@@ -1,0 +1,27 @@
+<@controller namespace="modules::guestbook::pres::documentcontroller" class="guestbook_adminlogin_v1_controller" file="guestbook_adminlogin_v1_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<br />
+<br />
+<strong>G&auml;stebuch administrieren:</strong>
+<br />
+<br />
+Hier kannst du dich einloggen um das G&auml;stebuch zu administrieren.
+<br />
+<br />
+<html:placeholder name="Form" />
+
+<html:form name="AdminLogin" method="post" action="">
+  <form:placeholder name="LogInError" />
+  Benutzer: <form:text name="Username" class="eingabe_feld" style="width: 200px; margin-left: 20px;" validate="true" button="AdminLogin" />
+  <br />
+  Passwort: <form:password name="Password" class="eingabe_feld" style="width: 200px; margin-left: 16px;" validate="true" button="AdminLogin" />
+  <br />
+  <br />
+  <form:button name="AdminLogin" value="Login" class="eingabe_feld" style="margin-left: 227px;"/>
+</html:form>
+
+<html:template name="LogInError">
+  <font style="color: red; font-weight: bold;">Die von Ihnen eingegebenen Zugangsdaten sind falsch!</font>
+  <br />
+  <br />
+</html:template>

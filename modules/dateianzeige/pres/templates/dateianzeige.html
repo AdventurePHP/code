@@ -1,0 +1,16 @@
+<@controller namespace="modules::dateianzeige::pres::documentcontroller" file="dateianzeige_v1_controller" class="dateianzeige_v1_controller" @>
+<html:placeholder name="Inhalt" />
+
+<html:template name="Bild">
+  <?xml version="1.0" encoding="iso-8859-1" ?>
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  <title>Bild-Ansicht</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  </head>
+  <body style="margin: 0px; background-color: #dedede;">
+    <img src="<template:placeholder name="BildLink" />" border="0" />
+  </body>
+  </html>
+</html:template>

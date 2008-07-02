@@ -1,0 +1,160 @@
+<@controller namespace="modules::schwarzesbrett::pres::documentcontroller" file="schwarzesbrett_v3_controller" class="schwarzesbrett_v3_controller" @>
+<html:placeholder name="Inhalt" />
+
+<html:template name="Eintrag">
+  <table border="0" cellpadding="0" cellspacing="0" style="width: 90%; background-image: url(<template:placeholder name="HintergrundBild" />); background-repeat: no-repeat;">
+    <tr>
+      <td height="19" valign="top" style="width: 100%">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="140" height="19" style="text-align: left; padding-left: 20px;"">
+              <font style="font-size: 11px;">&nbsp;<template:placeholder name="DatumUhrzeit" /></font>
+            </td>
+            <td width="260" valign="top">&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="40" valign="top" style="border: 1px solid black; background-color: #cdcdcd; padding: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
+        <template:placeholder name="Text" />
+      </td>
+    </tr>
+  </table>
+  <div style="width: 90%; max-width: 88%; text-align: left; font-family: Arial, Helvetica, sans-serif; font-size: 13px; border-bottom: 1px dashed black; border-left: 1px dashed black; border-right: 1px dashed black; padding: 10px;">
+    <strong>Adresse:</strong>
+    <br />
+    <template:placeholder name="VornameName" />
+    <br />
+    <template:placeholder name="Strasse" />
+    <br />
+    <template:placeholder name="PLZOrt" />
+    <br />
+    <br />
+    <strong>Tel.:</strong> <template:placeholder name="Tel" />
+    <br />
+    <strong>Fax.:</strong> <template:placeholder name="Fax" />
+    <template:placeholder name="EMail" />
+    <template:placeholder name="Anhang" />
+  </div>
+  <br />
+  <br />
+  <br />
+</html:template>
+
+<html:template name="Ausgabe">
+  <font style="font-size: 16px;"><strong>Schwarzes Brett</strong></font>
+  <br />
+  <br />
+  Auf diesen Seiten ist es Ihnen m&ouml;glich Anzeigen zu verfassen und abzurufen.
+  Sie sollen Ihnen erm&ouml;glichen sich mit
+  anderen Firmen der Branche zusammen zu schlie&szlig;en, anzubieten und zu kaufen.
+  Diese Plattform soll allen Besuchern der Branche zur Verf&uuml;gfung stehen und
+  auch von diesen genutzt werden. Es ist dabei zu beachten, dass die Anzeigen eine
+  G&uuml;ltigkeitsdauer von <strong>6 Wochen</strong> haben und danach automatisch
+  gel&ouml;scht werden.
+  <br />
+  <br />
+  <table style="width: 100%; border: 0px solid blue; text-align: right;" cellpadding="0" cellspacing="0">
+    <tr>
+      <td align="right">
+
+        <table style="border: 0px solid black; text-align: right;" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="width: 150px; height: 22px; text-align: left; vertical-align: middle; font-size: 12px; border: 0px solid red;">
+              <strong>Neuen Eintrag verfassen:</strong>
+            </td>
+            <td style="width: 22px; height: 22px; text-align: center;">
+              <a href="<template:placeholder name="EintragenLink" />"><img src="<template:placeholder name="EintragenBild" />" border="0" align="absmiddle" alt="Neuen Eintrag verfassen!"/></a>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 150px; height: 22px; text-align: left; font-size: 12px; border: 0px solid red;">
+              <strong>Alte Einträge anzeigen?</strong>
+            </td>
+            <td style="width: 22px; height: 22px; text-align: center;">
+              <a href="<template:placeholder name="HistoryLink" />" title="<template:placeholder name="HistoryKommentar" />"><img src="<template:placeholder name="HistoryBild" />" border="0" align="absmiddle" alt="<template:placeholder name="HistoryKommentar" />" /></a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <br />
+  <center>
+    <template:placeholder name="Pager" />
+    <template:placeholder name="Eintraege" />
+  </center>
+</html:template>
+
+<html:template name="Formular">
+  <font style="font-size: 16px;"><strong>Schwarzes Brett</strong></font>
+  <br />
+  <br />
+  Hier haben Sie die M&ouml;glich einen Eintrag zu erstellen. Beachten Sie bitte, da&szlig;
+  die Anzeigen eine G&uuml;ltigkeitsdauer von <strong>6 Wochen</strong> haben. F&uuml;llen
+  Sie die Felder bitte sorgf&auml;ltig aus (Telefon-Kontakt!), damit die Besucher des Schwarzen
+  Brettes schnelle Kontaktm&ouml;glichkeiten haben.
+  <br />
+  <br />
+  <div style="text-align: left; padding-left: 80px;">
+  <font style="font-size: 16px;"><strong>Eintrag erstellen</strong></font>
+  <br />
+  <br />
+  <template:placeholder name="Form" />
+    Ihr Text:
+    <br />
+    <template:placeholder name="Text" />
+    <br />
+    <br />
+    <br />
+    Ihre Daten:
+    <br />
+    Vorname:
+    <template:placeholder name="Vorname" />
+    <br />
+    Name:
+    <template:placeholder name="Nachname" />
+    <br />
+    Stra&szlig;e:
+    <template:placeholder name="Strasse" />
+    <br />
+    PLZ / Ort:
+    <template:placeholder name="PLZ" /><template:placeholder name="Ort" />
+    <br />
+    <br />
+    Telefon:
+    <template:placeholder name="Tel" />
+    <br />
+    Fax:
+    <template:placeholder name="Fax" />
+    <br />
+    <br />
+    Ihre E-Mail Adresse:
+    <br />
+    <template:placeholder name="EMail" />
+    <br />
+    <br />
+    <br />
+    Ihr Anhang (Bild oder PDF-Datei):
+    <br />
+    <template:placeholder name="Anhang" />
+    <br />
+    <font style="font-size: 10px;">(Es wird empfohlen, dass das hinzugef&uuml;gte Bildmaterial nicht gr&ouml;&szlig;er als 200kByte ist!<br />PDF-Dateien unterliegen einer Gr&ouml;ßen-Begrenzung von 2MB!)</font>
+    <br />
+    <br />
+    <br />
+    <input type="submit" name="Eintragen" value="Eintragen" class="eingabe_feld" />
+    <input type="hidden" name="Aktion" value="erstellen" />
+  </form>
+  </div>
+  <br />
+  <br />
+</html:template>
+
+<html:template name="KeinEintrag">
+  <br />
+  <br />
+  <br />
+  <strong>Zur Zeit sind keine Einträge im Schwarzen Brett vorhanden!</strong>
+</html:template>

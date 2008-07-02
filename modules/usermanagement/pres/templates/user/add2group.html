@@ -1,0 +1,11 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::user" file="add2group_controller" class="add2group_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:form name="Group" method="post">
+  Please choose one or more of the following groups:
+  <br />
+  <br />
+  <form:multiselect name="Group[]" size="3" validate="true" button="Add"/>
+  <br />
+  <br />
+  <form:button name="Add" value="Add" class="formfield"/>
+</html:form>

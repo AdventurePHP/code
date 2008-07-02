@@ -1,0 +1,104 @@
+<@controller namespace="modules::bildergalerie::pres::documentcontroller" file="bildergalerie_v2_controller" class="bildergalerie_v2_controller" @>
+<html:placeholder name="Content" />
+
+<html:template name="BilderGalerie">
+  <font style="font-size: 16px;"><strong><template:placeholder name="Name" /></strong></font>
+  <br />
+  <br />
+  <template:placeholder name="Beschreibung" />
+  <br />
+  <br />
+  <br />
+  <template:placeholder name="Inhalt" />
+</html:template>
+
+
+<html:template name="Uebersicht">
+  <center>
+    <div style="width: 100%; padding-left: 40px; text-align: left;">
+      <template:placeholder name="Ordner" />
+    </div>
+  </center>
+</html:template>
+
+
+<html:template name="Ordner">
+  <img src="<template:placeholder name="Ordner" />" border="0" align="absmiddle" />&nbsp;<a href="<template:placeholder name="Link" />"><strong><template:placeholder name="Name" /><strong></a>
+  <br />
+</html:template>
+
+
+<html:template name="Thema">
+  >> <a href="<template:placeholder name="GalerieLink" />"><strong><template:placeholder name="GalerieName" /></strong></a> > <strong><template:placeholder name="ThemaName" /></strong>
+  <hr style="border: 1px solid black;" />
+  <br />
+  <template:placeholder name="Bilder" />
+</html:template>
+
+
+<html:template name="Bild">
+  <a href="<template:placeholder name="BildLink" />"><img src="<template:placeholder name="BildPfad" />" alt="<template:placeholder name="BildName" />" border="0" align="absmiddle" style="margin-left: 10px; margin-bottom: 10px;" /></a>
+</html:template>
+
+
+<html:template name="Details">
+  >> <a href="<template:placeholder name="GalerieLink" />"><strong><template:placeholder name="GalerieName" /></strong></a> > <a href="<template:placeholder name="ThemaLink" />"><strong><template:placeholder name="ThemaName" /></strong></a> > <template:placeholder name="BildName" />
+  <hr style="border: 1px solid black;" />
+  <br />
+  <img src="<template:placeholder name="GrossBildPfad" />" galleryimg="no" />
+  <br />
+  <br />
+  <br />
+  <template:placeholder name="BildText" />
+  <br />
+  <br />
+  <br />
+  <table width="480" border="0" cellpadding="0" cellspacing="0" style="font-size: 12px; font-weight: bold;" class="bildergalerie">
+    <tr>
+      <td height="19" colspan="2" valign="top" class="schrift">
+        <template:placeholder name="PagerZurueck" />
+      </td>
+      <td colspan="2" align="right" valign="top" class="schrift">
+        <template:placeholder name="PagerVor" />
+      </td>
+    </tr>
+    <tr>
+      <td width="126" height="19" align="left" valign="middle" class="schrift">
+        <template:placeholder name="PagerAnfang" />
+      </td>
+      <td colspan="2" align="center" valign="top" class="schrift">
+        <template:placeholder name="PagerUebersicht" />
+      </td>
+      <td width="126" align="right" valign="middle" class="schrift">
+        <template:placeholder name="PagerEnde" />
+      </td>
+    </tr>
+  </table>
+  <br />
+  <br />
+</html:template>
+
+
+<html:template name="PagerVor">
+  <a href="<template:placeholder name="PagerVorLink" />">vor</a> &gt;
+</html:template>
+
+
+<html:template name="PagerZurueck">
+  &lt; <a href="<template:placeholder name="PagerZurueckLink" />">zur&uuml;ck</a>
+</html:template>
+
+
+<html:template name="PagerAnfang">
+  &lt;&lt; <a href="<template:placeholder name="PagerAnfangLink" />">Anfang</a>
+</html:template>
+
+
+<html:template name="PagerEnde">
+  <a href="<template:placeholder name="PagerEndeLink" />">Ende</a> &gt;&gt;
+</html:template>
+
+
+<html:template name="PagerUebersicht">
+  &lt; <a href="<template:placeholder name="PagerUebersichtLink" />">&Uuml;bersicht</a> &gt;
+</html:template>

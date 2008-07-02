@@ -1,0 +1,53 @@
+<@controller namespace="modules::footer::pres::documentcontroller" file="recommend_v1_controller" class="recommend_v1_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:placeholder name="Inhalt" />
+
+<html:form name="RecommendForm" method="post">
+  Hier können Sie die gewählte Seite per E-Mail weiterempfehlen.
+  <strong>Bitte f&uuml;llen Sie das Formular vollst&auml;ndig aus!</strong>
+  <br />
+  <br />
+  <div style="text-align: left; padding-left: 40px; font-size: 12px;">
+    <form:valgroup name="MyValGroup">
+     <div style="width: 435px; border: 1px solid red; padding: 5px;">
+       <img src="<valgroup:placeholder name="WarnBild" />" />&nbsp;<font style="font-size: 13px; font-weight: bold;">Fehler:</font>
+       <br />
+        <valgroup:validate validator="Text" button="Senden" field="AbsenderName" type="text" msginputreq="Recommend.Sender.Name.InputRequired" />
+        <valgroup:validate validator="EMail" button="Senden" field="AbsenderEMail" type="text" msginputreq="Recomment.Sender.EMail.InputRequired" msginputwrg="Recomment.Sender.EMail.InputWrong" />
+        <valgroup:validate validator="Text" button="Senden" field="EmpfaengerName" type="text" msginputreq="Recommend.Recipient.Name.InputRequired" />
+        <valgroup:validate validator="EMail" button="Senden" field="EmpfaengerEMail" type="text" msginputreq="Recomment.Recipient.EMail.InputRequired" msginputwrg="Recomment.Recipient.EMail.InputWrong" />
+        <valgroup:validate validator="Text" button="Senden" field="Betreff" type="text" msginputreq="Recomment.Subject.InputRequired" />
+        <valgroup:validate validator="Text" button="Senden" field="Text" type="text" msginputreq="Recomment.Text.InputRequired" />
+      </div>
+    </form:valgroup>
+    <br />
+    <span style="width: 56x; border: 0px solid black; margin-right: 98px;">Ihr Name:</span>
+    <form:text name="AbsenderName" class="eingabe_feld" style="width: 280px;" />
+    <br />
+    <br />
+    <span style="width: 108px; border: 0px solid black; margin-right: 44px;">Ihre eMail-Adresse:</span>
+    <form:text name="AbsenderEMail" class="eingabe_feld" style="width: 280px;" />
+    <br />
+    <br />
+    <span style="width: 56x; border: 0px solid black; margin-right: 20px;">Name des Empfängers:</span>
+    <form:text name="EmpfaengerName" class="eingabe_feld" style="width: 280px;" />
+    <br />
+    <br />
+    <span style="width: 108px; border: 0px solid black; margin-right: 44px;">E-Mail-Adresse des Empfängers:</span>
+    <form:text name="EmpfaengerEMail" class="eingabe_feld" style="width: 280px;" />
+    <br />
+    <br />
+    <span style="width: 57px; border: 0px solid black; margin-right: 95px;">Ihr Betreff:</span>
+    <form:text name="Betreff" class="eingabe_feld" style="width: 280px;" />
+    <br />
+    <br />
+    Ihre Nachricht:
+    <br />
+    <form:area name="Text" class="eingabe_feld" style="height: 200px; width: 433px; overflow: auto;" />
+    <br />
+    <br />
+    <div style="width: 433px; text-align: right;">
+      <form:button name="Senden" value="Senden" class="eingabe_feld" />
+     </div>
+  </div>
+</html:form>

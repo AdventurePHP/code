@@ -1,0 +1,34 @@
+<@controller namespace="modules::bilddatenbank::pres::documentcontroller" file="bildanzeige_v2_controller" class="bildanzeige_v2_controller" @>
+<html>
+<head>
+<title><html:placeholder name="Titel" /></title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="Javascript">
+<!--
+x = new Date()
+function cal(){
+   y = new Date()
+   diff = y.getTime() - x.getTime()
+   newstatus = "Ladezeit: " + diff/1000 + " s";
+   window.defaultStatus = newstatus;
+}
+
+function resizeToFitImage(){
+   window.resizeTo(<html:placeholder name="Breite" />,<html:placeholder name="Hoehe" />);
+}
+</script>
+<style>
+body
+{
+   background-color: #00238A;
+   margin: 0px;
+   padding-left: 20px;
+   padding-top: 20px;
+   overflow: auto;
+}
+</style>
+</head>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="cal(); resizeToFitImage(); focus();">
+  <img src="<html:placeholder name="BildQuelle" />" alt="" align="absmiddle" GALLERYIMG="no" />
+</body>
+</html>

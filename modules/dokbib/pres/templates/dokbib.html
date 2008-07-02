@@ -1,0 +1,100 @@
+<@controller namespace="modules::dokbib::pres::documentcontroller" file="dokbib_v2_controller" class="dokbib_v2_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:placeholder name="Content" />
+
+
+<html:template name="Anzeige">
+  <font style="font-size: 16px;"><strong>Kulturtechnik</strong></font>
+  <br />
+  <br />
+  Hier k&ouml;nnen Sie die gew&uuml;nschten Info&acute;s einfach per Mausklick abrufen.
+  Die Navigation funktioniert wie der Windows-Explorer ihres Windows-Betriebssystems!
+  Bitte w&auml;hlen Sie aus den aufgelisteten Ordnern aus...
+  <br />
+  <br />
+  <br />
+  <div style="width: 100%; padding-left: 30px;">
+    <template:placeholder name="Baum" />
+  </div>
+  <br />
+  <br />
+  <strong>Artikel-Suche</strong>
+  <br />
+  Falls Sie einen Artikel nicht auf Anhieb finden, dann l&auml;sst sich dieser oft mit Hilfe der
+  Artikel-Suche finden. Diese zeigt Ihnen dann an, wo sie den gew&uuml;nschte Artikel finden.
+  Mehrere Suchbegriffe durch Leerzeichen getrennt eingeben!
+  Bitte geben Sie einen Suchbegriff ein!
+  <br />
+  <br />
+  <template:placeholder name="SuchAusgabe" />
+  <template:placeholder name="SuchEingabe" />
+  <br />
+  <br />
+</html:template>
+
+
+<html:template name="SuchErgebnisLeer">
+  <br />
+  <font style="color: red;"><strong>Kein Ergebnis!</strong></font>
+  <br />
+  Es wurde kein passendes Ergebnis für Ihre Anfrage gefunden! Bitte verändern Sie den Suchbegriff
+  oder suchen Sie nach anderen Begriffen.
+  <br />
+  <br />
+  <br />
+</html:template>
+
+
+<html:template name="SuchErgebnis">
+  <div style="border-bottom: 1px solid black; margin-top: 20px; padding-bottom: 3px; padding-left: 10px; width: 90%;">
+    <font style="color: black;"><strong>Titel:</strong></font> <template:placeholder name="Titel" />
+    <br />
+    <font style="color: black;"><strong>Gefunden in:</strong></font> <a href="<template:placeholder name="PfadLink"/>" title="Klicken Sie hier um den Ordner im Baum zu öffnen!"><font style="font-style: italic;"><template:placeholder name="PfadName" /></font></a>
+    <br />
+    <font style="color: black;"><strong>Datum:</strong></font> <template:placeholder name="Datum" />
+    <br />
+    <font style="color: black;"><strong>Ergebnis zu</font> <img src="<template:placeholder name="BildPfad" />" width="<template:placeholder name="Relevanz" />" height="10" /> <template:placeholder name="Relevanz" />% zutreffend</strong>
+  </div>
+</html:template>
+
+
+<html:template name="SuchAusgabe">
+  <!--<br />
+  <font style="font-size: 14px;"><strong>Ergebnisse der Suche:</strong></font>
+  <br />-->
+  <br />
+  <template:placeholder name="SuchErgebnisse" />
+  <br />
+  <br />
+  Wollen Sie Ihre Suche verfeinern oder ver&auml;ndern k&ouml;nnen Sie den neuen Suchbegriff im folgenden Suchfeld
+  eingeben.
+</html:template>
+
+
+<html:template name="Ergebnis_Datei">
+  <span style="color: blue; cursor: pointer;" onClick="window.open('<template:placeholder name="DateiLink"/>','DokBib','toolbar=no,location=no,directories=no,status=no,menubar=no,closed=no,scrollbars=yes,resizable=yes,copyhistory=yes,width=600,height=500')" title="Klicken Sie hier um das Dokument '<template:placeholder name="Titel" />' direkt zu öffnen!"><font style="color: blue; font-weight: bold;"><template:placeholder name="Titel" /></font></span>
+</html:template>
+
+
+<html:template name="Ergebnis_Ordner">
+  <span style="color: blue;" title="Ordner '<template:placeholder name="Titel"/>'. Klicken Sie auf den unter 'Gefunden in:' angegeben Verzeichnis-Pfad um in den Ordner zu gelangen!"><font style="color: blue; font-weight: bold;"><template:placeholder name="Titel" /></font></span>
+</html:template>
+
+
+<html:template name="Suche">
+  <template:placeholder name="FormBeginn" />
+  <strong>Suchbegriff:</strong>
+  <br />
+  <template:placeholder name="Hidden" />
+  <template:placeholder name="SuchText" />
+  <template:placeholder name="Button" />
+  <template:placeholder name="FormEnde" />
+</html:template>
+
+<html:form name="KulturInfoSuche" method="post" action="">
+  <strong>Suchbegriff:</strong>
+  <br />
+  <form:text class="eingabe_feld" style="width: 200px;" name="SuchText" value="" validate="true" button="Suche" />
+  <form:button name="Suche" value="?&nbsp;Suchen" class="eingabe_feld" style="margin-left: 10px;" />
+  <form:hidden name="Seite" value="" />
+</html:form>
