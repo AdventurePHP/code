@@ -158,7 +158,7 @@
       *  @version
       *  Version 0.1, 29.03.2007<br />
       *  Version 0.2, 02.04.2007 (Fehler beim Anlegen des Log-Verzeichnisses behoben)<br />
-      *  Version 0.3, 21.062.008 (Replaced APPS__LOG_PATH with a value from the registry)<br />
+      *  Version 0.3, 21.06.2008 (Replaced APPS__LOG_PATH with a value from the registry)<br />
       */
       function Logger(){
 
