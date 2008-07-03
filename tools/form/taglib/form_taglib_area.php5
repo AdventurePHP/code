@@ -101,7 +101,7 @@
             // Validierung durchführen
             $ValidatorMethode = 'validate'.$this->__Validator;
 
-            if(in_array(strtolower($ValidatorMethode),get_class_methods('myValidator'))){
+            if(in_array($ValidatorMethode,get_class_methods('myValidator'))){
 
                if(!myValidator::$ValidatorMethode($this->__Content) || !isset($_REQUEST[$this->__Attributes['name']])){
 

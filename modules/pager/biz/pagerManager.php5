@@ -396,7 +396,7 @@
             $EntryIDs = $M->loadEntries($this->__config_StatementNamespace,$this->__config_EntriesStatement,$this->__pager_StatamentParams);
 
             // Prüfen, ob gegebene Daten-Komponente korrekt übergeben wurde
-            if(in_array(strtolower($LoadMethod),get_class_methods($DataComponent))){
+            if(in_array($LoadMethod,get_class_methods($DataComponent))){
 
                // Einträge mit Hilfe der Instanz der Daten-Komponente laden
                $Entries = array();
