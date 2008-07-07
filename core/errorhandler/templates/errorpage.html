@@ -1,0 +1,51 @@
+<@controller namespace="core::errorhandler" file="documentcontroller/errorpage_v1_controller" class="errorpage_v1_controller" @>
+<div style="background-color: white; padding: 5px; border: 2px solid red; width: 100%;">
+  <div style="border-top: 1px solid black; border-bottom: 1px solid black; width: 100%; padding: 10px; background-color: #dddddd;">
+    <font style="font-size: 18px; font-weight: bold; color: red;">Error!</font>
+    <br />
+    <br />
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="60" height="20" align="left" valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif">Error-ID:</font></td>
+        <td valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif"><strong><html:placeholder name="ErrorID" /><strong></font></td>
+      </tr>
+      <tr>
+        <td width="60" height="20" align="left" valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif">Message:</font></td>
+        <td valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif"><strong><html:placeholder name="ErrorMessage" /><strong></font></td>
+      </tr>
+      <tr>
+        <td width="60" height="20" align="left" valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif">Number:</font></td>
+        <td valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif"><strong><html:placeholder name="ErrorNumber" /><strong></font></td>
+      </tr>
+      <tr>
+        <td width="60" height="20" align="left" valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif">File:</font></td>
+        <td valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif"><strong><html:placeholder name="ErrorFile" /><strong></font></td>
+      </tr>
+      <tr>
+        <td width="60" height="20" align="left" valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif">Line:</font></td>
+        <td valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif"><strong><html:placeholder name="ErrorLine" /><strong></font></td>
+      </tr>
+    </table>
+  </div>
+  <br />
+  <strong>STACKTRACE:</strong>
+  <br />
+  <div style="height: 150px; overflow: auto; border: 1px solid gray;">
+    <table cellpadding="0" cellspacing="0" border="0" style="width: 100%; padding: 2px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
+      <tr style="background-color: #dddddd; font-weight: bold;">
+        <td>Call</td>
+        <td>File</td>
+        <td>Line</td>
+      </tr>
+      <html:placeholder name="Stacktrace" />
+    </table>
+  </div>
+</div>
+
+<html:template name="ErrorEntry">
+      <tr style="border-bottom: 1px solid #dddddd;">
+        <td style="border-bottom: 1px solid #dddddd;"><nobr><template:placeholder name="Class" /><template:placeholder name="Type" /><template:placeholder name="Function" />()</nobr></td>
+        <td style="border-bottom: 1px solid #dddddd;"><nobr><template:placeholder name="File" /></nobr></td>
+        <td style="border-bottom: 1px solid #dddddd;"><nobr><template:placeholder name="Line" /></nobr></td>
+      </tr>
+</html:template>
