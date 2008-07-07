@@ -1,0 +1,28 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::group" file="list_controller" class="list_controller" @>
+<table cellpadding="3" cellspacing="0" border="0">
+  <tr style="font-weight: bold; background-color: #eeeeee;">
+    <td>Display name</td>
+    <td>Action</td>
+  </tr>
+
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="iterator"/>
+<html:iterator name="Group">
+  <iterator:item getter="getProperty">
+    <tr>
+      <td><item:placeholder name="DisplayName" /></td>
+      <td>
+        <a href="?mainview=group&groupview=details&groupid=<item:placeholder name="GroupID" />" title="View group details">View group details</a>
+        &nbsp;|&nbsp;
+        <a href="?mainview=group&groupview=edit&groupid=<item:placeholder name="GroupID" />" title="Edit group">Edit group</a>
+        &nbsp;|&nbsp;
+        <a href="?mainview=group&groupview=delete&groupid=<item:placeholder name="GroupID" />" title="Delete group">Delete group</a>
+        &nbsp;|&nbsp;
+        <a href="?mainview=group&groupview=useradd&groupid=<item:placeholder name="GroupID" />" title="Add user to group">Add user to group</a>
+        &nbsp;|&nbsp;
+        <a href="?mainview=group&groupview=userrem&groupid=<item:placeholder name="GroupID" />" title="Detach users from group">Detach users from group</a>
+      </td>
+    </tr>
+  </iterator:item>
+</html:iterator>
+
+</table>
