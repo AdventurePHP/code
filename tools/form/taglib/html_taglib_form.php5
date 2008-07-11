@@ -16,6 +16,7 @@
    import('tools::form::taglib','form_taglib_valgroup');
    import('tools::form::taglib','form_taglib_genericval');
    import('tools::form::taglib','form_taglib_getstring');
+   import('tools::form::taglib','form_taglib_addtaglib');
 
 
    /**
@@ -65,7 +66,7 @@
       /**
       *  @public
       *
-      *  Konstruktor der Klasse. Fügt die in einer Form enthaltenen Tags als TagLib hinzu.<br />
+      *  Konstruktor der Klasse. Fügt die in einer Form enthaltenen Tags als TagLib hinzu.
       *
       *  @author Christian Schäfer
       *  @version
@@ -77,6 +78,7 @@
       *  Version 0.6, 25.03.2007 (Weitere Taglib "form:valgroup" eingeführt)<br />
       *  Version 0.7, 22.09.2007 (Generischen Vaidator hinzugefügt)<br />
       *  Version 0.8, 06.11.2007 (Tag form:getstring hinzugefügt)<br />
+      *  Version 0.9, 11.07.2008 (Added the form::addtaglib tag)<br />
       */
       function html_taglib_form(){
 
@@ -96,6 +98,7 @@
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','validate');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','genericval');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','getstring');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','addtaglib');
 
        // end function
       }
