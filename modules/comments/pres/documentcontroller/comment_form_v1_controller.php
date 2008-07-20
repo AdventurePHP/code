@@ -45,7 +45,7 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "transformContent()".<br />
+      *  Implementiert die abstrakte Methode "transformContent()".
       *
       *  @author Christian Achatz
       *  @version
@@ -110,7 +110,7 @@
       /**
       *  @private
       *
-      *  Erzeugt das Formular.<br />
+      *  Erzeugt das Formular.
       *
       *  @author Christian Achatz
       *  @version

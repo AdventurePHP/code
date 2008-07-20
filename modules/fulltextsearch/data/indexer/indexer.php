@@ -26,7 +26,7 @@
 
    // Indexer erstellen
    $fSI = new fulltextsearchIndexer();
-   $fSI->set('Context',$Context);
+   $fSI->set('Context','sites::demosite');
 
    // Gewünschten Job ausführen
    $nothing2do = false;
