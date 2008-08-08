@@ -19,6 +19,7 @@
    *  @version
    *  Version 0.1, 20.06.2008<br />
    *  Version 0.2, 16.07.2008 (added the LibPath to the registry namespace apf::core)
+   *  Version 0.3, 07.08.2008 (Made LibPath readonly)<br />
    */
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +68,7 @@
    $Reg->register('apf::core','URLRewriting',false);
    $Reg->register('apf::core','LogDir','./logs');
    $Reg->register('apf::core','URLBasePath',$_SERVER['HTTP_HOST']);
-   $Reg->register('apf::core','LibPath',APPS__PATH);
+   $Reg->register('apf::core','LibPath',APPS__PATH,true);
 
 
    /**
