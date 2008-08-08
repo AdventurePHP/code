@@ -81,7 +81,7 @@
 
          // Namespace prüfen
          if($Config->getSection($ConfigSection) == null){
-            trigger_error('['.get_class($this).'->initAbstractCacheManager()] No configuration section found for name "'.$this->__cacheNamespace.'"!');
+            trigger_error('['.get_class($this).'::initAbstractCacheManager()] No configuration section found for name "'.$this->__cacheNamespace.'"!');
             $this->__cacheAktiv = false;
           // end if
          }
@@ -250,17 +250,14 @@
       /**
       *  @private
       *
-      *  Prüft, ob der Cache-Namespace vorhanden ist. Falls nicht, wird dieser erstellt.<br />
+      *  Prüft, ob der Cache-Namespace vorhanden ist. Falls nicht, wird dieser erstellt.
       *
-      *  @author Christian Wiedemann
-      *  @version
-      *  Version 0.1, 31.10.2005 (ursprünglich: Funktion createFolderRecursive())<br />
-      *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 05.06.2006<br />
       *  Version 0.2, 14.08.2006 (Bug behoben, dass auf einem LINUX-System die Ordner nicht sauber angelegt werden)<br />
       *  Version 0.3, 01.10.2006 (Ergänzung eingepflegt, dass Ordner-Struktur sowohl auf LINUX als auch WINDOWS sauber angelegt werden)<br />
+      *  Version 0.4, 22.07.2008 (Added fix, that relative folders were not created properly)<br />
       */
       function __generateCacheNamespace(){
 
@@ -289,9 +286,20 @@
 
                $aktuellerPfad .= $verzeichnisTrenner.$ordnerArray[$i];
 
+
                // Sonderverhalten für WINDOWS: Sollte der aktuelle Pfad z.B. ein '/e:' sein, so muss dieser ersetzt werden
-               if(preg_match("=/[a-z]{1}:=i",$aktuellerPfad)){
+               if(preg_match('=/[a-z]{1}:=i',$aktuellerPfad)){
                   $aktuellerPfad = str_replace('/','',$aktuellerPfad);
+                // end if
+               }
+
+               // Sonderverhalen für relative Pfade, die mit "." oder ".." anfangen
+               if(substr($aktuellerPfad,0,2) == '/.'){
+                  $aktuellerPfad = str_replace('/.','.',$aktuellerPfad);
+                // end if
+               }
+               if(substr($aktuellerPfad,0,3) == '/..'){
+                  $aktuellerPfad = str_replace('/..','..',$aktuellerPfad);
                 // end if
                }
 

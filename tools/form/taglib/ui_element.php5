@@ -90,15 +90,24 @@
       *
       *  Setzt den Wert des Objekts. Ist der Wert im REQUEST-Array enthalten wird dieser Wert verwendet.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 07.01.2007<br />
+      *  Version 0.2, 08.08.2008 (Fixed bug, that the number "0" was not automatically prefilled)<br />
       */
       function __presetValue(){
 
          if(!isset($this->__Attributes['value']) || empty($this->__Attributes['value'])){
 
-            if(isset($_REQUEST[$this->__Attributes['name']]) && !empty($_REQUEST[$this->__Attributes['name']])){
+            if(
+               isset($_REQUEST[$this->__Attributes['name']])
+               &&
+               (
+               !empty($_REQUEST[$this->__Attributes['name']])
+               ||
+               $_REQUEST[$this->__Attributes['name']] === '0'
+               )
+               ){
                $this->__Attributes['value'] = $_REQUEST[$this->__Attributes['name']];
              // end if
             }

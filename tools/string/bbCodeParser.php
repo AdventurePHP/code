@@ -299,29 +299,11 @@
       *  Version 0.2, 17.03.2006<br />
       *  Version 0.3, 03.01.2008 (Bildauslieferung auf FrontController umgestellt)<br />
       *  Version 0.4, 21.06.2008 (Removed APPS__URL_REWRITING and APPS__URL_PATH)<br />
+      *  Version 0.5, 21.07.2008 (Extracted the image tag generation to an extra callback function due to changes to the image resizer module)<br />
       */
       function __parsePictureTags($Text){
-
-         // retrieve values from Registry
-         $Reg = &Singleton::getInstance('Registry');
-         $URLRewriting = $Reg->retrieve('apf::core','URLRewriting');
-         $URLBasePath = $Reg->retrieve('apf::core','URLBasePath');
-
-         // Auslieferung je nach URL Rewriting
-         if($URLRewriting == true){
-            $Text = preg_replace("=\[[B|b]ild\=([^\[]*?)\]=","<img src=\"".$URLBasePath."/~/modules_imageresizer-action/showImage/Bild/\\1/Pfad/MEDIA_PATH\" align=\"absmiddle\" galleryimg=\"no\" border=\"0\" alt=\"\" />",$Text);
-            $Text = preg_replace("=\[[R|r][M|m][B|b]ild\=([^\[]*?),[G|g]roesse\=([^\[]*?)\]=","<img src=\"".$URLBasePath."/~/modules_imageresizer-action/showImage/Bild/\\1/Pfad/MEDIA_PATH/Groesse/\\2\" align=\"absmiddle\" galleryimg=\"no\" border=\"0\" alt=\"\" />",$Text);
-          // end if
-         }
-         else{
-            $Text = preg_replace("=\[[B|b]ild\=([^\[]*?)\]=","<img src=\"".$URLBasePath."/?modules_imageresizer-action:showImage=Bild:\\1|Pfad:MEDIA_PATH\" align=\"absmiddle\" galleryimg=\"no\" border=\"0\" alt=\"\" />",$Text);
-            $Text = preg_replace("=\[[R|r][M|m][B|b]ild\=([^\[]*?),[G|g]roesse\=([^\[]*?)\]=","<img src=\"".$URLBasePath."/?modules_imageresizer-action:showImage=Bild:\\1|Pfad:MEDIA_PATH|Groesse:\\2\" align=\"absmiddle\" galleryimg=\"no\" border=\"0\" alt=\"\" />",$Text);
-          // end else
-         }
-
-         // Verarbeiteten Text zurückgeben
-         return $Text;
-
+         $Text = preg_replace_callback('=\[[B|b]ild\=([^\[]*?)\]=',array('bbCodeParser','imageCallback'),$Text);
+         return preg_replace_callback('=\[[R|r][M|m][B|b]ild\=([^\[]*?),[G|g]roesse\=([^\[]*?)\]=',array('bbCodeParser','imageCallback'),$Text);
        // end function
       }
 
@@ -339,10 +321,9 @@
       */
       function __parseLinkTags($Text){
 
-         $Text = preg_replace("=\[[l|L]ink\=([^\[]*?),[H|h]ilfe\=([^\[]*?)\]([^\[]*?)\[\/[l|L]ink\]=","<a href=\"\\1\" title=\"\\2\" linkrewrite=\"false\">\\3</a>",$Text);
-         $Text = preg_replace("=\[[l|L]inkext\=([^\[]*?),[H|h]ilfe\=([^\[]*?)\]([^\[]*?)\[\/[l|L]inkext\]=","<a href=\"\\1\" title=\"\\2\" target=\"_blank\" linkrewrite=\"false\">\\3</a>",$Text);
-         $Text = preg_replace_callback("=\[[d|D]ownload\=([^\[]*?),[H|h]ilfe\=([^\[]*?)\]([^\[]*?)\[\/[d|D]ownload\]=",array('bbCodeParser','linkDLCallback'),$Text);
-         return $Text;
+         $Text = preg_replace('=\[[l|L]ink\=([^\[]*?),[H|h]ilfe\=([^\[]*?)\]([^\[]*?)\[\/[l|L]ink\]=',"<a href=\"\\1\" title=\"\\2\" linkrewrite=\"false\">\\3</a>",$Text);
+         $Text = preg_replace('=\[[l|L]inkext\=([^\[]*?),[H|h]ilfe\=([^\[]*?)\]([^\[]*?)\[\/[l|L]inkext\]=',"<a href=\"\\1\" title=\"\\2\" target=\"_blank\" linkrewrite=\"false\">\\3</a>",$Text);
+         return preg_replace_callback('=\[[d|D]ownload\=([^\[]*?),[H|h]ilfe\=([^\[]*?)\]([^\[]*?)\[\/[d|D]ownload\]=',array('bbCodeParser','linkDLCallback'),$Text);
 
        // end function
       }
@@ -378,22 +359,22 @@
          $URLBasePath = $Reg->retrieve('apf::core','URLBasePath');
 
          // Bild-Liste parsen
-         $Text = preg_replace("=\[[L|l]iste [B|b]ild\=([^\[]*?)\]=","<ul style=\"list-style-image: url(".$URLBasePath."/bild.php?Bild=\\1);\">",$Text);
+         $Text = preg_replace('=\[[L|l]iste [B|b]ild\=([^\[]*?)\]=',"<ul style=\"list-style-image: url(".$URLBasePath."/bild.php?Bild=\\1);\">",$Text);
 
          // Strich-Liste parsen
-         $Text = preg_replace("=\[[L|l]iste [T|t]yp\=[S|s]trich\]=","<ul style=\"list-style-type: circle;\">",$Text);
+         $Text = preg_replace('=\[[L|l]iste [T|t]yp\=[S|s]trich\]=','<ul style="list-style-type: circle;">',$Text);
 
          // Kreis-Liste parsen
-         $Text = preg_replace("=\[[L|l]iste [T|t]yp\=[K|k]reis\]=","<ul style=\"list-style-type: disk;\">",$Text);
+         $Text = preg_replace('=\[[L|l]iste [T|t]yp\=[K|k]reis\]=','<ul style="list-style-type: disk;">',$Text);
 
          // Zahl-Liste parsen
-         $Text = preg_replace("=\[[L|l]iste [T|t]yp\=[Z|z]ahl\]=","<ul style=\"list-style-type: decimal;\">",$Text);
+         $Text = preg_replace('=\[[L|l]iste [T|t]yp\=[Z|z]ahl\]=','<ul style="list-style-type: decimal;">',$Text);
 
          // Einfache Liste parsen
-         $Text = preg_replace("=\[[L|l]iste\]=","<ul>",$Text);
+         $Text = preg_replace('=\[[L|l]iste\]=','<ul>',$Text);
 
          // Listen-Ende parsen
-         $Text = preg_replace("=\[\/[L|l]iste\]=","</ul>",$Text);
+         $Text = preg_replace('=\[\/[L|l]iste\]=','</ul>',$Text);
 
          // Formatierten Text zurückgeben
          return $Text;
@@ -472,6 +453,63 @@
 
          // return image tag
          return '<a href="'.$URLBasePath.'/datei.php?Datei='.$Matches[1].'" title="'.$Matches[2].'" target="_blank" linkrewrite="false">'.$Matches[3].'</a>';
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *  @static
+      *
+      *  Helper funktion for the __parsePictureTags() method.
+      *
+      *  @param array $Matches matches from the reg exp applied to the text
+      *  @return string $ImageString desired image string to be placed in the parsed text
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 21.07.2008<br />
+      */
+      function imageCallback($Matches){
+
+         // retrieve values from Registry
+         $Reg = &Singleton::getInstance('Registry');
+         $URLRewriting = $Reg->retrieve('apf::core','URLRewriting');
+         $URLBasePath = $Reg->retrieve('apf::core','URLBasePath');
+
+         // extract image name and extension
+         $ExtPos = strrpos($Matches[1],'.');
+         $Ext = substr($Matches[1],$ExtPos + 1);
+         $Image = str_replace('.'.$Ext,'',$Matches[1]);
+
+         // create image strings
+         if(!isset($Matches[3])){
+
+            if($URLRewriting === true){
+               return '<img src="'.$URLBasePath.'/~/modules_imageresizer-action/showImage/image/'.$Image.'/ext/'.$Ext.'" align="absmiddle" galleryimg="no" border="0" alt="" />';
+             // end if
+            }
+            else{
+               return '<img src="'.$URLBasePath.'/?modules_imageresizer-action:showImage=image:'.$Image.'|ext:'.$Ext.'" align="absmiddle" galleryimg="no" border="0" alt="" />';
+             // end else
+            }
+
+          // end if
+         }
+         else{
+
+            if($URLRewriting === true){
+               return '<img src="'.$URLBasePath.'/~/modules_imageresizer-action/showImage/image/'.$Image.'/ext/'.$Ext.'/size/'.$Matches[2].'" align="absmiddle" galleryimg="no" border="0" alt="" />';
+             // end if
+            }
+            else{
+               return '<img src="'.$URLBasePath.'/?modules_imageresizer-action:showImage=image:'.$Image.'|ext:'.$Ext.'|size:'.$Matches[2].'" align="absmiddle" galleryimg="no" border="0" alt="" />';
+             // end else
+            }
+
+          // end else
+         }
 
        // end function
       }
