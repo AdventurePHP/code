@@ -116,8 +116,29 @@
       */
       function transform(){
 
-         // initialize captcha code
-         $CaptchaCode = '<img src="/~/modules_captcha_biz-action/showCaptcha/name/'.$this->__TextFieldName.'" alt="CAPTCHA" align="absmiddle" ';
+         // get url rewrite information from the registry
+         $Registry = &Singleton::getInstance('Registry');
+         $URLRewrite = $Registry->retrieve('apf::core','URLRewriting');
+
+         // initialize base url
+         if(isset($this->__Attributes['action_baseurl'])){
+            $ActionBaseURL = $this->__Attributes['action_baseurl'];
+          // end if
+         }
+         else{
+            $ActionBaseURL = (string)'';
+          // end else
+         }
+
+         // initialize captcha source
+         if($URLRewrite == true){
+            $CaptchaCode = '<img src="'.$ActionBaseURL.'/~/modules_captcha_biz-action/showCaptcha/name/'.$this->__TextFieldName.'" alt="CAPTCHA" align="absmiddle" ';
+          // end if
+         }
+         else{
+            $CaptchaCode = '<img src="'.$ActionBaseURL.'/?modules_captcha_biz-action:showCaptcha=name:'.$this->__TextFieldName.'" alt="CAPTCHA" align="absmiddle" ';
+          // end else
+         }
 
          // add class and style attributes if desired
          if(isset($this->__Attributes['image_class'])){
