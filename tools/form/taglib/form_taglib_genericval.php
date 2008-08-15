@@ -6,14 +6,22 @@
    *  @package tools::form::taglib
    *  @class form_taglib_genericval
    *
-   *  Generischer Validator-Tag, mit dem der Inhalt des Tags bei falscher Validierung ausgegeben wird.<br />
+   *  Generic validator tag, that displays it's content, if the checked control isn't valid.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Achatz
    *  @version
    *  Version 0.1, 22.09.2007<br />
+   *  Version 0.2, 15.08.2008 (Introduced new behavior of transform() method)<br />
    */
    class form_taglib_genericval extends ui_validate
    {
+
+      /**
+      *  @private
+      *  @since 0.2
+      *  Stores, if the control to validate is valid (true = valid, false = invalid).
+      */
+      var $__ControlIsValid = true;
 
 
       function form_taglib_genericval(){
@@ -22,17 +30,19 @@
 
       /**
       *  @public
+      *  @see http://forum.adventure-php-framework.org/de/viewtopic.php?p=186#p186
       *
-      *  Implementiert die Interface-Methode aus "coreObject". Validiert ein Feld und gibt bei<br/>
-      *  nicht erfolgreicher Validierung den Text innerhalb des Tags aus.<br />
+      *  Implements coreObject's onAfterAppend() method. Validates a field and indicates, if the
+      *  content of the tag should be displayed.
       *
-      *  @author Christian W. Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 22.09.2007<br />
+      *  Version 0.2, 15.08.2008 (Made tag more generic. Added RegExp validator, added multi language support)<br />
       */
       function onAfterAppend(){
 
-         // Feld auslesen
+         // get the name of the fielt, that should be checked
          if(isset($this->__Attributes['field']) && !empty($this->__Attributes['field']) && isset($this->__Attributes['button']) && !empty($this->__Attributes['button'])){
             $Field = $this->__Attributes['field'];
             $Button = $this->__Attributes['button'];
@@ -47,8 +57,7 @@
           // end else
          }
 
-
-         // Validiere Wert, falls Button geklickt wurde
+         // check if button is clicked
          if(isset($_REQUEST[$Button])){
 
             // Validierungs-Methode auslesen
@@ -61,10 +70,7 @@
              // end else
             }
 
-            $ValidatorMethode = 'validate'.$Validator;
-
-
-            // String, der zu validieren ist, auslesen
+            // read string to validate from request
             if(isset($_REQUEST[trim($this->__Attributes['field'])])){
                $String = $_REQUEST[trim($this->__Attributes['field'])];
              // end if
@@ -74,17 +80,74 @@
              // end else
             }
 
+            // check, which kind of validation should be done
+            if($Validator != 'RegExp'){
 
-            // Validierung durchführen
-            if(myValidator::$ValidatorMethode($String) == true){
-               $this->__Content = (string)'';
+               // build validator method
+               $ValidatorMethod = 'validate'.$Validator;
+
+               if(!myValidator::$ValidatorMethod($String) === true){
+                  $this->__ControlIsValid = false;
+                // end if
+               }
+
              // end if
+            }
+            else{
+
+               // get reg exp from attribute "regexp"
+               if(isset($this->__Attributes['regexp'])){
+
+                  // get regexp
+                  $RegExp = $this->__Attributes['regexp'];
+
+                  // do regexp validation
+                  if(!myValidator::validateRegExp($String,$RegExp) === true){
+                     $this->__ControlIsValid = false;
+                   // end if
+                  }
+
+                // end if
+               }
+               else{
+
+                  // display error
+                  $Name = $this->__ParentObject->getAttribute('name');
+                  trigger_error('['.get_class($this).'::onAfterAppend()] Generic validator tag in form "'.$Name.'" has no regexp attribute for RegExp validation method! Control to validate is still considered valid!',E_USER_ERROR);
+
+                // end else
+               }
+
+             // end else
             }
 
           // end if
          }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *  @see http://forum.adventure-php-framework.org/de/viewtopic.php?p=186#p186
+      *  @since 0.2
+      *
+      *  Implements the abstract transform() method. Returns the desired content, if the control to
+      *  validate contains a invalid input.
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 15.08.2008<br />
+      */
+      function transform(){
+
+         if($this->__ControlIsValid == true){
+            return (string)'';
+          // end if
+         }
          else{
-            $this->__Content = (string)'';
+            return $this->__Content;
           // end else
          }
 
