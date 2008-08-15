@@ -61,18 +61,17 @@
       *  @param string $FilterName; Name des Filters
       *  @return object $Filter; Instanz des Filters oder NULL
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 08.06.2007<br />
+      *  Version 0.2, 13.08.2008 (Removed unused code)<br />
       */
       function getFilter($Namespace,$FilterName){
 
          // Prüfen, ob Filter vorhanden
          if(file_exists(APPS__PATH.'/'.str_replace('::','/',$Namespace).'/'.$FilterName.'.php')){
-
             import('core::filter',$FilterName);
             return new $FilterName;
-
           // end if
          }
          else{
@@ -80,12 +79,6 @@
             return null;
           // end else
          }
-
-         // Filternamen erzeugen
-         $FilterName = $Type.'RequestFilter';
-
-         // Instanz des Filters zurückgeben
-         return new $FilterName;
 
        // end function
       }

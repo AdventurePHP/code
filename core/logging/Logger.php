@@ -1,14 +1,14 @@
 <?php
-   // flushLogger als Shutdown-Function registrieren
+   // register flushLogger as shutdown function
    register_shutdown_function('flushLogger');
 
 
    /**
    *  @package core::logging
    *
-   *  Wrapper für fas Flushen der Log-Entries auf Platte.<br />
+   *  Wrapper for flushing the log buffer.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Achatz
    *  @version
    *  Version 0.1, 29.03.2007<br />
    */
@@ -23,9 +23,9 @@
    *  @package core::logging
    *  @class logEntry
    *
-   *  Implementiert ein logEntry-Objekt.<br />
+   *  Implements a  logEntry object.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Achatz
    *  @version
    *  Version 0.1, 29.03.2007<br />
    */
@@ -34,28 +34,28 @@
 
       /**
       *  @private
-      *  Datum der Meldung.
+      *  Date of the message.
       */
       var $__Date;
 
 
       /**
       *  @private
-      *  Uhrzeit der Meldung.
+      *  Time of the message.
       */
       var $__Time;
 
 
       /**
       *  @private
-      *  Text der Meldung.
+      *  Message text.
       */
       var $__Message;
 
 
       /**
       *  @private
-      *  Typ der Meldung.
+      *  Message type.
       */
       var $__Type;
 
@@ -63,12 +63,12 @@
       /**
       *  @public
       *
-      *  Konstruktor der Klasse. Erstellt ein neues logEntry-Objekt.<br />
+      *  Construktor of the class. Creates a new logEntry object.
       *
-      *  @param string $Message; Meldung
-      *  @param string $Type; Type der Meldung
+      *  @param string $Message; Desrired error message
+      *  @param string $Type; Error message type
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 29.03.2007<br />
       */
@@ -86,11 +86,11 @@
       /**
       *  @public
       *
-      *  Liefert den Message-String, der für Logging und Ausgabe verwendet wird zurück.<br />
+      *  Returns the message string used to write into a log file.<br />
       *
-      *  @return string $Message; Komplette Meldung
+      *  @return string $Message; Complete error message including date and time
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 29.03.2007<br />
       */
@@ -107,12 +107,11 @@
    *  @package core::logging
    *  @class Logger
    *
-   *  Implementiert einen generischen Logger für das Logging in<br />
-   *  Programmteilen und Modulen. Muss Singleton instanziiert werden!<br />
-   *  Das Flushen der Inhalte wird zum Ende eines Requests automatisch<br />
-   *  erledigt.<br />
+   *  Implements a generic logger used in the framework's core components and your applications. The
+   *  class must be initialized singleton! Flushing is done automatically ba shutdown function after
+   *  a request.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Achatz
    *  @version
    *  Version 0.1, 29.03.2007<br />
    */
@@ -121,29 +120,28 @@
 
       /**
       *  @private
-      *  Array, dessen Keys die Logfile-Namen und dessen Offset die zugehörigen
-      *  logEntry-Objekte sind.
+      *  Log entry store.
       */
       var $__LogEntries = array();
 
 
       /**
       *  @private
-      *  Pfad, in den Log-Dateien abgelegt werden sollen.
+      *  Directory, where log files are stored.
       */
       var $__LogDir;
 
 
       /**
       *  @private
-      *  Ordner-Rechte, mit denen Log-Ordner angelegt werden.
+      *  Permission that is applied to a newly created log folder.
       */
       var $__logFolderPermissions = 0777;
 
 
       /**
       *  @private
-      *  Ordner-Rechte, mit denen Log-Ordner angelegt werden.
+      *  Newline sign. Uses the PHP's standard newline sign if not configured in different way.
       */
       var $__CRLF = PHP_EOL;
 
@@ -152,32 +150,19 @@
       /**
       *  @public
       *
-      *  Constructor of the Logger. Initializes the LogDir.
+      *  Constructor of the Logger. Creates the LogDir if it does not exist.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 29.03.2007<br />
       *  Version 0.2, 02.04.2007 (Fehler beim Anlegen des Log-Verzeichnisses behoben)<br />
       *  Version 0.3, 21.06.2008 (Replaced APPS__LOG_PATH with a value from the registry)<br />
+      *  Version 0.4, 14.08.2008 (LogDir initialization was moved do the flushLogBuffer() method)<br />
       */
       function Logger(){
 
-         // initialize log directory
          $Reg = &Singleton::getInstance('Registry');
          $this->__LogDir = $Reg->retrieve('apf::core','LogDir');
-
-         // check if lock dir exists
-         if(!is_dir($this->__LogDir)){
-
-            // try to create non existing log dir
-            if(!mkdir($this->__LogDir,$this->__logFolderPermissions)){
-               trigger_error('[Logger->Logger()] The log directory "'.$this->__LogDir.'" cannot be created du to permission restrictions! Please check config an specify the "LogDir" (namespace: "apf::core") parameter in the registry!');
-               exit();
-             // end if
-            }
-
-          // end if
-         }
 
        // end function
       }
@@ -186,9 +171,13 @@
       /**
       *  @public
       *
-      *  Erzeugt einen Log-Eintrag.<br />
+      *  Create a log entry.
       *
-      *  @author Christian Schäfer
+      *  @param string $LogFileName Name of the log file to log to
+      *  @param string $Message Log message
+      *  @param string $Type Desired type of the message
+      *
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 29.03.2007<br />
       */
@@ -201,40 +190,61 @@
       /**
       *  @public
       *
-      *  Leert den Log-Puffer und schreibt die Einträge auf Platte.<br />
+      *  Flushes the log buffer to the desired files.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 29.03.2007<br />
+      *  Version 0.2, 14.08.2008 (LogDir now is created during flush instead of during initialization)<br />
       */
       function flushLogBuffer(){
 
-         foreach($this->__LogEntries as $LogFileName => $LogEntries){
+         // check, if buffer contains log entries
+         if(count($this->__LogEntries) > 0){
 
-            // Kompletten Dateinamen generieren
-            $LogFileName = $this->__getLogFileName($LogFileName);
+            // check if lock dir exists
+            if(!is_dir($this->__LogDir)){
 
-            // Kompletten Dateinamen incl. Pfad generieren
-            $LogFile = $this->__LogDir.'/'.$LogFileName;
-
-            // Entries auf Platte flushen
-            if(count($LogEntries) > 0){
-
-               // Datei zum appenden öffnen
-               $lFH = fopen($LogFile,'a+');
-
-               for($i = 0; $i < count($LogEntries); $i++){
-                  fwrite($lFH,$LogEntries[$i]->toString().$this->__CRLF);
-                // end for
+               // try to create non existing log dir
+               if(!mkdir($this->__LogDir,$this->__logFolderPermissions)){
+                  trigger_error('[Logger->Logger()] The log directory "'.$this->__LogDir.'" cannot be created du to permission restrictions! Please check config and specify the "LogDir" (namespace: "apf::core") parameter in the registry!');
+                  exit();
+                // end if
                }
-
-               // Datei schließen
-               fclose($lFH);
 
              // end if
             }
 
-          // end foreach
+            // flush entries to the filesystem
+            foreach($this->__LogEntries as $LogFileName => $LogEntries){
+
+               // generate complete log file name
+               $LogFileName = $this->__getLogFileName($LogFileName);
+
+               // generate complete log file pathe
+               $LogFile = $this->__LogDir.'/'.$LogFileName;
+
+               // flush entries to filesystem
+               if(count($LogEntries) > 0){
+
+                  // open file
+                  $lFH = fopen($LogFile,'a+');
+
+                  for($i = 0; $i < count($LogEntries); $i++){
+                     fwrite($lFH,$LogEntries[$i]->toString().$this->__CRLF);
+                   // end for
+                  }
+
+                  // close file!
+                  fclose($lFH);
+
+                // end if
+               }
+
+             // end foreach
+            }
+
+          // end if
          }
 
        // end function
@@ -244,10 +254,12 @@
       /**
       *  @private
       *
-      *  Gibt den Namen einer LogDatei anhand des Body's des Namens zurück.<br />
-      *  Log-Dateien haben das Format jjjj_mm_dd__{filename}.log.<br />
+      *  Returns the name of the log file by the body of the name. Each log file will be named like jjjj_mm_dd__{filename}.log.
       *
-      *  @author Christian Schäfer
+      *  @param string $FileName Name of the log file
+      *  @return string $CompleteFileName Complete file name, that contains a date prefix and an file extension
+      *
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 29.03.2007<br />
       */

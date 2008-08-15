@@ -88,7 +88,7 @@
       /**
       *  @private
       *
-      *  Setzt den Wert des Objekts. Ist der Wert im REQUEST-Array enthalten wird dieser Wert verwendet.<br />
+      *  Prefills the value of the current control.
       *
       *  @author Christian Achatz
       *  @version
@@ -137,7 +137,6 @@
          // Prüfen, ob eine Validierung notwendig ist
          $this->__setValidateObject();
 
-
          // Validierung durchführen
          if($this->__ValidateObject == true){
 
@@ -146,7 +145,6 @@
                $this->__Attributes['value'] = (string)'';
              // end if
             }
-
 
             // Validierung durchführen
             $ValidatorMethode = 'validate'.$this->__Validator;
@@ -164,7 +162,6 @@
                    // end else
                   }
 
-
                   // Form als nicht valide kennzeichnen
                   $this->__ParentObject->set('isValid',false);
 
@@ -174,7 +171,7 @@
              // end if
             }
             else{
-               trigger_error('['.get_class($this).'::__validate()] Validation methode "'.$ValidatorMethode.'" is not supported in class "myValidator"! Please consult the API documentation for further details!');
+               trigger_error('['.get_class($this).'::__validate()] Validation method "'.$ValidatorMethode.'" is not supported in class "myValidator"! Please consult the API documentation for further details!');
              // end else
             }
 
@@ -200,7 +197,6 @@
          // Validator auf false setzen
          $this->__ValidateObject = false;
 
-
          // Validator und Button finden
          if(isset($this->__Attributes['validate']) && (trim($this->__Attributes['validate']) == 'true' || trim($this->__Attributes['validate']) == '1')){
 
@@ -210,10 +206,9 @@
              // end if
             }
             else{
-               $this->__Validator = trim($this->__Attributes['validator']);
+               $this->__Validator = $this->__Attributes['validator'];
              // end else
             }
-
 
             // Button finden
             if(!isset($this->__Attributes['button']) || empty($this->__Attributes['button'])){
@@ -225,7 +220,6 @@
                $Button = $this->__Attributes['button'];
              // end else
             }
-
 
             // Validator auf true setzen, falls Button gedrückt
             if(isset($_REQUEST[$Button])){

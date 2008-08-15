@@ -43,7 +43,7 @@
       *
       *  Implementiert die abstrakte Methode "transform".<br />
       *
-      *  @return string $TextField; HTML-Code des Text-Feldes
+      *  @return string $TextField HTML code of the text field
       *
       *  @author Christian Schäfer
       *  @version

@@ -3,12 +3,12 @@
    *  @file pagecontroller.php
    *
    *  Setups the framework's core environment. Initializes the Registry, that stores parameters,
-   *  that are used within the complete framework. Among these are
+   *  that are used within the complete framework. These are
    *
    *  - Environment  : environment, the application is executed in. The value is 'DEFAULT' in common
-   *  - URLBasePath  : absolute url base path of the application (not really necessary)
    *  - URLRewriting : indicates, is url rewriting should be used
-   *  - LogPath      : path, where logfiles are stored. The value is './logs' by default.
+   *  - LogDir       : path, where logfiles are stored. The value is './logs' by default.
+   *  - URLBasePath  : absolute url base path of the application (not really necessary)
    *  - LibPath      : path, where the framework and your own libraries reside. This path can be used
    *                   to adress files with in the lib path directly (e.g. images or other ressources)
    *
@@ -20,6 +20,8 @@
    *  Version 0.1, 20.06.2008<br />
    *  Version 0.2, 16.07.2008 (added the LibPath to the registry namespace apf::core)
    *  Version 0.3, 07.08.2008 (Made LibPath readonly)<br />
+   *  Version 0.4, 13.08.2008 (Fixed some timing problems with the registry initialisation)<br />
+   *  Version 0.5, 14.08.2008 (Changed LogDir initialisation to absolute paths)<br />
    */
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,29 +48,32 @@
     // end for
    }
 
-   // define the APPS__PATH constand
+   // define the APPS__PATH constant to be used in the import() function
    define('APPS__PATH',implode($AppsPath,'/'));
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-   // include necessary core libraries for the pagecontroller
-   import('core::errorhandler','errorHandler');
+   // include core libraries for the basic configuration
    import('core::singleton','Singleton');
    import('core::registry','Registry');
-   import('core::service','serviceManager');
-   import('core::configuration','configurationManager');
-   import('core::benchmark','benchmarkTimer');
-   import('core::filter','filterFactory');
 
 
    // define base parameters of the framework's core and tools layer
    $Reg = &Singleton::getInstance('Registry');
    $Reg->register('apf::core','Environment','DEFAULT');
    $Reg->register('apf::core','URLRewriting',false);
-   $Reg->register('apf::core','LogDir','./logs');
+   $Reg->register('apf::core','LogDir',str_replace('\\','/',getcwd()).'/logs');
    $Reg->register('apf::core','URLBasePath',$_SERVER['HTTP_HOST']);
    $Reg->register('apf::core','LibPath',APPS__PATH,true);
+
+
+   // include necessary core libraries for the pagecontroller
+   import('core::errorhandler','errorHandler');
+   import('core::service','serviceManager');
+   import('core::configuration','configurationManager');
+   import('core::benchmark','benchmarkTimer');
+   import('core::filter','filterFactory');
 
 
    /**
@@ -182,7 +187,7 @@
       $buffer .= "\n<pre>";
 
       if($transformhtml == true){
-         $buffer .= htmlentities(print_R($o,true));
+         $buffer .= htmlentities(print_r($o,true));
        // end if
       }
       else{

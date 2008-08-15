@@ -1,4 +1,8 @@
 <?php
+   // include dependent library
+   import('core::logging','Logger');
+
+
    // Error-Reporting-Stufen festlegen
    error_reporting(E_ALL);
    ini_set('display_errors','1');
@@ -6,10 +10,6 @@
 
    // Fehlerbehandlungsoutine setzen
    set_error_handler('errorHandler');
-
-
-   // Core-Klassen einbinden
-   import('core::logging','Logger');
 
 
    /**
@@ -141,9 +141,6 @@
          $L = &Singleton::getInstance('Logger');
          $L->logEntry('php',$Message,'ERROR');
 
-         // Explizites Flushen
-         //$L->flushLogBuffer();
-
        // end function
       }
 
@@ -151,51 +148,33 @@
       /**
       *  @private
       *
-      *  Erzeugt die Fehlerseite.<br />
+      *  Creates the error page.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 21.01.2007<br />
       *  Version 0.2, 03.03.2007 (Kompatibilität für PageController V1 implementiert)<br />
       *  Version 0.3, 04.03.2007 (Context wird nun für die ErrorPage gesetzt)<br />
       *  Version 0.4, 29.03.2007 (Kompatibilitäten zum alten PC entfernt)<br />
+      *  Version 0.5, 13.08.2008 (Removed text only error page messages)<br />
       */
       function __buildErrorPage(){
 
-         if(!class_exists('Page')){
+         // Stacktrace zusammensetzen
+         $Stacktrace = new Page('Stacktrace');
+         $Stacktrace->set('Context','core::errorhandler');
+         $Stacktrace->loadDesign('core::errorhandler::templates','errorpage');
 
-            return '<font style="font-weight: bold; color: red">ERROR:</font><pre>
+         // Informationen der Meldung setzen
+         $Document = & $Stacktrace->getByReference('Document');
+         $Document->setAttribute('id',$this->__generateErrorID());
+         $Document->setAttribute('message',$this->__ErrorMessage);
+         $Document->setAttribute('number',$this->__ErrorNumber);
+         $Document->setAttribute('file',$this->__ErrorFile);
+         $Document->setAttribute('line',$this->__ErrorLine);
 
-Fehler-ID..: '.$this->__generateErrorID().'
-Meldung....: '.$this->__ErrorMessage.'
-Nummer.....: '.$this->__ErrorNumber.'
-Datei......: '.$this->__ErrorFile.'
-Zeile......: '.$this->__ErrorLine.'</pre>';
-
-          // end if
-         }
-         else{
-
-            // Stacktrace zusammensetzen
-            $Stacktrace = new Page('Stacktrace');
-            $Stacktrace->set('Context','core::errorhandler');
-            $Stacktrace->loadDesign('core::errorhandler::templates','errorpage');
-
-
-            // Informationen der Meldung setzen
-            $Document = & $Stacktrace->getByReference('Document');
-            $Document->setAttribute('id',$this->__generateErrorID());
-            $Document->setAttribute('message',$this->__ErrorMessage);
-            $Document->setAttribute('number',$this->__ErrorNumber);
-            $Document->setAttribute('file',$this->__ErrorFile);
-            $Document->setAttribute('line',$this->__ErrorLine);
-
-
-            // Fehlerseite ausgeben
-            return $Stacktrace->transform();
-
-          // end else
-         }
+         // Fehlerseite ausgeben
+         return $Stacktrace->transform();
 
        // end function
       }

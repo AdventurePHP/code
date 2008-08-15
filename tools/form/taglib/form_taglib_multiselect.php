@@ -47,27 +47,26 @@
       /**
       *  @public
       *
-      *  Implementiert die Methode "onParseTime" für das Multi-Select-Feld neu.<br />
-      *  Prüft, ob das
+      *  Implements the onParseTime() methode. Parses the option taglibs and checks the name.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 15.01.2007<br />
-      *  Version 0.2, 07.06.2008 (Fehlermeldung erweitert)<br />
+      *  Version 0.2, 07.06.2008 (Extended error message)<br />
+      *  Version 0.3, 15.08.2008 (Extended error message with the name of the control)<br />
       */
       function onParseTime(){
 
-         // Options exztrahieren
+         // parses the option tags
          $this->__extractTagLibTags();
 
-
-         // Prüfen, ob Name als Array initialisiert wurde
+         // checks, of the name of the control contains "[]" at the end of the name definition
          if(!preg_match('/([A-Za-z0-9]+)\[\]$/',$this->__Attributes['name'])){
 
             $Form = & $this->__ParentObject;
             $Document = $Form->get('ParentObject');
             $DocumentController = $Document->get('DocumentController');
-            trigger_error('[form_taglib_multiselect::onParseTime()] The attribute "name" of the &lt;form:multiselect /&gt; tag in form "'.$Form->getAttribute('name').'" in document controller "'.$DocumentController.'" must not contain whitespace characters before or between "[" or "]"! Otherwise you maybe forgot the "[]"!',E_USER_ERROR);
+            trigger_error('[form_taglib_multiselect::onParseTime()] The attribute "name" of the &lt;form:multiselect /&gt; tag with name "'.$this->__Attributes['name'].'" in form "'.$Form->getAttribute('name').'" in document controller "'.$DocumentController.'" must not contain whitespace characters before or between "[" or "]"! Otherwise you maybe forgot the "[]"!',E_USER_ERROR);
             exit();
 
           // end if
