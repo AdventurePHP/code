@@ -135,18 +135,19 @@
       *  @public
       *  @static
       *
-      *  Validiert eine Zahl.<br />
+      *  Validates, if given data is a number.
       *
-      *  @param string $String; String der geprüft werden soll
-      *  @return true|false
+      *  @param string $String data to validate
+      *  @return $isValid true|false
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 12.01.2007<br />
+      *  Version 0.2, 15.08.2008 (Changed due to feature change request)<br />
       */
       function validateNumber($String){
 
-         if(preg_match("/^[0-9]{1,}+$/",trim($String))){
+         if(is_numeric(trim($String))){
             return true;
           // end if
          }
