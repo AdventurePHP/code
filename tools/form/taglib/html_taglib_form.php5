@@ -392,20 +392,6 @@
 
 
       /**
-      *  @deprecated
-      *  @see getFormElementsByTagName
-      *
-      *  @author Christian Achatz
-      *  Version 0.1, 01.05.2008<br />
-      *  Version 0.2, 14.06.2008 (Als deprecated markiert. Bitte ab jetzt nur noch getFormElementsByTagName() nutzen!)<br />
-      */
-      function &getFormElementsByType($ClassType){
-         return $this->getFormElementsByTagName(str_replace('_taglib_',':',$ClassType));
-       // end function
-      }
-
-
-      /**
       *  @public
       *
       *  Gibt Formular-Elemente des übergebenen Typs (z.B. "form:text") zurück.<br />
