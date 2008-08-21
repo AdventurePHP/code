@@ -192,21 +192,22 @@
       *  @public
       *  @static
       *
-      *  Validiert einen String gegen eine übergebene RegExp.<br />
+      *  Validates a given string with the regular expression offered.
       *
-      *  @param string $String; String der geprüft werden soll
-      *  @param string $RegExp; Regulärer Ausdruck
+      *  @param string $String string to test
+      *  @param string $RegExp regular expression
       *  @return true|false
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, ??.??.????<br />
-      *  Version 0.2, 03.02.2006 (Tippfehler in Überprüfung behoben)<br />
-      *  Version 0.3, 12.01.2007 (Es werden nun bool'sche Werte zurückgegeben)<br />
+      *  Version 0.2, 03.02.2006 (Removed typo)<br />
+      *  Version 0.3, 12.01.2007 (Only boolean values are returned now)<br />
+      *  Version 0.4, 21.08.2008 (Removed trim()s due to validation errors with blanks)<br />
       */
       function validateRegExp($String,$RegExp){
 
-         if(!empty($String) && preg_match(trim($RegExp),trim($String))){
+         if(preg_match($RegExp,$String)){
            return true;
           // end if
          }
