@@ -39,6 +39,7 @@
       *  @version
       *  Version 0.1, 22.09.2007<br />
       *  Version 0.2, 15.08.2008 (Made tag more generic. Added RegExp validator, added multi language support)<br />
+      *  Version 0.3, 21.08.2008 (Fixed bug, that the form was not notified in case of invalid form control)<br />
       */
       function onAfterAppend(){
 
@@ -86,8 +87,9 @@
                // build validator method
                $ValidatorMethod = 'validate'.$Validator;
 
-               if(!myValidator::$ValidatorMethod($String) === true){
+               if(myValidator::$ValidatorMethod($String) === false){
                   $this->__ControlIsValid = false;
+                  $this->__ParentObject->set('isValid',false);
                 // end if
                }
 
@@ -102,8 +104,9 @@
                   $RegExp = $this->__Attributes['regexp'];
 
                   // do regexp validation
-                  if(!myValidator::validateRegExp($String,$RegExp) === true){
+                  if(myValidator::validateRegExp($String,$RegExp) === false){
                      $this->__ControlIsValid = false;
+                     $this->__ParentObject->set('isValid',false);
                    // end if
                   }
 
