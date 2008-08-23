@@ -7,7 +7,7 @@
 <html:template name="Page">
   <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
   <li>
-    <a href="/Seite/<template:placeholder name="Name" />" title="<template:placeholder name="Title" />"><strong><template:placeholder name="Title" /></strong></a>
+    <a href="/<template:placeholder name="PageIndicator" />/<template:placeholder name="Name" />" title="<template:placeholder name="Title" />"><strong><template:placeholder name="Title" /></strong></a>
     (<em><template:getstring namespace="modules::fulltextsearch" config="language" entry="Result.Mod" />: <template:placeholder name="LastMod" /></em>)
   </li>
 </html:template>

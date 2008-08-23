@@ -63,6 +63,16 @@
          // Seiten laden
          $Pages = $M->loadPages();
 
+         // PageIndicator definieren
+         if($this->__Language == 'de'){
+            $PageIndicator = 'Seite';
+          // end if
+         }
+         else{
+            $PageIndicator = 'Page';
+          // end else
+         }
+
          // Seiten ausgeben
          $count = count($Pages);
          $Buffer = (string)'';
@@ -73,6 +83,7 @@
             $Template__Page->setPlaceHolder('Title',$Pages[$i]->get('Title'));
             $Template__Page->setPlaceHolder('Name',$Pages[$i]->get('Name'));
             $Template__Page->setPlaceHolder('LastMod',$Pages[$i]->get('LastMod'));
+            $Template__Page->setPlaceHolder('PageIndicator',$PageIndicator);
             $Buffer .= $Template__Page->transformTemplate();
 
           // end for
