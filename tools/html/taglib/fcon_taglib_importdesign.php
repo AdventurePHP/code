@@ -47,6 +47,7 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 13.11.2007<br />
+      *  Version 0.2, 30.08.2008 (Fixed bug, that model class was not included)<br />
       */
       function onParseTime(){
 
@@ -116,7 +117,7 @@
 
 
          // Prüfen, ob Model-Klasse bereits eingebunden wurde und ggf. nachholen
-         if(class_exists($ModelClass)){
+         if(!class_exists($ModelClass)){
             import($ModelNamespace,$ModelFile);
           // end if
          }
