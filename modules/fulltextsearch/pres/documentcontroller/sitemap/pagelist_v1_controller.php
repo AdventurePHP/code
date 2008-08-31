@@ -1,5 +1,6 @@
 <?php
    import('modules::fulltextsearch::biz','fulltextsearchManager');
+   import('tools::link','linkHandler');
 
 
    /**
@@ -30,6 +31,7 @@
       *  @version
       *  Version 0.1, 24.03.2008<br />
       *  Version 0.2, 31.08.2008 (Removed server quick hack)<br />
+      *  Version 0.3, 31.08.2008 (Changed link generation)<br />
       */
       function transformContent(){
 
@@ -57,9 +59,8 @@
          for($i = 0; $i < $count; $i++){
 
             $Template__Page->setPlaceHolder('Title',$Pages[$i]->get('Title'));
-            $Template__Page->setPlaceHolder('Name',$Pages[$i]->get('Name'));
             $Template__Page->setPlaceHolder('LastMod',$Pages[$i]->get('LastMod'));
-            $Template__Page->setPlaceHolder('PageIndicator',$PageIndicator);
+            $Template__Page->setPlaceHolder('Link',linkHandler::generateLink('',array($PageIndicator => $Pages[$i]->get('Name'))));
             $Buffer .= $Template__Page->transformTemplate();
 
           // end for
