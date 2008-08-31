@@ -2,6 +2,7 @@
    import('tools::form::taglib','ui_element');
    import('tools::variablen','variablenHandler');
    import('tools::string','stringAssistant');
+   import('core::session','sessionManager');
 
 
    /**
