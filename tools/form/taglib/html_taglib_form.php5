@@ -17,6 +17,7 @@
    import('tools::form::taglib','form_taglib_genericval');
    import('tools::form::taglib','form_taglib_getstring');
    import('tools::form::taglib','form_taglib_addtaglib');
+   import('tools::form::taglib','form_taglib_marker');
 
 
    /**
@@ -78,7 +79,8 @@
       *  Version 0.6, 25.03.2007 (Weitere Taglib "form:valgroup" eingeführt)<br />
       *  Version 0.7, 22.09.2007 (Generischen Vaidator hinzugefügt)<br />
       *  Version 0.8, 06.11.2007 (Tag form:getstring hinzugefügt)<br />
-      *  Version 0.9, 11.07.2008 (Added the form::addtaglib tag)<br />
+      *  Version 0.9, 11.07.2008 (Added the form:addtaglib tag)<br />
+      *  Version 1.0, 03.09.2008 (Added the form:marker tag)<br />
       */
       function html_taglib_form(){
 
@@ -98,6 +100,7 @@
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','validate');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','genericval');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','getstring');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','marker');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','addtaglib');
 
        // end function
@@ -184,6 +187,110 @@
       /**
       *  @public
       *
+      *  Adds content in front of a form marker. This method is intended to dynamically generate forms.
+      *
+      *  @param string $MarkerName the desired marker name
+      *  @param string $Content the content to add
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 03.09.2008<br />
+      */
+      function addFormContentBeforeMarker($MarkerName,$Content){
+
+         // get desired marker
+         $Marker = &$this->__getMarker($MarkerName);
+
+         // check if marker exists
+         if($Marker !== null){
+
+            // get the object if
+            $ObjectID = $Marker->get('ObjectID');
+
+            // add the desired content before the marker
+            $this->__Content = str_replace('<'.$ObjectID.' />',$Content.'<'.$ObjectID.' />',$this->__Content);
+
+          // end if
+         }
+         else{
+
+            // display an error
+            trigger_error('[html_taglib_form::addFormContentBeforeMarker()] No marker object with name "'.$MarkerName.'" composed in current form for document controller "'.($this->__ParentObject->__DocumentController).'"! Please check the definition of the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
+            exit();
+
+          // end else
+         }
+
+       // end function
+      }
+
+      function addFormContentAfterMarker($MarkerName,$Content){
+      }
+
+      function addFormElementBeforeMarker($MarkerName,$ElementType){
+      }
+
+      function addFormElementAfterMarker($MarkerName,$ElementType){
+      }
+
+
+      /**
+      *  @private
+      *
+      *  Returns a reference on the desired marker or null.
+      *
+      *  @param string $MarkerName the desired marker name
+      *  @return form_taglib_marker $Marker the marker or null
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 03.09.2008<br />
+      */
+      function &__getMarker($MarkerName){
+
+         // check, weather the form has children
+         if(count($this->__Children) > 0){
+
+            // have a look at the children
+            foreach($this->__Children as $ObjectID => $Child){
+
+               // check, if current children is a marker
+               if(get_class($Child) == 'form_taglib_marker'){
+
+                  // check, if the name fits the method's argument
+                  if($Child->getAttribute('name') == $MarkerName){
+                     return $this->__Children[$ObjectID];
+                   // end if
+                  }
+
+                // end if
+               }
+
+             // end foreach
+            }
+
+            // return null, if no child was found (with a quick hack)
+            $null = null;
+            return $null;
+
+          // end if
+         }
+         else{
+
+            // return null (with a quick hack)
+            $null = null;
+            return $null;
+
+          // end else
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
       *  Füllt einen Platzhalter innerhalb einer Form.<br />
       *
       *  @param string $Name; Name des Platzhalters
@@ -240,7 +347,7 @@
          else{
 
             // Falls keine Kinder existieren -> Fehler!
-            trigger_error('[html_taglib_form::setPlaceHolder()] No placeholder object with name "'.$Name.'" composed in current template for document controller "'.($this->__ParentObject->__DocumentController).'"! Perhaps tag library form:placeHolder is not loaded in template "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
+            trigger_error('[html_taglib_form::setPlaceHolder()] No placeholder object with name "'.$Name.'" composed in current for document controller "'.($this->__ParentObject->__DocumentController).'"! Perhaps tag library form:placeholder is not loaded in form "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
             exit();
 
           // end else
