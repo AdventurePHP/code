@@ -125,41 +125,39 @@
       /**
       *  @public
       *
-      *  Fügt ein neues Form-Element zu einer Form hinzu.<br />
+      *  Adds a new form element at the end of the form. This method is intended to dynamically generate forms.
       *
-      *  @param string $Type; Typ des Formelements (Name einer TagLib-Klasse)
-      *  @return string $ObjectID | null; Objekt-ID des neu erzeugten Form-Objekts oder null im Fehlerfall
+      *  @param string $ElementType type of the element (e.g. "form:text")
+      *  @return string $ObjectID id of the new form object or null (e.g. for addressing the new element)
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 05.01.2007<br />
+      *  Version 0.2, 05.09.2008 (The new form element now gets the current context and language)<br />
+      *  Version 0.3, 06.09.2008 (API change: now the tag name (e.g. "form:text") is expected as an argument)<br />
       */
-      function addFormElement($Type){
+      function addFormElement($ElementType){
 
-         // Prüfen, ob Klasse existiert
-         if(class_exists($Type)){
+         // create form element
+         $ObjectID = $this->__createFormElement($ElementType);
 
-            // Objekt-ID generieren
-            $ObjectID = xmlParser::generateUniqID();
+         // add form element if id is not null
+         if($ObjectID !== null){
 
-            // FormObjekt generieren und Attribute füllen
-            $FormObject = new $Type;
-            $FormObject->set('ObjectID',$ObjectID);
-            $FormObject->setByReference('ParentObject',$this);
-
-            // FormObjekt als Kind einhängen
-            $this->__Children[$ObjectID] = $FormObject;
-
-            // XML-Merker-Tag im Content hinzufügen
+            // add position placeholder to the content
             $this->__Content .= '<'.$ObjectID.' />';
 
-            // Referenz auf die Funktion zurückgeben
+            // return object id of the new form element
             return $ObjectID;
 
           // end if
          }
          else{
+
+            // notify user and return null
+            trigger_error('[html_taglib_form::addFormElement()] Form element "'.$ElementType.'" cannot be added due to previous errors!');
             return null;
+
           // end else
          }
 
@@ -170,11 +168,11 @@
       /**
       *  @public
       *
-      *  Fügt weiteren Content (i.d.R. HTML-Code) zur aktuellen Form hinzu.<br />
+      *  Adds content at the end of the form. This method is intended to dynamically generate forms.
       *
-      *  @param string $Content; Content
+      *  @param string $Content the desired content
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 05.01.2007<br />
       */
@@ -224,13 +222,188 @@
        // end function
       }
 
+
+      /**
+      *  @public
+      *
+      *  Adds content behind a form marker. This method is intended to dynamically generate forms.
+      *
+      *  @param string $MarkerName the desired marker name
+      *  @param string $Content the content to add
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 05.09.2008<br />
+      */
       function addFormContentAfterMarker($MarkerName,$Content){
+
+         // get desired marker
+         $Marker = &$this->__getMarker($MarkerName);
+
+         // check if marker exists
+         if($Marker !== null){
+
+            // get the object if
+            $ObjectID = $Marker->get('ObjectID');
+
+            // add the desired content before the marker
+            $this->__Content = str_replace('<'.$ObjectID.' />','<'.$ObjectID.' />'.$Content,$this->__Content);
+
+          // end if
+         }
+         else{
+
+            // display an error
+            trigger_error('[html_taglib_form::addFormContentAfterMarker()] No marker object with name "'.$MarkerName.'" composed in current form for document controller "'.($this->__ParentObject->__DocumentController).'"! Please check the definition of the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
+            exit();
+
+          // end else
+         }
+
+       // end function
       }
 
+
+      /**
+      *  @public
+      *
+      *  Adds a new form element in front of a form marker. This method is intended to dynamically generate forms.
+      *
+      *  @param string $MarkerName the desired marker name
+      *  @param string $ElementType type of the element (e.g. "form:text")
+      *  @return string $ObjectID id of the new form object or null (e.g. for addressing the new element)
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 05.09.2008<br />
+      */
       function addFormElementBeforeMarker($MarkerName,$ElementType){
+
+         // create new form element
+         $ObjectID = $this->__createFormElement($ElementType);
+
+         // add form element if id is not null
+         if($ObjectID !== null){
+
+            // get desired marker
+            $Marker = &$this->__getMarker($MarkerName);
+
+            // add the position placeholder to the content
+            $MarkerID = $Marker->get('ObjectID');
+            $this->__Content = str_replace('<'.$MarkerID.' />','<'.$ObjectID.' /><'.$MarkerID.' />',$this->__Content);
+
+            // return object id of the new form element
+            return $ObjectID;
+
+          // end if
+         }
+         else{
+
+            // notify user and return null
+            trigger_error('[html_taglib_form::addFormElementBeforeMarker()] Form element "'.$ElementType.'" cannot be added due to previous errors!');
+            return null;
+
+          // end else
+         }
+
+       // end function
       }
 
+
+      /**
+      *  @public
+      *
+      *  Adds a new form element after a form marker. This method is intended to dynamically generate forms.
+      *
+      *  @param string $MarkerName the desired marker name
+      *  @param string $ElementType type of the element (e.g. "form:text")
+      *  @return string $ObjectID id of the new form object or null (e.g. for addressing the new element)
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 05.09.2008<br />
+      */
       function addFormElementAfterMarker($MarkerName,$ElementType){
+
+         // create new form element
+         $ObjectID = $this->__createFormElement($ElementType);
+
+         // add form element if id is not null
+         if($ObjectID !== null){
+
+            // get desired marker
+            $Marker = &$this->__getMarker($MarkerName);
+
+            // add the position placeholder to the content
+            $MarkerID = $Marker->get('ObjectID');
+            $this->__Content = str_replace('<'.$MarkerID.' />','<'.$MarkerID.' /><'.$ObjectID.' />',$this->__Content);
+
+            // return object id of the new form element
+            return $ObjectID;
+
+          // end if
+         }
+         else{
+
+            // notify user and return null
+            trigger_error('[html_taglib_form::addFormElementBeforeMarker()] Form element "'.$ElementType.'" cannot be added due to previous errors!');
+            return null;
+
+          // end else
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @private
+      *
+      *  Adds a new form element to the child list.
+      *
+      *  @param string $ElementType type of the element (e.g. "form:text")
+      *  @return string $ObjectID id of the new form object (e.g. for addressing the new element)
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 06.09.2008<br />
+      */
+      function __createFormElement($ElementType){
+
+         // define taglib class
+         $TagLibClass = str_replace(':','_taglib_',$ElementType);
+
+         // check, if class exists
+         if(class_exists($TagLibClass)){
+
+            // generate object id
+            $ObjectID = xmlParser::generateUniqID();
+
+            // create and initialize new form element
+            $FormObject = new $TagLibClass();
+            $FormObject->set('ObjectID',$ObjectID);
+            $FormObject->set('Context',$this->__Language);
+            $FormObject->set('Language',$this->__Context);
+            $FormObject->setByReference('ParentObject',$this);
+
+            // add new form element to children list
+            $this->__Children[$ObjectID] = $FormObject;
+
+            // return object id for further addressing
+            return $ObjectID;
+
+          // end if
+         }
+         else{
+
+            // throw error and return null as object id
+            trigger_error('[html_taglib_form::__createFormElement()] No form element with name "'.$ElementType.'" found! Maybe the tag name is misspellt or the class is not imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
+            return null;
+
+          // end else
+         }
+
+       // end function
       }
 
 
