@@ -639,29 +639,29 @@
       /**
       *  @public
       *
-      *  Gibt ein Formular-Element, das mit $ID spezifiziert ist zurück.<br />
+      *  Returns a reference on a form element addressed by it's internal object id.
       *
-      *  @param string $ID; Objekt-ID des Form-Elements
-      *  @return object $FormElement; Referenz auf ein Form-Objekt
+      *  @param string $ObjectID object if of the desired form element
+      *  @return object $FormElement reference on the form object
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 07.01.2007<br />
-      *  Version 0.1, 12.01.2007 (Fehlerausgabe korrigiert)<br />
+      *  Version 0.2, 12.01.2007 (Corrected error message)<br />
+      *  Version 0.3, 06.09.2008 (Corrected error message again)<br />
       */
-      function &getFormElementByObjectID($ID){
+      function &getFormElementByObjectID($ObjectID){
 
-         if(isset($this->__Children[$ID])){
-            return $this->__Children[$ID];
+         if(isset($this->__Children[$ObjectID])){
+            return $this->__Children[$ObjectID];
           // end if
          }
          else{
 
-            // Falls keine Kinder existieren -> Fehler!
+            // note, that no suitable child has been found
             $Parent = $this->get('ParentObject');
-            $GrandParent = $Parent->get('ParentObject');
-            $DocumentController = $GrandParent->get('DocumentController');
-            trigger_error('[html_taglib_form::getFormElementByObjectID()] No form element with id "'.$ID.'" composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$DocumentController.'"!',E_USER_ERROR);
+            $DocumentController =  $Parent->get('DocumentController');
+            trigger_error('[html_taglib_form::getFormElementByObjectID()] No form element with id "'.$ObjectID.'" composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$DocumentController.'"!',E_USER_ERROR);
             exit();
 
           // end else
@@ -674,10 +674,10 @@
       /**
       *  @public
       *
-      *  Gibt Formular-Elemente des übergebenen Typs (z.B. "form:text") zurück.<br />
+      *  Returns a list of form elements addressed by their tag name.
       *
-      *  @param string $TagName; Type des Form-Elements
-      *  @return array $FormElements; Liste von Referenzen auf die gewünschten Form-Objekte
+      *  @param string $TagName name of the desired form element
+      *  @return array $FormElements list of form element references
       *
       *  @author Christian Achatz
       *  @version
