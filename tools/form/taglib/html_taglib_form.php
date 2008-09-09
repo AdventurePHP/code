@@ -128,6 +128,7 @@
       *  Adds a new form element at the end of the form. This method is intended to dynamically generate forms.
       *
       *  @param string $ElementType type of the element (e.g. "form:text")
+      *  @param array $ElementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
       *  @return string $ObjectID id of the new form object or null (e.g. for addressing the new element)
       *
       *  @author Christian Achatz
@@ -135,11 +136,12 @@
       *  Version 0.1, 05.01.2007<br />
       *  Version 0.2, 05.09.2008 (The new form element now gets the current context and language)<br />
       *  Version 0.3, 06.09.2008 (API change: now the tag name (e.g. "form:text") is expected as an argument)<br />
+      *  Version 0.4, 10.09.2008 (Added the $ElementAttributes param)<br />
       */
-      function addFormElement($ElementType){
+      function addFormElement($ElementType,$ElementAttributes = array()){
 
          // create form element
-         $ObjectID = $this->__createFormElement($ElementType);
+         $ObjectID = $this->__createFormElement($ElementType,$ElementAttributes);
 
          // add form element if id is not null
          if($ObjectID !== null){
@@ -271,16 +273,18 @@
       *
       *  @param string $MarkerName the desired marker name
       *  @param string $ElementType type of the element (e.g. "form:text")
+      *  @param array $ElementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
       *  @return string $ObjectID id of the new form object or null (e.g. for addressing the new element)
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 05.09.2008<br />
+      *  Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
       */
-      function addFormElementBeforeMarker($MarkerName,$ElementType){
+      function addFormElementBeforeMarker($MarkerName,$ElementType,$ElementAttributes = array()){
 
          // create new form element
-         $ObjectID = $this->__createFormElement($ElementType);
+         $ObjectID = $this->__createFormElement($ElementType,$ElementAttributes);
 
          // add form element if id is not null
          if($ObjectID !== null){
@@ -317,16 +321,18 @@
       *
       *  @param string $MarkerName the desired marker name
       *  @param string $ElementType type of the element (e.g. "form:text")
+      *  @param array $ElementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
       *  @return string $ObjectID id of the new form object or null (e.g. for addressing the new element)
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 05.09.2008<br />
+      *  Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
       */
-      function addFormElementAfterMarker($MarkerName,$ElementType){
+      function addFormElementAfterMarker($MarkerName,$ElementType,$ElementAttributes = array()){
 
          // create new form element
-         $ObjectID = $this->__createFormElement($ElementType);
+         $ObjectID = $this->__createFormElement($ElementType,$ElementAttributes);
 
          // add form element if id is not null
          if($ObjectID !== null){
@@ -362,13 +368,15 @@
       *  Adds a new form element to the child list.
       *
       *  @param string $ElementType type of the element (e.g. "form:text")
+      *  @param array $ElementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
       *  @return string $ObjectID id of the new form object (e.g. for addressing the new element)
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 06.09.2008<br />
+      *  Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
       */
-      function __createFormElement($ElementType){
+      function __createFormElement($ElementType,$ElementAttributes = array()){
 
          // define taglib class
          $TagLibClass = str_replace(':','_taglib_',$ElementType);
@@ -379,15 +387,28 @@
             // generate object id
             $ObjectID = xmlParser::generateUniqID();
 
-            // create and initialize new form element
+            // create new form element
             $FormObject = new $TagLibClass();
+
+            // add standard and user defined attributes
             $FormObject->set('ObjectID',$ObjectID);
             $FormObject->set('Context',$this->__Language);
             $FormObject->set('Language',$this->__Context);
+
+            foreach($ElementAttributes as $Key => $Value){
+               $FormObject->setAttribute($Key,$Value);
+             // end foreach
+            }
+
+            // add form element to DOM tree and call the onParseTime() method
             $FormObject->setByReference('ParentObject',$this);
+            $FormObject->onParseTime();
 
             // add new form element to children list
             $this->__Children[$ObjectID] = $FormObject;
+
+            // call the onAfterAppend() method
+            $this->__Children[$ObjectID]->onAfterAppend();
 
             // return object id for further addressing
             return $ObjectID;
