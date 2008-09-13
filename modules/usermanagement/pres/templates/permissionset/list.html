@@ -1,0 +1,26 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::permissionset" file="list_controller" class="list_controller" @>
+<table cellpadding="3" cellspacing="0" border="0">
+  <tr style="font-weight: bold; background-color: #eeeeee;">
+    <td>Display name</td>
+    <td>Action</td>
+  </tr>
+
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="iterator"/>
+<html:iterator name="PermissionSet">
+  <iterator:item getter="getProperty">
+    <tr>
+      <td><item:placeholder name="DisplayName" /></td>
+      <td>
+        <a href="?mainview=permissionset&permissionsetview=details&permissionsetid=<item:placeholder name="PermissionSetID" />" title="View permissionset details">View permissionset details</a>
+        &nbsp;|&nbsp;
+        <a href="?mainview=permissionset&permissionsetview=edit&permissionsetid=<item:placeholder name="PermissionSetID" />" title="Edit permissionset">Edit permissionset</a>
+        &nbsp;|&nbsp;
+        <a href="?mainview=permissionset&permissionsetview=delete&permissionsetid=<item:placeholder name="PermissionSetID" />" title="Delete permissionset">Delete permissionset</a>
+        &nbsp;|&nbsp;
+        <a href="?mainview=permission&permissionview=add&permissionsetid=<item:placeholder name="PermissionSetID" />" title="Add permission">Add permission</a>
+      </td>
+    </tr>
+  </iterator:item>
+</html:iterator>
+
+</table>

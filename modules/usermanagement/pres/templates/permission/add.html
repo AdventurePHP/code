@@ -1,0 +1,36 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::permission" file="add_controller" class="add_controller" @>
+
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:form name="PermissionAdd" method="post">
+  Please fill in the following form:
+  <br />
+  <br />
+  <table cellpadding="0" cellspacing="0">
+    <tr>
+      <td><strong>Display name</strong>:</td>
+      <td><form:text name="DisplayName" style="width: 200px;" class="formfield" maxlength="100" validate="true" button="Add" /></td>
+    </tr>
+    <tr>
+      <td><strong>Name</strong>:</td>
+      <td><form:text name="Name" style="width: 200px;" class="formfield" maxlength="100" validate="true" button="Add" /></td>
+    </tr>
+    <tr>
+      <td><strong>Value</strong>:</td>
+      <td><form:text name="Value" style="width: 200px;" class="formfield" maxlength="100" validate="true" button="Add" /></td>
+    </tr>
+  </table>
+  <br />
+  <br />
+  <form:button name="Add" class="formfield" value="Add" />
+  <form:hidden name="permissionsetid" />
+</html:form>
+
+<html:form name="PermissionSetSelect" method="post">
+  Please choose one of the following groups to add the new permission to:
+  <br />
+  <br />
+  <form:select name="permissionsetid" class="formfield"/>
+  <br />
+  <br />
+  <form:button name="Choose" class="formfield" value="Choose" />
+</html:form>
