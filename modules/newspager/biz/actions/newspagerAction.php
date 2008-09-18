@@ -22,21 +22,23 @@
       /**
       *  @public
       *
-      *  Implements the abstract run() method.<br />
+      *  Implements the abstract run() method.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 02.02.2007<br />
       *  Version 0.2, 05.02.2008 (language is now directly taken from the AJAX request)<br />
+      *  Version 0.3, 18.09.2008 (Added dynamic data dir behaviour)<br />
       */
       function run(){
 
-         // get desired page number and language
+         // get desired page number, language and data dir
          $Page = $this->__Input->getAttribute('page');
          $Language = $this->__Input->getAttribute('lang');
+         $DataDir = base64_decode($this->__Input->getAttribute('datadir'));
 
          // get manager
-         $nM = &$this->__getServiceObject('modules::newspager::data','newspagerManager');
+         $nM = &$this->__getAndInitServiceObject('modules::newspager::data','newspagerManager',$DataDir);
 
          // set language
          $nM->set('Language',$Language);

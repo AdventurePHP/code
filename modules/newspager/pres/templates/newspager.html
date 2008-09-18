@@ -89,7 +89,7 @@
       pagenumber = pagenumber + 1;
 
       // create request
-      var request = "/~/modules_newspager_biz-action/Pager/page/" + pagenumber + "/lang/" + language;
+      var request = "<html:placeholder name="NewsServiceBaseURL" />" + pagenumber + "<html:placeholder name="NewsServiceLangParam" />" + language + "<html:placeholder name="NewsServiceDataDir" />";
 
       // send request for next news
       xhttp.open("GET",request,true);
@@ -122,7 +122,7 @@
       pagenumber = pagenumber - 1;
 
       // create request
-      var request = "/~/modules_newspager_biz-action/Pager/page/" + pagenumber + "/lang/" + language;
+      var request = "<html:placeholder name="NewsServiceBaseURL" />" + pagenumber + "<html:placeholder name="NewsServiceLangParam" />" + language + "<html:placeholder name="NewsServiceDataDir" />";
 
       // send request for next or prev news page
       xhttp.open("GET",request,true);

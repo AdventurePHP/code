@@ -16,7 +16,30 @@
    class newspagerMapper extends coreObject
    {
 
+      /**
+      *  @private
+      *  Defines the dir, where the news content is located.
+      */
+      var $__DataDir = null;
+
+
       function newspagerMapper(){
+      }
+
+      /**
+      *  @public
+      *
+      *  Initializes the manager.
+      *
+      *  @param string $DataDir the news content data dir
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 18.09.2008<br />
+      */
+      function init($DataDir){
+         $this->__DataDir = $DataDir;
+       // end function
       }
 
 
@@ -31,11 +54,12 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 02.02.2007<br />
+      *  Version 0.2, 18.09.2008 (Introduced variable data dir)<br />
       */
       function getNewsByPage($PageNumber){
 
          // create filesystem handler
-         $fM = new filesystemHandler('./frontend/news/');
+         $fM = new filesystemHandler($this->__DataDir);
 
          // read all files located there
          $RawFiles = $fM->showDirContent();
@@ -76,7 +100,7 @@
          }
 
          // read content of file
-         $NewsArray = file('./frontend/news/'.$Files[$PageNumber - 1]);
+         $NewsArray = file($this->__DataDir.'/'.$Files[$PageNumber - 1]);
 
          // initialize a new news content object
          $N = new newspagerContent();

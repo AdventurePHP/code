@@ -28,11 +28,20 @@
       *  @version
       *  Version 0.1, 02.20.2008<br />
       *  Version 0.2, 05.01.2008 (language is now published to the java script code)<br />
+      *  Version 0.3, 18.09.2008 (Introduced datadir attribute to be able to operate the module in more than one application)<br />
       */
       function transformContent(){
 
+         // get current data dir or trigger error
+         $DataDir = $this->__Document->getAttribute('datadir');
+         if($DataDir === null){
+            trigger_error('[newspager_v1_controller::transformContent()] Tag attribute "datadir" was not present in the &lt;core:importdesign /&gt; tag definition! Please specify a news content directory!');
+            return;
+          // end if
+         }
+
          // get manager
-         $nM = &$this->__getServiceObject('modules::newspager::data','newspagerManager');
+         $nM = &$this->__getAndInitServiceObject('modules::newspager::data','newspagerManager',$DataDir);
 
          // load default news page
          $N = $nM->getNewsByPage();
@@ -43,6 +52,21 @@
          $this->setPlaceHolder('Headline',$N->get('Headline'));
          $this->setPlaceHolder('Subheadline',$N->get('Subheadline'));
          $this->setPlaceHolder('Content',$N->get('Content'));
+
+         // set news service base url
+         $Reg = &Singleton::getInstance('Registry');
+         if($Reg->retrieve('apf::core','URLRewriting') === true){
+            $this->setPlaceHolder('NewsServiceBaseURL','/~/modules_newspager_biz-action/Pager/page/');
+            $this->setPlaceHolder('NewsServiceLangParam','/lang/');
+            $this->setPlaceHolder('NewsServiceDataDir','/datadir/'.base64_encode($DataDir));
+          // end if
+         }
+         else{
+            $this->setPlaceHolder('NewsServiceBaseURL','./?modules_newspager_biz-action:Pager=page:');
+            $this->setPlaceHolder('NewsServiceLangParam','|lang:');
+            $this->setPlaceHolder('NewsServiceDataDir','|datadir:'.base64_encode($DataDir));
+          // end else
+         }
 
        // end function
       }
