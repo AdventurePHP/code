@@ -120,6 +120,16 @@
         <form:area name="Text" class="eingabe_feld" style="height: 200px; width: 480px; overflow: auto;" validate="true" button="CreateGuestbookEntryButton" />
       </td>
     </tr>
+    <tr>
+      <td colspan="2" class="formtable_row_description">
+        <br />
+        <strong><form:getstring namespace="modules::guestbook" config="guestbook_lang" entry="CreateEntry.Form.Captcha" /></strong>
+        <br />
+        <br />
+        <form:addtaglib namespace="modules::captcha::pres::taglib" prefix="form" class="captcha" />
+        <form:captcha text_class="eingabe_feld" validate="true" button="CreateGuestbookEntryButton"/>
+      </td>
+    </tr>
   </table>
   <br />
   <span style="font-size: 11px;">
