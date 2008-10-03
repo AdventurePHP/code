@@ -1,4 +1,7 @@
 <?php
+   import('core::session','sessionManager');
+
+
    /**
    *  @package modules::captcha::biz::actions
    *  @class ShowCaptchaImageAction
