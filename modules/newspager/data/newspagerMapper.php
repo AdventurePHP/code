@@ -82,7 +82,7 @@
          $NewsCount = count($Files);
 
          if($NewsCount == 0){
-            trigger_error('[newspagerMapper::__getFileNameByPageNumber()] No news files are given for language '.$this->__Language,E_USER_ERROR);
+            trigger_error('[newspagerMapper::getNewsByPage()] No news files are given for language '.$this->__Language,E_USER_ERROR);
             exit;
           // end if
          }
