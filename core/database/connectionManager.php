@@ -14,14 +14,14 @@
    *  @author Christian Achatz
    *  @version
    *  Version 0.1, 09.11.2007<br />
-   *  Version 0.2, 24.02.2008 (Bestehende Connections werden nun gecached)<br />
+   *  Version 0.2, 24.02.2008 (Existing connections are cached now)<br />
    */
    class connectionManager extends coreObject
    {
 
       /**
       *  @private
-      *  Cache für die bestehenden Connections
+      *  Cache for existing database connections.
       */
       var $__Connections = array();
 
@@ -35,8 +35,8 @@
       *
       *  Gibt einen initialisierten Handler für eine Datenbank-Verbindung zurück.<br />
       *
-      *  @param string $ConnectionKey; Sektion der Connection-Konfiguration
-      *  @return object $DatebaseHandler; Instanz auf die Implementierung eines AbstractDatabaseHandler's
+      *  @param string $ConnectionKey desired configuration section
+      *  @return object $DatebaseHandler instance of an AbstractDatabaseHandler connection layer
       *
       *  @author Christian Achatz
       *  @version
@@ -44,6 +44,7 @@
       *  Version 0.2, 23.02.2008<br />
       *  Version 0.3, 24.02.2008 (Caching eingeführt; kein ConfigOffset => E_USER_ERROR)<br />
       *  Version 0.4, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
+      *  Version 0.5, 05.10.2008 (Bugfix: usage of two or more identical connections (e.g. of type MySQLx) led to interferences. Thus, service object usage was changed (line 84))<br />
       */
       function &getConnection($ConnectionKey){
 
@@ -55,10 +56,8 @@
           // end if
          }
 
-
          // Konfiguration lesen
          $Config = &$this->__getConfiguration('core::database','connections');
-
 
          // Sektion gemäß ConnectionKey holen
          $Section = $Config->getSection($ConnectionKey);
@@ -71,17 +70,14 @@
           // end if
          }
 
-
          // Handler einbinden
          if(!class_exists($Section['DB.Type'].'Handler')){
             import('core::database',$Section['DB.Type'].'Handler');
           // end if
          }
 
-
          // Handler erzeugen und cachen
-         $this->__Connections[$ConnectionHash] = $this->__getAndInitServiceObject('core::database',$Section['DB.Type'].'Handler',$Section);
-
+         $this->__Connections[$ConnectionHash] = &$this->__getAndInitServiceObject('core::database',$Section['DB.Type'].'Handler',$Section,'NORMAL');
 
          // Handler zurückgeben
          return $this->__Connections[$ConnectionHash];
