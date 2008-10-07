@@ -39,5 +39,11 @@
   <form:area name="Text" class="eingabe_feld" style="height: 200px; width: 400px; overflow: auto;" validate="true" button="KontaktSenden" />
   <br />
   <br />
+  <form:getstring namespace="modules::kontakt4" config="language" entry="form.captcha" />
+  <br />
+  <form:addtaglib namespace="modules::captcha::pres::taglib" prefix="form" class="captcha" />
+  <form:captcha text_class="eingabe_feld" validate="true" button="CreateGuestbookEntryButton"/>
+  <br />
+  <br />
   <form:button name="KontaktSenden" class="eingabe_feld" />
 </html:form>
