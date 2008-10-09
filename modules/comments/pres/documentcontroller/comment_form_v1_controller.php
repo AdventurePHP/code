@@ -10,18 +10,18 @@
    *  @package modules::comments::pres::documentcontroller
    *  @class comment_form_v1_controller
    *
-   *  Implementiert den DocumentController für das Template 'form.html'.<br />
+   *  Implements the document controller for the 'form.html' template.
    *
    *  @author Christian Achatz
    *  @version
-   *  Version 0.1, 22.08.2007
+   *  Version 0.1, 22.08.2007<br />
    */
    class comment_form_v1_controller extends commentBaseController
    {
 
       /**
       *  @private
-      *  Hält lokal verwendete Variablen
+      *  Contains locally used variables.
       */
       var $_LOCALS = array();
 
@@ -29,12 +29,12 @@
       /**
       *  @public
       *
-      *  Konstruktor der Klasse.<br />
+      *  Constructor of the class. Initializes the variables used in this view.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 22.08.2007<br />
-      *  Version 0.2, 28.12.2007 (CaptchaString eingefügt)<br />
+      *  Version 0.2, 28.12.2007 (Added the CaptchaString)<br />
       */
       function comment_form_v1_controller(){
          $this->_LOCALS = variablenHandler::registerLocal(array('Name','EMail','Comment','CaptchaString'));
@@ -45,13 +45,13 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "transformContent()".
+      *  Displays the form view.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 22.08.2007<br />
-      *  Version 0.2, 08.11.2007 (Mehrsprachigkeit eingebaut)<br />
-      *  Version 0.3, 28.12.2007 (Captcha eingefügt)<br />
+      *  Version 0.2, 08.11.2007 (Implemented multi language support)<br />
+      *  Version 0.3, 28.12.2007 (Added a captcha)<br />
       */
       function transformContent(){
 
@@ -110,11 +110,12 @@
       /**
       *  @private
       *
-      *  Erzeugt das Formular.
+      *  Generates the comment form.
       *
       *  @author Christian Achatz
       *  @version
-      *  Version 0.1, 28.12.2008
+      *  Version 0.1, 28.12.2008<br />
+      *  Version 0.2, 09.10.2008 (Changed captcha image url generation)<br />
       */
       function __buildForm(){
 
@@ -130,7 +131,16 @@
          $Button->setAttribute('value',$Config->getValue($this->__Language,'form.button'));
 
          // CaptchaImage füllen
-         $Form__AddComment->setPlaceHolder('CaptchaImage','/~/modules_comments-action/showCaptcha');
+         $Reg = &Singleton::getInstance('Registry');
+         $URLRewriting = $Reg->retrieve('apf::core','URLRewriting');
+         if($URLRewriting === true){
+            $Form__AddComment->setPlaceHolder('CaptchaImage','/~/modules_comments-action/showCaptcha');
+          // end if
+         }
+         else{
+            $Form__AddComment->setPlaceHolder('CaptchaImage','./?modules_comments-action:showCaptcha');
+          // end else
+         }
 
          // Formular darstellen
          $this->setPlaceHolder('Form',$Form__AddComment->transformForm());
