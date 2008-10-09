@@ -49,6 +49,7 @@
       *  Version 0.1, 02.06.2007<br />
       *  Version 0.2, 08.06.2007 (In "filter()" umbenannt)<br />
       *  Version 0.3, 17.06.2007 (Stripslashes- und Htmlentities-Filter hinzugefügt)<br />
+      *  Version 0.4, 09.10.2008 (Fixed bug, that an action call without params leads to an error)<br />
       */
       function filter(){
 
@@ -75,8 +76,10 @@
                $ActionNamespace = substr($Key,0,strpos($Key,$fC->get('NamespaceKeywordDelimiter')));
                $T->stop('getActionNameAndNamespace()');
 
+               // initialize the input params
+               $InputParams = array();
 
-               // Parameter-Array erzeugen
+               // create param array
                $ParamsArray = explode($fC->get('InputDelimiter'),$Value);
 
                for($i = 0; $i < count($ParamsArray); $i++){
