@@ -195,22 +195,23 @@
       /**
       *  @private
       *
-      *  Erledigt Datenbankconnect und Standard-Datenbank-Auswahl.<br />
+      *  Initiates the database connectio and preselects the desired database.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
-      *  Version 0.1, ???<br />
-      *  Version 0.2, ???<br />
+      *  Version 0.1, 2002<br />
+      *  Version 0.2, 2002<br />
       *  Version 0.3, 2002<br />
       *  Version 0.4, 10.04.2004<br />
       *  Version 0.5, 04.12.2005<br />
       *  Version 0.6, 24.12.2005<br />
       *  Version 0.7, 04.01.2005<br />
+      *  Version 0.8, 09.10.2008 (Removed the @ before mysql_connect to get a more detailed in case of connection errors)<br />
       */
       function __connect(){
 
-         // Connection aufbauen
-         $this->__dbConn = @mysql_connect($this->__dbHost,$this->__dbUser,$this->__dbPass);
+         // initiate connection
+         $this->__dbConn = mysql_connect($this->__dbHost,$this->__dbUser,$this->__dbPass);
 
          if(!is_resource($this->__dbConn)){
             trigger_error('[MySQLHandler->__connect()] Database connection could\'t be established ('.mysql_errno().': '.mysql_error().')!',E_USER_ERROR);
@@ -218,7 +219,7 @@
           // end if
          }
 
-         // Datenbank wählen
+         // select the database
          $result = @mysql_select_db($this->__dbName,$this->__dbConn);
 
          if(!$result){
