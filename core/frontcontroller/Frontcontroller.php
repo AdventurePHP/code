@@ -277,13 +277,12 @@
       /**
       *  @public
       *
-      *  Startet den Frontcontroller
+      *  Executes the desired actions and creates the page output.
       *
-      *  @param string $Namespace; Namespace des Templates
-      *  @param string $Template; Name des Templates
-      *  @param bool $RewriteLink; Anzeige, ob URL-Rewriting aktiviert ist
+      *  @param string $Namespace namespace of the templates
+      *  @param string $Template name of the templates
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 20.01.2007<br />
       *  Version 0.2, 27.01.2007<br />
@@ -293,25 +292,21 @@
       *  Version 0.6, 01.07.2007 (Ausführung von permanentpre und permanentpost gelöscht)<br />
       *  Version 0.7, 29.09.2007 (Aufrufzeiten der Actions erweitert / geändert)<br />
       *  Version 0.8, 21.06.2008 (Introduced Registry to retrieve URLRewrite configuration)<br />
+      *  Version 0.9, 13.10.2008 (Removed $URLRewriting parameter, because URL rewriting must be configured in the registry)<br />
       */
-      function start($Namespace,$Template,$URLRewriting = null){
+      function start($Namespace,$Template){
 
          // set URLRewrite
-         if($URLRewriting === null){
-            $Reg = &Singleton::getInstance('Registry');
-            $URLRewriting = $Reg->retrieve('apf::core','URLRewriting');
-          // end if
-         }
+         $Reg = &Singleton::getInstance('Registry');
+         $URLRewriting = $Reg->retrieve('apf::core','URLRewriting');
 
-
-         // Prüfen ob ein Context gesetzt ist
+         // check if the context is set. If not, use the current namespace
          if(empty($this->__Context)){
             $this->__Context = $Namespace;
           // end if
          }
 
-
-         // URI-Filter initialisieren
+         // initialize URI filter
          if($URLRewriting == true){
             $fCRF = filterFactory::getFilter('core::filter','frontcontrollerRewriteRequestFilter');
           // end if
@@ -321,48 +316,37 @@
           // end if
          }
 
-
-         // URI filtern und Actions parsen
+         // filter GET URIand parse action instructions
          $fCRF->filter();
 
-
-         // Actions vor dem Erzeugen der Seite aufrufen
+         // execute pre page create actions (see timing model)
          $this->__runActions('prepagecreate');
 
-
-         // Seite instanziieren
+         // create new page
          $Page = new Page('FrontControllerPage',$URLRewriting);
 
-
-         // Context setzen
+         // set context
          $Page->set('Context',$this->__Context);
 
-
-         // Sprache setzen
+         // set language
          $Page->set('Language',$this->__Language);
 
-
-         // Initiales Design laden
+         // load desired design
          $Page->loadDesign($Namespace,$Template);
 
-
-         // Actions nach dem Erzeugen der Seite aufrufen
+         // execute actions after page creation (see timing model)
          $this->__runActions('postpagecreate');
 
-
-         // Actions vor dem Transformieren aufrufen
+         // execute actions before transformation (see timing model)
          $this->__runActions('pretransform');
 
-
-         // Seite transformieren
+         // transform page
          $PageContent = $Page->transform();
 
-
-         // Actions nach dem Transformieren aufrufen
+         // execute actions after page transformation
          $this->__runActions('posttransform');
 
-
-         // Inhalt der Seite ausgeben
+         // display page content
          echo $PageContent;
 
        // end function
