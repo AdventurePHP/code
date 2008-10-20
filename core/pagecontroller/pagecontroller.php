@@ -1061,27 +1061,23 @@
       /**
       *  @public
       *
-      *  Konstruktor der "Page".<br />
+      *  Constructor of the page class. The class is the root node of the APF DOM tree..
       *
-      *  @author Christian Schäfer
+      *  @param string $Name optional name of the page
+      *
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 03.01.2007 (URL-Rewriting eingeführt)<br />
       *  Version 0.3, 08.06.2007 (URL-Rewriting in Filter ausgelagert)<br />
       *  Version 0.4, 20.06.2008 (Registry für "APPS__URL_REWRITING" eingeführt)<br />
+      *  Version 0.5, 20.10.2008 (Removed second parameter due to registry introduction in 1.7-beta)<br />
       */
-      function Page($Name = '',$URLRewrite = null){
+      function Page($Name = ''){
 
-         // set URLRewrite
-         if($URLRewrite === null){
-            $Reg = &Singleton::getInstance('Registry');
-            $this->__URLRewrite = $Reg->retrieve('apf::core','URLRewriting');
-          // end if
-         }
-         else{
-            $this->__URLRewrite = $URLRewrite;
-          // end else
-         }
+         // get URLRewrite option{
+         $Reg = &Singleton::getInstance('Registry');
+         $this->__URLRewrite = $Reg->retrieve('apf::core','URLRewriting');
 
          // Attribute setzen
          $this->__Name = $Name;
@@ -1147,13 +1143,11 @@
       /**
       *  @public
       *
-      *  Transformiert den Objektbaum der Webseite und gibt Erzeugt das initiale "Document" einer "Page" und läd das initiale Template.<br />
+      *  Transforms the APF DOM tree of the current page. Returns the content of the transformed document.
       *
-      *  @param string $Namespace; Namespace des initialen Templates
-      *  @param string $Design; Name des initialen Designs
-      *  @return string $this->__Document->transform(); Gibt den XML-String der Seite zurück.
+      *  @return string $Content the content of the transformed page
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 03.01.2007 (URL-Rewriting eingeführt)<br />
