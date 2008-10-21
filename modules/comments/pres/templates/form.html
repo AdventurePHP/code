@@ -1,0 +1,28 @@
+<@controller namespace="modules::comments::pres::documentcontroller" file="comment_form_v1_controller" class="comment_form_v1_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
+<html:getstring namespace="modules::comments" config="language" entry="formhint.text.1" /> <a href="<html:placeholder name="Zurueck" />#comments" title="<html:getstring namespace="modules::comments" config="language" entry="formhint.text.2.title" />"><strong><html:getstring namespace="modules::comments" config="language" entry="formhint.text.2" /></strong></a><html:getstring namespace="modules::comments" config="language" entry="formhint.text.3" />
+<br />
+<br />
+<html:placeholder name="Form"/>
+
+<html:form name="AddComment" method="post">
+  <span style="margin-right: 10px;"><form:getstring namespace="modules::comments" config="language" entry="form.name" />*</span><form:text maxlength="100" name="Name" value="" class="eingabe_feld" style="width: 390px;" validate="true" button="Save" validator="Text" />
+  <br />
+  <span style="margin-right: 10px;"><form:getstring namespace="modules::comments" config="language" entry="form.email" />*</span><form:text maxlength="100" name="EMail" value="" class="eingabe_feld" style="width: 390px;" validate="true" button="Save" validator="EMail" />
+  <br />
+  <br />
+  <form:getstring namespace="modules::comments" config="language" entry="form.comment" />
+  <br />
+  <form:area name="Comment" class="eingabe_feld" style="width: 441px; height: 120px; overflow: auto;" validate="true" button="Save" validator="Text" />
+  <br />
+  <br />
+  <span style="margin-right: 10px;"><form:getstring namespace="modules::comments" config="language" entry="form.confirm" />*</span>
+  <br />
+  <br />
+  <img src="<form:placeholder name="CaptchaImage" />" border="0" align="absmiddle" />
+  <form:text name="CaptchaString" class="eingabe_feld" style="margin-left: 10px; width: 60px;" validate="true" button="Save" validator="Text" maxlength="5" />
+  <br />
+  <br />
+  <form:button name="Save" class="eingabe_feld" />
+</html:form>
