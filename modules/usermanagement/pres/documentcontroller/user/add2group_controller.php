@@ -15,7 +15,12 @@
          $Form__Group = &$this->__getForm('Group');
          $Group = &$Form__Group->getFormElementByName('Group[]');
          $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
-         $Groups = $uM->loadGroupList();
+         $_LOCALS = variablenHandler::registerLocal(array('userid'));
+         echo printObject($_LOCALS);
+         $user = new GenericDomainObject('User');
+         $user->setProperty('UserID',$_LOCALS['userid']);
+         echo printObject($user);
+         $Groups = $uM->loadGroupList($user);
          $count = count($Groups);
 
          for($i = 0; $i < $count; $i++){
@@ -34,7 +39,7 @@
              // end for
             }
 
-            $_LOCALS = variablenHandler::registerLocal(array('userid'));
+
             $uM->addUser2Groups($_LOCALS['userid'],$NewGroups);
             header('Location: ?mainview=user');
 

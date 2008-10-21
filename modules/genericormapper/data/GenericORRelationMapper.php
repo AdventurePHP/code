@@ -13,6 +13,7 @@
    *  @version
    *  Version 0.1, 14.05.2008<br />
    *  Version 0.2, 15.06.2008 (Added ` to the statements due to relation saving bug)<br />
+   *  Version 0.3, 21.10.2008 (Improved some of the error messages)<br />
    */
    class GenericORRelationMapper extends GenericORMapper
    {
@@ -482,7 +483,7 @@
                           WHERE `'.$ObjectID.'` = \''.$Object->getProperty($ObjectID).'\';';
                $result = $this->__DBDriver->executeTextStatement($select);
                if($this->__DBDriver->getNumRows($result) > 0){
-                  trigger_error('[AbstractORRelationMapper::deleteObject()] Domain object "'.$ObjectName.'" with id "'.$Object->getProperty($ObjectID).'" cannot be deleted, because it still has composed child objects!',E_USER_WARNING);
+                  trigger_error('[GenericORRelationMapper::deleteObject()] Domain object "'.$ObjectName.'" with id "'.$Object->getProperty($ObjectID).'" cannot be deleted, because it still has composed child objects!',E_USER_WARNING);
                   return null;
                 // end if
                }
@@ -553,14 +554,14 @@
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$RelationName])){
-            trigger_error('[AbstractORRelationMapper::createAssociation()] Relation with name "'.$RelationName.'" is not defined in the mapping table! Please check your relation configuration.',E_USER_WARNING);
+            trigger_error('[GenericORRelationMapper::createAssociation()] Relation with name "'.$RelationName.'" is not defined in the mapping table! Please check your relation configuration.',E_USER_WARNING);
             return false;
           // end
          }
 
          // if relation is a composition, return with error
          if($this->__RelationTable[$RelationName]['Type'] == 'COMPOSITION'){
-            trigger_error('[AbstractORRelationMapper::createAssociation()] Compositions cannot be created with this method! Use saveObject() on the target object to create a composition!',E_USER_WARNING);
+            trigger_error('[GenericORRelationMapper::createAssociation()] Compositions cannot be created with this method! Use saveObject() on the target object to create a composition!',E_USER_WARNING);
             return false;
           // end if
          }
@@ -605,14 +606,14 @@
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$RelationName])){
-            trigger_error('[AbstractORRelationMapper::deleteAssociation()] Relation with name "'.$RelationName.'" is not defined in the mapping table! Please check your relation configuration.',E_USER_WARNING);
+            trigger_error('[GenericORRelationMapper::deleteAssociation()] Relation with name "'.$RelationName.'" is not defined in the mapping table! Please check your relation configuration.',E_USER_WARNING);
             return false;
           // end
          }
 
          // if relation is a composition, return with error
          if($this->__RelationTable[$RelationName]['Type'] == 'COMPOSITION'){
-            trigger_error('[AbstractORRelationMapper::deleteAssociation()] Compositions cannot be deleted! Use deleteObject() on the target object instead!',E_USER_WARNING);
+            trigger_error('[GenericORRelationMapper::deleteAssociation()] Compositions cannot be deleted! Use deleteObject() on the target object instead!',E_USER_WARNING);
             return false;
           // end if
          }
@@ -656,14 +657,14 @@
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$RelationName])){
-            trigger_error('[AbstractORRelationMapper::isAssociated()] Relation with name "'.$RelationName.'" is not defined in the mapping table! Please check your relation configuration.',E_USER_WARNING);
+            trigger_error('[GenericORRelationMapper::isAssociated()] Relation with name "'.$RelationName.'" is not defined in the mapping table! Please check your relation configuration.',E_USER_WARNING);
             return false;
           // end
          }
 
          // if relation is a composition, return with error
          if($this->__RelationTable[$RelationName]['Type'] == 'COMPOSITION'){
-            trigger_error('[AbstractORRelationMapper::isAssociated()] Given relation is not an association!',E_USER_WARNING);
+            trigger_error('[GenericORRelationMapper::isAssociated()] Given relation is not an association!',E_USER_WARNING);
             return false;
           // end if
          }

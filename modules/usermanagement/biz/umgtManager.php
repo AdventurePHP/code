@@ -364,12 +364,49 @@
        // end function
       }
 
-      function loadGroupList(){
+
+
+      /**
+      *  @public
+      *
+      *  Loads a list of user objects, but excludes the group of the given user.
+      *
+      *  @param GenericDomainObject $User user, whom groups should be excluded
+      *  @return GenericDomainObject[] $Groups a list of groups
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 15.06.2008<br />
+      */
+      function loadGroupList($user = null){
+
          $ORM = &$this->__getORMapper();
-         $select = 'SELECT * FROM ent_group ORDER BY DisplayName ASC;';
+
+         if($user !== null){
+            $userID = $user->getProperty('UserID');
+            $select = 'SELECT * FROM ent_group group
+                       WHERE not exists
+                       (
+                          SELECT * FROM ass_group2user assoc
+                          WHERE
+                            assoc.GroupID = group.GroupID
+                            AND
+                            assoc.UserID = '.$userID.'
+                        )
+                        ORDER BY DisplayName ASC';
+          // end if
+         }
+         else{
+            $select = 'SELECT * FROM ent_group ORDER BY DisplayName ASC;';
+          // end else
+         }
+
+         echo $select;
          return $ORM->loadObjectListByTextStatement('Group',$select);
+
        // end function
       }
+
 
       function loadUserList(){
          $ORM = &$this->__getORMapper();
