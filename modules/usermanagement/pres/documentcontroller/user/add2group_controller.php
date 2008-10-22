@@ -16,10 +16,10 @@
          $Group = &$Form__Group->getFormElementByName('Group[]');
          $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
          $_LOCALS = variablenHandler::registerLocal(array('userid'));
-         echo printObject($_LOCALS);
+         //echo printObject($_LOCALS);
          $user = new GenericDomainObject('User');
          $user->setProperty('UserID',$_LOCALS['userid']);
-         echo printObject($user);
+         //echo printObject($user);
          $Groups = $uM->loadGroupList($user);
          $count = count($Groups);
 

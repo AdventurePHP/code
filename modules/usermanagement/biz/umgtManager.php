@@ -383,17 +383,21 @@
          $ORM = &$this->__getORMapper();
 
          if($user !== null){
+
             $userID = $user->getProperty('UserID');
-            $select = 'SELECT * FROM ent_group group
-                       WHERE not exists
+
+            $select = 'SELECT ent_group . *
+                       FROM ent_group
+                       WHERE ent_group.GroupID NOT
+                       IN
                        (
-                          SELECT * FROM ass_group2user assoc
-                          WHERE
-                            assoc.GroupID = group.GroupID
-                            AND
-                            assoc.UserID = '.$userID.'
-                        )
-                        ORDER BY DisplayName ASC';
+                          SELECT ent_group.GroupID
+                          FROM ent_group
+                          INNER JOIN ass_group2user ON ent_group.GroupID = ass_group2user.GroupID
+                          INNER JOIN ent_user ON ass_group2user.UserID = ent_user.UserID
+                          WHERE ent_user.UserID = '.$userID.'
+                       )';
+
           // end if
          }
          else{
@@ -401,7 +405,7 @@
           // end else
          }
 
-         echo $select;
+         //echo $select;
          return $ORM->loadObjectListByTextStatement('Group',$select);
 
        // end function
