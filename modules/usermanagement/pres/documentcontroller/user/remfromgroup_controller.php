@@ -15,7 +15,10 @@
          $Form__Group = &$this->__getForm('Group');
          $Group = &$Form__Group->getFormElementByName('Group');
          $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
-         $Groups = $uM->loadGroupList();
+         $_LOCALS = variablenHandler::registerLocal(array('userid'));
+         $user = new GenericDomainObject('User');
+         $user->setProperty('UserID',$_LOCALS['userid']);
+         $Groups = $uM->loadGroupList($user);
          $count = count($Groups);
 
          for($i = 0; $i < $count; $i++){
@@ -27,7 +30,6 @@
 
             $Option = &$Group->getSelectedOption();
             $GroupID = $Option->getAttribute('value');
-            $_LOCALS = variablenHandler::registerLocal(array('userid'));
             $uM->removeUserFromGroup($_LOCALS['userid'],$GroupID);
             header('Location: ?mainview=user');
 

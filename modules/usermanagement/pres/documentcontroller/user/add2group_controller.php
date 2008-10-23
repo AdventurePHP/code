@@ -20,7 +20,7 @@
          $user = new GenericDomainObject('User');
          $user->setProperty('UserID',$_LOCALS['userid']);
          //echo printObject($user);
-         $Groups = $uM->loadGroupList($user);
+         $Groups = $uM->loadGroupList($user,true);
          $count = count($Groups);
 
          for($i = 0; $i < $count; $i++){

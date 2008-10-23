@@ -378,10 +378,22 @@
       *  @version
       *  Version 0.1, 15.06.2008<br />
       */
-      function loadGroupList($user = null){
+      function loadGroupList($user,$loadNotRelatedObjects = false){
 
+         // get the mapper
          $ORM = &$this->__getORMapper();
 
+         // load the desired object list
+         if($loadNotRelatedObjects === true){
+            return $ORM->loadNotRelatedObjects($user,'Group2User');
+          // end if
+         }
+         else{
+            return $ORM->loadRelatedObjects($user,'Group2User');
+          // end else
+         }
+
+/*
          if($user !== null){
 
             $userID = $user->getProperty('UserID');
@@ -404,9 +416,11 @@
             $select = 'SELECT * FROM ent_group ORDER BY DisplayName ASC;';
           // end else
          }
+*/
+         //echo printObject($ORM->__MappingTable);
 
          //echo $select;
-         return $ORM->loadObjectListByTextStatement('Group',$select);
+         //return $ORM->loadObjectListByTextStatement('Group',$select);
 
        // end function
       }
