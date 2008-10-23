@@ -330,7 +330,7 @@
          $TargetObjectName = $this->__getRelatedObjectNameByRelationName($ObjectName,$RelationName);
          $TargetObject = $this->__MappingTable[$TargetObjectName];
 
-         // Add the relation to the criterion
+         // create an empty criterion if the argument was null
          if($Criterion === null){
             $Criterion = new GenericCriterionObject();
           // end if
@@ -364,6 +364,95 @@
          }
 
          // Load target object
+         return $this->loadObjectListByTextStatement($TargetObjectName,$select);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads a list of *not* related objects by an object and an relation name.
+      *
+      *  @param object $Object current object
+      *  @param string $AssociationName name of the desired association
+      *  @param GenericCriterionObject $Criterion criterion object
+      *  @return array $NotRelatedObjects list of the *not* releated objects
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 23.10.2008<br />
+      */
+      function loadNotRelatedObjects(&$Object,$RelationName,$Criterion = null){
+
+         // gather information about the objects *not* related to each other
+         $ObjectName = $Object->get('ObjectName');
+         $SourceObject = $this->__MappingTable[$ObjectName];
+         $TargetObjectName = $this->__getRelatedObjectNameByRelationName($ObjectName,$RelationName);
+         $TargetObject = $this->__MappingTable[$TargetObjectName];
+
+         // create an empty criterion if the argument was null
+         if($Criterion === null){
+            $Criterion = new GenericCriterionObject();
+          // end if
+         }
+
+         // TODO:
+         // - add WHERE
+         // - test CriterionObject usage
+
+         // build statement
+         $select = 'SELECT '.($this->__buildProperties($TargetObjectName,$Criterion)).' FROM `'.$TargetObject['Table'].'`';
+
+         // first WHERE
+         $select .= 'WHERE '.$TargetObject['Table'].'.'.$TargetObject['ID'].' NOT IN (';
+
+         // inner select
+         $select .= 'SELECT `'.$TargetObject['Table'].'`.`'.$TargetObject['ID'].'` FROM `'.$TargetObject['Table'].'`';
+
+         // inner inner join to the target object
+         $select .= 'INNER JOIN `'.$this->__RelationTable[$RelationName]['Table'].'` ON `'.$TargetObject['Table'].'`.`'.$TargetObject['ID'].'` = `'.$this->__RelationTable[$RelationName]['Table'].'`.`'.$TargetObject['ID'].'`
+                     INNER JOIN `'.$SourceObject['Table'].'` ON `'.$this->__RelationTable[$RelationName]['Table'].'`.`'.$SourceObject['ID'].'` = `'.$SourceObject['Table'].'`.`'.$SourceObject['ID'].'`';
+
+         // inner where
+         $select .= 'WHERE `'.$SourceObject['Table'].'`.`'.$SourceObject['ID'].'` = \''.$Object->getProperty($SourceObject['ID']).'\'';
+
+         // end of inner statement
+         $select .= ')';
+
+         // ORDER
+         $ORDER = $this->__buildOrder($TargetObjectName,$Criterion);
+         if(count($ORDER) > 0){
+            $select .= ' ORDER BY '.implode(', ',$ORDER);
+          // end if
+         }
+
+         // LIMIT
+         $Limit = $Criterion->get('Limit');
+         if(count($Limit) > 0){
+            $select .= ' LIMIT '.implode(',',$Limit);
+          // end if
+         }
+
+/*
+         $select = 'SELECT ent_group . *
+                    FROM ent_group
+                    WHERE ent_group.GroupID NOT
+                    IN
+                    (
+                       SELECT ent_group.GroupID
+                       FROM ent_group
+                       INNER JOIN ass_group2user ON ent_group.GroupID = ass_group2user.GroupID
+                       INNER JOIN ent_user ON ass_group2user.UserID = ent_user.UserID
+                       WHERE ent_user.UserID = '.$userID.'
+                    )';
+*/
+
+         // display statement
+         //echo $select;
+
+         // load target object
          return $this->loadObjectListByTextStatement($TargetObjectName,$select);
 
        // end function
