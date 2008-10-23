@@ -13,6 +13,7 @@
    *    <li>modelclass: Name der Model-Klasse (Wert: Klassenname)</li>
    *    <li>modelparam: Name des Attributs des Models, das als Templatename verwendet werden soll</li>
    *    <li>context: Setzt den Context des Knotens (Wert: Gültiger Context)</li>
+   *    <li>sessionsingleton: defines, if the model is retrieved sessionsingleton or just singleton (values: true|false)</li>
    *  </ul>
    *  Alle Parameter ausser "context" sind Pflichtparameter.<br />
    *
@@ -48,6 +49,7 @@
       *  @version
       *  Version 0.1, 13.11.2007<br />
       *  Version 0.2, 30.08.2008 (Fixed bug, that model class was not included)<br />
+      *  Version 0.3, 23.10.2008 (Added the sessionsingleton param to be able to handle session models)<br />
       */
       function onParseTime(){
 
@@ -122,9 +124,18 @@
           // end if
          }
 
+         // get initialization mode
+         if(!isset($this->__Attributes['sessionsingleton']) || $this->__Attributes['sessionsingleton'] == 'false'){
+            $initMode = 'SINGLETON';
+          // end if
+         }
+         else{
+            $initMode = 'SESSIONSINGLETON';
+          // end else
+         }
 
-         // Template aus Model auslesen
-         $Model = &$this->__getServiceObject($ModelNamespace,$ModelClass);
+         // read the name of the template from the model
+         $Model = &$this->__getServiceObject($ModelNamespace,$ModelClass,$initMode);
          $TemplateName = $Model->getAttribute($ModelParam);
 
 
