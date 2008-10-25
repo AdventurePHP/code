@@ -27,16 +27,16 @@
       *
       *  Implements the interface method init() to be able to initialize the mapper with the service manager.
       *
-      *  @param array $InitParams; list of initialization parameters
+      *  @param array $initParams list of initialization parameters
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 14.05.2008<br />
       */
-      function init($InitParams){
+      function init($initParams){
 
          // call parent init method
-         parent::init($InitParams);
+         parent::init($initParams);
 
          // create mapping table if necessary
          if(count($this->__MappingTable) == 0){
@@ -54,11 +54,11 @@
       *  Loads an object list by a special statement. The statement must return the desired<br />
       *  object properties.<br />
       *
-      *  @param string $ObjectName; name of the object in mapping table
-      *  @param string $Namespace; namespace of the statement
-      *  @param string $StatementName; name of the statement file
-      *  @param array $StatementParams; a list of statement parameters
-      *  @return array $ObjectList; the desired object list
+      *  @param string $ObjectName name of the object in mapping table
+      *  @param string $Namespace namespace of the statement
+      *  @param string $StatementName name of the statement file
+      *  @param array $StatementParams a list of statement parameters
+      *  @return array $ObjectList the desired object list
       *
       *  @author Christian Achatz
       *  @version
@@ -76,9 +76,9 @@
       *
       *  Loads an object list by a list of object ids.<br />
       *
-      *  @param string $ObjectName; name of the object in mapping table
-      *  @param array $IDs; list of object ids
-      *  @return array $ObjectList; the desired object list
+      *  @param string $ObjectName name of the object in mapping table
+      *  @param array $IDs list of object ids
+      *  @return array $ObjectList the desired object list
       *
       *  @author Christian Achatz
       *  @version
@@ -109,9 +109,9 @@
       *  Loads an object list by a special statement. The statement must return the desired<br />
       *  object properties.<br />
       *
-      *  @param string $ObjectName; name of the object in mapping table
-      *  @param string $Statement; sql statement
-      *  @return array $ObjectList; the desired object list
+      *  @param string $ObjectName name of the object in mapping table
+      *  @param string $Statement sql statement
+      *  @return array $ObjectList the desired object list
       *
       *  @author Christian Achatz
       *  @version
@@ -129,11 +129,11 @@
       *  Loads an object by a special statement. The statement must return the desired<br />
       *  object properties.<br />
       *
-      *  @param string $ObjectName; name of the object in mapping table
-      *  @param string $Namespace; namespace of the statement
-      *  @param string $StatementName; name of the statement file
-      *  @param array $StatementParams; a list of statement parameters
-      *  @return object $Object; the desired object
+      *  @param string $ObjectName name of the object in mapping table
+      *  @param string $Namespace namespace of the statement
+      *  @param string $StatementName name of the statement file
+      *  @param array $StatementParams a list of statement parameters
+      *  @return object $Object the desired object
       *
       *  @author Christian Achatz
       *  @version
@@ -159,9 +159,9 @@
       *  Loads an object by a special statement. The statement must return the desired<br />
       *  object properties.<br />
       *
-      *  @param string $ObjectName; name of the object in mapping table
-      *  @param string $Statement; sql statement
-      *  @return object $Object; the desired object
+      *  @param string $ObjectName name of the object in mapping table
+      *  @param string $Statement sql statement
+      *  @return object $Object the desired object
       *
       *  @author Christian Achatz
       *  @version
@@ -186,8 +186,8 @@
       *
       *  Deletes an Object.<br />
       *
-      *  @param object $Object; the object to delete
-      *  @return int $ID; database id of the object
+      *  @param object $Object the object to delete
+      *  @return int $ID database id of the object
       *
       *  @author Christian Achatz
       *  @version
@@ -219,8 +219,8 @@
       *
       *  Saves an Object.<br />
       *
-      *  @param object $Object; the object to save
-      *  @return int $ID; database id of the object
+      *  @param object $Object the object to save
+      *  @return int $ID database id of the object
       *
       *  @author Christian Achatz
       *  @version
@@ -307,9 +307,9 @@
       *
       *  Returns an object by name and id.<br />
       *
-      *  @param string $ObjectName; name of the object in mapping table
-      *  @param int $ObjectID; database id of the desired object
-      *  @return object $Object; the desired object
+      *  @param string $ObjectName name of the object in mapping table
+      *  @param int $ObjectID database id of the desired object
+      *  @return object $Object the desired object
       *
       *  @author Christian Achatz
       *  @version
@@ -337,9 +337,9 @@
       *
       *  Loads an object list by a statemant resource.<br />
       *
-      *  @param string $ObjectName; name of the object in mapping table
-      *  @param string $StmtResult; sql statement result
-      *  @return array $ObjectList; the desired object list
+      *  @param string $ObjectName name of the object in mapping table
+      *  @param string $StmtResult sql statement result
+      *  @return array $ObjectList the desired object list
       *
       *  @author Christian Achatz
       *  @version
@@ -366,9 +366,9 @@
       *
       *  Creates an domain object by name and properties.<br />
       *
-      *  @param string $ObjectName; name of the object in mapping table
-      *  @param array $Properties; properties of the object
-      *  @return object $Object; the desired object or null
+      *  @param string $ObjectName name of the object in mapping table
+      *  @param array $Properties properties of the object
+      *  @return object $Object the desired object or null
       *
       *  @author Christian Achatz
       *  @version

@@ -57,8 +57,8 @@
       *
       *  Method to add a relation indicator.
       *
-      *  @param string $RelationName; name of the relation between the object in the second argument and the object to load
-      *  @param GenericDomainObject $SourceObject; related object
+      *  @param string $RelationName name of the relation between the object in the second argument and the object to load
+      *  @param GenericDomainObject $SourceObject related object
       *
       *  @author Christian Achatz
       *  @version
@@ -73,11 +73,11 @@
       /**
       *  @public
       *
-      *  Method to add a limit clause to the criterion object.<br />
-      *  If the second param is not present, the first param indicates the maximum amount of objects in a list.<br />
+      *  Method to add a limit clause to the criterion object. If the second param is not present,
+      *  the first param indicates the maximum amount of objects in a list.
       *
-      *  @param int $StartOrCount; start pointer
-      *  @param int $Count; optional count parameter
+      *  @param int $StartOrCount start pointer
+      *  @param int $Count optional count parameter
       *
       *  @author Christian Achatz
       *  @version
@@ -104,8 +104,8 @@
       *
       *  Method to add a property to the where list.
       *
-      *  @param string $AttributeName; name of the attribute
-      *  @param string $AttributeValue; value of the attribute
+      *  @param string $AttributeName name of the attribute
+      *  @param string $AttributeValue value of the attribute
       *
       *  @author Christian Achatz
       *  @version
@@ -122,8 +122,8 @@
       *
       *  Method to add a order indicator.
       *
-      *  @param string $AttributeName; name of the attribute
-      *  @param string $OrderDirection; direction of ordering
+      *  @param string $AttributeName name of the attribute
+      *  @param string $OrderDirection direction of ordering
       *
       *  @author Christian Achatz
       *  @version
@@ -140,7 +140,7 @@
       *
       *  Method to add a property, that should be loaded into the result object or object list.
       *
-      *  @param string $PropertyName; name of the desired property
+      *  @param string $PropertyName name of the desired property
       *
       *  @author Christian Achatz
       *  @version

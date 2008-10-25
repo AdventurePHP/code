@@ -1,6 +1,5 @@
 <?php
    import('modules::genericormapper::data','GenericORMapper');
-   import('core::logging','Logger');
 
 
    /**
@@ -14,6 +13,7 @@
    *  Version 0.1, 14.05.2008<br />
    *  Version 0.2, 15.06.2008 (Added ` to the statements due to relation saving bug)<br />
    *  Version 0.3, 21.10.2008 (Improved some of the error messages)<br />
+   *  Version 0.4, 25.10.2008 (Added the loadNotRelatedObjects() method)<br />
    */
    class GenericORRelationMapper extends GenericORMapper
    {
@@ -309,10 +309,10 @@
       *
       *  Loads a list of related objects by an object and an relation name.<br />
       *
-      *  @param object $Object; current object
-      *  @param string $AssociationName; name of the desired association
-      *  @param GenericCriterionObject $Criterion; criterion object
-      *  @return array $RelatedObjects; list of the releated objects
+      *  @param object $object current object
+      *  @param string $relationName name of the desired relation
+      *  @param GenericCriterionObject $criterion criterion object
+      *  @return array $relatedObjects list of the releated objects
       *
       *  @author Christian Achatz
       *  @version
@@ -321,50 +321,73 @@
       *  Version 0.3, 08.06.2008 (Bugfix to the statement)<br />
       *  Version 0.4, 25.06.2008 (Added a third parameter to have influence on the loaded list)<br />
       *  Version 0.4, 26.06.2008 (Some changes to the statement creation)<br />
+      *  Version 0.5, 25.10.2008 (Added the additional relation option via the criterion object)<br />
       */
-      function loadRelatedObjects(&$Object,$RelationName,$Criterion = null){
+      function loadRelatedObjects(&$object,$relationName,$criterion = null){
 
          // Gather information about the objects related to each other
-         $ObjectName = $Object->get('ObjectName');
-         $SourceObject = $this->__MappingTable[$ObjectName];
-         $TargetObjectName = $this->__getRelatedObjectNameByRelationName($ObjectName,$RelationName);
-         $TargetObject = $this->__MappingTable[$TargetObjectName];
+         $objectName = $object->get('ObjectName');
+         $sourceObject = $this->__MappingTable[$objectName];
+         $targetObjectName = $this->__getRelatedObjectNameByRelationName($objectName,$relationName);
+         $targetObject = $this->__MappingTable[$targetObjectName];
 
          // create an empty criterion if the argument was null
-         if($Criterion === null){
-            $Criterion = new GenericCriterionObject();
+         if($criterion === null){
+            $criterion = new GenericCriterionObject();
           // end if
          }
 
          // build statement
-         $select = 'SELECT '.($this->__buildProperties($TargetObjectName,$Criterion)).' FROM `'.$TargetObject['Table'].'`';
+         $select = 'SELECT '.($this->__buildProperties($targetObjectName,$criterion)).' FROM `'.$targetObject['Table'].'`';
 
          // JOIN
-         $select .= 'INNER JOIN `'.$this->__RelationTable[$RelationName]['Table'].'` ON `'.$TargetObject['Table'].'`.`'.$TargetObject['ID'].'` = `'.$this->__RelationTable[$RelationName]['Table'].'`.`'.$TargetObject['ID'].'`
-                     INNER JOIN `'.$SourceObject['Table'].'` ON `'.$this->__RelationTable[$RelationName]['Table'].'`.`'.$SourceObject['ID'].'` = `'.$SourceObject['Table'].'`.`'.$SourceObject['ID'].'`';
+         $select .= 'INNER JOIN `'.$this->__RelationTable[$relationName]['Table'].'` ON `'.$targetObject['Table'].'`.`'.$targetObject['ID'].'` = `'.$this->__RelationTable[$relationName]['Table'].'`.`'.$targetObject['ID'].'`
+                     INNER JOIN `'.$sourceObject['Table'].'` ON `'.$this->__RelationTable[$relationName]['Table'].'`.`'.$sourceObject['ID'].'` = `'.$sourceObject['Table'].'`.`'.$sourceObject['ID'].'`';
 
-         // WHERE
-         $WHERE = $this->__buildWhere($TargetObjectName,$Criterion);
-         $WHERE[] = '`'.$SourceObject['Table'].'`.`'.$SourceObject['ID'].'` = \''.$Object->getProperty($SourceObject['ID']).'\'';
-         $select .= ' WHERE '.implode(' AND ',$WHERE);
+         // - add relation joins
+         $where = array();
+         $joins = (string)'';
+         $relations = $criterion->get('Relations');
+         foreach($relations as $innerRelationName => $DUMMY){
 
+            // gather relation params
+            $relationObjectName = $relations[$innerRelationName]->get('ObjectName');
+            $relationSourceObject = $this->__MappingTable[$relationObjectName];
+            $relationTargetObjectName = $this->__getRelatedObjectNameByRelationName($relations[$innerRelationName]->get('ObjectName'),$innerRelationName);
+            $relationTargetObject = $this->__MappingTable[$relationTargetObjectName];
 
-         // ORDER
-         $ORDER = $this->__buildOrder($TargetObjectName,$Criterion);
-         if(count($ORDER) > 0){
-            $select .= ' ORDER BY '.implode(', ',$ORDER);
+            // finally build join
+            $joins .= ' INNER JOIN `'.$this->__RelationTable[$innerRelationName]['Table'].'` ON `'.$relationTargetObject['Table'].'`.`'.$relationTargetObject['ID'].'` = `'.$this->__RelationTable[$innerRelationName]['Table'].'`.`'.$relationTargetObject['ID'].'`
+                        INNER JOIN `'.$relationSourceObject['Table'].'` ON `'.$this->__RelationTable[$innerRelationName]['Table'].'`.`'.$relationSourceObject['ID'].'` = `'.$relationSourceObject['Table'].'`.`'.$relationSourceObject['ID'].'`';
+
+            // add a where for each join
+            $where[] = '`'.$relationSourceObject['Table'].'`.`'.$relationSourceObject['ID'].'` = \''.$relations[$innerRelationName]->getProperty($relationSourceObject['ID']).'\'';
+
+          // end foreach
+         }
+         $select .= $joins;
+
+         // add where statement
+         $where = array_merge($where,$this->__buildWhere($targetObjectName,$criterion));
+         $where[] = '`'.$sourceObject['Table'].'`.`'.$sourceObject['ID'].'` = \''.$object->getProperty($sourceObject['ID']).'\'';
+         $select .= ' WHERE '.implode(' AND ',$where);
+
+         // add order clause
+         $order = $this->__buildOrder($targetObjectName,$criterion);
+         if(count($order) > 0){
+            $select .= ' ORDER BY '.implode(', ',$order);
           // end if
          }
 
-         // LIMIT
-         $Limit = $Criterion->get('Limit');
-         if(count($Limit) > 0){
-            $select .= ' LIMIT '.implode(',',$Limit);
+         // add limit expression
+         $limit = $criterion->get('Limit');
+         if(count($limit) > 0){
+            $select .= ' LIMIT '.implode(',',$limit);
           // end if
          }
 
-         // Load target object
-         return $this->loadObjectListByTextStatement($TargetObjectName,$select);
+         // load target object list
+         return $this->loadObjectListByTextStatement($targetObjectName,$select);
 
        // end function
       }
@@ -375,85 +398,90 @@
       *
       *  Loads a list of *not* related objects by an object and an relation name.
       *
-      *  @param object $Object current object
-      *  @param string $AssociationName name of the desired association
-      *  @param GenericCriterionObject $Criterion criterion object
-      *  @return array $NotRelatedObjects list of the *not* releated objects
+      *  @param object $object current object
+      *  @param string $relationName name of the desired relation
+      *  @param GenericCriterionObject $criterion criterion object
+      *  @return array $notRelatedObjects list of the *not* releated objects
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 23.10.2008<br />
+      *  Version 0.2, 25.10.2008 (Added additional where and relation clauses. Bugfix to the inner relation statement.)<br />
       */
-      function loadNotRelatedObjects(&$Object,$RelationName,$Criterion = null){
+      function loadNotRelatedObjects(&$object,$relationName,$criterion = null){
 
          // gather information about the objects *not* related to each other
-         $ObjectName = $Object->get('ObjectName');
-         $SourceObject = $this->__MappingTable[$ObjectName];
-         $TargetObjectName = $this->__getRelatedObjectNameByRelationName($ObjectName,$RelationName);
-         $TargetObject = $this->__MappingTable[$TargetObjectName];
+         $objectName = $object->get('ObjectName');
+         $sourceObject = $this->__MappingTable[$objectName];
+         $targetObjectName = $this->__getRelatedObjectNameByRelationName($objectName,$relationName);
+         $targetObject = $this->__MappingTable[$targetObjectName];
 
          // create an empty criterion if the argument was null
-         if($Criterion === null){
-            $Criterion = new GenericCriterionObject();
+         if($criterion === null){
+            $criterion = new GenericCriterionObject();
           // end if
          }
-
-         // TODO:
-         // - add WHERE
-         // - test CriterionObject usage
 
          // build statement
-         $select = 'SELECT '.($this->__buildProperties($TargetObjectName,$Criterion)).' FROM `'.$TargetObject['Table'].'`';
+         $select = 'SELECT '.($this->__buildProperties($targetObjectName,$criterion)).' FROM `'.$targetObject['Table'].'`';
 
-         // first WHERE
-         $select .= 'WHERE '.$TargetObject['Table'].'.'.$TargetObject['ID'].' NOT IN (';
+         // add relation joins
+         $where = array();
+         $joins = (string)'';
+         $relations = $criterion->get('Relations');
+         foreach($relations as $innerRelationName => $DUMMY){
+
+            // gather relation params
+            $relationObjectName = $relations[$innerRelationName]->get('ObjectName');
+            $relationSourceObject = $this->__MappingTable[$relationObjectName];
+            $relationTargetObjectName = $this->__getRelatedObjectNameByRelationName($relations[$innerRelationName]->get('ObjectName'),$innerRelationName);
+            $relationTargetObject = $this->__MappingTable[$relationTargetObjectName];
+
+            // finally build join
+            $joins .= ' INNER JOIN `'.$this->__RelationTable[$innerRelationName]['Table'].'` ON `'.$relationTargetObject['Table'].'`.`'.$relationTargetObject['ID'].'` = `'.$this->__RelationTable[$innerRelationName]['Table'].'`.`'.$relationTargetObject['ID'].'`
+                        INNER JOIN `'.$relationSourceObject['Table'].'` ON `'.$this->__RelationTable[$innerRelationName]['Table'].'`.`'.$relationSourceObject['ID'].'` = `'.$relationSourceObject['Table'].'`.`'.$relationSourceObject['ID'].'`';
+
+            // add a where for each join
+            $where[] = '`'.$relationSourceObject['Table'].'`.`'.$relationSourceObject['ID'].'` = \''.$relations[$innerRelationName]->getProperty($relationSourceObject['ID']).'\'';
+
+          // end foreach
+         }
+         $select .= $joins;
+
+         // add where clause
+         $where = array_merge($where,$this->__buildWhere($targetObjectName,$criterion));
+         $where[] = '`'.$targetObject['Table'].'`.`'.$targetObject['ID'].'` NOT IN ( ';
+         $select .= ' WHERE '.implode(' AND ',$where);
 
          // inner select
-         $select .= 'SELECT `'.$TargetObject['Table'].'`.`'.$TargetObject['ID'].'` FROM `'.$TargetObject['Table'].'`';
+         $select .= ' SELECT `'.$targetObject['Table'].'`.`'.$targetObject['ID'].'` FROM `'.$targetObject['Table'].'`';
 
          // inner inner join to the target object
-         $select .= 'INNER JOIN `'.$this->__RelationTable[$RelationName]['Table'].'` ON `'.$TargetObject['Table'].'`.`'.$TargetObject['ID'].'` = `'.$this->__RelationTable[$RelationName]['Table'].'`.`'.$TargetObject['ID'].'`
-                     INNER JOIN `'.$SourceObject['Table'].'` ON `'.$this->__RelationTable[$RelationName]['Table'].'`.`'.$SourceObject['ID'].'` = `'.$SourceObject['Table'].'`.`'.$SourceObject['ID'].'`';
+         $select .= ' INNER JOIN `'.$this->__RelationTable[$relationName]['Table'].'` ON `'.$targetObject['Table'].'`.`'.$targetObject['ID'].'` = `'.$this->__RelationTable[$relationName]['Table'].'`.`'.$targetObject['ID'].'`
+                      INNER JOIN `'.$sourceObject['Table'].'` ON `'.$this->__RelationTable[$relationName]['Table'].'`.`'.$sourceObject['ID'].'` = `'.$sourceObject['Table'].'`.`'.$sourceObject['ID'].'`';
 
-         // inner where
-         $select .= 'WHERE `'.$SourceObject['Table'].'`.`'.$SourceObject['ID'].'` = \''.$Object->getProperty($SourceObject['ID']).'\'';
+         // add inner where
+         $select .= ' WHERE `'.$sourceObject['Table'].'`.`'.$sourceObject['ID'].'` = \''.$object->getProperty($sourceObject['ID']).'\'';
 
-         // end of inner statement
-         $select .= ')';
+         // indicate end of inner statement
+         $select .= ' )';
 
-         // ORDER
-         $ORDER = $this->__buildOrder($TargetObjectName,$Criterion);
-         if(count($ORDER) > 0){
-            $select .= ' ORDER BY '.implode(', ',$ORDER);
+         // add order clause
+         $order = $this->__buildOrder($targetObjectName,$criterion);
+         if(count($order) > 0){
+            $select .= ' ORDER BY '.implode(', ',$order);
           // end if
          }
 
-         // LIMIT
-         $Limit = $Criterion->get('Limit');
-         if(count($Limit) > 0){
-            $select .= ' LIMIT '.implode(',',$Limit);
+         // add limit definition
+         $limit = $criterion->get('Limit');
+         if(count($limit) > 0){
+            $select .= ' LIMIT '.implode(',',$limit);
           // end if
          }
 
-/*
-         $select = 'SELECT ent_group . *
-                    FROM ent_group
-                    WHERE ent_group.GroupID NOT
-                    IN
-                    (
-                       SELECT ent_group.GroupID
-                       FROM ent_group
-                       INNER JOIN ass_group2user ON ent_group.GroupID = ass_group2user.GroupID
-                       INNER JOIN ent_user ON ass_group2user.UserID = ent_user.UserID
-                       WHERE ent_user.UserID = '.$userID.'
-                    )';
-*/
-
-         // display statement
-         //echo $select;
-
-         // load target object
-         return $this->loadObjectListByTextStatement($TargetObjectName,$select);
+         // load target object list
+         return $this->loadObjectListByTextStatement($targetObjectName,$select);
 
        // end function
       }
@@ -538,10 +566,10 @@
       /**
       *  @public
       *
-      *  Overwrites the deleteObject() method of the parent class. Resolves relations.<br />
+      *  Overwrites the deleteObject() method of the parent class. Resolves relations.
       *
-      *  @param object $Object; the object to delete
-      *  @return int $ID; database id of the object or null
+      *  @param object $Object the object to delete
+      *  @return int $ID database id of the object or null
       *
       *  @author Christian Achatz
       *  @version

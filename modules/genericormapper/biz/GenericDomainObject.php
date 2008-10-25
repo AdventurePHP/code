@@ -46,7 +46,7 @@
       *
       *  Constructor of the generic domain object. Sets the object name if desired.<br />
       *
-      *  @param string $ObjectName; name of the domain object
+      *  @param string $ObjectName name of the domain object
       *
       *  @author Christian Achatz
       *  @version
@@ -68,9 +68,9 @@
       *
       *  Loads a list of related objects.<br />
       *
-      *  @param string $RelationName; name of the desired relation
-      *  @param GenericCriterionObject $Criterion; criterion object
-      *  @return array $ObjectList; List of objects that are related with the current object or null
+      *  @param string $RelationName name of the desired relation
+      *  @param GenericCriterionObject $Criterion criterion object
+      *  @return array $ObjectList List of objects that are related with the current object or null
       *
       *  @author Christian Achatz
       *  @version
@@ -84,8 +84,7 @@
          // check weather data component is there
          if($this->__DataComponent === null){
             trigger_error('[GenericDomainObject::loadRelatedObjects()] DataDomponent is not initialized, so related objects cannot be loaded! Please use the or mapper\'s loadRelatedObjects() method or call setByReference(\'DataComponent\',$ORM), where $ORM is an instance of the or mapper, on this object first!',E_USER_WARNING);
-            $null = null;
-            return $null;
+            return null;
           // end if
          }
 
@@ -101,8 +100,8 @@
       *
       *  Add a related object.<br />
       *
-      *  @param string $RelationName; name of the desired relation
-      *  @return array $Object; Object that is related with the current object
+      *  @param string $RelationName name of the desired relation
+      *  @return array $Object Object that is related with the current object
       *
       *  @author Christian Achatz
       *  @version
@@ -119,8 +118,8 @@
       *
       *  Abstract method to set a domain object's simple property.<br />
       *
-      *  @param string $PropertyName; name of the specified domain object property
-      *  @param string $PropertyValue; value of the specified domain object property
+      *  @param string $PropertyName name of the specified domain object property
+      *  @param string $PropertyValue value of the specified domain object property
       *
       *  @author Christian Achatz
       *  @version
@@ -137,8 +136,8 @@
       *
       *  Abstract method to get a domain object's simple property.<br />
       *
-      *  @param string $PropertyName; name of the specified domain object property
-      *  @return string $PropertyValue; value of the specified domain object property
+      *  @param string $PropertyName name of the specified domain object property
+      *  @return string $PropertyValue value of the specified domain object property
       *
       *  @author Christian Achatz
       *  @version
@@ -164,7 +163,7 @@
       *
       *  Abstract method to set all domain object's simple properties.<br />
       *
-      *  @param array $Properties; list of defined properties to apply to the domain object
+      *  @param array $Properties list of defined properties to apply to the domain object
       *
       *  @author Christian Achatz
       *  @version
@@ -186,7 +185,7 @@
       *
       *  Abstract method to get all domain object's simple properties.<br />
       *
-      *  @return array $Properties; list of defined domain object properties
+      *  @return array $Properties list of defined domain object properties
       *
       *  @author Christian Achatz
       *  @version
@@ -203,7 +202,7 @@
       *
       *  Implements the toString() method for the generic domain object.<br />
       *
-      *  @return string $PropertiesString; string output of the domain object's properties
+      *  @return string $PropertiesString string output of the domain object's properties
       *
       *  @author Christian Achatz
       *  @version

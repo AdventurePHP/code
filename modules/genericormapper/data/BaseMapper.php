@@ -1,6 +1,7 @@
 <?php
-   import('modules::genericormapper::biz','GenericDomainObject');
    import('core::database','connectionManager');
+   import('core::logging','Logger');
+   import('modules::genericormapper::biz','GenericDomainObject');
    import('modules::genericormapper::data','GenericCriterionObject');
 
 
@@ -8,7 +9,7 @@
    *  @package modules::genericormapper::data
    *  @class BaseMapper
    *
-   *  Implements the base class for all concrete or mapper implementations.<br />
+   *  Implements the base class for all concrete or-mapper implementations.<br />
    *
    *  @author Christian Achatz
    *  @version
@@ -62,7 +63,7 @@
       *  Implements the interface method init() to be able to initialize<br />
       *  the mapper with the service manager.<br />
       *
-      *  @param array $InitParams; list of initialization parameters
+      *  @param array $InitParams list of initialization parameters
       *
       *  @author Christian Achatz
       *  @version
