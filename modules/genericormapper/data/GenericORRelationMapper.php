@@ -501,6 +501,7 @@
       *  Version 0.2, 18.05.2008 (Function completed)<br />
       *  Version 0.3, 15.06.2008 (Fixed bug that lead to wrong association saving)<br />
       *  Version 0.4, 15.06.2008 (Fixed bug that relation was not found due to twisted columns)<br />
+      *  Version 0.5, 26.10.2008 (Added a check for the relation to exist in the relation table)<br />
       */
       function saveObject($Object){
 
@@ -525,6 +526,14 @@
                   $ObjectID = $this->__MappingTable[$Object->get('ObjectName')]['ID'];
                   $RelObjectID = $this->__MappingTable[$RelatedObjects[$RelationKey][$i]->get('ObjectName')]['ID'];
 
+                  // check for relation
+                  if(!isset($this->__RelationTable[$RelationKey]['Table'])){
+                     trigger_error('[GenericORRelationMapper::saveObject()] Relation "'.$RelationKey.'" does not exist in the relation table! Hence, your related object cannot be saved! Please check your relation configuration.');
+                     break;
+                   // end if
+                  }
+
+                  // create statement
                   $select = 'SELECT *
                              FROM `'.$this->__RelationTable[$RelationKey]['Table'].'`
                              WHERE `'.$ObjectID.'` = \''.$ID.'\'
@@ -774,14 +783,14 @@
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$RelationName])){
-            trigger_error('[GenericORRelationMapper::isAssociated()] Relation with name "'.$RelationName.'" is not defined in the mapping table! Please check your relation configuration.',E_USER_WARNING);
+            trigger_error('[GenericORRelationMapper::isAssociated()] Relation with name "'.$RelationName.'" is not defined in the relation table! Please check your relation configuration.',E_USER_WARNING);
             return false;
           // end
          }
 
          // if relation is a composition, return with error
          if($this->__RelationTable[$RelationName]['Type'] == 'COMPOSITION'){
-            trigger_error('[GenericORRelationMapper::isAssociated()] Given relation is not an association!',E_USER_WARNING);
+            trigger_error('[GenericORRelationMapper::isAssociated()] The given relation ("'.$RelationName.'") is not an association! Please check your relation configuration.',E_USER_WARNING);
             return false;
           // end if
          }
@@ -953,9 +962,10 @@
       *  @version
       *  Version 0.1, 14.05.2008<br />
       *  Version 0.2, 25.06.2008 (Removed "ApplicationID" from sleep list)<br />
+      *  Version 0.3, 26.10.2008 (Added "__importedConfigCache")<br />
       */
       function __sleep(){
-         return array('__MappingTable','__RelationTable','__Context','__Language');
+         return array('__MappingTable','__RelationTable','__Context','__Language','__importedConfigCache');
        // end function
       }
 

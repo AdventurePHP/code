@@ -41,11 +41,12 @@
       *  @version
       *  Version 0.1, 23.06.2008<br />
       *  Version 0.2, 25.10.2008 (Bugfix: added the $Type parameter to the service manager call)<br />
+      *  Version 0.3, 26.10.2008 (Bugfix: cache key now recognizes the creation type)<br />
       */
       function &getGenericORMapper($ConfigNamespace,$ConfigNameAffix,$ConnectionName,$Type = 'SINGLETON'){
 
          // calculate cache key
-         $CacheKey = md5($ConfigNamespace.$ConfigNameAffix.$ConnectionName);
+         $CacheKey = md5($ConfigNamespace.$ConfigNameAffix.$ConnectionName.$Type);
 
          // create and initaialize a mapper instance
          if(!isset($this->__ORMapperCache[$CacheKey])){

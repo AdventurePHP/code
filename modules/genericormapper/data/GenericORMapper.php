@@ -1,5 +1,7 @@
 <?php
    import('modules::genericormapper::data','BaseMapper');
+   import('modules::genericormapper::data','GenericDomainObject');
+   import('modules::genericormapper::data','GenericCriterionObject');
 
 
    /**

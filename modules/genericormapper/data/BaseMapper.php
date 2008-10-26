@@ -1,8 +1,5 @@
 <?php
    import('core::database','connectionManager');
-   import('core::logging','Logger');
-   import('modules::genericormapper::biz','GenericDomainObject');
-   import('modules::genericormapper::data','GenericCriterionObject');
 
 
    /**
@@ -15,6 +12,7 @@
    *  @version
    *  Version 0.1, 26.04.2008<br />
    *  Version 0.2, 14.05.2008<br />
+   *  Version 0.3, 26.10.2008 (Added the addMappingConfiguration() and addRelationConfiguration() methods)<br />
    */
    class BaseMapper extends coreObject
    {
@@ -31,13 +29,11 @@
       */
       var $__ConfigNameAffix = null;
 
-
       /**
       *  @private
       *  Instance of the database driver.
       */
       var $__DBDriver = null;
-
 
       /**
       *  @private
@@ -45,12 +41,17 @@
       */
       var $__MappingTable = array();
 
-
       /**
       *  @private
       *  Object relation table.
       */
       var $__RelationTable = array();
+
+      /**
+      *  @private
+      *  Indicates, if a additional configuration was already imported.
+      */
+      var $__importedConfigCache = array();
 
 
       function BaseMapper(){
@@ -99,8 +100,9 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 26.04.2008<br />
-      *  Version 0.2, 31.05.2008 (refactoring of the object definition)<br />
-      *  Version 0.3, 22.06.2008 (refactored object configuration adressing)<br />
+      *  Version 0.2, 31.05.2008 (Refactoring of the object definition)<br />
+      *  Version 0.3, 22.06.2008 (Refactored object configuration adressing)<br />
+      *  Version 0.4, 26.10.2008 (Resolving functionality was outsourced to the __generateMappingItem() method)<br />
       */
       function __createMappingTable(){
 
@@ -115,14 +117,8 @@
          $this->__MappingTable = $ObjectsConfig->getConfiguration();
 
          // resolve definitions
-         foreach($this->__MappingTable as $ObjectName => $DUMMY){
-
-            // resolve standard properties, that derive from the definition
-            // - table name:
-            $this->__MappingTable[$ObjectName]['Table'] = 'ent_'.strtolower($ObjectName);
-            // - name of the primary key
-            $this->__MappingTable[$ObjectName]['ID'] = $ObjectName.'ID';
-
+         foreach($this->__MappingTable as $objectName => $DUMMY){
+            $this->__MappingTable[$objectName] = $this->__generateMappingItem($objectName,$this->__MappingTable[$objectName]);
           // end foreach
          }
 
@@ -143,6 +139,7 @@
       *  Version 0.1, 11.05.2008<br />
       *  Version 0.2, 30.05.2008 (properties are now generated instead of configured explicitly)<br />
       *  Version 0.3, 22.06.2008 (refactored relation configuration adressing)<br />
+      *  Version 0.4, 26.10.2008 (Resolving functionality was outsourced to the __generateRelationItem() method)<br />
       */
       function __createRelationTable(){
 
@@ -157,31 +154,176 @@
          $this->__RelationTable = $RelationsConfig->getConfiguration();
 
          // Resolve definitions
-         foreach($this->__RelationTable as $RelationName => $DUMMY){
-
-            // Resolve standard properties, that derive from the definition
-            // - table name
-            if($this->__RelationTable[$RelationName]['Type'] == 'COMPOSITION'){
-               $this->__RelationTable[$RelationName]['Table'] = 'cmp_'.strtolower($RelationName);
-             // end if
-            }
-            else{
-               $this->__RelationTable[$RelationName]['Table'] = 'ass_'.strtolower($RelationName);
-             // end else
-            }
-
-            // - name of the primary key of the source object
-            $this->__RelationTable[$RelationName]['SourceID'] = $this->__RelationTable[$RelationName]['SourceObject'].'ID';
-
-            // - name of the primary key of the target object
-            $this->__RelationTable[$RelationName]['TargetID'] = $this->__RelationTable[$RelationName]['TargetObject'].'ID';
-
+         foreach($this->__RelationTable as $relationName => $DUMMY){
+            $this->__RelationTable[$relationName] = $this->__generateRelationItem($relationName,$this->__RelationTable[$relationName]);
           // end foreach
          }
 
-
          // Stop timer
          $T->stop('__createRelationTable()');
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Imports additional mapping information.
+      *
+      *  @param string $configNamespace the desired configuration namespace
+      *  @param string $configNameAffix the configuration affix of the desired configuration
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 26.10.2008<br />
+      */
+      function addMappingConfiguration($configNamespace,$configNameAffix){
+
+         // Invoke benchmark timer
+         $T = &Singleton::getInstance('BenchmarkTimer');
+         $T->start('addMappingConfiguration()');
+
+         // add config, if not already included
+         $cacheKey = md5($configNamespace.$configNameAffix.'_objects');
+         if(!isset($this->__importedConfigCache[$cacheKey])){
+
+            // import and merge config
+            $addConfig = &$this->__getConfiguration($configNamespace,$configNameAffix.'_objects');
+            $addObjects = $addConfig->getConfiguration();
+            foreach($addObjects as $objectName => $DUMMY){
+
+               if(!isset($this->__MappingTable[$objectName])){
+                  $this->__MappingTable[$objectName] = $this->__generateMappingItem($objectName,$addObjects[$objectName]);
+                // end else
+               }
+
+             // end foreach
+            }
+
+            // mark object config as cached
+            $this->__importedConfigCache[$cacheKey] = true;
+
+          // end if
+         }
+
+         // Stop timer
+         $T->stop('addMappingConfiguration()');
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Imports additional relation information.
+      *
+      *  @param string $configNamespace the desired configuration namespace
+      *  @param string $configNameAffix the configuration affix of the desired configuration
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 26.10.2008<br />
+      */
+      function addRelationConfiguration($configNamespace,$configNameAffix){
+
+         // Invoke benchmark timer
+         $T = &Singleton::getInstance('BenchmarkTimer');
+         $T->start('addRelationConfiguration()');
+
+         // add config, if not already included
+         $cacheKey = md5($configNamespace.$configNameAffix.'_relations');
+         if(!isset($this->__importedConfigCache[$cacheKey])){
+
+            // import and merge config
+            $addConfig = &$this->__getConfiguration($configNamespace,$configNameAffix.'_relations');
+            $addRelations = $addConfig->getConfiguration();
+            foreach($addRelations as $relationName => $DUMMY){
+
+               if(!isset($this->__RelationTable[$relationName])){
+                  $this->__RelationTable[$relationName] = $this->__generateRelationItem($relationName,$addRelations[$relationName]);
+                // end else
+               }
+
+             // end foreach
+            }
+
+            // mark relation config as cached
+            $this->__importedConfigCache[$cacheKey] = true;
+
+          // end if
+         }
+
+         // Stop timer
+         $T->stop('addRelationConfiguration()');
+
+       // end function
+      }
+
+
+      /**
+      *  @private
+      *
+      *  Resolves the table and primary key name within the object definition configuration.
+      *
+      *  @param string $objectName nam of the current configuration section (=name of the current object)
+      *  @param array $objectSection current object definition params
+      *  @return array $resolvedObjectSection enhanced object definition
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 26.10.2008<br />
+      */
+      function __generateMappingItem($objectName,$objectSection){
+
+         // resolve standard properties, that derive from the definition
+         // - table name:
+         $objectSection['Table'] = 'ent_'.strtolower($objectName);
+         // - name of the primary key
+         $objectSection['ID'] = $objectName.'ID';
+
+         // return section
+         return $objectSection;
+
+       // end function
+      }
+
+
+      /**
+      *  @private
+      *
+      *  Resolves the table name, source and target id of the relation definition within the relation configuration.
+      *
+      *  @param string $relationName nam of the current configuration section (=name of the current relation)
+      *  @param array $relationSection current relation definition params
+      *  @return array $resolvedRelationSection enhanced relation definition
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 26.10.2008<br />
+      */
+      function __generateRelationItem($relationName,$relationSection){
+
+         // Resolve standard properties, that derive from the definition
+         // - table name
+         if($relationSection['Type'] == 'COMPOSITION'){
+            $relationSection['Table'] = 'cmp_'.strtolower($relationName);
+          // end if
+         }
+         else{
+            $relationSection['Table'] = 'ass_'.strtolower($relationName);
+          // end else
+         }
+
+         // - name of the primary key of the source object
+         $relationSection['SourceID'] = $relationSection['SourceObject'].'ID';
+
+         // - name of the primary key of the target object
+         $relationSection['TargetID'] = $relationSection['TargetObject'].'ID';
+
+         // return section
+         return $relationSection;
 
        // end function
       }
