@@ -501,7 +501,7 @@
       *  Version 0.2, 18.05.2008 (Function completed)<br />
       *  Version 0.3, 15.06.2008 (Fixed bug that lead to wrong association saving)<br />
       *  Version 0.4, 15.06.2008 (Fixed bug that relation was not found due to twisted columns)<br />
-      *  Version 0.5, 26.10.2008 (Added a check for the relation to exist in the relation table)<br />
+      *  Version 0.5, 26.10.2008 (Added a check for the object/relation to exist in the object/relation table)<br />
       */
       function saveObject($Object){
 
@@ -524,6 +524,11 @@
                   // gather information about the current relation
                   //echo 'Related object id: '.$RelatedObjectID;
                   $ObjectID = $this->__MappingTable[$Object->get('ObjectName')]['ID'];
+                  if(!isset($this->__MappingTable[$RelatedObjects[$RelationKey][$i]->get('ObjectName')]['ID'])){
+                     trigger_error('[GenericORRelationMapper::saveObject()] The object name "'.$RelatedObjects[$RelationKey][$i]->get('ObjectName').'" does not exist in the mapping table! Hence, your object cannot be saved! Please check your object configuration.');
+                     break;
+                   // end if
+                  }
                   $RelObjectID = $this->__MappingTable[$RelatedObjects[$RelationKey][$i]->get('ObjectName')]['ID'];
 
                   // check for relation

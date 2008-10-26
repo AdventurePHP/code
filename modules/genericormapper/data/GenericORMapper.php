@@ -128,8 +128,7 @@
       /**
       *  @public
       *
-      *  Loads an object by a special statement. The statement must return the desired<br />
-      *  object properties.<br />
+      *  Loads an object by a special statement. The statement must return the desired object properties.
       *
       *  @param string $ObjectName name of the object in mapping table
       *  @param string $Namespace namespace of the statement
@@ -227,6 +226,7 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
+      *  Version 0.2, 26.10.2008 (Added a check, if the desired object name exists in the mapping table.)<br />
       */
       function saveObject($Object){
 
@@ -235,6 +235,11 @@
 
          // Build subquery
          $QueryParams = array();
+         if(!isset($this->__MappingTable[$ObjectName])){
+            trigger_error('[GenericORMapper::saveObject()] The object name "'.$ObjectName.'" does not exist in the mapping table! Hence, your object cannot be saved! Please check your object configuration.');
+            return null;
+          // end if
+         }
          $IDName = $this->__MappingTable[$ObjectName]['ID'];
          $Exceptions = array(
                              $IDName,
