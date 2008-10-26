@@ -1716,8 +1716,9 @@
    *  @package core::pagecontroller
    *  @class core_taglib_importdesign
    *
-   *  Repräsentiert die Funktion des core::importdesign-Tags. Generiert einen weiteres Objekt<br />
-   *  innerhalb des Objektbaums einer Seite. Kann sich selbst wieder komponieren.<br />
+   *  This class implements the functionality of the core::importdesign tag. It generates a sub node
+   *  from the template specified by the tag's attributes within the current APF DOM tree. Each
+   *  importdesign tag can compose further tags.
    *
    *  @author Christian Schäfer
    *  @version
@@ -1729,7 +1730,7 @@
       /**
       *  @public
       *
-      *  Konstruktor der Klasse. Setzt Standart-TagLibs.<br />
+      *  Constructor of the class. Sets the known taglibs.
       *
       *  @author Christian Schäfer
       *  @version
@@ -1744,37 +1745,36 @@
       /**
       *  @public
       *
-      *  Implementierung der abstrakten Methode aus "coreObject". Bindet das Template, das in den
-      *  Attributen beschreiben ist als neuen Objekt-Baum-Knoten ein.<br />
+      *  Implements the onParseTime() method from the Document class. Includes the desired template
+      *  as a new DOM node into the current APF DOM tree.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 31.12.2006 (pagepart-Option hinzugefügt)<br />
-      *  Version 0.3, 15.01.2007 (DocumentController Tags werden nun zuerst extrahiert)<br />
-      *  Version 0.4, 10.03.2007 (Context kann jetzt im core:importdesign-Tag neu gesetzt werden)<br />
-      *  Version 0.5, 11.03.2007 (Attribut "incparam" eingeführt um Template-Parameter steuern zu können)<br />
+      *  Version 0.2, 31.12.2006 (Added pagepart option)<br />
+      *  Version 0.3, 15.01.2007 (Now DocumentController tags are extracted first)<br />
+      *  Version 0.4, 10.03.2007 (The Context can now be manipulated in the core:importdesign tag)<br />
+      *  Version 0.5, 11.03.2007 (Introduced the "incparam" attribute to be able to control the template param via url)<br />
+      *  Version 0.6, 26.10.2008 (Made the benchmark id generation more generic)<br />
       */
       function onParseTime(){
 
-         // Timer starten
+         // start timer
          $T = &Singleton::getInstance('benchmarkTimer');
-         $T->start('(core_taglib_importdesign) '.$this->__ObjectID.'::onParseTime()');
+         $id = '('.get_class($this).') '.$this->__ObjectID.'::onParseTime()';
+         $T->start($id);
 
-
-         // Attribute auslesen
+         // get attributes
          $Namespace = trim($this->__Attributes['namespace']);
          $Template = trim($this->__Attributes['template']);
 
-
-         // Context-Parameter einlesen, falls gesetzt
+         // read context
          if(isset($this->__Attributes['context'])){
             $this->__Context = trim($this->__Attributes['context']);
           // end if
          }
 
-
-         // IncludeParameter vorgeben
+         // manager inc param
          if(isset($this->__Attributes['incparam'])){
             $IncParam = $this->__Attributes['incparam'];
           // end if
@@ -1784,20 +1784,16 @@
           // end else
          }
 
-
-         // Nach pagepart-Optionen suchen
+         // check, if the inc param is present in the current request
          if(substr_count($Template,'[') > 0){
 
             if(isset($_REQUEST[$IncParam]) && !empty($_REQUEST[$IncParam])){
-
-               // pagepart-Option aus URL lesen
                $Template = $_REQUEST[$IncParam];
-
              // end if
             }
             else{
 
-               // IncludeParameter-Option aus "template"-Attribut lesen
+               // read template attribute from inc param
                $PagepartStartPos = strpos($Template,'=');
                $PagepartEndPos = strlen($Template) - 1;
                $Template = trim(substr($Template,$PagepartStartPos + 1,($PagepartEndPos - $PagepartStartPos) - 1));
@@ -1808,21 +1804,17 @@
           // end if
          }
 
-
-         // Content einlesen
+         // get content
          $this->__loadContentFromFile($Namespace,$Template);
 
-
-         // Nach einem DocumentController suchen
+         // parse document controller statements
          $this->__extractDocumentController();
 
-
-         // XML-Tags im Content parsen
+         // extract further xml tags
          $this->__extractTagLibTags();
 
-
-         // Timer stoppen
-         $T->stop('(core_taglib_importdesign) '.$this->__ObjectID.'::onParseTime()');
+         // stop timer
+         $T->stop($id);
 
        // end function
       }
