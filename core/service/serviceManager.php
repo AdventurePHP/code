@@ -77,6 +77,7 @@
             if(is_subclass_of($ServiceObject,'coreObject')){
                $ServiceObject->set('Context',$this->__Context);
                $ServiceObject->set('Language',$this->__Language);
+               $ServiceObject->set('ServiceType','SINGLETON');
              // end if
             }
             else{
@@ -101,6 +102,7 @@
             if(is_subclass_of($ServiceObject,'coreObject')){
                $ServiceObject->set('Context',$this->__Context);
                $ServiceObject->set('Language',$this->__Language);
+               $ServiceObject->set('ServiceType','SESSIONSINGLETON');
              // end if
             }
             else{
@@ -119,6 +121,7 @@
             if(is_subclass_of($ServiceObject,'coreObject')){
                $ServiceObject->set('Context',$this->__Context);
                $ServiceObject->set('Language',$this->__Language);
+               $ServiceObject->set('ServiceType','NORMAL');
              // end if
             }
             else{
@@ -182,7 +185,7 @@
       /**
       *  @public
       *
-      *  Setzt den Context des ServiceManager.<br />
+      *  Setzt den Context des ServiceManager.
       *
       *  @param string $Context; Context des ServiceManagers
       *
@@ -199,7 +202,7 @@
       /**
       *  @public
       *
-      *  Gibt den Context des ServiceManager zurück.<br />
+      *  Gibt den Context des ServiceManager zurück.
       *
       *  @return string $Context; Context des ServiceManagers
       *
@@ -217,7 +220,7 @@
       *  @public
       *  @since 0.2
       *
-      *  Setzt die Sprache des ServiceManager.<br />
+      *  Setzt die Sprache des ServiceManager.
       *
       *  @param string $Language; Sprache des ServiceManagers
       *
@@ -235,7 +238,7 @@
       *  @public
       *  @since 0.2
       *
-      *  Setzt die Sprache des ServiceManager.<br />
+      *  Gibt die Sprache des ServiceManager zurück.
       *
       *  @return string $Language; Sprache des ServiceManagers
       *
