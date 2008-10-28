@@ -86,7 +86,6 @@
 
 
    /**
-   *  @package tools::string
    *  @class AdvancedBBCodeParser
    *
    *  Implements the advanced bbcode parser for the adventure php framework.
@@ -126,9 +125,6 @@
          $this->__Provider['standard.font.style'] = new BBCodeParserDefinition('tools::string::bbcpprovider','FontStyleProvider');
          $this->__Provider['standard.font.size'] = new BBCodeParserDefinition('tools::string::bbcpprovider','FontSizeProvider');
          $this->__Provider['standard.font.color'] = new BBCodeParserDefinition('tools::string::bbcpprovider','FontColorProvider');
-         //$this->__Provider['standard.image'] = new BBCodeParserDefinition('tools::string::bbcpprovider','ImageProvider');
-         //$this->__Provider['standard.link'] = new BBCodeParserDefinition('tools::string::bbcpprovider','LinkProvider');
-         //$this->__Provider['standard.list'] = new BBCodeParserDefinition('tools::string::bbcpprovider','ListProvider');
          $this->__Provider['standard.newline'] = new BBCodeParserDefinition('tools::string::bbcpprovider','NewLineProvider');
        // end function
       }
@@ -195,12 +191,8 @@
                $class = $this->__Provider[$providerName]->get('Class');
                import($namespace,$class);
 
-               // convert definition
-               $this->__Provider[$providerName] = new $class();
-
-               // apply context and language (perhaps this must always take place)
-               $this->__Provider[$providerName]->set('Context',$this->__Context);
-               $this->__Provider[$providerName]->set('Language',$this->__Language);
+               // convert definition and initialize provider
+               $this->__Provider[$providerName] = &$this->__getServiceObject($namespace,$class,'NORMAL');
 
              // end if
             }

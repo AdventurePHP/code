@@ -1,6 +1,6 @@
 <?php
    /**
-   *  @class FontSizeProvider
+   *  @class NewLineProvider
    *
    *  Implements the font color parser.
    *
@@ -22,7 +22,7 @@
       *  characters.
       *
       *  @param string $string the content to parse
-      *  @return string $parsedString the parsed contebt
+      *  @return string $parsedString the parsed content
       *
       *  @author Christian Achatz
       *  @version

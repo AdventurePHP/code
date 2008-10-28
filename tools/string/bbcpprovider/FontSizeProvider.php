@@ -23,7 +23,7 @@
       *  namespace. An configuration example can be found in the adventure-configpack-* release file.
       *
       *  @param string $string the content to parse
-      *  @return string $parsedString the parsed contebt
+      *  @return string $parsedString the parsed content
       *
       *  @author Christian Achatz
       *  @version
