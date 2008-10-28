@@ -468,12 +468,14 @@
    *  @class coreObject
    *  @abstract
    *
-   *  Repräsentiert das Basis-Objekt aller weiteren Objekte des Page-Controllers<br />
+   *  Represents the base objects of (nearly) all APF classes. Especially all GUI classes derive
+   *  from this class.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Achatz
    *  @version
    *  Version 0.1, 28.12.2006<br />
    *  Version 0.2, 11.02.2007 (Attribute Language und Context hinzugefügt)<br />
+   *  Version 0.3, 28.10.2008 (Added the __ServiceType member to indicate the service manager creation type)<br />
    */
    class coreObject
    {
@@ -515,6 +517,14 @@
       *  Sprache eines Objekts oder einer Applikation.
       */
       var $__Language = 'de';
+
+
+      /**
+      *  @since 0.3
+      *  @private
+      *  Contains the service type, if the object was created with the serviceManager.
+      */
+      var $__ServiceType = null;
 
 
       /**
