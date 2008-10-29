@@ -27,7 +27,8 @@
       *
       *  @author Christian Achatz
       *  @version
-      *  Version 0.1, 28.10.2008
+      *  Version 0.1, 28.10.2008<br />
+      *  Version 0.2, 29.10.2008 (Changed font tags to span tags)<br />
       */
       function getOutput($string){
 
@@ -37,7 +38,7 @@
 
          // parse text
          foreach($colors as $key => $value){
-            $string = strtr($string,array('['.$key.']' => '<font style="color: '.$value.';">', '[/'.$key.']' => '</font>'));
+            $string = strtr($string,array('['.$key.']' => '<span style="color: '.$value.';">', '[/'.$key.']' => '</span>'));
           // end forech
          }
 
