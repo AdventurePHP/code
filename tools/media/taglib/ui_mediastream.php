@@ -41,7 +41,6 @@
             $this->__NoOutput = true;
           // end if
          }
-         $this->__Attributes['namespace'] = str_replace('::','_',$this->__Attributes['namespace']);
 
          $filename = $this->getAttribute('filename');
          if($filename === null){
@@ -95,6 +94,7 @@
             $actionurl = $protocol.$basepath.$_SERVER['REQUEST_URI'];
 
             // return desired media url
+            $this->__Attributes['namespace'] = str_replace('::','_',$this->__Attributes['namespace']);
             if($urlrewrite === true){
                return $actionurl.'/~/tools_media-action/streamMedia/namespace/'.$this->__Attributes['namespace'].'/filebody/'.$this->__Attributes['filebody'].'/extension/'.$this->__Attributes['extension'];
              // end if
