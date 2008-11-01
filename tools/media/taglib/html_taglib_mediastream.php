@@ -1,5 +1,5 @@
 <?php
-   import('tools::media','ui_mediastream');
+   import('tools::media::taglib','ui_mediastream');
 
    /**
    *  @class html_taglib_mediastream
