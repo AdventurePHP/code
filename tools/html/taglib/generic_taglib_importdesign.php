@@ -113,10 +113,30 @@
           // end if
          }
 
-         // read the params from the model
+         // get model
          $model = &$this->__getServiceObject($modelNamespace,$modelClass,$modelMode);
+
+         // check for the get method
+         if(!method_exists($model,$getMethode)){
+            trigger_error('[generic_taglib_importdesign::onParseTime()] The model class ("'.$modelClass.'") does not support the method "'.$getMethode.'" provided within the "getmethode" attribute. Please provide the correct function name!');
+            return null;
+          // end if
+         }
+
+         // read the params from the model
          $templateNamespace = $model->$getMethode($namespaceParam);
+         if(empty($templateNamespace)){
+            trigger_error('[generic_taglib_importdesign::onParseTime()] The model ("'.$modelClass.'") returned an empty value when trying to get the template namespace using the "'.$getMethode.'" method! Please specify another getter or check the model class implementation!');
+            return null;
+          // end if
+         }
+
          $templateName = $model->$getMethode($templateParam);
+         if(empty($templateName)){
+            trigger_error('[generic_taglib_importdesign::onParseTime()] The model ("'.$modelClass.'") returned an empty value when trying to get the template name using the "'.$getMethode.'" method! Please specify another getter or check the model class implementation!');
+            return null;
+          // end if
+         }
 
          // import desired template
          $this->__loadContentFromFile($templateNamespace,$templateName);
