@@ -14,7 +14,7 @@
    *              modelmode="NORMAL|SINGLETON|SESSIONSINGLETON"
    *              namespaceparam=""
    *              templateparam=""
-   *              [getmethode=""]
+   *              [getmethod=""]
    *  &gt;</pre>
    *
    *  @author Christian Achatz
@@ -100,10 +100,10 @@
           // end if
          }
 
-         // getmethode="" (e.g. "getAttribute" or "get")
-         $getMethode = $this->getAttribute('getmethode');
-         if($getMethode === null){
-            $getMethode = 'getAttribute';
+         // getmethod="" (e.g. "getAttribute" or "get")
+         $getMethod = $this->getAttribute('getmethod');
+         if($getMethod === null){
+            $getMethod = 'getAttribute';
           // end if
          }
 
@@ -117,23 +117,23 @@
          $model = &$this->__getServiceObject($modelNamespace,$modelClass,$modelMode);
 
          // check for the get method
-         if(!method_exists($model,$getMethode)){
-            trigger_error('[generic_taglib_importdesign::onParseTime()] The model class ("'.$modelClass.'") does not support the method "'.$getMethode.'" provided within the "getmethode" attribute. Please provide the correct function name!');
+         if(!method_exists($model,$getMethod)){
+            trigger_error('[generic_taglib_importdesign::onParseTime()] The model class ("'.$modelClass.'") does not support the method "'.$getMethod.'" provided within the "getmethod" attribute. Please provide the correct function name!');
             return null;
           // end if
          }
 
          // read the params from the model
-         $templateNamespace = $model->$getMethode($namespaceParam);
+         $templateNamespace = $model->$getMethod($namespaceParam);
          if(empty($templateNamespace)){
-            trigger_error('[generic_taglib_importdesign::onParseTime()] The model ("'.$modelClass.'") returned an empty value when trying to get the template namespace using the "'.$getMethode.'" method! Please specify another getter or check the model class implementation!');
+            trigger_error('[generic_taglib_importdesign::onParseTime()] The model ("'.$modelClass.'") returned an empty value when trying to get the template namespace using the "'.$getMethod.'" method! Please specify another getter or check the model class implementation!');
             return null;
           // end if
          }
 
-         $templateName = $model->$getMethode($templateParam);
+         $templateName = $model->$getMethod($templateParam);
          if(empty($templateName)){
-            trigger_error('[generic_taglib_importdesign::onParseTime()] The model ("'.$modelClass.'") returned an empty value when trying to get the template name using the "'.$getMethode.'" method! Please specify another getter or check the model class implementation!');
+            trigger_error('[generic_taglib_importdesign::onParseTime()] The model ("'.$modelClass.'") returned an empty value when trying to get the template name using the "'.$getMethod.'" method! Please specify another getter or check the model class implementation!');
             return null;
           // end if
          }
