@@ -482,6 +482,7 @@
    *  Version 0.1, 28.12.2006<br />
    *  Version 0.2, 11.02.2007 (Attribute Language und Context hinzugefügt)<br />
    *  Version 0.3, 28.10.2008 (Added the __ServiceType member to indicate the service manager creation type)<br />
+   *  Version 0.4, 03.11.2008 (Added initializing values to some of the class members)<br />
    */
    class coreObject
    {
@@ -490,32 +491,32 @@
       *  @private
       *  Eindeutige ID des Objekts.
       */
-      var $__ObjectID;
+      var $__ObjectID = null;
 
       /**
       *  @private
       *  Referenz auf das Eltern-Objekt.
       */
-      var $__ParentObject;
+      var $__ParentObject = null;
 
       /**
       *  @private
       *  Kinder eines Objekts.
       */
-      var $__Children;
+      var $__Children = array();
 
       /**
       *  @private
       *  Attribute eines Objekts, die aus einem XML-Tag gelesen werden.
       */
-      var $__Attributes;
+      var $__Attributes = array();
 
 
       /**
       *  @private
       *  Kontext eines Objekts oder einer Applikation.
       */
-      var $__Context;
+      var $__Context = null;
 
 
       /**
@@ -1340,14 +1341,25 @@
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 01.01.2007 (Fehler behoben, dass Templates nicht sauber geladen wurden)<br />
+      *  Version 0.3, 03.11.2008 (Added code of the responsible template to the error message to ease debugging)<br />
       */
       function __loadContentFromFile($Namespace,$Design){
 
          $File = APPS__PATH.'/'.str_replace('::','/',$Namespace).'/'.$Design.'.html';
 
          if(!file_exists($File)){
-            trigger_error('[Document::__loadContentFromFile()] Design "'.$Design.'" not existent in namespace "'.$Namespace.'"!',E_USER_ERROR);
+
+            // get template code from parent object, if the parent exists
+            $code = (string)'';
+            if($this->__ParentObject !== null){
+               $code = ' Please check your template code ('.htmlentities($this->__ParentObject->get('Content')).').';
+             // end if
+            }
+
+            // throw error
+            trigger_error('[Document::__loadContentFromFile()] Design "'.$Design.'" not existent in namespace "'.$Namespace.'"!'.$code,E_USER_ERROR);
             exit();
+
           // end if
          }
          else{
