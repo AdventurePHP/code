@@ -237,12 +237,18 @@
       *  Version 0.3, 03.01.2007 (Fehler beim Bestimmen des Attribut-Strings behoben)<br />
       *  Version 0.4, 13.01.2007 (Fehlerausgabe beim Parse-Fehler verbessert)<br />
       *  Version 0.5, 16.11.2007 (Fehler bei Fehlerausgabe von Tags verbessert)<br />
+      *  Version 0.6, 03.11.2008 (Fixed the issue, that a TAB character is no valid token to attributes delimiter)<br />
       */
       static function getTagAttributes($TagString){
 
          // Trennzeichen von Taglib und Klasse suchen
-         $tagAttributeDel = strpos($TagString, ' ');
+         $tagAttributeDel = strpos($TagString,' ');
 
+         // BUGFIX: fixes the issue, that a TAB character is no valid delimiter
+         if($tagAttributeDel === false){
+            $tagAttributeDel = strpos($TagString,"\t");
+          // end if
+         }
 
          // Den Tag schließendes Zeichen suchen
          $posTagClosingSign = strpos($TagString,'>');
