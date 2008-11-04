@@ -238,16 +238,28 @@
       *  Version 0.4, 13.01.2007 (Fehlerausgabe beim Parse-Fehler verbessert)<br />
       *  Version 0.5, 16.11.2007 (Fehler bei Fehlerausgabe von Tags verbessert)<br />
       *  Version 0.6, 03.11.2008 (Fixed the issue, that a TAB character is no valid token to attributes delimiter)<br />
+      *  Version 0.7, 04.11.2008 (Fixed issue, that a combination of TAB and SPACE characters leads to wrong attributes parsing)<br />
       */
       static function getTagAttributes($TagString){
 
-         // Trennzeichen von Taglib und Klasse suchen
-         $tagAttributeDel = strpos($TagString,' ');
+         // search for taglib to attributes string delimiter
+         $tagAttributeDel_Blank = strpos($TagString,' ');
 
          // BUGFIX: fixes the issue, that a TAB character is no valid delimiter
-         if($tagAttributeDel === false){
-            $tagAttributeDel = strpos($TagString,"\t");
+         $tagAttributeDel_Tab = strpos($TagString,"\t");
+
+         if($tagAttributeDel_Tab !== false){
+
+            if($tagAttributeDel_Blank > $tagAttributeDel_Tab){
+               $tagAttributeDel = $tagAttributeDel_Tab;
+             // end if
+            }
+
           // end if
+         }
+         else{
+            $tagAttributeDel = $tagAttributeDel_Blank;
+          // end else
          }
 
          // Den Tag schlieﬂendes Zeichen suchen
