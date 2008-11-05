@@ -5,12 +5,13 @@
    *  Setups the framework's core environment. Initializes the Registry, that stores parameters,
    *  that are used within the complete framework. These are
    *
-   *  - Environment  : environment, the application is executed in. The value is 'DEFAULT' in common
-   *  - URLRewriting : indicates, is url rewriting should be used
-   *  - LogDir       : path, where logfiles are stored. The value is './logs' by default.
-   *  - URLBasePath  : absolute url base path of the application (not really necessary)
-   *  - LibPath      : path, where the framework and your own libraries reside. This path can be used
-   *                   to adress files with in the lib path directly (e.g. images or other ressources)
+   *  - Environment      : environment, the application is executed in. The value is 'DEFAULT' in common
+   *  - URLRewriting     : indicates, is url rewriting should be used
+   *  - LogDir           : path, where logfiles are stored. The value is './logs' by default.
+   *  - URLBasePath      : absolute url base path of the application (not really necessary)
+   *  - LibPath          : path, where the framework and your own libraries reside. This path can be used
+   *                       to adress files with in the lib path directly (e.g. images or other ressources)
+   *  - CurrentRequestURL: the fully qualified request url
    *
    *  The file also contains the pagecontroller core implementation with the classes Page,
    *  Document, TagLib, coreObject, xmlParser and baseController (the basic MVC document controller).
@@ -22,6 +23,7 @@
    *  Version 0.3, 07.08.2008 (Made LibPath readonly)<br />
    *  Version 0.4, 13.08.2008 (Fixed some timing problems with the registry initialisation)<br />
    *  Version 0.5, 14.08.2008 (Changed LogDir initialisation to absolute paths)<br />
+   *  Version 0.6, 05.11.2008 (Added the 'CurrentRequestURL' attribute to the 'apf::core' namespace of the registry)<br />
    */
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,6 +70,18 @@
    $Reg->register('apf::core','LibPath',APPS__PATH,true);
 
 
+   // define current request url entry
+   if($_SERVER['SERVER_PORT'] == '443'){
+      $protocol = 'https://';
+    // end if
+   }
+   else{
+      $protocol = 'http://';
+    // end else
+   }
+   $Reg->register('apf::core','CurrentRequestURL',$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+
+
    // include necessary core libraries for the pagecontroller
    import('core::errorhandler','errorHandler');
    import('core::service','serviceManager');
@@ -79,11 +93,10 @@
    /**
    *  @package core::pagecontroller
    *
-   *  Importiert Klassen und Module aus einem angegebenem Namespace. Ist bei aktiviertem<br />
-   *  PHP-5-Support eine Datei mit der Endung ".php5" vorhanden wird diese gezogen. Befindet<br />
-   *  sich keine Datei im angegebenen Namespace wird ein Fallback auf die Endung ".php" initiiert<br />
-   *  damit nicht alle Dateien, in denen keine Anpassungen für PHP 5 vorgenommen werden müssen<br />
-   *  auf dem Filesystem vorgehalten sein müssen.<br />
+   *  Imports classes or modules from a given namespace. If the php5 support is enabled, files with
+   *  the extension ".php5" are included. If no php5 file is present, the ".php" file is included
+   *  as a fallback scenario. This is also done, that the files, that can be used in both versions
+   *  do not have to be renamed or stored twice.
    *
    *  @author Christian Achatz
    *  @version
@@ -166,13 +179,14 @@
 
    /**
    *  @package core::applicationmanager
+   *  @see http://php.net/print_r
    *
-   *  Erzeugt die print_r()-Ausgabe eines übergebenen Objekts und gibt diese zurück.<br />
+   *  Creates a print_r() output of the given object, array, string or integer.
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 04.02.3006<br />
-   *  Version 0.2, 23.04.2006 (Ausgabe wird nun in einem Puffer übergeben)<br />
+   *  Version 0.2, 23.04.2006 (The output is now returned instead of printed directly)<br />
    */
    function printObject($o,$transformhtml = false){
 
@@ -211,7 +225,7 @@
    *  @class xmlParser
    *  @static
    *
-   *  Statischer Parser für XML-Strings.<br />
+   *  Static parser for XML / XSL Strings.
    *
    *  @author Christian Schäfer
    *  @version
@@ -358,18 +372,17 @@
       *  @public
       *  @static
       *
-      *  Extrahiert die XML-Attribute aus einem String. Gibt ein Array der Form<br />
+      *  Extracts XML attributes from an attributes string. Returns an associative array with the attributes as keys and the values.
       *  <pre>
       *    $Array['ATTRIBUTE_NAME'] = 'ATTRIBUTE_VALUE';
       *  </pre>
-      *  zurück.<br />
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 22.12.2006<br />
-      *  Version 0.2, 30.12.2006 (Dokumentation erweitert)<br />
-      *  Version 0.3, 14.01.2007 (Fehlermeldung verbessert)<br />
-      *  Version 0.4, 14.11.2007 ($hasFound entfernt; siehe http://forum.adventure-php-framework.org/de/viewtopic.php?t=7)<br />
+      *  Version 0.2, 30.12.2006 (Enhanced the documentation)<br />
+      *  Version 0.3, 14.01.2007 (Improved the error message)<br />
+      *  Version 0.4, 14.11.2007 (Removed $hasFound; see http://forum.adventure-php-framework.org/de/viewtopic.php?t=7)<br />
       */
       function getAttributesFromString($attributesString){
 
@@ -425,7 +438,7 @@
       *  @public
       *  @static
       *
-      *  Erzeugt eine eindeutige ID.<br />
+      *  Generates a uniqe id, that is used as the object id for the APF DOM tree.
       *
       *  @author Christian Schäfer
       *  @version
@@ -530,7 +543,7 @@
       /**
       *  @public
       *
-      *  Abstrakte get()-Methode.<br />
+      *  Implements an abstract get() method.
       *
       *  @param string $Attribut; Name des Member-Attributes, dessen Wert zurückgegeben werden soll.
       *  @return void $this->{'__'.$Attribut}; Gibt das addressierte Member-Attribut zurück, oder null im Fehlerfall.
@@ -558,7 +571,7 @@
       /**
       *  @public
       *
-      *  Abstrakte set()-Methode.<br />
+      *  Implements an abstract set() method.
       *
       *  @param string $Attribut; Name des Member-Attributes, dessen Wert gesetzt werden soll.
       *  @param void $Value; Wert des Member-Attributes, dessen Wert gesetzt werden soll.
@@ -576,7 +589,7 @@
       /**
       *  @public
       *
-      *  Abstrakte add()-Methode. Hängt ein weiteres Element an eine Liste an.<br />
+      *  Implements an abstract add() method. Appends a value to a given list.
       *
       *  @param string $Attribut; Name des Member-Attributes, dessen Wert gesetzt werden soll.
       *  @param void $Value; Wertdes Member-Attributes, dessen Wert gesetzt werden soll.
@@ -594,7 +607,7 @@
       /**
       *  @public
       *
-      *  Methode um ein Attribut aus einem von coreObject erbenden Objekts auszulesen.<br />
+      *  Returns the object's attribute.
       *
       *  @param string $Name; Name des Attributes, dessen Wert zurückgeliefert werden soll.
       *  @return void $this->__Attributes[$Name]; Gibt das addressierte Attribut zurück, oder null im Fehlerfall.
@@ -622,7 +635,7 @@
       /**
       *  @public
       *
-      *  Methode um ein Attribut aus einem von coreObject erbenden Objekts auszulesen.<br />
+      *  Sets an object's attribute.
       *
       *  @param string $Name; Name des Attributes, dessen Wert zurückgeliefert werden soll.
       *  @param void $Value; Wert des Attributes, dessen Wert gesetzt werden soll.
@@ -640,7 +653,7 @@
       /**
       *  @public
       *
-      *  Methode um das Attribut-Array aus eines Objekts auslesen zu können.<br />
+      *  Returns an object's attributes.
       *
       *  @return array $this->__Attributes; Gibt das Attributes-Array zurück
       *
@@ -657,7 +670,7 @@
       /**
       *  @public
       *
-      *  Löscht ein Attribut.<br />
+      *  Deletes an attribute.
       *
       *  @param string $Name; Name des zu löschenden Attributes.<br />
       *
@@ -674,7 +687,7 @@
       /**
       *  @public
       *
-      *  Methode um das Attribut-Array aus eines Objekts auslesen zu können.<br />
+      *  Sets an object's attributes.
       *
       *  @param array $Attributes; Attribut-Array
       *
@@ -703,7 +716,7 @@
       /**
       *  @public
       *
-      *  Setzt einen Member per Übergabe einer Referenz auf ein Objekt.<br />
+      *  Sets an object's member by reference. This is used to guarantee php4 support.
       *
       *  @param string $Attribute; Names des Attributes
       *  @parem object $Object; Referenz auf ein Objekt
@@ -721,7 +734,7 @@
       /**
       *  @public
       *
-      *  Holt sich die Referenz einer Member-Variable eines Objekts.<br />
+      *  Returns the content of a member by reference. This is used to guarantee php4 support.
       *
       *  @param string $Attribute; Names des Attributes
       *  @return object $Object; Referenz auf ein Objekt, oder null im Fehlerfall.
@@ -748,10 +761,11 @@
 
 
       /**
-      *  Abstrakte Methode transform(). Methode wird vom PageController zur Transformation eines Knotens aufgerufen. Muss von der erbenden Klasse implementiert werden.<br />
-      *
       *  @public
       *  @abstract
+      *
+      *  Interface definition of the transform() method. This function is used to transform a
+      *  DOM node within the page controller. It must be implemented by derived classes.
       *
       *  @author Christian Schäfer
       *  @version
@@ -762,10 +776,11 @@
 
 
       /**
-      *  Abstrakte Methode init(). Methode, die zur Initialisierung einer Komponente vom ServiceManager aufgerufen wird. Muss von der erbenden Klasse implementiert werden.<br />
-      *
       *  @public
       *  @abstract
+      *
+      *  Interface definition of the init() method. This function is used to initialize a service
+      *  object with the service manager. It must be implemented by derived classes.
       *
       *  @author Christian Schäfer
       *  @version
@@ -776,10 +791,11 @@
 
 
       /**
-      *  Abstrakte Methode onParseTime(). Wird nach dem Erstellen des DOM-Knotens auf diesen aufgerufen. Muss von der erbenden Klasse implementiert werden.<br />
-      *
       *  @public
       *  @abstract
+      *
+      *  Interface definition of the onParseTime() method. This function is called after the creation
+      *  of a new DOM node. It must be implemented by derived classes.
       *
       *  @author Christian Schäfer
       *  @version
@@ -790,10 +806,11 @@
 
 
       /**
-      *  Abstrakte Methode onAfterAppend(). Wird nach dem Einhängen im Baum auf das Objekt aufgerufen. Muss von der erbenden Klasse implementiert werden.<br />
-      *
       *  @public
       *  @abstract
+      *
+      *  Interface definition of the onAfterAppend() method. This function is called after the DOM
+      *  node is appended to the DOM tree. It must be implemented by derived classes.
       *
       *  @author Christian Schäfer
       *  @version
@@ -804,10 +821,12 @@
 
 
       /**
-      *  Abstrakte Methode transformContent(). Muss von der erbenden DocumentController-Klasse implementiert werden.<br />
-      *
       *  @public
       *  @abstract
+      *
+      *  Interface definition of the transformContent() method. This function is applied to a
+      *  document controller during the transformation of a DOM node. It must be implemented by
+      *  each document controller to influence content generation.
       *
       *  @author Christian Schäfer
       *  @version
@@ -820,7 +839,7 @@
       /**
       *  @private
       *
-      *  Gibt ein Service-Object gemäß dem eigenen Context zurück.<br />
+      *  Returns a service object according to the current application context.
       *
       *  @param string $Namespace; Namespace des Moduls / der Konfiguration
       *  @param string $ServiceName; Name des Service Objekts
@@ -856,7 +875,7 @@
       /**
       *  @private
       *
-      *  Gibt ein initialisiertes Service-Object gemäß dem eigenen Context zurück.<br />
+      *  Returns a initialized service object according to the current application context.
       *
       *  @param string $Namespace; Namespace des Moduls / der Konfiguration
       *  @param string $ServiceName; Name des Service Objekts
@@ -891,7 +910,8 @@
       /**
       *  @private
       *
-      *  Gibt ein Configuration-Object gemäß den übergebenen Parametern zurück.<br />
+      *  Returns a configuration object according to the current application context and the given
+      *  parameters.
       *
       *  @param string $Namespace; Namespace des Moduls / der Konfiguration
       *  @param string $ConfigName; Name der Konfiguration
