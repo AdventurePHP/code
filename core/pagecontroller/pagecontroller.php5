@@ -761,11 +761,11 @@
 
 
       /**
-      *  @public
-      *  @abstract
-      *
       *  Interface definition of the transform() method. This function is used to transform a
       *  DOM node within the page controller. It must be implemented by derived classes.
+      *
+      *  @public
+      *  @abstract
       *
       *  @author Christian Schäfer
       *  @version
@@ -776,11 +776,11 @@
 
 
       /**
-      *  @public
-      *  @abstract
-      *
       *  Interface definition of the init() method. This function is used to initialize a service
       *  object with the service manager. It must be implemented by derived classes.
+      *
+      *  @public
+      *  @abstract
       *
       *  @author Christian Schäfer
       *  @version
@@ -791,11 +791,11 @@
 
 
       /**
-      *  @public
-      *  @abstract
-      *
       *  Interface definition of the onParseTime() method. This function is called after the creation
       *  of a new DOM node. It must be implemented by derived classes.
+      *
+      *  @public
+      *  @abstract
       *
       *  @author Christian Schäfer
       *  @version
@@ -806,11 +806,12 @@
 
 
       /**
+      *  Interface definition of the onAfterAppend() method. This function is called after the DOM
+      *  node is appended to the DOM tree. It must be implemented by derived classes.
+      *
       *  @public
       *  @abstract
       *
-      *  Interface definition of the onAfterAppend() method. This function is called after the DOM
-      *  node is appended to the DOM tree. It must be implemented by derived classes.
       *
       *  @author Christian Schäfer
       *  @version
@@ -821,12 +822,12 @@
 
 
       /**
-      *  @public
-      *  @abstract
-      *
       *  Interface definition of the transformContent() method. This function is applied to a
       *  document controller during the transformation of a DOM node. It must be implemented by
       *  each document controller to influence content generation.
+      *
+      *  @public
+      *  @abstract
       *
       *  @author Christian Schäfer
       *  @version
