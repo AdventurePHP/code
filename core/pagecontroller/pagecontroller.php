@@ -79,7 +79,7 @@
       $protocol = 'http://';
     // end else
    }
-   $Reg->register('apf::core','CurrentRequestURL',$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+   $Reg->register('apf::core','CurrentRequestURL',$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],true);
 
 
    // include necessary core libraries for the pagecontroller
