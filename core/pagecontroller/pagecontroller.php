@@ -228,9 +228,9 @@
       *  @public
       *  @static
       *
-      *  Extrahiert die Attribute eines Tags aus einem XML-String.<br />
+      *  Extracts the attributes from an XML attributes string.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 22.12.2006<br />
       *  Version 0.2, 30.12.2006 (Fehler beim Parsen von Tags ohne Attribute behoben (setzen von $tagAttributeDel))<br />
@@ -239,32 +239,15 @@
       *  Version 0.5, 16.11.2007 (Fehler bei Fehlerausgabe von Tags verbessert)<br />
       *  Version 0.6, 03.11.2008 (Fixed the issue, that a TAB character is no valid token to attributes delimiter)<br />
       *  Version 0.7, 04.11.2008 (Fixed issue, that a combination of TAB and SPACE characters leads to wrong attributes parsing)<br />
+      *  Version 0.8, 05.11.2008 (Removed the TAB support due to performance and fault tolerance problems)<br />
       */
       function getTagAttributes($TagString){
 
          // search for taglib to attributes string delimiter
-         $tagAttributeDel_Blank = strpos($TagString,' ');
+         $tagAttributeDel = strpos($TagString,' ');
 
-         // BUGFIX: fixes the issue, that a TAB character is no valid delimiter
-         $tagAttributeDel_Tab = strpos($TagString,"\t");
-
-         if($tagAttributeDel_Tab !== false){
-
-            if($tagAttributeDel_Blank > $tagAttributeDel_Tab){
-               $tagAttributeDel = $tagAttributeDel_Tab;
-             // end if
-            }
-
-          // end if
-         }
-         else{
-            $tagAttributeDel = $tagAttributeDel_Blank;
-          // end else
-         }
-
-         // Den Tag schließendes Zeichen suchen
+         // search for the closing sign
          $posTagClosingSign = strpos($TagString,'>');
-
 
          // Falls Trennposition zwischen Tag und Attributen nicht gefunden wurden, oder das
          // TagEnde-Zeichen vor dem Delimiter zwischen Tag und Attributen liegt, wird
@@ -277,32 +260,25 @@
           // end if
          }
 
-
          // Position des Trennzeichens zwischen Taglib und Klasse suchen
          $prefixDel = strpos($TagString,':');
-
 
          // Klasse extrahieren
          $class = substr($TagString,$prefixDel + 1,$tagAttributeDel - ($prefixDel +1));
 
-
          // Taglib extrahieren
          $prefix = substr($TagString,1,$prefixDel - 1);
 
-
          // Position der ersten schließenden Klammer nach dem Attribut-String finden
          $posEndAttrib = strpos($TagString,'>');
-
 
          // Restlichen String als Attributstring extrahieren
          // OLD: Machte Fehler, falls ein XML-Tag direkt im Anschluss an das Tag folgte
          //$attributesString = substr($TagString,$tagAttributeDel + 1,$posEndAttrib);
          $attributesString = substr($TagString,$tagAttributeDel + 1,$posEndAttrib - $tagAttributeDel);
 
-
          // Attribute des Strings auslesen
          $attributes = xmlParser::getAttributesFromString($attributesString);
-
 
          // Prüfen ob Tag selbstschließend. Falls nicht Content einlesen
          if(substr($TagString,$posEndAttrib - 1,1) == '/'){
@@ -364,14 +340,12 @@
           // end else
          }
 
-
          // Return-Array definieren
          $Attributes = array ();
          $Attributes['attributes'] = $attributes;
          $Attributes['class'] = $class;
          $Attributes['prefix'] = $prefix;
          $Attributes['content'] = $content;
-
 
          // Werte zurückgeben
          return $Attributes;
@@ -406,13 +380,11 @@
          $ParserLoops = 0;
          $ParserMaxLoops = 20;
 
-
          // Attribute iterativ suchen
          while(true){
 
             // Parser-Durchläufe inkrementieren
             $ParserLoops++;
-
 
             // Prüfen, om Maximum an Parser-Durchläufen schon erreicht ist
             if($ParserLoops == $ParserMaxLoops){
@@ -420,17 +392,14 @@
              // end if
             }
 
-
             // Attribute auslesen
             $foundAtr = strpos($attributesString, '=', $Offset);
-
 
             // Falls kein Attribut mehr gefunden wurde -> aussteigen
             if($foundAtr === false){
                 break;
              // end if
             }
-
 
             // Werte auslesen
             $key = substr($attributesString, $Offset, $foundAtr - $Offset);
@@ -439,7 +408,6 @@
             $attrValueEnd = strpos($attributesString, '"', $attrValueStart);
             $attrValue = substr($attributesString, $attrValueStart, $attrValueEnd - $attrValueStart);
             $Offset = $attrValueEnd + 1;
-
 
             // Array mit Key => Value aufbauen
             $Attributes[trim($key)] = trim($attrValue);
