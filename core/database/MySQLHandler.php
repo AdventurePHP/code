@@ -304,12 +304,12 @@
       *  Version 0.7, 29.03.2007 (An neue Implementierung für PC V2 angepasst)<br />
       *  Version 0.8, 07.03.2008 (Bug behoben, dass Query nicht auf die korrekte Verbindung ausgeführt wurde)<br />
       *  Version 0.9, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
+      *  Version 1.0, 05.11.2008 (Added value escaping to the statement params)<br />
       */
       function executeStatement($Namespace,$StatementFile,$Params = array(),$ShowStatement = false){
 
          // Initialisiere Klasse
          $this->__initMySQLHandler();
-
 
          // Dateinamen generieren und prüfen, ob Datei existiert
          $Reg = &Singleton::getInstance('Registry');
@@ -328,14 +328,14 @@
          // Platzhalter ersetzen
          if(count($Params) > 0){
 
+            // replace statement param by a escaped value
             foreach($Params as $Key => $Value){
-               $Statement = str_replace('['.$Key.']',$Value,$Statement);
+               $Statement = str_replace('['.$Key.']',$this->escapeValue($Value),$Statement);
              // end foreach
             }
 
           // end if
          }
-
 
          // Statement ausgeben
          if($ShowStatement == true){
@@ -343,10 +343,8 @@
           // end if
          }
 
-
          // Statement ausführen
          $result = @mysql_query($Statement,$this->__dbConn);
-
 
          // Fehler tracken
          $mysql_error = mysql_error($this->__dbConn);
@@ -369,11 +367,9 @@
           // end if
          }
 
-
          // $__lastInsertID setzen
          $ID = @mysql_fetch_assoc(@mysql_query('SELECT Last_Insert_ID() AS Last_Insert_ID;',$this->__dbConn));
          $this->__lastInsertID = $ID['Last_Insert_ID'];
-
 
          // Ergebnis zurückgeben
          return $result;
@@ -530,15 +526,12 @@
          // Initialisiere Klasse
          $this->__initMySQLHandler();
 
-
          // Statement ausführen
          $Result = @mysql_query($Statement,$this->__dbConn);
-
 
          // Fehler tracken
          $mysql_error = mysql_error($this->__dbConn);
          $mysql_errno = mysql_errno($this->__dbConn);
-
 
          if(!empty($mysql_error) || !empty($mysql_errno)){
 
@@ -556,11 +549,9 @@
           // end if
          }
 
-
          // $__lastInsertID setzen
          $ID = @mysql_fetch_assoc(@mysql_query('SELECT Last_Insert_ID() AS Last_Insert_ID',$this->__dbConn));
          $this->__lastInsertID = $ID['Last_Insert_ID'];
-
 
          // Ergebnis zurückgeben
          return $Result;
