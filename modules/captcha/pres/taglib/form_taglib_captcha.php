@@ -114,30 +114,24 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 20.06.2008<br />
+      *  Version 0.2, 05.11.2008 (Changed action base url generation)<br />
       */
       function transform(){
 
          // get url rewrite information from the registry
-         $Registry = &Singleton::getInstance('Registry');
-         $URLRewrite = $Registry->retrieve('apf::core','URLRewriting');
+         $Reg = &Singleton::getInstance('Registry');
+         $URLRewrite = $Reg->retrieve('apf::core','URLRewriting');
 
          // initialize base url
-         if(isset($this->__Attributes['action_baseurl'])){
-            $ActionBaseURL = $this->__Attributes['action_baseurl'];
-          // end if
-         }
-         else{
-            $ActionBaseURL = (string)'';
-          // end else
-         }
+         $actionBaseURL = $Reg->retrieve('apf::core','CurrentRequestURL');
 
          // initialize captcha source
          if($URLRewrite == true){
-            $CaptchaCode = '<img src="'.$ActionBaseURL.'/~/modules_captcha_biz-action/showCaptcha/name/'.$this->__TextFieldName.'" alt="CAPTCHA" align="absmiddle" ';
+            $CaptchaCode = '<img src="'.$actionBaseURL.'/~/modules_captcha_biz-action/showCaptcha/name/'.$this->__TextFieldName.'" alt="CAPTCHA" align="absmiddle" ';
           // end if
          }
          else{
-            $CaptchaCode = '<img src="'.$ActionBaseURL.'/?modules_captcha_biz-action:showCaptcha=name:'.$this->__TextFieldName.'" alt="CAPTCHA" align="absmiddle" ';
+            $CaptchaCode = '<img src="'.$actionBaseURL.'?modules_captcha_biz-action:showCaptcha=name:'.$this->__TextFieldName.'" alt="CAPTCHA" align="absmiddle" ';
           // end else
          }
 
