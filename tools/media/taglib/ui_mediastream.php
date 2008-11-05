@@ -72,6 +72,7 @@
       *  @version
       *  Version 0.1, 29.10.2008<br />
       *  Version 0.2, 01.11.2008<br />
+      *  Version 0.3, 05.11.2008 (Changed action base url generation)<br />
       */
       function transform(){
 
@@ -80,18 +81,7 @@
             // get infos from the registry
             $reg = &Singleton::getInstance('Registry');
             $urlrewrite = $reg->retrieve('apf::core','URLRewriting');
-            $basepath = $reg->retrieve('apf::core','URLBasePath');
-
-            // generate media action url
-            if($_SERVER['SERVER_PORT'] == '443'){
-               $protocol = 'https://';
-             // end if
-            }
-            else{
-               $protocol = 'http://';
-             // end else
-            }
-            $actionurl = $protocol.$basepath.$_SERVER['REQUEST_URI'];
+            $actionurl = $Reg->retrieve('apf::core','CurrentRequestURL');
 
             // return desired media url
             $this->__Attributes['namespace'] = str_replace('::','_',$this->__Attributes['namespace']);
