@@ -81,7 +81,7 @@
             // get infos from the registry
             $reg = &Singleton::getInstance('Registry');
             $urlrewrite = $reg->retrieve('apf::core','URLRewriting');
-            $actionurl = $Reg->retrieve('apf::core','CurrentRequestURL');
+            $actionurl = $reg->retrieve('apf::core','CurrentRequestURL');
 
             // return desired media url
             $this->__Attributes['namespace'] = str_replace('::','_',$this->__Attributes['namespace']);
