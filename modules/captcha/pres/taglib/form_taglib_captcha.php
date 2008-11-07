@@ -3,6 +3,7 @@
    import('tools::variablen','variablenHandler');
    import('tools::string','stringAssistant');
    import('core::session','sessionManager');
+   import('tools::link','frontcontrollerLinkHandler');
 
 
    /**
@@ -115,38 +116,47 @@
       *  @version
       *  Version 0.1, 20.06.2008<br />
       *  Version 0.2, 05.11.2008 (Changed action base url generation)<br />
+      *  Version 0.3, 07.11.2008 (Fixed the action URL generation. See class ui_mediastream for more details.)<br />
       */
       function transform(){
 
          // get url rewrite information from the registry
-         $Reg = &Singleton::getInstance('Registry');
-         $URLRewrite = $Reg->retrieve('apf::core','URLRewriting');
+         $reg = &Singleton::getInstance('Registry');
+         $urlrewrite = $reg->retrieve('apf::core','URLRewriting');
+         $actionurl = $reg->retrieve('apf::core','CurrentRequestURL');
 
-         // initialize base url
-         $actionBaseURL = $Reg->retrieve('apf::core','CurrentRequestURL');
-
-         // initialize captcha source
-         if($URLRewrite == true){
-            $CaptchaCode = '<img src="'.$actionBaseURL.'/~/modules_captcha_biz-action/showCaptcha/name/'.$this->__TextFieldName.'" alt="CAPTCHA" align="absmiddle" ';
+         // build action statement
+         if($urlrewrite === true){
+            $actionParam = array(
+                                 'modules_captcha_biz-action/showCaptcha' => 'name/'.$this->__TextFieldName
+                                );
           // end if
          }
          else{
-            $CaptchaCode = '<img src="'.$actionBaseURL.'?modules_captcha_biz-action:showCaptcha=name:'.$this->__TextFieldName.'" alt="CAPTCHA" align="absmiddle" ';
+            $actionParam = array(
+                                 'modules_captcha_biz-action:showCaptcha' => 'name:'.$this->__TextFieldName
+                                );
           // end else
          }
 
+         // create desired media url
+         $actionURL = frontcontrollerLinkHandler::generateLink($actionurl,$actionParam);
+
+         // initialize captcha source
+         $captchaCode = '<img src="'.$actionURL.'" alt="CAPTCHA" align="absmiddle" ';
+
          // add class and style attributes if desired
          if(isset($this->__Attributes['image_class'])){
-            $CaptchaCode .= 'class="'.$this->__Attributes['image_class'].'" ';
+            $captchaCode .= 'class="'.$this->__Attributes['image_class'].'" ';
           // end if
          }
          if(isset($this->__Attributes['image_style'])){
-            $CaptchaCode .= 'style="'.$this->__Attributes['image_style'].'" ';
+            $captchaCode .= 'style="'.$this->__Attributes['image_style'].'" ';
           // end if
          }
 
          // concatinate the html code and return it
-         return $CaptchaCode.'/> '.$this->__TextField->transform();
+         return $captchaCode.'/> '.$this->__TextField->transform();
 
        // end function
       }
