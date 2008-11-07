@@ -1,4 +1,7 @@
 <?php
+   import('tools::link','frontcontrollerLinkHandler');
+
+
    /**
    *  @class ui_mediastream
    *
@@ -73,6 +76,7 @@
       *  Version 0.1, 29.10.2008<br />
       *  Version 0.2, 01.11.2008<br />
       *  Version 0.3, 05.11.2008 (Changed action base url generation)<br />
+      *  Version 0.4, 07.11.2008 (Refactored the url generation due to some addressing bugs)<br />
       */
       function transform(){
 
@@ -83,16 +87,23 @@
             $urlrewrite = $reg->retrieve('apf::core','URLRewriting');
             $actionurl = $reg->retrieve('apf::core','CurrentRequestURL');
 
-            // return desired media url
+            // build action statement
             $this->__Attributes['namespace'] = str_replace('::','_',$this->__Attributes['namespace']);
             if($urlrewrite === true){
-               return $actionurl.'/~/tools_media-action/streamMedia/namespace/'.$this->__Attributes['namespace'].'/filebody/'.$this->__Attributes['filebody'].'/extension/'.$this->__Attributes['extension'];
+               $actionParam = array(
+                                 'tools_media-action/streamMedia' => 'namespace/'.$this->__Attributes['namespace'].'/filebody/'.$this->__Attributes['filebody'].'/extension/'.$this->__Attributes['extension']
+                              );
              // end if
             }
             else{
-               return $actionurl.'?tools_media-action:streamMedia=namespace:'.$this->__Attributes['namespace'].'|filebody:'.$this->__Attributes['filebody'].'|extension:'.$this->__Attributes['extension'];
+               $actionParam = array(
+                                 'tools_media-action:streamMedia' => 'namespace:'.$this->__Attributes['namespace'].'|filebody:'.$this->__Attributes['filebody'].'|extension:'.$this->__Attributes['extension']
+                              );
              // end else
             }
+
+            // return desired media url
+            return frontcontrollerLinkHandler::generateLink($actionurl,$actionParam);
 
           // end if
          }
