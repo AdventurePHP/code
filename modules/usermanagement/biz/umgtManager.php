@@ -51,7 +51,7 @@
       *
       *  Returns an initialized or mapper instance.<br />
       *
-      *  @return GenericORRelationMapper $ORM; instance of the generic or relation mapper
+      *  @return GenericORRelationMapper $ORM instance of the generic or relation mapper
       *
       *  @author Christian Achatz
       *  @version
@@ -60,7 +60,7 @@
       function &__getORMapper(){
 
          // obtain a reference on the mapper factory
-         $ORMFactory = $this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
+         $ORMFactory = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
 
          // return mapper instance
          return $ORMFactory->getGenericORMapper('modules::usermanagement','umgt_'.$this->__ApplicationID,'usermanagement_test','SESSIONSINGLETON');
@@ -371,21 +371,31 @@
       *
       *  Loads a list of user objects, but excludes the group of the given user.
       *
-      *  @param GenericDomainObject $User user, whom groups should be excluded
+      *  @param int $userId id ot the user, whom groups should be excluded
       *  @return GenericDomainObject[] $Groups a list of groups
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 15.06.2008<br />
       */
-      function loadGroupList($user,$loadNotRelatedObjects = false){
+      function loadGroupList($userId,$loadNotRelatedObjects = false){
 
          // get the mapper
          $ORM = &$this->__getORMapper();
 
+         // create user object
+         $user = new GenericDomainObject('User');
+         $user->setProperty('UserID',$userId);
+
          // load the desired object list
          if($loadNotRelatedObjects === true){
-            return $ORM->loadNotRelatedObjects($user,'Group2User');
+            $criterion = new GenericCriterionObject();
+            //$app = $this->__getCurrentApplication();
+            $app = new GenericDomainObject('Application');
+            $app->setProperty('ApplicationID',1);
+            $criterion->addRelationIndicator('Application2Group',$app);
+            //$criterion->addPropertyIndicator('DisplayName','N%');
+            return $ORM->loadNotRelatedObjects($user,'Group2User',$criterion);
           // end if
          }
          else{
@@ -545,6 +555,47 @@
 
          $ORM->deleteAssociation('Role2User',$Role,$User);
 
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Test method, that selects a list of users, that are composed to one application and
+      *  have a certain role.
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 25.10.2008<br />
+      */
+      function getUserListForApplicationAndRole(){
+
+         $oRM = &$this->__getORMapper();
+         $app = $this->__getCurrentApplication();
+
+         $role = new GenericDomainObject('Role');
+         $role->setProperty('RoleID',2);
+
+         $crit = new GenericCriterionObject();
+         $crit->addRelationIndicator('Role2User',$role);
+
+         //$user = new GenericDomainObject('User');
+         //$user->setProperty('UserID',6);
+
+         return $oRM->loadRelatedObjects($app,'Application2User',$crit);
+
+       // end function
+      }
+
+
+      function testAddMappingConfiguration(){
+         $oRMF = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
+         $oRM = &$oRMF->getGenericORMapper('modules::usermanagement','umgt_1','usermanagement_test');
+         $oRM->addMappingConfiguration('modules::usermanagement','umgt_2');
+         $oRM->addRelationConfiguration('modules::usermanagement','umgt_2');
+         //echo 'MappingTable: '.printObject($oRM->__MappingTable);
+         //echo 'RelationTable: '.printObject($oRM->__RelationTable);
        // end function
       }
 

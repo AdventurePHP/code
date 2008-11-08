@@ -103,11 +103,11 @@
 
                // Link erzeugen
                if($SearchResults[$i]->get('Language') != $this->__Language){
-                  $Link = '/'.$PageParams[$SearchResults[$i]->get('Language')].'/'.ucfirst($SearchResults[$i]->get('Name')).'/~/sites_demosite_biz-action/setLanguage/lang/'.($SearchResults[$i]->get('Language'));
+                  $Link = '/'.$PageParams[$SearchResults[$i]->get('Language')].'/'.$SearchResults[$i]->get('PageID').'-'.$SearchResults[$i]->get('URLName').'/~/sites_demosite_biz-action/setLanguage/lang/'.($SearchResults[$i]->get('Language'));
                 // end if
                }
                else{
-                  $Link = '/Seite/'.ucfirst($SearchResults[$i]->get('Name'));
+                  $Link = '/'.$PageParams[$SearchResults[$i]->get('Language')].'/'.$SearchResults[$i]->get('PageID').'-'.$SearchResults[$i]->get('URLName');
                 // end else
                }
 

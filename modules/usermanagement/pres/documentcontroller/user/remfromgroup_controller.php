@@ -16,9 +16,7 @@
          $Group = &$Form__Group->getFormElementByName('Group');
          $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
          $_LOCALS = variablenHandler::registerLocal(array('userid'));
-         $user = new GenericDomainObject('User');
-         $user->setProperty('UserID',$_LOCALS['userid']);
-         $Groups = $uM->loadGroupList($user);
+         $Groups = $uM->loadGroupList($_LOCALS['userid']);
          $count = count($Groups);
 
          for($i = 0; $i < $count; $i++){

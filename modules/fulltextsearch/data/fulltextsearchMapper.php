@@ -45,6 +45,9 @@
          $cM = &$this->__getServiceObject('core::database','connectionManager');
          $SQL = &$cM->getConnection($Config->getValue('Database','ConnectionKey'));
 
+         // quote search string to avoid sql injection
+         $SearchString = $SQL->escapeValue($SearchString);
+
          // WHERE-Bedingung erzeugen
          $SearchStringArray = split(' ',$SearchString);
          $count = count($SearchStringArray);
@@ -124,7 +127,7 @@
                     WHERE
                        Language = \''.$Language.'\'
                        AND
-                       Name != \'404\'
+                       FileName != \'404\'
                     ORDER BY Title ASC';
 
          // Abfrage ausführen
@@ -209,7 +212,6 @@
 
 
       /**
-      *  @module __mapSearchResult2DomainObject()
       *  @private
       *
       *  Mappt ein Result-Array in ein Ergebnis-Objekte.<br />
@@ -220,14 +222,25 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 10.03.2008<br />
+      *  Version 0.2, 02.10.2008 (Added some new domain object attributes)<br />
       */
       function __mapSearchResult2DomainObject($ResultSet){
 
          // Objekt erstellen
          $SearchResult = new searchResult();
 
-         if(isset($ResultSet['Name'])){
-            $SearchResult->set('Name',$ResultSet['Name']);
+         if(isset($ResultSet['FileName'])){
+            $SearchResult->set('FileName',$ResultSet['FileName']);
+          // end if
+         }
+
+         if(isset($ResultSet['URLName'])){
+            $SearchResult->set('URLName',$ResultSet['URLName']);
+          // end if
+         }
+
+         if(isset($ResultSet['PageID'])){
+            $SearchResult->set('PageID',$ResultSet['PageID']);
           // end if
          }
 
