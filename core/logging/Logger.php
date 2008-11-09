@@ -136,7 +136,7 @@
       *  @private
       *  Permission that is applied to a newly created log folder.
       */
-      var $__logFolderPermissions = 0777;
+      var $__LogFolderPermissions = 0777;
 
 
       /**
@@ -206,7 +206,7 @@
             if(!is_dir($this->__LogDir)){
 
                // try to create non existing log dir
-               if(!mkdir($this->__LogDir,$this->__logFolderPermissions)){
+               if(!mkdir($this->__LogDir,$this->__LogFolderPermissions)){
                   trigger_error('[Logger->Logger()] The log directory "'.$this->__LogDir.'" cannot be created du to permission restrictions! Please check config and specify the "LogDir" (namespace: "apf::core") parameter in the registry!');
                   exit();
                 // end if
