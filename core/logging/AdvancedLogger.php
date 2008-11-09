@@ -12,8 +12,6 @@
    */
    function flushAdvancedLogger(){
 
-      //echo printObject($GLOBALS['SINGLETON_CACHE']);
-
       // get logger factory
       $aLF = &Singleton::getInstance('AdvancedLoggerFactory');
 
