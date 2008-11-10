@@ -47,6 +47,7 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 20.06.2008<br />
+      *  Version 0.2, 10.11.2008 (Added the "clearonerror" attribute. If set to "true", the field is cleared on error.)<br />
       */
       function onAfterAppend(){
 
@@ -97,6 +98,13 @@
             if($_LOCALS[$this->__TextFieldName] != $CaptchaString){
                $this->__TextField->setAttribute('style',$this->__TextField->getAttribute('style').'; '.$this->__ValidatorStyle);
                $this->__ParentObject->set('isValid',false);
+
+               // clear captcha field, if desired
+               if($this->getAttribute('clearonerror') === 'true'){
+                  $this->__TextField->setAttribute('value','');
+                // end if
+               }
+
              // end if
             }
 
