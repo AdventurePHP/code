@@ -11,29 +11,12 @@
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 21.04.2006<br />
+   *  Version 0.2, 10.11.2008 (Removed the onParseTime() method, because the registerTagLibModule() function now is obsolete)<br />
    */
    class template_taglib_getstring extends ui_getstring
    {
 
       function template_taglib_getstring(){
-      }
-
-
-      /**
-      *  @public
-      *
-      *  Implementierung der abstrakten Methode aus "coreObject". Bindet eine TagLib ein.<br />
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 21.04.2007<br />
-      */
-      function onParseTime(){
-
-         // Beim Template registrieren, damit das Objekt transformiert wird
-         $this->__ParentObject->registerTagLibModule(get_class($this));
-
-       // end function
       }
 
     // end class
