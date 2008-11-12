@@ -375,6 +375,7 @@
       *  @version
       *  Version 0.1, 06.09.2008<br />
       *  Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
+      *  Version 0.3, 12.11.2008 (Bugfix: language and context initialisation were wrong)<br />
       */
       function __createFormElement($ElementType,$ElementAttributes = array()){
 
@@ -392,8 +393,8 @@
 
             // add standard and user defined attributes
             $FormObject->set('ObjectID',$ObjectID);
-            $FormObject->set('Context',$this->__Language);
-            $FormObject->set('Language',$this->__Context);
+            $FormObject->set('Language',$this->__Language);
+            $FormObject->set('Context',$this->__Context);
 
             foreach($ElementAttributes as $Key => $Value){
                $FormObject->setAttribute($Key,$Value);
