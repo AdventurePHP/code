@@ -102,18 +102,19 @@
    *  @version
    *  Version 0.1, 03.12.2005<br />
    *  Version 0.2, 14.04.2006<br />
-   *  Version 0.3, 14.01.2007 (Proprietären Support für PHP 5 implementiert)<br />
-   *  Version 0.4, 03.03.2007 (Schönheitskorrekturen am Code)<br />
-   *  Version 0.5, 03.03.2007 (Support für den Betrieb unter PHP 4 und PHP 5 hinzugefügt)<br />
-   *  Version 0.6, 24.03.2008 (Aus Performance-Gründen Cache für bereits inportierte Dateien eingeführt)<br />
-   *  Version 0.7, 20.06.2008 (Wegen Einführung Registry in den pagecontroller verlagert)<br />
+   *  Version 0.3, 14.01.2007 (Implemented proprietary support for PHP 5)<br />
+   *  Version 0.4, 03.03.2007 (Did some cosmetics)<br />
+   *  Version 0.5, 03.03.2007 (Added support for mixed operation under PHP 4 and PHP 5)<br />
+   *  Version 0.6, 24.03.2008 (Improved Performance due to include cache introduction)<br />
+   *  Version 0.7, 20.06.2008 (Moved to pagecontroller.php due to the Registry introduction)<br />
+   *  Version 0.8, 13.11.2008 (Replaced the include_once() calls with include()s to gain performance)<br />
    */
    function import($Namespace,$File,$ActivatePHP5Support = true){
 
-      // Dateinamen zusammenbauen
+      // create the complete and absolute file name
       $File = APPS__PATH.'/'.str_replace('::','/',$Namespace).'/'.$File;
 
-      // Prüfen, ob Datei bereits inkludiert ist
+      // check if the file is already included, if yes, return
       if(isset($GLOBALS['IMPORT_CACHE'][$File])){
          return true;
        // end if
@@ -123,16 +124,15 @@
        // end else
       }
 
-      // Datei importieren
+      // import file
       if(intval(phpversion()) == 5 && $ActivatePHP5Support == true){
 
-         // Dateiendung anhängen
+         // add the php 5 extension
          $ImportFile = $File.'.php5';
 
-         // Datei importieren
          if(!file_exists($ImportFile)){
 
-            // php5-File annehmen
+            // if not, assume the fallback extension
             $ImportFile = $File.'.php';
 
             if(!file_exists($ImportFile)){
@@ -141,14 +141,14 @@
              // end if
             }
             else{
-               include_once($ImportFile);
+               include($ImportFile);
              // end else
             }
 
           // end if
          }
          else{
-            include_once($ImportFile);
+            include($ImportFile);
           // end else
          }
 
@@ -156,17 +156,16 @@
       }
       else{
 
-         // Dateiendung anhängen
+         // add the default file extension
          $ImportFile = $File.'.php';
 
-         // Datei importieren
          if(!file_exists($ImportFile)){
             trigger_error('[import()] The given module ('.$ImportFile.') cannot be loaded!');
             exit();
           // end if
          }
          else{
-            include_once($ImportFile);
+            include($ImportFile);
           // end else
          }
 
