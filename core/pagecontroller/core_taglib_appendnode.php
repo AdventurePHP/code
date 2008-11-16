@@ -75,12 +75,15 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 16.11.2008<br />
-      *  Version 0.2, 16.11.2008 (Bugfix: added a parent object reference correction for the new nodes (line 88))<br />
+      *  Version 0.2, 16.11.2008 (Bugfix: added a parent object reference correction for the new nodes)<br />
+      *  Version 0.3, 16.11.2008 (Enhancement: added a tag marker to the parent object to enable the transformOnPlace() feature)<br />
       */
       function onAfterAppend(){
 
          // get parent children list
          $parentChildren = &$this->__ParentObject->getByReference('Children');
+         $parentContent = $this->__ParentObject->get('Content');
+         $currentObjectId = $this->__ObjectID;
 
          foreach($this->__Children as $objectId => $DUMMY){
 
@@ -90,11 +93,13 @@
             // correct the parent object refrence
             $parentChildren[$objectId]->setByReference('ParentObject',$this->__ParentObject);
 
+            // add a marker tag to the parent object after the tag's marker
+            $parentContent = str_replace('<'.$currentObjectId.' />','<'.$currentObjectId.' /><'.$objectId.' />',$parentContent);
+            $currentObjectId = $objectId;
+
           // end foreach
          }
-
-         // the only problem could be, that the parent node's transform method can't find
-         // the remark tags (<{object_id]} />). So let's test it.
+         $this->__ParentObject->set('Content',$parentContent);
 
        // end function
       }
