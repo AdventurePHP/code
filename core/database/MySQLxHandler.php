@@ -6,7 +6,7 @@
    *  @package core::database
    *  @class MySQLxHandler
    *
-   *  Kompatibilitätsklasse für den MySQLHandler zur Benutzung über den connectionManager.<br />
+   *  Compatibility class to be able to use the MySQLHandler with the connectionManager.
    *
    *  @author Christian Achatz
    *  @version
@@ -22,27 +22,28 @@
       /**
       *  @public
       *
-      *  Initialisiert den MySQLxHandler.<br />
+      *  Initializes the MySQLxHandler.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 27.02.2008<br />
+      *  Version 0.2, 16.11.2008 (Bugfix: debug mode was not activated correctly)<br />
       */
       function init($ConfigSection){
 
-         // Falls noch nicht initialisiert wurde initialisieren
+         // initialize if not already done
          if($this->__isInitialized == false){
 
-            // Zugangsdaten auslesen
+            // fill connection data
             $this->__dbHost = $ConfigSection['DB.Host'];
             $this->__dbUser = $ConfigSection['DB.User'];
             $this->__dbPass = $ConfigSection['DB.Pass'];
             $this->__dbName = $ConfigSection['DB.Name'];
 
-            // Debug-Mode aktivieren / deaktivieren
-            if(isset($Section['DB.DebugMode'])){
+            // activate / deactivate debug mode
+            if(isset($ConfigSection['DB.DebugMode'])){
 
-               if($Section['DB.DebugMode'] == 'true' || $Section['DB.DebugMode'] == '1'){
+               if($ConfigSection['DB.DebugMode'] == 'true' || $ConfigSection['DB.DebugMode'] == '1'){
                   $this->__dbDebug = true;
                 // end if
                }
@@ -58,13 +59,13 @@
              // end else
             }
 
-            // Logdatei festlegen (Instanz des Loggers)
+            // create logger instance
             $this->__dbLog = &Singleton::getInstance('Logger');
 
-            // Klasse als initialisiert kennzeichnen
+            // mark as initialized
             $this->__isInitialized = true;
 
-            // Zur DB verbinden
+            // create connection
             $this->__connect();
 
           // end if
