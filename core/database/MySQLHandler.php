@@ -381,17 +381,19 @@
       /**
       *  @public
       *
-      *  Quotiert Daten für den Eintrag in die Datenbank.<br />
+      *  Quotes data for use in mysql statements.
       *
-      *  @param string $Value; String, der quotiert werden soll
-      *  @return string $EscapedValue; Quotierter String
+      *  @param string $Value string to quote
+      *  @return string $escapedValue quoted string
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 07.01.2008<br />
+      *  Version 0.2, 17.11.2008 (Bugfix: if the method is called before any other, the connection is null)<br />
       */
-      function escapeValue($Value){
-         return mysql_real_escape_string($Value,$this->__dbConn);
+      function escapeValue($value){
+         $this->__initMySQLHandler();
+         return mysql_real_escape_string($value,$this->__dbConn);
        // end function
       }
 
