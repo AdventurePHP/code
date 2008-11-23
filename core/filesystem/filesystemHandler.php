@@ -7,34 +7,34 @@
    *  @package core::filesystem
    *  @class filesystemHandler
    *
-   *  Kapselt Zugriffsmethoden für das Filesystem.<br />
+   *  Encapsulates filesystem access methods.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Achatz
    *  @version
    *  Version 0.1, 20.09.2004<br />
    *  Version 0.2, 01.12.2004<br />
-   *  Version 0.3, 28.03.2007 (Pfade werden immer OHNE endenden "/" erwartet!)<br />
+   *  Version 0.3, 28.03.2007 (Filesystem paths are now expected without trailing "/"!)<br />
    */
    class filesystemHandler
    {
 
       /**
       *  @private
-      *  Liste von bei Filesystem-Aktionen beeinflusste Dateien und Ordner.
+      *  List of files, that are affected during certain operations.
       */
       var $__AffectedFiles = array();
 
 
       /**
       *  @private
-      *  Arbeits-Verzeichnis.
+      *  Current working dir.
       */
       var $__WorkDir;
 
 
       /**
       *  @private
-      *  Instanz des Loggers.
+      *  The logger instance.
       */
       var $__fsLog;
 
@@ -42,35 +42,24 @@
       /**
       *  @public
       *
-      *  Konstruktor der Klasse. Initialisiert das Arbeitsverzeichnis.<br />
+      *  Constructor of the class. Initializes the working dir.
       *
-      *  @author Christian Schäfer
+      *  @param string $workDir the desired working dir
+      *
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 20.09.2004<br />
       *  Version 0.2, 01.12.2004<br />
-      *  Version 0.3, 17.08.2007 (Überprüfung des Arbeitsverzeichnisses eingeführt)<br />
+      *  Version 0.3, 17.08.2007 (Added working dir check)<br />
+      *  Version 0.4, 20.11.2008 (Removed dublicate code)<br />
       */
       function filesystemHandler($WorkDir = '.'){
 
-         // Instanz des Loggers holen
+         // store reference on the logger
          $this->__fsLog = &Singleton::getInstance('Logger');
 
-         // Status-Cache leeren
-         clearstatcache();
-
-         // Arbeitsverzeichnis prüfen
-         if(!is_dir($WorkDir)){
-            trigger_error('[filesystemHandler::filesystemHandler()] Given directory "'.$WorkDir.'" is not a valid directory! Please check your working directory!',E_USER_ERROR);
-            exit();
-          // end if
-         }
-         else{
-            $this->__WorkDir = $WorkDir;
-          // end else
-         }
-
-         // Status-Cache leeren
-         clearstatcache();
+         // switch ro given work dir
+         $this->changeWorkDir($WorkDir);
 
        // end function
       }
@@ -79,30 +68,29 @@
       /**
       *  @public
       *
-      *  Wechselt das Arbeitsverzeichnis.<br />
+      *  Switches the working dir to the given directory.
       *
-      *  @author Christian Schäfer
+      *  @param string $workDir the desired working dir
+      *
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 20.09.2004<br />
-      *  Version 0.2, 17.08.2007 (Überprüfung des Arbeitsverzeichnisses eingeführt)<br />
+      *  Version 0.2, 17.08.2007 (Added working dir check)<br />
       */
-      function changeWorkDir($WorkDir){
+      function changeWorkDir($workDir){
 
-         // Status-Cache leeren
          clearstatcache();
 
-         // Arbeitsverzeichnis prüfen
-         if(!is_dir($WorkDir)){
-            trigger_error('[filesystemHandler::changeWorkDir()] Can not change working directory to "'.$WorkDir.'", because this is not a valid directory!',E_USER_ERROR);
+         if(!is_dir($workDir)){
+            trigger_error('[filesystemHandler::changeWorkDir()] Can not change working directory to "'.$workDir.'", because this is not a valid directory!',E_USER_ERROR);
             exit();
           // end if
          }
          else{
-            $this->__WorkDir = $WorkDir;
+            $this->__WorkDir = $workDir;
           // end else
          }
 
-         // Status-Cache leeren
          clearstatcache();
 
        // end function
