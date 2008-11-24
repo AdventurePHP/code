@@ -1,22 +1,70 @@
 <?php
-   import('core::filesystem','FilesystemManager');
+   /**
+   *  @abstract
+   *  @package tools::cache
+   *  @class CacheCoreObject
+   *
+   *  Implements an abstact base class for the cache provider and the cache manager. Includes
+   *  a generic access method to the cache configuration attributes.
+   *
+   *  @author Christian Achatz
+   *  @version
+   *  Version 0.1, 24.11.2008<br />
+   */
+   class CacheCoreObject extends coreObject
+   {
+
+      /**
+      *  @private
+      *
+      *  Returns the value of the cache config attribute or triggers an error (FATAL), if the
+      *  attribute is not given within the attributes array.
+      *
+      *  @param string $name name of the desired attribute
+      *  @return string $value value of the attribute
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 24.11.2008<br />
+      */
+      function __getCacheConfigAttribute($name){
+
+         if(!isset($this->__Attributes[$name])){
+            $reg = &Singleton::getInstance('Registry');
+            $env = $reg->retrieve('apf::core','Environment');
+            trigger_error('['.get_class($this).'::__getCacheConfigAttribute()] The configuration directive "'.$name.'" is not present or empty. Please check your cache configuration ("'.$env.'_cacheconfig.ini") for namespace "tools::cache" and context "'.$this->__Context.'" or consult the documentation!',E_USER_ERROR);
+            exit();
+          // end if
+         }
+         else{
+            return $this->__Attributes[$name];
+          // end else
+         }
+
+       // end function
+      }
+
+    // end class
+   }
 
 
    /**
    *  @abstract
-   *  @class AbstractCacheWriter
+   *  @package tools::cache
+   *  @class AbstractCacheProvider
    *
-   *  Interface for concrete writer implementations. To access the configuration, the reader has
-   *  a reference on the cache manager within the "ParentObject" attribute.
+   *  Interface for concrete provider implementations. To access the configuration, the provider
+   *  is injected the current configuration params as the attributes array.
    *
    *  @author Christian Achatz
    *  @version
    *  Version 0.1, 31.10.2008<br />
+   *  Version 0.2, 24.11.2008 (Refactoring due to discussions on the fusion of writers and readers.)<br />
    */
-   class AbstractCacheWriter extends coreObject
+   class AbstractCacheProvider extends CacheCoreObject
    {
 
-      function AbstractCacheWriter(){
+      function AbstractCacheProvider(){
       }
 
 
@@ -24,7 +72,7 @@
       *  @abstract
       *  @public
       *
-      *  Interface definition of the writer's write() method. Must return true on write success,
+      *  Interface definition of the provider's write() method. Must return true on write success,
       *  otherwise false.
       *
       *  @param string $cacheFile fully qualified cache file name
@@ -39,33 +87,12 @@
        // end function
       }
 
-    // end class
-   }
-
-
-   /**
-   *  @abstract
-   *  @class AbstractCacheReader
-   *
-   *  Interface for concrete reader implementations. To access the configuration, the reader has
-   *  a reference on the cache manager within the "ParentObject" attribute.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 31.10.2008<br />
-   */
-   class AbstractCacheReader extends coreObject
-   {
-
-      function AbstractCacheReader(){
-      }
-
 
       /**
       *  @abstract
       *  @public
       *
-      *  Interface definition of the reader's read() method. Must return the desired cache
+      *  Interface definition of the provider's read() method. Must return the desired cache
       *  content on success, otherwise null.
       *
       *  @param string $cacheFile fully qualified cache file name
@@ -77,6 +104,28 @@
       */
       function read($cacheKey){
          return null;
+       // end function
+      }
+
+
+      /**
+      *  @abstract
+      *  @public
+      *  @since 0.2
+      *
+      *  Interface definition of the provider's clear() method. Delete the dedicated cache item
+      *  specified by the cache key, or the whole namespace, if the cache key is null. Returns true
+      *  on success and false otherwise.
+      *
+      *  @param string $cacheKey the cache key or null
+      *  @return string $result true|false
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 24.11.2008<br />
+      */
+      function clear($cacheKey = null){
+         return true;
        // end function
       }
 
@@ -98,21 +147,23 @@
    *  @version
    *  Version 0.1, 31.10.2008<br />
    */
-   class CacheManager extends coreObject
+   class CacheManager extends CacheCoreObject
    {
 
       /**
       *  @private
-      *  The desired reader implementation.
+      *  The current cache provider.
       */
-      var $__Reader = null;
+      var $__Provider = null;
 
 
       /**
       *  @private
-      *  The desired writer implementation.
+      *  Indicates, if the cache is active. Can be influenced by set('Active') or the
+      *  cache configuration file. The cache is off by default to avoid strange behavior, if the
+      *  config value is not set properly.
       */
-      var $__Writer = null;
+      var $__Active = false;
 
 
       function CacheManager(){
@@ -131,42 +182,26 @@
       *  @version
       *  Version 0.1, 21.11.2008<br />
       *  Version 0.2, 22.11.2008 (Refactored due to fabric introduction.)<br />
+      *  Version 0.3, 24.11.2008 (Refactoring due to discussions on the fusion of writers and readers)<br />
       */
-      function init($section){
+      function init($configSection){
 
-         // fill the current configuration
-         $this->__Attributes = $section;
+         // injects the config section
+         $this->__Attributes = $configSection;
 
-         // check for the default values
-         $reg = &Singleton::getInstance('Registry');
-         $env = $reg->retrieve('apf::core','Environment');
-         $mandatoryDirectives = array(
-                                      'Cache.Reader.Namespace',
-                                      'Cache.Reader.Class',
-                                      'Cache.Writer.Namespace',
-                                      'Cache.Writer.Class',
-                                      'Cache.Active'
-                                     );
-         foreach($mandatoryDirectives as $directive){
+         // include and create the provider
+         $namespace = $this->__getCacheConfigAttribute('Cache.Provider.Namespace');
+         $class = $this->__getCacheConfigAttribute('Cache.Provider.Class');
+         import($namespace,$class);
+         $this->__Provider = $this->__getServiceObject($namespace,$class,'NORMAL');
+         $this->__Provider->setAttributes($configSection);
 
-            if(!isset($this->__Attributes[$directive]) || empty($this->__Attributes[$directive])){
-               trigger_error('[CacheManager::init()] The given config section does not contain a valid "'.$directive.'" directive. Please check your cache configuration ("'.$env.'_cacheconfig.ini") for namespace "tools::cache" and context "'.$this->__Context.'"!',E_USER_ERROR);
-               exit();
-             // end if
-            }
-
-          // end foreach
+         // map the active configuration key
+         $active = $this->__getCacheConfigAttribute('Cache.Active');
+         if($active == 'true'){
+            $this->__Active = true;
+          // end if
          }
-
-         // include the reader and writer
-         import($this->__Attributes['Cache.Reader.Namespace'],$this->__Attributes['Cache.Reader.Class']);
-         import($this->__Attributes['Cache.Writer.Namespace'],$this->__Attributes['Cache.Writer.Class']);
-
-         // create and init the reader and writer instances
-         $this->__Reader = $this->__getServiceObject($this->__Attributes['Cache.Reader.Namespace'],$this->__Attributes['Cache.Reader.Class'],'NORMAL');
-         $this->__Reader->setByReference('ParentObject',$this);
-         $this->__Writer = $this->__getServiceObject($this->__Attributes['Cache.Writer.Namespace'],$this->__Attributes['Cache.Writer.Class'],'NORMAL');
-         $this->__Writer->setByReference('ParentObject',$this);
 
        // end function
       }
@@ -187,8 +222,8 @@
       */
       function getFromCache($cacheKey){
 
-         if($this->getAttribute('Cache.Active') == 'true'){
-            return $this->__Reader->read($cacheKey);
+         if($this->__Active === true){
+            return $this->__Provider->read($cacheKey);
           // end if
          }
          else{
@@ -214,8 +249,8 @@
       */
       function writeToCache($cacheKey,$content){
 
-         if($this->getAttribute('Cache.Active') == 'true'){
-            return $this->__Writer->write($cacheKey,$content);
+         if($this->__Active === true){
+            return $this->__Provider->write($cacheKey,$content);
           // end if
          }
          else{
@@ -223,6 +258,25 @@
           // end else
          }
 
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Clears the whole cache in case the cache key is null, or the cache item specified  by
+      *  the given cache key.
+      *
+      *  @param string $cacheKey the application's cache key
+      *  @param bool $status true in case of success, otherwise false
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 21.11.2008<br />
+      */
+      function clearCache($cacheKey = null){
+         return $this->__Provider->clear($cacheKey);
        // end function
       }
 
