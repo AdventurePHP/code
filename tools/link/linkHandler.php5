@@ -1,6 +1,6 @@
 <?php
    /**
-   *  @package tools::link
+   *  @namespace tools::link
    *  @class linkHandler
    *  @static
    *

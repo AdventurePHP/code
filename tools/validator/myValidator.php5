@@ -1,6 +1,6 @@
 <?php
    /**
-   *  @package tools::validator
+   *  @namespace tools::validator
    *  @class myValidator
    *
    *  Stellt Methoden zur Validierung von Strings zu Verfügung.<br />

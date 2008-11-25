@@ -3,7 +3,7 @@
 
 
    /**
-   *  @package tools::form::taglib
+   *  @namespace tools::form::taglib
    *  @class ui_element
    *  @abstract
    *

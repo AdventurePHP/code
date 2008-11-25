@@ -1,6 +1,6 @@
 <?php
    /**
-   *  @package tools::datetime
+   *  @namespace tools::datetime
    *  @class dateTimeManager
    *  @static
    *

@@ -1,6 +1,6 @@
 <?php
    /**
-   *  @package tools::string
+   *  @namespace tools::string
    *  @class stringAssistant
    *  @static
    *

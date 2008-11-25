@@ -4,7 +4,7 @@
 
 
    /**
-   *  @package tools::link
+   *  @namespace tools::link
    *  @class frontcontrollerLinkHandler
    *
    *  Implementiert den linkHandler für den Gebrauch in Frontcontroller-Anwendungen neu.<br />

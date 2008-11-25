@@ -21,7 +21,7 @@
 
 
    /**
-   *  @package tools::form::taglib
+   *  @namespace tools::form::taglib
    *  @class html_taglib_form
    *
    *  Repräsentiert ein Form-Objekt (HTML-Form).<br />

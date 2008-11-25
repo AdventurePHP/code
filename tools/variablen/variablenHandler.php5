@@ -1,6 +1,6 @@
 <?php
    /**
-   *  @package tools::variablen
+   *  @namespace tools::variablen
    *  @class variablenHandler
    *
    *  Stellt Methoden zur Extraktion von Request-Variablen bereit.<br />

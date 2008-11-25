@@ -3,7 +3,7 @@
 
 
    /**
-   *  @package tools::image
+   *  @namespace tools::image
    *  @class imageManager
    *
    *  Stellt Methoden zur Bildbearbeitung bereit.<br />

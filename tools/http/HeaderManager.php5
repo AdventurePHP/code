@@ -1,6 +1,6 @@
 <?php
    /**
-   *  @package tools::http
+   *  @namespace tools::http
    *  @class HeaderManager
    *  @see http://forum.adventure-php-framework.org/de/viewtopic.php?p=243#p243
    *

@@ -1,6 +1,6 @@
 <?php
    /**
-   *  @package tools::string
+   *  @namespace tools::string
    *  @class bbCodeParser
    *
    *  <pre>Stellt Methoden der Text-Formatierungen im bbCode-Style zur Verfügung.
