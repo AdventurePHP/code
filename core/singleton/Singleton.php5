@@ -1,6 +1,6 @@
 <?php
    /**
-   *  @package core::singleton
+   *  @namespace core::singleton
    *  @class Singleton
    *  @static
    *

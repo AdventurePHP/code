@@ -1,9 +1,29 @@
 <?php
    /**
-   *  @package core::errorhandler::documentcontroller
+   *  <!--
+   *  This file is part of the adventure php framework (APF) published under
+   *  http://adventure-php-framework.org.
+   *
+   *  The APF is free software: you can redistribute it and/or modify
+   *  it under the terms of the GNU Lesser General Public License as published
+   *  by the Free Software Foundation, either version 3 of the License, or
+   *  (at your option) any later version.
+   *
+   *  The APF is distributed in the hope that it will be useful,
+   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  GNU Lesser General Public License for more details.
+   *
+   *  You should have received a copy of the GNU Lesser General Public License
+   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+   *  -->
+   */
+
+   /**
+   *  @namespace core::errorhandler::documentcontroller
    *  @class errorpage_v1_controller
    *
-   *  Implementiert den DocumentController der Fehlerseite.<br />
+   *  Implements the error page's document controller.
    *
    *  @author Christian Schäfer
    *  @version
@@ -19,7 +39,7 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "transformContent" für die Fehlerseite.<br />
+      *  Displays the error page.
       *
       *  @author Christian Schäfer
       *  @version
@@ -27,78 +47,58 @@
       */
       function transformContent(){
 
+         // build stacktrace
          $Errors = $this->__buildStackTrace();
-         $Buffer = (string)'';
+         $buffer = (string)'';
 
-
-         // Template holen
+         // get template
          $Template__ErrorEntry = & $this->__getTemplate('ErrorEntry');
 
-
-         // Stacktrace ausgeben
+         // generate stacktrace
          for($i = 0; $i < count($Errors); $i++){
 
-            // Aktuelle Funktion
             if(isset($Errors[$i]['function'])){
                $Template__ErrorEntry->setPlaceHolder('Function',$Errors[$i]['function']);
              // end if
             }
 
-
-            // Fehler-Zeile
             if(isset($Errors[$i]['line'])){
                $Template__ErrorEntry->setPlaceHolder('Line',$Errors[$i]['line']);
              // end if
             }
 
-
-            // Aktuelle Datei
             if(isset($Errors[$i]['file'])){
                $Template__ErrorEntry->setPlaceHolder('File',$Errors[$i]['file']);
              // end if
             }
 
-
-            // Aktuelle Klasse
             if(isset($Errors[$i]['class'])){
                $Template__ErrorEntry->setPlaceHolder('Class',$Errors[$i]['class']);
              // end if
             }
 
-
-            // Aktuelles Objekt
             if(isset($Errors[$i]['object'])){
                //$Template__ErrorEntry->setPlaceHolder('Object',$Errors[$i]['object']);
              // end if
             }
 
-
-            // Aktueller Typ
             if(isset($Errors[$i]['type'])){
                $Template__ErrorEntry->setPlaceHolder('Type',$Errors[$i]['type']);
              // end if
             }
 
-
-            // Aktuelle Argument-Liste
             if(isset($Errors[$i]['args'])){
                //$Template__ErrorEntry->setPlaceHolder('Arguments',$Errors[$i]['args']);
              // end if
             }
 
-
-            // Element in den Puffer einsetzen
-            $Buffer .= $Template__ErrorEntry->transformTemplate();
+            $buffer .= $Template__ErrorEntry->transformTemplate();
 
           // end for
          }
 
+         $this->setPlaceHolder('Stacktrace',$buffer);
 
-         // Liste ausgeben
-         $this->setPlaceHolder('Stacktrace',$Buffer);
-
-
-         // Attribute der aktuellen Meldung setzen
          $this->setPlaceHolder('ErrorID',$this->__Attributes['id']);
          $this->setPlaceHolder('ErrorMessage',$this->__Attributes['message']);
          $this->setPlaceHolder('ErrorNumber',$this->__Attributes['number']);
@@ -112,7 +112,7 @@
       /**
       *  @private
       *
-      *  Erzeugt den Stacktrace.<br />
+      *  Creates the stacktrace.
       *
       *  @author Christian Schäfer
       *  @version

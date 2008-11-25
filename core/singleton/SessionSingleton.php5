@@ -4,7 +4,7 @@
    register_shutdown_function('saveSessionSingletonObjects');
 
    /**
-   *  @package core::singleton
+   *  @namespace core::singleton
    *
    *  Shutdown Function um alle SessionSingleton gecachten Objekte in die Session<br />
    *  zu persistieren.<br />
@@ -45,7 +45,7 @@
 
 
    /**
-   *  @package core::singleton
+   *  @namespace core::singleton
    *  @class SessionSingleton
    *  @static
    *

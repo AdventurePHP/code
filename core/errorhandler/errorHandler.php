@@ -1,36 +1,51 @@
 <?php
-   // include dependent library
+   /**
+   *  <!--
+   *  This file is part of the adventure php framework (APF) published under
+   *  http://adventure-php-framework.org.
+   *
+   *  The APF is free software: you can redistribute it and/or modify
+   *  it under the terms of the GNU Lesser General Public License as published
+   *  by the Free Software Foundation, either version 3 of the License, or
+   *  (at your option) any later version.
+   *
+   *  The APF is distributed in the hope that it will be useful,
+   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  GNU Lesser General Public License for more details.
+   *
+   *  You should have received a copy of the GNU Lesser General Public License
+   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+   *  -->
+   */
+
    import('core::logging','Logger');
 
-
-   // Error-Reporting-Stufen festlegen
    error_reporting(E_ALL);
    ini_set('display_errors','1');
 
-
-   // Fehlerbehandlungsoutine setzen
    set_error_handler('errorHandler');
 
 
    /**
-   *  @package core::errorhandler
+   *  @namespace core::errorhandler
    *
-   *  Wrapper für das Error-Handling.
+   *  Wrapper for the APF error handling.
    *
-   *  @param string $ErrorNumber; Fehler-Nummer
-   *  @param string $ErrorMessage; Fehler-Meldung
-   *  @param string $ErrorFile; Fehler-Datei
-   *  @param string $ErrorLine; Fehler-Zeile
+   *  @param string $errorNumber error number
+   *  @param string $errorMessage error message
+   *  @param string $errorFile error file
+   *  @param string $errorLine error line
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 30.11.2005<br />
    *  Version 0.2, 04.12.2005<br />
    *  Version 0.3, 15.01.2005<br />
-   *  Version 0.4, 21.01.2007 (errorManager eingeführt)<br />
+   *  Version 0.4, 21.01.2007 (Introduced the errorManager)<br />
    *  Version 0.5, 20.06.2008 (Errors, that are triggered while using the @ sign are not raised anymore)<br />
    */
-   function errorHandler($ErrorNumber,$ErrorMessage,$ErrorFile,$ErrorLine){
+   function errorHandler($errorNumber,$errorMessage,$errorFile,$errorLine){
 
       // Don't raise error, if @ was applied
       if(error_reporting() == 0){
@@ -39,52 +54,52 @@
       }
 
       // raise error and display error message
-      $ErrMgr = new errorManager();
-      $ErrMgr->raiseError($ErrorNumber,$ErrorMessage,$ErrorFile,$ErrorLine);
+      $ErrMgr = new ErrorManager();
+      $ErrMgr->raiseError($errorNumber,$errorMessage,$errorFile,$errorLine);
 
     // end function
    }
 
 
    /**
-   *  @package core::errorhandler
-   *  @class errorManager
+   *  @namespace core::errorhandler
+   *  @class ErrorManager
    *
-   *  Stellt einen globalen ErrorManager zur Verfügung.<br />
+   *  Implements the global error handler.
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 21.01.2007<br />
    */
-   class errorManager
+   class ErrorManager
    {
 
       /**
       *  @private
-      *  Fehlernummer
+      *  Error number.
       */
       var $__ErrorNumber;
 
       /**
       *  @private
-      *  Fehlermeldung
+      *  Error message,
       */
       var $__ErrorMessage;
 
       /**
       *  @private
-      *  Datei, in der der Fehler auftritt
+      *  Error file.
       */
       var $__ErrorFile;
 
       /**
       *  @private
-      *  Zeile, in der der Fehler auftritt
+      *  Error line.
       */
       var $__ErrorLine;
 
 
-      function errorManager(){
+      function ErrorManager(){
       }
 
 
@@ -93,29 +108,27 @@
       *
       *  Funktion, die von der globalen ErrorHandler-Funktion aufgerufen wird um einen Fehler zu melden.<br />
       *
-      *  @param string $ErrorNumber; Fehler-Nummer
-      *  @param string $ErrorMessage; Fehler-Meldung
-      *  @param string $ErrorFile; Fehler-Datei
-      *  @param string $ErrorLine; Fehler-Zeile
+      *  @param string $errorNumber error number
+      *  @param string $errorMessage error message
+      *  @param string $errorFile error file
+      *  @param string $errorLine error line
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 21.01.2007<br />
       */
-      function raiseError($ErrorNumber,$ErrorMessage,$ErrorFile,$ErrorLine){
+      function raiseError($errorNumber,$errorMessage,$errorFile,$errorLine){
 
-         // Lokale Attribute setzen
-         $this->__ErrorNumber = $ErrorNumber;
-         $this->__ErrorMessage = $ErrorMessage;
-         $this->__ErrorFile = $ErrorFile;
-         $this->__ErrorLine = $ErrorLine;
+         // fill attributes
+         $this->__ErrorNumber = $errorNumber;
+         $this->__ErrorMessage = $errorMessage;
+         $this->__ErrorFile = $errorFile;
+         $this->__ErrorLine = $errorLine;
 
-
-         // Fehler loggen
+         // log error
          $this->__logError();
 
-
-         // Fehlerseite generieren
+         // build nice error page
          echo $this->__buildErrorPage();
 
        // end function
@@ -125,19 +138,16 @@
       /**
       *  @private
       *
-      *  Logging-Funktion für Fehler.<br />
+      *  Creates a log entry containing the error occured.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 21.01.2007<br />
-      *  Version 0.2, 29.03.2007 (Umstellung auf neuen Logger)<br />
+      *  Version 0.2, 29.03.2007 (Changed to new logger)<br />
       */
       function __logError(){
 
-         // Fehlermeldung erzeugen
          $Message = '['.($this->__generateErrorID()).'] '.$this->__ErrorMessage.' (Number: '.$this->__ErrorNumber.', File: '.$this->__ErrorFile.', Line: '.$this->__ErrorLine.')';
-
-         // Fehler protokollieren
          $L = &Singleton::getInstance('Logger');
          $L->logEntry('php',$Message,'ERROR');
 
@@ -153,28 +163,28 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 21.01.2007<br />
-      *  Version 0.2, 03.03.2007 (Kompatibilität für PageController V1 implementiert)<br />
-      *  Version 0.3, 04.03.2007 (Context wird nun für die ErrorPage gesetzt)<br />
-      *  Version 0.4, 29.03.2007 (Kompatibilitäten zum alten PC entfernt)<br />
+      *  Version 0.2, 03.03.2007<br />
+      *  Version 0.3, 04.03.2007 (Context now is set)<br />
+      *  Version 0.4, 29.03.2007<br />
       *  Version 0.5, 13.08.2008 (Removed text only error page messages)<br />
       */
       function __buildErrorPage(){
 
-         // Stacktrace zusammensetzen
-         $Stacktrace = new Page('Stacktrace');
-         $Stacktrace->set('Context','core::errorhandler');
-         $Stacktrace->loadDesign('core::errorhandler::templates','errorpage');
+         // create page
+         $stacktrace = new Page('Stacktrace');
+         $stacktrace->set('Context','core::errorhandler');
+         $stacktrace->loadDesign('core::errorhandler::templates','errorpage');
 
-         // Informationen der Meldung setzen
-         $Document = & $Stacktrace->getByReference('Document');
+         // inject error information into the document attributes array
+         $Document = & $stacktrace->getByReference('Document');
          $Document->setAttribute('id',$this->__generateErrorID());
          $Document->setAttribute('message',$this->__ErrorMessage);
          $Document->setAttribute('number',$this->__ErrorNumber);
          $Document->setAttribute('file',$this->__ErrorFile);
          $Document->setAttribute('line',$this->__ErrorLine);
 
-         // Fehlerseite ausgeben
-         return $Stacktrace->transform();
+         // create error page
+         return $stacktrace->transform();
 
        // end function
       }
@@ -183,7 +193,7 @@
       /**
       *  @private
       *
-      *  Erzeugt die ID der Fehlermeldung.<br />
+      *  Generates the error id.
       *
       *  @author Christian Schäfer
       *  @version

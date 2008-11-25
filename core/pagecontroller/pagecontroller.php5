@@ -91,7 +91,7 @@
 
 
    /**
-   *  @package core::pagecontroller
+   *  @namespace core::pagecontroller
    *
    *  Imports classes or modules from a given namespace. If the php5 support is enabled, files with
    *  the extension ".php5" are included. If no php5 file is present, the ".php" file is included
@@ -177,7 +177,7 @@
 
 
    /**
-   *  @package core::applicationmanager
+   *  @namespace core::applicationmanager
    *  @see http://php.net/print_r
    *
    *  Creates a print_r() output of the given object, array, string or integer.
@@ -220,7 +220,7 @@
 
 
    /**
-   *  @package core::pagecontroller
+   *  @namespace core::pagecontroller
    *  @class xmlParser
    *  @static
    *
@@ -462,7 +462,7 @@
 
 
    /**
-   *  @package core::pagecontroller
+   *  @namespace core::pagecontroller
    *  @class coreObject
    *  @abstract
    *
@@ -985,7 +985,7 @@
 
 
    /**
-   *  @package core::pagecontroller
+   *  @namespace core::pagecontroller
    *  @class TagLib
    *
    *  Repräsentiert eine Tag-Library.<br />
@@ -1040,7 +1040,7 @@
 
 
    /**
-   *  @package core::pagecontroller
+   *  @namespace core::pagecontroller
    *  @class Page
    *
    *  Repräsentiert eine Webseite. Bildet den root-Knoten derselben.<br />
@@ -1193,7 +1193,7 @@
 
 
    /**
-   *  @package core::pagecontroller
+   *  @namespace core::pagecontroller
    *  @class Document
    *
    *  Repräsentiert ein Dokument innerhalb einer HTML-Seite oder eines Dokuments.<br />
@@ -1741,7 +1741,7 @@
 
 
    /**
-   *  @package core::pagecontroller
+   *  @namespace core::pagecontroller
    *  @class core_taglib_importdesign
    *
    *  This class implements the functionality of the core::importdesign tag. It generates a sub node
@@ -1852,7 +1852,7 @@
 
 
    /**
-   *  @package core::pagecontroller
+   *  @namespace core::pagecontroller
    *  @class core_taglib_addtaglib
    *
    *  Represents the functionality of the core:addtaglib tag. Adds a further taglib to the known
@@ -1907,7 +1907,7 @@
 
 
    /**
-   *  @package core::pagecontroller
+   *  @namespace core::pagecontroller
    *  @class html_taglib_placeholder
    *
    *  Represents a place holder within a template file. Can be filled within a documen controller
@@ -1944,7 +1944,7 @@
 
 
    /**
-   *  @package core::pagecontroller
+   *  @namespace core::pagecontroller
    *  @class html_taglib_template
    *
    *  Represents a reusable html fragment (template) within a template file. The tag's functionality
@@ -2165,7 +2165,7 @@
 
 
    /**
-   *  @package core::pagecontroller
+   *  @namespace core::pagecontroller
    *  @class template_taglib_placeholder
    *
    *  Implements the place holder tag with in a html:template tag. The tag does not hav further children.
@@ -2201,7 +2201,7 @@
 
 
    /**
-   *  @package core::pagecontroller
+   *  @namespace core::pagecontroller
    *  @class template_taglib_addtaglib
    *
    *  Represents the core:addtaglib functionality for the html:template tag. Includes further
@@ -2223,7 +2223,7 @@
 
 
    /**
-   *  @package core::pagecontroller
+   *  @namespace core::pagecontroller
    *  @class baseController
    *  @abstract
    *
