@@ -1,6 +1,6 @@
 <?php
    /**
-   *  @package modules::calendar::data
+   *  @namespace modules::calendar::data
    *  @module calendarDataAdapter
    *
    *  Implementiert den Data-Service für den Kalender.<br />

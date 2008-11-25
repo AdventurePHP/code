@@ -1,9 +1,29 @@
 <?php
+   /**
+   *  <!--
+   *  This file is part of the adventure php framework (APF) published under
+   *  http://adventure-php-framework.org.
+   *
+   *  The APF is free software: you can redistribute it and/or modify
+   *  it under the terms of the GNU Lesser General Public License as published
+   *  by the Free Software Foundation, either version 3 of the License, or
+   *  (at your option) any later version.
+   *
+   *  The APF is distributed in the hope that it will be useful,
+   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  GNU Lesser General Public License for more details.
+   *
+   *  You should have received a copy of the GNU Lesser General Public License
+   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+   *  -->
+   */
+
    import('modules::genericormapper::data','GenericORMapper');
 
 
    /**
-   *  @package modules::genericormapper::data
+   *  @namespace modules::genericormapper::data
    *  @class GenericORRelationMapper
    *
    *  Implements the or data mapper, that handles objects and their relations .<br />
@@ -501,7 +521,7 @@
       *  Version 0.2, 18.05.2008 (Function completed)<br />
       *  Version 0.3, 15.06.2008 (Fixed bug that lead to wrong association saving)<br />
       *  Version 0.4, 15.06.2008 (Fixed bug that relation was not found due to twisted columns)<br />
-      *  Version 0.5, 26.10.2008 (Added a check for the object/relation to exist in the object/relation table)<br />
+      *  Version 0.5, 26.10.2008 (Added a check for the object/relation to exist in the objec>t/relation table)<br />
       */
       function saveObject($Object){
 

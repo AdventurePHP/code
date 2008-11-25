@@ -10,7 +10,7 @@
 
 
    /**
-   *  @package modules::calendar::pres
+   *  @namespace modules::calendar::pres
    *  @module calendar_v1_controller
    *
    *  Implementiert den DocumentController für das Stylesheet 'calendar.html'.<br />

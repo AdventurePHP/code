@@ -6,7 +6,7 @@
 
 
    /**
-   *  @package modules::pager::biz
+   *  @namespace modules::pager::biz
    *  @class pagerManagerFabric
    *
    *  Implementierung der Pager-Fabric.<br />
@@ -80,7 +80,7 @@
 
 
    /**
-   *  @package modules::pager::biz
+   *  @namespace modules::pager::biz
    *  @class pagerManager
    *
    *  Repräsentiert die Business-Schicht der Pagers. Implementiert den Pager im Frontcontroller-Stil.<br />

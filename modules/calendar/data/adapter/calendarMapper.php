@@ -4,7 +4,7 @@
 
 
    /**
-   *  @package modules::calender::data::adapter
+   *  @namespace modules::calender::data::adapter
    *  @module calendarMapper
    *
    *  Daten-Adapter für das Termin-Modul des CMS.<br />
