@@ -1,10 +1,30 @@
 <?php
    /**
+   *  <!--
+   *  This file is part of the adventure php framework (APF) published under
+   *  http://adventure-php-framework.org.
+   *
+   *  The APF is free software: you can redistribute it and/or modify
+   *  it under the terms of the GNU Lesser General Public License as published
+   *  by the Free Software Foundation, either version 3 of the License, or
+   *  (at your option) any later version.
+   *
+   *  The APF is distributed in the hope that it will be useful,
+   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  GNU Lesser General Public License for more details.
+   *
+   *  You should have received a copy of the GNU Lesser General Public License
+   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+   *  -->
+   */
+
+   /**
    *  @namespace tools::link
    *  @class linkHandler
    *  @static
    *
-   *  Stellt Methoden zur Link-Prüfung und URL-Bearbeitung bereit.<br />
+   *  Presents a method to generate and valudate urls.
    *
    *  @author Christian Achatz
    *  @version
@@ -12,7 +32,7 @@
    *  Version 0.2, 11.05.2005<br />
    *  Version 0.3, 27.06.2005<br />
    *  Version 0.4, 25.04.2006<br />
-   *  Version 0.5, 27.03.2007 (Veraltete Methoden bereinigt)<br />
+   *  Version 0.5, 27.03.2007 (Replaced deprecated code)<br />
    *  Version 0.6, 21.06.2008 (Introduced Registry)<br />
    */
    class linkHandler
@@ -70,14 +90,11 @@
           // end if
          }
 
-
          // Apmersands decodieren
          $URL = str_replace('&amp;','&',$URL);
 
-
          // URL zerlegen
          $ParsedURL = parse_url($URL);
-
 
          // Query-String zerlegen
          if(!isset($ParsedURL['query'])){
@@ -91,14 +108,12 @@
           // end if
          }
 
-
          // set URLRewrite
          if($URLRewriting === null){
             $Reg = &Singleton::getInstance('Registry');
             $URLRewriting = $Reg->retrieve('apf::core','URLRewriting');
           // end if
          }
-
 
          // URL je nach URL-Typ zerlegen
          if($URLRewriting == true){
@@ -158,10 +173,8 @@
           // end else
          }
 
-
          // Erzeugtes und übergebenes Parameter-Set zusammenführen (dadurch können Löschungen realisiert werden)
          $SplitParameters = array_merge($SplitParameters,$Parameter);
-
 
          // Query-String an Hand der gemergten Parameter erzeugen
          $Query = (string)'';
@@ -197,7 +210,6 @@
           // end function
          }
 
-
          // URL generieren
          $NewURL = (string)'';
 
@@ -225,7 +237,6 @@
           // end else
          }
 
-
          // Link URL-Rewriten, falls gewünscht
          if($URLRewriting == true){
 
@@ -245,7 +256,6 @@
 
           // end else
          }
-
 
          // Fertige URL zurückgeben
          return $FinishedURL;

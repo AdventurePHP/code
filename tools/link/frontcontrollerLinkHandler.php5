@@ -1,5 +1,24 @@
 <?php
-   import('core::singleton','Singleton');
+   /**
+   *  <!--
+   *  This file is part of the adventure php framework (APF) published under
+   *  http://adventure-php-framework.org.
+   *
+   *  The APF is free software: you can redistribute it and/or modify
+   *  it under the terms of the GNU Lesser General Public License as published
+   *  by the Free Software Foundation, either version 3 of the License, or
+   *  (at your option) any later version.
+   *
+   *  The APF is distributed in the hope that it will be useful,
+   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  GNU Lesser General Public License for more details.
+   *
+   *  You should have received a copy of the GNU Lesser General Public License
+   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+   *  -->
+   */
+
    import('core::frontcontroller','Frontcontroller');
 
 
@@ -7,7 +26,7 @@
    *  @namespace tools::link
    *  @class frontcontrollerLinkHandler
    *
-   *  Implementiert den linkHandler für den Gebrauch in Frontcontroller-Anwendungen neu.<br />
+   *  Implements the linkHandler for front controller purposes.
    *
    *  @author Christian Schäfer
    *  @version
@@ -79,7 +98,6 @@
           // end if
          }
 
-
          // URL-Keyword-Class-Trenner
          if($URLRewriting == true){
             $Config__KeywordClassDelimiter = $fC->get('URLRewritingKeywordClassDelimiter');
@@ -90,14 +108,11 @@
           // end else
          }
 
-
          // Standard Keyword-Klasse-Trenner definieren
          $Config__NormalKeywordClassDelimiter = $fC->get('KeywordClassDelimiter');
 
-
          // URL-Trenner für Actions im URL-Rewriting-Fall
          $Config__RewriteURLDelimiter = '/~/';
-
 
          // URL-Trenner für KEY und VALUE
          if($URLRewriting == true){
@@ -108,7 +123,6 @@
             $Config__KeyValueDelimiter = $fC->get('KeyValueDelimiter');
           // end else
          }
-
 
          // URL-Trenner zwischen verschiedenen KEY-VALUE-Paaren
          if($URLRewriting == true){
@@ -127,7 +141,6 @@
 
          // Offset generieren
          $Offset = str_replace('::','_',$ActionNamespace).$Config__NamespaceKeywordDelimiter.$Config__ActionKeyword.$Config__KeywordClassDelimiter.$ActionName;
-
 
          // Params
          $Params = array();
