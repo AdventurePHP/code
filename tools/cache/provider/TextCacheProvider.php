@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('core::filesystem','FilesystemManager');
+   import('tools::filesystem','FilesystemManager');
 
 
    /**
