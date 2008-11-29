@@ -55,6 +55,7 @@
       */
       function deleteFolder($folder,$recursive = false){
 
+         // clear stat cache to prevent interference with previous calls
          clearstatcache();
 
          if(!is_dir($folder)){
@@ -106,7 +107,7 @@
       *  @version
       *  Version 0.1, 21.11.2008<br />
       */
-      function createFolder($folder,$permissions = 066){
+      function createFolder($folder,$permissions = 666){
 
          // normalize folder structure
          $folder = str_replace('\\','/',$folder);
@@ -183,17 +184,21 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 20.11.2008<br />
+      *  Version 0.2, 29.11.2008 (Fixed bug, that non existing source was not indicated)<br />
       */
       function copyFile($sourceFile,$targetFile,$force = false){
 
-         $target = str_replace('\\','/',realpath($targetFile));
-
-         if(file_exists($target) && $force === false){
+         // create realpath from the source and target file
+         $source = str_replace('\\','/',realpath($sourceFile));
+         $target = str_replace('\\','/',$targetFile);
+         if(!file_exists($source)){
+            trigger_error('[FilesystemManager::copyFile()] The source file "'.$sourceFile.'" does not exist!',E_USER_NOTICE);
             return false;
           // end if
          }
-         else{
-            $source = str_replace('\\','/',realpath($sourceFile));
+
+         // copy source to target
+         if((file_exists($target) && $force === true) || !file_exists($target)){
 
             if(copy($source,$target)){
                return true;
@@ -204,6 +209,10 @@
              // end else
             }
 
+          // end if
+         }
+         else{
+            return false;
           // end else
          }
 
@@ -224,9 +233,20 @@
       *  @version
       *  Version 0.1, 20.11.2008<br />
       *  Version 0.2, 24.11.2008 (Bugfix: recursion on windows systems broken due to directory seperator problems)<br />
+      *  Version 0.3, 29.11.2008 (Added check, if the file to delete does exist)<br />
       */
       function removeFile($file){
-         return unlink(str_replace('\\','/',realpath($file)));
+
+         // check if file exists
+         $realFile = str_replace('\\','/',realpath($file));
+         if(!file_exists($realFile)){
+            trigger_error('[FilesystemManager::removeFile()] The file "'.$file.'" does not exist!',E_USER_NOTICE);
+            return false;
+          // end if
+         }
+
+         return unlink($realFile);
+
        // end function
       }
 
@@ -308,17 +328,21 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 20.11.2008<br />
+      *  Version 0.2, 29.11.2008 (Fixed bug, that non existing source was not indicated)<br />
       */
       function renameFile($sourceFile,$targetFile,$force = false){
 
-         $target = str_replace('\\','/',realpath($targetFile));
-
-         if(file_exists($target) && $force === false){
+         // create realpath from the source and target file
+         $source = str_replace('\\','/',realpath($sourceFile));
+         $target = str_replace('\\','/',$targetFile);
+         if(!file_exists($source)){
+            trigger_error('[FilesystemManager::renameFile()] The source file "'.$sourceFile.'" does not exist!',E_USER_NOTICE);
             return false;
           // end if
          }
-         else{
-            $source = str_replace('\\','/',realpath($sourceFile));
+
+         // copy source to target
+         if((file_exists($target) && $force === true) || !file_exists($target)){
 
             if(rename($source,$target)){
                return true;
@@ -329,19 +353,164 @@
              // end else
             }
 
+          // end if
+         }
+         else{
+            return false;
           // end else
          }
 
        // end function
       }
 
-      function isFileUnique($file){
+
+      /**
+      *  @public
+      *  @static
+      *
+      *  Returns a list of files/dirs within the given folder. If $fullpath is set to true, the
+      *  full path to the file/dir is included in the list. Set to false, only the file/dir name
+      *  is included.
+      *
+      *  @param string $folder the folder that should be read out
+      *  @param bool $fullpath false (list contains only file/dir names) | true (full path is returned)
+      *  @return array $files a list of files within the given folder
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.11.2008<br />
+      */
+      function getFolderContent($folder,$fullpath = false){
+
+         // check if folder exists
+         $realFolder = str_replace('\\','/',realpath($folder));
+         if(!file_exists($realFolder)){
+            trigger_error('[FilesystemManager::getFolderContent()] The given folder ("'.$folder.'") does not exist!');
+            return array();
+          // end if
+         }
+
+         // gather folder content
+         $folderContent = glob($realFolder.'/*');
+
+         if($fullpath === false){
+
+            $count = count($folderContent);
+
+            for($i = 0; $i < $count; $i++){
+               $folderContent[$i] = basename($folderContent[$i]);
+             // end for
+            }
+
+          // end if
+         }
+
+         return $folderContent;
+
+       // end function
       }
 
-      function showFolderContent($folder){
+
+      /**
+      *  @public
+      *  @static
+      *
+      *  Returns the attributes of the given file. If the file exists, additional attributes are
+      *  included. The associative array contains the following offsets:
+      *  <ul>
+      *    <li>extension: the file extentsion</li>
+      *    <li>filename: the name of the file without the folder path</li>
+      *    <li>folderpath: the folder path</li>
+      *    <li>filebody: the filename without extension</li>
+      *    <li>modificationdate: the modification date in the format "YYYY-MM-DD" (if file exists only)</li>
+      *    <li>modificationtime: the modification time in the format "HH:MM:SS" (if file exists only)</li>
+      *    <li>size: the file size in bytes(if file exists only)</li>
+      *  </ul>
+      *
+      *  @param string $file the desired file
+      *  @return array $files a list of files within the given folder
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.11.2008<br />
+      */
+      function getFileAttributes($file){
+
+         // clear the stat cache to avoid interference with previous calls
+         clearstatcache();
+
+         // check if folder exists
+         $realFile = str_replace('\\','/',realpath($file));
+         if(!file_exists($realFile)){
+            trigger_error('[FilesystemManager::getFileAttributes()] The given file ("'.$file.'") does not exist!');
+            return array();
+          // end if
+         }
+
+         // gather attributes
+         $fileInfo = pathinfo($realFile);
+         $attributes['extension'] = $fileInfo['extension'];
+         $attributes['filename'] = $fileInfo['basename'];
+         $attributes['folderpath'] = $fileInfo['dirname'];
+         $attributes['filebody'] = str_replace('.'.$attributes['extension'],'',$attributes['filename']);
+         $modTime = filemtime($file);
+         $attributes['modificationdate'] = date('Y-m-d',$modTime);
+         $attributes['modificationtime'] = date('H:i:s',$modTime);
+         $attributes['size'] = intval(filesize($file));
+
+         return $attributes;
+
+       // end function
       }
 
-      function showFileAttributes(){
+
+      /**
+      *  @public
+      *  @static
+      *
+      *  Returns the size of the given folder. The size includes all files and subfolders.
+      *
+      *  @param string $folder the desired folder
+      *  @return int $size the size of the given folder
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.11.2008<br />
+      */
+      function getFolderSize($folder){
+
+         // check if folder exists
+         $realFolder = str_replace('\\','/',realpath($folder));
+         if(!file_exists($realFolder)){
+            trigger_error('[FilesystemManager::getFolderSize()] The given folder ("'.$folder.'") does not exist!');
+            return (int)0;
+          // end if
+         }
+
+         // get content of the desired folder
+         $folderContent = FilesystemManager::getFolderContent($realFolder,true);
+         $size = (int)0;
+
+         // collect size recursively
+         $count = count($folderContent);
+         for($i = 0; $i < $count; $i++){
+
+            if(is_dir($folderContent[$i])){
+               $size = (int)FilesystemManager::getFolderSize($folderContent[$i]) + $size;
+             // end if
+            }
+            else{
+               $fileAttributes = FilesystemManager::getFileAttributes($folderContent[$i]);
+               $size = (int)$fileAttributes['size'] + $size;
+             // end else
+            }
+
+          // end for
+         }
+
+         return $size;
+
+       // end function
       }
 
     // end function
