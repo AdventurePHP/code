@@ -107,7 +107,7 @@
       *  @version
       *  Version 0.1, 21.11.2008<br />
       */
-      public static function createFolder($folder,$permissions = 666){
+      public static function createFolder($folder,$permissions = 660){
 
          // normalize folder structure
          $folder = str_replace('\\','/',$folder);
