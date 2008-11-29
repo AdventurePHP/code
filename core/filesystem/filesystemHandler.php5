@@ -26,6 +26,7 @@
    /**
    *  @namespace core::filesystem
    *  @class filesystemHandler
+   *  @deprecated
    *
    *  Encapsulates filesystem access methods.
    *
