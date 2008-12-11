@@ -20,7 +20,7 @@
    */
 
    /**
-   *  @namespace core::filter
+   *  @namespace core::filter::input
    *  @class AbstractRequestFilter
    *  @abstract
    *

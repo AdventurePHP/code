@@ -19,20 +19,20 @@
    *  -->
    */
 
-   import('core::filter','AbstractRequestFilter');
+   import('core::filter::input','AbstractRequestFilter');
 
 
    /**
-   *  @namespace core::filter
-   *  @class pagecontrollerRewriteRequestFilter
+   *  @namespace core::filter::input
+   *  @class PagecontrollerRewriteRequestFilter
    *
-   *  Implementiert den URL-Filter für den PageController im URL-Rewrite-Modus.<br />
+   *  Implements the URL filter for the page controller in rewrite url mode.
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 02.06.2007<br />
    */
-   class pagecontrollerRewriteRequestFilter extends AbstractRequestFilter
+   class PagecontrollerRewriteRequestFilter extends AbstractRequestFilter
    {
 
       /**
@@ -42,7 +42,7 @@
       var $__RewriteURLDelimiter = '/';
 
 
-      function pagecontrollerRewriteRequestFilter(){
+      function PagecontrollerRewriteRequestFilter(){
       }
 
 
@@ -60,10 +60,9 @@
       */
       function filter(){
 
-         // Timer starten
+         // invoke timer
          $T = &Singleton::getInstance('benchmarkTimer');
-         $T->start('pagecontrollerRewriteRequestFilter::filter()');
-
+         $T->start('PagecontrollerRewriteRequestFilter::filter()');
 
          // PHPSESSID aus $_REQUEST extrahieren, falls vorhanden
          $PHPSESSID = (string)'';
@@ -74,39 +73,31 @@
           // end if
          }
 
-
          // Query-String Filtern
          if(isset($_REQUEST['query']) && !empty($_REQUEST['query'])){
 
             // Query-String auslesen
             $Query = $_REQUEST['query'];
 
-
             // URL-Rewriting-Kenner löschen
             unset($_REQUEST['query']);
-
 
             // Bisheriges Request.Array sichern
             $RequestBackup = $_REQUEST;
 
-
             // Request-Array zurücksetzen
             $_REQUEST = array();
-
 
             // Request-URI in REQUEST-Array extrahieren
             $T->start('filterRewriteParameters()');
             $_REQUEST = $this->__createRequestArray($Query);
 
-
             // Request-Array aus Sicherung und neu generiertem Array wieder zusammensetzen
             $_REQUEST = array_merge($_REQUEST,$RequestBackup);
             $T->stop('filterRewriteParameters()');
 
-
             // Post-Parameter mit einbeziehen
             $_REQUEST = array_merge($_REQUEST,$_POST);
-
 
             // PHPSESSID in Request wieder einsetzen
             if(!empty($PHPSESSID)){
@@ -114,16 +105,14 @@
              // end if
             }
 
-
             // Request-Array filtern
             $this->__filterRequestArray();
 
           // end if
          }
 
-
-         // Timer stoppen
-         $T->stop('pagecontrollerRewriteRequestFilter::filter()');
+         // stop timer
+         $T->stop('PagecontrollerRewriteRequestFilter::filter()');
 
        // end function
       }

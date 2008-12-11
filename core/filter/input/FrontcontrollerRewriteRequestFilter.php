@@ -19,13 +19,13 @@
    *  -->
    */
 
-   import('core::filter','AbstractRequestFilter');
+   import('core::filter::input','AbstractRequestFilter');
    import('core::frontcontroller','Frontcontroller');
 
 
    /**
-   *  @namespace core::request
-   *  @class frontcontrollerRewriteRequestFilter
+   *  @namespace core::filter::input
+   *  @class FrontcontrollerRewriteRequestFilter
    *
    *  Implementiert den Request-URL-Filter für den Frontcontroller mit aktiviertem URL-Rewriting.<br />
    *
@@ -33,7 +33,7 @@
    *  @version
    *  Version 0.1, 03.06.2007<br />
    */
-   class frontcontrollerRewriteRequestFilter extends AbstractRequestFilter
+   class FrontcontrollerRewriteRequestFilter extends AbstractRequestFilter
    {
 
       /**
@@ -66,7 +66,7 @@
       *  @version
       *  Version 0.1, 03.06.2007<br />
       */
-      function frontcontrollerRewriteRequestFilter(){
+      function FrontcontrollerRewriteRequestFilter(){
          $fC = &Singleton::getInstance('Frontcontroller');
          $this->__FrontcontrollerActionKeyword = $fC->get('NamespaceKeywordDelimiter').$fC->get('ActionKeyword');
        // end function
@@ -91,11 +91,9 @@
          // Instanz des Frontcontrollers holen
          $fC = &Singleton::getInstance('Frontcontroller');
 
-
          // Timer starten
          $T = &Singleton::getInstance('benchmarkTimer');
-         $T->start('frontcontrollerRewriteRequestFilter::filter()');
-
+         $T->start('FrontcontrollerRewriteRequestFilter::filter()');
 
          // PHPSESSID aus $_REQUEST extrahieren, falls vorhanden
          $T->start('extractSessionValueFromRequest()');
@@ -109,15 +107,12 @@
 
          $T->stop('extractSessionValueFromRequest()');
 
-
          // Timer starten
          $T->start('filterRequestURI()');
-
 
          // Offset "query" aus $_REQUEST löschen, damit pagecontrollerRewriteRequestFilter nicht
          // mehr anspringt.
          unset($_REQUEST['query']);
-
 
          // Request-URI in Array extrahieren
          //
@@ -154,7 +149,6 @@
                      $ActionName = $RequestArray[1];
                      $ActionParams = array_slice($RequestArray,2);
 
-
                      // Action-Parameter-Array erzeugen
                      $ActionParamsArray = array();
 
@@ -177,7 +171,6 @@
 
                       // end if
                      }
-
 
                      // Action zum Frontcontroller hinzufügen
                      $fC->addAction($ActionNamespace,$ActionName,$ActionParamsArray);
@@ -219,10 +212,8 @@
          // Timer stoppen
          $T->stop('filterRequestURI()');
 
-
          // Post-Parameter mit einbeziehen
          $_REQUEST = array_merge($_REQUEST,$_POST);
-
 
          // PHPSESSID in Request wieder einsetzen
          $T->start('addSessionValueToRequest()');
@@ -237,8 +228,8 @@
          // Request-Array filtern
          $this->__filterRequestArray();
 
-         // Timer stoppen
-         $T->stop('frontcontrollerRewriteRequestFilter::filter()');
+         // stop timer
+         $T->stop('FrontcontrollerRewriteRequestFilter::filter()');
 
        // end function
       }

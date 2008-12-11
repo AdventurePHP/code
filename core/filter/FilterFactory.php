@@ -21,7 +21,7 @@
 
    /**
    *  @namespace core::filter
-   *  @class AbstractFilter
+   *  @class FilterDefinition
    *
    *  Represents the description of an APF filter.
    *
@@ -32,14 +32,32 @@
    class FilterDefinition extends coreObject
    {
 
+      /**
+      *  @private
+      *  The namespace of the filter class.
+      */
       var $__Namespace = null;
-      var $__Class = null;
-      var $__FilterInstruction = null;
 
-      function FilterDefinition($namespace,$class,$instruction){
+
+      /**
+      *  @private
+      *  The name of the filter class (and file name as well).
+      */
+      var $__Class = null;
+
+
+      /**
+      *  @public
+      *
+      *  Constructor of the filter description. Taks the namespace and the class as an argument.
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 08.12.2007<br />
+      */
+      function FilterDefinition($namespace,$class){
          $this->__Namespace = $namespace;
          $this->__Class = $class;
-         $this->__FilterInstruction = $instruction;
        // end function
       }
 
@@ -91,18 +109,19 @@
 
    /**
    *  @namespace core::filter
-   *  @class filterFactory
+   *  @class FilterFactory
    *
-   *  Implements a simple factory to load filter classes derived ftom the AbstractFilter class.
+   *  Implements a simple factory to load filter classes derived from the AbstractFilter class.
+   *  Each filter is described by the FilterDefinition class.
    *
    *  @author Christian Achatz
    *  @version
    *  Version 0.1, 08.06.2007<br />
    */
-   class filterFactory
+   class FilterFactory
    {
 
-      function filterFactory(){
+      function FilterFactory(){
       }
 
 
@@ -110,46 +129,40 @@
       *  @public
       *  @static
       *
-      *  Returns an instance of the desired filter .<br />
+      *  Returns an instance of the desired filter.<br />
       *
-      *  @param string $namespace the namespace of the filter
-      *  @param string $filterName the name of the filter
-      *  @return object $filterInstance the instance of the filter or null in case the filter class does not exist
+      *  @param FilterDefinition $filterDefinition the definition of the APF style filter
+      *  @return AbstractFilter $filterInstance the instance of the filter or null in case the filter class does not exist
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 08.06.2007<br />
       *  Version 0.2, 13.08.2008 (Removed unused code)<br />
       *  Version 0.3, 07.11.2008 (Bugfix: the namespace of filters outside "core::filter" could not be included)<br />
+      *  Version 0.4, 11.12.2008 (Switched to FilterDefinition for addressing a filter)<br />
       */
-      function getFilter($namespace,$filterName){
+      function getFilter($filterDefinition){
 
-         if(file_exists(APPS__PATH.'/'.str_replace('::','/',$namespace).'/'.$filterName.'.php')){
-            import($namespace,$filterName);
-            return new $filterName;
-          // end if
-         }
-         else{
-            trigger_error('[filterFactory::getFilter()] Requested filter "'.$filterName.'" cannot be loaded from namespace "'.$namespace.'"!',E_USER_ERROR);
+         // check definition
+         $defClassName = get_class($filterDefinition);
+         if($defClassName !== strtolower('FilterDefinition')){
+            trigger_error('[FilterFactory::getFilter()] The given filter definition (class name: "'.$defClassName.'") is not an instance of the "FilterDefinition" class!',E_USER_ERROR);
             return null;
-          // end else
+          // end if
          }
 
-       // end function
-      }
+         // gather the filter information
+         $namespace = $filterDefinition->get('Namespace');
+         $filterName = $filterDefinition->get('Class');
 
-
-      function getFilterByDefinition($def){
-
-         $namespace = $def->get('Namespace');
-         $filterName = $def->get('Class');
+         // check, if the filter exists and include it
          if(file_exists(APPS__PATH.'/'.str_replace('::','/',$namespace).'/'.$filterName.'.php')){
             import($namespace,$filterName);
             return new $filterName;
           // end if
          }
          else{
-            trigger_error('[filterFactory::getFilter()] Requested filter "'.$filterName.'" cannot be loaded from namespace "'.$namespace.'"!',E_USER_ERROR);
+            trigger_error('[FilterFactory::getFilter()] Requested filter "'.$filterName.'" cannot be loaded from namespace "'.$namespace.'"!',E_USER_ERROR);
             return null;
           // end else
          }

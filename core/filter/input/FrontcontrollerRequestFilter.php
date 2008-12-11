@@ -19,13 +19,13 @@
    *  -->
    */
 
-   import('core::filter','AbstractRequestFilter');
+   import('core::filter::input','AbstractRequestFilter');
    import('core::frontcontroller','Frontcontroller');
 
 
    /**
-   *  @namespace core::request
-   *  @class frontcontrollerRequestFilter
+   *  @namespace core::filter::input
+   *  @class FrontcontrollerRequestFilter
    *
    *  Implementiert den Request-URL-Filter für den Frontcontroller.<br />
    *
@@ -33,7 +33,7 @@
    *  @version
    *  Version 0.1, 03.06.2007<br />
    */
-   class frontcontrollerRequestFilter extends AbstractRequestFilter
+   class FrontcontrollerRequestFilter extends AbstractRequestFilter
    {
 
       /**
@@ -52,7 +52,7 @@
       *  @version
       *  Version 0.1, 03.06.2007<br />
       */
-      function frontcontrollerRequestFilter(){
+      function FrontcontrollerRequestFilter(){
          $fC = &Singleton::getInstance('Frontcontroller');
          $this->__FrontcontrollerActionKeyword = $fC->get('NamespaceKeywordDelimiter').$fC->get('ActionKeyword');
        // end function
@@ -75,7 +75,7 @@
 
          // Timer einbinden
          $T = &Singleton::getInstance('benchmarkTimer');
-         $T->start('frontcontrollerRequestFilter::filter()');
+         $T->start('FrontcontrollerRequestFilter::filter()');
 
          // Instanz des Frontcontrollers holen
          $fC = &Singleton::getInstance('Frontcontroller');
@@ -118,8 +118,6 @@
                // Action hinzufügen
                $fC->addAction($ActionNamespace,$ActionName,$InputParams);
 
-               //echo printObject($InputParams);
-
              // end if
             }
 
@@ -132,7 +130,7 @@
          $this->__filterRequestArray();
 
          // Timer stoppen
-         $T->stop('frontcontrollerRequestFilter::filter()');
+         $T->stop('FrontcontrollerRequestFilter::filter()');
 
        // end function
       }

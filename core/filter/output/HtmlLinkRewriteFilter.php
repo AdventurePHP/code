@@ -21,7 +21,7 @@
 
    /**
    *  @namespace core::filter
-   *  @class htmlLinkRewriteFilter
+   *  @class HtmlLinkRewriteFilter
    *
    *  Implementiert den URL-Rewriting-Filter für HTML-Quelltext.<br />
    *  Bei Links mit dem Attribut <code>linkrewrite="false"</code> wird der Link nicht rewritet.<br />
@@ -34,10 +34,10 @@
    *  Version 0.2, 08.05.2007 (Kapselung als Filter)<br />
    *  Version 0.3, 17.06.2007 (Um Action-Rewriting ergänzt)<br />
    */
-   class htmlLinkRewriteFilter extends AbstractFilter
+   class HtmlLinkRewriteFilter extends AbstractFilter
    {
 
-      function htmlLinkRewriteFilter(){
+      function HtmlLinkRewriteFilter(){
       }
 
 
@@ -46,31 +46,31 @@
       *
       *  Implementiert die Filer-Funktion für das Rewriten von HTML-Links und Actions.<br />
       *
-      *  @param string $HTMLContent; HTML-Quelltext
-      *  @return string $HTMLContent; Rewriteter HTML-Quelltext
+      *  @param string $content; HTML-Quelltext
+      *  @return string $content; Rewriteter HTML-Quelltext
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 05.05.2007 (Erste Version des generischen Link-Rewritings)<br />
       *  Version 0.2, 08.05.2007 (Kapselung als Filter)<br />
       */
-      function filter($HTMLContent){
+      function filter($content){
 
-         // Timer starten
+         // invoke timer
          $T = &Singleton::getInstance('benchmarkTimer');
-         $T->start('htmlLinkRewriteFilter::filter()');
+         $T->start('HtmlLinkRewriteFilter::filter()');
 
-         // Links filtern
-         $HTMLContent = $this->__filter($HTMLContent,'<a','>','href');
+         // filter links
+         $content = $this->__filter($content,'<a','>','href');
 
-         // Actions filtern
-         $HTMLContent = $this->__filter($HTMLContent,'<form','>','action');
+         // filter actions
+         $content = $this->__filter($content,'<form','>','action');
 
-         // Timer stoppen
-         $T->stop('htmlLinkRewriteFilter::filter()');
+         // stop timer
+         $T->stop('HtmlLinkRewriteFilter::filter()');
 
-         // Rewriteten HTMLContent zurückgeben
-         return $HTMLContent;
+         // return rewritten HTML code
+         return $content;
 
        // end function
       }
@@ -90,12 +90,14 @@
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 17.07.2007 (Auslagerung der Filter-Methode, damit sowohl Links als auch Actions gefiltert werden können)<br />
+      *  Version 0.2, 11.12.2008 (Made the benchmark ids more explicit)<br />
       */
       function __filter($HTMLContent,$StartToken = '<a',$EndToken = '>',$AttributeToken = 'href'){
 
-         // Timer starten
+         // start timer
          $T = &Singleton::getInstance('benchmarkTimer');
-         $T->start('htmlLinkRewriteFilter::__filter()');
+         $id = 'HtmlLinkRewriteFilter::__filter('.$AttributeToken.')';
+         $T->start($id);
 
          // Offset deklarieren
          $SearchOffset = 0;
@@ -155,7 +157,7 @@
          }
 
          // Timer stoppen
-         $T->stop('htmlLinkRewriteFilter::__filter()');
+         $T->stop($id);
 
          // Rewriteten HTMLContent zurückgeben
          return $HTMLContent;

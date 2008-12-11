@@ -19,37 +19,48 @@
    *  -->
    */
 
-   import('core::filter','AbstractRequestFilter');
+   import('core::filter::input','AbstractRequestFilter');
 
 
    /**
-   *  @namespace core::filter
-   *  @class standardRequestFilter
+   *  @namespace core::filter::input
+   *  @class StandardRequestFilter
    *
-   *  Implementiert den URL-Filter für den PageController ohne URL-Rewrite-Modus.<br />
+   *  Implements the URL filter for the page controller in standard mode.
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 02.06.2007<br />
    */
-   class standardRequestFilter extends AbstractRequestFilter
+   class StandardRequestFilter extends AbstractRequestFilter
    {
 
-      function standardRequestFilter(){
+      function StandardRequestFilter(){
       }
 
 
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Filter-Funktion aus "abstractRequestFilter".<br />
+      *  Checks the request array for malicious code.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 17.06.2007<br />
+      *  Version 0.2, 11.12.2008 (Added the benchmarker)<br />
       */
       function filter(){
+
+         // invoke timer
+         $T = &Singleton::getInstance('benchmarkTimer');
+         $T->start('StandardRequestFilter::filter()');
+
+         // filter input
          $this->__filterRequestArray();
+
+         // stop timer
+         $T->stop('StandardRequestFilter::filter()');
+
        // end function
       }
 
