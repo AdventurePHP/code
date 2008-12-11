@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('core::filter','abstractRequestFilter');
+   import('core::filter','AbstractRequestFilter');
 
 
    /**
@@ -32,7 +32,7 @@
    *  @version
    *  Version 0.1, 02.06.2007<br />
    */
-   class standardRequestFilter extends abstractRequestFilter
+   class standardRequestFilter extends AbstractRequestFilter
    {
 
       function standardRequestFilter(){

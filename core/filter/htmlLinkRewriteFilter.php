@@ -34,7 +34,7 @@
    *  Version 0.2, 08.05.2007 (Kapselung als Filter)<br />
    *  Version 0.3, 17.06.2007 (Um Action-Rewriting ergänzt)<br />
    */
-   class htmlLinkRewriteFilter extends abstractFilter
+   class htmlLinkRewriteFilter extends AbstractFilter
    {
 
       function htmlLinkRewriteFilter(){

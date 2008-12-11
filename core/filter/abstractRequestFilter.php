@@ -21,7 +21,7 @@
 
    /**
    *  @namespace core::filter
-   *  @class abstractRequestFilter
+   *  @class AbstractRequestFilter
    *  @abstract
    *
    *  Definiert abstrakten Request-Filter.<br />
@@ -29,12 +29,12 @@
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 03.06.2007<br />
-   *  Version 0.2, 08.06.2007 (Klasse erbt nun von "abstractFilter")<br />
+   *  Version 0.2, 08.06.2007 (Klasse erbt nun von "AbstractFilter")<br />
    */
-   class abstractRequestFilter extends abstractFilter
+   class AbstractRequestFilter extends AbstractFilter
    {
 
-      function abstractRequestFilter(){
+      function AbstractRequestFilter(){
       }
 
 

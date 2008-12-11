@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('core::filter','abstractRequestFilter');
+   import('core::filter','AbstractRequestFilter');
    import('core::frontcontroller','Frontcontroller');
 
 
@@ -33,7 +33,7 @@
    *  @version
    *  Version 0.1, 03.06.2007<br />
    */
-   class frontcontrollerRewriteRequestFilter extends abstractRequestFilter
+   class frontcontrollerRewriteRequestFilter extends AbstractRequestFilter
    {
 
       /**
