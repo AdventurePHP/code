@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -23,7 +23,7 @@
    *  @namespace tools::form::taglib
    *  @class form_taglib_text
    *
-   *  Repräsentiert ein Text-Feld-Objekt (HTML-Form).<br />
+   *  Represents a APF text field.
    *
    *  @author Christian Schäfer
    *  @version
@@ -40,7 +40,7 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "onAfterAppend".<br />
+      *  Executes presetting, validation and filtering.
       *
       *  @author Christian Schäfer
       *  @version
@@ -48,10 +48,13 @@
       */
       function onAfterAppend(){
 
-         // Inhalt übertragen
+         // Preset the content of the field
          $this->__presetValue();
 
-         // Validierung durchführen
+         // Execute filter, if desired
+         $this->__filter();
+
+         // Execute validation
          $this->__validate();
 
        // end function
@@ -61,7 +64,7 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "transform".<br />
+      *  Returns the HTML source code of the text field.
       *
       *  @return string $TextField HTML code of the text field
       *
@@ -71,10 +74,7 @@
       *  Version 0.2, 11.02.2007 (Presetting und Validierung nach onAfterAppend() verschoben)<br />
       */
       function transform(){
-
-         // HTML-Tag zurückgeben
          return  '<input type="text" '.$this->__getAttributesAsString($this->__Attributes,$this->__ExclusionArray).' />';
-
        // end function
       }
 

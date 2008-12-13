@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -23,7 +23,7 @@
    *  @namespace tools::form::taglib
    *  @class form_taglib_file
    *
-   *  Repräsentiert ein Datei-Feld-Objekt (HTML-Form).<br />
+   *  Represents the APF form file field.
    *
    *  @author Christian Schäfer
    *  @version
@@ -39,23 +39,23 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "onAfterAppend". Setzt das Attribute 'enctype' des Formulars.<br />
+      *  Executes the presetting and validation. Adds the "enctype" to the form.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 13.01.2007<br />
-      *  Version 0.2, 11.02.2007 (Presetting und Validierung nach onAfterAppend() verschoben)<br />
+      *  Version 0.2, 11.02.2007 (Moved presetting and Validierung to onAfterAppend())<br />
       */
       function onAfterAppend(){
 
-         // Sobald ein File-Feld in der Form enthalten ist muss das
-         // Attribut 'enctype' in der Form (ParentObject) gesetzt werden
+         // Add the "enctype" attribute to the parent object, so that the
+         // developer must not care about that!
          $this->__ParentObject->setAttribute('enctype','multipart/form-data');
 
-         // Inhalt übertragen
+         // Preset the content of the field
          $this->__presetValue();
 
-         // Validierung durchführen
+         // Execute validation
          $this->__validate();
 
        // end function
@@ -65,20 +65,17 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "transform".<br />
+      *  Returns the HTML code of the file selection field.
       *
-      *  @return string $FileField; HTML-Code des Datei-Felds
+      *  @return string $FileField HTML code of the file field
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 13.01.2007<br />
-      *  Version 0.2, 11.02.2007 (Presetting und Validierung nach onAfterAppend() verschoben)<br />
+      *  Version 0.2, 11.02.2007 (Moved presetting and Validierung to onAfterAppend())<br />
       */
       function transform(){
-
-         // HTML-Tag zurückgeben
          return  '<input type="file" '.$this->__getAttributesAsString($this->__Attributes,$this->__ExclusionArray).' />';
-
        // end function
       }
 

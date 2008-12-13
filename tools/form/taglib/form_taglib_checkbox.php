@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -23,7 +23,7 @@
    *  @namespace tools::form::taglib
    *  @class form_taglib_checkbox
    *
-   *  Repräsentiert ein Checkbox-Objekt (HTML-Form).<br />
+   *  Represents an APF form checkbox.
    *
    *  @author Christian Schäfer
    *  @version
@@ -39,21 +39,17 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "onParseTime". Setzt das Attribut 'checked', falls Checkbox im<br />
-      *  REQUEST-Array vorhanden ist.<br />
+      *  Sets the checked attribute, if the checkbox name exists in the request.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 13.01.2007<br />
       */
       function onParseTime(){
-
-         // Auf 'selected' setzen, wenn Request-Offset vorhanden ist
          if(isset($_REQUEST[$this->__Attributes['name']])){
             $this->__Attributes['checked'] = 'checked';
           // end if
          }
-
        // end function
       }
 
@@ -61,7 +57,7 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "onAfterAppend".<br />
+      *  Executes presetting and validation.
       *
       *  @author Christian Schäfer
       *  @version
@@ -69,10 +65,10 @@
       */
       function onAfterAppend(){
 
-         // Inhalt übertragen
+         // Preset the content of the field
          $this->__presetValue();
 
-         // Validierung durchführen
+         // Execute validation
          $this->__validate();
 
        // end function
@@ -82,20 +78,17 @@
       /**
       *  @public
       *
-      *  Transformiert ein Checkbox-Objekt.<br />
+      *  Returns the HTML code of the checkbox.
       *
-      *  @return string $Checkbox; HTML-Code der Checkbox
+      *  @return string $Checkbox the HTML code of the checkbox
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 13.01.2007<br />
-      *  Version 0.2, 11.02.2007 (Presetting und Validierung nach onAfterAppend() verschoben)<br />
+      *  Version 0.2, 11.02.2007 (Moved presetting and validation to the onAfterAppend() method)<br />
       */
       function transform(){
-
-         // Checkbox zurückgeben
          return '<input type="checkbox" '.$this->__getAttributesAsString($this->__Attributes,$this->__ExclusionArray).' />';
-
        // end function
       }
 

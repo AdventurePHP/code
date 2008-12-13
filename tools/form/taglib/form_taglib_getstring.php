@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -26,9 +26,9 @@
    *  @namespace tools::form::taglib
    *  @class form_taglib_getstring
    *
-   *  Implementiert die TagLib für den Tag "<form:getstring />".<br />
+   *  Implements the taglib for the "<form:getstring />" tag.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Achatz
    *  @version
    *  Version 0.1, 07.11.2007<br />
    */

@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -23,32 +23,32 @@
    *  @namespace tools::form::taglib
    *  @class form_taglib_date
    *
-   *  Repräsentiert ein Datums-Feld-Objekt (HTML-Form).<br />
-   *
-   *  VERHALTEN:<br />
-   *   - class gilt für alle 3 Selects<br />
-   *   - style kann nur für das erste Element gelten (wg. Abständ zu vorhergehenden Elementen!)<br />
-   *   - name wird für jedes eingesetzt, mit dem Zusatz "Tag", "Monat", "Jahr", oder die englischen Entsprechungen<br />
-   *   - WerteRange kann angegeben werden über z.B. yearrange="1998 - 2009"<br />
-   *   - muss ein interface haben, mit dem Attribute bzw. Werte (Array) gesetzt werden können<br />
+   *  Represents a APF form date control. Please remember the following things when using the control:
+   *  <ul>
+   *    <li>The "class" attribute is applied to all child elements.</li>
+   *    <li>The "style" attribute is only applied to the first element.</li>
+   *    <li>The value of the "name" attribute is suffixed with the day, month and year array offset indicator.</li>
+   *    <li>The range of the year can be defined as "1998 - 2009".</li>
+   *  </ul>
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 10.01.2007<br />
-   *  Version 0.2, 12.01.2007 (Umbenannt in "form_taglib_date")<br />
+   *  Version 0.2, 12.01.2007 (Renamed to "form_taglib_date")<br />
    */
    class form_taglib_date extends ui_element
    {
 
       /**
       *  @private
-      *  Start und Ende des Jahres-Ranges
+      *  Start and end of the year range.
       */
       var $__YearRange;
 
+
       /**
       *  @private
-      *  Namen der Offsets für Tag, Monat, Jahr
+      *  Names of the offsets for day, month and year.
       */
       var $__OffsetNames;
 
@@ -56,7 +56,7 @@
       /**
       *  @public
       *
-      *  Konstruktor der Klasse. Initialisiert die Member-Attribute.<br />
+      *  Initializes the member variables.
       *
       *  @author Christian Schäfer
       *  @version
@@ -64,10 +64,10 @@
       */
       function form_taglib_date(){
 
-         // Bezeichnungen für die Offsets setzen
+         // initialize the offset names
          $this->__OffsetNames = array('Day' => 'Day', 'Month' => 'Month', 'Year' => 'Year');
 
-         // Range für das Jahres-Feld setzen
+         // initialize the year range
          $this->__YearRange['Start'] = (int) date('Y') - 10;
          $this->__YearRange['End'] = (int) date('Y') + 10;
 
@@ -78,23 +78,16 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "onParseTime". Erzeugt die Kinder des Date-Fields.<br />
+      *  Creates the children select fields for the date control.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 10.01.2007<br />
-      *  Version 0.2, 26.08.2007 (Attribute "class" und "style" werden nun als optional erkannt)<br />
+      *  Version 0.2, 26.08.2007 (The "class" And "style" attributes are now optional)<br />
       */
       function onParseTime(){
 
-         // Attribute einlesen und zuordnen
-         if(isset($this->__Attributes['class'])){
-            $this->__CSSClass = $this->__Attributes['class'];
-          // end if
-         }
-
-
-         // Range für Jahres-Angabe einlesen
+         // read the range for the year select box
          if(isset($this->__Attributes['yearrange'])){
 
             $YearRange = split('-',$this->__Attributes['yearrange']);
@@ -108,8 +101,7 @@
           // end if
          }
 
-
-         // Offset-Werte setzen
+         // set offset values
          if(isset($this->__Attributes['offsetnames'])){
 
             $OffsetNames = split(';',$this->__Attributes['offsetnames']);
@@ -122,14 +114,12 @@
           // end if
          }
 
-
-         // 3 neue SelectFelder erzeugen
+         // create select boxes
          $Day = new form_taglib_select();
          $Month = new form_taglib_select();
          $Year = new form_taglib_select();
 
-
-         // Class Attribut setzen
+         // set classes
          if(isset($this->__Attributes['class'])){
             $Day->setAttribute('class',$this->__Attributes['class']);
             $Month->setAttribute('class',$this->__Attributes['class']);
@@ -137,14 +127,12 @@
           // end if
          }
 
-
-         // Name setzen
+         // set names
          $Day->setAttribute('name',$this->__Attributes['name'].'['.$this->__OffsetNames['Day'].']');
          $Month->setAttribute('name',$this->__Attributes['name'].'['.$this->__OffsetNames['Month'].']');
          $Year->setAttribute('name',$this->__Attributes['name'].'['.$this->__OffsetNames['Year'].']');
 
-
-         // Styles setzen
+         // set styles
          if(isset($this->__Attributes['style'])){
             $Day->setAttribute('style',$this->__Attributes['style'].' width: 40px;');
           // end if
@@ -157,7 +145,7 @@
          $Year->setAttribute('style','width: 55px;');
 
 
-         // Werte setzen (Day)
+         // set the valued for the day select box
          $CheckDayForPreset = false;
 
          if(isset($_REQUEST[$this->__Attributes['name']][$this->__OffsetNames['Day']])){
@@ -165,7 +153,6 @@
           // end if
          }
 
-         // Werte einsetzen
          for($i = 1; $i <= 31; $i++){
 
             if(strlen($i) < 2){
@@ -195,7 +182,7 @@
          }
 
 
-         // Werte setzen (Month)
+         // set the valued for the month select box
          $CheckMonthForPreset = false;
 
          if(isset($_REQUEST[$this->__Attributes['name']][$this->__OffsetNames['Month']])){
@@ -232,7 +219,7 @@
          }
 
 
-         // Werte setzen (Year)
+         // set the valued for the year select box
          $CheckYearForPreset = false;
 
          if(isset($_REQUEST[$this->__Attributes['name']][$this->__OffsetNames['Year']])){
@@ -268,14 +255,12 @@
           // end for
          }
 
-
-         // Vater bekanntmachen
+         // reference the father object
          $Day->setByReference('ParentObject',$this);
          $Month->setByReference('ParentObject',$this);
          $Year->setByReference('ParentObject',$this);
 
-
-         // Kinder bekanntmachen
+         // add the select boxes to the children list
          $this->__Children['Day'] = $Day;
          $this->__Children['Month'] = $Month;
          $this->__Children['Year'] = $Year;
@@ -287,9 +272,9 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "transform". Erzeugt das Date-Field.<br />
+      *  Returns the HTML code of the date control.
       *
-      *  @return string $Date; HTML-Code des Datums-Felds
+      *  @return string $date the HTML code of the date control
       *
       *  @author Christian Schäfer
       *  @version
@@ -297,14 +282,14 @@
       */
       function transform(){
 
-         $Buffer = (string)'';
+         $buffer = (string)'';
 
-         foreach($this->__Children as $ObjectID => $Child){
-            $Buffer .= $Child->transform();
+         foreach($this->__Children as $section => $DUMMY){
+            $buffer .= $this->__Children[$section]->transform();
           // end foreach
          }
 
-         return $Buffer;
+         return $buffer;
 
        // end function
       }

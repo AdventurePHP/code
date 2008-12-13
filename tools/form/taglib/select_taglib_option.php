@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -23,12 +23,12 @@
    *  @namespace tools::form::taglib
    *  @class select_taglib_option
    *
-   *  Repräsentiert die Option eines Select-Feld-Objekts (HTML-Form).<br />
+   *  Represents a select option of an APF select field.
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 07.01.2007<br />
-   *  Version 0.2, 12.01.2007 (Umbenannt in "select_taglib_option")<br />
+   *  Version 0.2, 12.01.2007 (Renamed to "select_taglib_option")<br />
    */
    class select_taglib_option extends ui_element
    {
@@ -40,16 +40,16 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "transform".<br />
+      *  Returns the HTML code of the option.
       *
-      *  @return string $SelectOption; HTML-Tag SelectOption
+      *  @return string $SelectOption the HTML source code
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 07.01.2007<br />
       */
       function transform(){
-         return  '<option '.$this->__getAttributesAsString($this->__Attributes).'>'.$this->__Content.'</option>';
+         return '<option '.$this->__getAttributesAsString($this->__Attributes).'>'.$this->__Content.'</option>';
        // end function
       }
 

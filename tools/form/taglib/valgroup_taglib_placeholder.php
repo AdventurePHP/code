@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -23,11 +23,11 @@
    *  @namespace tools::form::taglib
    *  @class valgroup_taglib_placeholder
    *
-   *  Repräsentiert ein Platzhalter-Objekt in einer Validator-Gruppe.<br />
+   *  Represents a place holder within a validator group.
    *
    *  @author Christian Schäfer
    *  @version
-   *  Version 0.1, 28.03.2007 (Platzhalter für Validator-Gruppen eingeführt)<br />
+   *  Version 0.1, 28.03.2007<br />
    */
    class valgroup_taglib_placeholder extends ui_element
    {

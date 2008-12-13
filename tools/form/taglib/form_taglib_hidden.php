@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -23,7 +23,7 @@
    *  @namespace tools::form::taglib
    *  @class form_taglib_hidden
    *
-   *  Repräsentiert ein Hidden-Form-Objekt (HTML-Form).<br />
+   *  Represents a HTML hidden field within the APF form tags.
    *
    *  @author Christian Schäfer
    *  @version
@@ -39,9 +39,9 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "transform".<br />
+      *  Returns the HTML code of the hidden field.
       *
-      *  @return string $HiddenField; HTML-Code des Hidden-Felds
+      *  @return string $HiddenField the HTML code of the hidden field
       *
       *  @author Christian Schäfer
       *  @version

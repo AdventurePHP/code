@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -23,12 +23,12 @@
    *  @namespace tools::form::taglib
    *  @class form_taglib_placeholder
    *
-   *  Repräsentiert ein Platzhalter-Objekt in einer HTML-Form.<br />
+   *  Represents a APF form place holder.
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 05.01.2007<br />
-   *  Version 0.2, 12.01.2006 (Umbenannt in "form_taglib_placeholder")<br />
+   *  Version 0.2, 12.01.2006 (Renamed to "form_taglib_placeholder")<br />
    */
    class form_taglib_placeholder extends ui_element
    {

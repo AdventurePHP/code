@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -26,7 +26,7 @@
    *  @namespace tools::form::taglib
    *  @class form_taglib_validate
    *
-   *  Repräsentiert ein konkretes Validate-Objekt (HTML-Form).<br />
+   *  Represents a validate object.
    *
    *  @author Christian Schäfer
    *  @version

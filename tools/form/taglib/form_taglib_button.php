@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -23,12 +23,12 @@
    *  @namespace tools::form::taglib
    *  @class form_taglib_button
    *
-   *  Repräsentiert ein Button-Feld-Objekt (HTML-Form).<br />
+   *  Represents an APF form button.
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 05.01.2007<br />
-   *  Version 0.2, 14.04.2007 (Methode "onAfterAppend" hinzugefügt)<br />
+   *  Version 0.2, 14.04.2007 (Added the onAfterAppend() method)<br />
    */
    class form_taglib_button extends ui_element
    {
@@ -41,8 +41,7 @@
       *  @public
       *  @since 0.2
       *
-      *  Implementiert die abstrakte Methode "onAfterAppend". Zeigt dem Formular an, dass<br />
-      *  der Button geklickt wurde.<br />
+      *  Indicates, if the form was sent.
       *
       *  @author Christian Schäfer
       *  @version
@@ -67,9 +66,9 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "transform".<br />
+      *  Returns the HTML code of the button.
       *
-      *  @return string $Button; HTML-Code des Buttons
+      *  @return string $Button the HTML code of the button
       *
       *  @author Christian Schäfer
       *  @version
