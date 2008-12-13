@@ -21,8 +21,8 @@
 
    // setup the front controller input filter and disable the page controller filter
    $reg = &Singleton::getInstance('Registry');
-   $reg->register('apf::core','FrontControllerInputFilter',new FilterDefinition('core::filter','FrontControllerInputFilter'));
-   $reg->register('apf::core','PageControllerInputFilter',null);
+   $reg->register('apf::core::filter','FrontControllerInputFilter',new FilterDefinition('core::filter','FrontControllerInputFilter'));
+   $reg->register('apf::core::filter','PageControllerInputFilter',null);
 
 
    /**
@@ -335,15 +335,21 @@
          }
 
          // apply front controller input filter
-         $filterDef = $reg->retrieve('apf::core','FrontControllerInputFilter');
-         $inputFilter = FilterFactory::getFilter($filterDef);
+         $filterDef = $reg->retrieve('apf::core::filter','FrontControllerInputFilter');
 
-         if($URLRewriting == true){
-            $inputFilter->filter('URLRewriting',null);
-          // end if
-         }
-         else{
-            $inputFilter->filter('Normal',null);
+         if($filterDef !== null){
+
+            $inputFilter = FilterFactory::getFilter($filterDef);
+
+            if($URLRewriting == true){
+               $inputFilter->filter('URLRewriting',null);
+             // end if
+            }
+            else{
+               $inputFilter->filter('Normal',null);
+             // end if
+            }
+
           // end if
          }
 

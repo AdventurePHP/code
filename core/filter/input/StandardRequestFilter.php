@@ -48,19 +48,10 @@
       *  @version
       *  Version 0.1, 17.06.2007<br />
       *  Version 0.2, 11.12.2008 (Added the benchmarker)<br />
+      *  Version 0.3, 13.12.2008 (Removed the benchmarker)<br />
       */
       function filter(){
-
-         // invoke timer
-         $T = &Singleton::getInstance('benchmarkTimer');
-         $T->start('StandardRequestFilter::filter()');
-
-         // filter input
          $this->__filterRequestArray();
-
-         // stop timer
-         $T->stop('StandardRequestFilter::filter()');
-
        // end function
       }
 

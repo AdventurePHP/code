@@ -37,7 +37,7 @@
 
       /**
       *  @private
-      *  Definiert das URL-Rewriting URL-Trennzeichen.
+      *  Defines the URL rewrite param-to-value delimiter.
       */
       var $__RewriteURLDelimiter = '/';
 
@@ -49,70 +49,65 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Filter-Funktion aus "abstractRequestFilter".<br />
+      *  Implements the rewrite url input filter for the page controller.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 02.06.2007<br />
-      *  Version 0.2, 08.06.2007 (In "filter()" umbenannt)<br />
-      *  Version 0.3, 16.06.2007 (URL-Rewriting geändert, so dass ein Mix aus Rewrite-URLs und klassichen URLs möglich ist)<br />
-      *  Version 0.4, 29.09.2007 (Filter springt nur dann an, wenn $_REQUEST['query'] gesetzt ist)<br />
+      *  Version 0.2, 08.06.2007 (Renamed to "filter()")<br />
+      *  Version 0.3, 16.06.2007 (Changed URL rewriting behavior, so that mixed param sets are allowed)<br />
+      *  Version 0.4, 29.09.2007 (Filtr is only active, if the $_REQUEST['query'] is set)<br />
+      *  Version 0.5, 12.12.2008 (Rewrited some code, added documentation in englisch)<br />
+      *  Version 0.6, 13.12.2008 (Removed the benchmarker)<br />
       */
       function filter(){
 
-         // invoke timer
-         $T = &Singleton::getInstance('benchmarkTimer');
-         $T->start('PagecontrollerRewriteRequestFilter::filter()');
-
-         // PHPSESSID aus $_REQUEST extrahieren, falls vorhanden
+         // backup PHPSESSID if applicable
          $PHPSESSID = (string)'';
-         $SessionName = ini_get('session.name');
+         $sessionName = ini_get('session.name');
 
-         if(isset($_REQUEST[$SessionName])){
-            $PHPSESSID = $_REQUEST[$SessionName];
+         if(isset($_REQUEST[$sessionName])){
+            $PHPSESSID = $_REQUEST[$sessionName];
           // end if
          }
 
-         // Query-String Filtern
+         // filter query
          if(isset($_REQUEST['query']) && !empty($_REQUEST['query'])){
 
-            // Query-String auslesen
-            $Query = $_REQUEST['query'];
+            // read the query string presented to the
+            // bootstrap file by apache's mod_rewrite
+            $query = $_REQUEST['query'];
 
-            // URL-Rewriting-Kenner löschen
+            // delete the rewite param indicator
             unset($_REQUEST['query']);
 
-            // Bisheriges Request.Array sichern
-            $RequestBackup = $_REQUEST;
+            // backup the request array
+            $requestBackup = $_REQUEST;
 
-            // Request-Array zurücksetzen
+            // reset the request array
             $_REQUEST = array();
 
-            // Request-URI in REQUEST-Array extrahieren
-            $T->start('filterRewriteParameters()');
-            $_REQUEST = $this->__createRequestArray($Query);
+            // recreate the request array using the uri informations within the query param
+            $_REQUEST = $this->__createRequestArray($query);
 
-            // Request-Array aus Sicherung und neu generiertem Array wieder zusammensetzen
-            $_REQUEST = array_merge($_REQUEST,$RequestBackup);
-            $T->stop('filterRewriteParameters()');
+            // merge backup into the request array
+            $_REQUEST = array_merge($_REQUEST,$requestBackup);
+            unset($requestBackup);
 
-            // Post-Parameter mit einbeziehen
+            // merge port params into the request again
             $_REQUEST = array_merge($_REQUEST,$_POST);
 
-            // PHPSESSID in Request wieder einsetzen
+            // reinsert the PHPSESSID value into the request array
             if(!empty($PHPSESSID)){
-               $_REQUEST[$SessionName] = $PHPSESSID;
+               $_REQUEST[$sessionName] = $PHPSESSID;
              // end if
             }
 
-            // Request-Array filtern
+            // filter request array
             $this->__filterRequestArray();
 
           // end if
          }
-
-         // stop timer
-         $T->stop('PagecontrollerRewriteRequestFilter::filter()');
 
        // end function
       }

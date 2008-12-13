@@ -24,12 +24,12 @@
    *  @class AbstractRequestFilter
    *  @abstract
    *
-   *  Definiert abstrakten Request-Filter.<br />
+   *  Implements some basic filter methods used by the derived classes.
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 03.06.2007<br />
-   *  Version 0.2, 08.06.2007 (Klasse erbt nun von "AbstractFilter")<br />
+   *  Version 0.2, 08.06.2007 (Now inherits from the abstract filter definition class)<br />
    */
    class AbstractRequestFilter extends AbstractFilter
    {
@@ -41,10 +41,10 @@
       /**
       *  @private
       *
-      *  Behandlung des Interface-Funktion für konkrete Request-Filter.<br />
+      *  Creates a request array out of a slash-separated url string.
       *
-      *  @param string $URLString; URL-String
-      *  @return array $ReturnArray; Array der URL-Parameter
+      *  @param string $URLString URL string
+      *  @return array $ReturnArray list of URL params with their corresponding valued
       *
       *  @author Christian Schäfer
       *  @version
@@ -52,35 +52,33 @@
       */
       function __createRequestArray($URLString){
 
-         // Slashed am Anfang entfernen
+         // remove slashes at the beginning
          $URLString = $this->__deleteTrailingSlash($URLString);
 
-         // Request-Array erzeugen
-         $RequestArray = explode($this->__RewriteURLDelimiter,strip_tags($URLString));
+         // create first version of the array
+         $requestArray = explode($this->__RewriteURLDelimiter,strip_tags($URLString));
 
-         // Rückgabe-Array initialisieren
-         $ReturnArray = array();
-
-         // Offset-Zähler setzen
+         // initialize some vars
+         $returnArray = array();
          $x = 0;
 
-         // RequestArray durchiterieren und auf dem Offset x den Key und auf Offset x+1
-         // die Value aus der Request-URI extrahieren
-         while($x <= (count($RequestArray) - 1)){
 
-            if(isset($RequestArray[$x + 1])){
-               $ReturnArray[$RequestArray[$x]] = $RequestArray[$x + 1];
+         // walk throug the new request array and combine the key (offset x) and
+         // the value (offset x + 1)
+         while($x <= (count($requestArray) - 1)){
+
+            if(isset($requestArray[$x + 1])){
+               $returnArray[$requestArray[$x]] = $requestArray[$x + 1];
              // end if
             }
 
-            // Offset-Zähler um 2 erhöhen
+            // increment offset with two, because the next offset is the key
             $x = $x + 2;
 
           // end while
          }
 
-         // Array zurückgeben
-         return $ReturnArray;
+         return $returnArray;
 
        // end function
       }
@@ -89,10 +87,10 @@
       /**
       *  @private
       *
-      *  Eliminiert führende Slashed in URL-Strings.<br />
+      *  Removes trailing slashes from URL strings.
       *
-      *  @param string $URLString; URL-String
-      *  @return string $URLString; URL-String ohne führenden Slash
+      *  @param string $URLString URL string
+      *  @return string $URLString URL string without trailing slashes
       *
       *  @author Christian Schäfer
       *  @version
@@ -100,13 +98,11 @@
       */
       function __deleteTrailingSlash($URLString){
 
-         // Prüfen, ob "trailing slash" vorhanden
          if(substr($URLString,0,1) == $this->__RewriteURLDelimiter){
             $URLString = substr($URLString,1);
           // end if
          }
 
-         // URL-String zurückgeben
          return $URLString;
 
        // end function
@@ -116,23 +112,22 @@
       /**
       *  @private
       *
-      *  Filtert das Request-Array, entfernt Escape-Sequenzen und ersetzt Sonderzeichen mit Ihren<br />
-      *  HTML-Entsprechung, damit z.B. Formularfelder nicht falsch angezeigt werden.<br />
+      *  Filters the request array. Removed escape sequences and replaces special characters with
+      *  their HTML entities to ensure, that form content is displayed correctly.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 17.06.2007<br />
-      *  Version 0.2, 26.08.2007 (Arrays werden nun sauber behandelt)<br />
+      *  Version 0.2, 26.08.2007 (Added array handling)<br />
       */
       function __filterRequestArray(){
 
-         // Wert für 'magic_quotes_gpc' auslesen
+         // get the current 'magic_quotes_gpc' config value
          $MagicQuotesGPC = ini_get('magic_quotes_gpc');
 
-         // Request-Array filtern
          foreach($_REQUEST as $Key => $Value){
 
-            // Zuvor hinzugefügte Slashes removen und decoden
+            // remove slashes added before, if 'magic_quotes_gpc' is active
             if(!is_array($Value)){
 
                if($MagicQuotesGPC == '1'){

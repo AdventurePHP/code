@@ -20,7 +20,7 @@
    */
 
    /**
-   *  @namespace core::filter
+   *  @namespace core::filter::output
    *  @class HtmlLinkRewriteFilter
    *
    *  Implementiert den URL-Rewriting-Filter für HTML-Quelltext.<br />
@@ -57,8 +57,8 @@
       function filter($content){
 
          // invoke timer
-         $T = &Singleton::getInstance('benchmarkTimer');
-         $T->start('HtmlLinkRewriteFilter::filter()');
+         $t = &Singleton::getInstance('benchmarkTimer');
+         $t->start('GenericOutputFilter::filter()');
 
          // filter links
          $content = $this->__filter($content,'<a','>','href');
@@ -67,7 +67,7 @@
          $content = $this->__filter($content,'<form','>','action');
 
          // stop timer
-         $T->stop('HtmlLinkRewriteFilter::filter()');
+         $t->stop('GenericOutputFilter::filter()');
 
          // return rewritten HTML code
          return $content;
@@ -79,7 +79,7 @@
       /**
       *  @private
       *
-      *  Implementiert eine generische Filter-Methode.<br />
+      *  Generic filter method, that can filter various HTML tags/attributes.
       *
       *  @param string $HTMLContent; HTML-Quelltext
       *  @param string $StartToken; Start-Token für die Suche im Quelltext
@@ -91,13 +91,9 @@
       *  @version
       *  Version 0.1, 17.07.2007 (Auslagerung der Filter-Methode, damit sowohl Links als auch Actions gefiltert werden können)<br />
       *  Version 0.2, 11.12.2008 (Made the benchmark ids more explicit)<br />
+      *  Version 0.3, 13.12.2008 (Removed the benchmarker)<br />
       */
       function __filter($HTMLContent,$StartToken = '<a',$EndToken = '>',$AttributeToken = 'href'){
-
-         // start timer
-         $T = &Singleton::getInstance('benchmarkTimer');
-         $id = 'HtmlLinkRewriteFilter::__filter('.$AttributeToken.')';
-         $T->start($id);
 
          // Offset deklarieren
          $SearchOffset = 0;
@@ -155,9 +151,6 @@
 
           // end while
          }
-
-         // Timer stoppen
-         $T->stop($id);
 
          // Rewriteten HTMLContent zurückgeben
          return $HTMLContent;

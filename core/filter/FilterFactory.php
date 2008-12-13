@@ -96,7 +96,7 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 08.06.2007<br />
-      *  Version 0.2, 08.12.2008 (Added the $filterType argument)<br />
+      *  Version 0.2, 08.12.2008 (Added the $filterInstruction argument)<br />
       */
       function filter($filterInstruction,$input = null){
          return $input;

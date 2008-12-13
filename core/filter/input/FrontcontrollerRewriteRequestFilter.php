@@ -20,14 +20,13 @@
    */
 
    import('core::filter::input','AbstractRequestFilter');
-   import('core::frontcontroller','Frontcontroller');
 
 
    /**
    *  @namespace core::filter::input
    *  @class FrontcontrollerRewriteRequestFilter
    *
-   *  Implementiert den Request-URL-Filter für den Frontcontroller mit aktiviertem URL-Rewriting.<br />
+   *  Input filter for the front controller in combination with rewritten URLs.
    *
    *  @author Christian Schäfer
    *  @version
@@ -38,65 +37,51 @@
 
       /**
       *  @private
-      *  Definiert das URL-Rewriting URL-Trennzeichen.
+      *  Defines the global URL rewriting delimiter.
       */
       var $__RewriteURLDelimiter = '/';
 
 
       /**
       *  @private
-      *  Trennzeichen zwischen Parameter- und Action-Strings.
+      *  Delimiter between params and action strings.
       */
       var $__ActionDelimiter = '/~/';
 
 
       /**
       *  @private
-      *  Action-Keyword.
+      *  Defines the action keyword.
       */
       var $__FrontcontrollerActionKeyword;
 
 
-      /**
-      *  @public
-      *
-      *  Konstruktor der Klasse.<br />
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 03.06.2007<br />
-      */
       function FrontcontrollerRewriteRequestFilter(){
-         $fC = &Singleton::getInstance('Frontcontroller');
-         $this->__FrontcontrollerActionKeyword = $fC->get('NamespaceKeywordDelimiter').$fC->get('ActionKeyword');
-       // end function
       }
 
 
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Filter-Funktion aus "abstractRequestFilter".<br />
+      *  Filters a rewritten url for the front controller. Apply action definitions to the front
+      *  controller to be executed.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 02.06.2007<br />
-      *  Version 0.2, 08.06.2007 (In "filter()" umbenannt)<br />
-      *  Version 0.3, 17.06.2007 (Stripslashes- und Htmlentities-Filter hinzugefügt)<br />
-      *  Version 0.4, 08.09.2007 (Es wird nun auch abgefragt, ob sich nur das ActionKeyword in der URL befindet (Fall: nur eine Action, ohne ActionDelimiter)<br />
-      *  Version 0.5, 29.09.2007 (Filter löscht nun $_REQUEST['query'])<br />
+      *  Version 0.2, 08.06.2007 (Renamed to "filter()")<br />
+      *  Version 0.3, 17.06.2007 (Added stripslashes and htmlentities filter)<br />
+      *  Version 0.4, 08.09.2007 (Now, the existance of the action keyword indicates, that an action is included. Before, only the action keyword in combination with the action delimiter was used as an action indicator)<br />
+      *  Version 0.5, 29.09.2007 (Now, $_REQUEST['query'] is cleared)<br />
+      *  Version 0.6, 13.12.2008 (Removed the benchmarker)<br />
       */
       function filter(){
 
-         // Instanz des Frontcontrollers holen
+         // get the front controller and initialize the action keyword
          $fC = &Singleton::getInstance('Frontcontroller');
+         $this->__FrontcontrollerActionKeyword = $fC->get('NamespaceKeywordDelimiter').$fC->get('ActionKeyword');
 
-         // Timer starten
-         $T = &Singleton::getInstance('benchmarkTimer');
-         $T->start('FrontcontrollerRewriteRequestFilter::filter()');
-
-         // PHPSESSID aus $_REQUEST extrahieren, falls vorhanden
-         $T->start('extractSessionValueFromRequest()');
+         // extracte the PHPSESSID from $_REQUEST if existent
          $PHPSESSID = (string)'';
          $SessionName = ini_get('session.name');
 
@@ -105,13 +90,7 @@
           // end if
          }
 
-         $T->stop('extractSessionValueFromRequest()');
-
-         // Timer starten
-         $T->start('filterRequestURI()');
-
-         // Offset "query" aus $_REQUEST löschen, damit pagecontrollerRewriteRequestFilter nicht
-         // mehr anspringt.
+         // delete the rewite param indicator
          unset($_REQUEST['query']);
 
          // Request-URI in Array extrahieren
@@ -134,10 +113,6 @@
 
                // Frontcontroller-Action enthalten
                if(substr_count($RequestURLParts[$i],$this->__FrontcontrollerActionKeyword) > 0){
-
-                  // Timer starten
-                  $T->start('filterFrontcontrollerAction('.$i.')');
-
 
                   // String zerlegen
                   $RequestArray = explode($this->__RewriteURLDelimiter,$RequestURLParts[$i]);
@@ -178,17 +153,12 @@
                    // end if
                   }
 
-                  // Timer stoppen
-                  $T->stop('filterFrontcontrollerAction('.$i.')');
-
                 // end if
                }
                else{
 
-                  $T->start('filterRewriteParameters('.$i.')');
                   $ParamArray = $this->__createRequestArray($RequestURLParts[$i]);
                   $_REQUEST = array_merge($_REQUEST,$ParamArray);
-                  $T->stop('filterRewriteParameters('.$i.')');
 
                 // end else
                }
@@ -201,35 +171,23 @@
          else{
 
             // Standard-Rewrite wie PageController URL-Rewriting
-            $T->start('filterRewriteParameters()');
             $ParamArray = $this->__createRequestArray($_SERVER['REQUEST_URI']);
             $_REQUEST = array_merge($_REQUEST,$ParamArray);
-            $T->stop('filterRewriteParameters()');
 
           // end if
          }
 
-         // Timer stoppen
-         $T->stop('filterRequestURI()');
-
-         // Post-Parameter mit einbeziehen
+         // readd POST params
          $_REQUEST = array_merge($_REQUEST,$_POST);
 
-         // PHPSESSID in Request wieder einsetzen
-         $T->start('addSessionValueToRequest()');
-
+         // add PHPSESSID to the request again
          if(!empty($PHPSESSID)){
             $_REQUEST[$SessionName] = $PHPSESSID;
           // end if
          }
 
-         $T->stop('addSessionValueToRequest()');
-
-         // Request-Array filtern
+         // filter request array
          $this->__filterRequestArray();
-
-         // stop timer
-         $T->stop('FrontcontrollerRewriteRequestFilter::filter()');
 
        // end function
       }

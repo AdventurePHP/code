@@ -49,8 +49,13 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.12.2008<br />
+      *  Version 0.2, 13.12.2008 (Added the benchmarker)<br />
       */
       function filter($instruction,$content){
+
+         // invoke timer
+         $t = &Singleton::getInstance('benchmarkTimer');
+         $t->start('PageControllerInputFilter::filter()');
 
          // setup filter
          if($instruction === 'URLRewriting'){
@@ -66,6 +71,9 @@
 
          // apply filter
          $filter->filter();
+
+         // stop timer
+         $t->stop('PageControllerInputFilter::filter()');
 
        // end function
       }

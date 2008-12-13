@@ -33,6 +33,12 @@
    *                       to adress files with in the lib path directly (e.g. images or other ressources)
    *  - CurrentRequestURL: the fully qualified request url
    *
+   *  Further, the built-in input and output filters are initialized. For this reason, the following
+   *  registry entries are created within the "apf::core::filter" namespace:
+   *
+   *  - PageControllerInputFilter:
+   *  - OutputFilter             :
+   *
    *  The file also contains the pagecontroller core implementation with the classes Page,
    *  Document, TagLib, coreObject, xmlParser and baseController (the basic MVC document controller).
    *
@@ -112,8 +118,8 @@
 
 
    // set up the input and output filter
-   $reg->register('apf::core','PageControllerInputFilter',new FilterDefinition('core::filter','PageControllerInputFilter'));
-   $reg->register('apf::core','OutputFilter',new FilterDefinition('core::filter','GenericOutputFilter'));
+   $reg->register('apf::core::filter','PageControllerInputFilter',new FilterDefinition('core::filter','PageControllerInputFilter'));
+   $reg->register('apf::core::filter','OutputFilter',new FilterDefinition('core::filter','GenericOutputFilter'));
 
 
    /**
@@ -1121,7 +1127,7 @@
          $this->__ObjectID = xmlParser::generateUniqID();
 
          // apply input filter if desired (e.g. front controller is not used)
-         $filterDef = $reg->retrieve('apf::core','PageControllerInputFilter');
+         $filterDef = $reg->retrieve('apf::core::filter','PageControllerInputFilter');
 
          if($filterDef !== null){
 
@@ -1205,18 +1211,24 @@
 
          // apply output filter if desired
          $reg = &Singleton::getInstance('Registry');
-         $URLRewriting = $reg->retrieve('apf::core','URLRewriting');
-         $filterDef = $reg->retrieve('apf::core','OutputFilter');
-         $outputFilter = FilterFactory::getFilter($filterDef);
+         $filterDef = $reg->retrieve('apf::core::filter','OutputFilter');
 
-         if($outputFilter !== null){
+         if($filterDef !== null){
 
-            if($URLRewriting == true){
-               $content = $outputFilter->filter('URLRewriting',$content);
-             // end if
-            }
-            else{
-               $content = $outputFilter->filter('Normal',$content);
+            $outputFilter = FilterFactory::getFilter($filterDef);
+            $URLRewriting = $reg->retrieve('apf::core','URLRewriting');
+
+            if($outputFilter !== null){
+
+               if($URLRewriting == true){
+                  $content = $outputFilter->filter('URLRewriting',$content);
+                // end if
+               }
+               else{
+                  $content = $outputFilter->filter('Normal',$content);
+                // end if
+               }
+
              // end if
             }
 
