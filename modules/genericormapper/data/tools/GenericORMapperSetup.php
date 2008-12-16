@@ -73,9 +73,9 @@
       *  Setups the database. Uses the connectionManager, hence a valid database connection is required.
       *  If the third parameter ($ConnectionName) is left blank, the statements are displayed only.
       *
-      *  @param string $ConfigNamespace; namespace, where the desired mapper configuration is located
-      *  @param string $ConfigNameAffix; name affix of the object and relation definition files
-      *  @param string $ConnectionName; name of the connection, that the mapper should use to acces the database
+      *  @param string $ConfigNamespace namespace, where the desired mapper configuration is located
+      *  @param string $ConfigNameAffix name affix of the object and relation definition files
+      *  @param string $ConnectionName name of the connection, that the mapper should use to acces the database
       *
       *  @author Christian Achatz
       *  @version
@@ -147,7 +147,7 @@
       *
       *  Creates the setup statements for the object persistance.<br />
       *
-      *  @return string $Setup; sql setup script
+      *  @return string $Setup sql setup script
       *
       *  @author Christian Achatz
       *  @version
@@ -208,7 +208,7 @@
       *
       *  Creates the setup statements for the relation persistence.<br />
       *
-      *  @return string $Setup; sql setup script
+      *  @return string $Setup sql setup script
       *
       *  @author Christian Achatz
       *  @version

@@ -47,7 +47,7 @@
       *
       *  Implements the interface method init() to be able to initialize the mapper with the service manager.
       *
-      *  @param array $InitParams; list of initialization parameters
+      *  @param array $InitParams list of initialization parameters
       *
       *  @author Christian Achatz
       *  @version
@@ -73,9 +73,9 @@
       *
       *  Load an object list by a given criterion object.<br />
       *
-      *  @param string $ObjectName; name of the desired objects
-      *  @param GenericCriterionObject $Criterion; criterion object
-      *  @return array $ObjectList; list of domain objects
+      *  @param string $ObjectName name of the desired objects
+      *  @param GenericCriterionObject $Criterion criterion object
+      *  @return array $ObjectList list of domain objects
       *
       *  @author Christian Achatz
       *  @version
@@ -93,9 +93,9 @@
       *
       *  Load an object by a given criterion object.<br />
       *
-      *  @param string $ObjectName; name of the desired objects
-      *  @param GenericCriterionObject $Criterion; criterion object
-      *  @return array $ObjectList; list of domain objects
+      *  @param string $ObjectName name of the desired objects
+      *  @param GenericCriterionObject $Criterion criterion object
+      *  @return array $ObjectList list of domain objects
       *
       *  @author Christian Achatz
       *  @version
@@ -112,9 +112,9 @@
       *
       *  Creates a list of WHERE statements by a given object name and a criterion object.<br />
       *
-      *  @param string $ObjectName; name of the desired objects
-      *  @param GenericCriterionObject $Criterion; criterion object
-      *  @return array $WHERE; list of WHERE statements
+      *  @param string $ObjectName name of the desired objects
+      *  @param GenericCriterionObject $Criterion criterion object
+      *  @return array $WHERE list of WHERE statements
       *
       *  @author Christian Achatz
       *  @version
@@ -160,9 +160,9 @@
       *
       *  Creates a list of ORDER statements by a given object name and a criterion object.<br />
       *
-      *  @param string $ObjectName; name of the desired objects
-      *  @param GenericCriterionObject $Criterion; criterion object
-      *  @return array $ORDER; list of ORDER statements
+      *  @param string $ObjectName name of the desired objects
+      *  @param GenericCriterionObject $Criterion criterion object
+      *  @return array $ORDER list of ORDER statements
       *
       *  @author Christian Achatz
       *  @version
@@ -199,9 +199,9 @@
       *
       *  Creates a list of properties by a given object name and a criterion object.<br />
       *
-      *  @param string $ObjectName; name of the desired objects
-      *  @param GenericCriterionObject $Criterion; criterion object
-      *  @return array $Properties; list of properties
+      *  @param string $ObjectName name of the desired objects
+      *  @param GenericCriterionObject $Criterion criterion object
+      *  @return array $Properties list of properties
       *
       *  @author Christian Achatz
       *  @version
@@ -241,9 +241,9 @@
       *
       *  Creates an SQL statement by a given object name and a criterion object.<br />
       *
-      *  @param string $ObjectName; name of the desired objects
-      *  @param GenericCriterionObject $Criterion; criterion object
-      *  @return string $Statement; SQL statement
+      *  @param string $ObjectName name of the desired objects
+      *  @param GenericCriterionObject $Criterion criterion object
+      *  @return string $Statement SQL statement
       *
       *  @author Christian Achatz
       *  @version
@@ -329,7 +329,7 @@
       *
       *  Loads a list of related objects by an object and an relation name.<br />
       *
-      *  @param object $object current object
+      *  @param GenericDomainObject $object current object
       *  @param string $relationName name of the desired relation
       *  @param GenericCriterionObject $criterion criterion object
       *  @return array $relatedObjects list of the releated objects
@@ -418,7 +418,7 @@
       *
       *  Loads a list of *not* related objects by an object and an relation name.
       *
-      *  @param object $object current object
+      *  @param GenericDomainObject $object current object
       *  @param string $relationName name of the desired relation
       *  @param GenericCriterionObject $criterion criterion object
       *  @return array $notRelatedObjects list of the *not* releated objects
@@ -510,9 +510,55 @@
       /**
       *  @public
       *
+      *  Loads the multiplicity of a relation defined by one object and the desired relation name.
+      *
+      *  @param GenericDomainObject $object current object
+      *  @param string $relationName relation name
+      *  @return int $multiplicity the multiplicity of the relation
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 16.12.2008<br />
+      */
+      function loadRelationMultiplicity(&$object,$relationName){
+
+         if(!isset($this->__RelationTable[$relationName])){
+            trigger_error('[GenericORRelationMapper::loadRelationMultiplicity()] Relation "'.$relationName.'" does not exist in relation table! Hence, the relation multiplicity cannot be loaded! Please check your relation configuration.');
+            $multiplicity = 0;
+          // end if
+         }
+         else{
+
+            // gather information about the object and the relation
+            $objectName = $object->get('ObjectName');
+            $sourceObject = $this->__MappingTable[$objectName];
+            $targetObjectName = $this->__getRelatedObjectNameByRelationName($objectName,$relationName);
+            $targetObject = $this->__MappingTable[$targetObjectName];
+
+            // load multiplicity
+            $relationTable = $this->__RelationTable[$relationName];
+            $select = 'SELECT COUNT(`'.$targetObject['ID'].'`) AS multiplicity FROM `'.$relationTable['Table'].'`
+                       WHERE `'.$sourceObject['ID'].'` = \''.$object->getProperty($sourceObject['ID']).'\';';
+            $result = $this->__DBDriver->executeTextStatement($select);
+            $data = $this->__DBDriver->fetchData($result);
+            $multiplicity = $data['multiplicity'];
+
+          // end else
+         }
+
+         // return multiplicity
+         return $multiplicity;
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
       *  Overwrites the saveObject() method of the parent class. Resolves relations.<br />
       *
-      *  @param object $Object; current object
+      *  @param $relationName $Object current object
       *  @return int $ObjectID; id of the saved object
       *
       *  @author Christian Achatz
@@ -742,10 +788,10 @@
       *  Delete an association between two objects. Due to data consistency, only associations<br />
       *  can be deleted.<br />
       *
-      *  @param string $RelationName; Name ofthe relation to create
-      *  @param GenericDomainObject $SourceObject; Source object for the relation
-      *  @param GenericDomainObject $TargetObject; Target object for the relation
-      *  @return bool $return; true (sucess) or false (error)
+      *  @param string $RelationName Name ofthe relation to create
+      *  @param GenericDomainObject $SourceObject Source object for the relation
+      *  @param GenericDomainObject $TargetObject Target object for the relation
+      *  @return bool $return true (success) or false (error)
       *
       *  @author Christian Achatz
       *  @version
@@ -794,10 +840,10 @@
       *
       *  Returns true if an association of the given type exists between the provided objects.<br />
       *
-      *  @param string $RelationName; Name of the relation to select
-      *  @param GenericDomainObject $SourceObject; Source object for the relation
-      *  @param GenericDomainObject $TargetObject; Target object for the relation
-      *  @return bool $return; true (association exists) or false (objects are not associated)
+      *  @param string $RelationName Name of the relation to select
+      *  @param GenericDomainObject $SourceObject Source object for the relation
+      *  @param GenericDomainObject $TargetObject Target object for the relation
+      *  @return bool $return true (association exists) or false (objects are not associated)
       *
       *  @author Christian Achatz
       *  @version
@@ -852,8 +898,8 @@
       *
       *  Returns all compositions concerning one object name.<br />
       *
-      *  @param string $ObjectName; Name of the current object
-      *  @return array $RelationList, List of relations of the given type
+      *  @param string $ObjectName Name of the current object
+      *  @return array $RelationList List of relations of the given type
       *
       *  @author Christian Achatz
       *  @version
@@ -887,9 +933,9 @@
       *
       *  Returns all compositions concerning one object name.<br />
       *
-      *  @param string $ObjectName; Name of the current object
-      *  @param string $Direction; Direction of the relation (legal values: source, target)
-      *  @return array $RelationList, List of relations of the given type
+      *  @param string $ObjectName Name of the current object
+      *  @param string $Direction Direction of the relation (legal values: source, target)
+      *  @return array $RelationList List of relations of the given type
       *
       *  @author Christian Achatz
       *  @version
@@ -938,9 +984,9 @@
       *
       *  Returns the name of the related object concerning the given arguments.<br />
       *
-      *  @param string $ObjectName; Name of the current object
-      *  @param string $RelationName; Name of the desired relation
-      *  @return string $RelatedObject; Name of the releated object or null, in case the object definition was not found
+      *  @param string $ObjectName Name of the current object
+      *  @param string $RelationName Name of the desired relation
+      *  @return string $RelatedObject Name of the releated object or null, in case the object definition was not found
       *
       *  @author Christian Achatz
       *  @version
@@ -981,7 +1027,7 @@
       *
       *  Implements php's magic __sleep() method to indicate, which class vars have to be serialized.<br />
       *
-      *  @return array $Vars2Serialize; list of serializable properties
+      *  @return array $Vars2Serialize list of serializable properties
       *
       *  @author Christian Achatz
       *  @version

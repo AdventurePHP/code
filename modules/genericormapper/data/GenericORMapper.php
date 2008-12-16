@@ -389,9 +389,9 @@
 
 
       /**
-      *  @privat
+      *  @private
       *
-      *  Creates an domain object by name and properties.<br />
+      *  Creates an domain object by name and properties.
       *
       *  @param string $ObjectName name of the object in mapping table
       *  @param array $Properties properties of the object
@@ -403,31 +403,31 @@
       *  Version 0.2, 30.05.2008 (Now returns null, if no properties are available)<br />
       *  Version 0.3, 15.06.2008 (Now uses the constructor of GenericDomainObject to set the object name)<br />
       */
-      function __mapResult2DomainObject($ObjectName,$Properties){
+      function __mapResult2DomainObject($objectName,$properties){
 
-         if($Properties !== false){
+         if($properties !== false){
 
             // create object
-            $Object = new GenericDomainObject($ObjectName);
+            $object = new GenericDomainObject($objectName);
 
             // set data component and object name
-            $Object->setByReference('DataComponent',$this);
+            $object->setByReference('DataComponent',$this);
 
             // map properties into object
-            foreach($Properties as $PropertyName => $PropertyValue){
-               $Object->setProperty($PropertyName,$PropertyValue);
+            foreach($properties as $propertyName => $propertyValue){
+               $object->setProperty($propertyName,$propertyValue);
              // end foreach
             }
 
           // end if
          }
          else{
-            $Object = null;
+            $object = null;
           // end else
          }
 
          // return object
-         return $Object;
+         return $object;
 
        // end function
       }
