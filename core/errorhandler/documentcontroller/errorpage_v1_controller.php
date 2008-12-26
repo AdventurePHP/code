@@ -44,6 +44,7 @@
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 21.01.2007<br />
+      *  Version 0.2, 26.12.2008 (Messages after the trigger_error() are not displayed any more)<br />
       */
       function transformContent(){
 
@@ -56,6 +57,12 @@
 
          // generate stacktrace
          for($i = 0; $i < count($Errors); $i++){
+
+            // don't display any further messages, because these belong to the error manager
+            if(isset($Errors[$i]['function']) && substr_count($Errors[$i]['function'],'trigger_error') > 0){
+               break;
+             // end if
+            }
 
             if(isset($Errors[$i]['function'])){
                $Template__ErrorEntry->setPlaceHolder('Function',$Errors[$i]['function']);
