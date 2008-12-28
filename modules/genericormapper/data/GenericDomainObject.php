@@ -118,6 +118,34 @@
       /**
       *  @public
       *
+      *  Returns the reference on the list of related objects manually added to the object.
+      *
+      *  @param string $relationName name of the desired relation
+      *  @return GenericDomainObject[] $relatedObjects a list of referenced objects that are related with the current object or null
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      */
+      function &getRelatedObjects($relationName){
+
+         if(isset($this->__RelatedObjects[$relationName])){
+            return $this->__RelatedObjects[$relationName];
+          // end if
+         }
+         else{
+            $null = null;
+            return $null;
+          // end else
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
       *  Add a related object.<br />
       *
       *  @param string $RelationName name of the desired relation

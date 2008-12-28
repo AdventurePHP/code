@@ -247,6 +247,7 @@
       *  @version
       *  Version 0.1, 11.05.2008<br />
       *  Version 0.2, 26.10.2008 (Added a check, if the desired object name exists in the mapping table.)<br />
+      *  Version 0.3, 27.12.2008 (Update is now done, if params are located in the params array)<br />
       */
       function saveObject($Object){
 
@@ -316,13 +317,16 @@
             $update .= ' SET '.implode(', ',$QueryParams).', ModificationTimestamp = NOW()';
             $update .= ' WHERE '.$IDName. '= \''.$ID.'\';';
 
-            // Execute update
-            $this->__DBDriver->executeTextStatement($update);
+            // execute update, only if the update is necessary
+            if(count($QueryParams) > 0){
+               $this->__DBDriver->executeTextStatement($update);
+             // end if
+            }
 
           // end else
          }
 
-         // Return the database ID of the object
+         // return the database ID of the object
          return $ID;
 
        // end function

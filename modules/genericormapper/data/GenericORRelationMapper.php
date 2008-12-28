@@ -896,25 +896,33 @@
       /**
       *  @private
       *
-      *  Returns all compositions concerning one object name.<br />
+      *  Returns all associations concerning one object.
       *
-      *  @param string $ObjectName Name of the current object
-      *  @return array $RelationList List of relations of the given type
+      *  @param string $objectName name of the current object
+      *  @return array $relationList list of relations of the given object
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 30.05.2008<br />
+      *  Version 0.2, 28.12.2008 (Bugfix: only associations are returned, where the object is involved)<br />
       */
-      function __getAssociationsByObjectName($ObjectName){
+      function &__getAssociationsByObjectName($objectName){
 
          // initialize list
-         $RelationList = array();
+         $relationList = array();
 
          // look for suitable relation entries
-         foreach($this->__RelationTable as $SectionName => $Attributes){
+         foreach($this->__RelationTable as $sectionName => $attributes){
 
-            if($Attributes['Type'] == 'ASSOCIATION'){
-               $RelationList[] = &$this->__RelationTable[$SectionName];
+            // only allow associations
+            if($attributes['Type'] == 'ASSOCIATION'){
+
+               // only add, if the current object is involved in the association
+               if($attributes['SourceObject'] === $objectName || $attributes['TargetObject'] === $objectName){
+                  $relationList[] = &$this->__RelationTable[$sectionName];
+                // end if
+               }
+
              // end if
             }
 
@@ -922,7 +930,7 @@
          }
 
          // return list
-         return $RelationList;
+         return $relationList;
 
        // end function
       }
