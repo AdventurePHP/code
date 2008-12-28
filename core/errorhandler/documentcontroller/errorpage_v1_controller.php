@@ -59,7 +59,7 @@
          for($i = 0; $i < count($Errors); $i++){
 
             // don't display any further messages, because these belong to the error manager
-            if(isset($Errors[$i]['function']) && substr_count($Errors[$i]['function'],'trigger_error') > 0){
+            if(isset($Errors[$i]['function']) && preg_match('/errorHandler|trigger_error/i',$Errors[$i]['function'])){
                break;
              // end if
             }
