@@ -4,25 +4,29 @@
     <td>Display name</td>
     <td>Action</td>
   </tr>
-
-<core:addtaglib namespace="tools::html::taglib" prefix="html" class="iterator"/>
-<html:iterator name="Group">
-  <iterator:item getter="getProperty">
-    <tr>
-      <td><item:placeholder name="DisplayName" /></td>
-      <td>
-        <a href="?mainview=group&groupview=details&groupid=<item:placeholder name="GroupID" />" title="View group details">View group details</a>
-        &nbsp;|&nbsp;
-        <a href="?mainview=group&groupview=edit&groupid=<item:placeholder name="GroupID" />" title="Edit group">Edit group</a>
-        &nbsp;|&nbsp;
-        <a href="?mainview=group&groupview=delete&groupid=<item:placeholder name="GroupID" />" title="Delete group">Delete group</a>
-        &nbsp;|&nbsp;
-        <a href="?mainview=group&groupview=useradd&groupid=<item:placeholder name="GroupID" />" title="Add user to group">Add user to group</a>
-        &nbsp;|&nbsp;
-        <a href="?mainview=group&groupview=userrem&groupid=<item:placeholder name="GroupID" />" title="Detach users from group">Detach users from group</a>
-      </td>
-    </tr>
-  </iterator:item>
-</html:iterator>
-
+  <html:placeholder name="Grouplist" />
 </table>
+
+<html:template name="Group">
+  <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+  <tr>
+    <td><template:placeholder name="DisplayName" /></td>
+    <td>
+      <a href="<template:placeholder name="group_details" />" title="View group details">
+        <umgt:media filename="cc-xmag-128x128.png" alt="View group details" title="View group details" />
+      </a>
+      <a href="<template:placeholder name="group_edit" />" title="Edit group">
+        <umgt:media filename="cc-package_settings-128x128.png" alt="Edit group" title="Edit group" />
+      </a>
+      <a href="<template:placeholder name="group_delete" />" title="Delete group">
+        <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete group" title="Delete group" />
+      </a>
+      <a href="<template:placeholder name="group_useradd" />" title="Add user to group">
+        <umgt:media filename="cc-forward2-128x128.png" alt="Add user to group" title="Add user to group" />
+      </a>
+      <a href="<template:placeholder name="group_userrem" />" title="Detach users from group">
+        <umgt:media filename="cc-backward2-red-128x128.png" alt="Detach users from group" title="Detach users from group" />
+      </a>
+    </td>
+  </tr>
+</html:template>

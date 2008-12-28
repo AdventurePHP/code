@@ -1,29 +1,21 @@
 <?php
-   /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
-
    import('modules::usermanagement::biz','umgtManager');
-   import('tools::variablen','variablenHandler');
+   import('tools::request','RequestHandler');
+   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('tools::http','HeaderManager');
 
 
-   class add2group_controller extends baseController
+   /**
+   *  @namespace modules::usermanagement::pres::documentcontroller
+   *  @class edit_controller
+   *
+   *  Implements the controller to add a user to a group.
+   *
+   *  @author Christian Achatz
+   *  @version
+   *  Version 0.1, 26.12.2008<br />
+   */
+   class add2group_controller extends umgtbaseController
    {
 
       function add2group_controller(){
@@ -32,18 +24,30 @@
 
       function transformContent(){
 
+         // init the form and load the relevant groups
+         $userid = RequestHandler::getValue('userid');
          $Form__Group = &$this->__getForm('Group');
          $Group = &$Form__Group->getFormElementByName('Group[]');
          $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
-         $_LOCALS = variablenHandler::registerLocal(array('userid'));
-         $Groups = $uM->loadGroupList($_LOCALS['userid'],true);
+         $User = $uM->loadUserById($userid);
+         $Groups = $uM->loadnotUserGroups($User);
          $count = count($Groups);
 
+         // display a note, if there are no groups to add the user to
+         if($count == 0) {
+            $Template = &$this->__getTemplate('NoMoreGroups');
+            $Template->transformOnPlace();
+            return true;
+          // end if
+         }
+
+         // add the groups to the option field
          for($i = 0; $i < $count; $i++){
             $Group->addOption($Groups[$i]->getProperty('DisplayName'),$Groups[$i]->getProperty('GroupID'));
           // end for
          }
 
+         // handle the click event
          if($Form__Group->get('isSent') && $Form__Group->get('isValid')){
 
             $Options = &$Group->getSelectedOptions();
@@ -55,9 +59,8 @@
              // end for
             }
 
-
-            $uM->addUser2Groups($_LOCALS['userid'],$NewGroups);
-            header('Location: ?mainview=user');
+            $uM->addUser2Groups($userid,$NewGroups);
+            HeaderManager::forward($this->__generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
 
           // end if
          }

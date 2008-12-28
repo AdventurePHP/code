@@ -1,6 +1,7 @@
-<a href="?mainview=group" title="Group list" class="menu_links">Group list</a>
+<@controller namespace="modules::usermanagement::pres::documentcontroller" file="group_controller" class="group_controller" @>
+<a href="<html:placeholder name="manage_groups" />" title="Group list" class="menu_links">Group list</a>
 &nbsp;|&nbsp;
-<a href="?mainview=group&groupview=add" title="Add group" class="menu_links">Add group</a>
+<a href="<html:placeholder name="add_group" />" title="Add group" class="menu_links">Add group</a>
 <br />
 <br />
 <core:importdesign namespace="modules::usermanagement::pres::templates::group" template="[groupview = list]" incparam="groupview" />

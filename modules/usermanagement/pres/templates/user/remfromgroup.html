@@ -4,10 +4,9 @@
   In order to remove the user from this group, please choose one of the following groups:
   <br />
   <br />
-  <form:select name="Group" validate="true" button="Rem">
-    <select:option value=""></select:option>
-  </form:select>
+  <form:multiselect name="Groups[]" validate="true" button="Rem" />
   <br />
   <br />
   <form:button name="Rem" value="Remove" class="formfield"/>
 </html:form>
+<html:template name="NoMoreGroups">This user is not assigned to any group!</html:template>

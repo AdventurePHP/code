@@ -4,10 +4,9 @@
   In order to detach the role from a user, please choose one of the following users:
   <br />
   <br />
-  <form:select name="User" validate="true" button="Det">
-    <select:option value=""></select:option>
-  </form:select>
+  <form:multiselect name="User[]" validate="true" button="Det" size="5"/>
   <br />
   <br />
   <form:button name="Det" value="Detatch" class="formfield"/>
 </html:form>
+<html:template name="NoMoreUser">No more users are assigned to this Role!</html:template>

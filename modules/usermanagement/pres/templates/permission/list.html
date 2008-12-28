@@ -6,21 +6,21 @@
     <td>Value</td>
     <td>Action</td>
   </tr>
-
-<core:addtaglib namespace="tools::html::taglib" prefix="html" class="iterator"/>
-<html:iterator name="Permission">
-  <iterator:item getter="getProperty">
-    <tr>
-      <td><item:placeholder name="DisplayName" /></td>
-      <td><item:placeholder name="Name" /></td>
-      <td><item:placeholder name="Value" /></td>
-      <td>
-        <a href="?mainview=permission&permissionview=edit&permissionid=<item:placeholder name="PermissionID" />" title="Edit permission">Edit permission</a>
-        &nbsp;|&nbsp;
-        <a href="?mainview=permission&permissionview=delete&permissionid=<item:placeholder name="PermissionID" />" title="Delete user">Delete permission</a>
-      </td>
-    </tr>
-  </iterator:item>
-</html:iterator>
-
+  <html:placeholder name="ListPermissions" />
 </table>
+<html:template name="Permission">
+  <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+  <tr>
+    <td><template:placeholder name="DisplayName" /></td>
+    <td><template:placeholder name="Name" /></td>
+    <td><template:placeholder name="Value" /></td>
+    <td>
+      <a href="<template:placeholder name="permission_edit" />" title="Edit permission">
+        <umgt:media filename="cc-package_settings-128x128.png" alt="Edit permission" title="Edit permission" />
+      </a>
+      <a href="<template:placeholder name="permission_delete" />" title="Delete Permission">
+        <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete permission" title="Delete permission" />
+      </a>
+    </td>
+  </tr>
+</html:template>

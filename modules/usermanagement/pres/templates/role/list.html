@@ -4,25 +4,29 @@
     <td>Display name</td>
     <td>Action</td>
   </tr>
-
-<core:addtaglib namespace="tools::html::taglib" prefix="html" class="iterator"/>
-<html:iterator name="Role">
-  <iterator:item getter="getProperty">
-    <tr>
-      <td><item:placeholder name="DisplayName" /></td>
-      <td>
-        <a href="?mainview=role&roleview=details&roleid=<item:placeholder name="RoleID" />" title="View role details">View role details</a>
-        &nbsp;|&nbsp;
-        <a href="?mainview=role&roleview=edit&roleid=<item:placeholder name="RoleID" />" title="Edit role">Edit role</a>
-        &nbsp;|&nbsp;
-        <a href="?mainview=role&roleview=delete&roleid=<item:placeholder name="RoleID" />" title="Delete role">Delete role</a>
-        &nbsp;|&nbsp;
-        <a href="?mainview=role&roleview=ass2user&roleid=<item:placeholder name="RoleID" />" title="Assign role to user">Assign role to user</a>
-        &nbsp;|&nbsp;
-        <a href="?mainview=role&roleview=detachfromuser&roleid=<item:placeholder name="RoleID" />" title="Detach role from user">Detach role from user</a>
-      </td>
-    </tr>
-  </iterator:item>
-</html:iterator>
-
+  <html:placeholder name="RoleList" />
 </table>
+
+<html:template name="Role">
+  <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+  <tr>
+    <td><template:placeholder name="DisplayName" /></td>
+    <td>
+      <a href="<template:placeholder name="role_details" />" title="View role details">
+        <umgt:media filename="cc-xmag-128x128.png" alt="View Role details" title="View role details" />
+      </a>
+      <a href="<template:placeholder name="role_edit" />" title="Edit role">
+        <umgt:media filename="cc-package_settings-128x128.png" alt="Edit role" title="Edit Role" />
+      </a>
+      <a href="<template:placeholder name="role_delete" />" title="Delete role">
+        <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete role" title="Delete role" />
+      </a>
+      <a href="<template:placeholder name="role_ass2user" />" title="Assign role to user">
+        <umgt:media filename="cc-forward2-128x128.png" alt="Assign role to user" title="Assign role to user" />
+      </a>
+      <a href="<template:placeholder name="role_detachfromuser" />" title="Detach role from user">
+        <umgt:media filename="cc-backward2-red-128x128.png" alt="Detach role from user" title="Detach role from user" />
+      </a>
+    </td>
+  </tr>
+</html:template>

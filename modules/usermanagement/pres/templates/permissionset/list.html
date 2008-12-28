@@ -4,23 +4,23 @@
     <td>Display name</td>
     <td>Action</td>
   </tr>
-
-<core:addtaglib namespace="tools::html::taglib" prefix="html" class="iterator"/>
-<html:iterator name="PermissionSet">
-  <iterator:item getter="getProperty">
-    <tr>
-      <td><item:placeholder name="DisplayName" /></td>
-      <td>
-        <a href="?mainview=permissionset&permissionsetview=details&permissionsetid=<item:placeholder name="PermissionSetID" />" title="View permissionset details">View permissionset details</a>
-        &nbsp;|&nbsp;
-        <a href="?mainview=permissionset&permissionsetview=edit&permissionsetid=<item:placeholder name="PermissionSetID" />" title="Edit permissionset">Edit permissionset</a>
-        &nbsp;|&nbsp;
-        <a href="?mainview=permissionset&permissionsetview=delete&permissionsetid=<item:placeholder name="PermissionSetID" />" title="Delete permissionset">Delete permissionset</a>
-        &nbsp;|&nbsp;
-        <a href="?mainview=permission&permissionview=add&permissionsetid=<item:placeholder name="PermissionSetID" />" title="Add permission">Add permission</a>
-      </td>
-    </tr>
-  </iterator:item>
-</html:iterator>
-
+  <html:placeholder name="PermissionSetList" />
 </table>
+
+<html:template name="PermissionSet">
+  <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+  <tr>
+    <td><template:placeholder name="DisplayName" /></td>
+    <td>
+      <a href="<template:placeholder name="permissionset_details" />" title="View permissionset details">
+        <umgt:media filename="cc-xmag-128x128.png" alt="View permissionset details" title="View permissionset details" />
+      </a>
+      <a href="<template:placeholder name="permissionset_edit" />" title="Edit permissionset">
+        <umgt:media filename="cc-package_settings-128x128.png" alt="Edit permissionset" title="Edit permissionset" />
+      </a>
+      <a href="<template:placeholder name="permissionset_delete" />" title="Delete permissionset">
+        <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete permissionset" title="Delete permissionset" />
+      </a>
+    </td>
+  </tr>
+</html:template>

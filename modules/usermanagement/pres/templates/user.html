@@ -1,6 +1,7 @@
-<a href="?mainview=user" title="User list" class="menu_links">User list</a>
+<@controller namespace="modules::usermanagement::pres::documentcontroller" file="user_controller" class="user_controller" @>
+<a href="<html:placeholder name="manage_user" />" title="User list" class="menu_links">User list</a>
 &nbsp;|&nbsp;
-<a href="?mainview=user&userview=add" title="Add user" class="menu_links">Add user</a>
+<a href="<html:placeholder name="user_add" />" title="Add user" class="menu_links">Add user</a>
 <br />
 <br />
 <core:importdesign namespace="modules::usermanagement::pres::templates::user" template="[userview = list]" incparam="userview" />

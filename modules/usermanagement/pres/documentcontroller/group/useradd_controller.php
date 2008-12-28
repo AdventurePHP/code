@@ -1,29 +1,21 @@
 <?php
-   /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
-
    import('modules::usermanagement::biz','umgtManager');
-   import('tools::variablen','variablenHandler');
+   import('tools::request','RequestHandler');
+   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('tools::http','HeaderManager');
 
 
-   class useradd_controller extends baseController
+   /**
+   *  @namespace modules::usermanagement::pres::documentcontroller
+   *  @class useradd_controller
+   *
+   *  Implements the controller to list the groups.
+   *
+   *  @author Christian Achatz
+   *  @version
+   *  Version 0.1, 27.12.2008<br />
+   */
+   class useradd_controller extends umgtbaseController
    {
 
       function useradd_controller(){
@@ -32,37 +24,49 @@
 
       function transformContent(){
 
+         // initialize form
          $Form__User = &$this->__getForm('User');
-         $User = &$Form__User->getFormElementByName('User[]');
+         $user = &$Form__User->getFormElementByName('User[]');
+         $groupid = RequestHandler::getValue('groupid');
          $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
-         $Users = $uM->loadUserList();
-         $count = count($Users);
+         $group = $uM->loadGroupById($groupid);
+         $users = $uM->loadUsersNotInGroup($group);
+         $count = count($users);
 
-         for($i = 0; $i < $count; $i++){
-            $User->addOption($Users[$i]->getProperty('LastName').', '.$Users[$i]->getProperty('FirstName'),$Users[$i]->getProperty('UserID'));
-          // end for
+         // display hint, if group has associated all users
+         if($count == 0){
+            $template = &$this->__getTemplate('NoMoreUser');
+            $template->transformOnPlace();
+            return true;
+          // end if
          }
 
+         // fill multi select field
+         for($i = 0; $i < $count; $i++){
+            $user->addOption($users[$i]->getProperty('LastName').', '.$users[$i]->getProperty('FirstName'),$users[$i]->getProperty('UserID'));
+         // end for
+         }
+
+         // add users, if selected
          if($Form__User->get('isSent') && $Form__User->get('isValid')){
 
-            $Options = &$User->getSelectedOptions();
-            $count = count($Options);
+            $options = &$user->getSelectedOptions();
+            $count = count($options);
 
-            $NewUsers = array();
+            $newUsers = array();
             for($i = 0; $i < $count; $i++){
-               $NewUsers[] = $Options[$i]->getAttribute('value');
+               $newUsers[] = $options[$i]->getAttribute('value');
              // end for
             }
 
-            $_LOCALS = variablenHandler::registerLocal(array('groupid'));
-            $uM->addUsers2Group($NewUsers,$_LOCALS['groupid']);
-            header('Location: ?mainview=group');
+            $uM->addUsers2Group($newUsers,$groupid);
+            HeaderManager::forward($this->__generateLink(array('mainview' => 'group','groupview' => '','groupid' => '')));
 
           // end if
          }
          else{
             $Form__User->transformOnPlace();
-          // end else
+         // end else
          }
 
        // end function
