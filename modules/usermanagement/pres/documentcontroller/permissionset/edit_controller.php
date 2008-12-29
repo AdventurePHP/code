@@ -86,7 +86,7 @@
             $DisplayName->setAttribute('value',$PermissionSet->getProperty('DisplayName'));
 
             // preselect the options
-            $selectedPermissions = $uM->loadPermissionSetPermissions($permSet);
+            $selectedPermissions = $uM->loadPermissionsOfPermissionSet($permSet);
             for($i = 0; $i < count($selectedPermissions); $i++){
                $permField->setOption2Selected($selectedPermissions[$i]->getProperty('PermissionID'));
              // end for

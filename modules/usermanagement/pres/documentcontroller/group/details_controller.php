@@ -33,7 +33,7 @@
          $Template__User->transformOnPlace();
 
          // display users
-         $Users = $uM->loadGroupUsers($Group);
+         $Users = $uM->loadUsersWithGroup($Group);
          $Iterator__Users = &$this->__getIterator('Users');
          $Iterator__Users->fillDataContainer($Users);
          $Iterator__Users->transformOnPlace();

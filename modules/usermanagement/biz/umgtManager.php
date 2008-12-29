@@ -30,9 +30,9 @@
       /**
       *  @private
       *
-      *  Returns an initialized Application object.<br />
+      *  Returns an initialized Application object.
       *
-      *  @return GenericDomainObject $App; current application domain object
+      *  @return GenericDomainObject $app current application domain object
       *
       *  @author Christian Achatz
       *  @version
@@ -49,9 +49,9 @@
       /**
       *  @private
       *
-      *  Returns an initialized or mapper instance.<br />
+      *  Returns an initialized or mapper instance.
       *
-      *  @return GenericORRelationMapper $ORM; instance of the generic or relation mapper
+      *  @return GenericORRelationMapper $ORM instance of the generic or relation mapper
       *
       *  @author Christian Achatz
       *  @version
@@ -60,7 +60,7 @@
       function &__getORMapper(){
 
          // obtain a reference on the mapper factory
-         $ORMFactory = $this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
+         $ORMFactory = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
 
          // return mapper instance
          return $ORMFactory->getGenericORMapper('modules::usermanagement','umgt','usermanagement_test','SESSIONSINGLETON');
@@ -72,9 +72,9 @@
       /**
       *  @public
       *
-      *  Saves a user object within the current application.<br />
+      *  Saves a user object within the current application.
       *
-      *  @param GenericDomainObject $User; Current user
+      *  @param GenericDomainObject $User current user
       *
       *  @author Christian Achatz
       *  @version
@@ -93,7 +93,7 @@
       /**
       *  @public
       *
-      *  Saves a group object within the current application.<br />
+      *  Saves a group object within the current application.
       *
       *  @param GenericDomainObject $group current group
       *
@@ -113,19 +113,19 @@
       /**
       *  @public
       *
-      *  Saves a role object within the current application.<br />
+      *  Saves a role object within the current application.
       *
-      *  @param GenericDomainObject $Role; Current role
+      *  @param GenericDomainObject $role current role
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 15.06.2008<br />
       */
-      function saveRole($Role){
-         $ORM = &$this->__getORMapper();
-         $App = $this->__getCurrentApplication();
-         $App->addRelatedObject('Application2Role',$Role);
-         $ORM->saveObject($App);
+      function saveRole($role){
+         $oRM = &$this->__getORMapper();
+         $app = $this->__getCurrentApplication();
+         $app->addRelatedObject('Application2Role',$role);
+         $oRM->saveObject($app);
        // end function
       }
 
@@ -208,9 +208,9 @@
       /**
       *  @public
       *
-      *  Returns a list of users concerning the current page.<br />
+      *  Returns a list of users concerning the current page.
       *
-      *  @return GenericDomainObject[] $UserList; list of users
+      *  @return GenericDomainObject[] $users list of users
       *
       *  @author Christian Achatz
       *  @version
@@ -229,35 +229,7 @@
                     WHERE ent_application.ApplicationID = \''.$this->__ApplicationID.'\'
                     ORDER BY ent_user.LastName ASC, ent_user.FirstName ASC';
          return $ORM->loadObjectListByTextStatement('User', $select);
-/*
-         // select by criterion
-         $Crit = new GenericCriterionObject();
-         // --> Kriterium erzeugen
 
-         $Crit->addRelationIndicator('Application2User',$this->__getCurrentApplication());
-         $Group = new GenericDomainObject('Group');
-         $Group->setProperty('GroupID',1);
-         $Crit->addRelationIndicator('Group2User',$Group);
-         // --> ausdrücken, dass zu selektierende Objekte per Beziehung XXX unterhalb des übergebenen Objekts
-         //     komponiert sein sollen, bzw. zum entsprechenden Objekt assoziiert sein sollen.
-
-         $Crit->addCountIndicator(0,3);
-         //$Crit->addCountIndicator(2);
-         // --> ausdrücken, dass beginnend ab 0 in der Liste 10 Ergebnisse selekteirt werden sollen
-
-         $Crit->addPropertyIndicator('LastName','Achatz');
-         // --> Ausdrücken, welches Attribut als weitere WHERE-Einschränkung gilt
-
-         $Crit->addOrderIndicator('FirstName','ASC');
-         $Crit->addOrderIndicator('LastName','ASC');
-         // --> ausdrücken, welches Attribut in welcher Reihenfolge als Sortier-Kriterium dient
-
-         $Crit->addLoadedProperty('FirstName');
-         $Crit->addLoadedProperty('LastName');
-         // --> ausdrücken, welche Attribute geladen werden sollen
-
-         return $ORM->loadObjectListByCriterion('User',$Crit);
-*/
        // end function
       }
 
@@ -290,6 +262,17 @@
       }
 
 
+      /**
+      *  @public
+      *
+      *  Returns a list of roles concerning the current page.
+      *
+      *  @return GenericDomainObject[] $roleList list of roles
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
       function getPagedRoleList(){
          $ORM = &$this->__getORMapper();
          $select = 'SELECT * FROM ent_role ORDER BY DisplayName ASC';
@@ -297,48 +280,117 @@
        // end function
       }
 
+
+      /**
+      *  @public
+      *
+      *  Returns a list of permission sets concerning the current page.
+      *
+      *  @return GenericDomainObject[] $permissionSetList list of permission sets
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
       function getPagedPermissionSetList(){
-         $ORM = &$this->__getORMapper();
+         $oRM = &$this->__getORMapper();
          $select = 'SELECT * FROM ent_permissionset ORDER BY DisplayName ASC';
-         return $ORM->loadObjectListByTextStatement('PermissionSet',$select);
+         return $oRM->loadObjectListByTextStatement('PermissionSet',$select);
        // end function
       }
 
-      function loadPermissionSetList(){
-         $ORM = &$this->__getORMapper();
-         $select = 'SELECT * FROM ent_permissionset ORDER BY DisplayName ASC';
-         return $ORM->loadObjectListByTextStatement('PermissionSet',$select);
-       // end function
-      }
 
+      /**
+      *  @public
+      *
+      *  Returns a list of permissions concerning the current page.
+      *
+      *  @return GenericDomainObject[] $permissionList list of permissions
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
       function getPagedPermissionList(){
-         $ORM = &$this->__getORMapper();
+         $oRM = &$this->__getORMapper();
          $select = 'SELECT * FROM ent_permission ORDER BY DisplayName ASC';
-         return $ORM->loadObjectListByTextStatement('Permission',$select);
+         return $oRM->loadObjectListByTextStatement('Permission',$select);
        // end function
       }
 
-      function loadUserByID($UserID){
-         $ORM = &$this->__getORMapper();
-         return $ORM->loadObjectByID('User',$UserID);
-       // end function
-      }
 
-      function loadGroupByID($GroupID){
+      /**
+      *  @public
+      *
+      *  Returns a user domain object.
+      *
+      *  @param int $userID id of the desired user
+      *  @return GenericDomainObject[] $user the user domain object
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadUserByID($userID){
          $oRM = &$this->__getORMapper();
-         return $oRM->loadObjectByID('Group',$GroupID);
+         return $oRM->loadObjectByID('User',$userID);
        // end function
       }
 
-      function loadRoleByID($RoleID){
+
+      /**
+      *  @public
+      *
+      *  Returns a group domain object.
+      *
+      *  @param int $groupID id of the desired group
+      *  @return GenericDomainObject[] $group the group domain object
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadGroupByID($groupID){
          $oRM = &$this->__getORMapper();
-         return $oRM->loadObjectByID('Role',$RoleID);
+         return $oRM->loadObjectByID('Group',$groupID);
        // end function
       }
 
-      function loadPermissionSetByID($PermissionSetID){
+
+      /**
+      *  @public
+      *
+      *  Returns a role domain object.
+      *
+      *  @param int $roleID id of the desired role
+      *  @return GenericDomainObject[] $role the role domain object
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadRoleByID($roleID){
          $oRM = &$this->__getORMapper();
-         return $oRM->loadObjectByID('PermissionSet',$PermissionSetID);
+         return $oRM->loadObjectByID('Role',$roleID);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads a permission set by it's id.
+      *
+      *  @param int $permissionSetID the permission set's id
+      *  @return GenericDomainObject $permissionSet the permission set
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadPermissionSetByID($permissionSetID){
+         $oRM = &$this->__getORMapper();
+         return $oRM->loadObjectByID('PermissionSet',$permissionSetID);
        // end function
       }
 
@@ -348,7 +400,7 @@
       *
       *  Loads a list of permissions of the current application.
       *
-      *  @return array $permissions the permission list
+      *  @return GenericDomainObject[] $permissions the permission list
       *
       *  @author Christian Achatz
       *  @version
@@ -389,21 +441,30 @@
       }
 
 
-      function deleteUser($User){
-         $oRM = &$this->__getORMapper();
-         $oRM->deleteObject($User);
-       // end function
-      }
+      /**
+      *  @public
+      *
+      *  Loads a list of roles, that are not associated with the permission set.
+      *
+      *  @param GenericDomainObject $permissionSet the desiried permission set
+      *  @return GenericDomainObject[] $roles the roles, that are not associated
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadRolesNotWithPermissionSet($permissionSet){
 
-      function deleteGroup($Group){
+         // get the mapper
          $oRM = &$this->__getORMapper();
-         $oRM->deleteObject($Group);
-       // end function
-      }
 
-      function deleteRole($Role){
-         $oRM = &$this->__getORMapper();
-         $oRM->deleteObject($Role);
+         // setup driterion
+         $crit = new GenericCriterionObject();
+         $crit->addRelationIndicator('Application2Role',$this->__getCurrentApplication());
+
+         // load roles, that are not associated
+         return $oRM->loadNotRelatedObjects($permissionSet,'Role2PermissionSet',$crit);
+
        // end function
       }
 
@@ -411,7 +472,143 @@
       /**
       *  @public
       *
-      *  Deletes a PermissionSet and removes the associations.
+      *  Loads a list of roles, that are associated with the permission set.
+      *
+      *  @param GenericDomainObject $permissionSet the desiried permission set
+      *  @return GenericDomainObject[] $roles the roles, that are associated
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadRolesWithPermissionSet($permissionSet){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // setup driterion
+         $crit = new GenericCriterionObject();
+         $crit->addRelationIndicator('Application2Role',$this->__getCurrentApplication());
+
+         // load roles, that are not associated
+         return $oRM->loadRelatedObjects($permissionSet,'Role2PermissionSet',$crit);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Associates a given permission set to a list of roles.
+      *
+      *  @param GenericDomainObject $permissionSet the desiried permission set
+      *  @param GenericDomainObject[] $roles the roles, that have to be associated
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function assignPermissionSet2Roles($permissionSet,$roles = array()){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // create the associations
+         for($i = 0; $i < count($roles); $i++){
+            $oRM->createAssociation('Role2PermissionSet',$roles[$i],$permissionSet);
+          // end for
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Associates a given permission set to a list of roles.
+      *
+      *  @param GenericDomainObject $permissionSet the desiried permission set
+      *  @param GenericDomainObject[] $roles the roles, that have to be associated
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function detachPermissionSetFromRoles($permissionSet,$roles = array()){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // delete the associations
+         for($i = 0; $i < count($roles); $i++){
+            $oRM->deleteAssociation('Role2PermissionSet',$roles[$i],$permissionSet);
+          // end for
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Deletes a user.
+      *
+      *  @param GenericDomainObject[] $user the user to delete
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function deleteUser($user){
+         $oRM = &$this->__getORMapper();
+         $oRM->deleteObject($user);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Deletes a group.
+      *
+      *  @param GenericDomainObject[] $group the group to delete
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function deleteGroup($group){
+         $oRM = &$this->__getORMapper();
+         $oRM->deleteObject($group);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Deletes a role.
+      *
+      *  @param GenericDomainObject[] $role the role to delete
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function deleteRole($role){
+         $oRM = &$this->__getORMapper();
+         $oRM->deleteObject($role);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Deletes a PermissionSet.
       *
       *  @param GenericDomainObject $permissionSet the permission set
       *
@@ -420,123 +617,52 @@
       *  Version 0.1, 28.12.2008<br />
       */
       function deletePermissionSet($permissionSet){
+         $oRM = &$this->__getORMapper();
+         $oRM->deleteObject($permissionSet);
+       // end function
+      }
 
-         // get or mapper
+
+      /**
+      *  @public
+      *
+      *  Deletes a Permission.
+      *
+      *  @param GenericDomainObject $permission the permission
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      */
+      function deletePermission($permission){
+         $oRM = &$this->__getORMapper();
+         $oRM->deleteObject($permission);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Associates a user with a list of groups.
+      *
+      *  @param GenericDomainObject $user the user
+      *  @param GenericDomainObject[] $groups the group list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      */
+      function assignUser2Groups($user,$groups = array()){
+
+         // get the mapper
          $oRM = &$this->__getORMapper();
 
-         // load permissions
-         $permissions = $oRM->loadRelatedObjects($permissionSet,'PermissionSet2Permission');
-
-         // delete associations
-         for($i = 0; $i < count($permissions); $i++){
-            $oRM->deleteAssociation('PermissionSet2Permission',$permissionSet,$permissions[$i]);
+         // create the association
+         for($i = 0; $i < count($groups); $i++){
+            $oRM->createAssociation('Group2User',$user,$groups[$i]);
           // end for
          }
-
-         // delete permission set itself
-         $oRM->deleteObject($permissionSet);
-
-       // end function
-      }
-
-
-
-
-      function deletePermission($Permission){
-         $ORM = &$this->__getORMapper();
-         $ORM->deleteObject($Permission);
-       // end function
-      }
-
-      function loadGroupList(){
-         $ORM = &$this->__getORMapper();
-         $select = 'SELECT * FROM ent_group ORDER BY DisplayName ASC;';
-         return $ORM->loadObjectListByTextStatement('Group',$select);
-       // end function
-      }
-
-      function loadUserList(){
-         $ORM = &$this->__getORMapper();
-         $select = 'SELECT * FROM ent_user ORDER BY LastName ASC, FirstName ASC;';
-         return $ORM->loadObjectListByTextStatement('User',$select);
-       // end function
-      }
-
-      function addUser2Groups($UserID,$GroupIDs = array()){
-
-         $ORM = &$this->__getORMapper();
-         $User = new GenericDomainObject('User');
-         $User->setProperty('UserID',$UserID);
-
-         $count = count($GroupIDs);
-         for($i = 0; $i < $count; $i++){
-            $Group = new GenericDomainObject('Group');
-            $Group->setProperty('GroupID',$GroupIDs[$i]);
-            $ORM->createAssociation('Group2User',$User,$Group);
-          // end for
-         }
-
-       // end function
-      }
-
-      function addUsers2Group($UserIDs = array(),$GroupID){
-
-         $ORM = &$this->__getORMapper();
-         $Group = new GenericDomainObject('Group');
-         $Group->setProperty('GroupID',$GroupID);
-
-         $count = count($UserIDs);
-         for($i = 0; $i < $count; $i++){
-            $User = new GenericDomainObject('User');
-            $User->setProperty('UserID',$UserIDs[$i]);
-            $ORM->createAssociation('Group2User',$User,$Group);
-          // end for
-         }
-
-       // end function
-      }
-
-      function assignRole2Users($RoleID,$UserIDs = array()){
-
-         $ORM = &$this->__getORMapper();
-         $Role = new GenericDomainObject('Role');
-         $Role->setProperty('RoleID',$RoleID);
-
-         $count = count($UserIDs);
-         for($i = 0; $i < $count; $i++){
-            $User = new GenericDomainObject('User');
-            $User->setProperty('UserID',$UserIDs[$i]);
-            $ORM->createAssociation('Role2User',$Role,$User);
-          // end for
-         }
-
-       // end function
-      }
-
-      function loadUserGroups(&$User){
-         return $User->loadRelatedObjects('Group2User');
-       // end function
-      }
-
-      function loadnotUserGroups(&$User){
-       $select = "select * from ent_group g where not exists (select * from ass_group2user au
-                  where g.GroupID = au.GroupID and au.UserID = " . $User->getProperty('UserID') . ")";
-       $ORM = $this->__getORMapper();
-       return $ORM->loadObjectListByTextStatement('User', $select);
-      }
-
-
-      // load all Users that belong to group $Group
-      function loadGroupUsers(&$Group){
-
-         /*$Crit = new GenericCriterionObject();
-         $Crit->addOrderIndicator('DisplayName','ASC');
-         $Crit->addPropertyIndicator('DisplayName','%A%');
-         $Crit->addCountIndicator(10);
-         return $Group->loadRelatedObjects('Group2User',$Crit);*/
-
-         $ORM = &$this->__getORMapper();
-         return $ORM->loadRelatedObjects($Group,'Group2User');
 
        // end function
       }
@@ -545,37 +671,191 @@
       /**
       *  @public
       *
-      *  Loads all users, that are not within the given group.
+      *  Associates users with a group.
       *
-      *  @param GenericDomainObject $group the desired group
-      *  @return array $users the users, that are not within the group
+      *  @param GenericDomainObject[] $users the user list
+      *  @param GenericDomainObject $group the group
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      */
+      function assignUsers2Group($users = array(),$group){
+
+         for($i = 0; $i < count($users); $i++){
+            $this->addUser2Groups($users[$i],array($group));
+          // end for
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Associates a role with a list of users.
+      *
+      *  @param GenericDomainObject $role the role
+      *  @param GenericDomainObject[] $users the user list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function assignRole2Users($role,$users = array()){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // create the association
+         for($i = 0; $i < count($users); $i++){
+            $oRM->createAssociation('Role2User',$role,$users[$i]);
+          // end for
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads all groups, that are assigned to a given user.
+      *
+      *  @param GenericDomainObject $user the user
+      *  @return GenericDomainObject[] $roles the role list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadGroupsWithUser(&$user){
+         return $user->loadRelatedObjects('Group2User');
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads all groups, that are not assigned to a given user.
+      *
+      *  @param GenericDomainObject $user the user
+      *  @return GenericDomainObject[] $roles the role list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadGroupsNotWithUser(&$user){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // setup driterion
+         $crit = new GenericCriterionObject();
+         $crit->addRelationIndicator('Application2Group',$this->__getCurrentApplication());
+
+         // load roles, that are not associated
+         return $oRM->loadNotRelatedObjects($user,'Group2User',$crit);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads all users, that are assigned to a given group.
+      *
+      *  @param GenericDomainObject $group the group
+      *  @return GenericDomainObject[] $users the user list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadUsersWithGroup(&$group){
+         $oRM = &$this->__getORMapper();
+         return $oRM->loadRelatedObjects($Group,'Group2User');
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads all users, that are not assigned to a given group.
+      *
+      *  @param GenericDomainObject $group the group
+      *  @return GenericDomainObject[] $users the user list
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 27.12.2008<br />
       */
-      function loadUsersNotInGroup($group) {
+      function loadUsersNotWithGroup(&$group) {
 
+         // get the mapper
          $oRM = &$this->__getORMapper();
+
+         // setup the criterion
          $crit = new GenericCriterionObject();
          $app = $this->__getCurrentApplication();
          $crit->addRelationIndicator('Application2User',$app);
+
+         // load the user list
          return $oRM->loadNotRelatedObjects($group,'Group2User',$crit);
 
        // end function
       }
 
 
-      function loadUserRoles(&$User){
-         return $User->loadRelatedObjects('Role2User');
+      /**
+      *  @public
+      *
+      *  Loads all roles, that are assigned to a given user.
+      *
+      *  @param GenericDomainObject $user the user
+      *  @return GenericDomainObject[] $roles the role list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 27.12.2008<br />
+      */
+      function loadRolesWithUser(&$user){
+         return $user->loadRelatedObjects('Role2User');
        // end function
       }
 
-      function loadnotUserRoles($User) {
-       $select = "select * from ent_role r where not exists (select * from ass_role2user ru where ru.RoleID = r.RoleID and
-                  ru.UserID = " . $User->getProperty('UserID') . ")";
-       $ORM = $this->__getORMapper();
-       return $ORM->loadObjectListByTextStatement('Role', $select);
+
+      /**
+      *  @public
+      *
+      *  Loads all roles, that are not assigned to a given user.
+      *
+      *  @param GenericDomainObject $user the user
+      *  @return GenericDomainObject[] $roles the role list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 27.12.2008<br />
+      */
+      function loadRolesNotWithUser(&$user){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // setup the criterion
+         $crit = new GenericCriterionObject();
+         $app = $this->__getCurrentApplication();
+         $crit->addRelationIndicator('Application2User',$app);
+
+         // load the user list
+         return $oRM->loadNotRelatedObjects($user,'Role2User',$crit);
+
+       // end function
       }
 
 
@@ -585,7 +865,7 @@
       *  Loads a list of users, that have a certail role.
       *
       *  @param GenericDomainObject $role the role, the users should have
-      *  @return array $users desired user list
+      *  @return GenericDomainObject[] $users desired user list
       *
       *  @author Christian Achatz
       *  @version
@@ -603,14 +883,14 @@
       *  Loads a list of users, that don't have the given role.
       *
       *  @param GenericDomainObject $role the role, the users should not have
-      *  @return array $users desired user list
+      *  @return GenericDomainObject[] $users desired user list
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 27.12.2008<br />
       *  Version 0.2, 28.12.2008 (Bugfix: criterion definition contained wrong relation indicator)<br />
       */
-      function loadUsersNotWithRole($role){
+      function loadUsersNotWithRole(&$role){
 
          $oRM = &$this->__getORMapper();
          $crit = new GenericCriterionObject();
@@ -628,20 +908,15 @@
       *  Loads the permissions associated with a permission set.
       *
       *  @param GenericDomainObject $permissionSet the permission set
-      *  @return array $permissions the list of permissions
+      *  @return GenericDomainObject[] $permissions the list of permissions
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 28.12.2008<br />
       */
-      function loadPermissionSetPermissions(&$permissionSet){
-
-         // get the mapper
+      function loadPermissionsOfPermissionSet(&$permissionSet){
          $oRM = &$this->__getORMapper();
-
-         // load the permissions
          return $oRM->loadRelatedObjects($permissionSet,'PermissionSet2Permission');
-
        // end function
       }
 
@@ -651,27 +926,16 @@
       *
       *  Detaches a user from a role.
       *
-      *  @param array $userID a user id
-      *  @param int $roleID the desired role to detach the user from
+      *  @param GenericDomainObject $user the user
+      *  @param GenericDomainObject $role the desired role to detach the user from
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 28.12.2008<br />
       */
-      function detachUserFromRole($userID,$roleID){
-
-         // get the mapper
+      function detachUserFromRole($user,$role){
          $oRM = &$this->__getORMapper();
-
-         // create the user
-         $user = new GenericDomainObject('User');
-         $user->setProperty('UserID',$userID);
-
-         // create the role and delete the association
-         $role = new GenericDomainObject('Role');
-         $role->setProperty('RoleID',$roleID);
          $oRM->deleteAssociation('Role2User',$role,$user);
-
        // end function
       }
 
@@ -681,17 +945,17 @@
       *
       *  Detaches users from a role.
       *
-      *  @param array $userIDs a list of user ids
-      *  @param int $roleID the desired role to detach the users from
+      *  @param GenericDomainObject[] $users a list of users
+      *  @param GenericDomainObject $role the desired role to detach the users from
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 28.12.2008<br />
       */
-      function detachUsersFromRole($userIDs,$roleID){
+      function detachUsersFromRole($users,$role){
 
-         for($i = 0; $i < count($userIDs); $i++){
-            $this->detachUserFromRole($userIDs[$i],$roleID);
+         for($i = 0; $i < count($users); $i++){
+            $this->detachUserFromRole($users[$i],$role);
           // end for
          }
 
@@ -704,27 +968,16 @@
       *
       *  Removes a user from the given groups.
       *
-      *  @param int $userID the id of the desired user
-      *  @param int $groupID the group id
+      *  @param GenericDomainObject $user the desired user
+      *  @param GenericDomainObject $group the group
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 26.12.2008<br />
       */
-      function removeUserFromGroup($userID,$groupID){
-
-         // get the mapper
+      function detachUserFromGroup($user,$group){
          $oRM = &$this->__getORMapper();
-
-         // create user
-         $user = new GenericDomainObject('User');
-         $user->setProperty('UserID',$userID);
-
-         // delete the association between user and group
-         $group = new GenericDomainObject('Group');
-         $group->setProperty('GroupID',$groupID);
          $oRM->deleteAssociation('Group2User',$user,$group);
-
        // end function
       }
 
@@ -734,62 +987,41 @@
       *
       *  Removes a user from the given groups.
       *
-      *  @param array $userIDs a list of user ids
-      *  @param int $groupID a group id
+      *  @param GenericDomainObject $user the desired user
+      *  @param GenericDomainObject[] $groups a list of groups
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 26.12.2008<br />
+      */
+      function detachUserFromGroups($user,$groups){
+
+         for($i = 0; $i < count($groups); $i++){
+            $this->detachUserFromGroup($user,$groups[$i]);
+          // end for
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Removes users from a given group.
+      *
+      *  @param GenericDomainObject[] $users a list of users
+      *  @param GenericDomainObject $group the desired group
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 27.12.2008<br />
       */
-      function removeUsersFromGroup($userIDs,$groupID){
+      function detachUsersFromGroup($users,$group){
 
-         // get the mapper
-         $oRM = &$this->__getORMapper();
-
-         // delete the association between user and group
-         $group = new GenericDomainObject('Group');
-         $group->setProperty('GroupID',$groupID);
-
-         for($i = 0; $i < count($userIDs); $i++){
-            $user = new GenericDomainObject('User');
-            $user->setProperty('UserID',$userIDs[$i]);
-            $oRM->deleteAssociation('Group2User',$user,$group);
+         for($i = 0; $i < count($users); $i++){
+            $this->detachUserFromGroup($users[$i],$group);
           // end for
-         }
-
-       // end function
-      }
-
-
-      /**
-      *  @public
-      *
-      *  Removes a user from the given groups.
-      *
-      *  @param int $userID the id of the desired user
-      *  @param array $groupIDs a list of group ids
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 26.12.2008<br />
-      */
-      function removeUserFromGroups($userID,$groupIDs){
-
-         // get the mapper
-         $oRM = &$this->__getORMapper();
-
-         // create user
-         $user = new GenericDomainObject('User');
-         $user->setProperty('UserID',$userID);
-
-         // delete the association between user and group
-         foreach($groupIDs as $groupID){
-
-            $group = new GenericDomainObject('Group');
-            $group->setProperty('GroupID',$groupID);
-            $oRM->deleteAssociation('Group2User',$user,$group);
-
-          // end foreach
          }
 
        // end function

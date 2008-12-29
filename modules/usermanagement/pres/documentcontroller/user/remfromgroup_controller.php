@@ -28,19 +28,19 @@
          $groupField = &$Form__Group->getFormElementByName('Groups[]');
          $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
          $userid = RequestHandler::getValue('userid');
-         $User = $uM->loadUserbyId($userid);
-         $Groups = $uM->loadUserGroups($User);
-         $count = count($Groups);
+         $user = $uM->loadUserbyId($userid);
+         $groups = $uM->loadGroupsWithUser($user);
+         $count = count($groups);
 
          if($count == 0){
-            $Template = $this->__getTemplate('NoMoreGroups');
-            $Template->transformOnPlace();
+            $template = $this->__getTemplate('NoMoreGroups');
+            $template->transformOnPlace();
             return true;
           // end if
          }
 
          for($i = 0; $i < $count; $i++){
-            $groupField->addOption($Groups[$i]->getProperty('DisplayName'),$Groups[$i]->getProperty('GroupID'));
+            $groupField->addOption($groups[$i]->getProperty('DisplayName'),$groups[$i]->getProperty('GroupID'));
           // end for
          }
 
@@ -48,14 +48,16 @@
 
             // read the groups from the form field
             $options = &$groupField->getSelectedOptions();
-            $groupIDs = array();
+            $newGroups = array();
             foreach($options as $option){
-               $groupIDs[] = $option->getAttribute('value');
+               $newGroup = new GenericDomainObject('Group');
+               $newGroup->setProperty('GroupID',$option->getAttribute('value'));
+               $newGroups[] = $newGroup;
+               unset($newGroup);
              // end foreach
             }
 
-            // detatch user from the groups
-            $uM->removeUserFromGroups($userid,$groupIDs);
+            $uM->detachUserFromGroups($user,$newGroups);
             HeaderManager::forward($this->__generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
 
           // end if

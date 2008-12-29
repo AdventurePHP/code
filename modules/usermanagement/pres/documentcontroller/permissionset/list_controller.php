@@ -33,6 +33,8 @@
             $template->setPlaceHolder('permissionset_details',$this->__generateLink(array('mainview' => 'permissionset','permissionsetview' => 'details','permissionsetid' => $id)));
             $template->setPlaceHolder('permissionset_edit',$this->__generateLink(array('mainview' => 'permissionset','permissionsetview' => 'edit','permissionsetid' => $id)));
             $template->setPlaceHolder('permissionset_delete',$this->__generateLink(array('mainview' => 'permissionset','permissionsetview' => 'delete','permissionsetid' => $id)));
+            $template->setPlaceHolder('permissionset_ass2role',$this->__generateLink(array('mainview' => 'permissionset','permissionsetview' => 'ass2role','permissionsetid' => $id)));
+            $template->setPlaceHolder('permissionset_detachfromrole',$this->__generateLink(array('mainview' => 'permissionset','permissionsetview' => 'detachfromrole','permissionsetid' => $id)));
             $template->setPlaceHolder('DisplayName',$permissionSet->getProperty('DisplayName'));
             $buffer .= $template->transformTemplate();
 

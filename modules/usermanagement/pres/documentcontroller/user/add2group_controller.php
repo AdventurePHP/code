@@ -22,6 +22,16 @@
       }
 
 
+      /**
+      *  @public
+      *
+      *  Displays the views to add a user to groups.
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 26.12.2008<br />
+      *  Version 0.2, 29.12.2008 (Applied API change of the usermanagement manager)<br />
+      */
       function transformContent(){
 
          // init the form and load the relevant groups
@@ -29,8 +39,8 @@
          $Form__Group = &$this->__getForm('Group');
          $Group = &$Form__Group->getFormElementByName('Group[]');
          $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
-         $User = $uM->loadUserById($userid);
-         $Groups = $uM->loadnotUserGroups($User);
+         $user = $uM->loadUserById($userid);
+         $Groups = $uM->loadGroupsNotWithUser($user);
          $count = count($Groups);
 
          // display a note, if there are no groups to add the user to
@@ -50,16 +60,19 @@
          // handle the click event
          if($Form__Group->get('isSent') && $Form__Group->get('isValid')){
 
-            $Options = &$Group->getSelectedOptions();
-            $count = count($Options);
+            $options = &$Group->getSelectedOptions();
+            $count = count($options);
 
-            $NewGroups = array();
+            $newGroups = array();
             for($i = 0; $i < $count; $i++){
-               $NewGroups[] = $Options[$i]->getAttribute('value');
+               $newGroup = new GenericDomainObject('Group');
+               $newGroup->setProperty('GroupID',$options[$i]->getAttribute('value'));
+               $newGroups[] = $newGroup;
+               unset($newGroup);
              // end for
             }
 
-            $uM->addUser2Groups($userid,$NewGroups);
+            $uM->assignUser2Groups($user,$newGroups);
             HeaderManager::forward($this->__generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
 
           // end if

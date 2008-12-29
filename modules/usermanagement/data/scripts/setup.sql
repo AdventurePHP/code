@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS `ent_application` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+
 CREATE TABLE IF NOT EXISTS `ent_user` (
   `UserID` INT(5) NOT NULL auto_increment,
   `DisplayName` VARCHAR(100) character set utf8 NOT NULL default '',
@@ -27,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `ent_user` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+
 CREATE TABLE IF NOT EXISTS `ent_group` (
   `GroupID` INT(5) NOT NULL auto_increment,
   `DisplayName` VARCHAR(100) character set utf8 NOT NULL default '',
@@ -36,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `ent_group` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+
 CREATE TABLE IF NOT EXISTS `ent_role` (
   `RoleID` INT(5) NOT NULL auto_increment,
   `DisplayName` VARCHAR(100) character set utf8 NOT NULL default '',
@@ -43,6 +46,7 @@ CREATE TABLE IF NOT EXISTS `ent_role` (
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`RoleID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 
 CREATE TABLE IF NOT EXISTS `ent_permission` (
@@ -56,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `ent_permission` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+
 CREATE TABLE IF NOT EXISTS `ent_permissionset` (
   `PermissionSetID` INT(5) NOT NULL auto_increment,
   `DisplayName` VARCHAR(100) character set utf8 NOT NULL default '',
@@ -63,6 +68,7 @@ CREATE TABLE IF NOT EXISTS `ent_permissionset` (
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`PermissionSetID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 
 CREATE TABLE IF NOT EXISTS `cmp_application2group` (
@@ -74,6 +80,7 @@ CREATE TABLE IF NOT EXISTS `cmp_application2group` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+
 CREATE TABLE IF NOT EXISTS `ass_group2user` (
   `ASSID` INT(5) NOT NULL auto_increment,
   `GroupID` INT(5) NOT NULL default '0',
@@ -81,6 +88,7 @@ CREATE TABLE IF NOT EXISTS `ass_group2user` (
   PRIMARY KEY  (`ASSID`),
   KEY `JOININDEX` (`GroupID`,`UserID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 
 CREATE TABLE IF NOT EXISTS `ass_role2user` (
@@ -92,6 +100,17 @@ CREATE TABLE IF NOT EXISTS `ass_role2user` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+
+CREATE TABLE IF NOT EXISTS `ass_role2permissionset` (
+  `ASSID` INT(5) NOT NULL auto_increment,
+  `RoleID` INT(5) NOT NULL default '0',
+  `PermissionSetID` INT(5) NOT NULL default '0',
+  PRIMARY KEY  (`ASSID`),
+  KEY `JOININDEX` (`RoleID`,`PermissionSetID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
 CREATE TABLE IF NOT EXISTS `cmp_application2user` (
   `CMPID` INT(5) NOT NULL auto_increment,
   `ApplicationID` INT(5) NOT NULL default '0',
@@ -99,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `cmp_application2user` (
   PRIMARY KEY  (`CMPID`),
   KEY `JOININDEX` (`ApplicationID`,`UserID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 
 CREATE TABLE IF NOT EXISTS `cmp_application2role` (
@@ -110,6 +130,7 @@ CREATE TABLE IF NOT EXISTS `cmp_application2role` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+
 CREATE TABLE IF NOT EXISTS `cmp_application2permissionset` (
   `CMPID` INT(5) NOT NULL auto_increment,
   `ApplicationID` INT(5) NOT NULL default '0',
@@ -117,6 +138,7 @@ CREATE TABLE IF NOT EXISTS `cmp_application2permissionset` (
   PRIMARY KEY  (`CMPID`),
   KEY `JOININDEX` (`ApplicationID`,`PermissionSetID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 
 CREATE TABLE IF NOT EXISTS `ass_permissionset2permission` (
@@ -128,6 +150,7 @@ CREATE TABLE IF NOT EXISTS `ass_permissionset2permission` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+
 CREATE TABLE IF NOT EXISTS `cmp_application2permission` (
   `CMPID` INT(5) NOT NULL auto_increment,
   `ApplicationID` INT(5) NOT NULL default '0',
@@ -135,3 +158,4 @@ CREATE TABLE IF NOT EXISTS `cmp_application2permission` (
   PRIMARY KEY  (`CMPID`),
   KEY `JOININDEX` (`ApplicationID`,`PermissionID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+

@@ -30,7 +30,7 @@
          $groupid = RequestHandler::getValue('groupid');
          $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
          $group = $uM->loadGroupById($groupid);
-         $users = $uM->loadGroupUsers($group);
+         $users = $uM->loadUsersWithGroup($group);
          $count = count($users);
 
          // display hint, if no user is assignet to this group

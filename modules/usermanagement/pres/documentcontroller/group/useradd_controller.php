@@ -22,6 +22,16 @@
       }
 
 
+      /**
+      *  @public
+      *
+      *  Displays the view to add users to a group.
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 27.12.2008<br />
+      *  Version 0.2, 29.12.2008 (Applied API change of the usermanagement manager)<br />
+      */
       function transformContent(){
 
          // initialize form
@@ -30,7 +40,7 @@
          $groupid = RequestHandler::getValue('groupid');
          $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
          $group = $uM->loadGroupById($groupid);
-         $users = $uM->loadUsersNotInGroup($group);
+         $users = $uM->loadUsersNotWithGroup($group);
          $count = count($users);
 
          // display hint, if group has associated all users
@@ -55,11 +65,14 @@
 
             $newUsers = array();
             for($i = 0; $i < $count; $i++){
-               $newUsers[] = $options[$i]->getAttribute('value');
+               $newUser = new GenericDomainObject('User');
+               $newUser->setProperty('UserID',$options[$i]->getAttribute('value'));
+               $newUsers[] = $newUser;
+               unset($newUser);
              // end for
             }
 
-            $uM->addUsers2Group($newUsers,$groupid);
+            $uM->assignUsers2Group($newUsers,$group);
             HeaderManager::forward($this->__generateLink(array('mainview' => 'group','groupview' => '','groupid' => '')));
 
           // end if

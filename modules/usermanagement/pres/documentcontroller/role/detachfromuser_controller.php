@@ -9,7 +9,7 @@
    *  @namespace modules::usermanagement::pres::documentcontroller
    *  @class detachfromuser_controller
    *
-   *  Implements the controller to assign a role to a user.
+   *  Implements the controller to detach a role from a user.
    *
    *  @author Christian Achatz
    *  @version
@@ -53,12 +53,15 @@
          if($Form__User->get('isSent') && $Form__User->get('isValid')){
 
             $options = &$user->getSelectedOptions();
-            $userIDs = array();
+            $newUsers = array();
             for($i = 0; $i< count($options); $i++){
-               $userIDs[] = $options[$i]->getAttribute('value');
+               $newUser = new GenericDomainObject('User');
+               $newUser->setProperty('UserID',$options[$i]->getAttribute('value'));
+               $newUsers[] = $newUser;
+               unset($newUser);
              // end for
             }
-            $uM->detachUsersFromRole($userIDs,$roleid);
+            $uM->detachUsersFromRole($newUsers,$role);
             HeaderManager::forward($this->__generateLink(array('mainview' => 'role', 'roleview' => '','roleid' => '')));
 
           // end if

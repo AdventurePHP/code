@@ -35,13 +35,13 @@
          $Template__User->transformOnPlace();
 
          // display groups
-         $Groups = $uM->loadUserGroups($User);
+         $Groups = $uM->loadGroupsWithUser($User);
          $Iterator__Groups = &$this->__getIterator('Groups');
          $Iterator__Groups->fillDataContainer($Groups);
          $Iterator__Groups->transformOnPlace();
 
          // display roles
-         $Roles = $uM->loadUserRoles($User);
+         $Roles = $uM->loadRolesWithUser($User);
          $Iterator__Roles = &$this->__getIterator('Roles');
          $Iterator__Roles->fillDataContainer($Roles);
          $Iterator__Roles->transformOnPlace();
