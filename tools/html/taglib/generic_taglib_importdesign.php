@@ -19,6 +19,9 @@
    *  -->
    */
 
+   import('core::frontcontroller','Frontcontroller');
+
+
    /**
    *  @class generic_taglib_importdesign
    *
@@ -35,7 +38,13 @@
    *              namespaceparam=""
    *              templateparam=""
    *              [getmethod=""]
-   *  &gt;</pre>
+   *              [dependentactionnamespace="action::namespace"
+   *              dependentactionname="ActionName"
+   *              [dependentactionparams="param1:value1|param2:value2"]]
+   *  /&gt;</pre>
+   *  The dependentaction* params can be used to register a dependent action to the front controller.
+   *  This optional mechanism can be used to have an action registered, that is used for navigation
+   *  purposes (aka click on link displays the start page instead of the module's view).
    *
    *  @author Christian Achatz
    *  @version
@@ -69,6 +78,7 @@
       *  @version
       *  Version 0.1, 30.10.2008<br />
       *  Version 0.2, 01.11.2008 (Added the modelmode and getmethode params)<br />
+      *  Version 0.3, 29.12.2208 (Added the dependent action options)<br />
       */
       function onParseTime(){
 
@@ -124,6 +134,42 @@
          $getMethod = $this->getAttribute('getmethod');
          if($getMethod === null){
             $getMethod = 'getAttribute';
+          // end if
+         }
+
+         // register dependent action (needed, if the action is used for navigation purposes)
+         $depact_namespace = $this->getAttribute('dependentactionnamespace');
+         $depact_name = $this->getAttribute('dependentactionname');
+         $depact_params = $this->getAttribute('dependentactionparams');
+
+         if($depact_namespace !== null && $depact_name !== null){
+
+            // create param list
+            $actionParamList = array();
+            if($depact_params !== null){
+
+               $paramPieces = explode('|',$depact_params);
+
+               foreach($paramPieces as $piece){
+                  $temp = explode(':',$piece);
+                  if(isset($temp[1])){
+                     $actionParamList[trim($temp[0])] = trim($temp[1]);
+                   // end if
+                  }
+                // end for
+               }
+
+             // end if
+            }
+
+            // register action with the front controller
+            $fC = &Singleton::getInstance('Frontcontroller');
+            $action = &$fC->getActionByName($depact_name);
+            if($action === null){
+               $fC->addAction($depact_namespace,$depact_name,$actionParamList);
+             // end if
+            }
+
           // end if
          }
 
