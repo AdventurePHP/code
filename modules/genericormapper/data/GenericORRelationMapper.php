@@ -342,10 +342,18 @@
       *  Version 0.4, 25.06.2008 (Added a third parameter to have influence on the loaded list)<br />
       *  Version 0.4, 26.06.2008 (Some changes to the statement creation)<br />
       *  Version 0.5, 25.10.2008 (Added the additional relation option via the criterion object)<br />
+      *  Version 0.6, 29.12.2008 (Added check, if given object is null)<br />
       */
       function loadRelatedObjects(&$object,$relationName,$criterion = null){
 
-         // Gather information about the objects related to each other
+         // check if object is present
+         if($object === null){
+            trigger_error('[GenericORRelationMapper::loadRelatedObjects()] The given object is null. Perhaps the object does not exist in database any more. Please check your implementation!');
+            return null;
+          // end if
+         }
+
+         // gather information about the objects related to each other
          $objectName = $object->get('ObjectName');
          $sourceObject = $this->__MappingTable[$objectName];
          $targetObjectName = $this->__getRelatedObjectNameByRelationName($objectName,$relationName);
@@ -427,8 +435,16 @@
       *  @version
       *  Version 0.1, 23.10.2008<br />
       *  Version 0.2, 25.10.2008 (Added additional where and relation clauses. Bugfix to the inner relation statement.)<br />
+      *  Version 0.3, 29.12.2008 (Added check, if given object is null)<br />
       */
       function loadNotRelatedObjects(&$object,$relationName,$criterion = null){
+
+         // check if object is present
+         if($object === null){
+            trigger_error('[GenericORRelationMapper::loadNotRelatedObjects()] The given object is null. Perhaps the object does not exist in database any more. Please check your implementation!');
+            return null;
+          // end if
+         }
 
          // gather information about the objects *not* related to each other
          $objectName = $object->get('ObjectName');
