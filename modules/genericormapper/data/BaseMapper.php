@@ -33,6 +33,7 @@
    *  Version 0.1, 26.04.2008<br />
    *  Version 0.2, 14.05.2008<br />
    *  Version 0.3, 26.10.2008 (Added the addMappingConfiguration() and addRelationConfiguration() methods)<br />
+   *  Version 0.4, 30.12.2008 (Prettified the benchmark ids)<br />
    */
    class BaseMapper extends coreObject
    {
@@ -128,7 +129,7 @@
 
          // invoke benchmark timer
          $T = &Singleton::getInstance('BenchmarkTimer');
-         $T->start('__createMappingTable()');
+         $T->start('BaseMapper::__createMappingTable()');
 
          // get object configuration
          $ObjectsConfig = &$this->__getConfiguration($this->__ConfigNamespace,$this->__ConfigNameAffix.'_objects');
@@ -143,7 +144,7 @@
          }
 
          // stop timer
-         $T->stop('__createMappingTable()');
+         $T->stop('BaseMapper::__createMappingTable()');
 
        // end function
       }
@@ -165,7 +166,7 @@
 
          // Invoke benchmark timer
          $T = &Singleton::getInstance('BenchmarkTimer');
-         $T->start('__createRelationTable()');
+         $T->start('BaseMapper::__createRelationTable()');
 
          // Get relation configuration
          $RelationsConfig = &$this->__getConfiguration($this->__ConfigNamespace,$this->__ConfigNameAffix.'_relations');
@@ -180,7 +181,7 @@
          }
 
          // Stop timer
-         $T->stop('__createRelationTable()');
+         $T->stop('BaseMapper::__createRelationTable()');
 
        // end function
       }
@@ -202,7 +203,7 @@
 
          // Invoke benchmark timer
          $T = &Singleton::getInstance('BenchmarkTimer');
-         $T->start('addMappingConfiguration()');
+         $T->start('BaseMapper::addMappingConfiguration()');
 
          // add config, if not already included
          $cacheKey = md5($configNamespace.$configNameAffix.'_objects');
@@ -228,7 +229,7 @@
          }
 
          // Stop timer
-         $T->stop('addMappingConfiguration()');
+         $T->stop('BaseMapper::addMappingConfiguration()');
 
        // end function
       }
@@ -250,7 +251,7 @@
 
          // Invoke benchmark timer
          $T = &Singleton::getInstance('BenchmarkTimer');
-         $T->start('addRelationConfiguration()');
+         $T->start('BaseMapper::addRelationConfiguration()');
 
          // add config, if not already included
          $cacheKey = md5($configNamespace.$configNameAffix.'_relations');
@@ -276,7 +277,7 @@
          }
 
          // Stop timer
-         $T->stop('addRelationConfiguration()');
+         $T->stop('BaseMapper::addRelationConfiguration()');
 
        // end function
       }
