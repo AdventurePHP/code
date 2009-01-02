@@ -52,7 +52,7 @@
          $GroupID = &$Form__Edit->getFormElementByName('roleid');
          $GroupID->setAttribute('value',$roleid);
 
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
 
          if($Form__Edit->get('isSent') == true){
 

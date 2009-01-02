@@ -50,7 +50,7 @@
          $GroupID = &$Form__Edit->getFormElementByName('groupid');
          $GroupID->setAttribute('value',$groupid);
 
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
 
          if($Form__Edit->get('isSent') == true){
 

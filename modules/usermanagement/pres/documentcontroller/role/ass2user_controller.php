@@ -60,7 +60,7 @@
          // initialize the form
          $Form__User = &$this->__getForm('User');
          $user = &$Form__User->getFormElementByName('User[]');
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $role = $uM->loadRoleById($roleid);
          $users = $uM->loadUsersNotWithRole($role);
          $count = count($users);

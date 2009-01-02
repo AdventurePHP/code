@@ -45,7 +45,7 @@
       function transformContent(){
 
          $permissionid = RequestHandler::getValue('permissionid');
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $Permission = $uM->loadPermissionByID($permissionid);
          $this->setPlaceHolder('DisplayName',$Permission->getProperty('DisplayName'));
 

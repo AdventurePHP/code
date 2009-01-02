@@ -43,7 +43,7 @@
       function transformContent(){
 
          // load data
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $roleid = RequestHandler::getValue('roleid');
          $role = $uM->loadRoleByID($roleid);
 

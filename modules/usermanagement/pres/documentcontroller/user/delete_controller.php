@@ -45,7 +45,7 @@
       function transformContent(){
 
          $userid = RequestHandler::getValue('userid');
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $User = $uM->loadUserById($userid);
          $this->setPlaceHolder('DisplayName', $User->getProperty('DisplayName'));
          $Form__No = &$this->__getForm('UserDelNo');

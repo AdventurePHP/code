@@ -48,7 +48,7 @@
          $groupid = RequestHandler::getValue('groupid');
 
          // load the current group and print the display name
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $Group = $uM->loadGroupByID($groupid);
          $this->setPlaceHolder('DisplayName', $Group->getProperty('DisplayName'));
 

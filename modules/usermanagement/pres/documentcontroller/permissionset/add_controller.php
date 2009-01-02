@@ -44,7 +44,7 @@
       function transformContent(){
 
          // initialize the form
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $Form__Add = &$this->__getForm('PermissionSetAdd');
 
          // prefill the multiselect field

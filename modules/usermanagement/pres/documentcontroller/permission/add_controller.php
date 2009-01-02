@@ -44,7 +44,7 @@
 
       function transformContent(){
 
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
 
          $Form__PermissionAdd = &$this->__getForm('PermissionAdd');
 

@@ -43,7 +43,69 @@
       var $__ApplicationID = 1;
 
 
+      /**
+      *  @private
+      *  Indicates the database connection key.
+      */
+      var $__ConnectionKey = null;
+
+
+      /**
+      *  @private
+      *  Defines the service mode of the generic or mapper.
+      */
+      var $__ServiceMode = 'SESSIONSINGLETON';
+
+
+      /**
+      *  @private
+      *  indicates, if the component is already initialized.
+      */
+      var $__IsInitialized = false;
+
+
       function umgtManager(){
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Implements the init() method for the service manager. Initializes the connection key.
+      *
+      *  @param string $connectionKey the desired connection key
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 30.12.2008<br />
+      */
+      function init($configKey){
+
+         if($this->__IsInitialized === false){
+
+            // setup the component
+            $config = &$this->__getConfiguration('modules::usermanagement','umgtconfig');
+
+            $appID = $config->getValue($configKey,'ApplicationID');
+            if($appID !== null){
+               $this->__ApplicationID = $appID;
+             // end if
+            }
+
+            $serviceMode = $config->getValue($configKey,'ServiceMode');
+            if($serviceMode !== null){
+               $this->__ServiceMode = $serviceMode;
+             // end if
+            }
+            $this->__ConnectionKey = $config->getValue($configKey,'ConnectionKey');
+
+            // set to initialized
+            $this->__IsInitialized = true;
+
+          // end if
+         }
+
+       // end function
       }
 
 
@@ -83,7 +145,7 @@
          $ORMFactory = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
 
          // return mapper instance
-         return $ORMFactory->getGenericORMapper('modules::usermanagement','umgt','usermanagement_test','SESSIONSINGLETON');
+         return $ORMFactory->getGenericORMapper('modules::usermanagement','umgt',$this->__ConnectionKey,$this->__ServiceMode);
 
        // end function
       }
@@ -100,12 +162,25 @@
       *  @version
       *  Version 0.1, 15.06.2008<br />
       */
-      function saveUser($User){
+      function saveUser($user){
+
+         // get the mapper
          $oRM = &$this->__getORMapper();
-         $App = $this->__getCurrentApplication();
-         $User->setProperty('DisplayName',$User->getProperty('LastName').', '.$User->getProperty('FirstName'));
-         $App->addRelatedObject('Application2User',$User);
-         $oRM->saveObject($App);
+
+         // setup the composition
+         $app = $this->__getCurrentApplication();
+         $user->setProperty('DisplayName',$user->getProperty('LastName').', '.$user->getProperty('FirstName'));
+         $app->addRelatedObject('Application2User',$user);
+
+         // handle password
+         if($user->getProperty('Password') !== null){
+            $user->setProperty('Password',md5($user->getProperty('Password')));
+          // end if
+         }
+
+         // save object
+         $oRM->saveObject($app);
+
        // end function
       }
 
@@ -361,6 +436,104 @@
       /**
       *  @public
       *
+      *  Returns a user domain object by it'd username and password.
+      *
+      *  @param string $username the user's username
+      *  @param string $password the user's password
+      *  @return GenericDomainObject $user the user domain object or null
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 30.12.2008<br />
+      *  Version 0.2, 02.01.2009 (Added sql injection security)<br />
+      */
+      function loadUserByUsernameAndPassword($username,$password){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // escape the input values
+         $dbDriver = &$oRM->getByReference('DBDriver');
+         $username = $dbDriver->escapeValue($username);
+         $password = $dbDriver->escapeValue($password);
+
+         // create the statement and select user
+         $select = 'SELECT * FROM ent_user WHERE Username = \''.$username.'\' AND Password = MD5(\''.$password.'\');';
+         return $oRM->loadObjectByTextStatement('User',$select);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns a user domain object by it'd email and password.
+      *
+      *  @param string $email the user's email
+      *  @param string $password the user's password
+      *  @return GenericDomainObject $user the user domain object or null
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      *  Version 0.2, 02.01.2009 (Added sql injection security)<br />
+      */
+      function loadUserByEMailAndPassword($email,$password){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // escape the input values
+         $dbDriver = &$oRM->getByReference('DBDriver');
+         $email = $dbDriver->escapeValue($email);
+         $password = $dbDriver->escapeValue($password);
+
+         // create the statenent and select user
+         $select = 'SELECT * FROM ent_user WHERE EMail = \''.$email.'\' AND Password = MD5(\''.$password.'\');';
+         return $oRM->loadObjectByTextStatement('User',$select);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns a list of Permission domain objects for the given user.
+      *
+      *  @param GenericDomainObject $user the user object
+      *  @return GenericDomainObject[] $permissions the user's permissions
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      *  Version 0.2, 02.01.2009 (Implemented the method)<br />
+      */
+      function loadUserPermissions(&$user){
+
+         // build select statement
+         $select = 'SELECT `ent_permission`.* FROM `ent_permission`
+                    INNER JOIN ass_permissionset2permission ON ent_permission.PermissionID = ass_permissionset2permission.PermissionID
+                    INNER JOIN ent_permissionset ON ass_permissionset2permission.PermissionSetID = ent_permissionset.PermissionSetID
+                    INNER JOIN ass_role2permissionset ON ent_permissionset.PermissionSetID = ass_role2permissionset.PermissionSetID
+                    INNER JOIN ent_role ON ass_role2permissionset.RoleID = ent_role.RoleID
+                    INNER JOIN ass_role2user ON ent_role.RoleID = ass_role2user.RoleID
+                    INNER JOIN ent_user ON ass_role2user.UserID = ent_user.UserID
+                    WHERE ent_user.UserID = \''.$user->getProperty('UserID').'\'
+                    GROUP BY `ent_permission`.`PermissionID`;';
+
+         // load permissions
+         $oRM = &$this->__getORMapper();
+         return $oRM->loadObjectListByTextStatement('Permission',$select);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
       *  Returns a group domain object.
       *
       *  @param int $groupID id of the desired group
@@ -547,7 +720,7 @@
       /**
       *  @public
       *
-      *  Associates a given permission set to a list of roles.
+      *  Removes a given permission set from a list of roles.
       *
       *  @param GenericDomainObject $permissionSet the desiried permission set
       *  @param GenericDomainObject[] $roles the roles, that have to be associated
@@ -795,10 +968,11 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 29.12.2008<br />
+      *  Version 0.2, 30.12.2008 (Removed null pointer typo)<br />
       */
       function loadUsersWithGroup(&$group){
          $oRM = &$this->__getORMapper();
-         return $oRM->loadRelatedObjects($Group,'Group2User');
+         return $oRM->loadRelatedObjects($group,'Group2User');
        // end function
       }
 

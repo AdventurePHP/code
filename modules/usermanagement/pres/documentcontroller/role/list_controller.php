@@ -42,7 +42,7 @@
       function transformContent(){
 
          // load role list
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $roleList = $uM->getPagedRoleList();
 
          // display list

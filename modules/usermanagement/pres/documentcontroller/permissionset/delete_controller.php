@@ -50,7 +50,7 @@
          // initialize the forms
          $Form__No = &$this->__getForm('PermissionSetDelNo');
          $Form__Yes = &$this->__getForm('PermissionSetDelYes');
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $permissionSet = $uM->loadPermissionSetByID($permissionSetId);
          $this->setPlaceHolder('DisplayName',$permissionSet->getProperty('DisplayName'));
 

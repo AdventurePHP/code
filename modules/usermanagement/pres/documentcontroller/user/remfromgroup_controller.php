@@ -46,7 +46,7 @@
 
          $Form__Group = &$this->__getForm('Group');
          $groupField = &$Form__Group->getFormElementByName('Groups[]');
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $userid = RequestHandler::getValue('userid');
          $user = $uM->loadUserbyId($userid);
          $groups = $uM->loadGroupsWithUser($user);

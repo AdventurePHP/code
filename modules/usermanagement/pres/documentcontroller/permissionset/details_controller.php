@@ -54,7 +54,7 @@
       function transformContent(){
 
          // load data
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $permissionSetId = RequestHandler::getValue('permissionsetid');
          $permissionSet = $uM->loadPermissionSetByID($permissionSetId);
 

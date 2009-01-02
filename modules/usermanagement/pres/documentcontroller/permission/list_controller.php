@@ -43,7 +43,7 @@
       function transformContent(){
 
          // load the permission list
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $permissionList = $uM->getPagedPermissionList();
 
          // display list

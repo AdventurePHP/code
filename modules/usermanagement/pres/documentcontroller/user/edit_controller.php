@@ -42,33 +42,79 @@
       }
 
 
+      /**
+      *  @public
+      *
+      *  Displays and handles the user edit form.
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 26.12.2008<br />
+      *  Version 0.2, 02.01.2009 (Added the password fields handling)<br />
+      */
       function transformContent(){
 
+         // get the userid from the request
          $userid = RequestHandler::getValue('userid');
 
+         // setup the form
          $Form__Edit = &$this->__getForm('UserForm');
-         $UserID = &$Form__Edit->getFormElementByName('userid');
-         $UserID->setAttribute('value',$userid);
+         $fieldUserId = &$Form__Edit->getFormElementByName('userid');
+         $fieldUserId->setAttribute('value',$userid);
 
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         // get the manager
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
 
          if($Form__Edit->get('isSent') == true){
 
             if($Form__Edit->get('isValid') == true){
 
-               $Fields = &$Form__Edit->getFormElementsByTagName('form:text');
+               // setup the domain object
+               $user = new GenericDomainObject('User');
+               $user->setProperty('UserID',$userid);
 
-               $User = new GenericDomainObject('User');
-               $User->setProperty('UserID',$userid);
+               // read the "normal" fields
+               $textFields = &$Form__Edit->getFormElementsByTagName('form:text');
 
-               $fieldcount = count($Fields);
-               for($i = 0; $i < $fieldcount; $i++){
-                  $User->setProperty($Fields[$i]->getAttribute('name'),$Fields[$i]->getAttribute('value'));
+               for($i = 0; $i < count($textFields); $i++){
+                  $user->setProperty($textFields[$i]->getAttribute('name'),$textFields[$i]->getAttribute('value'));
                 // end for
                }
 
-               $uM->saveUser($User);
-               HeaderManager::forward($this->__generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
+               // read the password field
+               $passField1 = &$Form__Edit->getFormElementByName('Password');
+               $passField2 = &$Form__Edit->getFormElementByName('Password2');
+               $pass1 = $passField1->getAttribute('value');
+               $pass2 = $passField2->getAttribute('value');
+
+               if(!empty($pass1)){
+
+                  if($pass1 !== $pass2){
+                     $Form__Edit->set('isValid',false);
+                     $passField1->addAttribute('style','border: 2px solid red;');
+                     $passField2->addAttribute('style','border: 2px solid red;');
+                     $this->setPlaceHolder('UserEdit',$Form__Edit->transformForm());
+                   // end if
+                  }
+                  else{
+
+                     // add the password to the object
+                     $user->setProperty('Password',$pass2);
+
+                     // save the user
+                     $uM->saveUser($user);
+                     HeaderManager::forward($this->__generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
+
+                   // end else
+                  }
+
+                // end if
+               }
+               else{
+                  $uM->saveUser($user);
+                  HeaderManager::forward($this->__generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
+                // end else
+               }
 
              // end if
             }
@@ -82,38 +128,35 @@
          else{
 
             // load user
-            $User = $uM->loadUserByID($userid);
+            $user = $uM->loadUserByID($userid);
 
             // prefill form
             $FirstName = &$Form__Edit->getFormElementByName('FirstName');
-            $FirstName->setAttribute('value',$User->getProperty('FirstName'));
+            $FirstName->setAttribute('value',$user->getProperty('FirstName'));
 
             $LastName = &$Form__Edit->getFormElementByName('LastName');
-            $LastName->setAttribute('value',$User->getProperty('LastName'));
+            $LastName->setAttribute('value',$user->getProperty('LastName'));
 
             $StreetName = &$Form__Edit->getFormElementByName('StreetName');
-            $StreetName->setAttribute('value',$User->getProperty('StreetName'));
+            $StreetName->setAttribute('value',$user->getProperty('StreetName'));
 
             $StreetNumber = &$Form__Edit->getFormElementByName('StreetNumber');
-            $StreetNumber->setAttribute('value',$User->getProperty('StreetNumber'));
+            $StreetNumber->setAttribute('value',$user->getProperty('StreetNumber'));
 
             $ZIPCode = &$Form__Edit->getFormElementByName('ZIPCode');
-            $ZIPCode->setAttribute('value',$User->getProperty('ZIPCode'));
+            $ZIPCode->setAttribute('value',$user->getProperty('ZIPCode'));
 
             $City = &$Form__Edit->getFormElementByName('City');
-            $City->setAttribute('value',$User->getProperty('City'));
+            $City->setAttribute('value',$user->getProperty('City'));
 
             $EMail = &$Form__Edit->getFormElementByName('EMail');
-            $EMail->setAttribute('value',$User->getProperty('EMail'));
+            $EMail->setAttribute('value',$user->getProperty('EMail'));
 
             $Mobile = &$Form__Edit->getFormElementByName('Mobile');
-            $Mobile->setAttribute('value',$User->getProperty('Mobile'));
+            $Mobile->setAttribute('value',$user->getProperty('Mobile'));
 
-            $Username = &$Form__Edit->getFormElementByName('Username');
-            $Username->setAttribute('value',$User->getProperty('Username'));
-
-            $Password = &$Form__Edit->getFormElementByName('Password');
-            $Password->setAttribute('value',$User->getProperty('Password'));
+            $username = &$Form__Edit->getFormElementByName('Username');
+            $username->setAttribute('value',$user->getProperty('Username'));
 
             // display form
             $this->setPlaceHolder('UserEdit',$Form__Edit->transformForm());

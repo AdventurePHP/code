@@ -44,7 +44,7 @@
 
          $T = &Singleton::getInstance('benchmarkTimer');
          $T->start('getPagedUserList()');
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $userList = $uM->getPagedUserList();
          $T->stop('getPagedUserList()');
 

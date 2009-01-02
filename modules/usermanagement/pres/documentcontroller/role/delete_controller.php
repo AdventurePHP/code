@@ -45,7 +45,7 @@
       function transformContent(){
 
          $roleid = RequestHandler::getValue('roleid');
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $Role = $uM->loadRoleById($roleid);
          $this->sph('DisplayName', $Role->getProperty('DisplayName'));
 

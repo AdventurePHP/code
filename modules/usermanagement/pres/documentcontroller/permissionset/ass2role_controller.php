@@ -50,7 +50,7 @@
          // initialize the form
          $Form__Role = &$this->__getForm('Role');
          $role = &$Form__Role->getFormElementByName('Role[]');
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $permissionSet = $uM->loadPermissionSetByID($permissionSetId);
          $roles = $uM->loadRolesNotWithPermissionSet($permissionSet);
          $count = count($roles);

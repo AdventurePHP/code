@@ -43,19 +43,19 @@
       function transformContent(){
 
          // load data
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $groupid = RequestHandler::getValue('groupid');
-         $Group = $uM->loadGroupByID($groupid);
+         $group = $uM->loadGroupByID($groupid);
 
          // display user data
          $Template__User = &$this->__getTemplate('Group');
-         $Template__User->setPlaceHolder('DisplayName',$Group->getProperty('DisplayName'));
+         $Template__User->setPlaceHolder('DisplayName',$group->getProperty('DisplayName'));
          $Template__User->transformOnPlace();
 
          // display users
-         $Users = $uM->loadUsersWithGroup($Group);
+         $users = $uM->loadUsersWithGroup($group);
          $Iterator__Users = &$this->__getIterator('Users');
-         $Iterator__Users->fillDataContainer($Users);
+         $Iterator__Users->fillDataContainer($users);
          $Iterator__Users->transformOnPlace();
 
        // end function

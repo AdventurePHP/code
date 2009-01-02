@@ -47,7 +47,7 @@
          if($Form__Add->get('isSent') == true && $Form__Add->get('isValid') == true){
 
             // get the business object
-            $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+            $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
 
             // get the form element's value
             $displayName = &$Form__Add->getFormElementByName('DisplayName');

@@ -46,7 +46,7 @@
          $Form__Add = &$this->__getForm('RoleAdd');
          if($Form__Add->get('isSent') == true && $Form__Add->get('isValid') == true){
 
-            $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+            $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
             $Role = new GenericDomainObject('Role');
 
             $displayName = &$Form__Add->getFormElementByName('DisplayName');

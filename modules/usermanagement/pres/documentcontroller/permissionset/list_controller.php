@@ -42,7 +42,7 @@
 
       function transformContent(){
 
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $permissionSetList = $uM->getPagedPermissionSetList();
          $buffer = (string)'';
          $template = &$this->__getTemplate('PermissionSet');

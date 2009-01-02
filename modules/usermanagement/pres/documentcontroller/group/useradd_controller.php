@@ -58,7 +58,7 @@
          $Form__User = &$this->__getForm('User');
          $user = &$Form__User->getFormElementByName('User[]');
          $groupid = RequestHandler::getValue('groupid');
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $group = $uM->loadGroupById($groupid);
          $users = $uM->loadUsersNotWithGroup($group);
          $count = count($users);

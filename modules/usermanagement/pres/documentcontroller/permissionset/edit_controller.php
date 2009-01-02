@@ -51,7 +51,7 @@
          $PermissionSetID->setAttribute('value',$permissionsetid);
 
          // prefill the multiselect field
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $permSet = new GenericDomainObject('PermissionSet');
          $permSet->setProperty('PermissionSetID',$permissionsetid);
          $allPermissions = $uM->loadPermissionList();

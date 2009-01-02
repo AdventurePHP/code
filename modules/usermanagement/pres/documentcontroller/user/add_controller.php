@@ -63,7 +63,7 @@
                                                          )
                                                    );
 
-            $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+            $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
             $user = new GenericDomainObject('User');
 
             foreach($FormValues as $Key => $Value){

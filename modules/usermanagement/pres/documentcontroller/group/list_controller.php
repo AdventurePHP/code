@@ -42,7 +42,7 @@
       function transformContent(){
 
          // load group list
-         $uM = &$this->__getServiceObject('modules::usermanagement::biz','umgtManager');
+         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $GroupList = $uM->getPagedGroupList();
 
          // display group list
