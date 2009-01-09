@@ -73,9 +73,9 @@
       *  Setups the database. Uses the connectionManager, hence a valid database connection is required.
       *  If the third parameter ($ConnectionName) is left blank, the statements are displayed only.
       *
-      *  @param string $ConfigNamespace; namespace, where the desired mapper configuration is located
-      *  @param string $ConfigNameAffix; name affix of the object and relation definition files
-      *  @param string $ConnectionName; name of the connection, that the mapper should use to acces the database
+      *  @param string $ConfigNamespace namespace, where the desired mapper configuration is located
+      *  @param string $ConfigNameAffix name affix of the object and relation definition files
+      *  @param string $ConnectionName name of the connection, that the mapper should use to acces the database
       *
       *  @author Christian Achatz
       *  @version
@@ -147,12 +147,13 @@
       *
       *  Creates the setup statements for the object persistance.<br />
       *
-      *  @return string $Setup; sql setup script
+      *  @return string $Setup sql setup script
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       *  Version 0.2, 31.05.2008 (Code completed and refactored due to changes on the mapping table)<br />
+      *  Version 0.3, 09.12.2008 (Replaced TINYINT by INT)<br />
       */
       function __generateObjectLayout(){
 
@@ -167,7 +168,7 @@
             $create = 'CREATE TABLE IF NOT EXISTS `'.$Attributes['Table'].'` ('.PHP_EOL;
 
             // id row
-            $create .= '  `'.$Attributes['ID'].'` TINYINT(5) NOT NULL auto_increment,'.PHP_EOL;
+            $create .= '  `'.$Attributes['ID'].'` INT(5) NOT NULL auto_increment,'.PHP_EOL;
 
             // object properties
             foreach($Attributes as $Key => $Value){
@@ -207,11 +208,12 @@
       *
       *  Creates the setup statements for the relation persistence.<br />
       *
-      *  @return string $Setup; sql setup script
+      *  @return string $Setup sql setup script
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 31.05.2008<br />
+      *  Version 0.2, 09.12.2008 (Replaced TINYINT by INT)<br />
       */
       function __generateRelationLayout(){
 
@@ -234,13 +236,13 @@
                $PKName = 'ASSID';
              // end if
             }
-            $create .= '  `'.$PKName.'` TINYINT(5) NOT NULL auto_increment,'.PHP_EOL;
+            $create .= '  `'.$PKName.'` INT(5) NOT NULL auto_increment,'.PHP_EOL;
 
             // source id
-            $create .= '  `'.$Attributes['SourceID'].'` TINYINT(5) NOT NULL default \'0\','.PHP_EOL;
+            $create .= '  `'.$Attributes['SourceID'].'` INT(5) NOT NULL default \'0\','.PHP_EOL;
 
             // target id
-            $create .= '  `'.$Attributes['TargetID'].'` TINYINT(5) NOT NULL default \'0\','.PHP_EOL;
+            $create .= '  `'.$Attributes['TargetID'].'` INT(5) NOT NULL default \'0\','.PHP_EOL;
 
             // indices
             $create .= '  PRIMARY KEY  (`'.$PKName.'`),'.PHP_EOL;

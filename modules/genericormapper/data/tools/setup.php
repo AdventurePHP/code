@@ -19,28 +19,28 @@
    *  -->
    */
 
-   // PageController einbinden
+   // include page controller
    require('../../apps/core/pagecontroller/pagecontroller.php');
 
-   // Ggf. Werte der Registry anpassen
+   // configure the registry if desired
    $Reg = &Singleton::getInstance('Registry');
    $Reg->register('apf::core','Environment',{ENVIRONMENT});
 
-   // SetupMapper einbinden
+   // include SetupMapper
    import('modules::genericormapper::data::tools','GenericORMapperSetup');
 
-   // SetupMapper instanziieren
+   // create SetupMapper
    $SetupMapper = new GenericORMapperSetup();
 
-   // Context der Applikation bekannt geben (wichtig f&uuml;r die Konfigurationsdateien!)
+   // set Context (important for the configuration files!)
    $SetupMapper->set('Context',{CONTEXT});
 
-   // Ggf. MySQL Storage-Engine anpassen (Standard is MyISAM)
+   // adapt storage engine (default is MyISAM)
    $SetupMapper->set('StorageEngine','...');
 
-   // Datenbanklayout erstellen
+   // create database layout
    $SetupMapper->setupDatabase({CONFIG_NAMESPACE},{CONFIG_NAME_AFFIX},{CONNECTION_NAME});
 
-   // Datenbanklayout lediglich anzeigen
+   // display database only
    $SetupMapper->setupDatabase({CONFIG_NAMESPACE},{CONFIG_NAME_AFFIX});
 ?>

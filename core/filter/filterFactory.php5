@@ -86,7 +86,7 @@
       *  Version 0.1, 08.06.2007<br />
       *  Version 0.2, 13.08.2008 (Removed unused code)<br />
       */
-      static function getFilter($Namespace,$FilterName){
+      function getFilter($Namespace,$FilterName){
 
          // Prüfen, ob Filter vorhanden
          if(file_exists(APPS__PATH.'/'.str_replace('::','/',$Namespace).'/'.$FilterName.'.php')){
