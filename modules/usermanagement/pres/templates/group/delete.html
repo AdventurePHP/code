@@ -1,0 +1,11 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::group" file="delete_controller" class="delete_controller" @>
+Should this group really be deleted?
+<br />
+<br />
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:form name="GroupDelNo" method="post">
+  <form:button name="No" value="No" class="formfield"/>
+</html:form>
+<html:form name="GroupDelYes" method="post">
+  <form:button name="Yes" value="Yes" class="formfield"/>
+</html:form>
