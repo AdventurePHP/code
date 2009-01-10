@@ -75,7 +75,7 @@
       *
       *  Retrieves the desired values from the request. If one request offset does not exist, the
       *  given default value or null is taken. Usage:
-      *  <pre>$value = RequestHandler::getValues(array('foo' => 'bar','baz'));</pre>
+      *  <pre>$values = RequestHandler::getValues(array('foo' => 'bar','baz'));</pre>
       *
       *  @param array $namesWithDefaults an input array with names and default values
       *  @return array $values the desired values
