@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -73,17 +73,25 @@
       *
       *  Load an object list by a given criterion object.<br />
       *
-      *  @param string $ObjectName name of the desired objects
-      *  @param GenericCriterionObject $Criterion criterion object
-      *  @return array $ObjectList list of domain objects
+      *  @param string $objectName name of the desired objects
+      *  @param GenericCriterionObject $criterion criterion object
+      *  @return array $objectList list of domain objects
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 17.05.2008<br />
       *  Version 0.2, 21.06.2008 (Sourced out statement creation into an extra method)<br />
+      *  Version 0.3, 17.01.2009 (Added a check, if the criterion object is present. Otherwise return null.)<br />
       */
-      function loadObjectListByCriterion($ObjectName,$Criterion){
-         return $this->loadObjectListByTextStatement($ObjectName,$this->__buildSelectStatementByCriterion($ObjectName,$Criterion));
+      function loadObjectListByCriterion($objectName,$criterion = null){
+
+         if($criterion === null){
+            trigger_error('[GenericORRelationMapper::loadObjectListByCriterion()] No criterion object given as second argument! Please consult the manual.');
+            return null;
+          // end if
+         }
+         return $this->loadObjectListByTextStatement($objectName,$this->__buildSelectStatementByCriterion($objectName,$criterion));
+
        // end function
       }
 
@@ -93,16 +101,24 @@
       *
       *  Load an object by a given criterion object.<br />
       *
-      *  @param string $ObjectName name of the desired objects
-      *  @param GenericCriterionObject $Criterion criterion object
+      *  @param string $objectName name of the desired objects
+      *  @param GenericCriterionObject $criterion criterion object
       *  @return array $ObjectList list of domain objects
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 21.06.2008<br />
+      *  Version 0.2, 17.01.2009 (Added a check, if the criterion object is present. Otherwise return null.)<br />
       */
-      function loadObjectByCriterion($ObjectName,$Criterion){
-         return $this->loadObjectByTextStatement($ObjectName,$this->__buildSelectStatementByCriterion($ObjectName,$Criterion));
+      function loadObjectByCriterion($objectName,$criterion){
+
+         if($criterion === null){
+            trigger_error('[GenericORRelationMapper::loadObjectByCriterion()] No criterion object given as second argument! Please consult the manual.');
+            return null;
+          // end if
+         }
+         return $this->loadObjectByTextStatement($objectName,$this->__buildSelectStatementByCriterion($objectName,$criterion));
+
        // end function
       }
 
