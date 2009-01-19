@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -21,15 +21,15 @@
 
    /**
    *  @namespace modules::pager::biz
-   *  @class pageObject
+   *  @class PagerPage
    *
-   *  Repräsentiert das Business-Objekt 'pageObject'.<br />
+   *  Represents the business object of the pager module.
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 06.08.2006<br />
    */
-   class pageObject extends coreObject
+   class PagerPage extends coreObject
    {
 
       var $__Page;
@@ -39,7 +39,7 @@
       var $__pageCount;
 
 
-      function pageObject(){
+      function PagerPage(){
 
          $this->__Page = (string)'';
          $this->__Link = (string)'';

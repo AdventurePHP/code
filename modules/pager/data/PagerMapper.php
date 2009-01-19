@@ -83,10 +83,13 @@
       */
       function getEntriesCountValue($namespace,$statement,$params = array()){
 
+         $t = &Singleton::getInstance('benchmarkTimer');
+         $t->start('PagerMapper::getEntriesCountValue()');
          $cM = &$this->__getServiceObject('core::database','connectionManager');
          $SQL = &$cM->getConnection($this->__ConnectionKey);
          $result = $SQL->executeStatement($namespace,$statement,$params);
          $data = $SQL->fetchData($result);
+         $t->stop('PagerMapper::getEntriesCountValue()');
          return $data['EntriesCount'];
 
        // end function
@@ -110,15 +113,20 @@
       */
       function loadEntries($namespace,$statement,$params = array()){
 
+         $t = &Singleton::getInstance('benchmarkTimer');
+         $t->start('PagerMapper::loadEntries()');
          $cM = &$this->__getServiceObject('core::database','connectionManager');
          $SQL = &$cM->getConnection($this->__ConnectionKey);
          $result = $SQL->executeStatement($namespace,$statement,$params);
 
          $list = array();
+
          while($data = $SQL->fetchData($result)){
             $list[] = $data['DB_ID'];
           // end while
          }
+
+         $t->stop('PagerMapper::loadEntries()');
          return $list;
 
        // end function
