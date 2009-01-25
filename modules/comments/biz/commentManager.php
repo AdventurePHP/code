@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -19,7 +19,6 @@
    *  -->
    */
 
-   import('modules::pager::biz','pagerManager');
    import('modules::comments::data','commentMapper');
    import('modules::pager::biz','pagerManager');
    import('tools::link','frontcontrollerLinkHandler');
@@ -110,12 +109,12 @@
       function loadEntries(){
 
          // pagerManager holen
-         $pMF = &$this->__getServiceObject('modules::pager::biz','pagerManagerFabric');
-         $pM = &$pMF->getPagerManager('ArticleComments',array('CategoryKey' => $this->__CategoryKey));
+         $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
+         $pM = &$pMF->getPagerManager('ArticleComments');
 
          // Kommentare laden
          $M = &$this->__getServiceObject('modules::comments::data','commentMapper');
-         return $pM->loadEntriesByAppDataComponent($M,'loadArticleCommentByID');
+         return $pM->loadEntriesByAppDataComponent($M,'loadArticleCommentByID',array('CategoryKey' => $this->__CategoryKey));
 
        // end function
       }
@@ -126,26 +125,20 @@
       *
       *  Gibt die HTML-Ausgabe des Pagers zurück.<br />
       *
+      *  @param string $anchorName the desired anchor name (optional)
+      *  @return string $pagerOutput the HTML code of the pager
+      *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 21.08.2007<br />
-      *  Version 0.2, 29.08.2007 (Anker-Name mit eingebunden)<br />
+      *  Version 0.2, 29.08.2007 (Added the anchor name)<br />
+      *  Version 0.3, 24.01.2009 (Introduced the $anchorName parameter)<br />
       */
-      function getPager($AnchorName = ''){
-
-         // pagerManager holen
-         $pMF = &$this->__getServiceObject('modules::pager::biz','pagerManagerFabric');
-         $pM = &$pMF->getPagerManager('ArticleComments',array('CategoryKey' => $this->__CategoryKey));
-
-         // Anker setzen
-         if($AnchorName != ''){
-            $pM->setAnchorName($AnchorName);
-          // end if
-         }
-
-         // Pager-Ausgabe hinzufügen
-         return $pM->getPager();
-
+      function getPager($anchorName = null){
+         $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
+         $pM = &$pMF->getPagerManager('ArticleComments');
+         $pM->setAnchorName($anchorName);
+         return $pM->getPager(array('CategoryKey' => $this->__CategoryKey));
        // end function
       }
 
@@ -162,14 +155,9 @@
       *  Version 0.1, 21.08.2007<br />
       */
       function getURLParameter(){
-
-         // pagerManager holen
          $pMF = &$this->__getServiceObject('modules::pager::biz','pagerManagerFabric');
-         $pM = &$pMF->getPagerManager('ArticleComments',array('CategoryKey' => $this->__CategoryKey));
-
-         // Pager-Ausgabe hinzufügen
+         $pM = &$pMF->getPagerManager('ArticleComments');
          return $pM->getPagerURLParameters();
-
        // end function
       }
 
