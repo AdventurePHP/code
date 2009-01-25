@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -20,37 +20,34 @@
    */
 
    import('tools::link','frontcontrollerLinkHandler');
-   import('tools::variablen','variablenHandler');
-   import('modules::pager::biz','pageObject');
-   import('modules::pager::data','pagerMapper');
+   import('tools::request','RequestHandler');
+   import('modules::pager::biz','PagerPage');
+   import('modules::pager::data','PagerMapper');
 
 
    /**
    *  @namespace modules::pager::biz
-   *  @class pagerManagerFabric
+   *  @class PagerManagerFabric
    *
-   *  Implementierung der Pager-Fabric.<br />
+   *  Implements the factory of the pager manager. Application sample:
+   *  <pre>$pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
+   *  $pM = &$pMF->getPagerManager('{ConfigSection}',{AdditionalParamArray});</pre>
    *
-   *  <strong>Anwendungsbeispiel:<strong>
-   *  <br />
-   *  $pMF = &$this->__getServiceObject('modules::pager::biz','pagerManagerFabric');
-   *  $pM = &$pMF->getPagerManager('{ConfigSection}',{AdditionlParamArray});
-   *
-   *  @author Christian Schäfer
+   *  @author Christian Achatz
    *  @version
    *  Version 0.1, 13.04.2007<br />
    */
-   class pagerManagerFabric extends coreObject
+   class PagerManagerFabric extends coreObject
    {
 
       /**
       *  @private
-      *  Array mit allen aktuell erhältlichen Pagern
+      *  Cache list if concrete pager manager instances.
       */
       var $__Pager = array();
 
 
-      function pagerManagerFabric(){
+      function PagerManagerFabric(){
       }
 
 
@@ -60,37 +57,25 @@
       *  Gibt eine Referenz auf einen pagerManager zurück.<br />
       *
       *  @param string $configString; Konfigurations-String
-      *  @param array $AddParams; Zusätzliche Anwendungs-Parameter der Anwendung
       *  @return pagerManager $pagerManager; Referenz auf den gewünschten pagerManager
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 13.04.2007<br />
+      *  Version 0.2, 24.01.2009 (Moved the additional params to the loadEntries() method. Refactored the method.)<br />
       */
-      function &getPagerManager($configString,$AddParams = array()){
+      function &getPagerManager($configString){
 
-         // Hash errechnen
-         $PagerHash = md5($configString.'_'.implode('_',$AddParams));
+         // create cache key
+         $pagerHash = md5($configString);
 
-         if(!isset($this->__Pager[$PagerHash])){
-
-             // pagerManager erzeugen (ServiceObject-Modell)
-             $pgrMgr = new pagerManager();
-
-             // Mit zusätzlichen Parametern initialisieren
-             $pgrMgr->set('Context',$this->__Context);
-             $pgrMgr->set('Language',$this->__Language);
-             $pgrMgr->init($configString,$AddParams);
-
-             // Lokal cachen
-             $this->__Pager[$PagerHash] = $pgrMgr;
-
+         if(!isset($this->__Pager[$pagerHash])){
+             $this->__Pager[$pagerHash] = &$this->__getAndInitServiceObject('modules::pager::biz','PagerManager',$configString,'NORMAL');
           // end if
          }
 
-
-         // Pager zurückgeben
-         return $this->__Pager[$PagerHash];
+         // return desired pager reference
+         return $this->__Pager[$pagerHash];
 
        // end function
       }
@@ -101,258 +86,70 @@
 
    /**
    *  @namespace modules::pager::biz
-   *  @class pagerManager
+   *  @class PagerManager
    *
-   *  Repräsentiert die Business-Schicht der Pagers. Implementiert den Pager im Frontcontroller-Stil.<br />
+   *  Represents a concrete pager.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Achatz
    *  @version
    *  Version 0.1, 06.08.2006<br />
-   *  Version 0.2, 14.08.2006 (Klassen-Variablen sauber deklariert)<br />
-   *  Version 0.3, 16.08.2006 (Erweiterte Konfiguration für Statements hinzugefügt)<br />
-   *  Version 0.4, 13.04.2007 (Erweitert, damit auch Parameter aus der Anwendung an den pagerManager gegeben werden können)<br />
+   *  Version 0.2, 14.08.2006 (Added new class variables)<br />
+   *  Version 0.3, 16.08.2006 (Added configuration for the count and entries statements)<br />
+   *  Version 0.4, 13.04.2007 (Added the possibility to add params from the application)<br />
+   *  Version 0.5, 25.01.2009 (Refactoring of the API, refactoring of the functionality)<br />
    */
-   class pagerManager extends coreObject
+   class PagerManager extends coreObject
    {
 
       /**
       *  @private
-      *  Hält lokal verwendete Variablen.
+      *  @since 0.5
+      *  Contains the current configuration.
       */
-      var $_LOCALS;
+      var $__PagerConfig = null;
 
 
       /**
       *  @private
-      *  Konfigurations-Name des Pagers.
-      */
-      var $__config_Name = 'pager';
-
-
-      /**
-      *  @private
-      *  Konfigurations-Abschnitt.
-      */
-      var $__config_Section = 'Standard';
-
-
-      /**
-      *  @private
-      *  Standard für Einträge pro Seite.
-      */
-      var $__config_EntriesPerPage;
-
-
-      /**
-      *  @private
-      *  URL-Name für Start-Anzahl.
-      */
-      var $__config_ParameterStartName;
-
-
-      /**
-      *  @private
-      *  URL-Name für die Anzahl.
-      */
-      var $__config_ParameterCountName;
-
-
-      /**
-      *  @private
-      *  Statement-Namespace.
-      */
-      var $__config_StatementNamespace;
-
-
-      /**
-      *  @private
-      *  Name des Count-Stataments.
-      */
-      var $__config_CountStatement;
-
-
-      /**
-      *  @private
-      *  Parameter des Count-Statements.
-      */
-      var $__config_CountStatement_Params;
-
-
-      /**
-      *  @private
-      *  Statement für die IDs der Datensätze.
-      */
-      var $__config_EntriesStatement;
-
-
-      /**
-      *  @private
-      *  Parameter für das ID-Statement.
-      */
-      var $__config_EntriesStatement_Params;
-
-
-      /**
-      *  @private
-      *  Namespace des Templates.
-      */
-      var $__config_DesignNamespace;
-
-
-      /**
-      *  @private
-      *  Name des Templates.
-      */
-      var $__config_DesignTemplate;
-
-
-      /**
-      *  @private
-      *  @since 0.4
-      *  Statement-Parameter.
-      */
-      var $__pager_StatamentParams;
-
-
-      /**
-      *  @private
-      *  Start-Nummer.
-      */
-      var $__pager_Start;
-
-
-      /**
-      *  @private
-      *  Anzahl der Einträge.
-      */
-      var $__pager_EntriesCount;
-
-
-      /**
-      *  @private
-      *  Aktuelle Seite (ULR).
-      */
-      var $__pager_Site;
-
-
-      /**
-      *  @private
-      *  Prüfzahl, on Pager initialisiert wurde
-      */
-      var $__pager_IsInitialized = false;
-
-
-      /**
-      *  @private
-      *  Optionaler Anker-Name.
+      *  Contains the desired anchor name.
       */
       var $__AnchorName = null;
 
 
-      function pagerManager(){
+      function PagerManager(){
       }
 
 
       /**
       *  @public
       *
-      *  Setzt die verwendete Konfigurations-Sektion und initialisiert den Pager.<br />
+      *  Initializes the pager. Loads the desired config section.
       *
-      *  @param string | array $initParam; Konfigurations-Abschnitt oder Array mit Konfigurations-Abschnitt und zusätzlichen Parametern
+      *  @param string $configSection the name of the config section+
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 06.08.2006<br />
-      *  Version 0.2, 16.08.2006 (Erweiterte Parameter-Konfigurations-Möglichkeit für Anzahl-Statement implementiert)<br />
-      *  Version 0.3, 29.03.2007 (Umbenannt in "init()" um serviceManager zu unterstützen)<br />
-      *  Version 0.4, 30.03.2007 (iniHandler bereinigt)<br />
-      *  Version 0.5, 13.04.2007 (Methode erweitert, damit der pagerManager auch über die Fabric instanziiert werden kann)<br />
-      *  Version 0.6, 26.04.2008 (Statement-Parameter "Start" und "EntriesCount" werden nun auf int gecastet)<br />
+      *  Version 0.2, 16.08.2006 (Added more params to be applied to the count statement)<br />
+      *  Version 0.3, 29.03.2007 (Renamed to "init()" to support the ServiceManager)<br />
+      *  Version 0.4, 30.03.2007 (Removed the old iniHandler component)<br />
+      *  Version 0.5, 13.04.2007 (Enhanced the method, that the pager can be created using the fabric)<br />
+      *  Version 0.6, 26.04.2008 (The statement params are now casted to int by default)<br />
+      *  Version 0.7, 25.01.2009 (Complete redesign / refactoring due to pager design changes. Now the pager can be used together with the GenericORMapper)<br />
       */
-      function init($configSection,$AddParams = array()){
+      function init($configSection){
 
-         if($this->__pager_IsInitialized == false){
+         // initialize the config
+         $Config = &$this->__getConfiguration('modules::pager','pager');
+         $this->__PagerConfig = $Config->getSection($configSection);
 
-            // Config einlesen
-            $this->__config_Section = $configSection;
-            $Config = &$this->__getConfiguration('modules::pager',$this->__config_Name);
-
-            $this->__config_EntriesPerPage = $Config->getValue($this->__config_Section,'Pager.EntriesPerPage');
-
-            $this->__config_ParameterStartName = $Config->getValue($this->__config_Section,'Pager.ParameterStartName');
-            $this->__config_ParameterCountName = $Config->getValue($this->__config_Section,'Pager.ParameterCountName');
-
-            $this->__config_StatementNamespace = $Config->getValue($this->__config_Section,'Pager.StatementNamespace');
-
-            $this->__config_CountStatement = $Config->getValue($this->__config_Section,'Pager.CountStatement');
-            $this->__config_CountStatement_Params = $Config->getValue($this->__config_Section,'Pager.CountStatement.Params');
-
-            $this->__config_EntriesStatement = $Config->getValue($this->__config_Section,'Pager.EntriesStatement');
-            $this->__config_EntriesStatement_Params = $Config->getValue($this->__config_Section,'Pager.EntriesStatement.Params');
-
-            $this->__config_DesignNamespace = $Config->getValue($this->__config_Section,'Pager.DesignNamespace');
-            $this->__config_DesignTemplate = $Config->getValue($this->__config_Section,'Pager.DesignTemplate');
-
-
-            // Config für URI-Parameter ziehen
-            $this->_LOCALS = variablenHandler::registerLocal(array(
-                                                                   $this->__config_ParameterStartName => 0,
-                                                                   $this->__config_ParameterCountName => $this->__config_EntriesPerPage
-                                                                  )
-                                                            );
-
-
-            // Statement-Parameter initialisieren (Cast erzwingen!)
-            $params = array(
-                            'Start' => (int)$this->_LOCALS[$this->__config_ParameterStartName],
-                            'EntriesCount' => (int)$this->_LOCALS[$this->__config_ParameterCountName]
-                           );
-
-
-            // Erweiterte Parameter setzen ($AddParams sticht!)
-            $this->__pager_StatamentParams = array_merge($params,$this->__generateStatementParams($this->__config_EntriesStatement_Params),$AddParams);
-
-
-            // Mapper holen
-            $pM = &$this->__getServiceObject('modules::pager::data','pagerMapper');
-
-
-            // Start, Count und Site initialisieren
-            $this->__pager_Start = $this->_LOCALS[$this->__config_ParameterStartName];
-            $this->__pager_EntriesCount = $pM->getEntriesCountValue($this->__config_StatementNamespace,$this->__config_CountStatement,$this->__pager_StatamentParams);
-            $this->__pager_Site = $_SERVER['REQUEST_URI'];
-
-
-            // Pager als initialisiert kennzeichnen
-            $this->__pager_IsInitialized = true;
-
-          // end if
-         }
-
-       // end function
-      }
-
-
-      /**
-      *  @public
-      *
-      *  Setzt einen Anker-Link-Namen, der bei der Ausgabe des Pagers mit eingebunden wird,<br />
-      *  falls dieser > 3 Zeichen ist.<br />
-      *
-      *  @param string $AnchorName; Anker-Name
-      *
-      *  @author Christian W. Schäfer
-      *  @version
-      *  Version 0.1, 29.08.2007<br />
-      */
-      function setAnchorName($AnchorName = ''){
-
-         if(strlen($AnchorName) >= 3){
-            $this->__AnchorName = $AnchorName;
+         // translate the cache directive
+         if(!isset($this->__PagerConfig['Pager.CacheInSession']) || $this->__PagerConfig['Pager.CacheInSession'] === 'false'){
+            $this->__PagerConfig['Pager.CacheInSession'] = false;
           // end if
          }
          else{
-            trigger_error('[pagerManager::setAnchor()] Given anchor name is too short. It must have a minimum length of tree or more letters!',E_USER_WARNING);
+            $this->__PagerConfig['Pager.CacheInSession'] = true;
           // end else
          }
 
@@ -361,34 +158,45 @@
 
 
       /**
+      *  @private
+      *
+      *  Returns the statement params needed by the pager's data layer.
+      *
+      *  @param array $addStmtParams additional statement parameters
+      *  @return array $stmtParams a list of default statement params.
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 24.01.2009<br />
+      */
+      function __getStatementParams($addStmtParams = array()){
+         $defaultParams = array(
+                                'Start' => (int)RequestHandler::getValue($this->__PagerConfig['Pager.ParameterStartName'],0),
+                                'EntriesCount' => (int)RequestHandler::getValue($this->__PagerConfig['Pager.ParameterCountName'],$this->__PagerConfig['Pager.EntriesPerPage'])
+                               );
+         return array_merge($defaultParams,$this->__generateStatementParams($this->__PagerConfig['Pager.EntriesStatement.Params']),$addStmtParams);
+       // end function
+      }
+
+
+      /**
       *  @public
       *
-      *  Läd die aktuellen IDs, die auf der aktuellen Seite angezeigt werden sollen.<br />
+      *  Loads the ids of the entries of the current page.
       *
-      *  @return array $Entries | array(); Array mit den IDs, für die aktuelle Seite oder leeres Array
+      *  @param array $addStmtParams additional statement parameters
+      *  @return array $entryIDs list of entry ids for the current page
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 05.08.2006<br />
       *  Version 0.2, 06.08.2006<br />
-      *  Version 0.3, 16.08.2006 (Erweiterte Parameter-Konfigurations-Möglichkeit für Lade-Statement implementiert)<br />
+      *  Version 0.3, 16.08.2006 (Added the enhanced param configuration opportunity)<br />
+      *  Version 0.4, 24.01.2009 (Changed the API of the method. Moved the additional param handling to this method)<br />
       */
-      function loadEntries(){
-
-         if($this->__pager_IsInitialized){
-
-            // ID's der Einträge zurückliefern
-            $M = &$this->__getServiceObject('modules::pager::data','pagerMapper');
-            return $M->loadEntries($this->__config_StatementNamespace,$this->__config_EntriesStatement,$this->__pager_StatamentParams);
-
-          // end if
-         }
-         else{
-            trigger_error('[pagerManager->loadEntries()] Pager is not initialized!');
-            return array();
-          // end else
-         }
-
+      function loadEntries($addStmtParams = array()){
+         $M = &$this->__getAndInitServiceObject('modules::pager::data','PagerMapper',$this->__PagerConfig['Pager.DatabaseConnection']);
+         return $M->loadEntries($this->__PagerConfig['Pager.StatementNamespace'],$this->__PagerConfig['Pager.EntriesStatement'],$this->__getStatementParams($addStmtParams),$this->__PagerConfig['Pager.CacheInSession']);
        // end function
       }
 
@@ -396,50 +204,41 @@
       /**
       *  @public
       *
-      *  Läd die aktuell geforderten Domain-Objekte, die auf der aktuellen Seite angezeigt werden sollen.<br />
+      *  Loads a list of domain objects using a given data layer component.
       *
-      *  @param object $DataComponent Instanz der Datenkomponente der Anwendung
-      *  @param string $LoadMethod Name der Objekt-Lade-Methode der Datenkomponente
-      *  @return array object $Entries | array(); Array mit den Domain-Objekten der Anwenung oder leeres Array
+      *  @param object $dataComponent instance of a data component, that loads the domain objects directly
+      *  @param string $loadMethod name of the load method for the domain object
+      *  @param array $addStmtParams additional statement parameters
+      *  @return array $entries list of domain objects for the current page
       *
-      *  @author Christian W. Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 01.09.2007<br />
-      *  Version 0.2, 18.09.2007 (Überprüfung der Methode für PHP 4 kompatibel gemacht)<br />
+      *  Version 0.2, 18.09.2007 (Introduced PHP 4 compatibility)<br />
+      *  Version 0.3, 24.01.2009 (Added the $addStmtParams param to the API)<br />
+      *  Version 0.4, 25.01.2009 (Refactored the function. Now uses the $this->loadEntries() to load the ids)<br />
       */
-      function loadEntriesByAppDataComponent(&$DataComponent,$LoadMethod){
+      function loadEntriesByAppDataComponent(&$dataComponent,$loadMethod,$addStmtParams = array()){
 
-         if($this->__pager_IsInitialized){
+         // check, if the load method exists
+         if(in_array($loadMethod,get_class_methods($dataComponent))){
 
-            // ID's der Einträge selektieren
-            $M = &$this->__getServiceObject('modules::pager::data','pagerMapper');
-            $EntryIDs = $M->loadEntries($this->__config_StatementNamespace,$this->__config_EntriesStatement,$this->__pager_StatamentParams);
+            // select the ids of the desired entries
+            $entryIDs = $this->loadEntries($addStmtParams);
 
-            // Prüfen, ob gegebene Daten-Komponente korrekt übergeben wurde
-            if(in_array($LoadMethod,get_class_methods($DataComponent))){
-
-               // Einträge mit Hilfe der Instanz der Daten-Komponente laden
-               $Entries = array();
-               for($i = 0; $i < count($EntryIDs); $i++){
-                  $Entries[] = $DataComponent->{$LoadMethod}($EntryIDs[$i]);
-                // end for
-               }
-
-               // Ergebnis-Liste zurückgenen
-               return $Entries;
-
-             // end if
+            // load the entries using the data layer component
+            $entries = array();
+            for($i = 0; $i < count($entryIDs); $i++){
+               $entries[] = $dataComponent->{$loadMethod}($entryIDs[$i]);
+             // end for
             }
-            else{
-               trigger_error('[pagerManager->loadEntriesByAppDataComponent()] Given data component ('.get_class($DataComponent).') has no method "'.$LoadMethod.'"! No entries can be loaded!',E_USER_WARNING);
-               return array();
-             // end else
-            }
+
+            return $entries;
 
           // end if
          }
          else{
-            trigger_error('[pagerManager->loadEntriesByAppDataComponent()] Pager is not initialized!',E_USER_WARNING);
+            trigger_error('[PagerManager->loadEntriesByAppDataComponent()] Given data component ('.get_class($dataComponent).') has no method "'.$loadMethod.'"! No entries can be loaded!',E_USER_WARNING);
             return array();
           // end else
          }
@@ -451,54 +250,81 @@
       /**
       *  @public
       *
-      *  Erzeugt einen Pager (grafische Ausgabe) und gibt den HTML-Code zurück.<br />
+      *  Sets the anchor name.
       *
-      *  @return string $Pager; HTML-Ausgabe des Pagers
+      *  @param string $anchorName the name of the desired anchor
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 25.01.2009<br />
+      */
+      function setAnchorName($anchorName = null){
+         $this->__AnchorName = $anchorName;
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns the anchor name.
+      *
+      *  @return string $anchorName the name of the anchor
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 25.01.2009<br />
+      */
+      function getAnchorName(){
+         return $this->__AnchorName;
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Creates the graphical output of the pagerc concerning the configured presentation layer template.
+      *
+      *  @param array $addStmtParams list of additional statement params
+      *  @return string $pagerOutput the HTML representation of the pager
+      *
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 05.08.2006<br />
-      *  Version 0.2, 11.03.2007 (Auf neuen PageController umgestellt, MessageQueue entfernt)<br />
-      *  Version 0.3, 29.08.2007 (Anker-Name wird nun als Attribut der Seite gesetzt)<br />
-      *  Version 0.4, 02.03.2008 (Page wird nun mit der aktuellen Sprache und Context ausgestattet)<br />
+      *  Version 0.2, 11.03.2007 (Ported to new document controller, removed MessageQueue)<br />
+      *  Version 0.3, 29.08.2007 (Anchor name is not set as the document's attribute)<br />
+      *  Version 0.4, 02.03.2008 (The page is now applied the context and language)<br />
       */
-      function getPager(){
+      function getPager($addStmtParams = array()){
 
-         if($this->__pager_IsInitialized){
+         // create pager page
+         $pager = new Page();
 
-            // Neue Pager-Ausgabe erzeugen
-            $Pager = new Page('Pager',false);
+         // apply context and language (form configuration purposes!)
+         $pager->set('Language',$this->__Language);
+         $pager->set('Context',$this->__Context);
 
-            // Spache und Context setzen
-            $Pager->set('Language',$this->__Language);
-            $Pager->set('Context',$this->__Context);
+         // load the econfigured design
+         $pager->loadDesign($this->__PagerConfig['Pager.DesignNamespace'],$this->__PagerConfig['Pager.DesignTemplate']);
 
-            // Design laden
-            $Pager->loadDesign($this->__config_DesignNamespace,$this->__config_DesignTemplate);
+         // add the necessary config params and pages
+         $document = &$pager->getByReference('Document');
+         $document->setAttribute('Pages',$this->__createPages4PagerDisplay($addStmtParams));
+         $document->setAttribute('Config',array('ParameterStartName' => $this->__PagerConfig['Pager.ParameterStartName'],
+                                                'ParameterCountName' => $this->__PagerConfig['Pager.ParameterCountName'],
+                                                'EntriesPerPage' => $this->__PagerConfig['Pager.EntriesPerPage']
+                                               )
+                                );
 
-            // Seiten an Document weitergeben
-            $Document = &$Pager->getByReference('Document');
-            $Document->setAttribute('Pages',$this->__createPages4PagerDisplay());
-            $Document->setAttribute('Config',array('ParameterStartName' => $this->__config_ParameterStartName,
-                                                   'ParameterCountName' => $this->__config_ParameterCountName,
-                                                   'EntriesPerPage' => $this->__config_EntriesPerPage
-                                                  )
-                                   );
-            if($this->__AnchorName != null){
-               $Document->setAttribute('AnchorName',$this->__AnchorName);
-             // end if
-            }
-
-            // Pager transformieren
-            return $Pager->transform();
-
+         // add the anchor if desired
+         if($this->__AnchorName !== null){
+            $document->setAttribute('AnchorName',$this->__AnchorName);
           // end if
          }
-         else{
-            trigger_error('[pagerManager->getPager()] Pager is not initialized!',E_USER_WARNING);
-            return false;
-          // end else
-         }
+
+         // transform pager GUI representation
+         return $pager->transform();
 
        // end function
       }
@@ -507,21 +333,21 @@
       /**
       *  @public
       *
-      *  Gibt die URL-Parameter des Pagers zurück.<br />
+      *  Returns the name of the current URL params of the pager. The array featiures the following
+      *  offsets:
+      *  <ul>
+      *    <li>StartName: the name of the start param</li>
+      *    <li>CountName: the name of the count per page param</li>
+      *  <ul>
       *
       *  @return array $URLParams; Array der URL-Parameter des Pagers
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 17.03.2007<br />
       */
       function getPagerURLParameters(){
-
-         return array(
-                      'StartName' => $this->__config_ParameterStartName,
-                      'CountName' => $this->__config_ParameterCountName
-                      );
-
+         return array('StartName' => $this->__PagerConfig['Pager.ParameterStartName'],'CountName' => $this->__PagerConfig['Pager.ParameterCountName']);
        // end function
       }
 
@@ -529,62 +355,76 @@
       /**
       *  @private
       *
-      *  Erzeugt Seitenobjekte für die Anzeige.<br />
+      *  Creates a list of pager pages and returns it.
       *
-      *  @return array $PagerObjects; Array von pageObject's
+      *  @param array $addStmtParams list of additional statement params
+      *  @return array $pages list of pages
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 05.08.2006<br />
       *  Version 0.2, 06.08.2006<br />
-      *  Version 0.3, 14.08.2006 (Globale Konfiguration für URL-Rewriting hinzugefügt)<br />
-      *  Version 0.4, 16.11.2007 (Auf frontcontrollerLinkHandler umgestellt)<br />
-      *  Version 0.5, 26.04.2008 (Division by zero vermeiden)<br />
+      *  Version 0.3, 14.08.2006 (Added a global configuration for url rewriting)<br />
+      *  Version 0.4, 16.11.2007 (Switched to the frontcontrollerLinkHandler)<br />
+      *  Version 0.5, 26.04.2008 (Avoid division by zero)<br />
+      *  Version 0.6, 19.01.2009 (Changed the implementation due to refactoring)<br />
       */
-      function __createPages4PagerDisplay(){
+      function __createPages4PagerDisplay($addStmtParams = array()){
 
-         $PagerObjekte = array();
-         $Start = 0;
+         // start benchmarker
+         $t = &Singleton::getInstance('benchmarkTimer');
+         $t->start('PagerManager::__createPages4PagerDisplay()');
 
-         // Division by zero vermeiden
-         if((int)$this->_LOCALS[$this->__config_ParameterCountName] == 0){
-            $this->_LOCALS[$this->__config_ParameterCountName] = 1;
+         // initialize start params
+         $start = (int)0;
+         $currentStart = (int)RequestHandler::getValue($this->__PagerConfig['Pager.ParameterStartName'],0);
+
+         // initialize page delimiter params
+         $M = &$this->__getAndInitServiceObject('modules::pager::data','PagerMapper',$this->__PagerConfig['Pager.DatabaseConnection']);
+         $entriesCount = $M->getEntriesCount($this->__PagerConfig['Pager.StatementNamespace'],$this->__PagerConfig['Pager.CountStatement'],$this->__getStatementParams($addStmtParams),$this->__PagerConfig['Pager.CacheInSession']);
+
+         $countPerPage = (int)RequestHandler::getValue($this->__PagerConfig['Pager.ParameterCountName'],0);
+         if($countPerPage === 0){ // avoid devision by zero!
+            $countPerPage = (int)$this->__PagerConfig['Pager.EntriesPerPage'];
           // end if
          }
-         $PagerAnzahlSeiten = ceil($this->__pager_EntriesCount / $this->_LOCALS[$this->__config_ParameterCountName]);
+         $pageCount = ceil($entriesCount / $countPerPage);
 
-         for($i = 0; $i < $PagerAnzahlSeiten; $i++){
+         // create the page representation objects
+         $pages = array();
+         for($i = 0; $i < $pageCount; $i++){
 
-            // Seiten-Objekt erzeugen
-            $PagerObjekte[$i] = new pageObject();
+            // create a new pager page object
+            $pages[$i] = new PagerPage();
 
-            // Link generieren
-            $Link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array($this->__config_ParameterStartName => $Start));
-            $PagerObjekte[$i]->set('Link',$Link);
+            // generate the link
+            $link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array($this->__PagerConfig['Pager.ParameterStartName'] => $start));
+            $pages[$i]->set('Link',$link);
 
-            // Name der Seite einsetzen
-            $PagerObjekte[$i]->set('Page',$i+1);
+            // set the number of the page
+            $pages[$i]->set('Page',$i + 1);
 
-            // Selektierte Seite markieren
-            if($Start == $this->_LOCALS[$this->__config_ParameterStartName]){
-               $PagerObjekte[$i]->set('isSelected',true);
+            // mark as selected
+            if($start === $currentStart){
+               $pages[$i]->set('isSelected',true);
              // end if
             }
 
-            // Anzahl der Einträge einsetzen
-            $PagerObjekte[$i]->set('entriesCount',$this->__pager_EntriesCount);
+            // add the entries count
+            $pages[$i]->set('entriesCount',$entriesCount);
 
-            // Anzahl der Seiten einsetzen
-            $PagerObjekte[$i]->set('pageCount',$PagerAnzahlSeiten);
+            // add the page count
+            $pages[$i]->set('pageCount',$pageCount);
 
-
-            // Startpunkt inkrementieren
-            $Start = $Start + $this->_LOCALS[$this->__config_ParameterCountName];
+            // increment the start point
+            $start = $start + $countPerPage;
 
           // end for
          }
 
-         return $PagerObjekte;
+         // stop benchmarker and return the list of pager pages
+         $t->stop('PagerManager::__createPages4PagerDisplay()');
+         return $pages;
 
        // end function
       }
@@ -593,49 +433,40 @@
       /**
       *  @private
       *
-      *  Erzeugt ein Parameter-Array für das Ausführen eines SQL-Statements aus einem Konfigurations-String.<br />
-      *  Gibt ein leeres Array zurück, dass der Config-String leer ist, oder das Parameter-Array, das sowohl<br />
-      *  aus dem Request als auch aus Standard-Werten zusammengesetzt ist zurück.<br />
+      *  Returns a param array, that contains the initialized params from the page configuration
+      *  file. The initialization is done by the url params. Default values are taken from the
+      *  configuration offset *.Params. If no value is contained in the URL, the default ones are
+      *  taken.
       *
-      *  @param string $configString; Konfigurations-Zeichenkette
-      *  @return array $StmtParams; Array der Statement-Parameter
+      *  @param string $configString the param-value-string from the configuration (e.g.: param1:value1|param2:value2)
+      *  @return array $stmtParams a list of statement parameters
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
       *  Version 0.1, 16.08.2006<br />
+      *  Version 0.2, 24.01.2009 (Refactoring due to configuration param changes)<br />
       */
       function __generateStatementParams($configString){
 
+         // initialize the return array
+         $stmtParams = array();
+
+         // create the params
          if(!empty($configString)){
 
             $params = explode('|',$configString);
 
-            $stmtparams = array();
-
             for($i = 0; $i < count($params); $i++){
 
-               if(substr_count($params[$i],':')){
+               // only accept params, that have a default value configured (to avoid errors!)
+               if(substr_count($params[$i],':') !== 0){
 
-                  // Offset in Name und Standardwert trennen
+                  // add the param with the default value of the url value
                   $temp = explode(':',$params[$i]);
-
-                  // Variable lokal registrieren
-                  $locals = variablenHandler::registerLocal(array(trim($temp[0]) => trim($temp[1])));
-
-                  // Lokale Variablen mergen
-                  $stmtparams = array_merge($stmtparams,$locals);
+                  $stmtParams = array_merge($stmtParams,RequestHandler::getValues(array(trim($temp[0]) => trim($temp[1]))));
+                  unset($temp);
 
                 // end if
-               }
-               else{
-
-                  // Variable lokal registrieren
-                  $locals = variablenHandler::registerLocal(array(trim($params[$i])));
-
-                  // Lokale Variablen mergen
-                  $stmtparams = array_merge($stmtparams,$locals);
-
-                // end else
                }
 
              // end for
@@ -643,13 +474,8 @@
 
           // end if
          }
-         else{
-            $stmtparams = array();
-          // end else
-         }
 
-         // Statement-Parameter-Array zurückgeben
-         return $stmtparams;
+         return $stmtParams;
 
        // end function
       }

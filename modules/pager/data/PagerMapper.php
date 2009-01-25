@@ -20,6 +20,7 @@
    */
 
    import('core::database','connectionManager');
+   import('core::session','sessionManager');
 
 
    /**
@@ -28,10 +29,11 @@
    *
    *  Represents the data layer of the pager.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Achatz
    *  @version
    *  Version 0.1, 06.08.2006<br />
    *  Version 0.2, 19.02.2009 (Added the connection key handling)<br />
+   *  Version 0.3, 24.01.2009 (Added session caching to gain performance)<br />
    */
    class PagerMapper extends coreObject
    {
@@ -66,6 +68,26 @@
 
 
       /**
+      *  @private
+      *
+      *  Returns the session key for the current statement and params.
+      *
+      *  @param string $namespace namespace of the statement
+      *  @param string $statement name of the statement file
+      *  @param array $params statement params
+      *  @return string $sessionKey the desired session key
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 24.01.2009<br />
+      */
+      function __getSessionKey($namespace,$statement,$params){
+         return 'PagerMapper_'.md5($namespace.$statement.implode('',$params));
+       // end function
+      }
+
+
+      /**
       *  @public
       *
       *  Returns the number of entries of the current object.
@@ -73,6 +95,7 @@
       *  @param string $namespace the namespace of the statement
       *  @param string $statement the name of the statement file
       *  @param array $params additional params for the statement
+      *  @param bool $cache decides if caching is active or not (true = yes, false = no)
       *  @return string $entriesCount the number of entries
       *
       *  @author Christian Achatz
@@ -80,17 +103,41 @@
       *  Version 0.1, 06.08.2006<br />
       *  Version 0.2, 16.08.2006 (Added an argument for further statement params)<br />
       *  Version 0.3, 19.01.2009 (Added the connection key handling)<br />
+      *  Version 0.4, 24.01.2009 (Added session caching)<br />
+      *  Version 0.5, 25.01.2009 (Removed nullpointer bug due to session object definition)<br />
       */
-      function getEntriesCountValue($namespace,$statement,$params = array()){
+      function getEntriesCount($namespace,$statement,$params = array(),$cache = true){
 
+         // start benchmarker
          $t = &Singleton::getInstance('benchmarkTimer');
-         $t->start('PagerMapper::getEntriesCountValue()');
-         $cM = &$this->__getServiceObject('core::database','connectionManager');
-         $SQL = &$cM->getConnection($this->__ConnectionKey);
-         $result = $SQL->executeStatement($namespace,$statement,$params);
-         $data = $SQL->fetchData($result);
-         $t->stop('PagerMapper::getEntriesCountValue()');
-         return $data['EntriesCount'];
+         $t->start('PagerMapper::getEntriesCount()');
+
+         // try to load the entries count from the session
+         $session = new sessionManager('modules::pager::biz');
+         $sessionKey = $this-> __getSessionKey($namespace,$statement,$params).'_EntriesCount';
+         if($cache === true){
+            $entriesCount = $session->loadSessionData($sessionKey);
+          // end if
+         }
+         else{
+            $entriesCount = false;
+          // end else
+         }
+
+         // load from database if not in session
+         if($entriesCount === false){
+            $cM = &$this->__getServiceObject('core::database','connectionManager');
+            $SQL = &$cM->getConnection($this->__ConnectionKey);
+            $result = $SQL->executeStatement($namespace,$statement,$params);
+            $data = $SQL->fetchData($result);
+            $entriesCount = $data['EntriesCount'];
+            $session->saveSessionData($sessionKey,$entriesCount);
+          // end if
+         }
+
+         // stop timer and return value
+         $t->stop('PagerMapper::getEntriesCount()');
+         return $entriesCount;
 
        // end function
       }
@@ -104,30 +151,60 @@
       *  @param string $namespace the namespace of the statement
       *  @param string $statement the name of the statement file
       *  @param array $params additional params for the statement
+      *  @param bool $cache decides if caching is active or not (true = yes, false = no)
       *  @return array $entries a list of entry ids
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 05.08.2006<br />
       *  Version 0.2, 19.01.2009 (Added the connection key handling)<br />
+      *  Version 0.3, 24.01.2009 (Added session caching)<br />
+      *  Version 0.4, 25.01.2009 (Removed nullpointer bug due to session object definition)<br />
       */
-      function loadEntries($namespace,$statement,$params = array()){
+      function loadEntries($namespace,$statement,$params = array(),$cache = true){
 
+         // start benchmarker
          $t = &Singleton::getInstance('benchmarkTimer');
          $t->start('PagerMapper::loadEntries()');
-         $cM = &$this->__getServiceObject('core::database','connectionManager');
-         $SQL = &$cM->getConnection($this->__ConnectionKey);
-         $result = $SQL->executeStatement($namespace,$statement,$params);
 
-         $list = array();
-
-         while($data = $SQL->fetchData($result)){
-            $list[] = $data['DB_ID'];
-          // end while
+         // try to load the entries count from the session
+         $session = new sessionManager('modules::pager::biz');
+         $sessionKey = $this-> __getSessionKey($namespace,$statement,$params).'_EntryIDs';
+         if($cache === true){
+            $entryIDs = $session->loadSessionData($sessionKey);
+          // end if
+         }
+         else{
+            $entryIDs = false;
+          // end else
          }
 
+         // load from database if not in session
+         if($entryIDs === false){
+
+            $cM = &$this->__getServiceObject('core::database','connectionManager');
+            $SQL = &$cM->getConnection($this->__ConnectionKey);
+            $result = $SQL->executeStatement($namespace,$statement,$params);
+
+            $entryIDs = array();
+
+            while($data = $SQL->fetchData($result)){
+               $entryIDs[] = $data['DB_ID'];
+             // end while
+            }
+
+            $session->saveSessionData($sessionKey,serialize($entryIDs));
+
+          // end if
+         }
+         else{
+            $entryIDs = unserialize($entryIDs);
+          // end else
+         }
+
+         // stop benchmarker and return list
          $t->stop('PagerMapper::loadEntries()');
-         return $list;
+         return $entryIDs;
 
        // end function
       }
