@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -106,21 +106,17 @@
          if($this->__Guestbook == null){
 
             // pagerManager holen
-            $pMF = &$this->__getServiceObject('modules::pager::biz','pagerManagerFabric');
-            $pM = &$pMF->getPagerManager('Guestbook',array('GuestbookID' => $this->__GuestbookID));
-
+            $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
+            $pM = &$pMF->getPagerManager('Guestbook');
 
             // GuestbookMapper holen
             $gM = &$this->__getServiceObject('modules::guestbook::data','guestbookMapper');
 
-
             // Gästebuch laden
             $this->__Guestbook = $gM->loadGuestbookByID($this->__GuestbookID);
 
-
             // Eintrag-IDs, die angezeigt werden sollen laden
-            $EntryIDs = $pM->loadEntries();
-
+            $EntryIDs = $pM->loadEntries(array('GuestbookID' => $this->__GuestbookID));
 
             // Einträge laden
             $Entries = array();
@@ -129,7 +125,6 @@
                $Entries[] = $gM->loadEntryWithComments($EntryIDs[$i]);
              // end for
             }
-
 
             // Einträge zum Gästebuch hinzufügen
             $this->__Guestbook->setEntries($Entries);
@@ -180,14 +175,9 @@
       *  Version 0.1, 13.04.2007<br />
       */
       function getURLParameters(){
-
-         // pagerManager holen
-         $pMF = &$this->__getServiceObject('modules::pager::biz','pagerManagerFabric');
-         $pM = &$pMF->getPagerManager('Guestbook',array('GuestbookID' => $this->__GuestbookID));
-
-         // Pager-Ausgabe hinzufügen
+         $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
+         $pM = &$pMF->getPagerManager('Guestbook');
          return $pM->getPagerURLParameters();
-
        // end function
       }
 
@@ -202,14 +192,9 @@
       *  Version 0.1, 13.04.2007<br />
       */
       function getPager(){
-
-         // pagerManager holen
-         $pMF = &$this->__getServiceObject('modules::pager::biz','pagerManagerFabric');
-         $pM = &$pMF->getPagerManager('Guestbook',array('GuestbookID' => $this->__GuestbookID));
-
-         // Pager-Ausgabe hinzufügen
-         return $pM->getPager();
-
+         $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
+         $pM = &$pMF->getPagerManager('Guestbook');
+         return $pM->getPager(array('GuestbookID' => $this->__GuestbookID));
        // end function
       }
 
@@ -239,12 +224,8 @@
          // Gästebuch speichern
          $gM->saveGuestbook($Guestbook);
 
-         // pagerManager holen
-         $pMF = &$this->__getServiceObject('modules::pager::biz','pagerManagerFabric');
-         $pM = &$pMF->getPagerManager('Guestbook',array('GuestbookID' => $this->__GuestbookID));
-
          // Auf Anzeige-Seite weiterleiten
-         $URLParams = $pM->getPagerURLParameters();
+         $URLParams = $this->getURLParameters();
          $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array($URLParams['StartName'] => '', $URLParams['CountName'] => '', 'gbview' => 'display'));
          header('Location: '.$Link);
 
@@ -285,12 +266,8 @@
          // Gästebuch speichern
          $gM->saveGuestbook($Guestbook);
 
-         // pagerManager holen
-         $pMF = &$this->__getServiceObject('modules::pager::biz','pagerManagerFabric');
-         $pM = &$pMF->getPagerManager('Guestbook',array('GuestbookID' => $this->__GuestbookID));
-
          // Auf Anzeige-Seite weiterleiten
-         $URLParams = $pM->getPagerURLParameters();
+         $URLParams = $this->getURLParameters();
          $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array($URLParams['StartName'] => '', $URLParams['CountName'] => '', 'gbview' => 'display','commentid' => '', 'entryid' => ''));
          header('Location: '.$Link);
 
