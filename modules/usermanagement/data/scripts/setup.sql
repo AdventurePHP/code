@@ -159,3 +159,6 @@ CREATE TABLE IF NOT EXISTS `cmp_application2permission` (
   KEY `JOININDEX` (`ApplicationID`,`PermissionID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
+
+INSERT INTO `ent_application` (`ApplicationID`, `DisplayName`, `CreationTimestamp`) VALUES (1, 'Default application', NOW());
