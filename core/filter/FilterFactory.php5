@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -141,7 +141,7 @@
       *  Version 0.3, 07.11.2008 (Bugfix: the namespace of filters outside "core::filter" could not be included)<br />
       *  Version 0.4, 11.12.2008 (Switched to FilterDefinition for addressing a filter)<br />
       */
-      function getFilter($filterDefinition){
+      static function getFilter($filterDefinition){
 
          // check definition
          $defClassName = get_class($filterDefinition);
