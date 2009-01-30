@@ -32,7 +32,7 @@
 
    // setup the registry with the default APF error handler
    $reg = &Singleton::getInstance('Registry');
-   $reg->register('apf::core','ErrorHandler',new ErrorHandlerDefinition('core::errorhandler','APFErrorHandler'));
+   $reg->register('apf::core','ErrorHandler',new ErrorHandlerDefinition('core::errorhandler','DefaultErrorHandler'));
 
 
    /**
