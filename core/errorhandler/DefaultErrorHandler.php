@@ -25,7 +25,7 @@
 
    /**
    *  @namespace core::errorhandler
-   *  @class APFErrorHandler
+   *  @class DefaultErrorHandler
    *
    *  Implements the default error handler of the APF. Logs errors to a logfile and displays the
    *  standard error page.
@@ -34,7 +34,7 @@
    *  @version
    *  Version 0.1, 30.01.2009<br />
    */
-   class APFErrorHandler extends AbstractErrorHandler
+   class DefaultErrorHandler extends AbstractErrorHandler
    {
 
       /**
@@ -62,7 +62,7 @@
       var $__ErrorLine;
 
 
-      function APFErrorHandler(){
+      function DefaultErrorHandler(){
       }
 
 
