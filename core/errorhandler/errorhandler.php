@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -19,18 +19,28 @@
    *  -->
    */
 
-   import('core::logging','Logger');
-
+   // setup the PHP environment
    error_reporting(E_ALL);
    ini_set('display_errors','1');
+   ini_set('html_errors','off');
 
+   // set the error handling function
    set_error_handler('errorHandler');
+
+   // include necessary classes
+   import('core::errorhandler','ErrorHandlerDefinition');
+
+   // setup the registry with the default APF error handler
+   $reg = &Singleton::getInstance('Registry');
+   $reg->register('apf::core','ErrorHandler',new ErrorHandlerDefinition('core::errorhandler','APFErrorHandler'));
 
 
    /**
    *  @namespace core::errorhandler
+   *  @function errorHandler
    *
-   *  Wrapper for the APF error handling.
+   *  This function is the global APF error handler function. Calls the error manager configured in
+   *  the registry.
    *
    *  @param string $errorNumber error number
    *  @param string $errorMessage error message
@@ -44,6 +54,7 @@
    *  Version 0.3, 15.01.2005<br />
    *  Version 0.4, 21.01.2007 (Introduced the errorManager)<br />
    *  Version 0.5, 20.06.2008 (Errors, that are triggered while using the @ sign are not raised anymore)<br />
+   *  Version 0.6, 30.01.2009 (Updated to the new error handler concept)<br />
    */
    function errorHandler($errorNumber,$errorMessage,$errorFile,$errorLine){
 
@@ -54,156 +65,37 @@
       }
 
       // raise error and display error message
-      $ErrMgr = new ErrorManager();
-      $ErrMgr->raiseError($errorNumber,$errorMessage,$errorFile,$errorLine);
+      $reg = &Singleton::getInstance('Registry');
+      $errorHandlerDef = $reg->retrieve('apf::core','ErrorHandler');
+
+      if($errorHandlerDef !== null && get_class($errorHandlerDef) === strtolower('ErrorHandlerDefinition')){
+
+         // get handler params
+         $namespace = $errorHandlerDef->get('Namespace');
+         $class = $errorHandlerDef->get('Class');
+
+         // include error handler
+         import($namespace,$class);
+
+         // execute error handler
+         $errHandler = new $class();
+
+         if(is_subclass_of($errHandler,strtolower('AbstractErrorHandler')) === true){
+            $errHandler->handleError($errorNumber,$errorMessage,$errorFile,$errorLine);
+          // end if
+         }
+         else{
+            echo 'APF catchable error: '.$errorMessage.' (code: '.$errorNumber.') in '.$errorFile.' on line '.$errorLine.'!';
+          // end else
+         }
+
+       // end if
+      }
+      else{
+         echo 'APF catchable error: '.$errorMessage.' (code: '.$errorNumber.') in '.$errorFile.' on line '.$errorLine.'!';
+       // end if
+      }
 
     // end function
-   }
-
-
-   /**
-   *  @namespace core::errorhandler
-   *  @class ErrorManager
-   *
-   *  Implements the global error handler.
-   *
-   *  @author Christian Schäfer
-   *  @version
-   *  Version 0.1, 21.01.2007<br />
-   */
-   class ErrorManager
-   {
-
-      /**
-      *  @private
-      *  Error number.
-      */
-      var $__ErrorNumber;
-
-      /**
-      *  @private
-      *  Error message,
-      */
-      var $__ErrorMessage;
-
-      /**
-      *  @private
-      *  Error file.
-      */
-      var $__ErrorFile;
-
-      /**
-      *  @private
-      *  Error line.
-      */
-      var $__ErrorLine;
-
-
-      function ErrorManager(){
-      }
-
-
-      /**
-      *  @public
-      *
-      *  Funktion, die von der globalen ErrorHandler-Funktion aufgerufen wird um einen Fehler zu melden.<br />
-      *
-      *  @param string $errorNumber error number
-      *  @param string $errorMessage error message
-      *  @param string $errorFile error file
-      *  @param string $errorLine error line
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 21.01.2007<br />
-      */
-      function raiseError($errorNumber,$errorMessage,$errorFile,$errorLine){
-
-         // fill attributes
-         $this->__ErrorNumber = $errorNumber;
-         $this->__ErrorMessage = $errorMessage;
-         $this->__ErrorFile = $errorFile;
-         $this->__ErrorLine = $errorLine;
-
-         // log error
-         $this->__logError();
-
-         // build nice error page
-         echo $this->__buildErrorPage();
-
-       // end function
-      }
-
-
-      /**
-      *  @private
-      *
-      *  Creates a log entry containing the error occured.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 21.01.2007<br />
-      *  Version 0.2, 29.03.2007 (Changed to new logger)<br />
-      */
-      function __logError(){
-
-         $Message = '['.($this->__generateErrorID()).'] '.$this->__ErrorMessage.' (Number: '.$this->__ErrorNumber.', File: '.$this->__ErrorFile.', Line: '.$this->__ErrorLine.')';
-         $L = &Singleton::getInstance('Logger');
-         $L->logEntry('php',$Message,'ERROR');
-
-       // end function
-      }
-
-
-      /**
-      *  @private
-      *
-      *  Creates the error page.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 21.01.2007<br />
-      *  Version 0.2, 03.03.2007<br />
-      *  Version 0.3, 04.03.2007 (Context now is set)<br />
-      *  Version 0.4, 29.03.2007<br />
-      *  Version 0.5, 13.08.2008 (Removed text only error page messages)<br />
-      */
-      function __buildErrorPage(){
-
-         // create page
-         $stacktrace = new Page('Stacktrace');
-         $stacktrace->set('Context','core::errorhandler');
-         $stacktrace->loadDesign('core::errorhandler::templates','errorpage');
-
-         // inject error information into the document attributes array
-         $Document = & $stacktrace->getByReference('Document');
-         $Document->setAttribute('id',$this->__generateErrorID());
-         $Document->setAttribute('message',$this->__ErrorMessage);
-         $Document->setAttribute('number',$this->__ErrorNumber);
-         $Document->setAttribute('file',$this->__ErrorFile);
-         $Document->setAttribute('line',$this->__ErrorLine);
-
-         // create error page
-         return $stacktrace->transform();
-
-       // end function
-      }
-
-
-      /**
-      *  @private
-      *
-      *  Generates the error id.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 21.01.2007<br />
-      */
-      function __generateErrorID(){
-         return md5($this->__ErrorMessage.$this->__ErrorNumber.$this->__ErrorFile.$this->__ErrorLine);
-       // end function
-      }
-
-    // end class
    }
 ?>

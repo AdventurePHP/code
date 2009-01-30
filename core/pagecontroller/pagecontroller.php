@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -36,8 +36,8 @@
    *  Further, the built-in input and output filters are initialized. For this reason, the following
    *  registry entries are created within the "apf::core::filter" namespace:
    *
-   *  - PageControllerInputFilter:
-   *  - OutputFilter             :
+   *  - PageControllerInputFilter : the definition of the input filter
+   *  - OutputFilter              : the definition of the output filter
    *
    *  The file also contains the pagecontroller core implementation with the classes Page,
    *  Document, TagLib, coreObject, xmlParser and baseController (the basic MVC document controller).
@@ -82,11 +82,9 @@
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
 
-
    // include core libraries for the basic configuration
    import('core::singleton','Singleton');
    import('core::registry','Registry');
-
 
    // define base parameters of the framework's core and tools layer
    $reg = &Singleton::getInstance('Registry');
@@ -95,7 +93,6 @@
    $reg->register('apf::core','LogDir',str_replace('\\','/',getcwd()).'/logs');
    $reg->register('apf::core','URLBasePath',$_SERVER['HTTP_HOST']);
    $reg->register('apf::core','LibPath',APPS__PATH,true);
-
 
    // define current request url entry
    if($_SERVER['SERVER_PORT'] == '443'){
@@ -108,14 +105,12 @@
    }
    $reg->register('apf::core','CurrentRequestURL',$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],true);
 
-
    // include necessary core libraries for the pagecontroller
-   import('core::errorhandler','errorHandler');
+   import('core::errorhandler','errorhandler');
    import('core::service','serviceManager');
    import('core::configuration','configurationManager');
    import('core::benchmark','benchmarkTimer');
    import('core::filter','FilterFactory');
-
 
    // set up the input and output filter
    $reg->register('apf::core::filter','PageControllerInputFilter',new FilterDefinition('core::filter','PageControllerInputFilter'));
@@ -124,6 +119,7 @@
 
    /**
    *  @namespace core::pagecontroller
+   *  @function import
    *
    *  Imports classes or modules from a given namespace. If the php5 support is enabled, files with
    *  the extension ".php5" are included. If no php5 file is present, the ".php" file is included
@@ -209,7 +205,8 @@
 
 
    /**
-   *  @namespace core::applicationmanager
+   *  @namespace core::pagecontroller
+   *  @function printObject
    *  @see http://php.net/print_r
    *
    *  Creates a print_r() output of the given object, array, string or integer.
