@@ -11,16 +11,13 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
    *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
    *  -->
    */
-
-   import('core::filesystem','filesystemHandler');
-
 
    /**
    *  @namespace tools::image
