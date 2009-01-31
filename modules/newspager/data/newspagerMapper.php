@@ -20,7 +20,7 @@
    */
 
    import('modules::newspager::biz','newspagerContent');
-   import('core::filesystem','filesystemHandler');
+   import('tools::filesystem','FilesystemManager');
 
 
    /**
@@ -78,11 +78,8 @@
       */
       function getNewsByPage($PageNumber){
 
-         // create filesystem handler
-         $fM = new filesystemHandler($this->__DataDir);
-
          // read all files located there
-         $RawFiles = $fM->showDirContent();
+         $RawFiles = FilesystemManager::getFolderContent($this->__DataDir);
 
          // get files, that match the current language
          $Files = array();
