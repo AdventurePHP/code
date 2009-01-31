@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -19,19 +19,19 @@
    *  -->
    */
 
-   import('tools::variablen','variablenHandler');
+   import('tools::request','RequestHandler');
 
 
    /**
    *  @namespace tools::html::taglib::doc
    *  @class doc_taglib_createobject
    *
-   *  Implementiert die TagLib für den Tag "doc:createobject".<br />
+   *  Implements a taglib that creates a child node by the content of a file.
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 04.01.2006<br />
-   *  Version 0.2, 29.09.2007 (TagLib in doc_taglib_createobject umbenannt)<br />
+   *  Version 0.2, 29.09.2007 (Renamed to doc_taglib_createobject)<br />
    */
    class doc_taglib_createobject extends Document
    {
@@ -39,12 +39,12 @@
       /**
       *  @public
       *
-      *  Konstruktor der Klasse. Ruft den Konstruktor der Eltern-Klasse auf.<br />
+      *  Calls the parent's constructor to initialize the known taglibs.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 04.01.2006<br />
-      *  Version 0.2, 29.09.2007 (Methode in doc_taglib_createobject umbenannt)<br />
+      *  Version 0.2, 29.09.2007 (Renamed to doc_taglib_createobject<br />
       */
       function doc_taglib_createobject(){
          parent::Document();
@@ -55,31 +55,27 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode onParseTime().<br />
+      *  Reimplements the onParseTime().
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 04.01.2006<br />
+      *  Version 0.2, 31.01.2009 (Replaced the variablenHandler)<br />
       */
       function onParseTime(){
 
-         // Attribute auslesen
-         $RequestParameter = $this->__Attributes['requestparam'];
-         $DefaultValue = $this->__Attributes['defaultvalue'];
+         // get the attributes
+         $RequestParameter = $this->getAttribute('requestparam');
+         $DefaultValue = $this->getAttribute('defaultvalue');
 
-         // Parameter über variablenHandler initialisieren
-         $_LOCALS = variablenHandler::registerLocal(array($RequestParameter => $DefaultValue));
+         // get current request param
+         $CurrentRequestParameter = RequestHandler::getValue($RequestParameter,$DefaultValue);
 
-         // Aktuellen Parameter auslesen
-         $CurrentRequestParameter = $_LOCALS[$RequestParameter];
-
-         // Content des Objekts setzen
+         // fill content
          $this->__Content = $this->__getContent($CurrentRequestParameter);
 
-         // Tags extrahieren
+         // extract tags and document controller
          $this->__extractTagLibTags();
-
-         // DocumentController extrahieren
          $this->__extractDocumentController();
 
        // end function
@@ -89,25 +85,25 @@
       /**
       *  @private
       *
-      *  Liest den Inhalt einer Seite aus der zugehörigen Datei aus. Im Fehler-<br />
-      *  Fall wird eine 404-Seite angezeigt.<br />
+      *  Reads the content of a file using the param to indicate it's name. If the file does not
+      *  exist, a file with name "404" is taken instead.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 30.05.2006<br />
-      *  Version 0.2, 31.05.2006 (Content aus Namespace /apps/sites in Webseiten-Repository (frontend/content) verschoben)<br />
-      *  Version 0.3, 29.09.2007 (Sprachabhängige Seiten eingeführt)<br />
+      *  Version 0.2, 31.05.2006 (Path changed from /apps/sites  to ./frontend/content)<br />
+      *  Version 0.3, 29.09.2007 (Introduced the language in the filename)<br />
       */
-      function __getContent($Seite){
+      function __getContent($pageName){
 
-         $Datei = './frontend/content/c_'.$this->__Language.'_'.strtolower($Seite).'.html';
+         $file = './frontend/content/c_'.$this->__Language.'_'.strtolower($pageName).'.html';
 
-         if(!file_exists($Datei)){
-            $Datei = './frontend/content/c_'.$this->__Language.'_404.html';
+         if(!file_exists($file)){
+            $file = './frontend/content/c_'.$this->__Language.'_404.html';
           // end else
          }
 
-         return file_get_contents($Datei);
+         return file_get_contents($file);
 
        // end function
       }
