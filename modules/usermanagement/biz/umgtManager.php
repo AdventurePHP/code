@@ -26,12 +26,15 @@
    *  @package modules::usermanagement::biz
    *  @module umgtManager
    *
-   *  Business component of the user management module.
+   *  Business component of the user management module. Uses the md5 algo to create password hashes.
+   *  If you desire to use another one, extend this class and overwrite the __createPasswordHash()
+   *  function with your own functionality. Please be sure to keep all the other methods untouched!
    *
    *  @author Christian Achatz
    *  @version
    *  Version 0.1, 26.04.2008<br />
    *  Version 0.2, 23.06.2008 (Mapper is now loaded by an internal method that uses the GenericORMapperFactory)<br />
+   *  Version 0.3, 31.01.2009 (Introduced the possibility to switch the hash algo)<br />
    */
    class umgtManager extends coreObject
    {
@@ -112,6 +115,25 @@
       /**
       *  @private
       *
+      *  Implements the central hashing method. If you desire to use another hash algo, extend the
+      *  UmgtManager and reimplement this method! Be sure, to keep all other methods untouched.
+      *
+      *  @param string $password the password to hash
+      *  @return string $passwordHash the desired hash of the given password
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 31.01.2009<br />
+      */
+      function __createPasswordHash($password){
+         return md5($password);
+       // end function
+      }
+
+
+      /**
+      *  @private
+      *
       *  Returns an initialized Application object.
       *
       *  @return GenericDomainObject $app current application domain object
@@ -174,7 +196,7 @@
 
          // handle password
          if($user->getProperty('Password') !== null){
-            $user->setProperty('Password',md5($user->getProperty('Password')));
+            $user->setProperty('Password',$this->__createPasswordHash($user->getProperty('Password')));
           // end if
          }
 
@@ -446,6 +468,7 @@
       *  @version
       *  Version 0.1, 30.12.2008<br />
       *  Version 0.2, 02.01.2009 (Added sql injection security)<br />
+      *  Version 0.3, 31.01.2009 (Switched to the private hashing method)<br />
       */
       function loadUserByUsernameAndPassword($username,$password){
 
@@ -458,7 +481,8 @@
          $password = $dbDriver->escapeValue($password);
 
          // create the statement and select user
-         $select = 'SELECT * FROM ent_user WHERE Username = \''.$username.'\' AND Password = MD5(\''.$password.'\');';
+         $password = $this->__createPasswordHash($password);
+         $select = 'SELECT * FROM ent_user WHERE Username = \''.$username.'\' AND Password = \''.$password.'\';';
          return $oRM->loadObjectByTextStatement('User',$select);
 
        // end function
@@ -478,6 +502,7 @@
       *  @version
       *  Version 0.1, 29.12.2008<br />
       *  Version 0.2, 02.01.2009 (Added sql injection security)<br />
+      *  Version 0.3, 31.01.2009 (Switched to the private hashing method)<br />
       */
       function loadUserByEMailAndPassword($email,$password){
 
@@ -490,7 +515,8 @@
          $password = $dbDriver->escapeValue($password);
 
          // create the statenent and select user
-         $select = 'SELECT * FROM ent_user WHERE EMail = \''.$email.'\' AND Password = MD5(\''.$password.'\');';
+         $password = $this->__createPasswordHash($password);
+         $select = 'SELECT * FROM ent_user WHERE EMail = \''.$email.'\' AND Password = \''.$password.'\';';
          return $oRM->loadObjectByTextStatement('User',$select);
 
        // end function
