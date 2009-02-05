@@ -51,6 +51,7 @@
    *  Version 0.5, 14.08.2008 (Changed LogDir initialisation to absolute paths)<br />
    *  Version 0.6, 05.11.2008 (Added the 'CurrentRequestURL' attribute to the 'apf::core' namespace of the registry)<br />
    *  Version 0.7, 11.12.2008 (Added the input and output filter initialization)<br />
+   *  Version 0.8, 01.02.2009 (Added the protocol prefix to the URLBasePath)<br />
    */
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +92,6 @@
    $reg->register('apf::core','Environment','DEFAULT');
    $reg->register('apf::core','URLRewriting',false);
    $reg->register('apf::core','LogDir',str_replace('\\','/',getcwd()).'/logs');
-   $reg->register('apf::core','URLBasePath',$_SERVER['HTTP_HOST']);
    $reg->register('apf::core','LibPath',APPS__PATH,true);
 
    // define current request url entry
@@ -103,6 +103,7 @@
       $protocol = 'http://';
     // end else
    }
+   $reg->register('apf::core','URLBasePath',$protocol.$_SERVER['HTTP_HOST']);
    $reg->register('apf::core','CurrentRequestURL',$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],true);
 
    // include necessary core libraries for the pagecontroller
