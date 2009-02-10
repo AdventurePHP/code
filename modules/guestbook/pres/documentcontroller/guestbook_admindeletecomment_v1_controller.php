@@ -45,7 +45,7 @@
 
 
       function guestbook_admindeletecomment_v1_controller(){
-         $this->_LOCALS = variablenHandler::registerLocal(array('commentid'));
+         $this->_LOCALS = RequestHandler::getValues(array('commentid'));
        // end function
       }
 

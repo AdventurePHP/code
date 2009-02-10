@@ -20,7 +20,7 @@
    */
 
    import('modules::comments::pres::documentcontroller','commentBaseController');
-   import('tools::variablen','variablenHandler');
+   import('tools::request','RequestHandler');
    import('modules::comments::biz','commentManager');
    import('tools::link','frontcontrollerLinkHandler');
    import('tools::string','stringAssistant');
@@ -57,7 +57,7 @@
       *  Version 0.2, 28.12.2007 (Added the CaptchaString)<br />
       */
       function comment_form_v1_controller(){
-         $this->_LOCALS = variablenHandler::registerLocal(array('Name','EMail','Comment','CaptchaString'));
+         $this->_LOCALS = RequestHandler::getValues(array('Name','EMail','Comment','CaptchaString'));
        // end function
       }
 

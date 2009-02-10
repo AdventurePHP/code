@@ -45,7 +45,7 @@
 
       function guestbook_adminedit_v1_controller(){
 
-         $this->_LOCALS = variablenHandler::registerLocal(array(
+         $this->_LOCALS = RequestHandler::getValues(array(
                                                                 'Name',
                                                                 'EMail',
                                                                 'City',

@@ -6,7 +6,7 @@
    import('modules::calendar::biz','Day');
    import('modules::calendar::biz','Event');
    import('tools::link','linkHandler');
-   import('tools::variablen','variablenHandler');
+   import('tools::request','RequestHandler');
 
 
    /**
@@ -45,7 +45,7 @@
       */
       function calendar_v1_controller(){
          //$this->__Attributes['calendarname'] = 'TerminDB';
-         $this->_LOCALS = variablenHandler::registerLocal(array('Month' => date('m'),'Year' => date('Y'),'Day'));
+         $this->_LOCALS = RequestHandler::getValues(array('Month' => date('m'),'Year' => date('Y'),'Day'));
        // end function
       }
 

@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('tools::variablen','variablenHandler');
+   import('tools::request','RequestHandler');
    import('modules::kontakt4::biz','contactManager');
 
 
@@ -47,7 +47,7 @@
 
       function kontakt_v4_controller(){
 
-         $this->_LOCALS = variablenHandler::registerLocal(array('Empfaenger',
+         $this->_LOCALS = RequestHandler::getValues(array('Empfaenger',
                                                                 'AbsenderName',
                                                                 'AbsenderAdresse',
                                                                 'Betreff',

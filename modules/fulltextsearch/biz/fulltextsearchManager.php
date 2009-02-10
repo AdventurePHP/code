@@ -121,7 +121,7 @@
          $DefaultPageName = $Model->getAttribute('DefaultPageName');
          $RequestParameter = $ReqParamName[$this->__Language];
          $DefaultValue = $DefaultPageName[$this->__Language];
-         $_LOCALS = variablenHandler::registerLocal(array($RequestParameter,$DefaultValue));
+         $_LOCALS = RequestHandler::getValues(array($RequestParameter,$DefaultValue));
 
          // Mapper laden
          $M = &$this->__getServiceObject('modules::fulltextsearch::data','fulltextsearchMapper');

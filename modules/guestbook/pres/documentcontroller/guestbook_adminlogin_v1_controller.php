@@ -46,7 +46,7 @@
 
       function guestbook_adminlogin_v1_controller(){
 
-         $this->_LOCALS = variablenHandler::registerLocal(array(
+         $this->_LOCALS = RequestHandler::getValues(array(
                                                                 'Username',
                                                                 'Password',
                                                                 'logout'

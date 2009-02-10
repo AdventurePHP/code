@@ -20,7 +20,7 @@
    */
 
    import('modules::fulltextsearch::biz','fulltextsearchManager');
-   import('tools::variablen','variablenHandler');
+   import('tools::request','RequestHandler');
    import('tools::datetime','dateTimeManager');
    import('sites::demosite::biz','DemositeModel');
 
@@ -81,7 +81,7 @@
       function transformContent(){
 
          // Suchwort entgegen nehmen
-         $_LOCALS = variablenHandler::registerLocal(array('SearchString' => ''));
+         $_LOCALS = RequestHandler::getValues(array('SearchString' => ''));
 
 
          // Model holen

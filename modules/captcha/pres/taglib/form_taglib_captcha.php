@@ -20,7 +20,7 @@
    */
 
    import('tools::form::taglib','ui_element');
-   import('tools::variablen','variablenHandler');
+   import('tools::request','RequestHandler');
    import('tools::string','stringAssistant');
    import('core::session','sessionManager');
    import('tools::link','frontcontrollerLinkHandler');
@@ -112,7 +112,7 @@
          if($this->__ParentObject->get('isSent') == true && isset($this->__Attributes['validate']) && $this->__Attributes['validate'] == 'true'){
 
             // register field name from the request
-            $_LOCALS = variablenHandler::registerLocal(array($this->__TextFieldName => null));
+            $_LOCALS = RequestHandler::getValues(array($this->__TextFieldName => null));
 
             // validate field
             if($_LOCALS[$this->__TextFieldName] != $CaptchaString){

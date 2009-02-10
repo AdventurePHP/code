@@ -45,7 +45,7 @@
 
 
       function guestbook_admindelete_v1_controller(){
-         $this->_LOCALS = variablenHandler::registerLocal(array('entryid'));
+         $this->_LOCALS = RequestHandler::getValues(array('entryid'));
        // end function
       }
 
