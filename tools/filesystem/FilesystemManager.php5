@@ -427,15 +427,18 @@
       *    <li>modificationtime: the modification time in the format "HH:MM:SS" (if file exists only)</li>
       *    <li>size: the file size in bytes(if file exists only)</li>
       *  </ul>
+      *  If the second argument contains a file attribute, the value is returned instead of a list!
       *
       *  @param string $file the desired file
+      *  @param string $attributeName the name of the attribute, that should be returned
       *  @return array $files a list of files within the given folder
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 29.11.2008<br />
+      *  Version 0.2, 01.02.2009 (Added the possibility to only return one attribute)<br />
       */
-      public static function getFileAttributes($file){
+      public static function getFileAttributes($file,$attributeName = null){
 
          // clear the stat cache to avoid interference with previous calls
          clearstatcache();
@@ -459,6 +462,23 @@
          $attributes['modificationtime'] = date('H:i:s',$modTime);
          $attributes['size'] = intval(filesize($file));
 
+         // return attribute
+         if($attributeName !== null){
+
+            if(isset($attributes[$attributeName])){
+               return $attributes[$attributeName];
+             // end if
+            }
+            else{
+               trigger_error('[ImageManager::getImageAttributes()] The desired file attribute ("'.$attributes.'") does not exist!');
+               return null;
+             // end else
+            }
+
+          // end if
+         }
+
+         // return whole list
          return $attributes;
 
        // end function
