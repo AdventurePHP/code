@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('tools::variablen','variablenHandler');
+   import('tools::request','RequestHandler');
 
 
    /**
@@ -57,7 +57,7 @@
       function transformContent(){
 
          // LOCALS füllen
-         $this->_LOCALS = variablenHandler::registerLocal(array($this->__Attributes['Config']['ParameterCountName'] => $this->__Attributes['Config']['EntriesPerPage']));
+         $this->_LOCALS = RequestHandler::getValues(array($this->__Attributes['Config']['ParameterCountName'] => $this->__Attributes['Config']['EntriesPerPage']));
 
 
          // Puffer initialisieren

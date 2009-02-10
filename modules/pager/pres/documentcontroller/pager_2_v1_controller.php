@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -20,7 +20,7 @@
    */
 
    import('tools::link','frontcontrollerLinkHandler');
-   import('tools::variablen','variablenHandler');
+   import('tools::request','RequestHandler');
 
 
    /**
@@ -70,8 +70,7 @@
       function transformContent(){
 
          // LOCALS füllen
-         $this->_LOCALS = variablenHandler::registerLocal(array($this->__Attributes['Config']['ParameterCountName'] => $this->__Attributes['Config']['EntriesPerPage']));
-
+         $this->_LOCALS = RequestHandler::getValues(array($this->__Attributes['Config']['ParameterCountName'] => $this->__Attributes['Config']['EntriesPerPage']));
 
          // Pager leer zurückgeben, falls keine Seiten vorhanden sind.
          if(count($this->__Attributes['Pages']) == 0){
