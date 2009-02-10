@@ -286,6 +286,7 @@
       *  Version 0.1, 22.11.2004<br />
       *  Version 0.2, 15.07.2006 (Added the extension in the attributes list; added another algo to guess the extension)<br />
       *  Version 0.3, 31.01.2009 (Refactoring of the method. Now only the relevant image indicators are returned)<br />
+      *  Version 0.4, 01.02.2009 (Added a check, if the channel attribute is returned by getimagesize())<br />
       */
       function getImageAttributes($image,$attributeName = null){
 
@@ -328,13 +329,18 @@
          }
 
          // define the color mode
-         if($attributes['channels'] == '3'){
-            $imageAttributes['colormode'] = 'RGB';
+         if(isset($attributes['channels'])){
+
+            if($attributes['channels'] == '3'){
+               $imageAttributes['colormode'] = 'RGB';
+             // end if
+            }
+            else{
+               $imageAttributes['colormode'] = 'CMYK';
+             // end else
+            }
+
           // end if
-         }
-         else{
-            $imageAttributes['colormode'] = 'CMYK';
-          // end else
          }
 
          // return attribute
