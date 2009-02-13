@@ -60,14 +60,14 @@
       /**
       *  @public
       *
-      *  Transformiert ein Checkbox-Objekt.<br />
+      *  Returns the HTML code of the radio button.
       *
-      *  @return string $Checkbox; HTML-Code der Radio-Checkbox
+      *  @return string $radio the HTML code of the radio button
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 13.01.2007<br />
-      *  Version 0.2, 11.02.2007 (Presetting und Validierung nach onAfterAppend() verschoben)<br />
+      *  Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
       */
       function transform(){
          return '<input type="radio" '.$this->__getAttributesAsString($this->__Attributes,$this->__ExclusionArray).' />';
@@ -78,17 +78,22 @@
       /**
       *  @private
       *
-      *  Implementiert die Methode "__presetValue" der Eltern-Klasse neu für den Radio-Button.<br />
+      *  Re-implements the __presetValue() method for the radio button.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 13.01.2007<br />
+      *  Version 0.2, 13.01.2009 (Bugfix: now the 'checked' attribute is deleted, that in case of a manually defined 'ckecked' the button could be unchecked)<br />
       */
       function __presetValue(){
 
          if(isset($_REQUEST[$this->__Attributes['name']]) && $_REQUEST[$this->__Attributes['name']] == $this->__Attributes['value']){
             $this->__Attributes['checked'] = 'checked';
           // end if
+         }
+         else{
+            unset($this->__Attributes['checked']);
+          // end else
          }
 
        // end function
