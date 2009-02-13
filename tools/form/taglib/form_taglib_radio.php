@@ -87,13 +87,18 @@
       */
       function __presetValue(){
 
-         if(isset($_REQUEST[$this->__Attributes['name']]) && $_REQUEST[$this->__Attributes['name']] == $this->__Attributes['value']){
-            $this->__Attributes['checked'] = 'checked';
+         if(isset($_REQUEST[$this->__Attributes['name']])){
+
+            if($_REQUEST[$this->__Attributes['name']] == $this->__Attributes['value']){
+               $this->__Attributes['checked'] = 'checked';
+             // end if
+            }
+            else{
+               unset($this->__Attributes['checked']);
+             // end else
+            }
+
           // end if
-         }
-         else{
-            unset($this->__Attributes['checked']);
-          // end else
          }
 
        // end function
