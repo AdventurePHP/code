@@ -27,7 +27,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class edit_controller
+   *  @class umgt_edit_controller
    *
    *  Implements the controller to edit a role.
    *
@@ -35,12 +35,8 @@
    *  @version
    *  Version 0.1, 27.12.2008<br />
    */
-   class edit_controller extends umgtbaseController
+   class umgt_edit_controller extends umgtbaseController
    {
-
-      function edit_controller(){
-      }
-
 
       function transformContent(){
 

@@ -27,7 +27,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class detachfromuser_controller
+   *  @class umgt_detachfromuser_controller
    *
    *  Implements the controller to detach a role from a user.
    *
@@ -35,12 +35,8 @@
    *  @version
    *  Version 0.1, 27.12.2008<br />
    */
-   class detachfromuser_controller extends umgtbaseController
+   class umgt_detachfromuser_controller extends umgtbaseController
    {
-
-      function detachfromuser_controller(){
-      }
-
 
       function transformContent(){
 

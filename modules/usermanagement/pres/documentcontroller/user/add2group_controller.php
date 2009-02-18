@@ -27,7 +27,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class edit_controller
+   *  @class umgt_add2group_controller
    *
    *  Implements the controller to add a user to a group.
    *
@@ -35,12 +35,8 @@
    *  @version
    *  Version 0.1, 26.12.2008<br />
    */
-   class add2group_controller extends umgtbaseController
+   class umgt_add2group_controller extends umgtbaseController
    {
-
-      function add2group_controller(){
-      }
-
 
       /**
       *  @public

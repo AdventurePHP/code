@@ -26,7 +26,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class delete_controller
+   *  @class umgt_add_controller
    *
    *  Implements the controller to add a group.
    *
@@ -34,12 +34,8 @@
    *  @version
    *  Version 0.1, 27.12.2008<br />
    */
-   class add_controller extends umgtbaseController
+   class umgt_add_controller extends umgtbaseController
    {
-
-      function add_controller(){
-      }
-
 
       function transformContent(){
 

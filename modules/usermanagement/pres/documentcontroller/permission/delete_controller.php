@@ -27,7 +27,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class delete_controller
+   *  @class umgt_delete_controller
    *
    *  Implements the delete controller for a permission.
    *
@@ -35,12 +35,8 @@
    *  @version
    *  Version 0.1, 27.12.2008<br />
    */
-   class delete_controller extends umgtbaseController
+   class umgt_delete_controller extends umgtbaseController
    {
-
-      function delete_controller(){
-      }
-
 
       function transformContent(){
 

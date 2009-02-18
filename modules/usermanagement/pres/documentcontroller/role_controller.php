@@ -23,7 +23,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class role_controller
+   *  @class umgt_role_controller
    *
    *  Implements the documentcontroller to display the role sub menu.
    *
@@ -31,7 +31,7 @@
    *  @version
    *  Version 0.1, 29.12.2008<br />
    */
-   class role_controller extends umgtbaseController
+   class umgt_role_controller extends umgtbaseController
    {
 
       function transformContent(){

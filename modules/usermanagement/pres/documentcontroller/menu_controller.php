@@ -24,7 +24,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class menu_controller
+   *  @class umgt_menu_controller
    *
    *  Displays the user management menu.
    *
@@ -32,12 +32,8 @@
    *  @version
    *  Version 0.1, 28.12.2008<br />
    */
-   class menu_controller extends umgtbaseController
+   class umgt_menu_controller extends umgtbaseController
    {
-
-      function menu_controller(){
-      }
-
 
       /**
       *  @public

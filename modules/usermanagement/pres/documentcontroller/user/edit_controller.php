@@ -27,7 +27,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class edit_controller
+   *  @class umgt_edit_controller
    *
    *  Implements the edit controller for a user.
    *
@@ -35,12 +35,8 @@
    *  @version
    *  Version 0.1, 26.12.2008<br />
    */
-   class edit_controller extends umgtbaseController
+   class umgt_edit_controller extends umgtbaseController
    {
-
-      function edit_controller(){
-      }
-
 
       /**
       *  @public

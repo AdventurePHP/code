@@ -27,7 +27,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class edit_controller
+   *  @class umgt_delete_controller
    *
    *  Implements the controller to delete a user.
    *
@@ -35,12 +35,8 @@
    *  @version
    *  Version 0.1, 26.12.2008<br />
    */
-   class delete_controller extends umgtbaseController
+   class umgt_delete_controller extends umgtbaseController
    {
-
-      function delete_controller(){
-      }
-
 
       function transformContent(){
 

@@ -26,7 +26,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class edit_controller
+   *  @class umgt_details_controller
    *
    *  Implements the controller to dispolay a user's details.
    *
@@ -34,11 +34,8 @@
    *  @version
    *  Version 0.1, 26.12.2008<br />
    */
-   class details_controller extends iteratorBaseController
+   class umgt_details_controller extends iteratorBaseController
    {
-
-      function details_controller(){
-      }
 
       function transformContent(){
 

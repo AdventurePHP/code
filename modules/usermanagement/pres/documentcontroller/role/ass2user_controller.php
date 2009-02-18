@@ -27,7 +27,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class ass2user_controller
+   *  @class umgt_ass2user_controller
    *
    *  Implements the controller to assign a role to a user.
    *
@@ -36,12 +36,8 @@
    *  Version 0.1, 27.12.2008<br />
    *  Version 0.2, 29.12.2008 (Applied API change of the usermanagement manager)<br />
    */
-   class ass2user_controller extends umgtbaseController
+   class umgt_ass2user_controller extends umgtbaseController
    {
-
-      function ass2user_controller(){
-      }
-
 
       /**
       *  @public

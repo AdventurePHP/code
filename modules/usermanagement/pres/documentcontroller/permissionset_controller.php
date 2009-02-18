@@ -24,7 +24,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class permissionset_controller
+   *  @class umgt_permissionset_controller
    *
    *  Displays the permission set sub menu.
    *
@@ -32,7 +32,7 @@
    *  @version
    *  Version 0.1, 28.12.2008<br />
    */
-   class permissionset_controller extends umgtbaseController
+   class umgt_permissionset_controller extends umgtbaseController
    {
 
       function transformContent(){

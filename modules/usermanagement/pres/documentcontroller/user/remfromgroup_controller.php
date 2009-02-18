@@ -27,7 +27,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class edit_controller
+   *  @class umgt_remfromgroup_controller
    *
    *  Implements the controller to remove a user from a group.
    *
@@ -35,12 +35,8 @@
    *  @version
    *  Version 0.1, 26.12.2008<br />
    */
-   class remfromgroup_controller extends umgtbaseController
+   class umgt_remfromgroup_controller extends umgtbaseController
    {
-
-      function remfromgroup_controller(){
-      }
-
 
       function transformContent(){
 

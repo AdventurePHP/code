@@ -24,7 +24,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class group_controller
+   *  @class umgt_group_controller
    *
    *  Displays the group sub menu.
    *
@@ -32,7 +32,7 @@
    *  @version
    *  Version 0.1, 28.12.2008<br />
    */
-   class group_controller extends umgtbaseController
+   class umgt_group_controller extends umgtbaseController
    {
 
       function transformContent(){

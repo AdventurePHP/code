@@ -898,11 +898,12 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 28.12.2008<br />
+      *  Version 0.2, 18.02.2009 (Bugfix: addUser2Groups() does not exist)<br />
       */
       function assignUsers2Group($users = array(),$group){
 
          for($i = 0; $i < count($users); $i++){
-            $this->addUser2Groups($users[$i],array($group));
+            $this->assignUser2Groups($users[$i],array($group));
           // end for
          }
 

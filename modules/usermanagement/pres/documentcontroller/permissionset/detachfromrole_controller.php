@@ -27,7 +27,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class detachfromrole_controller
+   *  @class umgt_detachfromrole_controller
    *
    *  Implements the controller to detach a permission set from a role.
    *
@@ -35,12 +35,8 @@
    *  @version
    *  Version 0.1, 29.12.2008<br />
    */
-   class detachfromrole_controller extends umgtbaseController
+   class umgt_detachfromrole_controller extends umgtbaseController
    {
-
-      function detachfromrole_controller(){
-      }
-
 
       function transformContent(){
 

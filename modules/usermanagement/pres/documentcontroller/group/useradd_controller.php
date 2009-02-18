@@ -27,7 +27,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class useradd_controller
+   *  @class umgt_useradd_controller
    *
    *  Implements the controller to list the groups.
    *
@@ -35,12 +35,8 @@
    *  @version
    *  Version 0.1, 27.12.2008<br />
    */
-   class useradd_controller extends umgtbaseController
+   class umgt_useradd_controller extends umgtbaseController
    {
-
-      function useradd_controller(){
-      }
-
 
       /**
       *  @public

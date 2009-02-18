@@ -26,7 +26,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class details_controller
+   *  @class umgt_details_controller
    *
    *  Implements the controller to list the existing permission sets.
    *
@@ -34,12 +34,8 @@
    *  @version
    *  Version 0.1, 27.12.2008<br />
    */
-   class details_controller extends iteratorBaseController
+   class umgt_details_controller extends iteratorBaseController
    {
-
-      function details_controller(){
-      }
-
 
       /**
       *  @public

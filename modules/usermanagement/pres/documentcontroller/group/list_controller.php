@@ -24,7 +24,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class list_controller
+   *  @class umgt_list_controller
    *
    *  Implements the controller to list the groups.
    *
@@ -32,12 +32,8 @@
    *  @version
    *  Version 0.1, 27.12.2008<br />
    */
-   class list_controller extends umgtbaseController
+   class umgt_list_controller extends umgtbaseController
    {
-
-      function list_controller(){
-      }
-
 
       function transformContent(){
 

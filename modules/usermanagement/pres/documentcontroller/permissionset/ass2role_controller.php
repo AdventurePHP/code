@@ -27,7 +27,7 @@
 
    /**
    *  @namespace modules::usermanagement::pres::documentcontroller
-   *  @class ass2role_controller
+   *  @class umgt_ass2role_controller
    *
    *  Implements the controller to assign a permission set to a role.
    *
@@ -35,12 +35,8 @@
    *  @version
    *  Version 0.1, 27.12.2008<br />
    */
-   class ass2role_controller extends umgtbaseController
+   class umgt_ass2role_controller extends umgtbaseController
    {
-
-      function ass2role_controller(){
-      }
-
 
       function transformContent(){
 
