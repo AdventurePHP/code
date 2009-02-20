@@ -23,36 +23,36 @@
    *  @namespace tools::image
    *  @class ImageManager
    *
-   *  Stellt Methoden zur Bildbearbeitung bereit.<br />
+   *  Provides methods to manipulate images.
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 08.09.2003<br />
    *  Version 0.2, 17.09.2004<br />
    *  Version 0.3, 21.01.2006<br />
-   *  Version 0.4, 06.03.2007 (Anpassungen am Code)<br />
-   *  Version 0.5, 31.03.2007 (Refactoring und PNG-Support hinzugefügt)<br />
+   *  Version 0.4, 06.03.2007 (Several code changes)<br />
+   *  Version 0.5, 31.03.2007 (Refactoring and added PNG support)<br />
    */
    class ImageManager
    {
 
       /**
       *  @private
-      *  Breite des Bildes.
+      *  Width of the image.
       */
       var $__Width;
 
 
       /**
       *  @private
-      *  Höhe des Bildes.
+      *  Height of the image.
       */
       var $__Height;
 
 
       /**
       *  @private
-      *  Qualität eines JPG-Bildes.
+      *  Quality of a JPEG image.
       */
       var $__JPGQuality;
 
@@ -60,25 +60,22 @@
       /**
       *  @public
       *
-      *  Konstruktor der Klasse. Setzt die Statdard-Einstellungen der Library.<br />
+      *  Initializes the image's dimensions.
+      *
+      *  @param int $width the width of an image
+      *  @param int $height the height of an image
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 08.09.2003<br />
       *  Version 0.2, 17.09.2004<br />
       *  Version 0.3, 21.01.2006<br />
-      *  Version 0.4, 06.03.2007 (JPG-Qualität wird nicht mehr aus dem Config-File geladen)<br />
+      *  Version 0.4, 06.03.2007 (JPG quality is now not loaded from a file any more)<br />
       */
-      function ImageManager($Width = 80,$Height = 80){
-
-         // Breite und Höhe setzen
-         $this->__Width = $Width;
-         $this->__Height = $Height;
-
-
-         // JPG-Qualität setzen
+      function ImageManager($width = 80,$height = 80){
+         $this->__Width = $width;
+         $this->__Height = $height;
          $this->__JPGQuality = 80;
-
        // end function
       }
 
@@ -86,15 +83,18 @@
       /**
       *  @public
       *
-      *  Ermöglicht das setzen von Breite und Hoehe auch auch ausserhalb des Konstruktors.<br />
+      *  Redefines the image's size.
+      *
+      *  @param int $width the width of an image
+      *  @param int $height the height of an image
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 20.03.2005<br />
       */
-      function setImageSize($Width,$Height){
-         $this->__Width = $Width;
-         $this->__Height = $Height;
+      function setImageSize($width,$height){
+         $this->__Width = $width;
+         $this->__Height = $height;
        // end function
       }
 
@@ -102,11 +102,13 @@
       /**
       *  @public
       *
-      *  Erzeugt ein Pictogramm der Größe 80x80px (standard) und<br />
-      *  speichert dieses im übergebenen Pfad ab.<br />
-      *  Als Namen wird der Name des Quellbildes mit dem Suffix<br />
-      *  _klein gewählt. Zurückgegeben wird der Link zum<br />
-      *  Pictogramm.<br />
+      *  Creates a thumbnail of 80 x 80 px and saves the image in a given thumb path. The name of
+      *  the small image is created by the filebody of the huge image with the suffix "_klein". The
+      *  method returns the full path to the pictogramm.
+      *
+      *  @param string $ImageName the name of the source image
+      *  @param string $ThumbnailPath the path to save the thumbnail at
+      *  @return string $thumbnailName the fully qualified thumbnail file name (including the path)
       *
       *  @author Christian Schäfer
       *  @version
@@ -115,17 +117,16 @@
       *  Version 0.3, 22.11.2004<br />
       *  Version 0.4, 01.12.2004<br />
       *  Version 0.5, 02.12.2004<br />
-      *  Version 0.6, 17.02.2005 (transparenten GIFs ergänzt)<br />
-      *  Version 0.7, 21.01.2006 (Meldung entfernt)<br />
+      *  Version 0.6, 17.02.2005 (Added support for transparent GIF images)<br />
+      *  Version 0.7, 21.01.2006 (Removed messages)<br />
       *  Version 0.8, 22.01.2006<br />
-      *  Version 0.9, 31.03.2007 (PNG-Support hinzugefügt)<br />
+      *  Version 0.9, 31.03.2007 (Added PNG support)<br />
       */
       function generateThumbnail($ImageName,$ThumbnailPath){
 
          // Breite und Höhe des Pictogramms definierten
          $thumb_hoehe = $this->__Height;
          $thumb_breite = $this->__Width;
-
 
          // Quellbild analysieren
          $Eigenschaften = imageManager::showImageAttributes($ImageName);
@@ -134,7 +135,6 @@
          $quell_bild_hoehe = $Eigenschaften['Height'];
          $quell_bild_endung = $Eigenschaften['Type'];
          $quell_bild_eigenname = $Eigenschaften['FileBaseName'];
-
 
          // Ziel-Bild erzeugen
          if($quell_bild_endung == 'jpg'){
@@ -145,7 +145,6 @@
             $ziel_bild = imagecreate($thumb_breite,$thumb_hoehe);
           // end if
          }
-
 
          // Aktuelles Bild laden
          if($quell_bild_endung == 'jpg'){
@@ -160,7 +159,6 @@
             $quell_bild = imagecreatefrompng($ImageName);
           // end else
          }
-
 
          // Transparenz kopieren, falls GIF
          if($quell_bild_endung == 'gif'){
@@ -180,14 +178,11 @@
           // end if
          }
 
-
          // Name des Piktogramms zusammensetzen
          $thumb_name = $quell_bild_eigenname.'_thumb.'.$quell_bild_endung;
 
-
          // Quellbild verkleinert in das Zielbild kopieren
          imagecopyresized($ziel_bild,$quell_bild,0,0,0,0,$thumb_breite,$thumb_hoehe,$quell_bild_breite,$quell_bild_hoehe);
-
 
          // Zielbild unter angegebenem Namen speichern
          if($quell_bild_endung == 'jpg'){
@@ -202,7 +197,6 @@
             imagepng($ziel_bild,$ThumbnailPath.'/'.$thumb_name);
           // end else
          }
-
 
          // Thumb aus Speicher löschen
          imagedestroy($ziel_bild);
@@ -220,13 +214,25 @@
       /**
       *  @public
       *  @static
+      *  @deprecated
       *
-      *  Gibt wichtige Bildmaße wie Breite, Höhe und Typ eines Bildes aus.<br />
+      *  Returns information about about an image. The return list contains the following offsets:
+      *  <ul>
+      *    <li>Width: the width of the image</li>
+      *    <li>Height: the height of the image</li>
+      *    <li>Type: the type of the image</li>
+      *    <li>Extension: the image's extension</li>
+      *    <li>FileBaseName: the body of the file name</li>
+      *    <li>FileName: the complete file name</li>
+      *  </ul>
+      *
+      *  @param string $ImageName the name of the image
+      *  @return array $attributes the image attributes
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 22.11.2004<br />
-      *  Version 0.2, 15.07.2006 (Endung im Ergebnis-Array ergänzt; Alternativer Algorithmus zur Extraktion von DateiEigenName und Endung)<br />
+      *  Version 0.2, 15.07.2006 (Added the extension to the attributes)<br />
       */
       function showImageAttributes($ImageName){
 
@@ -255,7 +261,6 @@
          $attributes['Width'] = $bild_breite;
          $attributes['Height'] = $bild_hoehe;
          $attributes['Type'] = $img_flag[$bild_type];
-
          return $attributes;
 
        // end function
@@ -368,16 +373,21 @@
 
       /**
       *  @public
+      *  @static
       *
-      *  Resized ein Bild nach bei der Initialisierung angegebenen Maßen.<br />
-      *  Rückgabewert ist der Bildname.<br />
+      *  Resizes an image to the dimensions given when creating the ImageManager. The method returns
+      *  the fully qualified path to the thumbnail image.
+      *
+      *  @param string $Bild full qualified path to the image file
+      *  @param string $BildPfad full qualified path to the target image
+      *  @param string $BildName name of the desired target image
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 14.01.2005<br />
-      *  Version 0.2, 16.02.2005 (transparente GIFs ergänzt)<br />
-      *  Version 0.3, 22.01.2006 (Fehler bei der Behandlung der JPG-Qualität beseitigt)<br />
-      *  Version 0.4, 31.03.2007 (PNG-Support hinzugefügt)<br />
+      *  Version 0.2, 16.02.2005 (Added transparent GIF support)<br />
+      *  Version 0.3, 22.01.2006 (Removed bug handling JPEG images)<br />
+      *  Version 0.4, 31.03.2007 (Added PNG support)<br />
       */
       function resizeImageOld($Bild,$BildPfad,$BildName){
 
@@ -387,18 +397,15 @@
          // Quelle festlegen
          $bild_name = $Bild;
 
-
          // BildTyp ermitteln
          $BildEigenschaften = imageManager::showImageAttributes($Bild);
          $quell_bild_breite = $BildEigenschaften['Width'];
          $quell_bild_hoehe = $BildEigenschaften['Height'];
          $quell_bild_endung = $BildEigenschaften['Type'];
 
-
          // Breiten und Höhen definierten
          $thumb_hoehe = $this->__Height;
          $thumb_breite = $this->__Width;
-
 
          // Ziel-Bild erzeugen
          if($quell_bild_endung == 'jpg'){
@@ -409,7 +416,6 @@
             $ziel_bild = imagecreate($thumb_breite,$thumb_hoehe);
           // end if
          }
-
 
          // Aktuelles Bild laden
          if($quell_bild_endung == 'jpg'){
@@ -424,7 +430,6 @@
             $quell_bild = imagecreatefrompng($bild_name);
           // end else
          }
-
 
          // Transparenz kopieren, falls GIF
          if($quell_bild_endung == 'gif'){
@@ -444,13 +449,11 @@
           // end if
          }
 
-
          // Name des Pictogramms zusammensetzen:
          $thumb_name = $BildName;
 
          // Quellbild verkleinert in das Zielbild kopieren
          imagecopyresized($ziel_bild,$quell_bild,0,0,0,0,$thumb_breite,$thumb_hoehe,$quell_bild_breite,$quell_bild_hoehe);
-
 
          // Zielbild unter angegebenem Namen speichern
          if($quell_bild_endung == 'jpg'){
@@ -482,8 +485,9 @@
       /**
       *  @public
       *
-      *  Gibt die Möglichkeit die in der Konfiguration eingetragene<br />
-      *  Qualität manuell zu setzen.<br />
+      *  Sets the JPEG image quality used for resizing.
+      *
+      *  @param int $JPGQuality the quality of the JPEG image (0-100)
       *
       *  @author Christian Schäfer
       *  @version
