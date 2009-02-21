@@ -20,6 +20,7 @@
    */
 
    /**
+   *  @abstract
    *  @namespace core::errorhandler
    *  @class AbstractErrorHandler
    *

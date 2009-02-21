@@ -52,6 +52,7 @@
    *  Version 0.6, 05.11.2008 (Added the 'CurrentRequestURL' attribute to the 'apf::core' namespace of the registry)<br />
    *  Version 0.7, 11.12.2008 (Added the input and output filter initialization)<br />
    *  Version 0.8, 01.02.2009 (Added the protocol prefix to the URLBasePath)<br />
+   *  Version 0.9, 21.02.2009 (Added the exception handler, turned off the php5 support in the import() function of the PHP4 branch)<br />
    */
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +79,7 @@
     // end for
    }
 
-   // define the APPS__PATH constant to be used in the import() function
+   // define the APPS__PATH constant to be used in the import() function (performance hack!)
    define('APPS__PATH',implode($AppsPath,'/'));
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,6 +109,7 @@
 
    // include necessary core libraries for the pagecontroller
    import('core::errorhandler','errorhandler');
+   //import('core::exceptionhandler','exceptionhandler');
    import('core::service','serviceManager');
    import('core::configuration','configurationManager');
    import('core::benchmark','benchmarkTimer');
@@ -127,6 +129,10 @@
    *  as a fallback scenario. This is also done, that the files, that can be used in both versions
    *  do not have to be renamed or stored twice.
    *
+   *  @param string $Namespace the namespace of the file (=relative path, starting at the root of your code base)
+   *  @param string $File the body of the desired file / class to include
+   *  @print bool $ActivatePHP5Support indicates if the PHP 5 extension mixture feature is enabled or not
+   *
    *  @author Christian Achatz
    *  @version
    *  Version 0.1, 03.12.2005<br />
@@ -138,7 +144,7 @@
    *  Version 0.7, 20.06.2008 (Moved to pagecontroller.php due to the Registry introduction)<br />
    *  Version 0.8, 13.11.2008 (Replaced the include_once() calls with include()s to gain performance)<br />
    */
-   function import($Namespace,$File,$ActivatePHP5Support = true){
+   function import($Namespace,$File,$ActivatePHP5Support = false){
 
       // create the complete and absolute file name
       $File = APPS__PATH.'/'.str_replace('::','/',$Namespace).'/'.$File;
@@ -533,20 +539,17 @@
       */
       var $__Attributes = array();
 
-
       /**
       *  @private
       *  Kontext eines Objekts oder einer Applikation.
       */
       var $__Context = null;
 
-
       /**
       *  @private
       *  Sprache eines Objekts oder einer Applikation.
       */
       var $__Language = 'de';
-
 
       /**
       *  @since 0.3
@@ -556,15 +559,6 @@
       var $__ServiceType = null;
 
 
-      /**
-      *  @public
-      *
-      *  Konstruktor des abstrakten Basis-Objekts.<br />
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
       function coreObject(){
       }
 

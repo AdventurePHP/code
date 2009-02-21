@@ -52,6 +52,7 @@
    *  Version 0.6, 05.11.2008 (Added the 'CurrentRequestURL' attribute to the 'apf::core' namespace of the registry)<br />
    *  Version 0.7, 11.12.2008 (Added the input and output filter initialization)<br />
    *  Version 0.8, 01.02.2009 (Added the protocol prefix to the URLBasePath)<br />
+   *  Version 0.9, 21.02.2009 (Added the exception handler, turned off the php5 support in the import() function of the PHP4 branch)<br />
    */
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +79,7 @@
     // end for
    }
 
-   // define the APPS__PATH constant to be used in the import() function
+   // define the APPS__PATH constant to be used in the import() function (performance hack!)
    define('APPS__PATH',implode($AppsPath,'/'));
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,6 +109,7 @@
 
    // include necessary core libraries for the pagecontroller
    import('core::errorhandler','errorhandler');
+   import('core::exceptionhandler','exceptionhandler');
    import('core::service','serviceManager');
    import('core::configuration','configurationManager');
    import('core::benchmark','benchmarkTimer');
@@ -126,6 +128,10 @@
    *  the extension ".php5" are included. If no php5 file is present, the ".php" file is included
    *  as a fallback scenario. This is also done, that the files, that can be used in both versions
    *  do not have to be renamed or stored twice.
+   *
+   *  @param string $Namespace the namespace of the file (=relative path, starting at the root of your code base)
+   *  @param string $File the body of the desired file / class to include
+   *  @print bool $ActivatePHP5Support indicates if the PHP 5 extension mixture feature is enabled or not
    *
    *  @author Christian Achatz
    *  @version
@@ -513,58 +519,46 @@
       *  @private
       *  Eindeutige ID des Objekts.
       */
-      var $__ObjectID = null;
+      protected $__ObjectID = null;
 
       /**
       *  @private
       *  Referenz auf das Eltern-Objekt.
       */
-      var $__ParentObject = null;
+      protected $__ParentObject = null;
 
       /**
       *  @private
       *  Kinder eines Objekts.
       */
-      var $__Children = array();
+      protected $__Children = array();
 
       /**
       *  @private
       *  Attribute eines Objekts, die aus einem XML-Tag gelesen werden.
       */
-      var $__Attributes = array();
-
+      protected $__Attributes = array();
 
       /**
       *  @private
       *  Kontext eines Objekts oder einer Applikation.
       */
-      var $__Context = null;
-
+      protected $__Context = null;
 
       /**
       *  @private
       *  Sprache eines Objekts oder einer Applikation.
       */
-      var $__Language = 'de';
-
+      protected $__Language = 'de';
 
       /**
       *  @since 0.3
       *  @private
       *  Contains the service type, if the object was created with the serviceManager.
       */
-      var $__ServiceType = null;
+      protected $__ServiceType = null;
 
 
-      /**
-      *  @public
-      *
-      *  Konstruktor des abstrakten Basis-Objekts.<br />
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
       function coreObject(){
       }
 
@@ -1030,17 +1024,17 @@
       /**
       *  @private
       */
-      var $__Namespace;
+      protected $__Namespace;
 
       /**
       *  @private
       */
-      var $__Prefix;
+      protected $__Prefix;
 
       /**
       *  @private
       */
-      var $__Class;
+      protected $__Class;
 
 
       /**
@@ -1088,14 +1082,14 @@
       *  @private
       *  Name der "Page".
       */
-      var $__Name;
+      protected $__Name;
 
 
       /**
       *  @private
       *  Komponiert das initiale "Document" einer "Page".
       */
-      var $__Document;
+      protected $__Document;
 
 
       /**
@@ -1260,22 +1254,22 @@
       /**
       *  @private
       */
-      var $__Content;
+      protected $__Content;
 
       /**
       *  @private
       */
-      var $__DocumentController;
+      protected $__DocumentController;
 
       /**
       *  @private
       */
-      var $__TagLibs;
+      protected $__TagLibs;
 
       /**
       *  @private
       */
-      var $__MaxLoops = 100;
+      protected $__MaxLoops = 100;
 
 
       /**
@@ -2014,7 +2008,7 @@
       *  @private
       *  Indicates, if the template should be transformed on the place of definition. Default is false.
       */
-      var $__TransformOnPlace = false;
+      protected $__TransformOnPlace = false;
 
 
       /**
@@ -2292,7 +2286,7 @@
       *  @private
       *  Referenz auf das Document.
       */
-      var $__Document;
+      protected $__Document;
 
 
       function baseController(){
