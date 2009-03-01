@@ -38,6 +38,7 @@
 
       /**
       *  @private
+      *  @deprecated
       *  Width of the image.
       */
       var $__Width;
@@ -45,6 +46,7 @@
 
       /**
       *  @private
+      *  @deprecated
       *  Height of the image.
       */
       var $__Height;
@@ -52,6 +54,7 @@
 
       /**
       *  @private
+      *  @deprecated
       *  Quality of a JPEG image.
       */
       var $__JPGQuality;
@@ -59,6 +62,7 @@
 
       /**
       *  @public
+      *  @deprecated
       *
       *  Initializes the image's dimensions.
       *
@@ -82,6 +86,7 @@
 
       /**
       *  @public
+      *  @deprecated
       *
       *  Redefines the image's size.
       *
@@ -101,6 +106,7 @@
 
       /**
       *  @public
+      *  @deprecated
       *
       *  Creates a thumbnail of 80 x 80 px and saves the image in a given thumb path. The name of
       *  the small image is created by the filebody of the huge image with the suffix "_klein". The
@@ -374,6 +380,7 @@
       /**
       *  @public
       *  @static
+      *  @deprecated
       *
       *  Resizes an image to the dimensions given when creating the ImageManager. The method returns
       *  the fully qualified path to the thumbnail image.
@@ -484,6 +491,7 @@
 
       /**
       *  @public
+      *  @deprecated
       *
       *  Sets the JPEG image quality used for resizing.
       *
