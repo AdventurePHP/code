@@ -516,44 +516,44 @@
    {
 
       /**
-      *  @private
-      *  Eindeutige ID des Objekts.
+      *  @protected
+      *  Unique object identifier.
       */
       var $__ObjectID = null;
 
       /**
-      *  @private
-      *  Referenz auf das Eltern-Objekt.
+      *  @protected
+      *  Reference to the parent object.
       */
       var $__ParentObject = null;
 
       /**
-      *  @private
-      *  Kinder eines Objekts.
+      *  @protected
+      *  List of the children of the current object.
       */
       var $__Children = array();
 
       /**
-      *  @private
-      *  Attribute eines Objekts, die aus einem XML-Tag gelesen werden.
+      *  @protected
+      *  The attributes of an object (merely the XML tag attributes).
       */
       var $__Attributes = array();
 
       /**
-      *  @private
-      *  Kontext eines Objekts oder einer Applikation.
+      *  @protected
+      *  The context of the current object within the application.
       */
       var $__Context = null;
 
       /**
-      *  @private
-      *  Sprache eines Objekts oder einer Applikation.
+      *  @protected
+      *  The language of the current object within the application.
       */
       var $__Language = 'de';
 
       /**
       *  @since 0.3
-      *  @private
+      *  @protected
       *  Contains the service type, if the object was created with the serviceManager.
       */
       var $__ServiceType = null;
@@ -1012,7 +1012,8 @@
    *  @namespace core::pagecontroller
    *  @class TagLib
    *
-   *  Repräsentiert eine Tag-Library.<br />
+   *  Represents a taglib. You can see this class as a taglib definition or representation. It is
+   *  used to mark the known taglibs of a DOM node.
    *
    *  @author Christian Schäfer
    *  @version
@@ -1023,16 +1024,19 @@
 
       /**
       *  @private
+      *  The namespace of the taglib.
       */
       var $__Namespace;
 
       /**
       *  @private
+      *  The prefix of the taglib.
       */
       var $__Prefix;
 
       /**
       *  @private
+      *  The class name of the taglib.
       */
       var $__Class;
 
@@ -1040,21 +1044,21 @@
       /**
       *  @public
       *
-      *  Konstruktor einer Tag-Lib.<br />
+      *  Defines a taglib.
       *
-      *  @param string $Namespace; Namespace der Tag-Library
-      *  @param string $Prefix; Tag-Prefix der Tag-Library
-      *  @param string $Class; XML-Klasse der Tag-Library
+      *  @param string $namespace The namespace of the taglib
+      *  @param string $prefix The prefix of the taglib
+      *  @param string $class The class name of the taglib
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
-      function TagLib($Namespace,$Prefix,$Class){
+      function TagLib($namespace,$prefix,$class){
 
-         $this->__Namespace = $Namespace;
-         $this->__Class = $Class;
-         $this->__Prefix = $Prefix;
+         $this->__Namespace = $namespace;
+         $this->__Class = $class;
+         $this->__Prefix = $prefix;
 
        // end function
       }
@@ -1067,27 +1071,29 @@
    *  @namespace core::pagecontroller
    *  @class Page
    *
-   *  Repräsentiert eine Webseite. Bildet den root-Knoten derselben.<br />
+   *  The Page object represents the root node of  a web page. It is used as a container for the
+   *  initial document (root document) and is responsible for creating and transforming the root
+   *  document.
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 28.12.2006<br />
-   *  Version 0.2, 03.01.2007 (URL-Rewriting eingeführt)<br />
-   *  Version 0.3, 08.06.2007 (URL-Rewriting in Filer ausgelagert, "__rewriteRequestURI()" entfernt)<br />
+   *  Version 0.2, 03.01.2007 (Introduced URL rewriting)<br />
+   *  Version 0.3, 08.06.2007 (URL rewriting was outsorced and "__rewriteRequestURI()" was removed)<br />
    */
    class Page extends coreObject
    {
 
       /**
-      *  @private
-      *  Name der "Page".
+      *  @protected
+      *  The name of the page.
       */
       var $__Name;
 
 
       /**
-      *  @private
-      *  Komponiert das initiale "Document" einer "Page".
+      *  @protected
+      *  Container for the initial Document of the Page.
       */
       var $__Document;
 
@@ -1095,16 +1101,16 @@
       /**
       *  @public
       *
-      *  Constructor of the page class. The class is the root node of the APF DOM tree..
+      *  Constructor of the page class. The class is the root node of the APF DOM tree.
       *
-      *  @param string $Name optional name of the page
+      *  @param string $name the optional name of the page
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 03.01.2007 (URL-Rewriting eingeführt)<br />
-      *  Version 0.3, 08.06.2007 (URL-Rewriting in Filter ausgelagert)<br />
-      *  Version 0.4, 20.06.2008 (Registry für "APPS__URL_REWRITING" eingeführt)<br />
+      *  Version 0.2, 03.01.2007 (Introduced URL rewriting)<br />
+      *  Version 0.3, 08.06.2007 (URL rewriting is now outsourced to the filters)<br />
+      *  Version 0.4, 20.06.2008 (Replaced the usage of "APPS__URL_REWRITING" with a registry call)<br />
       *  Version 0.5, 20.10.2008 (Removed second parameter due to registry introduction in 1.7-beta)<br />
       *  Version 0.6, 11.12.2008 (Switched to the new input filter concept)<br />
       */
@@ -1144,25 +1150,27 @@
       /**
       *  @public
       *
-      *  Erzeugt das initiale "Document" einer "Page" und läd das initiale Template.<br />
+      *  Creates the initial document (root) of the page object and loads the initial template. If
+      *  no context was set before, the namespace of the initial template is taken instead.
       *
-      *  @param string $Namespace; Namespace des initialen Templates
-      *  @param string $Design; Name des initialen Designs
+      *  @param string $namespace namespace if the initial template
+      *  @param string $design (file)name if the initial template
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 31.01.2007 (Context des Documents wird nun gesetzt)<br />
-      *  Version 0.3, 04.03.2007 (Namespace wird als Context verwendet, falls kein Context vorhanden)<br />
-      *  Version 0.4, 22.04.2007 (Sprache der Page wird nun in das Document übernommen)<br />
+      *  Version 0.2, 31.01.2007 (Now the context of the document is set)<br />
+      *  Version 0.3, 04.03.2007 (The namespace is taken as a context, if no other was set before)<br />
+      *  Version 0.4, 22.04.2007 (Now the language is applied to the document)<br />
+      *  Version 0.5, 08.03.2009 (Bugfix: protected variable __ParentObject might not be used)<br />
       */
-      function loadDesign($Namespace,$Design){
+      function loadDesign($namespace,$design){
 
          $this->__Document = new Document();
 
-         // Context setzen
+         // set the current context
          if(empty($this->__Context)){
-            $this->__Document->set('Context',$Namespace);
+            $this->__Document->set('Context',$namespace);
           // end if
          }
          else{
@@ -1170,13 +1178,13 @@
           // end else
          }
 
-         // Sprache setzen
+         // set the current language
          $this->__Document->set('Language',$this->__Language);
 
-         // Design laden
-         $this->__Document->loadDesign($Namespace,$Design);
+         // load the design
+         $this->__Document->loadDesign($namespace,$design);
          $this->__Document->set('ObjectID',xmlParser::generateUniqID());
-         $this->__Document->__ParentObject = & $this;
+         $this->__Document->setByReference('ParentObject',$this);
 
        // end function
       }
@@ -1241,8 +1249,8 @@
    *  @namespace core::pagecontroller
    *  @class Document
    *
-   *  Repräsentiert ein Dokument innerhalb einer HTML-Seite oder eines Dokuments.<br />
-   *  Kann sich selbst wieder komponieren.<br />
+   *  Represents a node within the APF DOM tree. Each document can compose several other documents
+   *  by use of the $__Children property (composite tree).
    *
    *  @author Christian Schäfer
    *  @version
@@ -1252,22 +1260,22 @@
    {
 
       /**
-      *  @private
+      *  @protected
       */
       var $__Content;
 
       /**
-      *  @private
+      *  @protected
       */
       var $__DocumentController;
 
       /**
-      *  @private
+      *  @protected
       */
       var $__TagLibs;
 
       /**
-      *  @private
+      *  @protected
       */
       var $__MaxLoops = 100;
 
@@ -1275,19 +1283,19 @@
       /**
       *  @public
       *
-      *  Konstruktor des Objekts. Initialisiert Standard-TagLibs für den Aufbau der HTML-Seite.<br />
+      *  Initializes the built-in taglibs, used to create the APF DOM tree.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 03.03.2007 ("&" vor dem "new" entfernt)<br />
+      *  Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
       */
       function Document(){
 
-         // Objekt-ID setzen
+         // set the object id
          $this->__ObjectID = xmlParser::generateUniqID();
 
-         // Standard-TagLibs setzen
+         // add the known taglibs (core taglibs!)
          $this->__TagLibs[] = new TagLib('core::pagecontroller','core','addtaglib');
          $this->__TagLibs[] = new TagLib('core::pagecontroller','core','importdesign');
          $this->__TagLibs[] = new TagLib('core::pagecontroller','html','template');
@@ -1300,26 +1308,26 @@
       /**
       *  @public
       *
-      *  Methode zum Hinzufügen weitere Tag-Libs zu einem Dokument.<br />
+      *  This method is used to add more known taglibs to a document.
       *
-      *  @param string $Namespace; Namespace der Tag-Library
-      *  @param string $Prefix; Tag-Prefix der Tag-Library
-      *  @param string $Class; XML-Klasse der Tag-Library
+      *  @param string $namespace The namespace of the taglib
+      *  @param string $prefix The prefix of the taglib
+      *  @param string $class The class name of the taglib
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 03.03.2007 ("&" vor dem "new" entfernt)<br />
+      *  Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
       */
-      function addTagLib($Namespace,$Prefix,$Class){
+      function addTagLib($namespace,$prefix,$class){
 
-         // TagLib-Objekt erzeugen
-         $this->__TagLibs[] = new TagLib($Namespace,$Prefix,$Class);
+         // add the taglib to the current node
+         $this->__TagLibs[] = new TagLib($namespace,$prefix,$class);
 
-         // Klasse importieren
-         $ModuleName = $this->__getModuleName($Prefix,$Class);
-         if(!class_exists($ModuleName)){
-            import($Namespace,$ModuleName);
+         // import taglib class
+         $moduleName = $this->__getModuleName($prefix,$class);
+         if(!class_exists($moduleName)){
+            import($namespace,$moduleName);
           // end if
          }
 
@@ -1330,18 +1338,19 @@
       /**
       *  @private
       *
-      *  Erzeugt den Modul-Namen (=Klassen-Namen) einer Klasse, die durch eine TagLib eingebunden wurde.<br />
+      *  Returns the full name of the taglib class file. The name consists of the prefix followed by
+      *  the string "_taglib_" ans the suffix (=class).
       *
-      *  @param string $Prefix; Tag-Prefix der Tag-Library
-      *  @param string $Class; XML-Klasse der Tag-Library
-      *  @return string $ModuleName; Liefert den Modul-Namen zurück
+      *  @param string $prefix The prefix of the taglib
+      *  @param string $class The class name of the taglib
+      *  @return string $moduleName The full file name of the taglib class
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
-      function __getModuleName($Prefix,$Class){
-         return $Prefix.'_taglib_'.$Class;
+      function __getModuleName($prefix,$class){
+         return $prefix.'_taglib_'.$class;
        // end function
       }
 
@@ -1349,7 +1358,7 @@
       /**
       *  @public
       *
-      *  Läd das initiale Template. Wird nur vom Objekt "Page" aufgerufen.<br />
+      *  Loads the initial template for the initial document.
       *
       *  @param string $Namespace; Namespace des initialen Templates
       *  @param string $Design; Name des initialen Designs
@@ -1357,17 +1366,17 @@
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 15.01.2007 (DocumentController werden nun zuerst extrahiert)<br />
+      *  Version 0.2, 15.01.2007 (Now document controller are extracted first)<br />
       */
       function loadDesign($Namespace,$Design){
 
-         // Content einlesen
+         // read the content of the template
          $this->__loadContentFromFile($Namespace,$Design);
 
-         // DocumentController suchen
+         // analyze document controller definitions
          $this->__extractDocumentController();
 
-         // XML-Tags im Content parsen
+         // parse known taglibs
          $this->__extractTagLibTags();
 
        // end function
