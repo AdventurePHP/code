@@ -113,9 +113,9 @@
          $t->start('PagerMapper::getEntriesCount()');
 
          // try to load the entries count from the session
-         $session = new sessionManager('modules::pager::biz');
-         $sessionKey = $this-> __getSessionKey($namespace,$statement,$params).'_EntriesCount';
          if($cache === true){
+            $session = new sessionManager('modules::pager::biz');
+            $sessionKey = $this->__getSessionKey($namespace,$statement,$params).'_EntriesCount';
             $entriesCount = $session->loadSessionData($sessionKey);
           // end if
          }
@@ -131,7 +131,13 @@
             $result = $SQL->executeStatement($namespace,$statement,$params);
             $data = $SQL->fetchData($result);
             $entriesCount = $data['EntriesCount'];
-            $session->saveSessionData($sessionKey,$entriesCount);
+
+            // only save to session, when cache is enabled
+            if($cache === true){
+               $session->saveSessionData($sessionKey,$entriesCount);
+             // end if
+            }
+
           // end if
          }
 
@@ -168,9 +174,9 @@
          $t->start('PagerMapper::loadEntries()');
 
          // try to load the entries count from the session
-         $session = new sessionManager('modules::pager::biz');
-         $sessionKey = $this-> __getSessionKey($namespace,$statement,$params).'_EntryIDs';
          if($cache === true){
+            $session = new sessionManager('modules::pager::biz');
+            $sessionKey = $this-> __getSessionKey($namespace,$statement,$params).'_EntryIDs';
             $entryIDs = $session->loadSessionData($sessionKey);
           // end if
          }
@@ -193,7 +199,12 @@
              // end while
             }
 
-            $session->saveSessionData($sessionKey,serialize($entryIDs));
+            // only save to session, when cache is enabled
+            if($cache === true){
+               $session->saveSessionData($sessionKey,serialize($entryIDs));
+             // end if
+            }
+
 
           // end if
          }

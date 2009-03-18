@@ -155,7 +155,7 @@
       *  Version 0.1, 21.08.2007<br />
       */
       function getURLParameter(){
-         $pMF = &$this->__getServiceObject('modules::pager::biz','pagerManagerFabric');
+         $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
          $pM = &$pMF->getPagerManager('ArticleComments');
          return $pM->getPagerURLParameters();
        // end function
