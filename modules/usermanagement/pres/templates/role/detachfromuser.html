@@ -1,0 +1,12 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::role" file="detachfromuser_controller" class="umgt_detachfromuser_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:form name="User" method="post">
+  In order to detach the role from a user, please choose one of the following users:
+  <br />
+  <br />
+  <form:multiselect name="User[]" validate="true" button="Det" size="5"/>
+  <br />
+  <br />
+  <form:button name="Det" value="Detatch" class="formfield"/>
+</html:form>
+<html:template name="NoMoreUser">No more users are assigned to this role!</html:template>

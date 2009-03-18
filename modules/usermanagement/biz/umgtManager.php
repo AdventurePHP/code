@@ -1,0 +1,1253 @@
+<?php
+   /**
+   *  <!--
+   *  This file is part of the adventure php framework (APF) published under
+   *  http://adventure-php-framework.org.
+   *
+   *  The APF is free software: you can redistribute it and/or modify
+   *  it under the terms of the GNU Lesser General Public License as published
+   *  by the Free Software Foundation, either version 3 of the License, or
+   *  (at your option) any later version.
+   *
+   *  The APF is distributed in the hope that it will be useful,
+   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+   *  GNU Lesser General Public License for more details.
+   *
+   *  You should have received a copy of the GNU Lesser General Public License
+   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+   *  -->
+   */
+
+   import('modules::genericormapper::data','GenericORMapperFactory');
+
+
+   /**
+   *  @package modules::usermanagement::biz
+   *  @module umgtManager
+   *
+   *  Business component of the user management module. Uses the md5 algo to create password hashes.
+   *  If you desire to use another one, extend this class and overwrite the __createPasswordHash()
+   *  function with your own functionality. Please be sure to keep all the other methods untouched!
+   *
+   *  @author Christian Achatz
+   *  @version
+   *  Version 0.1, 26.04.2008<br />
+   *  Version 0.2, 23.06.2008 (Mapper is now loaded by an internal method that uses the GenericORMapperFactory)<br />
+   *  Version 0.3, 31.01.2009 (Introduced the possibility to switch the hash algo)<br />
+   */
+   class umgtManager extends coreObject
+   {
+
+      /**
+      *  @private
+      *  Indicates the id of the current application/project.
+      */
+      var $__ApplicationID = 1;
+
+
+      /**
+      *  @private
+      *  Indicates the database connection key.
+      */
+      var $__ConnectionKey = null;
+
+
+      /**
+      *  @private
+      *  Defines the service mode of the generic or mapper.
+      */
+      var $__ServiceMode = 'SESSIONSINGLETON';
+
+
+      /**
+      *  @private
+      *  indicates, if the component is already initialized.
+      */
+      var $__IsInitialized = false;
+
+
+      function umgtManager(){
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Implements the init() method for the service manager. Initializes the connection key.
+      *
+      *  @param string $connectionKey the desired connection key
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 30.12.2008<br />
+      */
+      function init($configKey){
+
+         if($this->__IsInitialized === false){
+
+            // setup the component
+            $config = &$this->__getConfiguration('modules::usermanagement','umgtconfig');
+
+            $appID = $config->getValue($configKey,'ApplicationID');
+            if($appID !== null){
+               $this->__ApplicationID = $appID;
+             // end if
+            }
+
+            $serviceMode = $config->getValue($configKey,'ServiceMode');
+            if($serviceMode !== null){
+               $this->__ServiceMode = $serviceMode;
+             // end if
+            }
+            $this->__ConnectionKey = $config->getValue($configKey,'ConnectionKey');
+
+            // set to initialized
+            $this->__IsInitialized = true;
+
+          // end if
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @private
+      *
+      *  Implements the central hashing method. If you desire to use another hash algo, extend the
+      *  UmgtManager and reimplement this method! Be sure, to keep all other methods untouched.
+      *
+      *  @param string $password the password to hash
+      *  @return string $passwordHash the desired hash of the given password
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 31.01.2009<br />
+      */
+      function __createPasswordHash($password){
+         return md5($password);
+       // end function
+      }
+
+
+      /**
+      *  @private
+      *
+      *  Returns an initialized Application object.
+      *
+      *  @return GenericDomainObject $app current application domain object
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 15.06.2008<br />
+      */
+      function __getCurrentApplication(){
+         $app = new GenericDomainObject('Application');
+         $app->setProperty('ApplicationID',$this->__ApplicationID);
+         return $app;
+       // end function
+      }
+
+
+      /**
+      *  @private
+      *
+      *  Returns an initialized or mapper instance.
+      *
+      *  @return GenericORRelationMapper $ORM instance of the generic or relation mapper
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 23.06.2008<br />
+      */
+      function &__getORMapper(){
+
+         // obtain a reference on the mapper factory
+         $ORMFactory = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
+
+         // return mapper instance
+         return $ORMFactory->getGenericORMapper('modules::usermanagement','umgt',$this->__ConnectionKey,$this->__ServiceMode);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Saves a user object within the current application.
+      *
+      *  @param GenericDomainObject $User current user
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 15.06.2008<br />
+      */
+      function saveUser($user){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // setup the composition
+         $app = $this->__getCurrentApplication();
+         $user->setProperty('DisplayName',$user->getProperty('LastName').', '.$user->getProperty('FirstName'));
+         $app->addRelatedObject('Application2User',$user);
+
+         // handle password
+         if($user->getProperty('Password') !== null){
+            $user->setProperty('Password',$this->__createPasswordHash($user->getProperty('Password')));
+          // end if
+         }
+
+         // save object
+         $oRM->saveObject($app);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Saves a group object within the current application.
+      *
+      *  @param GenericDomainObject $group current group
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 15.06.2008<br />
+      */
+      function saveGroup($group){
+         $oRM = &$this->__getORMapper();
+         $app = $this->__getCurrentApplication();
+         $app->addRelatedObject('Application2Group',$group);
+         $oRM->saveObject($app);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Saves a role object within the current application.
+      *
+      *  @param GenericDomainObject $role current role
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 15.06.2008<br />
+      */
+      function saveRole($role){
+         $oRM = &$this->__getORMapper();
+         $app = $this->__getCurrentApplication();
+         $app->addRelatedObject('Application2Role',$role);
+         $oRM->saveObject($app);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Saves a permission set object within the current application.
+      *
+      *  @param GenericDomainObject $permissionSet a permission set
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 15.06.2008<br />
+      *  Version 0.2, 28.12.2008 (Bugfix: unnecessary associations are now deleted)<br />
+      */
+      function savePermissionSet($permissionSet){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // compose the permission set under the application
+         $app = $this->__getCurrentApplication();
+         $app->addRelatedObject('Application2PermissionSet',$permissionSet);
+
+         // check for deleted associations
+         $permissions = &$permissionSet->getRelatedObjects('PermissionSet2Permission');
+         $permissionIDs = array();
+         for($i = 0; $i < count($permissions); $i++){
+            $permissionIDs[] = $permissions[$i]->getProperty('PermissionID');
+          // end for
+         }
+
+         // delete the unnecessary relations
+         $allPermissions = $this->loadPermissionList();
+         for($i = 0; $i < count($allPermissions); $i++){
+            if(!in_array($allPermissions[$i]->getProperty('PermissionID'),$permissionIDs)){
+               $oRM->deleteAssociation('PermissionSet2Permission',$permissionSet,$allPermissions[$i]);
+             // end if
+            }
+          // end for
+         }
+
+         // save tree
+         $oRM->saveObject($app);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Saves a permission object within the current application.
+      *
+      *  @param GenericDomainObject $permission the permission
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 15.06.2008<br />
+      *  Version 0.2, 16.06.2008 (The permission set is lazy loaded when not present)<br />
+      *  Version 0.3, 28.12.2008 (Changed the API concerning the new UML diagram)<br />
+      */
+      function savePermission($permission){
+
+         // load generic or mapper
+         $oRM = &$this->__getORMapper();
+
+         // add permission to structure
+         $app = $this->__getCurrentApplication();
+         $app->addRelatedObject('Application2Permission',$permission);
+
+         // save tree
+         $oRM->saveObject($app);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns a list of users concerning the current page.
+      *
+      *  @return GenericDomainObject[] $users list of users
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 15.06.2008<br />
+      *  Version 0.2, 17.06.2008 (introduced query over current application)<br />
+      */
+      function getPagedUserList(){
+
+         // initialize or mapper
+         $ORM = &$this->__getORMapper();
+
+         // select by statement
+         $select = 'SELECT ent_user.* FROM ent_user
+                    INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.UserID
+                    INNER JOIN ent_application ON cmp_application2user.ApplicationID = ent_application.ApplicationID
+                    WHERE ent_application.ApplicationID = \''.$this->__ApplicationID.'\'
+                    ORDER BY ent_user.LastName ASC, ent_user.FirstName ASC';
+         return $ORM->loadObjectListByTextStatement('User', $select);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns a list of groups concerning the current page.
+      *
+      *  @return GenericDomainObject[] $groupList list of groups
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 27.12.2008<br />
+      */
+      function getPagedGroupList(){
+
+         // get or mapper instance
+         $oRM = &$this->__getORMapper();
+
+         // configure criterion object
+         $crit = new GenericCriterionObject();
+         $crit->addRelationIndicator('Application2Group',$this->__getCurrentApplication());
+         $crit->addOrderIndicator('DisplayName','ASC');
+
+         // return list
+         return $oRM->loadObjectListByCriterion('Group',$crit);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns a list of roles concerning the current page.
+      *
+      *  @return GenericDomainObject[] $roleList list of roles
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function getPagedRoleList(){
+         $ORM = &$this->__getORMapper();
+         $select = 'SELECT * FROM ent_role ORDER BY DisplayName ASC';
+         return $ORM->loadObjectListByTextStatement('Role',$select);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns a list of permission sets concerning the current page.
+      *
+      *  @return GenericDomainObject[] $permissionSetList list of permission sets
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function getPagedPermissionSetList(){
+         $oRM = &$this->__getORMapper();
+         $select = 'SELECT * FROM ent_permissionset ORDER BY DisplayName ASC';
+         return $oRM->loadObjectListByTextStatement('PermissionSet',$select);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns a list of permissions concerning the current page.
+      *
+      *  @return GenericDomainObject[] $permissionList list of permissions
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function getPagedPermissionList(){
+         $oRM = &$this->__getORMapper();
+         $select = 'SELECT * FROM ent_permission ORDER BY DisplayName ASC';
+         return $oRM->loadObjectListByTextStatement('Permission',$select);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns a user domain object.
+      *
+      *  @param int $userID id of the desired user
+      *  @return GenericDomainObject[] $user the user domain object
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadUserByID($userID){
+         $oRM = &$this->__getORMapper();
+         return $oRM->loadObjectByID('User',$userID);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns a user domain object by it'd username and password.
+      *
+      *  @param string $username the user's username
+      *  @param string $password the user's password
+      *  @return GenericDomainObject $user the user domain object or null
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 30.12.2008<br />
+      *  Version 0.2, 02.01.2009 (Added sql injection security)<br />
+      *  Version 0.3, 31.01.2009 (Switched to the private hashing method)<br />
+      */
+      function loadUserByUsernameAndPassword($username,$password){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // escape the input values
+         $dbDriver = &$oRM->getByReference('DBDriver');
+         $username = $dbDriver->escapeValue($username);
+         $password = $dbDriver->escapeValue($password);
+
+         // create the statement and select user
+         $password = $this->__createPasswordHash($password);
+         $select = 'SELECT * FROM ent_user WHERE Username = \''.$username.'\' AND Password = \''.$password.'\';';
+         return $oRM->loadObjectByTextStatement('User',$select);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns a user domain object by it'd email and password.
+      *
+      *  @param string $email the user's email
+      *  @param string $password the user's password
+      *  @return GenericDomainObject $user the user domain object or null
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      *  Version 0.2, 02.01.2009 (Added sql injection security)<br />
+      *  Version 0.3, 31.01.2009 (Switched to the private hashing method)<br />
+      */
+      function loadUserByEMailAndPassword($email,$password){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // escape the input values
+         $dbDriver = &$oRM->getByReference('DBDriver');
+         $email = $dbDriver->escapeValue($email);
+         $password = $dbDriver->escapeValue($password);
+
+         // create the statenent and select user
+         $password = $this->__createPasswordHash($password);
+         $select = 'SELECT * FROM ent_user WHERE EMail = \''.$email.'\' AND Password = \''.$password.'\';';
+         return $oRM->loadObjectByTextStatement('User',$select);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns a list of Permission domain objects for the given user.
+      *
+      *  @param GenericDomainObject $user the user object
+      *  @return GenericDomainObject[] $permissions the user's permissions
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      *  Version 0.2, 02.01.2009 (Implemented the method)<br />
+      */
+      function loadUserPermissions(&$user){
+
+         // build select statement
+         $select = 'SELECT `ent_permission`.* FROM `ent_permission`
+                    INNER JOIN ass_permissionset2permission ON ent_permission.PermissionID = ass_permissionset2permission.PermissionID
+                    INNER JOIN ent_permissionset ON ass_permissionset2permission.PermissionSetID = ent_permissionset.PermissionSetID
+                    INNER JOIN ass_role2permissionset ON ent_permissionset.PermissionSetID = ass_role2permissionset.PermissionSetID
+                    INNER JOIN ent_role ON ass_role2permissionset.RoleID = ent_role.RoleID
+                    INNER JOIN ass_role2user ON ent_role.RoleID = ass_role2user.RoleID
+                    INNER JOIN ent_user ON ass_role2user.UserID = ent_user.UserID
+                    WHERE ent_user.UserID = \''.$user->getProperty('UserID').'\'
+                    GROUP BY `ent_permission`.`PermissionID`;';
+
+         // load permissions
+         $oRM = &$this->__getORMapper();
+         return $oRM->loadObjectListByTextStatement('Permission',$select);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns a group domain object.
+      *
+      *  @param int $groupID id of the desired group
+      *  @return GenericDomainObject[] $group the group domain object
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadGroupByID($groupID){
+         $oRM = &$this->__getORMapper();
+         return $oRM->loadObjectByID('Group',$groupID);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Returns a role domain object.
+      *
+      *  @param int $roleID id of the desired role
+      *  @return GenericDomainObject[] $role the role domain object
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadRoleByID($roleID){
+         $oRM = &$this->__getORMapper();
+         return $oRM->loadObjectByID('Role',$roleID);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads a permission set by it's id.
+      *
+      *  @param int $permissionSetID the permission set's id
+      *  @return GenericDomainObject $permissionSet the permission set
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadPermissionSetByID($permissionSetID){
+         $oRM = &$this->__getORMapper();
+         return $oRM->loadObjectByID('PermissionSet',$permissionSetID);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads a list of permissions of the current application.
+      *
+      *  @return GenericDomainObject[] $permissions the permission list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      */
+      function loadPermissionList(){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // setup the criterion
+         $crit = new GenericCriterionObject();
+         $crit->addRelationIndicator('Application2Permission',$this->__getCurrentApplication());
+
+         // load permission list
+         return $oRM->loadObjectListByCriterion('Permission',$crit);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads a permission by it's id.
+      *
+      *  @param int $permID the permission's id
+      *  @return GenericDomainObject $permission the desiried permission
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      */
+      function loadPermissionByID($permID){
+         $oRM = &$this->__getORMapper();
+         return $oRM->loadObjectByID('Permission',$permID);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads a list of roles, that are not associated with the permission set.
+      *
+      *  @param GenericDomainObject $permissionSet the desiried permission set
+      *  @return GenericDomainObject[] $roles the roles, that are not associated
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadRolesNotWithPermissionSet($permissionSet){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // setup driterion
+         $crit = new GenericCriterionObject();
+         $crit->addRelationIndicator('Application2Role',$this->__getCurrentApplication());
+
+         // load roles, that are not associated
+         return $oRM->loadNotRelatedObjects($permissionSet,'Role2PermissionSet',$crit);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads a list of roles, that are associated with the permission set.
+      *
+      *  @param GenericDomainObject $permissionSet the desiried permission set
+      *  @return GenericDomainObject[] $roles the roles, that are associated
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadRolesWithPermissionSet($permissionSet){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // setup driterion
+         $crit = new GenericCriterionObject();
+         $crit->addRelationIndicator('Application2Role',$this->__getCurrentApplication());
+
+         // load roles, that are not associated
+         return $oRM->loadRelatedObjects($permissionSet,'Role2PermissionSet',$crit);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Associates a given permission set to a list of roles.
+      *
+      *  @param GenericDomainObject $permissionSet the desiried permission set
+      *  @param GenericDomainObject[] $roles the roles, that have to be associated
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function assignPermissionSet2Roles($permissionSet,$roles = array()){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // create the associations
+         for($i = 0; $i < count($roles); $i++){
+            $oRM->createAssociation('Role2PermissionSet',$roles[$i],$permissionSet);
+          // end for
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Removes a given permission set from a list of roles.
+      *
+      *  @param GenericDomainObject $permissionSet the desiried permission set
+      *  @param GenericDomainObject[] $roles the roles, that have to be associated
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function detachPermissionSetFromRoles($permissionSet,$roles = array()){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // delete the associations
+         for($i = 0; $i < count($roles); $i++){
+            $oRM->deleteAssociation('Role2PermissionSet',$roles[$i],$permissionSet);
+          // end for
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Deletes a user.
+      *
+      *  @param GenericDomainObject[] $user the user to delete
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function deleteUser($user){
+         $oRM = &$this->__getORMapper();
+         $oRM->deleteObject($user);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Deletes a group.
+      *
+      *  @param GenericDomainObject[] $group the group to delete
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function deleteGroup($group){
+         $oRM = &$this->__getORMapper();
+         $oRM->deleteObject($group);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Deletes a role.
+      *
+      *  @param GenericDomainObject[] $role the role to delete
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function deleteRole($role){
+         $oRM = &$this->__getORMapper();
+         $oRM->deleteObject($role);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Deletes a PermissionSet.
+      *
+      *  @param GenericDomainObject $permissionSet the permission set
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      */
+      function deletePermissionSet($permissionSet){
+         $oRM = &$this->__getORMapper();
+         $oRM->deleteObject($permissionSet);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Deletes a Permission.
+      *
+      *  @param GenericDomainObject $permission the permission
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      */
+      function deletePermission($permission){
+         $oRM = &$this->__getORMapper();
+         $oRM->deleteObject($permission);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Associates a user with a list of groups.
+      *
+      *  @param GenericDomainObject $user the user
+      *  @param GenericDomainObject[] $groups the group list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      */
+      function assignUser2Groups($user,$groups = array()){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // create the association
+         for($i = 0; $i < count($groups); $i++){
+            $oRM->createAssociation('Group2User',$user,$groups[$i]);
+          // end for
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Associates users with a group.
+      *
+      *  @param GenericDomainObject[] $users the user list
+      *  @param GenericDomainObject $group the group
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      *  Version 0.2, 18.02.2009 (Bugfix: addUser2Groups() does not exist)<br />
+      */
+      function assignUsers2Group($users = array(),$group){
+
+         for($i = 0; $i < count($users); $i++){
+            $this->assignUser2Groups($users[$i],array($group));
+          // end for
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Associates a role with a list of users.
+      *
+      *  @param GenericDomainObject $role the role
+      *  @param GenericDomainObject[] $users the user list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function assignRole2Users($role,$users = array()){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // create the association
+         for($i = 0; $i < count($users); $i++){
+            $oRM->createAssociation('Role2User',$role,$users[$i]);
+          // end for
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads all groups, that are assigned to a given user.
+      *
+      *  @param GenericDomainObject $user the user
+      *  @return GenericDomainObject[] $roles the role list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadGroupsWithUser(&$user){
+         return $user->loadRelatedObjects('Group2User');
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads all groups, that are not assigned to a given user.
+      *
+      *  @param GenericDomainObject $user the user
+      *  @return GenericDomainObject[] $roles the role list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      */
+      function loadGroupsNotWithUser(&$user){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // setup driterion
+         $crit = new GenericCriterionObject();
+         $crit->addRelationIndicator('Application2Group',$this->__getCurrentApplication());
+
+         // load roles, that are not associated
+         return $oRM->loadNotRelatedObjects($user,'Group2User',$crit);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads all users, that are assigned to a given group.
+      *
+      *  @param GenericDomainObject $group the group
+      *  @return GenericDomainObject[] $users the user list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 29.12.2008<br />
+      *  Version 0.2, 30.12.2008 (Removed null pointer typo)<br />
+      */
+      function loadUsersWithGroup(&$group){
+         $oRM = &$this->__getORMapper();
+         return $oRM->loadRelatedObjects($group,'Group2User');
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads all users, that are not assigned to a given group.
+      *
+      *  @param GenericDomainObject $group the group
+      *  @return GenericDomainObject[] $users the user list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 27.12.2008<br />
+      */
+      function loadUsersNotWithGroup(&$group) {
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // setup the criterion
+         $crit = new GenericCriterionObject();
+         $app = $this->__getCurrentApplication();
+         $crit->addRelationIndicator('Application2User',$app);
+
+         // load the user list
+         return $oRM->loadNotRelatedObjects($group,'Group2User',$crit);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads all roles, that are assigned to a given user.
+      *
+      *  @param GenericDomainObject $user the user
+      *  @return GenericDomainObject[] $roles the role list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 27.12.2008<br />
+      */
+      function loadRolesWithUser(&$user){
+         return $user->loadRelatedObjects('Role2User');
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads all roles, that are not assigned to a given user.
+      *
+      *  @param GenericDomainObject $user the user
+      *  @return GenericDomainObject[] $roles the role list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 27.12.2008<br />
+      */
+      function loadRolesNotWithUser(&$user){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // setup the criterion
+         $crit = new GenericCriterionObject();
+         $app = $this->__getCurrentApplication();
+         $crit->addRelationIndicator('Application2User',$app);
+
+         // load the user list
+         return $oRM->loadNotRelatedObjects($user,'Role2User',$crit);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads a list of users, that have a certail role.
+      *
+      *  @param GenericDomainObject $role the role, the users should have
+      *  @return GenericDomainObject[] $users desired user list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      */
+      function loadUsersWithRole(&$role){
+         return $role->loadRelatedObjects('Role2User');
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads a list of users, that don't have the given role.
+      *
+      *  @param GenericDomainObject $role the role, the users should not have
+      *  @return GenericDomainObject[] $users desired user list
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 27.12.2008<br />
+      *  Version 0.2, 28.12.2008 (Bugfix: criterion definition contained wrong relation indicator)<br />
+      */
+      function loadUsersNotWithRole(&$role){
+
+         $oRM = &$this->__getORMapper();
+         $crit = new GenericCriterionObject();
+         $app = $this->__getCurrentApplication();
+         $crit->addRelationIndicator('Application2User',$app);
+         return $oRM->loadNotRelatedObjects($role,'Role2User',$crit);
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads the permissions associated with a permission set.
+      *
+      *  @param GenericDomainObject $permissionSet the permission set
+      *  @return GenericDomainObject[] $permissions the list of permissions
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      */
+      function loadPermissionsOfPermissionSet(&$permissionSet){
+         $oRM = &$this->__getORMapper();
+         return $oRM->loadRelatedObjects($permissionSet,'PermissionSet2Permission');
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Detaches a user from a role.
+      *
+      *  @param GenericDomainObject $user the user
+      *  @param GenericDomainObject $role the desired role to detach the user from
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      */
+      function detachUserFromRole($user,$role){
+         $oRM = &$this->__getORMapper();
+         $oRM->deleteAssociation('Role2User',$role,$user);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Detaches users from a role.
+      *
+      *  @param GenericDomainObject[] $users a list of users
+      *  @param GenericDomainObject $role the desired role to detach the users from
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 28.12.2008<br />
+      */
+      function detachUsersFromRole($users,$role){
+
+         for($i = 0; $i < count($users); $i++){
+            $this->detachUserFromRole($users[$i],$role);
+          // end for
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Removes a user from the given groups.
+      *
+      *  @param GenericDomainObject $user the desired user
+      *  @param GenericDomainObject $group the group
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 26.12.2008<br />
+      */
+      function detachUserFromGroup($user,$group){
+         $oRM = &$this->__getORMapper();
+         $oRM->deleteAssociation('Group2User',$user,$group);
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Removes a user from the given groups.
+      *
+      *  @param GenericDomainObject $user the desired user
+      *  @param GenericDomainObject[] $groups a list of groups
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 26.12.2008<br />
+      */
+      function detachUserFromGroups($user,$groups){
+
+         for($i = 0; $i < count($groups); $i++){
+            $this->detachUserFromGroup($user,$groups[$i]);
+          // end for
+         }
+
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Removes users from a given group.
+      *
+      *  @param GenericDomainObject[] $users a list of users
+      *  @param GenericDomainObject $group the desired group
+      *
+      *  @author Christian Achatz
+      *  @version
+      *  Version 0.1, 27.12.2008<br />
+      */
+      function detachUsersFromGroup($users,$group){
+
+         for($i = 0; $i < count($users); $i++){
+            $this->detachUserFromGroup($users[$i],$group);
+          // end for
+         }
+
+       // end function
+      }
+
+    // end class
+   }
+?>

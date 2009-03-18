@@ -1,0 +1,32 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::group" file="list_controller" class="umgt_list_controller" @>
+<table cellpadding="3" cellspacing="0" border="0">
+  <tr style="font-weight: bold; background-color: #eeeeee;">
+    <td>Display name</td>
+    <td>Action</td>
+  </tr>
+  <html:placeholder name="Grouplist" />
+</table>
+
+<html:template name="Group">
+  <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+  <tr>
+    <td><template:placeholder name="DisplayName" /></td>
+    <td>
+      <a href="<template:placeholder name="group_details" />" title="View group details">
+        <umgt:media filename="cc-xmag-128x128.png" alt="View group details" title="View group details" />
+      </a>
+      <a href="<template:placeholder name="group_edit" />" title="Edit group">
+        <umgt:media filename="cc-package_settings-128x128.png" alt="Edit group" title="Edit group" />
+      </a>
+      <a href="<template:placeholder name="group_delete" />" title="Delete group">
+        <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete group" title="Delete group" />
+      </a>
+      <a href="<template:placeholder name="group_useradd" />" title="Add user to group">
+        <umgt:media filename="cc-forward2-128x128.png" alt="Add user to group" title="Add user to group" />
+      </a>
+      <a href="<template:placeholder name="group_userrem" />" title="Detach users from group">
+        <umgt:media filename="cc-backward2-red-128x128.png" alt="Detach users from group" title="Detach users from group" />
+      </a>
+    </td>
+  </tr>
+</html:template>
