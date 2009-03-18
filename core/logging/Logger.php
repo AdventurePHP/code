@@ -215,6 +215,7 @@
       *  @version
       *  Version 0.1, 29.03.2007<br />
       *  Version 0.2, 14.08.2008 (LogDir now is created during flush instead of during initialization)<br />
+      *  Version 0.3, 18.03.2009 (After writing entries to file, the log container is now resetted)<br />
       */
       function flushLogBuffer(){
 
@@ -262,6 +263,9 @@
 
              // end foreach
             }
+
+            // reset the buffer
+            $this->__LogEntries = array();
 
           // end if
          }

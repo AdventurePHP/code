@@ -227,11 +227,12 @@
       *  Version 0.6, 24.12.2005<br />
       *  Version 0.7, 04.01.2005<br />
       *  Version 0.8, 09.10.2008 (Removed the @ before mysql_connect to get a more detailed in case of connection errors)<br />
+      *  Version 0.9, 18.03.2009 (Bugfix: create a new connection, even if the connection data is the same. This otherwise may result in interference of connections, that use different databases.)<br />
       */
       function __connect(){
 
          // initiate connection
-         $this->__dbConn = mysql_connect($this->__dbHost,$this->__dbUser,$this->__dbPass);
+         $this->__dbConn = mysql_connect($this->__dbHost,$this->__dbUser,$this->__dbPass,true);
 
          if(!is_resource($this->__dbConn)){
             trigger_error('[MySQLHandler->__connect()] Database connection could\'t be established ('.mysql_errno().': '.mysql_error().')!',E_USER_ERROR);
@@ -255,7 +256,7 @@
       /**
       *  @private
       *
-      *  Trennt die durch __verbindeDatenbank() aufgebaute MySQL-Verbindung.<br />
+      *  Closes the database connection.
       *
       *  @author Christian Schäfer
       *  @version
@@ -266,7 +267,6 @@
       */
       function __close(){
 
-         // Verbindung schließen
          $result = @mysql_close($this->__dbConn);
          $this->__dbConn = null;
 
@@ -282,16 +282,15 @@
       /**
       *  @public
       *
-      *  Öffentliche Funktion zum Trennen der DB-Verbindung (für shutdown function).<br />
+      *  Public method to close the database connection. Used by the shutdown function.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 01.04.2007<br />
-      *  Version 0.2, 01.04.2007 (Verbindung wird nur dan geschlossen, wenn auch vorhanden)<br />
+      *  Version 0.2, 01.04.2007 (Connection is only closed if existent)<br />
       */
       function closeConnection(){
 
-         // Verbindung schließen, falls diese besteht
          if($this->__dbConn != null){
             $this->__close();
           // end if
@@ -304,25 +303,25 @@
       /**
       *  @public
       *
-      *  Führt ein Statement in einem Namespace aus. Platzhalter werden<br />
-      *  durch die in $Variablen gegebenen Werte ersetzt.<br />
+      *  Executes a statement file located in the given namespace. The place holders contained in the
+      *  file are replaced by the given values.
       *
-      *  @param string $Namespace; Namespace der Statementdatei
-      *  @param string $StatementFile; Name der Statementdatei
-      *  @param array $Params; Parameter für das Statement
-      *  @param bool $ShowStatement; Indiziert, ob das Statement ausgegeben werden soll
-      *  @return resource $Result; Result-Ressource
+      *  @param string $Namespace the namespace of the statement file
+      *  @param string $StatementFile the name of the statement file (with ENVIRONMENT prefix!)
+      *  @param array $Params a list of statement params (associative array)
+      *  @param bool $ShowStatement indicates, if the statement is displayed for debug purposes
+      *  @return resource $Result the result resource
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 24.12.2005<br />
       *  Version 0.2, 16.01.2006<br />
       *  Version 0.3, 19.01.2006<br />
-      *  Version 0.4, 23.04.2006 (Änderung auf Grund des ApplicationManagers)<br />
-      *  Version 0.5, 05.08.2006 (Dateiendung muss beim Stmt-File nicht mehr angegeben werden; Es müssen nicht zwingend Parameter angegeben werden)<br />
-      *  Version 0.6, 05.08.2006 (optionalen Parameter $ShowStatement hinzugefügt)<br />
-      *  Version 0.7, 29.03.2007 (An neue Implementierung für PC V2 angepasst)<br />
-      *  Version 0.8, 07.03.2008 (Bug behoben, dass Query nicht auf die korrekte Verbindung ausgeführt wurde)<br />
+      *  Version 0.4, 23.04.2006 (Changes due to the ApplicationManagers)<br />
+      *  Version 0.5, 05.08.2006 (File extension must not be present in the file name any more. Statement params are now optional.)<br />
+      *  Version 0.6, 05.08.2006 (Added the $ShowStatement param)<br />
+      *  Version 0.7, 29.03.2007 (Adapted implementation to the new page controller implementation)<br />
+      *  Version 0.8, 07.03.2008 (Bugfix: query was not executed with the right connection)<br />
       *  Version 0.9, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
       *  Version 1.0, 05.11.2008 (Added value escaping to the statement params)<br />
       */
@@ -421,24 +420,19 @@
       /**
       *  @public
       *
-      *  Holt einen Datensatz, der aus einem ResultSet stammt aus der Datenbank ab.<br />
+      *  Fetches a record from the database using the given result resource.
       *
-      *  @param resource $ResultCursor; MySQL-ResultResource
-      *  @return array $Data; Array der Ergebnisdaten
+      *  @param resource $ResultCursor the mysql result resource
+      *  @return array $Data the associative result array
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 24.12.2005<br />
-      *  Version 0.2, 23.02.2008 (Array wird nun direkt zurückgegeben)<br />
+      *  Version 0.2, 23.02.2008 (Array is now returned directly)<br />
       */
       function fetchData($ResultCursor){
-
-         // Initialisiere Klasse
          $this->__initMySQLHandler();
-
-         // Daten abholen
          return mysql_fetch_assoc($ResultCursor);
-
        // end function
       }
 
@@ -446,20 +440,15 @@
       /**
       *  @public
       *
-      *  Setzt den Result-Pointer auf eine durch $offset angegebenen Ergebnis-Zeile.<br />
+      *  Sets the data pointer to the given offset using the result resource.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 15.01.2006<br />
       */
       function setDataPointer($result,$offset){
-
-         // Initialisiere Klasse
          $this->__initMySQLHandler();
-
-         // Pointer auf Daten-Set setzen
          @mysql_data_seek($result,$offset);
-
        // end function
       }
 
@@ -467,23 +456,18 @@
       /**
       *  @public
       *
-      *  Liefert die Anzahl der durch ein Statement betroffene Datensätze.<br />
+      *  Returns the count of affected database records. Can be used to indicate the rows, that are updated/deleted.
       *
-      *  @return int $AffectedRows; Anzahl an betroffenen Datensätzen für eine Verbindungskennung.
+      *  @return int $AffectedRows the amount of affected rows
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 04.01.2006<br />
-      *  Version 0.2, 07.03.2008 (Verbindungskennung übergeben)<br />
+      *  Version 0.2, 07.03.2008<br />
       */
       function getAffectedRows(){
-
-         // Initialisiere Klasse
          $this->__initMySQLHandler();
-
-         // Affected Rows für die aktuelle Verbindungskennung zurückgeben
          return mysql_affected_rows($this->__dbConn);
-
        // end function
       }
 
@@ -491,20 +475,15 @@
       /**
       *  @public
       *
-      *  Liefert die ID des zuletzt eingefügten Datensatzes (Nummer des Primary Keys).<br />
+      *  Returns the last auto_increment id for the last INSERT statement.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 04.01.2006<br />
       */
       function getLastID(){
-
-         // Initialisiere Klasse
          $this->__initMySQLHandler();
-
-         // LastInsertID zurückgeben
          return $this->__lastInsertID;
-
        // end function
       }
 
@@ -512,20 +491,18 @@
       /**
       *  @public
       *
-      *  Liefert die ID des zuletzt eingefügten Datensatzes (Nummer des Primary Keys).<br />
+      *  Returns the number of selected rows by the given result resource.
+      *
+      *  @param $result the mysql result resource
+      *  @return $numRows the number of selected rows
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 04.01.2006<br />
       */
-      function getNumRows($Result){
-
-         // Initialisiere Klasse
+      function getNumRows($result){
          $this->__initMySQLHandler();
-
-         // NumRows zurückgeben
-         return mysql_num_rows($Result);
-
+         return mysql_num_rows($result);
        // end function
       }
 
@@ -533,15 +510,15 @@
       /**
       *  @public
       *
-      *  Führt ein Statement, das via String übergeben wurde aus.<br />
+      *  Executes a statement given by the first argument.
       *
-      *  @param string $Statement; SQL-Statement
-      *  @return ressource $Result; MySQL-Result-Ressource
+      *  @param string $Statement the mysql statement
+      *  @return ressource $Result the resulting mysql result resource pointer
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 22.01.2006<br />
-      *  Version 0.2, 07.03.2008 (Bug behoben, dass Query nicht auf die korrekte Verbindung ausgeführt wurde)<br />
+      *  Version 0.2, 07.03.2008 (Bugfix: the query was not executed with the right connection)<br />
       */
       function executeTextStatement($Statement){
 
@@ -585,21 +562,16 @@
       /**
       *  @public
       *
-      *  Gibt die Version des Datenbank-Servers zurück.<br />
+      *  Returns the version of the database server.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 05.03.2006<br />
-      *  Version 0.2, 07.03.2008 (Verbindungskennung wird nun übergeben)<br />
+      *  Version 0.2, 07.03.2008 (Now the connection is applied to the call.)<br />
       */
       function getServerInfo(){
-
-         // Initialisiere Klasse
          $this->__initMySQLHandler();
-
-         // Daten zurückgeben
          return mysql_get_server_info($this->__dbConn);
-
        // end function
       }
 
@@ -607,26 +579,22 @@
       /**
       *  @public
       *
-      *  Gibt den Namen der Datenbank zurück.<br />
+      *  Returns the name of the current database.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 05.03.2006<br />
       */
       function getDatabaseName(){
-
-         // Initialisiere Klasse
          $this->__initMySQLHandler();
-
-         // DB-Name zurückgeben
          return $this->__db_name;
-
        // end function
       }
 
 
       /**
       *  @public
+      *  @deprecated
       *
       *  Erzeugt einen Dump der aktuellen Datenbank mit dem CLI-Tool 'mysqldump'.<br />
       *
@@ -658,6 +626,7 @@
 
       /**
       *  @public
+      *  @deprecated
       *
       *  Spielt ein Datenbank-Backup wieder ein, das zuvor mit backupDatabase() erzeugt wurde.<br />
       *  Benutzt das CLI-Tool 'mysql'.<br />
