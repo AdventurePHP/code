@@ -64,6 +64,7 @@
       *  Version 0.4, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
       *  Version 0.5, 05.10.2008 (Bugfix: usage of two or more identical connections (e.g. of type MySQLx) led to interferences. Thus, service object usage was changed)<br />
       *  Version 0.6, 30.01.2009 (Added a check, that the old MySQLHandler cannot be used with the ConnectionManager. Doing so leads to bad connection interference!)<br />
+      *  Version 0.7, 22.03.2009 (Added the context to the error message, to ease debugging)<br />
       */
       function &getConnection($connectionKey){
 
@@ -84,7 +85,7 @@
          if($Section == null){
             $Reg = &Singleton::getInstance('Registry');
             $Environment = $Reg->retrieve('apf::core','Environment');
-            trigger_error('[connectionManager::getConnection()] The given configuration section ("'.$connectionKey.'") does not exist in configuration file "'.$Environment.'_connections.ini" in namespace "core::database"!',E_USER_ERROR);
+            trigger_error('[connectionManager::getConnection()] The given configuration section ("'.$connectionKey.'") does not exist in configuration file "'.$Environment.'_connections.ini" in namespace "core::database" for context "'.$this->__Context.'"!',E_USER_ERROR);
             exit(1);
           // end if
          }
