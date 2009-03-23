@@ -22,6 +22,8 @@
    import('modules::guestbook::biz','guestbookManager');
    import('core::session','sessionManager');
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
+   import('tools::link','linkHandler');
+   import('tools::request','RequestHandler');
 
 
    /**
