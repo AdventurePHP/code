@@ -1,0 +1,32 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::permissionset" file="list_controller" class="umgt_list_controller" @>
+<table cellpadding="3" cellspacing="0" border="0">
+  <tr style="font-weight: bold; background-color: #eeeeee;">
+    <td>Display name</td>
+    <td>Action</td>
+  </tr>
+  <html:placeholder name="PermissionSetList" />
+</table>
+
+<html:template name="PermissionSet">
+  <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+  <tr>
+    <td><template:placeholder name="DisplayName" /></td>
+    <td>
+      <a href="<template:placeholder name="permissionset_details" />" title="View permissionset details">
+        <umgt:media filename="cc-xmag-128x128.png" alt="View permissionset details" title="View permissionset details" />
+      </a>
+      <a href="<template:placeholder name="permissionset_edit" />" title="Edit permissionset">
+        <umgt:media filename="cc-package_settings-128x128.png" alt="Edit permissionset" title="Edit permissionset" />
+      </a>
+      <a href="<template:placeholder name="permissionset_delete" />" title="Delete permissionset">
+        <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete permissionset" title="Delete permissionset" />
+      </a>
+      <a href="<template:placeholder name="permissionset_ass2role" />" title="Assign permission set to role">
+        <umgt:media filename="cc-forward2-128x128.png" alt="Assign permission set to role" title="Assign permission set to role" />
+      </a>
+      <a href="<template:placeholder name="permissionset_detachfromrole" />" title="Detach permission set from role">
+        <umgt:media filename="cc-backward2-red-128x128.png" alt="Detach permission set from role" title="Detach permission set from role" />
+      </a>
+    </td>
+  </tr>
+</html:template>

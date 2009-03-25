@@ -1,0 +1,37 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::user" file="list_controller" class="umgt_list_controller" @>
+<table cellpadding="3" cellspacing="0" border="0">
+  <tr style="font-weight: bold; background-color: #eeeeee;">
+    <td>First name</td>
+    <td>Last name</td>
+    <td>Username</td>
+    <td>Action</td>
+  </tr>
+  <html:placeholder name="UserList" />
+  <html:placeholder name="TemplateUserList" />
+</table>
+
+<html:template name="ListUser">
+  <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+  <tr>
+    <td><template:placeholder name="FirstName" /></td>
+    <td><template:placeholder name="LastName" /></td>
+    <td><template:placeholder name="Username" /></td>
+    <td>
+      <a href="<template:placeholder name="LinkUserDetails" />">
+        <umgt:media filename="cc-xmag-128x128.png" title="View user details" alt="View User Details" />
+      </a>
+      <a href="<template:placeholder name="LinkUserEdit" />">
+        <umgt:media filename="cc-package_settings-128x128.png" title="Edit User" alt="Edit User" />
+      </a>
+      <a href="<template:placeholder name="LinkUserDelete" />">
+        <umgt:media filename="cc-trashcan_empty2-128x128.png" title="Delete User" alt="Delete User" />
+      </a>
+      <a href="<template:placeholder name="LinkUserAdd2Group" />">
+        <umgt:media filename="cc-forward2-128x128.png" title="Add User to Group" alt="Add User to Group" />
+      </a>
+      <a href="<template:placeholder name="LinkUserRemFromGroup" />">
+        <umgt:media filename="cc-backward2-red-128x128.png" alt="Remove User from Group" title="Remove User from Group" />
+      </a>
+    </td>
+  </tr>
+</html:template>

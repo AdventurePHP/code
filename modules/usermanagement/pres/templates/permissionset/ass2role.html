@@ -1,0 +1,12 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::permissionset" file="ass2role_controller" class="umgt_ass2role_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:form name="Role" method="post">
+  Please choose one or more of the following roles:
+  <br />
+  <br />
+  <form:multiselect name="Role[]" size="4" validate="true" button="Assign"/>
+  <br />
+  <br />
+  <form:button name="Assign" value="Assign" class="formfield"/>
+</html:form>
+<html:template name="NoMoreRole">All roles are already assigned to this permission set!</html:template>
