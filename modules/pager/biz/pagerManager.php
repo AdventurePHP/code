@@ -221,7 +221,7 @@
       function loadEntriesByAppDataComponent(&$dataComponent,$loadMethod,$addStmtParams = array()){
 
          // check, if the load method exists
-         if(in_array(strtolower($loadMethod),get_class_methods($dataComponent))){
+         if(in_array($loadMethod,get_class_methods($dataComponent))){
 
             // select the ids of the desired entries
             $entryIDs = $this->loadEntries($addStmtParams);
