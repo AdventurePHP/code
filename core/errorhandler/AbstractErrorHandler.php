@@ -30,7 +30,7 @@
    *  @version
    *  Version 0.1, 30.01.2009<br />
    */
-   class AbstractErrorHandler extends coreObject
+   abstract class AbstractErrorHandler extends coreObject
    {
 
       function AbstractErrorHandler(){
@@ -39,6 +39,7 @@
 
       /**
       *  @public
+      *  @abstract
       *
       *  This method is called by the global APF error handler function.
       *
@@ -51,8 +52,7 @@
       *  @version
       *  Version 0.1, 30.01.2009<br />
       */
-      function handleError($errorNumber,$errorMessage,$errorFile,$errorLine){
-      }
+      abstract function handleError($errorNumber,$errorMessage,$errorFile,$errorLine);
 
     // end class
    }

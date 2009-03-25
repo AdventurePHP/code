@@ -33,77 +33,77 @@
    *  @version
    *  Version 0.1, 10.02.2008<br />
    */
-   class AbstractDatabaseHandler extends coreObject
+   abstract class AbstractDatabaseHandler extends coreObject
    {
 
       /**
       *  @private
       *  Kennzeichnet, ob der Handler bereits initialisiert wurde.
       */
-      var $__isInitialized = false;
+      protected $__isInitialized = false;
 
 
       /**
       *  @private
       *  Datenbank-Server.
       */
-      var $__dbHost = null;
+      protected $__dbHost = null;
 
 
       /**
       *  @private
       *  Datenbank-Benutzer.
       */
-      var $__dbUser = null;
+      protected $__dbUser = null;
 
 
       /**
       *  @private
       *  Datenbank-Passwort.
       */
-      var $__dbPass = null;
+      protected $__dbPass = null;
 
 
       /**
       *  @private
       *  Datenbank-Name.
       */
-      var $__dbName = null;
+      protected $__dbName = null;
 
 
       /**
       *  @private
       *  Datenbank Debug-Mode?.
       */
-      var $__dbDebug = false;
+      protected $__dbDebug = false;
 
 
       /**
       *  @private
       *  Datenbank-Verbindung.
       */
-      var $__dbConn = null;
+      protected $__dbConn = null;
 
 
       /**
       *  @private
       *  Instanz des Loggers.
       */
-      var $__dbLog = null;
+      protected $__dbLog = null;
 
 
       /**
       *  @private
       *  Name der Log-Datei. Muss in der konkreten Implementierung definiert werden.
       */
-      var $__dbLogFileName;
+      protected $__dbLogFileName;
 
 
       /**
       *  @private
       *  ID des letzten Inserts.
       */
-      var $__lastInsertID;
+      protected $__lastInsertID;
 
 
       function AbstractDatabaseHandler(){
@@ -180,7 +180,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *  @abstract
       *
       *  Abstrakte Interface-Methode für das Aufbauen einer Datenbank-Verbindung.<br />
@@ -189,12 +189,12 @@
       *  @version
       *  Version 0.1, 10.02.2008<br />
       */
-      function __connect(){
+      protected function __connect(){
       }
 
 
       /**
-      *  @private
+      *  @protected
       *  @abstract
       *
       *  Abstrakte Interface-Methode für das Schließen einer Datenbank-Verbindung.<br />
@@ -203,28 +203,7 @@
       *  @version
       *  Version 0.1, 10.02.2008<br />
       */
-      function __close(){
-      }
-
-
-      /**
-      *  @public
-      *
-      *  Öffentliche Methode zum Trennen der Datenbank-Verbindung (für shutdown function).<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 10.02.2008<br />
-      */
-      function closeConnection(){
-
-         // Verbindung schließen, falls diese besteht
-         if($this->__dbConn != null){
-            $this->__close();
-          // end if
-         }
-
-       // end function
+      protected function __close(){
       }
 
 
@@ -244,8 +223,7 @@
       *  @version
       *  Version 0.1, 10.02.2008<br />
       */
-      function executeStatement($Namespace,$StatementFile,$Params = array(),$ShowStatement = false){
-      }
+      abstract function executeStatement($Namespace,$StatementFile,$Params = array(),$ShowStatement = false);
 
 
       /**
@@ -261,8 +239,7 @@
       *  @version
       *  Version 0.1, 10.02.2008<br />
       */
-      function executeTextStatement($Statement){
-      }
+      abstract function executeTextStatement($Statement);
 
 
       /**
@@ -278,7 +255,7 @@
       *  @version
       *  Version 0.1, 23.02.2008<br />
       */
-      function escapeValue($Value){
+      abstract function escapeValue($Value){
       }
 
 
@@ -295,7 +272,7 @@
       *  @version
       *  Version 0.1, 24.02.2008<br />
       */
-      function getAffectedRows($ResultResource){
+      abstract function getAffectedRows($ResultResource){
       }
 
     // end class

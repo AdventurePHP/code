@@ -37,7 +37,7 @@
       *  @private
       *  Container for configuration entries.
       */
-      var $__Configuration = array();
+      private $__Configuration = array();
 
 
       function Configuration(){
@@ -189,14 +189,14 @@
       *  @private
       *  Caches the configurations loaded before.
       */
-      var $__Configurations = array();
+      private $__Configurations = array();
 
 
       /**
       *  @private
       *  Subkey delimiter.
       */
-      var $__NamespaceDelimiter = '.';
+      private $__NamespaceDelimiter = '.';
 
 
       function configurationManager(){
@@ -324,7 +324,7 @@
       *  Version 0.3, 07.03.2007<br />
       *  Version 0.4, 02.04.2007 (Removed else, because the existance is already checked before.)<br />
       */
-      function __loadConfiguration($namespace,$context,$configName){
+      private function __loadConfiguration($namespace,$context,$configName){
          $configFile = $this->__getConfigurationFileName($namespace,$context,$configName);
          return parse_ini_file($configFile,true);
        // end function
@@ -347,7 +347,7 @@
       *  Version 0.2, 07.03.2007<br />
       *  Version 0.3, 21.06.2008 (Introduced the Registry component)<br />
       */
-      function __getConfigurationFileName($namespace,$context,$configName){
+      private function __getConfigurationFileName($namespace,$context,$configName){
 
          if(strlen($context) > 0){
             $path = str_replace('::','/',$namespace).'/'.str_replace('::','/',$context);
@@ -379,7 +379,7 @@
       *  @version
       *  Version 0.1, 28.01.2007<br />
       */
-      function __parseConfiguration($configuration = array()){
+      private function __parseConfiguration($configuration = array()){
 
          $configurationArray = array();
 
@@ -416,7 +416,7 @@
       *  @version
       *  Version 0.1, 28.01.2007<br />
       */
-      function __parseSubsections($subsectionArray){
+      private function __parseSubsections($subsectionArray){
 
          $concatenatedArray = array();
 
@@ -452,7 +452,7 @@
       *  @version
       *  Version 0.1, 28.01.2007<br />
       */
-      function __generateSubArray($key,$value){
+      private function __generateSubArray($key,$value){
 
          $SubArray = array();
 

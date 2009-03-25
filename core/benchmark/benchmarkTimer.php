@@ -47,42 +47,42 @@
       *  @private
       *  The benchmark root process.
       */
-      var $__RootProcess = null;
+      private $__RootProcess = null;
 
 
       /**
       *  @private
       *  The process table, that contains all running processes (hash table).
       */
-      var $__RunningProcesses = array();
+      private $__RunningProcesses = array();
 
 
       /**
       *  @private
       *  References the current parent process (=last process created).
       */
-      var $__CurrentParent = null;
+      private $__CurrentParent = null;
 
 
       /**
       *  @private
       *  Stores the process count.
       */
-      var $__CurrentProcessID = 0;
+      private $__CurrentProcessID = 0;
 
 
       /**
       *  @private
       *  Defines the critical time for the benchmark report.
       */
-      var $__CriticalTime = 0.5;
+      private $__CriticalTime = 0.5;
 
 
       /**
       *  @private
       *  Line counter for the report.
       */
-      var $__LineCounter = 0;
+      private $__LineCounter = 0;
 
 
       /**
@@ -218,7 +218,7 @@
       *  @version
       *  Version 0.1, 31.12.2006<br />
       */
-      function __getID(){
+      private function __getID(){
          $this->__CurrentProcessID += 1;
          return $this->__CurrentProcessID;
        // end function
@@ -236,7 +236,7 @@
       *  @version
       *  Version 0.1, 31.12.2006<br />
       */
-      function __generateMicroTime(){
+      private function __generateMicroTime(){
 
          if(intval(phpversion()) == 5){
             $return = microtime(true);
@@ -268,7 +268,7 @@
       *  @version
       *  Version 0.1, 31.12.2006<br />
       */
-      function __createProcess($name,$startTime,&$parent){
+      private function __createProcess($name,$startTime,&$parent){
 
          $process = new benchmarkProcess();
          $process->setProcessID($this->__getID());
@@ -293,7 +293,7 @@
       *  @version
       *  Version 0.1, 31.12.2006<br />
       */
-      function &__createRootProcess(){
+      private function &__createRootProcess(){
 
          $startTime = $this->__generateMicroTime();
          $rootProcess = new benchmarkProcess();
@@ -319,7 +319,7 @@
       *  @version
       *  Version 0.1, 31.12.2006<br />
       */
-      function &__getRootProcess(){
+      private function &__getRootProcess(){
 
          $rootProcess = &$this->__RootProcess;
          $rootProcess->setProcessStopTime($this->__generateMicroTime());
@@ -340,7 +340,7 @@
       *  @version
       *  Version 0.1, 31.12.2006<br />
       */
-      function __addRunningProcess(&$process){
+      private function __addRunningProcess(&$process){
          $name = $process->getProcessName();
          $this->__RunningProcesses[$name] = &$process;
        // end function
@@ -358,7 +358,7 @@
       *  @version
       *  Version 0.1, 31.12.2006<br />
       */
-      function __removeRunningProcess($name){
+      private function __removeRunningProcess($name){
          unset($this->__RunningProcesses[$name]);
        // end function
       }
@@ -376,7 +376,7 @@
       *  @version
       *  Version 0.1, 31.12.2006<br />
       */
-      function &__getRunningProcessByName($name){
+      private function &__getRunningProcessByName($name){
 
          if(isset($this->__RunningProcesses[$name])){
             return $this->__RunningProcesses[$name];
@@ -403,7 +403,7 @@
       *  @version
       *  Version 0.1, 31.12.2006<br />
       */
-      function __setCurrentParent(&$process){
+      private function __setCurrentParent(&$process){
          $this->__CurrentParent = &$process;
        // end function
        }
@@ -420,7 +420,7 @@
       *  @version
       *  Version 0.1, 31.12.2006<br />
       */
-      function &__getCurrentParent(){
+      private function &__getCurrentParent(){
          return $this->__CurrentParent;
        // end function
       }
@@ -473,7 +473,7 @@
       *  @version
       *  Version 0.1, 01.01.2007<br />
       */
-      function __createReport4Process(&$process){
+      private function __createReport4Process(&$process){
 
          $buffer = (string)'';
          $buffer .= $this->__generateReportLine($process->getProcessName(),$process->getProcessLevel(),$process->getProcessRuntime());
@@ -509,7 +509,7 @@
       *  @version
       *  Version 0.1, 01.01.2007<br />
       */
-      function __generateTab($level){
+      private function __generateTab($level){
 
          $string = (string)'';
 
@@ -536,7 +536,7 @@
       *  Version 0.1, 01.01.2007<br />
       *  Version 0.2, 24.06.2007 (Text align is set to left)<br />
       */
-      function __generateHeader(){
+      private function __generateHeader(){
 
          $buffer = (string)'';
          $buffer .= '<div style="width: 100%; background-color: white; border: 1px dashed black; margin-top: 10px; padding: 10px; font-size: 12px; font-family: Arial, Helvetica, sans-serif; text-align: left;">';
@@ -583,7 +583,7 @@
       *  @version
       *  Version 0.1, 01.01.2007<br />
       */
-      function __generateFooter(){
+      private function __generateFooter(){
 
          $buffer = (string)'</div>';
          $buffer .= "\n";
@@ -608,7 +608,7 @@
       *  Version 0.1, 01.01.2007<br />
       *  Version 0.2, 08.03.2008 (Changed labels)<br />
       */
-      function __generateReportLine($name,$level,$time){
+      private function __generateReportLine($name,$level,$time){
 
          // generate display name
          $name = $this->__generateTab($level).'&#187&nbsp;&nbsp;&nbsp;'.$name;
@@ -679,43 +679,43 @@
       *  @private
       *  ID of the process.
       */
-      var $__ProcessID;
+      private $__ProcessID;
 
       /**
       *  @private
       *  Name of the process.
       */
-      var $__ProcessName;
+      private $__ProcessName;
 
       /**
       *  @private
       *  Level of the process.
       */
-      var $__ProcessLevel;
+      private $__ProcessLevel;
 
       /**
       *  @private
       *  Start time of the process.
       */
-      var $__ProcessStartTime = null;
+      private $__ProcessStartTime = null;
 
       /**
       *  @private
       *  Stop time of the process.
       */
-      var $__ProcessStopTime = null;
+      private $__ProcessStopTime = null;
 
       /**
       *  @private
       *  Reference on the process' parent.
       */
-      var $__ParentProcess = null;
+      private $__ParentProcess = null;
 
       /**
       *  @private
       *  List of child processes.
       */
-      var $__Processes = array();
+      private $__Processes = array();
 
 
       function benchmarkProcess(){

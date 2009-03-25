@@ -121,17 +121,16 @@
 
 
    /**
-   *  @namespace core::pagecontroller
+   *  @package core::pagecontroller
    *  @function import
    *
-   *  Imports classes or modules from a given namespace. If the php5 support is enabled, files with
-   *  the extension ".php5" are included. If no php5 file is present, the ".php" file is included
-   *  as a fallback scenario. This is also done, that the files, that can be used in both versions
-   *  do not have to be renamed or stored twice.
+   *  Imports classes or modules from a given namespace. Usage:
+   *  <pre>
+   *  import('core::frontcontroller','Frontcontroller');
+   *  </pre>
    *
-   *  @param string $Namespace the namespace of the file (=relative path, starting at the root of your code base)
-   *  @param string $File the body of the desired file / class to include
-   *  @print bool $ActivatePHP5Support indicates if the PHP 5 extension mixture feature is enabled or not
+   *  @param string $namespace the namespace of the file (=relative path, starting at the root of your code base)
+   *  @param string $file the body of the desired file / class to include (without extension)
    *
    *  @author Christian Achatz
    *  @version
@@ -143,67 +142,31 @@
    *  Version 0.6, 24.03.2008 (Improved Performance due to include cache introduction)<br />
    *  Version 0.7, 20.06.2008 (Moved to pagecontroller.php due to the Registry introduction)<br />
    *  Version 0.8, 13.11.2008 (Replaced the include_once() calls with include()s to gain performance)<br />
+   *  Version 0.9, 25.03.2009 (Cleared implementation for the PHP 5 branch)<br />
    */
-   function import($Namespace,$File,$ActivatePHP5Support = true){
+   function import($namespace,$file){
 
       // create the complete and absolute file name
-      $File = APPS__PATH.'/'.str_replace('::','/',$Namespace).'/'.$File;
+      $file = APPS__PATH.'/'.str_replace('::','/',$namespace).'/'.$file.'.php';
 
       // check if the file is already included, if yes, return
-      if(isset($GLOBALS['IMPORT_CACHE'][$File])){
+      if(isset($GLOBALS['IMPORT_CACHE'][$file])){
          return true;
        // end if
       }
       else{
-         $GLOBALS['IMPORT_CACHE'][$File] = true;
+         $GLOBALS['IMPORT_CACHE'][$file] = true;
        // end else
       }
 
-      // import file
-      if(intval(phpversion()) == 5 && $ActivatePHP5Support == true){
-
-         // add the php 5 extension
-         $ImportFile = $File.'.php5';
-
-         if(!file_exists($ImportFile)){
-
-            // if not, assume the fallback extension
-            $ImportFile = $File.'.php';
-
-            if(!file_exists($ImportFile)){
-               trigger_error('[import()] The given module ('.$ImportFile.') cannot be loaded!');
-               exit();
-             // end if
-            }
-            else{
-               include($ImportFile);
-             // end else
-            }
-
-          // end if
-         }
-         else{
-            include($ImportFile);
-          // end else
-         }
-
+      // handle non existing files
+      if(!file_exists($file)){
+         trigger_error('[import()] The given module ('.$file.') cannot be loaded!');
+         exit();
        // end if
       }
       else{
-
-         // add the default file extension
-         $ImportFile = $File.'.php';
-
-         if(!file_exists($ImportFile)){
-            trigger_error('[import()] The given module ('.$ImportFile.') cannot be loaded!');
-            exit();
-          // end if
-         }
-         else{
-            include($ImportFile);
-          // end else
-         }
-
+         include($file);
        // end else
       }
 
