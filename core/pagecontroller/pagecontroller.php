@@ -109,7 +109,7 @@
 
    // include necessary core libraries for the pagecontroller
    import('core::errorhandler','errorhandler');
-   //import('core::exceptionhandler','exceptionhandler');
+   import('core::exceptionhandler','exceptionhandler');
    import('core::service','serviceManager');
    import('core::configuration','configurationManager');
    import('core::benchmark','benchmarkTimer');
@@ -144,7 +144,7 @@
    *  Version 0.7, 20.06.2008 (Moved to pagecontroller.php due to the Registry introduction)<br />
    *  Version 0.8, 13.11.2008 (Replaced the include_once() calls with include()s to gain performance)<br />
    */
-   function import($Namespace,$File,$ActivatePHP5Support = false){
+   function import($Namespace,$File,$ActivatePHP5Support = true){
 
       // create the complete and absolute file name
       $File = APPS__PATH.'/'.str_replace('::','/',$Namespace).'/'.$File;
@@ -290,7 +290,7 @@
       *  Version 0.7, 04.11.2008 (Fixed issue, that a combination of TAB and SPACE characters leads to wrong attributes parsing)<br />
       *  Version 0.8, 05.11.2008 (Removed the TAB support due to performance and fault tolerance problems)<br />
       */
-      function getTagAttributes($TagString){
+      static function getTagAttributes($TagString){
 
          // search for taglib to attributes string delimiter
          $tagAttributeDel = strpos($TagString,' ');
@@ -419,7 +419,7 @@
       *  Version 0.3, 14.01.2007 (Improved the error message)<br />
       *  Version 0.4, 14.11.2007 (Removed $hasFound; see http://forum.adventure-php-framework.org/de/viewtopic.php?t=7)<br />
       */
-      function getAttributesFromString($attributesString){
+      static function getAttributesFromString($attributesString){
 
          $Attributes = array ();
          $foundAtr = true;
@@ -479,7 +479,7 @@
       *  @version
       *  Version 0.1, 22.12.2006<br />
       */
-      function generateUniqID($md5 = true){
+      static function generateUniqID($md5 = true){
 
          if($md5 == true){
             return md5(uniqid(rand(),true));
@@ -519,44 +519,44 @@
       *  @protected
       *  Unique object identifier.
       */
-      var $__ObjectID = null;
+      protected $__ObjectID = null;
 
       /**
       *  @protected
       *  Reference to the parent object.
       */
-      var $__ParentObject = null;
+      protected $__ParentObject = null;
 
       /**
       *  @protected
       *  List of the children of the current object.
       */
-      var $__Children = array();
+      protected $__Children = array();
 
       /**
       *  @protected
       *  The attributes of an object (merely the XML tag attributes).
       */
-      var $__Attributes = array();
+      protected $__Attributes = array();
 
       /**
       *  @protected
       *  The context of the current object within the application.
       */
-      var $__Context = null;
+      protected $__Context = null;
 
       /**
       *  @protected
       *  The language of the current object within the application.
       */
-      var $__Language = 'de';
+      protected $__Language = 'de';
 
       /**
       *  @since 0.3
       *  @protected
       *  Contains the service type, if the object was created with the serviceManager.
       */
-      var $__ServiceType = null;
+      protected $__ServiceType = null;
 
 
       function coreObject(){
@@ -1026,19 +1026,19 @@
       *  @private
       *  The namespace of the taglib.
       */
-      var $__Namespace;
+      protected $__Namespace;
 
       /**
       *  @private
       *  The prefix of the taglib.
       */
-      var $__Prefix;
+      protected $__Prefix;
 
       /**
       *  @private
       *  The class name of the taglib.
       */
-      var $__Class;
+      protected $__Class;
 
 
       /**
@@ -1088,14 +1088,14 @@
       *  @protected
       *  The name of the page.
       */
-      var $__Name;
+      protected $__Name;
 
 
       /**
       *  @protected
       *  Container for the initial Document of the Page.
       */
-      var $__Document;
+      protected $__Document;
 
 
       /**
@@ -1262,22 +1262,22 @@
       /**
       *  @protected
       */
-      var $__Content;
+      protected $__Content;
 
       /**
       *  @protected
       */
-      var $__DocumentController;
+      protected $__DocumentController;
 
       /**
       *  @protected
       */
-      var $__TagLibs;
+      protected $__TagLibs;
 
       /**
       *  @protected
       */
-      var $__MaxLoops = 100;
+      protected $__MaxLoops = 100;
 
 
       /**
@@ -2017,7 +2017,7 @@
       *  @private
       *  Indicates, if the template should be transformed on the place of definition. Default is false.
       */
-      var $__TransformOnPlace = false;
+      protected $__TransformOnPlace = false;
 
 
       /**
@@ -2295,7 +2295,7 @@
       *  @private
       *  Referenz auf das Document.
       */
-      var $__Document;
+      protected $__Document;
 
 
       function baseController(){

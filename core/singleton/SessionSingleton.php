@@ -100,7 +100,7 @@
       *  @version
       *  Version 0.1, 24.02.2008<br />
       */
-      function &getInstance($className){
+      static function &getInstance($className){
 
          // Cachenamen erzeugen
          $CacheContainer = SessionSingleton::showCacheContainerOffset();
@@ -152,7 +152,7 @@
       *  @version
       *  Version 0.1, 24.02.2008<br />
       */
-      function clearInstance($className){
+      static function clearInstance($className){
          unset($GLOBALS[SessionSingleton::showCacheContainerOffset()][SessionSingleton::createCacheObjectName($className)]);
        // end function
       }
@@ -168,7 +168,7 @@
       *  @version
       *  Version 0.1, 24.02.2008<br />
       */
-      function clearAll(){
+      static function clearAll(){
          $GLOBALS[SessionSingleton::showCacheContainerOffset()] = array();
        // end function
       }
@@ -184,7 +184,7 @@
       *  @version
       *  Version 0.1, 24.02.2008<br />
       */
-      function isInSingletonCache($className){
+      static function isInSingletonCache($className){
 
          if(isset($GLOBALS[SessionSingleton::showCacheContainerOffset()][SessionSingleton::createCacheObjectName($className)])){
             return true;
@@ -210,7 +210,7 @@
       *  @version
       *  Version 0.1, 24.02.2008<br />
       */
-      function showCacheContainerOffset(){
+      static function showCacheContainerOffset(){
          return (string)'SESSION_SINGLETON_CACHE';
        // end function
       }
@@ -226,7 +226,7 @@
       *  @version
       *  Version 0.1, 24.02.2008<br />
       */
-      function showSessionNamespace(){
+      static function showSessionNamespace(){
          return (string)'core::session';
        // end function
       }

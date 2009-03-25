@@ -141,11 +141,11 @@
       *  Version 0.3, 07.11.2008 (Bugfix: the namespace of filters outside "core::filter" could not be included)<br />
       *  Version 0.4, 11.12.2008 (Switched to FilterDefinition for addressing a filter)<br />
       */
-      function getFilter($filterDefinition){
+      static function getFilter($filterDefinition){
 
          // check definition
          $defClassName = get_class($filterDefinition);
-         if($defClassName !== strtolower('FilterDefinition')){
+         if($defClassName !== 'FilterDefinition'){
             trigger_error('[FilterFactory::getFilter()] The given filter definition (class name: "'.$defClassName.'") is not an instance of the "FilterDefinition" class!',E_USER_ERROR);
             return null;
           // end if

@@ -68,7 +68,7 @@
       $reg = &Singleton::getInstance('Registry');
       $errorHandlerDef = $reg->retrieve('apf::core','ErrorHandler');
 
-      if($errorHandlerDef !== null && get_class($errorHandlerDef) === strtolower('ErrorHandlerDefinition')){
+      if($errorHandlerDef !== null && get_class($errorHandlerDef) === 'ErrorHandlerDefinition'){
 
          // get handler params
          $namespace = $errorHandlerDef->get('Namespace');
@@ -80,7 +80,7 @@
          // execute error handler
          $errHandler = new $class();
 
-         if(is_subclass_of($errHandler,strtolower('AbstractErrorHandler')) === true){
+         if(is_subclass_of($errHandler,'AbstractErrorHandler') === true){
             $errHandler->handleError($errorNumber,$errorMessage,$errorFile,$errorLine);
           // end if
          }

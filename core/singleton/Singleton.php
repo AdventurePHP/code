@@ -55,7 +55,7 @@
       *  Version 0.1, 12.04.2006<br />
       *  Version 0.2, 21.08.2007 (Es wird nun geprüft, ob die Klasse existiert)<br />
       */
-      function &getInstance($className){
+      static function &getInstance($className){
 
          // Prüfen, ob Instanz des Objekt bereits existiert
          if(!Singleton::isInSingletonCache($className)){
@@ -90,7 +90,7 @@
       *  @version
       *  Version 0.1, 12.04.2006<br />
       */
-      function clearInstance($className){
+      static function clearInstance($className){
          unset($GLOBALS[Singleton::showCacheContainerOffset()][Singleton::createCacheObjectName($className)]);
        // end function
       }
@@ -106,7 +106,7 @@
       *  @version
       *  Version 0.1, 12.04.2006<br />
       */
-      function clearAll(){
+      static function clearAll(){
          $GLOBALS[Singleton::showCacheContainerOffset()] = array();
        // end function
       }
@@ -122,7 +122,7 @@
       *  @version
       *  Version 0.1, 12.04.2006<br />
       */
-      function isInSingletonCache($className){
+      static function isInSingletonCache($className){
 
          if(isset($GLOBALS[Singleton::showCacheContainerOffset()][Singleton::createCacheObjectName($className)])){
             return true;
@@ -147,7 +147,7 @@
       *  @version
       *  Version 0.1, 12.04.2006<br />
       */
-      function createCacheObjectName($className){
+      static function createCacheObjectName($className){
          return strtoupper($className);
        // end function
       }
@@ -164,7 +164,7 @@
       *  @version
       *  Version 0.1, 12.04.2006<br />
       */
-      function showCacheContainerOffset(){
+      static function showCacheContainerOffset(){
          return (string)'SINGLETON_CACHE';
        // end function
       }
