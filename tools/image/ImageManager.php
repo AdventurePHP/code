@@ -240,7 +240,7 @@
       *  Version 0.1, 22.11.2004<br />
       *  Version 0.2, 15.07.2006 (Added the extension to the attributes)<br />
       */
-      function showImageAttributes($ImageName){
+      static function showImageAttributes($ImageName){
 
          // Quellbild analysieren
          $size = getimagesize($ImageName);

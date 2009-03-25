@@ -64,7 +64,7 @@
 
             $filterMethod = '__'.trim($filterInstruction);
 
-            if(in_array(strtolower($filterMethod),$filterMethods)){
+            if(in_array($filterMethod,$filterMethods)){
                $output = $this->$filterMethod($output);
              // end if
             }

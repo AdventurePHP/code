@@ -736,7 +736,7 @@
             $FormElements = array();
             foreach($this->__Children as $ObjectID => $Child){
 
-               if(get_class($this->__Children[$ObjectID]) == strtolower($ClassName)){
+               if(get_class($this->__Children[$ObjectID]) == $ClassName){
                   $FormElements[] = &$this->__Children[$ObjectID];
                 // end if
                }

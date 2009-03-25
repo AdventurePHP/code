@@ -204,7 +204,7 @@
 
          foreach($this->__Provider as $providerName => $DUMMY){
 
-            if(get_class($this->__Provider[$providerName]) == strtolower('BBCodeParserDefinition')){
+            if(get_class($this->__Provider[$providerName]) == 'BBCodeParserDefinition'){
 
                // include class
                $namespace = $this->__Provider[$providerName]->get('Namespace');

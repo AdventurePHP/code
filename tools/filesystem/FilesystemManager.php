@@ -53,7 +53,7 @@
       *  Version 0.1, 20.11.2008<br />
       *  Version 0.2, 24.11.2008 (Bugfix: recursion on windows systems broken due to directory seperator problems)<br />
       */
-      function deleteFolder($folder,$recursive = false){
+      public static function deleteFolder($folder,$recursive = false){
 
          // clear stat cache to prevent interference with previous calls
          clearstatcache();
@@ -107,7 +107,7 @@
       *  @version
       *  Version 0.1, 21.11.2008<br />
       */
-      function createFolder($folder,$permissions = 660){
+      public static function createFolder($folder,$permissions = 660){
 
          // normalize folder structure
          $folder = str_replace('\\','/',$folder);
@@ -186,7 +186,7 @@
       *  Version 0.1, 20.11.2008<br />
       *  Version 0.2, 29.11.2008 (Fixed bug, that non existing source was not indicated)<br />
       */
-      function copyFile($sourceFile,$targetFile,$force = false){
+      public static function copyFile($sourceFile,$targetFile,$force = false){
 
          // create realpath from the source and target file
          $source = str_replace('\\','/',realpath($sourceFile));
@@ -235,7 +235,7 @@
       *  Version 0.2, 24.11.2008 (Bugfix: recursion on windows systems broken due to directory seperator problems)<br />
       *  Version 0.3, 29.11.2008 (Added check, if the file to delete does exist)<br />
       */
-      function removeFile($file){
+      public static function removeFile($file){
 
          // check if file exists
          $realFile = str_replace('\\','/',realpath($file));
@@ -272,7 +272,7 @@
       *  @version
       *  Version 0.1, 24.11.2008 (Added the function to the new FilesystemManager class.)<br />
       */
-      function uploadFile($dir,$temp_file,$file_name,$file_size,$file_max_size,$file_type,$allowed_mime_types){
+      public static function uploadFile($dir,$temp_file,$file_name,$file_size,$file_max_size,$file_type,$allowed_mime_types){
 
          // check, if the mime type and the size is ok
          if(in_array($file_type,$allowed_mime_types) && ($file_size < $file_max_size)){
@@ -331,7 +331,7 @@
       *  Version 0.1, 20.11.2008<br />
       *  Version 0.2, 29.11.2008 (Fixed bug, that non existing source was not indicated)<br />
       */
-      function renameFile($sourceFile,$targetFile,$force = false){
+      public static function renameFile($sourceFile,$targetFile,$force = false){
 
          // create realpath from the source and target file
          $source = str_replace('\\','/',realpath($sourceFile));
@@ -381,7 +381,7 @@
       *  @version
       *  Version 0.1, 29.11.2008<br />
       */
-      function getFolderContent($folder,$fullpath = false){
+      public static function getFolderContent($folder,$fullpath = false){
 
          // check if folder exists
          $realFolder = str_replace('\\','/',realpath($folder));
@@ -438,7 +438,7 @@
       *  Version 0.1, 29.11.2008<br />
       *  Version 0.2, 01.02.2009 (Added the possibility to only return one attribute)<br />
       */
-      function getFileAttributes($file,$attributeName = null){
+      public static function getFileAttributes($file,$attributeName = null){
 
          // clear the stat cache to avoid interference with previous calls
          clearstatcache();
@@ -498,7 +498,7 @@
       *  @version
       *  Version 0.1, 29.11.2008<br />
       */
-      function getFolderSize($folder){
+      public static function getFolderSize($folder){
 
          // check if folder exists
          $realFolder = str_replace('\\','/',realpath($folder));

@@ -81,7 +81,7 @@
       *  Version 1.0, 26.08.2007 (URL wird nun auf is_string() geprüft; URL-Parameter akzeptieren keine mehrdimensionales Arrays!)<br />
       *  Version 1.1, 21.06.2008 (Introduced the Registry to retrieve the URLRewriting information)<br />
       */
-      function generateLink($URL,$Parameter,$URLRewriting = null){
+      static function generateLink($URL,$Parameter,$URLRewriting = null){
 
          // Prüfen, ob $URL ein String ist
          if(!is_string($URL)){

@@ -52,7 +52,7 @@
       *  Version 0.1, 12.01.2007<br />
       *  Version 0.2, 16.06.2007 (Strings < 3 Zeichen werden als "false" gewertet)<br />
       */
-      function validateText($String){
+      static function validateText($String){
 
          if(!empty($String) && strlen($String) >= 3){
             return true;
@@ -80,7 +80,7 @@
       *  @version
       *  Version 0.1, 12.01.2007<br />
       */
-      function validateEMail($String){
+      static function validateEMail($String){
 
          if(!empty($String) && ereg("^([a-zA-Z0-9\.\_\-]+)@([a-zA-Z0-9\.\-]+\.[A-Za-z][A-Za-z]+)$",$String)){
             return true;
@@ -108,7 +108,7 @@
       *  @version
       *  Version 0.1, 12.01.2007<br />
       */
-      function validateTelefon($String){
+      static function validateTelefon($String){
 
          if(preg_match("/^[0-9\-\+\(\)\/ ]{6,}+$/",trim($String))){
             return true;
@@ -136,7 +136,7 @@
       *  @version
       *  Version 0.1, 12.01.2007<br />
       */
-      function validateFax($String){
+      static function validateFax($String){
 
          if(preg_match("/^[0-9\-\+\(\)\/ ]{6,}+$/",trim($String))){
             return true;
@@ -165,7 +165,7 @@
       *  Version 0.1, 12.01.2007<br />
       *  Version 0.2, 15.08.2008 (Changed due to feature change request)<br />
       */
-      function validateNumber($String){
+      static function validateNumber($String){
 
          if(is_numeric(trim($String))){
             return true;
@@ -193,7 +193,7 @@
       *  @version
       *  Version 0.1, 12.01.2007<br />
       */
-      function validateFolder($String){
+      static function validateFolder($String){
 
          if(preg_match("/^[a-zA-Z0-9\-\_]+$/",trim($String))){
             return true;
@@ -225,7 +225,7 @@
       *  Version 0.3, 12.01.2007 (Only boolean values are returned now)<br />
       *  Version 0.4, 21.08.2008 (Removed trim()s due to validation errors with blanks)<br />
       */
-      function validateRegExp($String,$RegExp){
+      static function validateRegExp($String,$RegExp){
 
          if(preg_match($RegExp,$String)){
            return true;

@@ -50,7 +50,7 @@
       *  @version
       *  Version 0.1, 09.10.2008<br />
       */
-      function forward($targetURL){
+      public static function forward($targetURL){
          header('Location: '.str_replace('&amp;','&',$targetURL));
        // end function
       }
@@ -70,7 +70,7 @@
       *  @version
       *  Version 0.1, 09.10.2008<br />
       */
-      function redirect($targetURL,$permanent = false){
+      public static function redirect($targetURL,$permanent = false){
 
          if($permanent === true){
             $statusCode = 301;
@@ -102,7 +102,7 @@
       *  @version
       *  Version 0.1, 09.10.2008<br />
       */
-      function send($content,$replacePrevHeaders = false,$HTTPStatus = false){
+      public static function send($content,$replacePrevHeaders = false,$HTTPStatus = false){
 
          if($HTTPStatus === false){
             header($content,$replacePrevHeaders);

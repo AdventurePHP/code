@@ -52,7 +52,7 @@
       *  @version
       *  Version 0.1, 13.12.2008<br />
       */
-      function getValue($name,$defaultValue = null){
+      static function getValue($name,$defaultValue = null){
 
          if(isset($_REQUEST[$name])){
             $value = $_REQUEST[$name];
@@ -84,7 +84,7 @@
       *  @version
       *  Version 0.1, 13.12.2008<br />
       */
-      function getValues($namesWithDefaults){
+      static static function getValues($namesWithDefaults){
 
          // initialize values
          $values = array();

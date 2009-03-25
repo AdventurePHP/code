@@ -49,7 +49,7 @@
       *  @version
       *  Version 0.1, 08.09.2004<br />
       */
-      function generateGermanDate(){
+      static function generateGermanDate(){
          return date('d.m.Y');
        // end function
       }
@@ -65,7 +65,7 @@
       *  @version
       *  Version 0.1, 08.09.2004<br />
       */
-      function generateDate(){
+      static function generateDate(){
          return date('Y-m-d');
        // end function
       }
@@ -81,7 +81,7 @@
       *  @version
       *  Version 0.1, 08.09.2004<br />
       */
-      function generateTime(){
+      static function generateTime(){
          return date('H:i:s');
        // end function
       }
@@ -97,7 +97,7 @@
       *  @version
       *  Version 0.1, 08.09.2004<br />
       */
-      function generateTimeStamp(){
+      static static function generateTimeStamp(){
          return date('Y-m-d H:i:s');
        // end function
       }
@@ -115,7 +115,7 @@
       *  Version 0.1, 08.09.2004<br />
       *  Version 0.2, 27.03.2007 (Code aufgeräumt)<br />
       */
-      function addLeadingZero($Value){
+      static function addLeadingZero($Value){
 
          $Value = strval($Value);
 
@@ -143,7 +143,7 @@
       *  @version
       *  Version 0.1, 05.06.2006<br />
       */
-      function showMonthLabel($Number,$Lang = 'de'){
+      static function showMonthLabel($Number,$Lang = 'de'){
 
          switch(intval($Number)){
             case 12:
@@ -207,7 +207,7 @@
       *  Version 0.2, 23.03.2004<br />
       *  Version 0.3, 09.09.2004<br />
       */
-      function convertDate2Normal($SQLFormat){
+      static function convertDate2Normal($SQLFormat){
 
          $Temp = array();
          $Temp = split('[-]',$SQLFormat);
@@ -228,7 +228,7 @@
       *  @version
       *  Version 0.1, ??.??.????<br />
       */
-      function splitDate($Datum){
+      static function splitDate($Datum){
 
          $Temp = array();
          $return = array();
@@ -273,7 +273,7 @@
       *  Version 0.1, 09.09.2004<br />
       *  Version 0.2, 29.11.2004<br />
       */
-      function splitTime($Uhrzeit){
+      static function splitTime($Uhrzeit){
 
          $Temp = array();
          $return = array();
@@ -306,7 +306,7 @@
       *  Version 0.1, 12.04.2005<br />
       *  Version 0.1, 05.05.2005<br />
       */
-      function calculateTimeDifference($Uhrzeit,$Differenz = array()){
+      static function calculateTimeDifference($Uhrzeit,$Differenz = array()){
 
          // Differenz aufschlüsseln
          if(!isset($Differenz['Stunden'])){
@@ -407,7 +407,7 @@
       *  Version 0.1, 10.03.2006<br />
       *  Version 0.2, 11.03.2006<br />
       */
-      function calculateDate($Datum,$Differenz = array('Jahr' => '0', 'Monat' => '0', 'Tag' => '0')){
+      static function calculateDate($Datum,$Differenz = array('Jahr' => '0', 'Monat' => '0', 'Tag' => '0')){
 
           // Anzahl der Tage im Monat
           $TageImMonat[1] = 31;
@@ -518,7 +518,7 @@
       *  @version
       *  Version 0.1, 18.03.2007<br />
       */
-      function getMonthInfo($Month = null,$Year = null){
+      static function getMonthInfo($Month = null,$Year = null){
 
          // Monat auf aktuellen setzen, falls keiner gegeben
          if($Month == null){

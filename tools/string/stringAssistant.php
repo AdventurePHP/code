@@ -48,7 +48,7 @@
       *  @version
       *  Version 0.1, 11.01.2005<br />
       */
-      function escapeSpecialCharacters($String,$escape4mysql = false){
+      static function escapeSpecialCharacters($String,$escape4mysql = false){
 
          //
          //   Ist magic_quotes_gpc aktiviert, dann nur htmlspecialcharacters,
@@ -89,7 +89,7 @@
       *  Version 0.5, 05.06.2006 (Optimierung der Ersetzung (' statt " in der Array-Aufzählung))<br />
       *  Version 0.6, 31.03.2007 ("?" in die Liste mit aufgenommen)<br />
       */
-      function replaceSpecialCharacters($String){
+      static function replaceSpecialCharacters($String){
 
          $Ersatz = array(
                          'ä' => 'ae',
@@ -148,7 +148,7 @@
       *  @version
       *  Version 0.1, 24.06.2007<br />
       */
-      function encodeCharactersToHTML($String){
+      static function encodeCharactersToHTML($String){
 
          // Inhalt von Leerzeichen befreien
          $Content = trim($String);
@@ -182,7 +182,7 @@
       *  @version
       *  Version 0.1, 28.12.2007<br />
       */
-      function generateCaptchaString($Length){
+      static function generateCaptchaString($Length){
 
          // Shuffeln der Zufallszahlen
          srand(stringAssistant::generateSeed());
@@ -217,7 +217,7 @@
       *  @version
       *  Version 0.1, 28.12.2007<br />
       */
-      function generateSeed(){
+      static function generateSeed(){
         list($usec, $sec) = explode(' ',microtime());
         return (float) $sec + ((float) $usec * 100000);
        // end function

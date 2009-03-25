@@ -221,7 +221,7 @@
       *  Version 0.5, 10.01.2008 (Fix für Problem mit DUMMY-Action bei APPS__URL_REWRITING = false)<br />
       *  Version 0.6, 21.06.2008 (Introduced the Registry to retrieve the URLRewriting information)<br />
       */
-      function generateLink($URL,$NewParams = array(),$URLRewriting = null){
+      static function generateLink($URL,$NewParams = array(),$URLRewriting = null){
 
          //
          // Timer starten
@@ -654,7 +654,7 @@
       *  @version
       *  Version 0.1, 07.07.2007<br />
       */
-      function createArrayFromRequestString($RequestString){
+      static function createArrayFromRequestString($RequestString){
 
          // Ergebnis-Array initialisieren
          $URLParams = array();
