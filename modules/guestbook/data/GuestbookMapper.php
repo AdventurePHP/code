@@ -27,7 +27,7 @@
 
    /**
    *  @namespace modules::guestbook::data
-   *  @class guestbookMapper
+   *  @class GuestbookMapper
    *
    *  DataMapper des Gästebuchs.<br />
    *
@@ -36,10 +36,10 @@
    *  Version 0.1, 12.04.2007<br />
    *  Version 0.2, 07.01.2008 (Werte werden beim Inserten/Updaten quotiert)<br />
    */
-   class guestbookMapper extends coreObject
+   class GuestbookMapper extends coreObject
    {
 
-      function guestbookMapper(){
+      function GuestbookMapper(){
       }
 
 

@@ -22,14 +22,14 @@
    import('modules::guestbook::biz','Guestbook');
    import('modules::guestbook::biz','Entry');
    import('modules::guestbook::biz','Comment');
-   import('modules::guestbook::data','guestbookMapper');
+   import('modules::guestbook::data','GuestbookMapper');
    import('modules::pager::biz','pagerManager');
    import('core::session','sessionManager');
 
 
    /**
    *  @namespace modules::guestbook::biz
-   *  @class guestbookManager
+   *  @class GuestbookManager
    *
    *  Business-Komponente des Gästebuchs.<br />
    *
@@ -37,7 +37,7 @@
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
-   class guestbookManager extends coreObject
+   class GuestbookManager extends coreObject
    {
 
 
@@ -62,7 +62,7 @@
       var $__sessMgr = null;
 
 
-      function guestbookManager(){
+      function GuestbookManager(){
       }
 
 
@@ -77,10 +77,10 @@
       *  @version
       *  Version 0.1, 13.04.2007<br />
       */
-      function init($GuestbookID){
+      function init($guestbookID){
 
          // GuestbookID speichern
-         $this->__GuestbookID = $GuestbookID;
+         $this->__GuestbookID = $guestbookID;
 
          // SessionManager initialisieren
          $this->__sessMgr = new sessionManager('Guestbook');
@@ -110,7 +110,7 @@
             $pM = &$pMF->getPagerManager('Guestbook');
 
             // GuestbookMapper holen
-            $gM = &$this->__getServiceObject('modules::guestbook::data','guestbookMapper');
+            $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
 
             // Gästebuch laden
             $this->__Guestbook = $gM->loadGuestbookByID($this->__GuestbookID);
@@ -153,7 +153,7 @@
       function loadGuestbookObject(){
 
          // GuestbookMapper holen
-         $gM = &$this->__getServiceObject('modules::guestbook::data','guestbookMapper');
+         $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
 
          // Gästebuch-Objekt laden
          return $gM->loadGuestbookByID($this->__GuestbookID);
@@ -213,7 +213,7 @@
       function saveEntry($Entry){
 
          // GuestbookMapper holen
-         $gM = &$this->__getServiceObject('modules::guestbook::data','guestbookMapper');
+         $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
 
          // Gästebuch laden
          $Guestbook = $gM->loadGuestbookByID($this->__GuestbookID);
@@ -249,7 +249,7 @@
       function saveComment($EntryID,$Comment){
 
          // GuestbookMapper holen
-         $gM = &$this->__getServiceObject('modules::guestbook::data','guestbookMapper');
+         $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
 
          // Gästebuch laden
          $Guestbook = $gM->loadGuestbookByID($this->__GuestbookID);
@@ -289,7 +289,7 @@
       function loadEntry($EntryID){
 
          // GuestbookMapper holen
-         $gM = &$this->__getServiceObject('modules::guestbook::data','guestbookMapper');
+         $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
 
          // Eintrag ausgeben
          return $gM->loadEntryByID($EntryID);
@@ -312,7 +312,7 @@
       function loadComment($CommentID){
 
          // GuestbookMapper holen
-         $gM = &$this->__getServiceObject('modules::guestbook::data','guestbookMapper');
+         $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
 
          // Eintrag ausgeben
          return $gM->loadCommentByID($CommentID);
@@ -367,7 +367,7 @@
       function deleteEntry($Entry){
 
          // GuestbookMapper holen
-         $gM = &$this->__getServiceObject('modules::guestbook::data','guestbookMapper');
+         $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
 
          // Eintrag löschen
          $gM->deleteEntry($Entry);
@@ -390,7 +390,7 @@
       function deleteComment($Comment){
 
          // GuestbookMapper holen
-         $gM = &$this->__getServiceObject('modules::guestbook::data','guestbookMapper');
+         $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
 
          // Eintrag löschen
          $gM->deleteComment($Comment);
