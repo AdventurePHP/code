@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -324,6 +324,7 @@
       *  Version 0.8, 07.03.2008 (Bugfix: query was not executed with the right connection)<br />
       *  Version 0.9, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
       *  Version 1.0, 05.11.2008 (Added value escaping to the statement params)<br />
+      *  Version 1.1, 26.03.2009 (Enhanced the error messages)<br />
       */
       function executeStatement($Namespace,$StatementFile,$Params = array(),$ShowStatement = false){
 
@@ -336,7 +337,7 @@
          $File = APPS__PATH.'/config/'.str_replace('::','/',$Namespace).'/'.str_replace('::','/',$this->__Context).'/statements/'.$Environment.'_'.$StatementFile.'.sql';
 
          if(!file_exists($File)){
-            trigger_error('[MySQLHandler->executeStatement()] There\'s no statement file with name "'.($Environment.'_'.$StatementFile.'.sql').'" for given namespace "'.$Namespace.'" and current context "'.$this->__Context.'"!',E_USER_ERROR);
+            trigger_error('[MySQLHandler->executeStatement()] There\'s no statement file with name "'.($Environment.'_'.$StatementFile.'.sql').'" for given namespace "config::'.$Namespace.'" and current context "'.$this->__Context.'::statements"!',E_USER_ERROR);
             exit(1);
           // end if
          }
