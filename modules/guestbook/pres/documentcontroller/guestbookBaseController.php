@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -30,7 +30,7 @@
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
-   class guestbookBaseController extends baseController
+   abstract class guestbookBaseController extends baseController
    {
 
       function guestbookBaseController(){
@@ -40,21 +40,18 @@
       /**
       *  @private
       *
-      *  Gibt die Instanz des Managers zurück.<br />
+      *  Returns the instance of the manager
       *
-      *  @return guestbookManager $gM; Instanz des Gästebuch-Managers
+      *  @return GuestbookManager $gM The guestbook manager
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
-      function &__getGuestbookManager(){
+      protected function &__getGuestbookManager(){
 
-         // guestbookid vom Vater holen
          $Parent = &$this->__Document->getByReference('ParentObject');
          $GuestbookID = $Parent->getAttribute('guestbookid');
-
-         // Manager holen
          return $this->__getAndInitServiceObject('modules::guestbook::biz','guestbookManager',$GuestbookID);
 
        // end function

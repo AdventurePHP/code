@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -23,7 +23,7 @@
    *  @namespace modules::guestbook::biz
    *  @class Comment
    *
-   *  Domain-Objekt für einen Kommentar.<br />
+   *  Comment domain object.
    *
    *  @author Christian Schäfer
    *  @version
@@ -34,40 +34,40 @@
 
       /**
       *  @private
-      *  ID des Kommentars.
+      *  Id of the comment.
       */
-      var $__ID = null;
+      protected $__ID = null;
 
 
       /**
       *  @private
-      *  Titel des Kommentars.
+      *  Title of the comment.
       */
-      var $__Title;
+      protected $__Title;
 
 
       /**
       *  @private
-      *  Datum des Kommentars.
+      *  Date of the comment.
       */
-      var $__Date;
+      protected $__Date;
 
 
       /**
       *  @private
-      *  Text des Kommentars.
+      *  Text of the comment.
       */
-      var $__Text;
+      protected $__Text;
 
 
       /**
       *  @private
-      *  Uhrzeit des Kommentars.
+      *  Time of the comment.
       */
-      var $__Time;
+      protected $__Time;
 
 
-      function Comment(){
+      public function Comment(){
       }
 
     // end class

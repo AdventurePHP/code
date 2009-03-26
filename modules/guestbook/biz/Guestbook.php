@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -23,7 +23,7 @@
    *  @namespace modules::guestbook::biz
    *  @class Guestbook
    *
-   *  Domain-Objekt für einen Gästebuch.<br />
+   *  Guestbook domain object.
    *
    *  @author Christian Schäfer
    *  @version
@@ -34,62 +34,62 @@
 
       /**
       *  @private
-      *  ID des Gästebuchs.
+      *  Id of the guestbook.
       */
-      var $__ID = null;
+      protected $__ID = null;
 
 
       /**
       *  @private
-      *  Name des Gästebuchs.
+      *  Name of the guestbook.
       */
-      var $__Name;
+      protected $__Name;
 
 
       /**
       *  @private
-      *  Beschreibung des Gästebuchs.
+      *  Description of the guestbook.
       */
-      var $__Description;
+      protected $__Description;
 
 
       /**
       *  @private
-      *  Einträge des Gästebuchs.
+      *  Entries of the giestbook.
       */
-      var $__Entries = array();
+      protected $__Entries = array();
 
 
       /**
       *  @private
-      *  Admin-Benutzername.
+      *  Admin username.
       */
-      var $__Admin_Username;
+      protected $__Admin_Username;
 
 
       /**
       *  @private
-      *  Admin-Passwort.
+      *  Admin password.
       */
-      var $__Admin_Password;
+      protected $__Admin_Password;
 
 
-      function Guestbook(){
+      public function Guestbook(){
       }
 
 
       /**
       *  @public
       *
-      *  Gibt die Einträge des Gästebuchs zurück.<br />
+      *  Returns the list of entries of the guestbook.
       *
-      *  @return array $Entries; Liste mit Entry-Objekten
+      *  @return array $entries The entries list
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       */
-      function getEntries(){
+      public function getEntries(){
          return $this->__Entries;
        // end function
       }
@@ -98,16 +98,16 @@
       /**
       *  @public
       *
-      *  Gibt die Einträge des Gästebuchs zurück.<br />
+      *  Fills the entry list.
       *
-      *  @param array $Entries; Liste mit Entry-Objekten
+      *  @param Entry[] $entries A list of entries
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       */
-      function setEntries($Entries){
-         $this->__Entries = $Entries;
+      public function setEntries($entries){
+         $this->__Entries = $entries;
        // end function
       }
 
@@ -115,16 +115,16 @@
       /**
       *  @public
       *
-      *  Fügt einen Eintrag zum Gästebuch hinzu.<br />
+      *  Adds an entry to the list.
       *
-      *  @param Entry $Entry; Entry-Objekt
+      *  @param Entry $entry An entry object
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       */
-      function addEntry($Entry){
-         $this->__Entries[] = $Entry;
+      public function addEntry($entry){
+         $this->__Entries[] = $entry;
        // end function
       }
 

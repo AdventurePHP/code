@@ -31,7 +31,7 @@
    *  @namespace modules::guestbook::biz
    *  @class GuestbookManager
    *
-   *  Business-Komponente des Gästebuchs.<br />
+   *  Business component of the guestbook module.
    *
    *  @author Christian Schäfer
    *  @version
@@ -40,51 +40,45 @@
    class GuestbookManager extends coreObject
    {
 
-
       /**
       *  @private
-      *  Gästebuch-ID.
+      *  The id of the guestbook.
       */
-      var $__GuestbookID;
-
-
-      /**
-      *  @private
-      *  Container für ein Guestbook-Objekt.
-      */
-      var $__Guestbook = null;
+      protected $__GuestbookID;
 
 
       /**
       *  @private
-      *  Instanz des Session-Managers.
+      *  Container of the guestbook.
       */
-      var $__sessMgr = null;
+      protected $__Guestbook = null;
 
 
-      function GuestbookManager(){
+      /**
+      *  @private
+      *  Instance of the session manager.
+      */
+      protected $__sessMgr = null;
+
+
+      public function GuestbookManager(){
       }
 
 
       /**
       *  @public
       *
-      *  Implementierung der abstrakte "init()"-Methode.<br />
+      *  Implements the init() method used with the service manager.
       *
-      *  @param string $GuestbookID; Gästebuch-ID
+      *  @param string $guestbookID The guestbook id
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 13.04.2007<br />
       */
-      function init($guestbookID){
-
-         // GuestbookID speichern
+      public function init($guestbookID){
          $this->__GuestbookID = $guestbookID;
-
-         // SessionManager initialisieren
          $this->__sessMgr = new sessionManager('Guestbook');
-
        // end function
       }
 
@@ -92,33 +86,26 @@
       /**
       *  @public
       *
-      *  Läd ein Gästebuch per ID.<br />
+      *  Loads a guestbook.
       *
-      *  @return object $Guestbook; Gästebuch-Objekt-Baum
+      *  @return Guestbook $guestbook The guestbook domain object structure
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 13.04.2007<br />
       */
-      function loadGuestbook(){
+      public function loadGuestbook(){
 
-         // Falls Gästebuch noch nicht geladen wurde...
          if($this->__Guestbook == null){
 
-            // pagerManager holen
             $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
             $pM = &$pMF->getPagerManager('Guestbook');
 
-            // GuestbookMapper holen
             $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
-
-            // Gästebuch laden
             $this->__Guestbook = $gM->loadGuestbookByID($this->__GuestbookID);
 
-            // Eintrag-IDs, die angezeigt werden sollen laden
             $EntryIDs = $pM->loadEntries(array('GuestbookID' => $this->__GuestbookID));
 
-            // Einträge laden
             $Entries = array();
 
             for($i = 0; $i < count($EntryIDs); $i++){
@@ -126,13 +113,12 @@
              // end for
             }
 
-            // Einträge zum Gästebuch hinzufügen
+            // add entries
             $this->__Guestbook->setEntries($Entries);
 
           // end if
          }
 
-         // Gästebuch zurückgeben
          return $this->__Guestbook;
 
        // end function
@@ -142,7 +128,7 @@
       /**
       *  @public
       *
-      *  Läd ein Gästebuch-Objekt per ID.<br />
+      *  Loads a guestbook object.
       *
       *  @return object $Guestbook; Gästebuch-Objekt ohne Einträge
       *
@@ -150,14 +136,9 @@
       *  @version
       *  Version 0.1, 21.04.2007<br />
       */
-      function loadGuestbookObject(){
-
-         // GuestbookMapper holen
+      public function loadGuestbookObject(){
          $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
-
-         // Gästebuch-Objekt laden
          return $gM->loadGuestbookByID($this->__GuestbookID);
-
        // end function
       }
 
@@ -165,16 +146,15 @@
       /**
       *  @public
       *
-      *  Gibt die URL-Parameter des Pagers zurück.<br />
+      *  Returns the URL params of the pager configuration.
       *
-      *  @param string $GuestbookID; Gästebuch-ID
-      *  @return array $URLParameter; Pager-URL-Parameter
+      *  @return array $urlParameter The pager url params
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 13.04.2007<br />
       */
-      function getURLParameters(){
+      public function getURLParameters(){
          $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
          $pM = &$pMF->getPagerManager('Guestbook');
          return $pM->getPagerURLParameters();
@@ -185,13 +165,15 @@
       /**
       *  @public
       *
-      *  Gibt die HTML-Ausgabe des Pagers zurück.<br />
+      *  Returns the HTML representation of the pager.
+      *
+      *  @return string $pager The pager representation
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 13.04.2007<br />
       */
-      function getPager(){
+      public function getPager(){
          $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
          $pM = &$pMF->getPagerManager('Guestbook');
          return $pM->getPager(array('GuestbookID' => $this->__GuestbookID));
@@ -202,32 +184,26 @@
       /**
       *  @public
       *
-      *  Speichert einen Eintrag in das aktuelle Gästebuch.<br />
+      *  Saves an entry object
       *
-      *  @param Entry $Entry; Entry-Objekt
+      *  @param Entry $entry The entry object
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 14.04.2007<br />
       */
-      function saveEntry($Entry){
+      public function saveEntry($entry){
 
-         // GuestbookMapper holen
          $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
 
-         // Gästebuch laden
-         $Guestbook = $gM->loadGuestbookByID($this->__GuestbookID);
+         $guestbook = $gM->loadGuestbookByID($this->__GuestbookID);
+         $guestbook->addEntry($entry);
+         $gM->saveGuestbook($guestbook);
 
-         // Eintrag hinzufügen
-         $Guestbook->addEntry($Entry);
-
-         // Gästebuch speichern
-         $gM->saveGuestbook($Guestbook);
-
-         // Auf Anzeige-Seite weiterleiten
-         $URLParams = $this->getURLParameters();
-         $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array($URLParams['StartName'] => '', $URLParams['CountName'] => '', 'gbview' => 'display'));
-         header('Location: '.$Link);
+         // forward to the target page
+         $urlParams = $this->getURLParameters();
+         $link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array($urlParams['StartName'] => '', $urlParams['CountName'] => '', 'gbview' => 'display'));
+         header('Location: '.$link);
 
        // end function
       }
@@ -236,40 +212,30 @@
       /**
       *  @public
       *
-      *  Speichert einen Kommentar zu einem Eintrag.<br />
+      *  Saves a comment object.
       *
-      *  @param string $EntryID; ID des Eintrags
-      *  @param Comment $Comment; Kommentar-Objekt
+      *  @param string $entryID The id of an entry
+      *  @param Comment $comment The comment object
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 05.05.2007<br />
-      *  Version 0.2, 19.05.2007 (Generierung der Weiterleitungs-URL erweitert)<br />
+      *  Version 0.2, 19.05.2007 (Added the redirect url generation)<br />
       */
-      function saveComment($EntryID,$Comment){
+      public function saveComment($EntryID,$Comment){
 
-         // GuestbookMapper holen
          $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
 
-         // Gästebuch laden
          $Guestbook = $gM->loadGuestbookByID($this->__GuestbookID);
-
-         // Entry laden
          $Entry = $gM->loadEntryByID($EntryID);
-
-         // Comment zum Entry hinzufügen
          $Entry->addComment($Comment);
-
-         // Eintrag hinzufügen
          $Guestbook->addEntry($Entry);
-
-         // Gästebuch speichern
          $gM->saveGuestbook($Guestbook);
 
-         // Auf Anzeige-Seite weiterleiten
-         $URLParams = $this->getURLParameters();
-         $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array($URLParams['StartName'] => '', $URLParams['CountName'] => '', 'gbview' => 'display','commentid' => '', 'entryid' => ''));
-         header('Location: '.$Link);
+         // forward to the target page
+         $urlParams = $this->getURLParameters();
+         $link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array($urlParams['StartName'] => '', $urlParams['CountName'] => '', 'gbview' => 'display','commentid' => '', 'entryid' => ''));
+         header('Location: '.$link);
 
        // end function
       }
@@ -278,22 +244,17 @@
       /**
       *  @public
       *
-      *  Läd einen Eintrag per ID.<br />
+      *  Loads an entry by id.
       *
-      *  @param string $EntryID; ID des Eintrags
+      *  @param string $entryID Id of the desired entry
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
-      function loadEntry($EntryID){
-
-         // GuestbookMapper holen
+      public function loadEntry($entryID){
          $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
-
-         // Eintrag ausgeben
-         return $gM->loadEntryByID($EntryID);
-
+         return $gM->loadEntryByID($entryID);
        // end function
       }
 
@@ -301,22 +262,17 @@
       /**
       *  @public
       *
-      *  Läd einen Kommentar per ID.<br />
+      *  Loads a comment by id.
       *
-      *  @param string $CommentID; ID des Kommentars
+      *  @param string $commentID The comment id
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 19.05.2007<br />
       */
-      function loadComment($CommentID){
-
-         // GuestbookMapper holen
+      public function loadComment($commentID){
          $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
-
-         // Eintrag ausgeben
-         return $gM->loadCommentByID($CommentID);
-
+         return $gM->loadCommentByID($commentID);
        // end function
       }
 
@@ -324,23 +280,21 @@
       /**
       *  @public
       *
-      *  Validiert Zugangsdaten für ein Gästebuch.<br />
+      *  Validates the login credentials.
       *
-      *  @param string $Username; Benutzername
-      *  @param string $Password; Passwort
-      *  @return bool $CredOK; true | false
+      *  @param string $username Usernam
+      *  @param string $password Password
+      *  @return bool $login true | false
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
-      function validateCrendentials($Username,$Password){
+      public function validateCrendentials($username,$password){
 
-         // Gästebuch-Objekt laden
-         $Guestbook = $this->loadGuestbookObject();
+         $guestbook = $this->loadGuestbookObject();
 
-         // Zugangsdaten validieren
-         if($Guestbook->get('Admin_Username') == $Username && $Guestbook->get('Admin_Password') == $Password){
+         if($guestbook->get('Admin_Username') == $username && $guestbook->get('Admin_Password') == $password){
             return true;
           // end if
          }
@@ -356,22 +310,17 @@
       /**
       *  @public
       *
-      *  Löscht einen Eintrag eines Gästebuchs.<br />
+      *  Deletes an guestbook entry.
       *
-      *  @param Entry $Entry; Eintrags-Objekt
+      *  @param Entry $entry The guestbook entry
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
-      function deleteEntry($Entry){
-
-         // GuestbookMapper holen
+      public function deleteEntry($entry){
          $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
-
-         // Eintrag löschen
-         $gM->deleteEntry($Entry);
-
+         $gM->deleteEntry($entry);
        // end function
       }
 
@@ -379,22 +328,17 @@
       /**
       *  @public
       *
-      *  Löscht einen Kommentar eines Eintrags.<br />
+      *  Deletes a comment.
       *
-      *  @param Comment $Comment; Kommentar-Objekt
+      *  @param Comment $comment The comment object
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 19.05.2007<br />
       */
-      function deleteComment($Comment){
-
-         // GuestbookMapper holen
+      public function deleteComment($comment){
          $gM = &$this->__getServiceObject('modules::guestbook::data','GuestbookMapper');
-
-         // Eintrag löschen
-         $gM->deleteComment($Comment);
-
+         $gM->deleteComment($comment);
        // end function
       }
 

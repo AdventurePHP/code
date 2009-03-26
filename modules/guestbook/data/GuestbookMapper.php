@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -22,19 +22,19 @@
    import('modules::guestbook::biz','Guestbook');
    import('modules::guestbook::biz','Entry');
    import('modules::guestbook::biz','Comment');
-   import('core::database','MySQLHandler');
+   import('core::database','connectionManager');
 
 
    /**
    *  @namespace modules::guestbook::data
    *  @class GuestbookMapper
    *
-   *  DataMapper des Gästebuchs.<br />
+   *  DataMapper of the guestbook.
    *
    *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 12.04.2007<br />
-   *  Version 0.2, 07.01.2008 (Werte werden beim Inserten/Updaten quotiert)<br />
+   *  Version 0.2, 07.01.2008 (Values are now quoted during insert/update)<br />
    */
    class GuestbookMapper extends coreObject
    {
@@ -44,35 +44,26 @@
 
 
       /**
-      *  @public
+      *  @private
       *
-      *  Läd ein Entry-Objekt per EntryID.<br />
+      *  Returns the desired database connection for the guestbook.
       *
-      *  @param string $EntryID; ID des Eintrags
-      *  @return Entry $Entry; Entry-Objekt
+      *  @return $databaseConnection The guestbook database connection
       *
-      *  @author Christian Schäfer
+      *  @author Christian Achatz
       *  @version
-      *  Version 0.1, 12.04.2007<br />
+      *  Version 0.1, 26.03.2009<br />
       */
-      function loadEntryByID($EntryID){
+      private function &__getConnection(){
 
-         // Instanz des MySQLHandlers holen
-         $SQL = &$this->__getServiceObject('core::database','MySQLHandler');
+         // get configuration
+         $config = &$this->__getConfiguration('modules::guestbook','guestbook');
+         $connectionKey = $config->getValue('Default','Database.ConnectionKey');
 
-         // Daten lesen und zurückgeben
-         $T = &Singleton::getInstance('benchmarkTimer');
-         $T->start('loadEntryByID('.$EntryID.')');
-         $select = 'SELECT * FROM entry WHERE EntryID = \''.$EntryID.'\';';
-         $result = $SQL->executeTextStatement($select);
-
-         $T->start('__mapEntry2DomainObject('.$EntryID.')');
-         $Entry = $this->__mapEntry2DomainObject($SQL->fetchData($result));
-         $T->stop('__mapEntry2DomainObject('.$EntryID.')');
-
-         $T->stop('loadEntryByID('.$EntryID.')');
-
-         return $Entry;
+         // create database
+         $cM = &$this->__getServiceObject('core::database','connectionManager');
+         $this->__DatabaseConnection = &$cM->getConnection($connectionKey);
+         return $this->__DatabaseConnection;
 
        // end function
       }
@@ -81,22 +72,44 @@
       /**
       *  @public
       *
-      *  Läd ein Comment-Objekt per CommentID.<br />
+      *  Loads an entry by id.
       *
-      *  @param string $CommentID; ID des Eintrags
-      *  @return Comment $Comment; Comment-Objekt
+      *  @param string $entryID Id of the desired entry
+      *  @return Entry $entry The entry object
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
+      *  Version 0.2, 26.03.2009 (Refactoring)<br />
       */
-      function loadCommentByID($CommentID){
+      public function loadEntryByID($entryID){
 
-         // Instanz des MySQLHandlers holen
-         $SQL = &$this->__getServiceObject('core::database','MySQLHandler');
+         $SQL = &$this->__getConnection();
+         $select = 'SELECT * FROM entry WHERE EntryID = \''.$entryID.'\';';
+         $result = $SQL->executeTextStatement($select);
+         return $this->__mapEntry2DomainObject($SQL->fetchData($result));
 
-         // Daten lesen und zurückgeben
-         $select = 'SELECT * FROM comment WHERE CommentID = \''.$CommentID.'\';';
+       // end function
+      }
+
+
+      /**
+      *  @public
+      *
+      *  Loads a comment by id.
+      *
+      *  @param string $commentID Id of the desired comment
+      *  @return Comment $comment The comment object
+      *
+      *  @author Christian Schäfer
+      *  @version
+      *  Version 0.1, 12.04.2007<br />
+      *  Version 0.2, 26.03.2009 (Refactoring)<br />
+      */
+      public function loadCommentByID($commentID){
+
+         $SQL = &$this->__getConnection();
+         $select = 'SELECT * FROM comment WHERE CommentID = \''.$commentID.'\';';
          $result = $SQL->executeTextStatement($select);
          return $this->__mapComment2DomainObject($SQL->fetchData($result));
 
@@ -107,22 +120,20 @@
       /**
       *  @public
       *
-      *  Läd ein Guestbook-Objekt per GuestbookID.<br />
+      *  Loads a guestbook by id.
       *
-      *  @param string $GuestbookID; ID des Eintrags
-      *  @return Guestbook $Guestbook; Guestbook-Objekt
+      *  @param string $guestbookID Id of the desired guestbook
+      *  @return Guestbook $guestbook The guestbook object
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
+      *  Version 0.2, 26.03.2009 (Refactoring)<br />
       */
-      function loadGuestbookByID($GuestbookID){
+      public function loadGuestbookByID($guestbookID){
 
-         // Instanz des MySQLHandlers holen
-         $SQL = &$this->__getServiceObject('core::database','MySQLHandler');
-
-         // Daten lesen und zurückgeben
-         $select = 'SELECT * FROM guestbook WHERE GuestbookID = \''.$GuestbookID.'\';';
+         $SQL = &$this->__getConnection();
+         $select = 'SELECT * FROM guestbook WHERE GuestbookID = \''.$guestbookID.'\';';
          $result = $SQL->executeTextStatement($select);
          return $this->__mapGuestbook2DomainObject($SQL->fetchData($result));
 
@@ -133,42 +144,32 @@
       /**
       *  @public
       *
-      *  Läd einen Eintrag mit allen seinen Kommentaren.<br />
+      *  Loads an entry with it's comments.
       *
-      *  @param string $EntyID; ID des Eintrags
-      *  @return Entry $Entry; Eintrags-Objekt
+      *  @param string $entryID Id of the desired entry
+      *  @return Entry $entry The entry id with it's comments
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
+      *  Version 0.2, 26.03.2009 (Refactoring)<br />
       */
-      function loadEntryWithComments($EntyID){
+      public function loadEntryWithComments($entryID){
 
-         // Instanz des MySQLHandlers holen
-         $SQL = &$this->__getServiceObject('core::database','MySQLHandler');
-
-
-         // Eintrag laden
-         $Entry = $this->loadEntryByID($EntyID);
-
-
-         // Kommentare hinzuladen
+         $SQL = &$this->__getConnection();
+         $entry = $this->loadEntryByID($entryID);
          $select = 'SELECT comment.CommentID AS ID FROM comment
                     INNER JOIN comp_entry_comment ON comment.CommentID = comp_entry_comment.CommentID
                     INNER JOIN entry ON comp_entry_comment.EntryID = entry.EntryID
-                    WHERE entry.EntryID = \''.$Entry->get('ID').'\';';
+                    WHERE entry.EntryID = \''.$entry->get('ID').'\';';
          $result = $SQL->executeTextStatement($select);
 
          while($data = $SQL->fetchData($result)){
-            $Comment = $this->loadCommentByID($data['ID']);
-            $Entry->addComment($Comment);
-            $Comment = null;
+            $entry->addComment($this->loadCommentByID($data['ID']));
           // end while
          }
 
-
-         // Eintrag zurückgeben
-         return $Entry;
+         return $entry;
 
        // end function
       }
@@ -177,42 +178,33 @@
       /**
       *  @public
       *
-      *  Läd ein Gästebuch mit allen Einträgen.<br />
+      *  Loads a guestbook with it's entries.
       *
-      *  @param string $GuestbookID; ID des Eintrags
-      *  @return Guestbook $Guestbook; Guestbook-Objekt
+      *  @param string $guestbookID Id of the desired guestbook
+      *  @return Guestbook $guestbook The guestbook object
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
+      *  Version 0.2, 26.03.2009 (Refactoring)<br />
       */
-      function loadGuestbookWithEntries($GuestbookID){
+      public function loadGuestbookWithEntries($guestbookID){
 
-         // Instanz des MySQLHandlers holen
-         $SQL = &$this->__getServiceObject('core::database','MySQLHandler');
+         $guestbook = $this->loadGuestbookByID($guestbookID);
 
-
-         // Gästebuch laden
-         $Guestbook = $this->loadGuestbookByID($GuestbookID);
-
-
-         // Kommentare hinzuladen
+         $SQL = &$this->__getConnection();
          $select = 'SELECT entry.EntryID AS ID FROM entry
                     INNER JOIN comp_guestbook_entry ON entry.EntryID = comp_guestbook_entry.EntryID
                     INNER JOIN guestbook ON comp_guestbook_entry.GuestbookID = guestbook.GuestbookID
-                    WHERE guestbook.GuestbookID = \''.$Guestbook->get('ID').'\';';
+                    WHERE guestbook.GuestbookID = \''.$guestbook->get('ID').'\';';
          $result = $SQL->executeTextStatement($select);
 
          while($data = $SQL->fetchData($result)){
-            $Entry = $this->loadEntryWithComments($data['ID']);
-            $Guestbook->addEntry($Entry);
-            $Entry = null;
+            $guestbook->addEntry($this->loadEntryWithComments($data['ID']));
           // end while
          }
 
-
-         // Gästebuch zurückgeben
-         return $Guestbook;
+         return $guestbook;
 
        // end function
       }
@@ -221,32 +213,32 @@
       /**
       *  @public
       *
-      *  Speichert ein Gästebuch.<br />
+      *  Saves a guestbook.
       *
-      *  @param Guestbook $Guestbook; Ein Guestbook-Objekt
-      *  @return string $GuestbookID; ID des Eintrags
+      *  @param Guestbook $guestbook The guestbook object
+      *  @return string $guestbookID Id of the guestbook
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
-      *  Version 0.2, 14.04.2007 (Bug beim Update und Speichern behoben)<br />
+      *  Version 0.2, 14.04.2007 (Fixed bug during saving)<br />
+      *  Version 0.3, 26.03.2009 (Refactoring)<br />
       */
-      function saveGuestbook($Guestbook){
+      public function saveGuestbook($guestbook){
 
-         // Instanz des MySQLHandlers holen
-         $SQL = &$this->__getServiceObject('core::database','MySQLHandler');
+         $SQL = &$this->__getConnection();
 
-         // Entry speichern oder updaten
-         $GuestbookID = $Guestbook->get('ID');
+         // save the guestbook itself
+         $guestbookID = $guestbook->get('ID');
 
-         if($GuestbookID != null){
+         if($guestbookID != null){
 
             $update = 'UPDATE guestbook SET
-                       Name = \''.$SQL->escapeValue($Guestbook->get('Name')).'\',
-                       Description = \''.$SQL->escapeValue($Guestbook->get('Description')).'\',
-                       Admin_Username = \''.$SQL->escapeValue($Guestbook->get('Admin_Username')).'\',
-                       Admin_Password = \''.$SQL->escapeValue($Guestbook->get('Admin_Password')).'\'
-                       WHERE GuestbookID = \''.$GuestbookID.'\';';
+                       Name = \''.$SQL->escapeValue($guestbook->get('Name')).'\',
+                       Description = \''.$SQL->escapeValue($guestbook->get('Description')).'\',
+                       Admin_Username = \''.$SQL->escapeValue($guestbook->get('Admin_Username')).'\',
+                       Admin_Password = \''.$SQL->escapeValue($guestbook->get('Admin_Password')).'\'
+                       WHERE GuestbookID = \''.$guestbookID.'\';';
             $SQL->executeTextStatement($update);
 
           // end if
@@ -264,28 +256,27 @@
 
                        VALUES
                        (
-                          \''.$SQL->escapeValue($Guestbook->get('Name')).'\',
-                          \''.$SQL->escapeValue($Guestbook->get('Description')).'\',
-                          \''.$SQL->escapeValue($Guestbook->get('Admin_Username')).'\',
-                          \''.$SQL->escapeValue($Guestbook->get('Admin_Password')).'\'
+                          \''.$SQL->escapeValue($guestbook->get('Name')).'\',
+                          \''.$SQL->escapeValue($guestbook->get('Description')).'\',
+                          \''.$SQL->escapeValue($guestbook->get('Admin_Username')).'\',
+                          \''.$SQL->escapeValue($guestbook->get('Admin_Password')).'\'
                        );';
             $SQL->executeTextStatement($insert);
-            $GuestbookID = $SQL->getLastID();
+            $guestbookID = $SQL->getLastID();
 
           // end else
          }
 
-         // Prüfen, ob Eintrag Kommentare hat, wenn ja speichern
-         $Entries = $Guestbook->getEntries();
-         if(count($Entries) > 0){
+         // check, if an entry has comments and save them, too
+         $entries = $guestbook->getEntries();
+         if(count($entries) > 0){
 
-            for($i = 0; $i < count($Entries); $i++){
+            for($i = 0; $i < count($entries); $i++){
 
-               // Entries selbst speichern
-               $EntryID = $this->saveEntry($Entries[$i]);
+               $entryID = $this->saveEntry($entries[$i]);
 
-               // Beziehung zum Eintrag speichern
-               $select = 'SELECT * FROM comp_guestbook_entry WHERE GuestbookID  = \''.$GuestbookID.'\' AND EntryID = \''.$EntryID.'\';';
+               // save relation
+               $select = 'SELECT * FROM comp_guestbook_entry WHERE GuestbookID  = \''.$guestbookID.'\' AND EntryID = \''.$entryID.'\';';
                $result = $SQL->executeTextStatement($select);
 
                if($SQL->getNumRows($result) > 0){
@@ -293,8 +284,8 @@
                }
                else{
 
-                  // Beziehung speichern
-                  $insert = 'INSERT INTO comp_guestbook_entry (GuestbookID,EntryID) VALUES (\''.$GuestbookID.'\',\''.$EntryID.'\');';
+                  // save relation
+                  $insert = 'INSERT INTO comp_guestbook_entry (GuestbookID,EntryID) VALUES (\''.$guestbookID.'\',\''.$entryID.'\');';
                   $SQL->executeTextStatement($insert);
 
                 // end if
@@ -306,9 +297,8 @@
           // end if
          }
 
-
-         // Entry-ID zurückgeben
-         return $GuestbookID;
+         // return guestbook id
+         return $guestbookID;
 
        // end function
       }
@@ -317,37 +307,35 @@
       /**
       *  @public
       *
-      *  Speichert einen Eintrag.<br />
+      *  Save a entry object.
       *
-      *  @param Entry $Entry; Ein Entry-Objekt
-      *  @return string $EntryID; ID des Eintrags
+      *  @param Entry $entry The entry object
+      *  @return string $entryID Id of the entry
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
+      *  Version 0.2, 26.03.2009 (Refactoring)<br />
       */
-      function saveEntry($Entry){
+      public function saveEntry($entry){
 
-         // Instanz des MySQLHandlers holen
-         $SQL = &$this->__getServiceObject('core::database','MySQLHandler');
+         $SQL = &$this->__getConnection();
+         $entryID = $entry->get('ID');
 
-         // Entry speichern oder updaten
-         $EntryID = $Entry->get('ID');
-
-         if($EntryID != null){
+         if($entryID != null){
 
             $update = 'UPDATE entry SET
-                       Name = \''.$SQL->escapeValue($Entry->get('Name')).'\',
-                       EMail = \''.$SQL->escapeValue($Entry->get('EMail')).'\',
-                       City = \''.$SQL->escapeValue($Entry->get('City')).'\',
-                       Website = \''.$SQL->escapeValue($Entry->get('Website')).'\',
-                       ICQ = \''.$SQL->escapeValue($Entry->get('ICQ')).'\',
-                       MSN = \''.$SQL->escapeValue($Entry->get('MSN')).'\',
-                       Skype = \''.$SQL->escapeValue($Entry->get('Skype')).'\',
-                       AIM = \''.$SQL->escapeValue($Entry->get('AIM')).'\',
-                       Yahoo = \''.$SQL->escapeValue($Entry->get('Yahoo')).'\',
-                       Text = \''.$SQL->escapeValue($Entry->get('Text')).'\'
-                       WHERE EntryID = \''.$EntryID.'\';';
+                       Name = \''.$SQL->escapeValue($entry->get('Name')).'\',
+                       EMail = \''.$SQL->escapeValue($entry->get('EMail')).'\',
+                       City = \''.$SQL->escapeValue($entry->get('City')).'\',
+                       Website = \''.$SQL->escapeValue($entry->get('Website')).'\',
+                       ICQ = \''.$SQL->escapeValue($entry->get('ICQ')).'\',
+                       MSN = \''.$SQL->escapeValue($entry->get('MSN')).'\',
+                       Skype = \''.$SQL->escapeValue($entry->get('Skype')).'\',
+                       AIM = \''.$SQL->escapeValue($entry->get('AIM')).'\',
+                       Yahoo = \''.$SQL->escapeValue($entry->get('Yahoo')).'\',
+                       Text = \''.$SQL->escapeValue($entry->get('Text')).'\'
+                       WHERE EntryID = \''.$entryID.'\';';
             $SQL->executeTextStatement($update);
 
           // end if
@@ -373,36 +361,36 @@
 
                        VALUES
                        (
-                          \''.$SQL->escapeValue($Entry->get('Name')).'\',
-                          \''.$SQL->escapeValue($Entry->get('EMail')).'\',
-                          \''.$SQL->escapeValue($Entry->get('City')).'\',
-                          \''.$SQL->escapeValue($Entry->get('Website')).'\',
-                          \''.$SQL->escapeValue($Entry->get('ICQ')).'\',
-                          \''.$SQL->escapeValue($Entry->get('MSN')).'\',
-                          \''.$SQL->escapeValue($Entry->get('Skype')).'\',
-                          \''.$SQL->escapeValue($Entry->get('AIM')).'\',
-                          \''.$SQL->escapeValue($Entry->get('Yahoo')).'\',
-                          \''.$SQL->escapeValue($Entry->get('Text')).'\',
+                          \''.$SQL->escapeValue($entry->get('Name')).'\',
+                          \''.$SQL->escapeValue($entry->get('EMail')).'\',
+                          \''.$SQL->escapeValue($entry->get('City')).'\',
+                          \''.$SQL->escapeValue($entry->get('Website')).'\',
+                          \''.$SQL->escapeValue($entry->get('ICQ')).'\',
+                          \''.$SQL->escapeValue($entry->get('MSN')).'\',
+                          \''.$SQL->escapeValue($entry->get('Skype')).'\',
+                          \''.$SQL->escapeValue($entry->get('AIM')).'\',
+                          \''.$SQL->escapeValue($entry->get('Yahoo')).'\',
+                          \''.$SQL->escapeValue($entry->get('Text')).'\',
                           CURDATE(),
                           CURTIME()
                        );';
             $SQL->executeTextStatement($insert);
-            $EntryID = $SQL->getLastID();
+            $entryID = $SQL->getLastID();
 
           // end else
          }
 
-         // Prüfen, ob Eintrag Kommentare hat, wenn ja speichern
-         $Comments = $Entry->getComments();
-         if(count($Comments) > 0){
+         // check, whether the entry has comments
+         $comments = $entry->getComments();
+         if(count($comments) > 0){
 
-            for($i = 0; $i < count($Comments); $i++){
+            for($i = 0; $i < count($comments); $i++){
 
-               // Comment selbst speichern
-               $CommentID = $this->saveComment($Comments[$i]);
+               // save comment itself
+               $commentID = $this->saveComment($comments[$i]);
 
-               // Beziehung zum Eintrag speichern
-               $select = 'SELECT * FROM comp_entry_comment WHERE EntryID = \''.$EntryID.'\' AND CommentID = \''.$CommentID.'\';';
+               // save relations
+               $select = 'SELECT * FROM comp_entry_comment WHERE EntryID = \''.$entryID.'\' AND CommentID = \''.$commentID.'\';';
                $result = $SQL->executeTextStatement($select);
 
                if($SQL->getNumRows($result) > 0){
@@ -410,8 +398,7 @@
                }
                else{
 
-                  // Beziehung speichern
-                  $insert = 'INSERT INTO comp_entry_comment (EntryID,CommentID) VALUES (\''.$EntryID.'\',\''.$CommentID.'\');';
+                  $insert = 'INSERT INTO comp_entry_comment (EntryID,CommentID) VALUES (\''.$entryID.'\',\''.$commentID.'\');';
                   $SQL->executeTextStatement($insert);
 
                 // end if
@@ -423,9 +410,8 @@
           // end if
          }
 
-
-         // Entry-ID zurückgeben
-         return $EntryID;
+         // return entry id
+         return $entryID;
 
        // end function
       }
@@ -434,29 +420,27 @@
       /**
       *  @public
       *
-      *  Speichert einen Kommentar.<br />
+      *  Saves a comment.
       *
-      *  @param Comment $Comment; Ein Comment-Objekt
-      *  @return string $CommentID; ID des Eintrags
+      *  @param Comment $comment The comment object
+      *  @return string $commentID Id of the comment
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
+      *  Version 0.2, 26.03.2009 (Refactoring)<br />
       */
-      function saveComment($Comment){
+      public function saveComment($comment){
 
-         // Instanz des MySQLHandlers holen
-         $SQL = &$this->__getServiceObject('core::database','MySQLHandler');
+         $SQL = &$this->__getConnection();
+         $commentID = $comment->get('ID');
 
-         // Entry speichern oder updaten
-         $CommentID = $Comment->get('ID');
-
-         if($CommentID != null){
+         if($commentID != null){
 
             $update = 'UPDATE comment SET
-                       Title = \''.$SQL->escapeValue($Comment->get('Title')).'\',
-                       Text = \''.$SQL->escapeValue($Comment->get('Text')).'\'
-                       WHERE CommentID = \''.$CommentID.'\';';
+                       Title = \''.$SQL->escapeValue($comment->get('Title')).'\',
+                       Text = \''.$SQL->escapeValue($comment->get('Text')).'\'
+                       WHERE CommentID = \''.$commentID.'\';';
             $SQL->executeTextStatement($update);
 
           // end if
@@ -464,30 +448,27 @@
          else{
 
             $insert = 'INSERT INTO comment
-
                        (
                           Title,
                           Text,
                           Date,
                           Time
                        )
-
                        VALUES
                        (
-                          \''.$SQL->escapeValue($Comment->get('Title')).'\',
-                          \''.$SQL->escapeValue($Comment->get('Text')).'\',
+                          \''.$SQL->escapeValue($comment->get('Title')).'\',
+                          \''.$SQL->escapeValue($comment->get('Text')).'\',
                           CURDATE(),
                           CURTIME()
                        );';
             $SQL->executeTextStatement($insert);
-            $CommentID = $SQL->getLastID();
+            $commentID = $SQL->getLastID();
 
           // end else
          }
 
-
-         // CommentID zurückgeben
-         return $CommentID;
+         // return comment if
+         return $commentID;
 
        // end function
       }
@@ -496,49 +477,47 @@
       /**
       *  @public
       *
-      *  Löscht einen Entry eines Gästebuchs.<br />
+      *  Deletes a guestbook entry.
       *
-      *  @param Entry $Entry; Eintrags-Objekt
+      *  @param Entry $entry The entry object
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 05.05.2007<br />
+      *  Version 0.2, 26.03.2009 (Refactoring)<br />
       */
-      function deleteEntry($Entry){
+      public function deleteEntry($entry){
 
-         // Instanz des MySQLHandlers holen
-         $SQL = &$this->__getServiceObject('core::database','MySQLHandler');
-
-         // Kommentare zum Eintrag selektieren und ggf. löschen
+         $SQL = &$this->__getConnection();
          $select_commment = 'SELECT comment.CommentID AS ID FROM comment
                              INNER JOIN comp_entry_comment ON comment.CommentID = comp_entry_comment.CommentID
                              INNER JOIN entry ON comp_entry_comment.EntryID = entry.EntryID
-                             WHERE entry.EntryID = \''.$Entry->get('ID').'\';';
+                             WHERE entry.EntryID = \''.$entry->get('ID').'\';';
          $result_comment = $SQL->executeTextStatement($select_commment);
 
          while($data_comment = $SQL->fetchData($result_comment)){
 
-            // Kommentar löschen
+            // delete comment
             $delete_comment = 'DELETE FROM comment WHERE CommentID = \''.$data_comment['ID'].'\';';
             $SQL->executeTextStatement($delete_comment);
 
-            // Beziehung zum Eintrag löschen
+            // delete relation
             $delete_comp_comment = 'DELETE FROM comp_entry_comment WHERE CommentID = \''.$data_comment['ID'].'\';';
             $SQL->executeTextStatement($delete_comp_comment);
 
-            // Variablen zurücksetzen
+            // reset variables
             $delete_comment = null;
             $delete_comp_comment = null;
 
           // end while
          }
 
-         // Eintrag selbst löschen
-         $delete_entry = 'DELETE FROM entry WHERE EntryID = \''.$Entry->get('ID').'\';';
+         // delete entry itself
+         $delete_entry = 'DELETE FROM entry WHERE EntryID = \''.$entry->get('ID').'\';';
          $SQL->executeTextStatement($delete_entry);
 
-         // Komposition zum Gästebuch löschen
-         $delete_comp_entry = 'DELETE FROM comp_guestbook_entry WHERE EntryID = \''.$Entry->get('ID').'\';';
+         // return composition
+         $delete_comp_entry = 'DELETE FROM comp_guestbook_entry WHERE EntryID = \''.$entry->get('ID').'\';';
          $SQL->executeTextStatement($delete_comp_entry);
 
        // end function
@@ -548,25 +527,23 @@
       /**
       *  @public
       *
-      *  Löscht einen Kommentar eines Eintrags.<br />
+      *  Deletes a comment
       *
-      *  @param Comment $Comment; Kommentar-Objekt
+      *  @param Comment $comment The comment object
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 19.05.2007<br />
+      *  Version 0.2, 26.03.2009 (Refactoring)<br />
       */
-      function deleteComment($Comment){
+      public function deleteComment($comment){
 
-         // Instanz des MySQLHandlers holen
-         $SQL = &$this->__getServiceObject('core::database','MySQLHandler');
+         $SQL = &$this->__getConnection();
 
-         // Beziehung zum Eintrag löschen
-         $delete_comp_comment = 'DELETE FROM comp_entry_comment WHERE CommentID = \''.$Comment->get('ID').'\';';
+         $delete_comp_comment = 'DELETE FROM comp_entry_comment WHERE CommentID = \''.$comment->get('ID').'\';';
          $SQL->executeTextStatement($delete_comp_comment);
 
-         // Kommentar löschen
-         $delete_comment = 'DELETE FROM comment WHERE CommentID = \''.$Comment->get('ID').'\';';
+         $delete_comment = 'DELETE FROM comment WHERE CommentID = \''.$comment->get('ID').'\';';
          $SQL->executeTextStatement($delete_comment);
 
        // end function
@@ -576,76 +553,74 @@
       /**
       *  @private
       *
-      *  Mappt ein ResultSet in ein Entry-Objekt.<br />
+      *  Maps an result-set into the domain object.
       *
-      *  @param array $EntryResultSet; Datenbank-ResultSet
-      *  @return Entry $Entry; Entry-Objekt
+      *  @param array $entryResultSet The database result set
+      *  @return Entry $entry The entry object
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
+      *  Version 0.2, 26.03.2009 (Refactoring)<br />
       */
-      function __mapEntry2DomainObject($EntryResultSet){
+      private function __mapEntry2DomainObject($entryResultSet){
 
-         // Neues Entry-Objekt erstellen
-         $Entry = new Entry();
+         $entry = new Entry();
 
-         // Variablen in das Objekt einsetzen
-         if(isset($EntryResultSet['EntryID'])){
-            $Entry->set('ID',$EntryResultSet['EntryID']);
+         if(isset($entryResultSet['EntryID'])){
+            $entry->set('ID',$entryResultSet['EntryID']);
           // end if
          }
-         if(isset($EntryResultSet['Name'])){
-            $Entry->set('Name',$EntryResultSet['Name']);
+         if(isset($entryResultSet['Name'])){
+            $entry->set('Name',$entryResultSet['Name']);
           // end if
          }
-         if(isset($EntryResultSet['EMail'])){
-            $Entry->set('EMail',$EntryResultSet['EMail']);
+         if(isset($entryResultSet['EMail'])){
+            $entry->set('EMail',$entryResultSet['EMail']);
           // end if
          }
-         if(isset($EntryResultSet['City'])){
-            $Entry->set('City',$EntryResultSet['City']);
+         if(isset($entryResultSet['City'])){
+            $entry->set('City',$entryResultSet['City']);
           // end if
          }
-         if(isset($EntryResultSet['Website'])){
-            $Entry->set('Website',$EntryResultSet['Website']);
+         if(isset($entryResultSet['Website'])){
+            $entry->set('Website',$entryResultSet['Website']);
           // end if
          }
-         if(isset($EntryResultSet['ICQ'])){
-            $Entry->set('ICQ',$EntryResultSet['ICQ']);
+         if(isset($entryResultSet['ICQ'])){
+            $entry->set('ICQ',$entryResultSet['ICQ']);
           // end if
          }
-         if(isset($EntryResultSet['MSN'])){
-            $Entry->set('MSN',$EntryResultSet['MSN']);
+         if(isset($entryResultSet['MSN'])){
+            $entry->set('MSN',$entryResultSet['MSN']);
           // end if
          }
-         if(isset($EntryResultSet['Skype'])){
-            $Entry->set('Skype',$EntryResultSet['Skype']);
+         if(isset($entryResultSet['Skype'])){
+            $entry->set('Skype',$entryResultSet['Skype']);
           // end if
          }
-         if(isset($EntryResultSet['AIM'])){
-            $Entry->set('AIM',$EntryResultSet['AIM']);
+         if(isset($entryResultSet['AIM'])){
+            $entry->set('AIM',$entryResultSet['AIM']);
           // end if
          }
-         if(isset($EntryResultSet['Yahoo'])){
-            $Entry->set('Yahoo',$EntryResultSet['Yahoo']);
+         if(isset($entryResultSet['Yahoo'])){
+            $entry->set('Yahoo',$entryResultSet['Yahoo']);
           // end if
          }
-         if(isset($EntryResultSet['Text'])){
-            $Entry->set('Text',$EntryResultSet['Text']);
+         if(isset($entryResultSet['Text'])){
+            $entry->set('Text',$entryResultSet['Text']);
           // end if
          }
-         if(isset($EntryResultSet['Date'])){
-            $Entry->set('Date',$EntryResultSet['Date']);
+         if(isset($entryResultSet['Date'])){
+            $entry->set('Date',$entryResultSet['Date']);
           // end if
          }
-         if(isset($EntryResultSet['Time'])){
-            $Entry->set('Time',$EntryResultSet['Time']);
+         if(isset($entryResultSet['Time'])){
+            $entry->set('Time',$entryResultSet['Time']);
           // end if
          }
 
-         // Entry zurückgeben
-         return $Entry;
+         return $entry;
 
        // end function
       }
@@ -654,44 +629,42 @@
       /**
       *  @private
       *
-      *  Mappt ein ResultSet in ein Guestbook-Objekt.<br />
+      *  Maps an result-set into the domain object.
       *
-      *  @param array $GuestbookResultSet; Datenbank-ResultSet
-      *  @return Guestbook $Guestbook; Guestbook-Objekt
+      *  @param array $guestbookResultSet The database result set
+      *  @return Guestbook $guestbook The guestbook object
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
+      *  Version 0.2, 26.03.2009 (Refactoring)<br />
       */
-      function __mapGuestbook2DomainObject($GuestbookResultSet){
+      private function __mapGuestbook2DomainObject($guestbookResultSet){
 
-         // Neues Guestbook-Objekt erstellen
-         $Guestbook = new Guestbook();
+         $guestbook = new Guestbook();
 
-         // Variablen in das Objekt einsetzen
-         if(isset($GuestbookResultSet['GuestbookID'])){
-            $Guestbook->set('ID',$GuestbookResultSet['GuestbookID']);
+         if(isset($guestbookResultSet['GuestbookID'])){
+            $guestbook->set('ID',$guestbookResultSet['GuestbookID']);
           // end if
          }
-         if(isset($GuestbookResultSet['Name'])){
-            $Guestbook->set('Name',$GuestbookResultSet['Name']);
+         if(isset($guestbookResultSet['Name'])){
+            $guestbook->set('Name',$guestbookResultSet['Name']);
           // end if
          }
-         if(isset($GuestbookResultSet['Description'])){
-            $Guestbook->set('Description',$GuestbookResultSet['Description']);
+         if(isset($guestbookResultSet['Description'])){
+            $guestbook->set('Description',$guestbookResultSet['Description']);
           // end if
          }
-         if(isset($GuestbookResultSet['Admin_Username'])){
-            $Guestbook->set('Admin_Username',$GuestbookResultSet['Admin_Username']);
+         if(isset($guestbookResultSet['Admin_Username'])){
+            $guestbook->set('Admin_Username',$guestbookResultSet['Admin_Username']);
           // end if
          }
-         if(isset($GuestbookResultSet['Admin_Password'])){
-            $Guestbook->set('Admin_Password',$GuestbookResultSet['Admin_Password']);
+         if(isset($guestbookResultSet['Admin_Password'])){
+            $guestbook->set('Admin_Password',$guestbookResultSet['Admin_Password']);
           // end if
          }
 
-         // Guestbook zurückgeben
-         return $Guestbook;
+         return $guestbook;
 
        // end function
       }
@@ -700,44 +673,42 @@
       /**
       *  @private
       *
-      *  Mappt ein ResultSet in ein Comment-Objekt.<br />
+      *  Maps an result-set into the domain object.
       *
-      *  @param array $CommentResultSet; Datenbank-ResultSet
-      *  @return Comment $Comment Comment-Objekt
+      *  @param array $commentResultSet The database result set
+      *  @return Comment $comment The database result set
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
+      *  Version 0.2, 26.03.2009 (Refactoring)<br />
       */
-      function __mapComment2DomainObject($CommentResultSet){
+      private function __mapComment2DomainObject($commentResultSet){
 
-         // Neues Guestbook-Objekt erstellen
-         $Comment = new Comment();
+         $comment = new Comment();
 
-         // Variablen in das Objekt einsetzen
-         if(isset($CommentResultSet['CommentID'])){
-            $Comment->set('ID',$CommentResultSet['CommentID']);
+         if(isset($commentResultSet['CommentID'])){
+            $comment->set('ID',$commentResultSet['CommentID']);
           // end if
          }
-         if(isset($CommentResultSet['Title'])){
-            $Comment->set('Title',$CommentResultSet['Title']);
+         if(isset($commentResultSet['Title'])){
+            $comment->set('Title',$commentResultSet['Title']);
           // end if
          }
-         if(isset($CommentResultSet['Text'])){
-            $Comment->set('Text',$CommentResultSet['Text']);
+         if(isset($commentResultSet['Text'])){
+            $comment->set('Text',$commentResultSet['Text']);
           // end if
          }
-         if(isset($CommentResultSet['Date'])){
-            $Comment->set('Date',$CommentResultSet['Date']);
+         if(isset($commentResultSet['Date'])){
+            $comment->set('Date',$commentResultSet['Date']);
           // end if
          }
-         if(isset($CommentResultSet['Time'])){
-            $Comment->set('Time',$CommentResultSet['Time']);
+         if(isset($commentResultSet['Time'])){
+            $comment->set('Time',$commentResultSet['Time']);
           // end if
          }
 
-         // Comment zurückgeben
-         return $Comment;
+         return $comment;
 
        // end function
       }

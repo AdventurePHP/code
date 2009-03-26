@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -23,7 +23,7 @@
    *  @namespace modules::guestbook::biz
    *  @class Entry
    *
-   *  Domain-Objekt für einen Eintrag.<br />
+   *  Entry domain object.
    *
    *  @author Christian Schäfer
    *  @version
@@ -34,138 +34,132 @@
 
       /**
       *  @private
-      *  ID des Eintrags.
+      *  Id of the entry.
       */
-      var $__ID = null;
+      protected $__ID = null;
 
 
       /**
       *  @private
-      *  Name des Autors.
+      *  Name of the author.
       */
-      var $__Name;
+      protected $__Name;
 
 
       /**
       *  @private
-      *  E-Mail des Autors.
+      *  Email of the author.
       */
-      var $__EMail;
+      protected $__EMail;
 
 
       /**
       *  @private
-      *  Ort des Autors.
+      *  City of the author.
       */
-      var $__City;
+      protected $__City;
 
 
       /**
       *  @private
-      *  Webseite des Authors.
+      *  Website of the author.
       */
-      var $__Website;
+      protected $__Website;
 
 
       /**
       *  @private
-      *  ICQ-Nummer des Authors.
+      *  ICQ number of the author.
       */
-      var $__ICQ;
+      protected $__ICQ;
 
 
       /**
       *  @private
-      *  MSN-ID des Authors.
+      *  MSN id of the author.
       */
-      var $__MSN;
+      protected $__MSN;
 
 
       /**
       *  @private
-      *  Skype-Name des Authors.
+      *  Skype name of the author.
       */
-      var $__Skype;
+      protected $__Skype;
 
 
       /**
       *  @private
-      *  AIM-Nummer des Authors.
+      *  AIM number of the author.
       */
-      var $__AIM;
+      protected $__AIM;
 
 
       /**
       *  @private
-      *  Yahoo-Kennung des Authors.
+      *  Yahoo id of the author.
       */
-      var $__Yahoo;
+      protected $__Yahoo;
 
 
       /**
       *  @private
-      *  Text.
+      *  Entry text.
       */
-      var $__Text;
+      protected $__Text;
 
 
       /**
       *  @private
-      *  Kommentare.
+      *  Comments.
       */
-      var $__Comments = array();
+      protected $__Comments = array();
 
 
       /**
       *  @private
-      *  Datum des Eintrags.
+      *  Date of the entry.
       */
-      var $__Date;
+      protected $__Date;
 
 
       /**
       *  @private
-      *  Uhrzeit des Eintrags.
+      *  Time of the entry.
       */
-      var $__Time;
+      protected $__Time;
 
 
-      function Entry(){
+      public function Entry(){
       }
 
 
       /**
-      *  @module getComments()
       *  @public
       *
-      *  Gibt die Kommentare eines Eintrags zurück.<br />
+      *  Returns the list of comments.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       */
-      function getComments(){
+      public function getComments(){
          return $this->__Comments;
        // end function
       }
 
 
-      function setComments(){
-      }
-
-
       /**
-      *  @module addComment()
       *  @public
       *
-      *  Fügt einen Kommentar zu einem Eintrag hinzu.<br />
+      *  Adds a comment to the current list.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       */
-      function addComment($Comment){
-         $this->__Comments[] = $Comment;
+      public function addComment($comment){
+         $this->__Comments[] = $comment;
        // end function
       }
 

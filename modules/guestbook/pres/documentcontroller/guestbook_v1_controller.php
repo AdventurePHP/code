@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('modules::guestbook::biz','guestbookManager');
+   import('modules::guestbook::biz','GuestbookManager');
 
 
    /**
@@ -34,13 +34,6 @@
    */
    class guestbook_v1_controller extends baseController
    {
-
-      /**
-      *  @private
-      *  Hält lokal verwendete Variablen.
-      */
-      var $_LOCALS;
-
 
       function guestbook_v1_controller(){
       }
@@ -59,14 +52,11 @@
       */
       function transformContent(){
 
-         // guestbookid holen
          $GuestbookID = $this->__Attributes['guestbookid'];
 
-         // Gästebuch laden
          $gM = &$this->__getAndInitServiceObject('modules::guestbook::biz','guestbookManager',$GuestbookID);
          $Guestbook = $gM->loadGuestbookObject();
 
-         // Name und Beschreibung anzeigen
          $this->setPlaceHolder('Name',$Guestbook->get('Name'));
          $this->setPlaceHolder('Description',$Guestbook->get('Description'));
 
