@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -20,7 +20,7 @@
    */
 
    /**
-   *  @namespace core::errorhandler::documentcontroller
+   *  @package core::errorhandler::documentcontroller
    *  @class errorpage_v1_controller
    *
    *  Implements the error page's document controller.
@@ -84,18 +84,8 @@
              // end if
             }
 
-            if(isset($Errors[$i]['object'])){
-               //$Template__ErrorEntry->setPlaceHolder('Object',$Errors[$i]['object']);
-             // end if
-            }
-
             if(isset($Errors[$i]['type'])){
                $Template__ErrorEntry->setPlaceHolder('Type',$Errors[$i]['type']);
-             // end if
-            }
-
-            if(isset($Errors[$i]['args'])){
-               //$Template__ErrorEntry->setPlaceHolder('Arguments',$Errors[$i]['args']);
              // end if
             }
 
@@ -105,7 +95,6 @@
          }
 
          $this->setPlaceHolder('Stacktrace',$buffer);
-
          $this->setPlaceHolder('ErrorID',$this->__Attributes['id']);
          $this->setPlaceHolder('ErrorMessage',$this->__Attributes['message']);
          $this->setPlaceHolder('ErrorNumber',$this->__Attributes['number']);
@@ -125,7 +114,7 @@
       *  @version
       *  Version 0.1, 21.01.2007<br />
       */
-      function __buildStackTrace(){
+      private function __buildStackTrace(){
          return array_reverse(debug_backtrace());
        // end function
       }

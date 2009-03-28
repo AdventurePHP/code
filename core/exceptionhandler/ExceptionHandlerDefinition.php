@@ -21,7 +21,7 @@
 
    /**
    *  @final
-   *  @namespace core::errorhandler
+   *  @package core::errorhandler
    *  @class ExceptionHandlerDefinition
    *
    *  Represents the definition of an exception handler invoked by the framework.
@@ -60,7 +60,7 @@
       *  @version
       *  Version 0.1, 21.02.20097<br />
       */
-      final public function ExceptionHandlerDefinition($namespace,$class){
+      public function ExceptionHandlerDefinition($namespace,$class){
          $this->__Namespace = $namespace;
          $this->__Class = $class;
        // end function

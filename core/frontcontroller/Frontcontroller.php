@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -30,36 +30,36 @@
    *  @class AbstractFrontcontrollerAction
    *  @abstract
    *
-   *  Implementiert das Action-Interface für eine Frontcontroller-Action.<br />
+   *  Implements an action interface for a front controller action.
    *
    *  @author Christian Achatz
    *  @version
    *  Version 0.1, 27.01.2007<br />
-   *  Version 0.2, 24.02.2007 (Parameter "KeepInURL" hinzugefügt)<br />
+   *  Version 0.2, 24.02.2007 (Added param "KeepInURL")<br />
    *  Version 0.3, 08.11.2007 (Standardwert von KeepInURL auf false gesetzt)<br />
    */
-   class AbstractFrontcontrollerAction extends coreObject
+   abstract class AbstractFrontcontrollerAction extends coreObject
    {
 
       /**
       *  @private
       *  Namespace of the action.
       */
-      var $__ActionNamespace;
+      protected $__ActionNamespace;
 
 
       /**
       *  @private
       *  Name of the action.
       */
-      var $__ActionName;
+      protected $__ActionName;
 
 
       /**
       *  @private
       *  Input object of the action.
       */
-      var $__Input;
+      protected $__Input;
 
 
       /**
@@ -73,14 +73,14 @@
       *  </ul>
       *  The default value is "prepagecreate".
       */
-      var $__Type = 'prepagecreate';
+      protected $__Type = 'prepagecreate';
 
 
       /**
       *  @private
       *  Indicates, if the action should be included in the URL. Values: true | false.
       */
-      var $__KeepInURL = false;
+      protected $__KeepInURL = false;
 
 
       function AbstractFrontcontrollerAction(){
@@ -124,7 +124,7 @@
    *  @namespace core::frontcontroller
    *  @class FrontcontrollerInput
    *
-   *  Implementiert das Input-Interface für einen Frontcontroller-Input.<br />
+   *  Implements a base class for input parameters for front controller actions.
    *
    *  @author Christian Achatz
    *  @version
@@ -140,9 +140,10 @@
       /**
       *  @public
       *
-      *  Gibt die Input-Attribute als URL-formatierten String zurück.
+      *  Returns all input parameters as a URL formatted string.
       *
-      *  @return string $AttributesString; URL-formatierten Attribut-String
+      *  @param boolean $urlRewriting True for activated url rewriting, false instead
+      *  @return string $attributesString URL formatted attributes string
       *
       *  @author Christian Achatz
       *  @version
@@ -150,23 +151,21 @@
       *  Version 0.2, 08.11.2007 (Fehler bei leerem Input-Objekt korrigiert)<br />
       *  Version 0.3, 21.06.2008 (Removed APPS__URL_REWRITING and introduced the Registry instead)<br />
       */
-      function getAttributesAsString($URLRewriting = null){
+      function getAttributesAsString($urlRewriting = null){
 
-         // Parameter vom Frontcontroller auslesen
-         $Action = &$this->__ParentObject;
-         $fC = &$Action->getByReference('ParentObject');
+         // get the current front controller
+         $action = &$this->__ParentObject;
+         $fC = &$action->getByReference('ParentObject');
 
-
-         // set URLRewriting
-         if($URLRewriting === null){
-            $Reg = &Singleton::getInstance('Registry');
-            $URLRewriting = $Reg->retrieve('apf::core','URLRewriting');
+         // set URLRewriting manually
+         if($urlRewriting === null){
+            $reg = &Singleton::getInstance('Registry');
+            $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
           // end if
          }
 
-
-         // URL-Trenner setzen
-         if($URLRewriting == true){
+         // define url delimiter
+         if($urlRewriting == true){
             $InputDelimiter = $fC->get('URLRewritingInputDelimiter');
             $KeyValueDelimiter = $fC->get('URLRewritingKeyValueDelimiter');
           // end if
@@ -177,12 +176,8 @@
           // end else
          }
 
-
-         // Return-Array initialisieren
+         // fill consolidated attributes array
          $AttributesArray = array();
-
-
-         // Array füllen
          if(count($this->__Attributes) > 0){
 
             foreach($this->__Attributes as $Key => $Value){
@@ -193,8 +188,6 @@
           // end if
          }
 
-
-         // String zurückgeben
          return implode($InputDelimiter,$AttributesArray);
 
        // end function
@@ -221,80 +214,80 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Enthält die registrierten Actions.
       */
-      var $__Actions = array();
+      protected $__Actions = array();
 
 
       /**
-      *  @private
+      *  @protected
       *  Action-Keyword.
       */
-      var $__ActionKeyword = 'action';
+      protected $__ActionKeyword = 'action';
 
 
       /**
-      *  @private
+      *  @protected
       *  Trenner innerhalb des Namespaces einer Action.
       */
-      var $__NamespaceURLDelimiter = '_';
+      protected $__NamespaceURLDelimiter = '_';
 
 
       /**
-      *  @private
+      *  @protected
       *  Trenner zwischen Namespace und Action-Keyword.
       */
-      var $__NamespaceKeywordDelimiter = '-';
+      protected $__NamespaceKeywordDelimiter = '-';
 
 
       /**
-      *  @private
+      *  @protected
       *  Trenner zwischen Action-Keyword und Action-Klasse.
       */
-      var $__KeywordClassDelimiter = ':';
+      protected $__KeywordClassDelimiter = ':';
 
 
       /**
-      *  @private
+      *  @protected
       *  Trenner zwischen Action-Keyword und Action-Klasse bei aktiviertem URLRewriting.
       */
-      var $__URLRewritingKeywordClassDelimiter = '/';
+      protected $__URLRewritingKeywordClassDelimiter = '/';
 
 
       /**
-      *  @private
+      *  @protected
       *  Trenner zwischen Input-Werten.
       */
-      var $__InputDelimiter = '|';
+      protected $__InputDelimiter = '|';
 
 
       /**
-      *  @private
+      *  @protected
       *  Trenner zwischen Input-Werten bei aktiviertem URLRewriting.
       */
-      var $__URLRewritingInputDelimiter = '/';
+      protected $__URLRewritingInputDelimiter = '/';
 
 
       /**
-      *  @private
+      *  @protected
       *  Trenner zwischen Key zu Value eines Input-Wertes.
       */
-      var $__KeyValueDelimiter = ':';
+      protected $__KeyValueDelimiter = ':';
 
 
       /**
-      *  @private
+      *  @protected
       *  Trenner zwischen Key zu Value eines Input-Wertes bei aktiviertem URLRewriting.
       */
-      var $__URLRewritingKeyValueDelimiter = '/';
+      protected $__URLRewritingKeyValueDelimiter = '/';
 
 
       /**
-      *  @private
+      *  @protected
       *  Namespace des Frontcontrollers.
       */
-      var $__Namespace = 'core::frontcontroller';
+      protected $__Namespace = 'core::frontcontroller';
 
 
       function Frontcontroller(){
@@ -420,7 +413,7 @@
          }
 
 
-         // Falls Action nicht vorhanden, NULL zurückgeben
+         // return null, if action could not be found
          $null = null;
          return $null;
 
@@ -454,7 +447,7 @@
       *  @version
       *  Version 0.1, 03.06.2007<br />
       */
-      function __getActionNamespaceByURLString($NamespaceString){
+      protected function __getActionNamespaceByURLString($NamespaceString){
          return str_replace($this->__NamespaceURLDelimiter,'::',$NamespaceString);
        // end function
       }
@@ -643,7 +636,7 @@
       *  @version
       *  Version 0.1, 08.09.2007<br />
       */
-      function __generateParamsFromInputConfig($InputConfig = ''){
+      protected function __generateParamsFromInputConfig($InputConfig = ''){
 
          // Rückgabe-Array initialisieren
          $InputParams = array();
@@ -699,7 +692,7 @@
       *  Version 0.5, 08.11.2007 (Umstellung auf Hash-Offsets nachgezogen)<br />
       *  Version 0.6, 28.03.2008 (Benchmark-Aufruf optimiert)<br />
       */
-      function __runActions($Type = 'prepagecreate'){
+      protected function __runActions($Type = 'prepagecreate'){
 
          // BenchmarkTimer holen
          $T = &Singleton::getInstance('benchmarkTimer');

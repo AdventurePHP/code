@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -31,14 +31,14 @@
    *  Version 0.2, 22.04.2007 (Um Sprache erweitert)<br />
    *  Version 0.3, 24.02.2008 (Um SessionSingleton erweitert)<br />
    */
-   class serviceManager
+   final class serviceManager
    {
 
       /**
       *  @private
       *  Context.
       */
-      var $__Context;
+      private $__Context;
 
 
       /**
@@ -46,7 +46,7 @@
       *  @since 0.2
       *  Sprache.
       */
-      var $__Language;
+      private $__Language;
 
 
       function serviceManager(){

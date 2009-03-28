@@ -41,25 +41,25 @@
       *  @private
       *  Error number.
       */
-      var $__ErrorNumber;
+      protected $__ErrorNumber;
 
       /**
       *  @private
       *  Error message,
       */
-      var $__ErrorMessage;
+      protected $__ErrorMessage;
 
       /**
       *  @private
       *  Error file.
       */
-      var $__ErrorFile;
+      protected $__ErrorFile;
 
       /**
       *  @private
       *  Error line.
       */
-      var $__ErrorLine;
+      protected $__ErrorLine;
 
 
       function DefaultErrorHandler(){
@@ -108,7 +108,7 @@
       *  Version 0.1, 21.01.2007<br />
       *  Version 0.2, 29.03.2007 (Changed to new logger)<br />
       */
-      function __logError(){
+      protected function __logError(){
          $message = '['.($this->__generateErrorID()).'] '.$this->__ErrorMessage.' (Number: '.$this->__ErrorNumber.', File: '.$this->__ErrorFile.', Line: '.$this->__ErrorLine.')';
          $L = &Singleton::getInstance('Logger');
          $L->logEntry('php',$message,'ERROR');
@@ -129,7 +129,7 @@
       *  Version 0.4, 29.03.2007<br />
       *  Version 0.5, 13.08.2008 (Removed text only error page messages)<br />
       */
-      function __buildErrorPage(){
+      protected function __buildErrorPage(){
 
          // create page
          $stacktrace = new Page('Stacktrace');
@@ -160,7 +160,7 @@
       *  @version
       *  Version 0.1, 21.01.2007<br />
       */
-      function __generateErrorID(){
+      protected function __generateErrorID(){
          return md5($this->__ErrorMessage.$this->__ErrorNumber.$this->__ErrorFile.$this->__ErrorLine);
        // end function
       }

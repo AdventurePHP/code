@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -55,28 +55,28 @@
       *  @private
       *  Date of the message.
       */
-      var $__Date;
+      private $__Date;
 
 
       /**
       *  @private
       *  Time of the message.
       */
-      var $__Time;
+      private $__Time;
 
 
       /**
       *  @private
       *  Message text.
       */
-      var $__Message;
+      private $__Message;
 
 
       /**
       *  @private
       *  Message type.
       */
-      var $__Type;
+      private $__Type;
 
 
       /**
@@ -141,28 +141,28 @@
       *  @private
       *  Log entry store.
       */
-      var $__LogEntries = array();
+      private $__LogEntries = array();
 
 
       /**
       *  @private
       *  Directory, where log files are stored.
       */
-      var $__LogDir;
+      private $__LogDir;
 
 
       /**
       *  @private
       *  Permission that is applied to a newly created log folder.
       */
-      var $__LogFolderPermissions = 0777;
+      private $__LogFolderPermissions = 0777;
 
 
       /**
       *  @private
       *  Newline sign. Uses the PHP's standard newline sign if not configured in different way.
       */
-      var $__CRLF = PHP_EOL;
+      private $__CRLF = PHP_EOL;
 
 
 
@@ -286,7 +286,7 @@
       *  @version
       *  Version 0.1, 29.03.2007<br />
       */
-      function __getLogFileName($FileName){
+      private function __getLogFileName($FileName){
          return date('Y_m_d').'__'.str_replace('-','_',strtolower($FileName)).'.log';
        // end function
       }

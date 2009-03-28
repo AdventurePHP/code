@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -73,28 +73,28 @@
       *  @private
       *  Date of the message.
       */
-      var $__Date;
+      private $__Date;
 
 
       /**
       *  @private
       *  Time of the message.
       */
-      var $__Time;
+      private $__Time;
 
 
       /**
       *  @private
       *  Message text.
       */
-      var $__Message;
+      private $__Message;
 
 
       /**
       *  @private
       *  Message type (aka severity).
       */
-      var $__Type;
+      private $__Type;
 
 
       /**
@@ -168,7 +168,7 @@
       *  @private
       *  The logger cache.
       */
-      var $__Logger = array();
+      private $__Logger = array();
 
 
       function AdvancedLoggerFactory(){
@@ -254,21 +254,21 @@
       *  @private
       *  The log buffer;
       */
-      var $__LogBuffer = array();
+      private $__LogBuffer = array();
 
 
       /**
       *  @private
       *  Contains the desired log configuration section.
       */
-      var $__LogConfig = null;
+      private $__LogConfig = null;
 
 
       /**
       *  @private
       *  New line character used for the file and stdout target.
       */
-      var $__CRLF = PHP_EOL;
+      private $__CRLF = PHP_EOL;
 
 
       function AdvancedLogger(){
@@ -378,7 +378,7 @@
       *  @version
       *  Version 0.1, 09.11.2008<br />
       */
-      function __flush2Database(){
+      private function __flush2Database(){
 
          // read params from the configuration
          if(!isset($this->__LogConfig['LogDatabase'])){
@@ -425,7 +425,7 @@
       *  @version
       *  Version 0.1, 09.11.2008<br />
       */
-      function __flush2File(){
+      private function __flush2File(){
 
          // read params from the configuration
          if(!isset($this->__LogConfig['LogDir'])){
@@ -471,7 +471,7 @@
       *  @version
       *  Version 0.1, 09.11.2008<br />
       */
-      function __flush2Stdout(){
+      private function __flush2Stdout(){
 
          foreach($this->__LogBuffer as $entry){
             echo $this->__getLogEntryString($entry).$this->__CRLF;
@@ -494,7 +494,7 @@
       *  @version
       *  Version 0.1, 09.11.2008<br />
       */
-      function __getLogEntryString($entry){
+      private function __getLogEntryString($entry){
 
          // configure timestamp
          $timestamp = true;

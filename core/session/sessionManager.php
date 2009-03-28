@@ -41,7 +41,7 @@
       *  @private
       *  Namespace der aktuellen Instanz.
       */
-      var $__Namespace;
+      private $__Namespace;
 
 
       /**

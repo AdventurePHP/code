@@ -36,10 +36,29 @@
    class DefaultExceptionHandler extends AbstractExceptionHandler
    {
 
+      /**
+      *  The number of the exception.
+      */
       protected $__ExceptionNumber = null;
+
+      /**
+      *  The message of the exception.
+      */
       protected $__ExceptionMessage = null;
+
+      /**
+      *  The file, the exception occures in.
+      */
       protected $__ExceptionFile = null;
+
+      /**
+      *  The line, the exception occures in
+      */
       protected $__ExceptionLine = null;
+
+      /**
+      *  The exception trace.
+      */
       protected $__ExceptionTrace = array();
 
 
@@ -87,7 +106,7 @@
       *  @version
       *  Version 0.1, 21.02.2009<br />
       */
-      private function __logException(){
+      protected function __logException(){
          $message = '['.($this->__generateExceptionID()).'] '.$this->__ExceptionMessage.' (Number: '.$this->__ExceptionNumber.', File: '.$this->__ExceptionFile.', Line: '.$this->__ExceptionLine.')';
          $L = Singleton::getInstance('Logger');
          $L->logEntry('php',$message,'EXCEPTION');
@@ -104,7 +123,7 @@
       *  @version
       *  Version 0.1, 21.02.2009<br />
       */
-      private function __buildExeptionPage(){
+      protected function __buildExeptionPage(){
 
          // create page
          $stacktrace = new Page('Stacktrace');
@@ -136,7 +155,7 @@
       *  @version
       *  Version 0.1, 21.02.2009<br />
       */
-      private function __generateExceptionID(){
+      protected function __generateExceptionID(){
          return md5($this->__ExceptionMessage.$this->__ExceptionNumber.$this->__ExceptionFile.$this->__ExceptionLine);
        // end function
       }

@@ -29,21 +29,21 @@
    *  @version
    *  Version 0.1, 30.01.2009<br />
    */
-   class ErrorHandlerDefinition extends coreObject
+   final class ErrorHandlerDefinition extends coreObject
    {
 
       /**
-      *  @private
+      *  @protected
       *  Defines the namespace of the error handler implementation.
       */
-      var $__Namespace = null;
+      protected $__Namespace = null;
 
 
       /**
-      *  @private
+      *  @protected
       *  Indicates the class name of the error handler implementation (=filename).
       */
-      var $__Class = null;
+      protected $__Class = null;
 
 
       /**

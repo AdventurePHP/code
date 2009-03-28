@@ -161,7 +161,7 @@
 
       // handle non existing files
       if(!file_exists($file)){
-         trigger_error('[import()] The given module ('.$file.') cannot be loaded!');
+         trigger_error('[import()] The given module ('.$file.') cannot be loaded!',E_USER_ERROR);
          exit();
        // end if
       }
@@ -232,7 +232,7 @@
    class xmlParser
    {
 
-      function xmlParser(){
+      private function xmlParser(){
       }
 
 
@@ -475,7 +475,7 @@
    *  Version 0.3, 28.10.2008 (Added the __ServiceType member to indicate the service manager creation type)<br />
    *  Version 0.4, 03.11.2008 (Added initializing values to some of the class members)<br />
    */
-   class coreObject
+   abstract class coreObject
    {
 
       /**
@@ -824,7 +824,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns a service object according to the current application context.
       *
@@ -841,7 +841,7 @@
       *  Version 0.4, 22.04.2007 (Um Übergabe der Sprache erweitert)<br />
       *  Version 0.5, 24.02.2008 (Um weiteren Parameter $Type erweitert)<br />
       */
-      function &__getServiceObject($Namespace,$ServiceName,$Type = 'SINGLETON'){
+      protected function &__getServiceObject($Namespace,$ServiceName,$Type = 'SINGLETON'){
 
          // ServiceManager holen
          $serviceManager = &Singleton::getInstance('serviceManager');
@@ -860,7 +860,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns a initialized service object according to the current application context.
       *
@@ -876,7 +876,7 @@
       *  Version 0.2, 22.04.2007 (Um Übergabe der Sprache erweitert)<br />
       *  Version 0.3, 24.02.2008 (Um weiteren Parameter $Type erweitert)<br />
       */
-      function &__getAndInitServiceObject($Namespace,$ServiceName,$InitParam,$Type = 'SINGLETON'){
+      protected function &__getAndInitServiceObject($Namespace,$ServiceName,$InitParam,$Type = 'SINGLETON'){
 
          // ServiceManager holen
          $serviceManager = &Singleton::getInstance('serviceManager');
@@ -895,7 +895,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns a configuration object according to the current application context and the given
       *  parameters.
@@ -910,7 +910,7 @@
       *  Version 0.2, 08.03.2007 (Context wird nun aus dem aktuellen Objekt gezogen)<br />
       *  Version 0.3, 10.03.2007 (Methode ist nun private)<br />
       */
-      function &__getConfiguration($Namespace,$ConfigName){
+      protected function &__getConfiguration($Namespace,$ConfigName){
 
          // configurationManager holen
          $configurationManager = &Singleton::getInstance('configurationManager');
@@ -923,7 +923,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Erzeugt einen Attribut-String an Hand eines Attribut-Arrays. Im ExcludeArray enthaltene Attribute<br />
       *  werden nicht beachtet.
@@ -938,7 +938,7 @@
       *  Version 0.2, 07.01.2007 ($ExclusionArray-Verhalten hinzugefügt)<br />
       *  Version 0.3, 02.06.2007 (Rechtschreibkorrektur und von "ui_element" nach "coreObject" verschoben)<br />
       */
-      function __getAttributesAsString($AttributesArray,$ExclusionArray = array()){
+      protected function __getAttributesAsString($AttributesArray,$ExclusionArray = array()){
 
          if(count($AttributesArray) > 0){
 
@@ -982,7 +982,7 @@
    *  @version
    *  Version 0.1, 28.12.2006<br />
    */
-   class TagLib extends coreObject
+   final class TagLib extends coreObject
    {
 
       /**
@@ -1299,7 +1299,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns the full name of the taglib class file. The name consists of the prefix followed by
       *  the string "_taglib_" ans the suffix (=class).
@@ -1312,7 +1312,7 @@
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
-      function __getModuleName($prefix,$class){
+      protected function __getModuleName($prefix,$class){
          return $prefix.'_taglib_'.$class;
        // end function
       }
@@ -1347,7 +1347,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Läd ein Template "$Design" aus einem angegebenen Namespace.<br />
       *
@@ -1360,7 +1360,7 @@
       *  Version 0.2, 01.01.2007 (Fehler behoben, dass Templates nicht sauber geladen wurden)<br />
       *  Version 0.3, 03.11.2008 (Added code of the responsible template to the error message to ease debugging)<br />
       */
-      function __loadContentFromFile($Namespace,$Design){
+      protected function __loadContentFromFile($Namespace,$Design){
 
          $File = APPS__PATH.'/'.str_replace('::','/',$Namespace).'/'.$Design.'.html';
 
@@ -1389,7 +1389,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  XML-Parser-Methode, die die registrierten TagLib-Tags aus dem Content extrahiert und den<br />
       *  Objektbaum aufbaut. Dabei werden für die jeweiligen Tags eigene Child-Objekte im "Document"<br />
@@ -1404,7 +1404,7 @@
       *  Version 0.4, 09.04.2007 (Doppeltes Setzen der Attributes bereinigt, Language-Behandlung hinzugefügt)<br />
       *  Version 0.5, 02.04.2008 (Bug behoben, dass Token nicht in der Fehlermeldung angezeigt wird)<br />
       */
-      function __extractTagLibTags(){
+      protected function __extractTagLibTags(){
 
          // Kopie des aktuellen Content erzeugen
          $Content = $this->__Content;
@@ -1597,7 +1597,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  XML-Parser-Methode, die die im Content enthaltenen Document-Controller-Tags extrahiert.<br />
       *
@@ -1605,7 +1605,7 @@
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
-      function __extractDocumentController(){
+      protected function __extractDocumentController(){
 
          // Kopie ddes aktuellen Contents holen
          $Content = $this->__Content;
@@ -2251,7 +2251,7 @@
    *  Version 0.1, 28.12.2006<br />
    *  Version 0.2, 04.11.2007 (isButtonPushed() entfernt)<br />
    */
-   class baseController extends Document
+   abstract class baseController extends Document
    {
 
       /**
@@ -2352,7 +2352,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Implementiert eine Methode, mit der innerhalb des DocumentControllers auf eine Form zugegriffen<br />
       *  werden kann. Hierzu ist die TagLib-Klasse "html_taglib_form" notwendig.<br />
@@ -2362,7 +2362,7 @@
       *  Version 0.1, 12.01.2007<br />
       *  Version 0.2, 14.06.2008 (Fehlermeldung verbessert)<br />
       */
-      function &__getForm($Name){
+      protected function &__getForm($Name){
 
          // Deklariert das notwendige TagLbib-Modul
          $TagLibModule = 'html_taglib_form';
@@ -2418,7 +2418,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Implementiert eine Methode, mit der innerhalb des DocumentControllers auf ein Content-Template zugegriffen<br />
       *  werden kann. Hierzu ist die TagLib-Klasse "html_taglib_template" notwendig.<br />
@@ -2429,7 +2429,7 @@
       *  Version 0.2, 03.01.2007 (Bug behoben, dass immer erstes Template referenziert wurde)<br />
       *  Version 0.3, 12.01.2006 (Von "__getContentTemplate" nach "__getTemplate" umbenannt, wg. Einführung von "__getForm")<br />
       */
-      function &__getTemplate($Name){
+      protected function &__getTemplate($Name){
 
          // Deklariert das notwendige TagLib-Modul
          $TagLibModule = 'html_taglib_template';
@@ -2485,7 +2485,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Prüft, ob ein Platzhalter im aktuellen Template vorhanden ist.<br />
       *
@@ -2496,7 +2496,7 @@
       *  @version
       *  Version 0.1, 11.03.2007<br />
       */
-      function __placeholderExists($Name){
+      protected function __placeholderExists($Name){
 
          // Kinder des aktuellen Dokuments holen
          $Children = &$this->__Document->getByReference('Children');
@@ -2527,7 +2527,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Prüft, ob ein Platzhalter im aktuellen Template vorhanden ist.<br />
       *
@@ -2538,7 +2538,7 @@
       *  @version
       *  Version 0.1, 11.03.2007<br />
       */
-      function __templatePlaceholderExists(&$Template,$Name){
+      protected function __templatePlaceholderExists(&$Template,$Name){
 
          // Kinder des Templates holen
          $Children = &$Template->getByReference('Children');

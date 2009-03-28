@@ -29,21 +29,21 @@
    *  @version
    *  Version 0.1, 08.12.2007<br />
    */
-   class FilterDefinition extends coreObject
+   final class FilterDefinition extends coreObject
    {
 
       /**
-      *  @private
+      *  @protected
       *  The namespace of the filter class.
       */
-      var $__Namespace = null;
+      protected $__Namespace = null;
 
 
       /**
-      *  @private
+      *  @protected
       *  The name of the filter class (and file name as well).
       */
-      var $__Class = null;
+      protected $__Class = null;
 
 
       /**
@@ -76,7 +76,7 @@
    *  @version
    *  Version 0.1, 08.06.2007<br />
    */
-   class AbstractFilter extends coreObject
+   abstract class AbstractFilter extends coreObject
    {
 
       function AbstractFilter(){
