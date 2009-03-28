@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -33,10 +33,10 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Mapping table for associating file extensions with content type headers.
       */
-      var $__ExtensionMap = array(
+      protected $__ExtensionMap = array(
                                   'png' => 'image/png',
                                   'jpeg' => 'image/jpg',
                                   'jpg' => 'image/jpg',
@@ -84,7 +84,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns the content type suitable for the given file extension.
       *
@@ -95,7 +95,7 @@
       *  @version
       *  Version 0.1, 01.11.2008<br />
       */
-      function __getContentType4Extension($extension){
+      protected function __getContentType4Extension($extension){
 
          if(isset($this->__ExtensionMap[$extension])){
             return $this->__ExtensionMap[$extension];

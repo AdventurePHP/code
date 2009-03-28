@@ -42,93 +42,93 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Indicates the sender.
       *  <pre>$this->__Sender['Name']  = '...';
       *  $this->__Sender['EMail'] = '...';</pre>
       */
-      var $__Sender = array();
+      protected $__Sender = array();
 
 
       /**
-      *  @private
+      *  @protected
       *  Indicates the recipients.
       *  <pre>$this->__Recipients[0]['Name']  = '...';
       *  $this->__Recipients[0]['EMail'] = '...';
       *  $this->__Recipients[1]['Name']  = '...';
       *  $this->__Recipients[1]['EMail'] = '...';</pre>
       */
-      var $__Recipients = array();
+      protected $__Recipients = array();
 
 
       /**
-      *  @private
+      *  @protected
       *  Indicates the CC recipients.
       *  <pre>$this->__CCRecipients[0]['Name']  = '...';
       *  $this->__CCRecipients[0]['EMail'] = '...';
       *  $this->__CCRecipients[1]['Name']  = '...';
       *  $this->__CCRecipients[1]['EMail'] = '...';</pre>
       */
-      var $__CCRecipients = array();
+      protected $__CCRecipients = array();
 
       /**
-      *  @private
+      *  @protected
       *  Indicates the BCC recipients.
       *  <pre>$this->__BCCRecipients[0]['Name']  = '...';
       *  $this->__BCCRecipients[0]['EMail'] = '...';
       *  $this->__BCCRecipients[1]['Name']  = '...';
       *  $this->__BCCRecipients[1]['EMail'] = '...';</pre>
       */
-      var $__BCCRecipients = array();
+      protected $__BCCRecipients = array();
 
 
       /**
-      *  @private
+      *  @protected
       *  Header of the mail.
       */
-      var $__MailHeader = null;
+      protected $__MailHeader = null;
 
 
       /**
-      *  @private
+      *  @protected
       *  The mail's subject.
       */
-      var $__Subject;
+      protected $__Subject;
 
 
       /**
-      *  @private
+      *  @protected
       *  Content of the mail.
       */
-      var $__Content = '';
+      protected $__Content = '';
 
 
       /**
-      *  @private
+      *  @protected
       *  Content type of the mail.
       */
-      var $__ContentType;
+      protected $__ContentType;
 
 
       /**
-      *  @private
+      *  @protected
       *  Return path.
       */
-      var $__ReturnPath;
+      protected $__ReturnPath;
 
 
       /**
-      *  @private
+      *  @protected
       *  EOL sign.
       */
-      var $__EOL = "\n";
+      protected $__EOL = "\n";
 
 
       /**
-      *  @private
+      *  @protected
       *  CRLF sign.
       */
-      var $__CRLF = "\r\n";
+      protected $__CRLF = "\r\n";
 
 
       function mailSender(){
@@ -189,7 +189,7 @@
       *  Version 0.5, 21.06.2005 (Added the CC recipients)<br />
       *  Version 0.6, 03.09.2007 (Added some more headers and BCC recipients)<br />
       */
-      function __generateHeader(){
+      protected function __generateHeader(){
 
          // Header-Puffer initialisieren
          $MailHeader = (string)'';

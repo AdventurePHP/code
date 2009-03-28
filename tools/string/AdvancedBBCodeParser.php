@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -29,21 +29,21 @@
    *  @version
    *  Version 0.1, 28.10.2008
    */
-   class BBCodeParserDefinition extends coreObject
+   final class BBCodeParserDefinition extends coreObject
    {
 
       /**
-      *  @private
+      *  @protected
       *  Represents the namespace of the parser provider.
       */
-      var $__Namespace;
+      protected $__Namespace;
 
 
       /**
-      *  @private
+      *  @protected
       *  Represents the class name of the parser provider an thus the file name (without extentsion!).
       */
-      var $__Class;
+      protected $__Class;
 
 
       /**
@@ -78,7 +78,7 @@
    *  @version
    *  Version 0.1, 28.10.2008
    */
-   class BBCodeParserProvider extends coreObject
+   abstract class BBCodeParserProvider extends coreObject
    {
 
       function BBCodeParserProvider(){
@@ -123,12 +123,11 @@
    class AdvancedBBCodeParser extends coreObject
    {
 
-
       /**
       *  @private
       *  Represents the list of provider.
       */
-      var $__Provider = array();
+      private $__Provider = array();
 
 
       /**
@@ -197,7 +196,7 @@
       *  @version
       *  Version 0.1, 28.10.2008
       */
-      function __setUpProvider(){
+      private function __setUpProvider(){
 
          $T = &Singleton::getInstance('benchmarkTimer');
          $T->start('AdvancedBBCodeParser::__setUpProvider()');

@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -38,7 +38,7 @@
    class frontcontrollerLinkHandler
    {
 
-      function frontcontrollerLinkHandler(){
+      private function frontcontrollerLinkHandler(){
       }
 
 
@@ -61,7 +61,7 @@
       *  Version 0.1, 29.10.2007<br />
       *  Version 0.2, 21.06.2008 (Introduced the Registry to retrieve the URLRewriting information)<br />
       */
-      function generateURLParams($ActionNamespace,$ActionName,$ActionParams = array(),$URLRewriting = null){
+      static function generateURLParams($ActionNamespace,$ActionName,$ActionParams = array(),$URLRewriting = null){
 
          //
          // Timer starten

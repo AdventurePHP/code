@@ -32,7 +32,7 @@
    class RequestHandler
    {
 
-      function RequestHandler(){
+      private function RequestHandler(){
       }
 
 
@@ -84,7 +84,7 @@
       *  @version
       *  Version 0.1, 13.12.2008<br />
       */
-      static static function getValues($namesWithDefaults){
+      static function getValues($namesWithDefaults){
 
          // initialize values
          $values = array();
