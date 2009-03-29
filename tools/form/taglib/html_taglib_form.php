@@ -63,25 +63,25 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Speichert, ob das Formular mit gültigen Werten ausgefüllt wurde.
       */
-      var $__isValid = true;
+      protected $__isValid = true;
 
 
       /**
-      *  @private
+      *  @protected
       *  @since 0.7
       *  Speichert, ob das Formular abgesendet wurde.
       */
-      var $__isSent = false;
+      protected $__isSent = false;
 
 
       /**
-      *  @private
+      *  @protected
       *  Indiziert, ob das Formular an der Definitionsstelle transformiert und ausgegeben werden soll.
       */
-      var $__TransformOnPlace = false;
+      protected $__TransformOnPlace = false;
 
 
       /**
@@ -383,7 +383,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Adds a new form element to the child list.
       *
@@ -397,7 +397,7 @@
       *  Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
       *  Version 0.3, 12.11.2008 (Bugfix: language and context initialisation were wrong)<br />
       */
-      function __createFormElement($ElementType,$ElementAttributes = array()){
+      protected function __createFormElement($ElementType,$ElementAttributes = array()){
 
          // define taglib class
          $TagLibClass = str_replace(':','_taglib_',$ElementType);
@@ -450,7 +450,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns a reference on the desired marker or null.
       *
@@ -461,7 +461,7 @@
       *  @version
       *  Version 0.1, 03.09.2008<br />
       */
-      function &__getMarker($MarkerName){
+      protected function &__getMarker($MarkerName){
 
          // check, weather the form has children
          if(count($this->__Children) > 0){

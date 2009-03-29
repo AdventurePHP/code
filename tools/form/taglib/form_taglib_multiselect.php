@@ -186,7 +186,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Reimplements the presetting method for the multiselect field.
       *
@@ -195,7 +195,7 @@
       *  Version 0.1, 15.01.2007<br />
       *  Version 0.2, 16.01.2007 (Now checks, if the request param is set)<br />
       */
-      function __presetValue(){
+      protected function __presetValue(){
 
          // generate the offset of the request array from the name attribute
          $RequestOffset = trim(str_replace('[','',str_replace(']','',$this->__Attributes['name'])));
@@ -231,7 +231,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Reimplements the validation of the multiselect field.
       *
@@ -239,7 +239,7 @@
       *  @version
       *  Version 0.1, 08.06.2008 (Reimplemented the __validate() method for the form_taglib_multiselect, because validation is different here)<br />
       */
-      function __validate(){
+      protected function __validate(){
 
          // check, if validation is enabled
          $this->__setValidateObject();

@@ -33,7 +33,7 @@
    class FilesystemManager
    {
 
-      function FilesystemManager(){
+      private function FilesystemManager(){
       }
 
 

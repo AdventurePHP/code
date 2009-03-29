@@ -34,76 +34,76 @@
    *  Version 0.2, 02.06.2007 (Added the $__ExclusionArray, moved the __getAttributesAsString() to the coreObject class)<br />
    *  Version 0.3, 07.12.2008 (Added the filter functionality, that let's you filter user input)<br />
    */
-   class ui_element extends Document
+   abstract class ui_element extends Document
    {
 
       /**
-      *  @private
+      *  @protected
       *  Defines the CSS style used to indicate invalid form elements.
       */
-      var $__ValidatorStyle = 'border: 2px solid red;';
+      protected $__ValidatorStyle = 'border: 2px solid red;';
 
 
       /**
-      *  @private
+      *  @protected
       *  Indicates, whether the form object should be validated (true) or not (false).
       */
-      var $__ValidateObject = false;
+      protected $__ValidateObject = false;
 
 
       /**
-      *  @private
+      *  @protected
       *  Indicated the validator type method.
       */
-      var $__Validator;
+      protected $__Validator;
 
 
       /**
-      *  @private
+      *  @protected
       *  @since 0.2
       *  Exclusion array for transformation purposes.
       */
-      var $__ExclusionArray = array('validate','validator','button','filter','filterclass');
+      protected $__ExclusionArray = array('validate','validator','button','filter','filterclass');
 
 
       /**
-      *  @private
+      *  @protected
       *  @since 1.3
       *  Indicates, if the current object should be filtered.
       */
-      var $__FilterObject = false;
+      protected $__FilterObject = false;
 
 
       /**
-      *  @private
+      *  @protected
       *  @since 1.3
       *  Describes the delimiter between the namespace and class name of the filter.
       */
-      var $__FilterClassDelimiter = '|';
+      protected $__FilterClassDelimiter = '|';
 
 
       /**
-      *  @private
+      *  @protected
       *  @since 1.3
       *  Contains the filter class' namespace.
       */
-      var $__FilterNamespace = 'tools::form::filter';
+      protected $__FilterNamespace = 'tools::form::filter';
 
 
       /**
-      *  @private
+      *  @protected
       *  @since 1.3
       *  Contains the filter class' name.
       */
-      var $__FilterClass = 'FormFilter';
+      protected $__FilterClass = 'FormFilter';
 
 
       /**
-      *  @private
+      *  @protected
       *  @since 1.3
       *  Contains the filter method name.
       */
-      var $__FilterMethod = null;
+      protected $__FilterMethod = null;
 
 
       function ui_element(){
@@ -138,7 +138,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Prefills the value of the current control.
       *
@@ -147,7 +147,7 @@
       *  Version 0.1, 07.01.2007<br />
       *  Version 0.2, 08.08.2008 (Fixed bug, that the number "0" was not automatically prefilled)<br />
       */
-      function __presetValue(){
+      protected function __presetValue(){
 
          if(!isset($this->__Attributes['value']) || empty($this->__Attributes['value'])){
 
@@ -172,7 +172,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Validates the value of an form object. If the field is not valid, the field will be
       *  marked red, using additional css styles.
@@ -185,7 +185,7 @@
       *  Version 0.4, 11.02.2007 (Bugfix: form is not makred as invalid, too, if a form element is invalid)<br />
       *  Version 0.5, 03.03.2007 (Removed bug within error message)<br />
       */
-      function __validate(){
+      protected function __validate(){
 
          // check, if object has to be validated
          $this->__setValidateObject();
@@ -236,7 +236,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Checks, if the current form element should be validated.
       *
@@ -245,7 +245,7 @@
       *  Version 0.1, 13.01.2007<br />
       *  Version 0.2, 13.01.2007 (Activation is now done, only if the button is clicked)<br />
       */
-      function __setValidateObject(){
+      protected function __setValidateObject(){
 
          $this->__ValidateObject = false;
 
@@ -287,7 +287,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Initializes the filter parameters of the APF form filters. To use the filter mechanism,
       *  this method must be called within the onAfterAppend() if the desired form taglib. Filtering
@@ -302,7 +302,7 @@
       *  @version
       *  Version 0.1, 07.12.2008<br />
       */
-      function __initializeFilter(){
+      protected function __initializeFilter(){
 
          // get filter
          $this->__FilterMethod = $this->getAttribute('filter');
@@ -345,7 +345,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Implements the filter method, that is used to filter user input. Uses the
       *  $this->__FilterMethod, $this->__FilterNamespace and $this->__FilterClass properties.
@@ -355,7 +355,7 @@
       *  Version 0.1, 07.12.2008<br />
       *  Version 0.2, 13.12.2208 (Removed benchmarker)<br />
       */
-      function __filter(){
+      protected function __filter(){
 
          // initialize filter
          $this->__initializeFilter();

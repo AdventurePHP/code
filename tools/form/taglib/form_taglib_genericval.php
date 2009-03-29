@@ -37,11 +37,11 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  @since 0.2
       *  Stores, if the control to validate is valid (true = valid, false = invalid).
       */
-      var $__ControlIsValid = true;
+      protected $__ControlIsValid = true;
 
 
       function form_taglib_genericval(){

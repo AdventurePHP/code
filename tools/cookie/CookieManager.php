@@ -40,17 +40,17 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Namespace of the current instance.
       */
-      var $__Namespace = 'apf_cookies_default';
+      protected $__Namespace = 'apf_cookies_default';
 
 
       /**
-      *  @private
+      *  @protected
       *  Defines the default expiration time in seconds (1 day).
       */
-      var $__ExpireTime = 86400;
+      protected $__ExpireTime = 86400;
 
 
       /**
@@ -231,7 +231,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns the default domain
       *
@@ -241,14 +241,14 @@
       *  @version
       *  Version 0.1, 10.01.2009<br />
       */
-      function __getDefaultDomain(){
+      protected function __getDefaultDomain(){
          return $_SERVER['HTTP_HOST'];
        // end function
       }
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns the default path
       *
@@ -258,14 +258,14 @@
       *  @version
       *  Version 0.1, 10.01.2009<br />
       */
-      function __getDefaultPath(){
+      protected function __getDefaultPath(){
          return str_replace(basename($_SERVER['SCRIPT_FILENAME']),'',$_SERVER['PHP_SELF']);
        // end function
       }
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns the default expire timestamp
       *
@@ -275,7 +275,7 @@
       *  @version
       *  Version 0.1, 10.01.2009<br />
       */
-      function __getDefaultExpireTime(){
+      protected function __getDefaultExpireTime(){
          return time() + $this->__ExpireTime;
        // end function
       }

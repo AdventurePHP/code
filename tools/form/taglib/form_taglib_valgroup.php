@@ -40,10 +40,10 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Indikator, ob die ValGroup beim Transformieren der Form ausgegeben werden soll.
       */
-      var $__isValid = true;
+      protected $__isValid = true;
 
 
       /**

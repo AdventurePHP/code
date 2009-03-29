@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -38,7 +38,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Gibt die Referenz auf ein Iterator-Objekt zurück.<br />
       *
@@ -49,7 +49,7 @@
       *  @version
       *  Version 0.1, 02.06.2008<br />
       */
-      function &__getIterator($Name){
+      protected function &__getIterator($Name){
 
          // Deklariert das notwendige TagLib-Modul
          $TagLibModule = 'html_taglib_iterator';

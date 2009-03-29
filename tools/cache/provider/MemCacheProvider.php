@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -33,11 +33,11 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Remembers the cache keys within a certain namespace to be able to clear a whole
       *  namespace.
       */
-      var $__CacheKeyStore = array();
+      protected $__CacheKeyStore = array();
 
 
       function MemCacheProvider(){
@@ -221,7 +221,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns the memcache connection (instance of PHP's Memcache class).
       *
@@ -231,7 +231,7 @@
       *  @version
       *  Version 0.1, 24.11.2008 (Refactored due to provider introduction.)<br />
       */
-      function __getMemcacheConnection(){
+      protected function __getMemcacheConnection(){
 
          // get configuration params
          $host = $this->__getCacheConfigAttribute('Cache.Host');

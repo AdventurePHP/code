@@ -76,7 +76,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Re-implements the __presetValue() method for the radio button.
       *
@@ -85,7 +85,7 @@
       *  Version 0.1, 13.01.2007<br />
       *  Version 0.2, 13.01.2009 (Bugfix: now the 'checked' attribute is deleted, that in case of a manually defined 'ckecked' the button could be unchecked)<br />
       */
-      function __presetValue(){
+      protected function __presetValue(){
 
          if(isset($_REQUEST[$this->__Attributes['name']])){
 

@@ -83,7 +83,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Reads the content of a file using the param to indicate it's name. If the file does not
       *  exist, a file with name "404" is taken instead.
@@ -94,7 +94,7 @@
       *  Version 0.2, 31.05.2006 (Path changed from /apps/sites  to ./frontend/content)<br />
       *  Version 0.3, 29.09.2007 (Introduced the language in the filename)<br />
       */
-      function __getContent($pageName){
+      protected function __getContent($pageName){
 
          $file = './frontend/content/c_'.$this->__Language.'_'.strtolower($pageName).'.html';
 

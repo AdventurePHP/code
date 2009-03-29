@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -77,7 +77,6 @@
          $T = &Singleton::getInstance('benchmarkTimer');
          $T->start('(fcon_taglib_importdesign) '.$this->__ObjectID.'::onParseTime()');
 
-
          // Template-Namespace auslesen
          if(!isset($this->__Attributes['templatenamespace'])){
             trigger_error('[fcon_taglib_importdesign::onParseTime()] Attribute "templatenamespace" is not given!');
@@ -88,7 +87,6 @@
             $TemplateNamespace = $this->__Attributes['templatenamespace'];
           // end else
          }
-
 
          // Template-Namespace auslesen
          if(!isset($this->__Attributes['modelnamespace'])){
@@ -101,7 +99,6 @@
           // end else
          }
 
-
          // Model-Datei auslesen
          if(!isset($this->__Attributes['modelfile'])){
             trigger_error('[fcon_taglib_importdesign::onParseTime()] Attribute "modelfile" is not given!');
@@ -112,7 +109,6 @@
             $ModelFile = $this->__Attributes['modelfile'];
           // end else
          }
-
 
          // Model-Klasse auslesen
          if(!isset($this->__Attributes['modelclass'])){
@@ -125,7 +121,6 @@
           // end else
          }
 
-
          // Model-Klasse auslesen
          if(!isset($this->__Attributes['modelparam'])){
             trigger_error('[fcon_taglib_importdesign::onParseTime()] Attribute "modelparam" is not given!');
@@ -136,7 +131,6 @@
             $ModelParam = $this->__Attributes['modelparam'];
           // end else
          }
-
 
          // Prüfen, ob Model-Klasse bereits eingebunden wurde und ggf. nachholen
          if(!class_exists($ModelClass)){
@@ -158,25 +152,20 @@
          $Model = &$this->__getServiceObject($ModelNamespace,$ModelClass,$initMode);
          $TemplateName = $Model->getAttribute($ModelParam);
 
-
          // Context-Parameter einlesen, falls gesetzt
          if(isset($this->__Attributes['context'])){
             $this->__Context = trim($this->__Attributes['context']);
           // end if
          }
 
-
          // Content einlesen
          $this->__loadContentFromFile($TemplateNamespace,$TemplateName);
-
 
          // Nach einem DocumentController suchen
          $this->__extractDocumentController();
 
-
          // XML-Tags im Content parsen
          $this->__extractTagLibTags();
-
 
          // Timer stoppen
          $T->stop('(fcon_taglib_importdesign) '.$this->__ObjectID.'::onParseTime()');

@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -31,11 +31,11 @@
    *  @version
    *  Version 0.1, 24.11.2008<br />
    */
-   class CacheCoreObject extends coreObject
+   abstract class CacheCoreObject extends coreObject
    {
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns the value of the cache config attribute or triggers an error (FATAL), if the
       *  attribute is not given within the attributes array.
@@ -47,7 +47,7 @@
       *  @version
       *  Version 0.1, 24.11.2008<br />
       */
-      function __getCacheConfigAttribute($name){
+      protected function __getCacheConfigAttribute($name){
 
          if(!isset($this->__Attributes[$name])){
             $reg = &Singleton::getInstance('Registry');
@@ -81,7 +81,7 @@
    *  Version 0.1, 31.10.2008<br />
    *  Version 0.2, 24.11.2008 (Refactoring due to discussions on the fusion of writers and readers.)<br />
    */
-   class AbstractCacheProvider extends CacheCoreObject
+   abstract class AbstractCacheProvider extends CacheCoreObject
    {
 
       function AbstractCacheProvider(){
@@ -167,14 +167,14 @@
    *  @version
    *  Version 0.1, 31.10.2008<br />
    */
-   class CacheManager extends CacheCoreObject
+   final class CacheManager extends CacheCoreObject
    {
 
       /**
       *  @private
       *  The current cache provider.
       */
-      var $__Provider = null;
+      private $__Provider = null;
 
 
       /**
@@ -183,7 +183,7 @@
       *  cache configuration file. The cache is off by default to avoid strange behavior, if the
       *  config value is not set properly.
       */
-      var $__Active = false;
+      private $__Active = false;
 
 
       function CacheManager(){
@@ -315,14 +315,14 @@
    *  @version
    *  Version 0.1, 22.11.2008<br />
    */
-   class CacheManagerFabric extends coreObject
+   final class CacheManagerFabric extends coreObject
    {
 
       /**
       *  @private
       *  Contains the cache manager instances.
       */
-      var $__CacheManagerCache = array();
+      private $__CacheManagerCache = array();
 
 
       function CacheManagerFabric(){

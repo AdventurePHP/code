@@ -27,6 +27,7 @@
    /**
    *  @namespace tools::form::taglib
    *  @class ui_validate
+   *  @abstract
    *
    *  Represents an abstract validation tag. It expectes the following attributes:
    *  <ul>
@@ -52,7 +53,7 @@
    *  Version 0.1, 11.02.2007<br />
    *  Version 0.2, 25.03.2007 (Added the "msginputreq" and "msginputwrg" attributes)<br />
    */
-   class ui_validate extends ui_element
+   abstract class ui_validate extends ui_element
    {
 
       function ui_validate(){

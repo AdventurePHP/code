@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -97,7 +97,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns the complete cache file name.
       *
@@ -108,7 +108,7 @@
       *  @version
       *  Version 0.1, 21.11.2008<br />
       */
-      function __getCacheFile($cacheKey){
+      protected function __getCacheFile($cacheKey){
 
          $cacheKey = md5($cacheKey);
          $subFolder = substr($cacheKey,0,2);

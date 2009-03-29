@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -107,7 +107,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Replaces the language keys surrounded by "{{{" and "}}}" by a given XML string containing
       *  the translations.
@@ -120,7 +120,7 @@
       *  @version
       *  Version 0.1, 18.11.2008<br />
       */
-      function __parseTranslations($namespace,$template){
+      protected function __parseTranslations($namespace,$template){
 
          // use dictionary from the config namespace if applicable
          $dict_namespace = $this->getAttribute('dict_namespace');
@@ -137,7 +137,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Parses a dedicated language file defined by it's namespace and language file name.
       *
@@ -148,7 +148,7 @@
       *  @version
       *  Version 0.1, 19.11.2008<br />
       */
-      function __parseLanguageFile($namespace,$filename){
+      protected function __parseLanguageFile($namespace,$filename){
 
          // create file name
          $fileName = APPS__PATH.'/'.str_replace('::','/',$namespace).'/'.$filename.'.'.$this->__Language.'.xml';
@@ -180,7 +180,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Replaces the language keys surrounded by "{{{" and "}}}" by a given XML string containing
       *  the translations.
@@ -194,7 +194,7 @@
       *  Version 0.1, 18.11.2008<br />
       *  Version 0.2, 19.11.2008 (Simplifyed the XML structure and thus the implementation)<br />
       */
-      function __parseLanguageTokens($content,$domDoc){
+      protected function __parseLanguageTokens($content,$domDoc){
 
          $translations = $domDoc->xpath('/translations/translation');
 
@@ -210,7 +210,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns the value of a desired attribute of the given SimpleXMLElement.
       *
@@ -222,7 +222,7 @@
       *  @version
       *  Version 0.1, 18.11.2008<br />
       */
-      function __getAttributeByName($element,$name){
+      protected function __getAttributeByName($element,$name){
 
          $attributeValue = null;
          foreach($element->attributes() as $key => $value){

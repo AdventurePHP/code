@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -38,17 +38,17 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Daten-Container. Array mit numerischen Offsets und assoziativen Unteroffsets oder Liste von Objekten.
       */
-      var $__DataContainer = array();
+      protected $__DataContainer = array();
 
 
       /**
-      *  @private
+      *  @protected
       *  Indiziert, ob das Iterator-Template an der Definitionsstelle transformiert und ausgegeben werden soll.
       */
-      var $__TransformOnPlace = false;
+      protected $__TransformOnPlace = false;
 
 
       /**

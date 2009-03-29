@@ -79,7 +79,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Implements the presetting method for the text area.
       *
@@ -87,7 +87,7 @@
       *  @version
       *  Version 0.1, 13.01.2007<br />
       */
-      function __presetValue(){
+      protected function __presetValue(){
 
          if(isset($_REQUEST[$this->__Attributes['name']])){
             $this->__Content = $_REQUEST[$this->__Attributes['name']];
@@ -99,7 +99,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Reimplements the validation method for the text area.
       *
@@ -109,7 +109,7 @@
       *  Version 0.2, 05.05.2007 (Added "valid or not" report to the form)<br />
       *  Version 0.3, 22.08.2007 (Corrected error message within error message)<br />
       */
-      function __validate(){
+      protected function __validate(){
 
          // check if validation should be applied
          $this->__setValidateObject();
@@ -155,7 +155,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Reimplements the filter method for the text area.
       *
@@ -163,7 +163,7 @@
       *  @version
       *  Version 0.1, 07.12.2008<br />
       */
-      function __filter(){
+      protected function __filter(){
 
          // initialize filter
          $this->__initializeFilter();

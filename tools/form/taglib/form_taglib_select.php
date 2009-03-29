@@ -277,7 +277,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Validiert den Wert des Objekts. Wird der Erwartung-Wert nicht erfüllt, so wird das Feld rot hinterlegt.<br />
       *
@@ -285,7 +285,7 @@
       *  @version
       *  Version 0.1, 08.06.2008 (Methode __validate() für form_taglib_select neu implementiert, da Validierung fehlerhaft)<br />
       */
-      function __validate(){
+      protected function __validate(){
 
          // Prüfen, ob eine Validierung notwendig ist
          $this->__setValidateObject();
@@ -324,17 +324,16 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
-      *  Implementiert die Methode "__presetValue" aus der Klasse "ui_element" neu.<br />
+      *  Re-implements the method from the base class to specialize the presetting for the select field.
       *
       *  @author Christian Achatz
       *  @version
-      *  Version 0.1, 08.06.2008 (Neuimplementierung wegen Validierungsfehlern!)<br />
+      *  Version 0.1, 08.06.2008 (Method is now overridden due to validation error!)<br />
       */
-      function __presetValue(){
+      protected function __presetValue(){
 
-         // Werte aus REQUEST auslesen
          if(isset($_REQUEST[$this->__Attributes['name']])){
             $Value = $_REQUEST[$this->__Attributes['name']];
           // end if
@@ -344,8 +343,7 @@
           // end else
          }
 
-
-         // Optionen mit entsprechenden Werten vorselektieren
+         // preselect options with the corresponding values
          if(count($this->__Children) > 0){
 
             foreach($this->__Children as $ObjectID => $Child){

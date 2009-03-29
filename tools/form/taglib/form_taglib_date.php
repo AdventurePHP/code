@@ -40,17 +40,17 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Start and end of the year range.
       */
-      var $__YearRange;
+      protected $__YearRange;
 
 
       /**
-      *  @private
+      *  @protected
       *  Names of the offsets for day, month and year.
       */
-      var $__OffsetNames;
+      protected $__OffsetNames;
 
 
       /**

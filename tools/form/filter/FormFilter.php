@@ -56,7 +56,7 @@
 
 
       /**
-      *  @public
+      *  @protected
       *
       *  Implements the filter method, that turns all capitals to small letters.
       *
@@ -67,14 +67,14 @@
       *  @version
       *  Version 0.1, 07.12.2008<br />
       */
-      function __string2Lower($input){
+      protected function __string2Lower($input){
          return strtolower($input);
        // end function
       }
 
 
       /**
-      *  @public
+      *  @protected
       *
       *  Implements the filter method, that turns all small letters to capitals.
       *
@@ -85,14 +85,14 @@
       *  @version
       *  Version 0.1, 07.12.2008<br />
       */
-      function __string2Upper($input){
+      protected function __string2Upper($input){
          return strtoupper($input);
        // end function
       }
 
 
       /**
-      *  @public
+      *  @protected
       *
       *  Implements the filter method, that strips all tags.
       *
@@ -103,14 +103,14 @@
       *  @version
       *  Version 0.1, 07.12.2008<br />
       */
-      function __stripTags($input){
+      protected function __stripTags($input){
          return strip_tags($input);
        // end function
       }
 
 
       /**
-      *  @public
+      *  @protected
       *
       *  Implements the filter method, that removes all special characters.
       *
@@ -121,14 +121,14 @@
       *  @version
       *  Version 0.1, 07.12.2008<br />
       */
-      function __noSpecialCharacters($input){
+      protected function __noSpecialCharacters($input){
          return preg_replace('/[^0-9A-Za-z-_\.& ]/i','',$input);
        // end function
       }
 
 
       /**
-      *  @public
+      *  @protected
       *
       *  Implements the filter method, that only accepts numbers.
       *
@@ -139,14 +139,14 @@
       *  @version
       *  Version 0.1, 07.12.2008<br />
       */
-      function __onlyNumbers($input){
+      protected function __onlyNumbers($input){
          return preg_replace('/[^0-9\-\.,]/i','',$input);
        // end function
       }
 
 
       /**
-      *  @public
+      *  @protected
       *
       *  Implements the filter method, that only accepts integers.
       *
@@ -157,14 +157,14 @@
       *  @version
       *  Version 0.1, 07.12.2008<br />
       */
-      function __onlyInteger($input){
+      protected function __onlyInteger($input){
          return (int)$this->onlyNumbers($input);
        // end function
       }
 
 
       /**
-      *  @public
+      *  @protected
       *
       *  Implements the filter method, that only accepts letters.
       *
@@ -175,14 +175,14 @@
       *  @version
       *  Version 0.1, 07.12.2008<br />
       */
-      function __onlyLetters($input){
+      protected function __onlyLetters($input){
          return preg_replace('/[^A-Za-z& ]/i','',$input);
        // end function
       }
 
 
       /**
-      *  @public
+      *  @protected
       *
       *  Implements the filter method, that transcodes the input to it's HTML entities.
       *
@@ -193,7 +193,7 @@
       *  @version
       *  Version 0.1, 07.12.2008<br />
       */
-      function __onlyHTMLEntities($input){
+      protected function __onlyHTMLEntities($input){
          return htmlentities(str_replace('&amp;','&',$input));
        // end function
       }
