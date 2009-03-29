@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -35,10 +35,10 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Version von PHP
       */
-      var $__PHPVersion;
+      protected $__PHPVersion;
 
 
 
@@ -101,7 +101,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Transforms the content in PHP 4 environments.<br />
       *
@@ -111,7 +111,7 @@
       *  @version
       *  Version 0.1, 26.04.2008<br />
       */
-      function __transformPHP4($XML){
+      protected function __transformPHP4($XML){
 
          // Get references on the templates used
          $Template__Channel = &$this->__getTemplate('Channel');
@@ -172,7 +172,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Transforms the content in PHP 5 environments.<br />
       *
@@ -182,7 +182,7 @@
       *  @version
       *  Version 0.1, 26.04.2008<br />
       */
-      function __transformPHP5($XML){
+      protected function __transformPHP5($XML){
 
          // Get references on the templates used
          $Template__Channel = &$this->__getTemplate('Channel');
@@ -235,7 +235,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Helper method to get the content of the first child of a given DOM node.<br />
       *
@@ -246,7 +246,7 @@
       *  @version
       *  Version 0.1, 20.04.2008<br />
       */
-      function __getFirstChildContent($Node){
+      protected function __getFirstChildContent($Node){
 
          // Get first child
          $FirstChild = $Node->first_child();
@@ -259,7 +259,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Helper method to get the child nodes of a given node type.<br />
       *
@@ -271,7 +271,7 @@
       *  @version
       *  Version 0.1, 20.04.2008<br />
       */
-      function &__getChildNodesByNodeName(&$Node,$Name){
+      protected function &__getChildNodesByNodeName(&$Node,$Name){
 
          // Get all child nodes
          $AllChildNodes = $Node->child_nodes();
@@ -297,7 +297,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Helper method to get the RSS string.<br />
       *
@@ -307,7 +307,7 @@
       *  @version
       *  Version 0.1, 20.04.2008<br />
       */
-      function __getRSSFeed(){
+      protected function __getRSSFeed(){
 
          // Fetch RSS source
          $RSS_Source = $this->__getRSSSource();
@@ -382,7 +382,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Helper method to read the attribute "rss_source" from the current object<br />
       *  (core:importdesign), that is used to include the module.<br />
@@ -393,7 +393,7 @@
       *  @version
       *  Version 0.1, 20.04.2008<br />
       */
-      function __getRSSSource(){
+      protected function __getRSSSource(){
          return $this->__Document->getAttribute('rss_source');
        // end function
       }

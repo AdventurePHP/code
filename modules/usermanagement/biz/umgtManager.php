@@ -40,31 +40,31 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Indicates the id of the current application/project.
       */
-      var $__ApplicationID = 1;
+      protected $__ApplicationID = 1;
 
 
       /**
-      *  @private
+      *  @protected
       *  Indicates the database connection key.
       */
-      var $__ConnectionKey = null;
+      protected $__ConnectionKey = null;
 
 
       /**
-      *  @private
+      *  @protected
       *  Defines the service mode of the generic or mapper.
       */
-      var $__ServiceMode = 'SESSIONSINGLETON';
+      protected $__ServiceMode = 'SESSIONSINGLETON';
 
 
       /**
-      *  @private
+      *  @protected
       *  indicates, if the component is already initialized.
       */
-      var $__IsInitialized = false;
+      protected $__IsInitialized = false;
 
 
       function umgtManager(){
@@ -113,7 +113,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Implements the central hashing method. If you desire to use another hash algo, extend the
       *  UmgtManager and reimplement this method! Be sure, to keep all other methods untouched.
@@ -125,14 +125,14 @@
       *  @version
       *  Version 0.1, 31.01.2009<br />
       */
-      function __createPasswordHash($password){
+      protected function __createPasswordHash($password){
          return md5($password);
        // end function
       }
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns an initialized Application object.
       *
@@ -142,7 +142,7 @@
       *  @version
       *  Version 0.1, 15.06.2008<br />
       */
-      function __getCurrentApplication(){
+      protected function __getCurrentApplication(){
          $app = new GenericDomainObject('Application');
          $app->setProperty('ApplicationID',$this->__ApplicationID);
          return $app;
@@ -151,7 +151,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns an initialized or mapper instance.
       *
@@ -161,7 +161,7 @@
       *  @version
       *  Version 0.1, 23.06.2008<br />
       */
-      function &__getORMapper(){
+      protected function &__getORMapper(){
 
          // obtain a reference on the mapper factory
          $ORMFactory = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
