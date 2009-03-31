@@ -35,15 +35,15 @@
    *  Version 0.2, 19.02.2009 (Added the connection key handling)<br />
    *  Version 0.3, 24.01.2009 (Added session caching to gain performance)<br />
    */
-   class PagerMapper extends coreObject
+   final class PagerMapper extends coreObject
    {
 
 
       /**
-      *  @private
+      *  @protected
       *  Defines the database connection key. Must be filled within the init() method.
       */
-      var $__ConnectionKey = null;
+      protected $__ConnectionKey = null;
 
 
       function PagerMapper(){
@@ -81,7 +81,7 @@
       *  @version
       *  Version 0.1, 24.01.2009<br />
       */
-      function __getSessionKey($namespace,$statement,$params){
+      protected function __getSessionKey($namespace,$statement,$params){
          return 'PagerMapper_'.md5($namespace.$statement.implode('',$params));
        // end function
       }

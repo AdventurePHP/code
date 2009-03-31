@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -24,7 +24,7 @@
 
 
    /**
-   *  @namespace modules::kontakt::pres::documentcontroller
+   *  @namespace modules::kontakt4::pres::documentcontroller
    *  @class kontakt_v4_controller
    *
    *  Implementiert die Präsentationsschicht des Kontaktformulars.<br />
@@ -42,7 +42,7 @@
       *  @private
       *  Array von lokalen Variablen.
       */
-      var $_LOCALS;
+      protected $_LOCALS;
 
 
       function kontakt_v4_controller(){
@@ -108,7 +108,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Erzeugt das Kontakt-Formular.<br />
       *
@@ -120,15 +120,13 @@
       *  Version 0.4, 28.03.2007 (Generisches Bild in der Validatorgruppe hinzugefügt)<br />
       *  Version 0.5, 13.12.2007 (Auf Mehrsprachigkeit erweitert)<br />
       */
-      function __buildForm(){
+      protected function __buildForm(){
 
          // Referenz auf die Form holen
          $Form__Kontakt = &$this->__getForm('Kontakt');
 
-
          // Action setzen
          $Form__Kontakt->setAttribute('action',$_SERVER['REQUEST_URI']);
-
 
          // Button beschriften und formatieren
          $Config = &$this->__getConfiguration('modules::kontakt4','language');
@@ -136,17 +134,14 @@
          $Button->setAttribute('value',$Config->getValue($this->__Language,'form.button'));
          $Button->setAttribute('style',$Config->getValue($this->__Language,'form.button.style'));
 
-
          // Bild in der ValidatorGroup setzen (Auslesen der formconfig)
          $Config = &$this->__getConfiguration('tools::form::taglib','formconfig');
          $ValGroup = &$Form__Kontakt->getFormElementByName('FormValGroup');
          $ValGroup->setPlaceHolder('WarnImage',$Config->getValue($this->__Language,'Contact.Warning.Image'));
          $ValGroup->setPlaceHolder('WarnText',$Config->getValue($this->__Language,'Contact.Warning.Text'));
 
-
          // Auswahlfeld Person
          $Recipients = & $Form__Kontakt->getFormElementByName('Empfaenger');
-
 
          // RecipientList laden
          $cM = &$this->__getServiceObject('modules::kontakt4::biz','contactManager');
@@ -157,8 +152,6 @@
           // end if
          }
 
-
-         // Formular transformieren und zurückgeben
          return $Form__Kontakt->transformForm();
 
        // end function

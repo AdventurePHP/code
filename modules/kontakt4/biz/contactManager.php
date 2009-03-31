@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -24,6 +24,7 @@
    import('modules::kontakt4::data','contactMapper');
    import('tools::mail','mailSender');
    import('tools::link','linkHandler');
+   import('tools::http','HeaderManager');
 
 
    /**
@@ -62,10 +63,8 @@
          // contactMapper holen
          $cM = &$this->__getServiceObject('modules::kontakt4::data','contactMapper');
 
-
          // E-Mail für Empfänger aufsetzen
          $MAIL = &$this->__getAndInitServiceObject('tools::mail','mailSender','Kontaktformular');
-
 
          // Empfaenger setzen
          $Recipient = $cM->loadRecipientPerId($oFD->get('RecipientID'));
@@ -84,7 +83,6 @@
 
          // Mail senden
          $MAIL->sendMail();
-
 
          // E-Mail für Absender aufsetzen
          $MAIL->clearRecipients();
@@ -110,7 +108,6 @@
          // Mail senden
          $MAIL->sendMail();
 
-
          // Bestätigungsseite anzeigen
          $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('pagepart' => 'meldung'));
 
@@ -122,7 +119,7 @@
           // end if
          }
 
-         header('Location: '.$Link);
+         HeaderManager::forward($Link);
 
        // end function
       }

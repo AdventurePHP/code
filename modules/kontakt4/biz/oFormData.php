@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -32,11 +32,12 @@
    */
    class oFormData extends coreObject
    {
-      var $__RecipientID;
-      var $__SenderName;
-      var $__SenderEMail;
-      var $__Subject;
-      var $__Text;
+
+      protected $__RecipientID;
+      protected $__SenderName;
+      protected $__SenderEMail;
+      protected $__Subject;
+      protected $__Text;
 
 
       function oFormData(){

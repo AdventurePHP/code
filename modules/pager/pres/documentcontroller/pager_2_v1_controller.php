@@ -45,6 +45,10 @@
    class pager_2_v1_controller extends baseController
    {
 
+      /**
+      *  @deprecated
+      *  List of local variables.
+      */
       var $_LOCALS;
 
 

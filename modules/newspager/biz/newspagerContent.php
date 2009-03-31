@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -33,31 +33,31 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Headline of a news page.
       */
-      var $__Headline;
+      protected $__Headline;
 
 
       /**
-      *  @private
+      *  @protected
       *  Subheadline of a news page.
       */
-      var $__Subheadline;
+      protected $__Subheadline;
 
 
       /**
-      *  @private
+      *  @protected
       *  Content of a news page.
       */
-      var $__Content;
+      protected $__Content;
 
 
       /**
-      *  @private
+      *  @protected
       *  Number of news pages.
       */
-      var $__NewsCount;
+      protected $__NewsCount;
 
 
       function newspagerContent(){

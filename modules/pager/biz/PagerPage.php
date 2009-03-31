@@ -29,14 +29,34 @@
    *  @version
    *  Version 0.1, 06.08.2006<br />
    */
-   class PagerPage extends coreObject
+   final class PagerPage extends coreObject
    {
 
-      var $__Page;
-      var $__Link;
-      var $__isSelected;
-      var $__entriesCount;
-      var $__pageCount;
+      /**
+      *  @protected
+      *  The Page name.
+      */
+      protected $__Page;
+
+      /**
+      *  The hyperlink to the current page.
+      */
+      protected $__Link;
+
+      /**
+      *  Indicates if the current page is selected.
+      */
+      protected $__isSelected;
+
+      /**
+      *  Indicates the entries count on the current page.
+      */
+      protected $__entriesCount;
+
+      /**
+      *  Indicates the total amount of pages.
+      */
+      protected $__pageCount;
 
 
       function PagerPage(){

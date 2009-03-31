@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -39,7 +39,7 @@
       *  @private
       *  Defines the dir, where the news content is located.
       */
-      var $__DataDir = null;
+      private $__DataDir = null;
 
 
       function newspagerManager(){
@@ -87,13 +87,8 @@
       *  Version 0.2, 18.09.2008 (DataDir is now applied to the mapper)<br />
       */
       function getNewsByPage($PageNumber = 1){
-
-         // get mapper
          $nM = &$this->__getAndInitServiceObject('modules::newspager::data','newspagerMapper',$this->__DataDir);
-
-         // load and return news object
          return $nM->getNewsByPage($PageNumber);
-
        // end function
       }
 

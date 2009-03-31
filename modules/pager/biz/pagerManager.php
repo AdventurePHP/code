@@ -37,14 +37,14 @@
    *  @version
    *  Version 0.1, 13.04.2007<br />
    */
-   class PagerManagerFabric extends coreObject
+   final class PagerManagerFabric extends coreObject
    {
 
       /**
       *  @private
       *  Cache list if concrete pager manager instances.
       */
-      var $__Pager = array();
+      private $__Pager = array();
 
 
       function PagerManagerFabric(){
@@ -54,10 +54,10 @@
       /**
       *  @public
       *
-      *  Gibt eine Referenz auf einen pagerManager zurück.<br />
+      *  Returns a reference on the desired pager manager. Initializes newly created ones.
       *
-      *  @param string $configString; Konfigurations-String
-      *  @return pagerManager $pagerManager; Referenz auf den gewünschten pagerManager
+      *  @param string $configString The configuration/initialization string (configuration section name).
+      *  @return pagerManager $pagerManager Reference on the desired pagerManager instance
       *
       *  @author Christian Achatz
       *  @version
@@ -74,7 +74,6 @@
           // end if
          }
 
-         // return desired pager reference
          return $this->__Pager[$pagerHash];
 
        // end function
@@ -98,7 +97,7 @@
    *  Version 0.4, 13.04.2007 (Added the possibility to add params from the application)<br />
    *  Version 0.5, 25.01.2009 (Refactoring of the API, refactoring of the functionality)<br />
    */
-   class PagerManager extends coreObject
+   final class PagerManager extends coreObject
    {
 
       /**
@@ -169,7 +168,7 @@
       *  @version
       *  Version 0.1, 24.01.2009<br />
       */
-      function __getStatementParams($addStmtParams = array()){
+      private function __getStatementParams($addStmtParams = array()){
          $defaultParams = array(
                                 'Start' => (int)RequestHandler::getValue($this->__PagerConfig['Pager.ParameterStartName'],0),
                                 'EntriesCount' => (int)RequestHandler::getValue($this->__PagerConfig['Pager.ParameterCountName'],$this->__PagerConfig['Pager.EntriesPerPage'])
@@ -369,7 +368,7 @@
       *  Version 0.5, 26.04.2008 (Avoid division by zero)<br />
       *  Version 0.6, 19.01.2009 (Changed the implementation due to refactoring)<br />
       */
-      function __createPages4PagerDisplay($addStmtParams = array()){
+      private function __createPages4PagerDisplay($addStmtParams = array()){
 
          // start benchmarker
          $t = &Singleton::getInstance('benchmarkTimer');
@@ -446,7 +445,7 @@
       *  Version 0.1, 16.08.2006<br />
       *  Version 0.2, 24.01.2009 (Refactoring due to configuration param changes)<br />
       */
-      function __generateStatementParams($configString){
+      private function __generateStatementParams($configString){
 
          // initialize the return array
          $stmtParams = array();
