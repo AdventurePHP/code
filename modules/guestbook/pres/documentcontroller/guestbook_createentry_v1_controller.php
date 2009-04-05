@@ -40,7 +40,7 @@
       *  @private
       *  Hält lokal verwendete Variablen.
       */
-      var $_LOCALS;
+      private $_LOCALS;
 
 
       function guestbook_createentry_v1_controller(){

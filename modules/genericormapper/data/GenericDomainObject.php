@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -29,36 +29,36 @@
    *  @version
    *  Version 0.1, 26.04.2008<br />
    */
-   class GenericDomainObject extends coreObject
+   final class GenericDomainObject extends coreObject
    {
 
       /**
-      *  @private
+      *  @protected
       *  Data component, that can be used to lazy load attributes.
       *  To set the member, use setByReference() from coreObject.
       */
-      var $__DataComponent = null;
+      protected $__DataComponent = null;
 
 
       /**
-      *  @private
+      *  @protected
       *  Name of the object (see mapping table!).
       */
-      var $__ObjectName = null;
+      protected $__ObjectName = null;
 
 
       /**
-      *  @private
+      *  @protected
       *  Properties of a domain object.
       */
-      var $__Properties = array();
+      protected $__Properties = array();
 
 
       /**
-      *  @private
+      *  @protected
       *  Objects related to the current object. Sorted by composition or association key.
       */
-      var $__RelatedObjects = array();
+      protected $__RelatedObjects = array();
 
 
       /**

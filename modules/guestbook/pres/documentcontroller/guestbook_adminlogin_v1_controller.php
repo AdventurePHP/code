@@ -43,10 +43,10 @@
       *  @private
       *  Hält lokal verwendete Variablen.
       */
-      var $_LOCALS;
+      private $_LOCALS;
 
 
-      function guestbook_adminlogin_v1_controller(){
+      public function guestbook_adminlogin_v1_controller(){
 
          $this->_LOCALS = RequestHandler::getValues(array(
                                                                 'Username',
@@ -68,7 +68,7 @@
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
-      function transformContent(){
+      public function transformContent(){
 
          // Logout
          if($this->_LOCALS['logout'] == 'true'){
@@ -133,7 +133,7 @@
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
-      function __displayForm($ShowLogInError = false){
+      private function __displayForm($ShowLogInError = false){
 
          // Referenz auf das Formular holen
          $Form__AdminLogin = &$this->__getForm('AdminLogin');
@@ -150,7 +150,6 @@
           // end if
          }
 
-         // Formular transformieren und zurückgeben
          return $Form__AdminLogin->transformForm();
 
        // end function

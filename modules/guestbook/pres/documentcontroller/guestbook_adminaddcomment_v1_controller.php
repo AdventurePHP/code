@@ -37,10 +37,10 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Hält lokal verwendete Variablen.
       */
-      var $_LOCALS;
+      protected $_LOCALS;
 
 
       function guestbook_adminaddcomment_v1_controller(){

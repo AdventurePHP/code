@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -30,42 +30,42 @@
    *  Version 0.1, 17.06.2008<br />
    *  Version 0.2, 21.06.2008 (Added more indicators)<br />
    */
-   class GenericCriterionObject extends coreObject
+   final class GenericCriterionObject extends coreObject
    {
 
       /**
-      *  @private
+      *  @protected
       *  Stores the relation indicators.
       */
-      var $__Relations = array();
+      protected $__Relations = array();
 
 
       /**
-      *  @private
+      *  @protected
       *  Stores the limit indicator.
       */
-      var $__Limit = array();
+      protected $__Limit = array();
 
 
       /**
-      *  @private
+      *  @protected
       *  Stores the property indicator.
       */
-      var $__Properties = array();
+      protected $__Properties = array();
 
 
       /**
-      *  @private
+      *  @protected
       *  Stores the properties to load into the object.
       */
-      var $__LoadedProperties = array();
+      protected $__LoadedProperties = array();
 
 
       /**
-      *  @private
+      *  @protected
       *  Stores the order indicator.
       */
-      var $__Orders = array();
+      protected $__Orders = array();
 
 
       function GenericCriterionObject(){

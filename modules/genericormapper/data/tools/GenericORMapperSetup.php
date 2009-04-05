@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -36,20 +36,20 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Indicators for the datatype mapping.
       */
-      var $__RowTypeMappingFrom = array(
+      protected $__RowTypeMappingFrom = array(
                                         '/^VARCHAR\(([0-9]+)\)$/i',
                                         '/^TEXT$/i',
                                         '/^DATE$/i'
                                        );
 
       /**
-      *  @private
+      *  @protected
       *  Replace strings for the datatype mapping.
       */
-      var $__RowTypeMappingTo = array(
+      protected $__RowTypeMappingTo = array(
                                       'VARCHAR($1) character set utf8 NOT NULL default \'\'',
                                       'TEXT character set utf8 NOT NULL',
                                       'DATE NOT NULL default \'0000-00-00\''
@@ -57,10 +57,10 @@
 
 
       /**
-      *  @private
+      *  @protected
       *  Stores the MySQL storage engine type.
       */
-      var $__StorageEngine = 'MyISAM';
+      protected $__StorageEngine = 'MyISAM';
 
 
       function GenericORMapperSetup(){
@@ -143,7 +143,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Creates the setup statements for the object persistance.<br />
       *
@@ -155,7 +155,7 @@
       *  Version 0.2, 31.05.2008 (Code completed and refactored due to changes on the mapping table)<br />
       *  Version 0.3, 09.12.2008 (Replaced TINYINT by INT)<br />
       */
-      function __generateObjectLayout(){
+      protected function __generateObjectLayout(){
 
          // create mapping table
          $this->__createMappingTable();
@@ -204,7 +204,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Creates the setup statements for the relation persistence.<br />
       *
@@ -215,7 +215,7 @@
       *  Version 0.1, 31.05.2008<br />
       *  Version 0.2, 09.12.2008 (Replaced TINYINT by INT)<br />
       */
-      function __generateRelationLayout(){
+      protected function __generateRelationLayout(){
 
          // create relation table
          $this->__createRelationTable();

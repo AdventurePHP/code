@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -39,40 +39,40 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Namespace, where the configuration files are located.
       */
-      var $__ConfigNamespace = null;
+      protected $__ConfigNamespace = null;
 
       /**
-      *  @private
+      *  @protected
       *  Name affix of the configuration files.
       */
-      var $__ConfigNameAffix = null;
+      protected $__ConfigNameAffix = null;
 
       /**
-      *  @private
+      *  @protected
       *  Instance of the database driver.
       */
-      var $__DBDriver = null;
+      protected $__DBDriver = null;
 
       /**
-      *  @private
+      *  @protected
       *  Object mapping table.
       */
-      var $__MappingTable = array();
+      protected $__MappingTable = array();
 
       /**
-      *  @private
+      *  @protected
       *  Object relation table.
       */
-      var $__RelationTable = array();
+      protected $__RelationTable = array();
 
       /**
-      *  @private
+      *  @protected
       *  Indicates, if a additional configuration was already imported.
       */
-      var $__importedConfigCache = array();
+      protected $__importedConfigCache = array();
 
 
       function BaseMapper(){
@@ -114,7 +114,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Parse the object configuration definition file.<br />
       *
@@ -125,7 +125,7 @@
       *  Version 0.3, 22.06.2008 (Refactored object configuration adressing)<br />
       *  Version 0.4, 26.10.2008 (Resolving functionality was outsourced to the __generateMappingItem() method)<br />
       */
-      function __createMappingTable(){
+      protected function __createMappingTable(){
 
          // invoke benchmark timer
          $T = &Singleton::getInstance('BenchmarkTimer');
@@ -151,7 +151,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Create the object relation table.<br />
       *
@@ -162,7 +162,7 @@
       *  Version 0.3, 22.06.2008 (refactored relation configuration adressing)<br />
       *  Version 0.4, 26.10.2008 (Resolving functionality was outsourced to the __generateRelationItem() method)<br />
       */
-      function __createRelationTable(){
+      protected function __createRelationTable(){
 
          // Invoke benchmark timer
          $T = &Singleton::getInstance('BenchmarkTimer');
@@ -284,7 +284,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Resolves the table and primary key name within the object definition configuration.
       *
@@ -296,7 +296,7 @@
       *  @version
       *  Version 0.1, 26.10.2008<br />
       */
-      function __generateMappingItem($objectName,$objectSection){
+      protected function __generateMappingItem($objectName,$objectSection){
 
          // resolve standard properties, that derive from the definition
          // - table name:
@@ -312,7 +312,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Resolves the table name, source and target id of the relation definition within the relation configuration.
       *
@@ -324,7 +324,7 @@
       *  @version
       *  Version 0.1, 26.10.2008<br />
       */
-      function __generateRelationItem($relationName,$relationSection){
+      protected function __generateRelationItem($relationName,$relationSection){
 
          // Resolve standard properties, that derive from the definition
          // - table name

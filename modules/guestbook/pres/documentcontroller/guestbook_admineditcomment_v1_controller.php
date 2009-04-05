@@ -40,7 +40,7 @@
       *  @private
       *  Hält lokal verwendete Variablen.
       */
-      var $_LOCALS;
+      private $_LOCALS;
 
 
       function guestbook_admineditcomment_v1_controller(){
@@ -66,7 +66,7 @@
       *  @version
       *  Version 0.1, 19.05.2007<br />
       */
-      function transformContent(){
+      public function transformContent(){
 
          // Referenz auf das Formular holen
          $Form__Comment = &$this->__getForm('Comment');

@@ -33,45 +33,45 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Basis-URL des Bookmark-Services.
       */
-      var $__ServiceBaseURL;
+      protected $__ServiceBaseURL;
 
 
       /**
-      *  @private
+      *  @protected
       *  Name des URL-Parameters für die zu bookmarkende URL.
       */
-      var $__ServiceParams_URL;
+      protected $__ServiceParams_URL;
 
 
       /**
-      *  @private
+      *  @protected
       *  Name des Titel-Parameters für die zu bookmarkende URL.
       */
-      var $__ServiceParams_Title;
+      protected $__ServiceParams_Title;
 
 
       /**
-      *  @private
+      *  @protected
       *  Titel des Bookmark-Eintrags (Link-Titel, Alt-Text).
       */
-      var $__Title;
+      protected $__Title;
 
 
       /**
-      *  @private
+      *  @protected
       *  URL des Bookmark-Icons ohne Endung.
       */
-      var $__ImageURL;
+      protected $__ImageURL;
 
 
       /**
-      *  @private
+      *  @protected
       *  Endung des Bookmark-Icons.
       */
-      var $__ImageExt;
+      protected $__ImageExt;
 
 
       /**

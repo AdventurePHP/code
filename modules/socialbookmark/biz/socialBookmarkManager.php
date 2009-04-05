@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -66,45 +66,45 @@
 
 
       /**
-      *  @private
+      *  @protected
       *  Linkziel der Bookmark-Einträge.
       */
-      var $__Target = '_blank';
+      protected $__Target = '_blank';
 
 
       /**
-      *  @private
+      *  @protected
       *  URL der Seite, die gebookmarkt werden soll.
       */
-      var $__URL = '';
+      protected $__URL = '';
 
 
       /**
-      *  @private
+      *  @protected
       *  Titel der Seite, die gebookmarkt werden soll.
       */
-      var $__Title = '';
+      protected $__Title = '';
 
 
       /**
-      *  @private
+      *  @protected
       *  Breite des Bookmark-Icons.
       */
-      var $__Width = '20';
+      protected $__Width = '20';
 
 
       /**
-      *  @private
+      *  @protected
       *  Höhe des Bookmark-Icons.
       */
-      var $__Height = '20';
+      protected $__Height = '20';
 
 
       /**
-      *  @private
+      *  @protected
       *  Liste der Bookmark-Services.
       */
-      var $__BookmarkServices = array();
+      protected $__BookmarkServices = array();
 
 
       function socialBookmarkManager(){
@@ -207,7 +207,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Generiert einen Bookmark-HTML-Code aus einem BookmarkEntry.<br />
       *
@@ -223,7 +223,7 @@
       *  Version 0.5, 25.05.2008 (Page-Title wird nun übergeben)<br />
       *  Version 0.6, 21.06.2008 (Replaced APPS__URL_REWRITING with a value from the registry)<br />
       */
-      function __generateBookmarkEntry($BookmarkEntry){
+      protected function __generateBookmarkEntry($BookmarkEntry){
 
          // Timer starten
          $T = &Singleton::getInstance('BenchmarkTimer');
@@ -279,7 +279,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Gibt die URL der aktuellen Seite zurück.<br />
       *
@@ -289,7 +289,7 @@
       *  @version
       *  Version 0.1, 02.06.2007<br />
       */
-      function __getCurrentURL(){
+      protected function __getCurrentURL(){
 
          // Rückgabe-Variable initialisieren
          $Link = (string)'';

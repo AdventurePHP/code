@@ -42,17 +42,17 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Contains the instance of the captcha text field.
       */
-      var $__TextField = null;
+      protected $__TextField = null;
 
 
       /**
-      *  @private
+      *  @protected
       *  Contains the name of the captcha text field.
       */
-      var $__TextFieldName = null;
+      protected $__TextFieldName = null;
 
 
       function form_taglib_captcha(){

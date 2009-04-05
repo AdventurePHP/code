@@ -41,17 +41,17 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Schlüssel für die auszuliefernde Kategorie.
       */
-      var $__CategoryKey;
+      protected $__CategoryKey;
 
 
       /**
-      *  @private
+      *  @protected
       *  Captcha String zur Prüfung der Eingabe.
       */
-      var $__CaptchaString = null;
+      protected $__CaptchaString = null;
 
 
       function commentManager(){

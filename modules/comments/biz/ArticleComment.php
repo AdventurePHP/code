@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -34,52 +34,52 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  ID des Eintrags.
       */
-      var $__ID = null;
+      protected $__ID = null;
 
 
       /**
-      *  @private
+      *  @protected
       *  Name des Autors.
       */
-      var $__Name;
+      protected $__Name;
 
 
       /**
-      *  @private
+      *  @protected
       *  E-Mail des Autors.
       */
-      var $__EMail;
+      protected $__EMail;
 
 
       /**
-      *  @private
+      *  @protected
       *  Kommentar.
       */
-      var $__Comment;
+      protected $__Comment;
 
 
       /**
-      *  @private
+      *  @protected
       *  Datum.
       */
-      var $__Date;
+      protected $__Date;
 
 
       /**
-      *  @private
+      *  @protected
       *  Uhrzeit.
       */
-      var $__Time;
+      protected $__Time;
 
 
       /**
-      *  @private
+      *  @protected
       *  Kategorie.
       */
-      var $__CategoryKey;
+      protected $__CategoryKey;
 
 
       function ArticleComment(){

@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -40,10 +40,10 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Contains locally used variables.
       */
-      var $_LOCALS = array();
+      protected $_LOCALS = array();
 
 
       /**
@@ -137,7 +137,7 @@
       *  Version 0.1, 28.12.2008<br />
       *  Version 0.2, 09.10.2008 (Changed captcha image url generation)<br />
       */
-      function __buildForm(){
+      private function __buildForm(){
 
          // Referenz auf das Formular holen
          $Form__AddComment = &$this->__getForm('AddComment');

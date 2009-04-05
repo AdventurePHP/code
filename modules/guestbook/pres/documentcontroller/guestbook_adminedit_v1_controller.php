@@ -40,10 +40,10 @@
       *  @private
       *  Hält lokal verwendete Variablen.
       */
-      var $_LOCALS;
+      private $_LOCALS;
 
 
-      function guestbook_adminedit_v1_controller(){
+      public function guestbook_adminedit_v1_controller(){
 
          $this->_LOCALS = RequestHandler::getValues(array(
                                                                 'Name',
@@ -73,7 +73,7 @@
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
-      function transformContent(){
+      public function transformContent(){
 
          // Referenz auf das Formular holen
          $Form__GuestbookEntry = &$this->__getForm('GuestbookEntry');

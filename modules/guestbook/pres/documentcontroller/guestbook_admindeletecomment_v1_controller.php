@@ -41,10 +41,10 @@
       *  @private
       *  Hält lokal verwendete Variablen.
       */
-      var $_LOCALS;
+      private $_LOCALS;
 
 
-      function guestbook_admindeletecomment_v1_controller(){
+      public function guestbook_admindeletecomment_v1_controller(){
          $this->_LOCALS = RequestHandler::getValues(array('commentid'));
        // end function
       }
@@ -59,7 +59,7 @@
       *  @version
       *  Version 0.1, 19.05.2007<br />
       */
-      function transformContent(){
+      public function transformContent(){
 
          // Referenz auf die Formulare holen
          $Form__FormNo = &$this->__getForm('FormNo');

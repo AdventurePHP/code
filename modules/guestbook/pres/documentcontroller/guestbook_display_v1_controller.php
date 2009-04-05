@@ -41,17 +41,17 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Hält lokal verwendete Variablen.
       */
-      var $_LOCALS;
+      protected $_LOCALS;
 
 
       /**
-      *  @private
+      *  @protected
       *  Hält eine Instanz des Session-Managers.
       */
-      var $__sessMgr;
+      protected $__sessMgr;
 
 
       /**
@@ -63,14 +63,14 @@
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
-      function guestbook_display_v1_controller(){
+      public function guestbook_display_v1_controller(){
          $this->__sessMgr = new sessionManager('Module_Guestbook');
        // end function
       }
 
 
       /**
-      *  @private
+      *  @public
       *
       *  Implementiert die abstrakte Methode "transformContent()".<br />
       *
@@ -79,7 +79,7 @@
       *  Version 0.1, 13.04.2007<br />
       *  Version 0.2, 05.05.2007 (Admin-Link hinzugefügt)<br />
       */
-      function transformContent(){
+      public function transformContent(){
 
          // Manager holen
          $gM = &$this->__getGuestbookManager();
@@ -112,7 +112,7 @@
       *  Version 0.1, 13.04.2007<br />
       *  Version 0.2, 07.01.2008 (Mehrsprachigkeit eingeführt)<br />
       */
-      function __generateCreateEntryLink(){
+      private function __generateCreateEntryLink(){
 
          // Referenz auf das Template holen
          $Template__CreateEntry = &$this->__getTemplate('CreateEntry_'.$this->__Language);
@@ -141,7 +141,7 @@
       *  Version 0.1, 05.05.2007<br />
       *  Version 0.2, 07.01.2008 (Mehrsprachigkeit eingeführt)<br />
       */
-      function __generateControlGuestbookLink(){
+      private function __generateControlGuestbookLink(){
 
          // Inhalte der Session erstören
          $oSessMgr = new sessionManager('Module_Guestbook');
@@ -190,7 +190,7 @@
       *  @version
       *  Version 0.1, 13.04.2007<br />
       */
-      function __generateEntryList(){
+      private function __generateEntryList(){
 
          // Manager holen
          $gM = &$this->__getGuestbookManager();
@@ -227,7 +227,7 @@
       *  Version 0.1, 13.04.2007<br />
       *  Version 0.2, 07.01.2008 (E-Mail wird nun codiert dargestellt,Text mehrzeilig)<br />
       */
-      function __generateEntry($Entry){
+      private function __generateEntry($Entry){
 
          // Referenz auf das Template holen
          $Template__Entry = &$this->__getTemplate('Entry');
@@ -285,7 +285,7 @@
       *  @version
       *  Version 0.1, 14.04.2007<br />
       */
-      function __generateComment($Comment,$EntryID){
+      private function __generateComment($Comment,$EntryID){
 
          $Template__Comment = &$this->__getTemplate('Comment');
          $Template__Comment->setPlaceHolder('AdminDeleteComment',$this->__showAdminDeleteComment($Comment->get('ID'),$EntryID));
@@ -312,7 +312,7 @@
       *  @version
       *  Version 0.1, 14.04.2007<br />
       */
-      function __showAdminDelete($EntryID){
+      private function __showAdminDelete($EntryID){
 
          if($this->__sessMgr->loadSessionData('AdminView') == true){
 
@@ -347,7 +347,7 @@
       *  @version
       *  Version 0.1, 14.04.2007<br />
       */
-      function __showAdminEdit($EntryID){
+      private function __showAdminEdit($EntryID){
 
          if($this->__sessMgr->loadSessionData('AdminView') == true){
 
@@ -382,7 +382,7 @@
       *  @version
       *  Version 0.1, 14.04.2007<br />
       */
-      function __showAdminAddComment($EntryID){
+      private function __showAdminAddComment($EntryID){
 
          if($this->__sessMgr->loadSessionData('AdminView') == true){
 
@@ -418,7 +418,7 @@
       *  @version
       *  Version 0.1, 19.04.2007<br />
       */
-      function __showAdminDeleteComment($CommentID,$EntryID){
+      private function __showAdminDeleteComment($CommentID,$EntryID){
 
          if($this->__sessMgr->loadSessionData('AdminView') == true){
 
@@ -454,7 +454,7 @@
       *  @version
       *  Version 0.1, 19.04.2007<br />
       */
-      function __showAdminEditComment($CommentID,$EntryID){
+      private function __showAdminEditComment($CommentID,$EntryID){
 
          if($this->__sessMgr->loadSessionData('AdminView') == true){
 

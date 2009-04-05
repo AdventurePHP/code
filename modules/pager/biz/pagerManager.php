@@ -105,14 +105,14 @@
       *  @since 0.5
       *  Contains the current configuration.
       */
-      var $__PagerConfig = null;
+      private $__PagerConfig = null;
 
 
       /**
       *  @private
       *  Contains the desired anchor name.
       */
-      var $__AnchorName = null;
+      private $__AnchorName = null;
 
 
       function PagerManager(){

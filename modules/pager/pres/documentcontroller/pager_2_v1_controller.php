@@ -46,10 +46,10 @@
    {
 
       /**
-      *  @deprecated
+      *  @private
       *  List of local variables.
       */
-      var $_LOCALS;
+      private $_LOCALS;
 
 
       function pager_2_v1_controller(){
