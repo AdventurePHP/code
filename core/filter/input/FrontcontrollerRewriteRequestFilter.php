@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -36,24 +36,24 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Defines the global URL rewriting delimiter.
       */
-      var $__RewriteURLDelimiter = '/';
+      protected $__RewriteURLDelimiter = '/';
 
 
       /**
-      *  @private
+      *  @protected
       *  Delimiter between params and action strings.
       */
-      var $__ActionDelimiter = '/~/';
+      protected $__ActionDelimiter = '/~/';
 
 
       /**
-      *  @private
+      *  @protected
       *  Defines the action keyword.
       */
-      var $__FrontcontrollerActionKeyword;
+      protected $__FrontcontrollerActionKeyword;
 
 
       function FrontcontrollerRewriteRequestFilter(){

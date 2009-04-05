@@ -36,10 +36,10 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Defines the URL rewrite param-to-value delimiter.
       */
-      var $__RewriteURLDelimiter = '/';
+      protected $__RewriteURLDelimiter = '/';
 
 
       function PagecontrollerRewriteRequestFilter(){

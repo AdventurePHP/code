@@ -33,14 +33,14 @@
    *  Version 0.1, 09.11.2007<br />
    *  Version 0.2, 24.02.2008 (Existing connections are cached now)<br />
    */
-   class connectionManager extends coreObject
+   final class connectionManager extends coreObject
    {
 
       /**
       *  @private
       *  Cache for existing database connections.
       */
-      var $__Connections = array();
+      private $__Connections = array();
 
 
       function connectionManager(){

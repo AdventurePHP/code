@@ -62,80 +62,80 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Verbindungs-Kennung.
       */
-      var $__dbConn = null;
+      protected $__dbConn = null;
 
 
       /**
-      *  @private
+      *  @protected
       *  ID des letzten Inserts.
       */
-      var $__lastInsertID;
+      protected $__lastInsertID;
 
 
       /**
-      *  @private
+      *  @protected
       *  Anzahl der selektierten Ergebnisse.
       */
-      var $__NumRows;
+      protected $__NumRows;
 
 
       /**
-      *  @private
+      *  @protected
       *  Datenbank-Host.
       */
-      var $__dbHost;
+      protected $__dbHost;
 
 
       /**
-      *  @private
+      *  @protected
       *  Datenbank-Benutzer.
       */
-      var $__dbUser;
+      protected $__dbUser;
 
 
       /**
-      *  @private
+      *  @protected
       *  Datenbank-Password.
       */
-      var $__dbPass;
+      protected $__dbPass;
 
 
       /**
-      *  @private
+      *  @protected
       *  Datenbank-Name.
       */
-      var $__dbName;
+      protected $__dbName;
 
 
       /**
-      *  @private
+      *  @protected
       *  Log-Datei (Instanz des Loggers).
       */
-      var $__dbLog;
+      protected $__dbLog;
 
 
       /**
-      *  @private
+      *  @protected
       *  Log-Datei-Name.
       */
-      var $__dbLogFileName = 'mysql';
+      protected $__dbLogFileName = 'mysql';
 
 
       /**
-      *  @private
+      *  @protected
       *  Debug-Mode an?
       */
-      var $__dbDebug = false;
+      protected $__dbDebug = false;
 
 
       /**
-      *  @private
+      *  @protected
       *  Zeigt an, ob Klasse bereits initialisiert wurde.
       */
-      var $__isInitialized = false;
+      protected $__isInitialized = false;
 
 
       function MySQLHandler(){
@@ -154,7 +154,7 @@
       *  Version 0.1, 28.03.2007<br />
       *  Version 0.2, 01.04.2007 (Connect wird beim INIT erledigt)<br />
       */
-      function __initMySQLHandler(){
+      protected function __initMySQLHandler(){
 
          // Falls noch nicht initialisiert wurde initialisieren
          if($this->__isInitialized == false){
@@ -229,7 +229,7 @@
       *  Version 0.8, 09.10.2008 (Removed the @ before mysql_connect to get a more detailed in case of connection errors)<br />
       *  Version 0.9, 18.03.2009 (Bugfix: create a new connection, even if the connection data is the same. This otherwise may result in interference of connections, that use different databases.)<br />
       */
-      function __connect(){
+      protected function __connect(){
 
          // initiate connection
          $this->__dbConn = mysql_connect($this->__dbHost,$this->__dbUser,$this->__dbPass,true);
@@ -265,7 +265,7 @@
       *  Version 0.3, 04.12.2005<br />
       *  Version 0.4, 24.12.2005<br />
       */
-      function __close(){
+      protected function __close(){
 
          $result = @mysql_close($this->__dbConn);
          $this->__dbConn = null;

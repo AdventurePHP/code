@@ -52,24 +52,24 @@
    {
 
       /**
-      *  @private
+      *  @protected
       *  Name der Logdatei der Abstraktionsschicht.
       */
-      var $__dbLogFileName = 'sqlite';
+      protected $__dbLogFileName = 'sqlite';
 
 
       /**
-      *  @private
+      *  @protected
       *  Modus, in dem die Datenbank geöffnet werden soll.
       */
-      var $__dbMode = 0666;
+      protected $__dbMode = 0666;
 
 
       /**
-      *  @private
+      *  @protected
       *  Trackt Fehlermeldungen von SQLite.
       */
-      var $__dbError = null;
+      protected $__dbError = null;
 
 
       function SQLiteHandler(){
@@ -77,7 +77,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Abstrakte Interface-Methode für das Aufbauen einer Datenbank-Verbindung.<br />
       *
@@ -85,7 +85,7 @@
       *  @version
       *  Version 0.1, 23.02.2008<br />
       */
-      function __connect(){
+      protected function __connect(){
 
          // Verbindung öffnen
          $this->__dbConn = @sqlite_open($this->__dbName,$this->__dbMode,$this->__dbError);
@@ -102,7 +102,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Abstrakte Interface-Methode für das Schließen einer Datenbank-Verbindung.<br />
       *
@@ -110,7 +110,7 @@
       *  @version
       *  Version 0.1, 23.02.2008<br />
       */
-      function __close(){
+      protected function __close(){
 
          // Verbindung schließen
          @sqlite_close($this->__dbConn);
