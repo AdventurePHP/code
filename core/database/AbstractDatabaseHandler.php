@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -27,7 +27,8 @@
    *  @class AbstractDatabaseHandler
    *  @abstract
    *
-   *  Abstrakter DatenbankHandler. Basis für konkrete Datenbank-Handler.<br />
+   *  Defines the scheme of a database handler. Forms the base class for all
+   *  database abstraction layer classes.
    *
    *  @author Christian Achatz
    *  @version
@@ -37,71 +38,71 @@
    {
 
       /**
-      *  @private
-      *  Kennzeichnet, ob der Handler bereits initialisiert wurde.
+      *  @protected
+      *  Indicates, whether the handler is already initialized or not.
       */
       protected $__isInitialized = false;
 
 
       /**
-      *  @private
-      *  Datenbank-Server.
+      *  @protected
+      *  Database server.
       */
       protected $__dbHost = null;
 
 
       /**
-      *  @private
-      *  Datenbank-Benutzer.
+      *  @protected
+      *  Database user.
       */
       protected $__dbUser = null;
 
 
       /**
-      *  @private
-      *  Datenbank-Passwort.
+      *  @protected
+      *  Password for the database.
       */
       protected $__dbPass = null;
 
 
       /**
-      *  @private
-      *  Datenbank-Name.
+      *  @protected
+      *  Name of the database.
       */
       protected $__dbName = null;
 
 
       /**
-      *  @private
-      *  Datenbank Debug-Mode?.
+      *  @protected
+      *  Indicates, if the handler runs in debug mode.
       */
       protected $__dbDebug = false;
 
 
       /**
-      *  @private
-      *  Datenbank-Verbindung.
+      *  @protected
+      *  Database connection resource.
       */
       protected $__dbConn = null;
 
 
       /**
-      *  @private
-      *  Instanz des Loggers.
+      *  @protected
+      *  Instance of the logger.
       */
       protected $__dbLog = null;
 
 
       /**
-      *  @private
-      *  Name der Log-Datei. Muss in der konkreten Implementierung definiert werden.
+      *  @protected
+      *  Name of the log file. Must be defined within the implementation class!
       */
       protected $__dbLogFileName;
 
 
       /**
-      *  @private
-      *  ID des letzten Inserts.
+      *  @protected
+      *  Auto increment id of the last insert.
       */
       protected $__lastInsertID;
 
@@ -113,45 +114,44 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte init()-Methode um eine Erzeugung per serviceManager<br />
-      *  zu unterstützen. Initialisiert den Handler einmalig.<br />
+      *  Implements the init() method, so that the derived classes can be initialized
+      *  by the service manager. Initializes the handler only one time.
       *
-      *  @param array $ConfigSection; Array mit Konfigurationsparametern
+      *  @param array $configSection Associative configuration array
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 10.02.2008<br />
       */
-      function init($ConfigSection){
+      function init($configSection){
 
-         // Prüfen, ob bereits initialisiert
          if($this->__isInitialized == false){
 
-            // Server setzen
-            if(isset($ConfigSection['DB.Host'])){
-               $this->__dbHost = $ConfigSection['DB.Host'];
+            // set server host
+            if(isset($configSection['DB.Host'])){
+               $this->__dbHost = $configSection['DB.Host'];
              // end if
             }
 
-            // Benutzer setzen
-            if(isset($ConfigSection['DB.User'])){
-               $this->__dbUser = $ConfigSection['DB.User'];
+            // set user name
+            if(isset($configSection['DB.User'])){
+               $this->__dbUser = $configSection['DB.User'];
              // end if
             }
 
-            // Passwort setzen
-            if(isset($ConfigSection['DB.Pass'])){
-               $this->__dbPass = $ConfigSection['DB.Pass'];
+            // set password
+            if(isset($configSection['DB.Pass'])){
+               $this->__dbPass = $configSection['DB.Pass'];
              // end if
             }
 
-            // Name der Datenbank setzen
-            $this->__dbName = $ConfigSection['DB.Name'];
+            // set name of the database
+            $this->__dbName = $configSection['DB.Name'];
 
-            // Debug Mode setzen
-            if(isset($ConfigSection['DB.DebugMode'])){
+            // set debug mode
+            if(isset($configSection['DB.DebugMode'])){
 
-               if($ConfigSection['DB.DebugMode'] == 'true' || $ConfigSection['DB.DebugMode'] == '1'){
+               if($configSection['DB.DebugMode'] == 'true' || $configSection['DB.DebugMode'] == '1'){
                   $this->__dbDebug = true;
                 // end if
                }
@@ -163,13 +163,8 @@
              // end if
             }
 
-            // Instanz des Loggers erzeugen
             $this->__dbLog = &Singleton::getInstance('Logger');
-
-            // Handler als initialisiert kennzeichnen
             $this->__isInitialized = true;
-
-            // Zur Datenbank verbinden
             $this->__connect();
 
           // end if
@@ -183,7 +178,7 @@
       *  @protected
       *  @abstract
       *
-      *  Abstrakte Interface-Methode für das Aufbauen einer Datenbank-Verbindung.<br />
+      *  Provides internal service to open a database connection.
       *
       *  @author Christian Achatz
       *  @version
@@ -197,7 +192,7 @@
       *  @protected
       *  @abstract
       *
-      *  Abstrakte Interface-Methode für das Schließen einer Datenbank-Verbindung.<br />
+      *  Provides internal service to close a database connection.
       *
       *  @author Christian Achatz
       *  @version
@@ -211,69 +206,68 @@
       *  @public
       *  @abstract
       *
-      *  Methode zum Ausführen eines Statements in einer Statementdatei.<br />
+      *  Executes a statement, located within a statement file.
       *
-      *  @param string $Namespace; Namespace der Statementdatei
-      *  @param string $StatementFile; Name der Statementdatei
-      *  @param array $Params; Parameter für das Statement
-      *  @param bool $ShowStatement; Indiziert, ob das Statement ausgegeben werden soll
-      *  @return resource $Result; Result-Ressource
+      *  @param string $namespace Namespace of the statement file
+      *  @param string $statementFile Name of the statement file (filebody!)
+      *  @param array $params A list of statement parameters
+      *  @param bool $showStatement Indicates, if the statement should be printed to screen
+      *  @return resource The database result resource
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 10.02.2008<br />
       */
-      abstract function executeStatement($Namespace,$StatementFile,$Params = array(),$ShowStatement = false);
+      abstract function executeStatement($namespace,$statementFile,$params = array(),$showStatement = false);
 
 
       /**
       *  @public
       *  @abstract
       *
-      *  Methode zum Ausführen eines Statements.<br />
+      *  Executes a statement applied as a string to the method and returns the
+      *  result pointer.
       *
-      *  @param string $Statement; Datenbankstatement
-      *  @return resource $Result; Result-Ressource
+      *  @param string $statement The statement string
+      *  @return resource The database result resource
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 10.02.2008<br />
       */
-      abstract function executeTextStatement($Statement);
+      abstract function executeTextStatement($statement);
 
 
       /**
       *  @public
       *  @abstract
       *
-      *  Methode zum Escapen von speziellen Zeichen.<br />
+      *  Escapes given values to be SQL injection save.
       *
-      *  @param string $Value; Zu escapender String
-      *  @return string $EcapedValue; Escapter String
+      *  @param string $value The unescaped value
+      *  @return string The escapted string
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 23.02.2008<br />
       */
-      abstract function escapeValue($Value){
-      }
+      abstract function escapeValue($value);
 
 
       /**
       *  @public
       *  @abstract
       *
-      *  Gibt die Anzahl der durch einen Update oder Delete betroffenen Datensätze zurück.<br />
+      *  Returns the amount of rows, that are affected by a previous update or delete call.
       *
-      *  @param resource $ResultResource; Ergebniszeiger
-      *  @return int $AffectedRows; Anzahl der betroffenen Datensätze
+      *  @param resource $resultResource The result resource pointer
+      *  @return int The number of affected rows
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 24.02.2008<br />
       */
-      abstract function getAffectedRows($ResultResource){
-      }
+      abstract function getAffectedRows($resultResource);
 
     // end class
    }
