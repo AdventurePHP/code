@@ -97,7 +97,7 @@
       *  @version
       *  Version 0.1, 08.09.2004<br />
       */
-      static static function generateTimeStamp(){
+      static function generateTimeStamp(){
          return date('Y-m-d H:i:s');
        // end function
       }
