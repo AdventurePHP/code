@@ -24,7 +24,7 @@
 
    // configure the registry if desired
    $Reg = &Singleton::getInstance('Registry');
-   $Reg->register('apf::core','Environment',{ENVIRONMENT});
+   $Reg->register('apf::core','Environment','{ENVIRONMENT}');
 
    // include SetupMapper
    import('modules::genericormapper::data::tools','GenericORMapperSetup');
@@ -33,14 +33,14 @@
    $SetupMapper = new GenericORMapperSetup();
 
    // set Context (important for the configuration files!)
-   $SetupMapper->set('Context',{CONTEXT});
+   $SetupMapper->set('Context','{CONTEXT}');
 
    // adapt storage engine (default is MyISAM)
    $SetupMapper->set('StorageEngine','...');
 
    // create database layout
-   $SetupMapper->setupDatabase({CONFIG_NAMESPACE},{CONFIG_NAME_AFFIX},{CONNECTION_NAME});
+   $SetupMapper->setupDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}','{CONNECTION_NAME}');
 
    // display database only
-   $SetupMapper->setupDatabase({CONFIG_NAMESPACE},{CONFIG_NAME_AFFIX});
+   $SetupMapper->setupDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}');
 ?>
