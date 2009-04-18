@@ -415,6 +415,7 @@
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.01.2007<br />
+      *  Version 0.2, 19.04.2009 (Bugfix: Parsing subsections returned an empty array!)<br />
       */
       private function __parseSubsections($subsectionArray){
 
@@ -422,7 +423,7 @@
 
          if(is_array($subsectionArray)){
 
-            foreach($concatenatedArray as $key => $value){
+            foreach($subsectionArray as $key => $value){
                $concatenatedArray = array_merge_recursive($concatenatedArray,$this->__generateSubArray($key,$value));
              // end foreach
             }

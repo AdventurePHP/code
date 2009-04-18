@@ -44,7 +44,7 @@
       /**
       *  @private
       *  @since 0.2
-      *  Sprache.
+      *  Current language.
       */
       private $__Language;
 
@@ -91,13 +91,13 @@
          if($Type == 'SINGLETON'){
 
             // ServiceObject instanziieren
-            $ServiceObject = &Singleton::getInstance($ServiceName);
+            $serviceObject = &Singleton::getInstance($ServiceName);
 
             // Falls Klasse von coreObject geerbt hat den Context setzen
-            if(is_subclass_of($ServiceObject,'coreObject')){
-               $ServiceObject->set('Context',$this->__Context);
-               $ServiceObject->set('Language',$this->__Language);
-               $ServiceObject->set('ServiceType','SINGLETON');
+            if(is_subclass_of($serviceObject,'coreObject')){
+               $serviceObject->set('Context',$this->__Context);
+               $serviceObject->set('Language',$this->__Language);
+               $serviceObject->set('ServiceType','SINGLETON');
              // end if
             }
             else{
@@ -116,13 +116,13 @@
             }
 
             // SerciceObject instanziieren
-            $ServiceObject = &SessionSingleton::getInstance($ServiceName);
+            $serviceObject = &SessionSingleton::getInstance($ServiceName);
 
             // Falls Klasse von coreObject geerbt hat den Context setzen
-            if(is_subclass_of($ServiceObject,'coreObject')){
-               $ServiceObject->set('Context',$this->__Context);
-               $ServiceObject->set('Language',$this->__Language);
-               $ServiceObject->set('ServiceType','SESSIONSINGLETON');
+            if(is_subclass_of($serviceObject,'coreObject')){
+               $serviceObject->set('Context',$this->__Context);
+               $serviceObject->set('Language',$this->__Language);
+               $serviceObject->set('ServiceType','SESSIONSINGLETON');
              // end if
             }
             else{
@@ -135,13 +135,13 @@
          elseif($Type == 'NORMAL'){
 
             // ServiceObject instanziieren
-            $ServiceObject = new $ServiceName();
+            $serviceObject = new $ServiceName();
 
             // Falls Klasse von coreObject geerbt hat den Context setzen
-            if(is_subclass_of($ServiceObject,'coreObject')){
-               $ServiceObject->set('Context',$this->__Context);
-               $ServiceObject->set('Language',$this->__Language);
-               $ServiceObject->set('ServiceType','NORMAL');
+            if(is_subclass_of($serviceObject,'coreObject')){
+               $serviceObject->set('Context',$this->__Context);
+               $serviceObject->set('Language',$this->__Language);
+               $serviceObject->set('ServiceType','NORMAL');
              // end if
             }
             else{
@@ -153,12 +153,12 @@
          }
          else{
             trigger_error('[serviceManager->getServiceObject()] The given type ('.$Type.') is not supported. Please provide one out of "SINGLETON", "SESSIONSINGLETON" or "NORMAL"',E_USER_WARNING);
-            $ServiceObject = null;
+            $serviceObject = null;
           // end else
          }
 
          // ServiceObject zurückgeben
-         return $ServiceObject;
+         return $serviceObject;
 
        // end function
       }
@@ -183,11 +183,11 @@
       function &getAndInitServiceObject($Namespace,$ServiceName,$InitParam,$Type = 'SINGLETON'){
 
          // ServiceObject holen
-         $ServiceObject = &$this->getServiceObject($Namespace,$ServiceName,$Type);
+         $serviceObject = &$this->getServiceObject($Namespace,$ServiceName,$Type);
 
          // ServiceObject initialisieren
-         if(in_array('init',get_class_methods($ServiceObject))){
-            $ServiceObject->init($InitParam);
+         if(in_array('init',get_class_methods($serviceObject))){
+            $serviceObject->init($InitParam);
           // end if
          }
          else{
@@ -196,7 +196,7 @@
          }
 
          // ServiceObject zurückgeben
-         return $ServiceObject;
+         return $serviceObject;
 
        // end function
       }
