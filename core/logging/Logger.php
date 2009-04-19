@@ -216,6 +216,7 @@
       *  Version 0.1, 29.03.2007<br />
       *  Version 0.2, 14.08.2008 (LogDir now is created during flush instead of during initialization)<br />
       *  Version 0.3, 18.03.2009 (After writing entries to file, the log container is now resetted)<br />
+      *  Version 0.4, 19.04.2009 (Suppressed mkdir() warning to make the error message nice)<br />
       */
       function flushLogBuffer(){
 
@@ -226,7 +227,7 @@
             if(!is_dir($this->__LogDir)){
 
                // try to create non existing log dir
-               if(!mkdir($this->__LogDir,$this->__LogFolderPermissions)){
+               if(!@mkdir($this->__LogDir,$this->__LogFolderPermissions)){
                   trigger_error('[Logger->Logger()] The log directory "'.$this->__LogDir.'" cannot be created du to permission restrictions! Please check config and specify the "LogDir" (namespace: "apf::core") parameter in the registry!');
                   exit();
                 // end if
@@ -244,10 +245,8 @@
                // generate complete log file pathe
                $LogFile = $this->__LogDir.'/'.$LogFileName;
 
-               // flush entries to filesystem
                if(count($LogEntries) > 0){
 
-                  // open file
                   $lFH = fopen($LogFile,'a+');
 
                   for($i = 0; $i < count($LogEntries); $i++){
