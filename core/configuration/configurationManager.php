@@ -83,12 +83,13 @@
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 30.01.2007<br />
-      *  Version 0.2, 31.01.2007 (Subsection wird auf array geprüft)<br />
-      *  Version 0.3, 16.11.2007 (trim() bei return entfernt, da es keinen Sinn macht)<br />
+      *  Version 0.2, 31.01.2007 (Added check for Subsection to be an array)<br />
+      *  Version 0.3, 16.11.2007 (removed senseless trim() during return)<br />
+      *  Version 0.4, 19.04.2009 (Bugfix: added check for the subsection to exist)<br />
       */
       function getSubSection($section,$name){
 
-         if(is_array($this->__Configuration[$section][$name])){
+         if(isset($this->__Configuration[$section][$name]) && is_array($this->__Configuration[$section][$name])){
             return $this->__Configuration[$section][$name];
           // end if
          }

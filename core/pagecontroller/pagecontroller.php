@@ -111,6 +111,7 @@
    import('core::errorhandler','errorhandler');
    import('core::exceptionhandler','exceptionhandler');
    import('core::service','serviceManager');
+   import('core::service','DIServiceManager');
    import('core::configuration','configurationManager');
    import('core::benchmark','benchmarkTimer');
    import('core::filter','FilterFactory');
@@ -822,38 +823,50 @@
       function transformContent(){
       }
 
+      /**
+       * @protected
+       *
+       * Returns a service object, that is initialized by dependency injection.
+       * For details see {@link DIServiceManager}.
+       *
+       * @param string $namespace The namespace of the service object definition.
+       * @param string $name The namne of the service object.
+       * @return coreObject The preconfigured service object.
+       */
+      protected function &__getDIServiceObject($namespace,$name){
+
+         $diServiceMgr = &Singleton::getInstance('DIServiceManager');
+         $diServiceMgr->set('Context',$this->__Context);
+         $diServiceMgr->set('Language',$this->__Language);
+         return $diServiceMgr->getServiceObject($namespace,$name);
+
+       // end function
+      }
 
       /**
       *  @protected
       *
       *  Returns a service object according to the current application context.
       *
-      *  @param string $Namespace; Namespace des Moduls / der Konfiguration
-      *  @param string $ServiceName; Name des Service Objekts
-      *  @param string $Type; Typ der Initialisierung des ServiceObjekts
-      *  @return object $ServiceObject; ServiceObject
+      *  @param string $namespace Namespace of the service object (currently ignored).
+      *  @param string $serviceName Name of the service object (=class name).
+      *  @param string $type The initializing type (see service manager for details).
+      *  @return coreObject $serviceObject The desired service object.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 07.03.2007<br />
-      *  Version 0.2, 08.03.2007 (Context wird nun aus dem aktuellen Objekt gezogen)<br />
-      *  Version 0.3, 10.03.2007 (Methode ist nun private)<br />
-      *  Version 0.4, 22.04.2007 (Um Übergabe der Sprache erweitert)<br />
-      *  Version 0.5, 24.02.2008 (Um weiteren Parameter $Type erweitert)<br />
+      *  Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
+      *  Version 0.3, 10.03.2007 (Method now is considered protected)<br />
+      *  Version 0.4, 22.04.2007 (Added language initializaton of the service manager)<br />
+      *  Version 0.5, 24.02.2008 (Added the service type param)<br />
       */
-      protected function &__getServiceObject($Namespace,$ServiceName,$Type = 'SINGLETON'){
+      protected function &__getServiceObject($namespace,$serviceName,$type = 'SINGLETON'){
 
-         // ServiceManager holen
          $serviceManager = &Singleton::getInstance('serviceManager');
-
-         // Eigenen Context beim ServiceManager bekannt machen
          $serviceManager->setContext($this->__Context);
-
-         // Sprache beim ServiceManager bekannt machen
          $serviceManager->setLanguage($this->__Language);
-
-         // ServiceObject zurückgeben
-         return $serviceManager->getServiceObject($Namespace,$ServiceName,$Type);
+         return $serviceManager->getServiceObject($namespace,$serviceName,$type);
 
        // end function
       }
@@ -864,31 +877,24 @@
       *
       *  Returns a initialized service object according to the current application context.
       *
-      *  @param string $Namespace; Namespace des Moduls / der Konfiguration
-      *  @param string $ServiceName; Name des Service Objekts
-      *  @param string $InitParam; Initialisierungs-Parameter
-      *  @param string $Type; Typ der Initialisierung des ServiceObjekts*
-      *  @return object $ServiceObject; ServiceObject
+      *  @param string $namespace Namespace of the service object (currently ignored).
+      *  @param string $serviceName Name of the service object (=class name).
+      *  @param string $InitParam The initialization parameter.
+      *  @param string $type The initializing type (see service manager for details).
+      *  @return coreObject $serviceObject The desired service object.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 29.03.2007<br />
-      *  Version 0.2, 22.04.2007 (Um Übergabe der Sprache erweitert)<br />
-      *  Version 0.3, 24.02.2008 (Um weiteren Parameter $Type erweitert)<br />
+      *  Version 0.2, 22.04.2007 (Added language initializaton of the service manager)<br />
+      *  Version 0.3, 24.02.2008 (Added the service type param)<br />
       */
-      protected function &__getAndInitServiceObject($Namespace,$ServiceName,$InitParam,$Type = 'SINGLETON'){
+      protected function &__getAndInitServiceObject($namespace,$serviceName,$initParam,$type = 'SINGLETON'){
 
-         // ServiceManager holen
          $serviceManager = &Singleton::getInstance('serviceManager');
-
-         // Eigenen Context beim ServiceManager bekannt machen
          $serviceManager->setContext($this->__Context);
-
-         // Sprache beim ServiceManager bekannt machen
          $serviceManager->setLanguage($this->__Language);
-
-         // ServiceObject zurückgeben
-         return $serviceManager->getAndInitServiceObject($Namespace,$ServiceName,$InitParam,$Type);
+         return $serviceManager->getAndInitServiceObject($namespace,$serviceName,$initParam,$type);
 
        // end function
       }
@@ -900,24 +906,20 @@
       *  Returns a configuration object according to the current application context and the given
       *  parameters.
       *
-      *  @param string $Namespace; Namespace des Moduls / der Konfiguration
-      *  @param string $ConfigName; Name der Konfiguration
-      *  @return object $Configuration; Konfigurations-Objekt
+      *  @param string $namespace The namespace of the configuration file.
+      *  @param string $configName The name of the configuration file.
+      *  @param boolean $parseSubsections Indicates, whether the configuration manager should parse subsections.
+      *  @return Configuration $configuration The desired configuration object.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 07.03.2007<br />
-      *  Version 0.2, 08.03.2007 (Context wird nun aus dem aktuellen Objekt gezogen)<br />
-      *  Version 0.3, 10.03.2007 (Methode ist nun private)<br />
+      *  Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
+      *  Version 0.3, 10.03.2007 (Method now is considered protected)<br />
       */
-      protected function &__getConfiguration($Namespace,$ConfigName){
-
-         // configurationManager holen
+      protected function &__getConfiguration($namespace,$configName,$parseSubsections = false){
          $configurationManager = &Singleton::getInstance('configurationManager');
-
-         // Configuration Objekt zurückgeben
-         return $configurationManager->getConfiguration($Namespace,$this->__Context,$ConfigName);
-
+         return $configurationManager->getConfiguration($namespace,$this->__Context,$configName,$parseSubsections);
        // end function
       }
 
