@@ -19,8 +19,6 @@
    *  -->
    */
 
-   import('core::service','serviceManager');
-
    /**
     * The DIServiceManager provides a dependency injection container for
     * creating preconfigured service objects similar to the {@link ServiceManager}.
@@ -88,6 +86,13 @@
        */
       private $__ConfigFileName = 'serviceobjects';
 
+      /**
+       * @private
+       * Contains the service objects, that were already configured.
+       */
+      private $__ServiceObjectCache = array();
+
+
       public function DIServiceManager(){
       }
 
@@ -106,12 +111,20 @@
        */
       public function &getServiceObject($configNamespace,$sectionName){
 
-         // invoke benchmarker
+         // Check, whether service object was created before. If yes, deliver it from cache.
+         $cacheKey = $configNamespace.'__'.$sectionName;
+         if(isset($this->__ServiceObjectCache[$cacheKey])){
+            return $this->__ServiceObjectCache[$cacheKey];
+          // end if
+         }
+
+         // Invoke benchmarker. Suppress warning for already started timers with circular calls!
+         // Suppressing is here done by a dirty '@', because we will run into an error anyway.
          $t = &Singleton::getInstance('benchmarkTimer');
          $benchId = 'DIServiceManager::getServiceObject('.$configNamespace.','.$sectionName.')';
-         $t->start($benchId);
+         @$t->start($benchId);
 
-         // get config to determine, which object to create. Parse subsections, to be able to
+         // Get config to determine, which object to create. Parse subsections, to be able to
          // easily separate the init/conf subsections.
          $config = &$this->__getConfiguration($configNamespace,$this->__ConfigFileName,true);
 
@@ -119,21 +132,22 @@
          $serviceType = $config->getValue($sectionName,'servicetype');
          $namespace = $config->getValue($sectionName,'namespace');
          $class = $config->getValue($sectionName,'class');
-         
+
+         // Check if configuration section was complete. If not throw an error.
          if($serviceType !== null && $namespace !== null && $class !== null){
 
-            // include the class, that it can be created
+            // include the class representing the service object
             if(!class_exists($class)){
-               import($namespace,$class);   
+               import($namespace,$class);
             }
 
-            // create the service object with use of the "normal" service manager
-            // perhaps, this is not possible, because we have to ensure, that the
-            // singleton objects are only treated once by the injection
-            // mechanism!!!
-            // But: if we constitute, that the injected service objects are often
-            // also singletons, this is no problem, because the injected instance
-            // is then only one time constructed initialized.
+            // Create the service object with use of the "normal" service manager. Perhaps, this
+            // may run into problems, because we have to ensure, that the singleton objects are
+            // only treated once by the injection mechanism!
+            // But: if we constitute, that the injected service objects are often also singletons
+            // and the DIServiceManager caches the created service objects within a singleton cache,
+            // this is no problem. Hence, the injected instance is then only one time constructed
+            // initialized.
             $serviceObject = &$this->__getServiceObject($namespace,$class,$serviceType);
 
             // do param injection (static configuration)
@@ -152,25 +166,23 @@
                      }
                      else{
 
-                        trigger_error('[DIServiceManager::getServiceObject()] Injection of configuration value "'.$directive['value'].
-                           '" cannot be accomplished to service object "'.$class.'" from namespace "'.$namespace.'"! Method '.
-                           $directive['method'].'() is not implemented!',
-                           E_USER_ERROR);
+                        trigger_error('[DIServiceManager::getServiceObject()] Injection of'
+                           .' configuration value "'.$directive['value']. '" cannot be accomplished'
+                           .' to service object "'.$class.'" from namespace "'.$namespace.'"! Method '
+                           .$directive['method'].'() is not implemented!',E_USER_ERROR);
                         exit();
 
                       // end else
                      }
 
-
-
                    // end if
                   }
                   else{
 
-                     trigger_error('[DIServiceManager::getServiceObject()] Initialization of the service object "'.
-                        $sectionName.'" cannot be accomplished, due to incorrect configuration! Please revise the "'.$initKey.
-                        '" sub section and consult the manual!',
-                        E_USER_ERROR);
+                     trigger_error('[DIServiceManager::getServiceObject()] Initialization of the'
+                        .' service object "'.$sectionName.'" cannot be accomplished, due to'
+                        .' incorrect configuration! Please revise the "'.$initKey.'" sub section and'
+                        .' consult the manual!',E_USER_ERROR);
                      exit();
 
                    // end else
@@ -197,17 +209,19 @@
 
                      if(!isset($this->__InjectionCallCache[$injectionKey])){
 
-                        // check, if method exists to avoid fatals
+                        // add the current run to the recursion detection array
+                        $this->__InjectionCallCache[$injectionKey] = true;
+
+                        // get the dependent service object
+                        $miObject = &$this->getServiceObject($directive['namespace'],$directive['name']);
+
+                        // inject the current service object with the created one
                         if(method_exists($serviceObject,$directive['method'])){
-
-                           $this->__InjectionCallCache[$injectionKey] = true;
-                           $miObject = &$this->getServiceObject($directive['namespace'],$directive['name']);
                            $serviceObject->{$directive['method']}($miObject);
-
                          // end if
                         }
                         else{
-
+                           
                            trigger_error('[DIServiceManager::getServiceObject()] Injection of service object "'.$directive['name'].
                               '" from namespace "'.$directive['namespace'].'" cannot be accomplished to service object "'.
                               $class.'" from namespace "'.$namespace.'"! Method '.$directive['method'].'() is not implemented!',
@@ -222,8 +236,8 @@
                      else{
 
                         // print note with shortend information
-                        trigger_error('[DIServiceManager::getServiceObject()] Detected circular injection: '.
-                           'class "'.$class.'" from namespace "'.$namespace.'" with service type "'.$serviceType.
+                        trigger_error('[DIServiceManager::getServiceObject()] Detected circular injection! '.
+                           'Class "'.$class.'" from namespace "'.$namespace.'" with service type "'.$serviceType.
                            '" was already configured with service object "'.$directive['name'].'" from namespace "'.
                            $directive['namespace'].'"! Full stack trace can be taken from the logfile!', E_USER_ERROR);
 
@@ -239,6 +253,7 @@
                       // end else
                      }
 
+                   // end if
                   }
                   else{
 
@@ -247,7 +262,7 @@
                         '" sub section and consult the manual!',
                         E_USER_ERROR);
                      exit();
-                     
+
                    // end else
                   }
 
@@ -261,16 +276,20 @@
          }
          else{
 
-            $reg = &Singleton::getInstance('Registry');
-            $env = $reg->retrieve('apf::core','Environment');
-            trigger_error('[DIServiceManager::getServiceObject()] No valid object definition section found for service object "'.$sectionName.'"! Please check the configuration file "'.$env.'_serviceobjects.ini" in namespace "'.$configNamespace.'" for context "'.$this->__Context.'".',E_USER_ERROR);
+            trigger_error('[DIServiceManager::getServiceObject()] Initialization of the service object "'.
+               $sectionName.'" from namespace "'.$configNamespace.'" cannot be accomplished, due to missing
+               or incorrect configuration! Please revise the configuration file and consult the manual!',
+               E_USER_ERROR);
             exit();
-            
+
           // end else
          }
 
          $t->stop($benchId);
-         return $serviceObject;
+
+         // add service object to cache and return it
+         $this->__ServiceObjectCache[$cacheKey] = $serviceObject;
+         return $this->__ServiceObjectCache[$cacheKey];
 
        // end function
       }
