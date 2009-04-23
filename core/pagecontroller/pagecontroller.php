@@ -2331,33 +2331,31 @@
          // Deklariert das notwendige TagLib-Modul
          $TagLibModule = 'html_taglib_placeholder';
 
-
          // Falls TagLib-Modul nicht vorhanden -> Fehler!
          if(!class_exists($TagLibModule)){
             trigger_error('['.get_class($this).'::setPlaceHolder()] TagLib module '.$TagLibModule.' is not loaded!',E_USER_ERROR);
           // end if
          }
 
-
          // Anzahl der Platzhalter zählen
-         $PlaceHolderCount = 0;
-
+         $placeHolderCount = 0;
 
          // Prüfen, ob Kinder existieren
-         if(count($this->__Document->__Children) > 0){
+         $children = &$this->__Document->getByReference('Children');
+         if(count($children) > 0){
 
             // Platzhalter setzen
-            foreach($this->__Document->__Children as $ObjectID => $Child){
+            foreach($children as $objectID => $DUMMY){
 
                // Klassen mit dem Namen "$TagLibModule" aus den Child-Objekten des
                // aktuellen "Document"s aussuchen
-               if(get_class($Child) == $TagLibModule){
+               if(get_class($children[$objectID]) == $TagLibModule){
 
                   // Klassen mit dem auf den Attribut Namen lautenden Namen suchen
                   // und den gewünschten Inhalt einsetzen
-                  if($Child->__Attributes['name'] == $Name){
-                     $this->__Document->__Children[$ObjectID]->set('Content',$Value);
-                     $PlaceHolderCount++;
+                  if($children[$objectID]->__Attributes['name'] == $Name){
+                     $children[$objectID]->set('Content',$Value);
+                     $placeHolderCount++;
                    // end if
                   }
 
@@ -2370,16 +2368,13 @@
           // end if
          }
          else{
-
-            // Falls keine Kinder existieren -> Fehler!
             trigger_error('['.get_class($this).'::setPlaceHolder()] No placeholder object with name "'.$Name.'" composed in current document for document controller "'.get_class($this).'"! Perhaps tag library html:placeholder is not loaded in current template!',E_USER_ERROR);
             exit();
-
           // end else
          }
 
-         // Warnen, falls kein Platzhalter gefunden wurde
-         if($PlaceHolderCount < 1){
+         // warn, if no place holder is found
+         if($placeHolderCount < 1){
             trigger_error('['.get_class($this).'::setPlaceHolder()] There are no placeholders found for name "'.$Name.'" in document controller "'.get_class($this).'"!',E_USER_WARNING);
           // end if
          }
@@ -2389,7 +2384,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Implementiert eine Methode, mit der innerhalb des DocumentControllers auf eine Form zugegriffen<br />
       *  werden kann. Hierzu ist die TagLib-Klasse "html_taglib_form" notwendig.<br />
@@ -2404,27 +2399,26 @@
          // Deklariert das notwendige TagLbib-Modul
          $TagLibModule = 'html_taglib_form';
 
-
          // Falls TagLib-Modul nicht vorhanden -> Fehler!
          if(!class_exists($TagLibModule)){
             trigger_error('['.get_class($this).'::__getForm()] TagLib module "'.$TagLibModule.'" is not loaded!',E_USER_ERROR);
           // end if
          }
 
-
          // Prüfen, ob Kinder existieren
-         if(count($this->__Document->__Children) > 0){
+         $children = &$this->__Document->getByReference('Children');
+         if(count($children) > 0){
 
             // Templates aus dem aktuellen Document bereitstellen
-            foreach($this->__Document->__Children as $ObjectID => $Child){
+            foreach($children as $objectID => $DUMMY){
 
                // Klassen mit dem Namen "$TagLibModule" aus den Child-Objekten des
                // aktuellen "Document"s als Referenz zurückgeben
-               if(get_class($Child) == $TagLibModule){
+               if(get_class($children[$objectID]) == $TagLibModule){
 
                   // Prüfen, ob das gefundene Template $Name heißt.
-                  if($Child->getAttribute('name') == $Name){
-                     return $this->__Document->__Children[$ObjectID];
+                  if($children[$objectID]->getAttribute('name') == $Name){
+                     return $children[$objectID];
                    // end if
                   }
 
@@ -2437,14 +2431,10 @@
           // end if
          }
          else{
-
-            // Falls keine Kinder existieren -> Fehler!
             trigger_error('['.get_class($this).'::__getForm()] No form object with name "'.$Name.'" composed in current document for document controller "'.get_class($this).'"! Perhaps tag library html:form is not loaded in current document!',E_USER_ERROR);
             exit();
-
           // end else
          }
-
 
          // Falls das Template nicht gefunden werden kann -> Fehler!
          trigger_error('['.get_class($this).'::__getForm()] Form with name "'.$Name.'" cannot be found in document controller "'.get_class($this).'"!',E_USER_ERROR);
@@ -2455,7 +2445,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Implementiert eine Methode, mit der innerhalb des DocumentControllers auf ein Content-Template zugegriffen<br />
       *  werden kann. Hierzu ist die TagLib-Klasse "html_taglib_template" notwendig.<br />
@@ -2471,27 +2461,26 @@
          // Deklariert das notwendige TagLib-Modul
          $TagLibModule = 'html_taglib_template';
 
-
          // Falls TagLib-Modul nicht vorhanden -> Fehler!
          if(!class_exists($TagLibModule)){
             trigger_error('['.get_class($this).'::__getTemplate()] TagLib module "'.$TagLibModule.'" is not loaded!',E_USER_ERROR);
           // end if
          }
 
-
          // Prüfen, ob Kinder existieren
-         if(count($this->__Document->__Children) > 0){
+         $children = &$this->__Document->getByReference('Children');
+         if(count($children) > 0){
 
             // Templates aus dem aktuellen Document bereitstellen
-            foreach($this->__Document->__Children as $ObjectID => $Child){
+            foreach($children as $objectID => $DUMMY){
 
                // Klassen mit dem Namen "$TagLibModule" aus den Child-Objekten des
                // aktuellen "Document"s als Referenz zurückgeben
-               if(get_class($Child) == $TagLibModule){
+               if(get_class($children[$objectID]) == $TagLibModule){
 
                   // Prüfen, ob das gefundene Template $Name heißt.
-                  if($Child->getAttribute('name') == $Name){
-                     return $this->__Document->__Children[$ObjectID];
+                  if($children[$objectID]->getAttribute('name') == $Name){
+                     return $children[$objectID];
                    // end if
                   }
 
@@ -2504,14 +2493,10 @@
           // end if
          }
          else{
-
-            // Falls keine Kinder existieren -> Fehler!
             trigger_error('['.get_class($this).'::__getTemplate()] No template object with name "'.$Name.'" composed in current document for document controller "'.get_class($this).'"! Perhaps tag library html:template is not loaded in current template!',E_USER_ERROR);
             exit();
-
           // end else
          }
-
 
          // Falls das Template nicht gefunden werden kann -> Fehler!
          trigger_error('['.get_class($this).'::__getTemplate()] Template with name "'.$Name.'" cannot be found!',E_USER_ERROR);
@@ -2522,7 +2507,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Prüft, ob ein Platzhalter im aktuellen Template vorhanden ist.<br />
       *
@@ -2536,10 +2521,10 @@
       function __placeholderExists($Name){
 
          // Kinder des aktuellen Dokuments holen
-         $Children = &$this->__Document->getByReference('Children');
+         $children = &$this->__Document->getByReference('Children');
 
          // Kinder prüfen
-         foreach($Children as $Key => $Child){
+         foreach($children as $Key => $Child){
 
             // Auf Platzhalter-Kinder prüfen
             if(get_class($Child) == 'html_taglib_placeholder'){
@@ -2564,7 +2549,7 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Prüft, ob ein Platzhalter im aktuellen Template vorhanden ist.<br />
       *
