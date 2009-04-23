@@ -2084,13 +2084,13 @@
          if(count($this->__Children) > 0){
 
             // check, if template place holder exists within the children list
-            foreach($this->__Children as $ObjectID => $Child){
+            foreach($this->__Children as $ObjectID => $DUMMY){
 
                // check, if current child is a plece holder
-               if(get_class($Child) == $TagLibModule){
+               if(get_class($this->__Children[$ObjectID]) == $TagLibModule){
 
                   // check, if current child is the desired place holder
-                  if($Child->getAttribute('name') == $Name){
+                  if($this->__Children[$ObjectID]->getAttribute('name') == $Name){
 
                      // set content of the placeholder
                      $this->__Children[$ObjectID]->set('Content',$Value);
@@ -2353,7 +2353,7 @@
 
                   // Klassen mit dem auf den Attribut Namen lautenden Namen suchen
                   // und den gewünschten Inhalt einsetzen
-                  if($children[$objectID]->__Attributes['name'] == $Name){
+                  if($children[$objectID]->getAttribute('name') == $Name){
                      $children[$objectID]->set('Content',$Value);
                      $placeHolderCount++;
                    // end if
