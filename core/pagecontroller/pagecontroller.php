@@ -2043,23 +2043,23 @@
          $TagLibModule = 'template_taglib_placeholder';
 
          // initialize place holder count
-         $PlaceHolderCount = 0;
+         $placeHolderCount = 0;
 
          // check, if tag has children
          if(count($this->__Children) > 0){
 
             // check, if template place holder exists within the children list
-            foreach($this->__Children as $ObjectID => $Child){
+            foreach($this->__Children as $objectID => $DUMMY){
 
                // check, if current child is a plece holder
-               if(get_class($Child) == $TagLibModule){
+               if(get_class($this->__Children[$objectID]) == $TagLibModule){
 
                   // check, if current child is the desired place holder
-                  if($Child->getAttribute('name') == $Name){
+                  if($this->__Children[$objectID]->getAttribute('name') == $Name){
 
                      // set content of the placeholder
-                     $this->__Children[$ObjectID]->set('Content',$Value);
-                     $PlaceHolderCount++;
+                     $this->__Children[$objectID]->set('Content',$Value);
+                     $placeHolderCount++;
 
                    // end if
                   }
@@ -2082,7 +2082,7 @@
          }
 
          // thorw error, if no children are composed under the current tag
-         if($PlaceHolderCount < 1){
+         if($placeHolderCount < 1){
             trigger_error('[html_taglib_template::setPlaceHolder()] There are no placeholders found for name "'.$Name.'" in template "'.($this->__Attributes['name']).'" in document controller "'.($this->__ParentObject->__DocumentController).'"!',E_USER_WARNING);
           // end if
          }
@@ -2290,39 +2290,35 @@
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
+      *  Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
       */
       function setPlaceHolder($Name,$Value){
 
-         // Deklariert das notwendige TagLib-Modul
          $TagLibModule = 'html_taglib_placeholder';
-
 
          // Falls TagLib-Modul nicht vorhanden -> Fehler!
          if(!class_exists($TagLibModule)){
-            trigger_error('['.get_class($this).'::setPlaceHolder()] TagLib module '.$TagLibModule.' is not loaded!',E_USER_ERROR);
+            trigger_error('['.get_class($this).'::setPlaceHolder()] TagLib module '
+               .$TagLibModule.' is not loaded!',E_USER_ERROR);
           // end if
          }
 
+         $placeHolderCount = 0;
 
-         // Anzahl der Platzhalter zählen
-         $PlaceHolderCount = 0;
+         $children = &$this->__Document->getByReference('Children');
+         if(count($children) > 0){
 
-
-         // Prüfen, ob Kinder existieren
-         if(count($this->__Document->__Children) > 0){
-
-            // Platzhalter setzen
-            foreach($this->__Document->__Children as $ObjectID => $Child){
+            foreach($children as $objectID => $DUMMY){
 
                // Klassen mit dem Namen "$TagLibModule" aus den Child-Objekten des
                // aktuellen "Document"s aussuchen
-               if(get_class($Child) == $TagLibModule){
+               if(get_class($children[$objectID]) == $TagLibModule){
 
                   // Klassen mit dem auf den Attribut Namen lautenden Namen suchen
                   // und den gewünschten Inhalt einsetzen
-                  if($Child->__Attributes['name'] == $Name){
-                     $this->__Document->__Children[$ObjectID]->set('Content',$Value);
-                     $PlaceHolderCount++;
+                  if($children[$objectID]->getAttribute('name') == $Name){
+                     $children[$objectID]->set('Content',$Value);
+                     $placeHolderCount++;
                    // end if
                   }
 
@@ -2335,17 +2331,17 @@
           // end if
          }
          else{
-
-            // Falls keine Kinder existieren -> Fehler!
-            trigger_error('['.get_class($this).'::setPlaceHolder()] No placeholder object with name "'.$Name.'" composed in current document for document controller "'.get_class($this).'"! Perhaps tag library html:placeholder is not loaded in current template!',E_USER_ERROR);
+            trigger_error('['.get_class($this).'::setPlaceHolder()] No placeholder object with name "'
+               .$Name.'" composed in current document for document controller "'.get_class($this)
+               .'"! Perhaps tag library html:placeholder is not loaded in current template!',E_USER_ERROR);
             exit();
-
           // end else
          }
 
-         // Warnen, falls kein Platzhalter gefunden wurde
-         if($PlaceHolderCount < 1){
-            trigger_error('['.get_class($this).'::setPlaceHolder()] There are no placeholders found for name "'.$Name.'" in document controller "'.get_class($this).'"!',E_USER_WARNING);
+         // warn, if no place holder is found
+         if($placeHolderCount < 1){
+            trigger_error('['.get_class($this).'::setPlaceHolder()] There are no placeholders found for name "'
+               .$Name.'" in document controller "'.get_class($this).'"!',E_USER_WARNING);
           // end if
          }
 
@@ -2366,30 +2362,26 @@
       */
       protected function &__getForm($Name){
 
-         // Deklariert das notwendige TagLbib-Modul
          $TagLibModule = 'html_taglib_form';
-
 
          // Falls TagLib-Modul nicht vorhanden -> Fehler!
          if(!class_exists($TagLibModule)){
-            trigger_error('['.get_class($this).'::__getForm()] TagLib module "'.$TagLibModule.'" is not loaded!',E_USER_ERROR);
+            trigger_error('['.get_class($this).'::__getForm()] TagLib module "'
+               .$TagLibModule.'" is not loaded!',E_USER_ERROR);
           // end if
          }
 
+         $children = &$this->__Document->getByReference('Children');
+         if(count($children) > 0){
 
-         // Prüfen, ob Kinder existieren
-         if(count($this->__Document->__Children) > 0){
-
-            // Templates aus dem aktuellen Document bereitstellen
-            foreach($this->__Document->__Children as $ObjectID => $Child){
+            foreach($children as $objectID => $DUMMY){
 
                // Klassen mit dem Namen "$TagLibModule" aus den Child-Objekten des
                // aktuellen "Document"s als Referenz zurückgeben
-               if(get_class($Child) == $TagLibModule){
+               if(get_class($children[$objectID]) == $TagLibModule){
 
-                  // Prüfen, ob das gefundene Template $Name heißt.
-                  if($Child->getAttribute('name') == $Name){
-                     return $this->__Document->__Children[$ObjectID];
+                  if($children[$objectID]->getAttribute('name') == $Name){
+                     return $children[$objectID];
                    // end if
                   }
 
@@ -2402,17 +2394,16 @@
           // end if
          }
          else{
-
-            // Falls keine Kinder existieren -> Fehler!
-            trigger_error('['.get_class($this).'::__getForm()] No form object with name "'.$Name.'" composed in current document for document controller "'.get_class($this).'"! Perhaps tag library html:form is not loaded in current document!',E_USER_ERROR);
+            trigger_error('['.get_class($this).'::__getForm()] No form object with name "'
+               .$Name.'" composed in current document for document controller "'.get_class($this)
+               .'"! Perhaps tag library html:form is not loaded in current document!',E_USER_ERROR);
             exit();
-
           // end else
          }
 
-
          // Falls das Template nicht gefunden werden kann -> Fehler!
-         trigger_error('['.get_class($this).'::__getForm()] Form with name "'.$Name.'" cannot be found in document controller "'.get_class($this).'"!',E_USER_ERROR);
+         trigger_error('['.get_class($this).'::__getForm()] Form with name "'
+            .$Name.'" cannot be found in document controller "'.get_class($this).'"!',E_USER_ERROR);
          exit();
 
        // end function
@@ -2430,33 +2421,31 @@
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 03.01.2007 (Bug behoben, dass immer erstes Template referenziert wurde)<br />
       *  Version 0.3, 12.01.2006 (Von "__getContentTemplate" nach "__getTemplate" umbenannt, wg. Einführung von "__getForm")<br />
+      *  Version 0.4, 23.04.2009 (Corrected PHP4 style object access)<br />
       */
       protected function &__getTemplate($Name){
 
          // Deklariert das notwendige TagLib-Modul
          $TagLibModule = 'html_taglib_template';
 
-
          // Falls TagLib-Modul nicht vorhanden -> Fehler!
          if(!class_exists($TagLibModule)){
-            trigger_error('['.get_class($this).'::__getTemplate()] TagLib module "'.$TagLibModule.'" is not loaded!',E_USER_ERROR);
+            trigger_error('['.get_class($this).'::__getTemplate()] TagLib module "'
+               .$TagLibModule.'" is not loaded!',E_USER_ERROR);
           // end if
          }
 
+         $children = &$this->__Document->getByReference('Children');
+         if(count($children) > 0){
 
-         // Prüfen, ob Kinder existieren
-         if(count($this->__Document->__Children) > 0){
-
-            // Templates aus dem aktuellen Document bereitstellen
-            foreach($this->__Document->__Children as $ObjectID => $Child){
+            foreach($children as $objectID => $DUMMY){
 
                // Klassen mit dem Namen "$TagLibModule" aus den Child-Objekten des
                // aktuellen "Document"s als Referenz zurückgeben
-               if(get_class($Child) == $TagLibModule){
+               if(get_class($children[$objectID]) == $TagLibModule){
 
-                  // Prüfen, ob das gefundene Template $Name heißt.
-                  if($Child->getAttribute('name') == $Name){
-                     return $this->__Document->__Children[$ObjectID];
+                  if($children[$objectID]->getAttribute('name') == $Name){
+                     return $children[$objectID];
                    // end if
                   }
 
@@ -2469,17 +2458,16 @@
           // end if
          }
          else{
-
-            // Falls keine Kinder existieren -> Fehler!
-            trigger_error('['.get_class($this).'::__getTemplate()] No template object with name "'.$Name.'" composed in current document for document controller "'.get_class($this).'"! Perhaps tag library html:template is not loaded in current template!',E_USER_ERROR);
+            trigger_error('['.get_class($this).'::__getTemplate()] No template object with name "'
+               .$Name.'" composed in current document for document controller "'.get_class($this)
+               .'"! Perhaps tag library html:template is not loaded in current template!',E_USER_ERROR);
             exit();
-
           // end else
          }
 
-
          // Falls das Template nicht gefunden werden kann -> Fehler!
-         trigger_error('['.get_class($this).'::__getTemplate()] Template with name "'.$Name.'" cannot be found!',E_USER_ERROR);
+         trigger_error('['.get_class($this).'::__getTemplate()] Template with name "'
+            .$Name.'" cannot be found!',E_USER_ERROR);
          exit();
 
        // end function
@@ -2489,28 +2477,25 @@
       /**
       *  @protected
       *
-      *  Prüft, ob ein Platzhalter im aktuellen Template vorhanden ist.<br />
+      *  Prüft, ob ein Platzhalter im aktuellen Template vorhanden ist.
       *
-      *  @param string $Name; Name des Platzhalters
-      *  @return bool $Exists; true | false
+      *  @param string $name Name of the place holder
+      *  @return bool true | false
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 11.03.2007<br />
+      *  Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
       */
-      protected function __placeholderExists($Name){
+      protected function __placeholderExists($name){
 
-         // Kinder des aktuellen Dokuments holen
-         $Children = &$this->__Document->getByReference('Children');
+         $children = &$this->__Document->getByReference('Children');
 
-         // Kinder prüfen
-         foreach($Children as $Key => $Child){
+         foreach($children as $objectID => $DUMMY){
 
-            // Auf Platzhalter-Kinder prüfen
-            if(get_class($Child) == 'html_taglib_placeholder'){
+            if(get_class($children[$objectID]) == 'html_taglib_placeholder'){
 
-               // Auf Namen prüfen
-               if($Child->getAttribute('name') == $Name){
+               if($children[$objectID]->getAttribute('name') == $name){
                   return true;
                 // end if
                }
@@ -2521,7 +2506,6 @@
           // end foreach
          }
 
-         // False zurückgeben
          return false;
 
        // end function
@@ -2533,26 +2517,23 @@
       *
       *  Prüft, ob ein Platzhalter im aktuellen Template vorhanden ist.<br />
       *
-      *  @param string $Name; Name des Platzhalters
-      *  @return bool $Exists; true | false
+      *  @param string $name; Name des Platzhalters
+      *  @return bool $exists; true | false
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 11.03.2007<br />
+      *  Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
       */
-      protected function __templatePlaceholderExists(&$Template,$Name){
+      protected function __templatePlaceholderExists(&$template,$name){
 
-         // Kinder des Templates holen
-         $Children = &$Template->getByReference('Children');
+         $children = &$template->getByReference('Children');
 
-         // Kinder prüfen
-         foreach($Children as $Key => $Child){
+         foreach($children as $objectID => $DUMMY){
 
-            // Auf Platzhalter-Kinder prüfen
-            if(get_class($Child) == 'template_taglib_placeholder'){
+            if(get_class($children[$objectID]) == 'template_taglib_placeholder'){
 
-               // Auf Namen prüfen
-               if($Child->getAttribute('name') == $Name){
+               if($children[$objectID]->getAttribute('name') == $name){
                   return true;
                 // end if
                }
@@ -2563,7 +2544,6 @@
           // end foreach
          }
 
-         // False zurückgeben
          return false;
 
        // end function
