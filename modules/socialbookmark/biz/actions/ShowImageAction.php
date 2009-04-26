@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -19,11 +19,14 @@
    *  -->
    */
 
+   session_cache_limiter('none');
+   import('tools::http','HeaderManager');
+
    /**
    *  @namespace modules::socialbookmark::biz::actions
    *  @class ShowImageAction
    *
-   *  Action für die Ausgabe der Icons.<br />
+   *  Implements a front controller action to display the bookmark icons.
    *
    *  @author Christian W. Schäfer
    *  @version
@@ -35,30 +38,34 @@
       function ShowImageAction(){
       }
 
-
       /**
       *  @public
       *
-      *  Implementiert die Interface-Methode "run()" der AbstractFrontcontrollerAction.<br />
+      *  Displays the image with respect of some caching headers.
       *
       *  @author Christian W. Schäfer
       *  @version
       *  Version 0.1, 07.09.2007<br />
+      *  Version 0.2, 26.04.2009 (Added caching header)<br />
       */
       function run(){
 
-         // Bild aus dem Input-Objekt beenden
+         // retrieve image information from the input object
          $Image = APPS__PATH.'/modules/socialbookmark/pres/image/'.$this->__Input->getAttribute('img').'.'.$this->__Input->getAttribute('imgext');
 
-         // Header senden
-         header('Content-type: image/'.$this->__Input->getAttribute('imgext'));
-         header('Cache-Control: public');
+         // send headers to allow caching
+         HeaderManager::send('Content-Type: image/'.$this->__Input->getAttribute('imgext'));
+         $delta = 7 * 24 * 60 * 60; // chaching for 7 days
+         HeaderManager::send('Cache-Control: public; max-age='.$delta);
+         $modifiedDate = date('D, d M Y H:i:s \G\M\T', time());
+         HeaderManager::send('Last-Modified: '.$modifiedDate);
+         $expiresDate = date('D, d M Y H:i:s \G\M\T', time() + $delta);
+         HeaderManager::send('Expires: '.$expiresDate);
 
-         // Datei streamen
+         // stream file
          readfile($Image);
 
-         // Abarbeitung beenden
-         exit();
+         exit(0);
 
        // end function
       }
