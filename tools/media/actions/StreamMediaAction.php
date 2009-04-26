@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -19,7 +19,11 @@
    *  -->
    */
 
+   session_cache_limiter('none');
+   import('tools::http','HeaderManager');
+   
    /**
+   *  @namespace tools::media::actions
    *  @class StreamMediaAction
    *
    *  Implementation of the streamMesia action, that streams various media files (css, image, ...)
@@ -45,19 +49,18 @@
                                   'xml' => 'text/xml'
                                  );
 
-
       function StreamMediaAction(){
       }
-
 
       /**
       *  @public
       *
-      *  Implements the action's run method.
+      *  Displays the requested image with respect to caching headers.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 01.11.2008<br />
+      *  Version 0.2, 26.04.2009 (Added caching header)<br />
       */
       function run(){
 
@@ -73,10 +76,17 @@
          // send desired header
          header('Content-Type: '.$contentType);
 
+         // send headers to allow caching
+         $delta = 7 * 24 * 60 * 60; // chaching for 7 days
+         HeaderManager::send('Cache-Control: public; max-age='.$delta);
+         $modifiedDate = date('D, d M Y H:i:s \G\M\T', time());
+         HeaderManager::send('Last-Modified: '.$modifiedDate);
+         $expiresDate = date('D, d M Y H:i:s \G\M\T', time() + $delta);
+         HeaderManager::send('Expires: '.$expiresDate);
+
          // send content
          @readfile(APPS__PATH.'/'.$namespace.'/'.$filename);
 
-         // end program
          exit(0);
 
        // end function
@@ -88,8 +98,8 @@
       *
       *  Returns the content type suitable for the given file extension.
       *
-      *  @param string $extension the file extension
-      *  @return string $contentType the desired content type or "application/octet-stream" when extension is unknown
+      *  @param string $extension The given file extension.
+      *  @return string The desired content type or "application/octet-stream" when extension is unknown.
       *
       *  @author Christian Achatz
       *  @version
