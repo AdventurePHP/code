@@ -1,0 +1,12 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::user" file="remfromgroup_controller" class="umgt_remfromgroup_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:form name="Group" method="post">
+  In order to remove the user from this group, please choose one of the following groups:
+  <br />
+  <br />
+  <form:multiselect name="Groups[]" validate="true" button="Rem" />
+  <br />
+  <br />
+  <form:button name="Rem" value="Remove" class="formfield"/>
+</html:form>
+<html:template name="NoMoreGroups">This user is not assigned to any group!</html:template>

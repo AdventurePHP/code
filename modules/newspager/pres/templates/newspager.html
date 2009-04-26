@@ -1,0 +1,206 @@
+<@controller namespace="modules::newspager::pres::documentcontroller" file="newspager_v1_controller" class="newspager_v1_controller" @>
+<script type="text/javascript">
+   // declare variable to be initialized with the XMLHttpRequest object
+   var xhttp;
+
+   // declare current page number
+   var pagenumber = 1;
+
+   // declace news count
+   var newscount = <html:placeholder name="NewsCount" />;
+
+   // declare current language
+   var language = "<html:placeholder name="NewsLanguage" />";
+
+
+   /**
+   *  @module createXMLHttpRequest()
+   *
+   *  Initialize the XMLHttpRequest object
+   *
+   *  @author Christian Achatz
+   *  @version
+   *  Revision 0.1, 02.02.2008
+   */
+   function createXMLHttpRequest(){
+
+     if(window.ActiveXObject){
+
+          try{
+             // IE 6 and higher
+             xhttp = new ActiveXObject("MSXML2.XMLHTTP");
+           // end try
+          }
+          catch (e){
+
+              try{
+                 // IE 5
+                 xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+               // end try
+              }
+              catch (e){
+                 xhttp = false;
+               // end catch
+              }
+
+           // end catch
+          }
+
+       // end if
+      }
+      else if(window.XMLHttpRequest){
+
+          try{
+             // Mozilla, Opera, Safari ...
+             xhttp = new XMLHttpRequest();
+           // end try
+          }
+          catch (e){
+             xhttp = false;
+           // end catch
+          }
+
+       // end else if
+      }
+
+    // end function
+   }
+
+
+   /**
+   *  @module next()
+   *
+   *  Send the next request
+   *
+   *  @author Christian Achatz
+   *  @version
+   *  Revision 0.1, 02.02.2008
+   */
+   function next(){
+
+      // check if XMLHTTPRequest object is initialized correctly
+      if(!xhttp){
+         alert("An Error occured when trying to initialize the XMLHttpRequest object!");
+         return;
+       // end if
+      }
+
+      // increment page number
+      pagenumber = pagenumber + 1;
+
+      // create request
+      var request = "<html:placeholder name="NewsServiceBaseURL" />" + pagenumber + "<html:placeholder name="NewsServiceLangParam" />" + language + "<html:placeholder name="NewsServiceDataDir" />";
+
+      // send request for next news
+      xhttp.open("GET",request,true);
+      xhttp.onreadystatechange = updateNewsContent;
+      xhttp.send(null);
+
+    // end function
+   }
+
+
+   /**
+   *  @module prev()
+   *
+   *  Send the prev request
+   *
+   *  @author Christian Achatz
+   *  @version
+   *  Revision 0.1, 02.02.2008
+   */
+   function prev(){
+
+      // check if XMLHTTPRequest object is initialized correctly
+      if(!xhttp){
+         alert("An Error occured when trying to initialize the XMLHttpRequest object!");
+         return;
+       // end if
+      }
+
+      // decrement page number
+      pagenumber = pagenumber - 1;
+
+      // create request
+      var request = "<html:placeholder name="NewsServiceBaseURL" />" + pagenumber + "<html:placeholder name="NewsServiceLangParam" />" + language + "<html:placeholder name="NewsServiceDataDir" />";
+
+      // send request for next or prev news page
+      xhttp.open("GET",request,true);
+      xhttp.onreadystatechange = updateNewsContent;
+      xhttp.send(null);
+
+    // end function
+   }
+
+
+   /**
+   *  @module prev()
+   *
+   *  Update the news content (callback function for next() and prev())
+   *
+   *  @author Christian Achatz
+   *  @version
+   *  Revision 0.1, 02.02.2008
+   */
+   function updateNewsContent() {
+
+      // check for ready loadad and HTTP status 200 (OK)
+      if(xhttp.readyState == 4 && xhttp.status == 200){
+
+         // get request xml
+         var responseXML = xhttp.responseXML;
+
+         // insert xml values into the desired spans
+         document.getElementById("newspager_headline").innerHTML = responseXML.getElementsByTagName('news').item(0).childNodes[0].textContent;
+         document.getElementById("newspager_subheadline").innerHTML = responseXML.getElementsByTagName('news').item(0).childNodes[1].textContent;
+         document.getElementById("newspager_content").innerHTML = responseXML.getElementsByTagName('news').item(0).childNodes[2].textContent;
+
+         // extract news count out of the xml
+         var newscount = responseXML.getElementsByTagName('news').item(0).childNodes[3].textContent;
+
+         // enable prev and next button by default
+         document.getElementById("newspager_prev_button").style.visibility = "visible";
+         document.getElementById("newspager_next_button").style.visibility = "visible";
+
+         // disable next button if desired
+         if(pagenumber >= newscount){
+            document.getElementById("newspager_next_button").style.visibility = "hidden";
+          // end if
+         }
+
+         // disable prev button if desired
+         if(pagenumber <= 1){
+            document.getElementById("newspager_prev_button").style.visibility = "hidden";
+            pagenumber = 1;
+          // end if
+         }
+
+       // end if
+      }
+
+    // end function
+   }
+
+   // execute createXMLHttpRequest() on window load
+   window.onload = createXMLHttpRequest;
+</script>
+<div style="width: 300px; float: right; border: 1px dashed #777BB4; margin: 10px;">
+  <table cellpadding="0" cellspacing="0">
+    <tr>
+      <td style="text-align: center; vertical-align: center; width: 15px; background-color: #777BB4; font-size: 16px;">
+        <span id="newspager_prev_button" style="font-weight: bold; cursor: pointer; visibility: hidden;" onclick="prev();">&lt;</span>
+      </td>
+      <td style="width: 270px; height: 80px; padding: 2px; vertical-align: top; text-align: left;">
+        <span id="newspager_headline" style="font-variant: small-caps; font-size: 16px; font-weight: bold;"><html:placeholder name="Headline" /></span>
+        <br />
+        <span id="newspager_subheadline" style="font-size: 12px; font-style: italic;"><html:placeholder name="Subheadline" /></span>
+        <br />
+        <br />
+        <span id="newspager_content" style="font-size: 11px;"><html:placeholder name="Content" /></span>
+      </td>
+      <td style="text-align: center; vertical-align: center; width: 15px; background-color: #777BB4; font-size: 16px;">
+        <span id="newspager_next_button" style="font-weight: bold; cursor: pointer;" onclick="next();">&gt;</span>
+      </td>
+    </tr>
+  </table>
+</div>

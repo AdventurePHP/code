@@ -1,0 +1,12 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::role" file="ass2user_controller" class="umgt_ass2user_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:form name="User" method="post">
+  Please choose one or more of the following users:
+  <br />
+  <br />
+  <form:multiselect name="User[]" size="4" validate="true" button="Assign"/>
+  <br />
+  <br />
+  <form:button name="Assign" value="Assign" class="formfield"/>
+</html:form>
+<html:template name="NoMoreUser">All users are already assigned to this role!</html:template>

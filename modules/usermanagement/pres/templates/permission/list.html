@@ -1,0 +1,26 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::permission" file="list_controller" class="umgt_list_controller" @>
+<table cellpadding="3" cellspacing="0" border="0">
+  <tr style="font-weight: bold; background-color: #eeeeee;">
+    <td>Display name</td>
+    <td>Name</td>
+    <td>Value</td>
+    <td>Action</td>
+  </tr>
+  <html:placeholder name="ListPermissions" />
+</table>
+<html:template name="Permission">
+  <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+  <tr>
+    <td><template:placeholder name="DisplayName" /></td>
+    <td><template:placeholder name="Name" /></td>
+    <td><template:placeholder name="Value" /></td>
+    <td>
+      <a href="<template:placeholder name="permission_edit" />" title="Edit permission">
+        <umgt:media filename="cc-package_settings-128x128.png" alt="Edit permission" title="Edit permission" />
+      </a>
+      <a href="<template:placeholder name="permission_delete" />" title="Delete Permission">
+        <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete permission" title="Delete permission" />
+      </a>
+    </td>
+  </tr>
+</html:template>

@@ -1,0 +1,32 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::role" file="list_controller" class="umgt_list_controller" @>
+<table cellpadding="3" cellspacing="0" border="0">
+  <tr style="font-weight: bold; background-color: #eeeeee;">
+    <td>Display name</td>
+    <td>Action</td>
+  </tr>
+  <html:placeholder name="RoleList" />
+</table>
+
+<html:template name="Role">
+  <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+  <tr>
+    <td><template:placeholder name="DisplayName" /></td>
+    <td>
+      <a href="<template:placeholder name="role_details" />" title="View role details">
+        <umgt:media filename="cc-xmag-128x128.png" alt="View Role details" title="View role details" />
+      </a>
+      <a href="<template:placeholder name="role_edit" />" title="Edit role">
+        <umgt:media filename="cc-package_settings-128x128.png" alt="Edit role" title="Edit Role" />
+      </a>
+      <a href="<template:placeholder name="role_delete" />" title="Delete role">
+        <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete role" title="Delete role" />
+      </a>
+      <a href="<template:placeholder name="role_ass2user" />" title="Assign role to user">
+        <umgt:media filename="cc-forward2-128x128.png" alt="Assign role to user" title="Assign role to user" />
+      </a>
+      <a href="<template:placeholder name="role_detachfromuser" />" title="Detach role from user">
+        <umgt:media filename="cc-backward2-red-128x128.png" alt="Detach role from user" title="Detach role from user" />
+      </a>
+    </td>
+  </tr>
+</html:template>

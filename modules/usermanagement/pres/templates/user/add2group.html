@@ -1,0 +1,12 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::user" file="add2group_controller" class="umgt_add2group_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:form name="Group" method="post">
+  Please choose one or more of the following groups:
+  <br />
+  <br />
+  <form:multiselect name="Group[]" size="5" validate="true" button="Add"/>
+  <br />
+  <br />
+  <form:button name="Add" value="Add" class="formfield"/>
+</html:form>
+<html:template name="NoMoreGroups">This user is already a member of all groups!<br /></html:template>

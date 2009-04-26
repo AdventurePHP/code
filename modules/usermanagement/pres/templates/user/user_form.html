@@ -1,0 +1,53 @@
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:form name="UserForm" method="post">
+  <table cellpadding="0" cellspacing="0">
+    <tr>
+      <td><strong>FirstName</strong>:</td>
+      <td><form:text name="FirstName" style="width: 200px;" class="formfield" maxlength="100" validate="true" button="UserButton" /></td>
+    </tr>
+    <tr>
+      <td><strong>LastName</strong>:</td>
+      <td><form:text name="LastName" style="width: 200px;" class="formfield" maxlength="100" validate="true" button="UserButton" /></td>
+    </tr>
+    <tr>
+      <td><strong>StreetName</strong>:</td>
+      <td><form:text name="StreetName" style="width: 200px;" class="formfield" maxlength="100" /></td>
+    </tr>
+    <tr>
+      <td><strong>StreetNumber</strong>:</td>
+      <td><form:text name="StreetNumber" style="width: 200px;" class="formfield" maxlength="100" /></td>
+    </tr>
+    <tr>
+      <td><strong>ZIPCode</strong>:</td>
+      <td><form:text name="ZIPCode" style="width: 200px;" class="formfield" maxlength="100" /></td>
+    </tr>
+    <tr>
+      <td><strong>City</strong>:</td>
+      <td><form:text name="City" style="width: 200px;" class="formfield" maxlength="100" /></td>
+    </tr>
+    <tr>
+      <td><strong>EMail</strong>:</td>
+      <td><form:text name="EMail" style="width: 200px;" class="formfield" maxlength="100" /></td>
+    </tr>
+    <tr>
+      <td><strong>Mobile</strong>:</td>
+      <td><form:text name="Mobile" style="width: 200px;" class="formfield" maxlength="100" /></td>
+    </tr>
+    <tr>
+      <td><strong>Username</strong>:</td>
+      <td><form:text name="Username" style="width: 200px;" class="formfield" maxlength="100" /></td>
+    </tr>
+    <tr>
+      <td><strong>Password</strong>:</td>
+      <td><form:password name="Password" style="width: 200px;" class="formfield" maxlength="100" /></td>
+    </tr>
+    <tr>
+      <td><strong>Password again</strong>:</td>
+      <td><form:password name="Password2" style="width: 200px;" class="formfield" maxlength="100" /></td>
+    </tr>
+  </table>
+  <br />
+  <br />
+  <form:button name="UserButton" class="formfield" value="Send" />
+  <form:hidden name="userid" />
+</html:form>
