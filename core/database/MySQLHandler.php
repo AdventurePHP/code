@@ -26,9 +26,9 @@
    /**
    *  @namespace core::database
    *
-   *  Wrapper-Funktion zum Schließen einer DB-Verbindung.<br />
+   *  Wrapper-Funktion zum Schlieï¿½en einer DB-Verbindung.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 01.04.2007<br />
    */
@@ -46,7 +46,7 @@
    *  Dienst zur Abstraktion einer MySQL-Datenbank. Beinhaltet<br />
    *  keine Caching-Mechanismen.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 21.06.2004<br />
    *  Version 0.2, 06.04.2005<br />
@@ -54,9 +54,9 @@
    *  Version 0.4, 06.02.2006 (Konfiguration 'ZeigeFehler' bereinigt)<br />
    *  Version 0.5, 16.04.2006 (Bereinigung alter Methoden, Quell-Code-Dokumentation)<br />
    *  Version 0.6, 29.03.2007 (Auf neuen Logger umgestellt)<br />
-   *  Version 0.7, 01.04.2007 (Performance-Tuning: Connect/Disconnect wird nun nur noch EIN Mal ausgeführt)<br />
-   *  Version 0.8, 23.02.2008 (Kompatibilitätsanpassungen für ConnectionManager)<br />
-   *  Version 0.9, 24.02.2008 (Weitere Kompatibilitätsanpassungen für ConnectionManager)<br />
+   *  Version 0.7, 01.04.2007 (Performance-Tuning: Connect/Disconnect wird nun nur noch EIN Mal ausgefï¿½hrt)<br />
+   *  Version 0.8, 23.02.2008 (Kompatibilitï¿½tsanpassungen fï¿½r ConnectionManager)<br />
+   *  Version 0.9, 24.02.2008 (Weitere Kompatibilitï¿½tsanpassungen fï¿½r ConnectionManager)<br />
    */
    class MySQLHandler extends coreObject
    {
@@ -147,9 +147,9 @@
       *
       *  Initialisiert den MySQLHandler, falls dies noch nicht geschehen ist.<br />
       *  Methode ist ein interner Helper, da von aussen nur der Context gesetzt wird, und die<br />
-      *  restliche Initialisierung möglichst nicht von Aussen erledigt werden sollte.<br />
+      *  restliche Initialisierung mï¿½glichst nicht von Aussen erledigt werden sollte.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.03.2007<br />
       *  Version 0.2, 01.04.2007 (Connect wird beim INIT erledigt)<br />
@@ -165,7 +165,7 @@
             // Section auslesen
             $Section = $Config->getSection('MySQL');
 
-            // Prüfen, ob Section existent
+            // Prï¿½fen, ob Section existent
             if($Config == null){
                trigger_error('[MySQLHandler->__initMySQLHandler()] Configuration "dbconnectiondaten" in namspace "core::database" and context "'.$this->__Context.'" contains no valid data!',E_USER_ERROR);
                exit();
@@ -258,7 +258,7 @@
       *
       *  Closes the database connection.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 2002<br />
       *  Version 0.2, 10.04.2004<br />
@@ -284,7 +284,7 @@
       *
       *  Public method to close the database connection. Used by the shutdown function.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 01.04.2007<br />
       *  Version 0.2, 01.04.2007 (Connection is only closed if existent)<br />
@@ -306,92 +306,87 @@
       *  Executes a statement file located in the given namespace. The place holders contained in the
       *  file are replaced by the given values.
       *
-      *  @param string $Namespace the namespace of the statement file
-      *  @param string $StatementFile the name of the statement file (with ENVIRONMENT prefix!)
-      *  @param array $Params a list of statement params (associative array)
-      *  @param bool $ShowStatement indicates, if the statement is displayed for debug purposes
-      *  @return resource $Result the result resource
+      *  @param string $namespace The namespace of the statement file
+      *  @param string $statementFile The name of the statement file (with ENVIRONMENT prefix!)
+      *  @param array $params A list of statement params (associative array)
+      *  @param bool $logStatement Indicates, if the statement is logged for debug purposes
+      *  @return resource The result resource
       *
-      *  @author Christian Schäfer
+      *  @author Christian SchÃ¤fer
       *  @version
       *  Version 0.1, 24.12.2005<br />
       *  Version 0.2, 16.01.2006<br />
       *  Version 0.3, 19.01.2006<br />
       *  Version 0.4, 23.04.2006 (Changes due to the ApplicationManagers)<br />
       *  Version 0.5, 05.08.2006 (File extension must not be present in the file name any more. Statement params are now optional.)<br />
-      *  Version 0.6, 05.08.2006 (Added the $ShowStatement param)<br />
+      *  Version 0.6, 05.08.2006 (Added the $showStatement param)<br />
       *  Version 0.7, 29.03.2007 (Adapted implementation to the new page controller implementation)<br />
       *  Version 0.8, 07.03.2008 (Bugfix: query was not executed with the right connection)<br />
       *  Version 0.9, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
       *  Version 1.0, 05.11.2008 (Added value escaping to the statement params)<br />
       *  Version 1.1, 26.03.2009 (Enhanced the error messages)<br />
+      *  Version 1.2, 03.05.2009 (Forth param set to true now results in a debug log entry instead of an error)<br />
       */
-      function executeStatement($Namespace,$StatementFile,$Params = array(),$ShowStatement = false){
+      function executeStatement($namespace,$statementFile,$params = array(),$logStatement = false){
 
-         // Initialisiere Klasse
          $this->__initMySQLHandler();
 
-         // Dateinamen generieren und prüfen, ob Datei existiert
-         $Reg = &Singleton::getInstance('Registry');
-         $Environment = $Reg->retrieve('apf::core','Environment');
-         $File = APPS__PATH.'/config/'.str_replace('::','/',$Namespace).'/'.str_replace('::','/',$this->__Context).'/statements/'.$Environment.'_'.$StatementFile.'.sql';
+         // check, whether the desired statement file exists
+         $reg = &Singleton::getInstance('Registry');
+         $env = $reg->retrieve('apf::core','Environment');
+         $file = APPS__PATH.'/config/'.str_replace('::','/',$namespace).'/'.str_replace('::','/',$this->__Context).'/'.$env.'_'.$statementFile.'.sql';
 
-         if(!file_exists($File)){
-            trigger_error('[MySQLHandler->executeStatement()] There\'s no statement file with name "'.($Environment.'_'.$StatementFile.'.sql').'" for given namespace "config::'.$Namespace.'" and current context "'.$this->__Context.'::statements"!',E_USER_ERROR);
+         if(!file_exists($file)){
+            trigger_error('[MySQLHandler->executeStatement()] There\'s no statement file with name "'.($env.'_'.$statementFile.'.sql').'" for given namespace "config::'.$namespace.'" and current context "'.$this->__Context.'::statements"!',E_USER_ERROR);
             exit(1);
           // end if
          }
 
-         // Statement einlesen
-         $Statement = file_get_contents($File);
+         $statement = file_get_contents($file);
 
-         // Platzhalter ersetzen
-         if(count($Params) > 0){
+         // set place holders
+         if(count($params) > 0){
 
             // replace statement param by a escaped value
-            foreach($Params as $Key => $Value){
-               $Statement = str_replace('['.$Key.']',$this->escapeValue($Value),$Statement);
+            foreach($params as $key => $value){
+               $statement = str_replace('['.$key.']',$this->escapeValue($value),$statement);
              // end foreach
             }
 
           // end if
          }
 
-         // Statement ausgeben
-         if($ShowStatement == true){
-            trigger_error('[MySQLHandler->executeStatement()] Current Statement: '.$Statement);
+         if($logStatement == true){
+            $this->__dbLog->logEntry($this->__dbLogFileName,
+               '[MySQLHandler::executeStatement()] Current statement: '.$statement,
+               'DEBUG');
           // end if
          }
 
-         // Statement ausführen
-         $result = @mysql_query($Statement,$this->__dbConn);
+         // execute the statement with use of the current connection!
+         $result = @mysql_query($statement,$this->__dbConn);
 
-         // Fehler tracken
+         // get current error to be able to do error handling
          $mysql_error = mysql_error($this->__dbConn);
          $mysql_errno = mysql_errno($this->__dbConn);
 
          if(!empty($mysql_error) || !empty($mysql_errno)){
 
-            // Meldung generieren
-            $Message = '('.$mysql_errno.') '.$mysql_error.' (Statement: '.$Statement.')';
+            $message = '('.$mysql_errno.') '.$mysql_error.' (Statement: '.$statement.')';
+            $this->__dbLog->logEntry($this->__dbLogFileName,$message,'ERROR');
 
-            // Meldung protokollieren
-            $this->__dbLog->logEntry($this->__dbLogFileName,$Message,'ERROR');
-
-            // Fehler werfen
             if($this->__dbDebug == true){
-               trigger_error('[MySQLHandler->executeStatement()] '.$Message);
+               trigger_error('[MySQLHandler::executeStatement()] '.$message);
              // end if
             }
 
           // end if
          }
 
-         // $__lastInsertID setzen
+         // track $__lastInsertID fur further usage
          $ID = @mysql_fetch_assoc(@mysql_query('SELECT Last_Insert_ID() AS Last_Insert_ID;',$this->__dbConn));
          $this->__lastInsertID = $ID['Last_Insert_ID'];
 
-         // Ergebnis zurückgeben
          return $result;
 
        // end function
@@ -426,7 +421,7 @@
       *  @param resource $ResultCursor the mysql result resource
       *  @return array $Data the associative result array
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 24.12.2005<br />
       *  Version 0.2, 23.02.2008 (Array is now returned directly)<br />
@@ -443,7 +438,7 @@
       *
       *  Sets the data pointer to the given offset using the result resource.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 15.01.2006<br />
       */
@@ -461,7 +456,7 @@
       *
       *  @return int $AffectedRows the amount of affected rows
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 04.01.2006<br />
       *  Version 0.2, 07.03.2008<br />
@@ -478,7 +473,7 @@
       *
       *  Returns the last auto_increment id for the last INSERT statement.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 04.01.2006<br />
       */
@@ -497,7 +492,7 @@
       *  @param $result the mysql result resource
       *  @return $numRows the number of selected rows
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 04.01.2006<br />
       */
@@ -513,48 +508,52 @@
       *
       *  Executes a statement given by the first argument.
       *
-      *  @param string $Statement the mysql statement
-      *  @return ressource $Result the resulting mysql result resource pointer
+      *  @param string $statement The mysql statement
+      *  @param boolean $logStatement Inidcates, whether the given statement should be logged for debug purposes
+      *  @return ressource The resulting mysql result resource pointer
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 22.01.2006<br />
       *  Version 0.2, 07.03.2008 (Bugfix: the query was not executed with the right connection)<br />
+      *  Version 0.3, 03.05.2009 (Added the $logStatement param)<br />
       */
-      function executeTextStatement($Statement){
+      function executeTextStatement($statement,$logStatement = false){
 
-         // Initialisiere Klasse
          $this->__initMySQLHandler();
 
-         // Statement ausführen
-         $Result = @mysql_query($Statement,$this->__dbConn);
+         if($logStatement == true){
+            $this->__dbLog->logEntry($this->__dbLogFileName,
+               '[MySQLHandler::executeTextStatement()] Current statement: '.$statement,
+               'DEBUG');
+          // end if
+         }
 
-         // Fehler tracken
+         // execute the statement with use of the current connection!
+         $result = @mysql_query($statement,$this->__dbConn);
+
+         // get current error to be able to do error handling
          $mysql_error = mysql_error($this->__dbConn);
          $mysql_errno = mysql_errno($this->__dbConn);
 
          if(!empty($mysql_error) || !empty($mysql_errno)){
 
-            // Meldung generieren
-            $Meldung = '('.$mysql_errno.') '.$mysql_error.' (Statement: '.$Statement.')';
-
-            // Fehler protokollieren
-            $this->__dbLog->logEntry($this->__dbLogFileName,$Meldung,'ERROR');
+            $message = '('.$mysql_errno.') '.$mysql_error.' (Statement: '.$statement.')';
+            $this->__dbLog->logEntry($this->__dbLogFileName,$message,'ERROR');
 
             if($this->__dbDebug == true){
-               trigger_error('[MySQLHandler->executeTextStatement()] '.$Meldung);
+               trigger_error('[MySQLHandler->executeTextStatement()] '.$message);
              // end if
             }
 
           // end if
          }
 
-         // $__lastInsertID setzen
+         // track $__lastInsertID for further usage
          $ID = @mysql_fetch_assoc(@mysql_query('SELECT Last_Insert_ID() AS Last_Insert_ID',$this->__dbConn));
          $this->__lastInsertID = $ID['Last_Insert_ID'];
 
-         // Ergebnis zurückgeben
-         return $Result;
+         return $result;
 
        // end function
       }
@@ -565,7 +564,7 @@
       *
       *  Returns the version of the database server.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.03.2006<br />
       *  Version 0.2, 07.03.2008 (Now the connection is applied to the call.)<br />
@@ -582,7 +581,7 @@
       *
       *  Returns the name of the current database.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.03.2006<br />
       */
@@ -599,10 +598,10 @@
       *
       *  Erzeugt einen Dump der aktuellen Datenbank mit dem CLI-Tool 'mysqldump'.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 01.07.2006<br />
-      *  Version 0.2, 18.08.2006 (Standard-Namen wurde von db_host auf db_name geändert)<br />
+      *  Version 0.2, 18.08.2006 (Standard-Namen wurde von db_host auf db_name geï¿½ndert)<br />
       */
       function backupDatabase($File = ''){
 
@@ -615,10 +614,10 @@
           // end if
          }
 
-         // mysqldump ausführen
+         // mysqldump ausfï¿½hren
          exec('mysqldump --add-drop-table --complete-insert --create-options --extended-insert --force --lock-tables --host='.($this->__db_host).' --user='.($this->__db_user).' --password='.($this->__db_pass).' '.($this->__db_name).' > '.$File);
 
-         // true zurückgeben
+         // true zurï¿½ckgeben
          return true;
 
        // end function
@@ -632,7 +631,7 @@
       *  Spielt ein Datenbank-Backup wieder ein, das zuvor mit backupDatabase() erzeugt wurde.<br />
       *  Benutzt das CLI-Tool 'mysql'.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 01.07.2006<br />
       */
@@ -641,16 +640,16 @@
          // Initialisiere Klasse
          $this->__initMySQLHandler();
 
-         // Prüfen, ob Dump-Datei existiert
+         // Prï¿½fen, ob Dump-Datei existiert
          if(!file_exists($File)){
             return false;
           // end if
          }
 
-         // Import ausführen
+         // Import ausfï¿½hren
          exec('mysql --host='.($this->__db_host).' --user='.($this->__db_user).' --password='.($this->__db_pass).' --database='.($this->__db_name).' --force --xml --execute="source '.$File.'"');
 
-         // true zurückgeben
+         // true zurï¿½ckgeben
          return true;
 
        // end function
