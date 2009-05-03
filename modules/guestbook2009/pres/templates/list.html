@@ -1,0 +1,19 @@
+<@controller namespace="modules::guestbook2009::pres::controller" file="list_controller" class="list_controller" @>
+<div class="gb--body">
+   <html:placeholder name="content" />
+</div>
+<html:template name="entry">
+   <div class="gb--entry">
+
+      <div class="gb--entry-header">
+         <h4><template:placeholder name="title" /></h4>
+      </div>
+
+      <div class="gb--entry-body">
+         <template:placeholder name="text"/>
+      </div>
+      <div class="gb--entry-footer">
+         Datum: <template:placeholder name="date" />, Uhrzeit: <template:placeholder name="time" />
+      </div>
+   </div>
+</html:template>
