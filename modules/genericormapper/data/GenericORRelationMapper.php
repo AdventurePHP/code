@@ -571,7 +571,7 @@
             $relationTable = $this->__RelationTable[$relationName];
             $select = 'SELECT COUNT(`'.$targetObject['ID'].'`) AS multiplicity FROM `'.$relationTable['Table'].'`
                        WHERE `'.$sourceObject['ID'].'` = \''.$object->getProperty($sourceObject['ID']).'\';';
-            $result = $this->__DBDriver->executeTextStatement($select);
+            $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
             $data = $this->__DBDriver->fetchData($result);
             $multiplicity = $data['multiplicity'];
 
@@ -620,7 +620,6 @@
                   $RelatedObjectID = $this->saveObject($RelatedObjects[$RelationKey][$i]);
 
                   // gather information about the current relation
-                  //echo 'Related object id: '.$RelatedObjectID;
                   $ObjectID = $this->__MappingTable[$Object->get('ObjectName')]['ID'];
                   if(!isset($this->__MappingTable[$RelatedObjects[$RelationKey][$i]->get('ObjectName')]['ID'])){
                      trigger_error('[GenericORRelationMapper::saveObject()] The object name "'.$RelatedObjects[$RelationKey][$i]->get('ObjectName').'" does not exist in the mapping table! Hence, your object cannot be saved! Please check your object configuration.');
@@ -642,20 +641,14 @@
                              WHERE `'.$ObjectID.'` = \''.$ID.'\'
                              AND `'.$RelObjectID.'` = \''.$RelatedObjectID.'\';';
 
-                  $result = $this->__DBDriver->executeTextStatement($select);
+                  $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
                   $relationcount = $this->__DBDriver->getNumRows($result);
-                  //$data = $this->__DBDriver->fetchData($result);
-                  //echo '<br />$data[\'relationcount\']: '.$data['relationcount'].'<br />';
 
                   // create relation if necessary
                   if($relationcount == 0){
-
-                     //echo '<br />';
                      $insert = 'INSERT INTO `'.$this->__RelationTable[$RelationKey]['Table'].'`
                                 (`'.$RelObjectID.'`,`'.$ObjectID.'`) VALUES (\''.$RelatedObjectID.'\',\''.$ID.'\');';
-                     $this->__DBDriver->executeTextStatement($insert);
-                     //echo '<br />';
-
+                     $this->__DBDriver->executeTextStatement($insert,$this->__LogStatements);
                    // end if
                   }
 
@@ -700,7 +693,6 @@
          $ObjectName = $Object->get('ObjectName');
          $ObjectID = $this->__MappingTable[$ObjectName]['ID'];
          $TargetCompositions = $this->__getCompositionsByObjectName($ObjectName,'source');
-         //echo printObject($TargetCompositions);
 
          // 2. test, if the current object has child objects and though can't be deleted
          $targetcmpcount = count($TargetCompositions);
@@ -710,7 +702,8 @@
 
                $select = 'SELECT * FROM `'.$TargetCompositions[$i]['Table']. '`
                           WHERE `'.$ObjectID.'` = \''.$Object->getProperty($ObjectID).'\';';
-               $result = $this->__DBDriver->executeTextStatement($select);
+               $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
+
                if($this->__DBDriver->getNumRows($result) > 0){
                   trigger_error('[GenericORRelationMapper::deleteObject()] Domain object "'.$ObjectName.'" with id "'.$Object->getProperty($ObjectID).'" cannot be deleted, because it still has composed child objects!',E_USER_WARNING);
                   return null;
@@ -725,16 +718,12 @@
 
          // 3. check for associations and delete them
          $Associations = $this->__getAssociationsByObjectName($ObjectName);
-         //echo printObject($Associations);
 
          $asscount = count($Associations);
          for($i = 0; $i < $asscount; $i++){
-
             $delete = 'DELETE FROM `'.$Associations[$i]['Table'].'`
                        WHERE `'.$ObjectID.'` = \''.$Object->getProperty($ObjectID).'\';';
-            $this->__DBDriver->executeTextStatement($delete);
-            //echo '<br />';
-
+            $this->__DBDriver->executeTextStatement($delete,$this->__LogStatements);
           // end if
          }
 
@@ -743,15 +732,13 @@
 
          // 5. delete composition towards other object
          $SourceCompositions = $this->__getCompositionsByObjectName($ObjectName,'target');
-         //echo printObject($SourceCompositions);
 
          $sourcecmpcount = count($SourceCompositions);
          for($i = 0; $i < $sourcecmpcount; $i++){
 
             $delete = 'DELETE FROM `'.$SourceCompositions[$i]['Table'].'`
                        WHERE `'.$ObjectID.'` = \''.$Object->getProperty($ObjectID).'\';';
-            $this->__DBDriver->executeTextStatement($delete);
-            //echo '<br />';
+            $this->__DBDriver->executeTextStatement($delete,$this->__LogStatements);
 
           // end for
          }
@@ -805,9 +792,8 @@
                     (`'.$SourceObjectID.'`,`'.$TargetObjectID.'`)
                     VALUES
                     (\''.$SourceObject->getProperty($SourceObjectID).'\',\''.$TargetObject->getProperty($TargetObjectID).'\');';
-         $this->__DBDriver->executeTextStatement($insert);
+         $this->__DBDriver->executeTextStatement($insert,$this->__LogStatements);
 
-         // return success
          return true;
 
        // end function
@@ -858,9 +844,8 @@
                        `'.$SourceObjectID.'` = \''.$SourceObject->getProperty($SourceObjectID).'\'
                        AND
                        `'.$TargetObjectID.'` = \''.$TargetObject->getProperty($TargetObjectID).'\';';
-         $this->__DBDriver->executeTextStatement($delete);
+         $this->__DBDriver->executeTextStatement($delete,$this->__LogStatements);
 
-         // return success
          return true;
 
        // end function
@@ -909,7 +894,7 @@
                        `'.$SourceObjectID.'` = \''.$SourceObject->getProperty($SourceObjectID).'\'
                        AND
                        `'.$TargetObjectID.'` = \''.$TargetObject->getProperty($TargetObjectID).'\';';
-         $result = $this->__DBDriver->executeTextStatement($delete);
+         $result = $this->__DBDriver->executeTextStatement($delete,$this->__LogStatements);
 
          // return if objects are associated
          if($this->__DBDriver->getNumRows($result) > 0){

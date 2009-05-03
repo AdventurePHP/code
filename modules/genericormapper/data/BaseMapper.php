@@ -74,6 +74,12 @@
       */
       protected $__importedConfigCache = array();
 
+      /**
+       * @protected
+       * Indicates, whether the generated statements should be logged for debugging purposes.
+       */
+      protected $__LogStatements = false;
+
 
       function BaseMapper(){
       }
@@ -82,10 +88,10 @@
       /**
       *  @public
       *
-      *  Implements the interface method init() to be able to initialize<br />
-      *  the mapper with the service manager.<br />
+      *  Implements the interface method init() to be able to initialize the mapper with the
+      *  service manager.
       *
-      *  @param array $InitParams list of initialization parameters
+      *  @param array $initParams list of initialization parameters
       *
       *  @author Christian Achatz
       *  @version
@@ -94,20 +100,24 @@
       *  Version 0.3, 31.05.2008 (changed behavior due to refactoring)<br />
       *  Version 0.4, 22.06.2008 (refactored the configuration file entries to gain flexibility)<br />
       *  Version 0.5, 23.06.2008 (mapper now must be instanciated by the factory, that configures the mapper)<br />
+      *  Version 0.6, 03.05.2009 (added the LogStatements param)<br />
       */
-      function init($InitParams){
+      function init($initParams){
 
          // set the config namespace
-         $this->__ConfigNamespace = $InitParams['ConfigNamespace'];
+         $this->__ConfigNamespace = $initParams['ConfigNamespace'];
 
          // set the config name affix
-         $this->__ConfigNameAffix = $InitParams['ConfigNameAffix'];
+         $this->__ConfigNameAffix = $initParams['ConfigNameAffix'];
 
          // get connection manager
          $cM = &$this->__getServiceObject('core::database','connectionManager');
 
          // initialize connection
-         $this->__DBDriver = &$cM->getConnection($InitParams['ConnectionName']);
+         $this->__DBDriver = &$cM->getConnection($initParams['ConnectionName']);
+
+         // set debug mode, if desired
+         $this->__LogStatements = $initParams['LogStatements'];
 
        // end function
       }

@@ -131,16 +131,16 @@
       *  Loads an object list by a special statement. The statement must return the desired<br />
       *  object properties.<br />
       *
-      *  @param string $ObjectName name of the object in mapping table
-      *  @param string $Statement sql statement
-      *  @return array $ObjectList the desired object list
+      *  @param string $objectName Name of the object in mapping table
+      *  @param string $statement Sql statement
+      *  @return GenericDomainObject[] The desired object list
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       */
-      function loadObjectListByTextStatement($ObjectName,$Statement){
-         return $this->__loadObjectListByStatementResult($ObjectName,$this->__DBDriver->executeTextStatement($Statement));
+      function loadObjectListByTextStatement($objectName,$statement){
+         return $this->__loadObjectListByStatementResult($objectName,$this->__DBDriver->executeTextStatement($statement,$this->__LogStatements));
        // end function
       }
 
@@ -150,26 +150,21 @@
       *
       *  Loads an object by a special statement. The statement must return the desired object properties.
       *
-      *  @param string $ObjectName name of the object in mapping table
-      *  @param string $Namespace namespace of the statement
-      *  @param string $StatementName name of the statement file
-      *  @param array $StatementParams a list of statement parameters
-      *  @return object $Object the desired object
+      *  @param string $objectName name of the object in mapping table
+      *  @param string $namespace namespace of the statement
+      *  @param string $statementName name of the statement file
+      *  @param array $statementParams a list of statement parameters
+      *  @return GenericDomainObject The desired object
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       *  Version 0.2, 25.06.2008 (Added the $StatementParams parameter)<br />
       */
-      function loadObjectByStatement($ObjectName,$Namespace,$StatementName,$StatementParams = array()){
-
-         // Execute statement
-         $result = $this->__DBDriver->executeStatement($Namespace,$StatementName,$StatementParams);
+      function loadObjectByStatement($objectName,$namespace,$statementName,$statementParams = array()){
+         $result = $this->__DBDriver->executeStatement($namespace,$statementName,$statementParams,$this->__LogStatements);
          $data = $this->__DBDriver->fetchData($result);
-
-         // Return object
-         return $this->__mapResult2DomainObject($ObjectName,$data);
-
+         return $this->__mapResult2DomainObject($objectName,$data);
        // end function
       }
 
@@ -180,24 +175,19 @@
       *  Loads an object by a special statement. The statement must return the desired<br />
       *  object properties.<br />
       *
-      *  @param string $ObjectName name of the object in mapping table
-      *  @param string $Statement sql statement
-      *  @return object $Object the desired object
+      *  @param string $objectName name of the object in mapping table
+      *  @param string $statement sql statement
+      *  @return GenericDomainObject The desired object
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       *  Version 0.2, 25.05.2008 (Corrected the call of the executeTextStatement() method)<br />
       */
-      function loadObjectByTextStatement($ObjectName,$Statement){
-
-         // Execute statement
-         $result = $this->__DBDriver->executeTextStatement($Statement);
+      function loadObjectByTextStatement($objectName,$statement){
+         $result = $this->__DBDriver->executeTextStatement($statement,$this->__LogStatements);
          $data = $this->__DBDriver->fetchData($result);
-
-         // Return object
-         return $this->__mapResult2DomainObject($ObjectName,$data);
-
+         return $this->__mapResult2DomainObject($objectName,$data);
        // end function
       }
 
@@ -225,10 +215,8 @@
          $delete = 'DELETE FROM `'.$this->__MappingTable[$ObjectName]['Table'].'`';
          $delete .= ' WHERE `'.$ObjectID. '` = \''.$ID.'\';';
 
-         // Execute delete
-         $this->__DBDriver->executeTextStatement($delete);
+         $this->__DBDriver->executeTextStatement($delete,$this->__LogStatements);
 
-         // Return the database ID of the object
          return $ID;
 
        // end function
@@ -291,10 +279,7 @@
             $insert .= ' ('.implode(', ',$Names).')';
             $insert .= ' VALUES ('.implode(', ',$Values).');';
 
-            // Execute insert
-            $this->__DBDriver->executeTextStatement($insert);
-
-            // Get ID
+            $this->__DBDriver->executeTextStatement($insert,$this->__LogStatements);
             $ID = $this->__DBDriver->getLastID();
 
           // end if
@@ -319,14 +304,14 @@
 
             // execute update, only if the update is necessary
             if(count($QueryParams) > 0){
-               $this->__DBDriver->executeTextStatement($update);
+               $this->__DBDriver->executeTextStatement($update,$this->__LogStatements);
              // end if
             }
 
           // end else
          }
 
-         // return the database ID of the object
+         // return the database ID of the object for further usage
          return $ID;
 
        // end function
@@ -354,7 +339,7 @@
          // Load properties
          $query = 'SELECT * FROM `'.$this->__MappingTable[$ObjectName]['Table'].'`
                    WHERE `'.$this->__MappingTable[$ObjectName]['ID'].'` = \''.$ObjectID.'\';';
-         $result = $this->__DBDriver->executeTextStatement($query);
+         $result = $this->__DBDriver->executeTextStatement($query,$this->__LogStatements);
 
          // Return desired object
          return $this->__mapResult2DomainObject($ObjectName,$this->__DBDriver->fetchData($result));
