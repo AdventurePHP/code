@@ -162,13 +162,8 @@
       *  Version 0.1, 23.06.2008<br />
       */
       protected function &__getORMapper(){
-
-         // obtain a reference on the mapper factory
          $ORMFactory = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
-
-         // return mapper instance
          return $ORMFactory->getGenericORMapper('modules::usermanagement','umgt',$this->__ConnectionKey,$this->__ServiceMode);
-
        // end function
       }
 
