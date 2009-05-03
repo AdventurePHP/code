@@ -146,17 +146,22 @@
       /**
       *  @public
       *
-      *  Add a related object.<br />
+      *  Add a related object.
       *
-      *  @param string $RelationName name of the desired relation
-      *  @return array $Object Object that is related with the current object
+      *  @param string $relationName name of the desired relation
+      *  @return array $object Object that is related with the current object
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 15.04.2008<br />
+      *  Version 0.2, 03.05.2009 (Added check for null objects. In null cases, the object is not added.)<br />
       */
-      function addRelatedObject($RelationName,&$Object){
-         $this->__RelatedObjects[$RelationName][] = &$Object;
+      function addRelatedObject($relationName,&$object){
+         
+         if($object !== null){
+            $this->__RelatedObjects[$relationName][] = &$object;
+         }
+
        // end function
       }
 
