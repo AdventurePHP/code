@@ -30,12 +30,10 @@
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
-   abstract class guestbookBaseController extends baseController
-   {
+   class guestbookBaseController extends baseController {
 
       function guestbookBaseController(){
       }
-
 
       /**
       *  @private
@@ -49,11 +47,36 @@
       *  Version 0.1, 05.05.2007<br />
       */
       protected function &__getGuestbookManager(){
+         return $this->__getAndInitServiceObject('modules::guestbook::biz','guestbookManager',$this->__getGuestbookId());
+       // end function
+      }
 
-         $Parent = &$this->__Document->getByReference('ParentObject');
-         $GuestbookID = $Parent->getAttribute('guestbookid');
-         return $this->__getAndInitServiceObject('modules::guestbook::biz','guestbookManager',$GuestbookID);
+      /**
+       * @protected
+       *
+       * Returns the id of the current guestbook. The id is defined within the main template
+       * of the guestbook module. Thus, the attribute can be retrieved by requesting the parent
+       * object's attributes list.
+       * 
+       * @return int The id of the current guestbook.
+       */
+      protected function __getGuestbookId(){
+         $parentDocument = &$this->__Document->getByReference('ParentObject');
+         return $parentDocument->getAttribute('guestbookid');
+       // end function
+      }
 
+      /**
+       * @protected
+       *
+       * Returns the namespace of the current guestbook. It consists of the module's namespace
+       * and the id of the current guestbook. This is done, because two guestbooks of the same
+       * code base could be hijacked by knowing one of the instance's credentials.
+       *
+       * @return string The guestbook's namespace.
+       */
+      protected function __getGuestbookNamespace(){
+         return 'modules::guestbook::'.$this->__getGuestbookId();
        // end function
       }
 

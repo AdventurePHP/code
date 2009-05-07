@@ -61,43 +61,34 @@
       */
       public function transformContent(){
 
-         // Referenz auf die Formulare holen
          $Form__FormNo = &$this->__getForm('FormNo');
          $Form__FormYes = &$this->__getForm('FormYes');
 
-         // SessionManager erzeugen
-         $oSessMgr = new sessionManager('Module_Guestbook');
+         $oSessMgr = new sessionManager($this->__getGuestbookNamespace());
 
          if($oSessMgr->loadSessionData('AdminView') == true){
 
-            // Aktion ausführen für abgesendetes NEIN-Formular
             if($Form__FormNo->get('isSent')){
                $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','commentid' => ''));
                header('Location: '.$Link);
              // end if
             }
 
-            // Aktion ausführen für abgesendetes JA-Formular
             if($Form__FormYes->get('isSent')){
 
-               // Manager holen
                $gM = &$this->__getGuestbookManager();
 
-               // Entry erzeugen
                $Comment= new Entry();
                $Comment->set('ID',$this->_LOCALS['commentid']);
 
-               // Eintrag löschen
                $gM->deleteComment($Comment);
 
-               // Auf Anzeige-Seite weiterleiten
                $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','commentid' => ''));
                header('Location: '.$Link);
 
              // end if
             }
 
-            // Formular anzeigen
             $this->setPlaceHolder('FormNo',$Form__FormNo->transformForm());
             $this->setPlaceHolder('FormYes',$Form__FormYes->transformForm());
 

@@ -64,8 +64,6 @@
       *  Version 0.1, 05.05.2007<br />
       */
       public function guestbook_display_v1_controller(){
-         $this->__sessMgr = new sessionManager('Module_Guestbook');
-       // end function
       }
 
 
@@ -80,22 +78,12 @@
       *  Version 0.2, 05.05.2007 (Admin-Link hinzugefügt)<br />
       */
       public function transformContent(){
-
-         // Manager holen
+         $this->__sessMgr = new sessionManager($this->__getGuestbookNamespace());
          $gM = &$this->__getGuestbookManager();
-
-         // Einträge ausgeben
          $this->setPlaceHolder('Content',$this->__generateEntryList());
-
-         // Pager ausgeben
          $this->setPlaceHolder('Pager',$gM->getPager());
-
-         // Eintragen-Link ausgeben
          $this->setPlaceHolder('CreateEntry',$this->__generateCreateEntryLink());
-
-         // Eintragen-Link ausgeben
          $this->setPlaceHolder('ControlGuestbook',$this->__generateControlGuestbookLink());
-
        // end function
       }
 
@@ -143,10 +131,7 @@
       */
       private function __generateControlGuestbookLink(){
 
-         // Inhalte der Session erstören
-         $oSessMgr = new sessionManager('Module_Guestbook');
-
-         if($oSessMgr->loadSessionData('AdminView') == 'true'){
+         if($this->__sessMgr->loadSessionData('AdminView') == 'true'){
 
             // Referenz auf das Template holen
             $Template__ControlGuestbook_Logout = &$this->__getTemplate('ControlGuestbook_Logout_'.$this->__Language);

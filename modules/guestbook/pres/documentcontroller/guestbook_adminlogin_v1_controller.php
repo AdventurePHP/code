@@ -24,6 +24,7 @@
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
    import('tools::link','linkHandler');
    import('tools::request','RequestHandler');
+   import('tools::http','HeaderManager');
 
 
    /**
@@ -70,41 +71,32 @@
       */
       public function transformContent(){
 
-         // Logout
+         // Handle logout, in case the url contains true for the logout param. This is done, because
+         // we don't want to use a front controller action here.
          if($this->_LOCALS['logout'] == 'true'){
-
-            // Inhalte der Session erstören
-            $oSessMgr = new sessionManager('Module_Guestbook');
-            $oSessMgr->destroySession('Module_Guestbook');
-
-            // Auf Anzeige-Seite weiterleiten
-            $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','logout' => ''));
-            header('Location: '.$Link);
-
+            $guestbookNamespace = $this->__getGuestbookNamespace();
+            $oSessMgr = new sessionManager($guestbookNamespace);
+            $oSessMgr->destroySession($guestbookNamespace);
+            $link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','logout' => ''));
+            HeaderManager::redirect($link);
           // end if
          }
 
-
-         // Referenz auf das Formular holen
          $Form__AdminLogin = &$this->__getForm('AdminLogin');
 
          if($Form__AdminLogin->get('isValid') && $Form__AdminLogin->get('isSent')){
 
-            // Manager holen
             $gM = &$this->__getGuestbookManager();
 
-            // Prüfen, ob Zugangsdaten gültig sind
             if($gM->validateCrendentials($this->_LOCALS['Username'],$this->_LOCALS['Password']) == true){
 
-               // Session starten
-               $oSessMgr = new sessionManager('Module_Guestbook');
+               $oSessMgr = new sessionManager($this->__getGuestbookNamespace());
                $oSessMgr->saveSessionData('LoginDate',date('Y-m-d'));
                $oSessMgr->saveSessionData('LoginTime',date('H:i:s'));
                $oSessMgr->saveSessionData('AdminView',true);
 
-               // Auf Anzeige-Seite weiterleiten
-               $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display'));
-               header('Location: '.$Link);
+               $link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display'));
+               HeaderManager::forward($link);
 
              // end if
             }
@@ -135,22 +127,17 @@
       */
       private function __displayForm($ShowLogInError = false){
 
-         // Referenz auf das Formular holen
-         $Form__AdminLogin = &$this->__getForm('AdminLogin');
+         $form__AdminLogin = &$this->__getForm('AdminLogin');
 
-         // Fehlermeldung ausgeben, falls gewünscht
          if($ShowLogInError == true){
 
-            // Template mit Meldung holen
-            $Template__LogInError = &$this->__getTemplate('LogInError');
-
-            // Template in Form einsetzen
-            $Form__AdminLogin->setPlaceHolder('LogInError',$Template__LogInError->transformTemplate());
+            $template__LogInError = &$this->__getTemplate('LogInError');
+            $form__AdminLogin->setPlaceHolder('LogInError',$template__LogInError->transformTemplate());
 
           // end if
          }
 
-         return $Form__AdminLogin->transformForm();
+         return $form__AdminLogin->transformForm();
 
        // end function
       }
