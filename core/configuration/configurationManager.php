@@ -52,7 +52,7 @@
       *  @param string $Name; Name of the cection
       *  @return array $Section | null; Section or null
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.01.2007<br />
       */
@@ -80,7 +80,7 @@
       *  @param string $name name of the subsection
       *  @return array $value | null value of the configuration key or null
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 30.01.2007<br />
       *  Version 0.2, 31.01.2007 (Added check for Subsection to be an array)<br />
@@ -111,7 +111,7 @@
       *  @param string $name name of the config key
       *  @return string $value | null value of the configuration key or null
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.01.2007<br />
       */
@@ -137,7 +137,7 @@
       *
       *  @param array $list configuration array
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.01.2007<br />
       */
@@ -154,7 +154,7 @@
       *
       *  @return array $list the configuration array
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 03.02.2007<br />
       */
@@ -178,8 +178,8 @@
    *  @author Christian Achatz
    *  @version
    *  Version 0.1, 28.01.2007<br />
-   *  Version 0.2, 07.03.2007 (Kompletter Umbau wegen Strukturänderung (Context!!!)<br />
-   *  Version 0.3, 02.04.2007 (Abschließend getestet und Feinheiten optimiert)<br />
+   *  Version 0.2, 07.03.2007 (Kompletter Umbau wegen Strukturï¿½nderung (Context!!!)<br />
+   *  Version 0.3, 02.04.2007 (Abschlieï¿½end getestet und Feinheiten optimiert)<br />
    *  Version 0.4, 16.11.2007 (Definition von $__NamespaceDelimiter wiederhergestellt)<br />
    *  Version 0.5, 21.06.2008 (Introduced Registry to get the current Environment string)<br />
    */
@@ -288,7 +288,7 @@
       *  @param string $configName the name of the configuration file
       *  @return bool $configurationExistent true | false
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 03.02.2007<br />
       *  Version 0.2, 07.03.2007 (Renamed to configurationExists())<br />
@@ -318,7 +318,7 @@
       *  @param string $configName the name of the configuration file
       *  @return array $configuration | null configuration array or null
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.01.2007<br />
       *  Version 0.2, 03.02.2007 (Outsourced the file name generation)<br />
@@ -333,22 +333,27 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
-      *  Setzt den ConfigFileName aus Namespace und ConfigName zusammen.<br />
+      *  Creates the fully qualified path of the configuration file. If you want to have an own
+      *  config file and folder layout, create a new class derived from the configurationManager
+      *  and overwrite this method.
+      *  See http://forum.adventure-php-framework.org/de/viewtopic.php?f=1&t=80&start=30#p531 for
+      *  details on the discussion.
       *
-      *  @param string $namespace namespace of the requested configuration (will be prefixed with "config")
-      *  @param string $context context of the configuration file
-      *  @param string $configName the name of the configuration file
-      *  @return string $ConfigurationFileName name of the configuration file name
+      *  @param string $namespace Namespace of the requested configuration (will be prefixed with "config")
+      *  @param string $context Context of the configuration file
+      *  @param string $configName The name of the configuration file
+      *  @return string Name of the configuration file name
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 03.02.2007<br />
       *  Version 0.2, 07.03.2007<br />
       *  Version 0.3, 21.06.2008 (Introduced the Registry component)<br />
+      *  Version 0.4, 09.05.2009 (Made the function protected.)<br />
       */
-      private function __getConfigurationFileName($namespace,$context,$configName){
+      protected function __getConfigurationFileName($namespace,$context,$configName){
 
          if(strlen($context) > 0){
             $path = str_replace('::','/',$namespace).'/'.str_replace('::','/',$context);
@@ -376,7 +381,7 @@
       *  @param array $configuration configuration array created with the parse_ini_file function
       *  @return array $configurationArray the parsed configuration list
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.01.2007<br />
       */
@@ -413,7 +418,7 @@
       *  @param array $subsectionArray the configuration array
       *  @return array $parsedArray the parsed array
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.01.2007<br />
       *  Version 0.2, 19.04.2009 (Bugfix: Parsing subsections returned an empty array!)<br />
@@ -450,7 +455,7 @@
       *  @param string $key the current configuration directive possibly containg a dot
       *  @param array|string $value value of the offset specified with $key
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.01.2007<br />
       */
