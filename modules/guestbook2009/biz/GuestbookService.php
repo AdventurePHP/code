@@ -22,6 +22,7 @@
    import('modules::guestbook2009::biz','Entry');
    import('modules::guestbook2009::biz','Guestbook');
    import('modules::guestbook2009::biz','User');
+   import('tools::http','HeaderManager');
    
    /**
     * Description of GuestbookService
@@ -32,11 +33,15 @@
    {
    
       public function loadPagedEntryList(){
-         $entry = new Entry();
+
+         $mapper = &$this->__getMapper();
+         return $mapper->loadEntryList();
+
+         /*$entry = new Entry();
          $entry->setCreationTimestamp(time());
          $entry->setText('Mein Text...');
          $entry->setTitle('title');
-         return array($entry,$entry);
+         return array($entry,$entry);*/
       
        // end function
       }
@@ -45,10 +50,45 @@
       }
 
       /**
-       * Mehrfache Widerverwendbarkeit: durch unterschiedliche Datenbanken!
-       * Ansonsten über mehrere DAOs, die per z.B. Registry in der index.php
-       * konfigurierbar sind!
+       * @public
+       *
+       * Saves the entry and forwards to the list view.
+       *
+       * @param Entry $entry The guestbook entry to save.
+       * 
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.05.2009<br />
        */
+      public function saveEntry($entry){
+
+         $mapper = &$this->__getMapper();
+         $mapper->saveEntry($entry);
+
+         // forward to the desired view to prevent F5-bugs
+         //HeaderManager::forward('./?pagepart=list');
+
+       // end function
+      }
+
+      /**
+       * @private
+       *
+       * Returns the configured instance of the guestbook's data component.
+       *
+       * @return GuestbookMapper The mapper instance.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.05.2009<br />
+       */
+      private function &__getMapper(){
+         return $this->__getDIServiceObject('modules::guestbook2009::data','GuestbookMapper');
+      }
+      
+      // Mehrfache Widerverwendbarkeit: durch unterschiedliche Datenbanken!
+      // Ansonsten über mehrere DAOs, die per z.B. Registry in der index.php
+      // konfigurierbar sind!
 
     // end class
    }

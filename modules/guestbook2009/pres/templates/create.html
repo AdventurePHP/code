@@ -1,0 +1,19 @@
+<@controller namespace="modules::guestbook2009::pres::controller" file="create_controller" class="create_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:form name="create_entry" method="post">
+   <label class="gb--label-name">Name: </label>
+   <form:text name="name" validate="true" button="send" />
+   <br />
+   <label class="gb--label-email">E-Mail:</label>
+   <form:text name="email" validate="true" button="send" validator="EMail"/>
+   <br />
+   <label class="gb--label-title">Titel:</label>
+   <form:text name="title" validate="true" button="send" />
+   <br />
+   <label class="gb--label-text">Text:</label>
+   <br />
+   <form:area name="text" validate="true" button="send" />
+   <br />
+   <br />
+   <form:button name="send" value="Absenden" />
+</html:form>

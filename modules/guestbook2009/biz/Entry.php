@@ -33,6 +33,16 @@
        */      
       private $modificationTimestamp;
 
+      /**
+       * @private
+       * The creator of the entry.
+       */
+      private $user;
+      
+      public function getEditor(){
+         return $this->user;
+      }
+
       public function getTitle(){
          return $this->title;
       }
@@ -47,6 +57,10 @@
 
       public function getCreationTimestamp(){
          return $this->creationTimestamp;
+      }
+
+      public function setEditor($user){
+         $this->user = $user;
       }
 
       public function setTitle($title){
