@@ -240,44 +240,42 @@
       function saveObject($Object){
 
          // Get information about object to load
-         $ObjectName = $Object->get('ObjectName');
+         $objectName = $Object->get('ObjectName');
 
-         // Build subquery
-         $QueryParams = array();
-         if(!isset($this->__MappingTable[$ObjectName])){
-            trigger_error('[GenericORMapper::saveObject()] The object name "'.$ObjectName.'" does not exist in the mapping table! Hence, your object cannot be saved! Please check your object configuration.');
+         if(!isset($this->__MappingTable[$objectName])){
+            trigger_error('[GenericORMapper::saveObject()] The object name "'.$objectName.'" does not exist in the mapping table! Hence, your object cannot be saved! Please check your object configuration.');
             return null;
           // end if
          }
-         $IDName = $this->__MappingTable[$ObjectName]['ID'];
-         $Exceptions = array(
-                             $IDName,
+         $pkName = $this->__MappingTable[$objectName]['ID'];
+         $attrExceptions = array(
+                             $pkName,
                              'ModificationTimestamp',
                              'CreationTimestamp'
                             );
 
          // Check if object must be saved or updated
-         $ID = $Object->getProperty($IDName);
+         $ID = $Object->getProperty($pkName);
          if($ID === null){
 
             // Do an INSERT
-            $insert = 'INSERT INTO '.$this->__MappingTable[$ObjectName]['Table'];
+            $insert = 'INSERT INTO '.$this->__MappingTable[$objectName]['Table'];
 
-            $Names = array();
-            $Values = array();
-            foreach($Object->getProperties() as $PropertyName => $PropertyValue){
+            $names = array();
+            $values = array();
+            foreach($Object->getProperties() as $propertyName => $propertyValue){
 
-               if(!in_array($PropertyName,$Exceptions)){
-                  $Names[] = $PropertyName;
-                  $Values[] = '\''.$PropertyValue.'\'';
+               if(!in_array($propertyName,$attrExceptions)){
+                  $names[] = $propertyName;
+                  $values[] = '\''.$propertyValue.'\'';
                 // end if
                }
 
              // end foreach
             }
 
-            $insert .= ' ('.implode(', ',$Names).')';
-            $insert .= ' VALUES ('.implode(', ',$Values).');';
+            $insert .= ' ('.implode(', ',$names).')';
+            $insert .= ' VALUES ('.implode(', ',$values).');';
 
             $this->__DBDriver->executeTextStatement($insert,$this->__LogStatements);
             $ID = $this->__DBDriver->getLastID();
@@ -287,23 +285,24 @@
          else{
 
             // UPDATE object in database
-            $update = 'UPDATE '.$this->__MappingTable[$ObjectName]['Table'];
+            $update = 'UPDATE '.$this->__MappingTable[$objectName]['Table'];
 
-            foreach($Object->getProperties() as $PropertyName => $PropertyValue){
+            $queryParams = array();
+            foreach($Object->getProperties() as $propertyName => $propertyValue){
 
-               if(!in_array($PropertyName,$Exceptions)){
-                  $QueryParams[] = '`'.$PropertyName.'` = \''.$PropertyValue.'\'';
+               if(!in_array($propertyName,$attrExceptions)){
+                  $queryParams[] = '`'.$propertyName.'` = \''.$propertyValue.'\'';
                 // end if
                }
 
              // end foreach
             }
 
-            $update .= ' SET '.implode(', ',$QueryParams).', ModificationTimestamp = NOW()';
-            $update .= ' WHERE '.$IDName. '= \''.$ID.'\';';
+            $update .= ' SET '.implode(', ',$queryParams).', ModificationTimestamp = NOW()';
+            $update .= ' WHERE '.$pkName. '= \''.$ID.'\';';
 
             // execute update, only if the update is necessary
-            if(count($QueryParams) > 0){
+            if(count($queryParams) > 0){
                $this->__DBDriver->executeTextStatement($update,$this->__LogStatements);
              // end if
             }

@@ -372,7 +372,18 @@
          // gather information about the objects related to each other
          $objectName = $object->get('ObjectName');
          $sourceObject = $this->__MappingTable[$objectName];
+         
+         // check for null relations to prevent "undefined index" errors.
          $targetObjectName = $this->__getRelatedObjectNameByRelationName($objectName,$relationName);
+         if($targetObjectName === null){
+            trigger_error(
+               '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "'.$relationName
+               .'" found! Please re-check your relation configuration.',
+               E_USER_ERROR
+            );
+            exit(1);
+          // end if
+         }
          $targetObject = $this->__MappingTable[$targetObjectName];
 
          // create an empty criterion if the argument was null

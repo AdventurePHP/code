@@ -426,9 +426,9 @@
       *  Version 0.1, 24.12.2005<br />
       *  Version 0.2, 23.02.2008 (Array is now returned directly)<br />
       */
-      function fetchData($ResultCursor){
+      function fetchData($resultCursor){
          $this->__initMySQLHandler();
-         return mysql_fetch_assoc($ResultCursor);
+         return mysql_fetch_assoc($resultCursor);
        // end function
       }
 
