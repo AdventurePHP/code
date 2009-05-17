@@ -19,6 +19,8 @@
    *  -->
    */
 
+   import('tools::form::filter','FormFilter');
+   
    /**
    *  @namespace tools::form::filter
    *  @class MultiplexFormFilter
