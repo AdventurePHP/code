@@ -42,11 +42,20 @@
          $tmpl_entry = &$this->__getTemplate('entry');
          $buffer = (string)'';
          foreach($entryList as $entry){
+            
+            $editor = $entry->getEditor();
+            $tmpl_entry->setPlaceHolder('name',$editor->getName());
+            $tmpl_entry->setPlaceHolder('website',$editor->getWebsite());
+
             $tmpl_entry->setPlaceHolder('title',$entry->getTitle());
             $tmpl_entry->setPlaceHolder('text',$entry->getText());
-            $tmpl_entry->setPlaceHolder('time',date('H:i:s',$entry->getCreationTimestamp()));
-            $tmpl_entry->setPlaceHolder('date',date('d.m.Y',$entry->getCreationTimestamp()));
+            
+            $creationTimestamp = $entry->getCreationTimestamp();
+            $tmpl_entry->setPlaceHolder('time',date('H:i:s',strtotime($creationTimestamp)));
+            $tmpl_entry->setPlaceHolder('date',date('d.m.Y',strtotime($creationTimestamp)));
+
             $buffer .= $tmpl_entry->transformTemplate();
+
           // end foreach
          }
          $this->setPlaceHolder('content',$buffer);

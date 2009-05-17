@@ -1,20 +1,39 @@
 <style type="text/css">
-   .gb--entry
-   {
-      background-color: #efefef;
+   .gb--main {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 12px;
    }
 
-   .gb--entry-header
-   {
-      margin-bottom: 5px;
+   .gb--main-heading {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 20px;
    }
 
-   .gb--entry-header h4
+   .gb--main-text {
+      margin-bottom: 20px;
+   }
+
+   .gb--list-entry
+   {
+      background-color: #efefef;
+   }
+
+   .gb--list-entry-body {
+      margin-bottom: 10px;
+   }
+
+   .gb--list-entry-header {
+      margin-bottom: 20px;
+      font-style: italic;
+   }
+
+   .gb--list-entry-header h4
    {
       font-size: 16px;
       font-weight: bold;
+      font-style: normal;
+      margin-bottom: 5px;
    }
 
    .gb--entry-body
@@ -26,5 +45,99 @@
    {
       font-size: 10px;
    }
+
+   .gb--create-form,
+   .gb--list-content,
+   .gb--login {
+      width: 380px;
+   }
+
+   .gb--create-entry input,textarea {
+      border: 1px solid black;
+      background-color: #efefef;
+   }
+
+   .gb--login input {
+      border: 1px solid black;
+      background-color: #efefef;
+   }
+
+   .gb--create-field-name,
+   .gb--create-field-email,
+   .gb--create-field-title,
+   .gb--create-field-website,
+   .gb--login-field-username,
+   .gb--login-field-password {
+      width: 300px;
+   }
+
+   .gb--create-field-captcha-text {
+      width: 50px;
+   }
+
+   .gb--create-field-captcha-image {
+      margin-right: 20px;
+   }
+
+   .gb--label-captcha {
+      margin-right: 57px;
+   }
+
+   .gb--create-field-text {
+      width: 380px;
+      height: 200px;
+      overflow: auto;
+   }
+
+   .gb--create-text {
+      margin-bottom: 30px;
+   }
+
+   .gb--label-name {
+      margin-right: 40px;
+   }
+
+   .gb--label-email {
+      margin-right: 40px;
+   }
+
+   .gb--label-website {
+      margin-right: 22px;
+   }
+
+   .gb--label-title {
+      margin-right: 51px;
+   }
+
+   .gb--create-button-placer,
+   .gb--login-button-placer {
+      text-align: right;
+   }
+
+   .gb--login-label-user {
+      margin-right: 26px;
+   }
+
+   .gb--login-label-pass {
+      margin-right: 22px;
+   }
+
+   .gb--login-error-form {
+      color: red;
+      font-weight: bold;
+      margin-bottom: 20px;
+   }
 </style>
-<core:importdesign namespace="modules::guestbook2009::pres::templates" template="[pagepart=list]" />
+<div class="gb--main">
+   <div class="gb--main-heading">
+      &Uuml;berschrift des G&auml;stebuchs
+   </div>
+   <div class="gb--main-text">
+     Allgemeiner Text des G&auml;stebuchs ...
+   </div>
+   <core:importdesign
+      namespace="modules::guestbook2009::pres::templates"
+      template="[gbview=list]"
+      incparam="gbview"
+   />
+</div>

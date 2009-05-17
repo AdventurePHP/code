@@ -23,6 +23,8 @@
    import('modules::guestbook2009::biz','Guestbook');
    import('modules::guestbook2009::biz','User');
    import('tools::http','HeaderManager');
+   import('modules::guestbook2009::biz','GuestbookModel');
+   import('core::session','sessionManager');
    
    /**
     * Description of GuestbookService
@@ -33,20 +35,47 @@
    {
    
       public function loadPagedEntryList(){
-
          $mapper = &$this->__getMapper();
          return $mapper->loadEntryList();
-
-         /*$entry = new Entry();
-         $entry->setCreationTimestamp(time());
-         $entry->setText('Mein Text...');
-         $entry->setTitle('title');
-         return array($entry,$entry);*/
-      
        // end function
       }
 
       public function loadGuestbook(){
+      }
+
+
+      /**
+       * @public
+       * 
+       * Implements the login helper method called by the document controller. Returns false, in
+       * case of login errors or logs the user in and redirects to the admin page. 
+       * 
+       * @param string $user The user object containing the username and password typed by the user.
+       * @return boolean False in case, the credential check failed, true otherwise.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 16.05.2009<br />
+       */
+      public function validateCredentials($user){
+
+         $mapper = &$this->__getMapper();
+         if($mapper->validateCredentials($user)){
+
+            // log user in
+            $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+            $guestbookId = $model->get('GuestbookId');
+            $session = new sessionManager('modules::guestbook2009::biz::'.$guestbookId);
+            $session->saveSessionData('LoggedIn','true');
+
+            // redirect to admin page
+            HeaderManager::forward('./?gbview=admin');
+
+          // end if
+         }
+         return false;
+      
+       // end function
       }
 
       /**
@@ -65,8 +94,8 @@
          $mapper = &$this->__getMapper();
          $mapper->saveEntry($entry);
 
-         // forward to the desired view to prevent F5-bugs
-         //HeaderManager::forward('./?pagepart=list');
+         // Forward to the desired view to prevent F5-bugs.
+         HeaderManager::forward('./?pagepart=list');
 
        // end function
       }

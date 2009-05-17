@@ -40,7 +40,8 @@
 
          if($form->get('isSent') && $form->get('isValid')){
 
-            // fill domain objects by extracting the values from the form elements directly
+            // Fill domain objects by extracting the values
+            // from the form elements directly.
             $name = $form->getFormElementByName('name');
             $email = $form->getFormElementByName('email');
 
@@ -56,13 +57,15 @@
 
             $entry->setEditor($user);
 
-            // save the entry using the business component
+            // Save the entry using the business component.
             $gbServive = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
             $gbServive->saveEntry($entry);
             
           // end if
          }
 
+         // Transform on definition place to render
+         // the content within the surrounding div.
          $form->transformOnPlace();
 
        // enf function

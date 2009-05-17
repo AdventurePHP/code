@@ -33,6 +33,12 @@
        */
       private $email;
 
+      /**
+       * @private
+       * The user's website.
+       */
+      private $website;
+
       public function getUsername(){
          return $this->username;
       }
@@ -49,6 +55,10 @@
          return $this->email;
       }
 
+      public function getWebsite(){
+         return $this->website;
+      }
+
       public function setUsername($username){
          $this->username = $username;
       }
@@ -63,6 +73,10 @@
 
       public function setEmail($email){
          $this->email = $email;
+      }
+
+      public function setWebsite($website){
+         $this->website = $website;
       }
 
     // end class

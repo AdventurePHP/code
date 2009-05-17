@@ -1,19 +1,28 @@
 <@controller namespace="modules::guestbook2009::pres::controller" file="list_controller" class="list_controller" @>
-<div class="gb--body">
-   <html:placeholder name="content" />
+<div class="gb--list-entries">
+   <div class="gb--list-text">
+      Hier sehen Sie die Liste der Eintr&auml;ge des G&auml;stebuchs. Um einen neuen Eintrag zu erstellen,
+      klicken Sie bitte
+      <a href="./?gbview=create" title="Eintrag erstellen">hier</a>.
+   </div>
+   <div class="gb--list-pager">
+      <html:placeholder name="pager" />
+   </div>
+   <div class="gb--list-content">
+      <html:placeholder name="content" />
+   </div>
 </div>
 <html:template name="entry">
-   <div class="gb--entry">
-
-      <div class="gb--entry-header">
-         <h4><template:placeholder name="title" /></h4>
+      <div class="gb--list-entry">
+         <div class="gb--list-entry-header">
+            <h4><template:placeholder name="title" /></h4>
+            <template:placeholder name="name" />, <template:placeholder name="website" />
+         </div>
+         <div class="gb--list-entry-body">
+            <template:placeholder name="text"/>
+         </div>
+         <div class="gb--list-entry-footer">
+            Datum: <template:placeholder name="date" />, Uhrzeit: <template:placeholder name="time" />
+         </div>
       </div>
-
-      <div class="gb--entry-body">
-         <template:placeholder name="text"/>
-      </div>
-      <div class="gb--entry-footer">
-         Datum: <template:placeholder name="date" />, Uhrzeit: <template:placeholder name="time" />
-      </div>
-   </div>
 </html:template>

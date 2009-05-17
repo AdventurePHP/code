@@ -20,6 +20,7 @@
    */
 
    import('modules::genericormapper::data','GenericORMapperFactory');
+   import('modules::guestbook2009::biz','User');
    
    /**
     * @namespace modules::guestbook2009::data
@@ -35,15 +36,21 @@
    class GuestbookMapper extends coreObject {
 
       /**
+       * @public
+       *
        * Loads the list of Entries
+       *
        * @return Entry[] The desired entries for the current guestbook.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 06.05.2009<br />
        */
       public function loadEntryList(){
-
-         $orm = &$this->__getGenericORMapper();
-         $gb = $orm->loadObjectByID('Guestbook',1);
-         return $this->__mapGenericEntries2DomainObjects($gb->loadRelatedObjects('Guestbook2Entry'));
-
+         $sortCrit = new GenericCriterionObject();
+         $sortCrit->addOrderIndicator('CreationTimestamp','DESC');
+         $gb = $this->__getCurrentGuestbook();
+         return $this->__mapGenericEntries2DomainObjects($gb->loadRelatedObjects('Guestbook2Entry',$sortCrit));
        // end function
       }
 
@@ -66,6 +73,34 @@
          $genericEntry = $this->__mapDomainObjects2GenericEntries($entry);
          $orm = &$this->__getGenericORMapper();
          $orm->saveObject($genericEntry);
+       // end function
+      }
+
+
+      /**
+       * @public
+       * 
+       * Checks the user's credentials.
+       *
+       * @param User $user The user to authenticate.
+       * @return boolean True in case, the user is allowed to login, false otherwise.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 17.05.2009<br />
+       */
+      public function validateCredentials($user){
+
+         $authCrit = new GenericCriterionObject();
+         $authCrit->addPropertyIndicator('Username',$user->getUsername());
+         $authCrit->addPropertyIndicator('Password',md5($user->getPassword()));
+         $orm = &$this->__getGenericORMapper();
+         $gbUser = $orm->loadObjectByCriterion('User',$authCrit);
+         if($gbUser !== null){
+            return true;
+         }
+         return false;
+
        // end function
       }
 
@@ -102,30 +137,11 @@
          $gb = $this->__getCurrentGuestbook();
          $entry->addRelatedObject('Guestbook2Entry',$gb);
 
-         echo printObject($entry);
-
          return $entry;
 
        // end function
       }
       
-      private function __getCurrentLanguage(){
-
-         $crit = new GenericCriterionObject();
-         $crit->addPropertyIndicator('ISOCode',$this->__Language);
-
-         $orm = &$this->__getGenericORMapper();
-         return $orm->loadObjectByCriterion('Language',$crit);
-
-       // end function
-      }
-
-      private function __getCurrentGuestbook(){
-         $gb = new GenericDomainObject('Guestbook');
-         $gb->setProperty('GuestbookID',1);
-         return $gb;
-      }
-
 
       private function __mapGenericEntries2DomainObjects($entries = array()){
 
@@ -151,25 +167,35 @@
          $critEntries->addRelationIndicator('Attribute2Language',$lang);
 
          $gbEntries = array();
-         foreach($entries as $entry){
+         foreach($entries as $current){
 
-            // load the
-            $gbEntry = new Entry();
-            $attributes = $orm->loadRelatedObjects($entry,'Entry2LangDepValues',$critEntries);
+            // load the entry itself
+            $entry = new Entry();
+            $entry->setCreationTimestamp($current->getProperty('CreationTimestamp'));
 
+            $attributes = $orm->loadRelatedObjects($current,'Entry2LangDepValues',$critEntries);
             foreach($attributes as $attribute){
 
                if($attribute->getProperty('Name') == 'title'){
-                  $gbEntry->setTitle($attribute->getProperty('Value'));
+                  $entry->setTitle($attribute->getProperty('Value'));
                }
                if($attribute->getProperty('Name') == 'text'){
-                  $gbEntry->setText($attribute->getProperty('Value'));
+                  $entry->setText($attribute->getProperty('Value'));
                }
 
              // end foreach
             }
 
-            $gbEntries[] = $gbEntry;
+            // add the editor's data
+            $editor = new User();
+            $user = $orm->loadRelatedObjects($current,'Editor2Entry');
+            //echo printObject($user);
+            $editor->setName($user[0]->getProperty('Name'));
+            $editor->setWebsite($user[0]->getProperty('Website'));
+            $entry->setEditor($editor);
+            
+            $gbEntries[] = $entry;
+            unset($editor,$attributes);
 
           // end foreach
          }
@@ -181,6 +207,8 @@
       }
 
       /**
+       * @private
+       *
        * Returns the desired instance of the GenericORMapper configured for this application case.
        * 
        * @return GenericORRelationMapper The or mapper instance.
@@ -196,6 +224,42 @@
                                        true
          );
          
+       // end function
+      }
+
+      /**
+       * @private
+       *
+       * @return GenericDomainObject The active language's representation object.
+       */
+      private function __getCurrentLanguage(){
+
+         $crit = new GenericCriterionObject();
+         $crit->addPropertyIndicator('ISOCode',$this->__Language);
+         $orm = &$this->__getGenericORMapper();
+         return $orm->loadObjectByCriterion('Language',$crit);
+
+       // end function
+      }
+
+      /**
+       * @private
+       *
+       * Returns the current instance of the guestbook.
+       *
+       * @return GenericDomainObject The current instance of the guestbook.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 16.05.2009<br />
+       */
+      private function __getCurrentGuestbook(){
+
+         $orm = &$this->__getGenericORMapper();
+         $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+         $gb = $orm->loadObjectByID('Guestbook',$model->get('GuestbookId'));
+         return $gb;
+
        // end function
       }
 
