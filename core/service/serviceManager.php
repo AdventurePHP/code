@@ -23,13 +23,16 @@
    *  @namespace core::service
    *  @class serviceManager
    *
-   *  Instanziiert ServiceObjekte mit dem jeweils richtigen Context.<br />
+   *  Provides a simple dependency injection container for objects created during application flow.
+   *  It initializes the service objects with the current context and language to be able to access
+   *  context and environment sensitive configuration at any place of your application. For details
+   *  see the service object configuration.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 07.03.2007<br />
-   *  Version 0.2, 22.04.2007 (Um Sprache erweitert)<br />
-   *  Version 0.3, 24.02.2008 (Um SessionSingleton erweitert)<br />
+   *  Version 0.2, 22.04.2007 (Added language attribute)<br />
+   *  Version 0.3, 24.02.2008 (Added SESSIONSINGLETON feature)<br />
    */
    final class serviceManager
    {
@@ -61,9 +64,9 @@
       *  @param string $namespace Namespace of the service object (currently ignored).
       *  @param string $serviceName Name of the service object (=class name).
       *  @param string $type The initializing type (see service manager for details).
-      *  @return coreObject $serviceObject The desired service object.
+      *  @return coreObject The desired service object.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 07.03.2007<br />
       *  Version 0.2, 17.03.2007 (Adjusted error messages)<br />
@@ -73,6 +76,7 @@
       */
       function &getServiceObject($namespace,$serviceName,$type = 'SINGLETON'){
 
+         $serviceObject = null;
          if($type == 'SINGLETON'){
 
             $serviceObject = &Singleton::getInstance($serviceName);
@@ -92,7 +96,6 @@
          }
          elseif($type == 'SESSIONSINGLETON'){
 
-            // Klasse einbinden, falls noch nicht vorhanden
             if(!class_exists('SessionSingleton')){
                import('core::singleton','SessionSingleton');
              // end if
@@ -133,7 +136,6 @@
          }
          else{
             trigger_error('[serviceManager->getServiceObject()] The given type ('.$type.') is not supported. Please provide one out of "SINGLETON", "SESSIONSINGLETON" or "NORMAL"',E_USER_WARNING);
-            $serviceObject = null;
           // end else
          }
 
@@ -146,24 +148,26 @@
       /**
       *  @public
       *
-      *  Gibt ein ServiceObject, das bereits mit einem Initialisierungs-Parameter initialisiert<br />
-      *  wurde zurück. Der Context wurde bereits durch den ServiceManager gesetzt.<br />
+      *  Returns a service object, that is initialized with the given init param. The param itself
+      *  can be a primitive data type, an array or an object. Context and language are injected
+      *  as well.
       *
-      *  @param string $namespace Namespace of the service object (currently ignored).
+      *  @param string $namespace The namespace of the service object's class (currently ignored).
       *  @param string $serviceName Name of the service object (=class name).
       *  @param string $InitParam The initialization param for the service object.
       *  @param string $type The initializing type (see service manager for details).
-      *  @return coreObject $serviceObject The desired service object.
+      *  @return coreObject The desired service object.
       *
-      *  @author Christian Schäfer
+      *  @author Christian SchÃ¤fer
       *  @version
       *  Version 0.1, 29.03.2007<br />
+      *  Version 0.2, 16.05.2009 (Added check for non existing service object returned by getServiceObject()))<br />
       */
       function &getAndInitServiceObject($namespace,$serviceName,$initParam,$type = 'SINGLETON'){
 
          $serviceObject = &$this->getServiceObject($namespace,$serviceName,$type);
 
-         if(in_array('init',get_class_methods($serviceObject))){
+         if($serviceObject !== null && in_array('init',get_class_methods($serviceObject))){
             $serviceObject->init($initParam);
           // end if
          }
@@ -185,7 +189,7 @@
       *
       *  @param string $context The context of the service manager.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 07.03.2007<br />
       */
@@ -202,7 +206,7 @@
       *
       *  @param string $language Language of the service manager.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 22.04.2007<br />
       */
