@@ -47,15 +47,61 @@
        * Version 0.1, 06.05.2009<br />
        */
       public function loadEntryList(){
+
          $sortCrit = new GenericCriterionObject();
          $sortCrit->addOrderIndicator('CreationTimestamp','DESC');
          $gb = $this->__getCurrentGuestbook();
-         return $this->__mapGenericEntries2DomainObjects($gb->loadRelatedObjects('Guestbook2Entry',$sortCrit));
+         return $this->__mapGenericEntries2DomainObjects(
+            $gb->loadRelatedObjects('Guestbook2Entry',$sortCrit)
+         );
+         
        // end function
       }
 
-      public function loadGuestbook(){
+      /**
+       * @public
+       * 
+       * Returns the list of all entries for filling a selection field.
+       *
+       * @return Entry[] The desired entry list.
+       */
+      public function loadEntryListForSelection(){
          
+         $sortCrit = new GenericCriterionObject();
+         $sortCrit->addOrderIndicator('CreationTimestamp','DESC');
+         $gb = $this->__getCurrentGuestbook();
+         return $this->__mapGenericEntries2DomainObjects(
+            $gb->loadRelatedObjects('Guestbook2Entry',$sortCrit),
+            false
+         );
+
+       // end function
+      }
+
+
+      public function loadGuestbook(){
+      }
+
+      /**
+       * @public
+       *
+       * Loads a single entry with it's editor to perform an update.
+       *
+       * @param int $id The id of the entry.
+       * @return Entry The desired entry.
+       */
+      public function loadEntry($id){
+         
+         $crit = new GenericCriterionObject();
+         $crit->addOrderIndicator('CreationTimestamp','DESC');
+         $crit->addPropertyIndicator('EntryID',$id);
+         $gb = $this->__getCurrentGuestbook();
+         $entryList = $this->__mapGenericEntries2DomainObjects(
+            $gb->loadRelatedObjects('Guestbook2Entry',$crit)
+         );
+         return $entryList[0];
+
+       // end function
       }
 
       /**
@@ -119,6 +165,11 @@
          $editor = new GenericDomainObject('User');
          $editor->setProperty('Name',$domEditor->getName());
          $editor->setProperty('Email',$domEditor->getEmail());
+         $editor->setProperty('Website',$domEditor->getWebsite());
+         $editorId = $domEditor->getId();
+         if(!empty($editorId)){
+            $editor->setAttibute('UserID',$editorId);
+         }
 
          $title = new GenericDomainObject('Attribute');
          $title->setProperty('Name','title');
@@ -137,13 +188,19 @@
          $gb = $this->__getCurrentGuestbook();
          $entry->addRelatedObject('Guestbook2Entry',$gb);
 
+         // possible problem, that edit creates a new entry :(
+         $entryId = $domEntry->getId();
+         if(!empty($entryId)){
+            $entry->setAttibute('EntryID',$entryId);
+         }
+
          return $entry;
 
        // end function
       }
       
 
-      private function __mapGenericEntries2DomainObjects($entries = array()){
+      private function __mapGenericEntries2DomainObjects($entries = array(),$addEditor = true){
 
          // return empty array, because having no entries means nothing to do!
          if(count($entries) == 0){
@@ -187,15 +244,18 @@
             }
 
             // add the editor's data
-            $editor = new User();
-            $user = $orm->loadRelatedObjects($current,'Editor2Entry');
-            //echo printObject($user);
-            $editor->setName($user[0]->getProperty('Name'));
-            $editor->setWebsite($user[0]->getProperty('Website'));
-            $entry->setEditor($editor);
-            
+            if($addEditor === true){
+               $editor = new User();
+               $user = $orm->loadRelatedObjects($current,'Editor2Entry');
+               $editor->setName($user[0]->getProperty('Name'));
+               $editor->setWebsite($user[0]->getProperty('Website'));
+               $editor->setId($user[0]->getProperty('UserID'));
+               $entry->setEditor($editor);
+             // end if
+            }
+
+            $entry->setId($current->getProperty('EntryID'));
             $gbEntries[] = $entry;
-            unset($editor,$attributes);
 
           // end foreach
          }

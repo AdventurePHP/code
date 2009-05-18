@@ -1,0 +1,74 @@
+<@controller namespace="modules::guestbook2009::pres::controller::admin" file="edit_controller" class="edit_controller" @>
+<core:addtaglib namespace="core::pagecontroller" prefix="core" class="appendnode" />
+<core:appendnode 
+   namespace="modules::guestbook2009::pres::templates::admin"
+   template="choose"
+/>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<div class="gb--admin-edit">
+   <div class="gb--admin-edit-text">
+      Please edit the desired content.
+   </div>
+   <div class="gb--admin-edit-form">
+      <html:form name="edit_entry" method="post">
+         <label class="gb--admin-edit-label-name">Name:</label>
+         <form:text
+            maxlength="100"
+            class="gb--admin-edit-field-name"
+            name="name"
+            validate="true"
+            button="send"
+            filter="onlyLetters"
+         />
+         <br />
+         <label class="gb--admin-edit-label-email">Email:</label>
+         <form:text
+            maxlength="100"
+            class="gb--admin-edit-field-email"
+            name="email"
+            validate="true"
+            button="send"
+            validator="EMail"
+            filter="stripTags"
+         />
+         <br />
+         <label class="gb--admin-edit-label-website">Website:</label>
+         <form:text
+            maxlength="100"
+            class="gb--admin-edit-field-website"
+            name="website"
+            validate="true"
+            button="send"
+            filter="stripTags"
+         />
+         <br />
+         <label class="gb--admin-edit-label-title">Title:</label>
+         <form:text
+            maxlength="100"
+            class="gb--admin-edit-field-title"
+            name="title"
+            validate="true"
+            button="send"
+            filter="onlyLetters"
+         />
+         <br />
+         <br />
+         <label class="gb--admin-edit-label-text">Text:</label>
+         <br />
+         <form:area
+            class="gb--admin-edit-field-text"
+            name="text"
+            validate="true"
+            button="send"
+            filter="stripTags"
+         />
+         <br />
+         <br />
+         <div class="gb--admin-edit-button-placer">
+            <form:button class="gb--admin-edit-button-save" name="send" value="Save" />
+         </div>
+         <form:hidden name="entryid" />
+         <form:hidden name="editorid" />
+      </html:form>
+   </div>
+</div>

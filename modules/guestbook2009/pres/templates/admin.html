@@ -1,1 +1,11 @@
-Admin-View
+<@controller namespace="modules::guestbook2009::pres::controller" file="admin_controller" class="admin_controller" @>
+<a href="<html:placeholder name="editLink" />" title="Edit entry">Edit entry</a>
+&nbsp;|&nbsp;
+<a href="<html:placeholder name="deleteLink" />" title="Delete entry">Delete entry</a>
+<br />
+<br />
+<core:importdesign
+   namespace="modules::guestbook2009::pres::templates::admin"
+   template="[adminview=start]"
+   incparam="adminview"
+/>

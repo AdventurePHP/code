@@ -37,7 +37,16 @@
       public function loadPagedEntryList(){
          $mapper = &$this->__getMapper();
          return $mapper->loadEntryList();
-       // end function
+      }
+
+      public function loadEntryListForSelection(){
+         $mapper = &$this->__getMapper();
+         return $mapper->loadEntryListForSelection();
+      }
+
+      public function loadEntry($id){
+         $mapper = &$this->__getMapper();
+         return $mapper->loadEntry($id);
       }
 
       public function loadGuestbook(){
@@ -95,7 +104,13 @@
          $mapper->saveEntry($entry);
 
          // Forward to the desired view to prevent F5-bugs.
-         HeaderManager::forward('./?pagepart=list');
+         echo $entryId = $entry->getId();
+         if(!empty($entryId)){
+            HeaderManager::forward('./?gbview=admin');
+         }
+         else{
+            HeaderManager::forward('./?gbview=list');
+         }         
 
        // end function
       }
