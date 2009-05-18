@@ -145,15 +145,16 @@
       /**
       *  @protected
       *
-      *  Creates the setup statements for the object persistance.<br />
+      *  Creates the setup statements for the object persistance.
       *
-      *  @return string $Setup sql setup script
+      *  @return string Sql setup script
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       *  Version 0.2, 31.05.2008 (Code completed and refactored due to changes on the mapping table)<br />
       *  Version 0.3, 09.12.2008 (Replaced TINYINT by INT)<br />
+      *  Version 0.4, 18.05.2009 (Changed primary key columns to UNSIGNED)<br />
       */
       protected function __generateObjectLayout(){
 
@@ -168,7 +169,7 @@
             $create = 'CREATE TABLE IF NOT EXISTS `'.$Attributes['Table'].'` ('.PHP_EOL;
 
             // id row
-            $create .= '  `'.$Attributes['ID'].'` INT(5) NOT NULL auto_increment,'.PHP_EOL;
+            $create .= '  `'.$Attributes['ID'].'` INT(5) UNSIGNED NOT NULL auto_increment,'.PHP_EOL;
 
             // object properties
             foreach($Attributes as $Key => $Value){
@@ -196,7 +197,6 @@
           // end foreach
          }
 
-         // return statement string
          return $setup;
 
        // end function
@@ -206,14 +206,15 @@
       /**
       *  @protected
       *
-      *  Creates the setup statements for the relation persistence.<br />
+      *  Creates the setup statements for the relation persistence.
       *
-      *  @return string $Setup sql setup script
+      *  @return string Sql setup script.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 31.05.2008<br />
       *  Version 0.2, 09.12.2008 (Replaced TINYINT by INT)<br />
+      *  Version 0.3, 18.05.2009 (Changed primary key columns to UNSIGNED)<br />
       */
       protected function __generateRelationLayout(){
 
@@ -236,7 +237,7 @@
                $PKName = 'ASSID';
              // end if
             }
-            $create .= '  `'.$PKName.'` INT(5) NOT NULL auto_increment,'.PHP_EOL;
+            $create .= '  `'.$PKName.'` INT(5) UNSIGNED NOT NULL auto_increment,'.PHP_EOL;
 
             // source id
             $create .= '  `'.$Attributes['SourceID'].'` INT(5) NOT NULL default \'0\','.PHP_EOL;
@@ -257,7 +258,6 @@
           // end foreach
          }
 
-         // return statement string
          return $setup;
 
        // end function
