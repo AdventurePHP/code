@@ -46,7 +46,7 @@
       *
       *  @param string $name name of the request offset
       *  @param string $defaultValue the default value
-      *  @return string $value the desired value
+      *  @return string The desired value.
       *
       *  @author Christian Achatz
       *  @version
@@ -78,7 +78,7 @@
       *  <pre>$values = RequestHandler::getValues(array('foo' => 'bar','baz'));</pre>
       *
       *  @param array $namesWithDefaults an input array with names and default values
-      *  @return array $values the desired values
+      *  @return array The desired values
       *
       *  @author Christian Achatz
       *  @version
