@@ -25,14 +25,28 @@
    *
    *  Represents a HTML hidden field within the APF form tags.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 05.01.2007<br />
    */
    class form_taglib_hidden extends ui_element
    {
 
-      function form_taglib_hidden(){
+      public function form_taglib_hidden(){
+      }
+
+      /**
+       * @public
+       *
+       * Re-implement the onAfterAppend() for the hidden field.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 19.05.2009<br />
+       */
+      public function onAfterAppend(){
+         $this->__presetValue();
+       // end function
       }
 
 
@@ -43,11 +57,11 @@
       *
       *  @return string $HiddenField the HTML code of the hidden field
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.01.2007<br />
       */
-      function transform(){
+      public function transform(){
          return '<input type="hidden" '.$this->__getAttributesAsString($this->__Attributes,$this->__ExclusionArray).' />';
        // end function
       }
