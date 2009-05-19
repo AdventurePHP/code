@@ -168,14 +168,18 @@
          $editor->setProperty('Website',$domEditor->getWebsite());
          $editorId = $domEditor->getId();
          if(!empty($editorId)){
-            $editor->setAttibute('UserID',$editorId);
+            $editor->setProperty('UserID',$editorId);
          }
 
-         $title = new GenericDomainObject('Attribute');
+         // try to load an existing title attribute
+         $title = $this->__getGenericTitleAttribute($domEntry);
+         //$title = new GenericDomainObject('Attribute');
          $title->setProperty('Name','title');
          $title->setProperty('Value',$domEntry->getTitle());
          $title->addRelatedObject('Attribute2Language',$lang);
 
+         // try to load an existing text attribute
+         // (TODO: implement and use __getGenericTitleAttribute())
          $text = new GenericDomainObject('Attribute');
          $text->setProperty('Name','text');
          $text->setProperty('Value',$domEntry->getText());
@@ -188,13 +192,40 @@
          $gb = $this->__getCurrentGuestbook();
          $entry->addRelatedObject('Guestbook2Entry',$gb);
 
-         // possible problem, that edit creates a new entry :(
          $entryId = $domEntry->getId();
          if(!empty($entryId)){
-            $entry->setAttibute('EntryID',$entryId);
+            $entry->setProperty('EntryID',$entryId);
          }
 
          return $entry;
+
+       // end function
+      }
+
+      /**
+       * Try to load an existing title attribute. If possible, merge the attributes to not
+       * generate new objects in database. Otherwise return a new generic domain object.
+       *
+       * @param Entry $domEntry The entry domain object.
+       */
+      private function __getGenericTitleAttribute($domEntry){
+
+         // try to load
+         $entry = new GenericDomainObject('Entry');
+         $entry->setProperty('EntryID',$domEntry->getId());
+
+         $orm = &$this->__getGenericORMapper();
+
+         $crit = new GenericCriterionObject();
+         $crit->addPropertyIndicator('Name','title');
+         $crit->addRelationIndicator('Attribute2Language',$this->__getCurrentLanguage());
+         
+         $attributes = $orm->loadRelatedObjects($entry,'Entry2LangDepValues',$crit);
+         if(isset($attributes[0])){
+            return $attributes[0];
+         }
+
+         return new GenericDomainObject('Attribute');
 
        // end function
       }
@@ -248,6 +279,7 @@
                $editor = new User();
                $user = $orm->loadRelatedObjects($current,'Editor2Entry');
                $editor->setName($user[0]->getProperty('Name'));
+               $editor->setEmail($user[0]->getProperty('Email'));
                $editor->setWebsite($user[0]->getProperty('Website'));
                $editor->setId($user[0]->getProperty('UserID'));
                $entry->setEditor($editor);

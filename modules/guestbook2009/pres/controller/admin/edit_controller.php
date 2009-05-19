@@ -30,7 +30,16 @@
     * Version 0.1, 18.05.2009<br />
     */
    class edit_controller extends backend_base_controller {
-       
+
+       /**
+        * @public
+        * 
+        * Handles the edit flow.
+        *
+        * @author Christian Achatz
+        * @version
+        * Version 0.1, 18.05.2009<br />
+        */
        public function transformContent(){
 
           $entryId = RequestHandler::getValue('entryid');
@@ -72,7 +81,7 @@
              }
              else{
 
-                // 2. save entry
+                // save entry
                 if($form->get('isValid') === true){
 
                    $entry = new Entry();
@@ -92,17 +101,17 @@
 
                    $text = &$form->getFormElementByName('text');
                    $entry->setText($text->get('Content'));
-                   
+
+                   // retrieve the entry id from the hidden field
                    $hiddenEntryId = &$form->getFormElementByName('entryid');
                    $entry->setId($hiddenEntryId->getAttribute('value'));
 
+                   // retrieve the editor id from the hidden field
                    $hiddenEditorId = &$form->getFormElementByName('editorid');
                    $editor->setId($hiddenEditorId->getAttribute('value'));
 
                    $entry->setEditor($editor);
 
-                   // Problem: entry does not save the email and redirects to incorrect
-                   // view in admin edit case!
                    $gS->saveEntry($entry);
                    
                  // end if
