@@ -39,14 +39,13 @@
    import('tools::form::taglib','form_taglib_addtaglib');
    import('tools::form::taglib','form_taglib_marker');
 
-
    /**
-   *  @namespace tools::form::taglib
+   *  @package tools::form::taglib
    *  @class html_taglib_form
    *
-   *  Represents a APF form.
+   *  Represents a APF form element (DOM node).
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 05.01.2007<br />
    *  Version 0.2, 12.01.2007 (Form is now handled as a template)<br />
@@ -63,42 +62,45 @@
    {
 
       /**
-      *  @protected
-      *  Speichert, ob das Formular mit gültigen Werten ausgefüllt wurde.
-      */
+       * @protected
+       * Speichert, ob das Formular mit gï¿½ltigen Werten ausgefï¿½llt wurde.
+       * @var boolean
+       */
       protected $__isValid = true;
 
 
       /**
-      *  @protected
-      *  @since 0.7
-      *  Speichert, ob das Formular abgesendet wurde.
-      */
+       * @protected
+       * @since 0.7
+       * Speichert, ob das Formular abgesendet wurde.
+       * @var boolean
+       */
       protected $__isSent = false;
 
 
       /**
-      *  @protected
-      *  Indiziert, ob das Formular an der Definitionsstelle transformiert und ausgegeben werden soll.
-      */
+       * @protected
+       * Indiziert, ob das Formular an der Definitionsstelle transformiert und ausgegeben werden soll.
+       * @var boolean
+       */
       protected $__TransformOnPlace = false;
 
 
       /**
       *  @public
       *
-      *  Konstruktor der Klasse. Fügt die in einer Form enthaltenen Tags als TagLib hinzu.
+      *  Initializes the known taglibs.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.01.2007<br />
-      *  Version 0.2, 13.01.2007 (Weitere TagLibs hinzugefügt)<br />
-      *  Version 0.3, 15.01.2007 (Weitere TagLib "form:multiselect" hinzugefügt)<br />
-      *  Version 0.4, 11.02.2007 (Weitere TagLib form:validate" hinzugefügt)<br />
+      *  Version 0.2, 13.01.2007 (Weitere TagLibs hinzugefï¿½gt)<br />
+      *  Version 0.3, 15.01.2007 (Weitere TagLib "form:multiselect" hinzugefï¿½gt)<br />
+      *  Version 0.4, 11.02.2007 (Weitere TagLib form:validate" hinzugefï¿½gt)<br />
       *  Version 0.5, 03.03.2007 ("&" vor "new" entfernt)<br />
-      *  Version 0.6, 25.03.2007 (Weitere Taglib "form:valgroup" eingeführt)<br />
-      *  Version 0.7, 22.09.2007 (Generischen Vaidator hinzugefügt)<br />
-      *  Version 0.8, 06.11.2007 (Tag form:getstring hinzugefügt)<br />
+      *  Version 0.6, 25.03.2007 (Weitere Taglib "form:valgroup" eingefï¿½hrt)<br />
+      *  Version 0.7, 22.09.2007 (Generischen Vaidator hinzugefï¿½gt)<br />
+      *  Version 0.8, 06.11.2007 (Tag form:getstring hinzugefï¿½gt)<br />
       *  Version 0.9, 11.07.2008 (Added the form:addtaglib tag)<br />
       *  Version 1.0, 03.09.2008 (Added the form:marker tag)<br />
       */
@@ -130,9 +132,9 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "onParseTime". Extrahiert die enthaltenen Tags.<br />
+      *  Parses the known taglibs.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.01.2007<br />
       */
@@ -147,9 +149,9 @@
       *
       *  Adds a new form element at the end of the form. This method is intended to dynamically generate forms.
       *
-      *  @param string $ElementType type of the element (e.g. "form:text")
-      *  @param array $ElementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
-      *  @return string $ObjectID id of the new form object or null (e.g. for addressing the new element)
+      *  @param string $elementType Type of the element (e.g. "form:text")
+      *  @param string[] $elementAttributes Associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
+      *  @return string Id of the new form object or null (e.g. for addressing the new element)
       *
       *  @author Christian Achatz
       *  @version
@@ -158,10 +160,10 @@
       *  Version 0.3, 06.09.2008 (API change: now the tag name (e.g. "form:text") is expected as an argument)<br />
       *  Version 0.4, 10.09.2008 (Added the $ElementAttributes param)<br />
       */
-      function addFormElement($ElementType,$ElementAttributes = array()){
+      function addFormElement($elementType,$elementAttributes = array()){
 
          // create form element
-         $ObjectID = $this->__createFormElement($ElementType,$ElementAttributes);
+         $ObjectID = $this->__createFormElement($elementType,$elementAttributes);
 
          // add form element if id is not null
          if($ObjectID !== null){
@@ -177,7 +179,7 @@
          else{
 
             // notify user and return null
-            trigger_error('[html_taglib_form::addFormElement()] Form element "'.$ElementType.'" cannot be added due to previous errors!');
+            trigger_error('[html_taglib_form::addFormElement()] Form element "'.$elementType.'" cannot be added due to previous errors!');
             return null;
 
           // end else
@@ -192,14 +194,14 @@
       *
       *  Adds content at the end of the form. This method is intended to dynamically generate forms.
       *
-      *  @param string $Content the desired content
+      *  @param string $content The desired content
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 05.01.2007<br />
       */
-      function addFormContent($Content){
-         $this->__Content .= $Content;
+      function addFormContent($content){
+         $this->__Content .= $content;
        // end function
       }
 
@@ -506,72 +508,47 @@
       /**
       *  @public
       *
-      *  Füllt einen Platzhalter innerhalb einer Form.<br />
+      *  Convenience method to fill a place holder within the form.  
       *
-      *  @param string $Name; Name des Platzhalters
-      *  @param string $Value; Wert des Platzhalters
+      *  @param string $name The name of the place holder.
+      *  @param string $value The value to fill the place holder with.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.01.2007<br />
       */
-      function setPlaceHolder($Name,$Value){
+      function setPlaceHolder($name,$value){
 
-         // Deklariert das notwendige TagLib-Modul
-         $TagLibModule = 'form_taglib_placeholder';
+         $tagLibClass = 'form_taglib_placeholder';
 
-
-         // Falls TagLib-Modul nicht vorhanden -> Fehler!
-         if(!class_exists($TagLibModule)){
-            trigger_error('[html_taglib_form::setPlaceHolder()] TagLib module '.$TagLibModule.' is not loaded!',E_USER_ERROR);
+         if(!class_exists($tagLibClass)){
+            trigger_error('[html_taglib_form::setPlaceHolder()] TagLib module '.$tagLibClass.' is not loaded!',E_USER_ERROR);
           // end if
          }
 
-
-         // Anzahl der Platzhalter zählen
-         $PlaceHolderCount = 0;
-
-
-         // Prüfen, ob Kinder vorhanden
+         $placeHolderCount = 0;
          if(count($this->__Children) > 0){
-
-            // Nachsehen, ob es Kinder der Klasse 'template_taglib_placeholder' gibt
             foreach($this->__Children as $ObjectID => $Child){
-
-               // Prüfen, ob Kind ein
-               if(get_class($Child) == $TagLibModule){
-
-                  // Prüfen, ob das Attribut 'name' dem angegebenen Namen entspricht
-                  // und Content einsetzen
-                  if($Child->getAttribute('name') == $Name){
-
-                     $this->__Children[$ObjectID]->set('Content',$Value);
-                     $PlaceHolderCount++;
-
+               if(get_class($Child) == $tagLibClass){
+                  if($Child->getAttribute('name') == $name){
+                     $this->__Children[$ObjectID]->set('Content',$value);
+                     $placeHolderCount++;
                    // end if
                   }
-
                 // end if
                }
-
              // end foreach
             }
-
           // end if
          }
          else{
-
-            // Falls keine Kinder existieren -> Fehler!
-            trigger_error('[html_taglib_form::setPlaceHolder()] No placeholder object with name "'.$Name.'" composed in current for document controller "'.($this->__ParentObject->__DocumentController).'"! Perhaps tag library form:placeholder is not loaded in form "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
+            trigger_error('[html_taglib_form::setPlaceHolder()] No placeholder object with name "'.$name.'" composed in current for document controller "'.($this->__ParentObject->__DocumentController).'"! Perhaps tag library form:placeholder is not loaded in form "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
             exit();
-
           // end else
          }
 
-
-         // Warnen, falls kein Platzhalter gefunden wurde
-         if($PlaceHolderCount < 1){
-            trigger_error('[html_taglib_form::setPlaceHolder()] There are no placeholders found for name "'.$Name.'" in template "'.($this->__Attributes['name']).'" in document controller "'.($this->__ParentObject->__DocumentController).'"!',E_USER_WARNING);
+         if($placeHolderCount < 1){
+            trigger_error('[html_taglib_form::setPlaceHolder()] There are no placeholders found for name "'.$name.'" in template "'.($this->__Attributes['name']).'" in document controller "'.($this->__ParentObject->__DocumentController).'"!',E_USER_WARNING);
           // end if
          }
 
@@ -582,16 +559,16 @@
       /**
       *  @public
       *
-      *  Setzt das action-Attribut einer Form.<br />
+      *  Sets the action url of the form.
       *
-      *  @param string $Action; Action der Form
+      *  @param string $action The action URL of the form.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 07.01.2007<br />
       */
-      function setAction($Action){
-         $this->__Attributes['action'] = $Action;
+      function setAction($action){
+         $this->__Attributes['action'] = $action;
        // end function
       }
 
@@ -599,37 +576,35 @@
       /**
       *  @public
       *
-      *  Gibt ein Formular-Element, das mit $Name spezifiziert ist zurück.<br />
+      *  Returns a reverence on the form element identified by the given name.
       *
-      *  @param string $Name; Name des Form-Elements
-      *  @return object $FormElement; Referenz auf ein Form-Objekt
+      *  @param string $name The name of the desired form element.
+      *  @return ui_element A reference on the form element.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 07.01.2007<br />
       */
-      function &getFormElementByName($Name){
+      function &getFormElementByName($name){
 
          if(count($this->__Children) > 0){
 
             foreach($this->__Children as $ObjectID => $Child){
-
-               if($Child->getAttribute('name') == $Name){
+               if($Child->getAttribute('name') == $name){
                   return $this->__Children[$ObjectID];
                 // end if
                }
-
              // end foreach
             }
 
           // end if
          }
 
-         // Falls keine Kinder existieren -> Fehler!
+         // display extended debug message in case no form element was found
          $Parent = $this->get('ParentObject');
          $GrandParent = $Parent->get('ParentObject');
          $DocumentController = $GrandParent->get('DocumentController');
-         trigger_error('[html_taglib_form::getFormElementByName()] No form element with name "'.$Name.'" composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$DocumentController.'"!',E_USER_ERROR);
+         trigger_error('[html_taglib_form::getFormElementByName()] No form element with name "'.$name.'" composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$DocumentController.'"!',E_USER_ERROR);
          exit();
 
        // end function
@@ -639,38 +614,35 @@
       /**
       *  @public
       *
-      *  Gibt ein Formular-Element, das mit der ID $ID spezifiziert ist zurück.<br />
-      *  Wird für den Zugriff auf Radio-Buttons benötigt, da diese gleich benamt sind.<br />
+      *  Returns a reverence on the form element identified by the given id.
       *
-      *  @param string $ID; ID des Form-Elements
-      *  @return object $FormElement; Referenz auf ein Form-Objekt
+      *  @param string $ID The ID of the desired form element.
+      *  @return ui_element A reference on the form element.
       *
-      *  @author Christian Schäfer
+      *  @author Christian SchÃ¤fer
       *  @version
       *  Version 0.1, 21.01.2007<br />
       */
-      function &getFormElementByID($ID){
+      function &getFormElementByID($id){
 
          if(count($this->__Children) > 0){
 
-            foreach($this->__Children as $ObjectID => $Child){
-
-               if($Child->getAttribute('id') == $ID){
+            foreach($this->__Children as $ObjectID => $DUMMY){
+               if($Child->getAttribute('id') == $id){
                   return $this->__Children[$ObjectID];
                 // end if
                }
-
              // end foreach
             }
 
           // end if
          }
 
-         // Falls keine Kinder existieren -> Fehler!
+         // display extended debug message in case no form element was found
          $Parent = $this->get('ParentObject');
          $GrandParent = $Parent->get('ParentObject');
          $DocumentController = $GrandParent->get('DocumentController');
-         trigger_error('[html_taglib_form::getFormElementByID()] No form element with id "'.$ID.'" composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$DocumentController.'"!',E_USER_ERROR);
+         trigger_error('[html_taglib_form::getFormElementByID()] No form element with id "'.$id.'" composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$DocumentController.'"!',E_USER_ERROR);
          exit();
 
        // end function
@@ -682,8 +654,8 @@
       *
       *  Returns a reference on a form element addressed by it's internal object id.
       *
-      *  @param string $ObjectID object if of the desired form element
-      *  @return object $FormElement reference on the form object
+      *  @param string $objectID The object id of of the desired form element.
+      *  @return ui_element A reference on the form element.
       *
       *  @author Christian Achatz
       *  @version
@@ -691,10 +663,10 @@
       *  Version 0.2, 12.01.2007 (Corrected error message)<br />
       *  Version 0.3, 06.09.2008 (Corrected error message again)<br />
       */
-      function &getFormElementByObjectID($ObjectID){
+      function &getFormElementByObjectID($objectID){
 
-         if(isset($this->__Children[$ObjectID])){
-            return $this->__Children[$ObjectID];
+         if(isset($this->__Children[$objectID])){
+            return $this->__Children[$objectID];
           // end if
          }
          else{
@@ -702,7 +674,7 @@
             // note, that no suitable child has been found
             $Parent = $this->get('ParentObject');
             $DocumentController =  $Parent->get('DocumentController');
-            trigger_error('[html_taglib_form::getFormElementByObjectID()] No form element with id "'.$ObjectID.'" composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$DocumentController.'"!',E_USER_ERROR);
+            trigger_error('[html_taglib_form::getFormElementByObjectID()] No form element with id "'.$objectID.'" composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$DocumentController.'"!',E_USER_ERROR);
             exit();
 
           // end else
@@ -717,40 +689,37 @@
       *
       *  Returns a list of form elements addressed by their tag name.
       *
-      *  @param string $TagName name of the desired form element
-      *  @return array $FormElements list of form element references
+      *  @param string $tagName The tag name of the desired form element (e.g. "form:text").
+      *  @return ui_element[] A list of references on the form elements.
       *
       *  @author Christian Achatz
       *  @version
-      *  Version 0.1, 14.06.2008 (API-Änderung. Statt getFormElementsByType() soll nur noch getFormElementsByTagName() verwendet werden, da intuitiver.)<br />
+      *  Version 0.1, 14.06.2008 (API-Ã„nderung. Statt getFormElementsByType() soll nur noch getFormElementsByTagName() verwendet werden, da intuitiver.)<br />
       */
-      function &getFormElementsByTagName($TagName){
+      function &getFormElementsByTagName($tagName){
 
-         // TagLib-Klasse zusammensetzen
-         $Colon = strpos($TagName,':');
-         $ClassName = trim(substr($TagName,0,$Colon)).'_taglib_'.trim(substr($TagName,$Colon + 1));
+         $colon = strpos($tagName,':');
+         $tagClassName = trim(substr($tagName,0,$colon)).'_taglib_'.trim(substr($tagName,$colon + 1));
 
-         // Eelemente suchen
          if(count($this->__Children) > 0){
 
             $FormElements = array();
-            foreach($this->__Children as $ObjectID => $Child){
+            foreach($this->__Children as $objectID => $DUMMY){
 
-               if(get_class($this->__Children[$ObjectID]) == $ClassName){
-                  $FormElements[] = &$this->__Children[$ObjectID];
+               if(get_class($this->__Children[$objectID]) == $tagClassName){
+                  $FormElements[] = &$this->__Children[$objectID];
                 // end if
                }
 
              // end foreach
             }
 
-            // Liste zurückgeben
             return $FormElements;
 
           // end if
          }
 
-         // Falls keine Kinder existieren -> Fehler!
+         // display extended debug message in case no form elements were found
          $Parent = $this->get('ParentObject');
          $GrandParent = $Parent->get('ParentObject');
          $DocumentController = $GrandParent->get('DocumentController');
@@ -764,24 +733,24 @@
       /**
       *  @public
       *
-      *  Transformiert eine Form und gibt den HTML-Quelltext zurück.<br />
+      *  Returns the content of the transformed form.
       *
-      *  @return string $Form; HTML-Quelltext der Form
+      *  @return string The content of the transformed form.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.01.2007<br />
-      *  Version 0.2, 20.01.2007 (Handling für Attribut "action" geändert)<br />
+      *  Version 0.2, 20.01.2007 (Handling fï¿½r Attribut "action" geï¿½ndert)<br />
       */
       function transformForm(){
 
-         // Verifizieren, ob action-Attribut gesetzt ist
+         // add action attribute if not set
          if(!isset($this->__Attributes['action']) || empty($this->__Attributes['action'])){
             $this->__Attributes['action'] = $_SERVER['REQUEST_URI'];
           // end if
          }
 
-         // Form transformieren
+         // transform
          $HTML_Form = (string)'';
          $HTML_Form .= '<form '.$this->__getAttributesAsString($this->__Attributes).'>';
 
@@ -808,8 +777,7 @@
       /**
       *  @public
       *
-      *  Definiert, dass das Formular an der exakten Definitionsstelle transformiert und<br />
-      *  ausgegeben werden soll.<br />
+      *  Defines, whether the form should be transformed at the definition place.
       *
       *  @author Christian Achatz
       *  @version
@@ -824,18 +792,18 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "transform" des "coreObject"s.<br />
+      *  Re-implements the {@link transform} method for the form taglib.
       *
-      *  @return string $Content; Leer-String oder Inhalt des Tags
+      *  @return string The content of the form (in case of transformOnPlace) or an empty string.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.01.2007<br />
-      *  Version 0.2, 01.06.2008 (transformOnPlace()-Feature implementiert)<br />
+      *  Version 0.2, 01.06.2008 (Added the transformOnPlace() feature)<br />
       */
       function transform(){
 
-         // Prüfen, ob Template ausgegeben werden soll
+         // to transformation on place if desired
          if($this->__TransformOnPlace === true){
             return $this->transformForm();
           // end if

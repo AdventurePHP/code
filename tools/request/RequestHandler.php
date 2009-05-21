@@ -29,7 +29,7 @@
    *  @version
    *  Version 0.1, 13.12.2008<br />
    */
-   class RequestHandler
+   final class RequestHandler
    {
 
       private function RequestHandler(){
