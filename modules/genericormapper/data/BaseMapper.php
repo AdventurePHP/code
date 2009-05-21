@@ -91,7 +91,7 @@
       *  Implements the interface method init() to be able to initialize the mapper with the
       *  service manager.
       *
-      *  @param array $initParams list of initialization parameters
+      *  @param string[] $initParams List of initialization parameters.
       *
       *  @author Christian Achatz
       *  @version
@@ -153,7 +153,6 @@
           // end foreach
          }
 
-         // stop timer
          $T->stop('BaseMapper::__createMappingTable()');
 
        // end function
@@ -190,7 +189,6 @@
           // end foreach
          }
 
-         // Stop timer
          $T->stop('BaseMapper::__createRelationTable()');
 
        // end function
@@ -238,7 +236,6 @@
           // end if
          }
 
-         // Stop timer
          $T->stop('BaseMapper::addMappingConfiguration()');
 
        // end function
@@ -286,7 +283,6 @@
           // end if
          }
 
-         // Stop timer
          $T->stop('BaseMapper::addRelationConfiguration()');
 
        // end function
@@ -300,7 +296,7 @@
       *
       *  @param string $objectName nam of the current configuration section (=name of the current object)
       *  @param array $objectSection current object definition params
-      *  @return array $resolvedObjectSection enhanced object definition
+      *  @return string[] Enhanced object definition
       *
       *  @author Christian Achatz
       *  @version
@@ -328,7 +324,7 @@
       *
       *  @param string $relationName nam of the current configuration section (=name of the current relation)
       *  @param array $relationSection current relation definition params
-      *  @return array $resolvedRelationSection enhanced relation definition
+      *  @return string[] Enhanced relation definition
       *
       *  @author Christian Achatz
       *  @version

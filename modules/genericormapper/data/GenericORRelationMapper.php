@@ -21,7 +21,6 @@
 
    import('modules::genericormapper::data','GenericORMapper');
 
-
    /**
    *  @namespace modules::genericormapper::data
    *  @class GenericORRelationMapper
@@ -35,8 +34,7 @@
    *  Version 0.3, 21.10.2008 (Improved some of the error messages)<br />
    *  Version 0.4, 25.10.2008 (Added the loadNotRelatedObjects() method)<br />
    */
-   class GenericORRelationMapper extends GenericORMapper
-   {
+   class GenericORRelationMapper extends GenericORMapper {
 
       function GenericORRelationMapper(){
       }
@@ -47,16 +45,16 @@
       *
       *  Implements the interface method init() to be able to initialize the mapper with the service manager.
       *
-      *  @param array $InitParams list of initialization parameters
+      *  @param string[] $initParams list of initialization parameters
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 14.05.2008<br />
       */
-      function init($InitParams){
+      public function init($initParams){
 
          // call parent init method
-         parent::init($InitParams);
+         parent::init($initParams);
 
          // create relation table if necessary
          if(count($this->__RelationTable) == 0){
@@ -75,7 +73,7 @@
       *
       *  @param string $objectName name of the desired objects
       *  @param GenericCriterionObject $criterion criterion object
-      *  @return array $objectList list of domain objects
+      *  @return GenericDomainObject[] List of domain objects.
       *
       *  @author Christian Achatz
       *  @version
@@ -83,7 +81,7 @@
       *  Version 0.2, 21.06.2008 (Sourced out statement creation into an extra method)<br />
       *  Version 0.3, 17.01.2009 (Added a check, if the criterion object is present. Otherwise return null.)<br />
       */
-      function loadObjectListByCriterion($objectName,$criterion = null){
+      public function loadObjectListByCriterion($objectName,$criterion = null){
 
          if($criterion === null){
             trigger_error('[GenericORRelationMapper::loadObjectListByCriterion()] No criterion object given as second argument! Please consult the manual.');
@@ -103,14 +101,14 @@
       *
       *  @param string $objectName name of the desired objects
       *  @param GenericCriterionObject $criterion criterion object
-      *  @return array $ObjectList list of domain objects
+      *  @return GenericDomainObject[] List of domain objects.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 21.06.2008<br />
       *  Version 0.2, 17.01.2009 (Added a check, if the criterion object is present. Otherwise return null.)<br />
       */
-      function loadObjectByCriterion($objectName,$criterion){
+      public function loadObjectByCriterion($objectName,$criterion){
 
          if($criterion === null){
             trigger_error('[GenericORRelationMapper::loadObjectByCriterion()] No criterion object given as second argument! Please consult the manual.');
@@ -124,25 +122,25 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Creates a list of WHERE statements by a given object name and a criterion object.<br />
       *
-      *  @param string $ObjectName name of the desired objects
-      *  @param GenericCriterionObject $Criterion criterion object
-      *  @return array $WHERE list of WHERE statements
+      *  @param string $objectName name of the desired objects
+      *  @param GenericCriterionObject $criterion criterion object
+      *  @return string[] List of WHERE statements.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 26.06.2008 (Extracted from __buildSelectStatementByCriterion())<br />
       */
-      function __buildWhere($ObjectName,$Criterion){
+      protected function __buildWhere($objectName,$criterion){
 
          // initialize return list
          $WHERE = array();
 
          // retrieve property indicators
-         $Properties = $Criterion->get('Properties');
+         $Properties = $criterion->get('Properties');
 
          if(count($Properties) > 0){
 
@@ -150,11 +148,11 @@
             foreach($Properties as $PropertyName => $PropertyValue){
 
                if(substr_count($PropertyValue,'%') > 0 || substr_count($PropertyValue,'_') > 0){
-                  $WHERE[] = '`'.$this->__MappingTable[$ObjectName]['Table'].'`.`'.$PropertyName.'` LIKE \''.$PropertyValue.'\'';
+                  $WHERE[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$PropertyName.'` LIKE \''.$PropertyValue.'\'';
                 // end if
                }
                else{
-                  $WHERE[] = '`'.$this->__MappingTable[$ObjectName]['Table'].'`.`'.$PropertyName.'` = \''.$PropertyValue.'\'';
+                  $WHERE[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$PropertyName.'` = \''.$PropertyValue.'\'';
                 // end else
                }
 
@@ -164,7 +162,6 @@
           // end if
          }
 
-         // return list of where clauses
          return $WHERE;
 
        // end function
@@ -172,19 +169,19 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Creates a list of ORDER statements by a given object name and a criterion object.<br />
       *
       *  @param string $ObjectName name of the desired objects
       *  @param GenericCriterionObject $Criterion criterion object
-      *  @return array $ORDER list of ORDER statements
+      *  @return array List of ORDER statements.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 26.06.2008 (Extracted from __buildSelectStatementByCriterion())<br />
       */
-      function __buildOrder($ObjectName,$Criterion){
+      protected function __buildOrder($ObjectName,$Criterion){
 
          // initialize return list
          $ORDER = array();
@@ -211,19 +208,19 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Creates a list of properties by a given object name and a criterion object.<br />
       *
       *  @param string $ObjectName name of the desired objects
       *  @param GenericCriterionObject $Criterion criterion object
-      *  @return array $Properties list of properties
+      *  @return array List of properties.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 26.06.2008 (Extracted from __buildSelectStatementByCriterion())<br />
       */
-      function __buildProperties($ObjectName,$Criterion){
+      protected function __buildProperties($ObjectName,$Criterion){
 
          // retrieve object properties to load
          $ObjectProperties = $Criterion->get('LoadedProperties');
@@ -253,13 +250,13 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Creates an SQL statement by a given object name and a criterion object.<br />
       *
       *  @param string $ObjectName name of the desired objects
       *  @param GenericCriterionObject $Criterion criterion object
-      *  @return string $Statement SQL statement
+      *  @return string SQL statement.
       *
       *  @author Christian Achatz
       *  @version
@@ -267,7 +264,7 @@
       *  Version 0.2, 21.06.2008 (Code completed)<br />
       *  Version 0.3, 25.06.2008 (Added LIKE-Feature. If the property indicator contains a '%' or '_', the resulting statement contains a LIKE clause instead of a = clause)<br />
       */
-      function __buildSelectStatementByCriterion($ObjectName,$Criterion){
+      protected function __buildSelectStatementByCriterion($ObjectName,$Criterion){
 
          // invoke benchmarker
          $T = &Singleton::getInstance('benchmarkTimer');
@@ -348,7 +345,7 @@
       *  @param GenericDomainObject $object current object
       *  @param string $relationName name of the desired relation
       *  @param GenericCriterionObject $criterion criterion object
-      *  @return array $relatedObjects list of the releated objects
+      *  @return GenericDomainObject[] List of the releated objects.
       *
       *  @author Christian Achatz
       *  @version
@@ -360,7 +357,7 @@
       *  Version 0.5, 25.10.2008 (Added the additional relation option via the criterion object)<br />
       *  Version 0.6, 29.12.2008 (Added check, if given object is null)<br />
       */
-      function loadRelatedObjects(&$object,$relationName,$criterion = null){
+      public function loadRelatedObjects(&$object,$relationName,$criterion = null){
 
          // check if object is present
          if($object === null){
@@ -456,7 +453,7 @@
       *  @param GenericDomainObject $object current object
       *  @param string $relationName name of the desired relation
       *  @param GenericCriterionObject $criterion criterion object
-      *  @return array $notRelatedObjects list of the *not* releated objects
+      *  @return GenericDomainObject[] List of the *not* releated objects.
       *
       *  @author Christian Achatz
       *  @version
@@ -464,7 +461,7 @@
       *  Version 0.2, 25.10.2008 (Added additional where and relation clauses. Bugfix to the inner relation statement.)<br />
       *  Version 0.3, 29.12.2008 (Added check, if given object is null)<br />
       */
-      function loadNotRelatedObjects(&$object,$relationName,$criterion = null){
+      public function loadNotRelatedObjects(&$object,$relationName,$criterion = null){
 
          // check if object is present
          if($object === null){
@@ -557,13 +554,13 @@
       *
       *  @param GenericDomainObject $object current object
       *  @param string $relationName relation name
-      *  @return int $multiplicity the multiplicity of the relation
+      *  @return int The multiplicity of the relation.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 16.12.2008<br />
       */
-      function loadRelationMultiplicity(&$object,$relationName){
+      public function loadRelationMultiplicity(&$object,$relationName){
 
          if(!isset($this->__RelationTable[$relationName])){
             trigger_error('[GenericORRelationMapper::loadRelationMultiplicity()] Relation "'.$relationName.'" does not exist in relation table! Hence, the relation multiplicity cannot be loaded! Please check your relation configuration.');
@@ -602,7 +599,7 @@
       *  Overwrites the saveObject() method of the parent class. Resolves relations.<br />
       *
       *  @param $relationName $Object current object
-      *  @return int $ObjectID; id of the saved object
+      *  @return int Id of the saved object.
       *
       *  @author Christian Achatz
       *  @version
@@ -612,13 +609,13 @@
       *  Version 0.4, 15.06.2008 (Fixed bug that relation was not found due to twisted columns)<br />
       *  Version 0.5, 26.10.2008 (Added a check for the object/relation to exist in the objec>t/relation table)<br />
       */
-      function saveObject($Object){
+      public function saveObject($object){
 
          // save the current object (uses parent function with no resolving for relations)
-         $ID = parent::saveObject($Object);
+         $id = parent::saveObject($object);
 
          // check if object has related objects in it
-         $RelatedObjects = $Object->get('RelatedObjects');
+         $RelatedObjects = $object->get('RelatedObjects');
          if(count($RelatedObjects) > 0){
 
             foreach($RelatedObjects as $RelationKey => $DUMMY){
@@ -631,7 +628,7 @@
                   $RelatedObjectID = $this->saveObject($RelatedObjects[$RelationKey][$i]);
 
                   // gather information about the current relation
-                  $ObjectID = $this->__MappingTable[$Object->get('ObjectName')]['ID'];
+                  $ObjectID = $this->__MappingTable[$object->get('ObjectName')]['ID'];
                   if(!isset($this->__MappingTable[$RelatedObjects[$RelationKey][$i]->get('ObjectName')]['ID'])){
                      trigger_error('[GenericORRelationMapper::saveObject()] The object name "'.$RelatedObjects[$RelationKey][$i]->get('ObjectName').'" does not exist in the mapping table! Hence, your object cannot be saved! Please check your object configuration.');
                      break;
@@ -649,7 +646,7 @@
                   // create statement
                   $select = 'SELECT *
                              FROM `'.$this->__RelationTable[$RelationKey]['Table'].'`
-                             WHERE `'.$ObjectID.'` = \''.$ID.'\'
+                             WHERE `'.$ObjectID.'` = \''.$id.'\'
                              AND `'.$RelObjectID.'` = \''.$RelatedObjectID.'\';';
 
                   $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
@@ -658,7 +655,7 @@
                   // create relation if necessary
                   if($relationcount == 0){
                      $insert = 'INSERT INTO `'.$this->__RelationTable[$RelationKey]['Table'].'`
-                                (`'.$RelObjectID.'`,`'.$ObjectID.'`) VALUES (\''.$RelatedObjectID.'\',\''.$ID.'\');';
+                                (`'.$RelObjectID.'`,`'.$ObjectID.'`) VALUES (\''.$RelatedObjectID.'\',\''.$id.'\');';
                      $this->__DBDriver->executeTextStatement($insert,$this->__LogStatements);
                    // end if
                   }
@@ -673,7 +670,7 @@
          }
 
          // return object id
-         return $ID;
+         return $id;
 
        // end function
       }
@@ -685,14 +682,14 @@
       *  Overwrites the deleteObject() method of the parent class. Resolves relations.
       *
       *  @param object $Object the object to delete
-      *  @return int $ID database id of the object or null
+      *  @return int Database id of the object or null.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       *  Version 0.2, 30.05.2008 (Completed the method's code)<br />
       */
-      function deleteObject($Object){
+      public function deleteObject($Object){
 
          // return if given object is null
          if($Object === null){
@@ -769,7 +766,7 @@
       *  @param string $RelationName; Name ofthe relation to create
       *  @param GenericDomainObject $SourceObject; Source object for the relation
       *  @param GenericDomainObject $TargetObject; Target object for the relation
-      *  @return bool $return; false (relation is not an association) or true (everything's fine)
+      *  @return bool False (relation is not an association) or true (everything's fine)
       *
       *  @author Christian Achatz
       *  @version
@@ -777,7 +774,7 @@
       *  Version 0.2, 31.05.2008 (Code completed)<br />
       *  Version 0.3, 08.06.2008 (Introduced a test to check weather relation exists or not)<br />
       */
-      function createAssociation($RelationName,$SourceObject,$TargetObject){
+      public function createAssociation($RelationName,$SourceObject,$TargetObject){
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$RelationName])){
@@ -820,7 +817,7 @@
       *  @param string $RelationName Name ofthe relation to create
       *  @param GenericDomainObject $SourceObject Source object for the relation
       *  @param GenericDomainObject $TargetObject Target object for the relation
-      *  @return bool $return true (success) or false (error)
+      *  @return bool True (success) or false (error).
       *
       *  @author Christian Achatz
       *  @version
@@ -828,7 +825,7 @@
       *  Version 0.2, 31.05.2008 (Code completed)<br />
       *  Version 0.3, 08.06.2008 (Introduced a test to check weather relation exists or not)<br />
       */
-      function deleteAssociation($RelationName,$SourceObject,$TargetObject){
+      public function deleteAssociation($RelationName,$SourceObject,$TargetObject){
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$RelationName])){
@@ -871,14 +868,14 @@
       *  @param string $RelationName Name of the relation to select
       *  @param GenericDomainObject $SourceObject Source object for the relation
       *  @param GenericDomainObject $TargetObject Target object for the relation
-      *  @return bool $return true (association exists) or false (objects are not associated)
+      *  @return bool True (association exists) or false (objects are not associated).
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 31.05.2008<br />
       *  Version 0.1, 08.06.2008 (Introduced a test to check weather relation exists or not)<br />
       */
-      function isAssociated($RelationName,$SourceObject,$TargetObject){
+      public function isAssociated($RelationName,$SourceObject,$TargetObject){
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$RelationName])){
@@ -922,19 +919,19 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns all associations concerning one object.
       *
       *  @param string $objectName name of the current object
-      *  @return array $relationList list of relations of the given object
+      *  @return string[] List of relations of the given object.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 30.05.2008<br />
       *  Version 0.2, 28.12.2008 (Bugfix: only associations are returned, where the object is involved)<br />
       */
-      function &__getAssociationsByObjectName($objectName){
+      protected function &__getAssociationsByObjectName($objectName){
 
          // initialize list
          $relationList = array();
@@ -965,19 +962,19 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Returns all compositions concerning one object name.<br />
       *
       *  @param string $ObjectName Name of the current object
       *  @param string $Direction Direction of the relation (legal values: source, target)
-      *  @return array $RelationList List of relations of the given type
+      *  @return string[] List of relations of the given type.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 30.05.2008<br />
       */
-      function __getCompositionsByObjectName($ObjectName,$Direction = null){
+      protected function __getCompositionsByObjectName($ObjectName,$Direction = null){
 
          // initialize list
          $RelationList = array();
@@ -1016,19 +1013,19 @@
 
 
       /**
-      *  @private
+      *  @protected 
       *
       *  Returns the name of the related object concerning the given arguments.<br />
       *
       *  @param string $ObjectName Name of the current object
       *  @param string $RelationName Name of the desired relation
-      *  @return string $RelatedObject Name of the releated object or null, in case the object definition was not found
+      *  @return string Name of the releated object or null, in case the object definition was not found.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 14.05.2008<br />
       */
-      function __getRelatedObjectNameByRelationName($ObjectName,$RelationName){
+      protected function __getRelatedObjectNameByRelationName($ObjectName,$RelationName){
 
          // look for suitable related object
          foreach($this->__RelationTable as $SectionName => $Attributes){
@@ -1063,7 +1060,7 @@
       *
       *  Implements php's magic __sleep() method to indicate, which class vars have to be serialized.<br />
       *
-      *  @return array $Vars2Serialize list of serializable properties
+      *  @return string[] List of serializable properties.
       *
       *  @author Christian Achatz
       *  @version
@@ -1071,7 +1068,7 @@
       *  Version 0.2, 25.06.2008 (Removed "ApplicationID" from sleep list)<br />
       *  Version 0.3, 26.10.2008 (Added "__importedConfigCache")<br />
       */
-      function __sleep(){
+      public function __sleep(){
          return array('__MappingTable','__RelationTable','__Context','__Language','__importedConfigCache');
        // end function
       }

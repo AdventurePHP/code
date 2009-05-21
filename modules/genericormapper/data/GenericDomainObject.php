@@ -23,7 +23,7 @@
    *  @namespace modules::genericormapper::biz
    *  @class GenericDomainObject
    *
-   *  Abstract class for all domain objects handled by the abstract or mapper.<br />
+   *  Abstract class for all domain objects handled by the abstract or mapper.
    *
    *  @author Christian Achatz
    *  @version
@@ -66,16 +66,16 @@
       *
       *  Constructor of the generic domain object. Sets the object name if desired.<br />
       *
-      *  @param string $ObjectName name of the domain object
+      *  @param string $objectName name of the domain object
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 15.04.2008<br />
       */
-      function GenericDomainObject($ObjectName = null){
+      public function GenericDomainObject($objectName = null){
 
-         if($ObjectName !== null){
-            $this->__ObjectName = $ObjectName;
+         if($objectName !== null){
+            $this->__ObjectName = $objectName;
           // end if
          }
 
@@ -88,9 +88,9 @@
       *
       *  Loads a list of related objects.<br />
       *
-      *  @param string $RelationName name of the desired relation
+      *  @param string $relationName name of the desired relation
       *  @param GenericCriterionObject $Criterion criterion object
-      *  @return array $ObjectList List of objects that are related with the current object or null
+      *  @return GenericDomainObject[] List of objects that are related with the current object or null.
       *
       *  @author Christian Achatz
       *  @version
@@ -99,7 +99,7 @@
       *  Version 0.3, 16.06.2008 (Caching of objects disabled, due to recursion errors)<br />
       *  Version 0.4, 25.06.2008 (Added a second parameter to have influence on the loaded list)<br />
       */
-      function loadRelatedObjects($RelationName,$Criterion = null){
+      public function loadRelatedObjects($relationName,$Criterion = null){
 
          // check weather data component is there
          if($this->__DataComponent === null){
@@ -109,7 +109,7 @@
          }
 
          // return objects that are related to the current object
-         return $this->__DataComponent->loadRelatedObjects($this,$RelationName,$Criterion);
+         return $this->__DataComponent->loadRelatedObjects($this,$relationName,$Criterion);
 
        // end function
       }
@@ -127,7 +127,7 @@
       *  @version
       *  Version 0.1, 28.12.2008<br />
       */
-      function &getRelatedObjects($relationName){
+      public function &getRelatedObjects($relationName){
 
          if(isset($this->__RelatedObjects[$relationName])){
             return $this->__RelatedObjects[$relationName];
@@ -149,14 +149,14 @@
       *  Add a related object.
       *
       *  @param string $relationName name of the desired relation
-      *  @return array $object Object that is related with the current object
+      *  @param GenericDomainObject $object Object that is related with the current object.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 15.04.2008<br />
       *  Version 0.2, 03.05.2009 (Added check for null objects. In null cases, the object is not added.)<br />
       */
-      function addRelatedObject($relationName,&$object){
+      public function addRelatedObject($relationName,&$object){
          
          if($object !== null){
             $this->__RelatedObjects[$relationName][] = &$object;
@@ -178,7 +178,7 @@
       *  @version
       *  Version 0.1, 26.04.2008<br />
       */
-      function setProperty($PropertyName,$PropertyValue){
+      public function setProperty($PropertyName,$PropertyValue){
          $this->__Properties[$PropertyName] = $PropertyValue;
        // end function
       }
@@ -196,7 +196,7 @@
       *  @version
       *  Version 0.1, 26.04.2008<br />
       */
-      function getProperty($PropertyName){
+      public function getProperty($PropertyName){
 
          if(isset($this->__Properties[$PropertyName])){
             return $this->__Properties[$PropertyName];
@@ -222,7 +222,7 @@
       *  @version
       *  Version 0.1, 26.04.2008<br />
       */
-      function setProperties($Properties = array()){
+      public function setProperties($Properties = array()){
 
          if(count($Properties) > 0){
             $this->__Properties = $Properties;
@@ -244,7 +244,7 @@
       *  @version
       *  Version 0.1, 26.04.2008<br />
       */
-      function getProperties(){
+      public function getProperties(){
          return $this->__Properties;
        // end function
       }
@@ -261,7 +261,7 @@
       *  @version
       *  Version 0.1, 18.08.2008<br />
       */
-      function toString(){
+      public function toString(){
          return printObject(array_merge(array('ObjectName' => $this->__ObjectName),$this->__Properties));
        // end function
       }

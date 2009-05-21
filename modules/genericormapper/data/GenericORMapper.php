@@ -23,7 +23,6 @@
    import('modules::genericormapper::data','GenericDomainObject');
    import('modules::genericormapper::data','GenericCriterionObject');
 
-
    /**
    *  @namespace modules::genericormapper::data
    *  @class GenericORMapper
@@ -55,7 +54,7 @@
       *  @version
       *  Version 0.1, 14.05.2008<br />
       */
-      function init($initParams){
+      public function init($initParams){
 
          // call parent init method
          parent::init($initParams);
@@ -80,14 +79,14 @@
       *  @param string $Namespace namespace of the statement
       *  @param string $StatementName name of the statement file
       *  @param array $StatementParams a list of statement parameters
-      *  @return array $ObjectList the desired object list
+      *  @return GenericDomainObject[] The desired object list.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       *  Version 0.2, 25.06.2008 (Added the $StatementParams parameter)<br />
       */
-      function loadObjectListByStatement($ObjectName,$Namespace,$StatementName,$StatementParams = array()){
+      public function loadObjectListByStatement($ObjectName,$Namespace,$StatementName,$StatementParams = array()){
          return $this->__loadObjectListByStatementResult($ObjectName,$this->__DBDriver->executeStatement($Namespace,$StatementName,$StatementParams));
        // end function
       }
@@ -100,13 +99,13 @@
       *
       *  @param string $ObjectName name of the object in mapping table
       *  @param array $IDs list of object ids
-      *  @return array $ObjectList the desired object list
+      *  @return GenericDomainObject[] The desired object list.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 14.05.2008<br />
       */
-      function loadObjectListByIDs($ObjectName,$IDs = array()){
+      public function loadObjectListByIDs($ObjectName,$IDs = array()){
 
          // initialize return list
          $Objects = array();
@@ -118,7 +117,6 @@
           // end for
          }
 
-         // return list
          return $Objects;
 
        // end function
@@ -133,13 +131,13 @@
       *
       *  @param string $objectName Name of the object in mapping table
       *  @param string $statement Sql statement
-      *  @return GenericDomainObject[] The desired object list
+      *  @return GenericDomainObject[] The desired object list.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       */
-      function loadObjectListByTextStatement($objectName,$statement){
+      public function loadObjectListByTextStatement($objectName,$statement){
          return $this->__loadObjectListByStatementResult($objectName,$this->__DBDriver->executeTextStatement($statement,$this->__LogStatements));
        // end function
       }
@@ -161,7 +159,7 @@
       *  Version 0.1, 11.05.2008<br />
       *  Version 0.2, 25.06.2008 (Added the $StatementParams parameter)<br />
       */
-      function loadObjectByStatement($objectName,$namespace,$statementName,$statementParams = array()){
+      public function loadObjectByStatement($objectName,$namespace,$statementName,$statementParams = array()){
          $result = $this->__DBDriver->executeStatement($namespace,$statementName,$statementParams,$this->__LogStatements);
          $data = $this->__DBDriver->fetchData($result);
          return $this->__mapResult2DomainObject($objectName,$data);
@@ -177,14 +175,14 @@
       *
       *  @param string $objectName name of the object in mapping table
       *  @param string $statement sql statement
-      *  @return GenericDomainObject The desired object
+      *  @return GenericDomainObject The desired object.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       *  Version 0.2, 25.05.2008 (Corrected the call of the executeTextStatement() method)<br />
       */
-      function loadObjectByTextStatement($objectName,$statement){
+      public function loadObjectByTextStatement($objectName,$statement){
          $result = $this->__DBDriver->executeTextStatement($statement,$this->__LogStatements);
          $data = $this->__DBDriver->fetchData($result);
          return $this->__mapResult2DomainObject($objectName,$data);
@@ -197,19 +195,19 @@
       *
       *  Deletes an Object.<br />
       *
-      *  @param object $Object the object to delete
-      *  @return int $ID database id of the object
+      *  @param GenericDomainObject $object the object to delete
+      *  @return int Database id of the object.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       */
-      function deleteObject($Object){
+      public function deleteObject($object){
 
          // Get information about object to load
-         $ObjectName = $Object->get('ObjectName');
+         $ObjectName = $object->get('ObjectName');
          $ObjectID = $this->__MappingTable[$ObjectName]['ID'];
-         $ID = $Object->getProperty($ObjectID);
+         $ID = $object->getProperty($ObjectID);
 
          // Build query
          $delete = 'DELETE FROM `'.$this->__MappingTable[$ObjectName]['Table'].'`';
@@ -226,10 +224,10 @@
       /**
       *  @public
       *
-      *  Saves an Object.<br />
+      *  Saves an Object.
       *
       *  @param object $Object the object to save
-      *  @return int $ID database id of the object
+      *  @return int Database id of the object.
       *
       *  @author Christian Achatz
       *  @version
@@ -237,7 +235,7 @@
       *  Version 0.2, 26.10.2008 (Added a check, if the desired object name exists in the mapping table.)<br />
       *  Version 0.3, 27.12.2008 (Update is now done, if params are located in the params array)<br />
       */
-      function saveObject($Object){
+      public function saveObject($Object){
 
          // Get information about object to load
          $objectName = $Object->get('ObjectName');
@@ -324,13 +322,13 @@
       *
       *  @param string $ObjectName name of the object in mapping table
       *  @param int $ObjectID database id of the desired object
-      *  @return object $Object the desired object
+      *  @return GenericDomainObject The desired object.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       */
-      function loadObjectByID($ObjectName,$ObjectID){
+      public function loadObjectByID($ObjectName,$ObjectID){
 
          // Get information about object to load
          $ObjectInfo = $this->__MappingTable[$ObjectName];
@@ -340,7 +338,6 @@
                    WHERE `'.$this->__MappingTable[$ObjectName]['ID'].'` = \''.$ObjectID.'\';';
          $result = $this->__DBDriver->executeTextStatement($query,$this->__LogStatements);
 
-         // Return desired object
          return $this->__mapResult2DomainObject($ObjectName,$this->__DBDriver->fetchData($result));
 
        // end function
@@ -348,19 +345,19 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Loads an object list by a statemant resource.<br />
       *
       *  @param string $ObjectName name of the object in mapping table
       *  @param string $StmtResult sql statement result
-      *  @return array $ObjectList the desired object list
+      *  @return GenericDomainObject[] The desired object list.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       */
-      function __loadObjectListByStatementResult($ObjectName,$StmtResult){
+      protected function __loadObjectListByStatementResult($ObjectName,$StmtResult){
 
          // Load list
          $ObjectList = array();
@@ -369,7 +366,6 @@
           // end while
          }
 
-         // Return list
          return $ObjectList;
 
        // end function
@@ -377,13 +373,13 @@
 
 
       /**
-      *  @private
+      *  @protected
       *
       *  Creates an domain object by name and properties.
       *
       *  @param string $ObjectName name of the object in mapping table
       *  @param array $Properties properties of the object
-      *  @return object $Object the desired object or null
+      *  @return GenericDomainObject The desired object or null.
       *
       *  @author Christian Achatz
       *  @version
@@ -391,7 +387,7 @@
       *  Version 0.2, 30.05.2008 (Now returns null, if no properties are available)<br />
       *  Version 0.3, 15.06.2008 (Now uses the constructor of GenericDomainObject to set the object name)<br />
       */
-      function __mapResult2DomainObject($objectName,$properties){
+      protected function __mapResult2DomainObject($objectName,$properties){
 
          if($properties !== false){
 
@@ -414,7 +410,6 @@
           // end else
          }
 
-         // return object
          return $object;
 
        // end function
