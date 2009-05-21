@@ -22,35 +22,28 @@
    import('core::session','sessionManager');
    register_shutdown_function('saveSessionSingletonObjects');
 
-
    /**
-   *  @namespace core::singleton
-   *
-   *  Shutdown Function um alle SessionSingleton gecachten Objekte in die Session<br />
-   *  zu persistieren.<br />
-   *
-   *  @author Christian Schäfer
-   *  @version
-   *  Version 0.1, 24.02.2008<br />
-   *  Version 0.2, 26.02.2008 (Include des sessionManagers wurde falsch notiert)<br />
-   */
+    * @namespace core::singleton
+    *
+    * Implements a shutdown function to save all session singleton objects in the session.
+    *
+    * @author Christian SchÃ¤fer
+    * @version
+    * Version 0.1, 24.02.2008<br />
+    * Version 0.2, 26.02.2008 (Include of the sessionManagers was noted wrong)<br />
+    */
    function saveSessionSingletonObjects(){
 
-      // Cachenamen erzeugen
-      $CacheContainer = SessionSingleton::showCacheContainerOffset();
+      $cacheContainer = SessionSingleton::showCacheContainerOffset();
 
-      if(isset($GLOBALS[$CacheContainer])){
+      if(isset($GLOBALS[$cacheContainer])){
+         $cacheCount = count($GLOBALS[$cacheContainer]);
 
-         // Anzahl der Objekte zählen
-         $CacheCount = count($GLOBALS[$CacheContainer]);
-
-         if($CacheCount > 0){
-
-            // sessionManager erzeugen
+         if($cacheCount > 0){
             $sessMgr = new sessionManager(SessionSingleton::showSessionNamespace());
 
-            foreach($GLOBALS[$CacheContainer] as $Key => $DUMMY){
-               $sessMgr->saveSessionData($Key,serialize($GLOBALS[$CacheContainer][$Key]));
+            foreach($GLOBALS[$cacheContainer] as $key => $DUMMY){
+               $sessMgr->saveSessionData($key,serialize($GLOBALS[$cacheContainer][$key]));
              // end for
             }
 
@@ -65,69 +58,64 @@
 
 
    /**
-   *  @namespace core::singleton
-   *  @class SessionSingleton
-   *  @static
-   *
-   *  Abstrakte Implementierung des SessionSingleton-Patterns. Die Objekte werden über die Session<br />
-   *  hinweg gecached. Als lokaler Cache während der Ausführung der Applikation wird der Offset<br />
-   *  'SESSION_SINGLETON_CACHE' im $GLOBALS-Array verwendet.<br />
-   *  <br />
-   *  Verwendung:<br />
-   *  $oObject = &SessionSingleton::getInstance('<ClassName>');<br />
-   *
-   *  @author Christian Schäfer
-   *  @version
-   *  Version 0.1, 24.02.2008<br />
-   */
-   class SessionSingleton extends Singleton
-   {
+    * @namespace core::singleton
+    * @class SessionSingleton
+    * @static
+    *
+    * Implements the generic session singleton pattern. Can be used to create singleton objects
+    * from every class. This eases unit tests, because explicit singleton implementations cause
+    * side effects during unit testing. As a cache container, the $GLOBALS array is used.
+    * Usage:
+    * <pre>import('my::namespace','MyClass');
+    * $myObject = &SessionSingleton::getInstance('MyClass');</pre>
+    *
+    * @author Christian SchÃ¤fer
+    * @version
+    * Version 0.1, 24.02.2008<br />
+    */
+   class SessionSingleton extends Singleton {
 
       private function SessionSingleton(){
       }
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Implementierung der Methode getInstance() für SessionSingleton.<br />
-      *
-      *  @param string $className; Name der zu instanziierenden Klasse
-      *  @return object $SessionSingletonObject; Objekt, das SessionSingelton instanziiert wurde
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 24.02.2008<br />
-      */
-      static function &getInstance($className){
+       * @public
+       * @static
+       *
+       * Returns a session singleton instance of the given class. In case the object is found
+       * in the session singleton cache, the cached object is returned.
+       *
+       * @param string $className The name of the class, that should be created a session singleton instance from.
+       * @return coreObject The desired object's singleton instance.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 24.02.2008<br />
+       */
+      public static function &getInstance($className){
 
-         // Cachenamen erzeugen
-         $CacheContainer = SessionSingleton::showCacheContainerOffset();
-         $CacheObjectName = SessionSingleton::createCacheObjectName($className);
+         $cacheContainer = SessionSingleton::showCacheContainerOffset();
+         $cacheObjectName = SessionSingleton::createCacheObjectName($className);
 
-         // Prüfen, ob Instanz des Objekt bereits im lokalen Cache existiert
          if(!SessionSingleton::isInSingletonCache($className)){
 
-            // Prüfen, ob Instanz bereits im Session Cache existiert
             $sessMgr = new sessionManager(SessionSingleton::showSessionNamespace());
-            $CachedObject = $sessMgr->loadSessionData($CacheObjectName);
+            $cachedObject = $sessMgr->loadSessionData($cacheObjectName);
 
-            if($CachedObject !== false){
-               $GLOBALS[$CacheContainer][$CacheObjectName] = unserialize($CachedObject);
+            if($cachedObject !== false){
+               $GLOBALS[$cacheContainer][$cacheObjectName] = unserialize($cachedObject);
              // end if
             }
             else{
 
-               // Prüfen, ob Klasse vorhanden
                if(!class_exists($className)){
                   trigger_error('[SessionSingleton::getInstance()] Class "'.$className.'" cannot be found! Maybe the class name is misspelt!',E_USER_ERROR);
                   exit(1);
                 // end if
                }
 
-               // Erzeugt Klasse $className singleton
-               $GLOBALS[$CacheContainer][$CacheObjectName] = new $className;
+               $GLOBALS[$cacheContainer][$cacheObjectName] = new $className();
 
              // end else
             }
@@ -135,23 +123,24 @@
           // end if
          }
 
-         // Gibt Instanz aus Singleton-Cache zurück
-         return $GLOBALS[$CacheContainer][$CacheObjectName];
+         return $GLOBALS[$cacheContainer][$cacheObjectName];
 
        // end function
       }
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Löscht die Instanz eines übergebenen Objekts aus dem Singleton-Cache.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 24.02.2008<br />
-      */
+       * @public
+       * @static
+       *
+       * Removes the given instance from the cache.
+       *
+       * @param string $className The name of the singleton class.
+       *
+       * @author Christian Achatz
+       * @version
+       *  Version 0.1, 24.02.2008<br />
+       */
       static function clearInstance($className){
          unset($GLOBALS[SessionSingleton::showCacheContainerOffset()][SessionSingleton::createCacheObjectName($className)]);
        // end function
@@ -159,15 +148,15 @@
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Setzt den Singleton-Cache für alle Objekte zurück.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 24.02.2008<br />
-      */
+       * @public
+       * @static
+       *
+       * Resets the entire singleton cache.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 24.02.2008<br />
+       */
       static function clearAll(){
          $GLOBALS[SessionSingleton::showCacheContainerOffset()] = array();
        // end function
@@ -175,15 +164,18 @@
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Prüft, ob ein Objekt bereits im Singleton-Cache vorhanden ist.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 24.02.2008<br />
-      */
+       * @protected
+       * @static
+       *
+       * Checks, whether a class is already in the singleton cache.
+       *
+       * @param string $className The name of the singleton class.
+       * @return boolean True in case it is, false otherwise.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.04.2006<br />
+       */
       static function isInSingletonCache($className){
 
          if(isset($GLOBALS[SessionSingleton::showCacheContainerOffset()][SessionSingleton::createCacheObjectName($className)])){
@@ -200,34 +192,37 @@
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Gibt den Offset des $GLOBALS-Array zurück, in dem der SessionSingleton-Cache<br />
-      *  gehalten wird.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 24.02.2008<br />
-      */
-      static function showCacheContainerOffset(){
+       * @protected
+       * @static
+       *
+       * Returns the name of the cache container offset within the $GLOBALS array.
+       *
+       * @return string The name of the cache container offset.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 24.02.2008<br />
+       */
+      protected static function showCacheContainerOffset(){
          return (string)'SESSION_SINGLETON_CACHE';
        // end function
       }
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Gibt den Namespace zurück, in dem die Objekte in der Session gecached werden sollen.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 24.02.2008<br />
-      */
-      static function showSessionNamespace(){
-         return (string)'core::session';
+       * @public
+       * @static
+       *
+       * Returns the namespace of the session cache for the session manager.
+       *
+       * @return string The namespace of the session singleton cache namespace in the session.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 24.02.2008<br />
+       */
+      public static function showSessionNamespace(){
+         return (string)'core::sessionsingleton';
        // end function
       }
 

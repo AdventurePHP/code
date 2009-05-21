@@ -20,60 +20,57 @@
    */
 
    /**
-   *  @namespace core::singleton
-   *  @class Singleton
-   *  @static
-   *
-   *  Abstrakte Implementierung des Singleton-Patterns. Als Cache wird<br />
-   *  der Offset 'SINGLETON_CACHE' im $GLOBALS-Array verwendet.<br />
-   *  <br />
-   *  Verwendung:<br />
-   *  $oObject = &Singleton::getInstance('<ClassName>');<br />
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 12.04.2006<br />
-   */
-   class Singleton
-   {
+    * @namespace core::singleton
+    * @class Singleton
+    * @static
+    *
+    * Implements the generic singleton pattern. Can be used to create singleton objects from
+    * every class. This eases unit tests, because explicit singleton implementations cause side
+    * effects during unit testing. As a cache container, the $GLOBALS array is used.
+    * Usage:
+    * <pre>import('my::namespace','MyClass');
+    * $myObject = &Singleton::getInstance('MyClass');</pre>
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.04.2006<br />
+    */
+   class Singleton {
 
       private function Singleton(){
       }
 
-
       /**
-      *  @public
-      *  @static
-      *
-      *  Gibt die Instanz des mit $className angegebenen Objekts zurück.<br />
-      *  Wird dies bereits im Singleton-Cache gefunden, gibt die Methode<br />
-      *  das bereits gecachete zurück, ist es noch nicht erzeugt, so wird<br />
-      *  eine neue Instanz erstellt und in den Singleton-Cache geschreiben.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 12.04.2006<br />
-      *  Version 0.2, 21.08.2007 (Es wird nun geprüft, ob die Klasse existiert)<br />
-      */
-      static function &getInstance($className){
+       * @public
+       * @static
+       *
+       * Returns a singleton instance of the given class. In case the object is found in the
+       * singleton cache, the cached object is returned.
+       *
+       * @param string $className The name of the class, that should be created a singleton instance from.
+       * @return coreObject The desired object's singleton instance.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.04.2006<br />
+       * Version 0.2, 21.08.2007 (Added check, if the class exists.)<br />
+       */
+      public static function &getInstance($className){
 
-         // Prüfen, ob Instanz des Objekt bereits existiert
          if(!Singleton::isInSingletonCache($className)){
 
-            // Prüfen, ob Klasse vorhanden
             if(!class_exists($className)){
                trigger_error('[Singleton::getInstance()] Class "'.$className.'" cannot be found! Maybe the class name is misspelt!',E_USER_ERROR);
                exit(1);
              // end if
             }
 
-            // Erzeugt Klasse $className singleton
+            // create instance using the globals array.
             $GLOBALS[Singleton::showCacheContainerOffset()][Singleton::createCacheObjectName($className)] = new $className;
 
           // end if
          }
 
-         // Gibt Instanz aus Singleton-Cache zurück
          return $GLOBALS[Singleton::showCacheContainerOffset()][Singleton::createCacheObjectName($className)];
 
        // end function
@@ -81,48 +78,53 @@
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Löscht die Instanz eines übergebenen Objekts aus dem Singleton-Cache.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 12.04.2006<br />
-      */
-      static function clearInstance($className){
+       * @public
+       * @static
+       *
+       * Removes the given instance from the cache.
+       *
+       * @param string $className The name of the singleton class.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.04.2006<br />
+       */
+      public static function clearInstance($className){
          unset($GLOBALS[Singleton::showCacheContainerOffset()][Singleton::createCacheObjectName($className)]);
        // end function
       }
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Setzt den Singleton-Cache für alle Objekte zurück.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 12.04.2006<br />
-      */
-      static function clearAll(){
+       * @public
+       * @static
+       *
+       * Resets the entire singleton cache.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.04.2006<br />
+       */
+      public static function clearAll(){
          $GLOBALS[Singleton::showCacheContainerOffset()] = array();
        // end function
       }
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Prüft, ob ein Objekt bereits im Singleton-Cache vorhanden ist.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 12.04.2006<br />
-      */
-      static function isInSingletonCache($className){
+       * @protected
+       * @static
+       *
+       * Checks, whether a class is already in the singleton cache.
+       *
+       * @param string $className The name of the singleton class.
+       * @return boolean True in case it is, false otherwise.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.04.2006<br />
+       */
+      protected static function isInSingletonCache($className){
 
          if(isset($GLOBALS[Singleton::showCacheContainerOffset()][Singleton::createCacheObjectName($className)])){
             return true;
@@ -138,33 +140,37 @@
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Erzeugt den Cache-Namen der Klasse.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 12.04.2006<br />
-      */
-      static function createCacheObjectName($className){
+       * @protected
+       * @static
+       *
+       * Creates the class' cache name.
+       *
+       * @param string $className The name of the singleton class
+       * @return string The name of the cache offset.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.04.2006<br />
+       */
+      protected static function createCacheObjectName($className){
          return strtoupper($className);
        // end function
       }
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Gibt den Offset des $GLOBALS-Array zurück, in dem der Singleton-Cache<br />
-      *  gehalten wird.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 12.04.2006<br />
-      */
-      static function showCacheContainerOffset(){
+       * @public
+       * @static
+       *
+       * Returns the name of the cache container offset within the $GLOBALS array.
+       *
+       * @return string The name of the cache container offset.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.04.2006<br />
+       */
+      public static function showCacheContainerOffset(){
          return (string)'SINGLETON_CACHE';
        // end function
       }
