@@ -23,6 +23,9 @@
    import('tools::request','RequestHandler');
 
    /**
+    * @package modules::guestbook2009::pres
+    * @class edit_controller
+    *
     * Implements the document controller to handle the edit flow.
     *
     * @author Christian Achatz

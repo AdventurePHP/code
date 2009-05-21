@@ -7,17 +7,17 @@
    </div>
    <div class="gb--create-form">
       <html:form name="create_entry" method="post">
-         <label class="gb--label-name">Name:</label>
+         <label class="gb--create-label-name">Name:</label>
          <form:text
             maxlength="100"
             class="gb--create-field-name"
             name="name"
             validate="true"
             button="send"
-            filter="onlyLetters"
+            filter="noSpecialCharacters"
          />
          <br />
-         <label class="gb--label-email">E-Mail:</label>
+         <label class="gb--create-label-email">E-Mail:</label>
          <form:text
             maxlength="100"
             class="gb--create-field-email"
@@ -28,7 +28,7 @@
             filter="stripTags"
          />
          <br />
-         <label class="gb--label-website">Webseite:</label>
+         <label class="gb--create-label-website">Webseite:</label>
          <form:text
             maxlength="100"
             class="gb--create-field-website"
@@ -38,18 +38,18 @@
             filter="stripTags"
          />
          <br />
-         <label class="gb--label-title">Titel:</label>
+         <label class="gb--create-label-title">Titel:</label>
          <form:text
             maxlength="100"
             class="gb--create-field-title"
             name="title"
             validate="true"
             button="send"
-            filter="onlyLetters"
+            filter="noSpecialCharacters"
          />
          <br />
          <br />
-         <label class="gb--label-text">Text:</label>
+         <label class="gb--create-label-text">Text:</label>
          <br />
          <form:area
             class="gb--create-field-text"
@@ -60,7 +60,7 @@
          />
          <br />
          <br />
-         <label class="gb--label-captcha">Sicherheitsabfrage:</label>
+         <label class="gb--create-label-captcha">Sicherheitsabfrage:</label>
          <form:addtaglib namespace="modules::captcha::pres::taglib" prefix="form" class="captcha" />
          <form:captcha
             text_class="gb--create-field-captcha-text"

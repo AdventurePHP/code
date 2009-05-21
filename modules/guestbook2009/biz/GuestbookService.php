@@ -25,31 +25,183 @@
    import('tools::http','HeaderManager');
    import('modules::guestbook2009::biz','GuestbookModel');
    import('core::session','sessionManager');
+   import('tools::link','frontcontrollerLinkHandler');
    
    /**
     * Description of GuestbookService
     *
     * @author Administrator
     */
-   final class GuestbookService extends coreObject
-   {
-   
+   final class GuestbookService extends coreObject {
+
+
+      /**
+       * @public
+       *
+       * Loads a paged entry list.
+       *
+       * @return Entry[] The paged entry list.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 21.05.2009<br />
+       */
       public function loadPagedEntryList(){
          $mapper = &$this->__getMapper();
          return $mapper->loadEntryList();
+       // end function
       }
 
+
+      /**
+       * @public
+       *
+       * Loads a complete entry list for selection (backend!).
+       *
+       * @return Entry[] The entry list.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 21.05.2009<br />
+       */
       public function loadEntryListForSelection(){
          $mapper = &$this->__getMapper();
          return $mapper->loadEntryListForSelection();
+       // end function
       }
 
+
+      /**
+       * @public
+       *
+       * Loads a dedicated entry.
+       *
+       * @return Entry An entry.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 21.05.2009<br />
+       */
       public function loadEntry($id){
          $mapper = &$this->__getMapper();
          return $mapper->loadEntry($id);
+       // end function
       }
 
+
+      /**
+       * @public
+       *
+       * Loads the guestbook.
+       *
+       * @return Guestbook The current guestbook domain object.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 21.05.2009<br />
+       */
       public function loadGuestbook(){
+         $mapper = &$this->__getMapper();
+         return $mapper->loadGuestbook();
+       // end function
+      }
+
+
+      /**
+       * @public
+       * 
+       * Deletes the given entry.
+       *
+       * @param Entry $entry The entry domain object.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 21.05.2009<br />
+       */
+      public function deleteEntry($entry){
+         
+         if($entry !== null){
+            $mapper = &$this->__getMapper();
+            $mapper->deleteEntry($entry);
+          // end if
+         }
+
+         // display the admin start page
+         $link = frontcontrollerLinkHandler::generateLink(
+            $_SERVER['REQUEST_URI'],
+            array(
+               'gbview' => 'admin',
+               'adminview' => null
+            )
+         );
+         HeaderManager::forward($link);
+         
+       // end function
+      }
+
+
+      /**
+       * @public
+       *
+       * Logs the user out and displays the list view.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 21.05.2009<br />
+       */
+      public function logout(){
+
+         // logout by cleaning the session
+         $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+         $guestbookId = $model->get('GuestbookId');
+         $session = new sessionManager('modules::guestbook2009::biz::'.$guestbookId);
+         $session->deleteSessionData('LoggedIn');
+         
+         // display the list view
+         $link = frontcontrollerLinkHandler::generateLink(
+            $_SERVER['REQUEST_URI'],
+            array(
+               'gbview' => 'list',
+               'adminview' => null
+            )
+         );
+         HeaderManager::forward($link);
+
+       // end function
+      }
+
+
+      /**
+       * @public
+       *
+       * Checks, whether the current a user is logged in and the admin backend
+       * may be displayed. If no, the user is redirected to the list view.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 21.05.2009<br />
+       */
+      public function checkAccessAllowed(){
+
+         $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+         $guestbookId = $model->get('GuestbookId');
+         $session = new sessionManager('modules::guestbook2009::biz::'.$guestbookId);
+         $loggedId = $session->loadSessionData('LoggedIn');
+
+         // redirect to admin page
+         if($loggedId !== 'true'){
+            $startLink = frontcontrollerLinkHandler::generateLink(
+               $_SERVER['REQUEST_URI'],
+               array(
+                  'gbview' => 'list',
+                  'adminview' => null
+               )
+            );
+            HeaderManager::forward($startLink);
+          // end if
+         }
+
+       // end function
       }
 
 
@@ -78,7 +230,14 @@
             $session->saveSessionData('LoggedIn','true');
 
             // redirect to admin page
-            HeaderManager::forward('./?gbview=admin');
+            $adminLink = frontcontrollerLinkHandler::generateLink(
+               $_SERVER['REQUEST_URI'],
+               array(
+                  'gbview' => 'admin',
+                  'adminview' => null
+               )
+            );
+            HeaderManager::forward($adminLink);
 
           // end if
          }
@@ -104,13 +263,26 @@
          $mapper->saveEntry($entry);
 
          // Forward to the desired view to prevent F5-bugs.
-         echo $entryId = $entry->getId();
+         $entryId = $entry->getId();
          if(!empty($entryId)){
-            HeaderManager::forward('./?gbview=admin');
+            $link = frontcontrollerLinkHandler::generateLink(
+               $_SERVER['REQUEST_URI'],
+               array(
+                  'gbview' => 'admin'
+               )
+            );
+          // end if
          }
          else{
-            HeaderManager::forward('./?gbview=list');
-         }         
+            $link = frontcontrollerLinkHandler::generateLink(
+               $_SERVER['REQUEST_URI'],
+               array(
+                  'gbview' => 'list'
+               )
+            );
+          // end else
+         }
+         HeaderManager::forward($link);
 
        // end function
       }

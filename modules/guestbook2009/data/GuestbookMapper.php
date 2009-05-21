@@ -21,9 +21,11 @@
 
    import('modules::genericormapper::data','GenericORMapperFactory');
    import('modules::guestbook2009::biz','User');
+   import('modules::guestbook2009::biz','Entry');
+   import('modules::guestbook2009::biz','Guestbook');
    
    /**
-    * @namespace modules::guestbook2009::data
+    * @package modules::guestbook2009::data
     * @class GuestbookMapper
     *
     * Implements the data mapper for the guestbook module. Translates the single-language
@@ -64,6 +66,10 @@
        * Returns the list of all entries for filling a selection field.
        *
        * @return Entry[] The desired entry list.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 06.05.2009<br />
        */
       public function loadEntryListForSelection(){
          
@@ -79,8 +85,64 @@
       }
 
 
+      /**
+       * @public
+       *
+       * Returns the current guestbook domain object.
+       *
+       * @return Guestbook The desired guestbook.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 21.05.2009<br />
+       */
       public function loadGuestbook(){
+         $gb = $this->__getCurrentGuestbook();
+         return $this->__mapGenericGuestbook2DomainObject($gb);
+       // end function
       }
+
+
+      /**
+       * @private
+       *
+       * Translates the generic guestbook object into the guestbook's
+       * equivalent domain object.
+       *
+       * @param GenericDomainObject $guestbook The generic domain object.
+       * @return Entry The guestbook's domain object.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 21.05.2009<br />
+       */
+      private function __mapGenericGuestbook2DomainObject($guestbook){
+
+         $orm = &$this->__getGenericORMapper();
+         $crit = new GenericCriterionObject();
+         $lang = $this->__getCurrentLanguage();
+         $crit->addRelationIndicator('Attribute2Language',$lang);
+
+         $attributes = $orm->loadRelatedObjects($guestbook,'Guestbook2LangDepValues',$crit);
+
+         $domGuestbook = new Guestbook();
+         foreach($attributes as $attribute){
+
+            if($attribute->getProperty('Name') == 'title'){
+               $domGuestbook->setTitle($attribute->getProperty('Value'));
+            }
+            if($attribute->getProperty('Name') == 'description'){
+               $domGuestbook->setDescription($attribute->getProperty('Value'));
+            }
+            
+          // end foreach
+         }
+
+         return $domGuestbook;
+
+       // end function
+      }
+
 
       /**
        * @public
@@ -89,6 +151,10 @@
        *
        * @param int $id The id of the entry.
        * @return Entry The desired entry.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 06.05.2009<br />
        */
       public function loadEntry($id){
          
@@ -116,9 +182,46 @@
        * Version 0.1, 10.05.2009<br />
        */
       public function saveEntry($entry){
-         $genericEntry = $this->__mapDomainObjects2GenericEntries($entry);
+         $genericEntry = $this->__mapDomainObject2GenericEntry($entry);
          $orm = &$this->__getGenericORMapper();
          $orm->saveObject($genericEntry);
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Deletes the given entry from the database.
+       *
+       * @param Entry $domEntry The guestbook entry to delete.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 21.05.2009<br />
+       */
+      public function deleteEntry($domEntry){
+
+         $orm = &$this->__getGenericORMapper();
+         $entry = new GenericDomainObject('Entry');
+         $entry->setProperty('EntryID',$domEntry->getId());
+
+         // Delete the attributes of the entry, so that the object
+         // itself can be deleted. If we don't do this, the ORM
+         // will not be glad, because the entry still has child objects!
+         $attributes = $orm->loadRelatedObjects($entry, 'Entry2LangDepValues');
+         foreach($attributes as $attribute){
+            $orm->deleteObject($attribute);
+         }
+
+         // delete associated users, because we don't need them anymore.
+         $users = $orm->loadRelatedObjects($entry,'Editor2Entry');
+         foreach($users as $user){
+            $orm->deleteObject($user);
+         }
+
+         // now delete entry object (associations are deleted automatically)
+         $orm->deleteObject($entry);
+
        // end function
       }
 
@@ -154,10 +257,16 @@
       /**
        * @private
        *
+       * Mapps a domain object to a GenericDomainObject to prepare the entry for saving it.
+       *
        * @param Entry $domEntry The Entry domain object.
        * @return GenericDomainObject The generic domain object representing the Entry object.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 06.05.2009<br />
        */
-      private function __mapDomainObjects2GenericEntries($domEntry){
+      private function __mapDomainObject2GenericEntry($domEntry){
 
          $lang = $this->__getCurrentLanguage();
 
@@ -171,20 +280,19 @@
             $editor->setProperty('UserID',$editorId);
          }
 
-         // try to load an existing title attribute
-         $title = $this->__getGenericTitleAttribute($domEntry);
-         //$title = new GenericDomainObject('Attribute');
+         // try to load an existing title attribute to avoid new attributes
+         // on updates and merge changes
+         $title = $this->__getGenericAttribute($domEntry,'title');
          $title->setProperty('Name','title');
          $title->setProperty('Value',$domEntry->getTitle());
          $title->addRelatedObject('Attribute2Language',$lang);
 
-         // try to load an existing text attribute
-         // (TODO: implement and use __getGenericTitleAttribute())
-         $text = new GenericDomainObject('Attribute');
+         $text = $this->__getGenericAttribute($domEntry,'text');
          $text->setProperty('Name','text');
          $text->setProperty('Value',$domEntry->getText());
          $text->addRelatedObject('Attribute2Language',$lang);
 
+         // setup generic domain object structure to preserve the relations
          $entry = new GenericDomainObject('Entry');
          $entry->addRelatedObject('Entry2LangDepValues',$title);
          $entry->addRelatedObject('Entry2LangDepValues',$text);
@@ -203,12 +311,20 @@
       }
 
       /**
-       * Try to load an existing title attribute. If possible, merge the attributes to not
+       * @private
+       * 
+       * Try to load an existing  attribute. If possible, merge the attributes to not
        * generate new objects in database. Otherwise return a new generic domain object.
        *
        * @param Entry $domEntry The entry domain object.
+       * @param string $name The name of the generic attribute to return.
+       * @return GenericDomainObject The attribute's data layer representation.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 06.05.2009<br />
        */
-      private function __getGenericTitleAttribute($domEntry){
+      private function __getGenericAttribute($domEntry,$name){
 
          // try to load
          $entry = new GenericDomainObject('Entry');
@@ -217,9 +333,9 @@
          $orm = &$this->__getGenericORMapper();
 
          $crit = new GenericCriterionObject();
-         $crit->addPropertyIndicator('Name','title');
+         $crit->addPropertyIndicator('Name',$name);
          $crit->addRelationIndicator('Attribute2Language',$this->__getCurrentLanguage());
-         
+
          $attributes = $orm->loadRelatedObjects($entry,'Entry2LangDepValues',$crit);
          if(isset($attributes[0])){
             return $attributes[0];
@@ -230,7 +346,19 @@
        // end function
       }
       
-
+      /**
+       * @private
+       *
+       * Returns the desired instance of the GenericORMapper configured for this application case.
+       *
+       * @param GenericDomainObject[] A list of generic entries.
+       * @param boolean $addEditor Indicates, if the editor should be mapped to the entry object.
+       * @return Entry[] A list of guestbook domain objects.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 06.05.2009<br />
+       */
       private function __mapGenericEntries2DomainObjects($entries = array(),$addEditor = true){
 
          // return empty array, because having no entries means nothing to do!
@@ -304,6 +432,10 @@
        * Returns the desired instance of the GenericORMapper configured for this application case.
        * 
        * @return GenericORRelationMapper The or mapper instance.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 06.05.2009<br />
        */
       private function &__getGenericORMapper(){
 
@@ -323,6 +455,10 @@
        * @private
        *
        * @return GenericDomainObject The active language's representation object.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 06.05.2009<br />
        */
       private function __getCurrentLanguage(){
 

@@ -1,0 +1,18 @@
+<@controller namespace="modules::guestbook2009::pres::controller::admin" file="delete_controller" class="delete_controller" @>
+<core:addtaglib namespace="core::pagecontroller" prefix="core" class="appendnode" />
+Please select an entry to delete!
+<br />
+<br />
+<core:appendnode 
+   namespace="modules::guestbook2009::pres::templates::admin"
+   template="choose"
+/>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:form name="delete_yes" method="post">
+   <form:button name="yes" value="Yes" />
+   <form:hidden name="entryid" />
+</html:form>
+<html:form name="delete_no" method="post">
+   <form:button name="no" value="No" />
+   <form:hidden name="entryid" />
+</html:form>

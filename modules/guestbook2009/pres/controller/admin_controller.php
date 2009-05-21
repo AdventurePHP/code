@@ -36,6 +36,12 @@
       
        public function transformContent(){
 
+          // invoke the service to check, if the current user may request this page
+          $gS = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
+          $gS->checkAccessAllowed();
+
+          // generate the admin menu links using the fc linkhander to
+          // be able to include the module in either page.
           $editLink = frontcontrollerLinkHandler::generateLink(
              $_SERVER['REQUEST_URI'],
              array(
@@ -53,6 +59,15 @@
              )
           );
           $this->setPlaceHolder('deleteLink',$deleteLink);
+
+          $logoutLink = frontcontrollerLinkHandler::generateLink(
+             $_SERVER['REQUEST_URI'],
+             array(
+               'gbview' => 'admin',
+                'adminview' => 'logout'
+             )
+          );
+          $this->setPlaceHolder('logoutLink',$logoutLink);
 
         // end function
        }

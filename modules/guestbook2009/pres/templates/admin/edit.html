@@ -1,16 +1,19 @@
 <@controller namespace="modules::guestbook2009::pres::controller::admin" file="edit_controller" class="edit_controller" @>
 <core:addtaglib namespace="core::pagecontroller" prefix="core" class="appendnode" />
+Please select an entry to edit!
+<br />
+<br />
 <core:appendnode 
    namespace="modules::guestbook2009::pres::templates::admin"
    template="choose"
 />
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
 <div class="gb--admin-edit">
-   <div class="gb--admin-edit-text">
-      Please edit the desired content.
-   </div>
    <div class="gb--admin-edit-form">
       <html:form name="edit_entry" method="post">
+         <div class="gb--admin-edit-text">
+            Please edit the desired content.
+         </div>
          <label class="gb--admin-edit-label-name">Name:</label>
          <form:text
             maxlength="100"
@@ -18,7 +21,7 @@
             name="name"
             validate="true"
             button="send"
-            filter="onlyLetters"
+            filter="noSpecialCharacters"
          />
          <br />
          <label class="gb--admin-edit-label-email">Email:</label>
@@ -49,7 +52,7 @@
             name="title"
             validate="true"
             button="send"
-            filter="onlyLetters"
+            filter="noSpecialCharacters"
          />
          <br />
          <br />

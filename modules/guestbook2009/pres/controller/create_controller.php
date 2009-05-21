@@ -42,15 +42,17 @@
 
             // Fill domain objects by extracting the values
             // from the form elements directly.
-            $name = $form->getFormElementByName('name');
-            $email = $form->getFormElementByName('email');
+            $name = &$form->getFormElementByName('name');
+            $email = &$form->getFormElementByName('email');
+            $website = &$form->getFormElementByName('website');
 
             $user = new User();
-            $user->setEmail($email->getAttribute('value'));
             $user->setName($name->getAttribute('value'));
+            $user->setEmail($email->getAttribute('value'));
+            $user->setWebsite($website->getAttribute('value'));
 
-            $title = $form->getFormElementByName('title');
-            $text = $form->getFormElementByName('text');
+            $title = &$form->getFormElementByName('title');
+            $text = &$form->getFormElementByName('text');
             $entry = new Entry();
             $entry->setTitle($title->getAttribute('value'));
             $entry->setText($text->get('Content'));

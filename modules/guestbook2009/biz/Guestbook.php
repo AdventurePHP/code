@@ -31,7 +31,7 @@
          return $this->title;
       }
 
-      public function getDesciption(){
+      public function getDescription(){
          return $this->description;
       }
 
@@ -43,7 +43,7 @@
          $this->title = $title;
       }
 
-      public function setDesciption($description){
+      public function setDescription($description){
          $this->description = $description;
       }
 
