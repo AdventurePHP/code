@@ -182,7 +182,7 @@
    *
    *  Creates a print_r() output of the given object, array, string or integer.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 04.02.3006<br />
    *  Version 0.2, 23.04.2006 (The output is now returned instead of printed directly)<br />
@@ -226,7 +226,7 @@
    *
    *  Static parser for XML / XSL Strings.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 22.12.2006<br />
    */
@@ -264,7 +264,7 @@
 
          // Falls Trennposition zwischen Tag und Attributen nicht gefunden wurden, oder das
          // TagEnde-Zeichen vor dem Delimiter zwischen Tag und Attributen liegt, wird
-         // das "Ende-Zeichen" ('>') als Trennzeichen gesetzt. So können Tags ohne
+         // das "Ende-Zeichen" ('>') als Trennzeichen gesetzt. So kï¿½nnen Tags ohne
          // Attribute erlaubt werden.
          if($tagAttributeDel === false || $tagAttributeDel > $posTagClosingSign){
             //OLD: Machte Fehler beim Parsen von Tags ohne Attribute
@@ -282,7 +282,7 @@
          // Taglib extrahieren
          $prefix = substr($TagString,1,$prefixDel - 1);
 
-         // Position der ersten schließenden Klammer nach dem Attribut-String finden
+         // Position der ersten schlieï¿½enden Klammer nach dem Attribut-String finden
          $posEndAttrib = strpos($TagString,'>');
 
          // Restlichen String als Attributstring extrahieren
@@ -293,7 +293,7 @@
          // Attribute des Strings auslesen
          $attributes = xmlParser::getAttributesFromString($attributesString);
 
-         // Prüfen ob Tag selbstschließend. Falls nicht Content einlesen
+         // Prï¿½fen ob Tag selbstschlieï¿½end. Falls nicht Content einlesen
          if(substr($TagString,$posEndAttrib - 1,1) == '/'){
             $content = (string)'';
           // end if
@@ -303,14 +303,14 @@
             // Content-Variable initialisieren
             $content = (string)'';
 
-            // Prüfen ob schließender Tag vorhanden ist
+            // Prï¿½fen ob schlieï¿½ender Tag vorhanden ist
             if(strpos($TagString,'</'.$prefix.':'.$class.'>') === false){
                trigger_error('[xmlParser::getTagAttributes()] No closing tag found for tag "&lt;'.$prefix.':'.$class.' /&gt;"! Tag string: "'.htmlentities($TagString).'".',E_USER_ERROR);
              // end if
             }
             else{
 
-               // Benötigte Variablen initialisieren
+               // Benï¿½tigte Variablen initialisieren
                $found = true;
                $offset = 0;
                $posEndContent = 0;
@@ -332,13 +332,13 @@
                    // end if
                   }
 
-                  // Falls mehr als $MaxCount Stellen gefunden -> aus Sicherheitsgründen aussteigen
+                  // Falls mehr als $MaxCount Stellen gefunden -> aus Sicherheitsgrï¿½nden aussteigen
                   if($Count > $MaxCount){
                      $found = false;
                    // end if
                   }
 
-                  // Count erhöhen
+                  // Count erhï¿½hen
                   $Count++;
 
                 // end while
@@ -360,7 +360,7 @@
          $Attributes['prefix'] = $prefix;
          $Attributes['content'] = $content;
 
-         // Werte zurückgeben
+         // Werte zurï¿½ckgeben
          return $Attributes;
 
        // end function
@@ -376,7 +376,7 @@
       *    $Array['ATTRIBUTE_NAME'] = 'ATTRIBUTE_VALUE';
       *  </pre>
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 22.12.2006<br />
       *  Version 0.2, 30.12.2006 (Enhanced the documentation)<br />
@@ -395,10 +395,10 @@
          // Attribute iterativ suchen
          while(true){
 
-            // Parser-Durchläufe inkrementieren
+            // Parser-Durchlï¿½ufe inkrementieren
             $ParserLoops++;
 
-            // Prüfen, om Maximum an Parser-Durchläufen schon erreicht ist
+            // Prï¿½fen, om Maximum an Parser-Durchlï¿½ufen schon erreicht ist
             if($ParserLoops == $ParserMaxLoops){
                trigger_error('[xmlParser::getAttributesFromString()] Error while parsing: "'.htmlentities($attributesString).'". Maximum number of loops exceeded!',E_USER_ERROR);
              // end if
@@ -439,7 +439,7 @@
       *
       *  Generates a uniqe id, that is used as the object id for the APF DOM tree.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 22.12.2006<br />
       */
@@ -472,7 +472,7 @@
    *  @author Christian Achatz
    *  @version
    *  Version 0.1, 28.12.2006<br />
-   *  Version 0.2, 11.02.2007 (Attribute Language und Context hinzugefügt)<br />
+   *  Version 0.2, 11.02.2007 (Attribute Language und Context hinzugefï¿½gt)<br />
    *  Version 0.3, 28.10.2008 (Added the __ServiceType member to indicate the service manager creation type)<br />
    *  Version 0.4, 03.11.2008 (Added initializing values to some of the class members)<br />
    */
@@ -523,24 +523,24 @@
       protected $__ServiceType = null;
 
 
-      function coreObject(){
+      public function coreObject(){
       }
 
 
       /**
       *  @public
       *
-      *  Implements an abstract get() method.
+      *  Retrieves an object's property.
       *
-      *  @param string $Attribut; Name des Member-Attributes, dessen Wert zurückgegeben werden soll.
-      *  @return void $this->{'__'.$Attribut}; Gibt das addressierte Member-Attribut zurück, oder null im Fehlerfall.
+      *  @param string $attributeName Name of an object's property.
+      *  @return string The property's value.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 02.02.2007 (Behandlung, falls Attribut nicht existiert hinzugefügt)<br />
+      *  Version 0.2, 02.02.2007 (Behandlung, falls Attribut nicht existiert hinzugefï¿½gt)<br />
       */
-      function get($Attribute){
+      public function get($Attribute){
 
          if(isset($this->{'__'.$Attribute})){
             return $this->{'__'.$Attribute};
@@ -558,17 +558,17 @@
       /**
       *  @public
       *
-      *  Implements an abstract set() method.
+      *  Sets an object's property.
       *
-      *  @param string $Attribut; Name des Member-Attributes, dessen Wert gesetzt werden soll.
-      *  @param void $Value; Wert des Member-Attributes, dessen Wert gesetzt werden soll.
+      *  @param string $attributeName Name of an object's property.
+      *  @param string $value The value to set.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
-      function set($Attribute,$Value){
-         $this->{'__'.$Attribute} = $Value;
+      public function set($attributeName,$value){
+         $this->{'__'.$attributeName} = $value;
        // end function
       }
 
@@ -576,17 +576,17 @@
       /**
       *  @public
       *
-      *  Implements an abstract add() method. Appends a value to a given list.
+      *  Appends a value to a given attribute list.
       *
-      *  @param string $Attribut; Name des Member-Attributes, dessen Wert gesetzt werden soll.
-      *  @param void $Value; Wertdes Member-Attributes, dessen Wert gesetzt werden soll.
+      *  @param string $attributeName Name of the attribute to set.
+      *  @param string $value Value of the attribute.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 11.11.2007<br />
       */
-      function add($Attribute,$Value){
-         $this->{'__'.$Attribute}[] = $Value;
+      public function add($attributeName,$value){
+         $this->{'__'.$attributeName}[] = $value;
        // end function
       }
 
@@ -596,18 +596,18 @@
       *
       *  Returns the object's attribute.
       *
-      *  @param string $Name; Name des Attributes, dessen Wert zurückgeliefert werden soll.
-      *  @return void $this->__Attributes[$Name]; Gibt das addressierte Attribut zurück, oder null im Fehlerfall.
+      *  @param string $name The name of the desired attribute.
+      *  @return string Returns the attribute's value or null in case of errors.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 02.02.2007 (Behandlung, falls Attribut nicht existiert hinzugefügt)<br />
+      *  Version 0.2, 02.02.2007 (Behandlung, falls Attribut nicht existiert hinzugefï¿½gt)<br />
       */
-      function getAttribute($Name){
+      public function getAttribute($name){
 
-         if(isset($this->__Attributes[$Name])){
-            return $this->__Attributes[$Name];
+         if(isset($this->__Attributes[$name])){
+            return $this->__Attributes[$name];
           // end if
          }
          else{
@@ -624,15 +624,15 @@
       *
       *  Sets an object's attribute.
       *
-      *  @param string $Name; Name des Attributes, dessen Wert zurückgeliefert werden soll.
-      *  @param void $Value; Wert des Attributes, dessen Wert gesetzt werden soll.
+      *  @param string $name Name des Attributes, dessen Wert zurï¿½ckgeliefert werden soll.
+      *  @param string $value Wert des Attributes, dessen Wert gesetzt werden soll.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
-      function setAttribute($Name,$Value){
-         $this->__Attributes[$Name] = $Value;
+      public function setAttribute($name,$value){
+         $this->__Attributes[$name] = $value;
        // end function
       }
 
@@ -642,13 +642,13 @@
       *
       *  Returns an object's attributes.
       *
-      *  @return array $this->__Attributes; Gibt das Attributes-Array zurück
+      *  @return string[] Returns the list of attributes of the current object.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
-      function getAttributes(){
+      public function getAttributes(){
          return $this->__Attributes;
        // end function
       }
@@ -659,14 +659,14 @@
       *
       *  Deletes an attribute.
       *
-      *  @param string $Name; Name des zu löschenden Attributes.<br />
+      *  @param string $name The name of the attribute to delete.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
-      function deleteAttribute($Name){
-         unset($this->__Attributes[$Name]);
+      public function deleteAttribute($name){
+         unset($this->__Attributes[$name]);
        // end function
       }
 
@@ -676,22 +676,22 @@
       *
       *  Sets an object's attributes.
       *
-      *  @param array $Attributes; Attribut-Array
+      *  @param string[] $attributes The attributes list.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
-      function setAttributes($Attributes = array()){
+      public function setAttributes($attributes = array()){
 
-         if(is_array($Attributes) && count($Attributes) > 0){
+         if(is_array($attributes) && count($attributes) > 0){
 
             if(!is_array($this->__Attributes)){
                $this->__Attributes = array();
              // end if
             }
 
-            $this->__Attributes = array_merge($this->__Attributes,$Attributes);
+            $this->__Attributes = array_merge($this->__Attributes,$attributes);
 
           // end if
          }
@@ -705,15 +705,15 @@
       *
       *  Sets an object's member by reference. This is used to guarantee php4 support.
       *
-      *  @param string $Attribute; Names des Attributes
-      *  @parem object $Object; Referenz auf ein Objekt
+      *  @param string $attributeName Name of the attribute.
+      *  @param object $value Desired object to reference.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 16.01.2007<br />
       */
-      function setByReference($Attribute,&$Value){
-         $this->{'__'.$Attribute} = & $Value;
+      public function setByReference($attributeName,&$value){
+         $this->{'__'.$attributeName} = & $value;
        // end function
       }
 
@@ -723,18 +723,18 @@
       *
       *  Returns the content of a member by reference. This is used to guarantee php4 support.
       *
-      *  @param string $Attribute; Names des Attributes
-      *  @return object $Object; Referenz auf ein Objekt, oder null im Fehlerfall.
+      *  @param string $attributeName Name of the desired attribute.
+      *  @return object Desired object to reference or null in case of errors.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 16.01.2007<br />
       *  Version 0.2, 21.01.2007 (Bugfix: $Attribute war falsch geschreiben)<br />
       */
-      function &getByReference($Attribute){
+      public function &getByReference($attributeName){
 
-         if(isset($this->{'__'.$Attribute})){
-            return $this->{'__'.$Attribute};
+         if(isset($this->{'__'.$attributeName})){
+            return $this->{'__'.$attributeName};
           // end if
          }
          else{
@@ -754,7 +754,7 @@
       *  @public
       *  @abstract
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -769,7 +769,7 @@
       *  @public
       *  @abstract
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 30.03.2007<br />
       */
@@ -784,7 +784,7 @@
       *  @public
       *  @abstract
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -800,7 +800,7 @@
       *  @abstract
       *
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -816,7 +816,7 @@
       *  @public
       *  @abstract
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -853,7 +853,7 @@
       *  @param string $type The initializing type (see service manager for details).
       *  @return coreObject $serviceObject The desired service object.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 07.03.2007<br />
       *  Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
@@ -883,7 +883,7 @@
       *  @param string $type The initializing type (see service manager for details).
       *  @return coreObject $serviceObject The desired service object.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 29.03.2007<br />
       *  Version 0.2, 22.04.2007 (Added language initializaton of the service manager)<br />
@@ -911,7 +911,7 @@
       *  @param boolean $parseSubsections Indicates, whether the configuration manager should parse subsections.
       *  @return Configuration $configuration The desired configuration object.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 07.03.2007<br />
       *  Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
@@ -934,10 +934,10 @@
       *  @param array $ExclusionArray; Array mit Attributen, die ignoriert werden sollen
       *  @return string $AttributesString; HTML-Attribut-String, oder Leerstring, falls keine Attribute vorhanden sind
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.01.2007<br />
-      *  Version 0.2, 07.01.2007 ($ExclusionArray-Verhalten hinzugefügt)<br />
+      *  Version 0.2, 07.01.2007 ($ExclusionArray-Verhalten hinzugefï¿½gt)<br />
       *  Version 0.3, 02.06.2007 (Rechtschreibkorrektur und von "ui_element" nach "coreObject" verschoben)<br />
       */
       protected function __getAttributesAsString($AttributesArray,$ExclusionArray = array()){
@@ -980,7 +980,7 @@
    *  Represents a taglib. You can see this class as a taglib definition or representation. It is
    *  used to mark the known taglibs of a DOM node.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 28.12.2006<br />
    */
@@ -1015,7 +1015,7 @@
       *  @param string $prefix The prefix of the taglib
       *  @param string $class The class name of the taglib
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -1040,7 +1040,7 @@
    *  initial document (root document) and is responsible for creating and transforming the root
    *  document.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 28.12.2006<br />
    *  Version 0.2, 03.01.2007 (Introduced URL rewriting)<br />
@@ -1121,7 +1121,7 @@
       *  @param string $namespace namespace if the initial template
       *  @param string $design (file)name if the initial template
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 31.01.2007 (Now the context of the document is set)<br />
@@ -1217,7 +1217,7 @@
    *  Represents a node within the APF DOM tree. Each document can compose several other documents
    *  by use of the $__Children property (composite tree).
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 28.12.2006<br />
    */
@@ -1250,7 +1250,7 @@
       *
       *  Initializes the built-in taglibs, used to create the APF DOM tree.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
@@ -1279,7 +1279,7 @@
       *  @param string $prefix The prefix of the taglib
       *  @param string $class The class name of the taglib
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
@@ -1310,7 +1310,7 @@
       *  @param string $class The class name of the taglib
       *  @return string $moduleName The full file name of the taglib class
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -1328,7 +1328,7 @@
       *  @param string $Namespace; Namespace des initialen Templates
       *  @param string $Design; Name des initialen Designs
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 15.01.2007 (Now document controller are extracted first)<br />
@@ -1351,12 +1351,12 @@
       /**
       *  @protected
       *
-      *  Läd ein Template "$Design" aus einem angegebenen Namespace.<br />
+      *  Lï¿½d ein Template "$Design" aus einem angegebenen Namespace.<br />
       *
       *  @param string $Namespace; Namespace des initialen Templates
       *  @param string $Design; Name des initialen Designs
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 01.01.2007 (Fehler behoben, dass Templates nicht sauber geladen wurden)<br />
@@ -1394,16 +1394,16 @@
       *  @protected
       *
       *  XML-Parser-Methode, die die registrierten TagLib-Tags aus dem Content extrahiert und den<br />
-      *  Objektbaum aufbaut. Dabei werden für die jeweiligen Tags eigene Child-Objekte im "Document"<br />
+      *  Objektbaum aufbaut. Dabei werden fï¿½r die jeweiligen Tags eigene Child-Objekte im "Document"<br />
       *  erzeugt und die Stellen mit einem Merker-Tag versehen, die bei der Transformation dann wieder<br />
       *  durch ihre Inhalts-Entsprechungen ersetzt werden.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 21.01.2007 (Bugfix: Parser übersah erneut öffnende Tokens im TagString, bei Mischungen aus selbst- und exklusiv-schließenden Tags)<br />
-      *  Version 0.3, 31.01.2007 (Kontext-Behandlung hinzugefügt)<br />
-      *  Version 0.4, 09.04.2007 (Doppeltes Setzen der Attributes bereinigt, Language-Behandlung hinzugefügt)<br />
+      *  Version 0.2, 21.01.2007 (Bugfix: Parser ï¿½bersah erneut ï¿½ffnende Tokens im TagString, bei Mischungen aus selbst- und exklusiv-schlieï¿½enden Tags)<br />
+      *  Version 0.3, 31.01.2007 (Kontext-Behandlung hinzugefï¿½gt)<br />
+      *  Version 0.4, 09.04.2007 (Doppeltes Setzen der Attributes bereinigt, Language-Behandlung hinzugefï¿½gt)<br />
       *  Version 0.5, 02.04.2008 (Bug behoben, dass Token nicht in der Fehlermeldung angezeigt wird)<br />
       */
       protected function __extractTagLibTags(){
@@ -1412,7 +1412,7 @@
          $Content = $this->__Content;
 
 
-         // Hilfsvariable für Parser-Durchläufe (Extraktion der TagLib-Tags) initialiserien
+         // Hilfsvariable fï¿½r Parser-Durchlï¿½ufe (Extraktion der TagLib-Tags) initialiserien
          $TagLibLoops = 0;
 
 
@@ -1421,10 +1421,10 @@
 
 
          // TagLibs parsen. Hier wird ein while verwendet, da im Parser-Lauf auch weitere Tag-Libs
-         // hinzukommen können. Siehe hierzu Klasse core_taglib_addTagLib!
+         // hinzukommen kï¿½nnen. Siehe hierzu Klasse core_taglib_addTagLib!
          while($i < count($this->__TagLibs)){
 
-            // Falls Parserläufe zu viel werden -> Fehler!
+            // Falls Parserlï¿½ufe zu viel werden -> Fehler!
             if($TagLibLoops > $this->__MaxLoops){
                trigger_error('[Document::__extractTagLibTags()] Maximum numbers of parsing loops reached!',E_USER_ERROR);
                exit();
@@ -1432,7 +1432,7 @@
             }
 
 
-            // Attribute für Parser-Lauf initialisieren
+            // Attribute fï¿½r Parser-Lauf initialisieren
             $Prefix = $this->__TagLibs[$i]->get('Prefix');
             $Class = $this->__TagLibs[$i]->get('Class');
             $Module = $this->__getModuleName($Prefix, $Class);
@@ -1443,7 +1443,7 @@
             // TagLib-Tags suchen
             while(substr_count($Content,'<'.$Token) > 0){
 
-               // Falls Parser-Durchläufe zu viele werden -> Fehler
+               // Falls Parser-Durchlï¿½ufe zu viele werden -> Fehler
                if($TagLoops > $this->__MaxLoops){
                   trigger_error('['.get_class($this).'::__extractTagLibTags()] Maximum numbers of parsing loops reached!',E_USER_ERROR);
                   exit();
@@ -1456,13 +1456,13 @@
 
 
                // Start- und End-Position des Tags im Content finden.
-               // Als End-Position wir immer ein schließender Tag erwartet
+               // Als End-Position wir immer ein schlieï¿½ender Tag erwartet
                $TagStartPos = strpos($Content,'<'.$Token);
                $TagEndPos = strpos($Content,'</'.$Token.'>',$TagStartPos);
                $ClosingTagLength = strlen('</'.$Token.'>');
 
 
-               // Falls ausführlicher End-Tag nicht vorkommt nach einfachem suchen
+               // Falls ausfï¿½hrlicher End-Tag nicht vorkommt nach einfachem suchen
                if($TagEndPos === false){
 
                   $TagEndPos = strpos($Content,'/>',$TagStartPos);
@@ -1485,20 +1485,20 @@
                $TagString = substr($Content,$TagStartPos,$TagStringLength);
 
 
-               // NEU (Bugfix für Fehler bei Mischungen aus selbst- und exklusiv-schließenden Tags):
-               // Prüfen, ob ein öffnender Tag im bisher angenommen Tag-String ist. Kommt
+               // NEU (Bugfix fï¿½r Fehler bei Mischungen aus selbst- und exklusiv-schlieï¿½enden Tags):
+               // Prï¿½fen, ob ein ï¿½ffnender Tag im bisher angenommen Tag-String ist. Kommt
                // dieser vor, so muss der Tag-String neu definiert werden.
                if(substr_count($TagString,'<'.$Token) > 1){
 
-                  // Position des selbsschlißenden Zeichens finden
+                  // Position des selbsschliï¿½enden Zeichens finden
                   $TagEndPos = strpos($Content,'/>',$TagStartPos);
 
 
-                  // String-Länge des selbst schließenden Tag-Zeichens für spätere Verwendung setzen
+                  // String-Lï¿½nge des selbst schlieï¿½enden Tag-Zeichens fï¿½r spï¿½tere Verwendung setzen
                   $ClosingTagLength = 2;
 
 
-                  // Länge des TagStrings für spätere Verwendung setzen
+                  // Lï¿½nge des TagStrings fï¿½r spï¿½tere Verwendung setzen
                   $TagStringLength = ($TagEndPos - $TagStartPos) + $ClosingTagLength;
 
 
@@ -1525,7 +1525,7 @@
                $Object->set('Language',$this->__Language);
 
 
-               // Attribute einhängen
+               // Attribute einhï¿½ngen
                $Object->setAttributes($Attributes['attributes']);
 
 
@@ -1549,7 +1549,7 @@
                $Object->onParseTime();
 
 
-               // Objekt einhängen (nicht per Referenz, da sonst Objekte nicht sauber in den Baum eingehängt werden)
+               // Objekt einhï¿½ngen (nicht per Referenz, da sonst Objekte nicht sauber in den Baum eingehï¿½ngt werden)
                $this->__Children[$ObjectID] = $Object;
 
 
@@ -1557,13 +1557,13 @@
                $TagLoops++;
 
 
-               // Aktuelles Element (neues Objekt) löschen, um Überlagerungen zu verhindern
+               // Aktuelles Element (neues Objekt) lï¿½schen, um ï¿½berlagerungen zu verhindern
                unset($Object);
 
              // end while
             }
 
-            // Offset erhöhen
+            // Offset erhï¿½hen
             $i++;
 
           // end while
@@ -1574,7 +1574,7 @@
          $this->__Content = $Content;
 
 
-         // Methode onAfterAppend() auf alle Kinder ausführen
+         // Methode onAfterAppend() auf alle Kinder ausfï¿½hren
          if(count($this->__Children) > 0){
 
             // Timer starten
@@ -1603,13 +1603,13 @@
       *
       *  XML-Parser-Methode, die die im Content enthaltenen Document-Controller-Tags extrahiert.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
       protected function __extractDocumentController(){
 
-         // Kopie ddes aktuellen Contents holen
+         // copy the current content to preserve the tag positions.
          $Content = $this->__Content;
 
          // Tag-Berschreibung initialisieren
@@ -1625,21 +1625,17 @@
             $ControllerTag = substr($Content,$TagStartPos + strlen($ControllerStartTag),($TagEndPos - $TagStartPos) - 1 - strlen($ControllerStartTag));
             $ControllerAttributes = xmlParser::getAttributesFromString($ControllerTag);
 
-
             // Document-Controller importieren
             if(!class_exists($ControllerAttributes['class'])){
                import($ControllerAttributes['namespace'],$ControllerAttributes['file']);
              // end if
             }
 
-
             // Document-Controller-Klasse bekannt machen
             $this->__DocumentController = $ControllerAttributes['class'];
 
-
             // DocumentController Tag ersetzen
             $Content = substr_replace($Content,'',$TagStartPos,($TagEndPos - $TagStartPos) + strlen($ControllerEndTag));
-
 
             // Content wieder einsetzen
             $this->__Content = $Content;
@@ -1652,105 +1648,85 @@
 
 
       /**
-      *  @public
-      *
-      *  Implementierung der abstrakten Methode aus "coreObject". Transformiert ein "Document" und gibt den Inhalt dessen zurück.<br />
-      *
-      *  @return string $Content; XML-String des transformierten Inhalts des "Document"s
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 21.01.2007 (Attribute des aktuellen Objekts werden den DocumentController nun zur Transformation zur Verfügung gestellt)<br />
-      *  Version 0.3, 31.01.2007 (Kontext-Behandlung hinzugefügt)<br />
-      *  Version 0.4, 24.02.2007 (Zeitmessung für DocCon's auf den Standard umgestellt)<br />
-      *  Version 0.5, 09.04.2007 (Sprache wird nun an den DocCon mitgegeben)<br />
-      */
+       * @public
+       *
+       * Implements the method, that is called at transformation time (see DOM node life cycle). If
+       * you want to add custom logic in your taglib, overwrite this method. The page controller
+       * expects the method to return the content of the transformed node.
+       *
+       * @return string The transformed content of the currend DOM node.
+       *
+       * @author Christian SchÃ¤fer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 21.01.2007 (Now, the attributes of the current node are injected the document controller)<br />
+       * Version 0.3, 31.01.2007 (Added context injection)<br />
+       * Version 0.4, 24.02.2007 (Switched timer inclusion to common benchmarker usage)<br />
+       * Version 0.5, 09.04.2007 (Added language injection)<br />
+       */
       function transform(){
 
-         // Timer einbinden
          $T = &Singleton::getInstance('benchmarkTimer');
          $T->start('('.get_class($this).') '.$this->__ObjectID.'::transform()');
 
+         // create copy, to preserve it!
+         $content = $this->__Content;
 
-         // Kopie des Inhalts anlegen
-         $Content = $this->__Content;
-
-
-         // DocumentController des Documents ausführen (falls vorhanden)
+         // execute the document controller if applicable
          if(!empty($this->__DocumentController)){
 
-            // Zeitmessung starten
             $ID = '('.$this->__DocumentController.') '.(xmlParser::generateUniqID()).'::transformContent()';
             $T->start($ID);
 
-
-            // Prüfen, ob Klasse existiert
             if(!class_exists($this->__DocumentController)){
                trigger_error('['.get_class($this).'::transform()] DocumentController "'.$this->__DocumentController.'" cannot be found! Maybe the class name is misspelt!',E_USER_ERROR);
                exit();
              // end if
             }
 
-
-            // Document-Controller instanziieren
             $DocCon = new $this->__DocumentController;
 
-
-            // Context des Documents mitgeben
+            // inject context
             $DocCon->set('Context',$this->__Context);
 
-
-            // Language des Documents mitgeben
+            // inject current language
             $DocCon->set('Language',$this->__Language);
 
-
-            // Dem DocumentController eine Referent auf sein Document mitgeben
+            // inject document reference to be able to access the current DOM document
             $DocCon->setByReference('Document',$this);
 
+            // inject the content to be able to access it
+            $DocCon->set('Content',$content);
 
-            // Dem DocumenController den aktuellen Content übergeben
-            $DocCon->set('Content',$Content);
-
-
-            // Dem DocumenController die aktuellen Attribute mitgeben
+            // inject the current DOM node's attributes to easily access them
             if(is_array($this->__Attributes) && count($this->__Attributes) > 0){
                $DocCon->setAttributes($this->__Attributes);
              // end if
             }
 
-
-            // Standard-Methode des DocumentControllers ausführen
+            // execute the document controller by using a standard method
             $DocCon->transformContent();
 
+            // retrieve the content
+            $content = $DocCon->get('Content');
 
-            // Transformierten Inhalt zurückgeben lassen
-            $Content = $DocCon->get('Content');
-
-
-            // Zeitmessung stoppen
             $T->stop($ID);
 
           // end if
          }
 
-
-         // XML-Merker-Tags durch die Inhalte der transformierten Children-Objekte ersetzen.
+         // transform child nodes and replace XML marker to place the output at the right position
          if(count($this->__Children) > 0){
-            foreach($this->__Children as $ObjectID => $Child){
-               $Content = str_replace('<'.$ObjectID.' />',$this->__Children[$ObjectID]->transform(),$Content);
+            foreach($this->__Children as $objectID => $DUMMY){
+               $content = str_replace('<'.$objectID.' />',$this->__Children[$objectID]->transform(),$content);
              // end foreach
             }
           // end if
          }
 
-
-         // Timer stoppen
          $T->stop('('.get_class($this).') '.$this->__ObjectID.'::transform()');
 
-
-         // Content zurückgeben
-         return $Content;
+         return $content;
 
        // end function
       }
@@ -1760,14 +1736,14 @@
 
 
    /**
-   *  @namespace core::pagecontroller
+   *  @package core::pagecontroller
    *  @class core_taglib_importdesign
    *
    *  This class implements the functionality of the core::importdesign tag. It generates a sub node
    *  from the template specified by the tag's attributes within the current APF DOM tree. Each
    *  importdesign tag can compose further tags.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 28.12.2006<br />
    */
@@ -1779,7 +1755,7 @@
       *
       *  Constructor of the class. Sets the known taglibs.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -1895,7 +1871,7 @@
       *  Implements the onParseTime() method of the Document class. Adds the desired taglib to the
       *  parent object.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 10.11.2008 (Changed implementation. We now use getAttribute() instead of direct internal attribute addressing)<br />
@@ -1912,7 +1888,7 @@
       *  Implements the Document's transform() method. Returns an empty string, because the addtaglib
       * tag should not generate output.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 21.04.2007<br />
       */
@@ -1949,7 +1925,7 @@
       *  Implements the transform() method. Returns the content of the tag, that is set by a
       *  document controller using the baseController's setPlaceHolder() method.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -1990,7 +1966,7 @@
       *
       *  Constructor of the class. Inituializes the known taglibs.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 29.12.2006<br />
       *  Version 0.2, 30.12.2006 (Added the template:config tag)<br />
@@ -2037,10 +2013,10 @@
       *  Version 0.1, 29.12.2006<br />
       *  Version 0.2, 10.11.2008 (Removed check, if taglib class exists)<br />
       */
-      function setPlaceHolder($Name,$Value){
+      function setPlaceHolder($name,$value){
 
          // declare the name of the place holder taglib to be flexible to future changes
-         $TagLibModule = 'template_taglib_placeholder';
+         $tagLibClass = 'template_taglib_placeholder';
 
          // initialize place holder count
          $placeHolderCount = 0;
@@ -2052,13 +2028,13 @@
             foreach($this->__Children as $objectID => $DUMMY){
 
                // check, if current child is a plece holder
-               if(get_class($this->__Children[$objectID]) == $TagLibModule){
+               if(get_class($this->__Children[$objectID]) == $tagLibClass){
 
                   // check, if current child is the desired place holder
-                  if($this->__Children[$objectID]->getAttribute('name') == $Name){
+                  if($this->__Children[$objectID]->getAttribute('name') == $name){
 
                      // set content of the placeholder
-                     $this->__Children[$objectID]->set('Content',$Value);
+                     $this->__Children[$objectID]->set('Content',$value);
                      $placeHolderCount++;
 
                    // end if
@@ -2075,7 +2051,7 @@
          else{
 
             // trow error, if no place holder with the desired name was found
-            trigger_error('[html_taglib_template::setPlaceHolder()] No placeholder object with name "'.$Name.'" composed in current template for document controller "'.($this->__ParentObject->__DocumentController).'"! Perhaps tag library template:placeHolder is not loaded in template "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
+            trigger_error('[html_taglib_template::setPlaceHolder()] No placeholder object with name "'.$name.'" composed in current template for document controller "'.($this->__ParentObject->__DocumentController).'"! Perhaps tag library template:placeHolder is not loaded in template "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
             exit();
 
           // end else
@@ -2083,7 +2059,7 @@
 
          // thorw error, if no children are composed under the current tag
          if($placeHolderCount < 1){
-            trigger_error('[html_taglib_template::setPlaceHolder()] There are no placeholders found for name "'.$Name.'" in template "'.($this->__Attributes['name']).'" in document controller "'.($this->__ParentObject->__DocumentController).'"!',E_USER_WARNING);
+            trigger_error('[html_taglib_template::setPlaceHolder()] There are no placeholders found for name "'.$name.'" in template "'.($this->__Attributes['name']).'" in document controller "'.($this->__ParentObject->__DocumentController).'"!',E_USER_WARNING);
           // end if
          }
 
@@ -2242,64 +2218,67 @@
 
 
    /**
-   *  @namespace core::pagecontroller
-   *  @class baseController
-   *  @abstract
-   *
-   *  Implementiert einen abstrakten DocumentController.<br />
-   *
-   *  @author Christian Schäfer
-   *  @version
-   *  Version 0.1, 28.12.2006<br />
-   *  Version 0.2, 04.11.2007 (isButtonPushed() entfernt)<br />
-   */
+    * @package core::pagecontroller
+    * @class baseController
+    * @abstract
+    *
+    * Defines the base class for all document controller classes. To add custom logic, implement
+    * the {@link transformContent} method, that is declared abstract, too.
+    *
+    * @author Christian SchÃ¤fer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    * Version 0.2, 04.11.2007 (Removed the isButtonPushed() method)<br />
+    */
    abstract class baseController extends Document
    {
 
       /**
-      *  @private
-      *  Referenz auf das Document.
+      *  @protected
+      *  @var Document References the document, the document controller is used for transformation.
       */
       protected $__Document;
 
 
-      function baseController(){
+      public function baseController(){
       }
 
 
       /**
-      *  @public
-      *  @abstract
-      *
-      *  Abstrakte Methode, die beim Transformieren der Seite auf jeden DocumentController aufgerufen wird.<br />
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
+       * @public
+       * @abstract
+       *
+       * Abstract method, that is called on transformation time of the current document. To add
+       * custom behavior, implement this method!
+       *
+       * @author Christian Schï¿½fer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
       function transformContent(){
       }
 
 
       /**
-      *  @public
-      *
-      *  Implementiert eine Methode, mit der Platzhalter innerhalb des Inhalts eines "Document"s gesetzt werden können.<br />
-      *  Hierzu ist die TagLib-Klasse "html_taglib_placeHolder" notwendig.<br />
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
-      */
-      function setPlaceHolder($Name,$Value){
+       * @protected
+       *
+       * Sets the given value as the content of the specified place holder.
+       *
+       * @param string $name The name of the plae holder to fill.
+       * @param string $value The value to insert into the place holder.
+       *
+       * @author Christian Schï¿½fer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
+       */
+      protected function setPlaceHolder($name,$value){
 
-         $TagLibModule = 'html_taglib_placeholder';
+         $tagLibClass = 'html_taglib_placeholder';
 
-         // Falls TagLib-Modul nicht vorhanden -> Fehler!
-         if(!class_exists($TagLibModule)){
+         if(!class_exists($tagLibClass)){
             trigger_error('['.get_class($this).'::setPlaceHolder()] TagLib module '
-               .$TagLibModule.' is not loaded!',E_USER_ERROR);
+               .$tagLibClass.' is not loaded!',E_USER_ERROR);
           // end if
          }
 
@@ -2310,14 +2289,10 @@
 
             foreach($children as $objectID => $DUMMY){
 
-               // Klassen mit dem Namen "$TagLibModule" aus den Child-Objekten des
-               // aktuellen "Document"s aussuchen
-               if(get_class($children[$objectID]) == $TagLibModule){
+               if(get_class($children[$objectID]) == $tagLibClass){
 
-                  // Klassen mit dem auf den Attribut Namen lautenden Namen suchen
-                  // und den gewünschten Inhalt einsetzen
-                  if($children[$objectID]->getAttribute('name') == $Name){
-                     $children[$objectID]->set('Content',$Value);
+                  if($children[$objectID]->getAttribute('name') == $name){
+                     $children[$objectID]->set('Content',$value);
                      $placeHolderCount++;
                    // end if
                   }
@@ -2332,7 +2307,7 @@
          }
          else{
             trigger_error('['.get_class($this).'::setPlaceHolder()] No placeholder object with name "'
-               .$Name.'" composed in current document for document controller "'.get_class($this)
+               .$name.'" composed in current document for document controller "'.get_class($this)
                .'"! Perhaps tag library html:placeholder is not loaded in current template!',E_USER_ERROR);
             exit();
           // end else
@@ -2341,7 +2316,7 @@
          // warn, if no place holder is found
          if($placeHolderCount < 1){
             trigger_error('['.get_class($this).'::setPlaceHolder()] There are no placeholders found for name "'
-               .$Name.'" in document controller "'.get_class($this).'"!',E_USER_WARNING);
+               .$name.'" in document controller "'.get_class($this).'"!',E_USER_WARNING);
           // end if
          }
 
@@ -2350,24 +2325,26 @@
 
 
       /**
-      *  @protected
-      *
-      *  Implementiert eine Methode, mit der innerhalb des DocumentControllers auf eine Form zugegriffen<br />
-      *  werden kann. Hierzu ist die TagLib-Klasse "html_taglib_form" notwendig.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 12.01.2007<br />
-      *  Version 0.2, 14.06.2008 (Fehlermeldung verbessert)<br />
-      */
-      protected function &__getForm($Name){
+       * @protected
+       *
+       * Returns the instance of the form specified by the given name. This method can be used to
+       * access a form object within a document controller.
+       *
+       * @param string $formName The name of the form to return.
+       * @return html_taglib_form The instance of the desired form.
+       * 
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.01.2007<br />
+       * Version 0.2, 14.06.2008 (Improved error handling.)<br />
+       */
+      protected function &__getForm($formName){
 
-         $TagLibModule = 'html_taglib_form';
-
-         // Falls TagLib-Modul nicht vorhanden -> Fehler!
-         if(!class_exists($TagLibModule)){
-            trigger_error('['.get_class($this).'::__getForm()] TagLib module "'
-               .$TagLibModule.'" is not loaded!',E_USER_ERROR);
+         $tagLibClass = 'html_taglib_form';
+         if(!class_exists($tagLibClass)){
+            trigger_error('['.get_class($this).'::__getForm()] TagLib "'.$tagLibClass
+               .'" is not loaded! Please add the form taglib using the &lt;core:addtaglib /&gt; tag',
+               E_USER_ERROR);
           // end if
          }
 
@@ -2376,11 +2353,9 @@
 
             foreach($children as $objectID => $DUMMY){
 
-               // Klassen mit dem Namen "$TagLibModule" aus den Child-Objekten des
-               // aktuellen "Document"s als Referenz zurückgeben
-               if(get_class($children[$objectID]) == $TagLibModule){
+               if(get_class($children[$objectID]) == $tagLibClass){
 
-                  if($children[$objectID]->getAttribute('name') == $Name){
+                  if($children[$objectID]->getAttribute('name') == $formName){
                      return $children[$objectID];
                    // end if
                   }
@@ -2395,15 +2370,15 @@
          }
          else{
             trigger_error('['.get_class($this).'::__getForm()] No form object with name "'
-               .$Name.'" composed in current document for document controller "'.get_class($this)
+               .$formName.'" composed in current document for document controller "'.get_class($this)
                .'"! Perhaps tag library html:form is not loaded in current document!',E_USER_ERROR);
             exit();
           // end else
          }
 
-         // Falls das Template nicht gefunden werden kann -> Fehler!
          trigger_error('['.get_class($this).'::__getForm()] Form with name "'
-            .$Name.'" cannot be found in document controller "'.get_class($this).'"!',E_USER_ERROR);
+            .$formName.'" cannot be found in document controller "'.get_class($this).'"!',
+            E_USER_ERROR);
          exit();
 
        // end function
@@ -2411,27 +2386,27 @@
 
 
       /**
-      *  @protected
-      *
-      *  Implementiert eine Methode, mit der innerhalb des DocumentControllers auf ein Content-Template zugegriffen<br />
-      *  werden kann. Hierzu ist die TagLib-Klasse "html_taglib_template" notwendig.<br />
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 03.01.2007 (Bug behoben, dass immer erstes Template referenziert wurde)<br />
-      *  Version 0.3, 12.01.2006 (Von "__getContentTemplate" nach "__getTemplate" umbenannt, wg. Einführung von "__getForm")<br />
-      *  Version 0.4, 23.04.2009 (Corrected PHP4 style object access)<br />
-      */
-      protected function &__getTemplate($Name){
+       * @protected
+       *
+       * Returns the instance of the template specified by the given name. This method can be used
+       * to access a html template object within a document controller.
+       *
+       * @param string $name The name of the template to return.
+       * @return html_taglib_template The desired template instance.
+       *
+       * @author Christian SchÃ¤fer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 03.01.2007 (Bugfix: now not only the first template is returned)<br />
+       * Version 0.3, 12.01.2006 (Renamed from "__getContentTemplate" to "__getTemplate" due to the introduction of "__getForm")<br />
+       * Version 0.4, 23.04.2009 (Corrected PHP4 style object access)<br />
+       */
+      protected function &__getTemplate($name){
 
-         // Deklariert das notwendige TagLib-Modul
-         $TagLibModule = 'html_taglib_template';
-
-         // Falls TagLib-Modul nicht vorhanden -> Fehler!
-         if(!class_exists($TagLibModule)){
+         $tagLibClass = 'html_taglib_template';
+         if(!class_exists($tagLibClass)){
             trigger_error('['.get_class($this).'::__getTemplate()] TagLib module "'
-               .$TagLibModule.'" is not loaded!',E_USER_ERROR);
+               .$tagLibClass.'" is not loaded!',E_USER_ERROR);
           // end if
          }
 
@@ -2440,11 +2415,9 @@
 
             foreach($children as $objectID => $DUMMY){
 
-               // Klassen mit dem Namen "$TagLibModule" aus den Child-Objekten des
-               // aktuellen "Document"s als Referenz zurückgeben
-               if(get_class($children[$objectID]) == $TagLibModule){
+               if(get_class($children[$objectID]) == $tagLibClass){
 
-                  if($children[$objectID]->getAttribute('name') == $Name){
+                  if($children[$objectID]->getAttribute('name') == $name){
                      return $children[$objectID];
                    // end if
                   }
@@ -2459,15 +2432,14 @@
          }
          else{
             trigger_error('['.get_class($this).'::__getTemplate()] No template object with name "'
-               .$Name.'" composed in current document for document controller "'.get_class($this)
+               .$name.'" composed in current document for document controller "'.get_class($this)
                .'"! Perhaps tag library html:template is not loaded in current template!',E_USER_ERROR);
             exit();
           // end else
          }
 
-         // Falls das Template nicht gefunden werden kann -> Fehler!
          trigger_error('['.get_class($this).'::__getTemplate()] Template with name "'
-            .$Name.'" cannot be found!',E_USER_ERROR);
+            .$name.'" cannot be found!',E_USER_ERROR);
          exit();
 
        // end function
@@ -2475,34 +2447,30 @@
 
 
       /**
-      *  @protected
-      *
-      *  Prüft, ob ein Platzhalter im aktuellen Template vorhanden ist.
-      *
-      *  @param string $name Name of the place holder
-      *  @return bool true | false
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 11.03.2007<br />
-      *  Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
-      */
+       * @protected
+       *
+       * Checks, if a place holder exists within the current document.
+       *
+       * @param string $name The name of the place holder.
+       * @return bool True if yes, false otherwise.
+       *
+       * @author Christian SchÃ¤fer
+       * @version
+       * Version 0.1, 11.03.2007<br />
+       * Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
+       */
       protected function __placeholderExists($name){
 
          $children = &$this->__Document->getByReference('Children');
 
          foreach($children as $objectID => $DUMMY){
-
             if(get_class($children[$objectID]) == 'html_taglib_placeholder'){
-
                if($children[$objectID]->getAttribute('name') == $name){
                   return true;
                 // end if
                }
-
              // end if
             }
-
           // end foreach
          }
 
@@ -2513,34 +2481,31 @@
 
 
       /**
-      *  @protected
-      *
-      *  Prüft, ob ein Platzhalter im aktuellen Template vorhanden ist.<br />
-      *
-      *  @param string $name; Name des Platzhalters
-      *  @return bool $exists; true | false
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 11.03.2007<br />
-      *  Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
-      */
+       * @protected
+       *
+       * Checks, if a place holder exists within the given template.
+       *
+       * @param html_taglib_template $template The instance of the template to check.
+       * @param string $name The name of the place holder.
+       * @return bool True if yes, false otherwise.
+       *
+       * @author Christian SchÃ¤fer
+       * @version
+       * Version 0.1, 11.03.2007<br />
+       * Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
+       */
       protected function __templatePlaceholderExists(&$template,$name){
 
          $children = &$template->getByReference('Children');
 
          foreach($children as $objectID => $DUMMY){
-
             if(get_class($children[$objectID]) == 'template_taglib_placeholder'){
-
                if($children[$objectID]->getAttribute('name') == $name){
                   return true;
                 // end if
                }
-
              // end if
             }
-
           // end foreach
          }
 
