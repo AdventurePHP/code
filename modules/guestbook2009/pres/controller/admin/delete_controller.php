@@ -69,6 +69,9 @@
                 $hidden_no_entryid = &$form_no->getFormElementByName('entryid');
                 $hidden_no_entryid->setAttribute('value',$entryId);
                 $form_no->transformOnPlace();
+
+                $template_confirm_text = $this->__getTemplate('confirm_text');
+                $template_confirm_text->transformOnPlace();
                 
               // end else
              }

@@ -22,9 +22,14 @@
    import('modules::guestbook2009::biz','User');
 
    /**
-    * Description of login_controller
+    * @namespace modules::guestbook2009::pres
+    * @class login_controller
     *
-    * @author Administrator
+    * Implements the document controller, to handle the login subview.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 18.05.2009<br />
     */
    class login_controller extends baseController {
 

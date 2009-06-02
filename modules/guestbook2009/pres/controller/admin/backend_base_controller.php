@@ -21,8 +21,29 @@
 
    import('tools::link','frontcontrollerLinkHandler');
 
+   /**
+    * @namespace modules::guestbook2009::pres
+    * @class backend_base_controller
+    *
+    * Provides basic functionality to display the selection menu for
+    * editing or deleting guestbook entries.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 18.05.2009<br />
+    */
    class backend_base_controller extends baseController {
 
+      /**
+       * Displays the select field using the choose.html template imported into
+       * the desired views.
+       *
+       * @param string $adminView The name of the admin view to display (edit|delete)
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 18.05.2009<br />
+       */
       protected function __displayEntrySelection($adminView){
 
          // fill the select list

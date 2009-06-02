@@ -19,6 +19,8 @@
    *  -->
    */
 
+   import('tools::html::taglib','ui_getstring');
+
    /**
     * @package modules::guestbook2009::pres
     * @class lang_base
@@ -43,7 +45,7 @@
        * Version 0.1, 21.05.2009<br />
        */
       public function langlabel_base(){
-         $this->__Attributes['namespace'] = 'modules::buestbook2009::pres';
+         $this->__Attributes['namespace'] = 'modules::guestbook2009::pres';
          $this->__Attributes['config'] = 'language';
        // end function
       }

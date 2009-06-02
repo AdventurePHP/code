@@ -19,28 +19,25 @@
    *  -->
    */
 
-   import('modules::guestbook2009::pres::controller::admin','backend_base_controller');
-   
+   import('modules::guestbook2009::pres::taglib','langlabel_base');
+
    /**
     * @package modules::guestbook2009::pres
-    * @class logout_controller
+    * @class html_taglib_langlabel
     *
-    * Handles the logout call. The class itself is only a wrapper to call the
-    * service. This is done, because the guestbook is not based on the front
-    * controller.
+    * Displays language labels within template files directly.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 21.05.2009<br />
     */
-   class logout_controller extends backend_base_controller {
+   class template_taglib_langlabel extends langlabel_base {
 
-      public function transformContent(){
-         $gS = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
-         $gS->logout();
+      public function template_taglib_langlabel() {
+         parent::langlabel_base();
        // end function
       }
-   
+
     // end class
    }
 ?>

@@ -34,15 +34,6 @@
     */
    class edit_controller extends backend_base_controller {
 
-       /**
-        * @public
-        * 
-        * Handles the edit flow.
-        *
-        * @author Christian Achatz
-        * @version
-        * Version 0.1, 18.05.2009<br />
-        */
        public function transformContent(){
 
           $entryId = RequestHandler::getValue('entryid');

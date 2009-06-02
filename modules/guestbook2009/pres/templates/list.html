@@ -13,6 +13,7 @@
    </div>
 </div>
 <html:template name="entry">
+      <template:addtaglib namespace="modules::guestbook2009::pres::taglib" prefix="template" class="langlabel" />
       <div class="gb--list-entry">
          <div class="gb--list-entry-header">
             <h4><template:placeholder name="title" /></h4>
@@ -22,7 +23,8 @@
             <template:placeholder name="text"/>
          </div>
          <div class="gb--list-entry-footer">
-            Datum: <template:placeholder name="date" />, Uhrzeit: <template:placeholder name="time" />
+            <template:langlabel entry="date"/>: <template:placeholder name="date" />,
+            <template:langlabel entry="time"/>: <template:placeholder name="time" />
          </div>
       </div>
 </html:template>

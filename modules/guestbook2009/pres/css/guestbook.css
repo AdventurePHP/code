@@ -51,6 +51,16 @@
    font-size: 10px;
 }
 
+.gb--admin-main {
+}
+
+.gb--admin-menu {
+   margin-bottom: 20px;
+}
+
+.gb--admin-content {
+}
+
 .gb--create-form,
 .gb--list-content,
 .gb--login,
@@ -131,11 +141,11 @@
 }
 
 .gb--login-label-user {
-   margin-right: 26px;
+   margin-right: 14px;
 }
 
 .gb--login-label-password {
-   margin-right: 22px;
+   margin-right: 17px;
 }
 
 .gb--login-error-form {
@@ -158,4 +168,24 @@
 
 .gb--admin-edit-label-title {
    margin-right: 51px;
+}
+
+.gb--admin-edit-label-text {
+}
+
+.gb--admin-choose-label {
+}
+
+.gb--admin-delete {
+}
+
+.gb--admin-delete-forms input,
+.gb--admin-choose-button,
+.gb--admin-choose-list {
+   border: 1px solid black;
+   background-color: #efefef;
+}
+
+.gb--admin-delete-text {
+   margin-bottom: 20px;
 }
