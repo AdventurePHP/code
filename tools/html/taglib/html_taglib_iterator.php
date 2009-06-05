@@ -23,43 +23,46 @@
 
 
    /**
-   *  @namespace tools::html::taglib
-   *  @class html_taglib_iterator
-   *
-   *  Implementiert ein HTML-Iterator-Container um eine Liste von gleichen<br />
-   *  Array-Offsets oder Objekten auszugeben.<br />
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 01.06.2008<br />
-   *  Version 0.2, 04.06.2008 (Methode __getIteratorItem() durch Verwendung von key() ersetzt)<br />
-   */
+    * @namespace tools::html::taglib
+    * @class html_taglib_iterator
+    *
+    * Implements a taglib, that can display a list of objects (arrays with numeric offsets)
+    * or associative arrays by defining a iterator with items and place holders within the
+    * items. For convenience, the iterator can contain additional (html) content.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 01.06.2008<br />
+    * Version 0.2, 04.06.2008 (Replaced __getIteratorItem() with key())<br />
+    */
    class html_taglib_iterator extends Document
    {
 
       /**
-      *  @protected
-      *  Daten-Container. Array mit numerischen Offsets und assoziativen Unteroffsets oder Liste von Objekten.
-      */
+       * @protected
+       * Data container. Array with numeric or associative offsets
+       * or a list of objects.
+       */
       protected $__DataContainer = array();
 
 
       /**
-      *  @protected
-      *  Indiziert, ob das Iterator-Template an der Definitionsstelle transformiert und ausgegeben werden soll.
-      */
+       * @protected
+       * Indicates, whether the iterator template should be displayed
+       * at it's definition place (transform-on-place feature).
+       */
       protected $__TransformOnPlace = false;
 
 
       /**
-      *  @public
-      *
-      *  Definiert die verwendeten TagLibs.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 01.06.2008<br />
-      */
+       * @public
+       *
+       * Defines the known taglibs. In this case, only the iterator item is parsed.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 01.06.2008<br />
+       */
       function html_taglib_iterator(){
          $this->__TagLibs[] = new TagLib('tools::html::taglib','iterator','item');
        // end function
@@ -69,7 +72,7 @@
       /**
       *  @public
       *
-      *  Implementiert die Methode onParseTime() für die aktuelle TagLib.<br />
+      *  Implements the onParseTime method. Parses the iterator item taglib.
       *
       *  @author Christian Achatz
       *  @version
@@ -82,18 +85,19 @@
 
 
       /**
-      *  @public
-      *
-      *  Mit dieser Methode wird der auszugebende Daten-Container gefüllt.<br />
-      *
-      *  @param array $Data; Liste von Objekten oder assoziativen Arrays
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 01.06.2008<br />
-      */
-      function fillDataContainer($Data){
-         $this->__DataContainer = $Data;
+       * @public
+       *
+       * This method allows you to fill the data container. Arrays with associative
+       * keys are allowed as well as lists of objects (arrays with numeric offsets).
+       *
+       * @param array $data List of objects of an associative array.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 01.06.2008<br />
+       */
+      function fillDataContainer($data){
+         $this->__DataContainer = $data;
        // end function
       }
 
@@ -101,8 +105,7 @@
       /**
       *  @public
       *
-      *  Definiert, dass das Iterator-Template an der exakten Definitionsstelle transformiert und<br />
-      *  ausgegeben werden soll.<br />
+      *  Activates the transform-on-place feature for the iterator tag.
       *
       *  @author Christian Achatz
       *  @version
@@ -115,66 +118,64 @@
 
 
       /**
-      *  @public
-      *
-      *  Erzeugt die Ausgabe des Iterator-Templates.<br />
-      *
-      *  @return string $Buffer; Transformierter Inhalt des Iterators
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 01.06.2008<br />
-      *  Version 0.2, 04.06.2008 (Funktion erweitert)<br />
-      *  Version 0.3, 15.06.2008 (Bug behoben, dass in PHP 5 das Item nicht gefunden wurde)<br />
-      */
+       * @public
+       *
+       * Creates the output of the iterator. Can be called manually to use the output within
+       * a document controller or surrounding taglib or automatically using the
+       * transform-on-place feature.
+       *
+       * @return string String representation of the iterator object.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 01.06.2008<br />
+       * Version 0.2, 04.06.2008 (Enhanced method)<br />
+       * Version 0.3, 15.06.2008 (Bugfix: the item was not found using PHP5)<br />
+       */
       function transformIterator(){
 
-         // Timer starten
          $T = &Singleton::getInstance('benchmarkTimer');
          $T->start('(html_taglib_iterator) '.$this->__ObjectID.'::transformIterator()');
 
-         // Ausgabe-Puffer initialisieren
-         $Buffer = (string)'';
+         $buffer = (string)'';
 
-         // Platzhalter holen
-         $ItemObjectID = array_keys($this->__Children);
-         $IteratorItem = &$this->__Children[$ItemObjectID[0]];
+         // the iterator item is always the first child of the
+         // current node! others will be ignored.
+         $itemObjectID = array_keys($this->__Children);
+         $iteratorItem = &$this->__Children[$itemObjectID[0]];
 
-         // Getter für Objekte definieren
-         $Getter = $IteratorItem->getAttribute('getter');
+         // define the dynamic getter.
+         $Getter = $iteratorItem->getAttribute('getter');
          if($Getter === null){
             $Getter = 'get';
           // end if
          }
 
-         // Platzhalter holen
-         $Placeholders = &$IteratorItem->getByReference('Children');
+         // get the place holders
+         $placeHolders = &$iteratorItem->getByReference('Children');
 
-         // Ausgabe erzeugen
          $itemcount = count($this->__DataContainer);
          for($i = 0; $i < $itemcount; $i++){
 
             if(is_array($this->__DataContainer[$i])){
 
-               foreach($Placeholders as $ObjectID => $DUMMY){
-                  $Placeholders[$ObjectID]->set('Content',$this->__DataContainer[$i][$Placeholders[$ObjectID]->getAttribute('name')]);
+               foreach($placeHolders as $ObjectID => $DUMMY){
+                  $placeHolders[$ObjectID]->set('Content',$this->__DataContainer[$i][$placeHolders[$ObjectID]->getAttribute('name')]);
                 // end foreach
                }
 
-               // Item transformieren und in Buffer schreiben
-               $Buffer .= $IteratorItem->transform();
+               $buffer .= $iteratorItem->transform();
 
              // end if
             }
             elseif(is_object($this->__DataContainer[$i])){
 
-               foreach($Placeholders as $ObjectID => $DUMMY){
-                  $Placeholders[$ObjectID]->set('Content',$this->__DataContainer[$i]->{$Getter}($Placeholders[$ObjectID]->getAttribute('name')));
+               foreach($placeHolders as $ObjectID => $DUMMY){
+                  $placeHolders[$ObjectID]->set('Content',$this->__DataContainer[$i]->{$Getter}($placeHolders[$ObjectID]->getAttribute('name')));
                 // end foreach
                }
 
-               // Item transformieren und in Buffer schreiben
-               $Buffer .= $IteratorItem->transform();
+               $buffer .= $iteratorItem->transform();
 
              // end elseif
             }
@@ -186,11 +187,11 @@
           // end for
          }
 
-         // Timer stoppen
          $T->stop('(html_taglib_iterator) '.$this->__ObjectID.'::transformIterator()');
 
-         // Buffer mit der fertigen Ausgabe zurückgeben
-         return $Buffer;
+         // add the surrounding content of the iterator to enable the
+         // user to define some html code as well.
+         return str_replace($this->__Content,'<'.$itemObjectID.' />',$buffer);
 
        // end function
       }
@@ -199,9 +200,9 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "transform" des "coreObject"s.<br />
+      *  Implements the transform method for the iterator tag.
       *
-      *  @return string $Content; Leer-String oder Inhalt des Tags
+      *  @return string Content of the tag or an empty string.
       *
       *  @author Christian Achatz
       *  @version
@@ -209,13 +210,11 @@
       */
       function transform(){
 
-         // Prüfen, ob Template ausgegeben werden soll
          if($this->__TransformOnPlace === true){
             return $this->transformIterator();
           // end if
          }
 
-         // Leerstring zurückgeben
          return (string)'';
 
        // end function
