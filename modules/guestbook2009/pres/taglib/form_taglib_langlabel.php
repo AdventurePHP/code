@@ -23,17 +23,17 @@
 
    /**
     * @package modules::guestbook2009::pres
-    * @class template_taglib_langlabel
+    * @class form_taglib_langlabel
     *
-    * Displays language labels within templates.
+    * Displays language labels within forms.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 02.06.2009<br />
+    * Version 0.1, 03.06.2009<br />
     */
-   class template_taglib_langlabel extends langlabel_base {
+   class form_taglib_langlabel extends langlabel_base {
 
-      public function template_taglib_langlabel() {
+      public function form_taglib_langlabel() {
          parent::langlabel_base();
        // end function
       }

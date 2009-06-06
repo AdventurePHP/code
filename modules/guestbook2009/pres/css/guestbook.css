@@ -73,6 +73,10 @@
    background-color: #efefef;
 }
 
+.gb--create-entry {
+   display: inline-block;
+}
+
 .gb--login input,
 .gb--admin-edit-form input {
    border: 1px solid black;
@@ -115,29 +119,59 @@
    margin-bottom: 30px;
 }
 
-.gb--create-label-name {
-   margin-right: 40px;
+.gb--create-label-name,
+.gb--create-label-email,
+.gb--create-label-website,
+.gb--create-label-title {
+   float: left;
+   width: 80px;
+}
+
+.gb--create-fieldset-name,
+.gb--create-fieldset-email,
+.gb--create-fieldset-website,
+.gb--create-fieldset-title,
+.gb--create-fieldset-text,
+.gb--create-fieldset-captcha {
+   float: left;
+}
+
+.gb--create-label-captcha {
+   float: left;
+   width: 110px;
+}
+
+.gb--create--block-captcha {
+   margin-top: 20px;
 }
 
 .gb--create-label-text {
+   margin-top: 20px;
 }
 
-.gb--create-label-email {
-   margin-right: 40px;
+.gb--create-clear {
+   clear: both;
 }
 
-.gb--create-label-website {
-   margin-right: 22px;
+.gb--create-block-name,
+.gb--create-block-email,
+.gb--create-block-website,
+.gb--create-block-title,
+.gb--create-block-text {
+   display: inline-block;
 }
 
-.gb--create-label-title {
-   margin-right: 51px;
+.gb--create-block-captcha {
+   display: inline-block;
+   margin-top: 20px;
+
 }
 
 .gb--create-button-placer,
 .gb--login-button-placer,
 .gb--admin-edit-button-placer {
    text-align: right;
+   margin-top: 20px;
 }
 
 .gb--login-label-user {

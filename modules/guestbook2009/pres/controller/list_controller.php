@@ -30,6 +30,7 @@
     * @author Christian Achatz
     * @version
     * Version 0.1, 03.05.2009<br />
+    * Version 0.2, 06.06.2009 (Added dynamic link generation)<br />
     */
    class list_controller extends baseController {
 
@@ -59,6 +60,12 @@
           // end foreach
          }
          $this->setPlaceHolder('content',$buffer);
+
+         // add dyamic link
+         $link = frontcontrollerLinkHandler::generateLink(
+            $_SERVER['REQUEST_URI'], 
+            array('gbview' => 'create'));
+         $this->setPlaceHolder('createlink',$link);
 
        // end function
       }

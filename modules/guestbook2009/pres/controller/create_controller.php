@@ -21,7 +21,7 @@
 
    import('modules::guestbook2009::biz','User');
    import('modules::guestbook2009::biz','Entry');
-   
+
    /**
     * @namespace modules::guestbook2009::pres::controller
     * @class create_controller
@@ -35,7 +35,7 @@
    class create_controller extends baseController {
 
       function transformContent(){
-         
+
          $form = $this->__getForm('create_entry');
 
          if($form->get('isSent') && $form->get('isValid')){
@@ -62,13 +62,29 @@
             // Save the entry using the business component.
             $gbServive = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
             $gbServive->saveEntry($entry);
-            
+
           // end if
          }
+
+         // set language dependent button label by using the
+         // language and context information of the current
+         // DOM node.
+         $config = $this->__getConfiguration('modules::guestbook2009::pres','language');
+         $buttonLabel = $config->getValue($this->__Language,'form.label.button');
+         $button = &$form->getFormElementByName('send');
+         $button->setAttribute('value',$buttonLabel);
 
          // Transform on definition place to render
          // the content within the surrounding div.
          $form->transformOnPlace();
+
+         // add dynamic link
+         $this->setPlaceHolder('overviewlink',
+            frontcontrollerLinkHandler::generateLink(
+               $_SERVER['REQUEST_URI'],
+               array('gbview' => 'list')
+            )
+         );
 
        // enf function
       }

@@ -50,11 +50,13 @@
        */
       public function loadEntryList(){
 
-         $sortCrit = new GenericCriterionObject();
-         $sortCrit->addOrderIndicator('CreationTimestamp','DESC');
+         $crit = new GenericCriterionObject();
+         $crit->addOrderIndicator('CreationTimestamp','DESC');
+         //$crit->addRelationIndicator('Guestbook2Entry', $SourceObject)
+
          $gb = $this->__getCurrentGuestbook();
          return $this->__mapGenericEntries2DomainObjects(
-            $gb->loadRelatedObjects('Guestbook2Entry',$sortCrit)
+            $gb->loadRelatedObjects('Guestbook2Entry',$crit)
          );
          
        // end function
@@ -385,37 +387,44 @@
          $gbEntries = array();
          foreach($entries as $current){
 
-            // load the entry itself
-            $entry = new Entry();
-            $entry->setCreationTimestamp($current->getProperty('CreationTimestamp'));
-
+            // Check, whether there are attributes related in the current language.
+            // If not, do NOT add an entry, because it will be empty!
             $attributes = $orm->loadRelatedObjects($current,'Entry2LangDepValues',$critEntries);
-            foreach($attributes as $attribute){
+            if(count($attributes) > 0){
 
-               if($attribute->getProperty('Name') == 'title'){
-                  $entry->setTitle($attribute->getProperty('Value'));
+               // load the entry itself
+               $entry = new Entry();
+               $entry->setCreationTimestamp($current->getProperty('CreationTimestamp'));
+
+               foreach($attributes as $attribute){
+
+                  if($attribute->getProperty('Name') == 'title'){
+                     $entry->setTitle($attribute->getProperty('Value'));
+                  }
+                  if($attribute->getProperty('Name') == 'text'){
+                     $entry->setText($attribute->getProperty('Value'));
+                  }
+
+                // end foreach
                }
-               if($attribute->getProperty('Name') == 'text'){
-                  $entry->setText($attribute->getProperty('Value'));
+
+               // add the editor's data
+               if($addEditor === true){
+                  $editor = new User();
+                  $user = $orm->loadRelatedObjects($current,'Editor2Entry');
+                  $editor->setName($user[0]->getProperty('Name'));
+                  $editor->setEmail($user[0]->getProperty('Email'));
+                  $editor->setWebsite($user[0]->getProperty('Website'));
+                  $editor->setId($user[0]->getProperty('UserID'));
+                  $entry->setEditor($editor);
+                // end if
                }
 
-             // end foreach
-            }
+               $entry->setId($current->getProperty('EntryID'));
+               $gbEntries[] = $entry;
 
-            // add the editor's data
-            if($addEditor === true){
-               $editor = new User();
-               $user = $orm->loadRelatedObjects($current,'Editor2Entry');
-               $editor->setName($user[0]->getProperty('Name'));
-               $editor->setEmail($user[0]->getProperty('Email'));
-               $editor->setWebsite($user[0]->getProperty('Website'));
-               $editor->setId($user[0]->getProperty('UserID'));
-               $entry->setEditor($editor);
              // end if
             }
-
-            $entry->setId($current->getProperty('EntryID'));
-            $gbEntries[] = $entry;
 
           // end foreach
          }

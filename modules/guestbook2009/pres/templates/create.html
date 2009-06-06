@@ -1,78 +1,93 @@
 <@controller namespace="modules::guestbook2009::pres::controller" file="create_controller" class="create_controller" @>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<core:addtaglib namespace="modules::guestbook2009::pres::taglib" prefix="html" class="langlabel" />
 <div class="gb--create-entry">
    <div class="gb--create-text">
-      Hier k&ouml;nnen Sie einen neuen Eintrag erstellen! Zur&uuml;ck zur &Uuml;bersicht geht es
-      <a href="./?gbview=list" title="Zur&uuml;ck zur &Uuml;bersicht">hier</a>.
+      <html:langlabel entry="form.headline.start" /><a href="<html:placeholder name="overviewlink" />" title="<html:langlabel entry="form.headline.link.title" />"><html:langlabel entry="form.headline.link.text" /></a><html:langlabel entry="form.headline.end" />
    </div>
    <div class="gb--create-form">
       <html:form name="create_entry" method="post">
-         <label class="gb--create-label-name">Name:</label>
-         <form:text
-            maxlength="100"
-            class="gb--create-field-name"
-            name="name"
-            validate="true"
-            button="send"
-            filter="noSpecialCharacters"
-         />
-         <br />
-         <label class="gb--create-label-email">E-Mail:</label>
-         <form:text
-            maxlength="100"
-            class="gb--create-field-email"
-            name="email"
-            validate="true"
-            button="send"
-            validator="EMail"
-            filter="stripTags"
-         />
-         <br />
-         <label class="gb--create-label-website">Webseite:</label>
-         <form:text
-            maxlength="100"
-            class="gb--create-field-website"
-            name="website"
-            validate="true"
-            button="send"
-            filter="stripTags"
-         />
-         <br />
-         <label class="gb--create-label-title">Titel:</label>
-         <form:text
-            maxlength="100"
-            class="gb--create-field-title"
-            name="title"
-            validate="true"
-            button="send"
-            filter="noSpecialCharacters"
-         />
-         <br />
-         <br />
-         <label class="gb--create-label-text">Text:</label>
-         <br />
-         <form:area
-            class="gb--create-field-text"
-            name="text"
-            validate="true"
-            button="send"
-            filter="stripTags"
-         />
-         <br />
-         <br />
-         <label class="gb--create-label-captcha">Sicherheitsabfrage:</label>
-         <form:addtaglib namespace="modules::captcha::pres::taglib" prefix="form" class="captcha" />
-         <form:captcha
-            text_class="gb--create-field-captcha-text"
-            image_class="gb--create-field-captcha-image"
-            validate="true"
-            button="send"
-            clearonerror="true"
-         />
-         <br />
-         <br />
+         <form:addtaglib namespace="modules::guestbook2009::pres::taglib" prefix="form" class="langlabel" />
+         <div class="gb--create-block-name">
+            <div class="gb--create-label-name"><form:langlabel entry="form.label.name"/>:</div>
+            <div class="gb--create-fieldset-name">
+               <form:text
+                  maxlength="100"
+                  class="gb--create-field-name"
+                  name="name"
+                  validate="true"
+                  button="send"
+                  filter="noSpecialCharacters"
+               />
+            </div>
+         </div>
+         <div class="gb--create-block-email">
+            <div class="gb--create-label-email"><form:langlabel entry="form.label.email"/>:</div>
+            <div class="gb--create-fieldset-email">
+               <form:text
+                  maxlength="100"
+                  class="gb--create-field-email"
+                  name="email"
+                  validate="true"
+                  button="send"
+                  validator="EMail"
+                  filter="stripTags"
+               />
+            </div>
+         </div>
+         <div class="gb--create-block-website">
+            <div class="gb--create-label-website"><form:langlabel entry="form.label.website"/>:</div>
+            <div class="gb--create-fieldset-website">
+               <form:text
+                  maxlength="100"
+                  class="gb--create-field-website"
+                  name="website"
+                  validate="true"
+                  button="send"
+                  filter="stripTags"
+               />
+            </div>
+         </div>
+         <div class="gb--create-block-title">
+            <div class="gb--create-label-title"><form:langlabel entry="form.label.title"/>:</div>
+            <div class="gb--create-fieldset-title">
+               <form:text
+                  maxlength="100"
+                  class="gb--create-field-title"
+                  name="title"
+                  validate="true"
+                  button="send"
+                  filter="noSpecialCharacters"
+               />
+            </div>
+         </div>
+         <div class="gb--create-block-text">
+            <div class="gb--create-label-text"><form:langlabel entry="form.label.text"/>:</div>
+            <div class="gb--create-fieldset-text">
+               <form:area
+                  class="gb--create-field-text"
+                  name="text"
+                  validate="true"
+                  button="send"
+                  filter="stripTags"
+               />
+            </div>
+         </div>
+         <div class="gb--create-block-captcha">
+            <div class="gb--create-label-captcha"><form:langlabel entry="form.label.captcha"/>:</div>
+            <div class="gb--create-fieldset-captcha">
+               <form:addtaglib namespace="modules::captcha::pres::taglib" prefix="form" class="captcha" />
+               <form:captcha
+                  text_class="gb--create-field-captcha-text"
+                  image_class="gb--create-field-captcha-image"
+                  validate="true"
+                  button="send"
+                  clearonerror="true"
+               />
+            </div>
+         </div>
          <div class="gb--create-button-placer">
-            <form:button class="gb--button-create" name="send" value="Absenden" />
+            <form:button class="gb--button-create" name="send" />
          </div>
       </html:form>
    </div>

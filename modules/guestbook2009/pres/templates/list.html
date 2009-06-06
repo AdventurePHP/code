@@ -1,9 +1,8 @@
 <@controller namespace="modules::guestbook2009::pres::controller" file="list_controller" class="list_controller" @>
+<core:addtaglib namespace="modules::guestbook2009::pres::taglib" prefix="html" class="langlabel" />
 <div class="gb--list-entries">
    <div class="gb--list-text">
-      Hier sehen Sie die Liste der Eintr&auml;ge des G&auml;stebuchs. Um einen neuen Eintrag zu erstellen,
-      klicken Sie bitte
-      <a href="./?gbview=create" title="Eintrag erstellen">hier</a>.
+      <html:langlabel entry="list.headline.start" /><a href="<html:placeholder name="createlink" />" title="<html:langlabel entry="list.headline.link.title" />"><html:langlabel entry="list.headline.link.text" /></a><html:langlabel entry="list.headline.end" />
    </div>
    <div class="gb--list-pager">
       <html:placeholder name="pager" />
@@ -23,8 +22,8 @@
             <template:placeholder name="text"/>
          </div>
          <div class="gb--list-entry-footer">
-            <template:langlabel entry="date"/>: <template:placeholder name="date" />,
-            <template:langlabel entry="time"/>: <template:placeholder name="time" />
+            <template:langlabel entry="list.date"/>: <template:placeholder name="date" />,
+            <template:langlabel entry="list.time"/>: <template:placeholder name="time" />
          </div>
       </div>
 </html:template>
