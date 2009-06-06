@@ -1391,85 +1391,63 @@
 
 
       /**
-      *  @protected
-      *
-      *  XML-Parser-Methode, die die registrierten TagLib-Tags aus dem Content extrahiert und den<br />
-      *  Objektbaum aufbaut. Dabei werden f�r die jeweiligen Tags eigene Child-Objekte im "Document"<br />
-      *  erzeugt und die Stellen mit einem Merker-Tag versehen, die bei der Transformation dann wieder<br />
-      *  durch ihre Inhalts-Entsprechungen ersetzt werden.<br />
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 21.01.2007 (Bugfix: Parser �bersah erneut �ffnende Tokens im TagString, bei Mischungen aus selbst- und exklusiv-schlie�enden Tags)<br />
-      *  Version 0.3, 31.01.2007 (Kontext-Behandlung hinzugef�gt)<br />
-      *  Version 0.4, 09.04.2007 (Doppeltes Setzen der Attributes bereinigt, Language-Behandlung hinzugef�gt)<br />
-      *  Version 0.5, 02.04.2008 (Bug behoben, dass Token nicht in der Fehlermeldung angezeigt wird)<br />
-      */
+       * @protected
+       *
+       * Parses the content of the current APF DOM node. Extracts all known taglibs listed in
+       * the <em>$this->__TagLibs</em> property. Each taglib is converted into a child document
+       * of the current tree element. The tag definition place is reminded by a marker tag using
+       * the internal id of the DOM node.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 21.01.2007 (Bugfix: a mixture of self- and exclusivly closing tags lead to wrong parsing)<br />
+       * Version 0.3, 31.01.2007 (Added context injection)<br />
+       * Version 0.4, 09.04.2007 (Removed double attributes setting, added language injection)<br />
+       * Version 0.5, 02.04.2008 (Bugfix: the token is now displayed in the HTML error page)<br />
+       * Version 0.6, 06.06.2009 (Improvement: content is not copied during parsing any more)<br />
+       */
       protected function __extractTagLibTags(){
 
-         // Kopie des aktuellen Content erzeugen
-         $Content = $this->__Content;
-
-
-         // Hilfsvariable f�r Parser-Durchl�ufe (Extraktion der TagLib-Tags) initialiserien
-         $TagLibLoops = 0;
-
-
-         // Laufvariable initialisieren
+         $tagLibLoops = 0;
          $i = 0;
 
-
-         // TagLibs parsen. Hier wird ein while verwendet, da im Parser-Lauf auch weitere Tag-Libs
-         // hinzukommen k�nnen. Siehe hierzu Klasse core_taglib_addTagLib!
+         // Parse the known taglibs. Here, we have to use a while loop, because one parser loop
+         // can result in an increasing amount of known taglibs (core:addtaglib!).
          while($i < count($this->__TagLibs)){
 
-            // Falls Parserl�ufe zu viel werden -> Fehler!
-            if($TagLibLoops > $this->__MaxLoops){
+            if($tagLibLoops > $this->__MaxLoops){
                trigger_error('[Document::__extractTagLibTags()] Maximum numbers of parsing loops reached!',E_USER_ERROR);
                exit();
              // end if
             }
 
-
-            // Attribute f�r Parser-Lauf initialisieren
             $Prefix = $this->__TagLibs[$i]->get('Prefix');
             $Class = $this->__TagLibs[$i]->get('Class');
             $Module = $this->__getModuleName($Prefix, $Class);
             $Token = $Prefix.':'.$Class;
             $TagLoops = 0;
 
+            while(substr_count($this->__Content,'<'.$Token) > 0){
 
-            // TagLib-Tags suchen
-            while(substr_count($Content,'<'.$Token) > 0){
-
-               // Falls Parser-Durchl�ufe zu viele werden -> Fehler
                if($TagLoops > $this->__MaxLoops){
                   trigger_error('['.get_class($this).'::__extractTagLibTags()] Maximum numbers of parsing loops reached!',E_USER_ERROR);
                   exit();
                 // end if
                }
 
-
-               // Eindeutige ID holen
-               $ObjectID = xmlParser::generateUniqID();
-
-
-               // Start- und End-Position des Tags im Content finden.
-               // Als End-Position wir immer ein schlie�ender Tag erwartet
-               $TagStartPos = strpos($Content,'<'.$Token);
-               $TagEndPos = strpos($Content,'</'.$Token.'>',$TagStartPos);
+               // Find start and end position of the tag. "Normally" a
+               // explicitly closing tag is expected.
+               $TagStartPos = strpos($this->__Content,'<'.$Token);
+               $TagEndPos = strpos($this->__Content,'</'.$Token.'>',$TagStartPos);
                $ClosingTagLength = strlen('</'.$Token.'>');
 
-
-               // Falls ausf�hrlicher End-Tag nicht vorkommt nach einfachem suchen
+               // in case a explictly-closing tag could not be found, seach for self-closing tag
                if($TagEndPos === false){
 
-                  $TagEndPos = strpos($Content,'/>',$TagStartPos);
+                  $TagEndPos = strpos($this->__Content,'/>',$TagStartPos);
                   $ClosingTagLength = 2;
 
-
-                  // Falls kein End-Tag vorhanden -> Fehler!
                   if($TagEndPos === false){
                      trigger_error('[Document::__extractTagLibTags()] No closing tag found for tag "&lt;'.$Token.' /&gt;"!',E_USER_ERROR);
                      exit();
@@ -1479,116 +1457,88 @@
                 // end if
                }
 
-
-               // Tag-String extrahieren
+               // extract the complete tag string from the current content
                $TagStringLength = ($TagEndPos - $TagStartPos) + $ClosingTagLength;
-               $TagString = substr($Content,$TagStartPos,$TagStringLength);
+               $TagString = substr($this->__Content,$TagStartPos,$TagStringLength);
 
-
-               // NEU (Bugfix f�r Fehler bei Mischungen aus selbst- und exklusiv-schlie�enden Tags):
-               // Pr�fen, ob ein �ffnender Tag im bisher angenommen Tag-String ist. Kommt
-               // dieser vor, so muss der Tag-String neu definiert werden.
+               // NEW (bugfix for errors while mixing self- and exclusivly closing tags):
+               // First, check if a opening tag was found within the previously taken tag string.
+               // If yes, the tag string must be redefined.
                if(substr_count($TagString,'<'.$Token) > 1){
 
-                  // Position des selbsschli�enden Zeichens finden
-                  $TagEndPos = strpos($Content,'/>',$TagStartPos);
-
-
-                  // String-L�nge des selbst schlie�enden Tag-Zeichens f�r sp�tere Verwendung setzen
+                  // find position of the self-colising tag
+                  $TagEndPos = strpos($this->__Content,'/>',$TagStartPos);
                   $ClosingTagLength = 2;
 
-
-                  // L�nge des TagStrings f�r sp�tere Verwendung setzen
+                  // extract the complete tag string from the current content
                   $TagStringLength = ($TagEndPos - $TagStartPos) + $ClosingTagLength;
-
-
-                  // Neuen Tag-String exzerpieren
-                  $TagString = substr($Content,$TagStartPos,$TagStringLength);
+                  $TagString = substr($this->__Content,$TagStartPos,$TagStringLength);
 
                 // end if
                }
 
-
-               // Attribute des Tag-Strings auslesen
+               // get the tag attributes of the current tag
                $Attributes = xmlParser::getTagAttributes($TagString);
-
-
-               // Neues Objekt erzeugen
                $Object = new $Module();
 
-
-               // Context setzen
+               // inject context of the parent object
                $Object->set('Context',$this->__Context);
 
-
-               // Sprache setzen
+               // inject language of the parent object
                $Object->set('Language',$this->__Language);
 
-
-               // Attribute einh�ngen
+               // add the tag's atributes
                $Object->setAttributes($Attributes['attributes']);
 
-
-               // ObjectID setzen
+               // initialize object id, that is used to reference the object
+               // within the APF DOM tree and to provide a unique key for the
+               // children index.
+               $ObjectID = xmlParser::generateUniqID();
                $Object->set('ObjectID',$ObjectID);
 
+               // replace the position of the taglib with a place holder
+               // token string: <$ObjectID />.
+               // this needs to be done, to be able to place the content of the
+               // transformed taglib at transformation time correctly
+               $this->__Content = substr_replace($this->__Content,'<'.$ObjectID.' />',$TagStartPos,$TagStringLength);
 
-               // Token-String im Content durch <$ObjectID /> ersetzen
-               $Content = substr_replace($Content,'<'.$ObjectID.' />',$TagStartPos,$TagStringLength);
-
-
-               // Vater bekannt machen
+               // advertise the parent object
                $Object->setByReference('ParentObject',$this);
 
-
-               // Content einbinden
+               // add the content to the current APF DOM node
                $Object->set('Content',$Attributes['content']);
 
-
-               // Standard-Methode onParseTime() aufrufen
+               // call onParseTime() to enable the taglib to initialize itself
                $Object->onParseTime();
 
-
-               // Objekt einh�ngen (nicht per Referenz, da sonst Objekte nicht sauber in den Baum eingeh�ngt werden)
+               // add current object to the APF DOM tree (no reference, because this leads to NPEs!)
                $this->__Children[$ObjectID] = $Object;
 
-
-               // Loops inkrementieren
                $TagLoops++;
 
-
-               // Aktuelles Element (neues Objekt) l�schen, um �berlagerungen zu verhindern
+               // delete current object to avoid interference.
                unset($Object);
 
              // end while
             }
 
-            // Offset erh�hen
             $i++;
 
           // end while
          }
 
-
-         // Content wieder in Membervariable speichern
-         $this->__Content = $Content;
-
-
-         // Methode onAfterAppend() auf alle Kinder ausf�hren
+         // call onAfterAppend() on each child to enable the taglib to interact with
+         // other APF DOM nodes to do extended initialization.
          if(count($this->__Children) > 0){
 
-            // Timer starten
             $T = &Singleton::getInstance('benchmarkTimer');
             $T->start('('.get_class($this).') '.$this->__ObjectID.'::__Children[]::onAfterAppend()');
 
-
-            foreach($this->__Children as $Offset => $Object){
-               $this->__Children[$Offset]->onAfterAppend();
+            foreach($this->__Children as $objectId => $DUMMY){
+               $this->__Children[$objectId]->onAfterAppend();
              // end for
             }
 
-
-            // Timer stoppen
             $T->stop('('.get_class($this).') '.$this->__ObjectID.'::__Children[]::onAfterAppend()');
 
           // end if
@@ -1599,46 +1549,39 @@
 
 
       /**
-      *  @protected
-      *
-      *  XML-Parser-Methode, die die im Content enthaltenen Document-Controller-Tags extrahiert.<br />
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
+       * @protected
+       *
+       * Initializes the document controller class, that is executed at APF DOM node
+       * transformation time.
+       *
+       * @author Christian Sch�fer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
       protected function __extractDocumentController(){
 
-         // copy the current content to preserve the tag positions.
-         $Content = $this->__Content;
-
-         // Tag-Berschreibung initialisieren
+         // define start and end tag
          $ControllerStartTag = '<@controller';
          $ControllerEndTag = '@>';
 
-         // Tags suchen
-         if(substr_count($Content,$ControllerStartTag) > 0){
+         if(substr_count($this->__Content,$ControllerStartTag) > 0){
 
-            // Position des Tags suchen und Attribute extrahieren
-            $TagStartPos = strpos($Content,$ControllerStartTag);
-            $TagEndPos = strpos($Content,$ControllerEndTag,$TagStartPos);
-            $ControllerTag = substr($Content,$TagStartPos + strlen($ControllerStartTag),($TagEndPos - $TagStartPos) - 1 - strlen($ControllerStartTag));
+            $TagStartPos = strpos($this->__Content,$ControllerStartTag);
+            $TagEndPos = strpos($this->__Content,$ControllerEndTag,$TagStartPos);
+            $ControllerTag = substr($this->__Content,$TagStartPos + strlen($ControllerStartTag),($TagEndPos - $TagStartPos) - 1 - strlen($ControllerStartTag));
             $ControllerAttributes = xmlParser::getAttributesFromString($ControllerTag);
 
-            // Document-Controller importieren
+            // lazily import document controller class
             if(!class_exists($ControllerAttributes['class'])){
                import($ControllerAttributes['namespace'],$ControllerAttributes['file']);
              // end if
             }
 
-            // Document-Controller-Klasse bekannt machen
+            // remark controller class
             $this->__DocumentController = $ControllerAttributes['class'];
 
-            // DocumentController Tag ersetzen
-            $Content = substr_replace($Content,'',$TagStartPos,($TagEndPos - $TagStartPos) + strlen($ControllerEndTag));
-
-            // Content wieder einsetzen
-            $this->__Content = $Content;
+            // remove definition from content to be not displayed
+            $this->__Content = substr_replace($this->__Content,'',$TagStartPos,($TagEndPos - $TagStartPos) + strlen($ControllerEndTag));
 
           // end if
          }
