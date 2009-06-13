@@ -844,23 +844,23 @@
       }
 
       /**
-      *  @protected
-      *
-      *  Returns a service object according to the current application context.
-      *
-      *  @param string $namespace Namespace of the service object (currently ignored).
-      *  @param string $serviceName Name of the service object (=class name).
-      *  @param string $type The initializing type (see service manager for details).
-      *  @return coreObject $serviceObject The desired service object.
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 07.03.2007<br />
-      *  Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
-      *  Version 0.3, 10.03.2007 (Method now is considered protected)<br />
-      *  Version 0.4, 22.04.2007 (Added language initializaton of the service manager)<br />
-      *  Version 0.5, 24.02.2008 (Added the service type param)<br />
-      */
+       * @protected
+       *
+       * Returns a service object according to the current application context.
+       *
+       * @param string $namespace Namespace of the service object (currently ignored).
+       * @param string $serviceName Name of the service object (=class name).
+       * @param string $type The initializing type (see service manager for details).
+       * @return coreObject $serviceObject The desired service object.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 07.03.2007<br />
+       * Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
+       * Version 0.3, 10.03.2007 (Method now is considered protected)<br />
+       * Version 0.4, 22.04.2007 (Added language initializaton of the service manager)<br />
+       * Version 0.5, 24.02.2008 (Added the service type param)<br />
+       */
       protected function &__getServiceObject($namespace,$serviceName,$type = 'SINGLETON'){
 
          $serviceManager = &Singleton::getInstance('serviceManager');
