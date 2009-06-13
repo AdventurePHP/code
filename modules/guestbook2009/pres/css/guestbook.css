@@ -1,3 +1,8 @@
+/***************************************************************************************************
+* This is a sample style sheet for the guestbook module. If you intend to use it as is, add it to  *
+* your existing style sheets or include it to your website's head.                                 *
+***************************************************************************************************/
+
 .gb--main {
    font-family: Arial, Helvetica, sans-serif;
    font-size: 12px;
