@@ -20,94 +20,55 @@
    */
 
    import('modules::comments::pres::documentcontroller','commentBaseController');
-   import('tools::request','RequestHandler');
    import('modules::comments::biz','commentManager');
    import('tools::link','frontcontrollerLinkHandler');
-   import('tools::string','stringAssistant');
-
 
    /**
-   *  @namespace modules::comments::pres::documentcontroller
-   *  @class comment_form_v1_controller
-   *
-   *  Implements the document controller for the 'form.html' template.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 22.08.2007<br />
-   */
-   class comment_form_v1_controller extends commentBaseController
-   {
+    * @namespace modules::comments::pres::documentcontroller
+    * @class comment_form_v1_controller
+    *
+    * Implements the document controller for the 'form.html' template.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 22.08.2007<br />
+    */
+   class comment_form_v1_controller extends commentBaseController {
 
       /**
-      *  @protected
-      *  Contains locally used variables.
-      */
-      protected $_LOCALS = array();
-
-
-      /**
-      *  @public
-      *
-      *  Constructor of the class. Initializes the variables used in this view.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 22.08.2007<br />
-      *  Version 0.2, 28.12.2007 (Added the CaptchaString)<br />
-      */
-      function comment_form_v1_controller(){
-         $this->_LOCALS = RequestHandler::getValues(array('Name','EMail','Comment','CaptchaString'));
-       // end function
-      }
-
-
-      /**
-      *  @public
-      *
-      *  Displays the form view.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 22.08.2007<br />
-      *  Version 0.2, 08.11.2007 (Implemented multi language support)<br />
-      *  Version 0.3, 28.12.2007 (Added a captcha)<br />
-      */
+       * @public
+       *
+       * Displays and handles the form view.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 22.08.2007<br />
+       * Version 0.2, 08.11.2007 (Implemented multi-language support)<br />
+       * Version 0.3, 28.12.2007 (Added a captcha)<br />
+       * Version 0.4, 13.06.2009 (Removed the captcha handling, introduced the captcha module)<br />
+       */
       function transformContent(){
 
-         // Referenz auf das Formular holen
-         $Form__AddComment = &$this->__getForm('AddComment');
+         $form = &$this->__getForm('AddComment');
 
-         // Prüfen, ob Formular abgesendet und erforlgreich validiert wurde
-         if($Form__AddComment->get('isSent') == true){
+         if($form->get('isSent') == true){
 
-            // Kategorie-Schlüssel laden
             $this->__loadCategoryKey();
-
-            // Mapper holen
             $M = &$this->__getAndInitServiceObject('modules::comments::biz','commentManager',$this->__CategoryKey);
 
-            // Validieren des Captchas
-            $CaptchaString = $M->get('CaptchaString');
+            if($form->get('isValid') == true){
 
-            if($CaptchaString != $this->_LOCALS['CaptchaString']){
-               $Captcha = &$Form__AddComment->getFormElementByName('CaptchaString');
-               $Captcha->set('isValid',false);
-               $Form__AddComment->set('isValid',false);
-             // end if
-            }
+               $articleComment = new ArticleComment();
+               $name = &$form->getFormElementByName('Name');
+               $articleComment->set('Name',$name->getAttribute('value'));
 
-            // Prüfen, ob Formular korrekt ausgefüllt wurde
-            if($Form__AddComment->get('isValid') == true){
+               $email = &$form->getFormElementByName('EMail');
+               $articleComment->set('EMail',$email->getAttribute('value'));
 
-               // Eintrag erstellen
-               $ArticleComment = new ArticleComment();
-               $ArticleComment->set('Name',$this->_LOCALS['Name']);
-               $ArticleComment->set('EMail',$this->_LOCALS['EMail']);
-               $ArticleComment->set('Comment',$this->_LOCALS['Comment']);
+               $comment = &$form->getFormElementByName('Comment');
+               $articleComment->set('Comment',$comment->get('Content'));
 
-               // Eintrag speichern
-               $M->saveEntry($ArticleComment);
+               $M->saveEntry($articleComment);
 
              // end if
             }
@@ -128,46 +89,29 @@
 
 
       /**
-      *  @private
-      *
-      *  Generates the comment form.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 28.12.2008<br />
-      *  Version 0.2, 09.10.2008 (Changed captcha image url generation)<br />
-      */
+       * @private
+       *
+       * Generates the comment form.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.12.2008<br />
+       * Version 0.2, 09.10.2008 (Changed captcha image url generation)<br />
+       * Version 0.3, 13.06.2009 (Removed the captcha handling, introduced the captcha module)<br />
+       */
       private function __buildForm(){
 
-         // Referenz auf das Formular holen
-         $Form__AddComment = &$this->__getForm('AddComment');
+         $form = &$this->__getForm('AddComment');
+         $form->setAttribute('action',$_SERVER['REQUEST_URI'].'#comments');
 
-         // action setzen
-         $Form__AddComment->setAttribute('action',$_SERVER['REQUEST_URI'].'#comments');
+         $config = &$this->__getConfiguration('modules::comments','language');
+         $button = &$form->getFormElementByName('Save');
+         $button->setAttribute('value',$config->getValue($this->__Language,'form.button'));
 
-         // Button beschriften
-         $Config = &$this->__getConfiguration('modules::comments','language');
-         $Button = &$Form__AddComment->getFormElementByName('Save');
-         $Button->setAttribute('value',$Config->getValue($this->__Language,'form.button'));
+         $form->transformOnPlace();
 
-         // CaptchaImage füllen
-         $Reg = &Singleton::getInstance('Registry');
-         $URLRewriting = $Reg->retrieve('apf::core','URLRewriting');
-         if($URLRewriting === true){
-            $Form__AddComment->setPlaceHolder('CaptchaImage','/~/modules_comments-action/showCaptcha');
-          // end if
-         }
-         else{
-            $Form__AddComment->setPlaceHolder('CaptchaImage','./?modules_comments-action:showCaptcha');
-          // end else
-         }
-
-         // Formular darstellen
-         $this->setPlaceHolder('Form',$Form__AddComment->transformForm());
-
-         // Zurücklink darstellen
-         $Link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('coview' => 'listing'));
-         $this->setPlaceHolder('Zurueck',$Link);
+         $link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('coview' => 'listing'));
+         $this->setPlaceHolder('back',$link);
 
        // end function
       }

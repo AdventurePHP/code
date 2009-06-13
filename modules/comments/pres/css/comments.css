@@ -1,0 +1,96 @@
+/***************************************************************************************************
+* This is a sample style sheet for the comments module. If you intend to use it as is, add it to   *
+* your existing style sheets or include it to your website's head.                                 *
+***************************************************************************************************/
+
+.cm--create {}
+
+.cm--create-head {}
+
+.cm--create-form {
+   margin-top: 20px;
+}
+
+.cm--create-form textarea {
+   width: 444px;
+   height: 120px;
+   overflow: auto;
+}
+
+.cm--create-form input, textarea {
+   border: 1px solid black;
+   background-color: #efefef;
+   width: 390px;
+}
+
+.cm--create-form span {
+   margin-right: 10px;
+}
+
+.cm--create-element-button {
+   width: 90px !important;
+}
+
+.cm--create-element-captcha {
+   margin-left: 10px;
+   width: 60px !important;
+}
+
+.cm--create-element-name {}
+
+.cm--create-element-email {}
+
+.cm--list {}
+
+.cm--list-head {}
+
+.cm--list-pager {
+   margin-bottom: 20px;
+}
+
+.cm--list-items {}
+
+.cm--list-item {
+   width: 100%;
+   margin-bottom: 20px;
+}
+
+.cm--list-item-head {
+   display: inline-block;
+}
+
+.cm--list-item-head-num {
+   float: left;
+   width: 60px;
+   padding: 2px;
+   font-size: 36px;
+   color: #777BB4;
+   font-style: italic;
+}
+
+.cm--list-item-head-date {
+   float: left;
+   padding: 2px; 
+}
+
+.cm--list-item-head-date > span {
+   display: block;
+   font-weight: bold;
+}
+
+.cm--list-item-head-date > em {
+   font-style: italic;
+}
+
+.cm--list-item-body {
+   background-color: #eeeeee;
+   padding: 2px;
+}
+
+.cm--list-noentries {
+   margin-left: 30px;
+   margin-top: 20px;
+   margin-bottom: 60px;
+   font-style: italic;
+   font-weight: bold;
+}

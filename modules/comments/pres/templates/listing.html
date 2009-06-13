@@ -1,37 +1,33 @@
 <@controller namespace="modules::comments::pres::documentcontroller" file="comment_listing_v1_controller" class="comment_listing_v1_controller" @>
 <core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
-<html:getstring namespace="modules::comments" config="language" entry="listing.text.1" /> <a href="<html:placeholder name="Link" />#comments" title="<html:getstring namespace="modules::comments" config="language" entry="listing.text.2.title" />"><strong><html:getstring namespace="modules::comments" config="language" entry="listing.text.2" /></strong></a> <html:getstring namespace="modules::comments" config="language" entry="listing.text.3" />
-<br />
-<br />
-<html:placeholder name="Pager" />
-<html:placeholder name="Content" />
-
+<div class="cm--list">
+   <div class="cm--list-head">
+      <html:getstring namespace="modules::comments" config="language" entry="listing.text.1" /> <a href="<html:placeholder name="Link" />#comments" title="<html:getstring namespace="modules::comments" config="language" entry="listing.text.2.title" />"><strong><html:getstring namespace="modules::comments" config="language" entry="listing.text.2" /></strong></a> <html:getstring namespace="modules::comments" config="language" entry="listing.text.3" />
+   </div>
+   <div class="cm--list-pager">
+      <html:placeholder name="Pager" />
+   </div>
+   <div class="cm--list-items">
+      <html:placeholder name="Content" />
+   </div>
+</div>
 <html:template name="ArticleComment">
-  <table cellspacing="0" cellpadding="0" style="border: 0px solid black; width: 100%;">
-    <tr>
-      <td style="width: 60px; text-align: left; padding: 2px;">
-        <font style="font-size: 36px; color: #777BB4; font-style: italic;">
-          <template:placeholder name="Number" />
-        </font>
-      </td>
-      <td style="padding: 2px; font-size: 12px; font-family: Arial, Helvetica, sans-serif;">
-        <strong><template:placeholder name="Name" /></strong>
-        <br />
-        <em><template:placeholder name="Date" />, <template:placeholder name="Time" /></em>
-      </td>
-    </tr>
-  </table>
-  <div style="background-color: #eeeeee; width: 100%; padding: 2px;">
-    <template:placeholder name="Comment" />
-  </div>
-  <br />
+   <div class="cm--list-item">
+      <div class="cm--list-item-head">
+         <div class="cm--list-item-head-num"><template:placeholder name="Number" /></div>
+         <div class="cm--list-item-head-date">
+            <span><template:placeholder name="Name" /></span>
+            <em><template:placeholder name="Date" />, <template:placeholder name="Time" /></em>
+         </div>
+      </div>
+      <div class="cm--list-item-body">
+         <template:placeholder name="Comment" />
+      </div>
+   </div>
 </html:template>
-
 <html:template name="NoEntries">
-  <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
-  <br />
-  <span style="font-style: italic; margin-left: 30px; font-weight: bold;"><template:getstring namespace="modules::comments" config="language" entry="noentries.text" /></span>
-  <br />
-  <br />
-  <br />
+   <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
+   <div class="cm--list-noentries">
+      <template:getstring namespace="modules::comments" config="language" entry="noentries.text" />
+   </div>
 </html:template>

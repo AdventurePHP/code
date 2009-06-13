@@ -24,15 +24,15 @@
 
 
    /**
-   *  @namespace modules::comments::date
-   *  @class commentMapper
-   *
-   *  Implementiert die Daten-Schicht des Comments-Moduls.<br />
-   *
-   *  @author Christian W. Schäfer
-   *  @version
-   *  Version 0.1, 22.08.2007
-   */
+    * @namespace modules::comments::date
+    * @class commentMapper
+    *
+    * Represents the data layer component of the comment function. Loads and saves entries.
+    *
+    * @author Christian W. Schäfer
+    * @version
+    * Version 0.1, 22.08.2007
+    */
    class commentMapper extends coreObject
    {
 
@@ -41,27 +41,24 @@
 
 
       /**
-      *  @public
-      *
-      *  Läd ein ArticleComment-Objekt an Hand einer ID.<br />
-      *
-      *  @param string $ArticleCommentID ID des Eintrags
-      *  @return ArticleComment $ArticleComment ArticleComment-Objekt
-      *
-      *  @author Christian W.Schäfer
-      *  @version
-      *  Version 0.1, 22.08.2007<br />
-      */
-      function loadArticleCommentByID($ArticleCommentID){
+       * @public
+       *
+       * Loads an article comment object by id. Can be used by the pager.
+       *
+       * @param string $commentId ID des Eintrags
+       * @return ArticleComment A comment object.
+       *
+       * @author Christian W.Schäfer
+       * @version
+       * Version 0.1, 22.08.2007<br />
+       */
+      public function loadArticleCommentByID($commentId){
 
-         // SQL-Handler holen
-         $SQL = &$this->__getServiceObject('core::database','MySQLHandler');
-
-         // Eintrag selektieren
-         $select = 'SELECT ArticleCommentID, Name, EMail, Comment, Date, Time FROM article_comments WHERE ArticleCommentID = \''.$ArticleCommentID.'\';';
+         $SQL = &$this->__getConnection();
+         $select = 'SELECT ArticleCommentID, Name, EMail, Comment, Date, Time 
+                    FROM article_comments
+                    WHERE ArticleCommentID = \''.$commentId.'\';';
          $result = $SQL->executeTextStatement($select);
-
-         // Objekt zurückgeben
          return $this->__mapArticleComment2DomainObject($SQL->fetchData($result));
 
        // end function
@@ -69,24 +66,21 @@
 
 
       /**
-      *  @public
-      *
-      *  Speichert ein ArticleComment-Objekt. Update wurde noch nicht implementiert.<br />
-      *
-      *  @param ArticleComment $ArticleComment ArticleComment-Objekt
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 22.08.2007<br />
-      */
-      function saveArticleComment($ArticleComment){
+       * @public
+       *
+       * Saves a new comment.
+       *
+       * @param ArticleComment $comment The domain object to save.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 22.08.2007<br />
+       */
+      public function saveArticleComment($comment){
 
-         // SQL-Handler holen
-         $SQL = &$this->__getServiceObject('core::database','MySQLHandler');
-
-         // Prüfen, ob Artikel bereits existiert
-         if($ArticleComment->get('ID') == null){
-            $insert = 'INSERT INTO article_comments (Name, EMail, Comment, Date, Time, CategoryKey) VALUES (\''.$ArticleComment->get('Name').'\',\''.$ArticleComment->get('EMail').'\',\''.$ArticleComment->get('Comment').'\',CURDATE(),CURTIME(),\''.$ArticleComment->get('CategoryKey').'\');';
+         $SQL = &$this->__getConnection();
+         if($comment->get('ID') == null){
+            $insert = 'INSERT INTO article_comments (Name, EMail, Comment, Date, Time, CategoryKey) VALUES (\''.$comment->get('Name').'\',\''.$comment->get('EMail').'\',\''.$comment->get('Comment').'\',CURDATE(),CURTIME(),\''.$comment->get('CategoryKey').'\');';
             $SQL->executeTextStatement($insert);
           // end if
          }
@@ -94,62 +88,77 @@
        // end function
       }
 
+      /**
+       * @public
+       *
+       * Returns the initialized database connection (reference!) for the
+       * current application instance.
+       *
+       * @return AbstractDatabaseHandler The database connection.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 09.06.2008<br />
+       */
+      private function &__getConnection(){
+
+         $cM = &$this->__getServiceObject('core::database','connectionManager');
+         $config = $this->__getConfiguration('modules::comments','comments');
+         $connectionKey = $config->getValue('Default','Database.ConnectionKey');
+         if($connectionKey == null){
+            trigger_error('[commentMapper::__getConnection()] The module\'s configuration file '
+               .'does not contain a valid database connection key. Please specify the database '
+               .'configuration according to the example configuration files!',E_USER_ERROR);
+            exit();
+         }
+         return $cM->getConnection($connectionKey);
+
+       // end function
+      }
+
 
       /**
-      *  @private
-      *
-      *  Mappt ein Result-Array in ein ArticleComment-Objekt.<br />
-      *
-      *  @param array $ResultSet Ergebnis-Array des SQL-Statements
-      *  @return ArticleComment $ArticleComment Gefülltes ArticleComment-Objekt
-      *
-      *  @author Christian W.Schäfer
-      *  @version
-      *  Version 0.1, 22.08.2007<br />
-      */
-      function __mapArticleComment2DomainObject($ResultSet){
+       * @private
+       *
+       * Mapps a database result set into s domain object.
+       *
+       * @param string[] $resultSet MySQL (database) result array.
+       * @return ArticleComment A initialized domain object.
+       *
+       * @author Christian W.Schäfer
+       * @version
+       * Version 0.1, 22.08.2007<br />
+       */
+      private function __mapArticleComment2DomainObject($resultSet){
 
-         // Neues Objekt erstellen
-         $ArticleComment = new ArticleComment();
+         $comment = new ArticleComment();
 
-         // ArticleCommentID
-         if(isset($ResultSet['ArticleCommentID'])){
-            $ArticleComment->set('ID',$ResultSet['ArticleCommentID']);
+         if(isset($resultSet['ArticleCommentID'])){
+            $comment->set('ID',$resultSet['ArticleCommentID']);
+          // end if
+         }
+         if(isset($resultSet['Name'])){
+            $comment->set('Name',$resultSet['Name']);
+          // end if
+         }
+         if(isset($resultSet['EMail'])){
+            $comment->set('EMail',$resultSet['EMail']);
+          // end if
+         }
+         if(isset($resultSet['Comment'])){
+            $comment->set('Comment',$resultSet['Comment']);
+          // end if
+         }
+         if(isset($resultSet['Date'])){
+            $comment->set('Date',$resultSet['Date']);
+          // end if
+         }
+         if(isset($resultSet['Time'])){
+            $comment->set('Time',$resultSet['Time']);
           // end if
          }
 
-         // Name
-         if(isset($ResultSet['Name'])){
-            $ArticleComment->set('Name',$ResultSet['Name']);
-          // end if
-         }
-
-         // EMail
-         if(isset($ResultSet['EMail'])){
-            $ArticleComment->set('EMail',$ResultSet['EMail']);
-          // end if
-         }
-
-         // Comment
-         if(isset($ResultSet['Comment'])){
-            $ArticleComment->set('Comment',$ResultSet['Comment']);
-          // end if
-         }
-
-         // Date
-         if(isset($ResultSet['Date'])){
-            $ArticleComment->set('Date',$ResultSet['Date']);
-          // end if
-         }
-
-         // Time
-         if(isset($ResultSet['Time'])){
-            $ArticleComment->set('Time',$ResultSet['Time']);
-          // end if
-         }
-
-         // Gefülltes Objekt zurückgeben
-         return $ArticleComment;
+         return $comment;
 
        // end function
       }

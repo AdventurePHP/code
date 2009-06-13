@@ -26,23 +26,18 @@
 
 
    /**
-   *  @namespace modules::comments::pres::documentcontroller
-   *  @class comment_listing_v1_controller
-   *
-   *  Implements the document controller for the 'listing.html' template.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 22.08.2007<br />
-   *  Version 0.2, 20.04.2008 (Added a display restriction)<br />
-   *  Version 0.3, 12.06.2008 (Removed the display restriction)<br />
-   */
-   class comment_listing_v1_controller extends commentBaseController
-   {
-
-      function comment_listing_v1_controller(){
-      }
-
+    * @namespace modules::comments::pres::documentcontroller
+    * @class comment_listing_v1_controller
+    *
+    * Implements the document controller for the 'listing.html' template.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 22.08.2007<br />
+    * Version 0.2, 20.04.2008 (Added a display restriction)<br />
+    * Version 0.3, 12.06.2008 (Removed the display restriction)<br />
+    */
+   class comment_listing_v1_controller extends commentBaseController {
 
       /**
       *  @public
@@ -59,68 +54,66 @@
       */
       function transformContent(){
 
-         // load the category key
          $this->__loadCategoryKey();
-
-         // get the manager
          $M = &$this->__getAndInitServiceObject('modules::comments::biz','commentManager',$this->__CategoryKey);
 
-         // load the entries
-         $Entries = $M->loadEntries();
+         // load the entries using the business component
+         $entries = $M->loadEntries();
 
-         $Buffer = (string)'';
-         $Template__ArticleComment = &$this->__getTemplate('ArticleComment');
+         $buffer = (string)'';
+         $template = &$this->__getTemplate('ArticleComment');
 
          // init bb code parser (remove some provider, that we don't need configuration files)
          $bP = &$this->__getServiceObject('tools::string','AdvancedBBCodeParser');
          $bP->removeProvider('standard.font.color');
          $bP->removeProvider('standard.font.size');
 
-         for($i = 0; $i < count($Entries); $i++){
+         for($i = 0; $i < count($entries); $i++){
 
-            // fill template
-            $Template__ArticleComment->setPlaceHolder('Number',$i + 1);
-            $Template__ArticleComment->setPlaceHolder('Name',$Entries[$i]->get('Name'));
-            $Template__ArticleComment->setPlaceHolder('Date',dateTimeManager::convertDate2Normal($Entries[$i]->get('Date')));
-            $Template__ArticleComment->setPlaceHolder('Time',$Entries[$i]->get('Time'));
-            $Template__ArticleComment->setPlaceHolder('Comment',$bP->parseCode($Entries[$i]->get('Comment')));
+            $template->setPlaceHolder('Number',$i + 1);
+            $template->setPlaceHolder('Name',$entries[$i]->get('Name'));
+            $template->setPlaceHolder('Date',dateTimeManager::convertDate2Normal($entries[$i]->get('Date')));
+            $template->setPlaceHolder('Time',$entries[$i]->get('Time'));
+            $template->setPlaceHolder('Comment',$bP->parseCode($entries[$i]->get('Comment')));
 
-            // add current item to the buffer
-            $Buffer .= $Template__ArticleComment->transformTemplate();
+            $buffer .= $template->transformTemplate();
 
           // end for
          }
 
          // display hint, if no entries are to display
-         if(count($Entries) < 1){
+         if(count($entries) < 1){
             $Template__NoEntries = &$this->__getTemplate('NoEntries');
-            $Buffer = $Template__NoEntries->transformTemplate();
+            $buffer = $Template__NoEntries->transformTemplate();
           // end if
          }
 
          // display the list
-         $this->setPlaceHolder('Content',$Buffer);
+         $this->setPlaceHolder('Content',$buffer);
 
          // display the pager
          $this->setPlaceHolder('Pager',$M->getPager('comments'));
 
+         // get the pager url params from the business component
+         // to be able to delete them from the url.
+         $urlParams = $M->getURLParameter();
+
          // generate the add comment link
-         $URLParameter = $M->getURLParameter();
          $this->setPlaceHolder(
-                               'Link',
-                               frontcontrollerLinkHandler::generateLink(
-                                                                        $_SERVER['REQUEST_URI'],
-                                                                        array(
-                                                                              $URLParameter['StartName'] => '',
-                                                                              $URLParameter['CountName'] => '',
-                                                                              'coview' => 'form'
-                                                                        )
-                               )
+                'Link',
+                frontcontrollerLinkHandler::generateLink(
+                                          $_SERVER['REQUEST_URI'],
+                                          array(
+                                                $urlParams['StartName'] => '',
+                                                $urlParams['CountName'] => '',
+                                                'coview' => 'form'
+                                          )
+                )
          );
 
        // end function
       }
 
-    // end function
+    // end class
    }
 ?>
