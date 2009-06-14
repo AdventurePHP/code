@@ -23,7 +23,7 @@
    import('modules::pager::biz','PagerManagerFabric');
    import('tools::link','frontcontrollerLinkHandler');
    import('tools::string','stringAssistant');
-   import('core::session','sessionManager');
+   import('core::session','SessionManager');
 
 
    /**
@@ -72,21 +72,13 @@
       */
       function init($CategoryKey){
 
-         // Kathegorie-Schlüssel initialisieren
          $this->__CategoryKey = $CategoryKey;
 
          // Captcha String initialisieren
          if($this->__CaptchaString == null){
-
-            // sessionManager erzeugen
-            $sessMgr = new sessionManager('modules::comment');
-
-            // Aktuellen String im Manager merken
+            $sessMgr = new SessionManager('modules::comment');
             $this->__CaptchaString = $sessMgr->loadSessionData('CAPTCHA_STRING');
-
-            // Captcha String generieren und in Session speichern
             $sessMgr->saveSessionData('CAPTCHA_STRING',stringAssistant::generateCaptchaString(5));
-
           // end if
          }
 
@@ -189,7 +181,7 @@
          if($AJAX == false){
 
             // Captcha-Session-Eintrag löschen
-            $sessMgr = new sessionManager('modules::comment');
+            $sessMgr = new SessionManager('modules::comment');
             $sessMgr->deleteSessionData('CAPTCHA_STRING');
 
             // Auf die Ausgabe weiterleiten

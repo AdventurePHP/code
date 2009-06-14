@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('core::session','sessionManager');
+   import('core::session','SessionManager');
 
 
    /**
@@ -59,8 +59,7 @@
       */
       function run(){
 
-         // create sessionManager
-         $sessMgr = new sessionManager('modules::captcha');
+         $sessMgr = new SessionManager('modules::captcha');
 
          // read captcha string from the session.
          $CaptchaStringName = $this->__Input->getAttribute('name');

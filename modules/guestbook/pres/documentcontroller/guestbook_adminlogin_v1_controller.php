@@ -20,7 +20,7 @@
    */
 
    import('modules::guestbook::biz','GuestbookManager');
-   import('core::session','sessionManager');
+   import('core::session','SessionManager');
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
    import('tools::link','linkHandler');
    import('tools::request','RequestHandler');
@@ -75,7 +75,7 @@
          // we don't want to use a front controller action here.
          if($this->_LOCALS['logout'] == 'true'){
             $guestbookNamespace = $this->__getGuestbookNamespace();
-            $oSessMgr = new sessionManager($guestbookNamespace);
+            $oSessMgr = new SessionManager($guestbookNamespace);
             $oSessMgr->destroySession($guestbookNamespace);
             $link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','logout' => ''));
             HeaderManager::redirect($link);
@@ -90,7 +90,7 @@
 
             if($gM->validateCrendentials($this->_LOCALS['Username'],$this->_LOCALS['Password']) == true){
 
-               $oSessMgr = new sessionManager($this->__getGuestbookNamespace());
+               $oSessMgr = new SessionManager($this->__getGuestbookNamespace());
                $oSessMgr->saveSessionData('LoginDate',date('Y-m-d'));
                $oSessMgr->saveSessionData('LoginTime',date('H:i:s'));
                $oSessMgr->saveSessionData('AdminView',true);

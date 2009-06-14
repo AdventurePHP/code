@@ -20,7 +20,7 @@
    */
 
    import('core::database','connectionManager');
-   import('core::session','sessionManager');
+   import('core::session','SessionManager');
 
 
    /**
@@ -114,7 +114,7 @@
 
          // try to load the entries count from the session
          if($cache === true){
-            $session = new sessionManager('modules::pager::biz');
+            $session = new SessionManager('modules::pager::biz');
             $sessionKey = $this->__getSessionKey($namespace,$statement,$params).'_EntriesCount';
             $entriesCount = $session->loadSessionData($sessionKey);
           // end if
@@ -175,7 +175,7 @@
 
          // try to load the entries count from the session
          if($cache === true){
-            $session = new sessionManager('modules::pager::biz');
+            $session = new SessionManager('modules::pager::biz');
             $sessionKey = $this-> __getSessionKey($namespace,$statement,$params).'_EntryIDs';
             $entryIDs = $session->loadSessionData($sessionKey);
           // end if

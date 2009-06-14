@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('core::session','sessionManager');
+   import('core::session','SessionManager');
    register_shutdown_function('saveSessionSingletonObjects');
 
    /**
@@ -30,7 +30,7 @@
     * @author Christian Schäfer
     * @version
     * Version 0.1, 24.02.2008<br />
-    * Version 0.2, 26.02.2008 (Include of the sessionManagers was noted wrong)<br />
+    * Version 0.2, 26.02.2008 (Include of the SessionManager was noted wrong)<br />
     */
    function saveSessionSingletonObjects(){
 
@@ -40,7 +40,7 @@
          $cacheCount = count($GLOBALS[$cacheContainer]);
 
          if($cacheCount > 0){
-            $sessMgr = new sessionManager(SessionSingleton::showSessionNamespace());
+            $sessMgr = new SessionManager(SessionSingleton::showSessionNamespace());
 
             foreach($GLOBALS[$cacheContainer] as $key => $DUMMY){
                $sessMgr->saveSessionData($key,serialize($GLOBALS[$cacheContainer][$key]));
@@ -100,7 +100,7 @@
 
          if(!SessionSingleton::isInSingletonCache($className)){
 
-            $sessMgr = new sessionManager(SessionSingleton::showSessionNamespace());
+            $sessMgr = new SessionManager(SessionSingleton::showSessionNamespace());
             $cachedObject = $sessMgr->loadSessionData($cacheObjectName);
 
             if($cachedObject !== false){

@@ -24,7 +24,7 @@
    import('modules::guestbook2009::biz','User');
    import('tools::http','HeaderManager');
    import('modules::guestbook2009::biz','GuestbookModel');
-   import('core::session','sessionManager');
+   import('core::session','SessionManager');
    import('tools::link','frontcontrollerLinkHandler');
    import('modules::pager::biz','PagerManagerFabric');
    
@@ -262,7 +262,7 @@
          // logout by cleaning the session
          $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
          $guestbookId = $model->get('GuestbookId');
-         $session = new sessionManager('modules::guestbook2009::biz::'.$guestbookId);
+         $session = new SessionManager('modules::guestbook2009::biz::'.$guestbookId);
          $session->deleteSessionData('LoggedIn');
          
          // display the list view
@@ -292,7 +292,7 @@
 
          $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
          $guestbookId = $model->get('GuestbookId');
-         $session = new sessionManager('modules::guestbook2009::biz::'.$guestbookId);
+         $session = new SessionManager('modules::guestbook2009::biz::'.$guestbookId);
          $loggedId = $session->loadSessionData('LoggedIn');
 
          // redirect to admin page
@@ -332,7 +332,7 @@
             // log user in
             $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
             $guestbookId = $model->get('GuestbookId');
-            $session = new sessionManager('modules::guestbook2009::biz::'.$guestbookId);
+            $session = new SessionManager('modules::guestbook2009::biz::'.$guestbookId);
             $session->saveSessionData('LoggedIn','true');
 
             // redirect to admin page

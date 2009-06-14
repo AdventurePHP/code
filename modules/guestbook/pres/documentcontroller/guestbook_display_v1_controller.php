@@ -21,7 +21,7 @@
 
    import('modules::guestbook::biz','GuestbookManager');
    import('tools::link','frontcontrollerLinkHandler');
-   import('core::session','sessionManager');
+   import('core::session','SessionManager');
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
    import('tools::string','stringAssistant');
 
@@ -78,7 +78,7 @@
       *  Version 0.2, 05.05.2007 (Admin-Link hinzugefügt)<br />
       */
       public function transformContent(){
-         $this->__sessMgr = new sessionManager($this->__getGuestbookNamespace());
+         $this->__sessMgr = new SessionManager($this->__getGuestbookNamespace());
          $gM = &$this->__getGuestbookManager();
          $this->setPlaceHolder('Content',$this->__generateEntryList());
          $this->setPlaceHolder('Pager',$gM->getPager());

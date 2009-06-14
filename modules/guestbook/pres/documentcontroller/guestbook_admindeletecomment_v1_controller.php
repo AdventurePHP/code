@@ -20,7 +20,7 @@
    */
 
    import('modules::guestbook::biz','GuestbookManager');
-   import('core::session','sessionManager');
+   import('core::session','SessionManager');
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
 
 
@@ -64,7 +64,7 @@
          $Form__FormNo = &$this->__getForm('FormNo');
          $Form__FormYes = &$this->__getForm('FormYes');
 
-         $oSessMgr = new sessionManager($this->__getGuestbookNamespace());
+         $oSessMgr = new SessionManager($this->__getGuestbookNamespace());
 
          if($oSessMgr->loadSessionData('AdminView') == true){
 

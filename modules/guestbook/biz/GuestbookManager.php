@@ -24,7 +24,7 @@
    import('modules::guestbook::biz','Comment');
    import('modules::guestbook::data','GuestbookMapper');
    import('modules::pager::biz','PagerManagerFabric');
-   import('core::session','sessionManager');
+   import('core::session','SessionManager');
 
 
    /**
@@ -78,7 +78,7 @@
       */
       public function init($guestbookID){
          $this->__GuestbookID = $guestbookID;
-         $this->__sessMgr = new sessionManager('Guestbook');
+         $this->__sessMgr = new SessionManager('Guestbook');
        // end function
       }
 

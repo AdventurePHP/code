@@ -22,7 +22,7 @@
    import('tools::form::taglib','ui_element');
    import('tools::request','RequestHandler');
    import('tools::string','stringAssistant');
-   import('core::session','sessionManager');
+   import('core::session','SessionManager');
    import('tools::link','frontcontrollerLinkHandler');
 
 
@@ -104,7 +104,7 @@
          $this->__TextField->onAfterAppend();
 
          // get the captcha string from session
-         $sessMgr = new sessionManager('modules::captcha');
+         $sessMgr = new SessionManager('modules::captcha');
          $CaptchaString = $sessMgr->loadSessionData($this->__TextFieldName);
          $sessMgr->saveSessionData($this->__TextFieldName,stringAssistant::generateCaptchaString(5));
 

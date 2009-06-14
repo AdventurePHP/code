@@ -21,19 +21,19 @@
 
    /**
    *  @namespace core::session
-   *  @class sessionManager
+   *  @class SessionManager
    *
    *  Provides advances session handling with namespaces. Example:
-   *  <pre>$sessMgr = new sessionManager('<namespace>');
+   *  <pre>$sessMgr = new SessionManager('<namespace>');
    *  $sessMgr->loadSessionData('<key>');
    *  $sessMgr->saveSessionData('<key>','<value>');</pre>
    *
-   *  @author Christian Schï¿½fer
+   *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 08.03.2006<br />
    *  Version 0.2, 12.04.2006 (Added the possibility to create the class singleton.)<br />
    */
-   class sessionManager
+   final class SessionManager
    {
 
       /**
@@ -50,11 +50,11 @@
       *
       *  @param string $namespace The desired namespace.
       *
-      *  @author Christian Schï¿½fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 08.03.2006<br />
       */
-      function sessionManager($namespace = ''){
+      function SessionManager($namespace = ''){
 
          // set namespace
          if($namespace != ''){
@@ -75,11 +75,11 @@
       /**
       *  @public
       *
-      *  Sets the namespace of the current instance of the sessionManager.
+      *  Sets the namespace of the current instance of the SessionManager.
       *
       *  @param string $namespace the desired namespace
       *
-      *  @author Christian Schï¿½fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 08.03.2006<br />
       */
@@ -96,7 +96,7 @@
       *
       *  @param string $namespace the desired namespace
       *
-      *  @author Christian Schï¿½fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 08.03.2006<br />
       */
@@ -113,7 +113,7 @@
       *
       *  @param string $namespace the desired namespace
       *
-      *  @author Christian Schï¿½fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 08.03.2006<br />
       *  Version 0.2, 18.07.2006 (Fixed bug, that after a post request, the session was valid again (Server: w3service.net)!)<br />
@@ -139,7 +139,7 @@
       *  @param string $attribute the desired attribute
       *  @return string $data the desired session data of (bool)false
       *
-      *  @author Christian Schï¿½fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 08.03.2006<br />
       *  Version 0.2, 15.06.2006 (Now false is returned if the data is not present in the session)<br />
@@ -168,7 +168,7 @@
       *  @param string $attribute the desired attribute
       *  @return string $data the desired session data of (bool)false
       *
-      *  @author Christian Schï¿½fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 08.03.2006<br />
       *  Version 0.2, 15.06.2006 (Now false is returned if the data is not present in the session)<br />
@@ -196,7 +196,7 @@
       *  @param string $attribute the desired attribute
       *  @param string $value the value to save
       *
-      *  @author Christian Schï¿½fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 08.03.2006<br />
       */
@@ -215,7 +215,7 @@
       *  @param string $attribute the desired attribute
       *  @param string $value the value to save
       *
-      *  @author Christian Schï¿½fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 08.03.2006<br />
       */
@@ -232,7 +232,7 @@
       *
       *  @param string $attribute the desired attribute
       *
-      *  @author Christian Schï¿½fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 08.03.2006<br />
       */
@@ -250,7 +250,7 @@
       *  @param string $namespace the namespace of the value
       *  @param string $attribute the desired attribute
       *
-      *  @author Christian Schï¿½fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 08.03.2006<br />
       */
@@ -267,7 +267,7 @@
       *
       *  @return string $sessionID the current session id
       *
-      *  @author Christian Schï¿½fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 08.03.2006<br />
       */
