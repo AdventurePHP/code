@@ -110,7 +110,7 @@
    // include necessary core libraries for the pagecontroller
    import('core::errorhandler','errorhandler');
    import('core::exceptionhandler','exceptionhandler');
-   import('core::service','serviceManager');
+   import('core::service','ServiceManager');
    import('core::service','DIServiceManager');
    import('core::configuration','configurationManager');
    import('core::benchmark','benchmarkTimer');
@@ -518,7 +518,7 @@
       /**
       *  @since 0.3
       *  @protected
-      *  Contains the service type, if the object was created with the serviceManager.
+      *  Contains the service type, if the object was created with the ServiceManager.
       */
       protected $__ServiceType = null;
 
@@ -863,7 +863,7 @@
        */
       protected function &__getServiceObject($namespace,$serviceName,$type = 'SINGLETON'){
 
-         $serviceManager = &Singleton::getInstance('serviceManager');
+         $serviceManager = &Singleton::getInstance('ServiceManager');
          $serviceManager->setContext($this->__Context);
          $serviceManager->setLanguage($this->__Language);
          return $serviceManager->getServiceObject($namespace,$serviceName,$type);
@@ -891,7 +891,7 @@
       */
       protected function &__getAndInitServiceObject($namespace,$serviceName,$initParam,$type = 'SINGLETON'){
 
-         $serviceManager = &Singleton::getInstance('serviceManager');
+         $serviceManager = &Singleton::getInstance('ServiceManager');
          $serviceManager->setContext($this->__Context);
          $serviceManager->setLanguage($this->__Language);
          return $serviceManager->getAndInitServiceObject($namespace,$serviceName,$initParam,$type);

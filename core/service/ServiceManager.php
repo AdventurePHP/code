@@ -21,7 +21,7 @@
 
    /**
    *  @namespace core::service
-   *  @class serviceManager
+   *  @class ServiceManager
    *
    *  Provides a simple dependency injection container for objects created during application flow.
    *  It initializes the service objects with the current context and language to be able to access
@@ -34,7 +34,7 @@
    *  Version 0.2, 22.04.2007 (Added language attribute)<br />
    *  Version 0.3, 24.02.2008 (Added SESSIONSINGLETON feature)<br />
    */
-   final class serviceManager
+   final class ServiceManager
    {
 
       /**
@@ -88,7 +88,7 @@
              // end if
             }
             else{
-               trigger_error('[serviceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass coreObject! So the context cannot be set correctly!',E_USER_WARNING);
+               trigger_error('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass coreObject! So the context cannot be set correctly!',E_USER_WARNING);
              // end else
             }
 
@@ -110,7 +110,7 @@
              // end if
             }
             else{
-               trigger_error('[serviceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass coreObject! So the context cannot be set correctly!',E_USER_WARNING);
+               trigger_error('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass coreObject! So the context cannot be set correctly!',E_USER_WARNING);
              // end else
             }
 
@@ -128,14 +128,14 @@
              // end if
             }
             else{
-               trigger_error('[serviceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass coreObject! So the context cannot be set correctly!',E_USER_WARNING);
+               trigger_error('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass coreObject! So the context cannot be set correctly!',E_USER_WARNING);
              // end else
             }
 
           // end elseif
          }
          else{
-            trigger_error('[serviceManager->getServiceObject()] The given type ('.$type.') is not supported. Please provide one out of "SINGLETON", "SESSIONSINGLETON" or "NORMAL"',E_USER_WARNING);
+            trigger_error('[ServiceManager->getServiceObject()] The given type ('.$type.') is not supported. Please provide one out of "SINGLETON", "SESSIONSINGLETON" or "NORMAL"',E_USER_WARNING);
           // end else
          }
 
@@ -172,7 +172,7 @@
           // end if
          }
          else{
-            trigger_error('[serviceManager->getAndInitServiceObject()] The service object ('.$serviceName.') doesn\'t support initialization!',E_USER_WARNING);
+            trigger_error('[ServiceManager->getAndInitServiceObject()] The service object ('.$serviceName.') doesn\'t support initialization!',E_USER_WARNING);
           // end else
          }
 
