@@ -61,6 +61,9 @@
          }
          $this->setPlaceHolder('content',$buffer);
 
+         // add the pager
+         $this->setPlaceHolder('pager',$gS->getPagerOutput());
+
          // add dyamic link
          $link = frontcontrollerLinkHandler::generateLink(
             $_SERVER['REQUEST_URI'], 
