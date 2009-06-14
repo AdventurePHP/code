@@ -23,6 +23,7 @@
 }
 
 .gb--list-text {
+   margin-bottom: 20px;
 }
 
 .gb--list-pager {
@@ -30,6 +31,7 @@
 
 .gb--list-entry {
    background-color: #efefef;
+   margin-bottom: 20px;
 }
 
 .gb--list-entry-body {
@@ -70,7 +72,7 @@
 .gb--list-content,
 .gb--login,
 .gb--admin-edit {
-   width: 380px;
+   width: 385px;
 }
 
 .gb--create-entry input,textarea {
@@ -177,6 +179,7 @@
 .gb--admin-edit-button-placer {
    text-align: right;
    margin-top: 20px;
+   padding-right: 5px;
 }
 
 .gb--login-label-user {

@@ -36,7 +36,7 @@
 
       function transformContent(){
 
-         $form = $this->__getForm('create_entry');
+         $form = &$this->__getForm('create_entry');
 
          if($form->get('isSent') && $form->get('isValid')){
 
@@ -69,7 +69,7 @@
          // set language dependent button label by using the
          // language and context information of the current
          // DOM node.
-         $config = $this->__getConfiguration('modules::guestbook2009::pres','language');
+         $config = &$this->__getConfiguration('modules::guestbook2009::pres','language');
          $buttonLabel = $config->getValue($this->__Language,'form.label.button');
          $button = &$form->getFormElementByName('send');
          $button->setAttribute('value',$buttonLabel);

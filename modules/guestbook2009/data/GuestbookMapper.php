@@ -38,6 +38,18 @@
    class GuestbookMapper extends coreObject {
 
       /**
+       * The database connection name.
+       * @var string
+       */
+      private $__connectionName;
+
+      /**
+       * The GenericORMapper init type.
+       * @var string
+       */
+      private $__initType;
+      
+      /**
        * @public
        *
        * Loads the list of Entries
@@ -119,6 +131,16 @@
        * Version 0.1, 21.05.2009<br />
        */
       private function __mapGenericGuestbook2DomainObject($guestbook){
+
+         if($guestbook == null){
+            $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+            $gbId = $model->get('GuestbookId');
+            trigger_error('[GuestbookManager::__mapGenericGuestbook2DomainObject()] No guestbook '
+               .'with id "'.$gbId.'" stored in database! Please check your guestbook tag '
+               .'inclusion.',E_USER_ERROR);
+            exit();
+          // end if
+         }
 
          $orm = &$this->__getGenericORMapper();
          $crit = new GenericCriterionObject();
@@ -452,11 +474,44 @@
          return $ormFact->getGenericORMapper(
                                        'modules::guestbook2009::data',
                                        'guestbook2009',
-                                       'guestbook2009',
-                                       'NORMAL',
-                                       true
+                                       $this->__connectionName,
+                                       $this->__initType
          );
          
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Initializer method for usage with the DIServiceManager. Sets the database
+       * connection name.
+       *
+       * @param string $connectionName The database connection to use.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.06.2009<br />
+       */
+      public function setConnectionName($connectionName){
+         $this->__connectionName = $connectionName;
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Initializer method for usage with the DIServiceManager. Sets the database
+       * connection name.
+       *
+       * @param string $connectionName The database connection to use.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.06.2009<br />
+       */
+      public function setORMInitType($initType){
+         $this->__initType = $initType;
        // end function
       }
 

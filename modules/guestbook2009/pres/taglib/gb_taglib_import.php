@@ -49,7 +49,7 @@
        */
       public function onParseTime(){
 
-         $model = $this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+         $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
          $guestbookId = $this->getAttribute('gbid');
 
          // do not include the guestbook, if gbid is not set/existent
@@ -61,6 +61,9 @@
          }
 
          $model->set('GuestbookId',$guestbookId);
+
+         $this->__Attributes['namespace'] = 'modules::guestbook2009::pres::templates';
+         $this->__Attributes['template'] = 'guestbook';
          parent::onParseTime();
          
        // end function
