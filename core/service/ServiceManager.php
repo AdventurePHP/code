@@ -52,7 +52,7 @@
       private $__Language;
 
 
-      function serviceManager(){
+      function ServiceManager(){
       }
 
 

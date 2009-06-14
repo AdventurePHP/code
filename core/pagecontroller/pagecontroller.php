@@ -226,12 +226,11 @@
    *
    *  Static parser for XML / XSL Strings.
    *
-   *  @author Christian Schï¿½fer
+   *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 22.12.2006<br />
    */
-   class xmlParser
-   {
+   final class xmlParser {
 
       private function xmlParser(){
       }
