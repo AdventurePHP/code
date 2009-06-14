@@ -337,7 +337,7 @@
          $file = APPS__PATH.'/config/'.str_replace('::','/',$namespace).'/'.str_replace('::','/',$this->__Context).'/'.$env.'_'.$statementFile.'.sql';
 
          if(!file_exists($file)){
-            trigger_error('[MySQLHandler->executeStatement()] There\'s no statement file with name "'.($env.'_'.$statementFile.'.sql').'" for given namespace "config::'.$namespace.'" and current context "'.$this->__Context.'::statements"!',E_USER_ERROR);
+            trigger_error('[MySQLHandler->executeStatement()] There\'s no statement file with name "'.($env.'_'.$statementFile.'.sql').'" for given namespace "config::'.$namespace.'" and current context "'.$this->__Context.'"!',E_USER_ERROR);
             exit(1);
           // end if
          }
