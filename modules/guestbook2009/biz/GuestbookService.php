@@ -26,14 +26,50 @@
    import('modules::guestbook2009::biz','GuestbookModel');
    import('core::session','sessionManager');
    import('tools::link','frontcontrollerLinkHandler');
+   import('modules::pager::biz','PagerManagerFabric');
    
    /**
-    * Description of GuestbookService
+    * @namespace modules::guestbook2009::biz
+    * @class GuestbookService
+    * 
+    * Implements the central business component of the guestbook. Must be initialized with
+    * the DIServiceManager to get the necessary information injected (pager config).
     *
-    * @author Administrator
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 21.05.2009<br />
     */
    final class GuestbookService extends coreObject {
 
+      /**
+       * Stores the pager instance for further usage.
+       * @var PagerManager
+       */
+      private $__Pager = null;
+
+
+      /**
+       * Defines the name of the pager config section.
+       * @var string
+       */
+      private $__PagerConfigSection;
+
+
+      /**
+       * @public
+       *
+       * Implements an initializer method for the DIServiceManager to inject the
+       * name of the pager's config section.
+       *
+       * @param string $pagerConfigSection The name of the config section.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.06.2009<br />
+       */
+      public function setPagerConfigSection($pagerConfigSection){
+         $this->__PagerConfigSection = $pagerConfigSection;
+      }
 
       /**
        * @public
@@ -47,11 +83,87 @@
        * Version 0.1, 21.05.2009<br />
        */
       public function loadPagedEntryList(){
+
+         $t = &Singleton::getInstance('benchmarkTimer');
+         $t->start('loadPagedEntryList');
+
+         $pager = &$this->__getPager();
+
+         $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+         $entryIds = $pager->loadEntries(array('GuestbookID' => $model->get('GuestbookId')));
+
+         $entries = array();
          $mapper = &$this->__getMapper();
-         return $mapper->loadEntryList();
+         foreach($entryIds as $entryId){
+            $entries[] = $mapper->loadEntry($entryId);
+         }
+
+         $t->stop('loadPagedEntryList');
+         return $entries;
+
        // end function
       }
 
+      /**
+       * @public
+       *
+       * Returns the string representation of the current pager status.
+       *
+       * @return string The pager output.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.06.2009<br />
+       */
+      public function getPagerOutput(){
+         $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+         $pager = &$this->__getPager();
+         return $pager->getPager(array('GuestbookID' => $model->get('GuestbookId')));
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Returns the pager's url params.
+       *
+       * @return string[] The pager's url params.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.06.2009<br />
+       */
+      public function getPagerURLParams(){
+         $pager = &$this->__getPager();
+         return $pager->getPagerURLParameters();
+       // end function
+      }
+
+      /**
+       * @private
+       *
+       * Returns the pager instance for the current guestbook instance.
+       * Internally abstracts the access of the pager instance to enable
+       * lazy initialization.
+       *
+       * @return PagerManager The pager instance.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.06.2009<br />
+       */
+      private function &__getPager(){
+         
+         if($this->__Pager === null){
+            $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
+            $this->__Pager = &$pMF->getPagerManager($this->__PagerConfigSection);
+          // end if
+         }
+         
+         return $this->__Pager;
+      
+       // end function
+      }
 
       /**
        * @public
@@ -70,7 +182,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -88,7 +199,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -105,7 +215,6 @@
          return $mapper->loadGuestbook();
        // end function
       }
-
 
       /**
        * @public
@@ -139,7 +248,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -169,7 +277,6 @@
 
        // end function
       }
-
 
       /**
        * @public
@@ -203,7 +310,6 @@
 
        // end function
       }
-
 
       /**
        * @public
@@ -301,10 +407,6 @@
       private function &__getMapper(){
          return $this->__getDIServiceObject('modules::guestbook2009::data','GuestbookMapper');
       }
-      
-      // Mehrfache Widerverwendbarkeit: durch unterschiedliche Datenbanken!
-      // Ansonsten über mehrere DAOs, die per z.B. Registry in der index.php
-      // konfigurierbar sind!
 
     // end class
    }

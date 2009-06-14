@@ -24,98 +24,41 @@
    import('modules::pager::biz','PagerPage');
    import('modules::pager::data','PagerMapper');
 
-
    /**
-   *  @namespace modules::pager::biz
-   *  @class PagerManagerFabric
-   *
-   *  Implements the factory of the pager manager. Application sample:
-   *  <pre>$pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
-   *  $pM = &$pMF->getPagerManager('{ConfigSection}',{AdditionalParamArray});</pre>
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 13.04.2007<br />
-   */
-   final class PagerManagerFabric extends coreObject
-   {
-
-      /**
-      *  @private
-      *  Cache list if concrete pager manager instances.
-      */
-      private $__Pager = array();
-
-
-      function PagerManagerFabric(){
-      }
-
-
-      /**
-      *  @public
-      *
-      *  Returns a reference on the desired pager manager. Initializes newly created ones.
-      *
-      *  @param string $configString The configuration/initialization string (configuration section name).
-      *  @return pagerManager $pagerManager Reference on the desired pagerManager instance
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 13.04.2007<br />
-      *  Version 0.2, 24.01.2009 (Moved the additional params to the loadEntries() method. Refactored the method.)<br />
-      */
-      function &getPagerManager($configString){
-
-         // create cache key
-         $pagerHash = md5($configString);
-
-         if(!isset($this->__Pager[$pagerHash])){
-             $this->__Pager[$pagerHash] = &$this->__getAndInitServiceObject('modules::pager::biz','PagerManager',$configString,'NORMAL');
-          // end if
-         }
-
-         return $this->__Pager[$pagerHash];
-
-       // end function
-      }
-
-    // end class
-   }
-
-
-   /**
-   *  @namespace modules::pager::biz
-   *  @class PagerManager
-   *
-   *  Represents a concrete pager.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 06.08.2006<br />
-   *  Version 0.2, 14.08.2006 (Added new class variables)<br />
-   *  Version 0.3, 16.08.2006 (Added configuration for the count and entries statements)<br />
-   *  Version 0.4, 13.04.2007 (Added the possibility to add params from the application)<br />
-   *  Version 0.5, 25.01.2009 (Refactoring of the API, refactoring of the functionality)<br />
-   */
+    * @namespace modules::pager::biz
+    * @class PagerManager
+    *
+    * Represents a concrete pager.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 06.08.2006<br />
+    * Version 0.2, 14.08.2006 (Added new class variables)<br />
+    * Version 0.3, 16.08.2006 (Added configuration for the count and entries statements)<br />
+    * Version 0.4, 13.04.2007 (Added the possibility to add params from the application)<br />
+    * Version 0.5, 25.01.2009 (Refactoring of the API, refactoring of the functionality)<br />
+    */
    final class PagerManager extends coreObject
    {
 
       /**
-      *  @private
-      *  @since 0.5
-      *  Contains the current configuration.
-      */
+       * @private
+       * @since 0.5
+       * Contains the current configuration.
+       * @var string[]
+       */
       private $__PagerConfig = null;
 
 
       /**
-      *  @private
-      *  Contains the desired anchor name.
-      */
+       * @private
+       * Contains the desired anchor name.
+       * @var string
+       */
       private $__AnchorName = null;
 
 
-      function PagerManager(){
+      public function PagerManager(){
       }
 
 
@@ -124,7 +67,7 @@
       *
       *  Initializes the pager. Loads the desired config section.
       *
-      *  @param string $configSection the name of the config section+
+      *  @param string $configSection the name of the config section.
       *
       *  @author Christian Achatz
       *  @version
@@ -136,11 +79,11 @@
       *  Version 0.6, 26.04.2008 (The statement params are now casted to int by default)<br />
       *  Version 0.7, 25.01.2009 (Complete redesign / refactoring due to pager design changes. Now the pager can be used together with the GenericORMapper)<br />
       */
-      function init($configSection){
+      public function init($configSection){
 
          // initialize the config
-         $Config = &$this->__getConfiguration('modules::pager','pager');
-         $this->__PagerConfig = $Config->getSection($configSection);
+         $config = &$this->__getConfiguration('modules::pager','pager');
+         $this->__PagerConfig = $config->getSection($configSection);
 
          // translate the cache directive
          if(!isset($this->__PagerConfig['Pager.CacheInSession']) || $this->__PagerConfig['Pager.CacheInSession'] === 'false'){
@@ -161,8 +104,8 @@
       *
       *  Returns the statement params needed by the pager's data layer.
       *
-      *  @param array $addStmtParams additional statement parameters
-      *  @return array $stmtParams a list of default statement params.
+      *  @param string[] $addStmtParams Additional statement parameters.
+      *  @return string[] A list of default statement params.
       *
       *  @author Christian Achatz
       *  @version
@@ -183,8 +126,8 @@
       *
       *  Loads the ids of the entries of the current page.
       *
-      *  @param array $addStmtParams additional statement parameters
-      *  @return array $entryIDs list of entry ids for the current page
+      *  @param string[] $addStmtParams additional statement parameters.
+      *  @return int[] List of entry ids for the current page.
       *
       *  @author Christian Achatz
       *  @version
@@ -193,7 +136,7 @@
       *  Version 0.3, 16.08.2006 (Added the enhanced param configuration opportunity)<br />
       *  Version 0.4, 24.01.2009 (Changed the API of the method. Moved the additional param handling to this method)<br />
       */
-      function loadEntries($addStmtParams = array()){
+      public function loadEntries($addStmtParams = array()){
          $M = &$this->__getAndInitServiceObject('modules::pager::data','PagerMapper',$this->__PagerConfig['Pager.DatabaseConnection']);
          return $M->loadEntries($this->__PagerConfig['Pager.StatementNamespace'],$this->__PagerConfig['Pager.EntriesStatement'],$this->__getStatementParams($addStmtParams),$this->__PagerConfig['Pager.CacheInSession']);
        // end function
@@ -205,10 +148,10 @@
       *
       *  Loads a list of domain objects using a given data layer component.
       *
-      *  @param object $dataComponent instance of a data component, that loads the domain objects directly
+      *  @param coreObject $dataComponent instance of a data component, that loads the domain objects directly
       *  @param string $loadMethod name of the load method for the domain object
-      *  @param array $addStmtParams additional statement parameters
-      *  @return array $entries list of domain objects for the current page
+      *  @param string[] $addStmtParams additional statement parameters
+      *  @return coreObject[] List of domain objects for the current page.
       *
       *  @author Christian Achatz
       *  @version
@@ -217,7 +160,7 @@
       *  Version 0.3, 24.01.2009 (Added the $addStmtParams param to the API)<br />
       *  Version 0.4, 25.01.2009 (Refactored the function. Now uses the $this->loadEntries() to load the ids)<br />
       */
-      function loadEntriesByAppDataComponent(&$dataComponent,$loadMethod,$addStmtParams = array()){
+      public function loadEntriesByAppDataComponent(&$dataComponent,$loadMethod,$addStmtParams = array()){
 
          // check, if the load method exists
          if(in_array($loadMethod,get_class_methods($dataComponent))){
@@ -251,13 +194,13 @@
       *
       *  Sets the anchor name.
       *
-      *  @param string $anchorName the name of the desired anchor
+      *  @param string $anchorName The name of the desired anchor.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 25.01.2009<br />
       */
-      function setAnchorName($anchorName = null){
+      public function setAnchorName($anchorName = null){
          $this->__AnchorName = $anchorName;
        // end function
       }
@@ -268,13 +211,13 @@
       *
       *  Returns the anchor name.
       *
-      *  @return string $anchorName the name of the anchor
+      *  @return string The name of the anchor
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 25.01.2009<br />
       */
-      function getAnchorName(){
+      public function getAnchorName(){
          return $this->__AnchorName;
        // end function
       }
@@ -286,7 +229,7 @@
       *  Creates the graphical output of the pagerc concerning the configured presentation layer template.
       *
       *  @param array $addStmtParams list of additional statement params
-      *  @return string $pagerOutput the HTML representation of the pager
+      *  @return string The HTML representation of the pager
       *
       *  @author Christian Achatz
       *  @version
@@ -295,7 +238,7 @@
       *  Version 0.3, 29.08.2007 (Anchor name is not set as the document's attribute)<br />
       *  Version 0.4, 02.03.2008 (The page is now applied the context and language)<br />
       */
-      function getPager($addStmtParams = array()){
+      public function getPager($addStmtParams = array()){
 
          // create pager page
          $pager = new Page();
@@ -339,13 +282,13 @@
       *    <li>CountName: the name of the count per page param</li>
       *  <ul>
       *
-      *  @return array $URLParams; Array der URL-Parameter des Pagers
+      *  @return string[] Url params of the pager.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 17.03.2007<br />
       */
-      function getPagerURLParameters(){
+      public function getPagerURLParameters(){
          return array('StartName' => $this->__PagerConfig['Pager.ParameterStartName'],'CountName' => $this->__PagerConfig['Pager.ParameterCountName']);
        // end function
       }
@@ -356,8 +299,8 @@
       *
       *  Creates a list of pager pages and returns it.
       *
-      *  @param array $addStmtParams list of additional statement params
-      *  @return array $pages list of pages
+      *  @param string[] $addStmtParams list of additional statement params
+      *  @return PagerPage[] List of pages.
       *
       *  @author Christian Achatz
       *  @version
@@ -438,7 +381,7 @@
       *  taken.
       *
       *  @param string $configString the param-value-string from the configuration (e.g.: param1:value1|param2:value2)
-      *  @return array $stmtParams a list of statement parameters
+      *  @return string[] A list of statement parameters
       *
       *  @author Christian Achatz
       *  @version

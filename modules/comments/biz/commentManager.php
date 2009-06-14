@@ -20,7 +20,7 @@
    */
 
    import('modules::comments::data','commentMapper');
-   import('modules::pager::biz','pagerManager');
+   import('modules::pager::biz','PagerManagerFabric');
    import('tools::link','frontcontrollerLinkHandler');
    import('tools::string','stringAssistant');
    import('core::session','sessionManager');

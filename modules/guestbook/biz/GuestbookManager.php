@@ -23,7 +23,7 @@
    import('modules::guestbook::biz','Entry');
    import('modules::guestbook::biz','Comment');
    import('modules::guestbook::data','GuestbookMapper');
-   import('modules::pager::biz','pagerManager');
+   import('modules::pager::biz','PagerManagerFabric');
    import('core::session','sessionManager');
 
 
@@ -33,7 +33,7 @@
    *
    *  Business component of the guestbook module.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
@@ -72,7 +72,7 @@
       *
       *  @param string $guestbookID The guestbook id
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 13.04.2007<br />
       */
@@ -90,7 +90,7 @@
       *
       *  @return Guestbook $guestbook The guestbook domain object structure
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 13.04.2007<br />
       */
@@ -130,9 +130,9 @@
       *
       *  Loads a guestbook object.
       *
-      *  @return object $Guestbook; Gästebuch-Objekt ohne Einträge
+      *  @return object $Guestbook; Gï¿½stebuch-Objekt ohne Eintrï¿½ge
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 21.04.2007<br />
       */
@@ -150,7 +150,7 @@
       *
       *  @return array $urlParameter The pager url params
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 13.04.2007<br />
       */
@@ -169,7 +169,7 @@
       *
       *  @return string $pager The pager representation
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 13.04.2007<br />
       */
@@ -188,7 +188,7 @@
       *
       *  @param Entry $entry The entry object
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 14.04.2007<br />
       */
@@ -217,7 +217,7 @@
       *  @param string $entryID The id of an entry
       *  @param Comment $comment The comment object
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       *  Version 0.2, 19.05.2007 (Added the redirect url generation)<br />
@@ -248,7 +248,7 @@
       *
       *  @param string $entryID Id of the desired entry
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
@@ -266,7 +266,7 @@
       *
       *  @param string $commentID The comment id
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 19.05.2007<br />
       */
@@ -286,7 +286,7 @@
       *  @param string $password Password
       *  @return bool $login true | false
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
@@ -314,7 +314,7 @@
       *
       *  @param Entry $entry The guestbook entry
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
@@ -332,7 +332,7 @@
       *
       *  @param Comment $comment The comment object
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 19.05.2007<br />
       */
