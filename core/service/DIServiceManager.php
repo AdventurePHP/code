@@ -120,7 +120,7 @@
 
          // Invoke benchmarker. Suppress warning for already started timers with circular calls!
          // Suppressing is here done by a dirty '@', because we will run into an error anyway.
-         $t = &Singleton::getInstance('benchmarkTimer');
+         $t = &Singleton::getInstance('BenchmarkTimer');
          $benchId = 'DIServiceManager::getServiceObject('.$configNamespace.','.$sectionName.')';
          @$t->start($benchId);
 

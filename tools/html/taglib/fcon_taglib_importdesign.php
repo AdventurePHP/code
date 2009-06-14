@@ -74,7 +74,7 @@
       function onParseTime(){
 
          // Timer starten
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $T->start('(fcon_taglib_importdesign) '.$this->__ObjectID.'::onParseTime()');
 
          // Template-Namespace auslesen

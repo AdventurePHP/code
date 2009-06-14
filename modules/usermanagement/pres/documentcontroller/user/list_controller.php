@@ -38,7 +38,7 @@
 
       function transformContent(){
 
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $T->start('getPagedUserList()');
          $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $userList = $uM->getPagedUserList();

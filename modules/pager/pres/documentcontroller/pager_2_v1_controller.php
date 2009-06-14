@@ -88,7 +88,7 @@
           // end if
          }
 
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $T->start('Pager');
 
          // Anzahl der Seiten generieren

@@ -55,7 +55,7 @@
       function filter($instruction,$content){
 
          // invoke timer
-         $t = &Singleton::getInstance('benchmarkTimer');
+         $t = &Singleton::getInstance('BenchmarkTimer');
          $t->start('FrontControllerInputFilter::filter()');
 
          // setup filter

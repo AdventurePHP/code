@@ -314,7 +314,7 @@
       private function __createPages4PagerDisplay($addStmtParams = array()){
 
          // start benchmarker
-         $t = &Singleton::getInstance('benchmarkTimer');
+         $t = &Singleton::getInstance('BenchmarkTimer');
          $t->start('PagerManager::__createPages4PagerDisplay()');
 
          // initialize start params

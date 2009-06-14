@@ -66,7 +66,7 @@
          //
          // Timer starten
          //
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $ID = 'frontcontrollerLinkHandler::generateURLParamsByAction('.xmlParser::generateUniqID().')';
          $T->start($ID);
 
@@ -226,7 +226,7 @@
          //
          // Timer starten
          //
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $ID = 'frontcontrollerLinkHandler::generateLink('.md5($URL).')';
          $T->start($ID);
 

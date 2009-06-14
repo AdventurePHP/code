@@ -267,7 +267,7 @@
       protected function __buildSelectStatementByCriterion($ObjectName,$Criterion){
 
          // invoke benchmarker
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $T->start('GenericORRelationMapper::__buildSelectStatementByCriterion()');
 
          // generate relation joins

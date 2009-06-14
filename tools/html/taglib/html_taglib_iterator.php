@@ -134,7 +134,7 @@
        */
       function transformIterator(){
 
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $T->start('(html_taglib_iterator) '.$this->__ObjectID.'::transformIterator()');
 
          $buffer = (string)'';

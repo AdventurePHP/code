@@ -84,7 +84,7 @@
        */
       public function loadPagedEntryList(){
 
-         $t = &Singleton::getInstance('benchmarkTimer');
+         $t = &Singleton::getInstance('BenchmarkTimer');
          $t->start('loadPagedEntryList');
 
          $pager = &$this->__getPager();

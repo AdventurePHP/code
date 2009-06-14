@@ -21,13 +21,13 @@
 
    /**
    *  @namespace core::benchmark
-   *  @class benchmarkTimer
+   *  @class BenchmarkTimer
    *
    *  This class implements the benchmark timer used for measurement of the core components
    *  and your software. Must be used as a singleton to guarantee, that all benchmark tags
    *  are included within the report. Usage:
    *  <pre>
-   *  $T = &Singleton::getInstance('benchmarkTimer');
+   *  $T = &Singleton::getInstance('BenchmarkTimer');
    *  $T->start('my_tag');
    *  ...
    *  $T->stop('my_tag');
@@ -40,7 +40,7 @@
    *  Version 0.1, 31.12.2006<br />
    *  Version 0.1, 01.01.2007<br />
    */
-   class benchmarkTimer
+   final class BenchmarkTimer
    {
 
       /**
@@ -88,13 +88,13 @@
       /**
       *  @public
       *
-      *  Constructor of the benchmarkTimer. Initializes the root process.
+      *  Constructor of the BenchmarkTimer. Initializes the root process.
       *
       *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 31.12.2006<br />
       */
-      function benchmarkTimer(){
+      function BenchmarkTimer(){
          $RootProcess = &$this->__createRootProcess();
          $this->__addRunningProcess($RootProcess);
          $this->__setCurrentParent($RootProcess);
@@ -152,12 +152,12 @@
          $StartTime = $this->__generateMicroTime();
 
          if($name == ''){
-            trigger_error('[benchmarkTimer::start()] Required parameter name is not set!');
+            trigger_error('[BenchmarkTimer::start()] Required parameter name is not set!');
           // end if
          }
 
          if($this->__getRunningProcessByName($name)!=null){
-            trigger_error('[benchmarkTimer::start()] Benchmark process with name '.$name.' is already running! Use a different one!');
+            trigger_error('[BenchmarkTimer::start()] Benchmark process with name '.$name.' is already running! Use a different one!');
           // end if
          }
          else{
@@ -199,7 +199,7 @@
           // end if
          }
          else{
-            trigger_error('[benchmarkTimer::stop()] Process with name '.$name.' is not running yet!');
+            trigger_error('[BenchmarkTimer::stop()] Process with name '.$name.' is not running yet!');
           // end else
          }
 

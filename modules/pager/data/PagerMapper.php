@@ -109,7 +109,7 @@
       function getEntriesCount($namespace,$statement,$params = array(),$cache = true){
 
          // start benchmarker
-         $t = &Singleton::getInstance('benchmarkTimer');
+         $t = &Singleton::getInstance('BenchmarkTimer');
          $t->start('PagerMapper::getEntriesCount()');
 
          // try to load the entries count from the session
@@ -170,7 +170,7 @@
       function loadEntries($namespace,$statement,$params = array(),$cache = true){
 
          // start benchmarker
-         $t = &Singleton::getInstance('benchmarkTimer');
+         $t = &Singleton::getInstance('BenchmarkTimer');
          $t->start('PagerMapper::loadEntries()');
 
          // try to load the entries count from the session

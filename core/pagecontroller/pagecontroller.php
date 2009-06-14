@@ -113,7 +113,7 @@
    import('core::service','ServiceManager');
    import('core::service','DIServiceManager');
    import('core::configuration','configurationManager');
-   import('core::benchmark','benchmarkTimer');
+   import('core::benchmark','BenchmarkTimer');
    import('core::filter','FilterFactory');
 
    // set up the input and output filter
@@ -1531,7 +1531,7 @@
          // other APF DOM nodes to do extended initialization.
          if(count($this->__Children) > 0){
 
-            $T = &Singleton::getInstance('benchmarkTimer');
+            $T = &Singleton::getInstance('BenchmarkTimer');
             $T->start('('.get_class($this).') '.$this->__ObjectID.'::__Children[]::onAfterAppend()');
 
             foreach($this->__Children as $objectId => $DUMMY){
@@ -1609,7 +1609,7 @@
        */
       function transform(){
 
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $T->start('('.get_class($this).') '.$this->__ObjectID.'::transform()');
 
          // create copy, to preserve it!
@@ -1726,7 +1726,7 @@
       function onParseTime(){
 
          // start timer
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $id = '('.get_class($this).') '.$this->__ObjectID.'::onParseTime()';
          $T->start($id);
 

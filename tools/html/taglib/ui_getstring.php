@@ -51,7 +51,7 @@
       function transform(){
 
          // start timer
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $ID = '('.get_class($this).') '.$this->__ObjectID.'::transform()';
          $T->start($ID);
 

@@ -198,7 +198,7 @@
       */
       private function __setUpProvider(){
 
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $T->start('AdvancedBBCodeParser::__setUpProvider()');
 
          foreach($this->__Provider as $providerName => $DUMMY){
@@ -240,7 +240,7 @@
       function parseCode($string){
 
          // start timer
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $T->start('AdvancedBBCodeParser::parseCode()');
 
          // set up the desired parser

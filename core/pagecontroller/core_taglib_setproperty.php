@@ -49,7 +49,7 @@
       function onAfterAppend(){
 
          // Timer starten
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $ID = '('.get_class($this).') '.$this->__ObjectID.'::onAfterAppend() ['.$this->__Attributes['name'].'] => '.$this->__Attributes['value'];
          $T->start($ID);
 

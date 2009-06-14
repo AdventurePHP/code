@@ -57,7 +57,7 @@
       function filter($content){
 
          // invoke timer
-         $t = &Singleton::getInstance('benchmarkTimer');
+         $t = &Singleton::getInstance('BenchmarkTimer');
          $t->start('GenericOutputFilter::filter()');
 
          // filter links

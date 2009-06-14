@@ -392,7 +392,7 @@
          }
 
          // invoke benchmarker to be able to monitor the performance
-         $t = &Singleton::getInstance('benchmarkTimer');
+         $t = &Singleton::getInstance('BenchmarkTimer');
          $t->start('__mapGenericEntries2DomainObjects()');
          
          // load the language object for the current language to enable

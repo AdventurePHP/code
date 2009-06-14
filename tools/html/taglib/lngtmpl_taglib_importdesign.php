@@ -63,7 +63,7 @@
       function onParseTime(){
 
          // invoke timer
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
          $id = '(lngtmpl_taglib_importdesign) '.$this->__ObjectID.'::onParseTime()';
          $T->start($id);
 

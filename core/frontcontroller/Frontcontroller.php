@@ -695,7 +695,7 @@
       protected function __runActions($Type = 'prepagecreate'){
 
          // BenchmarkTimer holen
-         $T = &Singleton::getInstance('benchmarkTimer');
+         $T = &Singleton::getInstance('BenchmarkTimer');
 
          // Actions ausführen
          foreach($this->__Actions as $ActionHash => $DUMMY){
