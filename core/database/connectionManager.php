@@ -54,7 +54,7 @@
       *  were created previously.
       *
       *  @param string $connectionKey desired configuration section
-      *  @return AbstractDatabaseHandler $databaseHandler instance of a connection layer
+      *  @return AbstractDatabaseHandler An instance of a connection layer implementation.
       *
       *  @author Christian Achatz
       *  @version
@@ -69,10 +69,10 @@
       function &getConnection($connectionKey){
 
          // check, if connection was already created
-         $ConnectionHash = md5($connectionKey);
+         $connectionHash = md5($connectionKey);
 
-         if(isset($this->__Connections[$ConnectionHash])){
-            return $this->__Connections[$ConnectionHash];
+         if(isset($this->__Connections[$connectionHash])){
+            return $this->__Connections[$connectionHash];
           // end if
          }
 
@@ -104,10 +104,10 @@
          }
 
          // create the handler
-         $this->__Connections[$ConnectionHash] = &$this->__getAndInitServiceObject('core::database',$Section['DB.Type'].'Handler',$Section,'NORMAL');
+         $this->__Connections[$connectionHash] = &$this->__getAndInitServiceObject('core::database',$Section['DB.Type'].'Handler',$Section,'NORMAL');
 
          // return the handler
-         return $this->__Connections[$ConnectionHash];
+         return $this->__Connections[$connectionHash];
 
        // end function
       }
