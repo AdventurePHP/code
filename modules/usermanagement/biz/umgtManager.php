@@ -169,16 +169,17 @@
 
 
       /**
-      *  @public
-      *
-      *  Saves a user object within the current application.
-      *
-      *  @param GenericDomainObject $User current user
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 15.06.2008<br />
-      */
+       * @public
+       *
+       * Saves a user object within the current application.
+       *
+       * @param GenericDomainObject $user current user.
+       * @return int The id of the user.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 15.06.2008<br />
+       */
       function saveUser($user){
 
          // get the mapper
@@ -195,65 +196,67 @@
           // end if
          }
 
-         // save object
-         $oRM->saveObject($app);
+         return $oRM->saveObject($app);
 
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Saves a group object within the current application.
-      *
-      *  @param GenericDomainObject $group current group
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 15.06.2008<br />
-      */
+       * @public
+       *
+       * Saves a group object within the current application.
+       *
+       * @param GenericDomainObject $group current group.
+       * @return int The id of the group.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 15.06.2008<br />
+       */
       function saveGroup($group){
          $oRM = &$this->__getORMapper();
          $app = $this->__getCurrentApplication();
          $app->addRelatedObject('Application2Group',$group);
-         $oRM->saveObject($app);
+         return $oRM->saveObject($app);
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Saves a role object within the current application.
-      *
-      *  @param GenericDomainObject $role current role
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 15.06.2008<br />
-      */
+       * @public
+       *
+       * Saves a role object within the current application.
+       *
+       * @param GenericDomainObject $role current role.
+       * @return int The id of the role.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 15.06.2008<br />
+       */
       function saveRole($role){
          $oRM = &$this->__getORMapper();
          $app = $this->__getCurrentApplication();
          $app->addRelatedObject('Application2Role',$role);
-         $oRM->saveObject($app);
+         return $oRM->saveObject($app);
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Saves a permission set object within the current application.
-      *
-      *  @param GenericDomainObject $permissionSet a permission set
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 15.06.2008<br />
-      *  Version 0.2, 28.12.2008 (Bugfix: unnecessary associations are now deleted)<br />
-      */
+       * @public
+       *
+       * Saves a permission set object within the current application.
+       *
+       * @param GenericDomainObject $permissionSet a permission set.
+       * @return int The id of the permission set.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 15.06.2008<br />
+       * Version 0.2, 28.12.2008 (Bugfix: unnecessary associations are now deleted)<br />
+       */
       function savePermissionSet($permissionSet){
 
          // get the mapper
@@ -281,26 +284,26 @@
           // end for
          }
 
-         // save tree
-         $oRM->saveObject($app);
+         return $oRM->saveObject($app);
 
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Saves a permission object within the current application.
-      *
-      *  @param GenericDomainObject $permission the permission
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 15.06.2008<br />
-      *  Version 0.2, 16.06.2008 (The permission set is lazy loaded when not present)<br />
-      *  Version 0.3, 28.12.2008 (Changed the API concerning the new UML diagram)<br />
-      */
+       * @public
+       *
+       * Saves a permission object within the current application.
+       *
+       * @param GenericDomainObject $permission the permission.
+       * @return int The id of the permission.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 15.06.2008<br />
+       * Version 0.2, 16.06.2008 (The permission set is lazy loaded when not present)<br />
+       * Version 0.3, 28.12.2008 (Changed the API concerning the new UML diagram)<br />
+       */
       function savePermission($permission){
 
          // load generic or mapper
@@ -310,8 +313,7 @@
          $app = $this->__getCurrentApplication();
          $app->addRelatedObject('Application2Permission',$permission);
 
-         // save tree
-         $oRM->saveObject($app);
+         return $oRM->saveObject($app);
 
        // end function
       }
