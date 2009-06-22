@@ -38,32 +38,33 @@
    import('tools::form::taglib','form_taglib_getstring');
    import('tools::form::taglib','form_taglib_addtaglib');
    import('tools::form::taglib','form_taglib_marker');
+   import('tools::form::taglib','form_taglib_reset');
 
    /**
-   *  @package tools::form::taglib
-   *  @class html_taglib_form
-   *
-   *  Represents a APF form element (DOM node).
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 05.01.2007<br />
-   *  Version 0.2, 12.01.2007 (Form is now handled as a template)<br />
-   *  Version 0.3, 13.01.2007 (Added mode taglibs)
-   *  Version 0.4, 15.01.2007 (Added the "form:multiselect" taglib)<br />
-   *  Version 0.5, 11.02.2007 (Added the "form:validate" taglib)<br />
-   *  Version 0.6, 25.06.2007 (Replaced "form:validate" with "form:valgroup")<br />
-   *  Version 0.7, 14.04.2007 (Added "isSent" attribute)<br />
-   *  Version 0.8, 22.09.2007 (Added the generic validator)<br />
-   *  Version 0.9, 01.06.2008 (Added the getFormElementsByType() method)<br />
-   *  Version 1.0, 16.06.2008 (API change: added getFormElementsByTagName())<br />
-   */
+    * @package tools::form::taglib
+    * @class html_taglib_form
+    *
+    * Represents a APF form element (DOM node).
+    *
+    * @author Christian Sch�fer
+    * @version
+    * Version 0.1, 05.01.2007<br />
+    * Version 0.2, 12.01.2007 (Form is now handled as a template)<br />
+    * Version 0.3, 13.01.2007 (Added mode taglibs)
+    * Version 0.4, 15.01.2007 (Added the "form:multiselect" taglib)<br />
+    * Version 0.5, 11.02.2007 (Added the "form:validate" taglib)<br />
+    * Version 0.6, 25.06.2007 (Replaced "form:validate" with "form:valgroup")<br />
+    * Version 0.7, 14.04.2007 (Added "isSent" attribute)<br />
+    * Version 0.8, 22.09.2007 (Added the generic validator)<br />
+    * Version 0.9, 01.06.2008 (Added the getFormElementsByType() method)<br />
+    * Version 1.0, 16.06.2008 (API change: added getFormElementsByTagName())<br />
+    */
    class html_taglib_form extends ui_element
    {
 
       /**
        * @protected
-       * Speichert, ob das Formular mit g�ltigen Werten ausgef�llt wurde.
+       * Indicates, whether the form was filled correctly (concerning the field validators).
        * @var boolean
        */
       protected $__isValid = true;
@@ -72,7 +73,7 @@
       /**
        * @protected
        * @since 0.7
-       * Speichert, ob das Formular abgesendet wurde.
+       * Indicates, if the form was sent.
        * @var boolean
        */
       protected $__isSent = false;
@@ -80,30 +81,31 @@
 
       /**
        * @protected
-       * Indiziert, ob das Formular an der Definitionsstelle transformiert und ausgegeben werden soll.
+       * Indicates, whether the form should be transformed at it'd place of definition or not.
        * @var boolean
        */
       protected $__TransformOnPlace = false;
 
 
       /**
-      *  @public
-      *
-      *  Initializes the known taglibs.
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 05.01.2007<br />
-      *  Version 0.2, 13.01.2007 (Weitere TagLibs hinzugef�gt)<br />
-      *  Version 0.3, 15.01.2007 (Weitere TagLib "form:multiselect" hinzugef�gt)<br />
-      *  Version 0.4, 11.02.2007 (Weitere TagLib form:validate" hinzugef�gt)<br />
-      *  Version 0.5, 03.03.2007 ("&" vor "new" entfernt)<br />
-      *  Version 0.6, 25.03.2007 (Weitere Taglib "form:valgroup" eingef�hrt)<br />
-      *  Version 0.7, 22.09.2007 (Generischen Vaidator hinzugef�gt)<br />
-      *  Version 0.8, 06.11.2007 (Tag form:getstring hinzugef�gt)<br />
-      *  Version 0.9, 11.07.2008 (Added the form:addtaglib tag)<br />
-      *  Version 1.0, 03.09.2008 (Added the form:marker tag)<br />
-      */
+       * @public
+       *
+       * Initializes the known taglibs.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 05.01.2007<br />
+       * Version 0.2, 13.01.2007<br />
+       * Version 0.3, 15.01.2007 (Added the form:multiselect tag)<br />
+       * Version 0.4, 11.02.2007 (Added the form:validate tag)<br />
+       * Version 0.5, 03.03.2007 (Removed the "&" before the "new" operator)<br />
+       * Version 0.6, 25.03.2007 (Added the form:valgroup tag)<br />
+       * Version 0.7, 22.09.2007 (Added the generic validator tag)<br />
+       * Version 0.8, 06.11.2007 (Added the form:getstring tag)<br />
+       * Version 0.9, 11.07.2008 (Added the form:addtaglib tag)<br />
+       * Version 1.0, 03.09.2008 (Added the form:marker tag)<br />
+       * Version 1.1, 22.06.2009 (Added the form:reset tag)<br />
+       */
       function html_taglib_form(){
 
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','button');
@@ -124,20 +126,21 @@
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','getstring');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','marker');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','addtaglib');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','reset');
 
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Parses the known taglibs.
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 05.01.2007<br />
-      */
+       * @public
+       *
+       * Parses the known taglibs.
+       *
+       * @author Christian Sch�fer
+       * @version
+       * Version 0.1, 05.01.2007<br />
+       */
       function onParseTime(){
          $this->__extractTagLibTags();
        // end function
