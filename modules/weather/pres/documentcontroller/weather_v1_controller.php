@@ -23,9 +23,9 @@
    *  @namespace modules::weather::pres::documentcontroller
    *  @class weather_v1_controller
    *
-   *  Implements an rss consumer to display current weather information.<br />
-   *  Please provide the attribute "rss_source" in the core:importdesign tag that<br />
-   *  includes the weather module.<br />
+   *  Implements an rss consumer to display current weather information.
+   *  Please provide the attribute "rss_source" in the core:importdesign tag that
+   *  includes the weather module.
    *
    *  @author Christian Achatz
    *  @version
@@ -240,7 +240,7 @@
       *  Helper method to get the content of the first child of a given DOM node.<br />
       *
       *  @param DOMNode $Node; Desired DOM node
-      *  @return string $NodeContent; Content of the first node
+      *  @return string Content of the first node
       *
       *  @author Christian Achatz
       *  @version
@@ -265,7 +265,7 @@
       *
       *  @param DOMNode $Node; Desired DOM node
       *  @param string $Name; Name of the nodes to be returned
-      *  @return array $ChildNodes; List of child nodes
+      *  @return Document[] List of child nodes
       *
       *  @author Christian Achatz
       *  @version
@@ -301,7 +301,7 @@
       *
       *  Helper method to get the RSS string.<br />
       *
-      *  @return string $RSSContent; Content of the RSS stream of wetter.com or null
+      *  @return string Content of the RSS stream of wetter.com or null
       *
       *  @author Christian Achatz
       *  @version
@@ -387,7 +387,7 @@
       *  Helper method to read the attribute "rss_source" from the current object<br />
       *  (core:importdesign), that is used to include the module.<br />
       *
-      *  @return string $RSS_Source; Source URL of the RSS stream
+      *  @return string Source URL of the RSS stream
       *
       *  @author Christian Achatz
       *  @version
