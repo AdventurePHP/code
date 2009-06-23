@@ -119,7 +119,7 @@
       *  UmgtManager and reimplement this method! Be sure, to keep all other methods untouched.
       *
       *  @param string $password the password to hash
-      *  @return string $passwordHash the desired hash of the given password
+      *  @return string The desired hash of the given password.
       *
       *  @author Christian Achatz
       *  @version
@@ -136,7 +136,7 @@
       *
       *  Returns an initialized Application object.
       *
-      *  @return GenericDomainObject $app current application domain object
+      *  @return GenericDomainObject Ccurrent application domain object.
       *
       *  @author Christian Achatz
       *  @version
@@ -155,7 +155,7 @@
       *
       *  Returns an initialized or mapper instance.
       *
-      *  @return GenericORRelationMapper $ORM instance of the generic or relation mapper
+      *  @return GenericORRelationMapper Instance of the generic or relation mapper.
       *
       *  @author Christian Achatz
       *  @version
@@ -179,6 +179,7 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 15.06.2008<br />
+       * Version 0.2, 23.06.2009 (Introduced a generic possibility to create the display name.)<br />
        */
       function saveUser($user){
 
@@ -187,7 +188,7 @@
 
          // setup the composition
          $app = $this->__getCurrentApplication();
-         $user->setProperty('DisplayName',$user->getProperty('LastName').', '.$user->getProperty('FirstName'));
+         $user->setProperty('DisplayName',$this->__getDisplayName($user));
          $app->addRelatedObject('Application2User',$user);
 
          // handle password
@@ -324,7 +325,7 @@
       *
       *  Returns a list of users concerning the current page.
       *
-      *  @return GenericDomainObject[] $users list of users
+      *  @return GenericDomainObject[] List of users.
       *
       *  @author Christian Achatz
       *  @version
@@ -353,7 +354,7 @@
       *
       *  Returns a list of groups concerning the current page.
       *
-      *  @return GenericDomainObject[] $groupList list of groups
+      *  @return GenericDomainObject[] List of groups.
       *
       *  @author Christian Achatz
       *  @version
@@ -381,7 +382,7 @@
       *
       *  Returns a list of roles concerning the current page.
       *
-      *  @return GenericDomainObject[] $roleList list of roles
+      *  @return GenericDomainObject[] List of roles.
       *
       *  @author Christian Achatz
       *  @version
@@ -400,7 +401,7 @@
       *
       *  Returns a list of permission sets concerning the current page.
       *
-      *  @return GenericDomainObject[] $permissionSetList list of permission sets
+      *  @return GenericDomainObject[] List of permission sets.
       *
       *  @author Christian Achatz
       *  @version
@@ -419,7 +420,7 @@
       *
       *  Returns a list of permissions concerning the current page.
       *
-      *  @return GenericDomainObject[] $permissionList list of permissions
+      *  @return GenericDomainObject[] List of permissions.
       *
       *  @author Christian Achatz
       *  @version
@@ -439,7 +440,7 @@
       *  Returns a user domain object.
       *
       *  @param int $userID id of the desired user
-      *  @return GenericDomainObject[] $user the user domain object
+      *  @return GenericDomainObject[] The user domain object.
       *
       *  @author Christian Achatz
       *  @version
@@ -457,9 +458,9 @@
       *
       *  Returns a user domain object by it'd username and password.
       *
-      *  @param string $username the user's username
-      *  @param string $password the user's password
-      *  @return GenericDomainObject $user the user domain object or null
+      *  @param string $username the user's username.
+      *  @param string $password the user's password.
+      *  @return GenericDomainObject The user domain object or null.
       *
       *  @author Christian Achatz
       *  @version
@@ -485,6 +486,166 @@
        // end function
       }
 
+      /**
+       * @public
+       *
+       * Loads a user object by a given first name.
+       *
+       * @param string $firstName The first name of the user to load.
+       * @return GenericDomainObject The user domain object or null.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.06.2009<br />
+       */
+      public function loadUserByFirstName($firstName){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // escape the input values
+         $dbDriver = &$oRM->getByReference('DBDriver');
+         $firstName = $dbDriver->escapeValue($firstName);
+
+         // create the statement and select user
+         $select = 'SELECT * FROM ent_user WHERE FirstName = \''.$firstName.'\';';
+         return $oRM->loadObjectByTextStatement('User',$select);
+
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Loads a user object by a given last name.
+       *
+       * @param string $lastName The last name of the user to load.
+       * @return GenericDomainObject The user domain object or null.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.06.2009<br />
+       */
+      public function loadUserByLastName($lastName){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // escape the input values
+         $dbDriver = &$oRM->getByReference('DBDriver');
+         $lastName = $dbDriver->escapeValue($lastName);
+
+         // create the statement and select user
+         $select = 'SELECT * FROM ent_user WHERE LastName = \''.$lastName.'\';';
+         return $oRM->loadObjectByTextStatement('User',$select);
+
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Loads a user object by a given email.
+       *
+       * @param string $email The email of the user to load.
+       * @return GenericDomainObject The user domain object or null.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.06.2009<br />
+       */
+      public function loadUserByEMail($email){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // escape the input values
+         $dbDriver = &$oRM->getByReference('DBDriver');
+         $email = $dbDriver->escapeValue($email);
+
+         // create the statement and select user
+         $select = 'SELECT * FROM ent_user WHERE EMail = \''.$email.'\';';
+         return $oRM->loadObjectByTextStatement('User',$select);
+
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Loads a user object by a first and last name.
+       *
+       * @param string $firstName The first name of the user to load.
+       * @param string $lastName The last name of the user to load.
+       * @return GenericDomainObject The user domain object or null.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.06.2009<br />
+       */
+      public function loadUserByFirstNameAndLastName($firstName,$lastName){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // escape the input values
+         $dbDriver = &$oRM->getByReference('DBDriver');
+         $firstName = $dbDriver->escapeValue($firstName);
+         $lastName = $dbDriver->escapeValue($lastName);
+
+         // create the statement and select user
+         $select = 'SELECT * FROM ent_user WHERE FirstName = \''.$firstName.'\' AND LastName = \''.$lastName.'\';';
+         return $oRM->loadObjectByTextStatement('User',$select);
+
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Loads a user object by a user name.
+       *
+       * @param string $username The user name of the user to load.
+       * @return GenericDomainObject The user domain object or null.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.06.2009<br />
+       */
+      public function loadUserByUserName($username){
+
+         // get the mapper
+         $oRM = &$this->__getORMapper();
+
+         // escape the input values
+         $dbDriver = &$oRM->getByReference('DBDriver');
+         $username = $dbDriver->escapeValue($username);
+
+         // create the statement and select user
+         $select = 'SELECT * FROM ent_user WHERE Username = \''.$username.'\';';
+         return $oRM->loadObjectByTextStatement('User',$select);
+
+       // end function
+      }
+
+      /**
+       * @protected
+       * 
+       * Implements the central method to create the display name of a user object. If you desire
+       * to use another algo, extend the UmgtManager and reimplement this method! Be sure, to keep
+       * all other methods untouched.
+       *
+       * @param GenericDomainObject $user The user object to save.
+       * @return string The desired display name.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.06.2009<br />
+       */
+      protected function __getDisplayName($user){
+         return $user->getProperty('LastName').', '.$user->getProperty('FirstName');
+       // end function
+      }
 
       /**
       *  @public
@@ -493,7 +654,7 @@
       *
       *  @param string $email the user's email
       *  @param string $password the user's password
-      *  @return GenericDomainObject $user the user domain object or null
+      *  @return GenericDomainObject The user domain object or null
       *
       *  @author Christian Achatz
       *  @version
@@ -560,7 +721,7 @@
       *  Returns a group domain object.
       *
       *  @param int $groupID id of the desired group
-      *  @return GenericDomainObject[] $group the group domain object
+      *  @return GenericDomainObject[] The group domain object.
       *
       *  @author Christian Achatz
       *  @version
@@ -579,7 +740,7 @@
       *  Returns a role domain object.
       *
       *  @param int $roleID id of the desired role
-      *  @return GenericDomainObject[] $role the role domain object
+      *  @return GenericDomainObject[] The role domain object.
       *
       *  @author Christian Achatz
       *  @version
@@ -598,7 +759,7 @@
       *  Loads a permission set by it's id.
       *
       *  @param int $permissionSetID the permission set's id
-      *  @return GenericDomainObject $permissionSet the permission set
+      *  @return GenericDomainObject The permission set.
       *
       *  @author Christian Achatz
       *  @version
@@ -616,7 +777,7 @@
       *
       *  Loads a list of permissions of the current application.
       *
-      *  @return GenericDomainObject[] $permissions the permission list
+      *  @return GenericDomainObject[] The permission list.
       *
       *  @author Christian Achatz
       *  @version
@@ -644,7 +805,7 @@
       *  Loads a permission by it's id.
       *
       *  @param int $permID the permission's id
-      *  @return GenericDomainObject $permission the desiried permission
+      *  @return GenericDomainObject The desiried permission.
       *
       *  @author Christian Achatz
       *  @version
@@ -663,7 +824,7 @@
       *  Loads a list of roles, that are not associated with the permission set.
       *
       *  @param GenericDomainObject $permissionSet the desiried permission set
-      *  @return GenericDomainObject[] $roles the roles, that are not associated
+      *  @return GenericDomainObject[] The roles, that are not associated.
       *
       *  @author Christian Achatz
       *  @version
@@ -691,7 +852,7 @@
       *  Loads a list of roles, that are associated with the permission set.
       *
       *  @param GenericDomainObject $permissionSet the desiried permission set
-      *  @return GenericDomainObject[] $roles the roles, that are associated
+      *  @return GenericDomainObject[] The roles, that are associated.
       *
       *  @author Christian Achatz
       *  @version
@@ -941,7 +1102,7 @@
       *  Loads all groups, that are assigned to a given user.
       *
       *  @param GenericDomainObject $user the user
-      *  @return GenericDomainObject[] $roles the role list
+      *  @return GenericDomainObject[] The role list.
       *
       *  @author Christian Achatz
       *  @version
@@ -959,7 +1120,7 @@
       *  Loads all groups, that are not assigned to a given user.
       *
       *  @param GenericDomainObject $user the user
-      *  @return GenericDomainObject[] $roles the role list
+      *  @return GenericDomainObject[] The group list.
       *
       *  @author Christian Achatz
       *  @version
@@ -987,7 +1148,7 @@
       *  Loads all users, that are assigned to a given group.
       *
       *  @param GenericDomainObject $group the group
-      *  @return GenericDomainObject[] $users the user list
+      *  @return GenericDomainObject[] The user list.
       *
       *  @author Christian Achatz
       *  @version
@@ -1007,7 +1168,7 @@
       *  Loads all users, that are not assigned to a given group.
       *
       *  @param GenericDomainObject $group the group
-      *  @return GenericDomainObject[] $users the user list
+      *  @return GenericDomainObject[] The user list.
       *
       *  @author Christian Achatz
       *  @version
@@ -1036,7 +1197,7 @@
       *  Loads all roles, that are assigned to a given user.
       *
       *  @param GenericDomainObject $user the user
-      *  @return GenericDomainObject[] $roles the role list
+      *  @return GenericDomainObject[] The role list.
       *
       *  @author Christian Achatz
       *  @version
@@ -1054,7 +1215,7 @@
       *  Loads all roles, that are not assigned to a given user.
       *
       *  @param GenericDomainObject $user the user
-      *  @return GenericDomainObject[] $roles the role list
+      *  @return GenericDomainObject[] The role list.
       *
       *  @author Christian Achatz
       *  @version
@@ -1083,7 +1244,7 @@
       *  Loads a list of users, that have a certail role.
       *
       *  @param GenericDomainObject $role the role, the users should have
-      *  @return GenericDomainObject[] $users desired user list
+      *  @return GenericDomainObject[] Desired user list.
       *
       *  @author Christian Achatz
       *  @version
@@ -1101,7 +1262,7 @@
       *  Loads a list of users, that don't have the given role.
       *
       *  @param GenericDomainObject $role the role, the users should not have
-      *  @return GenericDomainObject[] $users desired user list
+      *  @return GenericDomainObject[] Desired user list.
       *
       *  @author Christian Achatz
       *  @version
@@ -1126,7 +1287,7 @@
       *  Loads the permissions associated with a permission set.
       *
       *  @param GenericDomainObject $permissionSet the permission set
-      *  @return GenericDomainObject[] $permissions the list of permissions
+      *  @return GenericDomainObject[] The list of permissions.
       *
       *  @author Christian Achatz
       *  @version
