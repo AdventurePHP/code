@@ -141,7 +141,7 @@
        * @version
        *  Version 0.1, 24.02.2008<br />
        */
-      static function clearInstance($className){
+      public static function clearInstance($className){
          unset($GLOBALS[SessionSingleton::showCacheContainerOffset()][SessionSingleton::createCacheObjectName($className)]);
        // end function
       }
@@ -157,14 +157,14 @@
        * @version
        * Version 0.1, 24.02.2008<br />
        */
-      static function clearAll(){
+      public static function clearAll(){
          $GLOBALS[SessionSingleton::showCacheContainerOffset()] = array();
        // end function
       }
 
 
       /**
-       * @protected
+       * @public
        * @static
        *
        * Checks, whether a class is already in the singleton cache.
@@ -176,7 +176,7 @@
        * @version
        * Version 0.1, 12.04.2006<br />
        */
-      static function isInSingletonCache($className){
+      public static function isInSingletonCache($className){
 
          if(isset($GLOBALS[SessionSingleton::showCacheContainerOffset()][SessionSingleton::createCacheObjectName($className)])){
             return true;
@@ -192,7 +192,7 @@
 
 
       /**
-       * @protected
+       * @public
        * @static
        *
        * Returns the name of the cache container offset within the $GLOBALS array.
@@ -203,7 +203,7 @@
        * @version
        * Version 0.1, 24.02.2008<br />
        */
-      protected static function showCacheContainerOffset(){
+      public static function showCacheContainerOffset(){
          return (string)'SESSION_SINGLETON_CACHE';
        // end function
       }
