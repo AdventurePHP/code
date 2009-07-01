@@ -168,21 +168,21 @@
 
 
    /**
-   *  @namespace core::configuration
-   *  @class configurationManager
-   *
-   *  The configurationManager represents a configuration utility, that loads and handles configurations
-   *  that depend on the context and the environment tzhe application or module is executed in. The
-   *  manager must be instanciated singleton!
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 28.01.2007<br />
-   *  Version 0.2, 07.03.2007 (Kompletter Umbau wegen Struktur�nderung (Context!!!)<br />
-   *  Version 0.3, 02.04.2007 (Abschlie�end getestet und Feinheiten optimiert)<br />
-   *  Version 0.4, 16.11.2007 (Definition von $__NamespaceDelimiter wiederhergestellt)<br />
-   *  Version 0.5, 21.06.2008 (Introduced Registry to get the current Environment string)<br />
-   */
+    * @namespace core::configuration
+    * @class configurationManager
+    *
+    * The configurationManager represents a configuration utility, that loads and handles configurations
+    * that depend on the context and the environment tzhe application or module is executed in. The
+    * manager must be instanciated singleton!
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 28.01.2007<br />
+    * Version 0.2, 07.03.2007 (Refactoring due to context introduction)<br />
+    * Version 0.3, 02.04.2007 (Additional testing with some fine tuning)<br />
+    * Version 0.4, 16.11.2007 (Re-added $__NamespaceDelimiter)<br />
+    * Version 0.5, 21.06.2008 (Introduced Registry to get the current Environment string)<br />
+    */
    class configurationManager extends coreObject
    {
 
@@ -205,38 +205,38 @@
 
 
       /**
-      *  @public
-      *
-      *  Loads a configuration described through the given param. Configuration files must be stored
-      *  within the config namespace. Usage:
-      *  <pre>
-      *  $cM = &Singleton::getInstance('configurationManager');<br />
-      *  $config = &$cM->getConfiguration('sites::mysite','actions','permanentactions');
-      *  </pre>
-      *  Within classes inherited from coreObject, the __getConfiguration() wrapper can be used.
-      *
-      *  @param string $namespace namespace of the requested configuration (will be prefixed with "config::")
-      *  @param string $context context of the configuration file
-      *  @param string $configName the name of the configuration file
-      *  @param bool $parseSubsections defines if subsections ("." notation) should be parsed as subsections
-      *  @return Configuration $CfgObj | bool NULL configuration object or null in case of failure
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 07.03.2007<br />
-      *  Version 0.2, 02.04.2007 (An error is triggered if the config cannot be loaded)<br />
-      *  Version 0.3, 21.06.2008 (Introduced the Registry component)<br />
-      */
+       * @public
+       *
+       * Loads a configuration described through the given param. Configuration files must be stored
+       * within the config namespace. Usage:
+       * <pre>
+       * $cM = &Singleton::getInstance('configurationManager');<br />
+       * $config = &$cM->getConfiguration('sites::mysite','actions','permanentactions');
+       * </pre>
+       * Within classes inherited from coreObject, the <em>__getConfiguration()</em> wrapper can be used.
+       *
+       * @param string $namespace namespace of the requested configuration (will be prefixed with "config::")
+       * @param string $context context of the configuration file
+       * @param string $configName the name of the configuration file
+       * @param bool $parseSubsections defines if subsections ("." notation) should be parsed as subsections
+       * @return Configuration $CfgObj | bool NULL configuration object or null in case of failure
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 07.03.2007<br />
+       * Version 0.2, 02.04.2007 (An error is triggered if the config cannot be loaded)<br />
+       * Version 0.3, 21.06.2008 (Introduced the Registry component)<br />
+       */
       function &getConfiguration($namespace,$context,$configName,$parseSubsections = false){
 
          // calculate config hash
-         $ConfigHash = md5($namespace.$context.$configName);
+         $configHash = md5($namespace.$context.$configName);
 
          // check if config exists
          if($this->configurationExists($namespace,$context,$configName) == true){
 
             // check if config is already loaded
-            if(!isset($this->__Configurations[$ConfigHash])){
+            if(!isset($this->__Configurations[$configHash])){
 
                // load config
                $Configuration = $this->__loadConfiguration($namespace,$context,$configName);
@@ -252,7 +252,7 @@
                }
 
                // cache config
-               $this->__Configurations[$ConfigHash] = $CfgObj;
+               $this->__Configurations[$configHash] = $CfgObj;
 
              // end if
             }
@@ -272,7 +272,7 @@
           // end else
          }
 
-         return $this->__Configurations[$ConfigHash];
+         return $this->__Configurations[$configHash];
 
        // end function
       }
@@ -288,7 +288,7 @@
       *  @param string $configName the name of the configuration file
       *  @return bool $configurationExistent true | false
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 03.02.2007<br />
       *  Version 0.2, 07.03.2007 (Renamed to configurationExists())<br />
