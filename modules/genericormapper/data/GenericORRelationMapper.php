@@ -381,6 +381,17 @@
             exit(1);
           // end if
          }
+
+         // BUG-142: wrong spelling of source and target object must result in descriptive error!
+         if(!isset($this->__MappingTable[$targetObjectName])){
+            trigger_error(
+               '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "'
+               .$targetObjectName.'" found in releation definition "'.$relationName
+               .'"! Please re-check your relation configuration.',
+               E_USER_ERROR
+            );
+            exit(1);
+         }
          $targetObject = $this->__MappingTable[$targetObjectName];
 
          // create an empty criterion if the argument was null
