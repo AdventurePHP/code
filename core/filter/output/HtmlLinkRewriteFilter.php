@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -20,20 +20,20 @@
    */
 
    /**
-   *  @namespace core::filter::output
-   *  @class HtmlLinkRewriteFilter
-   *
-   *  Implementiert den URL-Rewriting-Filter für HTML-Quelltext.<br />
-   *  Bei Links mit dem Attribut <code>linkrewrite="false"</code> wird der Link nicht rewritet.<br />
-   *  Ist das Attribut auf "true" oder einen anderen Wert gesetzt oder fehlt dieses, wird der Link<br />
-   *  umgeschrieben.<br />
-   *
-   *  @author Christian Schäfer
-   *  @version
-   *  Version 0.1, 05.05.2007 (Erste Version des generischen Link-Rewritings)<br />
-   *  Version 0.2, 08.05.2007 (Kapselung als Filter)<br />
-   *  Version 0.3, 17.06.2007 (Um Action-Rewriting ergänzt)<br />
-   */
+    * @namespace core::filter::output
+    * @class HtmlLinkRewriteFilter
+    *
+    * Implements a URL rewriting output filter for HTML source code. Rewriting can be adjusted
+    * using the <em>linkrewrite</em> attribute. If it is set to "true" or not present, links are
+    * rewritten, "false" introduces the filter to not rewrite the link. Further, "mailto:" links
+    * are not rewritten, too.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 05.05.2007 (First version of the link rewrite filter)<br />
+    * Version 0.2, 08.05.2007 (Refactoring as a filter)<br />
+    * Version 0.3, 17.06.2007 (Added form action rewriting)<br />
+    */
    class HtmlLinkRewriteFilter extends AbstractFilter
    {
 
@@ -42,18 +42,18 @@
 
 
       /**
-      *  @public
-      *
-      *  Implementiert die Filer-Funktion für das Rewriten von HTML-Links und Actions.<br />
-      *
-      *  @param string $content; HTML-Quelltext
-      *  @return string $content; Rewriteter HTML-Quelltext
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 05.05.2007 (Erste Version des generischen Link-Rewritings)<br />
-      *  Version 0.2, 08.05.2007 (Kapselung als Filter)<br />
-      */
+       * @public
+       *
+       * Implements the filter methos for rewriting HTML links and form actions.
+       *
+       * @param string $content The HTML content to rewrite.
+       * @return string The rewritten HTML content.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 05.05.2007 (Erste Version des generischen Link-Rewritings)<br />
+       * Version 0.2, 08.05.2007 (Kapselung als Filter)<br />
+       */
       function filter($content){
 
          // invoke timer
@@ -66,10 +66,7 @@
          // filter actions
          $content = $this->__filter($content,'<form','>','action');
 
-         // stop timer
          $t->stop('GenericOutputFilter::filter()');
-
-         // return rewritten HTML code
          return $content;
 
        // end function
@@ -77,115 +74,115 @@
 
 
       /**
-      *  @private
-      *
-      *  Generic filter method, that can filter various HTML tags/attributes.
-      *
-      *  @param string $HTMLContent; HTML-Quelltext
-      *  @param string $StartToken; Start-Token für die Suche im Quelltext
-      *  @param string $EndToken; End-Token für die Suche im Quelltext
-      *  @param string $AttributeToken; Name des zu parsenden Attributs
-      *  @return string $HTMLContent; Rewriteter HTML-Quelltext
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 17.07.2007 (Auslagerung der Filter-Methode, damit sowohl Links als auch Actions gefiltert werden können)<br />
-      *  Version 0.2, 11.12.2008 (Made the benchmark ids more explicit)<br />
-      *  Version 0.3, 13.12.2008 (Removed the benchmarker)<br />
-      */
-      function __filter($HTMLContent,$StartToken = '<a',$EndToken = '>',$AttributeToken = 'href'){
+       * @private
+       *
+       * Generic filter method, that can filter various HTML tags/attributes.
+       *
+       * @param string $htmlContent The HTML source code.
+       * @param string $startToken The start token of the tag to parse.
+       * @param string $endToken The end token of the tag to parse.
+       * @param string $attributeToken The name of the attribute to rewrite.
+       * @return string The rewritten HTML content.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 17.07.2007 (Refactored the filter method to be able to filter links and forms with the same method)<br />
+       * Version 0.2, 11.12.2008 (Made the benchmark ids more explicit)<br />
+       * Version 0.3, 13.12.2008 (Removed the benchmarker)<br />
+       * Version 0.4, 13.07.2009 (Now "mailto:" links are not rewrited by default!)<br />
+       */
+      private function __filter($htmlContent,$startToken = '<a',$endToken = '>',$attributeToken = 'href'){
 
-         // Offset deklarieren
-         $SearchOffset = 0;
+         $searchOffset = 0;
+         $tokenFound = true;
+         $startTokenLength = strlen($startToken);
+         $endTokenLength = strlen($endToken);
+         
+         while($tokenFound == true){
 
-         // Token gefunden?
-         $TokenFound = true;
+            // we have to add an ugly @ sign, because sometimes with PHP5, an
+            // error/warning is generated! :/
+            $currentLinkStartPos = @strpos($htmlContent,$startToken,$searchOffset);
 
-         // Text durchsuchen
-         while($TokenFound == true){
+            if($currentLinkStartPos !== false){
 
-            // Token-Start-Position finden
-            $CurrentLinkStartPos = strpos($HTMLContent,$StartToken,$SearchOffset);
+               $currentLinkEndPos = strpos($htmlContent,$endToken,$currentLinkStartPos);
 
-            if($CurrentLinkStartPos !== false){
+               $currentLinkString = substr($htmlContent,
+                  $currentLinkStartPos + $startTokenLength,
+                  $currentLinkEndPos - $currentLinkStartPos - $startTokenLength);
 
-               // Token-End-Position finden
-               $CurrentLinkEndPos = strpos($HTMLContent,$EndToken,$CurrentLinkStartPos);
+               $currentLinkAttributes = xmlParser::getAttributesFromString($currentLinkString);
 
-               // Link-String extrahieren
-               $CurrentLinkString = substr($HTMLContent,$CurrentLinkStartPos + strlen($StartToken),$CurrentLinkEndPos - $CurrentLinkStartPos - strlen($StartToken));
+               // rewrite link if desired
+               if(isset($currentLinkAttributes[$attributeToken])){
 
-               // Attribute des Links parsen
-               $CurrentLinkAttributes = xmlParser::getAttributesFromString($CurrentLinkString);
-
-               // Link rewriten, falls gewünscht
-               if(isset($CurrentLinkAttributes[$AttributeToken])){
-
-                  // Prüfen, ob Attribut "linkrewrite" vorhanden ist
-                  if(isset($CurrentLinkAttributes['linkrewrite']) && $CurrentLinkAttributes['linkrewrite'] == 'false'){
+                  // check for "linkrewrite" attribute
+                  if(isset($currentLinkAttributes['linkrewrite']) && $currentLinkAttributes['linkrewrite'] == 'false'){
                    // end if
                   }
+                  elseif(substr_count($currentLinkAttributes[$attributeToken],'mailto:') > 0){
+                   // end elseif
+                  }
                   else{
-                     $CurrentLinkAttributes[$AttributeToken] = $this->__replaceURISeparators($CurrentLinkAttributes[$AttributeToken]);
+                     $currentLinkAttributes[$attributeToken] = $this->__replaceURISeparators($currentLinkAttributes[$attributeToken]);
                    // end else
                   }
 
                 // end if
                }
 
-               // Neuen Link-String erzeugen
-               $CurrentReplacedLinkString = $StartToken.' '.$this->__getAttributesAsString($CurrentLinkAttributes,array('linkrewrite')).'>';
-
-               // Bisherigen Link-String ersetzen
-               $HTMLContent = substr_replace($HTMLContent,$CurrentReplacedLinkString,$CurrentLinkStartPos,$CurrentLinkEndPos - $CurrentLinkStartPos + strlen($EndToken));
-
-               // SearchOffset erhöhen
-               $SearchOffset = $CurrentLinkEndPos + strlen($EndToken);
+               $currentReplacedLinkString =
+                  $startToken.' '.$this->__getAttributesAsString($currentLinkAttributes,array('linkrewrite')).'>';
+               $htmlContent = substr_replace($htmlContent,
+                  $currentReplacedLinkString,
+                  $currentLinkStartPos,
+                  $currentLinkEndPos - $currentLinkStartPos + $endTokenLength);
+               $searchOffset = $currentLinkEndPos + $endTokenLength;
 
              // end if
             }
             else{
-               $TokenFound = false;
+               $tokenFound = false;
              // end else
             }
 
           // end while
          }
 
-         // Rewriteten HTMLContent zurückgeben
-         return $HTMLContent;
+         return $htmlContent;
 
        // end function
       }
 
 
       /**
-      *  @private
-      *
-      *  Ersetzt in URLs übliche Request-Strings durch Slashes.<br />
-      *
-      *  @param string $String; URL-Teil
-      *  @return string $String; Ersetzter URL-Teil
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 14.03.2006<br />
-      *  Version 0.2, 16.04.2006<br />
-      *  Version 0.3, 27.07.2006 (Bug beim Replacen behoben ('./?' statt '/?'))<br />
-      *  Version 0.4, 01.08.2006 (Bug behoben, dass eine URI http://localhost/?Seite=123 falsch rewritet wurde)<br />
-      *  Version 0.5, 02.06.2007 (Encoded ampersands werden nun auch ersetzte)<br />
-      *  Version 0.6, 08.06.2007 (von "Page" nach "htmlLinkRewriteFilter" umgezogen)<br />
-      */
-      function __replaceURISeparators($String){
+       * @private
+       *
+       * Ersetzt in URLs übliche Request-Strings durch Slashes.<br />
+       *
+       * @param string $String; URL-Teil
+       * @return string $String; Ersetzter URL-Teil
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 14.03.2006<br />
+       * Version 0.2, 16.04.2006<br />
+       * Version 0.3, 27.07.2006 (Bug beim Replacen behoben ('./?' statt '/?'))<br />
+       * Version 0.4, 01.08.2006 (Bug behoben, dass eine URI http://localhost/?Seite=123 falsch rewritet wurde)<br />
+       * Version 0.5, 02.06.2007 (Encoded ampersands werden nun auch ersetzte)<br />
+       * Version 0.6, 08.06.2007 (von "Page" nach "htmlLinkRewriteFilter" umgezogen)<br />
+       */
+      private function __replaceURISeparators($string){
 
-         $Replace = array('/?' => '/',
+         $replace = array('/?' => '/',
                           './?' => '/',
                           '=' => '/',
                           '&' => '/',
                           '&amp;' => '/',
                           '?' => '/'
                          );
-         return strtr($String,$Replace);
+         return strtr($string,$replace);
 
        // end function
       }
