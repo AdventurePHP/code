@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -35,35 +35,38 @@
    class MySQLxHandler extends MySQLHandler
    {
 
-      function MySQLxHandler(){
+      public function MySQLxHandler(){
       }
 
 
       /**
-      *  @public
-      *
-      *  Initializes the MySQLxHandler.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 27.02.2008<br />
-      *  Version 0.2, 16.11.2008 (Bugfix: debug mode was not activated correctly)<br />
-      */
-      function init($ConfigSection){
+       * @public
+       *
+       * Initializes the MySQLxHandler.
+       *
+       * @param $configSection The content of the database configuration.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 27.02.2008<br />
+       * Version 0.2, 16.11.2008 (Bugfix: debug mode was not activated correctly)<br />
+       * Version 0.3, 15.07.2009 (Added collation support)<br />
+       */
+      public function init($configSection){
 
          // initialize if not already done
          if($this->__isInitialized == false){
 
             // fill connection data
-            $this->__dbHost = $ConfigSection['DB.Host'];
-            $this->__dbUser = $ConfigSection['DB.User'];
-            $this->__dbPass = $ConfigSection['DB.Pass'];
-            $this->__dbName = $ConfigSection['DB.Name'];
+            $this->__dbHost = $configSection['DB.Host'];
+            $this->__dbUser = $configSection['DB.User'];
+            $this->__dbPass = $configSection['DB.Pass'];
+            $this->__dbName = $configSection['DB.Name'];
 
             // activate / deactivate debug mode
-            if(isset($ConfigSection['DB.DebugMode'])){
+            if(isset($configSection['DB.DebugMode'])){
 
-               if($ConfigSection['DB.DebugMode'] == 'true' || $ConfigSection['DB.DebugMode'] == '1'){
+               if($configSection['DB.DebugMode'] == 'true' || $configSection['DB.DebugMode'] == '1'){
                   $this->__dbDebug = true;
                 // end if
                }
@@ -79,7 +82,25 @@
              // end else
             }
 
-            // create logger instance
+            // set connection charset and collation
+            if(isset($configSection['DB.Charset'])){
+               $charset = trim($configSection['DB.Charset']);
+               if(!empty($charset)){
+                  $this->__dbCharset = $charset;
+                // end if
+               }
+             // end if
+            }
+            if(isset($configSection['DB.Collation'])){
+               $collation = trim($configSection['DB.Collation']);
+               if(!empty($collation)){
+                  $this->__dbCollation = $collation;
+                // end if
+               }
+             // end if
+            }
+
+            // refer to the logger instance
             $this->__dbLog = &Singleton::getInstance('Logger');
 
             // mark as initialized

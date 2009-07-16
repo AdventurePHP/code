@@ -132,13 +132,30 @@
 
 
       /**
-      *  @protected
-      *  Zeigt an, ob Klasse bereits initialisiert wurde.
-      */
+       * @protected
+       * Indicates, wheather an instance was arleady initialized.
+       */
       protected $__isInitialized = false;
 
+      
+      /**
+       * @protected
+       * Indicates the charset of the database connnection.
+       * See http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
+       * for more details.
+       */
+      protected $__dbCollation = null;
 
-      function MySQLHandler(){
+      /**
+       * @protected
+       * Indicates the collation of the database connnection.
+       * See http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
+       * for more details.
+       */
+      protected $__dbCharset = null;
+
+
+      public function MySQLHandler(){
       }
 
 
@@ -156,31 +173,28 @@
       */
       protected function __initMySQLHandler(){
 
-         // Falls noch nicht initialisiert wurde initialisieren
+         // initialize if not already done
          if($this->__isInitialized == false){
 
-            // Konfiguration auslesen
-            $Config = &$this->__getConfiguration('core::database','connections');
+            // read config
+            $config = &$this->__getConfiguration('core::database','connections');
+            $section = $config->getSection('MySQL');
 
-            // Section auslesen
-            $Section = $Config->getSection('MySQL');
-
-            // Pr�fen, ob Section existent
-            if($Config == null){
+            if($config == null){
                trigger_error('[MySQLHandler->__initMySQLHandler()] Configuration "dbconnectiondaten" in namspace "core::database" and context "'.$this->__Context.'" contains no valid data!',E_USER_ERROR);
                exit();
              // end if
             }
 
-            // Zugangsdaten auslesen
-            $this->__dbHost = $Section['DB.Host'];
-            $this->__dbUser = $Section['DB.User'];
-            $this->__dbPass = $Section['DB.Pass'];
-            $this->__dbName = $Section['DB.Name'];
+            // fill connection data
+            $this->__dbHost = $section['DB.Host'];
+            $this->__dbUser = $section['DB.User'];
+            $this->__dbPass = $section['DB.Pass'];
+            $this->__dbName = $section['DB.Name'];
 
-            // Debug-Mode aktivieren / deaktivieren
-            if(isset($Section['DB.DebugMode'])){
-               if($Section['DB.DebugMode'] == 'true' || $Section['DB.DebugMode'] == '1'){
+            // activate / deactivate debug mode
+            if(isset($section['DB.DebugMode'])){
+               if($section['DB.DebugMode'] == 'true' || $section['DB.DebugMode'] == '1'){
                   $this->__dbDebug = true;
                 // end if
                }
@@ -196,15 +210,33 @@
              // end else
             }
 
-            // Logdatei festlegen (Instanz des Logger's)
+            // set connection charset and collation
+            if(isset($section['DB.Charset'])){
+               $charset = trim($section['DB.Charset']);
+               if(!empty($charset)){
+                  $this->__dbCharset = $charset;
+                // end if
+               }
+             // end if
+            }
+            if(isset($section['DB.Collation'])){
+               $collation = trim($section['DB.Collation']);
+               if(!empty($collation)){
+                  $this->__dbCollation = $collation;
+                // end if
+               }
+             // end if
+            }
+
+            // refer to the logger instance
             $this->__dbLog = &Singleton::getInstance('Logger');
 
-            // Klasse als initialisiert kennzeichnen
+            // mark as initialized
             $this->__isInitialized = true;
 
-            // Zur DB verbinden
+            // create connection
             $this->__connect();
-
+            
           // end if
          }
 
@@ -240,7 +272,22 @@
           // end if
          }
 
-         // select the database
+         // configure client connection
+         // See http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
+         // for more details
+         if($this->__dbCharset !== null){
+            $this->executeTextStatement('SET character_set_client = \''.$this->__dbCharset.'\'');
+            $this->executeTextStatement('SET character_set_connection = \''.$this->__dbCharset.'\'');
+            $this->executeTextStatement('SET character_set_results = \''.$this->__dbCharset.'\'');
+          // end if
+         }
+         if($this->__dbCollation !== null){
+            $this->executeTextStatement('SET collation_connection = \''.$this->__dbCollation.'\'');
+            $this->executeTextStatement('SET collation_database = \''.$this->__dbCollation.'\'');
+          // end if
+         }
+
+         // Select the database. The ugly @ sign is needed to provide nice error messages.
          $result = @mysql_select_db($this->__dbName,$this->__dbConn);
 
          if(!$result){
@@ -289,7 +336,7 @@
       *  Version 0.1, 01.04.2007<br />
       *  Version 0.2, 01.04.2007 (Connection is only closed if existent)<br />
       */
-      function closeConnection(){
+      public function closeConnection(){
 
          if($this->__dbConn != null){
             $this->__close();
@@ -327,7 +374,7 @@
       *  Version 1.1, 26.03.2009 (Enhanced the error messages)<br />
       *  Version 1.2, 03.05.2009 (Forth param set to true now results in a debug log entry instead of an error)<br />
       */
-      function executeStatement($namespace,$statementFile,$params = array(),$logStatement = false){
+      public function executeStatement($namespace,$statementFile,$params = array(),$logStatement = false){
 
          $this->__initMySQLHandler();
 
@@ -406,7 +453,7 @@
       *  Version 0.1, 07.01.2008<br />
       *  Version 0.2, 17.11.2008 (Bugfix: if the method is called before any other, the connection is null)<br />
       */
-      function escapeValue($value){
+      public function escapeValue($value){
          $this->__initMySQLHandler();
          return mysql_real_escape_string($value,$this->__dbConn);
        // end function
@@ -426,7 +473,7 @@
       *  Version 0.1, 24.12.2005<br />
       *  Version 0.2, 23.02.2008 (Array is now returned directly)<br />
       */
-      function fetchData($resultCursor){
+      public function fetchData($resultCursor){
          $this->__initMySQLHandler();
          return mysql_fetch_assoc($resultCursor);
        // end function
@@ -442,7 +489,7 @@
       *  @version
       *  Version 0.1, 15.01.2006<br />
       */
-      function setDataPointer($result,$offset){
+      public function setDataPointer($result,$offset){
          $this->__initMySQLHandler();
          @mysql_data_seek($result,$offset);
        // end function
@@ -461,7 +508,7 @@
       *  Version 0.1, 04.01.2006<br />
       *  Version 0.2, 07.03.2008<br />
       */
-      function getAffectedRows(){
+      public function getAffectedRows(){
          $this->__initMySQLHandler();
          return mysql_affected_rows($this->__dbConn);
        // end function
@@ -477,7 +524,7 @@
       *  @version
       *  Version 0.1, 04.01.2006<br />
       */
-      function getLastID(){
+      public function getLastID(){
          $this->__initMySQLHandler();
          return $this->__lastInsertID;
        // end function
@@ -518,7 +565,7 @@
       *  Version 0.2, 07.03.2008 (Bugfix: the query was not executed with the right connection)<br />
       *  Version 0.3, 03.05.2009 (Added the $logStatement param)<br />
       */
-      function executeTextStatement($statement,$logStatement = false){
+      public function executeTextStatement($statement,$logStatement = false){
 
          $this->__initMySQLHandler();
 
@@ -569,7 +616,7 @@
       *  Version 0.1, 05.03.2006<br />
       *  Version 0.2, 07.03.2008 (Now the connection is applied to the call.)<br />
       */
-      function getServerInfo(){
+      public function getServerInfo(){
          $this->__initMySQLHandler();
          return mysql_get_server_info($this->__dbConn);
        // end function
@@ -585,73 +632,9 @@
       *  @version
       *  Version 0.1, 05.03.2006<br />
       */
-      function getDatabaseName(){
+      public function getDatabaseName(){
          $this->__initMySQLHandler();
          return $this->__db_name;
-       // end function
-      }
-
-
-      /**
-      *  @public
-      *  @deprecated
-      *
-      *  Erzeugt einen Dump der aktuellen Datenbank mit dem CLI-Tool 'mysqldump'.<br />
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 01.07.2006<br />
-      *  Version 0.2, 18.08.2006 (Standard-Namen wurde von db_host auf db_name ge�ndert)<br />
-      */
-      function backupDatabase($File = ''){
-
-         // Initialisiere Klasse
-         $this->__initMySQLHandler();
-
-         // Dump-File benennen
-         if(empty($File)){
-            $File = 'dump_'.($this->__db_name).'_'.date('Y_m_d__H_i_s').'.sql';
-          // end if
-         }
-
-         // mysqldump ausf�hren
-         exec('mysqldump --add-drop-table --complete-insert --create-options --extended-insert --force --lock-tables --host='.($this->__db_host).' --user='.($this->__db_user).' --password='.($this->__db_pass).' '.($this->__db_name).' > '.$File);
-
-         // true zur�ckgeben
-         return true;
-
-       // end function
-      }
-
-
-      /**
-      *  @public
-      *  @deprecated
-      *
-      *  Spielt ein Datenbank-Backup wieder ein, das zuvor mit backupDatabase() erzeugt wurde.<br />
-      *  Benutzt das CLI-Tool 'mysql'.<br />
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 01.07.2006<br />
-      */
-      function restoreDatabase($File = ''){
-
-         // Initialisiere Klasse
-         $this->__initMySQLHandler();
-
-         // Pr�fen, ob Dump-Datei existiert
-         if(!file_exists($File)){
-            return false;
-          // end if
-         }
-
-         // Import ausf�hren
-         exec('mysql --host='.($this->__db_host).' --user='.($this->__db_user).' --password='.($this->__db_pass).' --database='.($this->__db_name).' --force --xml --execute="source '.$File.'"');
-
-         // true zur�ckgeben
-         return true;
-
        // end function
       }
 
