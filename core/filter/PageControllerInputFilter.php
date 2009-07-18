@@ -43,7 +43,7 @@
       *  Reimplements the filter() method. Checks the params present in the url.
       *
       *  @param string $instruction the filter instruction
-      *  @param string $content the content to filter
+      *  @param string $input the content to filter
       *  @return string $filteredContent the filtered content
       *
       *  @author Christian Achatz
@@ -51,14 +51,17 @@
       *  Version 0.1, 11.12.2008<br />
       *  Version 0.2, 13.12.2008 (Added the benchmarker)<br />
       */
-      function filter($instruction,$content){
+      public function filter($input){
 
          // invoke timer
          $t = &Singleton::getInstance('BenchmarkTimer');
          $t->start('PageControllerInputFilter::filter()');
 
          // setup filter
-         if($instruction === 'URLRewriting'){
+         $reg = &Singleton::getInstance('Registry');
+         $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
+         $filter = null;
+         if($urlRewriting === true){
             import('core::filter::input','PagecontrollerRewriteRequestFilter');
             $filter = new PagecontrollerRewriteRequestFilter();
           // end if
@@ -70,9 +73,8 @@
          }
 
          // apply filter
-         $filter->filter();
+         $filter->filter(null);
 
-         // stop timer
          $t->stop('PageControllerInputFilter::filter()');
 
        // end function

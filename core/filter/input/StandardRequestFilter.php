@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -23,15 +23,15 @@
 
 
    /**
-   *  @namespace core::filter::input
-   *  @class StandardRequestFilter
-   *
-   *  Implements the URL filter for the page controller in standard mode.
-   *
-   *  @author Christian Schäfer
-   *  @version
-   *  Version 0.1, 02.06.2007<br />
-   */
+    * @namespace core::filter::input
+    * @class StandardRequestFilter
+    *
+    * Implements the URL filter for the page controller in standard mode.
+    *
+    * @author Christian Schï¿½fer
+    * @version
+    * Version 0.1, 02.06.2007<br />
+    */
    class StandardRequestFilter extends AbstractRequestFilter
    {
 
@@ -40,17 +40,17 @@
 
 
       /**
-      *  @public
-      *
-      *  Checks the request array for malicious code.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 17.06.2007<br />
-      *  Version 0.2, 11.12.2008 (Added the benchmarker)<br />
-      *  Version 0.3, 13.12.2008 (Removed the benchmarker)<br />
-      */
-      function filter(){
+       * @public
+       *
+       * Checks the request array for malicious code.
+       *
+       * @author Christian SchÃ¤fer
+       * @version
+       * Version 0.1, 17.06.2007<br />
+       * Version 0.2, 11.12.2008 (Added the benchmarker)<br />
+       * Version 0.3, 13.12.2008 (Removed the benchmarker)<br />
+       */
+      public function filter($input){
          $this->__filterRequestArray();
        // end function
       }

@@ -20,15 +20,15 @@
    */
 
    /**
-   *  @package core::errorhandler::documentcontroller
-   *  @class errorpage_v1_controller
-   *
-   *  Implements the error page's document controller.
-   *
-   *  @author Christian Schäfer
-   *  @version
-   *  Version 0.1, 21.01.2007<br />
-   */
+    * @package core::errorhandler::documentcontroller
+    * @class errorpage_v1_controller
+    *
+    * Implements the error page's document controller.
+    *
+    * @author Christian SchÃ¤fer
+    * @version
+    * Version 0.1, 21.01.2007<br />
+    */
    class errorpage_v1_controller extends baseController
    {
 
@@ -41,55 +41,54 @@
       *
       *  Displays the error page.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 21.01.2007<br />
       *  Version 0.2, 26.12.2008 (Messages after the trigger_error() are not displayed any more)<br />
       */
-      function transformContent(){
+      public function transformContent(){
 
          // build stacktrace
-         $Errors = $this->__buildStackTrace();
+         $errors = $this->__buildStackTrace();
          $buffer = (string)'';
 
-         // get template
-         $Template__ErrorEntry = & $this->__getTemplate('ErrorEntry');
+         $errorEntry = &$this->__getTemplate('ErrorEntry');
 
          // generate stacktrace
-         for($i = 0; $i < count($Errors); $i++){
+         for($i = 0; $i < count($errors); $i++){
 
             // don't display any further messages, because these belong to the error manager
-            if(isset($Errors[$i]['function']) && preg_match('/errorHandler|trigger_error/i',$Errors[$i]['function'])){
+            if(isset($errors[$i]['function']) && preg_match('/errorHandler|trigger_error/i',$errors[$i]['function'])){
                break;
              // end if
             }
 
-            if(isset($Errors[$i]['function'])){
-               $Template__ErrorEntry->setPlaceHolder('Function',$Errors[$i]['function']);
+            if(isset($errors[$i]['function'])){
+               $errorEntry->setPlaceHolder('Function',$errors[$i]['function']);
              // end if
             }
 
-            if(isset($Errors[$i]['line'])){
-               $Template__ErrorEntry->setPlaceHolder('Line',$Errors[$i]['line']);
+            if(isset($errors[$i]['line'])){
+               $errorEntry->setPlaceHolder('Line',$errors[$i]['line']);
              // end if
             }
 
-            if(isset($Errors[$i]['file'])){
-               $Template__ErrorEntry->setPlaceHolder('File',$Errors[$i]['file']);
+            if(isset($errors[$i]['file'])){
+               $errorEntry->setPlaceHolder('File',$errors[$i]['file']);
              // end if
             }
 
-            if(isset($Errors[$i]['class'])){
-               $Template__ErrorEntry->setPlaceHolder('Class',$Errors[$i]['class']);
+            if(isset($errors[$i]['class'])){
+               $errorEntry->setPlaceHolder('Class',$errors[$i]['class']);
              // end if
             }
 
-            if(isset($Errors[$i]['type'])){
-               $Template__ErrorEntry->setPlaceHolder('Type',$Errors[$i]['type']);
+            if(isset($errors[$i]['type'])){
+               $errorEntry->setPlaceHolder('Type',$errors[$i]['type']);
              // end if
             }
 
-            $buffer .= $Template__ErrorEntry->transformTemplate();
+            $buffer .= $errorEntry->transformTemplate();
 
           // end for
          }
@@ -106,14 +105,14 @@
 
 
       /**
-      *  @private
-      *
-      *  Creates the stacktrace.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 21.01.2007<br />
-      */
+       * @private
+       *
+       * Creates the stacktrace.
+       *
+       * @author Christian SchÃ¤fer
+       * @version
+       * Version 0.1, 21.01.2007<br />
+       */
       private function __buildStackTrace(){
          return array_reverse(debug_backtrace());
        // end function

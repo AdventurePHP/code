@@ -22,16 +22,16 @@
    import('tools::form::filter','FormFilter');
    
    /**
-   *  @namespace tools::form::filter
-   *  @class MultiplexFormFilter
-   *
-   *  Extends the FormFilter's functionality and enables the developer to filter an input by
-   *  multiple filter instructions.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 13.12.2008<br />
-   */
+    * @namespace tools::form::filter
+    * @class MultiplexFormFilter
+    *
+    * Extends the FormFilter's functionality and enables the developer to filter an input by
+    * multiple filter instructions.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 13.12.2008<br />
+    */
    class MultiplexFormFilter extends FormFilter
    {
 
@@ -40,22 +40,23 @@
 
 
       /**
-      *  @public
-      *
-      *  Filters an input by multiple instructions, that are separated by pipe.
-      *
-      *  @param string $filterInstruction the filter instruction
-      *  @param string $input the filter's input
-      *  @return string $output the output
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 13.12.2008<br />
-      */
-      function filter($instruction,$input){
+       * @public
+       *
+       * Filters an input by multiple instructions, that are separated by pipe.
+       *
+       * @param string $filterInstruction the filter instruction
+       * @param string $input the filter's input
+       * @return string $output the output
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.12.2008<br />
+       * Version 0.2, 17.07.2009 (Applied the filter refactoring to the form filters)<br />
+       */
+      function filter($input){
 
          // create instruction set
-         $instructionSet = explode('|',$instruction);
+         $instructionSet = explode('|',$this->__Instruction);
 
          // initialize output
          $output = $input;
@@ -71,7 +72,7 @@
              // end if
             }
             else{
-               trigger_error('[MultiplexFormFilter::filter()] The filter instruction "'.$filterInstruction.'" cannot be applied! Please consult the manual to get the supported instructions.');
+               trigger_error('[MultiplexFormFilter::filter()] The filter instruction "'.$this->__Instruction.'" cannot be applied! Please consult the manual to get the supported instructions.');
              // end else
             }
 

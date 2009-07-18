@@ -28,7 +28,7 @@
    *
    *  Input filter for the front controller in combination with rewritten URLs.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 03.06.2007<br />
    */
@@ -61,32 +61,32 @@
 
 
       /**
-      *  @public
-      *
-      *  Filters a rewritten url for the front controller. Apply action definitions to the front
-      *  controller to be executed.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 02.06.2007<br />
-      *  Version 0.2, 08.06.2007 (Renamed to "filter()")<br />
-      *  Version 0.3, 17.06.2007 (Added stripslashes and htmlentities filter)<br />
-      *  Version 0.4, 08.09.2007 (Now, the existance of the action keyword indicates, that an action is included. Before, only the action keyword in combination with the action delimiter was used as an action indicator)<br />
-      *  Version 0.5, 29.09.2007 (Now, $_REQUEST['query'] is cleared)<br />
-      *  Version 0.6, 13.12.2008 (Removed the benchmarker)<br />
-      */
-      function filter(){
+       * @public
+       *
+       * Filters a rewritten url for the front controller. Apply action definitions to the front
+       * controller to be executed.
+       *
+       * @author Christian Schï¿½fer
+       * @version
+       * Version 0.1, 02.06.2007<br />
+       * Version 0.2, 08.06.2007 (Renamed to "filter()")<br />
+       * Version 0.3, 17.06.2007 (Added stripslashes and htmlentities filter)<br />
+       * Version 0.4, 08.09.2007 (Now, the existance of the action keyword indicates, that an action is included. Before, only the action keyword in combination with the action delimiter was used as an action indicator)<br />
+       * Version 0.5, 29.09.2007 (Now, $_REQUEST['query'] is cleared)<br />
+       * Version 0.6, 13.12.2008 (Removed the benchmarker)<br />
+       */
+      public function filter($input){
 
          // get the front controller and initialize the action keyword
          $fC = &Singleton::getInstance('Frontcontroller');
          $this->__FrontcontrollerActionKeyword = $fC->get('NamespaceKeywordDelimiter').$fC->get('ActionKeyword');
 
-         // extracte the PHPSESSID from $_REQUEST if existent
+         // extract the PHPSESSID from $_REQUEST if existent
          $PHPSESSID = (string)'';
-         $SessionName = ini_get('session.name');
+         $sessionName = ini_get('session.name');
 
-         if(isset($_REQUEST[$SessionName])){
-            $PHPSESSID = $_REQUEST[$SessionName];
+         if(isset($_REQUEST[$sessionName])){
+            $PHPSESSID = $_REQUEST[$sessionName];
           // end if
          }
 
@@ -97,48 +97,46 @@
          //
          // BETA (08.09.2007): Es wird nun mit
          //   substr_count($_SERVER['REQUEST_URI'],$this->__FrontcontrollerActionKeyword.'/') > 0
-         // auch auf das vorkommen eines ActionKeywords geprüft - ohne Delimiter. Bei Verwendung des
+         // auch auf das vorkommen eines ActionKeywords geprï¿½ft - ohne Delimiter. Bei Verwendung des
          // frontcontrollerLinkHandlers ist das zwar nicht notwendig, bei manuellem Erstellen des
          // FC-Links schon. Sollte es Probleme damit geben wird das Verhalten im folgenden Release
          // wieder entfernt.
          if(substr_count($_SERVER['REQUEST_URI'],$this->__ActionDelimiter) > 0 || substr_count($_SERVER['REQUEST_URI'],$this->__FrontcontrollerActionKeyword.'/') > 0){
 
             // URL nach Delimiter trennen
-            $RequestURLParts = explode($this->__ActionDelimiter,$_SERVER['REQUEST_URI']);
+            $requestURLParts = explode($this->__ActionDelimiter,$_SERVER['REQUEST_URI']);
 
-            for($i = 0; $i < count($RequestURLParts); $i++){
+            for($i = 0; $i < count($requestURLParts); $i++){
 
                // Slashed am Anfang entfernen
-               $RequestURLParts[$i] = $this->__deleteTrailingSlash($RequestURLParts[$i]);
+               $requestURLParts[$i] = $this->__deleteTrailingSlash($requestURLParts[$i]);
 
                // Frontcontroller-Action enthalten
-               if(substr_count($RequestURLParts[$i],$this->__FrontcontrollerActionKeyword) > 0){
+               if(substr_count($requestURLParts[$i],$this->__FrontcontrollerActionKeyword) > 0){
 
                   // String zerlegen
-                  $RequestArray = explode($this->__RewriteURLDelimiter,$RequestURLParts[$i]);
+                  $requestArray = explode($this->__RewriteURLDelimiter,$requestURLParts[$i]);
 
-                  if(isset($RequestArray[1])){
+                  if(isset($requestArray[1])){
 
                      // Action-Parameter erzeugen
-                     $ActionNamespace = str_replace($this->__FrontcontrollerActionKeyword,'',$RequestArray[0]);
-                     $ActionName = $RequestArray[1];
-                     $ActionParams = array_slice($RequestArray,2);
+                     $actionNamespace = str_replace($this->__FrontcontrollerActionKeyword,'',$requestArray[0]);
+                     $actionName = $requestArray[1];
+                     $actionParams = array_slice($requestArray,2);
 
                      // Action-Parameter-Array erzeugen
-                     $ActionParamsArray = array();
+                     $actionParamsArray = array();
 
-                     if(count($ActionParams) > 0){
+                     if(count($actionParams) > 0){
 
                         $x = 0;
 
-                        while($x <= (count($ActionParams) - 1)){
+                        while($x <= (count($actionParams) - 1)){
 
-                           if(isset($ActionParams[$x + 1])){
-                              $ActionParamsArray[$ActionParams[$x]] = $ActionParams[$x + 1];
+                           if(isset($actionParams[$x + 1])){
+                              $actionParamsArray[$actionParams[$x]] = $actionParams[$x + 1];
                             // end if
                            }
-
-                           // Offset-Zähler um 2 erhöhen
                            $x = $x + 2;
 
                          // end while
@@ -147,8 +145,7 @@
                       // end if
                      }
 
-                     // Action zum Frontcontroller hinzufügen
-                     $fC->addAction($ActionNamespace,$ActionName,$ActionParamsArray);
+                     $fC->addAction($actionNamespace,$actionName,$actionParamsArray);
 
                    // end if
                   }
@@ -157,8 +154,8 @@
                }
                else{
 
-                  $ParamArray = $this->__createRequestArray($RequestURLParts[$i]);
-                  $_REQUEST = array_merge($_REQUEST,$ParamArray);
+                  $paramArray = $this->__createRequestArray($requestURLParts[$i]);
+                  $_REQUEST = array_merge($_REQUEST,$paramArray);
 
                 // end else
                }
@@ -171,8 +168,8 @@
          else{
 
             // Standard-Rewrite wie PageController URL-Rewriting
-            $ParamArray = $this->__createRequestArray($_SERVER['REQUEST_URI']);
-            $_REQUEST = array_merge($_REQUEST,$ParamArray);
+            $paramArray = $this->__createRequestArray($_SERVER['REQUEST_URI']);
+            $_REQUEST = array_merge($_REQUEST,$paramArray);
 
           // end if
          }
@@ -182,7 +179,7 @@
 
          // add PHPSESSID to the request again
          if(!empty($PHPSESSID)){
-            $_REQUEST[$SessionName] = $PHPSESSID;
+            $_REQUEST[$sessionName] = $PHPSESSID;
           // end if
          }
 

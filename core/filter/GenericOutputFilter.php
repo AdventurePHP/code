@@ -37,28 +37,30 @@
 
 
       /**
-      *  @public core::filter
-      *
-      *  Reimplements the filter() method. Rewrites normals links, if url rewriting is active.
-      *
-      *  @param string $instruction the filter instruction
-      *  @param string $content the content to filter
-      *  @return string $filteredContent the filtered content
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 11.12.2008<br />
-      */
-      function filter($instruction,$content){
+       * @public
+       *
+       * Reimplements the filter() method. Rewrites normals links, if url rewriting is active.
+       *
+       * @param string $instruction the filter instruction
+       * @param string $input the content to filter
+       * @return string $filteredContent the filtered content
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 11.12.2008<br />
+       */
+      public function filter($input){
 
-         if($instruction === 'URLRewriting'){
+         $reg = &Singleton::getInstance('Registry');
+         $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
+         if($urlRewriting === true){
             import('core::filter::output','HtmlLinkRewriteFilter');
             $filter = new HtmlLinkRewriteFilter();
-            return $filter->filter($content);
+            return $filter->filter($input);
           // end if
          }
          else{
-            return $content;
+            return $input;
           // end else
          }
 

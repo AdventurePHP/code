@@ -20,15 +20,15 @@
    */
 
    /**
-   *  @namespace core::filter
-   *  @class FilterDefinition
-   *
-   *  Represents the description of an APF filter.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 08.12.2007<br />
-   */
+    * @namespace core::filter
+    * @class FilterDefinition
+    *
+    * Represents the description of an APF filter.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.12.2007<br />
+    */
    final class FilterDefinition extends coreObject
    {
 
@@ -47,14 +47,14 @@
 
 
       /**
-      *  @public
-      *
-      *  Constructor of the filter description. Taks the namespace and the class as an argument.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 08.12.2007<br />
-      */
+       * @public
+       *
+       * Constructor of the filter description. Taks the namespace and the class as an argument.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 08.12.2007<br />
+       */
       function FilterDefinition($namespace,$class){
          $this->__Namespace = $namespace;
          $this->__Class = $class;
@@ -66,16 +66,16 @@
 
 
    /**
-   *  @namespace core::filter
-   *  @class AbstractFilter
-   *  @abstract
-   *
-   *  Abstract filter class.
-   *
-   *  @author Christian Schäfer
-   *  @version
-   *  Version 0.1, 08.06.2007<br />
-   */
+    * @namespace core::filter
+    * @class AbstractFilter
+    * @abstract
+    *
+    * Abstract filter class.
+    *
+    * @author Christian Schï¿½fer
+    * @version
+    * Version 0.1, 08.06.2007<br />
+    */
    abstract class AbstractFilter extends coreObject
    {
 
@@ -84,40 +84,37 @@
 
 
       /**
-      *  @public
-      *  @abstract
-      *
-      *  Abstract filter methode. Must be implemented by concrete filter implementations.
-      *
-      *  @param string $filterInstruction instructions for the filter
-      *  @param void $input the input of the filter
-      *  @return void $output the output of the filter
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 08.06.2007<br />
-      *  Version 0.2, 08.12.2008 (Added the $filterInstruction argument)<br />
-      */
-      function filter($filterInstruction,$input = null){
-         return $input;
-       // end function
-      }
+       * @public
+       * @abstract
+       *
+       * Abstract filter methode. Must be implemented by concrete filter implementations.
+       *
+       * @param string $input the input of the filter.
+       * @return string The output of the filter.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 08.06.2007<br />
+       * Version 0.2, 08.12.2008 (Added the $filterInstruction argument)<br />
+       * Version 0.3, 18.07.2009 (Removed the $filterInstruction argument and refactored the filters)<br />
+       */
+      abstract function filter($input);
 
     // end class
    }
 
 
    /**
-   *  @namespace core::filter
-   *  @class FilterFactory
-   *
-   *  Implements a simple factory to load filter classes derived from the AbstractFilter class.
-   *  Each filter is described by the FilterDefinition class.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 08.06.2007<br />
-   */
+    * @namespace core::filter
+    * @class FilterFactory
+    *
+    * Implements a simple factory to load filter classes derived from the AbstractFilter class.
+    * Each filter is described by the FilterDefinition class.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.06.2007<br />
+    */
    class FilterFactory
    {
 

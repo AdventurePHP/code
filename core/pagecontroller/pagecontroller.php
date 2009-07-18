@@ -60,15 +60,15 @@
    /////////////////////////////////////////////////////////////////////////////////////////////////
 
    // get current path
-   $Path = explode('/',str_replace('\\','/',dirname(__FILE__)));
+   $path = explode('/',str_replace('\\','/',dirname(__FILE__)));
 
    // get relevant segments
-   $count = count($Path);
-   $AppsPath = array();
+   $count = count($path);
+   $appsPath = array();
    for($i = 0; $i < $count; $i++){
 
-      if($Path[$i] != 'core'){
-         $AppsPath[] = $Path[$i];
+      if($path[$i] != 'core'){
+         $appsPath[] = $path[$i];
        // end if
       }
       else{
@@ -80,7 +80,7 @@
    }
 
    // define the APPS__PATH constant to be used in the import() function (performance hack!)
-   define('APPS__PATH',implode($AppsPath,'/'));
+   define('APPS__PATH',implode($appsPath,'/'));
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -96,6 +96,7 @@
    $reg->register('apf::core','LibPath',APPS__PATH,true);
 
    // define current request url entry
+   $protocol = null;
    if($_SERVER['SERVER_PORT'] == '443'){
       $protocol = 'https://';
     // end if
@@ -122,29 +123,29 @@
 
 
    /**
-   *  @package core::pagecontroller
-   *  @function import
-   *
-   *  Imports classes or modules from a given namespace. Usage:
-   *  <pre>
-   *  import('core::frontcontroller','Frontcontroller');
-   *  </pre>
-   *
-   *  @param string $namespace the namespace of the file (=relative path, starting at the root of your code base)
-   *  @param string $file the body of the desired file / class to include (without extension)
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 03.12.2005<br />
-   *  Version 0.2, 14.04.2006<br />
-   *  Version 0.3, 14.01.2007 (Implemented proprietary support for PHP 5)<br />
-   *  Version 0.4, 03.03.2007 (Did some cosmetics)<br />
-   *  Version 0.5, 03.03.2007 (Added support for mixed operation under PHP 4 and PHP 5)<br />
-   *  Version 0.6, 24.03.2008 (Improved Performance due to include cache introduction)<br />
-   *  Version 0.7, 20.06.2008 (Moved to pagecontroller.php due to the Registry introduction)<br />
-   *  Version 0.8, 13.11.2008 (Replaced the include_once() calls with include()s to gain performance)<br />
-   *  Version 0.9, 25.03.2009 (Cleared implementation for the PHP 5 branch)<br />
-   */
+    * @package core::pagecontroller
+    * @function import
+    *
+    * Imports classes or modules from a given namespace. Usage:
+    * <pre>
+    * import('core::frontcontroller','Frontcontroller');
+    * </pre>
+    *
+    * @param string $namespace the namespace of the file (=relative path, starting at the root of your code base)
+    * @param string $file the body of the desired file / class to include (without extension)
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.12.2005<br />
+    * Version 0.2, 14.04.2006<br />
+    * Version 0.3, 14.01.2007 (Implemented proprietary support for PHP 5)<br />
+    * Version 0.4, 03.03.2007 (Did some cosmetics)<br />
+    * Version 0.5, 03.03.2007 (Added support for mixed operation under PHP 4 and PHP 5)<br />
+    * Version 0.6, 24.03.2008 (Improved Performance due to include cache introduction)<br />
+    * Version 0.7, 20.06.2008 (Moved to pagecontroller.php due to the Registry introduction)<br />
+    * Version 0.8, 13.11.2008 (Replaced the include_once() calls with include()s to gain performance)<br />
+    * Version 0.9, 25.03.2009 (Cleared implementation for the PHP 5 branch)<br />
+    */
    function import($namespace,$file){
 
       // create the complete and absolute file name
@@ -176,18 +177,18 @@
 
 
    /**
-   *  @namespace core::pagecontroller
-   *  @function printObject
-   *  @see http://php.net/print_r
-   *
-   *  Creates a print_r() output of the given object, array, string or integer.
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 04.02.3006<br />
-   *  Version 0.2, 23.04.2006 (The output is now returned instead of printed directly)<br />
-   */
-   function printObject($o,$transformhtml = false){
+    * @namespace core::pagecontroller
+    * @function printObject
+    * @see http://php.net/print_r
+    *
+    * Creates a print_r() output of the given object, array, string or integer.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 04.02.3006<br />
+    * Version 0.2, 23.04.2006 (The output is now returned instead of printed directly)<br />
+    */
+   function printObject($o,$transformHtml = false){
 
       $buffer = (string)'';
       $buffer .= "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
@@ -199,7 +200,7 @@
       $buffer .= "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
       $buffer .= "\n<pre>";
 
-      if($transformhtml == true){
+      if($transformHtml == true){
          $buffer .= htmlentities(print_r($o,true));
        // end if
       }
@@ -220,16 +221,16 @@
 
 
    /**
-   *  @namespace core::pagecontroller
-   *  @class xmlParser
-   *  @static
-   *
-   *  Static parser for XML / XSL Strings.
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 22.12.2006<br />
-   */
+    * @namespace core::pagecontroller
+    * @class xmlParser
+    * @static
+    *
+    * Static parser for XML / XSL Strings.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 22.12.2006<br />
+    */
    final class xmlParser {
 
       private function xmlParser(){
@@ -237,114 +238,111 @@
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Extracts the attributes from an XML attributes string.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 22.12.2006<br />
-      *  Version 0.2, 30.12.2006 (Fehler beim Parsen von Tags ohne Attribute behoben (setzen von $tagAttributeDel))<br />
-      *  Version 0.3, 03.01.2007 (Fehler beim Bestimmen des Attribut-Strings behoben)<br />
-      *  Version 0.4, 13.01.2007 (Fehlerausgabe beim Parse-Fehler verbessert)<br />
-      *  Version 0.5, 16.11.2007 (Fehler bei Fehlerausgabe von Tags verbessert)<br />
-      *  Version 0.6, 03.11.2008 (Fixed the issue, that a TAB character is no valid token to attributes delimiter)<br />
-      *  Version 0.7, 04.11.2008 (Fixed issue, that a combination of TAB and SPACE characters leads to wrong attributes parsing)<br />
-      *  Version 0.8, 05.11.2008 (Removed the TAB support due to performance and fault tolerance problems)<br />
-      */
-      static function getTagAttributes($TagString){
+       * @public
+       * @static
+       *
+       * Extracts the attributes from an XML attributes string.
+       *
+       * @param string $tagString The string, that contains the tag definition.
+       * @return string[] The attributes of the tag.
+       * 
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 22.12.2006<br />
+       * Version 0.2, 30.12.2006 (Bugfix: tag-to-attribute delimiter is now a constant value)<br />
+       * Version 0.3, 03.01.2007<br />
+       * Version 0.4, 13.01.2007 (Improved error messages)<br />
+       * Version 0.5, 16.11.2007 (Improved error message. Now affected tag string is displayed, too)<br />
+       * Version 0.6, 03.11.2008 (Fixed the issue, that a TAB character is no valid token to attributes delimiter)<br />
+       * Version 0.7, 04.11.2008 (Fixed issue, that a combination of TAB and SPACE characters leads to wrong attributes parsing)<br />
+       * Version 0.8, 05.11.2008 (Removed the TAB support due to performance and fault tolerance problems)<br />
+       */
+      public static function getTagAttributes($tagString){
 
          // search for taglib to attributes string delimiter
-         $tagAttributeDel = strpos($TagString,' ');
+         $tagAttributeDel = strpos($tagString,' ');
 
          // search for the closing sign
-         $posTagClosingSign = strpos($TagString,'>');
+         $posTagClosingSign = strpos($tagString,'>');
 
-         // Falls Trennposition zwischen Tag und Attributen nicht gefunden wurden, oder das
-         // TagEnde-Zeichen vor dem Delimiter zwischen Tag und Attributen liegt, wird
-         // das "Ende-Zeichen" ('>') als Trennzeichen gesetzt. So k�nnen Tags ohne
-         // Attribute erlaubt werden.
+         // In case, the seperator between tag and attribute is not found, or in case the tag
+         // end position is located between the tag and the attribute, the end sign (">") is used
+         // as separator. This allows tags without attributes.
          if($tagAttributeDel === false || $tagAttributeDel > $posTagClosingSign){
-            //OLD: Machte Fehler beim Parsen von Tags ohne Attribute
-            //$tagAttributeDel = strlen($TagString);
-            $tagAttributeDel = strpos($TagString,'>');
+            $tagAttributeDel = strpos($tagString,'>');
           // end if
          }
 
-         // Position des Trennzeichens zwischen Taglib und Klasse suchen
-         $prefixDel = strpos($TagString,':');
+         // search for seperator between prefix and class
+         $prefixDel = strpos($tagString,':');
 
-         // Klasse extrahieren
-         $class = substr($TagString,$prefixDel + 1,$tagAttributeDel - ($prefixDel +1));
+         // gather class
+         $class = substr($tagString,$prefixDel + 1,$tagAttributeDel - ($prefixDel +1));
 
-         // Taglib extrahieren
-         $prefix = substr($TagString,1,$prefixDel - 1);
+         // gather prefix
+         $prefix = substr($tagString,1,$prefixDel - 1);
 
-         // Position der ersten schlie�enden Klammer nach dem Attribut-String finden
-         $posEndAttrib = strpos($TagString,'>');
+         // search for the first appearance of the closing sign after the attribute string
+         $posEndAttrib = strpos($tagString,'>');
 
-         // Restlichen String als Attributstring extrahieren
-         // OLD: Machte Fehler, falls ein XML-Tag direkt im Anschluss an das Tag folgte
-         //$attributesString = substr($TagString,$tagAttributeDel + 1,$posEndAttrib);
-         $attributesString = substr($TagString,$tagAttributeDel + 1,$posEndAttrib - $tagAttributeDel);
+         // extract the rest of the tag string.
+         $attributesString = substr($tagString,$tagAttributeDel + 1,$posEndAttrib - $tagAttributeDel);
 
-         // Attribute des Strings auslesen
-         $attributes = xmlParser::getAttributesFromString($attributesString);
+         // parse the tag's attributes
+         $tagAttributes = xmlParser::getAttributesFromString($attributesString);
 
-         // Pr�fen ob Tag selbstschlie�end. Falls nicht Content einlesen
-         if(substr($TagString,$posEndAttrib - 1,1) == '/'){
+         // Check, whether the tag is self-closing. If not, read the content.
+         $content = null;
+         if(substr($tagString,$posEndAttrib - 1,1) == '/'){
             $content = (string)'';
           // end if
          }
          else{
 
-            // Content-Variable initialisieren
+            // initialize the content as empty string
             $content = (string)'';
 
-            // Pr�fen ob schlie�ender Tag vorhanden ist
-            if(strpos($TagString,'</'.$prefix.':'.$class.'>') === false){
-               trigger_error('[xmlParser::getTagAttributes()] No closing tag found for tag "&lt;'.$prefix.':'.$class.' /&gt;"! Tag string: "'.htmlentities($TagString).'".',E_USER_ERROR);
+            // check, if explictitly-closing tag exists
+            if(strpos($tagString,'</'.$prefix.':'.$class.'>') === false){
+               trigger_error('[xmlParser::getTagAttributes()] No closing tag found for tag "&lt;'.$prefix.':'.$class.' /&gt;"! Tag string: "'.htmlentities($tagString).'".',E_USER_ERROR);
              // end if
             }
             else{
 
-               // Ben�tigte Variablen initialisieren
                $found = true;
                $offset = 0;
                $posEndContent = 0;
-               $Count = 0;
-               $MaxCount = 10;
+               $count = 0;
+               $maxCount = 10;
                $endTag = '</'.$prefix.':'.$class.'>';
 
                while($found == true){
 
-                  // Alten Wert aufbewahren
+                  // save old value
                   $posEndContent = $offset;
 
-                  // Neue Position evaluieren
-                  $offset = strpos($TagString,$endTag,$offset + 1);
+                  // reasign the position of the tag end limiter
+                  $offset = strpos($tagString,$endTag,$offset + 1);
 
-                  // Falls keine weitere Version gefunden -> aussteigen
+                  // in case no futher position is found -> end at this point
                   if($offset === false){
                      $found = false;
                    // end if
                   }
 
-                  // Falls mehr als $MaxCount Stellen gefunden -> aus Sicherheitsgr�nden aussteigen
-                  if($Count > $MaxCount){
+                  // in case more than max positions are found -> end at this point for security reasons
+                  if($count > $maxCount){
                      $found = false;
                    // end if
                   }
 
-                  // Count erh�hen
-                  $Count++;
+                  $count++;
 
                 // end while
                }
 
-               // Content des Tags extrahieren
-               $content = substr($TagString,$posEndAttrib + 1,($posEndContent - $posEndAttrib) - 1);
+               // read the content of the tag
+               $content = substr($tagString,$posEndAttrib + 1,($posEndContent - $posEndAttrib) - 1);
 
              // end else
             }
@@ -352,97 +350,97 @@
           // end else
          }
 
-         // Return-Array definieren
-         $Attributes = array ();
-         $Attributes['attributes'] = $attributes;
-         $Attributes['class'] = $class;
-         $Attributes['prefix'] = $prefix;
-         $Attributes['content'] = $content;
-
-         // Werte zur�ckgeben
-         return $Attributes;
+         $attributes = array();
+         $attributes['attributes'] = $tagAttributes;
+         $attributes['class'] = $class;
+         $attributes['prefix'] = $prefix;
+         $attributes['content'] = $content;
+         return $attributes;
 
        // end function
       }
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Extracts XML attributes from an attributes string. Returns an associative array with the attributes as keys and the values.
-      *  <pre>
-      *    $Array['ATTRIBUTE_NAME'] = 'ATTRIBUTE_VALUE';
-      *  </pre>
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 22.12.2006<br />
-      *  Version 0.2, 30.12.2006 (Enhanced the documentation)<br />
-      *  Version 0.3, 14.01.2007 (Improved the error message)<br />
-      *  Version 0.4, 14.11.2007 (Removed $hasFound; see http://forum.adventure-php-framework.org/de/viewtopic.php?t=7)<br />
-      */
-      static function getAttributesFromString($attributesString){
+       * @public
+       * @static
+       *
+       * Extracts XML attributes from an attributes string. Returns an associative array with the attributes as keys and the values.
+       * <pre>
+       *   $array['ATTRIBUTE_NAME'] = 'ATTRIBUTE_VALUE';
+       * </pre>
+       *
+       * @param string $attributesString The attributes string of the tag to analyze.
+       * @return string[] The attributes of the tag.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 22.12.2006<br />
+       * Version 0.2, 30.12.2006 (Enhanced the documentation)<br />
+       * Version 0.3, 14.01.2007 (Improved the error message)<br />
+       * Version 0.4, 14.11.2007 (Removed $hasFound; see http://forum.adventure-php-framework.org/de/viewtopic.php?t=7)<br />
+       */
+      public static function getAttributesFromString($attributesString){
 
-         $Attributes = array ();
+         $attributes = array ();
          $foundAtr = true;
-         $Offset = 0;
+         $offset = 0;
 
-         $ParserLoops = 0;
-         $ParserMaxLoops = 20;
+         $parserLoops = 0;
+         $parserMaxLoops = 20;
 
-         // Attribute iterativ suchen
          while(true){
 
-            // Parser-Durchl�ufe inkrementieren
-            $ParserLoops++;
+            $parserLoops++;
 
-            // Pr�fen, om Maximum an Parser-Durchl�ufen schon erreicht ist
-            if($ParserLoops == $ParserMaxLoops){
+            // limit parse loop count to avoid enless while loops
+            if($parserLoops == $parserMaxLoops){
                trigger_error('[xmlParser::getAttributesFromString()] Error while parsing: "'.htmlentities($attributesString).'". Maximum number of loops exceeded!',E_USER_ERROR);
              // end if
             }
 
-            // Attribute auslesen
-            $foundAtr = strpos($attributesString, '=', $Offset);
+            // find attribute
+            $foundAtr = strpos($attributesString, '=', $offset);
 
-            // Falls kein Attribut mehr gefunden wurde -> aussteigen
+            // if no attribute was found -> end at this point
             if($foundAtr === false){
                 break;
              // end if
             }
 
-            // Werte auslesen
-            $key = substr($attributesString, $Offset, $foundAtr - $Offset);
+            // extract values
+            $key = substr($attributesString, $offset, $foundAtr - $offset);
             $attrValueStart = strpos($attributesString, '"', $foundAtr);
             $attrValueStart++;
             $attrValueEnd = strpos($attributesString, '"', $attrValueStart);
             $attrValue = substr($attributesString, $attrValueStart, $attrValueEnd - $attrValueStart);
-            $Offset = $attrValueEnd + 1;
+            $offset = $attrValueEnd + 1;
 
-            // Array mit Key => Value aufbauen
-            $Attributes[trim($key)] = trim($attrValue);
+            // add to key => value array
+            $attributes[trim($key)] = trim($attrValue);
 
           // end while
          }
 
-         return $Attributes;
+         return $attributes;
 
        // end function
       }
 
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Generates a uniqe id, that is used as the object id for the APF DOM tree.
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 22.12.2006<br />
-      */
-      static function generateUniqID($md5 = true){
+       * @public
+       * @static
+       *
+       * Generates a uniqe id, that is used as the object id for the APF DOM tree.
+       *
+       * @return string The unique id used as GUID for the APF DOM tree.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 22.12.2006<br />
+       */
+      public static function generateUniqID($md5 = true){
 
          if($md5 == true){
             return md5(uniqid(rand(),true));
@@ -461,33 +459,33 @@
 
 
    /**
-   *  @namespace core::pagecontroller
-   *  @class coreObject
-   *  @abstract
-   *
-   *  Represents the base objects of (nearly) all APF classes. Especially all GUI classes derive
-   *  from this class.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 28.12.2006<br />
-   *  Version 0.2, 11.02.2007 (Attribute Language und Context hinzugef�gt)<br />
-   *  Version 0.3, 28.10.2008 (Added the __ServiceType member to indicate the service manager creation type)<br />
-   *  Version 0.4, 03.11.2008 (Added initializing values to some of the class members)<br />
-   */
+    * @namespace core::pagecontroller
+    * @class coreObject
+    * @abstract
+    *
+    * Represents the base objects of (nearly) all APF classes. Especially all GUI classes derive
+    * from this class.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    * Version 0.2, 11.02.2007 (Attribute Language und Context hinzugef�gt)<br />
+    * Version 0.3, 28.10.2008 (Added the __ServiceType member to indicate the service manager creation type)<br />
+    * Version 0.4, 03.11.2008 (Added initializing values to some of the class members)<br />
+    */
    abstract class coreObject
    {
 
       /**
-      *  @protected
-      *  Unique object identifier.
-      */
+       * @protected
+       * Unique object identifier.
+       */
       protected $__ObjectID = null;
 
       /**
-      *  @protected
-      *  Reference to the parent object.
-      */
+       * @protected
+       * Reference to the parent object.
+       */
       protected $__ParentObject = null;
 
       /**
@@ -534,10 +532,10 @@
       *  @param string $attributeName Name of an object's property.
       *  @return string The property's value.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 02.02.2007 (Behandlung, falls Attribut nicht existiert hinzugef�gt)<br />
+      *  Version 0.2, 02.02.2007 (In case the attribute does not exist, null is returned now)<br />
       */
       public function get($Attribute){
 
@@ -562,7 +560,7 @@
       *  @param string $attributeName Name of an object's property.
       *  @param string $value The value to set.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -580,7 +578,7 @@
       *  @param string $attributeName Name of the attribute to set.
       *  @param string $value Value of the attribute.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 11.11.2007<br />
       */
@@ -598,7 +596,7 @@
       *  @param string $name The name of the desired attribute.
       *  @return string Returns the attribute's value or null in case of errors.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 02.02.2007 (Behandlung, falls Attribut nicht existiert hinzugef�gt)<br />
@@ -626,7 +624,7 @@
       *  @param string $name Name des Attributes, dessen Wert zur�ckgeliefert werden soll.
       *  @param string $value Wert des Attributes, dessen Wert gesetzt werden soll.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -643,7 +641,7 @@
       *
       *  @return string[] Returns the list of attributes of the current object.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -660,7 +658,7 @@
       *
       *  @param string $name The name of the attribute to delete.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -677,7 +675,7 @@
       *
       *  @param string[] $attributes The attributes list.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -707,7 +705,7 @@
       *  @param string $attributeName Name of the attribute.
       *  @param object $value Desired object to reference.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 16.01.2007<br />
       */
@@ -723,9 +721,9 @@
       *  Returns the content of a member by reference. This is used to guarantee php4 support.
       *
       *  @param string $attributeName Name of the desired attribute.
-      *  @return object Desired object to reference or null in case of errors.
+      *  @return coreObject Desired object to reference or null in case of errors.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 16.01.2007<br />
       *  Version 0.2, 21.01.2007 (Bugfix: $Attribute war falsch geschreiben)<br />
@@ -753,26 +751,28 @@
       *  @public
       *  @abstract
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
-      function transform(){
+      public function transform(){
       }
 
 
       /**
-      *  Interface definition of the init() method. This function is used to initialize a service
-      *  object with the service manager. It must be implemented by derived classes.
-      *
-      *  @public
-      *  @abstract
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 30.03.2007<br />
-      */
-      function init(){
+       * Interface definition of the init() method. This function is used to initialize a service
+       * object with the service manager. It must be implemented by derived classes.
+       *
+       * @public
+       * @abstract
+       *
+       * @param string $initParam The initializing value of the service object. Data type may also be array or object.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 30.03.2007<br />
+       */
+      public function init($initParam){
       }
 
 
@@ -783,11 +783,11 @@
       *  @public
       *  @abstract
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
-      function onParseTime(){
+      public function onParseTime(){
       }
 
 
@@ -799,11 +799,11 @@
       *  @abstract
       *
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
-      function onAfterAppend(){
+      public function onAfterAppend(){
       }
 
 
@@ -815,11 +815,11 @@
       *  @public
       *  @abstract
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
-      function transformContent(){
+      public function transformContent(){
       }
 
       /**
@@ -850,9 +850,9 @@
        * @param string $namespace Namespace of the service object (currently ignored).
        * @param string $serviceName Name of the service object (=class name).
        * @param string $type The initializing type (see service manager for details).
-       * @return coreObject $serviceObject The desired service object.
+       * @return coreObject The desired service object.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 07.03.2007<br />
        * Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
@@ -880,9 +880,9 @@
       *  @param string $serviceName Name of the service object (=class name).
       *  @param string $InitParam The initialization parameter.
       *  @param string $type The initializing type (see service manager for details).
-      *  @return coreObject $serviceObject The desired service object.
+      *  @return coreObject The desired service object.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 29.03.2007<br />
       *  Version 0.2, 22.04.2007 (Added language initializaton of the service manager)<br />
@@ -908,9 +908,9 @@
       *  @param string $namespace The namespace of the configuration file.
       *  @param string $configName The name of the configuration file.
       *  @param boolean $parseSubsections Indicates, whether the configuration manager should parse subsections.
-      *  @return Configuration $configuration The desired configuration object.
+      *  @return Configuration The desired configuration object.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 07.03.2007<br />
       *  Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
@@ -924,39 +924,38 @@
 
 
       /**
-      *  @protected
-      *
-      *  Erzeugt einen Attribut-String an Hand eines Attribut-Arrays. Im ExcludeArray enthaltene Attribute<br />
-      *  werden nicht beachtet.
-      *
-      *  @param array $AttributesArray; Array der Attribute
-      *  @param array $ExclusionArray; Array mit Attributen, die ignoriert werden sollen
-      *  @return string $AttributesString; HTML-Attribut-String, oder Leerstring, falls keine Attribute vorhanden sind
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 05.01.2007<br />
-      *  Version 0.2, 07.01.2007 ($ExclusionArray-Verhalten hinzugef�gt)<br />
-      *  Version 0.3, 02.06.2007 (Rechtschreibkorrektur und von "ui_element" nach "coreObject" verschoben)<br />
-      */
-      protected function __getAttributesAsString($AttributesArray,$ExclusionArray = array()){
+       * @protected
+       *
+       * Creates an attribute string by a given attributes list. Exludes params provided by the
+       * second argument.
+       *
+       * @param array $attributes The list of attributes.
+       * @param array $exclusionList A list of attributes, that should not be contained in the attribute's string representation.
+       * @return string HTML sttribute string or empty string in case of no attributes.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 05.01.2007<br />
+       * Version 0.2, 07.01.2007 (Added $exclusionList behaviour)<br />
+       * Version 0.3, 02.06.2007 (Corrected typos and moved to "coreObject")<br />
+       */
+      protected function __getAttributesAsString($attributes,$exclusionList = array()){
 
-         if(count($AttributesArray) > 0){
+         if(count($attributes) > 0){
 
-            // Attribute-Array initialisieren
-            $Attributes = array();
+            $attributeParts = array();
 
-            foreach($AttributesArray as $Offset => $Value){
+            foreach($attributes as $offset => $value){
 
-               if(!in_array($Offset,$ExclusionArray)){
-                  $Attributes[] = $Offset.'="'.$Value.'"';
+               if(!in_array($offset,$exclusionList)){
+                  $attributeParts[] = $offset.'="'.$value.'"';
                 // end if
                }
 
              // end foreach
             }
 
-            return implode(' ',$Attributes);
+            return implode(' ',$attributeParts);
 
           // end if
          }
@@ -973,16 +972,16 @@
 
 
    /**
-   *  @namespace core::pagecontroller
-   *  @class TagLib
-   *
-   *  Represents a taglib. You can see this class as a taglib definition or representation. It is
-   *  used to mark the known taglibs of a DOM node.
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 28.12.2006<br />
-   */
+    * @namespace core::pagecontroller
+    * @class TagLib
+    *
+    * Represents a taglib. You can see this class as a taglib definition or representation. It is
+    * used to mark the known taglibs of a DOM node.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
    final class TagLib extends coreObject
    {
 
@@ -1006,19 +1005,19 @@
 
 
       /**
-      *  @public
-      *
-      *  Defines a taglib.
-      *
-      *  @param string $namespace The namespace of the taglib
-      *  @param string $prefix The prefix of the taglib
-      *  @param string $class The class name of the taglib
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
-      function TagLib($namespace,$prefix,$class){
+       * @public
+       *
+       * Defines a taglib.
+       *
+       * @param string $namespace The namespace of the taglib
+       * @param string $prefix The prefix of the taglib
+       * @param string $class The class name of the taglib
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
+      public function TagLib($namespace,$prefix,$class){
 
          $this->__Namespace = $namespace;
          $this->__Class = $class;
@@ -1032,28 +1031,20 @@
 
 
    /**
-   *  @namespace core::pagecontroller
-   *  @class Page
-   *
-   *  The Page object represents the root node of  a web page. It is used as a container for the
-   *  initial document (root document) and is responsible for creating and transforming the root
-   *  document.
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 28.12.2006<br />
-   *  Version 0.2, 03.01.2007 (Introduced URL rewriting)<br />
-   *  Version 0.3, 08.06.2007 (URL rewriting was outsorced and "__rewriteRequestURI()" was removed)<br />
-   */
-   class Page extends coreObject
-   {
-
-      /**
-      *  @protected
-      *  The name of the page.
-      */
-      protected $__Name;
-
+    * @namespace core::pagecontroller
+    * @class Page
+    *
+    * The Page object represents the root node of  a web page. It is used as a container for the
+    * initial document (root document) and is responsible for creating and transforming the root
+    * document.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    * Version 0.2, 03.01.2007 (Introduced URL rewriting)<br />
+    * Version 0.3, 08.06.2007 (URL rewriting was outsorced and "__rewriteRequestURI()" was removed)<br />
+    */
+   class Page extends coreObject {
 
       /**
       *  @protected
@@ -1078,32 +1069,24 @@
       *  Version 0.5, 20.10.2008 (Removed second parameter due to registry introduction in 1.7-beta)<br />
       *  Version 0.6, 11.12.2008 (Switched to the new input filter concept)<br />
       */
-      function Page($name = ''){
-
-         // retrieve url rewrite option
-         $reg = &Singleton::getInstance('Registry');
-         $URLRewrite = $reg->retrieve('apf::core','URLRewriting');
+      public function Page(){
 
          // set internal attributes
-         $this->__Name = $name;
          $this->__ObjectID = xmlParser::generateUniqID();
 
          // apply input filter if desired (e.g. front controller is not used)
+         $reg = &Singleton::getInstance('Registry');
          $filterDef = $reg->retrieve('apf::core::filter','PageControllerInputFilter');
 
          if($filterDef !== null){
-
+            
             $inputFilter = FilterFactory::getFilter($filterDef);
 
-            if($URLRewrite == true){
-               $inputFilter->filter('URLRewriting',null);
+            if($inputFilter !== null){
+               $inputFilter->filter(null);
              // end if
             }
-            else{
-               $inputFilter->filter('Normal',null);
-             // end if
-            }
-
+            
           // end if
          }
 
@@ -1120,7 +1103,7 @@
       *  @param string $namespace namespace if the initial template
       *  @param string $design (file)name if the initial template
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 31.01.2007 (Now the context of the document is set)<br />
@@ -1128,7 +1111,7 @@
       *  Version 0.4, 22.04.2007 (Now the language is applied to the document)<br />
       *  Version 0.5, 08.03.2009 (Bugfix: protected variable __ParentObject might not be used)<br />
       */
-      function loadDesign($namespace,$design){
+      public function loadDesign($namespace,$design){
 
          $this->__Document = new Document();
 
@@ -1159,7 +1142,7 @@
       *
       *  Transforms the APF DOM tree of the current page. Returns the content of the transformed document.
       *
-      *  @return string $content the content of the transformed page
+      *  @return string The content of the transformed page
       *
       *  @author Christian Achatz
       *  @version
@@ -1168,7 +1151,7 @@
       *  Version 0.3, 08.06.2007 (Moved the URL rewriting into a filter)<br />
       *  Version 0.4, 11.12.2008 (Switched to the new input filter concept)<br />
       */
-      function transform(){
+      public function transform(){
 
          // transform the current document
          $content = $this->__Document->transform();
@@ -1180,26 +1163,15 @@
          if($filterDef !== null){
 
             $outputFilter = FilterFactory::getFilter($filterDef);
-            $URLRewriting = $reg->retrieve('apf::core','URLRewriting');
 
             if($outputFilter !== null){
-
-               if($URLRewriting == true){
-                  $content = $outputFilter->filter('URLRewriting',$content);
-                // end if
-               }
-               else{
-                  $content = $outputFilter->filter('Normal',$content);
-                // end if
-               }
-
+               $content = $outputFilter->filter($content);
              // end if
             }
 
           // end if
          }
 
-         // return the HTML source code
          return $content;
 
        // end function
@@ -1216,7 +1188,7 @@
    *  Represents a node within the APF DOM tree. Each document can compose several other documents
    *  by use of the $__Children property (composite tree).
    *
-   *  @author Christian Sch�fer
+   *  @author Christian Schäfer
    *  @version
    *  Version 0.1, 28.12.2006<br />
    */
@@ -1249,12 +1221,12 @@
       *
       *  Initializes the built-in taglibs, used to create the APF DOM tree.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
       */
-      function Document(){
+      public function Document(){
 
          // set the object id
          $this->__ObjectID = xmlParser::generateUniqID();
@@ -1278,12 +1250,12 @@
       *  @param string $prefix The prefix of the taglib
       *  @param string $class The class name of the taglib
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
       */
-      function addTagLib($namespace,$prefix,$class){
+      public function addTagLib($namespace,$prefix,$class){
 
          // add the taglib to the current node
          $this->__TagLibs[] = new TagLib($namespace,$prefix,$class);
@@ -1307,9 +1279,9 @@
       *
       *  @param string $prefix The prefix of the taglib
       *  @param string $class The class name of the taglib
-      *  @return string $moduleName The full file name of the taglib class
+      *  @return string The full file name of the taglib class
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       */
@@ -1327,12 +1299,12 @@
       *  @param string $Namespace; Namespace des initialen Templates
       *  @param string $Design; Name des initialen Designs
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 28.12.2006<br />
       *  Version 0.2, 15.01.2007 (Now document controller are extracted first)<br />
       */
-      function loadDesign($Namespace,$Design){
+      public function loadDesign($Namespace,$Design){
 
          // read the content of the template
          $this->__loadContentFromFile($Namespace,$Design);
@@ -1348,24 +1320,25 @@
 
 
       /**
-      *  @protected
-      *
-      *  L�d ein Template "$Design" aus einem angegebenen Namespace.<br />
-      *
-      *  @param string $Namespace; Namespace des initialen Templates
-      *  @param string $Design; Name des initialen Designs
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 01.01.2007 (Fehler behoben, dass Templates nicht sauber geladen wurden)<br />
-      *  Version 0.3, 03.11.2008 (Added code of the responsible template to the error message to ease debugging)<br />
-      */
-      protected function __loadContentFromFile($Namespace,$Design){
+       * @protected
+       *
+       * Loads a template from a given namespace. The convention says, that the name of the template
+       * is equal to the file body plus the ".html" extentions. The namespace is a APF namespace.
+       *
+       * @param string $namespace The namespace of the template.
+       * @param string $design The name of the template (a.k.a. design).
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 01.01.2007<br />
+       * Version 0.3, 03.11.2008 (Added code of the responsible template to the error message to ease debugging)<br />
+       */
+      protected function __loadContentFromFile($namespace,$design){
 
-         $File = APPS__PATH.'/'.str_replace('::','/',$Namespace).'/'.$Design.'.html';
+         $file = APPS__PATH.'/'.str_replace('::','/',$namespace).'/'.$design.'.html';
 
-         if(!file_exists($File)){
+         if(!file_exists($file)){
 
             // get template code from parent object, if the parent exists
             $code = (string)'';
@@ -1375,13 +1348,13 @@
             }
 
             // throw error
-            trigger_error('[Document::__loadContentFromFile()] Design "'.$Design.'" not existent in namespace "'.$Namespace.'"!'.$code,E_USER_ERROR);
+            trigger_error('[Document::__loadContentFromFile()] Design "'.$design.'" not existent in namespace "'.$namespace.'"!'.$code,E_USER_ERROR);
             exit();
 
           // end if
          }
          else{
-            $this->__Content = file_get_contents($File);
+            $this->__Content = file_get_contents($file);
           // end else
          }
 
@@ -1553,34 +1526,35 @@
        * Initializes the document controller class, that is executed at APF DOM node
        * transformation time.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.12.2006<br />
        */
       protected function __extractDocumentController(){
 
          // define start and end tag
-         $ControllerStartTag = '<@controller';
-         $ControllerEndTag = '@>';
+         $controllerStartTag = '<@controller';
+         $controllerEndTag = '@>';
 
-         if(substr_count($this->__Content,$ControllerStartTag) > 0){
+         if(substr_count($this->__Content,$controllerStartTag) > 0){
 
-            $TagStartPos = strpos($this->__Content,$ControllerStartTag);
-            $TagEndPos = strpos($this->__Content,$ControllerEndTag,$TagStartPos);
-            $ControllerTag = substr($this->__Content,$TagStartPos + strlen($ControllerStartTag),($TagEndPos - $TagStartPos) - 1 - strlen($ControllerStartTag));
-            $ControllerAttributes = xmlParser::getAttributesFromString($ControllerTag);
+            $tagStartPos = strpos($this->__Content,$controllerStartTag);
+            $tagEndPos = strpos($this->__Content,$controllerEndTag,$tagStartPos);
+            $controllerTag = substr($this->__Content,$tagStartPos + strlen($controllerStartTag),
+               ($tagEndPos - $tagStartPos) - 1 - strlen($controllerStartTag));
+            $controllerAttributes = xmlParser::getAttributesFromString($controllerTag);
 
             // lazily import document controller class
-            if(!class_exists($ControllerAttributes['class'])){
-               import($ControllerAttributes['namespace'],$ControllerAttributes['file']);
+            if(!class_exists($controllerAttributes['class'])){
+               import($controllerAttributes['namespace'],$controllerAttributes['file']);
              // end if
             }
 
             // remark controller class
-            $this->__DocumentController = $ControllerAttributes['class'];
+            $this->__DocumentController = $controllerAttributes['class'];
 
             // remove definition from content to be not displayed
-            $this->__Content = substr_replace($this->__Content,'',$TagStartPos,($TagEndPos - $TagStartPos) + strlen($ControllerEndTag));
+            $this->__Content = substr_replace($this->__Content,'',$tagStartPos,($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
 
           // end if
          }
@@ -1606,7 +1580,7 @@
        * Version 0.4, 24.02.2007 (Switched timer inclusion to common benchmarker usage)<br />
        * Version 0.5, 09.04.2007 (Added language injection)<br />
        */
-      function transform(){
+      public function transform(){
 
          $T = &Singleton::getInstance('BenchmarkTimer');
          $T->start('('.get_class($this).') '.$this->__ObjectID.'::transform()');
@@ -1626,31 +1600,31 @@
              // end if
             }
 
-            $DocCon = new $this->__DocumentController;
+            $docCon = new $this->__DocumentController;
 
             // inject context
-            $DocCon->set('Context',$this->__Context);
+            $docCon->set('Context',$this->__Context);
 
             // inject current language
-            $DocCon->set('Language',$this->__Language);
+            $docCon->set('Language',$this->__Language);
 
             // inject document reference to be able to access the current DOM document
-            $DocCon->setByReference('Document',$this);
+            $docCon->setByReference('Document',$this);
 
             // inject the content to be able to access it
-            $DocCon->set('Content',$content);
+            $docCon->set('Content',$content);
 
             // inject the current DOM node's attributes to easily access them
             if(is_array($this->__Attributes) && count($this->__Attributes) > 0){
-               $DocCon->setAttributes($this->__Attributes);
+               $docCon->setAttributes($this->__Attributes);
              // end if
             }
 
             // execute the document controller by using a standard method
-            $DocCon->transformContent();
+            $docCon->transformContent();
 
             // retrieve the content
-            $content = $DocCon->get('Content');
+            $content = $docCon->get('Content');
 
             $T->stop($ID);
 
@@ -1678,60 +1652,60 @@
 
 
    /**
-   *  @package core::pagecontroller
-   *  @class core_taglib_importdesign
-   *
-   *  This class implements the functionality of the core::importdesign tag. It generates a sub node
-   *  from the template specified by the tag's attributes within the current APF DOM tree. Each
-   *  importdesign tag can compose further tags.
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 28.12.2006<br />
-   */
+    * @package core::pagecontroller
+    * @class core_taglib_importdesign
+    *
+    * This class implements the functionality of the core::importdesign tag. It generates a sub node
+    * from the template specified by the tag's attributes within the current APF DOM tree. Each
+    * importdesign tag can compose further tags.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
    class core_taglib_importdesign extends Document
    {
 
       /**
-      *  @public
-      *
-      *  Constructor of the class. Sets the known taglibs.
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
-      function core_taglib_importdesign(){
+       * @public
+       *
+       * Constructor of the class. Sets the known taglibs.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
+      public function core_taglib_importdesign(){
          parent::Document();
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Implements the onParseTime() method from the Document class. Includes the desired template
-      *  as a new DOM node into the current APF DOM tree.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 31.12.2006 (Added pagepart option)<br />
-      *  Version 0.3, 15.01.2007 (Now DocumentController tags are extracted first)<br />
-      *  Version 0.4, 10.03.2007 (The Context can now be manipulated in the core:importdesign tag)<br />
-      *  Version 0.5, 11.03.2007 (Introduced the "incparam" attribute to be able to control the template param via url)<br />
-      *  Version 0.6, 26.10.2008 (Made the benchmark id generation more generic)<br />
-      */
-      function onParseTime(){
+       * @public
+       *
+       * Implements the onParseTime() method from the Document class. Includes the desired template
+       * as a new DOM node into the current APF DOM tree.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 31.12.2006 (Added pagepart option)<br />
+       * Version 0.3, 15.01.2007 (Now DocumentController tags are extracted first)<br />
+       * Version 0.4, 10.03.2007 (The Context can now be manipulated in the core:importdesign tag)<br />
+       * Version 0.5, 11.03.2007 (Introduced the "incparam" attribute to be able to control the template param via url)<br />
+       * Version 0.6, 26.10.2008 (Made the benchmark id generation more generic)<br />
+       */
+      public function onParseTime(){
 
-         // start timer
+         // invoke timer
          $T = &Singleton::getInstance('BenchmarkTimer');
          $id = '('.get_class($this).') '.$this->__ObjectID.'::onParseTime()';
          $T->start($id);
 
          // get attributes
-         $Namespace = trim($this->__Attributes['namespace']);
-         $Template = trim($this->__Attributes['template']);
+         $namespace = trim($this->__Attributes['namespace']);
+         $template = trim($this->__Attributes['template']);
 
          // read context
          if(isset($this->__Attributes['context'])){
@@ -1740,28 +1714,29 @@
          }
 
          // manager inc param
+         $incParam = null;
          if(isset($this->__Attributes['incparam'])){
-            $IncParam = $this->__Attributes['incparam'];
+            $incParam = $this->__Attributes['incparam'];
           // end if
          }
          else{
-            $IncParam = 'pagepart';
+            $incParam = 'pagepart';
           // end else
          }
 
          // check, if the inc param is present in the current request
-         if(substr_count($Template,'[') > 0){
+         if(substr_count($template,'[') > 0){
 
-            if(isset($_REQUEST[$IncParam]) && !empty($_REQUEST[$IncParam])){
-               $Template = $_REQUEST[$IncParam];
+            if(isset($_REQUEST[$incParam]) && !empty($_REQUEST[$incParam])){
+               $template = $_REQUEST[$incParam];
              // end if
             }
             else{
 
                // read template attribute from inc param
-               $PagepartStartPos = strpos($Template,'=');
-               $PagepartEndPos = strlen($Template) - 1;
-               $Template = trim(substr($Template,$PagepartStartPos + 1,($PagepartEndPos - $PagepartStartPos) - 1));
+               $pagepartStartPos = strpos($template,'=');
+               $pagepartEndPos = strlen($template) - 1;
+               $template = trim(substr($template,$pagepartStartPos + 1,($pagepartEndPos - $pagepartStartPos) - 1));
 
              // end else
             }
@@ -1770,7 +1745,7 @@
          }
 
          // get content
-         $this->__loadContentFromFile($Namespace,$Template);
+         $this->__loadContentFromFile($namespace,$template);
 
          // parse document controller statements
          $this->__extractDocumentController();
@@ -1778,7 +1753,6 @@
          // extract further xml tags
          $this->__extractTagLibTags();
 
-         // stop timer
          $T->stop($id);
 
        // end function
@@ -1789,52 +1763,52 @@
 
 
    /**
-   *  @namespace core::pagecontroller
-   *  @class core_taglib_addtaglib
-   *
-   *  Represents the functionality of the core:addtaglib tag. Adds a further taglib to the known
-   *  taglibs of the tag's parent object. This can be used to enhance the known tag list if a
-   *  desired APF DOM node.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 28.12.2006<br />
-   */
+    * @namespace core::pagecontroller
+    * @class core_taglib_addtaglib
+    *
+    * Represents the functionality of the core:addtaglib tag. Adds a further taglib to the known
+    * taglibs of the tag's parent object. This can be used to enhance the known tag list if a
+    * desired APF DOM node.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
    class core_taglib_addtaglib extends Document
    {
 
-      function core_taglib_addtaglib(){
+      public function core_taglib_addtaglib(){
       }
 
 
       /**
-      *  @public
-      *
-      *  Implements the onParseTime() method of the Document class. Adds the desired taglib to the
-      *  parent object.
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 10.11.2008 (Changed implementation. We now use getAttribute() instead of direct internal attribute addressing)<br />
-      */
-      function onParseTime(){
+       * @public
+       *
+       * Implements the onParseTime() method of the Document class. Adds the desired taglib to the
+       * parent object.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 10.11.2008 (Changed implementation. We now use getAttribute() instead of direct internal attribute addressing)<br />
+       */
+      public function onParseTime(){
          $this->__ParentObject->addTagLib($this->getAttribute('namespace'),$this->getAttribute('prefix'),$this->getAttribute('class'));
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Implements the Document's transform() method. Returns an empty string, because the addtaglib
-      * tag should not generate output.
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 21.04.2007<br />
-      */
-      function transform(){
+       * @public
+       *
+       * Implements the Document's transform() method. Returns an empty string, because the addtaglib
+       * tag should not generate output.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 21.04.2007<br />
+       */
+      public function transform(){
          return (string)'';
        // end function
       }
@@ -1844,34 +1818,34 @@
 
 
    /**
-   *  @namespace core::pagecontroller
-   *  @class html_taglib_placeholder
-   *
-   *  Represents a place holder within a template file. Can be filled within a documen controller
-   *  using the setPlaceHolder() method.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 28.12.2006<br />
-   */
+    * @namespace core::pagecontroller
+    * @class html_taglib_placeholder
+    *
+    * Represents a place holder within a template file. Can be filled within a documen controller
+    * using the setPlaceHolder() method.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
    class html_taglib_placeholder extends Document
    {
 
-      function html_taglib_placeholder(){
+      public function html_taglib_placeholder(){
       }
 
 
       /**
-      *  @public
-      *
-      *  Implements the transform() method. Returns the content of the tag, that is set by a
-      *  document controller using the baseController's setPlaceHolder() method.
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
-      function transform(){
+       * @public
+       *
+       * Implements the transform() method. Returns the content of the tag, that is set by a
+       * document controller using the baseController's setPlaceHolder() method.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
+      public function transform(){
          return $this->__Content;
        // end function
       }
@@ -1881,44 +1855,44 @@
 
 
    /**
-   *  @namespace core::pagecontroller
-   *  @class html_taglib_template
-   *
-   *  Represents a reusable html fragment (template) within a template file. The tag's functionality
-   *  can be extended by the &lt;template:addtaglib /&gt; tag. Use setPlaceHolder() to set a place
-   *  holder's value and transformOnPlace() or transformTemplate() to generate the output.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 28.12.2006<br />
-   *  Version 0.2, 10.11.2008 (Removed the IncludedTagLib behavior, because this lead to errors when including new taglibs with template:addtaglib.)<br />
-   */
+    * @namespace core::pagecontroller
+    * @class html_taglib_template
+    *
+    * Represents a reusable html fragment (template) within a template file. The tag's functionality
+    * can be extended by the &lt;template:addtaglib /&gt; tag. Use setPlaceHolder() to set a place
+    * holder's value and transformOnPlace() or transformTemplate() to generate the output.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    * Version 0.2, 10.11.2008 (Removed the IncludedTagLib behavior, because this lead to errors when including new taglibs with template:addtaglib.)<br />
+    */
    class html_taglib_template extends Document
    {
 
       /**
-      *  @private
-      *  Indicates, if the template should be transformed on the place of definition. Default is false.
-      */
+       * @protected
+       * Indicates, if the template should be transformed on the place of definition. Default is false.
+       */
       protected $__TransformOnPlace = false;
 
 
       /**
-      *  @public
-      *
-      *  Constructor of the class. Inituializes the known taglibs.
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 29.12.2006<br />
-      *  Version 0.2, 30.12.2006 (Added the template:config tag)<br />
-      *  Version 0.3, 05.01.2007 (Added the template:addtaglib tag)<br />
-      *  Version 0.4, 12.01.2007 (Removed the template:addtaglib tag)<br />
-      *  Version 0.5, 03.03.2007 (Removed the "&" before the "new" operator)<br />
-      *  Version 0.6, 21.04.2007 (Added the template:addtaglib tag again)<br />
-      *  Version 0.7, 02.05.2007 (Removed the template:config tag)<br />
-      */
-      function html_taglib_template(){
+       * @public
+       *
+       * Constructor of the class. Inituializes the known taglibs.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 29.12.2006<br />
+       * Version 0.2, 30.12.2006 (Added the template:config tag)<br />
+       * Version 0.3, 05.01.2007 (Added the template:addtaglib tag)<br />
+       * Version 0.4, 12.01.2007 (Removed the template:addtaglib tag)<br />
+       * Version 0.5, 03.03.2007 (Removed the "&" before the "new" operator)<br />
+       * Version 0.6, 21.04.2007 (Added the template:addtaglib tag again)<br />
+       * Version 0.7, 02.05.2007 (Removed the template:config tag)<br />
+       */
+      public function html_taglib_template(){
          $this->__TagLibs[] = new TagLib('core::pagecontroller','template','placeholder');
          $this->__TagLibs[] = new TagLib('core::pagecontroller','template','addtaglib');
        // end function
@@ -1926,41 +1900,41 @@
 
 
       /**
-      *  @public
-      *
-      *  Implements the onParseTime() method from the coreObject class. Uses the __extractTagLibTags()
-      *  function to parse the known taglibs.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 29.12.2006<br />
-      *  Version 0.2, 31.12.2006<br />
-      */
-      function onParseTime(){
+       * @public
+       *
+       * Implements the onParseTime() method from the coreObject class. Uses the __extractTagLibTags()
+       * function to parse the known taglibs.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 29.12.2006<br />
+       * Version 0.2, 31.12.2006<br />
+       */
+      public function onParseTime(){
          $this->__extractTagLibTags();
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  API method to set a place holder's content within a document controller.
-      *
-      *  @param string $Name name of the place holder
-      *  @param string $Value value of the place holder
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 29.12.2006<br />
-      *  Version 0.2, 10.11.2008 (Removed check, if taglib class exists)<br />
-      */
-      function setPlaceHolder($name,$value){
+       * @public
+       *
+       * API method to set a place holder's content within a document controller.
+       *
+       * @param string $Name name of the place holder
+       * @param string $Value value of the place holder
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 29.12.2006<br />
+       * Version 0.2, 10.11.2008 (Removed check, if taglib class exists)<br />
+       */
+      public function setPlaceHolder($name,$value){
 
          // declare the name of the place holder taglib to be flexible to future changes
          $tagLibClass = 'template_taglib_placeholder';
 
-         // initialize place holder count
+         // initialize place holder count for further checks
          $placeHolderCount = 0;
 
          // check, if tag has children
@@ -1999,7 +1973,7 @@
           // end else
          }
 
-         // thorw error, if no children are composed under the current tag
+         // throw error, if no children are composed under the current tag
          if($placeHolderCount < 1){
             trigger_error('[html_taglib_template::setPlaceHolder()] There are no placeholders found for name "'.$name.'" in template "'.($this->__Attributes['name']).'" in document controller "'.($this->__ParentObject->__DocumentController).'"!',E_USER_WARNING);
           // end if
@@ -2010,80 +1984,76 @@
 
 
       /**
-      *  @public
-      *
-      *  Returns the content of the template. Can be used ti generate the template output within a
-      *  document controller. Usage:
-      *  <pre>
-      *  $Template = &$this->__getTemplate('MyTemplate');
-      *  $Template->setPlaceHolder('URL','http://adventure-php-framework.org');
-      *  echo = $Template->transformTemplate();
-      *  </pre>
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 29.12.2006<br />
-      *  Version 0.2, 31.12.2006 (Removed parameter $this->__isVisible, because the parent object automatically removes the XML positioning tag on ransformation now)<br />
-      *  Version 0.3, 02.02.2007 (Renamed method to transformTemplate() umgenannt. Removed visible marking finally from the class)<br />
-      *  Version 0.4, 05.01.2007 (Added the template:addtaglib tag)<br />
-      */
-      function transformTemplate(){
-
-         // create buffer for transformation
-         $Content = (string)'';
+       * @public
+       *
+       * Returns the content of the template. Can be used ti generate the template output within a
+       * document controller. Usage:
+       * <pre>
+       * $template = &$this->__getTemplate('MyTemplate');
+       * $template->setPlaceHolder('URL','http://adventure-php-framework.org');
+       * echo = $template->transformTemplate();
+       * </pre>
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 29.12.2006<br />
+       * Version 0.2, 31.12.2006 (Removed parameter $this->__isVisible, because the parent object automatically removes the XML positioning tag on ransformation now)<br />
+       * Version 0.3, 02.02.2007 (Renamed method to transformTemplate() umgenannt. Removed visible marking finally from the class)<br />
+       * Version 0.4, 05.01.2007 (Added the template:addtaglib tag)<br />
+       */
+      public function transformTemplate(){
 
          // create copy of the tag's content
-         $Content = $this->__Content;
+         $content = $this->__Content;
 
          // transform children
          if(count($this->__Children) > 0){
 
             foreach($this->__Children as $ObjectID => $Child){
-               $Content = str_replace('<'.$ObjectID.' />',$Child->transform(),$Content);
+               $content = str_replace('<'.$ObjectID.' />',$Child->transform(),$content);
              // end foreach
             }
 
           // end if
          }
 
-         // return transformed content
-         return $Content;
+         return $content;
 
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Indicates, that the template should be displayed on the place of definition.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 19.05.2008<br />
-      */
-      function transformOnPlace(){
+       * @public
+       *
+       * Indicates, that the template should be displayed on the place of definition.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 19.05.2008<br />
+       */
+      public function transformOnPlace(){
          $this->__TransformOnPlace = true;
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  By default, the content of the template is returned as an empty string. This is because the
-      *  html:template tag normally is used as a reusable fragment. If the transformOnPlace() function
-      *  is called before, the content of the template is returned instead.
-      *
-      *  @return string $Content empty string or content of the tag
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 02.01.2007<br />
-      *  Version 0.2, 12.01.2007 (An empty string is now returned)<br />
-      *  Version 0.3, 19.05.2008 (Implemented the transformOnPlace() feature)<br />
-      */
-      function transform(){
+       * @public
+       *
+       * By default, the content of the template is returned as an empty string. This is because the
+       * html:template tag normally is used as a reusable fragment. If the transformOnPlace() function
+       * is called before, the content of the template is returned instead.
+       *
+       * @return string Empty string or content of the tag
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 02.01.2007<br />
+       * Version 0.2, 12.01.2007 (An empty string is now returned)<br />
+       * Version 0.3, 19.05.2008 (Implemented the transformOnPlace() feature)<br />
+       */
+      public function transform(){
 
          // checks, if transformOnPlace is activated
          if($this->__TransformOnPlace === true){
@@ -2102,33 +2072,33 @@
 
 
    /**
-   *  @namespace core::pagecontroller
-   *  @class template_taglib_placeholder
-   *
-   *  Implements the place holder tag with in a html:template tag. The tag does not hav further children.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 29.12.2006<br />
-   */
+    * @namespace core::pagecontroller
+    * @class template_taglib_placeholder
+    *
+    * Implements the place holder tag with in a html:template tag. The tag does not hav further children.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.12.2006<br />
+    */
    class template_taglib_placeholder extends Document
    {
 
-      function template_taglib_placeholder(){
+      public function template_taglib_placeholder(){
       }
 
 
       /**
-      *  @public
-      *
-      *  Implements the transform() method. Returns the content of the tag, that is set by a
-      *  document controller using the html_taglib_template's setPlaceHolder() method.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 29.12.2006<br />
-      */
-      function transform(){
+       * @public
+       *
+       * Implements the transform() method. Returns the content of the tag, that is set by a
+       * document controller using the html_taglib_template's setPlaceHolder() method.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 29.12.2006<br />
+       */
+      public function transform(){
          return $this->__Content;
        // end function
       }
@@ -2138,21 +2108,21 @@
 
 
    /**
-   *  @namespace core::pagecontroller
-   *  @class template_taglib_addtaglib
-   *
-   *  Represents the core:addtaglib functionality for the html:template tag. Includes further
-   *  tag libs into the scope. Please see class core_taglib_addtaglib for more details.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 21.04.2007<br />
-   *  Version 0.2, 10.11.2008 (Removed the registerTagLibModule() logic of the templates. Now the functionality is the same as core_taglib_addtaglib)<br />
-   */
+    * @namespace core::pagecontroller
+    * @class template_taglib_addtaglib
+    *
+    * Represents the core:addtaglib functionality for the html:template tag. Includes further
+    * tag libs into the scope. Please see class core_taglib_addtaglib for more details.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 21.04.2007<br />
+    * Version 0.2, 10.11.2008 (Removed the registerTagLibModule() logic of the templates. Now the functionality is the same as core_taglib_addtaglib)<br />
+    */
    class template_taglib_addtaglib extends core_taglib_addtaglib
    {
 
-      function template_taglib_addtaglib(){
+      public function template_taglib_addtaglib(){
       }
 
     // end class
@@ -2176,9 +2146,9 @@
    {
 
       /**
-      *  @protected
-      *  @var Document References the document, the document controller is used for transformation.
-      */
+       * @protected
+       * @var Document References the document, the document controller is used for transformation.
+       */
       protected $__Document;
 
 
@@ -2193,11 +2163,11 @@
        * Abstract method, that is called on transformation time of the current document. To add
        * custom behavior, implement this method!
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.12.2006<br />
        */
-      function transformContent(){
+      public function transformContent(){
       }
 
 
@@ -2209,7 +2179,7 @@
        * @param string $name The name of the plae holder to fill.
        * @param string $value The value to insert into the place holder.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.12.2006<br />
        * Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />

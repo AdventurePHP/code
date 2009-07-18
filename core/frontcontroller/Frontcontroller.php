@@ -207,7 +207,7 @@
    *  @version
    *  Version 0.1, 27.01.2007<br />
    *  Version 0.2, 01.03.2007 (Input-Objekte werden nun vom Frontcontroller geladen!)<br />
-   *  Version 0.3, 08.06.2007 (Größerer Umbau zu den PermanentActions und der URL-Filterung)<br />
+   *  Version 0.3, 08.06.2007 (Grï¿½ï¿½erer Umbau zu den PermanentActions und der URL-Filterung)<br />
    *  Version 0.4, 01.07.2007 (__createInputObject() entfernt)<br />
    */
    class Frontcontroller extends coreObject
@@ -215,7 +215,7 @@
 
       /**
       *  @protected
-      *  Enthält die registrierten Actions.
+      *  Enthï¿½lt die registrierten Actions.
       */
       protected $__Actions = array();
 
@@ -306,11 +306,11 @@
       *  @version
       *  Version 0.1, 20.01.2007<br />
       *  Version 0.2, 27.01.2007<br />
-      *  Version 0.3, 31.01.2007 (Context-Behandlung hinzugefügt)<br />
-      *  Version 0.4, 03.02.2007 (Permanente Actions hinzugefügt)<br />
+      *  Version 0.3, 31.01.2007 (Context-Behandlung hinzugefï¿½gt)<br />
+      *  Version 0.4, 03.02.2007 (Permanente Actions hinzugefï¿½gt)<br />
       *  Version 0.5, 08.06.2007 (URL-Filtering in generische Filter ausgelagert)<br />
-      *  Version 0.6, 01.07.2007 (Ausführung von permanentpre und permanentpost gelöscht)<br />
-      *  Version 0.7, 29.09.2007 (Aufrufzeiten der Actions erweitert / geändert)<br />
+      *  Version 0.6, 01.07.2007 (Ausfï¿½hrung von permanentpre und permanentpost gelï¿½scht)<br />
+      *  Version 0.7, 29.09.2007 (Aufrufzeiten der Actions erweitert / geï¿½ndert)<br />
       *  Version 0.8, 21.06.2008 (Introduced Registry to retrieve URLRewrite configuration)<br />
       *  Version 0.9, 13.10.2008 (Removed $URLRewriting parameter, because URL rewriting must be configured in the registry)<br />
       *  Version 1.0, 11.12.2008 (Switched to the new input filter concept)<br />
@@ -319,7 +319,7 @@
 
          // set URLRewrite
          $reg = &Singleton::getInstance('Registry');
-         $URLRewriting = $reg->retrieve('apf::core','URLRewriting');
+         $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
 
          // check if the context is set. If not, use the current namespace
          if(empty($this->__Context)){
@@ -331,18 +331,8 @@
          $filterDef = $reg->retrieve('apf::core::filter','FrontControllerInputFilter');
 
          if($filterDef !== null){
-
             $inputFilter = FilterFactory::getFilter($filterDef);
-
-            if($URLRewriting == true){
-               $inputFilter->filter('URLRewriting',null);
-             // end if
-            }
-            else{
-               $inputFilter->filter('Normal',null);
-             // end if
-            }
-
+            $inputFilter->filter(null);
           // end if
          }
 
@@ -350,7 +340,7 @@
          $this->__runActions('prepagecreate');
 
          // create new page
-         $Page = new Page('FrontControllerPage',$URLRewriting);
+         $Page = new Page('FrontControllerPage',$urlRewriting);
 
          // set context
          $Page->set('Context',$this->__Context);
@@ -383,18 +373,18 @@
       /**
       *  @public
       *
-      *  Gibt die Referenz auf eine Actions zurück.<br />
+      *  Gibt die Referenz auf eine Actions zurï¿½ck.<br />
       *
       *  @param string $ActionName; Name der Action
       *  @return object $Action | bool NULL; Die Action oder null
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.02.2007<br />
-      *  Version 0.2, 08.02.2007 (Noch nicht geladene Actions werden lazy nachgeladen und zurückgeliefert)<br />
+      *  Version 0.2, 08.02.2007 (Noch nicht geladene Actions werden lazy nachgeladen und zurï¿½ckgeliefert)<br />
       *  Version 0.3, 11.02.2007 (ActionName ist nun der Name der Section, bzw. des Alias der Action)<br />
       *  Version 0.4, 01.03.2007 (Input-Objekte werden nun vom Frontcontroller geladen!)<br />
-      *  Version 0.5, 01.03.2007 (Prüfung ob Action-Klasse vorhanden ist hinzugefügt!)<br />
+      *  Version 0.5, 01.03.2007 (Prï¿½fung ob Action-Klasse vorhanden ist hinzugefï¿½gt!)<br />
       *  Version 0.6, 08.03.2007 (Auf neuen configurationManager umgestellt)<br />
       *  Version 0.7, 08.06.2007 (Automatisches Neuerstellen einer Action entfernt)<br />
       *  Version 0.8, 08.11.2007 (Umstellung auf Hash-Offsets nachgezogen)<br />
@@ -403,7 +393,7 @@
 
          foreach($this->__Actions as $ActionHash => $DUMMY){
 
-            // Prüfen, ob Action mit dem übergebenen Namen existiert
+            // Prï¿½fen, ob Action mit dem ï¿½bergebenen Namen existiert
             if($this->__Actions[$ActionHash]->get('ActionName') == $ActionName){
                return $this->__Actions[$ActionHash];
              // end if
@@ -424,11 +414,11 @@
       /**
       *  @public
       *
-      *  Gibt die Referenz auf eine Actions zurück.<br />
+      *  Gibt die Referenz auf eine Actions zurï¿½ck.<br />
       *
       *  @return array $Actions; Array mit Action-Objekten
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.02.2007<br />
       */
@@ -441,9 +431,9 @@
       /**
       *  @private
       *
-      *  Erzeugt aus einem URL-Namespace einen regulären Namespace.<br />
+      *  Erzeugt aus einem URL-Namespace einen regulï¿½ren Namespace.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 03.06.2007<br />
       */
@@ -456,7 +446,7 @@
       /**
       *  @public
       *
-      *  Registriert eine Action beim FC und läd die Parameter des Models aus einem Config-File.<br />
+      *  Registriert eine Action beim FC und lï¿½d die Parameter des Models aus einem Config-File.<br />
       *  Erwartet eine Konfigurationsdatei mit Namen {APPS__ENVIRONMENT}_actionsconfig.ini unter<br />
       *  dem Pfad {$ActionNamespace}::actions::{$this->__Context}.<br />
       *
@@ -464,15 +454,15 @@
       *  @param string $ActionName; Name der Action
       *  @param array $ActionParams; (Input-)Parameter der Action
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 08.06.2007<br />
-      *  Version 0.2, 01.07.2007 (ActionNamespace wird nun zentral in addAction() übersetzt)<br />
-      *  Version 0.3, 01.07.2007 (Parsen der Config-Parameter wird nun korrekt durchgeführt)<br />
+      *  Version 0.2, 01.07.2007 (ActionNamespace wird nun zentral in addAction() ï¿½bersetzt)<br />
+      *  Version 0.3, 01.07.2007 (Parsen der Config-Parameter wird nun korrekt durchgefï¿½hrt)<br />
       */
       function registerAction($ActionNamespace,$ActionName,$ActionParams = array()){
 
-         // Config für Input laden
+         // Config fï¿½r Input laden
          $Config = &$this->__getConfiguration($ActionNamespace.'::actions','actionconfig');
 
          if($Config != null){
@@ -490,7 +480,7 @@
 
                      $ParamValuePair = explode($this->__KeyValueDelimiter,$Params[$i]);
 
-                     // Paar zu den ActionParams hinzufügen
+                     // Paar zu den ActionParams hinzufï¿½gen
                      if(isset($ParamValuePair[0]) && isset($ParamValuePair[1])){
                         $ActionParams = array_merge($ActionParams,array($ParamValuePair[0] => $ParamValuePair[1]));
                       // end if
@@ -508,7 +498,7 @@
           // end if
          }
 
-         // Action hinzufügen
+         // Action hinzufï¿½gen
          $this->addAction($ActionNamespace,$ActionName,$ActionParams);
 
        // end function
@@ -519,20 +509,20 @@
       /**
       *  @public
       *
-      *  Fügt eine Action hinzu. Erwartet eine Konfigurationsdatei mit Namen <br />
+      *  Fï¿½gt eine Action hinzu. Erwartet eine Konfigurationsdatei mit Namen <br />
       *  {ENVIRONMENT}_actionsconfig.ini unter dem Pfad {$ActionNamespace}::actions::{$this->__Context}.<br />
       *
       *  @param string $ActionNamespace; Namespace der Action
       *  @param string $ActionName; Name der Action
       *  @param array $ActionParams; (Input-)Parameter der Action
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.06.2007<br />
       *  Version 0.2, 01.07.2007 (Action-Konfiguration wird nun auch unter "{Namespace}::actions::{Context}" erwartet)<br />
       *  Version 0.3, 02.09.2007 (Fehlermeldung erweitert)<br />
       *  Version 0.4, 08.09.2007 (Input-Parameter aus Config werden jetz beachtet)<br />
-      *  Version 0.5, 08.11.2007 (Umstellung auf Hash-Offsets für Actions)<br />
+      *  Version 0.5, 08.11.2007 (Umstellung auf Hash-Offsets fï¿½r Actions)<br />
       *  Version 0.2, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
       */
       function addAction($ActionNamespace,$ActionName,$ActionParams = array()){
@@ -545,7 +535,7 @@
          $CfgObj = &$this->__getConfiguration($ActionNamespace,'actionconfig');
 
 
-         // Prüfen ob Konfiguration existent ist
+         // Prï¿½fen ob Konfiguration existent ist
          if($CfgObj == null){
             trigger_error('[Frontcontroller::__parseActions()] No configuration available for namespace "'.$ActionNamespace.'" and context "'.$this->__Context.'"!',E_USER_ERROR);
             exit;
@@ -573,7 +563,7 @@
          import($ActionSection['FC.ActionNamespace'],$ActionSection['FC.InputFile']);
 
 
-         // Prüfen, ob Action-Klasse vorhanden ist
+         // Prï¿½fen, ob Action-Klasse vorhanden ist
          if(!class_exists($ActionSection['FC.ActionClass'])){
             trigger_error('[Frontcontroller::__parseActions()] Action class with name "'.$ActionSection['FC.ActionClass'].'" could not be found. Please check your action configuration file!',E_USER_ERROR);
             exit;
@@ -593,11 +583,11 @@
          $Action->set('ActionName',$ActionName);
 
 
-         // Context übergeben
+         // Context ï¿½bergeben
          $Action->set('Context',$this->__Context);
 
 
-         // Sprache übergeben
+         // Sprache ï¿½bergeben
          $Action->set('Language',$this->__Language);
 
 
@@ -628,17 +618,17 @@
       /**
       *  @private
       *
-      *  Erzeugt ein Array aus dem Konfigurationswert für Standard-Input-Parameter.<br />
+      *  Erzeugt ein Array aus dem Konfigurationswert fï¿½r Standard-Input-Parameter.<br />
       *
       *  @param string $InputConfig; Konfigurations-String
       *
-      *  @author Christian W. Schäfer
+      *  @author Christian W. Schï¿½fer
       *  @version
       *  Version 0.1, 08.09.2007<br />
       */
       protected function __generateParamsFromInputConfig($InputConfig = ''){
 
-         // Rückgabe-Array initialisieren
+         // Rï¿½ckgabe-Array initialisieren
          $InputParams = array();
 
 
@@ -669,7 +659,7 @@
          }
 
 
-         // Input-Parameter zurückgeben
+         // Input-Parameter zurï¿½ckgeben
          return $InputParams;
 
        // end function
@@ -679,7 +669,7 @@
       /**
       *  @private
       *
-      *  Führt diejenigen Actions aus, die dem übergebenen Typ entsprechen.<br />
+      *  Fï¿½hrt diejenigen Actions aus, die dem ï¿½bergebenen Typ entsprechen.<br />
       *
       *  @param string $Type; Typ der Action (prepagecreate | postpagecreate | pretransform | posttransform)
       *
@@ -697,10 +687,10 @@
          // BenchmarkTimer holen
          $T = &Singleton::getInstance('BenchmarkTimer');
 
-         // Actions ausführen
+         // Actions ausfï¿½hren
          foreach($this->__Actions as $ActionHash => $DUMMY){
 
-            // Action ausführen, wenn Typ passt
+            // Action ausfï¿½hren, wenn Typ passt
             if($this->__Actions[$ActionHash]->get('Type') == $Type){
 
                // Timer starten
@@ -708,7 +698,7 @@
                $T->start($ID);
 
 
-               // Action ausführen
+               // Action ausfï¿½hren
                $this->__Actions[$ActionHash]->run();
 
 

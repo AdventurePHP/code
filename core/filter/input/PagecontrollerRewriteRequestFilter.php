@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -28,12 +28,11 @@
    *
    *  Implements the URL filter for the page controller in rewrite url mode.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 02.06.2007<br />
    */
-   class PagecontrollerRewriteRequestFilter extends AbstractRequestFilter
-   {
+   class PagecontrollerRewriteRequestFilter extends AbstractRequestFilter {
 
       /**
       *  @protected
@@ -51,7 +50,7 @@
       *
       *  Implements the rewrite url input filter for the page controller.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 02.06.2007<br />
       *  Version 0.2, 08.06.2007 (Renamed to "filter()")<br />
@@ -60,7 +59,7 @@
       *  Version 0.5, 12.12.2008 (Rewrited some code, added documentation in englisch)<br />
       *  Version 0.6, 13.12.2008 (Removed the benchmarker)<br />
       */
-      function filter(){
+      public function filter($input){
 
          // backup PHPSESSID if applicable
          $PHPSESSID = (string)'';

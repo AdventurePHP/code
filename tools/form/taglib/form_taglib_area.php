@@ -99,16 +99,16 @@
 
 
       /**
-      *  @protected
-      *
-      *  Reimplements the validation method for the text area.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 13.01.2007<br />
-      *  Version 0.2, 05.05.2007 (Added "valid or not" report to the form)<br />
-      *  Version 0.3, 22.08.2007 (Corrected error message within error message)<br />
-      */
+       * @protected
+       *
+       * Reimplements the validation method for the text area.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 13.01.2007<br />
+       * Version 0.2, 05.05.2007 (Added "valid or not" report to the form)<br />
+       * Version 0.3, 22.08.2007 (Corrected error message within error message)<br />
+       */
       protected function __validate(){
 
          // check if validation should be applied
@@ -155,14 +155,14 @@
 
 
       /**
-      *  @protected
-      *
-      *  Reimplements the filter method for the text area.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 07.12.2008<br />
-      */
+       * @protected
+       *
+       * Reimplements the filter method for the text area.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 07.12.2008<br />
+       */
       protected function __filter(){
 
          // initialize filter
@@ -171,7 +171,8 @@
          // filter input
          if($this->__FilterObject === true){
             $filter = FilterFactory::getFilter(new FilterDefinition($this->__FilterNamespace,$this->__FilterClass));
-            $this->__Content = $filter->filter($this->__FilterMethod,$this->__Content);
+            $filter->setInstruction($this->__FilterMethod);
+            $this->__Content = $filter->filter($this->__Content);
           // end if
          }
 

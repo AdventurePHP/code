@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -28,7 +28,7 @@
    *
    *  Implements the input filter for front controller usage and rewite urls.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 03.06.2007<br />
    */
@@ -40,20 +40,20 @@
 
 
       /**
-      *  @public
-      *
-      *  Filters the url params for front controller usage with normal urls.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 02.06.2007<br />
-      *  Version 0.2, 08.06.2007 (Renamed to "filter()")<br />
-      *  Version 0.3, 17.06.2007 (Added stripslashes and htmlentities filter)<br />
-      *  Version 0.4, 09.10.2008 (Fixed bug, that an action call without params leads to an error)<br />
-      *  Version 0.5, 12.12.2008 (Refactored some code and added english documentation)<br />
-      *  Version 0.6, 13.12.2008 (Removed the benchmarker)<br />
-      */
-      function filter(){
+       * @public
+       *
+       * Filters the url params for front controller usage with normal urls.
+       *
+       * @author Christian Schï¿½fer
+       * @version
+       * Version 0.1, 02.06.2007<br />
+       * Version 0.2, 08.06.2007 (Renamed to "filter()")<br />
+       * Version 0.3, 17.06.2007 (Added stripslashes and htmlentities filter)<br />
+       * Version 0.4, 09.10.2008 (Fixed bug, that an action call without params leads to an error)<br />
+       * Version 0.5, 12.12.2008 (Refactored some code and added english documentation)<br />
+       * Version 0.6, 13.12.2008 (Removed the benchmarker)<br />
+       */
+      public function filter($input){
 
          // get some front controller configuration params
          $fC = &Singleton::getInstance('Frontcontroller');
@@ -68,21 +68,21 @@
             if(substr_count($Key,$namespaceKeywordDelimiter.$actionKeyword.$keywordClassDelimiter) > 0){
 
                // get namespace and class from the REQUEST key
-               $ActionName = substr($Key,strpos($Key,$keywordClassDelimiter) + strlen($keywordClassDelimiter));
-               $ActionNamespace = substr($Key,0,strpos($Key,$namespaceKeywordDelimiter));
+               $actionName = substr($Key,strpos($Key,$keywordClassDelimiter) + strlen($keywordClassDelimiter));
+               $actionNamespace = substr($Key,0,strpos($Key,$namespaceKeywordDelimiter));
 
                // initialize the input params
-               $InputParams = array();
+               $inputParams = array();
 
                // create param array
-               $ParamsArray = explode($inputDelimiter,$Value);
+               $paramsArray = explode($inputDelimiter,$Value);
 
-               for($i = 0; $i < count($ParamsArray); $i++){
+               for($i = 0; $i < count($paramsArray); $i++){
 
-                  $TmpAry = explode($keyValueDelimiter,$ParamsArray[$i]);
+                  $tmpArray = explode($keyValueDelimiter,$paramsArray[$i]);
 
-                  if(isset($TmpAry[0]) && isset($TmpAry[1]) && !empty($TmpAry[0]) && !empty($TmpAry[1])){
-                     $InputParams[$TmpAry[0]] = $TmpAry[1];
+                  if(isset($tmpArray[0]) && isset($tmpArray[1]) && !empty($tmpArray[0]) && !empty($tmpArray[1])){
+                     $inputParams[$tmpArray[0]] = $tmpArray[1];
                    // end if
                   }
 
@@ -90,7 +90,7 @@
                }
 
                // add action to the front controller
-               $fC->addAction($ActionNamespace,$ActionName,$InputParams);
+               $fC->addAction($actionNamespace,$actionName,$inputParams);
 
              // end if
             }

@@ -28,7 +28,7 @@
     * rewritten, "false" introduces the filter to not rewrite the link. Further, "mailto:" links
     * are not rewritten, too.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 05.05.2007 (First version of the link rewrite filter)<br />
     * Version 0.2, 08.05.2007 (Refactoring as a filter)<br />
@@ -46,28 +46,28 @@
        *
        * Implements the filter methos for rewriting HTML links and form actions.
        *
-       * @param string $content The HTML content to rewrite.
+       * @param string $input The HTML content to rewrite.
        * @return string The rewritten HTML content.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 05.05.2007 (Erste Version des generischen Link-Rewritings)<br />
        * Version 0.2, 08.05.2007 (Kapselung als Filter)<br />
        */
-      function filter($content){
+      public function filter($input){
 
          // invoke timer
          $t = &Singleton::getInstance('BenchmarkTimer');
          $t->start('GenericOutputFilter::filter()');
 
          // filter links
-         $content = $this->__filter($content,'<a','>','href');
+         $input = $this->__filter($input,'<a','>','href');
 
          // filter actions
-         $content = $this->__filter($content,'<form','>','action');
+         $input = $this->__filter($input,'<form','>','action');
 
          $t->stop('GenericOutputFilter::filter()');
-         return $content;
+         return $input;
 
        // end function
       }
@@ -84,7 +84,7 @@
        * @param string $attributeToken The name of the attribute to rewrite.
        * @return string The rewritten HTML content.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 17.07.2007 (Refactored the filter method to be able to filter links and forms with the same method)<br />
        * Version 0.2, 11.12.2008 (Made the benchmark ids more explicit)<br />
@@ -159,12 +159,12 @@
       /**
        * @private
        *
-       * Ersetzt in URLs übliche Request-Strings durch Slashes.<br />
+       * Ersetzt in URLs ï¿½bliche Request-Strings durch Slashes.<br />
        *
        * @param string $String; URL-Teil
        * @return string $String; Ersetzter URL-Teil
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 14.03.2006<br />
        * Version 0.2, 16.04.2006<br />

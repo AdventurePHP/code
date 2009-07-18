@@ -20,18 +20,18 @@
    */
 
    /**
-   *  @namespace core::filter::input
-   *  @class AbstractRequestFilter
-   *  @abstract
-   *
-   *  Implements some basic filter methods used by the derived classes.
-   *
-   *  @author Christian Sch‰fer
-   *  @version
-   *  Version 0.1, 03.06.2007<br />
-   *  Version 0.2, 08.06.2007 (Now inherits from the abstract filter definition class)<br />
-   */
-   class AbstractRequestFilter extends AbstractFilter
+    * @namespace core::filter::input
+    * @class AbstractRequestFilter
+    * @abstract
+    *
+    * Implements some basic filter methods used by the derived classes.
+    *
+    * @author Christian Sch√§fer
+    * @version
+    * Version 0.1, 03.06.2007<br />
+    * Version 0.2, 08.06.2007 (Now inherits from the abstract filter definition class)<br />
+    */
+   abstract class AbstractRequestFilter extends AbstractFilter
    {
 
       function AbstractRequestFilter(){
@@ -39,29 +39,28 @@
 
 
       /**
-      *  @private
-      *
-      *  Creates a request array out of a slash-separated url string.
-      *
-      *  @param string $URLString URL string
-      *  @return array $ReturnArray list of URL params with their corresponding valued
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 03.06.2007<br />
-      */
-      function __createRequestArray($URLString){
+       * @protected
+       *
+       * Creates a request array out of a slash-separated url string.
+       *
+       * @param string $url URL string.
+       * @return string[] List of URL params with their corresponding value.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 03.06.2007<br />
+       */
+      protected function __createRequestArray($url){
 
          // remove slashes at the beginning
-         $URLString = $this->__deleteTrailingSlash($URLString);
+         $url = $this->__deleteTrailingSlash($url);
 
          // create first version of the array
-         $requestArray = explode($this->__RewriteURLDelimiter,strip_tags($URLString));
+         $requestArray = explode($this->__RewriteURLDelimiter,strip_tags($url));
 
          // initialize some vars
          $returnArray = array();
          $x = 0;
-
 
          // walk throug the new request array and combine the key (offset x) and
          // the value (offset x + 1)
@@ -85,52 +84,51 @@
 
 
       /**
-      *  @private
-      *
-      *  Removes trailing slashes from URL strings.
-      *
-      *  @param string $URLString URL string
-      *  @return string $URLString URL string without trailing slashes
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 03.06.2007<br />
-      */
-      function __deleteTrailingSlash($URLString){
+       * @protected
+       *
+       * Removes trailing slashes from URL strings.
+       *
+       * @param string $url URL string.
+       * @return string URL string without trailing slashes.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 03.06.2007<br />
+       */
+      protected function __deleteTrailingSlash($url){
 
-         if(substr($URLString,0,1) == $this->__RewriteURLDelimiter){
-            $URLString = substr($URLString,1);
+         if(substr($url,0,1) == $this->__RewriteURLDelimiter){
+            $url = substr($url,1);
           // end if
          }
-
-         return $URLString;
+         return $url;
 
        // end function
       }
 
 
       /**
-      *  @private
-      *
-      *  Filters the request array. Removed escape sequences and replaces special characters with
-      *  their HTML entities to ensure, that form content is displayed correctly.
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 17.06.2007<br />
-      *  Version 0.2, 26.08.2007 (Added array handling)<br />
-      */
-      function __filterRequestArray(){
+       * @protected
+       *
+       * Filters the request array. Removed escape sequences and replaces special characters with
+       * their HTML entities to ensure, that form content is displayed correctly.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 17.06.2007<br />
+       * Version 0.2, 26.08.2007 (Added array handling)<br />
+       */
+      protected function __filterRequestArray(){
 
          // get the current 'magic_quotes_gpc' config value
-         $MagicQuotesGPC = ini_get('magic_quotes_gpc');
+         $magicQuotesGPC = ini_get('magic_quotes_gpc');
 
          foreach($_REQUEST as $Key => $Value){
 
             // remove slashes added before, if 'magic_quotes_gpc' is active
             if(!is_array($Value)){
 
-               if($MagicQuotesGPC == '1'){
+               if($magicQuotesGPC == '1'){
                   $_REQUEST[$Key] = htmlspecialchars(stripcslashes($Value));
                 // end if
                }
