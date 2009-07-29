@@ -141,8 +141,9 @@
 
          // the iterator item is always the first child of the
          // current node! others will be ignored.
-         $itemObjectID = array_keys($this->__Children);
-         $iteratorItem = &$this->__Children[$itemObjectID[0]];
+         $childrenObjectIDs = array_keys($this->__Children);
+         $itemObjectID = $childrenObjectIDs[0];
+         $iteratorItem = &$this->__Children[$itemObjectID];
 
          // define the dynamic getter.
          $Getter = $iteratorItem->getAttribute('getter');
@@ -191,7 +192,7 @@
 
          // add the surrounding content of the iterator to enable the
          // user to define some html code as well.
-         return str_replace($this->__Content,'<'.$itemObjectID.' />',$buffer);
+         return str_replace('<'.$itemObjectID.' />',$buffer,$this->__Content);
 
        // end function
       }
