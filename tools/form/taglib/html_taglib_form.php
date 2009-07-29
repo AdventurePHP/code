@@ -106,7 +106,7 @@
        * Version 1.0, 03.09.2008 (Added the form:marker tag)<br />
        * Version 1.1, 22.06.2009 (Added the form:reset tag)<br />
        */
-      function html_taglib_form(){
+      public function html_taglib_form(){
 
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','button');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','text');
@@ -141,7 +141,7 @@
        * @version
        * Version 0.1, 05.01.2007<br />
        */
-      function onParseTime(){
+      public function onParseTime(){
          $this->__extractTagLibTags();
        // end function
       }
@@ -163,7 +163,7 @@
       *  Version 0.3, 06.09.2008 (API change: now the tag name (e.g. "form:text") is expected as an argument)<br />
       *  Version 0.4, 10.09.2008 (Added the $ElementAttributes param)<br />
       */
-      function addFormElement($elementType,$elementAttributes = array()){
+      public function addFormElement($elementType,$elementAttributes = array()){
 
          // create form element
          $ObjectID = $this->__createFormElement($elementType,$elementAttributes);
@@ -203,7 +203,7 @@
       *  @version
       *  Version 0.1, 05.01.2007<br />
       */
-      function addFormContent($content){
+      public function addFormContent($content){
          $this->__Content .= $content;
        // end function
       }
@@ -221,7 +221,7 @@
       *  @version
       *  Version 0.1, 03.09.2008<br />
       */
-      function addFormContentBeforeMarker($MarkerName,$Content){
+      public function addFormContentBeforeMarker($MarkerName,$Content){
 
          // get desired marker
          $Marker = &$this->__getMarker($MarkerName);
@@ -262,7 +262,7 @@
       *  @version
       *  Version 0.1, 05.09.2008<br />
       */
-      function addFormContentAfterMarker($MarkerName,$Content){
+      public function addFormContentAfterMarker($MarkerName,$Content){
 
          // get desired marker
          $Marker = &$this->__getMarker($MarkerName);
@@ -306,7 +306,7 @@
       *  Version 0.1, 05.09.2008<br />
       *  Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
       */
-      function addFormElementBeforeMarker($MarkerName,$ElementType,$ElementAttributes = array()){
+      public function addFormElementBeforeMarker($MarkerName,$ElementType,$ElementAttributes = array()){
 
          // create new form element
          $ObjectID = $this->__createFormElement($ElementType,$ElementAttributes);
@@ -354,7 +354,7 @@
       *  Version 0.1, 05.09.2008<br />
       *  Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
       */
-      function addFormElementAfterMarker($MarkerName,$ElementType,$ElementAttributes = array()){
+      public function addFormElementAfterMarker($MarkerName,$ElementType,$ElementAttributes = array()){
 
          // create new form element
          $ObjectID = $this->__createFormElement($ElementType,$ElementAttributes);
@@ -520,7 +520,7 @@
       *  @version
       *  Version 0.1, 12.01.2007<br />
       */
-      function setPlaceHolder($name,$value){
+      public function setPlaceHolder($name,$value){
 
          $tagLibClass = 'form_taglib_placeholder';
 
@@ -570,7 +570,7 @@
       *  @version
       *  Version 0.1, 07.01.2007<br />
       */
-      function setAction($action){
+      public function setAction($action){
          $this->__Attributes['action'] = $action;
        // end function
       }
@@ -588,7 +588,7 @@
       *  @version
       *  Version 0.1, 07.01.2007<br />
       */
-      function &getFormElementByName($name){
+      public function &getFormElementByName($name){
 
          if(count($this->__Children) > 0){
 
@@ -626,13 +626,13 @@
       *  @version
       *  Version 0.1, 21.01.2007<br />
       */
-      function &getFormElementByID($id){
+      public function &getFormElementByID($id){
 
          if(count($this->__Children) > 0){
 
-            foreach($this->__Children as $ObjectID => $DUMMY){
-               if($Child->getAttribute('id') == $id){
-                  return $this->__Children[$ObjectID];
+            foreach($this->__Children as $objectID => $DUMMY){
+               if($this->__Children[$objectID]->getAttribute('id') == $id){
+                  return $this->__Children[$objectID];
                 // end if
                }
              // end foreach
@@ -642,10 +642,12 @@
          }
 
          // display extended debug message in case no form element was found
-         $Parent = $this->get('ParentObject');
-         $GrandParent = $Parent->get('ParentObject');
-         $DocumentController = $GrandParent->get('DocumentController');
-         trigger_error('[html_taglib_form::getFormElementByID()] No form element with id "'.$id.'" composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$DocumentController.'"!',E_USER_ERROR);
+         $parent = $this->get('ParentObject');
+         $grandParent = $parent->get('ParentObject');
+         $documentController = $grandParent->get('DocumentController');
+         trigger_error('[html_taglib_form::getFormElementByID()] No form element with id "'
+            .$id.'" composed in current form "'.$this->__Attributes['name']
+            .'" in document controller "'.$documentController.'"!',E_USER_ERROR);
          exit();
 
        // end function
@@ -666,7 +668,7 @@
       *  Version 0.2, 12.01.2007 (Corrected error message)<br />
       *  Version 0.3, 06.09.2008 (Corrected error message again)<br />
       */
-      function &getFormElementByObjectID($objectID){
+      public function &getFormElementByObjectID($objectID){
 
          if(isset($this->__Children[$objectID])){
             return $this->__Children[$objectID];
@@ -675,9 +677,11 @@
          else{
 
             // note, that no suitable child has been found
-            $Parent = $this->get('ParentObject');
-            $DocumentController =  $Parent->get('DocumentController');
-            trigger_error('[html_taglib_form::getFormElementByObjectID()] No form element with id "'.$objectID.'" composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$DocumentController.'"!',E_USER_ERROR);
+            $parent = $this->get('ParentObject');
+            $documentController =  $parent->get('DocumentController');
+            trigger_error('[html_taglib_form::getFormElementByObjectID()] No form element with id "'
+               .$objectID.'" composed in current form "'.$this->__Attributes['name']
+               .'" in document controller "'.$documentController.'"!',E_USER_ERROR);
             exit();
 
           // end else
@@ -699,34 +703,36 @@
       *  @version
       *  Version 0.1, 14.06.2008 (API-Änderung. Statt getFormElementsByType() soll nur noch getFormElementsByTagName() verwendet werden, da intuitiver.)<br />
       */
-      function &getFormElementsByTagName($tagName){
+      public function &getFormElementsByTagName($tagName){
 
          $colon = strpos($tagName,':');
          $tagClassName = trim(substr($tagName,0,$colon)).'_taglib_'.trim(substr($tagName,$colon + 1));
 
          if(count($this->__Children) > 0){
 
-            $FormElements = array();
+            $formElements = array();
             foreach($this->__Children as $objectID => $DUMMY){
 
                if(get_class($this->__Children[$objectID]) == $tagClassName){
-                  $FormElements[] = &$this->__Children[$objectID];
+                  $formElements[] = &$this->__Children[$objectID];
                 // end if
                }
 
              // end foreach
             }
 
-            return $FormElements;
+            return $formElements;
 
           // end if
          }
 
          // display extended debug message in case no form elements were found
-         $Parent = $this->get('ParentObject');
-         $GrandParent = $Parent->get('ParentObject');
-         $DocumentController = $GrandParent->get('DocumentController');
-         trigger_error('[html_taglib_form::getFormElementsByType()] No form elements composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$DocumentController.'"!',E_USER_ERROR);
+         $parent = $this->get('ParentObject');
+         $grandParent = $parent->get('ParentObject');
+         $documentController = $grandParent->get('DocumentController');
+         trigger_error('[html_taglib_form::getFormElementsByType()] No form elements composed in '.
+            'current form "'.$this->__Attributes['name'].'" in document controller "'
+            .$documentController.'"!',E_USER_ERROR);
          exit();
 
        // end function
@@ -734,18 +740,19 @@
 
 
       /**
-      *  @public
-      *
-      *  Returns the content of the transformed form.
-      *
-      *  @return string The content of the transformed form.
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 12.01.2007<br />
-      *  Version 0.2, 20.01.2007 (Handling f�r Attribut "action" ge�ndert)<br />
-      */
-      function transformForm(){
+       * @public
+       *
+       * Returns the content of the transformed form.
+       *
+       * @return string The content of the transformed form.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.01.2007<br />
+       * Version 0.2, 20.01.2007 (Changed action attribute handling)<br />
+       * Version 0.3, 27.07.2009 (Attibute "name" is not rendered into HTML tag, because of XHTML 1.1 strict)<br />
+       */
+      public function transformForm(){
 
          // add action attribute if not set
          if(!isset($this->__Attributes['action']) || empty($this->__Attributes['action'])){
@@ -754,24 +761,26 @@
          }
 
          // transform
-         $HTML_Form = (string)'';
-         $HTML_Form .= '<form '.$this->__getAttributesAsString($this->__Attributes).'>';
+         $htmlCode = (string)'';
+         $htmlCode .= '<form ';
+         $htmlCode .= $this->__getAttributesAsString($this->__Attributes,array('name'));
+         $htmlCode .= '>';
 
-         $Content = $this->__Content;
+         $content = $this->__Content;
 
          if(count($this->__Children) > 0){
 
-            foreach($this->__Children as $ObjectID => $Child){
-               $Content = str_replace('<'.$ObjectID.' />',$Child->transform(),$Content);
+            foreach($this->__Children as $objectID => $Child){
+               $content = str_replace('<'.$objectID.' />',$Child->transform(),$content);
              // end foreach
             }
 
           // end if
          }
 
-         $HTML_Form .= $Content;
-         $HTML_Form .= '</form>';
-         return $HTML_Form;
+         $htmlCode .= $content;
+         $htmlCode .= '</form>';
+         return $htmlCode;
 
        // end function
       }
@@ -786,7 +795,7 @@
       *  @version
       *  Version 0.1, 01.06.2008<br />
       */
-      function transformOnPlace(){
+      public function transformOnPlace(){
          $this->__TransformOnPlace = true;
        // end function
       }
@@ -804,7 +813,7 @@
       *  Version 0.1, 12.01.2007<br />
       *  Version 0.2, 01.06.2008 (Added the transformOnPlace() feature)<br />
       */
-      function transform(){
+      public function transform(){
 
          // to transformation on place if desired
          if($this->__TransformOnPlace === true){
