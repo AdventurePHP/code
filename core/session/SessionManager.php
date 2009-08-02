@@ -20,51 +20,62 @@
    */
 
    /**
-   *  @namespace core::session
-   *  @class SessionManager
-   *
-   *  Provides advances session handling with namespaces. Example:
-   *  <pre>$sessMgr = new SessionManager('<namespace>');
-   *  $sessMgr->loadSessionData('<key>');
-   *  $sessMgr->saveSessionData('<key>','<value>');</pre>
-   *
-   *  @author Christian Sch‰fer
-   *  @version
-   *  Version 0.1, 08.03.2006<br />
-   *  Version 0.2, 12.04.2006 (Added the possibility to create the class singleton.)<br />
-   */
+    * @namespace core::session
+    * @class SessionManager
+    *
+    * Provides advances session handling with namespaces. Example:
+    * <pre>$sessMgr = new SessionManager('<namespace>');
+    * $sessMgr->loadSessionData('<key>');
+    * $sessMgr->saveSessionData('<key>','<value>');</pre>
+    * Further, you do not have to take care of starting or persisting sessions.
+    *
+    * @author Christian Sch√§fer
+    * @version
+    * Version 0.1, 08.03.2006<br />
+    * Version 0.2, 12.04.2006 (Added the possibility to create the class singleton.)<br />
+    * Version 0.3, 02.08.2009 (Ensured PHP 5.3.x/6.x.x compatibility with session handling.)<br />
+    */
    final class SessionManager
    {
 
       /**
-      *  @private
-      *  Namespace der aktuellen Instanz.
-      */
+       * @private
+       * The namespace of the current instance of the session manager.
+       */
       private $__Namespace;
 
 
       /**
-      *  @public
-      *
-      *  Constructor. Initializes the namespace of the current instance.
-      *
-      *  @param string $namespace The desired namespace.
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 08.03.2006<br />
-      */
-      function SessionManager($namespace = ''){
+       * @public
+       *
+       * Initializes the namespace of the current instance and starts the
+       * session in case it is not started yet.
+       *
+       * @param string $namespace The desired namespace.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 08.03.2006<br />
+       */
+      public function SessionManager($namespace = null){
 
          // set namespace
-         if($namespace != ''){
+         if($namespace !== null){
             $this->setNamespace($namespace);
           // end if
          }
 
-         // init the session if not existent yet
+         // start session, because session_register() is
+         // deprecated as of PHP 5.3. so we have to use 
+         // session_start(), but with an additional check :(
+         if(isset($_SESSION) === false){
+            session_start();
+          // end if
+         }
+
+         // init the session if not existent yet.
          if(!isset($_SESSION[$namespace])){
-            $this->createSession($namespace);
+            $_SESSION[$namespace] = array();
           // end if
          }
 
@@ -73,78 +84,54 @@
 
 
       /**
-      *  @public
-      *
-      *  Sets the namespace of the current instance of the SessionManager.
-      *
-      *  @param string $namespace the desired namespace
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 08.03.2006<br />
-      */
-      function setNamespace($namespace){
+       * @public
+       *
+       * Sets the namespace of the current instance of the SessionManager.
+       *
+       * @param string $namespace the desired namespace
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 08.03.2006<br />
+       */
+      public function setNamespace($namespace){
          $this->__Namespace = trim($namespace);
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Creates a session for the current namespace.
-      *
-      *  @param string $namespace the desired namespace
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 08.03.2006<br />
-      */
-      function createSession($namespace){
-         session_register($namespace);
-       // end function
-      }
-
-
-      /**
-      *  @public
-      *
-      *  Deletes the session for a given namespace.
-      *
-      *  @param string $namespace the desired namespace
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 08.03.2006<br />
-      *  Version 0.2, 18.07.2006 (Fixed bug, that after a post request, the session was valid again (Server: w3service.net)!)<br />
-      */
-      function destroySession($namespace){
-
-         // Is not working!
-         // session_unregister($Namespace);
-         // unset($_SESSION[$Namespace]);
-
-         // works!
+       * @public
+       *
+       * Deletes the session for a given namespace.
+       *
+       * @param string $namespace the desired namespace
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 08.03.2006<br />
+       * Version 0.2, 18.07.2006 (Fixed bug, that after a post request, the session was valid again (Server: w3service.net)!)<br />
+       */
+      public function destroySession($namespace){
          $_SESSION[$namespace] = array();
-
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Loads data from the session.
-      *
-      *  @param string $attribute the desired attribute
-      *  @return string $data the desired session data of (bool)false
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 08.03.2006<br />
-      *  Version 0.2, 15.06.2006 (Now false is returned if the data is not present in the session)<br />
-      */
-      function loadSessionData($attribute){
+       * @public
+       *
+       * Loads data from the session.
+       *
+       * @param string $attribute the desired attribute
+       * @return string The desired session data of (bool)false
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 08.03.2006<br />
+       * Version 0.2, 15.06.2006 (Now false is returned if the data is not present in the session)<br />
+       */
+      public function loadSessionData($attribute){
 
          if(isset($_SESSION[$this->__Namespace][$attribute])){
             return $_SESSION[$this->__Namespace][$attribute];
@@ -160,20 +147,20 @@
 
 
       /**
-      *  @public
-      *
-      *  Loads data from session using an explicit namespace.
-      *
-      *  @param string $namespace the namespace of the value
-      *  @param string $attribute the desired attribute
-      *  @return string $data the desired session data of (bool)false
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 08.03.2006<br />
-      *  Version 0.2, 15.06.2006 (Now false is returned if the data is not present in the session)<br />
-      */
-      function loadSessionDataByNamespace($namespace,$attribute){
+       * @public
+       *
+       * Loads data from session using an explicit namespace.
+       *
+       * @param string $namespace the namespace of the value
+       * @param string $attribute the desired attribute
+       * @return string The desired session data of (bool)false
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 08.03.2006<br />
+       * Version 0.2, 15.06.2006 (Now false is returned if the data is not present in the session)<br />
+       */
+      public function loadSessionDataByNamespace($namespace,$attribute){
 
          if(isset($_SESSION[$namespace][$attribute])){
             return $_SESSION[$namespace][$attribute];
@@ -189,53 +176,53 @@
 
 
       /**
-      *  @public
-      *
-      *  Saves session data.
-      *
-      *  @param string $attribute the desired attribute
-      *  @param string $value the value to save
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 08.03.2006<br />
-      */
-      function saveSessionData($attribute,$value){
+       * @public
+       *
+       * Saves session data.
+       *
+       * @param string $attribute the desired attribute
+       * @param string $value the value to save
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 08.03.2006<br />
+       */
+      public function saveSessionData($attribute,$value){
          $_SESSION[$this->__Namespace][$attribute] = $value;
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Saves session data using an explicit namespace.
-      *
-      *  @param string $namespace the namespace of the value
-      *  @param string $attribute the desired attribute
-      *  @param string $value the value to save
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 08.03.2006<br />
-      */
-      function saveSessionDataByNamespace($namespace,$attribute,$value){
+       * @public
+       *
+       * Saves session data using an explicit namespace.
+       *
+       * @param string $namespace the namespace of the value
+       * @param string $attribute the desired attribute
+       * @param string $value the value to save
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 08.03.2006<br />
+       */
+      public function saveSessionDataByNamespace($namespace,$attribute,$value){
          $_SESSION[$namespace][$attribute] = $value;
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Deletes session data.
-      *
-      *  @param string $attribute the desired attribute
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 08.03.2006<br />
-      */
+       * @public
+       *
+       * Deletes session data.
+       *
+       * @param string $attribute the desired attribute
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 08.03.2006<br />
+       */
       function deleteSessionData($attribute){
          unset($_SESSION[$this->__Namespace][$attribute]);
        // end function
@@ -243,35 +230,35 @@
 
 
       /**
-      *  @public
-      *
-      *  Deletes session data using an explicit namespace.
-      *
-      *  @param string $namespace the namespace of the value
-      *  @param string $attribute the desired attribute
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 08.03.2006<br />
-      */
-      function deleteSessionDataByNamespace($namespace,$attribute){
+       * @public
+       *
+       * Deletes session data using an explicit namespace.
+       *
+       * @param string $namespace the namespace of the value
+       * @param string $attribute the desired attribute
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 08.03.2006<br />
+       */
+      public function deleteSessionDataByNamespace($namespace,$attribute){
          unset($_SESSION[$namespace][$attribute]);
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Returns the id of the current session.
-      *
-      *  @return string $sessionID the current session id
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 08.03.2006<br />
-      */
-      function getSessionID(){
+       * @public
+       *
+       * Returns the id of the current session.
+       *
+       * @return string The current session id
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 08.03.2006<br />
+       */
+      public function getSessionID(){
          return session_id();
        // end function
       }
