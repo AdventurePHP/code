@@ -60,8 +60,8 @@
             $entry->setEditor($user);
 
             // Save the entry using the business component.
-            $gbServive = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
-            $gbServive->saveEntry($entry);
+            $gbService = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
+            $gbService->saveEntry($entry);
 
           // end if
          }
@@ -86,7 +86,7 @@
             )
          );
 
-       // enf function
+       // end function
       }
 
     // end class
