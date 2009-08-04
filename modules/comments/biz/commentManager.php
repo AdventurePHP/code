@@ -35,21 +35,21 @@
    *  @author Christian Achatz
    *  @version
    *  Version 0.1, 22.08.2007<br />
-   *  Version 0.2, 28.12.2007 (Captcha-Unterstützung eingeführt)<br />
+   *  Version 0.2, 28.12.2007 (Captcha-Unterstï¿½tzung eingefï¿½hrt)<br />
    */
    class commentManager extends coreObject
    {
 
       /**
       *  @protected
-      *  Schlüssel für die auszuliefernde Kategorie.
+      *  Schlï¿½ssel fï¿½r die auszuliefernde Kategorie.
       */
       protected $__CategoryKey;
 
 
       /**
       *  @protected
-      *  Captcha String zur Prüfung der Eingabe.
+      *  Captcha String zur Prï¿½fung der Eingabe.
       */
       protected $__CaptchaString = null;
 
@@ -63,16 +63,16 @@
       *
       *  Implementierung der abstrakte "init()"-Methode.<br />
       *
-      *  @param string $CategoryKey Kategorie-Schlüssel
+      *  @param string $initParam Kategorie-Schlï¿½ssel
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 13.04.2007<br />
-      *  Version 0.2, 28.12.2007 (Captcha-Unterstützung hinzugefügt)<br />
+      *  Version 0.2, 28.12.2007 (Captcha-Unterstï¿½tzung hinzugefï¿½gt)<br />
       */
-      function init($CategoryKey){
+      function init($initParam){
 
-         $this->__CategoryKey = $CategoryKey;
+         $this->__CategoryKey = $initParam;
 
          // Captcha String initialisieren
          if($this->__CaptchaString == null){
@@ -89,11 +89,11 @@
       /**
       *  @public
       *
-      *  Läd eine Liste von Kommentaren.<br />
+      *  Lï¿½d eine Liste von Kommentaren.<br />
       *
       *  @return Array $Entries Liste von ArticleComment-Objekten
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 21.08.2007<br />
       *  Version 0.2, 01.09.2007 (Verwendung des PagerManagers auf loadEntriesByAppDataComponent() umgestellt)<br />
@@ -115,12 +115,12 @@
       /**
       *  @public
       *
-      *  Gibt die HTML-Ausgabe des Pagers zurück.<br />
+      *  Gibt die HTML-Ausgabe des Pagers zurï¿½ck.<br />
       *
       *  @param string $anchorName the desired anchor name (optional)
       *  @return string $pagerOutput the HTML code of the pager
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 21.08.2007<br />
       *  Version 0.2, 29.08.2007 (Added the anchor name)<br />
@@ -138,11 +138,11 @@
       /**
       *  @public
       *
-      *  Gibt die URL-Parameter des Pagers zurück.<br />
+      *  Gibt die URL-Parameter des Pagers zurï¿½ck.<br />
       *
       *  @return array $URLParameter Pager-URL-Parameter
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 21.08.2007<br />
       */
@@ -162,11 +162,11 @@
       *  @param ArticleComment $ArticleComment ArticleComment-Objekt
       *  @param bool $AJAX Indiziert, ob die Methode im AJAX-Style verwendet wird
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 21.08.2007<br />
-      *  Version 0.2, 28.12.2007 (Captcha eingeführt)<br />
-      *  Version 0.3, 02.02.2008 (AJAX-Support hinzugefügt)<br />
+      *  Version 0.2, 28.12.2007 (Captcha eingefï¿½hrt)<br />
+      *  Version 0.3, 02.02.2008 (AJAX-Support hinzugefï¿½gt)<br />
       */
       function saveEntry($ArticleComment,$AJAX = false){
 
@@ -180,7 +180,7 @@
          // Weiterleitung auf anderen View nur bei normaler Anwendung
          if($AJAX == false){
 
-            // Captcha-Session-Eintrag löschen
+            // Captcha-Session-Eintrag lï¿½schen
             $sessMgr = new SessionManager('modules::comment');
             $sessMgr->deleteSessionData('CAPTCHA_STRING');
 

@@ -82,25 +82,25 @@
       *  @version
       *  Version 0.1, 30.12.2008<br />
       */
-      function init($configKey){
+      function init($initParam){
 
          if($this->__IsInitialized === false){
 
             // setup the component
             $config = &$this->__getConfiguration('modules::usermanagement','umgtconfig');
 
-            $appID = $config->getValue($configKey,'ApplicationID');
+            $appID = $config->getValue($initParam,'ApplicationID');
             if($appID !== null){
                $this->__ApplicationID = $appID;
              // end if
             }
 
-            $serviceMode = $config->getValue($configKey,'ServiceMode');
+            $serviceMode = $config->getValue($initParam,'ServiceMode');
             if($serviceMode !== null){
                $this->__ServiceMode = $serviceMode;
              // end if
             }
-            $this->__ConnectionKey = $config->getValue($configKey,'ConnectionKey');
+            $this->__ConnectionKey = $config->getValue($initParam,'ConnectionKey');
 
             // set to initialized
             $this->__IsInitialized = true;

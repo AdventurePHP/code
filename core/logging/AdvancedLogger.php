@@ -280,32 +280,32 @@
       *
       *  Implements the init() method used by the service manager to initialize the service object.
       *
-      *  @param string $section the desired configuration section
+      *  @param string $initParam the desired configuration section
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 09.11.2008<br />
       */
-      function init($section){
+      function init($initParam){
 
          // initialize the current log configuration section
          if($this->__LogConfig === null){
 
             // initialize config
             $config = &$this->__getConfiguration('core::logging','logconfig');
-            $this->__LogConfig = $config->getSection($section);
+            $this->__LogConfig = $config->getSection($initParam);
 
             if($this->__LogConfig === null){
                $reg = &Singleton::getInstance('Registry');
                $env = $reg->retrieve('apf::core','Environment');
-               trigger_error('[AdvancedLogger::init()] The configuration section ("'.$section.'") cannot be loaded from the logging configuration file "'.$env.'_logconfig.ini" for namespace "core::logging" and context "'.$this->__Context.'"!',E_USER_ERROR);
+               trigger_error('[AdvancedLogger::init()] The configuration section ("'.$initParam.'") cannot be loaded from the logging configuration file "'.$env.'_logconfig.ini" for namespace "core::logging" and context "'.$this->__Context.'"!',E_USER_ERROR);
                exit();
              // end if
             }
 
             // check for the target directive
             if(!isset($this->__LogConfig['LogTarget'])){
-               trigger_error('[AdvancedLogger::init()] The configuration section ("'.$section.'") does not contain a "LogTarget" directive! Please check your configuration.',E_USER_ERROR);
+               trigger_error('[AdvancedLogger::init()] The configuration section ("'.$initParam.'") does not contain a "LogTarget" directive! Please check your configuration.',E_USER_ERROR);
                exit();
              // end if
             }

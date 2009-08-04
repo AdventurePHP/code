@@ -51,21 +51,21 @@
       *
       *  Initializes the manager.
       *
-      *  @param string $DataDir the news content data dir
+      *  @param string $initParam the news content data dir
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 18.09.2008<br />
       */
-      function init($DataDir){
+      function init($initParam){
 
          // cut trailing slash if necessary
-         if(substr($DataDir,strlen($DataDir) - 1) == '/'){
-            $this->__DataDir = substr($DataDir,0,strlen($DataDir) -1);
+         if(substr($initParam,strlen($initParam) - 1) == '/'){
+            $this->__DataDir = substr($initParam,0,strlen($initParam) -1);
           // end if
          }
          else{
-            $this->__DataDir = $DataDir;
+            $this->__DataDir = $initParam;
           // end else
          }
 

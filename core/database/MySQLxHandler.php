@@ -52,21 +52,21 @@
        * Version 0.2, 16.11.2008 (Bugfix: debug mode was not activated correctly)<br />
        * Version 0.3, 15.07.2009 (Added collation support)<br />
        */
-      public function init($configSection){
+      public function init($initParam){
 
          // initialize if not already done
          if($this->__isInitialized == false){
 
             // fill connection data
-            $this->__dbHost = $configSection['DB.Host'];
-            $this->__dbUser = $configSection['DB.User'];
-            $this->__dbPass = $configSection['DB.Pass'];
-            $this->__dbName = $configSection['DB.Name'];
+            $this->__dbHost = $initParam['DB.Host'];
+            $this->__dbUser = $initParam['DB.User'];
+            $this->__dbPass = $initParam['DB.Pass'];
+            $this->__dbName = $initParam['DB.Name'];
 
             // activate / deactivate debug mode
-            if(isset($configSection['DB.DebugMode'])){
+            if(isset($initParam['DB.DebugMode'])){
 
-               if($configSection['DB.DebugMode'] == 'true' || $configSection['DB.DebugMode'] == '1'){
+               if($initParam['DB.DebugMode'] == 'true' || $initParam['DB.DebugMode'] == '1'){
                   $this->__dbDebug = true;
                 // end if
                }
@@ -83,16 +83,16 @@
             }
 
             // set connection charset and collation
-            if(isset($configSection['DB.Charset'])){
-               $charset = trim($configSection['DB.Charset']);
+            if(isset($initParam['DB.Charset'])){
+               $charset = trim($initParam['DB.Charset']);
                if(!empty($charset)){
                   $this->__dbCharset = $charset;
                 // end if
                }
              // end if
             }
-            if(isset($configSection['DB.Collation'])){
-               $collation = trim($configSection['DB.Collation']);
+            if(isset($initParam['DB.Collation'])){
+               $collation = trim($initParam['DB.Collation']);
                if(!empty($collation)){
                   $this->__dbCollation = $collation;
                 // end if

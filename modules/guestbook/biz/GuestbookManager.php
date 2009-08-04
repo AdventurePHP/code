@@ -70,14 +70,14 @@
       *
       *  Implements the init() method used with the service manager.
       *
-      *  @param string $guestbookID The guestbook id
+      *  @param string $initParam The guestbook id
       *
       *  @author Christian Sch�fer
       *  @version
       *  Version 0.1, 13.04.2007<br />
       */
-      public function init($guestbookID){
-         $this->__GuestbookID = $guestbookID;
+      public function init($initParam){
+         $this->__GuestbookID = $initParam;
          $this->__sessMgr = new SessionManager('Guestbook');
        // end function
       }

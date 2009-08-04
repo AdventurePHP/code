@@ -55,14 +55,14 @@
       *
       *  Initializes the connection key of the mapper.
       *
-      *  @param string $connectionKey the database connection key
+      *  @param string $initParam the database connection key
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 19.01.2009<br />
       */
-      function init($connectionKey){
-         $this->__ConnectionKey = $connectionKey;
+      function init($initParam){
+         $this->__ConnectionKey = $initParam;
        // end function
       }
 

@@ -48,16 +48,16 @@
       *
       *  Implements the interface method init() to be able to initialize the mapper with the service manager.
       *
-      *  @param array $initParams list of initialization parameters
+      *  @param array $initParam list of initialization parameters
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 14.05.2008<br />
       */
-      public function init($initParams){
+      public function init($initParam){
 
          // call parent init method
-         parent::init($initParams);
+         parent::init($initParam);
 
          // create mapping table if necessary
          if(count($this->__MappingTable) == 0){

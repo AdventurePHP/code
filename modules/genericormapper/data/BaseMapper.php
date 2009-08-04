@@ -91,7 +91,7 @@
       *  Implements the interface method init() to be able to initialize the mapper with the
       *  service manager.
       *
-      *  @param string[] $initParams List of initialization parameters.
+      *  @param string[] $initParam List of initialization parameters.
       *
       *  @author Christian Achatz
       *  @version
@@ -102,22 +102,22 @@
       *  Version 0.5, 23.06.2008 (mapper now must be instanciated by the factory, that configures the mapper)<br />
       *  Version 0.6, 03.05.2009 (added the LogStatements param)<br />
       */
-      function init($initParams){
+      function init($initParam){
 
          // set the config namespace
-         $this->__ConfigNamespace = $initParams['ConfigNamespace'];
+         $this->__ConfigNamespace = $initParam['ConfigNamespace'];
 
          // set the config name affix
-         $this->__ConfigNameAffix = $initParams['ConfigNameAffix'];
+         $this->__ConfigNameAffix = $initParam['ConfigNameAffix'];
 
          // get connection manager
          $cM = &$this->__getServiceObject('core::database','connectionManager');
 
          // initialize connection
-         $this->__DBDriver = &$cM->getConnection($initParams['ConnectionName']);
+         $this->__DBDriver = &$cM->getConnection($initParam['ConnectionName']);
 
          // set debug mode, if desired
-         $this->__LogStatements = $initParams['LogStatements'];
+         $this->__LogStatements = $initParam['LogStatements'];
 
        // end function
       }

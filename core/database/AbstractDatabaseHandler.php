@@ -117,41 +117,41 @@
       *  Implements the init() method, so that the derived classes can be initialized
       *  by the service manager. Initializes the handler only one time.
       *
-      *  @param array $configSection Associative configuration array
+      *  @param array $initParam Associative configuration array
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 10.02.2008<br />
       */
-      function init($configSection){
+      function init($initParam){
 
          if($this->__isInitialized == false){
 
             // set server host
-            if(isset($configSection['DB.Host'])){
-               $this->__dbHost = $configSection['DB.Host'];
+            if(isset($initParam['DB.Host'])){
+               $this->__dbHost = $initParam['DB.Host'];
              // end if
             }
 
             // set user name
-            if(isset($configSection['DB.User'])){
-               $this->__dbUser = $configSection['DB.User'];
+            if(isset($initParam['DB.User'])){
+               $this->__dbUser = $initParam['DB.User'];
              // end if
             }
 
             // set password
-            if(isset($configSection['DB.Pass'])){
-               $this->__dbPass = $configSection['DB.Pass'];
+            if(isset($initParam['DB.Pass'])){
+               $this->__dbPass = $initParam['DB.Pass'];
              // end if
             }
 
             // set name of the database
-            $this->__dbName = $configSection['DB.Name'];
+            $this->__dbName = $initParam['DB.Name'];
 
             // set debug mode
-            if(isset($configSection['DB.DebugMode'])){
+            if(isset($initParam['DB.DebugMode'])){
 
-               if($configSection['DB.DebugMode'] == 'true' || $configSection['DB.DebugMode'] == '1'){
+               if($initParam['DB.DebugMode'] == 'true' || $initParam['DB.DebugMode'] == '1'){
                   $this->__dbDebug = true;
                 // end if
                }

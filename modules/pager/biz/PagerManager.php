@@ -67,7 +67,7 @@
       *
       *  Initializes the pager. Loads the desired config section.
       *
-      *  @param string $configSection the name of the config section.
+      *  @param string $initParam the name of the config section.
       *
       *  @author Christian Achatz
       *  @version
@@ -79,11 +79,11 @@
       *  Version 0.6, 26.04.2008 (The statement params are now casted to int by default)<br />
       *  Version 0.7, 25.01.2009 (Complete redesign / refactoring due to pager design changes. Now the pager can be used together with the GenericORMapper)<br />
       */
-      public function init($configSection){
+      public function init($initParam){
 
          // initialize the config
          $config = &$this->__getConfiguration('modules::pager','pager');
-         $this->__PagerConfig = $config->getSection($configSection);
+         $this->__PagerConfig = $config->getSection($initParam);
 
          // translate the cache directive
          if(!isset($this->__PagerConfig['Pager.CacheInSession']) || $this->__PagerConfig['Pager.CacheInSession'] === 'false'){

@@ -204,17 +204,17 @@
       *  Version 0.2, 22.11.2008 (Refactored due to fabric introduction.)<br />
       *  Version 0.3, 24.11.2008 (Refactoring due to discussions on the fusion of writers and readers)<br />
       */
-      function init($configSection){
+      function init($initParam){
 
          // injects the config section
-         $this->__Attributes = $configSection;
+         $this->__Attributes = $initParam;
 
          // include and create the provider
          $namespace = $this->__getCacheConfigAttribute('Cache.Provider.Namespace');
          $class = $this->__getCacheConfigAttribute('Cache.Provider.Class');
          import($namespace,$class);
          $this->__Provider = $this->__getServiceObject($namespace,$class,'NORMAL');
-         $this->__Provider->setAttributes($configSection);
+         $this->__Provider->setAttributes($initParam);
 
          // map the active configuration key
          $active = $this->__getCacheConfigAttribute('Cache.Active');
