@@ -549,8 +549,7 @@
 
          $orm = &$this->__getGenericORMapper();
          $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
-         $gb = $orm->loadObjectByID('Guestbook',$model->get('GuestbookId'));
-         return $gb;
+         return $orm->loadObjectByID('Guestbook',$model->get('GuestbookId'));
 
        // end function
       }
