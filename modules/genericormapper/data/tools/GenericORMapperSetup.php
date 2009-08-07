@@ -92,24 +92,24 @@
          $this->__ConfigNameAffix = $configNameAffix;
 
          // setup object layout
-         $Objects = $this->__generateObjectLayout();
+         $objects = $this->__generateObjectLayout();
 
          // setup relation layout
-         $Relations = $this->__generateRelationLayout();
+         $relations = $this->__generateRelationLayout();
 
          // display only
          if($connectionName === null){
 
             // display object structure
             echo '<pre>';
-            foreach($Objects as $Object){
-               echo PHP_EOL.PHP_EOL.$Object;
+            foreach($objects as $object){
+               echo PHP_EOL.PHP_EOL.$object;
              // end function
             }
 
             // display relation structure
-            foreach($Relations as $Relation){
-              echo PHP_EOL.PHP_EOL.$Relation;
+            foreach($relations as $relation){
+              echo PHP_EOL.PHP_EOL.$relation;
              // end function
             }
             echo '</pre>';
@@ -125,14 +125,14 @@
             $this->__DBDriver = &$cM->getConnection($connectionName);
 
             // create object structure
-            foreach($Objects as $Object){
-               $this->__DBDriver->executeTextStatement($Object);
+            foreach($objects as $object){
+               $this->__DBDriver->executeTextStatement($object);
              // end function
             }
 
             // create relation structure
-            foreach($Relations as $Relation){
-               $this->__DBDriver->executeTextStatement($Relation);
+            foreach($relations as $relation){
+               $this->__DBDriver->executeTextStatement($relation);
              // end function
             }
 
