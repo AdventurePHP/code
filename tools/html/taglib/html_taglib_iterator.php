@@ -20,6 +20,8 @@
    */
 
    import('tools::html::taglib','iterator_taglib_item');
+   import('tools::html::taglib','iterator_taglib_addtaglib');
+   import('tools::html::taglib','iterator_taglib_getstring');
 
 
    /**
@@ -29,14 +31,20 @@
     * Implements a taglib, that can display a list of objects (arrays with numeric offsets)
     * or associative arrays by defining a iterator with items and place holders within the
     * items. For convenience, the iterator can contain additional (html) content.
+    * <p/>
+    * Further, the
+    * <pre><iterator:addtaglib /></pre>
+    * tag allows you to include custom tags (e.g. for language dependent table headers). In
+    * order to display language dependent values, you can use the
+    * <pre><iterator:getstring /></pre>
+    * tag.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 01.06.2008<br />
     * Version 0.2, 04.06.2008 (Replaced __getIteratorItem() with key())<br />
     */
-   class html_taglib_iterator extends Document
-   {
+   class html_taglib_iterator extends Document {
 
       /**
        * @protected
@@ -62,22 +70,25 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 01.06.2008<br />
+       * Version 0.2, 09.08.2009 (Added the addtaglib tag to enable custom tags.)<br />
        */
       function html_taglib_iterator(){
          $this->__TagLibs[] = new TagLib('tools::html::taglib','iterator','item');
+         $this->__TagLibs[] = new TagLib('tools::html::taglib','iterator','addtaglib');
+         $this->__TagLibs[] = new TagLib('tools::html::taglib','iterator','getstring');
        // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Implements the onParseTime method. Parses the iterator item taglib.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 01.06.2008<br />
-      */
+       * @public
+       *
+       * Implements the onParseTime method. Parses the iterator item taglib.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 01.06.2008<br />
+       */
       function onParseTime(){
          $this->__extractTagLibTags();
        // end function
@@ -103,14 +114,14 @@
 
 
       /**
-      *  @public
-      *
-      *  Activates the transform-on-place feature for the iterator tag.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 01.06.2008<br />
-      */
+       * @public
+       *
+       * Activates the transform-on-place feature for the iterator tag.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 01.06.2008<br />
+       */
       function transformOnPlace(){
          $this->__TransformOnPlace = true;
        // end function
@@ -131,6 +142,7 @@
        * Version 0.1, 01.06.2008<br />
        * Version 0.2, 04.06.2008 (Enhanced method)<br />
        * Version 0.3, 15.06.2008 (Bugfix: the item was not found using PHP5)<br />
+       * Version 0.4, 09.08.2009 (Added new taglibs iterator:addtaglib and iterator:getstring due to request in forum)<br />
        */
       function transformIterator(){
 
@@ -139,16 +151,15 @@
 
          $buffer = (string)'';
 
-         // the iterator item is always the first child of the
-         // current node! others will be ignored.
-         $childrenObjectIDs = array_keys($this->__Children);
-         $itemObjectID = $childrenObjectIDs[0];
+         // the iterator item must not always be the first child
+         // of the current node!
+         $itemObjectID = $this->__getIteratorItemObjectId();
          $iteratorItem = &$this->__Children[$itemObjectID];
 
          // define the dynamic getter.
-         $Getter = $iteratorItem->getAttribute('getter');
-         if($Getter === null){
-            $Getter = 'get';
+         $getter = $iteratorItem->getAttribute('getter');
+         if($getter === null){
+            $getter = 'get';
           // end if
          }
 
@@ -160,8 +171,8 @@
 
             if(is_array($this->__DataContainer[$i])){
 
-               foreach($placeHolders as $ObjectID => $DUMMY){
-                  $placeHolders[$ObjectID]->set('Content',$this->__DataContainer[$i][$placeHolders[$ObjectID]->getAttribute('name')]);
+               foreach($placeHolders as $objectID => $DUMMY){
+                  $placeHolders[$objectID]->set('Content',$this->__DataContainer[$i][$placeHolders[$objectID]->getAttribute('name')]);
                 // end foreach
                }
 
@@ -171,8 +182,8 @@
             }
             elseif(is_object($this->__DataContainer[$i])){
 
-               foreach($placeHolders as $ObjectID => $DUMMY){
-                  $placeHolders[$ObjectID]->set('Content',$this->__DataContainer[$i]->{$Getter}($placeHolders[$ObjectID]->getAttribute('name')));
+               foreach($placeHolders as $objectID => $DUMMY){
+                  $placeHolders[$objectID]->set('Content',$this->__DataContainer[$i]->{$getter}($placeHolders[$objectID]->getAttribute('name')));
                 // end foreach
                }
 
@@ -192,7 +203,20 @@
 
          // add the surrounding content of the iterator to enable the
          // user to define some html code as well.
-         return str_replace('<'.$itemObjectID.' />',$buffer,$this->__Content);
+         $iterator = str_replace('<'.$itemObjectID.' />',$buffer,$this->__Content);
+
+         // transform all other child tags except the iterator item(s)
+         foreach($this->__Children as $objectId => $DUMMY){
+
+            if(get_class($this->__Children[$objectId]) !== 'iterator_taglib_item'){
+               $iterator = str_replace('<'.$objectID. ' />',$this->__Children[$objectID]->transform(),$iterator);
+             // end if
+            }
+
+          // end foreach
+         }
+
+         return $iterator;
 
        // end function
       }
@@ -217,6 +241,40 @@
          }
 
          return (string)'';
+
+       // end function
+      }
+
+
+      /**
+       * @protected
+       *
+       * Returns the first iterator item, that is found in the children list.
+       * All other occurences are ignored, due to the fact, that it is not
+       * allowed to define more that one iterator item.
+       *
+       * @return iterator_taglib_item The iterator item.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 09.08.2009<br />
+       */
+      protected function __getIteratorItemObjectId(){
+
+         foreach($this->__Children as $objectId => $DUMMY){
+            if(get_class($this->__Children[$objectId]) === 'iterator_taglib_item'){
+               return $objectId;
+             // end if
+            }
+          // end foreach
+         }
+
+         // defining no iterator item is not allowed!
+         trigger_error('[html_taglib_iterator::__getIteratorItemObjectId()] The definition for '
+            .'iterator "'.$this->getAttribute('name').'" does not contain a iterator item, '
+            .'hence this is no legal iterator tag definition. Please refer to the documentation.',
+            E_USER_ERROR);
+         exit(1);
 
        // end function
       }
