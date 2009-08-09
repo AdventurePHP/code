@@ -75,10 +75,10 @@
       *  Loads an object list by a special statement. The statement must return the desired<br />
       *  object properties.<br />
       *
-      *  @param string $ObjectName name of the object in mapping table
-      *  @param string $Namespace namespace of the statement
-      *  @param string $StatementName name of the statement file
-      *  @param array $StatementParams a list of statement parameters
+      *  @param string $objectName name of the object in mapping table
+      *  @param string $namespace namespace of the statement
+      *  @param string $statementName name of the statement file
+      *  @param array $statementParams a list of statement parameters
       *  @return GenericDomainObject[] The desired object list.
       *
       *  @author Christian Achatz
@@ -86,8 +86,8 @@
       *  Version 0.1, 11.05.2008<br />
       *  Version 0.2, 25.06.2008 (Added the $StatementParams parameter)<br />
       */
-      public function loadObjectListByStatement($ObjectName,$Namespace,$StatementName,$StatementParams = array()){
-         return $this->__loadObjectListByStatementResult($ObjectName,$this->__DBDriver->executeStatement($Namespace,$StatementName,$StatementParams));
+      public function loadObjectListByStatement($objectName,$namespace,$statementName,$statementParams = array()){
+         return $this->__loadObjectListByStatementResult($objectName,$this->__DBDriver->executeStatement($namespace,$statementName,$statementParams));
        // end function
       }
 
@@ -205,13 +205,13 @@
       public function deleteObject($object){
 
          // Get information about object to load
-         $ObjectName = $object->get('ObjectName');
-         $ObjectID = $this->__MappingTable[$ObjectName]['ID'];
-         $ID = $object->getProperty($ObjectID);
+         $objectName = $object->get('ObjectName');
+         $objectID = $this->__MappingTable[$objectName]['ID'];
+         $ID = $object->getProperty($objectID);
 
          // Build query
-         $delete = 'DELETE FROM `'.$this->__MappingTable[$ObjectName]['Table'].'`';
-         $delete .= ' WHERE `'.$ObjectID. '` = \''.$ID.'\';';
+         $delete = 'DELETE FROM `'.$this->__MappingTable[$objectName]['Table'].'`';
+         $delete .= ' WHERE `'.$objectID. '` = \''.$ID.'\';';
 
          $this->__DBDriver->executeTextStatement($delete,$this->__LogStatements);
 
@@ -226,7 +226,7 @@
       *
       *  Saves an Object.
       *
-      *  @param object $Object the object to save
+      *  @param object $object the object to save
       *  @return int Database id of the object.
       *
       *  @author Christian Achatz
@@ -235,10 +235,10 @@
       *  Version 0.2, 26.10.2008 (Added a check, if the desired object name exists in the mapping table.)<br />
       *  Version 0.3, 27.12.2008 (Update is now done, if params are located in the params array)<br />
       */
-      public function saveObject($Object){
+      public function saveObject(&$object){
 
          // Get information about object to load
-         $objectName = $Object->get('ObjectName');
+         $objectName = $object->get('ObjectName');
 
          if(!isset($this->__MappingTable[$objectName])){
             trigger_error('[GenericORMapper::saveObject()] The object name "'.$objectName.'" does not exist in the mapping table! Hence, your object cannot be saved! Please check your object configuration.');
@@ -253,15 +253,15 @@
                             );
 
          // Check if object must be saved or updated
-         $ID = $Object->getProperty($pkName);
-         if($ID === null){
+         $id = $object->getProperty($pkName);
+         if($id === null){
 
             // Do an INSERT
             $insert = 'INSERT INTO '.$this->__MappingTable[$objectName]['Table'];
 
             $names = array();
             $values = array();
-            foreach($Object->getProperties() as $propertyName => $propertyValue){
+            foreach($object->getProperties() as $propertyName => $propertyValue){
 
                if(!in_array($propertyName,$attrExceptions)){
                   $names[] = $propertyName;
@@ -276,7 +276,7 @@
             $insert .= ' VALUES ('.implode(', ',$values).');';
 
             $this->__DBDriver->executeTextStatement($insert,$this->__LogStatements);
-            $ID = $this->__DBDriver->getLastID();
+            $id = $this->__DBDriver->getLastID();
 
           // end if
          }
@@ -286,7 +286,7 @@
             $update = 'UPDATE '.$this->__MappingTable[$objectName]['Table'];
 
             $queryParams = array();
-            foreach($Object->getProperties() as $propertyName => $propertyValue){
+            foreach($object->getProperties() as $propertyName => $propertyValue){
 
                if(!in_array($propertyName,$attrExceptions)){
                   $queryParams[] = '`'.$propertyName.'` = \''.$propertyValue.'\'';
@@ -297,7 +297,7 @@
             }
 
             $update .= ' SET '.implode(', ',$queryParams).', ModificationTimestamp = NOW()';
-            $update .= ' WHERE '.$pkName. '= \''.$ID.'\';';
+            $update .= ' WHERE '.$pkName. '= \''.$id.'\';';
 
             // execute update, only if the update is necessary
             if(count($queryParams) > 0){
@@ -308,8 +308,12 @@
           // end else
          }
 
+         // initialize the object id, to enable the developer to directly
+         // reuse the object after saving it.
+         $object->setProperty($pkName,$id);
+
          // return the database ID of the object for further usage
-         return $ID;
+         return $id;
 
        // end function
       }
@@ -320,25 +324,22 @@
       *
       *  Returns an object by name and id.<br />
       *
-      *  @param string $ObjectName name of the object in mapping table
-      *  @param int $ObjectID database id of the desired object
+      *  @param string $objectName name of the object in mapping table
+      *  @param int $objectID database id of the desired object
       *  @return GenericDomainObject The desired object.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       */
-      public function loadObjectByID($ObjectName,$ObjectID){
-
-         // Get information about object to load
-         $ObjectInfo = $this->__MappingTable[$ObjectName];
+      public function loadObjectByID($objectName,$objectID){
 
          // Load properties
-         $query = 'SELECT * FROM `'.$this->__MappingTable[$ObjectName]['Table'].'`
-                   WHERE `'.$this->__MappingTable[$ObjectName]['ID'].'` = \''.$ObjectID.'\';';
+         $query = 'SELECT * FROM `'.$this->__MappingTable[$objectName]['Table'].'`
+                   WHERE `'.$this->__MappingTable[$objectName]['ID'].'` = \''.$objectID.'\';';
          $result = $this->__DBDriver->executeTextStatement($query,$this->__LogStatements);
 
-         return $this->__mapResult2DomainObject($ObjectName,$this->__DBDriver->fetchData($result));
+         return $this->__mapResult2DomainObject($objectName,$this->__DBDriver->fetchData($result));
 
        // end function
       }
@@ -349,24 +350,24 @@
       *
       *  Loads an object list by a statemant resource.<br />
       *
-      *  @param string $ObjectName name of the object in mapping table
-      *  @param string $StmtResult sql statement result
+      *  @param string $objectName name of the object in mapping table
+      *  @param string $stmtResult sql statement result
       *  @return GenericDomainObject[] The desired object list.
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 11.05.2008<br />
       */
-      protected function __loadObjectListByStatementResult($ObjectName,$StmtResult){
+      protected function __loadObjectListByStatementResult($objectName,$stmtResult){
 
          // Load list
-         $ObjectList = array();
-         while($data = $this->__DBDriver->fetchData($StmtResult)){
-            $ObjectList[] = $this->__mapResult2DomainObject($ObjectName,$data);
+         $objectList = array();
+         while($data = $this->__DBDriver->fetchData($stmtResult)){
+            $objectList[] = $this->__mapResult2DomainObject($objectName,$data);
           // end while
          }
 
-         return $ObjectList;
+         return $objectList;
 
        // end function
       }
