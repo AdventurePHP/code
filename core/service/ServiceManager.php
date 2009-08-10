@@ -20,61 +20,64 @@
    */
 
    /**
-   *  @namespace core::service
-   *  @class ServiceManager
-   *
-   *  Provides a simple dependency injection container for objects created during application flow.
-   *  It initializes the service objects with the current context and language to be able to access
-   *  context and environment sensitive configuration at any place of your application. For details
-   *  see the service object configuration.
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 07.03.2007<br />
-   *  Version 0.2, 22.04.2007 (Added language attribute)<br />
-   *  Version 0.3, 24.02.2008 (Added SESSIONSINGLETON feature)<br />
-   */
-   final class ServiceManager
-   {
+    * @namespace core::service
+    * @class ServiceManager
+    *
+    * Provides a simple dependency injection container for objects created during application flow.
+    * It initializes the service objects with the current context and language to be able to access
+    * context and environment sensitive configuration at any place of your application. For details
+    * see the service object configuration.
+    *
+    * @author Christian Sch�fer
+    * @version
+    * Version 0.1, 07.03.2007<br />
+    * Version 0.2, 22.04.2007 (Added language attribute)<br />
+    * Version 0.3, 24.02.2008 (Added SESSIONSINGLETON feature)<br />
+    */
+   final class ServiceManager {
 
       /**
-      *  @private
-      *  Context.
-      */
+       * @private
+       * Context.
+       */
       private $__Context;
 
 
       /**
-      *  @private
-      *  @since 0.2
-      *  Current language.
-      */
+       * @private
+       * @since 0.2
+       * Current language.
+       */
       private $__Language;
 
 
-      function ServiceManager(){
+      public function ServiceManager(){
       }
 
 
       /**
-      *  @public
-      *
-      *  Returns a service object according to the current application context.
-      *
-      *  @param string $namespace Namespace of the service object (currently ignored).
-      *  @param string $serviceName Name of the service object (=class name).
-      *  @param string $type The initializing type (see service manager for details).
-      *  @return coreObject The desired service object.
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 07.03.2007<br />
-      *  Version 0.2, 17.03.2007 (Adjusted error messages)<br />
-      *  Version 0.3, 22.04.2007 (Language is now injected)<br />
-      *  Version 0.4, 24.02.2008 (Added SessionSingleton service type)<br />
-      *  Version 0.5, 25.02.2008 (Added performance optimization for the SessionSingleton objects)<br />
-      */
+       * @public
+       *
+       * Returns a service object according to the current application context.
+       *
+       * @param string $namespace Namespace of the service object (currently ignored).
+       * @param string $serviceName Name of the service object (=class name).
+       * @param string $type The initializing type (see service manager for details).
+       * @return coreObject The desired service object.
+       *
+       * @author Christian Sch�fer
+       * @version
+       * Version 0.1, 07.03.2007<br />
+       * Version 0.2, 17.03.2007 (Adjusted error messages)<br />
+       * Version 0.3, 22.04.2007 (Language is now injected)<br />
+       * Version 0.4, 24.02.2008 (Added SessionSingleton service type)<br />
+       * Version 0.5, 25.02.2008 (Added performance optimization for the SessionSingleton objects)<br />
+       * Version 0.6, 10.08.2009 (Added lazy import, so that the developer must not care about the inclusion of the component.)<br />
+       */
       function &getServiceObject($namespace,$serviceName,$type = 'SINGLETON'){
+
+         // include serice object for convenience
+         import($namespace,$serviceName);
 
          $serviceObject = null;
          if($type == 'SINGLETON'){
@@ -146,23 +149,23 @@
 
 
       /**
-      *  @public
-      *
-      *  Returns a service object, that is initialized with the given init param. The param itself
-      *  can be a primitive data type, an array or an object. Context and language are injected
-      *  as well.
-      *
-      *  @param string $namespace The namespace of the service object's class (currently ignored).
-      *  @param string $serviceName Name of the service object (=class name).
-      *  @param string $InitParam The initialization param for the service object.
-      *  @param string $type The initializing type (see service manager for details).
-      *  @return coreObject The desired service object.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 29.03.2007<br />
-      *  Version 0.2, 16.05.2009 (Added check for non existing service object returned by getServiceObject()))<br />
-      */
+       * @public
+       *
+       * Returns a service object, that is initialized with the given init param. The param itself
+       * can be a primitive data type, an array or an object. Context and language are injected
+       * as well.
+       *
+       * @param string $namespace The namespace of the service object's class (currently ignored).
+       * @param string $serviceName Name of the service object (=class name).
+       * @param string $InitParam The initialization param for the service object.
+       * @param string $type The initializing type (see service manager for details).
+       * @return coreObject The desired service object.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 29.03.2007<br />
+       * Version 0.2, 16.05.2009 (Added check for non existing service object returned by getServiceObject()))<br />
+       */
       function &getAndInitServiceObject($namespace,$serviceName,$initParam,$type = 'SINGLETON'){
 
          $serviceObject = &$this->getServiceObject($namespace,$serviceName,$type);
@@ -183,33 +186,33 @@
 
 
       /**
-      *  @public
-      *
-      *  Sets the context.
-      *
-      *  @param string $context The context of the service manager.
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 07.03.2007<br />
-      */
+       * @public
+       *
+       * Sets the context.
+       *
+       * @param string $context The context of the service manager.
+       *
+       * @author Christian Sch�fer
+       * @version
+       * Version 0.1, 07.03.2007<br />
+       */
       function setContext($context){
          $this->__Context = $context;
        // end function
       }
 
       /**
-      *  @public
-      *  @since 0.2
-      *
-      *  Sets the language.
-      *
-      *  @param string $language Language of the service manager.
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 22.04.2007<br />
-      */
+       * @public
+       * @since 0.2
+       *
+       * Sets the language.
+       *
+       * @param string $language Language of the service manager.
+       *
+       * @author Christian Sch�fer
+       * @version
+       * Version 0.1, 22.04.2007<br />
+       */
       function setLanguage($language){
          $this->__Language = $language;
        // end function
