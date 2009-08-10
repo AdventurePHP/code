@@ -11,7 +11,7 @@
    *
    *  The APF is distributed in the hope that it will be useful,
    *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    *  GNU Lesser General Public License for more details.
    *
    *  You should have received a copy of the GNU Lesser General Public License
@@ -19,28 +19,32 @@
    *  -->
    */
 
+   echo 'This is a sample setup script, that must be adapted to your requirements! '
+            .'Please do not use is as is to avoid unexpectes results! :)';
+   exit(0);
+
    // include page controller
    require('../../apps/core/pagecontroller/pagecontroller.php');
 
    // configure the registry if desired
-   $Reg = &Singleton::getInstance('Registry');
-   $Reg->register('apf::core','Environment','{ENVIRONMENT}');
+   $reg = &Singleton::getInstance('Registry');
+   $reg->register('apf::core','Environment','{ENVIRONMENT}');
 
    // include SetupMapper
    import('modules::genericormapper::data::tools','GenericORMapperSetup');
 
    // create SetupMapper
-   $SetupMapper = new GenericORMapperSetup();
+   $setupMapper = new GenericORMapperSetup();
 
    // set Context (important for the configuration files!)
-   $SetupMapper->set('Context','{CONTEXT}');
+   $setupMapper->set('Context','{CONTEXT}');
 
    // adapt storage engine (default is MyISAM)
-   $SetupMapper->set('StorageEngine','...');
+   $setupMapper->set('StorageEngine','MyISAM|INNODB');
 
    // create database layout
-   $SetupMapper->setupDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}','{CONNECTION_NAME}');
+   $setupMapper->setupDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}','{CONNECTION_NAME}');
 
    // display database only
-   $SetupMapper->setupDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}');
+   $setupMapper->setupDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}');
 ?>
