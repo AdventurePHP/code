@@ -398,9 +398,7 @@
          // load the language object for the current language to enable
          // language dependent mapping!
          $orm = &$this->__getGenericORMapper();
-         $langCrit = new GenericCriterionObject();
-         $langCrit->addPropertyIndicator('ISOCode',$this->__Language);
-         $lang = $orm->loadObjectByCriterion('Language',$langCrit); // lazy loading should be introduced!!!
+         $lang = $this->__getCurrentLanguage();
 
          // define the criterion
          $critEntries = new GenericCriterionObject();
