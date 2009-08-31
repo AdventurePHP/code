@@ -19,8 +19,6 @@
    *  -->
    */
 
-   import('tools::form::taglib','ui_element');
-
    /**
     * @namespace tools::html::taglib
     * @class form_taglib_reset
@@ -33,7 +31,7 @@
     * @version
     * Version 0.1, 22.06.2009<br />
     */
-   class form_taglib_reset extends ui_element {
+   class form_taglib_reset extends form_control {
 
       public function form_taglib_reset(){
       }

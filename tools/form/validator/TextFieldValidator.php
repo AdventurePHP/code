@@ -19,37 +19,37 @@
     * -->
     */
 
-   /**
-    * @namespace tools::form::taglib
-    * @class form_taglib_hidden
-    *
-    * Represents a HTML hidden field within the APF form tags.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 05.01.2007<br />
-    */
-   class form_taglib_hidden extends form_control {
+   import('tools::form::validator','AbstractFormValidator');
 
-      public function form_taglib_hidden(){
-      }
+   /**
+    * @namespace tools::form::validator
+    * @class TextFieldValidator
+    * @abstract
+    *
+    * Implements a base class for all text field validators.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2009<br />
+    */
+   abstract class TextFieldValidator extends AbstractFormValidator {
 
       /**
        * @public
        *
-       * Returns the HTML code of the hidden field.
+       * Notifies the form control to be invalid.
        *
-       * @return string The HTML code of the hidden field.
-       *
-       * @author Christian Schäfer
+       * @author Christian Achatz
        * @version
-       * Version 0.1, 05.01.2007<br />
+       * Version 0.1, 29.08.2009<br />
        */
-      public function transform(){
-         return '<input type="hidden" '.$this->__getAttributesAsString($this->__Attributes).' />';
+      public function notifyElement(){
+         $this->__Control->markAsInvalid();
+         $this->__Control->addAttribute('style','; border: 2px solid red;');
+         $this->__Control->notifyValidationListeners();
        // end function
       }
 
-    // end class
+    // end function
    }
 ?>

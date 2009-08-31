@@ -29,7 +29,7 @@
    *  @version
    *  Version 0.1, 28.03.2007<br />
    */
-   class valgroup_taglib_placeholder extends ui_element
+   class valgroup_taglib_placeholder extends form_control
    {
 
       function valgroup_taglib_placeholder(){

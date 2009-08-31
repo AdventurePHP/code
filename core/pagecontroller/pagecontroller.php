@@ -551,7 +551,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -569,7 +568,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -586,7 +584,6 @@
          $this->{'__'.$attributeName}[] = $value;
        // end function
       }
-
 
       /**
       *  @public
@@ -615,7 +612,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -633,7 +629,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -650,35 +645,33 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Deletes an attribute.
-      *
-      *  @param string $name The name of the attribute to delete.
-      *
-      *  @author Christian Sch√§fer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
+       * @public
+       *
+       * Deletes an attribute.
+       *
+       * @param string $name The name of the attribute to delete.
+       *
+       * @author Christian Sch‰fer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
       public function deleteAttribute($name){
          unset($this->__Attributes[$name]);
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Sets an object's attributes.
-      *
-      *  @param string[] $attributes The attributes list.
-      *
-      *  @author Christian Sch√§fer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
+       * @public
+       *
+       * Sets an object's attributes.
+       *
+       * @param string[] $attributes The attributes list.
+       *
+       * @author Christian Sch‰fer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
       public function setAttributes($attributes = array()){
 
          if(is_array($attributes) && count($attributes) > 0){
@@ -713,7 +706,6 @@
          $this->{'__'.$attributeName} = & $value;
        // end function
       }
-
 
       /**
       *  @public

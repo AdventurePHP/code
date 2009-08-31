@@ -19,9 +19,6 @@
    *  -->
    */
 
-   import('tools::form::taglib','ui_validate');
-
-
    /**
    *  @namespace tools::form::taglib
    *  @class form_taglib_validate
@@ -32,7 +29,7 @@
    *  @version
    *  Version 0.1, 25.03.2007<br />
    */
-   class form_taglib_validate extends ui_element
+   class form_taglib_validate extends form_control
    {
 
       function form_taglib_validate(){

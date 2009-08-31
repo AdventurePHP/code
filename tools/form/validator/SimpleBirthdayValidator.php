@@ -19,37 +19,29 @@
     * -->
     */
 
+   import('tools::form::validator','TextFieldValidator');
+
    /**
-    * @namespace tools::form::taglib
-    * @class form_taglib_hidden
-    *
-    * Represents a HTML hidden field within the APF form tags.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 05.01.2007<br />
+    * 
     */
-   class form_taglib_hidden extends form_control {
+   class SimpleBirthdayValidator extends TextFieldValidator {
 
-      public function form_taglib_hidden(){
-      }
+      public function validate($input){
 
-      /**
-       * @public
-       *
-       * Returns the HTML code of the hidden field.
-       *
-       * @return string The HTML code of the hidden field.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 05.01.2007<br />
-       */
-      public function transform(){
-         return '<input type="hidden" '.$this->__getAttributesAsString($this->__Attributes).' />';
+         $birthday = explode('.', trim($string));
+
+         // catch invalid strings
+         if(count($birthday) !== 3) {
+            return false;
+          // end if
+         }
+
+         // change order and check date
+         return checkdate((int) $birthday['1'], (int) $birthday['0'], (int) $birthday['2']);
+
        // end function
       }
 
-    // end class
+    // end function
    }
 ?>

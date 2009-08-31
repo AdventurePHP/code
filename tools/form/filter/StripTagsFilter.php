@@ -18,35 +18,16 @@
     * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
     * -->
     */
-
+    
+   import('tools::form::filter','AbstractFormFilter');
+   
    /**
-    * @namespace tools::form::taglib
-    * @class form_taglib_hidden
-    *
-    * Represents a HTML hidden field within the APF form tags.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 05.01.2007<br />
+    * 
     */
-   class form_taglib_hidden extends form_control {
+   class StripTagsFilter extends AbstractFormFilter {
 
-      public function form_taglib_hidden(){
-      }
-
-      /**
-       * @public
-       *
-       * Returns the HTML code of the hidden field.
-       *
-       * @return string The HTML code of the hidden field.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 05.01.2007<br />
-       */
-      public function transform(){
-         return '<input type="hidden" '.$this->__getAttributesAsString($this->__Attributes).' />';
+      public function filter($input){
+         return strip_tags($input);
        // end function
       }
 

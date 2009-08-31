@@ -36,7 +36,7 @@
    *  @version
    *  Version 0.1, 25.03.2007<br />
    */
-   class form_taglib_valgroup extends ui_element
+   class form_taglib_valgroup extends form_control
    {
 
       /**

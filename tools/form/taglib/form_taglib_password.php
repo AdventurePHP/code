@@ -30,52 +30,25 @@
    *  Version 0.1, 12.01.2007<br />
    *  Version 0.2, 12.01.2007 (Umbenannt in "form_taglib_password")<br />
    */
-   class form_taglib_password extends form_taglib_text
-   {
+   class form_taglib_password extends form_taglib_text {
 
       function form_taglib_password(){
       }
 
-
       /**
-      *  @public
-      *
-      *  Executes presetting, validation and filtering.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 11.02.2007<br />
-      *  Version 0.2, 07.11.2008 (Added filtering)<br />
-      */
-      function onAfterAppend(){
-
-         // Preset the content of the field
-         $this->__presetValue();
-
-         // Execute filter, if desired
-         $this->__filter();
-
-         // Execute validation
-         $this->__validate();
-
-       // end function
-      }
-
-
-      /**
-      *  @public
-      *
-      *  Returns the HTML source code of the text field.
-      *
-      *  @return string $passwordField HTML code of the password field
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 12.01.2007<br />
-      *  Version 0.2, 11.02.2007 (Presetting and validation was moved to the onAfterAppend() method)<br />
-      */
+       * @public
+       *
+       * Returns the HTML source code of the text field.
+       *
+       * @return string HTML code of the password field.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 12.01.2007<br />
+       * Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
+       */
       function transform(){
-         return  '<input type="password" '.$this->__getAttributesAsString($this->__Attributes,$this->__ExclusionArray).' />';
+         return  '<input type="password" '.$this->__getAttributesAsString($this->__Attributes).' />';
        // end function
       }
 

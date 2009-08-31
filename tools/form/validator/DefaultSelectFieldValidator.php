@@ -19,37 +19,23 @@
     * -->
     */
 
+   import('tools::form::validator','SelectFieldValidator');
+
    /**
-    * @namespace tools::form::taglib
-    * @class form_taglib_hidden
-    *
-    * Represents a HTML hidden field within the APF form tags.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 05.01.2007<br />
+    * Implements a base class for all text field validators.
     */
-   class form_taglib_hidden extends form_control {
+   class DefaultSelectFieldValidator extends SelectFieldValidator {
 
-      public function form_taglib_hidden(){
-      }
+      public function validate($input){
 
-      /**
-       * @public
-       *
-       * Returns the HTML code of the hidden field.
-       *
-       * @return string The HTML code of the hidden field.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 05.01.2007<br />
-       */
-      public function transform(){
-         return '<input type="hidden" '.$this->__getAttributesAsString($this->__Attributes).' />';
+         if(empty($input)){
+            return false;
+         }
+         return true;
+
        // end function
       }
 
-    // end class
+    // end function
    }
 ?>

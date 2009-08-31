@@ -30,51 +30,25 @@
    *  Version 0.1, 05.01.2007<br />
    *  Version 0.2, 12.01.2007 (Umbenannt in "form_taglib_text")<br />
    */
-   class form_taglib_text extends ui_element
-   {
+   class form_taglib_text extends form_control {
 
       function form_taglib_text(){
       }
 
-
       /**
-      *  @public
-      *
-      *  Executes presetting, validation and filtering.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 11.02.2007<br />
-      */
-      function onAfterAppend(){
-
-         // Preset the content of the field
-         $this->__presetValue();
-
-         // Execute filter, if desired
-         $this->__filter();
-
-         // Execute validation
-         $this->__validate();
-
-       // end function
-      }
-
-
-      /**
-      *  @public
-      *
-      *  Returns the HTML source code of the text field.
-      *
-      *  @return string $TextField HTML code of the text field
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 05.01.2007<br />
-      *  Version 0.2, 11.02.2007 (Presetting und Validierung nach onAfterAppend() verschoben)<br />
-      */
+       * @public
+       *
+       * Returns the HTML source code of the text field.
+       *
+       * @return string HTML code of the text field
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 05.01.2007<br />
+       * Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
+       */
       function transform(){
-         return  '<input type="text" '.$this->__getAttributesAsString($this->__Attributes,$this->__ExclusionArray).' />';
+         return  '<input type="text" '.$this->__getAttributesAsString($this->__Attributes).' />';
        // end function
       }
 

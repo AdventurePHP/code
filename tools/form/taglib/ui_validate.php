@@ -53,7 +53,7 @@
    *  Version 0.1, 11.02.2007<br />
    *  Version 0.2, 25.03.2007 (Added the "msginputreq" and "msginputwrg" attributes)<br />
    */
-   abstract class ui_validate extends ui_element
+   abstract class ui_validate extends form_control
    {
 
       function ui_validate(){

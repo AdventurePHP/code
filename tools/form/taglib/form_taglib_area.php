@@ -1,158 +1,113 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
-   *  @namespace tools::form::taglib
-   *  @class form_taglib_area
-   *
-   *  Represents a APF text area.
-   *
-   *  @author Christian Schäfer
-   *  @version
-   *  Version 0.1, 13.01.2007<br />
-   */
-   class form_taglib_area extends ui_element
-   {
+    * @namespace tools::form::taglib
+    * @class form_taglib_area
+    *
+    * Represents a APF text area.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 13.01.2007<br />
+    */
+   class form_taglib_area extends form_control {
 
       function form_taglib_area(){
       }
 
-
       /**
-      *  @public
-      *
-      *  Executes presetting, validation and filtering.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 11.02.2007<br />
-      */
-      function onAfterAppend(){
-
-         // Preset the content of the field
-         $this->__presetValue();
-
-         // Execute filter, if desired
-         $this->__filter();
-
-         // Execute validation
-         $this->__validate();
-
-       // end function
-      }
-
-
-      /**
-      *  @public
-      *
-      *  Returns the HTML source code of the text area.
-      *
-      *  @return string $TextArea HTML code of the text area
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 05.01.2007<br />
-      *  Version 0.2, 11.02.2007 (Presetting und Validierung nach onAfterAppend() verschoben)<br />
-      */
+       * @public
+       *
+       * Returns the HTML source code of the text area.
+       *
+       * @return string HTML code of the text area.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 05.01.2007<br />
+       * Version 0.2, 11.02.2007 (Presetting und Validierung nach onAfterAppend() verschoben)<br />
+       */
       function transform(){
-         return  '<textarea '.$this->__getAttributesAsString($this->__Attributes,$this->__ExclusionArray).'>'.$this->__Content.'</textarea>';
+         return '<textarea '.$this->__getAttributesAsString($this->__Attributes).'>'.$this->__Content.'</textarea>';
        // end function
       }
-
-
-      /**
-      *  @protected
-      *
-      *  Implements the presetting method for the text area.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 13.01.2007<br />
-      */
-      protected function __presetValue(){
-
-         if(isset($_REQUEST[$this->__Attributes['name']])){
-            $this->__Content = $_REQUEST[$this->__Attributes['name']];
-          // end if
-         }
-
-       // end function
-      }
-
 
       /**
        * @protected
        *
-       * Reimplements the validation method for the text area.
+       * Implements the presetting method for the text area.
        *
        * @author Christian Schäfer
        * @version
        * Version 0.1, 13.01.2007<br />
-       * Version 0.2, 05.05.2007 (Added "valid or not" report to the form)<br />
-       * Version 0.3, 22.08.2007 (Corrected error message within error message)<br />
        */
-      protected function __validate(){
-
-         // check if validation should be applied
-         $this->__setValidateObject();
-
-         // execute validation
-         if($this->__ValidateObject == true){
-
-            // gather validation method
-            $ValidatorMethode = 'validate'.$this->__Validator;
-
-            if(in_array($ValidatorMethode,get_class_methods('myValidator'))){
-
-               if(!myValidator::$ValidatorMethode($this->__Content) || !isset($_REQUEST[$this->__Attributes['name']])){
-
-                  // Style setzen
-                  if(isset($this->__Attributes['style'])){
-                     $this->__Attributes['style'] .= ' '.$this->__ValidatorStyle;
-                   // end if
-                  }
-                  else{
-                     $this->__Attributes['style'] = $this->__ValidatorStyle;
-                   // end else
-                  }
-
-                  // mark form as invalid
-                  $this->__ParentObject->set('isValid',false);
-
-                // end if
-               }
-
-             // end if
-            }
-            else{
-               trigger_error('['.get_class($this).'::__validate()] Validation method "'.$ValidatorMethode.'" is not supported in class "myValidator"! Please consult the api documentation for further details!');
-             // end else
-            }
-
+      protected function __presetValue(){
+         $name = $this->getAttribute('name');
+         if(isset($_REQUEST[$name])){
+            $this->__Content = $_REQUEST[$name];
           // end if
          }
-
        // end function
       }
 
+      /**
+       * @public
+       *
+       * Re-implements the method to fit the requirements of the text area field.
+       *
+       * @param AbstractFormValidator $validator The validator to add.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.08.2009<br />
+       */
+      public function addValidator(AbstractFormValidator &$validator){
+         if($validator->isActive()){
+            if(!$validator->validate($this->__Content)){
+               $validator->notifyElement();
+            }
+         }
+       // end function
+      }
+
+      /**
+       * @public
+       * @since 1.11
+       *
+       * Re-implements the filter applyment for the text area.
+       *
+       * @param AbstractFormFilter $filter The desired filter.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 30.08.2009<br />
+       */
+      public function addFilter(AbstractFormFilter &$filter){
+         if($filter->isActive()){
+            $this->__Content = $filter->filter($this->__Content);
+          // end if
+         }
+       // end function
+      }
 
       /**
        * @protected

@@ -20,81 +20,61 @@
    */
 
    /**
-   *  @namespace tools::form::taglib
-   *  @class form_taglib_radio
-   *
-   *  Represents a APF radio button.
-   *
-   *  @author Christian Schäfer
-   *  @version
-   *  Version 0.1, 13.01.2007<br />
-   */
-   class form_taglib_radio extends ui_element
-   {
+    * @namespace tools::form::taglib
+    * @class form_taglib_radio
+    *
+    * Represents a APF radio button.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 13.01.2007<br />
+    */
+   class form_taglib_radio extends form_control {
 
       function form_taglib_radio(){
       }
 
-
       /**
-      *  @public
-      *
-      *  Executes presetting and validation.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 11.02.2007<br />
-      */
-      function onAfterAppend(){
-
-         // do presetting
-         $this->__presetValue();
-
-         // do validation
-         $this->__validate();
-
-       // end function
-      }
-
-
-      /**
-      *  @public
-      *
-      *  Returns the HTML code of the radio button.
-      *
-      *  @return string $radio the HTML code of the radio button
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 13.01.2007<br />
-      *  Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
-      */
+       * @public
+       *
+       * Returns the HTML code of the radio button.
+       *
+       * @return string The HTML code of the radio button
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 13.01.2007<br />
+       * Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
+       */
       function transform(){
-         return '<input type="radio" '.$this->__getAttributesAsString($this->__Attributes,$this->__ExclusionArray).' />';
+         return '<input type="radio" '.$this->__getAttributesAsString($this->__Attributes).' />';
        // end function
       }
 
-
       /**
-      *  @protected
-      *
-      *  Re-implements the __presetValue() method for the radio button.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 13.01.2007<br />
-      *  Version 0.2, 13.01.2009 (Bugfix: now the 'checked' attribute is deleted, that in case of a manually defined 'ckecked' the button could be unchecked)<br />
-      */
+       * @protected
+       *
+       * Re-implements the __presetValue() method for the radio button.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 13.01.2007<br />
+       * Version 0.2, 13.01.2009 (Bugfix: now the 'checked' attribute is deleted, that in case of a manually defined 'ckecked' the button could be unchecked)<br />
+       */
       protected function __presetValue(){
 
-         if(isset($_REQUEST[$this->__Attributes['name']])){
+         $name = $this->getAttribute('name');
+         $value = $this->getAttribute('value');
+         if(isset($_REQUEST[$name])){
 
-            if($_REQUEST[$this->__Attributes['name']] == $this->__Attributes['value']){
-               $this->__Attributes['checked'] = 'checked';
+            // precheck, whether the value is contained in the request or the
+            // value is "on" for tag definitions without a value attribute.
+            if($_REQUEST[$name] == $value || $_REQUEST[$name] == 'on'){
+               $this->check();
              // end if
             }
             else{
-               unset($this->__Attributes['checked']);
+               $this->uncheck();
              // end else
             }
 

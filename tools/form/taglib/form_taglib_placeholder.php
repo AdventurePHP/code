@@ -30,8 +30,7 @@
    *  Version 0.1, 05.01.2007<br />
    *  Version 0.2, 12.01.2006 (Renamed to "form_taglib_placeholder")<br />
    */
-   class form_taglib_placeholder extends ui_element
-   {
+   class form_taglib_placeholder extends form_control {
 
       function form_taglib_placeholder(){
       }

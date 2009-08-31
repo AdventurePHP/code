@@ -1,26 +1,27 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
-   import('tools::form::taglib','ui_element');
-   import('tools::form::taglib','form_taglib_button');
+   import('tools::form::taglib','form_control');
+   import('tools::form::taglib','form_control_observer');
+   
    import('tools::form::taglib','form_taglib_text');
    import('tools::form::taglib','form_taglib_select');
    import('tools::form::taglib','form_taglib_date');
@@ -38,7 +39,14 @@
    import('tools::form::taglib','form_taglib_getstring');
    import('tools::form::taglib','form_taglib_addtaglib');
    import('tools::form::taglib','form_taglib_marker');
+
+   import('tools::form::taglib','form_taglib_button');
    import('tools::form::taglib','form_taglib_reset');
+   import('tools::form::taglib','form_taglib_imagebutton');
+
+   import('tools::form::taglib','form_taglib_addfilter');
+   import('tools::form::taglib','form_taglib_addvalidator');
+   import('tools::form::taglib','form_taglib_listener');
 
    /**
     * @package tools::form::taglib
@@ -59,25 +67,7 @@
     * Version 0.9, 01.06.2008 (Added the getFormElementsByType() method)<br />
     * Version 1.0, 16.06.2008 (API change: added getFormElementsByTagName())<br />
     */
-   class html_taglib_form extends ui_element
-   {
-
-      /**
-       * @protected
-       * Indicates, whether the form was filled correctly (concerning the field validators).
-       * @var boolean
-       */
-      protected $__isValid = true;
-
-
-      /**
-       * @protected
-       * @since 0.7
-       * Indicates, if the form was sent.
-       * @var boolean
-       */
-      protected $__isSent = false;
-
+   class html_taglib_form extends form_control {
 
       /**
        * @protected
@@ -85,7 +75,6 @@
        * @var boolean
        */
       protected $__TransformOnPlace = false;
-
 
       /**
        * @public
@@ -108,7 +97,20 @@
        */
       public function html_taglib_form(){
 
+         // Place the listener here, to ensure, that it is there, when the
+         // notification is sent!
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','listener');
+
+         // Please note, that the form:addfilter taglib is placed before the
+         // form:addvalidator, because filtering must take place before the
+         // validation. Otherwise, we might get unexpected results.
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','addfilter');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','addvalidator');
+
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','button');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','reset');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','imagebutton');
+
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','text');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','select');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','date');
@@ -126,26 +128,77 @@
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','getstring');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','marker');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','addtaglib');
-         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','reset');
 
        // end function
       }
-
 
       /**
        * @public
        *
        * Parses the known taglibs.
        *
-       * @author Christian Sch�fer
+       * @author Christian Sch�fer
        * @version
        * Version 0.1, 05.01.2007<br />
        */
       public function onParseTime(){
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $id = '(html_taglib_form) '.$this->__ObjectID.'::onParseTime()';
+         $t->start($id);
          $this->__extractTagLibTags();
+         $t->stop($id);
        // end function
       }
 
+      /**
+       * @public
+       *
+       * Indicates, whether the form has been sent or not. Retrieves the status
+       * directly from the form controls. Overwrites the parent's method.
+       * 
+       * @return boolean True, in case the form is sent, false otherwise.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 27.09.2009<br />
+       */
+      public function isSent(){
+
+         foreach($this->__Children as $objectId => $DUMMY){
+            if($this->__Children[$objectId]->isSent() === true){
+               return true;
+            }
+         }
+
+         return false;
+
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Indicates, whether the form is valid or not. Retrieves the status
+       * directly from the form controls. Overwrites the parent's method.
+       *
+       * @return boolean True, in case the form is valid, false otherwise.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 27.09.2009<br />
+       */
+      public function isValid(){
+
+         foreach($this->__Children as $objectId => $DUMMY){
+            if($this->__Children[$objectId]->isValid() === false){
+               return false;
+            }
+         }
+
+         return true;
+
+       // end function
+      }
 
       /**
       *  @public
@@ -166,16 +219,16 @@
       public function addFormElement($elementType,$elementAttributes = array()){
 
          // create form element
-         $ObjectID = $this->__createFormElement($elementType,$elementAttributes);
+         $objectId = $this->__createFormElement($elementType,$elementAttributes);
 
          // add form element if id is not null
-         if($ObjectID !== null){
+         if($objectId !== null){
 
             // add position placeholder to the content
-            $this->__Content .= '<'.$ObjectID.' />';
+            $this->__Content .= '<'.$objectId.' />';
 
             // return object id of the new form element
-            return $ObjectID;
+            return $objectId;
 
           // end if
          }
@@ -190,7 +243,6 @@
 
        // end function
       }
-
 
       /**
       *  @public
@@ -208,39 +260,38 @@
        // end function
       }
 
-
       /**
       *  @public
       *
       *  Adds content in front of a form marker. This method is intended to dynamically generate forms.
       *
-      *  @param string $MarkerName the desired marker name
-      *  @param string $Content the content to add
+      *  @param string $markerName the desired marker name
+      *  @param string $content the content to add
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 03.09.2008<br />
       */
-      public function addFormContentBeforeMarker($MarkerName,$Content){
+      public function addFormContentBeforeMarker($markerName,$content){
 
          // get desired marker
-         $Marker = &$this->__getMarker($MarkerName);
+         $marker = &$this->__getMarker($markerName);
 
          // check if marker exists
-         if($Marker !== null){
+         if($marker !== null){
 
             // get the object if
-            $ObjectID = $Marker->get('ObjectID');
+            $objectId = $marker->get('ObjectID');
 
             // add the desired content before the marker
-            $this->__Content = str_replace('<'.$ObjectID.' />',$Content.'<'.$ObjectID.' />',$this->__Content);
+            $this->__Content = str_replace('<'.$objectId.' />',$content.'<'.$objectId.' />',$this->__Content);
 
           // end if
          }
          else{
 
             // display an error
-            trigger_error('[html_taglib_form::addFormContentBeforeMarker()] No marker object with name "'.$MarkerName.'" composed in current form for document controller "'.($this->__ParentObject->__DocumentController).'"! Please check the definition of the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
+            trigger_error('[html_taglib_form::addFormContentBeforeMarker()] No marker object with name "'.$markerName.'" composed in current form for document controller "'.($this->__ParentObject->__DocumentController).'"! Please check the definition of the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
             exit();
 
           // end else
@@ -248,40 +299,39 @@
 
        // end function
       }
-
 
       /**
       *  @public
       *
       *  Adds content behind a form marker. This method is intended to dynamically generate forms.
       *
-      *  @param string $MarkerName the desired marker name
-      *  @param string $Content the content to add
+      *  @param string $markerName the desired marker name
+      *  @param string $content the content to add
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 05.09.2008<br />
       */
-      public function addFormContentAfterMarker($MarkerName,$Content){
+      public function addFormContentAfterMarker($markerName,$content){
 
          // get desired marker
-         $Marker = &$this->__getMarker($MarkerName);
+         $marker = &$this->__getMarker($markerName);
 
          // check if marker exists
-         if($Marker !== null){
+         if($marker !== null){
 
             // get the object if
-            $ObjectID = $Marker->get('ObjectID');
+            $objectId = $marker->get('ObjectID');
 
             // add the desired content before the marker
-            $this->__Content = str_replace('<'.$ObjectID.' />','<'.$ObjectID.' />'.$Content,$this->__Content);
+            $this->__Content = str_replace('<'.$objectId.' />','<'.$objectId.' />'.$content,$this->__Content);
 
           // end if
          }
          else{
 
             // display an error
-            trigger_error('[html_taglib_form::addFormContentAfterMarker()] No marker object with name "'.$MarkerName.'" composed in current form for document controller "'.($this->__ParentObject->__DocumentController).'"! Please check the definition of the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
+            trigger_error('[html_taglib_form::addFormContentAfterMarker()] No marker object with name "'.$markerName.'" composed in current form for document controller "'.($this->__ParentObject->__DocumentController).'"! Please check the definition of the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
             exit();
 
           // end else
@@ -290,15 +340,14 @@
        // end function
       }
 
-
       /**
       *  @public
       *
       *  Adds a new form element in front of a form marker. This method is intended to dynamically generate forms.
       *
-      *  @param string $MarkerName the desired marker name
-      *  @param string $ElementType type of the element (e.g. "form:text")
-      *  @param array $ElementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
+      *  @param string $markerName the desired marker name
+      *  @param string $elementType type of the element (e.g. "form:text")
+      *  @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
       *  @return string $ObjectID id of the new form object or null (e.g. for addressing the new element)
       *
       *  @author Christian Achatz
@@ -306,30 +355,30 @@
       *  Version 0.1, 05.09.2008<br />
       *  Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
       */
-      public function addFormElementBeforeMarker($MarkerName,$ElementType,$ElementAttributes = array()){
+      public function addFormElementBeforeMarker($markerName,$elementType,$elementAttributes = array()){
 
          // create new form element
-         $ObjectID = $this->__createFormElement($ElementType,$ElementAttributes);
+         $objectId = $this->__createFormElement($elementType,$elementAttributes);
 
          // add form element if id is not null
-         if($ObjectID !== null){
+         if($objectId !== null){
 
             // get desired marker
-            $Marker = &$this->__getMarker($MarkerName);
+            $marker = &$this->__getMarker($markerName);
 
             // add the position placeholder to the content
-            $MarkerID = $Marker->get('ObjectID');
-            $this->__Content = str_replace('<'.$MarkerID.' />','<'.$ObjectID.' /><'.$MarkerID.' />',$this->__Content);
+            $markerId = $marker->get('ObjectID');
+            $this->__Content = str_replace('<'.$markerId.' />','<'.$objectId.' /><'.$markerId.' />',$this->__Content);
 
             // return object id of the new form element
-            return $ObjectID;
+            return $objectId;
 
           // end if
          }
          else{
 
             // notify user and return null
-            trigger_error('[html_taglib_form::addFormElementBeforeMarker()] Form element "'.$ElementType.'" cannot be added due to previous errors!');
+            trigger_error('[html_taglib_form::addFormElementBeforeMarker()] Form element "'.$elementType.'" cannot be added due to previous errors!');
             return null;
 
           // end else
@@ -337,16 +386,15 @@
 
        // end function
       }
-
 
       /**
       *  @public
       *
       *  Adds a new form element after a form marker. This method is intended to dynamically generate forms.
       *
-      *  @param string $MarkerName the desired marker name
-      *  @param string $ElementType type of the element (e.g. "form:text")
-      *  @param array $ElementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
+      *  @param string $markerName the desired marker name
+      *  @param string $elementType type of the element (e.g. "form:text")
+      *  @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
       *  @return string $ObjectID id of the new form object or null (e.g. for addressing the new element)
       *
       *  @author Christian Achatz
@@ -354,30 +402,30 @@
       *  Version 0.1, 05.09.2008<br />
       *  Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
       */
-      public function addFormElementAfterMarker($MarkerName,$ElementType,$ElementAttributes = array()){
+      public function addFormElementAfterMarker($markerName,$elementType,$elementAttributes = array()){
 
          // create new form element
-         $ObjectID = $this->__createFormElement($ElementType,$ElementAttributes);
+         $objectId = $this->__createFormElement($elementType,$elementAttributes);
 
          // add form element if id is not null
-         if($ObjectID !== null){
+         if($objectId !== null){
 
             // get desired marker
-            $Marker = &$this->__getMarker($MarkerName);
+            $marker = &$this->__getMarker($markerName);
 
             // add the position placeholder to the content
-            $MarkerID = $Marker->get('ObjectID');
-            $this->__Content = str_replace('<'.$MarkerID.' />','<'.$MarkerID.' /><'.$ObjectID.' />',$this->__Content);
+            $markerId = $marker->get('ObjectID');
+            $this->__Content = str_replace('<'.$markerId.' />','<'.$markerId.' /><'.$objectId.' />',$this->__Content);
 
             // return object id of the new form element
-            return $ObjectID;
+            return $objectId;
 
           // end if
          }
          else{
 
             // notify user and return null
-            trigger_error('[html_taglib_form::addFormElementBeforeMarker()] Form element "'.$ElementType.'" cannot be added due to previous errors!');
+            trigger_error('[html_taglib_form::addFormElementBeforeMarker()] Form element "'.$elementType.'" cannot be added due to previous errors!');
             return null;
 
           // end else
@@ -386,14 +434,13 @@
        // end function
       }
 
-
       /**
       *  @protected
       *
       *  Adds a new form element to the child list.
       *
-      *  @param string $ElementType type of the element (e.g. "form:text")
-      *  @param array $ElementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
+      *  @param string $elementType type of the element (e.g. "form:text")
+      *  @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
       *  @return string $ObjectID id of the new form object (e.g. for addressing the new element)
       *
       *  @author Christian Achatz
@@ -402,49 +449,49 @@
       *  Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
       *  Version 0.3, 12.11.2008 (Bugfix: language and context initialisation were wrong)<br />
       */
-      protected function __createFormElement($ElementType,$ElementAttributes = array()){
+      protected function __createFormElement($elementType,$elementAttributes = array()){
 
          // define taglib class
-         $TagLibClass = str_replace(':','_taglib_',$ElementType);
+         $tagLibClass = str_replace(':','_taglib_',$elementType);
 
          // check, if class exists
-         if(class_exists($TagLibClass)){
+         if(class_exists($tagLibClass)){
 
             // generate object id
-            $ObjectID = xmlParser::generateUniqID();
+            $objectId = xmlParser::generateUniqID();
 
             // create new form element
-            $FormObject = new $TagLibClass();
+            $formObject = new $tagLibClass();
 
             // add standard and user defined attributes
-            $FormObject->set('ObjectID',$ObjectID);
-            $FormObject->set('Language',$this->__Language);
-            $FormObject->set('Context',$this->__Context);
+            $formObject->set('ObjectID',$objectId);
+            $formObject->set('Language',$this->__Language);
+            $formObject->set('Context',$this->__Context);
 
-            foreach($ElementAttributes as $Key => $Value){
-               $FormObject->setAttribute($Key,$Value);
+            foreach($elementAttributes as $Key => $Value){
+               $formObject->setAttribute($Key,$Value);
              // end foreach
             }
 
             // add form element to DOM tree and call the onParseTime() method
-            $FormObject->setByReference('ParentObject',$this);
-            $FormObject->onParseTime();
+            $formObject->setByReference('ParentObject',$this);
+            $formObject->onParseTime();
 
             // add new form element to children list
-            $this->__Children[$ObjectID] = $FormObject;
+            $this->__Children[$objectId] = $formObject;
 
             // call the onAfterAppend() method
-            $this->__Children[$ObjectID]->onAfterAppend();
+            $this->__Children[$objectId]->onAfterAppend();
 
             // return object id for further addressing
-            return $ObjectID;
+            return $objectId;
 
           // end if
          }
          else{
 
             // throw error and return null as object id
-            trigger_error('[html_taglib_form::__createFormElement()] No form element with name "'.$ElementType.'" found! Maybe the tag name is misspellt or the class is not imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
+            trigger_error('[html_taglib_form::__createFormElement()] No form element with name "'.$elementType.'" found! Maybe the tag name is misspellt or the class is not imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
             return null;
 
           // end else
@@ -453,20 +500,19 @@
        // end function
       }
 
-
       /**
       *  @protected
       *
       *  Returns a reference on the desired marker or null.
       *
-      *  @param string $MarkerName the desired marker name
+      *  @param string $markerName the desired marker name
       *  @return form_taglib_marker $Marker the marker or null
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 03.09.2008<br />
       */
-      protected function &__getMarker($MarkerName){
+      protected function &__getMarker($markerName){
 
          // check, weather the form has children
          if(count($this->__Children) > 0){
@@ -478,7 +524,7 @@
                if(get_class($Child) == 'form_taglib_marker'){
 
                   // check, if the name fits the method's argument
-                  if($Child->getAttribute('name') == $MarkerName){
+                  if($Child->getAttribute('name') == $markerName){
                      return $this->__Children[$ObjectID];
                    // end if
                   }
@@ -506,7 +552,6 @@
 
        // end function
       }
-
 
       /**
       *  @public
@@ -558,7 +603,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -574,7 +618,6 @@
          $this->__Attributes['action'] = $action;
        // end function
       }
-
 
       /**
       *  @public
@@ -604,15 +647,19 @@
          }
 
          // display extended debug message in case no form element was found
-         $Parent = $this->get('ParentObject');
-         $GrandParent = $Parent->get('ParentObject');
-         $DocumentController = $GrandParent->get('DocumentController');
-         trigger_error('[html_taglib_form::getFormElementByName()] No form element with name "'.$name.'" composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$DocumentController.'"!',E_USER_ERROR);
-         exit();
+         $parent = $this->get('ParentObject');
+         $grandParent = $parent->get('ParentObject');
+         if($grandParent !== null){
+            $docCon = $grandParent->get('DocumentController');
+         }
+         else {
+            $docCon = 'n/a';
+         }
+         trigger_error('[html_taglib_form::getFormElementByName()] No form element with name "'.$name.'" composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$docCon.'"!',E_USER_ERROR);
+         exit(1);
 
        // end function
       }
-
 
       /**
       *  @public
@@ -644,15 +691,19 @@
          // display extended debug message in case no form element was found
          $parent = $this->get('ParentObject');
          $grandParent = $parent->get('ParentObject');
-         $documentController = $grandParent->get('DocumentController');
+         if($grandParent !== null){
+            $docCon = $grandParent->get('DocumentController');
+         }
+         else {
+            $docCon = 'n/a';
+         }
          trigger_error('[html_taglib_form::getFormElementByID()] No form element with id "'
             .$id.'" composed in current form "'.$this->__Attributes['name']
-            .'" in document controller "'.$documentController.'"!',E_USER_ERROR);
+            .'" in document controller "'.$docCon.'"!',E_USER_ERROR);
          exit();
 
        // end function
       }
-
 
       /**
       *  @public
@@ -690,19 +741,18 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Returns a list of form elements addressed by their tag name.
-      *
-      *  @param string $tagName The tag name of the desired form element (e.g. "form:text").
-      *  @return ui_element[] A list of references on the form elements.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 14.06.2008 (API-Änderung. Statt getFormElementsByType() soll nur noch getFormElementsByTagName() verwendet werden, da intuitiver.)<br />
-      */
+       * @public
+       *
+       * Returns a list of form elements addressed by their tag name.
+       *
+       * @param string $tagName The tag name of the desired form element (e.g. "form:text").
+       * @return form_control[] A list of references on the form elements.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 14.06.2008 (API-Änderung. Statt getFormElementsByType() soll nur noch getFormElementsByTagName() verwendet werden, da intuitiver.)<br />
+       */
       public function &getFormElementsByTagName($tagName){
 
          $colon = strpos($tagName,':');
@@ -733,11 +783,10 @@
          trigger_error('[html_taglib_form::getFormElementsByType()] No form elements composed in '.
             'current form "'.$this->__Attributes['name'].'" in document controller "'
             .$documentController.'"!',E_USER_ERROR);
-         exit();
+         exit(1);
 
        // end function
       }
-
 
       /**
        * @public
@@ -785,7 +834,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -799,7 +847,6 @@
          $this->__TransformOnPlace = true;
        // end function
       }
-
 
       /**
       *  @public

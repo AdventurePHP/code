@@ -30,24 +30,34 @@
    *  Version 0.1, 07.01.2007<br />
    *  Version 0.2, 12.01.2007 (Renamed to "select_taglib_option")<br />
    */
-   class select_taglib_option extends ui_element
-   {
+   class select_taglib_option extends form_control {
 
       function select_taglib_option(){
       }
 
+      /**
+       * @protected
+       *
+       * Overwrites the __presetValue() methode, because here is nothing to do.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 29.08.2009<br />
+       */
+      protected function __presetValue(){
+      }
 
       /**
-      *  @public
-      *
-      *  Returns the HTML code of the option.
-      *
-      *  @return string $SelectOption the HTML source code
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 07.01.2007<br />
-      */
+       * @public
+       *
+       * Returns the HTML code of the option.
+       *
+       * @return string The HTML source code.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 07.01.2007<br />
+       */
       function transform(){
          return '<option '.$this->__getAttributesAsString($this->__Attributes).'>'.$this->__Content.'</option>';
        // end function

@@ -19,34 +19,35 @@
     * -->
     */
 
-   /**
-    * @namespace tools::form::taglib
-    * @class form_taglib_hidden
-    *
-    * Represents a HTML hidden field within the APF form tags.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 05.01.2007<br />
-    */
-   class form_taglib_hidden extends form_control {
+   import('tools::form::filter','AbstractFormFilter');
 
-      public function form_taglib_hidden(){
-      }
+   /**
+    * @namespace modules::captcha::pres::filter
+    * @class CaptchaFilter
+    *
+    * Implements a filter for the captcha field.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 30.08.2009<br />
+    */
+   class CaptchaFilter extends AbstractFormFilter {
 
       /**
        * @public
+       * 
+       * Filters the content of the captcha field through an aggressive
+       * filter to ensure security.
        *
-       * Returns the HTML code of the hidden field.
+       * @param string $input The content to filter.
+       * @return string Filtered content.
        *
-       * @return string The HTML code of the hidden field.
-       *
-       * @author Christian Schäfer
+       * @author Christian Achatz
        * @version
-       * Version 0.1, 05.01.2007<br />
+       * Version 0.1, 30.08.2009<br />
        */
-      public function transform(){
-         return '<input type="hidden" '.$this->__getAttributesAsString($this->__Attributes).' />';
+      public function filter($input){
+         return substr(preg_replace('/[^A-Za-z0-9]/','',$input),0,5);
        // end function
       }
 

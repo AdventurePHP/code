@@ -20,33 +20,45 @@
     */
 
    /**
-    * @namespace tools::form::taglib
-    * @class form_taglib_hidden
+    * @namespace tools::form::filter
+    * @class form_taglib_addvalidator
     *
-    * Represents a HTML hidden field within the APF form tags.
+    * Implements the taglib, that lets you add a form element validator to
+    * the desired element.
     *
-    * @author Christian Schäfer
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 05.01.2007<br />
+    * Version 0.1, 25.08.2009<br />
     */
-   class form_taglib_hidden extends form_control {
+   class form_taglib_addvalidator extends form_control_observer {
 
-      public function form_taglib_hidden(){
+      /**
+       * @public
+       *
+       * Prefills the namespace attribute, to be able to leave it out
+       * while declaring an form:addvalidator tag and using packaged
+       * validators.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 30.08.2009<br />
+       */
+      public function form_taglib_addvalidator(){
+         $this->setAttribute('namespace','tools::form::validator');
+       // end function
       }
 
       /**
        * @public
        *
-       * Returns the HTML code of the hidden field.
+       * Add the desired validator to the given form element.
        *
-       * @return string The HTML code of the hidden field.
-       *
-       * @author Christian Schäfer
+       * @author Christian Achatz
        * @version
-       * Version 0.1, 05.01.2007<br />
+       * Version 0.1, 25.08.2009<br />
        */
-      public function transform(){
-         return '<input type="hidden" '.$this->__getAttributesAsString($this->__Attributes).' />';
+      public function onAfterAppend(){
+         $this->__addObserver('addValidator');
        // end function
       }
 

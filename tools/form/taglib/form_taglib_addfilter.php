@@ -20,34 +20,46 @@
     */
 
    /**
-    * @namespace tools::form::taglib
-    * @class form_taglib_hidden
+    * @namespace tools::form::filter
+    * @class form_taglib_addfilter
     *
-    * Represents a HTML hidden field within the APF form tags.
+    * Implements the taglib, that lets you add a form element filter to
+    * the desired element.
     *
-    * @author Christian Schäfer
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 05.01.2007<br />
+    * Version 0.1, 25.08.2009<br />
     */
-   class form_taglib_hidden extends form_control {
+   class form_taglib_addfilter extends form_control_observer {
 
-      public function form_taglib_hidden(){
+      /**
+       * @public
+       *
+       * Prefills the namespace attribute, to be able to leave it out
+       * while declaring an form:addfilter tag and using packaged
+       * validators.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 30.08.2009<br />
+       */
+      public function form_taglib_addfilter(){
+         $this->setAttribute('namespace','tools::form::filter');
+       // end function
       }
 
       /**
        * @public
        *
-       * Returns the HTML code of the hidden field.
-       *
-       * @return string The HTML code of the hidden field.
-       *
-       * @author Christian Schäfer
+       * Adds the desired filter to the given form element.
+       * 
+       * @author Christian Achatz
        * @version
-       * Version 0.1, 05.01.2007<br />
+       * Version 0.1, 25.08.2009<br />
        */
-      public function transform(){
-         return '<input type="hidden" '.$this->__getAttributesAsString($this->__Attributes).' />';
-       // end function
+      public function onAfterAppend(){
+         $this->__addObserver('addFilter');
+       // end functin
       }
 
     // end class

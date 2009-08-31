@@ -29,10 +29,45 @@
    *  @version
    *  Version 0.1, 11.07.2008<br />
    */
-   class form_taglib_addtaglib extends core_taglib_addtaglib
-   {
+   class form_taglib_addtaglib extends core_taglib_addtaglib {
 
       function form_taglib_addtaglib(){
+      }
+
+      /**
+       * @public
+       *
+       * Implements the isValid() method for the addtaglib tag. Due
+       * to the fact, that this taglib has nothing to do with validation,
+       * true is returned in all cases.
+       *
+       * @return boolean Always true.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 30.08.2009<br />
+       */
+      public function isValid(){
+         return true;
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Implements the isSent() method for the addtaglib tag. Due
+       * to the fact, that this taglib has nothing to do with validation,
+       * false (=not sent) is returned in all cases.
+       *
+       * @return boolean Always true.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 30.08.2009<br />
+       */
+      public function isSent(){
+         return false;
+       // end function
       }
 
     // end class
