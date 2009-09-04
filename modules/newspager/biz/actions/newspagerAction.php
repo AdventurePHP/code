@@ -58,7 +58,7 @@
          $DataDir = base64_decode($this->__Input->getAttribute('datadir'));
 
          // get manager
-         $nM = &$this->__getAndInitServiceObject('modules::newspager::data','newspagerManager',$DataDir);
+         $nM = &$this->__getAndInitServiceObject('modules::newspager::biz','newspagerManager',$DataDir);
 
          // set language
          $nM->set('Language',$Language);

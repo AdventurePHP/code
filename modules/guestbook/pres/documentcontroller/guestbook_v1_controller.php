@@ -54,7 +54,7 @@
 
          $GuestbookID = $this->__Attributes['guestbookid'];
 
-         $gM = &$this->__getAndInitServiceObject('modules::guestbook::biz','guestbookManager',$GuestbookID);
+         $gM = &$this->__getAndInitServiceObject('modules::guestbook::biz','GuestbookManager',$GuestbookID);
          $Guestbook = $gM->loadGuestbookObject();
 
          $this->setPlaceHolder('Name',$Guestbook->get('Name'));
