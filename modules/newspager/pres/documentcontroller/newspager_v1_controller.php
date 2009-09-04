@@ -61,7 +61,7 @@
          }
 
          // get manager
-         $nM = &$this->__getAndInitServiceObject('modules::newspager::data','newspagerManager',$DataDir);
+         $nM = &$this->__getAndInitServiceObject('modules::newspager::biz','newspagerManager',$DataDir);
 
          // load default news page
          $N = $nM->getNewsByPage();
