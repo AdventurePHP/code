@@ -30,7 +30,7 @@
     * <pre>
     * $this->__Control->notifyValidatorListeners();
     * </pre>
-    * within the <code>notifyElement()</code> method of the
+    * within the <code>notify()</code> method of the
     * <code>AbstractFormValidator</code> implementation. The definition of
     * the tag is as follows:
     * <pre>

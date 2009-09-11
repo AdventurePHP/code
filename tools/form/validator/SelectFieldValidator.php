@@ -26,7 +26,7 @@
     */
    abstract class SelectFieldValidator extends AbstractFormValidator {
 
-      public function notifyElement(){
+      public function notify(){
          $this->__Control->markAsInvalid();
          $this->__Control->addAttribute('style','; background-color: red;');
          $this->__Control->notifyValidationListeners();

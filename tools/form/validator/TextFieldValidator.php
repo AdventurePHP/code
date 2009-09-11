@@ -43,7 +43,7 @@
        * @version
        * Version 0.1, 29.08.2009<br />
        */
-      public function notifyElement(){
+      public function notify(){
          $this->__Control->markAsInvalid();
          $this->__Control->addAttribute('style','; border: 2px solid red;');
          $this->__Control->notifyValidationListeners();
