@@ -22,59 +22,34 @@
    import('tools::form::validator','SelectFieldValidator');
 
    /**
+    * @namespace tools::form::validator
+    * @class MultiSelectFieldValidator
+    *
     * Implements a base class for all text field validators.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.09.2009<br />
     */
    class MultiSelectFieldValidator extends SelectFieldValidator {
 
-      public function validate($input){
-
-         if(empty($input)){
-            return false;
-         }
-         return true;
-
-       // end function
-      }
-
       /**
-       * @protected
+       * Implements the validation method for multiselect fields.
        *
-       * Reimplements the validation of the multiselect field.
+       * @param string $input The input of the multiselect field.
+       * @return boolean True, in case the control is valid, false otherwise.
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 08.06.2008 (Reimplemented the __validate() method for the form_taglib_multiselect, because validation is different here)<br />
+       * Version 0.1, 03.09.2009<br />
        */
-      protected function __validate(){ // not needed any more?
+      public function validate($input){
 
-         // check, if validation is enabled
-         $this->__setValidateObject();
-
-         if($this->__ValidateObject == true){
-
-            // generate the offset of the request array from the name attribute
-            $requestOffset = trim(str_replace('[','',str_replace(']','',$this->__Attributes['name'])));
-
-            // execute validation
-            if(!isset($_REQUEST[$requestOffset])){
-
-               if(isset($this->__Attributes['style'])){
-                  $this->__Attributes['style'] .= ' '.$this->__ValidatorStyle;
-                // end if
-               }
-               else{
-                  $this->__Attributes['style'] = $this->__ValidatorStyle;
-                // end else
-               }
-
-               // mark form as invalid
-               //$this->__ParentObject->set('isValid',false);
-
-             // end if
-            }
-
-          // end if
-         }
+         $controlName = $this->__Control->getAttribute('name');
+         if(!isset($_REQUEST[$controlName])){
+            return false;
+         }   
+         return true;
 
        // end function
       }

@@ -92,7 +92,7 @@
        * @version
        * Version 0.1, 28.08.2009<br />
        */
-      public abstract function notifyElement();
+      public abstract function notify();
 
       /**
        * @public

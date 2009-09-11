@@ -60,11 +60,24 @@
        * @version
        * Version 0.1, 13.01.2007<br />
        * Version 0.2, 13.01.2009 (Bugfix: now the 'checked' attribute is deleted, that in case of a manually defined 'ckecked' the button could be unchecked)<br />
+       * Version 0.3, 05.09.2009 (Added check for attributes "name" and "value" beeing present)<br />
        */
       protected function __presetValue(){
 
          $name = $this->getAttribute('name');
          $value = $this->getAttribute('value');
+
+         // Check for name and value beeing present. Otherwise
+         // presetting will fail!
+         if($name === null || $value === null){
+            $formName = $this->__ParentObject->getAttribute('name');
+            trigger_error('[form_taglib_radio::__presetValue()] Attribute "name" and or "value" is '
+               .'missing for &lt;form:radio /&gt; definition within form "'.$formName.'". '
+               .'Please check your tag definition!',E_USER_ERROR);
+            exit(1);
+          // end if
+         }
+         
          if(isset($_REQUEST[$name])){
 
             // precheck, whether the value is contained in the request or the

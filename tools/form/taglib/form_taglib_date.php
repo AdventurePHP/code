@@ -218,7 +218,7 @@
       public function addValidator(AbstractFormValidator &$validator){
          if($validator->isActive()){
             if(!$validator->validate($this->getDate())){
-               $validator->notifyElement();
+               $validator->notify();
             }
          }
        // end function

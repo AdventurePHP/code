@@ -47,6 +47,7 @@
    import('tools::form::taglib','form_taglib_addfilter');
    import('tools::form::taglib','form_taglib_addvalidator');
    import('tools::form::taglib','form_taglib_listener');
+   import('tools::form::taglib','form_taglib_error');
 
    /**
     * @package tools::form::taglib
@@ -81,7 +82,7 @@
        *
        * Initializes the known taglibs.
        *
-       * @author Christian Schäfer
+       * @author Christian Sch�fer
        * @version
        * Version 0.1, 05.01.2007<br />
        * Version 0.2, 13.01.2007<br />
@@ -94,6 +95,7 @@
        * Version 0.9, 11.07.2008 (Added the form:addtaglib tag)<br />
        * Version 1.0, 03.09.2008 (Added the form:marker tag)<br />
        * Version 1.1, 22.06.2009 (Added the form:reset tag)<br />
+       * Version 1.2, 03.09.2009 (Added several new tags concerning the refactoring)<br />
        */
       public function html_taglib_form(){
 
@@ -106,6 +108,10 @@
          // validation. Otherwise, we might get unexpected results.
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','addfilter');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','addvalidator');
+
+         // The time of adding the form errors is not relevant, because the action
+         // takes place on transform time. But for clarity, we add it near the listeners.
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','error');
 
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','button');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','reset');
@@ -751,7 +757,7 @@
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 14.06.2008 (API-Änderung. Statt getFormElementsByType() soll nur noch getFormElementsByTagName() verwendet werden, da intuitiver.)<br />
+       * Version 0.1, 14.06.2008 (API change: do use this function instead of getFormElementsByType()!)<br />
        */
       public function &getFormElementsByTagName($tagName){
 
@@ -804,30 +810,23 @@
       public function transformForm(){
 
          // add action attribute if not set
-         if(!isset($this->__Attributes['action']) || empty($this->__Attributes['action'])){
-            $this->__Attributes['action'] = $_SERVER['REQUEST_URI'];
-          // end if
+         $action = $this->getAttribute('action');
+         if($action === null){
+            $this->setAttribute('action',$_SERVER['REQUEST_URI']);
          }
 
-         // transform
-         $htmlCode = (string)'';
-         $htmlCode .= '<form ';
+         // transform the form including all child tags
+         $htmlCode = (string)'<form ';
          $htmlCode .= $this->__getAttributesAsString($this->__Attributes,array('name'));
          $htmlCode .= '>';
 
-         $content = $this->__Content;
-
          if(count($this->__Children) > 0){
-
             foreach($this->__Children as $objectID => $Child){
-               $content = str_replace('<'.$objectID.' />',$Child->transform(),$content);
-             // end foreach
+               $this->__Content = str_replace('<'.$objectID.' />',$Child->transform(),$this->__Content);
             }
-
-          // end if
          }
 
-         $htmlCode .= $content;
+         $htmlCode .= $this->__Content;
          $htmlCode .= '</form>';
          return $htmlCode;
 

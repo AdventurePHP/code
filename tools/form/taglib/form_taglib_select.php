@@ -249,7 +249,7 @@
             }
 
             if(!$validator->validate($value)){
-               $validator->notifyElement();
+               $validator->notify();
             }
             
           // end if

@@ -210,7 +210,7 @@
       public function addValidator(AbstractFormValidator &$validator){
          if($validator->isActive()){
             if(!$validator->validate($this->getAttribute('value'))){
-               $validator->notifyElement();
+               $validator->notify();
             }
          }
        // end function
@@ -265,7 +265,7 @@
                $listeners[$i]->notify();
             }
          }
-
+         
        // end function
       }
 

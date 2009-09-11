@@ -83,7 +83,7 @@
       public function addValidator(AbstractFormValidator &$validator){
          if($validator->isActive()){
             if(!$validator->validate($this->__Content)){
-               $validator->notifyElement();
+               $validator->notify();
             }
          }
        // end function
