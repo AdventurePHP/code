@@ -45,7 +45,7 @@
              // prefill edit form by directly accessing the APF form objects
              $gS = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
              $form = &$this->__getForm('edit_entry');
-             if($form->get('isSent') === false){
+             if($form->isSent() === false){
 
                 $entry = $gS->loadEntry($entryId);
                 $editor = $entry->getEditor();
@@ -76,7 +76,7 @@
              else{
 
                 // save entry
-                if($form->get('isValid') === true){
+                if($form->isValid() === true){
 
                    $entry = new Entry();
                    $editor = new User();

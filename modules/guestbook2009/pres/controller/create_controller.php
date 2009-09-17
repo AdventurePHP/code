@@ -38,7 +38,7 @@
 
          $form = &$this->__getForm('create_entry');
 
-         if($form->get('isSent') && $form->get('isValid')){
+         if($form->isSent() && $form->isValid()){
 
             // Fill domain objects by extracting the values
             // from the form elements directly.

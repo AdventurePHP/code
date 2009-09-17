@@ -46,12 +46,12 @@
              $form_yes = &$this->__getForm('delete_yes');
              $form_no = &$this->__getForm('delete_no');
 
-             if($form_no->get('isSent') || $form_yes->get('isSent')){
+             if($form_no->isSent() || $form_yes->isSent()){
 
                 $gS = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
 
                 $entry = null;
-                if($form_yes->get('isSent')){
+                if($form_yes->isSent()){
                    $entry = new Entry();
                    $entry->setId($entryId);
                 }

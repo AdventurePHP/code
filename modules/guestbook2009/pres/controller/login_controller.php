@@ -37,7 +37,7 @@
          
          $form = &$this->__getForm('login');
 
-         if($form->get('isSent') && $form->get('isValid')){
+         if($form->isSent() && $form->isValid()){
 
             $fieldUser = &$form->getFormElementByName('username');
             $fieldPass = &$form->getFormElementByName('password');

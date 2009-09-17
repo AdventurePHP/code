@@ -19,9 +19,6 @@ Please select an entry to edit!
             maxlength="100"
             class="gb--admin-edit-field-name"
             name="name"
-            validate="true"
-            button="send"
-            filter="noSpecialCharacters"
          />
          <br />
          <label class="gb--admin-edit-label-email">Email:</label>
@@ -29,10 +26,6 @@ Please select an entry to edit!
             maxlength="100"
             class="gb--admin-edit-field-email"
             name="email"
-            validate="true"
-            button="send"
-            validator="EMail"
-            filter="stripTags"
          />
          <br />
          <label class="gb--admin-edit-label-website">Website:</label>
@@ -40,7 +33,6 @@ Please select an entry to edit!
             maxlength="100"
             class="gb--admin-edit-field-website"
             name="website"
-            filter="stripTags"
          />
          <br />
          <label class="gb--admin-edit-label-title">Title:</label>
@@ -48,9 +40,6 @@ Please select an entry to edit!
             maxlength="100"
             class="gb--admin-edit-field-title"
             name="title"
-            validate="true"
-            button="send"
-            filter="noSpecialCharacters"
          />
          <br />
          <br />
@@ -59,9 +48,6 @@ Please select an entry to edit!
          <form:area
             class="gb--admin-edit-field-text"
             name="text"
-            validate="true"
-            button="send"
-            filter="stripTags"
          />
          <br />
          <br />
@@ -70,6 +56,31 @@ Please select an entry to edit!
          </div>
          <form:hidden name="entryid" />
          <form:hidden name="editorid" />
+         <form:addvalidator
+            class="TextLengthValidator"
+            button="send"
+            control="name|title|text"
+         />
+         <form:addfilter
+            class="NoSpecialCharactersFilter"
+            button="send"
+            control="name|title"
+         />
+         <form:addvalidator
+            class="EMailValidator"
+            button="send"
+            control="email"
+         />
+         <form:addfilter
+            class="StripTagsFilter"
+            button="send"
+            control="website|text"
+         />
+         <form:addfilter
+            class="EMailFilter"
+            button="send"
+            control="email"
+         />
       </html:form>
    </div>
 </div>

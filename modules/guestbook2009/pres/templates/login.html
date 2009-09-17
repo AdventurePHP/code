@@ -11,8 +11,6 @@
          maxlength="100"
          name="username"
          class="gb--login-field-username"
-         validate="true"
-         button="login"
       />
       <br />
       <label class="gb--login-label-password">Password:</label>
@@ -20,14 +18,17 @@
          maxlength="100"
          name="password"
          class="gb--login-field-password"
-         validate="true"
-         button="login"
       />
       <br />
       <br />
       <div class="gb--login-button-placer">
          <form:button name="login" value="Login" class="gb--login-button-login" />
       </div>
+      <form:addvalidator
+         class="TextLengthValidator"
+         button="login"
+         control="username|password"
+      />
    </html:form>
    <html:template name="error">
       <div class="gb--login-error-form">

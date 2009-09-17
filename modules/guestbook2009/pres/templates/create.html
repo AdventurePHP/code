@@ -15,9 +15,6 @@
                   maxlength="100"
                   class="gb--create-field-name"
                   name="name"
-                  validate="true"
-                  button="send"
-                  filter="noSpecialCharacters"
                />
             </div>
          </div>
@@ -28,10 +25,6 @@
                   maxlength="100"
                   class="gb--create-field-email"
                   name="email"
-                  validate="true"
-                  button="send"
-                  validator="EMail"
-                  filter="stripTags"
                />
             </div>
          </div>
@@ -42,7 +35,6 @@
                   maxlength="100"
                   class="gb--create-field-website"
                   name="website"
-                  filter="stripTags"
                />
             </div>
          </div>
@@ -53,9 +45,6 @@
                   maxlength="100"
                   class="gb--create-field-title"
                   name="title"
-                  validate="true"
-                  button="send"
-                  filter="noSpecialCharacters"
                />
             </div>
          </div>
@@ -65,9 +54,6 @@
                <form:area
                   class="gb--create-field-text"
                   name="text"
-                  validate="true"
-                  button="send"
-                  filter="stripTags"
                />
             </div>
          </div>
@@ -78,15 +64,50 @@
                <form:captcha
                   text_class="gb--create-field-captcha-text"
                   image_class="gb--create-field-captcha-image"
-                  validate="true"
-                  button="send"
+                  name="Captcha"
                   clearonerror="true"
+               />
+               <form:addvalidator
+                  namespace="modules::captcha::pres::validator"
+                  class="CaptchaValidator"
+                  control="Captcha"
+                  button="send"
                />
             </div>
          </div>
          <div class="gb--create-button-placer">
             <form:button class="gb--button-create" name="send" />
          </div>
+         <form:addvalidator
+            class="TextLengthValidator"
+            button="send"
+            control="name|title|text"
+         />
+         <form:addfilter
+            class="NoSpecialCharactersFilter"
+            button="send"
+            control="name|title"
+         />
+         <form:addvalidator
+            class="EMailValidator"
+            button="send"
+            control="email"
+         />
+         <form:addfilter
+            class="StripTagsFilter"
+            button="send"
+            control="email|website|text"
+         />
+         <form:addfilter
+            class="StripTagsFilter"
+            button="send"
+            control="website|text"
+         />
+         <form:addfilter
+            class="EMailFilter"
+            button="send"
+            control="email"
+         />
       </html:form>
    </div>
 </div>
