@@ -51,12 +51,12 @@
 
          $form = &$this->__getForm('AddComment');
 
-         if($form->get('isSent') == true){
+         if($form->isSent() == true){
 
             $this->__loadCategoryKey();
             $M = &$this->__getAndInitServiceObject('modules::comments::biz','commentManager',$this->__CategoryKey);
 
-            if($form->get('isValid') == true){
+            if($form->isValid() == true){
 
                $articleComment = new ArticleComment();
                $name = &$form->getFormElementByName('Name');

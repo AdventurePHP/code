@@ -14,9 +14,11 @@
             maxlength="100"
             name="Name"
             class="cm--create-element-name"
-            validate="true"
+         />
+         <form:addvalidator
+            class="TextLengthValidator"
             button="Save"
-            validator="Text"
+            control="Name|Comment"
          />
          <br />
          <span>
@@ -26,9 +28,16 @@
             maxlength="100"
             name="EMail"
             class="cm--create-element-email"
-            validate="true"
+         />
+         <form:addvalidator
+            class="EMailValidator"
             button="Save"
-            validator="EMail"
+            control="EMail"
+         />
+         <form:addfilter
+            class="EMailFilter"
+            button="Save"
+            control="EMail"
          />
          <br />
          <br />
@@ -37,9 +46,6 @@
          <form:area
             name="Comment"
             class="cm--create-element-comment"
-            validate="true"
-            button="Save"
-            validator="Text"
          />
          <br />
          <br />
@@ -51,9 +57,14 @@
          <form:addtaglib namespace="modules::captcha::pres::taglib" prefix="form" class="captcha" />
          <form:captcha
              text_class="cm--create-element-captcha"
-             validate="true"
-             button="Save"
+             name="Captcha"
              clearonerror="true"
+         />
+         <form:addvalidator
+            namespace="modules::captcha::pres::validator"
+            class="CaptchaValidator"
+            control="Captcha"
+            button="Save"
          />
          <br />
          <br />

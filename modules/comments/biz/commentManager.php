@@ -20,11 +20,9 @@
    */
 
    import('modules::comments::data','commentMapper');
-   import('modules::pager::biz','PagerManagerFabric');
    import('tools::link','frontcontrollerLinkHandler');
    import('tools::string','stringAssistant');
    import('core::session','SessionManager');
-
 
    /**
    *  @namespace modules::comments::biz
@@ -37,8 +35,7 @@
    *  Version 0.1, 22.08.2007<br />
    *  Version 0.2, 28.12.2007 (Captcha-Unterst�tzung eingef�hrt)<br />
    */
-   class commentManager extends coreObject
-   {
+   class commentManager extends coreObject {
 
       /**
       *  @protected
@@ -46,17 +43,14 @@
       */
       protected $__CategoryKey;
 
-
       /**
       *  @protected
       *  Captcha String zur Pr�fung der Eingabe.
       */
       protected $__CaptchaString = null;
 
-
       function commentManager(){
       }
-
 
       /**
       *  @public
@@ -85,7 +79,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -100,17 +93,14 @@
       */
       function loadEntries(){
 
-         // pagerManager holen
          $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
          $pM = &$pMF->getPagerManager('ArticleComments');
 
-         // Kommentare laden
          $M = &$this->__getServiceObject('modules::comments::data','commentMapper');
          return $pM->loadEntriesByAppDataComponent($M,'loadArticleCommentByID',array('CategoryKey' => $this->__CategoryKey));
 
        // end function
       }
-
 
       /**
       *  @public
@@ -134,7 +124,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -153,14 +142,13 @@
        // end function
       }
 
-
       /**
       *  @public
       *
       *  Speichert einen Kommentar-Eintrag.<br />
       *
-      *  @param ArticleComment $ArticleComment ArticleComment-Objekt
-      *  @param bool $AJAX Indiziert, ob die Methode im AJAX-Style verwendet wird
+      *  @param ArticleComment $articleComment ArticleComment-Objekt
+      *  @param bool $ajax Indiziert, ob die Methode im AJAX-Style verwendet wird
       *
       *  @author Christian Sch�fer
       *  @version
@@ -168,23 +156,20 @@
       *  Version 0.2, 28.12.2007 (Captcha eingef�hrt)<br />
       *  Version 0.3, 02.02.2008 (AJAX-Support hinzugef�gt)<br />
       */
-      function saveEntry($ArticleComment,$AJAX = false){
+      function saveEntry($articleComment,$ajax = false){
 
-         // Mapper holen
          $M = &$this->__getServiceObject('modules::comments::data','commentMapper');
 
-         // Artikel speichern
-         $ArticleComment->set('CategoryKey',$this->__CategoryKey);
-         $M->saveArticleComment($ArticleComment);
+         $articleComment->set('CategoryKey',$this->__CategoryKey);
+         $M->saveArticleComment($articleComment);
 
-         // Weiterleitung auf anderen View nur bei normaler Anwendung
-         if($AJAX == false){
+         // redirect to further view, if not in AJAX mode
+         if($ajax == false){
 
-            // Captcha-Session-Eintrag l�schen
+            // delete captcha session entry
             $sessMgr = new SessionManager('modules::comment');
             $sessMgr->deleteSessionData('CAPTCHA_STRING');
 
-            // Auf die Ausgabe weiterleiten
             $Link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('coview' => 'listing'));
             header('Location: '.$Link.'#comments');
 
