@@ -44,7 +44,7 @@ Hier kannst den gew&auml;hlten Kommentar bearbeiten! F&uuml;lle die Pflicht-Feld
         <strong>Titel des Kommentars:</strong> *
       </td>
       <td class="formtable_row_control">
-        <form:text name="Title" class="eingabe_feld" style="width: 300px;" validate="true" button="EditCommentButton"/>
+        <form:text name="Title" class="eingabe_feld" style="width: 300px;" />
       </td>
     </tr>
     <tr>
@@ -53,7 +53,7 @@ Hier kannst den gew&auml;hlten Kommentar bearbeiten! F&uuml;lle die Pflicht-Feld
         <strong>Ihr Kommentar:</strong> *
         <br />
         <br />
-        <form:area name="Text" class="eingabe_feld" style="height: 200px; width: 480px; overflow: auto;" validate="true" button="EditCommentButton" />
+        <form:area name="Text" class="eingabe_feld" style="height: 200px; width: 480px; overflow: auto;" />
       </td>
     </tr>
   </table>
@@ -67,4 +67,9 @@ Hier kannst den gew&auml;hlten Kommentar bearbeiten! F&uuml;lle die Pflicht-Feld
   <form:button name="EditCommentButton" value="Speichern" class="eingabe_feld" />
   <form:hidden name="commentid" value="" />
   <form:hidden name="entryid" value="" />
+  <form:addvalidator
+     class="TextLengthValidator"
+     button="EditCommentButton"
+     control="Title|Text"
+  />
 </html:form>

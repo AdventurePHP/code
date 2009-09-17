@@ -71,9 +71,9 @@
          // Referenz auf das Formular holen
          $Form__Comment = &$this->__getForm('Comment');
 
-         if($Form__Comment->get('isSent') == true){
+         if($Form__Comment->isSent() == true){
 
-            if($Form__Comment->get('isValid')){
+            if($Form__Comment->isValid()){
 
                // Manager holen
                $gM = &$this->__getGuestbookManager();

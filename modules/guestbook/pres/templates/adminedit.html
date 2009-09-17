@@ -44,7 +44,7 @@ Hier kannst du deinen Eintrag verfassen! F&uuml;lle die Pflicht-Felder vollst&au
         Ihr Name: *
       </td>
       <td class="formtable_row_control">
-        <form:text name="Name" class="eingabe_feld" style="width: 300px;" validate="true" button="CreateGuestbookEntryButton"/>
+        <form:text name="Name" class="eingabe_feld" style="width: 300px;" />
       </td>
     </tr>
     <tr>
@@ -52,7 +52,7 @@ Hier kannst du deinen Eintrag verfassen! F&uuml;lle die Pflicht-Felder vollst&au
         Ihre eMail-Adresse: *
       </td>
       <td class="formtable_row_control">
-        <form:text name="EMail" class="eingabe_feld" style="width: 300px;" validate="true" validator="EMail" button="CreateGuestbookEntryButton" />
+        <form:text name="EMail" class="eingabe_feld" style="width: 300px;" />
       </td>
     </tr>
     <tr>
@@ -117,7 +117,7 @@ Hier kannst du deinen Eintrag verfassen! F&uuml;lle die Pflicht-Felder vollst&au
         <strong>Ihr Text:</strong> *
         <br />
         <br />
-        <form:area name="Text" class="eingabe_feld" style="height: 200px; width: 480px; overflow: auto;" validate="true" button="CreateGuestbookEntryButton" />
+        <form:area name="Text" class="eingabe_feld" style="height: 200px; width: 480px; overflow: auto;" />
       </td>
     </tr>
   </table>
@@ -130,4 +130,14 @@ Hier kannst du deinen Eintrag verfassen! F&uuml;lle die Pflicht-Felder vollst&au
   <br />
   <form:button name="CreateGuestbookEntryButton" value="Speichern" class="eingabe_feld" />
   <form:hidden name="entryid" value="" />
+  <form:addvalidator
+     class="TextLengthValidator"
+     button="CreateGuestbookEntryButton"
+     control="Text|Name"
+  />
+  <form:addvalidator
+     class="EMailValidator"
+     button="CreateGuestbookEntryButton"
+     control="EMail"
+  />
 </html:form>

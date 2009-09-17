@@ -44,7 +44,7 @@
         <form:getstring namespace="modules::guestbook" config="guestbook_lang" entry="CreateEntry.Form.Name" />
       </td>
       <td class="formtable_row_control">
-        <form:text name="Name" class="eingabe_feld" style="width: 300px;" validate="true" button="CreateGuestbookEntryButton"/>
+        <form:text name="Name" class="eingabe_feld" style="width: 300px;" />
       </td>
     </tr>
     <tr>
@@ -52,7 +52,7 @@
         <form:getstring namespace="modules::guestbook" config="guestbook_lang" entry="CreateEntry.Form.EMail" />
       </td>
       <td class="formtable_row_control">
-        <form:text name="EMail" class="eingabe_feld" style="width: 300px;" validate="true" validator="EMail" button="CreateGuestbookEntryButton" />
+        <form:text name="EMail" class="eingabe_feld" style="width: 300px;" />
       </td>
     </tr>
     <tr>
@@ -117,7 +117,7 @@
         <strong><form:getstring namespace="modules::guestbook" config="guestbook_lang" entry="CreateEntry.Form.Text" /></strong> *
         <br />
         <br />
-        <form:area name="Text" class="eingabe_feld" style="height: 200px; width: 480px; overflow: auto;" validate="true" button="CreateGuestbookEntryButton" />
+        <form:area name="Text" class="eingabe_feld" style="height: 200px; width: 480px; overflow: auto;" />
       </td>
     </tr>
     <tr>
@@ -127,7 +127,13 @@
         <br />
         <br />
         <form:addtaglib namespace="modules::captcha::pres::taglib" prefix="form" class="captcha" />
-        <form:captcha text_class="eingabe_feld" validate="true" button="CreateGuestbookEntryButton"/>
+        <form:captcha text_class="eingabe_feld" clearonerror="true"/>
+         <form:addvalidator
+            namespace="modules::captcha::pres::validator"
+            class="CaptchaValidator"
+            control="Captcha"
+            button="CreateGuestbookEntryButton"
+         />
       </td>
     </tr>
   </table>
@@ -139,4 +145,14 @@
   <br />
   <br />
   <form:button name="CreateGuestbookEntryButton" value="Eintragen" class="eingabe_feld" />
+  <form:addvalidator
+    class="TextLengthValidator"
+    button="CreateGuestbookEntryButton"
+    control="Text|Name"
+  />
+  <form:addvalidator
+    class="EMailValidator"
+    button="CreateGuestbookEntryButton"
+    control="EMail"
+  />
 </html:form>

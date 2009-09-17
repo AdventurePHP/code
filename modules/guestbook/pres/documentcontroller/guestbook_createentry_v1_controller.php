@@ -68,7 +68,7 @@
          // Referenz auf das Formular holen
          $Form__GuestbookEntry = &$this->__getForm('GuestbookEntry');
 
-         if($Form__GuestbookEntry->get('isValid') && $Form__GuestbookEntry->get('isSent')){
+         if($Form__GuestbookEntry->isValid() && $Form__GuestbookEntry->isSent()){
 
             // Manager holen
             $gM = &$this->__getGuestbookManager();

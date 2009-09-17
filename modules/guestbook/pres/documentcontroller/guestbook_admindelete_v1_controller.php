@@ -68,13 +68,13 @@
 
          if($oSessMgr->loadSessionData('AdminView') == true){
 
-            if($Form__FormNo->get('isSent')){
+            if($Form__FormNo->isSent()){
                $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','entryid' => ''));
                header('Location: '.$Link);
              // end if
             }
 
-            if($Form__FormYes->get('isSent')){
+            if($Form__FormYes->isSent()){
 
                $gM = &$this->__getGuestbookManager();
 

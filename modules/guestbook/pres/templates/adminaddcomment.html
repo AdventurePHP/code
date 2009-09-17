@@ -44,7 +44,7 @@ Hier kannst du deinen Kommentar zum ausgew&auml;hlen Eintrag verfassen! F&uuml;l
         Ihr Titel: *
       </td>
       <td class="formtable_row_control">
-        <form:text name="Title" class="eingabe_feld" style="width: 300px;" validate="true" button="CreateCommentButton" />
+        <form:text name="Title" class="eingabe_feld" style="width: 300px;" />
       </td>
     </tr>
     <tr>
@@ -53,7 +53,7 @@ Hier kannst du deinen Kommentar zum ausgew&auml;hlen Eintrag verfassen! F&uuml;l
         <strong>Ihr Text:</strong> *
         <br />
         <br />
-        <form:area name="Text" class="eingabe_feld" style="height: 200px; width: 480px; overflow: auto;" validate="true" button="CreateCommentButton" />
+        <form:area name="Text" class="eingabe_feld" style="height: 200px; width: 480px; overflow: auto;" />
       </td>
     </tr>
   </table>
@@ -66,4 +66,9 @@ Hier kannst du deinen Kommentar zum ausgew&auml;hlen Eintrag verfassen! F&uuml;l
   <br />
   <form:button name="CreateCommentButton" value="Speichern" class="eingabe_feld" />
   <form:hidden name="entryid" value="" />
+  <form:addvalidator
+     class="TextLengthValidator"
+     control="Title|Text"
+     button="CreateCommentButton"
+  />
 </html:form>

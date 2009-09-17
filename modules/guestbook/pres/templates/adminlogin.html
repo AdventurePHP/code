@@ -12,12 +12,17 @@ Hier kannst du dich einloggen um das G&auml;stebuch zu administrieren.
 
 <html:form name="AdminLogin" method="post" action="">
   <form:placeholder name="LogInError" />
-  Benutzer: <form:text name="Username" class="eingabe_feld" style="width: 200px; margin-left: 20px;" validate="true" button="AdminLogin" />
+  Benutzer: <form:text name="Username" class="eingabe_feld" style="width: 200px; margin-left: 20px;" />
   <br />
-  Passwort: <form:password name="Password" class="eingabe_feld" style="width: 200px; margin-left: 16px;" validate="true" button="AdminLogin" />
+  Passwort: <form:password name="Password" class="eingabe_feld" style="width: 200px; margin-left: 16px;" />
   <br />
   <br />
   <form:button name="AdminLogin" value="Login" class="eingabe_feld" style="margin-left: 227px;"/>
+  <form:addvalidator
+     class="TextLengthValidator"
+     control="Username|Password"
+     button="AdminLogin"
+  />
 </html:form>
 
 <html:template name="LogInError">

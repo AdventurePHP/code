@@ -84,7 +84,7 @@
 
          $Form__AdminLogin = &$this->__getForm('AdminLogin');
 
-         if($Form__AdminLogin->get('isValid') && $Form__AdminLogin->get('isSent')){
+         if($Form__AdminLogin->isValid() && $Form__AdminLogin->isSent()){
 
             $gM = &$this->__getGuestbookManager();
 

@@ -71,9 +71,9 @@
          $Form__GuestbookAddComment = &$this->__getForm('GuestbookAddComment');
 
          // Aktion für Eintrag
-         if($Form__GuestbookAddComment->get('isSent') == true){
+         if($Form__GuestbookAddComment->isSent() == true){
 
-            if($Form__GuestbookAddComment->get('isValid')){
+            if($Form__GuestbookAddComment->isValid()){
 
                // Manager holen
                $gM = &$this->__getGuestbookManager();
