@@ -1,23 +1,23 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
     * @namespace modules::genericormapper::biz
@@ -28,9 +28,9 @@
     * @author Christian Achatz
     * @version
     * Version 0.1, 26.04.2008<br />
+    * Version 0.2, 04.09.2009 (Added serialization support)<br />
     */
-   final class GenericDomainObject extends coreObject
-   {
+   final class GenericDomainObject extends coreObject {
 
       /**
        * @protected
@@ -39,13 +39,11 @@
        */
       protected $__DataComponent = null;
 
-
       /**
        * @protected
        * Name of the object (see mapping table!).
        */
       protected $__ObjectName = null;
-
 
       /**
        * @protected
@@ -53,13 +51,11 @@
        */
       protected $__Properties = array();
 
-
       /**
        * @protected
        * Objects related to the current object. Sorted by composition or association key.
        */
       protected $__RelatedObjects = array();
-
 
       /**
        * @public
@@ -76,7 +72,6 @@
          $this->__ObjectName = $objectName;
        // end function
       }
-
 
       /**
        * @public
@@ -109,14 +104,13 @@
        // end function
       }
 
-
       /**
        * @public
        *
        * Returns the reference on the list of related objects manually added to the object.
        *
        * @param string $relationName name of the desired relation
-       * @return GenericDomainObject[] $relatedObjects a list of referenced objects that are related with the current object or null
+       * @return GenericDomainObject[] A list of referenced objects that are related with the current object or null
        *
        * @author Christian Achatz
        * @version
@@ -136,7 +130,6 @@
 
        // end function
       }
-
 
       /**
        * @public
@@ -160,37 +153,35 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Abstract method to set a domain object's simple property.<br />
-      *
-      *  @param string $name name of the specified domain object property
-      *  @param string $value value of the specified domain object property
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 26.04.2008<br />
-      */
+       * @public
+       *
+       * Abstract method to set a domain object's simple property.<br />
+       *
+       * @param string $name name of the specified domain object property
+       * @param string $value value of the specified domain object property
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 26.04.2008<br />
+       */
       public function setProperty($name,$value){
          $this->__Properties[$name] = $value;
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Abstract method to get a domain object's simple property.<br />
-      *
-      *  @param string $name name of the specified domain object property
-      *  @return string $PropertyValue value of the specified domain object property
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 26.04.2008<br />
-      */
+       * @public
+       *
+       * Abstract method to get a domain object's simple property.<br />
+       *
+       * @param string $name name of the specified domain object property
+       * @return string Value of the specified domain object property
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 26.04.2008<br />
+       */
       public function getProperty($name){
 
          if(isset($this->__Properties[$name])){
@@ -205,18 +196,17 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Abstract method to set all domain object's simple properties.<br />
-      *
-      *  @param array $properties list of defined properties to apply to the domain object
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 26.04.2008<br />
-      */
+       * @public
+       *
+       * Abstract method to set all domain object's simple properties.<br />
+       *
+       * @param string[] $properties list of defined properties to apply to the domain object
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 26.04.2008<br />
+       */
       public function setProperties($properties = array()){
 
          if(count($properties) > 0){
@@ -227,23 +217,21 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Abstract method to get all domain object's simple properties.<br />
-      *
-      *  @return array $Properties list of defined domain object properties
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 26.04.2008<br />
-      */
+       * @public
+       *
+       * Abstract method to get all domain object's simple properties.<br />
+       *
+       * @return string[] List of defined domain object properties
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 26.04.2008<br />
+       */
       public function getProperties(){
          return $this->__Properties;
        // end function
       }
-
 
       /**
        * @public
@@ -271,7 +259,7 @@
             $stringRep .= $name.'="'.$value.'"';
 
             if($current < $propCount) {
-               $stringRep .= ',';
+               $stringRep .= ', ';
              // end if
             }
 
@@ -281,6 +269,22 @@
          }
          return $stringRep.']';
 
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Implements php's magic __sleep() method to indicate, which class vars have to be serialized.<br />
+       *
+       * @return string[] List of serializable properties.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 04.09.2009<br />
+       */
+      public function __sleep(){
+         return array('__ObjectName','__Properties','__RelatedObjects');
        // end function
       }
 
