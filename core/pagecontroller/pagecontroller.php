@@ -469,12 +469,11 @@
     * @author Christian Achatz
     * @version
     * Version 0.1, 28.12.2006<br />
-    * Version 0.2, 11.02.2007 (Attribute Language und Context hinzugefÔøΩgt)<br />
+    * Version 0.2, 11.02.2007 (Added language and context)<br />
     * Version 0.3, 28.10.2008 (Added the __ServiceType member to indicate the service manager creation type)<br />
     * Version 0.4, 03.11.2008 (Added initializing values to some of the class members)<br />
     */
-   abstract class coreObject
-   {
+   abstract class coreObject {
 
       /**
        * @protected
@@ -522,7 +521,6 @@
 
       public function coreObject(){
       }
-
 
       /**
       *  @public
@@ -689,7 +687,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -735,7 +732,6 @@
        // end function
       }
 
-
       /**
       *  Interface definition of the transform() method. This function is used to transform a
       *  DOM node within the page controller. It must be implemented by derived classes.
@@ -749,7 +745,6 @@
       */
       public function transform(){
       }
-
 
       /**
        * Interface definition of the init() method. This function is used to initialize a service
@@ -767,7 +762,6 @@
       public function init($initParam){
       }
 
-
       /**
       *  Interface definition of the onParseTime() method. This function is called after the creation
       *  of a new DOM node. It must be implemented by derived classes.
@@ -781,7 +775,6 @@
       */
       public function onParseTime(){
       }
-
 
       /**
       *  Interface definition of the onAfterAppend() method. This function is called after the DOM
@@ -797,7 +790,6 @@
       */
       public function onAfterAppend(){
       }
-
 
       /**
       *  Interface definition of the transformContent() method. This function is applied to a
@@ -862,7 +854,6 @@
        // end function
       }
 
-
       /**
       *  @protected
       *
@@ -890,7 +881,6 @@
        // end function
       }
 
-
       /**
       *  @protected
       *
@@ -913,7 +903,6 @@
          return $configurationManager->getConfiguration($namespace,$this->__Context,$configName,$parseSubsections);
        // end function
       }
-
 
       /**
        * @protected
@@ -962,60 +951,100 @@
     // end class
    }
 
-
    /**
     * @namespace core::pagecontroller
     * @class TagLib
     *
-    * Represents a taglib. You can see this class as a taglib definition or representation. It is
-    * used to mark the known taglibs of a DOM node.
+    * This class represents a taglib and thus is used as a taglib definition. Each time,
+    * you add a known taglib to a DOM node, an instance of the TagLib class is added to
+    * the node.
     *
-    * @author Christian Sch√§fer
+    * @author Christian Sch‰fer
     * @version
     * Version 0.1, 28.12.2006<br />
     */
-   final class TagLib extends coreObject
-   {
+   final class TagLib extends coreObject {
 
       /**
-      *  @private
-      *  The namespace of the taglib.
-      */
+       * @protected
+       * @var string The namespace of the taglib.
+       */
       protected $__Namespace;
 
       /**
-      *  @private
-      *  The prefix of the taglib.
-      */
+       * @protected
+       * @var string The prefix of the taglib.
+       */
       protected $__Prefix;
 
       /**
-      *  @private
-      *  The class name of the taglib.
-      */
+       * @protected
+       * @var string The class name of the taglib.
+       */
       protected $__Class;
-
 
       /**
        * @public
        *
        * Defines a taglib.
        *
-       * @param string $namespace The namespace of the taglib
-       * @param string $prefix The prefix of the taglib
-       * @param string $class The class name of the taglib
+       * @param string $namespace The namespace of the taglib.
+       * @param string $prefix The prefix of the taglib.
+       * @param string $class The class name of the taglib.
        *
-       * @author Christian Sch√§fer
+       * @author Christian Sch‰fer
        * @version
        * Version 0.1, 28.12.2006<br />
        */
       public function TagLib($namespace,$prefix,$class){
-
          $this->__Namespace = $namespace;
          $this->__Class = $class;
          $this->__Prefix = $prefix;
+      }
 
-       // end function
+      /**
+       * @public
+       *
+       * Returns the namespace of the taglib.
+       *
+       * @return string The namespace of the taglib.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.09.2009<br />
+       */
+      public function getNamespace(){
+         return $this->__Namespace;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the prefix of the taglib.
+       *
+       * @return string The prefix of the taglib.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.09.2009<br />
+       */
+      public function getPrefix(){
+         return $this->__Prefix;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the class of the taglib.
+       *
+       * @return string The class of the taglib.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.09.2009<br />
+       */
+      public function getClass(){
+         return $this->__Class;
       }
 
     // end class
@@ -1642,7 +1671,6 @@
     // end class
    }
 
-
    /**
     * @package core::pagecontroller
     * @class core_taglib_importdesign
@@ -1651,12 +1679,11 @@
     * from the template specified by the tag's attributes within the current APF DOM tree. Each
     * importdesign tag can compose further tags.
     *
-    * @author Christian Sch√§fer
+    * @author Christian Sch‰fer
     * @version
     * Version 0.1, 28.12.2006<br />
     */
-   class core_taglib_importdesign extends Document
-   {
+   class core_taglib_importdesign extends Document {
 
       /**
        * @public
@@ -1671,7 +1698,6 @@
          parent::Document();
        // end function
       }
-
 
       /**
        * @public
@@ -1753,7 +1779,6 @@
     // end class
    }
 
-
    /**
     * @namespace core::pagecontroller
     * @class core_taglib_addtaglib
@@ -1766,12 +1791,10 @@
     * @version
     * Version 0.1, 28.12.2006<br />
     */
-   class core_taglib_addtaglib extends Document
-   {
+   class core_taglib_addtaglib extends Document {
 
       public function core_taglib_addtaglib(){
       }
-
 
       /**
        * @public
@@ -1788,7 +1811,6 @@
          $this->__ParentObject->addTagLib($this->getAttribute('namespace'),$this->getAttribute('prefix'),$this->getAttribute('class'));
        // end function
       }
-
 
       /**
        * @public
@@ -1820,12 +1842,10 @@
     * @version
     * Version 0.1, 28.12.2006<br />
     */
-   class html_taglib_placeholder extends Document
-   {
+   class html_taglib_placeholder extends Document {
 
       public function html_taglib_placeholder(){
       }
-
 
       /**
        * @public
@@ -1845,7 +1865,6 @@
     // end class
    }
 
-
    /**
     * @namespace core::pagecontroller
     * @class html_taglib_template
@@ -1859,15 +1878,13 @@
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 10.11.2008 (Removed the IncludedTagLib behavior, because this lead to errors when including new taglibs with template:addtaglib.)<br />
     */
-   class html_taglib_template extends Document
-   {
+   class html_taglib_template extends Document {
 
       /**
        * @protected
        * Indicates, if the template should be transformed on the place of definition. Default is false.
        */
       protected $__TransformOnPlace = false;
-
 
       /**
        * @public
@@ -1890,7 +1907,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -1906,7 +1922,6 @@
          $this->__extractTagLibTags();
        // end function
       }
-
 
       /**
        * @public
@@ -1974,7 +1989,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -2014,7 +2028,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -2028,7 +2041,6 @@
          $this->__TransformOnPlace = true;
        // end function
       }
-
 
       /**
        * @public
@@ -2062,7 +2074,6 @@
     // end class
    }
 
-
    /**
     * @namespace core::pagecontroller
     * @class template_taglib_placeholder
@@ -2073,12 +2084,10 @@
     * @version
     * Version 0.1, 29.12.2006<br />
     */
-   class template_taglib_placeholder extends Document
-   {
+   class template_taglib_placeholder extends Document {
 
       public function template_taglib_placeholder(){
       }
-
 
       /**
        * @public
@@ -2098,7 +2107,6 @@
     // end class
    }
 
-
    /**
     * @namespace core::pagecontroller
     * @class template_taglib_addtaglib
@@ -2111,15 +2119,13 @@
     * Version 0.1, 21.04.2007<br />
     * Version 0.2, 10.11.2008 (Removed the registerTagLibModule() logic of the templates. Now the functionality is the same as core_taglib_addtaglib)<br />
     */
-   class template_taglib_addtaglib extends core_taglib_addtaglib
-   {
+   class template_taglib_addtaglib extends core_taglib_addtaglib {
 
       public function template_taglib_addtaglib(){
       }
 
     // end class
    }
-
 
    /**
     * @package core::pagecontroller
@@ -2134,8 +2140,7 @@
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 04.11.2007 (Removed the isButtonPushed() method)<br />
     */
-   abstract class baseController extends Document
-   {
+   abstract class baseController extends Document {
 
       /**
        * @protected
@@ -2143,10 +2148,8 @@
        */
       protected $__Document;
 
-
       public function baseController(){
       }
-
 
       /**
        * @public
@@ -2161,7 +2164,6 @@
        */
       public function transformContent(){
       }
-
 
       /**
        * @protected
@@ -2227,7 +2229,6 @@
        // end function
       }
 
-
       /**
        * @protected
        *
@@ -2287,7 +2288,6 @@
 
        // end function
       }
-
 
       /**
        * @protected
@@ -2349,7 +2349,6 @@
        // end function
       }
 
-
       /**
        * @protected
        *
@@ -2382,7 +2381,6 @@
 
        // end function
       }
-
 
       /**
        * @protected
