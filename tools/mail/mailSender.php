@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('tools::validator','myValidator');
+   import('tools::validator','Validator');
 
 
    /**
@@ -287,7 +287,7 @@
        */
       public function setRecipient($recipientEMail,$recipientName){
 
-         if(myValidator::validateEMail($recipientEMail)){
+         if(Validator::validateEMail($recipientEMail)){
             $this->__Recipients[count($this->__Recipients)] = array('Name' => $recipientName,
                                                                     'EMail' => $recipientEMail
                                                                    );
@@ -327,7 +327,7 @@
        */
       function setCCRecipient($recipientEMail,$recipientName){
 
-         if(myValidator::validateEMail($recipientEMail)){
+         if(Validator::validateEMail($recipientEMail)){
             $this->__CCRecipients[count($this->__CCRecipients)] = array('Name' => $recipientName,
                                                                         'EMail' => $recipientEMail
                                                                        );
@@ -367,7 +367,7 @@
        */
       public function setBCCRecipient($recipientEMail,$recipientName){
 
-         if(myValidator::validateEMail($recipientEMail)){
+         if(Validator::validateEMail($recipientEMail)){
             $this->__BCCRecipients[count($this->__BCCRecipients)] = array('Name' => $recipientName,
                                                                           'EMail' => $recipientEMail
                                                                          );
@@ -407,7 +407,7 @@
        */
       public function setSender($senderEMail,$senderName){
 
-         if(myValidator::validateEMail($senderEMail)){
+         if(Validator::validateEMail($senderEMail)){
             $this->__Sender['Name'] = $senderName;
             $this->__Sender['EMail'] = $senderEMail;
           // end if
