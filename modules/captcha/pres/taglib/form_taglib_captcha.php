@@ -11,7 +11,7 @@
     *
     * The APF is distributed in the hope that it will be useful,
     * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     * GNU Lesser General Public License for more details.
     *
     * You should have received a copy of the GNU Lesser General Public License
@@ -26,17 +26,17 @@
    import('tools::link','frontcontrollerLinkHandler');
 
    /**
-   *  @namespace modules::captcha::pres::taglib
-   *  @module form_taglib_captcha
-   *
-   *  Implements a CAPTCHA-Taglib to extend a form's features. Inherits from ui_element in order to
-   *  be a represent qualified form element.<br />
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 16.07.2008<br />
-   *  Version 0.2, 20.07.2008 (Moved in a separate module folder to deliver it with the framework release)<br />
-   */
+    * @namespace modules::captcha::pres::taglib
+    * @module form_taglib_captcha
+    *
+    * Implements a CAPTCHA-Taglib to extend a form's features. Inherits from form_control
+    * in order to be a fully qualified form element.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 16.07.2008<br />
+    * Version 0.2, 20.07.2008 (Moved in a separate module folder to deliver it with the framework release)<br />
+    */
    class form_taglib_captcha extends form_control {
 
       /**
@@ -93,6 +93,22 @@
        */
       public function addFilter(AbstractFormFilter &$filter){
          $this->__TextField->addFilter($filter);
+       // end function
+      }
+
+      /**
+       * @pubic
+       *
+       * Re-implements the isValid() method for this special case.
+       *
+       * @return boolean The validation status of the inner text field.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.09.2009<br />
+       */
+      public function isValid(){
+         return $this->__TextField->isValid();
        // end function
       }
 
@@ -210,7 +226,7 @@
          $actionURL = frontcontrollerLinkHandler::generateLink($actionurl,$actionParam);
 
          // initialize captcha source
-         $captchaCode = '<img src="'.$actionURL.'" alt="CAPTCHA" style="float:left;" ';
+         $captchaCode = '<div class="captcha"><img src="'.$actionURL.'" alt="CAPTCHA" style="float:left;" ';
 
          // add class and style attributes if desired
          if(isset($this->__Attributes['image_class'])){
@@ -223,7 +239,8 @@
          }
 
          // concatinate the html code and return it
-         return $captchaCode.'/> <div style="line-height: 40px; float: left;">'.$this->__TextField->transform().'</div>';
+         return $captchaCode.'/> <div style="line-height: 40px; float: left; margin-left: 20px;">'
+            .$this->__TextField->transform().'</div><div style="clear: both;" /></div>';
 
        // end function
       }

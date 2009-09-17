@@ -19,6 +19,8 @@
     * -->
     */
 
+    import('tools::form::validator','TextFieldValidator');
+
    /**
     * @namespace modules::captcha::pres::validator
     * @class CaptchaValidator
@@ -63,14 +65,14 @@
       /**
        * @public
        *
-       * Re-implements the notifyElement() to care about the special
+       * Re-implements the notify() to care about the special
        * structure of the captcha control.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 30.08.2009<br />
        */
-      public function notifyElement(){
+      public function notify(){
 
          // add validation style to the text field
          $this->__Control->getCaptchaTextField()->addAttribute('style','; border: 2px solid red;');
