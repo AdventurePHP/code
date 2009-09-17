@@ -23,7 +23,7 @@
     * @namespace tools::form::filter
     * @class AbstractFormValidator
     * 
-    * Abstract class FormValidator should inherit from a Validator class,
+    * This class defines the scheme of form validators Abstract class FormValidator should inherit from a Validator class,
     * that is contained in the tools::validator namespace. So the regexps
     * and validation code is contained there. -> no, should use it!
     *

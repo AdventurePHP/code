@@ -19,23 +19,21 @@
     * -->
     */
 
-   import('tools::form::taglib','form_getstring');
-
    /**
     * @namespace tools::form::taglib
-    * @class form_taglib_getstring
+    * @class error_taglib_placeholder
     *
-    * Implements the taglib for the &lt;form:getstring /&gt; tag.
+    * Represents a place holder within the &lt;form:error /&gt; tag.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 07.11.2007<br />
+    * Version 0.1, 13.09.2009<br />
     */
-   class form_taglib_getstring extends form_getstring {
+   class error_taglib_placeholder extends html_taglib_placeholder {
 
-      function form_taglib_getstring(){
+      public function error_taglib_placeholder(){
       }
-
+      
     // end class
    }
 ?>

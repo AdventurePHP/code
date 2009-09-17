@@ -1,25 +1,23 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
-
-   import('tools::validator','myValidator');
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
     * @namespace tools::form::taglib
@@ -49,8 +47,6 @@
        * @var boolean Indicates, whether the form is sent or not.
        */
       protected $__ControlIsSent = false;
-
-      protected $__Validators = array();
 
       function form_control(){
       }
@@ -298,6 +294,89 @@
 
           // end if
          }
+
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Convenience method to fill a place holder within a form control. Currently
+       * only works with &lt;form:error /&gt;, &lt;form:listener /&gt; and
+       * &lt;html:form /&gt; tags.
+       *
+       * @param string $name The name of the place holder.
+       * @param string $value The value to fill the place holder with.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.09.2009<br />
+       */
+      public function setPlaceHolder($name,$value){
+
+         // dynamically gather taglib name of the place holder to set
+         $tagLibClass = $this->__getClassNameByTagLibClass('placeholder');
+
+         $placeHolderCount = 0;
+         if(count($this->__Children) > 0){
+            foreach($this->__Children as $objectId => $DUMMY){
+               if(get_class($this->__Children[$objectId]) == $tagLibClass){
+                  if($this->__Children[$objectId]->getAttribute('name') == $name){
+                     $this->__Children[$objectId]->set('Content',$value);
+                     $placeHolderCount++;
+                   // end if
+                  }
+                // end if
+               }
+             // end foreach
+            }
+          // end if
+         }
+         else{
+            trigger_error('['.get_class($this).'::setPlaceHolder()] No place holder object with '
+               .'name "'.$name.'" composed in current for document controller "'
+               .($this->__ParentObject->get('DocumentController')).'"! Perhaps tag library '
+               .'form:placeholder is not loaded in form "'.$this->getAttribute('name').'"!',
+               E_USER_ERROR);
+            exit();
+          // end else
+         }
+
+         if($placeHolderCount < 1){
+            trigger_error('['.get_class($this).'::setPlaceHolder()] There are no place holders '
+               .'found for name "'.$name.'" in template "'.($this->__Attributes['name'])
+               .'" in document controller "'.($this->__ParentObject->get('DocumentController'))
+               .'"!',E_USER_WARNING);
+          // end if
+         }
+
+       // end function
+      }
+
+      /**
+       * @protected
+       *
+       * Returns the name of the taglib class (PHP class name), that is defined
+       * with the given taglib class name. Passing the taglib class name "placeholder"
+       * would return "form_taglib_placeholder" within the &lt;html:form /&gt; taglib.
+       *
+       * @param string $class The taglib class name.
+       * @return string The PHP class name, that represents the taglib with the
+       *                given taglib class name.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.09.2009<br />
+       */
+      protected function __getClassNameByTagLibClass($class){
+         
+         foreach($this->__TagLibs as $tagLib){
+            if($tagLib->getClass() == $class){
+               return $tagLib->getPrefix().'_taglib_'.$class;
+            }
+         }
+
+         return null;
 
        // end function
       }

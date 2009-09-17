@@ -23,19 +23,19 @@
 
    /**
     * @namespace tools::form::taglib
-    * @class form_taglib_getstring
+    * @class listener_taglib_getstring
     *
-    * Implements the taglib for the &lt;form:getstring /&gt; tag.
+    * Implements the &lt;listener:getstring /&gt; tag.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 07.11.2007<br />
+    * Version 0.1, 17.09.2009<br />
     */
-   class form_taglib_getstring extends form_getstring {
+   class listener_taglib_getstring extends form_getstring {
 
-      function form_taglib_getstring(){
+      public function listener_taglib_getstring(){
       }
-
+      
     // end class
    }
 ?>

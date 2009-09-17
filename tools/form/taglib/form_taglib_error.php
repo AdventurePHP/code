@@ -19,6 +19,9 @@
    *  -->
    */
 
+   import('tools::form::taglib','error_taglib_placeholder');
+   import('tools::form::taglib','error_taglib_getstring');
+
    /**
     * @namespace tools::form::taglib
     * @class form_taglib_error
@@ -29,6 +32,8 @@
     * <pre>
     * &lt;form:error&gt;
     *   The content to display, in case the form is sent, but invalid!
+    *   [&lt;error:getstring namespace="" config="" key="" /&gt;]
+    *   [&lt;error:placeholder name="" /&gt;]
     * &lt;/form:error&gt;
     * </pre>
     *
@@ -39,6 +44,9 @@
    class form_taglib_error extends form_control {
 
       public function form_taglib_error(){
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','error','placeholder');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','error','getstring');
+       // end function
       }
 
       /**
@@ -51,6 +59,8 @@
        * Version 0.1, 03.09.2009<br />
        */
       public function onParseTime(){
+         $this->__extractTagLibTags();
+       // end function
       }
 
       /**
@@ -79,6 +89,11 @@
        */
       public function transform(){
          if($this->__ParentObject->isSent() && !$this->__ParentObject->isValid()){
+            foreach($this->__Children as $objectId => $DUMMY){
+               $this->__Content = str_replace(
+                  '<'.$objectId.' />',$this->__Children[$objectId]->transform(),$this->__Content
+               );
+            }
             return $this->__Content;
          }
          return (string)'';

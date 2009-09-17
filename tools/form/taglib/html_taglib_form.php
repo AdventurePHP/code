@@ -33,9 +33,6 @@
    import('tools::form::taglib','form_taglib_file');
    import('tools::form::taglib','form_taglib_area');
    import('tools::form::taglib','form_taglib_multiselect');
-   import('tools::form::taglib','form_taglib_validate');
-   import('tools::form::taglib','form_taglib_valgroup');
-   import('tools::form::taglib','form_taglib_genericval');
    import('tools::form::taglib','form_taglib_getstring');
    import('tools::form::taglib','form_taglib_addtaglib');
    import('tools::form::taglib','form_taglib_marker');
@@ -128,9 +125,6 @@
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','file');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','area');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','multiselect');
-         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','valgroup');
-         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','validate');
-         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','genericval');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','getstring');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','marker');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','addtaglib');
@@ -241,7 +235,8 @@
          else{
 
             // notify user and return null
-            trigger_error('[html_taglib_form::addFormElement()] Form element "'.$elementType.'" cannot be added due to previous errors!');
+            trigger_error('[html_taglib_form::addFormElement()] Form element "'.$elementType
+               .'" cannot be added due to previous errors!');
             return null;
 
           // end else
@@ -297,7 +292,10 @@
          else{
 
             // display an error
-            trigger_error('[html_taglib_form::addFormContentBeforeMarker()] No marker object with name "'.$markerName.'" composed in current form for document controller "'.($this->__ParentObject->__DocumentController).'"! Please check the definition of the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
+            trigger_error('[html_taglib_form::addFormContentBeforeMarker()] No marker object '
+               .'with name "'.$markerName.'" composed in current form for document controller "'
+               .($this->__ParentObject->__DocumentController).'"! Please check the definition of '
+               .'the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
             exit();
 
           // end else
@@ -337,7 +335,10 @@
          else{
 
             // display an error
-            trigger_error('[html_taglib_form::addFormContentAfterMarker()] No marker object with name "'.$markerName.'" composed in current form for document controller "'.($this->__ParentObject->__DocumentController).'"! Please check the definition of the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
+            trigger_error('[html_taglib_form::addFormContentAfterMarker()] No marker object '
+               .'with name "'.$markerName.'" composed in current form for document controller "'
+               .($this->__ParentObject->__DocumentController).'"! Please check the definition of '
+               .'the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
             exit();
 
           // end else
@@ -384,7 +385,8 @@
          else{
 
             // notify user and return null
-            trigger_error('[html_taglib_form::addFormElementBeforeMarker()] Form element "'.$elementType.'" cannot be added due to previous errors!');
+            trigger_error('[html_taglib_form::addFormElementBeforeMarker()] Form element "'
+               .$elementType.'" cannot be added due to previous errors!');
             return null;
 
           // end else
@@ -421,7 +423,10 @@
 
             // add the position placeholder to the content
             $markerId = $marker->get('ObjectID');
-            $this->__Content = str_replace('<'.$markerId.' />','<'.$markerId.' /><'.$objectId.' />',$this->__Content);
+            $this->__Content = str_replace(
+               '<'.$markerId.' />','<'.$markerId.' /><'.$objectId.' />',
+               $this->__Content
+            );
 
             // return object id of the new form element
             return $objectId;
@@ -497,7 +502,9 @@
          else{
 
             // throw error and return null as object id
-            trigger_error('[html_taglib_form::__createFormElement()] No form element with name "'.$elementType.'" found! Maybe the tag name is misspellt or the class is not imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
+            trigger_error('[html_taglib_form::__createFormElement()] No form element with name "'
+               .$elementType.'" found! Maybe the tag name is misspellt or the class is not '
+               .'imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
             return null;
 
           // end else
@@ -576,7 +583,8 @@
          $tagLibClass = 'form_taglib_placeholder';
 
          if(!class_exists($tagLibClass)){
-            trigger_error('[html_taglib_form::setPlaceHolder()] TagLib module '.$tagLibClass.' is not loaded!',E_USER_ERROR);
+            trigger_error('[html_taglib_form::setPlaceHolder()] TagLib module '
+               .$tagLibClass.' is not loaded!',E_USER_ERROR);
           // end if
          }
 
@@ -596,13 +604,20 @@
           // end if
          }
          else{
-            trigger_error('[html_taglib_form::setPlaceHolder()] No placeholder object with name "'.$name.'" composed in current for document controller "'.($this->__ParentObject->__DocumentController).'"! Perhaps tag library form:placeholder is not loaded in form "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
+            trigger_error('[html_taglib_form::setPlaceHolder()] No placeholder object with name "'
+               .$name.'" composed in current for document controller "'
+               .($this->__ParentObject->__DocumentController).'"! Perhaps tag library '
+               .'form:placeholder is not loaded in form "'.$this->__Attributes['name'].'"!',
+               E_USER_ERROR);
             exit();
           // end else
          }
 
          if($placeHolderCount < 1){
-            trigger_error('[html_taglib_form::setPlaceHolder()] There are no placeholders found for name "'.$name.'" in template "'.($this->__Attributes['name']).'" in document controller "'.($this->__ParentObject->__DocumentController).'"!',E_USER_WARNING);
+            trigger_error('[html_taglib_form::setPlaceHolder()] There are no placeholders found '
+               .'for name "'.$name.'" in template "'.($this->__Attributes['name'])
+               .'" in document controller "'.($this->__ParentObject->__DocumentController).'"!',
+               E_USER_WARNING);
           // end if
          }
 
@@ -626,17 +641,18 @@
       }
 
       /**
-      *  @public
-      *
-      *  Returns a reverence on the form element identified by the given name.
-      *
-      *  @param string $name The name of the desired form element.
-      *  @return ui_element A reference on the form element.
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 07.01.2007<br />
-      */
+       * @public
+       *
+       * Returns a reverence on the form element identified by the given name.
+       *
+       * @param string $name The name of the desired form element.
+       * @return ui_element A reference on the form element.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 07.01.2007<br />
+       * Version 0.2, 12.09.2009 (Corrected debug message)<br />
+       */
       public function &getFormElementByName($name){
 
          if(count($this->__Children) > 0){
@@ -653,15 +669,13 @@
          }
 
          // display extended debug message in case no form element was found
-         $parent = $this->get('ParentObject');
-         $grandParent = $parent->get('ParentObject');
-         if($grandParent !== null){
-            $docCon = $grandParent->get('DocumentController');
-         }
-         else {
-            $docCon = 'n/a';
-         }
-         trigger_error('[html_taglib_form::getFormElementByName()] No form element with name "'.$name.'" composed in current form "'.$this->__Attributes['name'].'" in document controller "'.$docCon.'"!',E_USER_ERROR);
+         $parent = &$this->getByReference('ParentObject');
+         $docCon = $parent->get('DocumentController');
+         trigger_error('[html_taglib_form::getFormElementByName()] No form element with name "'
+            .$name.'" composed in current form "'.$this->__Attributes['name']
+            .'" in document controller "'.$docCon.'". Please double-check your taglib definitions '
+            .'within this form (especially attributes, that are used for referencing other form '
+            .'controls)!',E_USER_ERROR);
          exit(1);
 
        // end function

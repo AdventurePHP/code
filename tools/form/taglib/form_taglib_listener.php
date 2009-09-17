@@ -19,6 +19,9 @@
    *  -->
    */
 
+   import('tools::form::taglib','listener_taglib_placeholder');
+   import('tools::form::taglib','listener_taglib_getstring');
+   
    /**
     * @namespace tools::form::taglib
     * @class form_taglib_listener
@@ -34,7 +37,11 @@
     * <code>AbstractFormValidator</code> implementation. The definition of
     * the tag is as follows:
     * <pre>
-    * &lt;form:listener control="..."&gt;color: red;&lt;/form:listener&gt;
+    * &lt;form:listener control="..."&gt;
+    *   The content to display, in case the form is sent, but the control is invalid!
+    *   [&lt;listener:getstring namespace="" config="" key="" /&gt;]
+    *   [&lt;listener:placeholder name="" /&gt;]
+    * &lt;/form:listener&gt;
     * </pre>
     *
     * @author Christian Achatz
@@ -50,6 +57,9 @@
       protected $__IsNotified = false;
 
       public function form_taglib_listener(){
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','listener','placeholder');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','listener','getstring');
+       // end function
       }
 
       /**
@@ -76,6 +86,8 @@
        * Version 0.1, 30.08.2009<br />
        */
       public function onParseTime(){
+         $this->__extractTagLibTags();
+       // end function
       }
 
       /**
@@ -103,6 +115,11 @@
        */
       public function transform(){
          if($this->__IsNotified === true){
+            foreach($this->__Children as $objectId => $DUMMY){
+               $this->__Content = str_replace(
+                  '<'.$objectId.' />',$this->__Children[$objectId]->transform(),$this->__Content
+               );
+            }
             return $this->__Content;
          }
          return (string)'';
