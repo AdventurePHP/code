@@ -1,129 +1,134 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('core::logging','Logger');
 
-
    /**
-   *  @namespace core::database
-   *  @class AbstractDatabaseHandler
-   *  @abstract
-   *
-   *  Defines the scheme of a database handler. Forms the base class for all
-   *  database abstraction layer classes.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 10.02.2008<br />
-   */
-   abstract class AbstractDatabaseHandler extends coreObject
-   {
+    * @namespace core::database
+    * @class AbstractDatabaseHandler
+    * @abstract
+    *
+    * Defines the scheme of a database handler. Forms the base class for all database
+    * abstraction layer classes.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 10.02.2008<br />
+    */
+   abstract class AbstractDatabaseHandler extends coreObject {
 
       /**
-      *  @protected
-      *  Indicates, whether the handler is already initialized or not.
-      */
+       * @protected
+       * @var boolean Indicates, whether the handler is already initialized or not.
+       */
       protected $__isInitialized = false;
 
-
       /**
-      *  @protected
-      *  Database server.
-      */
+       * @protected
+       * @var string Database server.
+       */
       protected $__dbHost = null;
 
-
       /**
-      *  @protected
-      *  Database user.
-      */
+       * @protected
+       * @var string Database user.
+       */
       protected $__dbUser = null;
 
-
       /**
-      *  @protected
-      *  Password for the database.
-      */
+       * @protected
+       * @var string Password for the database.
+       */
       protected $__dbPass = null;
 
-
       /**
-      *  @protected
-      *  Name of the database.
-      */
+       * @protected
+       * @var string Name of the database.
+       */
       protected $__dbName = null;
 
-
       /**
-      *  @protected
-      *  Indicates, if the handler runs in debug mode.
-      */
+       * @protected
+       * @var boolean Indicates, if the handler runs in debug mode.
+       */
       protected $__dbDebug = false;
 
-
       /**
-      *  @protected
-      *  Database connection resource.
-      */
+       * @protected
+       * @var resource Database connection resource.
+       */
       protected $__dbConn = null;
 
-
       /**
-      *  @protected
-      *  Instance of the logger.
-      */
+       * @protected
+       * @var Logger Instance of the logger.
+       */
       protected $__dbLog = null;
 
-
       /**
-      *  @protected
-      *  Name of the log file. Must be defined within the implementation class!
-      */
+       * @protected
+       * @var string Name of the log file. Must be defined within the implementation class!
+       */
       protected $__dbLogFileName;
 
-
       /**
-      *  @protected
-      *  Auto increment id of the last insert.
-      */
+       * @protected
+       * @var int Auto increment id of the last insert.
+       */
       protected $__lastInsertID;
 
-
-      function AbstractDatabaseHandler(){
-      }
-
+      /**
+       * @protected
+       * @var string Indicates the charset of the database connnection.
+       *
+       * For mysql databases, see http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
+       * for more details.
+       */
+      protected $__dbCollation = null;
 
       /**
-      *  @public
-      *
-      *  Implements the init() method, so that the derived classes can be initialized
-      *  by the service manager. Initializes the handler only one time.
-      *
-      *  @param array $initParam Associative configuration array
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 10.02.2008<br />
-      */
-      function init($initParam){
+       * @protected
+       * @var string Indicates the collation of the database connnection.
+       * 
+       * For mysql databases, see http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
+       * for more details.
+       */
+      protected $__dbCharset = null;
+
+      public function AbstractDatabaseHandler(){
+      }
+
+      /**
+       * @public
+       *
+       * Implements the init() method, so that the derived classes can be initialized
+       * by the service manager. Initializes the handler only one time.
+       *
+       * @param array $initParam Associative configuration array.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.02.2008<br />
+       */
+      public function init($initParam){
 
          if($this->__isInitialized == false){
 
@@ -163,6 +168,24 @@
              // end if
             }
 
+            // set connection charset and collation
+            if(isset($section['DB.Charset'])){
+               $charset = trim($section['DB.Charset']);
+               if(!empty($charset)){
+                  $this->__dbCharset = $charset;
+                // end if
+               }
+             // end if
+            }
+            if(isset($section['DB.Collation'])){
+               $collation = trim($section['DB.Collation']);
+               if(!empty($collation)){
+                  $this->__dbCollation = $collation;
+                // end if
+               }
+             // end if
+            }
+
             $this->__dbLog = &Singleton::getInstance('Logger');
             $this->__isInitialized = true;
             $this->__connect();
@@ -173,101 +196,124 @@
        // end function
       }
 
+      /**
+       * @protected
+       * @abstract
+       *
+       * Provides internal service to open a database connection.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.02.2008<br />
+       */
+      abstract protected function __connect();
 
       /**
-      *  @protected
-      *  @abstract
-      *
-      *  Provides internal service to open a database connection.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 10.02.2008<br />
-      */
-      protected function __connect(){
+       * @protected
+       * @abstract
+       *
+       * Provides internal service to close a database connection.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.02.2008<br />
+       */
+      abstract protected function __close();
+
+      /**
+       * @public
+       * @abstract
+       *
+       * Executes a statement, located within a statement file. The place holders contained in the
+       * file are replaced by the given values.
+       *
+       * @param string $namespace Namespace of the statement file.
+       * @param string $statementName Name of the statement file (filebody!).
+       * @param string[] $params A list of statement parameters.
+       * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
+       * @return resource The database result resource.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.02.2008<br />
+       */
+      abstract public function executeStatement($namespace,$statementName,$params = array(),$logStatement = false);
+
+      /**
+       * @public
+       * @abstract
+       *
+       * Executes a statement applied as a string to the method and returns the
+       * result pointer.
+       *
+       * @param string $statement The statement string.
+       * @param boolean $logStatement Inidcates, whether the given statement should be
+       *                              logged for debug purposes.
+       * @return resource The database result resource.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.02.2008<br />
+       */
+      abstract public function executeTextStatement($statement,$logStatement = false);
+
+      /**
+       * @public
+       *
+       * Fetches a record from the database using the given result resource.
+       *
+       * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
+       * @return string[] The associative result array.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.09.2009<br />
+       */
+      abstract public function fetchData($resultCursor);
+
+      /**
+       * @public
+       * @abstract
+       *
+       * Escapes given values to be SQL injection save.
+       *
+       * @param string $value The unescaped value.
+       * @return string The escapted string.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.02.2008<br />
+       */
+      abstract public function escapeValue($value);
+
+      /**
+       * @public
+       * @abstract
+       *
+       * Returns the amount of rows, that are affected by a previous update or delete call.
+       *
+       * @param resource $resultCursor The result resource pointer.
+       * @return int The number of affected rows.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 24.02.2008<br />
+       */
+      abstract public function getAffectedRows($resultCursor);
+
+      /**
+       * @public
+       *
+       * Returns the last insert id generated by auto_increment or trigger.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 04.01.2006<br />
+       */
+      public function getLastID(){
+         return $this->__lastInsertID;
+       // end function
       }
-
-
-      /**
-      *  @protected
-      *  @abstract
-      *
-      *  Provides internal service to close a database connection.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 10.02.2008<br />
-      */
-      protected function __close(){
-      }
-
-
-      /**
-      *  @public
-      *  @abstract
-      *
-      *  Executes a statement, located within a statement file.
-      *
-      *  @param string $namespace Namespace of the statement file
-      *  @param string $statementFile Name of the statement file (filebody!)
-      *  @param array $params A list of statement parameters
-      *  @param bool $showStatement Indicates, if the statement should be printed to screen
-      *  @return resource The database result resource
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 10.02.2008<br />
-      */
-      abstract function executeStatement($namespace,$statementFile,$params = array(),$showStatement = false);
-
-
-      /**
-      *  @public
-      *  @abstract
-      *
-      *  Executes a statement applied as a string to the method and returns the
-      *  result pointer.
-      *
-      *  @param string $statement The statement string
-      *  @return resource The database result resource
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 10.02.2008<br />
-      */
-      abstract function executeTextStatement($statement);
-
-
-      /**
-      *  @public
-      *  @abstract
-      *
-      *  Escapes given values to be SQL injection save.
-      *
-      *  @param string $value The unescaped value
-      *  @return string The escapted string
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 23.02.2008<br />
-      */
-      abstract function escapeValue($value);
-
-
-      /**
-      *  @public
-      *  @abstract
-      *
-      *  Returns the amount of rows, that are affected by a previous update or delete call.
-      *
-      *  @param resource $resultResource The result resource pointer
-      *  @return int The number of affected rows
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 24.02.2008<br />
-      */
-      abstract function getAffectedRows($resultResource);
 
     // end class
    }
