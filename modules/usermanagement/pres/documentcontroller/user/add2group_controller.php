@@ -53,7 +53,7 @@
          // init the form and load the relevant groups
          $userid = RequestHandler::getValue('userid');
          $Form__Group = &$this->__getForm('Group');
-         $Group = &$Form__Group->getFormElementByName('Group[]');
+         $Group = &$Form__Group->getFormElementByName('Group');
          $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $user = $uM->loadUserById($userid);
          $Groups = $uM->loadGroupsNotWithUser($user);
@@ -74,7 +74,7 @@
          }
 
          // handle the click event
-         if($Form__Group->get('isSent') && $Form__Group->get('isValid')){
+         if($Form__Group->isSent() && $Form__Group->isValid()){
 
             $options = &$Group->getSelectedOptions();
             $count = count($options);

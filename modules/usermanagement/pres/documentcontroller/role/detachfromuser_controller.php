@@ -45,7 +45,7 @@
 
          // initialize the form
          $Form__User = &$this->__getForm('User');
-         $user = &$Form__User->getFormElementByName('User[]');
+         $user = &$Form__User->getFormElementByName('User');
          $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $role = $uM->loadRoleByID($roleid);
          $users = $uM->loadUsersWithRole($role);
@@ -66,7 +66,7 @@
          }
 
          // detach users from the role
-         if($Form__User->get('isSent') && $Form__User->get('isValid')){
+         if($Form__User->isSent() && $Form__User->isValid()){
 
             $options = &$user->getSelectedOptions();
             $newUsers = array();

@@ -41,7 +41,7 @@
       function transformContent(){
 
          $Form__Group = &$this->__getForm('Group');
-         $groupField = &$Form__Group->getFormElementByName('Groups[]');
+         $groupField = &$Form__Group->getFormElementByName('Groups');
          $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $userid = RequestHandler::getValue('userid');
          $user = $uM->loadUserbyId($userid);
@@ -60,7 +60,7 @@
           // end for
          }
 
-         if($Form__Group->get('isSent') && $Form__Group->get('isValid')){
+         if($Form__Group->isSent() && $Form__Group->isValid()){
 
             // read the groups from the form field
             $options = &$groupField->getSelectedOptions();

@@ -47,7 +47,7 @@
          $Form__No = &$this->__getForm('UserDelNo');
          $Form__Yes = &$this->__getForm('UserDelYes');
 
-         if($Form__Yes->get('isSent')){
+         if($Form__Yes->isSent()){
 
             $User = new GenericDomainObject('User');
             $User->setProperty('UserID',$userid);
@@ -56,7 +56,7 @@
 
           // end if
          }
-         elseif($Form__No->get('isSent')){
+         elseif($Form__No->isSent()){
             HeaderManager::forward($this->__generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
           // end elseif
          }

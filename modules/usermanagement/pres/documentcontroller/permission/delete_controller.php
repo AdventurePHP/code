@@ -48,7 +48,7 @@
          $Form__No = &$this->__getForm('PermissionDelNo');
          $Form__Yes = &$this->__getForm('PermissionDelYes');
 
-         if($Form__Yes->get('isSent')){
+         if($Form__Yes->isSent()){
 
             $Permission = new GenericDomainObject('Permission');
             $Permission->setProperty('PermissionID',$permissionid);
@@ -57,7 +57,7 @@
 
           // end if
          }
-         elseif($Form__No->get('isSent')){
+         elseif($Form__No->isSent()){
             HeaderManager::forward($this->__generateLink(array('mainview' => 'permission', 'permissionview' => '','permissionid' => '')));
           // end elseif
          }

@@ -45,7 +45,7 @@
 
          // initialize the form
          $Form__Role = &$this->__getForm('Role');
-         $role = &$Form__Role->getFormElementByName('Role[]');
+         $role = &$Form__Role->getFormElementByName('Role');
          $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $permissionSet = $uM->loadPermissionSetByID($permissionSetId);
          $roles = $uM->loadRolesNotWithPermissionSet($permissionSet);
@@ -66,7 +66,7 @@
          }
 
          // assign permission set to the desired roles
-         if($Form__Role->get('isSent') && $Form__Role->get('isValid')){
+         if($Form__Role->isSent() && $Form__Role->isValid()){
 
             $options = &$role->getSelectedOptions();
             $count = count($options);

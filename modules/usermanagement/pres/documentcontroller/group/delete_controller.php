@@ -52,14 +52,14 @@
          $Form__No = &$this->__getForm('GroupDelNo');
          $Form__Yes = &$this->__getForm('GroupDelYes');
 
-         if($Form__Yes->get('isSent')){
+         if($Form__Yes->isSent()){
             $Group = new GenericDomainObject('Group');
             $Group->setProperty('GroupID',$groupid);
             $uM->deleteGroup($Group);
             HeaderManager::forward($this->__generateLink(array('mainview' => 'group','groupview' => '','groupid' => '')));
           // end if
          }
-         elseif($Form__No->get('isSent')){
+         elseif($Form__No->isSent()){
             HeaderManager::forward($this->__generateLink(array('mainview' => 'group','groupview' => '','groupid' => '')));
           // end elseif
          }

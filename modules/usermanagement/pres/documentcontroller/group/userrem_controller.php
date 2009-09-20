@@ -42,7 +42,7 @@
 
          // initialize the form
          $Form__User = &$this->__getForm('User');
-         $user = &$Form__User->getFormElementByName('User[]');
+         $user = &$Form__User->getFormElementByName('User');
          $groupid = RequestHandler::getValue('groupid');
          $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
          $group = $uM->loadGroupById($groupid);
@@ -64,7 +64,7 @@
          }
 
          // remove the desired users
-         if($Form__User->get('isSent') && $Form__User->get('isValid')){
+         if($Form__User->isSent() && $Form__User->isValid()){
 
             $options = &$user->getSelectedOptions();
 

@@ -44,7 +44,7 @@
 
          $Form__PermissionAdd = &$this->__getForm('PermissionAdd');
 
-         if($Form__PermissionAdd->get('isSent') == true && $Form__PermissionAdd->get('isValid') == true){
+         if($Form__PermissionAdd->isSent() == true && $Form__PermissionAdd->isValid() == true){
 
             $FormValues = RequestHandler::getValues(array('DisplayName','Name','Value'));
 

@@ -40,7 +40,7 @@
       function transformContent(){
 
          $Form__Add = &$this->__getForm('RoleAdd');
-         if($Form__Add->get('isSent') == true && $Form__Add->get('isValid') == true){
+         if($Form__Add->isSent() == true && $Form__Add->isValid() == true){
 
             $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
             $Role = new GenericDomainObject('Role');

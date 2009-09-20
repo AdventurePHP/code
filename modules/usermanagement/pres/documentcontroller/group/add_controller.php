@@ -39,14 +39,14 @@
 
       function transformContent(){
 
-         $Form__Add = &$this->__getForm('GroupAdd');
-         if($Form__Add->get('isSent') == true && $Form__Add->get('isValid') == true){
+         $formAdd = &$this->__getForm('GroupAdd');
+         if($formAdd->isSent() == true && $formAdd->isValid() == true){
 
             // get the business object
             $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
 
             // get the form element's value
-            $displayName = &$Form__Add->getFormElementByName('DisplayName');
+            $displayName = &$formAdd->getFormElementByName('DisplayName');
             $Group = new GenericDomainObject('Group');
             $Group->setProperty('DisplayName',$displayName->getAttribute('value'));
             $uM->saveGroup($Group);
@@ -56,7 +56,7 @@
 
           // end else
          }
-         $this->setPlaceHolder('GroupAdd',$Form__Add->transformForm());
+         $this->setPlaceHolder('GroupAdd',$formAdd->transformForm());
 
        // end function
       }

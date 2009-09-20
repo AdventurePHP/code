@@ -51,16 +51,16 @@
          $permSet = new GenericDomainObject('PermissionSet');
          $permSet->setProperty('PermissionSetID',$permissionsetid);
          $allPermissions = $uM->loadPermissionList();
-         $permField = &$Form__Edit->getFormElementByName('Permission[]');
+         $permField = &$Form__Edit->getFormElementByName('Permission');
          for($i = 0; $i < count($allPermissions); $i++){
             $permField->addOption($allPermissions[$i]->getProperty('DisplayName'),$allPermissions[$i]->getProperty('PermissionID'));
           // end foreach
          }
 
          // display / save the permission set
-         if($Form__Edit->get('isSent') == true){
+         if($Form__Edit->isSent() == true){
 
-            if($Form__Edit->get('isValid') == true){
+            if($Form__Edit->isValid() == true){
 
                // compose the permission set
                $permSetField = &$Form__Edit->getFormElementByName('DisplayName');
@@ -69,7 +69,7 @@
                $permissionSet->setProperty('PermissionSetID',$permissionsetid);
 
                // add the selected permissions
-               $permField = &$Form__Edit->getFormElementByName('Permission[]');
+               $permField = &$Form__Edit->getFormElementByName('Permission');
                $options = &$permField->getSelectedOptions();
 
                for($i = 0; $i < count($options); $i++){

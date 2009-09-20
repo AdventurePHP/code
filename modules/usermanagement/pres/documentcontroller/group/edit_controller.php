@@ -48,9 +48,9 @@
 
          $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
 
-         if($Form__Edit->get('isSent') == true){
+         if($Form__Edit->isSent() == true){
 
-            if($Form__Edit->get('isValid') == true){
+            if($Form__Edit->isValid() == true){
 
                $Fields = &$Form__Edit->getFormElementsByTagName('form:text');
 

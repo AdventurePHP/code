@@ -1,10 +1,15 @@
 <@controller namespace="modules::usermanagement::pres::documentcontroller::group" file="useradd_controller" class="umgt_useradd_controller" @>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
 <html:form name="User" method="post">
+  <form:addvalidator
+    class="MultiSelectFieldValidator"
+    button="Add"
+    control="User"
+  />
   Please choose one or more of the following users:
   <br />
   <br />
-  <form:multiselect name="User[]" size="4" validate="true" button="Add"/>
+  <form:multiselect name="User" size="4" />
   <br />
   <br />
   <form:button name="Add" value="Add" class="formfield"/>

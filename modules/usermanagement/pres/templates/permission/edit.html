@@ -6,18 +6,23 @@ Please edit in the following fields:
 
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
 <html:form name="PermissionEdit" method="post">
+  <form:addvalidator
+    class="TextLengthValidator"
+    button="Edit"
+    control="DisplayName|Name|Value"
+  />
   <table cellpadding="0" cellspacing="0">
     <tr>
       <td><strong>Display name</strong>:</td>
-      <td><form:text name="DisplayName" style="width: 200px;" class="formfield" maxlength="100" validate="true" button="Edit" /></td>
+      <td><form:text name="DisplayName" style="width: 200px;" class="formfield" maxlength="100" /></td>
     </tr>
     <tr>
       <td><strong>Key</strong>:</td>
-      <td><form:text name="Name" style="width: 200px;" class="formfield" maxlength="100" validate="true" button="Edit" /></td>
+      <td><form:text name="Name" style="width: 200px;" class="formfield" maxlength="100" /></td>
     </tr>
     <tr>
       <td><strong>Value</strong>:</td>
-      <td><form:text name="Value" style="width: 200px;" class="formfield" maxlength="100" validate="true" button="Edit" /></td>
+      <td><form:text name="Value" style="width: 200px;" class="formfield" maxlength="100" /></td>
     </tr>
   </table>
   <br />

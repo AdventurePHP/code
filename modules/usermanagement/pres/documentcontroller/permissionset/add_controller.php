@@ -45,14 +45,14 @@
 
          // prefill the multiselect field
          $perms = $uM->loadPermissionList();
-         $permission = &$Form__Add->getFormElementByName('Permission[]');
+         $permission = &$Form__Add->getFormElementByName('Permission');
          foreach($perms as $perm){
             $permission->addOption($perm->getProperty('DisplayName'),$perm->getProperty('PermissionID'));
           // end foreach
          }
 
          // add the permission set
-         if($Form__Add->get('isSent') == true && $Form__Add->get('isValid') == true){
+         if($Form__Add->isSent() == true && $Form__Add->isValid() == true){
 
             // create and fill permission set
             $permSet = &$Form__Add->getFormElementByName('DisplayName');

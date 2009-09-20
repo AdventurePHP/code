@@ -50,14 +50,14 @@
          $permissionSet = $uM->loadPermissionSetByID($permissionSetId);
          $this->setPlaceHolder('DisplayName',$permissionSet->getProperty('DisplayName'));
 
-         if($Form__Yes->get('isSent')){
+         if($Form__Yes->isSent()){
             $PermissionSet = new GenericDomainObject('PermissionSet');
             $PermissionSet->setProperty('PermissionSetID',$permissionSetId);
             $uM->deletePermissionSet($permissionSet);
             HeaderManager::forward($this->__generateLink(array('mainview' => 'permissionset', 'permissionsetview' => '','permissionsetid' => '')));
           // end if
          }
-         elseif($Form__No->get('isSent')){
+         elseif($Form__No->isSent()){
             HeaderManager::forward($this->__generateLink(array('mainview' => 'permissionset', 'permissionsetview' => '','permissionsetid' => '')));
           // end elseif
          }
