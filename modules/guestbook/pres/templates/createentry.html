@@ -35,7 +35,6 @@
 <html:getstring namespace="modules::guestbook" config="guestbook_lang" entry="CreateEntry.Hint" />
 <br />
 <br />
-<html:placeholder name="Form" />
 
 <html:form name="GuestbookEntry" method="post">
   <table cellpadding="0" cellspacing="0" class="formtable">
@@ -127,7 +126,7 @@
         <br />
         <br />
         <form:addtaglib namespace="modules::captcha::pres::taglib" prefix="form" class="captcha" />
-        <form:captcha text_class="eingabe_feld" clearonerror="true"/>
+        <form:captcha text_class="eingabe_feld" clearonerror="true" name="Captcha"/>
          <form:addvalidator
             namespace="modules::captcha::pres::validator"
             class="CaptchaValidator"

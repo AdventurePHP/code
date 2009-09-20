@@ -22,7 +22,6 @@
    import('modules::guestbook::biz','GuestbookManager');
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
 
-
    /**
    *  @namespace modules::guestbook::pres::documentcontroller
    *  @class guestbook_createentry_v1_controller
@@ -41,7 +40,6 @@
       *  Hält lokal verwendete Variablen.
       */
       private $_LOCALS;
-
 
       function guestbook_createentry_v1_controller(){
 
@@ -65,41 +63,36 @@
 
       function transformContent(){
 
-         // Referenz auf das Formular holen
-         $Form__GuestbookEntry = &$this->__getForm('GuestbookEntry');
+         $form = &$this->__getForm('GuestbookEntry');
 
-         if($Form__GuestbookEntry->isValid() && $Form__GuestbookEntry->isSent()){
+         if($form->isValid() && $form->isSent()){
 
-            // Manager holen
             $gM = &$this->__getGuestbookManager();
 
-            // Eintrag erzeugen
-            $Entry = new Entry();
-            $Entry->set('Name',$this->_LOCALS['Name']);
-            $Entry->set('EMail',$this->_LOCALS['EMail']);
-            $Entry->set('City',$this->_LOCALS['City']);
-            $Entry->set('Website',$this->_LOCALS['Website']);
-            $Entry->set('ICQ',$this->_LOCALS['ICQ']);
-            $Entry->set('MSN',$this->_LOCALS['MSN']);
-            $Entry->set('Skype',$this->_LOCALS['Skype']);
-            $Entry->set('AIM',$this->_LOCALS['AIM']);
-            $Entry->set('Yahoo',$this->_LOCALS['Yahoo']);
-            $Entry->set('Text',$this->_LOCALS['Text']);
+            $entry = new Entry();
+            $entry->set('Name',$this->_LOCALS['Name']);
+            $entry->set('EMail',$this->_LOCALS['EMail']);
+            $entry->set('City',$this->_LOCALS['City']);
+            $entry->set('Website',$this->_LOCALS['Website']);
+            $entry->set('ICQ',$this->_LOCALS['ICQ']);
+            $entry->set('MSN',$this->_LOCALS['MSN']);
+            $entry->set('Skype',$this->_LOCALS['Skype']);
+            $entry->set('AIM',$this->_LOCALS['AIM']);
+            $entry->set('Yahoo',$this->_LOCALS['Yahoo']);
+            $entry->set('Text',$this->_LOCALS['Text']);
 
-            // Eintrag speichern
-            $gM->saveEntry($Entry);
+            $gM->saveEntry($entry);
 
           // end if
          }
          else{
 
-            // Button beschriften
-            $Config = &$this->__getConfiguration('modules::guestbook','guestbook_lang');
-            $Button = &$Form__GuestbookEntry->getFormElementByName('CreateGuestbookEntryButton');
-            $Button->setAttribute('value',$Config->getValue($this->__Language,'CreateEntry.Form.Button'));
+            // label button
+            $config = &$this->__getConfiguration('modules::guestbook','guestbook_lang');
+            $button = &$form->getFormElementByName('CreateGuestbookEntryButton');
+            $button->setAttribute('value',$config->getValue($this->__Language,'CreateEntry.Form.Button'));
 
-            // Formular anzeigen
-            $this->setPlaceHolder('Form',$Form__GuestbookEntry->transformForm());
+            $form->transformOnPlace();
 
           // end elseif
          }
