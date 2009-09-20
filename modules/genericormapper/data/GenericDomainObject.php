@@ -34,26 +34,26 @@
 
       /**
        * @protected
-       * Data component, that can be used to lazy load attributes.
+       * @var GenericORRelationMapper Data component, that can be used to lazy load attributes.
        * To set the member, use setByReference() from coreObject.
        */
       protected $__DataComponent = null;
 
       /**
        * @protected
-       * Name of the object (see mapping table!).
+       * @var string Name of the object (see mapping table!).
        */
       protected $__ObjectName = null;
 
       /**
        * @protected
-       * Properties of a domain object.
+       * @var string[] Properties of a domain object.
        */
       protected $__Properties = array();
 
       /**
        * @protected
-       * Objects related to the current object. Sorted by composition or association key.
+       * @var GenericDomainObject[] Objects related to the current object. Sorted by composition or association key.
        */
       protected $__RelatedObjects = array();
 
@@ -220,9 +220,9 @@
       /**
        * @public
        *
-       * Abstract method to get all domain object's simple properties.<br />
+       * Abstract method to get all domain object's simple properties.
        *
-       * @return string[] List of defined domain object properties
+       * @return string[] List of defined domain object properties.
        *
        * @author Christian Achatz
        * @version
@@ -230,6 +230,22 @@
        */
       public function getProperties(){
          return $this->__Properties;
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Removes an attribute from the list.
+       * 
+       * @param string $name The name of the property to delete.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.09.2009 (Introduces because of bug 202)<br />
+       */
+      public function deleteProperty($name){
+         unset($this->__Properties[$name]);
        // end function
       }
 
