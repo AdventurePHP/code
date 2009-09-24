@@ -121,7 +121,6 @@
    $reg->register('apf::core::filter','PageControllerInputFilter',new FilterDefinition('core::filter','PageControllerInputFilter'));
    $reg->register('apf::core::filter','OutputFilter',new FilterDefinition('core::filter','GenericOutputFilter'));
 
-
    /**
     * @package core::pagecontroller
     * @function import
@@ -175,7 +174,6 @@
     // end function
    }
 
-
    /**
     * @namespace core::pagecontroller
     * @function printObject
@@ -219,7 +217,6 @@
     // end function
    }
 
-
    /**
     * @namespace core::pagecontroller
     * @class xmlParser
@@ -235,7 +232,6 @@
 
       private function xmlParser(){
       }
-
 
       /**
        * @public
@@ -360,7 +356,6 @@
        // end function
       }
 
-
       /**
        * @public
        * @static
@@ -427,7 +422,6 @@
        // end function
       }
 
-
       /**
        * @public
        * @static
@@ -456,7 +450,6 @@
 
     // end class
    }
-
 
    /**
     * @namespace core::pagecontroller
@@ -1050,7 +1043,6 @@
     // end class
    }
 
-
    /**
     * @namespace core::pagecontroller
     * @class Page
@@ -1114,7 +1106,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -1156,7 +1147,6 @@
 
        // end function
       }
-
 
       /**
       *  @public
@@ -1200,7 +1190,6 @@
 
     // end class
    }
-
 
    /**
    *  @namespace core::pagecontroller
@@ -1261,7 +1250,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -1291,7 +1279,6 @@
        // end function
       }
 
-
       /**
       *  @protected
       *
@@ -1310,7 +1297,6 @@
          return $prefix.'_taglib_'.$class;
        // end function
       }
-
 
       /**
       *  @public
@@ -1338,7 +1324,6 @@
 
        // end function
       }
-
 
       /**
        * @protected
@@ -1382,7 +1367,6 @@
        // end function
       }
 
-
       /**
        * @protected
        *
@@ -1415,15 +1399,15 @@
              // end if
             }
 
-            $Prefix = $this->__TagLibs[$i]->get('Prefix');
-            $Class = $this->__TagLibs[$i]->get('Class');
-            $Module = $this->__getModuleName($Prefix, $Class);
-            $Token = $Prefix.':'.$Class;
-            $TagLoops = 0;
+            $prefix = $this->__TagLibs[$i]->get('Prefix');
+            $class = $this->__TagLibs[$i]->get('Class');
+            $module = $this->__getModuleName($prefix, $class);
+            $token = $prefix.':'.$class;
+            $tagLoops = 0;
 
-            while(substr_count($this->__Content,'<'.$Token) > 0){
+            while(substr_count($this->__Content,'<'.$token) > 0){
 
-               if($TagLoops > $this->__MaxLoops){
+               if($tagLoops > $this->__MaxLoops){
                   trigger_error('['.get_class($this).'::__extractTagLibTags()] Maximum numbers of parsing loops reached!',E_USER_ERROR);
                   exit();
                 // end if
@@ -1431,18 +1415,18 @@
 
                // Find start and end position of the tag. "Normally" a
                // explicitly closing tag is expected.
-               $TagStartPos = strpos($this->__Content,'<'.$Token);
-               $TagEndPos = strpos($this->__Content,'</'.$Token.'>',$TagStartPos);
-               $ClosingTagLength = strlen('</'.$Token.'>');
+               $tagStartPos = strpos($this->__Content,'<'.$token);
+               $tagEndPos = strpos($this->__Content,'</'.$token.'>',$tagStartPos);
+               $closingTagLength = strlen('</'.$token.'>');
 
                // in case a explictly-closing tag could not be found, seach for self-closing tag
-               if($TagEndPos === false){
+               if($tagEndPos === false){
 
-                  $TagEndPos = strpos($this->__Content,'/>',$TagStartPos);
-                  $ClosingTagLength = 2;
+                  $tagEndPos = strpos($this->__Content,'/>',$tagStartPos);
+                  $closingTagLength = 2;
 
-                  if($TagEndPos === false){
-                     trigger_error('[Document::__extractTagLibTags()] No closing tag found for tag "&lt;'.$Token.' /&gt;"!',E_USER_ERROR);
+                  if($tagEndPos === false){
+                     trigger_error('[Document::__extractTagLibTags()] No closing tag found for tag "&lt;'.$token.' /&gt;"!',E_USER_ERROR);
                      exit();
                    // end if
                   }
@@ -1451,66 +1435,66 @@
                }
 
                // extract the complete tag string from the current content
-               $TagStringLength = ($TagEndPos - $TagStartPos) + $ClosingTagLength;
-               $TagString = substr($this->__Content,$TagStartPos,$TagStringLength);
+               $tagStringLength = ($tagEndPos - $tagStartPos) + $closingTagLength;
+               $tagString = substr($this->__Content,$tagStartPos,$tagStringLength);
 
                // NEW (bugfix for errors while mixing self- and exclusivly closing tags):
                // First, check if a opening tag was found within the previously taken tag string.
                // If yes, the tag string must be redefined.
-               if(substr_count($TagString,'<'.$Token) > 1){
+               if(substr_count($tagString,'<'.$token) > 1){
 
                   // find position of the self-colising tag
-                  $TagEndPos = strpos($this->__Content,'/>',$TagStartPos);
-                  $ClosingTagLength = 2;
+                  $tagEndPos = strpos($this->__Content,'/>',$tagStartPos);
+                  $closingTagLength = 2;
 
                   // extract the complete tag string from the current content
-                  $TagStringLength = ($TagEndPos - $TagStartPos) + $ClosingTagLength;
-                  $TagString = substr($this->__Content,$TagStartPos,$TagStringLength);
+                  $tagStringLength = ($tagEndPos - $tagStartPos) + $closingTagLength;
+                  $tagString = substr($this->__Content,$tagStartPos,$tagStringLength);
 
                 // end if
                }
 
                // get the tag attributes of the current tag
-               $Attributes = xmlParser::getTagAttributes($TagString);
-               $Object = new $Module();
+               $attributes = xmlParser::getTagAttributes($tagString);
+               $object = new $module();
 
                // inject context of the parent object
-               $Object->set('Context',$this->__Context);
+               $object->set('Context',$this->__Context);
 
                // inject language of the parent object
-               $Object->set('Language',$this->__Language);
+               $object->set('Language',$this->__Language);
 
                // add the tag's atributes
-               $Object->setAttributes($Attributes['attributes']);
+               $object->setAttributes($attributes['attributes']);
 
                // initialize object id, that is used to reference the object
                // within the APF DOM tree and to provide a unique key for the
                // children index.
-               $ObjectID = xmlParser::generateUniqID();
-               $Object->set('ObjectID',$ObjectID);
+               $objectId = xmlParser::generateUniqID();
+               $object->set('ObjectID',$objectId);
 
                // replace the position of the taglib with a place holder
                // token string: <$ObjectID />.
                // this needs to be done, to be able to place the content of the
                // transformed taglib at transformation time correctly
-               $this->__Content = substr_replace($this->__Content,'<'.$ObjectID.' />',$TagStartPos,$TagStringLength);
+               $this->__Content = substr_replace($this->__Content,'<'.$objectId.' />',$tagStartPos,$tagStringLength);
 
                // advertise the parent object
-               $Object->setByReference('ParentObject',$this);
+               $object->setByReference('ParentObject',$this);
 
                // add the content to the current APF DOM node
-               $Object->set('Content',$Attributes['content']);
+               $object->set('Content',$attributes['content']);
 
                // call onParseTime() to enable the taglib to initialize itself
-               $Object->onParseTime();
+               $object->onParseTime();
 
                // add current object to the APF DOM tree (no reference, because this leads to NPEs!)
-               $this->__Children[$ObjectID] = $Object;
+               $this->__Children[$objectId] = $object;
 
-               $TagLoops++;
+               $tagLoops++;
 
                // delete current object to avoid interference.
-               unset($Object);
+               unset($object);
 
              // end while
             }
@@ -1539,7 +1523,6 @@
 
        // end function
       }
-
 
       /**
        * @protected
@@ -1582,7 +1565,6 @@
 
        // end function
       }
-
 
       /**
        * @public
@@ -1830,7 +1812,6 @@
     // end class
    }
 
-
    /**
     * @namespace core::pagecontroller
     * @class html_taglib_placeholder
@@ -1992,19 +1973,19 @@
       /**
        * @public
        *
-       * Returns the content of the template. Can be used ti generate the template output within a
-       * document controller. Usage:
+       * Returns the content of the template. Can be used to generate the template output
+       * within a document controller. Usage:
        * <pre>
        * $template = &$this->__getTemplate('MyTemplate');
        * $template->setPlaceHolder('URL','http://adventure-php-framework.org');
-       * echo = $template->transformTemplate();
+       * echo $template->transformTemplate();
        * </pre>
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 29.12.2006<br />
        * Version 0.2, 31.12.2006 (Removed parameter $this->__isVisible, because the parent object automatically removes the XML positioning tag on ransformation now)<br />
-       * Version 0.3, 02.02.2007 (Renamed method to transformTemplate() umgenannt. Removed visible marking finally from the class)<br />
+       * Version 0.3, 02.02.2007 (Renamed method to transformTemplate() umbenannt. Removed visible marking finally from the class)<br />
        * Version 0.4, 05.01.2007 (Added the template:addtaglib tag)<br />
        */
       public function transformTemplate(){
@@ -2015,8 +1996,8 @@
          // transform children
          if(count($this->__Children) > 0){
 
-            foreach($this->__Children as $ObjectID => $Child){
-               $content = str_replace('<'.$ObjectID.' />',$Child->transform(),$content);
+            foreach($this->__Children as $objectId => $DUMMY){
+               $content = str_replace('<'.$objectId.' />',$this->__Children[$objectId]->transform(),$content);
              // end foreach
             }
 
