@@ -168,6 +168,7 @@
        * Version 0.1, 15.06.2008<br />
        * Version 0.2, 23.06.2009 (Introduced a generic possibility to create the display name.)<br />
        * Version 0.3, 20.09.2009 (Bugfix for bug 202. Password was hased twice on update.)<br />
+       * Version 0.4, 27.09.2009 (Bugfix for bug related to 202. Password for new user was not hashed.)<br />
        */
       public function saveUser($user){
 
@@ -186,13 +187,23 @@
             // hash the password. In all other cases, the password would be
             // hashed twice!
             if($storedUser->getProperty('Password') != $password){
-               $user->setProperty('Password',$this->__createPasswordHash($user->getProperty('Password')));
+               $user->setProperty(
+                  'Password',
+                  $this->__createPasswordHash($password)
+               );
             }
             else {
                $user->deleteProperty('Password');
             }
 
           // end if
+         }
+         else {
+            $user->setProperty(
+               'Password',
+               $this->__createPasswordHash($password)
+            );
+          // end else
          }
 
          // setup the composition
