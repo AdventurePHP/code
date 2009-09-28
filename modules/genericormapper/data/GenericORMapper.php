@@ -87,7 +87,10 @@
       *  Version 0.2, 25.06.2008 (Added the $StatementParams parameter)<br />
       */
       public function loadObjectListByStatement($objectName,$namespace,$statementName,$statementParams = array()){
-         return $this->__loadObjectListByStatementResult($objectName,$this->__DBDriver->executeStatement($namespace,$statementName,$statementParams));
+         return $this->__loadObjectListByStatementResult(
+            $objectName,
+            $this->__DBDriver->executeStatement($namespace,$statementName,$statementParams,$this->__LogStatements)
+         );
        // end function
       }
 
