@@ -21,48 +21,45 @@
 
    import('modules::socialbookmark::biz','socialBookmarkManager');
 
-
    /**
-   *  @namespace modules::socialbookmark::pres::taglib
-   *  @class social_taglib_bookmark
-   *
-   *  Implementiert eine TagLib für die Ausgabe von Bookmarks per Tag.<br />
-   *  Optional können die Parameter<br />
-   *  <br />
-   *  - width (Breite der Bookmark-Icons)<br />
-   *  - height (Höhe der Bookmark-Icons)<br />
-   *  <br />
-   *  angegeben werden. Beispiel:<br />
-   *  <br />
-   *  &lt;social:bookmark width="16" height="16"/&gt;<br />
-   *  <br />
-   *  Um das Tag verwenden zu können muss der BookmarkManager konfiguriert sein!<br />
-   *
-   *  @author Christian W. Schäfer
-   *  @version
-   *  Version 0.1, 08.09.2007<br />
-   */
-   class social_taglib_bookmark extends Document
-   {
+    * @namespace modules::socialbookmark::pres::taglib
+    * @class social_taglib_bookmark
+    *
+    * Implementiert eine TagLib für die Ausgabe von Bookmarks per Tag.<br />
+    * Optional können die Parameter<br />
+    * <br />
+    * - width (Breite der Bookmark-Icons)<br />
+    * - height (Höhe der Bookmark-Icons)<br />
+    * <br />
+    * angegeben werden. Beispiel:<br />
+    * <br />
+    * &lt;social:bookmark width="16" height="16"/&gt;<br />
+    * <br />
+    * Um das Tag verwenden zu können muss der BookmarkManager konfiguriert sein!<br />
+    *
+    * @author Christian W. Schäfer
+    * @version
+    * Version 0.1, 08.09.2007<br />
+    */
+   class social_taglib_bookmark extends Document {
 
       /**
-      *  @public
-      *
-      *  Konstruktor der Klasse. Initialisiert die benötigten Attribute.<br />
-      *
-      *  @author Christian W. Schäfer
-      *  @version
-      *  Version 0.1, 08.09.2007<br />
-      */
+       * @public
+       *
+       * Initialisiert die benötigten Attribute.
+       *
+       * @author Christian W. Schäfer
+       * @version
+       * Version 0.1, 08.09.2007<br />
+       */
       function social_taglib_bookmark(){
-         $this->__Attributes['width'] = '20';
-         $this->__Attributes['height'] = '20';
-         $this->__Attributes['title'] = null;
-         $this->__Attributes['url'] = null;
-         $this->__Attributes['target'] = null;
+         $this->setAttribute('width','20');
+         $this->setAttribute('height','20');
+         $this->setAttribute('title',null);
+         $this->setAttribute('url',null);
+         $this->setAttribute('target',null);
        // end function
       }
-
 
       /**
       *  @public

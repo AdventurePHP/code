@@ -1,47 +1,46 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
-   *  @namespace core::benchmark
-   *  @class BenchmarkTimer
-   *
-   *  This class implements the benchmark timer used for measurement of the core components
-   *  and your software. Must be used as a singleton to guarantee, that all benchmark tags
-   *  are included within the report. Usage:
-   *  <pre>
-   *  $T = &Singleton::getInstance('BenchmarkTimer');
-   *  $T->start('my_tag');
-   *  ...
-   *  $T->stop('my_tag');
-   *  ...
-   *  echo $T->createReport();
-   *  </pre>
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 31.12.2006<br />
-   *  Version 0.1, 01.01.2007<br />
-   */
-   final class BenchmarkTimer
-   {
+    * @namespace core::benchmark
+    * @class BenchmarkTimer
+    *
+    * This class implements the benchmark timer used for measurement of the core components
+    * and your software. Must be used as a singleton to guarantee, that all benchmark tags
+    * are included within the report. Usage:
+    * <pre>
+    * $T = &Singleton::getInstance('BenchmarkTimer');
+    * $T->start('my_tag');
+    * ...
+    * $T->stop('my_tag');
+    * ...
+    * echo $T->createReport();
+    * </pre>
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 31.12.2006<br />
+    * Version 0.1, 01.01.2007<br />
+    */
+   final class BenchmarkTimer {
 
       /**
       *  @private
@@ -49,13 +48,11 @@
       */
       private $__RootProcess = null;
 
-
       /**
       *  @private
       *  The process table, that contains all running processes (hash table).
       */
       private $__RunningProcesses = array();
-
 
       /**
       *  @private
@@ -63,13 +60,11 @@
       */
       private $__CurrentParent = null;
 
-
       /**
       *  @private
       *  Stores the process count.
       */
       private $__CurrentProcessID = 0;
-
 
       /**
       *  @private
@@ -77,13 +72,11 @@
       */
       private $__CriticalTime = 0.5;
 
-
       /**
       *  @private
       *  Line counter for the report.
       */
       private $__LineCounter = 0;
-
 
       /**
       *  @public
@@ -101,7 +94,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -118,7 +110,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -134,7 +125,6 @@
          return $this->__CriticalTime;
        // end function
       }
-
 
       /**
       *  @public
@@ -175,7 +165,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -206,7 +195,6 @@
        // end function
       }
 
-
       /**
       *  @private
       *
@@ -223,7 +211,6 @@
          return $this->__CurrentProcessID;
        // end function
       }
-
 
       /**
       *  @private
@@ -253,7 +240,6 @@
        // end function
       }
 
-
       /**
       *  @private
       *
@@ -270,7 +256,7 @@
       */
       private function __createProcess($name,$startTime,&$parent){
 
-         $process = new benchmarkProcess();
+         $process = new BenchmarkProcess();
          $process->setProcessID($this->__getID());
          $process->setProcessName($name);
          $process->setProcessLevel($parent->getProcessLevel() + 1);
@@ -281,13 +267,12 @@
        // end function
       }
 
-
       /**
       *  @private
       *
       *  Creates the root process and returns it.
       *
-      *  @return benchmarkProcess $rootProcess the root process
+      *  @return BenchmarkProcess $rootProcess the root process
       *
       *  @author Christian Schäfer
       *  @version
@@ -296,7 +281,7 @@
       private function &__createRootProcess(){
 
          $startTime = $this->__generateMicroTime();
-         $rootProcess = new benchmarkProcess();
+         $rootProcess = new BenchmarkProcess();
          $rootProcess->setProcessID($this->__getID());
          $rootProcess->setProcessName(get_class($this));
          $rootProcess->setProcessLevel(0);
@@ -307,13 +292,12 @@
        // end function
       }
 
-
       /**
       *  @private
       *
       *  Stopps the root process and returns it.
       *
-      *  @return benchmarkProcess $rootProcess the stopped root process
+      *  @return BenchmarkProcess $rootProcess the stopped root process
       *
       *  @author Christian Schäfer
       *  @version
@@ -328,13 +312,12 @@
        // end function
       }
 
-
       /**
       *  @private
       *
       *  Adds a process to the list of running processes.
       *
-      *  @param benchmarkProcess $process a reference on the running process
+      *  @param BenchmarkProcess $process a reference on the running process
       *
       *  @author Christian Schäfer
       *  @version
@@ -345,7 +328,6 @@
          $this->__RunningProcesses[$name] = &$process;
        // end function
       }
-
 
       /**
       *  @private
@@ -362,7 +344,6 @@
          unset($this->__RunningProcesses[$name]);
        // end function
       }
-
 
       /**
       *  @private
@@ -391,13 +372,12 @@
        // end function
        }
 
-
       /**
       *  @private
       *
       *  References the currently created process.
       *
-      *  @param benchmarkProcess $process the reference on the desired benchmark process
+      *  @param BenchmarkProcess $process the reference on the desired benchmark process
       *
       *  @author Christian Schäfer
       *  @version
@@ -408,13 +388,12 @@
        // end function
        }
 
-
       /**
       *  @private
       *
       *  Returns the currently created process.
       *
-      *  @return benchmarkProcess $process the reference on the desired benchmark process
+      *  @return BenchmarkProcess $process the reference on the desired benchmark process
       *
       *  @author Christian Schäfer
       *  @version
@@ -424,7 +403,6 @@
          return $this->__CurrentParent;
        // end function
       }
-
 
       /**
       *  @public
@@ -460,13 +438,12 @@
        // end function
       }
 
-
       /**
       *  @private
       *
       *  Generates the report for one single process.
       *
-      *  @param benchmarkProcess $process the current process
+      *  @param BenchmarkProcess $process the current process
       *  @return string $report4Line the report for the current process
       *
       *  @author Christian Schäfer
@@ -496,7 +473,6 @@
        // end function
       }
 
-
       /**
       *  @private
       *
@@ -522,7 +498,6 @@
 
        // end function
       }
-
 
       /**
       *  @private
@@ -571,7 +546,6 @@
        // end function
       }
 
-
       /**
       *  @private
       *
@@ -591,7 +565,6 @@
 
        // end function
       }
-
 
       /**
       *  @private
@@ -661,7 +634,6 @@
     // end class
    }
 
-
    /**
    *  @namespace core::benchmark
    *  @class benchmarkProcess
@@ -672,8 +644,7 @@
    *  @version
    *  Version 0.1, 31.12.2006<br />
    */
-   class benchmarkProcess
-   {
+   final class BenchmarkProcess {
 
       /**
       *  @private
@@ -718,7 +689,7 @@
       private $__Processes = array();
 
 
-      function benchmarkProcess(){
+      function BenchmarkProcess(){
       }
 
       function setProcessID($ID){

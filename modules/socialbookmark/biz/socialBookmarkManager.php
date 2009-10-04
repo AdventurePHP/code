@@ -1,178 +1,166 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('tools::link','frontcontrollerLinkHandler');
    import('tools::link','linkHandler');
    import('modules::socialbookmark::biz','bookmarkEntry');
 
-
    /**
-   *  @namespace modules::socialbookmark::biz
-   *  @class socialBookmarkManager
-   *
-   *  Generiert einen Bookmark-HTML-Code.<br />
-   *  Um die angezeigten Services erweitern zu können die Methode addBookmarkService()<br />
-   *  verwendet werden. Muss über den ServiceManager instanziiert werden.<br />
-   *  <br />
-   *  Erwartet eine Konfiguration mit dem Namen "{ENVIRONMENT}_bookmarkservices.ini" unter<br />
-   *  dem Namespace "/config/modules/socialbookmark/{Context}/" mit jeweils einer Sektion für einen<br />
-   *  Bookmarkservice. Diese muss wie folgt aufgebaut sein (Beispiel für del.icio.us):<br />
-   *  <br />
-   *  [del.icio.us]<br />
-   *  BookmarkService.BaseURL = "http://del.icio.us/post"<br />
-   *  BookmarkService.Param.URL = "url"<br />
-   *  BookmarkService.Param.Title = "title"<br />
-   *  BookmarkService.Display.Title = "Bookmark &#64; del.icio.us"<br />
-   *  BookmarkService.Display.Image = "bookmark_del_icio_us"<br />
-   *  BookmarkService.Display.ImageExt = "png"<br />
-   *  <br />
-   *  Darüber hinaus muss für die FrontController-basierte Ausgabe der Bilder eine Action-Konfiguration<br />
-   *  unter "/config/modules/socialbookmark/actions/{Context}/" angelegt sein und die Action für das<br />
-   *  Anzeigen der Bilder definieren. Diese muss folgende Werte haben:<br />
-   *  <br />
-   *  [showImage]<br />
-   *  FC.ActionNamespace = "modules::socialbookmark::biz::actions"<br />
-   *  FC.ActionFile = "ShowImageAction"<br />
-   *  FC.ActionClass = "ShowImageAction"<br />
-   *  FC.InputFile = "ShowImageInput"<br />
-   *  FC.InputClass = "ShowImageInput"<br />
-   *  FC.InputParams = "img:bookmark_del_icio_us|imgext:png"<br />
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 02.06.2007<br />
-   *  Version 0.2, 07.09.2007<br />
-   */
-   class socialBookmarkManager extends coreObject
-   {
-
+    * @namespace modules::socialbookmark::biz
+    * @class socialBookmarkManager
+    *
+    * Generiert einen Bookmark-HTML-Code. Um die angezeigten Services erweitern zu können die
+    * Methode addBookmarkService() verwendet werden. Muss über den ServiceManager instanziiert
+    * werden.
+    * <p />
+    * Erwartet eine Konfiguration mit dem Namen "{ENVIRONMENT}_bookmarkservices.ini" unter
+    * dem Namespace "/config/modules/socialbookmark/{Context}/" mit jeweils einer Sektion für einen
+    * Bookmarkservice. Diese muss wie folgt aufgebaut sein (Beispiel für del.icio.us):
+    * <pre>
+    * [del.icio.us]
+    * BookmarkService.BaseURL = "http://del.icio.us/post"
+    * BookmarkService.Param.URL = "url"
+    * BookmarkService.Param.Title = "title"
+    * BookmarkService.Display.Title = "Bookmark &#64; del.icio.us"
+    * BookmarkService.Display.Image = "bookmark_del_icio_us"
+    * BookmarkService.Display.ImageExt = "png"
+    * </pre>
+    * Darüber hinaus muss für die FrontController-basierte Ausgabe der Bilder eine
+    * Action-Konfiguration unter "/config/modules/socialbookmark/actions/{Context}/" angelegt sein
+    * und die Action für das Anzeigen der Bilder definieren. Diese muss folgende Werte haben:
+    * <pre>
+    * [showImage]
+    * FC.ActionNamespace = "modules::socialbookmark::biz::actions"
+    * FC.ActionFile = "ShowImageAction"
+    * FC.ActionClass = "ShowImageAction"
+    * FC.InputFile = "ShowImageInput"
+    * FC.InputClass = "ShowImageInput"
+    * FC.InputParams = "img:bookmark_del_icio_us|imgext:png"
+    * </pre>
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 02.06.2007<br />
+    * Version 0.2, 07.09.2007<br />
+    */
+   class socialBookmarkManager extends coreObject {
 
       /**
-      *  @protected
-      *  Linkziel der Bookmark-Einträge.
-      */
+       * @protected
+       * @var string Linkziel der Bookmark-Einträge.
+       */
       protected $__Target = '_blank';
 
-
       /**
-      *  @protected
-      *  URL der Seite, die gebookmarkt werden soll.
-      */
+       * @protected
+       * @var string URL der Seite, die gebookmarkt werden soll.
+       */
       protected $__URL = '';
 
-
       /**
-      *  @protected
-      *  Titel der Seite, die gebookmarkt werden soll.
-      */
+       * @protected
+       * @var string Titel der Seite, die gebookmarkt werden soll.
+       */
       protected $__Title = '';
 
-
       /**
-      *  @protected
-      *  Breite des Bookmark-Icons.
-      */
+       * @protected
+       * @var string Breite des Bookmark-Icons.
+       */
       protected $__Width = '20';
 
-
       /**
-      *  @protected
-      *  Höhe des Bookmark-Icons.
-      */
+       * @protected
+       * @var string Höhe des Bookmark-Icons.
+       */
       protected $__Height = '20';
 
-
       /**
-      *  @protected
-      *  Liste der Bookmark-Services.
-      */
+       * @protected
+       * @var bookmarkEntry[] Liste der Bookmark-Services.
+       */
       protected $__BookmarkServices = array();
-
 
       function socialBookmarkManager(){
       }
 
-
       /**
-      *  @public
-      *
-      *  Fügt einen Bookmark-Service hinzu.<br />
-      *
-      *  @param bookmarkEntry $Service; bookmarkEntry Objekt
-      *
-      *  @author Christian W. Schäfer
-      *  @version
-      *  Version 0.1, 07.09.2007<br />
-      */
-      function addBookmarkService($Service){
-         $this->__BookmarkServices[] = $Service;
+       * @public
+       *
+       * Fügt einen Bookmark-Service hinzu.<br />
+       *
+       * @param bookmarkEntry $service The bookmark entry to add.
+       *
+       * @author Christian W. Schäfer
+       * @version
+       * Version 0.1, 07.09.2007<br />
+       */
+      function addBookmarkService($service){
+         $this->__BookmarkServices[] = $service;
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Generiert einen Bookmark-HTML-Code und gibt diesen zurück.<br />
-      *
-      *  @return string $BookmarkCode; HTML-Code der konfigurierten Bookmarks
-      *
-      *  @author Christian W. Schäfer
-      *  @version
-      *  Version 0.1, 02.06.2007<br />
-      *  Version 0.2, 07.09.2007<br />
-      *  Version 0.3, 08.09.2007 (Profiling hinzugefügt)<br />
-      */
+       * @public
+       *
+       * Generiert einen Bookmark-HTML-Code und gibt diesen zurück.
+       *
+       * @return string HTML-Code der konfigurierten Bookmarks.
+       *
+       * @author Christian W. Schäfer
+       * @version
+       * Version 0.1, 02.06.2007<br />
+       * Version 0.2, 07.09.2007<br />
+       * Version 0.3, 08.09.2007 (Profiling hinzugefügt)<br />
+       */
       function getBookmarkCode(){
 
-         // Timer starten
-         $T = &Singleton::getInstance('BenchmarkTimer');
+         $t = &Singleton::getInstance('BenchmarkTimer');
          $ID = 'socialBookmarkManager::getBookmarkCode()';
-         $T->start($ID);
+         $t->start($ID);
 
-
-         // Aktuelle URL erzeugen, falls nicht gegeben
+         // generate the current's page url, if no url was set
          if($this->__URL == ''){
-            $this->__URL = $this->__getCurrentURL();
-
+            $reg = &Singleton::getInstance('Registry');
+            $this->__URL = $reg->retrieve('apf::core','CurrentRequestURL');
           // end if
          }
 
+         // get services from config file
+         $config = &$this->__getConfiguration('modules::socialbookmark','bookmarkservices');
+         $services = $config->getConfiguration();
 
-         // Konfiguration einlesen
-         $CfgObj = &$this->__getConfiguration('modules::socialbookmark','bookmarkservices');
-         $Services = $CfgObj->getConfiguration();
+         if($services != null){
 
-         if($Services != null){
+            foreach($services as $service){
 
-            foreach($Services as $Service){
-
-               $this->__BookmarkServices[] = new bookmarkEntry(
-                                                               $Service['BookmarkService.BaseURL'],
-                                                               $Service['BookmarkService.Param.URL'],
-                                                               $Service['BookmarkService.Param.Title'],
-                                                               $Service['BookmarkService.Display.Title'],
-                                                               $Service['BookmarkService.Display.Image'],
-                                                               $Service['BookmarkService.Display.ImageExt']
-                                                               );
+               $this->__BookmarkServices[] =
+                  new bookmarkEntry(
+                                    $service['BookmarkService.BaseURL'],
+                                    $service['BookmarkService.Param.URL'],
+                                    $service['BookmarkService.Param.Title'],
+                                    $service['BookmarkService.Display.Title'],
+                                    $service['BookmarkService.Display.Image'],
+                                    $service['BookmarkService.Display.ImageExt']
+                  );
 
              // end foreach
             }
@@ -180,138 +168,84 @@
           // end if
          }
          else{
-            trigger_error('[socialBookmarkManager::getBookmarkCode()] Configuration does not contain a valid bookmark service!',E_USER_WARNING);
+            trigger_error('[socialBookmarkManager::getBookmarkCode()] Configuration does not '
+               .'contain a valid bookmark service!',E_USER_WARNING);
           // end if
          }
 
-
-         // Services generieren
-         $HTML = (string)'';
-
+         $output = (string)'';
+         
          for($i = 0; $i < count($this->__BookmarkServices); $i++){
-            $HTML .= $this->__generateBookmarkEntry($this->__BookmarkServices[$i]);
-            $HTML .= PHP_EOL;
+            $output .= $this->__generateBookmarkEntry($this->__BookmarkServices[$i]);
+            $output .= PHP_EOL;
           // end for
          }
 
-
-         // Timer stoppen
-         $T->stop($ID);
-
-
-         // Services zurückgeben
-         return $HTML;
+         $t->stop($ID);
+         return $output;
 
        // end function
       }
 
 
       /**
-      *  @protected
-      *
-      *  Generiert einen Bookmark-HTML-Code aus einem BookmarkEntry.<br />
-      *
-      *  @param BookmarkEntry $BookmarkEntry; BookmarkEntry-Objekt
-      *  @return string $BookmarkCode; HTML-Code des Bookmarks
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 02.06.2007<br />
-      *  Version 0.2, 07.09.2007<br />
-      *  Version 0.3, 08.09.2007 (Profiling hinzugefügt)<br />
-      *  Version 0.4, 15.04.2008 (URL-Rewriting beachtet)<br />
-      *  Version 0.5, 25.05.2008 (Page-Title wird nun übergeben)<br />
-      *  Version 0.6, 21.06.2008 (Replaced APPS__URL_REWRITING with a value from the registry)<br />
-      */
-      protected function __generateBookmarkEntry($BookmarkEntry){
+       * @protected
+       *
+       * Generiert einen Bookmark-HTML-Code aus einem BookmarkEntry.
+       *
+       * @param BookmarkEntry $bookmarkEntry BookmarkEntry-Objekt
+       * @return string HTML-Code des Bookmarks.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 02.06.2007<br />
+       * Version 0.2, 07.09.2007<br />
+       * Version 0.3, 08.09.2007 (Profiling hinzugefügt)<br />
+       * Version 0.4, 15.04.2008 (URL-Rewriting beachtet)<br />
+       * Version 0.5, 25.05.2008 (Page-Title wird nun übergeben)<br />
+       * Version 0.6, 21.06.2008 (Replaced APPS__URL_REWRITING with a value from the registry)<br />
+       */
+      protected function __generateBookmarkEntry($bookmarkEntry){
 
-         // Timer starten
-         $T = &Singleton::getInstance('BenchmarkTimer');
-         $ID = 'socialBookmarkManager::__generateBookmarkEntry('.$BookmarkEntry->get('BookmarkService.Display.Title').')';
-         $T->start($ID);
-
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $ID = 'socialBookmarkManager::__generateBookmarkEntry('.$bookmarkEntry->get('BookmarkService.Display.Title').')';
+         $t->start($ID);
 
          // Retrieve some parameters from the registry
-         $Reg = &Singleton::getInstance('Registry');
-         $URLRewriting = $Reg->retrieve('apf::core','URLRewriting');
-         $URLBasePath = $Reg->retrieve('apf::core','URLBasePath');
+         $reg = &Singleton::getInstance('Registry');
+         $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
+         $urlBasePath = $reg->retrieve('apf::core','URLBasePath');
 
-
-         // Code generieren
-         $Code = (string)'';
-         $Code = $Code .= '<a href="';
-         $Code .=  linkHandler::generateLink($BookmarkEntry->get('ServiceBaseURL'),
+         $code = (string)'';
+         $code = $code .= '<a rel="nofollow" href="';
+         $code .=  linkHandler::generateLink($bookmarkEntry->get('ServiceBaseURL'),
                                              array(
-                                                   $BookmarkEntry->get('ServiceParams_URL') => $this->__URL,
-                                                   $BookmarkEntry->get('ServiceParams_Title') => $this->__Title
+                                                   $bookmarkEntry->get('ServiceParams_URL') => $this->__URL,
+                                                   $bookmarkEntry->get('ServiceParams_Title') => $this->__Title
                                                    ),
                                              false
                                             );
-         $Code .= '" target="_blank" title="';
-         $Code .= $BookmarkEntry->get('Title');
-         $Code .= '" linkrewrite="false"><img src="';
+         $code .= '" target="_blank" title="';
+         $code .= $bookmarkEntry->get('Title');
+         $code .= '" linkrewrite="false"><img src="';
 
-         if($URLRewriting == true){
-            $Code .= frontcontrollerLinkHandler::generateLink($URLBasePath,array('modules_socialbookmark-action' => 'showImage/imgext/'.$BookmarkEntry->get('ImageExt').'/img/'.$BookmarkEntry->get('ImageURL')));
+         if($urlRewriting == true){
+            $code .= frontcontrollerLinkHandler::generateLink($urlBasePath,array('modules_socialbookmark-action' => 'showImage/imgext/'.$bookmarkEntry->get('ImageExt').'/img/'.$bookmarkEntry->get('ImageURL')));
           // end if
          }
          else{
-            $Code .= frontcontrollerLinkHandler::generateLink($URLBasePath,array('modules_socialbookmark-action:showImage' => 'imgext:'.$BookmarkEntry->get('ImageExt').'|img:'.$BookmarkEntry->get('ImageURL')));
+            $code .= frontcontrollerLinkHandler::generateLink($urlBasePath,array('modules_socialbookmark-action:showImage' => 'imgext:'.$bookmarkEntry->get('ImageExt').'|img:'.$bookmarkEntry->get('ImageURL')));
           // end else
          }
 
-         $Code .= '" alt="';
-         $Code .= $BookmarkEntry->get('Title');
-         $Code .= '" border="0" align="absmiddle" style="width: ';
-         $Code .= $this->__Width.'px; height: ';
-         $Code .= $this->__Height.'px;" /></a>'.PHP_EOL;
+         $code .= '" alt="';
+         $code .= $bookmarkEntry->get('Title');
+         $code .= '" border="0" style="width: ';
+         $code .= $this->__Width.'px; height: ';
+         $code .= $this->__Height.'px;" /></a>'.PHP_EOL;
 
-
-         // Timer stoppen
-         $T->stop($ID);
-
-
-         // Code zurückgeben
-         return $Code;
-
-       // end function
-      }
-
-
-      /**
-      *  @protected
-      *
-      *  Gibt die URL der aktuellen Seite zurück.<br />
-      *
-      *  @return string $URL; Aktuelle URL
-      *
-      *  @author Christian W. Schäfer
-      *  @version
-      *  Version 0.1, 02.06.2007<br />
-      */
-      protected function __getCurrentURL(){
-
-         // Rückgabe-Variable initialisieren
-         $Link = (string)'';
-
-
-         // Protokoll setzen
-         if($_SERVER['REMOTE_PORT'] == '443'){
-            $Link = 'https://';
-          // end if
-         }
-         else{
-            $Link = 'http://';
-          // end else
-         }
-
-
-         // Link zusammenbauen
-         $Link .= $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-
-
-         // Link zurückgeben
-         return $Link;
+         $t->stop($ID);
+         return $code;
 
        // end function
       }
