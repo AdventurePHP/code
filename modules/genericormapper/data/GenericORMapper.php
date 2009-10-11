@@ -312,8 +312,12 @@
          }
 
          // initialize the object id, to enable the developer to directly
-         // reuse the object after saving it.
+         // reuse the object after saving it. (added for release 1.11)
          $object->setProperty($pkName,$id);
+
+         // inject data component to be able to reuse the saved object loading
+         // related object or create assocations. (added for release 1.11)
+         $object->setDataComponent($this);
 
          // return the database ID of the object for further usage
          return $id;
