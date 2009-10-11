@@ -68,10 +68,10 @@
       /**
        * @public
        *
-       * Load an object list by a given criterion object.<br />
+       * Load an object list by a given criterion object.
        *
-       * @param string $objectName name of the desired objects
-       * @param GenericCriterionObject $criterion criterion object
+       * @param string $objectName name of the desired objects.
+       * @param GenericCriterionObject $criterion criterion object.
        * @return GenericDomainObject[] List of domain objects.
        *
        * @author Christian Achatz
@@ -80,7 +80,7 @@
        * Version 0.2, 21.06.2008 (Sourced out statement creation into an extra method)<br />
        * Version 0.3, 17.01.2009 (Added a check, if the criterion object is present. Otherwise return null.)<br />
        */
-      public function loadObjectListByCriterion($objectName,GenericCriterionObject $criterion = null){
+      public function loadObjectListByCriterion($objectName,GenericCriterionObject $criterion){
 
          if($criterion === null){
             trigger_error('[GenericORRelationMapper::loadObjectListByCriterion()] No criterion object given as second argument! Please consult the manual.');

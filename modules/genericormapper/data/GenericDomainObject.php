@@ -76,6 +76,36 @@
       /**
        * @public
        *
+       * Injects the current mapper instance for further usage (load related objects).
+       *
+       * @param GenericORRelationMapper $orm The current mapper instance.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 11.10.2009<br />
+       */
+      public function setDataComponent(&$orm){
+         $this->__DataComponent = &$orm;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the current mapper instance for further usage (load related objects).
+       *
+       * @param GenericORRelationMapper $orm The current mapper instance.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 11.10.2009<br />
+       */
+      public function &getDataComponent(){
+         return $this->__DataComponent;
+      }
+
+      /**
+       * @public
+       *
        * Loads a list of related objects.<br />
        *
        * @param string $relationName name of the desired relation
@@ -93,7 +123,10 @@
 
          // check weather data component is there
          if($this->__DataComponent === null){
-            trigger_error('[GenericDomainObject::loadRelatedObjects()] DataDomponent is not initialized, so related objects cannot be loaded! Please use the or mapper\'s loadRelatedObjects() method or call setByReference(\'DataComponent\',$ORM), where $ORM is an instance of the or mapper, on this object first!',E_USER_WARNING);
+            trigger_error('[GenericDomainObject::loadRelatedObjects()] DataDomponent is not '
+               .'initialized, so related objects cannot be loaded! Please use the or mapper\'s '
+               .'loadRelatedObjects() method or call setByReference(\'DataComponent\',$orm), where '
+               .'$orm is an instance of the or mapper, on this object first!',E_USER_WARNING);
             return null;
           // end if
          }

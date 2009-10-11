@@ -25,15 +25,22 @@
     * @namespace modules::genericormapper::data
     * @class GenericORMapperSetup
     *
-    * Tool to setup the database automatically. <strong>Changes to the database
-    * layout cannot be applied.</strong>
+    * This tool allows you to setup a database for use with the generic or mapper. It enables
+    * you to generate the table layout from a given couple of configuration files (objects and
+    * relations). In order to adapt the automatic
+    *
+    * In order to adapt the automatically generated changeset, please ensure the last param
+    * to be <em>false</em>. This results in displaying the change statements rather to execute
+    * them agains the given database.
+    * <p/>
+    * Changes to the database layout can be applied using the <strong>GenericORMapperUpdate</strong>
+    * utility. Please refer to the documentation of this tool for update details!
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 11.05.2008<br />
     */
-   class GenericORMapperSetup extends BaseMapper
-   {
+   class GenericORMapperSetup extends BaseMapper {
 
       /**
        * @protected
@@ -138,7 +145,6 @@
        // end function
       }
 
-
       /**
        * @protected
        *
@@ -152,6 +158,7 @@
        * Version 0.2, 31.05.2008 (Code completed and refactored due to changes on the mapping table)<br />
        * Version 0.3, 09.12.2008 (Replaced TINYINT by INT)<br />
        * Version 0.4, 18.05.2009 (Changed primary key columns to UNSIGNED)<br />
+       * Version 0.5, 11.10.2009 (Outsorced table statement creation due to introduction of the update feature)<br />
        */
       protected function __generateObjectLayout(){
 
@@ -161,36 +168,10 @@
          // generate tables for objects
          $setup = array();
          foreach($this->__MappingTable as $name => $attributes){
-
-            // header
-            $create = 'CREATE TABLE IF NOT EXISTS `'.$attributes['Table'].'` ('.PHP_EOL;
-
-            // id row
-            $create .= '  `'.$attributes['ID'].'` INT(5) UNSIGNED NOT NULL auto_increment,'.PHP_EOL;
-
-            // object properties
-            foreach($attributes as $key => $value){
-               if($key != 'ID' && $key != 'Table'){
-                  $value = preg_replace($this->__RowTypeMappingFrom,$this->__RowTypeMappingTo,$value);
-                  $create .= '  `'.$key.'` '.$value.','.PHP_EOL;
-                // end if
-               }
-             // end if
-            }
-
-            // creation and modification information
-            $create .= '  `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,'.PHP_EOL;
-            $create .= '  `ModificationTimestamp` timestamp NOT NULL default \'0000-00-00 00:00:00\','.PHP_EOL;
-
-            // primary key
-            $create .= '  PRIMARY KEY (`'.$attributes['ID'].'`)'.PHP_EOL;
-
-            // footer
-            $create .= ') ENGINE='.$this->__StorageEngine.' DEFAULT CHARSET=utf8;';
-
-            // print statement
-            $setup[] = $create.PHP_EOL.PHP_EOL;
-
+            $setup[] =
+               $this->__generateMappingTableLayout(
+                  $this->__MappingTable[$name]
+               ).PHP_EOL.PHP_EOL;
           // end foreach
          }
 
@@ -199,6 +180,51 @@
        // end function
       }
 
+      /**
+       * @protected
+       *
+       * Generates a create statement for the object mapping table.
+       *
+       * @param string[] $tableAttributes The mapping entry's attributes.
+       * @return string The create statement.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 11.10.2009<br />
+       */
+      protected function __generateMappingTableLayout($tableAttributes){
+         
+         // header
+         $create = 'CREATE TABLE IF NOT EXISTS `'.$tableAttributes['Table'].'` ('.PHP_EOL;
+
+         // id row
+         $create .= '  `'.$tableAttributes['ID'].'` INT(5) UNSIGNED NOT NULL auto_increment,'.PHP_EOL;
+
+         // object properties
+         foreach($tableAttributes as $key => $value){
+            if($key != 'ID' && $key != 'Table'){
+               $value = preg_replace($this->__RowTypeMappingFrom,$this->__RowTypeMappingTo,$value);
+               $create .= '  `'.$key.'` '.$value.','.PHP_EOL;
+             // end if
+            }
+          // end if
+         }
+
+         // creation and modification information
+         $create .= '  `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,'.PHP_EOL;
+         $create .= '  `ModificationTimestamp` timestamp NOT NULL default \'0000-00-00 00:00:00\','.PHP_EOL;
+
+         // primary key
+         $create .= '  PRIMARY KEY (`'.$tableAttributes['ID'].'`)'.PHP_EOL;
+
+         // footer
+         $create .= ') ENGINE='.$this->__StorageEngine.' DEFAULT CHARSET=utf8;';
+
+         // print statement
+         return $create;
+
+       // end function
+      }
 
       /**
        * @protected
@@ -222,41 +248,58 @@
          // generate tables for objects
          $setup = array();
          foreach($this->__RelationTable as $name => $attributes){
-
-            // header
-            $create = 'CREATE TABLE IF NOT EXISTS `'.$attributes['Table'].'` ('.PHP_EOL;
-
-            // id row
-            if($attributes['Type'] == 'COMPOSITION'){
-               $pkName = 'CMPID';
-             // end if
-            }
-            else{
-               $pkName = 'ASSID';
-             // end if
-            }
-            $create .= '  `'.$pkName.'` INT(5) UNSIGNED NOT NULL auto_increment,'.PHP_EOL;
-
-            // source id
-            $create .= '  `'.$attributes['SourceID'].'` INT(5) UNSIGNED NOT NULL default \'0\','.PHP_EOL;
-
-            // target id
-            $create .= '  `'.$attributes['TargetID'].'` INT(5) UNSIGNED NOT NULL default \'0\','.PHP_EOL;
-
-            // indices
-            $create .= '  PRIMARY KEY  (`'.$pkName.'`),'.PHP_EOL;
-            $create .= '  KEY `JOININDEX` (`'.$attributes['SourceID'].'`,`'.$attributes['TargetID'].'`)'.PHP_EOL;
-
-            // footer
-            $create .= ') ENGINE='.$this->__StorageEngine.' DEFAULT CHARSET=utf8;';
-
-            // print statement
-            $setup[] = $create.PHP_EOL.PHP_EOL;
-
+            $setup[] = 
+               $this->__generateRelationTableLayout(
+                  $this->__RelationTable[$name]
+               ).PHP_EOL.PHP_EOL;
           // end foreach
          }
 
          return $setup;
+
+       // end function
+      }
+
+      /**
+       * @protected
+       *
+       * Generates a create statement for the relation table.
+       *
+       * @param string[] $tableAttributes The relation's attributes.
+       * @return string The create statement.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 11.10.2009<br />
+       */
+      protected function __generateRelationTableLayout($tableAttributes){
+
+         // header
+         $create = 'CREATE TABLE IF NOT EXISTS `'.$tableAttributes['Table'].'` ('.PHP_EOL;
+
+         // id row
+         if($tableAttributes['Type'] == 'COMPOSITION'){
+            $pkName = 'CMPID';
+          // end if
+         }
+         else{
+            $pkName = 'ASSID';
+          // end if
+         }
+         $create .= '  `'.$pkName.'` INT(5) UNSIGNED NOT NULL auto_increment,'.PHP_EOL;
+
+         // source id
+         $create .= '  `'.$tableAttributes['SourceID'].'` INT(5) UNSIGNED NOT NULL default \'0\','.PHP_EOL;
+
+         // target id
+         $create .= '  `'.$tableAttributes['TargetID'].'` INT(5) UNSIGNED NOT NULL default \'0\','.PHP_EOL;
+
+         // indices
+         $create .= '  PRIMARY KEY  (`'.$pkName.'`),'.PHP_EOL;
+         $create .= '  KEY `JOININDEX` (`'.$tableAttributes['SourceID'].'`,`'.$tableAttributes['TargetID'].'`)'.PHP_EOL;
+
+         // footer
+         return $create .= ') ENGINE='.$this->__StorageEngine.' DEFAULT CHARSET=utf8;';
 
        // end function
       }

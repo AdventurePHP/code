@@ -31,20 +31,20 @@
    $reg->register('apf::core','Environment','{ENVIRONMENT}');
 
    // include SetupMapper
-   import('modules::genericormapper::data::tools','GenericORMapperSetup');
+   import('modules::genericormapper::data::tools','GenericORMapperUpdate');
 
-   // create setup tool
-   $setupMapper = new GenericORMapperSetup();
+   // create update tool
+   $updateMapper = new GenericORMapperUpdate();
 
    // set Context (important for the configuration files!)
-   $setupMapper->set('Context','{CONTEXT}');
+   $updateMapper->set('Context','{CONTEXT}');
 
    // adapt storage engine (default is MyISAM)
-   $setupMapper->set('StorageEngine','MyISAM|INNODB');
+   $updateMapper->set('StorageEngine','MyISAM|INNODB');
 
-   // create database layout
-   $setupMapper->setupDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}','{CONNECTION_NAME}');
+   // update database layout
+   $updateMapper->updateDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}','{CONNECTION_NAME}');
 
    // display statements only
-   $setupMapper->setupDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}');
+   $updateMapper->updateDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}','{CONNECTION_NAME}',false);
 ?>

@@ -399,7 +399,7 @@
             $object = new GenericDomainObject($objectName);
 
             // set data component and object name
-            $object->setByReference('DataComponent',$this);
+            $object->setDataComponent($this);
 
             // map properties into object
             foreach($properties as $propertyName => $propertyValue){
