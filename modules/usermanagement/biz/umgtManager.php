@@ -19,13 +19,15 @@
     * -->
     */
 
+   import('modules::usermanagement::biz','DefaultPasswordHashProvider');
+    
    /**
     * @package modules::usermanagement::biz
     * @module umgtManager
     *
     * Business component of the user management module. Uses the md5 algo to create password hashes.
-    * If you desire to use another one, extend this class and overwrite the __createPasswordHash()
-    * function with your own functionality. Please be sure to keep all the other methods untouched!
+    * If you desire to use another one, implement the PasswordHashProvider interface and add it to
+    * the umgt's configuration file. For details on the implementation, please consult the manual!
     *
     * @author Christian Achatz
     * @version
@@ -58,6 +60,12 @@
        * @var boolean indicates, if the component is already initialized.
        */
       protected $__IsInitialized = false;
+
+      /**
+       * Stores the provider, that hashes the user's password.
+       * @var PasswordHashProvider The password hash provider.
+       */
+      protected $__PasswordHashProvider = null;
 
       public function umgtManager(){
       }
@@ -93,6 +101,20 @@
             }
             $this->__ConnectionKey = $config->getValue($initParam,'ConnectionKey');
 
+            // initialize password hash provider
+            $passHashProvNamespace = $config->getValue($initParam,'PasswordHashProvider.Namespace');
+            $passHashProvClass = $config->getValue($initParam,'PasswordHashProvider.Class');
+            if($passHashProvNamespace === null || $passHashProvClass === null){
+               // fallback to default provider
+               $this->__PasswordHashProvider = new DefaultPasswordHashProvider();
+            }
+            else {
+               // use given provider
+               import($passHashProvNamespace,$passHashProvClass);
+               $this->__PasswordHashProvider = new $passHashProvClass();
+             // end else
+            }
+
             // set to initialized
             $this->__IsInitialized = true;
 
@@ -114,9 +136,10 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 31.01.2009<br />
+       * Version 0.2, 12.10.2009 (Introduced password hash provider for release 1.11)<br />
        */
       protected function __createPasswordHash($password){
-         return md5($password);
+         return $this->__PasswordHashProvider->createPasswordHash($password);
        // end function
       }
 
