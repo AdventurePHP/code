@@ -141,7 +141,7 @@
          // setup relation layout (new)
          $this->__createRelationTable();
 
-         // generate layout from the database (reverse engeneering of the database)
+         // generate layout from the database (reverse engineering of the database)
          $cM = &$this->__getServiceObject('core::database','connectionManager');
          $sql = &$cM->getConnection($connectionName);
 
@@ -392,6 +392,9 @@
                // add default indicator to preserve correct data type
                if(!empty($field['Default'])){
                   $objectFields[$field['Field']] .= ' DEFAULT \''.$field['Default'].'\'';
+               }
+               else{
+                  $objectFields[$field['Field']] .= ' DEFAULT \'\'';
                }
 
              // end foreach
