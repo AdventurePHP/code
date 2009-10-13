@@ -182,8 +182,6 @@
           // end else
          }
 
-         //echo printObject($this);
-
        // end function
       }
 
@@ -215,9 +213,7 @@
       private function compareRelations($a,$b){
          $a = strtolower($a);
          $b = strtolower($b);
-         //echo '<br />compare '.$a.' <-> '.$b;
          if($a === $b){
-            //echo ' (equal)';
             return 0;
          }
          return 1;
@@ -244,12 +240,16 @@
        *
        * @param string[] $fields
        * @return string[] The fields relevant for comparison.
+       *
+       * @version
+       * Version 0.1, 10.10.2009<br />
+       * Version 0.2, 13.10.2009 (Corrected check for primary key)<br />
        */
       private function getRelevantFields($fields){
          $resultFields = array();
 
          foreach($fields as $field){
-            if(empty($field['Key'])
+            if($field['Key'] != 'PRI' // do exclude primary key, but allow MUL indices!
                && $field['Field'] != 'CreationTimestamp'
                && $field['Field'] != 'ModificationTimestamp'){
                $resultFields[] = $field;
@@ -378,7 +378,23 @@
 
             $objectFields = array();
             foreach($mainFields as $field){
+               
                $objectFields[$field['Field']] = strtoupper($field['Type']);
+
+               // add a null/not null indicator to preserve the correct datatype
+               if(empty($field['Null'])){
+                  $objectFields[$field['Field']] .= ' NOT NULL';
+               }
+               else {
+                  $objectFields[$field['Field']] .= ' NULL';
+               }
+
+               // add default indicator to preserve correct data type
+               if(!empty($field['Default'])){
+                  $objectFields[$field['Field']] .= ' DEFAULT \''.$field['Default'].'\'';
+               }
+
+             // end foreach
             }
 
             $this->__ReEngineeredMappingTable[$objectName] = array_merge(
@@ -399,6 +415,11 @@
        * @private
        * 
        * Generates update statements for the mapping configuration.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 04.10.2009<br />
+       * Version 0.2, 13.10.2009 (Added ticks to delimit table names.)<br />
        */
       private function generateMappingUpdateStatements(){
 
@@ -454,14 +475,13 @@
             if(count($values) > 0){
 
                foreach($values as $name){
-
                   $dataType = preg_replace(
                      $this->__RowTypeMappingFrom,
                      $this->__RowTypeMappingTo,
                      $this->__MappingTable[$alteredAttribute][$name]
                   );
-                  $this->__UpdateStatements[] = 'ALTER TABLE '
-                     .$this->__MappingTable[$alteredAttribute]['Table'].' CHANGE `'.$name.'` '
+                  $this->__UpdateStatements[] = 'ALTER TABLE `'
+                     .$this->__MappingTable[$alteredAttribute]['Table'].'` CHANGE `'.$name.'` '
                      .'`'.$name.'` '.$dataType.';';
 
                 // end if
