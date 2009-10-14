@@ -169,16 +169,16 @@
             }
 
             // set connection charset and collation
-            if(isset($section['DB.Charset'])){
-               $charset = trim($section['DB.Charset']);
+            if(isset($initParam['DB.Charset'])){
+               $charset = trim($initParam['DB.Charset']);
                if(!empty($charset)){
                   $this->__dbCharset = $charset;
                 // end if
                }
              // end if
             }
-            if(isset($section['DB.Collation'])){
-               $collation = trim($section['DB.Collation']);
+            if(isset($initParam['DB.Collation'])){
+               $collation = trim($initParam['DB.Collation']);
                if(!empty($collation)){
                   $this->__dbCollation = $collation;
                 // end if
