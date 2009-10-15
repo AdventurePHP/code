@@ -1,168 +1,164 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
-   *  @namespace tools::link
-   *  @class linkHandler
-   *  @static
-   *
-   *  Presents a method to generate and valudate urls.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 04.05.2005<br />
-   *  Version 0.2, 11.05.2005<br />
-   *  Version 0.3, 27.06.2005<br />
-   *  Version 0.4, 25.04.2006<br />
-   *  Version 0.5, 27.03.2007 (Replaced deprecated code)<br />
-   *  Version 0.6, 21.06.2008 (Introduced Registry)<br />
-   */
-   class linkHandler
-   {
+    * @namespace tools::link
+    * @class linkHandler
+    * @static
+    *
+    * Presents a method to generate and validate urls.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.05.2005<br />
+    * Version 0.2, 11.05.2005<br />
+    * Version 0.3, 27.06.2005<br />
+    * Version 0.4, 25.04.2006<br />
+    * Version 0.5, 27.03.2007 (Replaced deprecated code)<br />
+    * Version 0.6, 21.06.2008 (Introduced Registry)<br />
+    */
+   class linkHandler {
 
       private function linkHandler(){
       }
 
-
       /**
-      *  @public
-      *  @static
-      *
-      *  Generiert aus einer übergebenen URI und einem Parameter-Array eine neue URI.<br />
-      *  Es werden folgende Parameter übergeben:<br />
-      *  <br />
-      *    - string $URL: eine gültige URL.<br />
-      *    - array $Parameter: assoziatives, nicht mehr dimensional assoziatives, Array von URL-Parametern.<br />
-      *    - boolean $URLRewrite: bei 'true' wird die URL als Pfad-URL rewritet,<br />
-      *      bei 'false' so belassen. Der Standardwert wird aus der Registry bezogen.<br />
-      *  <br />
-      *  Die Option $Parameter bestimmt, welche Parameter der URL gelöscht, welche anders gesetzt,<br />
-      *  und welche belassen werden. Aus der URL<br />
-      *  <br />
-      *    http://myhost.de/index.php?Seite=123&Button=Send&Benutzer=456&Passwort=789<br />
-      *  <br />
-      *  wird durch Übergabe des Arrays<br />
-      *  <br />
-      *    array('Seite' => 'neueSeite','Button' => '')<br />
-      *  <br />
-      *  die URL<br />
-      *  <br />
-      *    http://myhost.de/index.php?Seite=neueSeite&Benutzer=456&Passwort=789<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 25.04.2006<br />
-      *  Version 0.2, 01.05.2006 (Bug behoben, dass Value mit Länge 1 herausgefiltert wird)<br />
-      *  Version 0.3, 06.05.2006 (Bug behoben, dass bei fehlender Query ein Fehler geworfen wird)<br />
-      *  Version 0.4, 29.07.2006 (Umbau, damit Links in Rewrite-Technik sauber geparst werden)<br />
-      *  Version 0.5, 14.08.2006 (Parameter "RewriteLink" wird nun standardmäßig mit der globalen Konfigurationskonstante "APPS__URL_REWRITING" gefüllt)<br />
-      *  Version 0.6, 24.02.2007 (in generateLink() umbenannt)<br />
-      *  Version 0.7, 27.05.2007 (Falls URL-Path nich existiert, wird dieser nun als leer angenommen)<br />
-      *  Version 0.8, 02.06.2007 (Ampersands werden nun konvertiert, falls URL-Rewriting nicht aktiviert ist)<br />
-      *  Version 0.9, 16.06.2007 (Ampersands werden am Anfang decodiert, da sonst Parsing-Fehler auftreten)<br />
-      *  Version 1.0, 26.08.2007 (URL wird nun auf is_string() geprüft; URL-Parameter akzeptieren keine mehrdimensionales Arrays!)<br />
-      *  Version 1.1, 21.06.2008 (Introduced the Registry to retrieve the URLRewriting information)<br />
-      */
-      static function generateLink($URL,$Parameter,$URLRewriting = null){
+       *  @public
+       *  @static
+       *
+       * Implements a link creation tool for page controller based application. Generates links
+       * given a base url and a set of manipulation params. Allows you to add, change and delete
+       * params within the base url.
+       * <p/>
+       * This components lets you easily generate links, that respect all included params without
+       * having to add then presenting the $_SERVER['REQUEST_URI'] as the first param.
+       * <p/>
+       * In case you apply the base url
+       * <pre>http://myhost.de/index.php?Seite=123&Button=Send&Benutzer=456&Passwort=789</pre>
+       * to the component, along with the manipulation params
+       * <pre>array('Seite' => 'neueSeite','Button' => '')</pre>
+       * the resulting url will be
+       * <pre>http://myhost.de/index.php?Seite=neueSeite&Benutzer=456&Passwort=789</pre>
+       *
+       * @param string $url The base url to generate a link with.
+       * @param string[] $parameter The params to manipulate the base link.
+       * @param boolean $urlRewriting Indicates, whether the link should be generated in url
+       *                              rewrite style (true) or not (false).
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 25.04.2006<br />
+       *  Version 0.2, 01.05.2006 (Removed bug, that values with length of one were filtered out)<br />
+       *  Version 0.3, 06.05.2006 (Removed bug, that misisng query generated an error)<br />
+       *  Version 0.4, 29.07.2006 (Refactoring to be able to create rewrite links)<br />
+       *  Version 0.5, 14.08.2006 (The third param is now initialized using the APPS__URL_REWRITING constant)<br />
+       *  Version 0.6, 24.02.2007 (Renamed to generateLink())<br />
+       *  Version 0.7, 27.05.2007 (Bugfix: non existent url paths are considered empty)<br />
+       *  Version 0.8, 02.06.2007 (Ampersands are now converted in case url rewriting is not active)<br />
+       *  Version 0.9, 16.06.2007 (Ampersands are now decoded at the beginning to avoid parse errors)<br />
+       *  Version 1.0, 26.08.2007 (URL is now checked to be a string. URL params do no like multi dimensional arrays!)<br />
+       *  Version 1.1, 21.06.2008 (Introduced the Registry to retrieve the URLRewriting information)<br />
+       */
+      public static function generateLink($url,$parameter,$urlRewriting = null){
 
-         // Prüfen, ob $URL ein String ist
-         if(!is_string($URL)){
-            trigger_error('[linkHandler::generateLink()] Given url is not a string!',E_USER_WARNING);
-            $URL = strval($URL);
+         // check, if given url is a string. if not print warning and convert to string
+         // if we do not convert to string parse_url() will fail!
+         if(!is_string($url)){
+            $paramStringParts = array();
+            foreach($parameter as $paramKey => $paramValue){
+               $paramStringParts[] = $paramKey.'='.$paramValue;
+            }
+            trigger_error('[linkHandler::generateLink()] Given url ('.$url.') is not a string! Given parameters are '
+               .'['.implode(',',$paramStringParts).']',E_USER_WARNING);
+            $url = strval($url);
           // end if
          }
 
-         // Apmersands decodieren
-         $URL = str_replace('&amp;','&',$URL);
+         // decode ampersands
+         $url = str_replace('&amp;','&',$url);
 
-         // URL zerlegen
-         $ParsedURL = parse_url($URL);
+         $parsedURL = parse_url($url);
 
-         // Query-String zerlegen
-         if(!isset($ParsedURL['query'])){
-            $ParsedURL['query'] = (string)'';
+         // resolve missing query string
+         if(!isset($parsedURL['query'])){
+            $parsedURL['query'] = (string)'';
           // end if
          }
 
-         // Path vorgeben, falls nicht vorhanden
-         if(!isset($ParsedURL['path'])){
-            $ParsedURL['path'] = (string)'';
+         // resolve missing path
+         if(!isset($parsedURL['path'])){
+            $parsedURL['path'] = (string)'';
           // end if
          }
 
          // set URLRewrite
-         if($URLRewriting === null){
-            $Reg = &Singleton::getInstance('Registry');
-            $URLRewriting = $Reg->retrieve('apf::core','URLRewriting');
+         if($urlRewriting === null){
+            $reg = &Singleton::getInstance('Registry');
+            $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
           // end if
          }
 
-         // URL je nach URL-Typ zerlegen
-         if($URLRewriting == true){
+         if($urlRewriting == true){
 
             // Request (in diesem Fall der 'Path') in Array extrahieren
-            $RequestArray = explode('/',strip_tags($ParsedURL['path']));
-            array_shift($RequestArray);
+            $requestArray = explode('/',strip_tags($parsedURL['path']));
+            array_shift($requestArray);
 
-            // Request-Array zurücksetzen
-            $SplitURL = array();
-
-            // Offset-Zähler setzen
+            $splitURL = array();
             $x = 0;
 
             // RequestArray durchiterieren und auf dem Offset x den Key und auf Offset x+1
             // die Value aus der Request-URI extrahieren
-            while($x <= (count($RequestArray) - 1)){
+            while($x <= (count($requestArray) - 1)){
 
-               if(isset($RequestArray[$x + 1])){
-                  $SplitURL[$RequestArray[$x]] = $RequestArray[$x + 1];
+               if(isset($requestArray[$x + 1])){
+                  $splitURL[$requestArray[$x]] = $requestArray[$x + 1];
                 // end if
                }
 
-               // Offset-Zähler um 2 erhöhen
+               // increment by 2, because the next offset is the key!
                $x = $x + 2;
 
              // end while
             }
 
-            $SplitParameters = $SplitURL;
+            $splitParameters = $splitURL;
 
           // end if
          }
          else{
-            $SplitURL = explode('&',$ParsedURL['query']);
+            $splitURL = explode('&',$parsedURL['query']);
 
             // Parameter der Query zerlegen
-            $SplitParameters = array();
+            $splitParameters = array();
 
-            for($i = 0; $i < count($SplitURL); $i++){
+            for($i = 0; $i < count($splitURL); $i++){
 
                // Nur Parameter größer 3 Zeichen (z.B. a=b) beachten
-               if(strlen($SplitURL[$i]) > 3){
+               if(strlen($splitURL[$i]) > 3){
 
-                  // Position des '=' suchen
-                  $EqualSign = strpos($SplitURL[$i],'=');
+                  $equalSign = strpos($splitURL[$i],'=');
 
                   // Array mit den Parametern als Key => Value - Paar erstellen
-                  $SplitParameters[substr($SplitURL[$i],0,$EqualSign)] = substr($SplitURL[$i],$EqualSign+1,strlen($SplitURL[$i]));
+                  $splitParameters[substr($splitURL[$i],0,$equalSign)] = substr($splitURL[$i],$equalSign+1,strlen($splitURL[$i]));
 
                 // end if
                }
@@ -173,33 +169,31 @@
           // end else
          }
 
-         // Erzeugtes und übergebenes Parameter-Set zusammenführen (dadurch können Löschungen realisiert werden)
-         $SplitParameters = array_merge($SplitParameters,$Parameter);
+         // create the final param set (this allows deletions with offsets that are empty or null!)
+         $splitParameters = array_merge($splitParameters,$parameter);
 
-         // Query-String an Hand der gemergten Parameter erzeugen
-         $Query = (string)'';
+         $query = (string)'';
 
-         foreach($SplitParameters as $Key => $Value){
+         foreach($splitParameters as $key => $value){
 
-            // Nur Keys mit einer Länge > 1 und Values mit einer Länge > 0 betrachten, damit
-            // ein 'Test' => '' eine Löschung bedeutet.
-            // Prüfen, ob $Value ein Array ist und dieses ablehnen!
-            if(!is_array($Value)){
+            // only allow keys with more than 1 character and a minimum length of 0.
+            // this enables the developer to delete params by applying an empty string
+            // or null as the param's value. in case the value is an array, deny it!
+            if(!is_array($value)){
 
-               if(strlen($Key) > 1 && strlen($Value) > 0){
+               if(strlen($key) > 1 && strlen($value) > 0){
 
-                  // '?' als erstes Bindezeichen setzen
-                  if(strlen($Query) == 0){
-                     $Query .= '?';
+                  // add '?' as first delimiter
+                  if(strlen($query) == 0){
+                     $query .= '?';
                    // end if
                   }
                   else{
-                     $Query .= '&';
+                     $query .= '&';
                    // end else
                   }
 
-                  // 'Key' => 'Value' - Paar zusammensetzen
-                  $Query .= trim($Key).'='.trim($Value);
+                  $query .= trim($key).'='.trim($value);
 
                 // end if
                }
@@ -210,55 +204,49 @@
           // end function
          }
 
-         // URL generieren
-         $NewURL = (string)'';
+         $newURL = (string)'';
 
-         // Falls Schema und Host gegeben, diese einbinden
-         if(isset($ParsedURL['scheme']) && isset($ParsedURL['host'])){
-            $NewURL .= $ParsedURL['scheme'].'://'.$ParsedURL['host'];
+         // in case schema and host is given add it!
+         if(isset($parsedURL['scheme']) && isset($parsedURL['host'])){
+            $newURL .= $parsedURL['scheme'].'://'.$parsedURL['host'];
           // end if
          }
 
-         // Falls nur Host gegeben, diesen einsetzen
-         if(!isset($ParsedURL['scheme']) && isset($ParsedURL['host'])){
-            $NewURL .= '/'.$ParsedURL['host'];
+         // if only the host is present, apply it either
+         if(!isset($parsedURL['scheme']) && isset($parsedURL['host'])){
+            $newURL .= '/'.$parsedURL['host'];
           // end if
          }
 
-
-         // URL final zusammensetzen
-         if($URLRewriting == true){
-            $FinishedURL = $NewURL.'/'.$Query;
-
+         // assemble final url
+         if($urlRewriting == true){
+            $finishedURL = $newURL.'/'.$query;
           // end if
          }
          else{
-            $FinishedURL = $NewURL.$ParsedURL['path'].$Query;
+            $finishedURL = $newURL.$parsedURL['path'].$query;
           // end else
          }
 
-         // Link URL-Rewriten, falls gewünscht
-         if($URLRewriting == true){
+         // rewrite url
+         if($urlRewriting == true){
 
-            $Replace = array('./?' => '/',
+            $replace = array('./?' => '/',
                              '/?' => '/',
                              '=' => '/',
                              '&' => '/'
                             );
-            $FinishedURL = strtr($FinishedURL,$Replace);
+            $finishedURL = strtr($finishedURL,$replace);
 
           // end if
          }
          else{
-
-            // Ampersands codieren
-            $FinishedURL = str_replace('&','&amp;',$FinishedURL);
-
+            // re-encode ampersands
+            $finishedURL = str_replace('&','&amp;',$finishedURL);
           // end else
          }
 
-         // Fertige URL zurückgeben
-         return $FinishedURL;
+         return $finishedURL;
 
        // end function
       }
