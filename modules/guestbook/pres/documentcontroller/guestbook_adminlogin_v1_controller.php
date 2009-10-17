@@ -22,7 +22,7 @@
    import('modules::guestbook::biz','GuestbookManager');
    import('core::session','SessionManager');
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
-   import('tools::link','linkHandler');
+   import('tools::link','LinkHandler');
    import('tools::request','RequestHandler');
    import('tools::http','HeaderManager');
 
@@ -31,9 +31,9 @@
    *  @namespace modules::guestbook::pres::documentcontroller
    *  @class guestbook_adminlogin_v1_controller
    *
-   *  Implementiert den DocumentController für das Stylesheet 'adminlogin.html'.<br />
+   *  Implementiert den DocumentController fï¿½r das Stylesheet 'adminlogin.html'.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 05.05.2007<br />
    */
@@ -42,7 +42,7 @@
 
       /**
       *  @private
-      *  Hält lokal verwendete Variablen.
+      *  Hï¿½lt lokal verwendete Variablen.
       */
       private $_LOCALS;
 
@@ -65,7 +65,7 @@
       *
       *  Implementiert die abstrakte Methode aus coreObject.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
@@ -77,7 +77,7 @@
             $guestbookNamespace = $this->__getGuestbookNamespace();
             $oSessMgr = new SessionManager($guestbookNamespace);
             $oSessMgr->destroySession($guestbookNamespace);
-            $link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','logout' => ''));
+            $link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','logout' => ''));
             HeaderManager::redirect($link);
           // end if
          }
@@ -95,7 +95,7 @@
                $oSessMgr->saveSessionData('LoginTime',date('H:i:s'));
                $oSessMgr->saveSessionData('AdminView',true);
 
-               $link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display'));
+               $link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display'));
                HeaderManager::forward($link);
 
              // end if
@@ -119,9 +119,9 @@
       /**
       *  @private
       *
-      *  Implementiert einen Wrapper für die Formular-Darstellung.<br />
+      *  Implementiert einen Wrapper fï¿½r die Formular-Darstellung.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */

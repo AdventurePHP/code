@@ -55,12 +55,11 @@
         * @return string The ready html-code.
         */
        public function transform(){
-           import('tools::link','linkHandler');
-           $link = linkHandler::generateLink($this->__url, $this->__parameter);
+           import('tools::link','LinkHandler');
+           $link = LinkHandler::generateLink($this->__url, $this->__parameter);
            return '<meta http-equiv="refresh" content="' . $this->__time . '; URL=' . $link . '">
    ';
        }
-
 
    }
 ?>

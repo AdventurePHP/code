@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('tools::link','frontcontrollerLinkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
 
    /**
     * @namespace modules::guestbook2009::pres::controller
@@ -42,7 +42,7 @@
 
           // generate the admin menu links using the fc linkhander to
           // be able to include the module in either page.
-          $editLink = frontcontrollerLinkHandler::generateLink(
+          $editLink = FrontcontrollerLinkHandler::generateLink(
              $_SERVER['REQUEST_URI'],
              array(
                'gbview' => 'admin',
@@ -51,7 +51,7 @@
           );
           $this->setPlaceHolder('editLink',$editLink);
 
-          $deleteLink = frontcontrollerLinkHandler::generateLink(
+          $deleteLink = FrontcontrollerLinkHandler::generateLink(
              $_SERVER['REQUEST_URI'],
              array(
                'gbview' => 'admin',
@@ -60,7 +60,7 @@
           );
           $this->setPlaceHolder('deleteLink',$deleteLink);
 
-          $logoutLink = frontcontrollerLinkHandler::generateLink(
+          $logoutLink = FrontcontrollerLinkHandler::generateLink(
              $_SERVER['REQUEST_URI'],
              array(
                'gbview' => 'admin',

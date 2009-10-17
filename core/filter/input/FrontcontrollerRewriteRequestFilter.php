@@ -98,7 +98,7 @@
          // BETA (08.09.2007): Es wird nun mit
          //   substr_count($_SERVER['REQUEST_URI'],$this->__FrontcontrollerActionKeyword.'/') > 0
          // auch auf das vorkommen eines ActionKeywords gepr�ft - ohne Delimiter. Bei Verwendung des
-         // frontcontrollerLinkHandlers ist das zwar nicht notwendig, bei manuellem Erstellen des
+         // FrontcontrollerLinkHandler's ist das zwar nicht notwendig, bei manuellem Erstellen des
          // FC-Links schon. Sollte es Probleme damit geben wird das Verhalten im folgenden Release
          // wieder entfernt.
          if(substr_count($_SERVER['REQUEST_URI'],$this->__ActionDelimiter) > 0 || substr_count($_SERVER['REQUEST_URI'],$this->__FrontcontrollerActionKeyword.'/') > 0){

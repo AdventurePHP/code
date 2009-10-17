@@ -19,7 +19,7 @@
     * -->
     */
 
-   import('tools::link','frontcontrollerLinkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
 
    /**
     * @namespace modules::kontakt4::pres::documentcontroller
@@ -27,7 +27,7 @@
     *
     * Document controller for the form view of the contact module.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 03.06.2006<br />
     * Version 0.2, 04.06.2006<br />
@@ -44,7 +44,7 @@
        *
        * Displays the form and handles the user input.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 03.06.2006<br />
        * Version 0.2, 04.06.2006<br />
@@ -57,7 +57,7 @@
          $form = &$this->__getForm('contact');
 
          // generate a generic action url, to be included in various pages
-         $action = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],$_REQUEST);
+         $action = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],$_REQUEST);
          $form->setAction($action);
 
          if($form->isSent() && $form->isValid()){

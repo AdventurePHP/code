@@ -28,9 +28,9 @@
    *  @namespace modules::guestbook::pres::documentcontroller
    *  @class guestbook_admindelete_v1_controller
    *
-   *  Implementiert den DocumentController für das Stylesheet 'admindelete.html'.<br />
+   *  Implementiert den DocumentController fï¿½r das Stylesheet 'admindelete.html'.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 05.05.2007<br />
    */
@@ -39,7 +39,7 @@
 
       /**
       *  @private
-      *  Hält lokal verwendete Variablen.
+      *  Hï¿½lt lokal verwendete Variablen.
       */
       private $_LOCALS;
 
@@ -55,7 +55,7 @@
       *
       *  Implementiert die abstrakte Methode aus coreObject.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
@@ -69,7 +69,7 @@
          if($oSessMgr->loadSessionData('AdminView') == true){
 
             if($Form__FormNo->isSent()){
-               $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','entryid' => ''));
+               $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','entryid' => ''));
                header('Location: '.$Link);
              // end if
             }
@@ -83,7 +83,7 @@
 
                $gM->deleteEntry($Entry);
 
-               $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','entryid' => ''));
+               $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','entryid' => ''));
                header('Location: '.$Link);
 
              // end if
@@ -95,7 +95,7 @@
           // end if
          }
          else{
-            $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','entryid' => ''));
+            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'display','entryid' => ''));
             header('Location: '.$Link);
           // end else
          }

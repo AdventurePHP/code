@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('tools::link','frontcontrollerLinkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
 
 
    /**
@@ -32,8 +32,7 @@
    *  @version
    *  Version 0.1, 29.10.2008<br />
    */
-   class ui_mediastream extends Document
-   {
+   class ui_mediastream extends Document {
 
       /**
       *  @protected
@@ -41,10 +40,8 @@
       */
       protected $__NoOutput = false;
 
-
-      function ui_mediastream(){
+      public function ui_mediastream(){
       }
-
 
       /**
       *  @public
@@ -56,7 +53,7 @@
       *  Version 0.1, 29.10.2008<br />
       *  Version 0.2, 01.11.2008<br />
       */
-      function onParseTime(){
+      public function onParseTime(){
 
          // gather attributes
          if($this->getAttribute('namespace') === null){
@@ -98,7 +95,7 @@
       *  Version 0.3, 05.11.2008 (Changed action base url generation)<br />
       *  Version 0.4, 07.11.2008 (Refactored the url generation due to some addressing bugs)<br />
       */
-      function transform(){
+      public function transform(){
 
          if($this->__NoOutput === false){
 
@@ -122,8 +119,7 @@
              // end else
             }
 
-            // return desired media url
-            return frontcontrollerLinkHandler::generateLink($actionurl,$actionParam);
+            return FrontcontrollerLinkHandler::generateLink($actionurl,$actionParam);
 
           // end if
          }

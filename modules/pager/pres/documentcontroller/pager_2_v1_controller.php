@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('tools::link','frontcontrollerLinkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
    import('tools::request','RequestHandler');
 
 
@@ -27,20 +27,20 @@
    *  @namespace modules::schwarzesbrett::pres::documentcontroller::pager
    *  @class pager_2_v1_controller
    *
-   *  Implementiert den DocumentController für den PagerManager. Folgende Features sind enthalten<br />
+   *  Implementiert den DocumentController fï¿½r den PagerManager. Folgende Features sind enthalten<br />
    *  <br />
    *    - Anzeige der Seiten<br />
-   *    - Vor- & Zurück-Button<br />
-   *    - Dynamisches Wählen der Anzahl der Einträge pro Seite<br />
+   *    - Vor- & Zurï¿½ck-Button<br />
+   *    - Dynamisches Wï¿½hlen der Anzahl der Eintrï¿½ge pro Seite<br />
    *  <br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 06.08.2006<br />
-   *  Version 0.2, 26.11.2006 (Pager gibt einen Leer-String zurück, falls keine Seiten vorhanden)<br />
+   *  Version 0.2, 26.11.2006 (Pager gibt einen Leer-String zurï¿½ck, falls keine Seiten vorhanden)<br />
    *  Version 0.3, 03.01.2007 (PageController V2 ready)<br />
    *  Version 0.4, 11.03.2007 (Komplett auf PageController V2 migriert)<br />
-   *  Version 0.5, 16.11.2007 (Auf frontcontrollerlinkHandler umgestellt)<br />
+   *  Version 0.5, 16.11.2007 (Auf FrontcontrollerLinkHandler umgestellt)<br />
    */
    class pager_2_v1_controller extends baseController
    {
@@ -61,22 +61,22 @@
       *
       *  Implementiert die abstrakte Methode 'transformContent'.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 06.08.2006<br />
-      *  Version 0.2, 26.11.2006 (Pager gibt einen Leer-String zurück, falls keine Seiten vorhanden)<br />
+      *  Version 0.2, 26.11.2006 (Pager gibt einen Leer-String zurï¿½ck, falls keine Seiten vorhanden)<br />
       *  Version 0.3, 03.01.2007 (PageController V2 ready)<br />
       *  Version 0.4, 11.03.2007 (Komplett auf PageController V2 migriert)<br />
       *  Version 0.5, 29.08.2007 (Anker-Name mit eingebunden)<br />
-      *  Version 0.6, 16.11.2007 (Auf frontcontrollerlinkHandler umgestellt)<br />
+      *  Version 0.6, 16.11.2007 (Switched to FrontcontrollerLinkHandler)<br />
       *  Version 0.7, 02.03.2008 (Mehrsprachigkeit der Beschriftung eingeführt)<br />
       */
       function transformContent(){
 
-         // LOCALS füllen
+         // LOCALS fï¿½llen
          $this->_LOCALS = RequestHandler::getValues(array($this->__Attributes['Config']['ParameterCountName'] => $this->__Attributes['Config']['EntriesPerPage']));
 
-         // Pager leer zurückgeben, falls keine Seiten vorhanden sind.
+         // Pager leer zurï¿½ckgeben, falls keine Seiten vorhanden sind.
          if(count($this->__Attributes['Pages']) == 0){
 
             // Content des aktuellen Designs leeren
@@ -97,7 +97,7 @@
          // Aktuelle Seite generieren
          $CurrentPage = (int) 0;
 
-         // Anzahl der Einträge
+         // Anzahl der Eintrï¿½ge
          $EntriesCount = (int) 0;
 
          // Puffer initialisieren
@@ -140,7 +140,7 @@
             // Anzahl der Seiten setzen
             $PageCount = $this->__Attributes['Pages'][$i]->get('pageCount');
 
-            // Anzahl der Datensätze setzen
+            // Anzahl der Datensï¿½tze setzen
             $EntriesCount = $this->__Attributes['Pages'][$i]->get('entriesCount');
 
           // end for
@@ -159,7 +159,7 @@
             $Start = ($Page * $EntriesPerPage) - $EntriesPerPage;
 
             // Link generieren
-            $Link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array($this->__Attributes['Config']['ParameterStartName'] => $Start));
+            $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array($this->__Attributes['Config']['ParameterStartName'] => $Start));
 
 
             // Template vorherige Seite ausgeben
@@ -197,7 +197,7 @@
             $Start = ($Page * $EntriesPerPage) - $EntriesPerPage;
 
             // Link generieren
-            $Link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array($this->__Attributes['Config']['ParameterStartName'] => $Start));
+            $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array($this->__Attributes['Config']['ParameterStartName'] => $Start));
 
             $Template__NaechsteSeite_Aktiv = & $this->__getTemplate('NaechsteSeite_Aktiv');
 
@@ -223,7 +223,7 @@
          }
 
 
-         // Einträge / Seite
+         // Eintrï¿½ge / Seite
          $EntriesPerPage = array(5,10,15,20);
          $Buffer = (string)'';
 
@@ -239,7 +239,7 @@
             }
 
             // Link generieren
-            $Link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array($this->__Attributes['Config']['ParameterStartName'] => '0',$this->__Attributes['Config']['ParameterCountName'] => $Value));
+            $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array($this->__Attributes['Config']['ParameterStartName'] => '0',$this->__Attributes['Config']['ParameterCountName'] => $Value));
 
             if(isset($this->__Attributes['AnchorName'])){
                $Template->setPlaceHolder('Link',$Link.'#'.$this->__Attributes['AnchorName']);
@@ -261,7 +261,7 @@
 
          $this->setPlaceHolder('EntriesPerPage',$Buffer);
 
-         // Beschriftung für Einträge/Seite einfügen
+         // Beschriftung fï¿½r Eintrï¿½ge/Seite einfï¿½gen
          $Template__EntriesPerPage = &$this->__getTemplate('EntriesPerPage_'.$this->__Language);
          $this->setPlaceHolder('EntriesPerPage_Display',$Template__EntriesPerPage->transformTemplate());
 

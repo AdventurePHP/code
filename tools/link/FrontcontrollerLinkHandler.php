@@ -23,20 +23,20 @@
 
    /**
     * @namespace tools::link
-    * @class frontcontrollerLinkHandler
+    * @class FrontcontrollerLinkHandler
     *
-    * Implements the linkHandler for front controller purposes.
+    * Implements a LinkHandler for front controller purposes.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 10.02.2007<br />
     * Version 0.2, 24.02.2007 (Added new method generateActionLink())<br />
     * Version 0.3, 08.07.2007 (Complete redesign due to changes of the request filter)<br />
     * Version 0.4, 29.10.2007 (Added new method generateURLParams())<br />
     */
-   class frontcontrollerLinkHandler {
+   class FrontcontrollerLinkHandler {
 
-      private function frontcontrollerLinkHandler(){
+      private function FrontcontrollerLinkHandler(){
       }
 
       /**
@@ -60,10 +60,10 @@
        * Version 0.1, 29.10.2007<br />
        * Version 0.2, 21.06.2008 (Introduced the Registry to retrieve the URLRewriting information)<br />
        */
-      static function generateURLParams($actionNamespace,$actionName,$actionParams = array(),$urlRewriting = null){
+      public static function generateURLParams($actionNamespace,$actionName,$actionParams = array(),$urlRewriting = null){
 
          $t = &Singleton::getInstance('BenchmarkTimer');
-         $id = 'frontcontrollerLinkHandler::generateURLParamsByAction('.xmlParser::generateUniqID().')';
+         $id = 'FrontcontrollerLinkHandler::generateURLParamsByAction('.xmlParser::generateUniqID().')';
          $t->start($id);
 
          // gather the delimiters used to define an action's url representation
@@ -149,7 +149,7 @@
        *                           style (true) or not (false).
        * @return string The desired url.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 24.02.2007<br />
        * Version 0.2, 08.07.2007 (Complete redesign due to redesign of the request filter)<br />
@@ -161,7 +161,7 @@
       public static function generateLink($url,$newParams = array(),$urlRewriting = null){
 
          $t = &Singleton::getInstance('BenchmarkTimer');
-         $id = 'frontcontrollerLinkHandler::generateLink('.md5($url).')';
+         $id = 'FrontcontrollerLinkHandler::generateLink('.md5($url).')';
          $t->start($id);
 
          // check, if given url is a string. if not print warning and convert to string
@@ -171,7 +171,7 @@
             foreach($newParams as $paramKey => $paramValue){
                $paramStringParts[] = $paramKey.'='.$paramValue;
             }
-            trigger_error('[frontcontrollerLinkHandler::generateLink()] Given url ('.$url.') is not a string! Given '
+            trigger_error('[FrontcontrollerLinkHandler::generateLink()] Given url ('.$url.') is not a string! Given '
                .'parameters are ['.implode(',',$paramStringParts).']',E_USER_WARNING);
             $url = strval($url);
           // end if
@@ -237,7 +237,7 @@
                      // only add pared params, when no action keyword is presend
                      if(substr_count($urlPathParts[$i],$namespaceKeywordDelimiter.$actionKeyword.$keywordClassDelimiter) < 1){
                         // analyze and merge params of the current part
-                        $params = array_merge($params,frontcontrollerLinkHandler::createArrayFromRequestString($urlPathParts[$i]));
+                        $params = array_merge($params,FrontcontrollerLinkHandler::createArrayFromRequestString($urlPathParts[$i]));
                       // end if
                      }
                      else{
@@ -258,7 +258,7 @@
             }
             else{
                // analyze url path
-               $params = array_merge($params,frontcontrollerLinkHandler::createArrayFromRequestString($parsedURL['path']));
+               $params = array_merge($params,FrontcontrollerLinkHandler::createArrayFromRequestString($parsedURL['path']));
              // end else
             }
 
@@ -488,7 +488,7 @@
        * @param string $requestString The url substring
        * @return string[] An associative array with params an values.
        *
-       * @author Christian W. Schäfer
+       * @author Christian W. Schï¿½fer
        * @version
        * Version 0.1, 07.07.2007<br />
        */

@@ -23,7 +23,7 @@
    import('tools::request','RequestHandler');
    import('tools::string','stringAssistant');
    import('core::session','SessionManager');
-   import('tools::link','frontcontrollerLinkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
 
    /**
     * @namespace modules::captcha::pres::taglib
@@ -223,7 +223,7 @@
          }
 
          // create desired media url
-         $actionURL = frontcontrollerLinkHandler::generateLink($actionurl,$actionParam);
+         $actionURL = FrontcontrollerLinkHandler::generateLink($actionurl,$actionParam);
 
          // initialize captcha source
          $captchaCode = '<div class="captcha"><img src="'.$actionURL.'" alt="CAPTCHA" style="float:left;" ';

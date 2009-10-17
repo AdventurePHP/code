@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('tools::link','frontcontrollerLinkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
    import('tools::request','RequestHandler');
    import('modules::pager::biz','PagerPage');
    import('modules::pager::data','PagerMapper');
@@ -307,7 +307,7 @@
       *  Version 0.1, 05.08.2006<br />
       *  Version 0.2, 06.08.2006<br />
       *  Version 0.3, 14.08.2006 (Added a global configuration for url rewriting)<br />
-      *  Version 0.4, 16.11.2007 (Switched to the frontcontrollerLinkHandler)<br />
+      *  Version 0.4, 16.11.2007 (Switched to the FrontcontrollerLinkHandler)<br />
       *  Version 0.5, 26.04.2008 (Avoid division by zero)<br />
       *  Version 0.6, 19.01.2009 (Changed the implementation due to refactoring)<br />
       */
@@ -340,7 +340,7 @@
             $pages[$i] = new PagerPage();
 
             // generate the link
-            $link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array($this->__PagerConfig['Pager.ParameterStartName'] => $start));
+            $link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array($this->__PagerConfig['Pager.ParameterStartName'] => $start));
             $pages[$i]->set('Link',$link);
 
             // set the number of the page

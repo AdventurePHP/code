@@ -20,7 +20,7 @@
    */
 
    import('modules::guestbook::biz','GuestbookManager');
-   import('tools::link','frontcontrollerLinkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
    import('core::session','SessionManager');
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
    import('tools::string','stringAssistant');
@@ -30,26 +30,26 @@
    *  @namespace modules::guestbook::pres::documentcontroller
    *  @class guestbook_display_v1_controller
    *
-   *  Implementiert den DocumentController für das Stylesheet 'display.html'.<br />
+   *  Implementiert den DocumentController fï¿½r das Stylesheet 'display.html'.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 12.04.2007<br />
-   *  Version 0.2, 07.01.2008 (Änderungen zur Mehrsprachigkeit, Spamschutz für E-Mails)<br />
+   *  Version 0.2, 07.01.2008 (ï¿½nderungen zur Mehrsprachigkeit, Spamschutz fï¿½r E-Mails)<br />
    */
    class guestbook_display_v1_controller extends guestbookBaseController
    {
 
       /**
       *  @protected
-      *  Hält lokal verwendete Variablen.
+      *  Hï¿½lt lokal verwendete Variablen.
       */
       protected $_LOCALS;
 
 
       /**
       *  @protected
-      *  Hält eine Instanz des Session-Managers.
+      *  Hï¿½lt eine Instanz des Session-Managers.
       */
       protected $__sessMgr;
 
@@ -59,7 +59,7 @@
       *
       *  Konstruktor der Klasse.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
@@ -72,10 +72,10 @@
       *
       *  Implementiert die abstrakte Methode "transformContent()".<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 13.04.2007<br />
-      *  Version 0.2, 05.05.2007 (Admin-Link hinzugefügt)<br />
+      *  Version 0.2, 05.05.2007 (Admin-Link hinzugefï¿½gt)<br />
       */
       public function transformContent(){
          $this->__sessMgr = new SessionManager($this->__getGuestbookNamespace());
@@ -95,10 +95,10 @@
       *
       *  @return string $CreateEntry; HTML-Ausgabe des "Eintrag verfassen"-Links
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 13.04.2007<br />
-      *  Version 0.2, 07.01.2008 (Mehrsprachigkeit eingeführt)<br />
+      *  Version 0.2, 07.01.2008 (Mehrsprachigkeit eingefï¿½hrt)<br />
       */
       private function __generateCreateEntryLink(){
 
@@ -106,10 +106,10 @@
          $Template__CreateEntry = &$this->__getTemplate('CreateEntry_'.$this->__Language);
 
          // Link generieren und einsetzen
-         $Link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'createentry','entryid' => ''));
+         $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'createentry','entryid' => ''));
          $Template__CreateEntry->setPlaceHolder('Link',$Link);
 
-         // Ausgabe zurückgeben
+         // Ausgabe zurï¿½ckgeben
          return $Template__CreateEntry->transformTemplate();
 
        // end function
@@ -119,15 +119,15 @@
       /**
       *  @private
       *
-      *  Erzeugt die Ausgabe des "Gästebuch administrieren"-Links, bzw. im eingeloggten Zustand den<br />
+      *  Erzeugt die Ausgabe des "Gï¿½stebuch administrieren"-Links, bzw. im eingeloggten Zustand den<br />
       *  Link zum verlassen des Admin-Modus.<br />
       *
-      *  @return string $ControlGuestbook; HTML-Ausgabe des "Gästebuch administrieren"-Links
+      *  @return string $ControlGuestbook; HTML-Ausgabe des "Gï¿½stebuch administrieren"-Links
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.05.2007<br />
-      *  Version 0.2, 07.01.2008 (Mehrsprachigkeit eingeführt)<br />
+      *  Version 0.2, 07.01.2008 (Mehrsprachigkeit eingefï¿½hrt)<br />
       */
       private function __generateControlGuestbookLink(){
 
@@ -137,10 +137,10 @@
             $Template__ControlGuestbook_Logout = &$this->__getTemplate('ControlGuestbook_Logout_'.$this->__Language);
 
             // Link generieren und einsetzen
-            $Link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'adminlogin','logout' => 'true','entryid' => ''));
+            $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'adminlogin','logout' => 'true','entryid' => ''));
             $Template__ControlGuestbook_Logout->setPlaceHolder('Link',$Link);
 
-            // Ausgabe zurückgeben
+            // Ausgabe zurï¿½ckgeben
             return $Template__ControlGuestbook_Logout->transformTemplate();
 
           // end if
@@ -151,10 +151,10 @@
             $Template__ControlGuestbook_Login = &$this->__getTemplate('ControlGuestbook_Login_'.$this->__Language);
 
             // Link generieren und einsetzen
-            $Link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'adminlogin','entryid' => ''));
+            $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'adminlogin','entryid' => ''));
             $Template__ControlGuestbook_Login->setPlaceHolder('Link',$Link);
 
-            // Ausgabe zurückgeben
+            // Ausgabe zurï¿½ckgeben
             return $Template__ControlGuestbook_Login->transformTemplate();
 
           // end else
@@ -171,7 +171,7 @@
       *
       *  @return string $EntryList; HTML-Ausgabe der Eintrags-Liste
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 13.04.2007<br />
       */
@@ -180,7 +180,7 @@
          // Manager holen
          $gM = &$this->__getGuestbookManager();
 
-         // Einträge holen
+         // Eintrï¿½ge holen
          $Guestbook = $gM->loadGuestbook();
          $Entries = $Guestbook->getEntries();
 
@@ -207,7 +207,7 @@
       *  @param Entry $Entry; Entry-Objekt
       *  @return string $EntryOut; HTML-Ausgabe des Eintrags
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 13.04.2007<br />
       *  Version 0.2, 07.01.2008 (E-Mail wird nun codiert dargestellt,Text mehrzeilig)<br />
@@ -235,7 +235,7 @@
          $Template__Entry->setPlaceHolder('Date',$Entry->get('Date'));
          $Template__Entry->setPlaceHolder('Time',$Entry->get('Time'));
 
-         // Comments einfügen
+         // Comments einfï¿½gen
          $Comments = $Entry->getComments();
          $CommentBuffer = (string)'';
 
@@ -251,7 +251,7 @@
 
          $Template__Entry->setPlaceHolder('Comments',$CommentBuffer);
 
-         // Ausgabe zurückgeben
+         // Ausgabe zurï¿½ckgeben
          return $Template__Entry->transformTemplate();
 
        // end function
@@ -266,7 +266,7 @@
       *  @param Comment $Comment; Comment-Objekt
       *  @return string $CommentOut; HTML-Ausgabe des Kommenrats
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 14.04.2007<br />
       */
@@ -288,12 +288,12 @@
       /**
       *  @private
       *
-      *  Erzeugt einen Link für das Löschen eines Beitrags.<br />
+      *  Erzeugt einen Link fï¿½r das Lï¿½schen eines Beitrags.<br />
       *
       *  @param string $EntryID; ID des Eintrags
       *  @return string $CommentOut; HTML-Ausgabe des Kommenrats
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 14.04.2007<br />
       */
@@ -305,10 +305,10 @@
             $Template__AdminDelete = &$this->__getTemplate('AdminDelete');
 
             // Link generieren und einsetzen
-            $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'admindelete','entryid' => $EntryID));
+            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'admindelete','entryid' => $EntryID));
             $Template__AdminDelete->setPlaceHolder('Link',$Link);
 
-            // Template zurückgeben
+            // Template zurï¿½ckgeben
             return $Template__AdminDelete->transformTemplate();
 
           // end if
@@ -328,7 +328,7 @@
       *  @param Comment $Comment; Comment-Objekt
       *  @return string $CommentOut; HTML-Ausgabe des Kommenrats
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 14.04.2007<br />
       */
@@ -340,10 +340,10 @@
             $Template__AdminEdit = &$this->__getTemplate('AdminEdit');
 
             // Link generieren und einsetzen
-            $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'adminedit','entryid' => $EntryID));
+            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'adminedit','entryid' => $EntryID));
             $Template__AdminEdit->setPlaceHolder('Link',$Link);
 
-            // Template zurückgeben
+            // Template zurï¿½ckgeben
             return $Template__AdminEdit->transformTemplate();
 
           // end if
@@ -358,12 +358,12 @@
       /**
       *  @private
       *
-      *  Erzeugt den Link zum Hinzufügen eines Kommentars.<br />
+      *  Erzeugt den Link zum Hinzufï¿½gen eines Kommentars.<br />
       *
       *  @param string $EntryID; ID des aktuell angezeigten Eintrags
       *  @return string $CommentOut; HTML-Ausgabe des Kommenrats
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 14.04.2007<br />
       */
@@ -375,10 +375,10 @@
             $Template__AdminAddComment = &$this->__getTemplate('AdminAddComment');
 
             // Link generieren und einsetzen
-            $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'adminaddcomment','entryid' => $EntryID));
+            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'adminaddcomment','entryid' => $EntryID));
             $Template__AdminAddComment->setPlaceHolder('Link',$Link);
 
-            // Template zurückgeben
+            // Template zurï¿½ckgeben
             return $Template__AdminAddComment->transformTemplate();
 
           // end if
@@ -393,13 +393,13 @@
       /**
       *  @private
       *
-      *  Erzeugt den Link zum Löschen eines Kommentars.<br />
+      *  Erzeugt den Link zum Lï¿½schen eines Kommentars.<br />
       *
       *  @param string $CommentID; ID des Kommentars
       *  @param string $EntryID; ID des Eintrags
-      *  @return string $AdminDeleteComment; HTML-Ausgabe für den Link zum Löschen eines Kommentars
+      *  @return string $AdminDeleteComment; HTML-Ausgabe fï¿½r den Link zum Lï¿½schen eines Kommentars
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 19.04.2007<br />
       */
@@ -411,10 +411,10 @@
             $Template__AdminDeleteComment = &$this->__getTemplate('AdminDeleteComment');
 
             // Link generieren und einsetzen
-            $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'admindeletecomment','commentid' => $CommentID));
+            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'admindeletecomment','commentid' => $CommentID));
             $Template__AdminDeleteComment->setPlaceHolder('Link',$Link);
 
-            // Template zurückgeben
+            // Template zurï¿½ckgeben
             return $Template__AdminDeleteComment->transformTemplate();
 
           // end if
@@ -433,9 +433,9 @@
       *
       *  @param string $CommentID; ID des Kommentars
       *  @param string $EntryID; ID des Eintrags
-      *  @return string $AdminDeleteComment; HTML-Ausgabe für den Link zum Editieren eines Kommentars
+      *  @return string $AdminDeleteComment; HTML-Ausgabe fï¿½r den Link zum Editieren eines Kommentars
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 19.04.2007<br />
       */
@@ -447,10 +447,10 @@
             $Template__AdminEditComment = &$this->__getTemplate('AdminEditComment');
 
             // Link generieren und einsetzen
-            $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'admineditcomment','commentid' => $CommentID, 'entryid' => $EntryID));
+            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'admineditcomment','commentid' => $CommentID, 'entryid' => $EntryID));
             $Template__AdminEditComment->setPlaceHolder('Link',$Link);
 
-            // Template zurückgeben
+            // Template zurï¿½ckgeben
             return $Template__AdminEditComment->transformTemplate();
 
           // end if

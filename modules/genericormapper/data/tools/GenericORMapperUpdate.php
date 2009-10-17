@@ -32,12 +32,12 @@
     * the setup tool.
     * <p/>
     * If you have adapted an automatic generated table layout, please remember the steps
-    * and execute them after update. This is necessary for additional indices, in case the
+    * and execute them after update. This is necessary for additional indexes, in case the
     * columns having a custom index are changed.
     * <p/>
-    * In order to adapt the automatically generated changeset, please ensure the last param
+    * In order to adapt the automatically generated change-set, please ensure the last param
     * to be <em>false</em>. This results in displaying the change statements rather to execute
-    * them agains the given database.
+    * them against the given database.
     *
     * @author Christian Achatz
     * @version
@@ -381,8 +381,61 @@
                
                $objectFields[$field['Field']] = strtoupper($field['Type']);
 
-               // add a null/not null indicator to preserve the correct datatype
+
+/*Wenn das Feld NULL sein darf, bewirkt KEINE Angabe eines DEFAULTs, dass DEFAULT NULL gesetzt wird. Wird hingegen
+ein benutzerdefinierter String genutzt, wird dieser in der Spalte "Default" ausgegeben. Dazu zählt auch ein leerer
+String. Sprich: Steht hier kein "NULL", ist es DEFAULT ''. Steht hier ein NULL, kann es jedoch nichts oder aber
+DEFAULT NULL sein. Kann man da vielleicht eine Ausnahme programmieren? Sonst wäre es doof, wenn man stetig den
+DEFAULT-Value angeben müsste!? Bei den Feldern, die NICHT NULL sein dürfen, ist es etwas konfus: Ich darf zwar kein
+DEFAULT NULL angeben, aber lasse ich DEFAUL weg, bekomme ich als Standard "NULL" zurückgeliefert. Sehr merkwürdig, aber
+in diesem Falle ist es wohl so, dass dies bedeuten soll, dass hier KEIN DEFAULT gesetzt wird. Ansonsten gilt bei Angabe
+einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/               
+
+
+               /*
+                  CREATE TABLE IF NOT EXISTS `test` (
+                    `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                    `Test1` varchar(10) ,
+                    `Test2` varchar(10) DEFAULT '',
+                    `Test3` varchar(10) DEFAULT NULL,
+                    `Test4` varchar(10) NOT NULL,
+                    `Test5` varchar(10) NOT NULL DEFAULT '',
+                    PRIMARY KEY (`ID`)
+                  ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+                  +-------+------------------+------+-----+---------+----------------+
+                  | Field | Type             | Null | Key | Default | Extra          |
+                  +-------+------------------+------+-----+---------+----------------+
+                  | ID    | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+                  | Test1 | varchar(10)      | YES  |     | NULL    |                |
+                  | Test2 | varchar(10)      | YES  |     |         |                |
+                  | Test3 | varchar(10)      | YES  |     | NULL    |                |
+                  | Test4 | varchar(10)      | NO   |     | NULL    |                |
+                  | Test5 | varchar(10)      | NO   |     |         |                |
+                  +-------+------------------+------+-----+---------+----------------+
+               */
+
+               // correct empty NULL values as NO for MySQL4
                if(empty($field['Null'])){
+                  $field['Null'] = 'NO';                  
+               }
+
+               // 
+               /*if($field['Null'] == 'YES' && $field['Default'] == 'NULL'){
+                  $objectFields[$field['Field']] .= '';
+               }
+               elseif($field['Null'] == 'YES' && empty($field['Default'])){
+                  $objectFields[$field['Field']] .= 'DEFAULT \'\'';
+               }
+               elseif($field['Null'] == 'NO' && $field['Default'] == 'NULL'){
+                     $objectFields[$field['Field']] .= 'NOT NULL';
+               }
+               elseif($field['Null'] == 'NO' && empty($field['Default'])){
+                     $objectFields[$field['Field']] .= 'NOT NULL DEFAULT \'\'';
+               }*/
+
+               // add a null/not null indicator to preserve the correct datatype
+               if($field['Null'] == 'NO'){
                   $objectFields[$field['Field']] .= ' NOT NULL';
                }
                else {

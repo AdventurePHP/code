@@ -25,7 +25,7 @@
    import('tools::http','HeaderManager');
    import('modules::guestbook2009::biz','GuestbookModel');
    import('core::session','SessionManager');
-   import('tools::link','frontcontrollerLinkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
    import('modules::pager::biz','PagerManagerFabric');
    
    /**
@@ -236,7 +236,7 @@
          }
 
          // display the admin start page
-         $link = frontcontrollerLinkHandler::generateLink(
+         $link = FrontcontrollerLinkHandler::generateLink(
             $_SERVER['REQUEST_URI'],
             array(
                'gbview' => 'admin',
@@ -266,7 +266,7 @@
          $session->deleteSessionData('LoggedIn');
          
          // display the list view
-         $link = frontcontrollerLinkHandler::generateLink(
+         $link = FrontcontrollerLinkHandler::generateLink(
             $_SERVER['REQUEST_URI'],
             array(
                'gbview' => 'list',
@@ -297,7 +297,7 @@
 
          // redirect to admin page
          if($loggedId !== 'true'){
-            $startLink = frontcontrollerLinkHandler::generateLink(
+            $startLink = FrontcontrollerLinkHandler::generateLink(
                $_SERVER['REQUEST_URI'],
                array(
                   'gbview' => 'list',
@@ -336,7 +336,7 @@
             $session->saveSessionData('LoggedIn','true');
 
             // redirect to admin page
-            $adminLink = frontcontrollerLinkHandler::generateLink(
+            $adminLink = FrontcontrollerLinkHandler::generateLink(
                $_SERVER['REQUEST_URI'],
                array(
                   'gbview' => 'admin',
@@ -371,7 +371,7 @@
          // Forward to the desired view to prevent F5-bugs.
          $entryId = $entry->getId();
          if(!empty($entryId)){
-            $link = frontcontrollerLinkHandler::generateLink(
+            $link = FrontcontrollerLinkHandler::generateLink(
                $_SERVER['REQUEST_URI'],
                array(
                   'gbview' => 'admin'
@@ -380,7 +380,7 @@
           // end if
          }
          else{
-            $link = frontcontrollerLinkHandler::generateLink(
+            $link = FrontcontrollerLinkHandler::generateLink(
                $_SERVER['REQUEST_URI'],
                array(
                   'gbview' => 'list'

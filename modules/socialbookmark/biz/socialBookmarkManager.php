@@ -19,21 +19,21 @@
     * -->
     */
 
-   import('tools::link','frontcontrollerLinkHandler');
-   import('tools::link','linkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
+   import('tools::link','LinkHandler');
    import('modules::socialbookmark::biz','bookmarkEntry');
 
    /**
     * @namespace modules::socialbookmark::biz
     * @class socialBookmarkManager
     *
-    * Generiert einen Bookmark-HTML-Code. Um die angezeigten Services erweitern zu können die
-    * Methode addBookmarkService() verwendet werden. Muss über den ServiceManager instanziiert
+    * Generiert einen Bookmark-HTML-Code. Um die angezeigten Services erweitern zu kï¿½nnen die
+    * Methode addBookmarkService() verwendet werden. Muss ï¿½ber den ServiceManager instanziiert
     * werden.
     * <p />
     * Erwartet eine Konfiguration mit dem Namen "{ENVIRONMENT}_bookmarkservices.ini" unter
-    * dem Namespace "/config/modules/socialbookmark/{Context}/" mit jeweils einer Sektion für einen
-    * Bookmarkservice. Diese muss wie folgt aufgebaut sein (Beispiel für del.icio.us):
+    * dem Namespace "/config/modules/socialbookmark/{Context}/" mit jeweils einer Sektion fï¿½r einen
+    * Bookmarkservice. Diese muss wie folgt aufgebaut sein (Beispiel fï¿½r del.icio.us):
     * <pre>
     * [del.icio.us]
     * BookmarkService.BaseURL = "http://del.icio.us/post"
@@ -43,9 +43,9 @@
     * BookmarkService.Display.Image = "bookmark_del_icio_us"
     * BookmarkService.Display.ImageExt = "png"
     * </pre>
-    * Darüber hinaus muss für die FrontController-basierte Ausgabe der Bilder eine
+    * Darï¿½ber hinaus muss fï¿½r die FrontController-basierte Ausgabe der Bilder eine
     * Action-Konfiguration unter "/config/modules/socialbookmark/actions/{Context}/" angelegt sein
-    * und die Action für das Anzeigen der Bilder definieren. Diese muss folgende Werte haben:
+    * und die Action fï¿½r das Anzeigen der Bilder definieren. Diese muss folgende Werte haben:
     * <pre>
     * [showImage]
     * FC.ActionNamespace = "modules::socialbookmark::biz::actions"
@@ -65,7 +65,7 @@
 
       /**
        * @protected
-       * @var string Linkziel der Bookmark-Einträge.
+       * @var string Linkziel der Bookmark-Eintrï¿½ge.
        */
       protected $__Target = '_blank';
 
@@ -89,7 +89,7 @@
 
       /**
        * @protected
-       * @var string Höhe des Bookmark-Icons.
+       * @var string Hï¿½he des Bookmark-Icons.
        */
       protected $__Height = '20';
 
@@ -105,11 +105,11 @@
       /**
        * @public
        *
-       * Fügt einen Bookmark-Service hinzu.<br />
+       * Fï¿½gt einen Bookmark-Service hinzu.<br />
        *
        * @param bookmarkEntry $service The bookmark entry to add.
        *
-       * @author Christian W. Schäfer
+       * @author Christian W. Schï¿½fer
        * @version
        * Version 0.1, 07.09.2007<br />
        */
@@ -121,15 +121,15 @@
       /**
        * @public
        *
-       * Generiert einen Bookmark-HTML-Code und gibt diesen zurück.
+       * Generiert einen Bookmark-HTML-Code und gibt diesen zurï¿½ck.
        *
        * @return string HTML-Code der konfigurierten Bookmarks.
        *
-       * @author Christian W. Schäfer
+       * @author Christian W. Schï¿½fer
        * @version
        * Version 0.1, 02.06.2007<br />
        * Version 0.2, 07.09.2007<br />
-       * Version 0.3, 08.09.2007 (Profiling hinzugefügt)<br />
+       * Version 0.3, 08.09.2007 (Profiling hinzugefï¿½gt)<br />
        */
       function getBookmarkCode(){
 
@@ -200,9 +200,9 @@
        * @version
        * Version 0.1, 02.06.2007<br />
        * Version 0.2, 07.09.2007<br />
-       * Version 0.3, 08.09.2007 (Profiling hinzugefügt)<br />
+       * Version 0.3, 08.09.2007 (Profiling hinzugefï¿½gt)<br />
        * Version 0.4, 15.04.2008 (URL-Rewriting beachtet)<br />
-       * Version 0.5, 25.05.2008 (Page-Title wird nun übergeben)<br />
+       * Version 0.5, 25.05.2008 (Page-Title wird nun ï¿½bergeben)<br />
        * Version 0.6, 21.06.2008 (Replaced APPS__URL_REWRITING with a value from the registry)<br />
        */
       protected function __generateBookmarkEntry($bookmarkEntry){
@@ -218,7 +218,7 @@
 
          $code = (string)'';
          $code = $code .= '<a rel="nofollow" href="';
-         $code .=  linkHandler::generateLink($bookmarkEntry->get('ServiceBaseURL'),
+         $code .=  LinkHandler::generateLink($bookmarkEntry->get('ServiceBaseURL'),
                                              array(
                                                    $bookmarkEntry->get('ServiceParams_URL') => $this->__URL,
                                                    $bookmarkEntry->get('ServiceParams_Title') => $this->__Title
@@ -230,11 +230,11 @@
          $code .= '" linkrewrite="false"><img src="';
 
          if($urlRewriting == true){
-            $code .= frontcontrollerLinkHandler::generateLink($urlBasePath,array('modules_socialbookmark-action' => 'showImage/imgext/'.$bookmarkEntry->get('ImageExt').'/img/'.$bookmarkEntry->get('ImageURL')));
+            $code .= FrontcontrollerLinkHandler::generateLink($urlBasePath,array('modules_socialbookmark-action' => 'showImage/imgext/'.$bookmarkEntry->get('ImageExt').'/img/'.$bookmarkEntry->get('ImageURL')));
           // end if
          }
          else{
-            $code .= frontcontrollerLinkHandler::generateLink($urlBasePath,array('modules_socialbookmark-action:showImage' => 'imgext:'.$bookmarkEntry->get('ImageExt').'|img:'.$bookmarkEntry->get('ImageURL')));
+            $code .= FrontcontrollerLinkHandler::generateLink($urlBasePath,array('modules_socialbookmark-action:showImage' => 'imgext:'.$bookmarkEntry->get('ImageExt').'|img:'.$bookmarkEntry->get('ImageURL')));
           // end else
          }
 

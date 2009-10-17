@@ -23,7 +23,7 @@
    import('modules::kontakt4::biz','oRecipient');
    import('modules::kontakt4::data','contactMapper');
    import('tools::mail','mailSender');
-   import('tools::link','linkHandler');
+   import('tools::link','LinkHandler');
    import('tools::http','HeaderManager');
 
 
@@ -33,7 +33,7 @@
    *
    *  Implementiert die Businessschicht des Kontaktformulars.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 03.06.2006<br />
    */
@@ -47,23 +47,23 @@
       /**
       *  @public
       *
-      *  Sendet das Kontaktformular ab und zeigt die Bestätigungsseite an.<br />
+      *  Sendet das Kontaktformular ab und zeigt die Bestï¿½tigungsseite an.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 03.06.2006<br />
       *  Version 0.2, 04.06.2006<br />
       *  Version 0.3, 21.06.2006 (Kontaktformular wird nun auch an den Absender geschickt.)<br />
-      *  Version 0.4, 09.03.2007 (Absender erhält eine andere Mail wie der Empfänger)<br />
+      *  Version 0.4, 09.03.2007 (Absender erhï¿½lt eine andere Mail wie der Empfï¿½nger)<br />
       *  Version 0.5, 31.03.2007 (Umstellung auf neuen mailSender)<br />
-      *  Version 0.6, 04.01.2008 (Weiterleitungslink für nicht REWRITE-URL-Betrieb korrigiert)<br />
+      *  Version 0.6, 04.01.2008 (Weiterleitungslink fï¿½r nicht REWRITE-URL-Betrieb korrigiert)<br />
       */
       function sendContactForm($oFD){
 
          // contactMapper holen
          $cM = &$this->__getServiceObject('modules::kontakt4::data','contactMapper');
 
-         // E-Mail für Empfänger aufsetzen
+         // E-Mail fï¿½r Empfï¿½nger aufsetzen
          $MAIL = &$this->__getAndInitServiceObject('tools::mail','mailSender','Kontaktformular');
 
          // Empfaenger setzen
@@ -71,9 +71,9 @@
          $MAIL->setRecipient($Recipient->get('Adresse'),$Recipient->get('Name'));
 
          // Text einsetzen
-         $Text = 'Sehr geehrter Empfänger, sehr geehrte Empfängerin,';
+         $Text = 'Sehr geehrter Empfï¿½nger, sehr geehrte Empfï¿½ngerin,';
          $Text .= "\n\n";
-         $Text .= $oFD->get('SenderName').' (E-Mail: '.$oFD->get('SenderEMail').') hat Ihnen folgende Nachricht über das Kontaktformular zukommen lassen:';
+         $Text .= $oFD->get('SenderName').' (E-Mail: '.$oFD->get('SenderEMail').') hat Ihnen folgende Nachricht ï¿½ber das Kontaktformular zukommen lassen:';
          $Text .= "\n\n\n";
          $Text .= $oFD->get('Text');
          $MAIL->setContent($Text);
@@ -84,7 +84,7 @@
          // Mail senden
          $MAIL->sendMail();
 
-         // E-Mail für Absender aufsetzen
+         // E-Mail fï¿½r Absender aufsetzen
          $MAIL->clearRecipients();
          $MAIL->clearCCRecipients();
          $MAIL->clearContent();
@@ -93,9 +93,9 @@
          $MAIL->setRecipient($oFD->get('SenderEMail'),$oFD->get('SenderName'));
 
          // Text einsetzen
-         $Text = 'Sehr geehrter Empfänger, sehr geehrte Empfängerin,';
+         $Text = 'Sehr geehrter Empfï¿½nger, sehr geehrte Empfï¿½ngerin,';
          $Text .= "\n\n";
-         $Text .= 'Ihre Anfrage wurde an die Kontaktperson "'.$Recipient->get('Name').'" weitergeleitet. Wir setzen uns baldmöglich mit Ihnen in Verbindung!';
+         $Text .= 'Ihre Anfrage wurde an die Kontaktperson "'.$Recipient->get('Name').'" weitergeleitet. Wir setzen uns baldmï¿½glich mit Ihnen in Verbindung!';
          $Text .= "\n\n";
          $Text .= 'Hier nochmals Ihr Anfragetext:';
          $Text .= "\n";
@@ -108,8 +108,8 @@
          // Mail senden
          $MAIL->sendMail();
 
-         // Bestätigungsseite anzeigen
-         $Link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array('pagepart' => 'meldung'));
+         // Bestï¿½tigungsseite anzeigen
+         $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('pagepart' => 'meldung'));
 
          $Reg = &Singleton::getInstance('Registry');
          $URLRewriting = $Reg->retrieve('apf::core','URLRewriting');
@@ -128,9 +128,9 @@
       /**
       *  @public
       *
-      *  Läd die in der Konfiguration abgelegten Empfänger-Objekte.<br />
+      *  Lï¿½d die in der Konfiguration abgelegten Empfï¿½nger-Objekte.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 03.06.2006<br />
       *  Version 0.2, 04.06.2006<br />

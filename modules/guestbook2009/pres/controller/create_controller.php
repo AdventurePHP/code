@@ -80,7 +80,7 @@
 
          // add dynamic link
          $this->setPlaceHolder('overviewlink',
-            frontcontrollerLinkHandler::generateLink(
+            FrontcontrollerLinkHandler::generateLink(
                $_SERVER['REQUEST_URI'],
                array('gbview' => 'list')
             )

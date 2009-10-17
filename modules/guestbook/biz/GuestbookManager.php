@@ -202,7 +202,7 @@
 
          // forward to the target page
          $urlParams = $this->getURLParameters();
-         $link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array($urlParams['StartName'] => '', $urlParams['CountName'] => '', 'gbview' => 'display'));
+         $link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array($urlParams['StartName'] => '', $urlParams['CountName'] => '', 'gbview' => 'display'));
          header('Location: '.$link);
 
        // end function
@@ -234,7 +234,7 @@
 
          // forward to the target page
          $urlParams = $this->getURLParameters();
-         $link = linkHandler::generateLink($_SERVER['REQUEST_URI'],array($urlParams['StartName'] => '', $urlParams['CountName'] => '', 'gbview' => 'display','commentid' => '', 'entryid' => ''));
+         $link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array($urlParams['StartName'] => '', $urlParams['CountName'] => '', 'gbview' => 'display','commentid' => '', 'entryid' => ''));
          header('Location: '.$link);
 
        // end function

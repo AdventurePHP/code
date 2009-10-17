@@ -21,7 +21,7 @@
 
    import('modules::comments::pres::documentcontroller','commentBaseController');
    import('modules::comments::biz','commentManager');
-   import('tools::link','frontcontrollerLinkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
 
    /**
     * @namespace modules::comments::pres::documentcontroller
@@ -110,7 +110,7 @@
 
          $form->transformOnPlace();
 
-         $link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('coview' => 'listing'));
+         $link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('coview' => 'listing'));
          $this->setPlaceHolder('back',$link);
 
        // end function

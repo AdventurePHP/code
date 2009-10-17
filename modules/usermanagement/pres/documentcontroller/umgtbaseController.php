@@ -19,7 +19,7 @@
     * -->
     */
 
-   import('tools::link','frontcontrollerLinkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
    import('modules::genericormapper::data','GenericDomainObject');
 
    /**
@@ -55,7 +55,7 @@
           // end if
          }
 
-         return frontcontrollerLinkHandler::generateLink($baseURL,$linkParams);
+         return FrontcontrollerLinkHandler::generateLink($baseURL,$linkParams);
 
        // end function
       }

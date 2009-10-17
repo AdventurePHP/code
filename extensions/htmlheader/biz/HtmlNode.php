@@ -57,7 +57,7 @@
         * @return string FC-action link.
         */
        protected function __buildFCLink($namespace, $filename, $type){
-           import('tools::link','frontcontrollerLinkHandler');
+           import('tools::link','FrontcontrollerLinkHandler');
 
            $reg = &Singleton::getInstance('Registry');
            $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
@@ -81,7 +81,7 @@
            }
 
            // return url
-           return frontcontrollerLinkHandler::generateLink($baseUrl,$actionParam);
+           return FrontcontrollerLinkHandler::generateLink($baseUrl,$actionParam);
 
        }
 

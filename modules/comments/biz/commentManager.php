@@ -20,7 +20,7 @@
    */
 
    import('modules::comments::data','commentMapper');
-   import('tools::link','frontcontrollerLinkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
    import('tools::string','stringAssistant');
    import('core::session','SessionManager');
 
@@ -170,7 +170,7 @@
             $sessMgr = new SessionManager('modules::comment');
             $sessMgr->deleteSessionData('CAPTCHA_STRING');
 
-            $Link = frontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('coview' => 'listing'));
+            $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('coview' => 'listing'));
             header('Location: '.$Link.'#comments');
 
           // end if

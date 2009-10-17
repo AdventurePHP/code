@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import('tools::link','frontcontrollerLinkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
 
    /**
     * @namespace modules::guestbook2009::pres
@@ -58,7 +58,7 @@
          }
 
          // define form action url concerning the view it is rendered in
-         $action = frontcontrollerLinkHandler::generateLink(
+         $action = FrontcontrollerLinkHandler::generateLink(
             $_SERVER['REQUEST_URI'],
             array(
                'gbview' => 'admin',

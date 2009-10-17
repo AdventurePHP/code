@@ -65,7 +65,7 @@
          $this->setPlaceHolder('pager',$gS->getPagerOutput());
 
          // add dyamic link
-         $link = frontcontrollerLinkHandler::generateLink(
+         $link = FrontcontrollerLinkHandler::generateLink(
             $_SERVER['REQUEST_URI'], 
             array('gbview' => 'create'));
          $this->setPlaceHolder('createlink',$link);

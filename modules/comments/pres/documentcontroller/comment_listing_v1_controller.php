@@ -22,7 +22,7 @@
    import('modules::comments::pres::documentcontroller','commentBaseController');
    import('tools::datetime','dateTimeManager');
    import('tools::string','AdvancedBBCodeParser');
-   import('tools::link','frontcontrollerLinkHandler');
+   import('tools::link','FrontcontrollerLinkHandler');
 
 
    /**
@@ -101,7 +101,7 @@
          // generate the add comment link
          $this->setPlaceHolder(
                 'Link',
-                frontcontrollerLinkHandler::generateLink(
+                FrontcontrollerLinkHandler::generateLink(
                                           $_SERVER['REQUEST_URI'],
                                           array(
                                                 $urlParams['StartName'] => '',

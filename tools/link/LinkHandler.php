@@ -21,7 +21,7 @@
 
    /**
     * @namespace tools::link
-    * @class linkHandler
+    * @class LinkHandler
     * @static
     *
     * Presents a method to generate and validate urls.
@@ -35,9 +35,9 @@
     * Version 0.5, 27.03.2007 (Replaced deprecated code)<br />
     * Version 0.6, 21.06.2008 (Introduced Registry)<br />
     */
-   class linkHandler {
+   class LinkHandler {
 
-      private function linkHandler(){
+      private function LinkHandler(){
       }
 
       /**
@@ -86,8 +86,8 @@
             foreach($parameter as $paramKey => $paramValue){
                $paramStringParts[] = $paramKey.'='.$paramValue;
             }
-            trigger_error('[linkHandler::generateLink()] Given url ('.$url.') is not a string! Given parameters are '
-               .'['.implode(',',$paramStringParts).']',E_USER_WARNING);
+            trigger_error('[LinkHandler::generateLink()] Given url ('.$url.') is not a string! '
+               .'Given parameters are ['.implode(',',$paramStringParts).']',E_USER_WARNING);
             $url = strval($url);
           // end if
          }
@@ -152,7 +152,7 @@
 
             for($i = 0; $i < count($splitURL); $i++){
 
-               // Nur Parameter größer 3 Zeichen (z.B. a=b) beachten
+               // Nur Parameter grï¿½ï¿½er 3 Zeichen (z.B. a=b) beachten
                if(strlen($splitURL[$i]) > 3){
 
                   $equalSign = strpos($splitURL[$i],'=');
