@@ -22,17 +22,23 @@
    import('tools::form::validator','TextFieldValidator');
 
    /**
-    * 
+    * @namespace tools::form::validator
+    * @class PhoneAndFaxValidator
+    *
+    * Validates a given form control to contain a syntactically correct
+    * phone or fax number.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2009<br />
     */
    class PhoneAndFaxValidator extends TextFieldValidator {
 
       public function validate($input){
-
          if(preg_match('/^[0-9\-\+\(\)\/ ]{6,}+$/',trim($input))){
             return true;
          }
          return false;
-
        // end function
       }
 

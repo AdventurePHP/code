@@ -22,17 +22,23 @@
    import('tools::form::validator','SelectFieldValidator');
 
    /**
-    * Implements a base class for all text field validators.
+    * @namespace tools::form::validator
+    * @class DefaultSelectFieldValidator
+    *
+    * Implements a simple validator for select fields. Expects the value of the select
+    * field, that is selected not to be empty.
+    * 
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2009<br />
     */
    class DefaultSelectFieldValidator extends SelectFieldValidator {
 
       public function validate($input){
-
          if(empty($input)){
             return false;
          }
          return true;
-
        // end function
       }
 

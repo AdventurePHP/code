@@ -22,7 +22,14 @@
    import('tools::form::filter','AbstractFormFilter');
    
    /**
-    * 
+    * @namespace tools::form::filter
+    * @class OnlyNumbersFilter
+    *
+    * Implements a filter, that only accepts numbers.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.09.2009<br />
     */
    class OnlyNumbersFilter extends AbstractFormFilter {
 

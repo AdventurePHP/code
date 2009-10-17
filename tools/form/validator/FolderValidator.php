@@ -22,17 +22,22 @@
    import('tools::form::validator','TextFieldValidator');
 
    /**
-    * 
+    * @namespace tools::form::validator
+    * @class DefaultSelectFieldValidator
+    *
+    * Validates a textfield to contain a valid folder name.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.09.2009<br />
     */
    class FolderValidator extends TextFieldValidator {
 
       public function validate($input){
-
          if(preg_match('/^[a-zA-Z0-9\-\_]+$/',trim($input))){
             return true;
          }
          return false;
-
        // end function
       }
 

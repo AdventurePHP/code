@@ -18,7 +18,9 @@
     * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
     * -->
     */
-    
+
+   import('tools::form::taglib','form_taglib_button');
+
    /**
     * @namespace tools::form::taglib
     * @class form_taglib_imagebutton
@@ -28,20 +30,9 @@
     * @author Christian Achatz
     * @version
     * Version 0.1, 27.09.2009<br />
+    * Version 0.2, 16.10.2009 (Made subclass of "normal" button to enable validation/filtering!)<br />
     */
-   class form_taglib_imagebutton extends form_control {
-
-      /**
-       * @public
-       * 
-       * Overwrites the onParseTime() method, because here is nothing to do.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 27.09.2009<br />
-       */
-      public function onParseTime(){
-      }
+   class form_taglib_imagebutton extends form_taglib_button {
 
       /**
        * @public

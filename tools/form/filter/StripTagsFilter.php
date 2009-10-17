@@ -22,7 +22,14 @@
    import('tools::form::filter','AbstractFormFilter');
    
    /**
-    * 
+    * @namespace tools::form::filter
+    * @class StripTagsFilter
+    *
+    * Implements a filter, that removes PHP and HTML tags.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.09.2009<br />
     */
    class StripTagsFilter extends AbstractFormFilter {
 

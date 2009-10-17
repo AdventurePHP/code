@@ -25,7 +25,7 @@
     * @namespace tools::form::validator
     * @class SimpleSelectControlValidator
     * 
-    * Implements a validator for select fields.
+    * Implements a validator for radio buttons.
     *
     * @author Christian Achatz
     * @version
@@ -36,10 +36,10 @@
       /**
        * @public
        * 
-       * Validates the select field content.
+       * Validates the radio button content.
        * 
-       * @param string $input The content of the select control.
-       * @return boolean True, in case the control is valid, false otherwise.
+       * @param string $input The content of the radio control.
+       * @return boolean True, in case the radio is valid, false otherwise.
        *
        * @author Christian Achatz
        * @version

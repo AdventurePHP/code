@@ -22,7 +22,15 @@
    import('tools::form::validator','TextFieldValidator');
 
    /**
-    * 
+    * @namespace tools::form::validator
+    * @class PhoneAndFaxValidator
+    *
+    * Validates a given form control to contain a syntactically correct
+    * birthday date. Schema: dd.MM.YY
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2009<br />
     */
    class SimpleBirthdayValidator extends TextFieldValidator {
 

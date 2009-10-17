@@ -187,7 +187,6 @@
             $this->setAttribute('value',$filteredValue);
           // end if
          }
-      
        // end function
       }
 

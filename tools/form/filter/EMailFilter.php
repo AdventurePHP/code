@@ -22,7 +22,15 @@
    import('tools::form::filter','AbstractFormFilter');
    
    /**
-    * 
+    * @namespace tools::form::filter
+    * @class EMailFilter
+    *
+    * Implements a filter, that removes all characters, that are not
+    * allowed in email addresses.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.09.2009<br />
     */
    class EMailFilter extends AbstractFormFilter {
 

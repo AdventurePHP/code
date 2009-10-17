@@ -22,17 +22,22 @@
    import('tools::form::validator','TextFieldValidator');
 
    /**
+    * @namespace tools::form::validator
+    * @class EMailValidator
     *
+    * Validates a given form control to contain a syntactically correct email.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2009<br />
     */
    class EMailValidator extends TextFieldValidator {
 
       public function validate($input){
-
          if(!empty($input) && preg_match('/^([a-zA-Z0-9\.\_\-]+)@([a-zA-Z0-9\.\-]+\.[A-Za-z][A-Za-z]+)$/',$input)){
             return true;
          }
          return false;
-
        // end function
       }
 

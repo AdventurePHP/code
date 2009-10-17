@@ -22,7 +22,14 @@
    import('tools::form::filter','AbstractFormFilter');
    
    /**
-    * 
+    * @namespace tools::form::filter
+    * @class OnlyLettersFilter
+    *
+    * Implements a filter, that only accepts character.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.09.2009<br />
     */
    class OnlyLettersFilter extends AbstractFormFilter {
 

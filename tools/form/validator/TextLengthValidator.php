@@ -22,18 +22,52 @@
    import('tools::form::validator','TextFieldValidator');
 
    /**
-    * 
+    * @namespace tools::form::validator
+    * @class NumberValidator
+    *
+    * Validates a given form control to contain a string with a defined length.
+    * The default value us three, to configure the length, please specify the
+    * <em>minlength</em> attribute within the target form control definition.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2009<br />
     */
    class TextLengthValidator extends TextFieldValidator {
 
       public function validate($input){
-
-         if(!empty($input) && strlen($input) >= 3){
+         if(!empty($input) && strlen($input) >= $this->__getMinLength()){
             return true;
          }
          return false;
-
        // end function
+      }
+
+      /**
+       * @private
+       *
+       * Returns the min length of the min length of the text, that must
+       * be contained within the target control. Tries to load the min
+       * length from the <em>minlength</em> attribute within the target
+       * form control definition.
+       *
+       * @return int The min length of the text.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 29.08.2009<br />
+       */
+      private function __getMinLength(){
+         $minLength = $this->__Control->getAttribute('minlength');
+         if($minLength === null){
+            $minLength = 3;
+         }
+
+         // remove the "minlenght" attribute, so that it is not rendered on
+         // transformation time of the control
+         $this->__Control->deleteAttribute('minlength');
+
+         return $minLength;
       }
 
     // end function

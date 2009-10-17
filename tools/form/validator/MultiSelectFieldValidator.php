@@ -25,7 +25,8 @@
     * @namespace tools::form::validator
     * @class MultiSelectFieldValidator
     *
-    * Implements a base class for all text field validators.
+    * Implements a simple multi select field validator, that expects the value
+    * of the select field not to be empty.
     *
     * @author Christian Achatz
     * @version
@@ -34,6 +35,8 @@
    class MultiSelectFieldValidator extends SelectFieldValidator {
 
       /**
+       * @public
+       * 
        * Implements the validation method for multiselect fields.
        *
        * @param string $input The input of the multiselect field.

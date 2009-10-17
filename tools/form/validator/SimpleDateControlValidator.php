@@ -25,7 +25,8 @@
     * @namespace tools::form::validator
     * @class SimpleDateControlValidator
     * 
-    * Implements a base class for all text field validators.
+    * Implements a simple date control validator. It expects the selected date to
+    * be greater than today.
     *
     * @author Christian Achatz
     * @version
@@ -34,6 +35,8 @@
    class SimpleDateControlValidator extends AbstractFormValidator {
 
       /**
+       * @private
+       * 
        * Validates the date contained in the date control. Checks, whether the
        * date is greater than or equal to the current date.
        * 

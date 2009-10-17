@@ -22,7 +22,14 @@
    import('tools::form::filter','AbstractFormFilter');
    
    /**
-    * 
+    * @namespace tools::form::filter
+    * @class String2LowerFilter
+    *
+    * Implements a filter, that converts all characters to lower letters.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.09.2009<br />
     */
    class String2LowerFilter extends AbstractFormFilter {
 

@@ -22,7 +22,15 @@
    import('tools::form::filter','AbstractFormFilter');
    
    /**
-    * 
+    * @namespace tools::form::filter
+    * @class NoSpecialCharactersFilter
+    *
+    * Implements a filter, that removes all "special" character
+    * except "0-9A-Za-z-_\.& ".
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.09.2009<br />
     */
    class NoSpecialCharactersFilter extends AbstractFormFilter {
 
