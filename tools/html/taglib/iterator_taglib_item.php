@@ -20,47 +20,75 @@
    */
 
    import('tools::html::taglib','item_taglib_placeholder');
+   import('tools::html::taglib','item_taglib_getstring');
+   import('tools::html::taglib','item_taglib_addtaglib');
 
 
    /**
-   *  @namespace tools::html::taglib
-   *  @class iterator_taglib_item
-   *
-   *  Implementiert die Repräsentation eines Items.<br />
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 01.06.2008<br />
-   */
-   class iterator_taglib_item extends Document
-   {
+    * @namespace tools::html::taglib
+    * @class iterator_taglib_item
+    *
+    * Implementiert die Reprï¿½sentation eines Items.<br />
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 01.06.2008<br />
+    */
+   class iterator_taglib_item extends Document {
 
       /**
-      *  @public
-      *
-      *  Fügt die verwendeten TagLibs hinzu.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 01.06.2008<br />
-      */
+       * @public
+       *
+       * Initializes the known taglibs.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 01.06.2008<br />
+       */
       function iterator_taglib_item(){
          $this->__TagLibs[] = new TagLib('tools::html::taglib','item','placeholder');
+         $this->__TagLibs[] = new TagLib('tools::html::taglib','item','getstring');
+         $this->__TagLibs[] = new TagLib('tools::html::taglib','item','addtaglib');
        // end functioin
       }
 
-
       /**
-      *  @public
-      *
-      *  Implementiert die Methode onParseTime() für die aktuelle TagLib.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 01.06.2008<br />
-      */
+       * @public
+       *
+       * Analyzes the child tags and creates the DOM tree using
+       * the included parser method.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 01.06.2008<br />
+       */
       function onParseTime(){
          $this->__extractTagLibTags();
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Returns the place holders defined within the item, to be filled
+       * te desired values.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 19.10.2009<br />
+       */
+      public function &getPlaceHolders(){
+
+         $placeHolders = array();
+         if(count($this->__Children) > 0){
+            foreach($this->__Children as $objectId => $DUMMY){
+               if(get_class($this->__Children[$objectId]) == 'item_taglib_placeholder'){
+                  $placeHolders[] = &$this->__Children[$objectId];
+               }
+            }
+         }
+         return $placeHolders;
+
        // end function
       }
 

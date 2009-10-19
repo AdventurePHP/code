@@ -157,7 +157,7 @@
          }
 
          // get the place holders
-         $placeHolders = &$iteratorItem->getByReference('Children');
+         $placeHolders = &$iteratorItem->getPlaceHolders();
 
          $itemcount = count($this->__DataContainer);
          for($i = 0; $i < $itemcount; $i++){
