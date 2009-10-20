@@ -174,7 +174,12 @@
        */
       protected function &__getORMapper(){
          $ORMFactory = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
-         return $ORMFactory->getGenericORMapper('modules::usermanagement','umgt',$this->__ConnectionKey,$this->__ServiceMode);
+         return $ORMFactory->getGenericORMapper(
+                                 'modules::usermanagement',
+                                 'umgt',
+                                 $this->__ConnectionKey,
+                                 $this->__ServiceMode
+          );
        // end function
       }
 
@@ -221,20 +226,25 @@
 
           // end if
          }
-         else {
-            $user->setProperty(
-               'Password',
-               $this->__createPasswordHash($password)
-            );
+         else{
+            // only create password for not empty strings!
+            if(!empty($password)){
+               $user->setProperty(
+                  'Password',
+                  $this->__createPasswordHash($password)
+               );
+             // end if
+            }
           // end else
          }
 
-         // setup the composition
-         $app = $this->__getCurrentApplication();
+         // set display name
          $user->setProperty('DisplayName',$this->__getDisplayName($user));
-         $app->addRelatedObject('Application2User',$user);
 
-         return $oRM->saveObject($app);
+         // save the user and return it's id
+         $app = $this->__getCurrentApplication();
+         $user->addRelatedObject('Application2User',$app);
+         return $oRM->saveObject($user);
 
        // end function
       }
@@ -254,8 +264,9 @@
       public function saveGroup($group){
          $oRM = &$this->__getORMapper();
          $app = $this->__getCurrentApplication();
-         $app->addRelatedObject('Application2Group',$group);
-         return $oRM->saveObject($app);
+         $group->addRelatedObject('Application2Group',$app);
+         // save the group and return it's id
+         return $oRM->saveObject($group);
        // end function
       }
 
@@ -274,8 +285,9 @@
       public function saveRole($role){
          $oRM = &$this->__getORMapper();
          $app = $this->__getCurrentApplication();
-         $app->addRelatedObject('Application2Role',$role);
-         return $oRM->saveObject($app);
+         $role->addRelatedObject('Application2Role',$app);
+         // save the group and return it's id
+         return $oRM->saveObject($role);
        // end function
       }
 
@@ -299,7 +311,7 @@
 
          // compose the permission set under the application
          $app = $this->__getCurrentApplication();
-         $app->addRelatedObject('Application2PermissionSet',$permissionSet);
+         $permissionSet->addRelatedObject('Application2PermissionSet',$app);
 
          // check for deleted associations
          $permissions = &$permissionSet->getRelatedObjects('PermissionSet2Permission');
@@ -319,7 +331,8 @@
           // end for
          }
 
-         return $oRM->saveObject($app);
+         // save the permission set and return it's id
+         return $oRM->saveObject($permissionSet);
 
        // end function
       }
@@ -339,16 +352,11 @@
        * Version 0.3, 28.12.2008 (Changed the API concerning the new UML diagram)<br />
        */
       public function savePermission($permission){
-
-         // load generic or mapper
          $oRM = &$this->__getORMapper();
-
-         // add permission to structure
          $app = $this->__getCurrentApplication();
-         $app->addRelatedObject('Application2Permission',$permission);
-
-         return $oRM->saveObject($app);
-
+         $permission->addRelatedObject('Application2Permission',$app);
+         // save the permission and return it's id
+         return $oRM->saveObject($permission);
        // end function
       }
 
