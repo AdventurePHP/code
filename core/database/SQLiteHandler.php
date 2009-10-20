@@ -34,35 +34,30 @@
    class SQLiteHandler extends AbstractDatabaseHandler {
 
       /**
-      *  @protected
-      *  Name der Logdatei der Abstraktionsschicht.
-      */
-      protected $__dbLogFileName = 'sqlite';
-
-      /**
-      *  @protected
-      *  Modus, in dem die Datenbank geöffnet werden soll.
-      */
+       * @protected
+       * @var int File system permission mode of the database.
+       */
       protected $__dbMode = 0666;
 
       /**
-      *  @protected
-      *  Trackt Fehlermeldungen von SQLite.
-      */
+       * @protected
+       * @var string Error tracking container for SQLite errors.
+       */
       protected $__dbError = null;
 
       public function SQLiteHandler(){
+         $this->__dbLogFileName = 'sqlite';
       }
 
       /**
-      *  @protected
-      *
-      *  Abstrakte Interface-Methode für das Aufbauen einer Datenbank-Verbindung.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 23.02.2008<br />
-      */
+       * @protected
+       *
+       * Implements the connect method to create a connection to the desired sqlite database.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.02.2008<br />
+       */
       protected function __connect(){
 
          // Verbindung öffnen
@@ -79,14 +74,14 @@
       }
 
       /**
-      *  @protected
-      *
-      *  Abstrakte Interface-Methode für das Schließen einer Datenbank-Verbindung.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 23.02.2008<br />
-      */
+       * @protected
+       *
+       * Implements the close method for the sqlite database.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.02.2008<br />
+       */
       protected function __close(){
          @sqlite_close($this->__dbConn);
          $this->__dbConn = null;

@@ -35,6 +35,7 @@
    class MySQLxHandler extends AbstractDatabaseHandler {
 
       public function MySQLxHandler(){
+         $this->__dbLogFileName = 'mysqlx';
       }
 
       /**
