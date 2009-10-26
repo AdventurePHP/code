@@ -1,62 +1,59 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
-   *  @namespace core::configuration
-   *  @class Configuration
-   *
-   *  Represents a configuration object, that is loaded by the configurationManager. It stores
-   *  section or subsections and their corresponding values.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 28.01.2007<br />
-   */
-   class Configuration
-   {
+    * @namespace core::configuration
+    * @class Configuration
+    *
+    * Represents a configuration object, that is loaded by the configurationManager. It stores
+    * section or subsections and their corresponding values.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 28.01.2007<br />
+    */
+   final class Configuration {
 
       /**
-      *  @private
-      *  Container for configuration entries.
-      */
+       * @private
+       * @var string[] Container for configuration entries.
+       */
       private $__Configuration = array();
 
-
-      function Configuration(){
+      public function Configuration(){
       }
 
-
       /**
-      *  @public
-      *
-      *  Returns a configuration section as an associative array.
-      *
-      *  @param string $Name; Name of the cection
-      *  @return array $Section | null; Section or null
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 28.01.2007<br />
-      */
-      function getSection($name){
+       * @public
+       *
+       * Returns a configuration section as an associative array.
+       *
+       * @param string $Name; Name of the cection
+       * @return string[] Section or null.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.01.2007<br />
+       */
+      public function getSection($name){
 
          if(isset($this->__Configuration[$name])){
             return $this->__Configuration[$name];
@@ -70,24 +67,23 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Returns a configuration sub section as an associative array.
-      *
-      *  @param string $section name of the section
-      *  @param string $name name of the subsection
-      *  @return array $value | null value of the configuration key or null
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 30.01.2007<br />
-      *  Version 0.2, 31.01.2007 (Added check for Subsection to be an array)<br />
-      *  Version 0.3, 16.11.2007 (removed senseless trim() during return)<br />
-      *  Version 0.4, 19.04.2009 (Bugfix: added check for the subsection to exist)<br />
-      */
-      function getSubSection($section,$name){
+       * @public
+       *
+       * Returns a configuration sub section as an associative array.
+       *
+       * @param string $section name of the section.
+       * @param string $name name of the subsection.
+       * @return string[] Value of the configuration key or null.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 30.01.2007<br />
+       * Version 0.2, 31.01.2007 (Added check for Subsection to be an array)<br />
+       * Version 0.3, 16.11.2007 (removed senseless trim() during return)<br />
+       * Version 0.4, 19.04.2009 (Bugfix: added check for the subsection to exist)<br />
+       */
+      public function getSubSection($section,$name){
 
          if(isset($this->__Configuration[$section][$name]) && is_array($this->__Configuration[$section][$name])){
             return $this->__Configuration[$section][$name];
@@ -101,21 +97,20 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Returns a configuration value by section and attribute name.
-      *
-      *  @param string $section name of the section
-      *  @param string $name name of the config key
-      *  @return string $value | null value of the configuration key or null
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 28.01.2007<br />
-      */
-      function getValue($section,$name){
+       * @public
+       *
+       * Returns a configuration value by section and attribute name.
+       *
+       * @param string $section name of the section.
+       * @param string $name name of the config key.
+       * @return string Value of the configuration key or null.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.01.2007<br />
+       */
+      public function getValue($section,$name){
 
          if(isset($this->__Configuration[$section][$name])){
             return $this->__Configuration[$section][$name];
@@ -129,43 +124,40 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Fills the internal configuration container with the configuration content.
-      *
-      *  @param array $list configuration array
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 28.01.2007<br />
-      */
-      function setConfiguration($list){
+       * @public
+       *
+       * Fills the internal configuration container with the configuration content.
+       *
+       * @param array $list configuration array
+       *
+       * @author Christian Schï¿½fer
+       * @version
+       * Version 0.1, 28.01.2007<br />
+       */
+      public function setConfiguration($list){
          $this->__Configuration = $list;
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Returns the entire configuration as an associative array.
-      *
-      *  @return array $list the configuration array
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 03.02.2007<br />
-      */
-      function getConfiguration(){
+       * @public
+       *
+       * Returns the entire configuration as an associative array.
+       *
+       * @return array $list the configuration array
+       *
+       * @author Christian Schï¿½fer
+       * @version
+       * Version 0.1, 03.02.2007<br />
+       */
+      public function getConfiguration(){
          return $this->__Configuration;
        // end function
       }
 
     // end class
    }
-
 
    /**
     * @namespace core::configuration
@@ -183,26 +175,22 @@
     * Version 0.4, 16.11.2007 (Re-added $__NamespaceDelimiter)<br />
     * Version 0.5, 21.06.2008 (Introduced Registry to get the current Environment string)<br />
     */
-   class configurationManager extends coreObject
-   {
+   class configurationManager extends coreObject {
 
       /**
-      *  @private
-      *  Caches the configurations loaded before.
-      */
+       * @private
+       * @var string[] Caches the configurations loaded before.
+       */
       private $__Configurations = array();
 
-
       /**
-      *  @private
-      *  Subkey delimiter.
-      */
+       * @private
+       * @var string Subkey delimiter.
+       */
       private $__NamespaceDelimiter = '.';
 
-
-      function configurationManager(){
+      public function configurationManager(){
       }
-
 
       /**
        * @public
@@ -227,7 +215,7 @@
        * Version 0.2, 02.04.2007 (An error is triggered if the config cannot be loaded)<br />
        * Version 0.3, 21.06.2008 (Introduced the Registry component)<br />
        */
-      function &getConfiguration($namespace,$context,$configName,$parseSubsections = false){
+      public function &getConfiguration($namespace,$context,$configName,$parseSubsections = false){
 
          // calculate config hash
          $configHash = md5($namespace.$context.$configName);
@@ -277,23 +265,22 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Checks, if a configuration file exists or not.
-      *
-      *  @param string $namespace namespace of the requested configuration
-      *  @param string $context context of the configuration file
-      *  @param string $configName the name of the configuration file
-      *  @return bool $configurationExistent true | false
-      *
-      *  @author Christian SchÃ¤fer
-      *  @version
-      *  Version 0.1, 03.02.2007<br />
-      *  Version 0.2, 07.03.2007 (Renamed to configurationExists())<br />
-      */
-      function configurationExists($namespace,$context,$configName){
+       * @public
+       *
+       * Checks, if a configuration file exists or not.
+       *
+       * @param string $namespace namespace of the requested configuration
+       * @param string $context context of the configuration file
+       * @param string $configName the name of the configuration file
+       * @return bool $configurationExistent true | false
+       *
+       * @author Christian SchÃ¤fer
+       * @version
+       * Version 0.1, 03.02.2007<br />
+       * Version 0.2, 07.03.2007 (Renamed to configurationExists())<br />
+       */
+      public function configurationExists($namespace,$context,$configName){
 
          if(file_exists($this->__getConfigurationFileName($namespace,$context,$configName))){
             return true;
@@ -307,52 +294,50 @@
        // end function
       }
 
-
       /**
-      *  @private
-      *
-      *  Loads a configuration file.
-      *
-      *  @param string $namespace namespace of the requested configuration
-      *  @param string $context context of the configuration file
-      *  @param string $configName the name of the configuration file
-      *  @return array $configuration | null configuration array or null
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 28.01.2007<br />
-      *  Version 0.2, 03.02.2007 (Outsourced the file name generation)<br />
-      *  Version 0.3, 07.03.2007<br />
-      *  Version 0.4, 02.04.2007 (Removed else, because the existance is already checked before.)<br />
-      */
+       * @private
+       *
+       * Loads a configuration file.
+       *
+       * @param string $namespace namespace of the requested configuration
+       * @param string $context context of the configuration file
+       * @param string $configName the name of the configuration file
+       * @return array $configuration | null configuration array or null
+       *
+       * @author Christian Schï¿½fer
+       * @version
+       * Version 0.1, 28.01.2007<br />
+       * Version 0.2, 03.02.2007 (Outsourced the file name generation)<br />
+       * Version 0.3, 07.03.2007<br />
+       * Version 0.4, 02.04.2007 (Removed else, because the existance is already checked before.)<br />
+       */
       private function __loadConfiguration($namespace,$context,$configName){
          $configFile = $this->__getConfigurationFileName($namespace,$context,$configName);
          return parse_ini_file($configFile,true);
        // end function
       }
 
-
       /**
-      *  @protected
-      *
-      *  Creates the fully qualified path of the configuration file. If you want to have an own
-      *  config file and folder layout, create a new class derived from the configurationManager
-      *  and overwrite this method.
-      *  See http://forum.adventure-php-framework.org/de/viewtopic.php?f=1&t=80&start=30#p531 for
-      *  details on the discussion.
-      *
-      *  @param string $namespace Namespace of the requested configuration (will be prefixed with "config")
-      *  @param string $context Context of the configuration file
-      *  @param string $configName The name of the configuration file
-      *  @return string Name of the configuration file name
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 03.02.2007<br />
-      *  Version 0.2, 07.03.2007<br />
-      *  Version 0.3, 21.06.2008 (Introduced the Registry component)<br />
-      *  Version 0.4, 09.05.2009 (Made the function protected.)<br />
-      */
+       * @protected
+       *
+       * Creates the fully qualified path of the configuration file. If you want to have an own
+       * config file and folder layout, create a new class derived from the configurationManager
+       * and overwrite this method.
+       * See http://forum.adventure-php-framework.org/de/viewtopic.php?f=1&t=80&start=30#p531 for
+       * details on the discussion.
+       *
+       * @param string $namespace Namespace of the requested configuration (will be prefixed with "config")
+       * @param string $context Context of the configuration file
+       * @param string $configName The name of the configuration file
+       * @return string Name of the configuration file name
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 03.02.2007<br />
+       * Version 0.2, 07.03.2007<br />
+       * Version 0.3, 21.06.2008 (Introduced the Registry component)<br />
+       * Version 0.4, 09.05.2009 (Made the function protected.)<br />
+       */
       protected function __getConfigurationFileName($namespace,$context,$configName){
 
          if(strlen($context) > 0){
@@ -372,19 +357,18 @@
        // end function
       }
 
-
       /**
-      *  @private
-      *
-      *  Parses the configuration file.
-      *
-      *  @param array $configuration configuration array created with the parse_ini_file function
-      *  @return array $configurationArray the parsed configuration list
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 28.01.2007<br />
-      */
+       * @private
+       *
+       * Parses the configuration file.
+       *
+       * @param string[] $configuration configuration array created with the parse_ini_file function.
+       * @return string[] $configurationArray the parsed configuration list.
+       *
+       * @author Christian Schï¿½fer
+       * @version
+       * Version 0.1, 28.01.2007<br />
+       */
       private function __parseConfiguration($configuration = array()){
 
          $configurationArray = array();
@@ -409,20 +393,20 @@
        // end function
       }
 
-
       /**
-      *  @private
-      *
-      *  Parses subsections.
-      *
-      *  @param array $subsectionArray the configuration array
-      *  @return array $parsedArray the parsed array
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 28.01.2007<br />
-      *  Version 0.2, 19.04.2009 (Bugfix: Parsing subsections returned an empty array!)<br />
-      */
+       * @private
+       *
+       * Parses subsections.
+       *
+       * @param string[] $subsectionArray The configuration array.
+       * @return string[] $parsedArray The parsed array.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.01.2007<br />
+       * Version 0.2, 19.04.2009 (Bugfix: Parsing subsections returned an empty array!)<br />
+       * Version 0.3, 27.10.2009 (Bugfix: introduced __mergeArrayRecursive() due to problems with the PHP array merge function)<br />
+       */
       private function __parseSubsections($subsectionArray){
 
          $concatenatedArray = array();
@@ -430,7 +414,7 @@
          if(is_array($subsectionArray)){
 
             foreach($subsectionArray as $key => $value){
-               $concatenatedArray = array_merge_recursive($concatenatedArray,$this->__generateSubArray($key,$value));
+               $concatenatedArray = $this->__mergeArrayRecursive($concatenatedArray,$this->__generateSubArray($key,$value));
              // end foreach
             }
 
@@ -446,46 +430,74 @@
        // end function
       }
 
-
       /**
-      *  @private
-      *
-      *  Generates sub arrays from the dot notated directices.
-      *
-      *  @param string $key the current configuration directive possibly containg a dot
-      *  @param array|string $value value of the offset specified with $key
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 28.01.2007<br />
-      */
+       * @private
+       *
+       * Generates sub arrays from the dot notated directices.
+       *
+       * @param string $key The current configuration directive possibly containg a dot.
+       * @param string[] $value Value of the offset specified with $key.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.01.2007<br />
+       */
       private function __generateSubArray($key,$value){
 
-         $SubArray = array();
+         $subArray = array();
 
          if(substr_count($key,$this->__NamespaceDelimiter) > 0){
 
             // search for the dot
-            $DelPos = strpos($key,$this->__NamespaceDelimiter);
+            $delPos = strpos($key,$this->__NamespaceDelimiter);
 
             // extract offset
-            $Offset = substr($key,0,$DelPos);
+            $offset = substr($key,0,$delPos);
 
             // create remaining string
-            $RemainingString = substr($key,$DelPos + strlen($this->__NamespaceDelimiter),strlen($key));
+            $remainingString = substr($key,$delPos + strlen($this->__NamespaceDelimiter),strlen($key));
 
             // generate new offset recursivly
-            $SubArray[$Offset] = $this->__generateSubArray($RemainingString,$value);
+            $subArray[$offset] = $this->__generateSubArray($remainingString,$value);
 
           // end if
          }
          else{
-            $SubArray[$key] = $value;
+            $subArray[$key] = $value;
           // end els
          }
 
-         return $SubArray;
+         return $subArray;
 
+       // end function
+      }
+
+      /**
+       * @private
+       *
+       * Implements a pendant to php's array_merge_recursive(), because the native php
+       * function does not support numeric key merging.
+       *
+       * @see http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=223&p=1669#p1669
+       *
+       * @param string[] $one The first array.
+       * @param string[] $two The array to merge into the first array.
+       * @return string[] The merged array.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 25.10.2009<br />
+       */
+      private function __mergeArrayRecursive($one,$two){
+         foreach($two as $key => $value){
+            if(isset($one[$key])){
+               $one[$key] = $this->__mergeArrayRecursive($one[$key],$value);
+            }
+            else{
+               $one[$key] = $value;
+            }
+         }
+         return $one;
        // end function
       }
 
