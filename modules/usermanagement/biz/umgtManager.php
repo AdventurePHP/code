@@ -20,6 +20,7 @@
     */
 
    import('modules::usermanagement::biz','DefaultPasswordHashProvider');
+   import('modules::genericormapper::data','GenericDomainObject');
     
    /**
     * @package modules::usermanagement::biz
@@ -173,8 +174,8 @@
        * Version 0.1, 23.06.2008<br />
        */
       protected function &__getORMapper(){
-         $ORMFactory = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
-         return $ORMFactory->getGenericORMapper(
+         $ormFactory = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
+         return $ormFactory->getGenericORMapper(
                                  'modules::usermanagement',
                                  'umgt',
                                  $this->__ConnectionKey,

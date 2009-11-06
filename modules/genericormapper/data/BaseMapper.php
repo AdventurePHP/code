@@ -1,107 +1,105 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('core::database','connectionManager');
+   import('modules::genericormapper::data','GenericDomainObject');
 
 
    /**
-   *  @namespace modules::genericormapper::data
-   *  @class BaseMapper
-   *
-   *  Implements the base class for all concrete or-mapper implementations.<br />
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 26.04.2008<br />
-   *  Version 0.2, 14.05.2008<br />
-   *  Version 0.3, 26.10.2008 (Added the addMappingConfiguration() and addRelationConfiguration() methods)<br />
-   *  Version 0.4, 30.12.2008 (Prettified the benchmark ids)<br />
-   */
-   class BaseMapper extends coreObject
-   {
+    * @namespace modules::genericormapper::data
+    * @class BaseMapper
+    *
+    * Implements the base class for all concrete or-mapper implementations.<br />
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.04.2008<br />
+    * Version 0.2, 14.05.2008<br />
+    * Version 0.3, 26.10.2008 (Added the addMappingConfiguration() and addRelationConfiguration() methods)<br />
+    * Version 0.4, 30.12.2008 (Prettified the benchmark ids)<br />
+    */
+   class BaseMapper extends coreObject {
 
       /**
-      *  @protected
-      *  Namespace, where the configuration files are located.
-      */
+       * @protected
+       * @var string Namespace, where the configuration files are located.
+       */
       protected $__ConfigNamespace = null;
 
       /**
-      *  @protected
-      *  Name affix of the configuration files.
-      */
+       * @protected
+       * @var string Name affix of the configuration files.
+       */
       protected $__ConfigNameAffix = null;
 
       /**
-      *  @protected
-      *  Instance of the database driver.
-      */
+       * @protected
+       * @var AbstractDatabaseHandler Instance of the database driver.
+       */
       protected $__DBDriver = null;
 
       /**
-      *  @protected
-      *  Object mapping table.
-      */
+       * @protected
+       * @var string[] Object mapping table.
+       */
       protected $__MappingTable = array();
 
       /**
-      *  @protected
-      *  Object relation table.
-      */
+       * @protected
+       * @var string[] Object relation table.
+       */
       protected $__RelationTable = array();
 
       /**
-      *  @protected
-      *  Indicates, if a additional configuration was already imported.
-      */
+       * @protected
+       * @var string[] Indicates, if a additional configuration was already imported.
+       */
       protected $__importedConfigCache = array();
 
       /**
        * @protected
-       * Indicates, whether the generated statements should be logged for debugging purposes.
+       * @var boolean Indicates, whether the generated statements should be logged for debugging purposes.
        */
       protected $__LogStatements = false;
-
 
       function BaseMapper(){
       }
 
-
       /**
-      *  @public
-      *
-      *  Implements the interface method init() to be able to initialize the mapper with the
-      *  service manager.
-      *
-      *  @param string[] $initParam List of initialization parameters.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 26.04.2008<br />
-      *  Version 0.2, 14.05.2008 (mapping table creation moved to AbstractORMapper)<br />
-      *  Version 0.3, 31.05.2008 (changed behavior due to refactoring)<br />
-      *  Version 0.4, 22.06.2008 (refactored the configuration file entries to gain flexibility)<br />
-      *  Version 0.5, 23.06.2008 (mapper now must be instanciated by the factory, that configures the mapper)<br />
-      *  Version 0.6, 03.05.2009 (added the LogStatements param)<br />
-      */
+       * @public
+       *
+       * Implements the interface method init() to be able to initialize the mapper with the
+       * service manager.
+       *
+       * @param string[] $initParam List of initialization parameters.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 26.04.2008<br />
+       * Version 0.2, 14.05.2008 (mapping table creation moved to AbstractORMapper)<br />
+       * Version 0.3, 31.05.2008 (changed behavior due to refactoring)<br />
+       * Version 0.4, 22.06.2008 (refactored the configuration file entries to gain flexibility)<br />
+       * Version 0.5, 23.06.2008 (mapper now must be instanciated by the factory, that configures the mapper)<br />
+       * Version 0.6, 03.05.2009 (added the LogStatements param)<br />
+       */
       function init($initParam){
 
          // set the config namespace
@@ -124,17 +122,17 @@
 
 
       /**
-      *  @protected
-      *
-      *  Parse the object configuration definition file.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 26.04.2008<br />
-      *  Version 0.2, 31.05.2008 (Refactoring of the object definition)<br />
-      *  Version 0.3, 22.06.2008 (Refactored object configuration adressing)<br />
-      *  Version 0.4, 26.10.2008 (Resolving functionality was outsourced to the __generateMappingItem() method)<br />
-      */
+       * @protected
+       *
+       * Parse the object configuration definition file.<br />
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 26.04.2008<br />
+       * Version 0.2, 31.05.2008 (Refactoring of the object definition)<br />
+       * Version 0.3, 22.06.2008 (Refactored object configuration adressing)<br />
+       * Version 0.4, 26.10.2008 (Resolving functionality was outsourced to the __generateMappingItem() method)<br />
+       */
       protected function __createMappingTable(){
 
          // invoke benchmark timer
@@ -158,19 +156,18 @@
        // end function
       }
 
-
       /**
-      *  @protected
-      *
-      *  Create the object relation table.<br />
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 11.05.2008<br />
-      *  Version 0.2, 30.05.2008 (properties are now generated instead of configured explicitly)<br />
-      *  Version 0.3, 22.06.2008 (refactored relation configuration adressing)<br />
-      *  Version 0.4, 26.10.2008 (Resolving functionality was outsourced to the __generateRelationItem() method)<br />
-      */
+       * @protected
+       *
+       * Create the object relation table.<br />
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 11.05.2008<br />
+       * Version 0.2, 30.05.2008 (properties are now generated instead of configured explicitly)<br />
+       * Version 0.3, 22.06.2008 (refactored relation configuration adressing)<br />
+       * Version 0.4, 26.10.2008 (Resolving functionality was outsourced to the __generateRelationItem() method)<br />
+       */
       protected function __createRelationTable(){
 
          // Invoke benchmark timer
