@@ -49,8 +49,7 @@
       protected $__RowTypeMappingFrom = array(
                                         '/^VARCHAR\(([0-9]+)\)$/i',
                                         '/^TEXT$/i',
-                                        '/^DATE$/i',
-                                        '/^BIT\(([0-9]+)\)$/i'
+                                        '/^DATE$/i'
                                        );
 
       /**
@@ -60,8 +59,7 @@
       protected $__RowTypeMappingTo = array(
                                       'VARCHAR($1) character set utf8 NOT NULL default \'\'',
                                       'TEXT character set utf8 NOT NULL',
-                                      'DATE NOT NULL default \'0000-00-00\'',
-                                      'BIT($1) NOT NULL DEFAULT b\'0000000\''
+                                      'DATE NOT NULL default \'0000-00-00\''
                                      );
 
       /**
