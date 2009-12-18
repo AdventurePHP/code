@@ -240,7 +240,7 @@
 
          // concatinate the html code and return it
          return $captchaCode.'/> <div style="line-height: 40px; float: left; margin-left: 20px;">'
-            .$this->__TextField->transform().'</div><div style="clear: both;" /></div>';
+            .$this->__TextField->transform().'</div><br style="clear: left;" /></div>';
 
        // end function
       }
