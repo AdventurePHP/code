@@ -7,9 +7,7 @@
    </div>
    <div class="cm--create-form">
       <html:form name="AddComment" method="post">
-         <span>
-            <form:getstring namespace="modules::comments" config="language" entry="form.name" />*
-         </span>
+         <span><form:getstring namespace="modules::comments" config="language" entry="form.name" />*</span>
          <form:text
             maxlength="100"
             name="Name"
@@ -21,9 +19,7 @@
             control="Name|Comment"
          />
          <br />
-         <span>
-            <form:getstring namespace="modules::comments" config="language" entry="form.email" />*
-         </span>
+         <span><form:getstring namespace="modules::comments" config="language" entry="form.email" />*</span>
          <form:text
             maxlength="100"
             name="EMail"
@@ -46,12 +42,12 @@
          <form:area
             name="Comment"
             class="cm--create-element-comment"
+            cols="50"
+            rows="6"
          />
          <br />
          <br />
-         <span>
-            <form:getstring namespace="modules::comments" config="language" entry="form.confirm" />*
-         </span>
+         <span><form:getstring namespace="modules::comments" config="language" entry="form.confirm" />*</span>
          <br />
          <br />
          <form:addtaglib namespace="modules::captcha::pres::taglib" prefix="form" class="captcha" />

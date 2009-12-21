@@ -261,7 +261,7 @@
          // search for the closing sign
          $posTagClosingSign = strpos($tagString,'>');
 
-         // In case, the seperator between tag and attribute is not found, or in case the tag
+         // In case, the separator between tag and attribute is not found, or in case the tag
          // end position is located between the tag and the attribute, the end sign (">") is used
          // as separator. This allows tags without attributes.
          if($tagAttributeDel === false || $tagAttributeDel > $posTagClosingSign){
@@ -269,7 +269,7 @@
           // end if
          }
 
-         // search for seperator between prefix and class
+         // search for separator between prefix and class
          $prefixDel = strpos($tagString,':');
 
          // gather class
@@ -298,9 +298,11 @@
             // initialize the content as empty string
             $content = (string)'';
 
-            // check, if explictitly-closing tag exists
+            // check, if explicitly-closing tag exists
             if(strpos($tagString,'</'.$prefix.':'.$class.'>') === false){
-               trigger_error('[xmlParser::getTagAttributes()] No closing tag found for tag "&lt;'.$prefix.':'.$class.' /&gt;"! Tag string: "'.htmlentities($tagString).'".',E_USER_ERROR);
+               trigger_error('[xmlParser::getTagAttributes()] No closing tag found for tag "&lt;'
+                       .$prefix.':'.$class.' /&gt;"! Tag string: "'.htmlentities($tagString).'".',
+                       E_USER_ERROR);
              // end if
             }
             else{
@@ -643,7 +645,7 @@
        *
        * @param string $name The name of the attribute to delete.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.12.2006<br />
        */
@@ -659,7 +661,7 @@
        *
        * @param string[] $attributes The attributes list.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.12.2006<br />
        */
@@ -952,7 +954,7 @@
     * you add a known taglib to a DOM node, an instance of the TagLib class is added to
     * the node.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 28.12.2006<br />
     */
@@ -985,7 +987,7 @@
        * @param string $prefix The prefix of the taglib.
        * @param string $class The class name of the taglib.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.12.2006<br />
        */
@@ -1533,6 +1535,7 @@
        * @author Christian SchÃ¤fer
        * @version
        * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 15.12.2009 (Added check for non existing class attribute)<br />
        */
       protected function __extractDocumentController(){
 
@@ -1548,6 +1551,15 @@
                ($tagEndPos - $tagStartPos) - 1 - strlen($controllerStartTag));
             $controllerAttributes = xmlParser::getAttributesFromString($controllerTag);
 
+            // check for class definition
+            if(!isset($controllerAttributes['class'])){
+               trigger_error('[Document::__extractDocumentController()] Document controller '
+                       .'specification does not contain a valid controller class definition. '
+                       .'Please double check the template code and consult the documentation. '
+                       .'Template code: '.htmlentities($this->__Content));
+               exit(1);
+            }
+
             // lazily import document controller class
             if(!class_exists($controllerAttributes['class'])){
                import($controllerAttributes['namespace'],$controllerAttributes['file']);
@@ -1558,7 +1570,8 @@
             $this->__DocumentController = $controllerAttributes['class'];
 
             // remove definition from content to be not displayed
-            $this->__Content = substr_replace($this->__Content,'',$tagStartPos,($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
+            $this->__Content = substr_replace($this->__Content,'',
+                    $tagStartPos,($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
 
           // end if
          }
@@ -1585,8 +1598,8 @@
        */
       public function transform(){
 
-         $T = &Singleton::getInstance('BenchmarkTimer');
-         $T->start('('.get_class($this).') '.$this->__ObjectID.'::transform()');
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $t->start('('.get_class($this).') '.$this->__ObjectID.'::transform()');
 
          // create copy, to preserve it!
          $content = $this->__Content;
@@ -1594,8 +1607,8 @@
          // execute the document controller if applicable
          if(!empty($this->__DocumentController)){
 
-            $ID = '('.$this->__DocumentController.') '.(xmlParser::generateUniqID()).'::transformContent()';
-            $T->start($ID);
+            $id = '('.$this->__DocumentController.') '.(xmlParser::generateUniqID()).'::transformContent()';
+            $t->start($id);
 
             if(!class_exists($this->__DocumentController)){
                trigger_error('['.get_class($this).'::transform()] DocumentController "'.$this->__DocumentController.'" cannot be found! Maybe the class name is misspelt!',E_USER_ERROR);
@@ -1629,7 +1642,7 @@
             // retrieve the content
             $content = $docCon->get('Content');
 
-            $T->stop($ID);
+            $t->stop($id);
 
           // end if
          }
@@ -1643,7 +1656,7 @@
           // end if
          }
 
-         $T->stop('('.get_class($this).') '.$this->__ObjectID.'::transform()');
+         $t->stop('('.get_class($this).') '.$this->__ObjectID.'::transform()');
 
          return $content;
 
@@ -1661,7 +1674,7 @@
     * from the template specified by the tag's attributes within the current APF DOM tree. Each
     * importdesign tag can compose further tags.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 28.12.2006<br />
     */

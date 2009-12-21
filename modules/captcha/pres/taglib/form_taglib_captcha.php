@@ -40,18 +40,19 @@
    class form_taglib_captcha extends form_control {
 
       /**
-      *  @protected
-      *  Contains the instance of the captcha text field.
-      */
+       * @protected
+       * @var form_control Contains the instance of the captcha text field.
+       */
       protected $__TextField = null;
 
       /**
-      *  @protected
-      *  Contains the name of the captcha text field.
-      */
+       * @protected
+       * @var string Contains the name of the captcha text field.
+       */
       protected $__TextFieldName = null;
 
       /**
+       * @protected
        * @var string The captcha string of the current request.
        */
       protected $__CaptchaString = null;
@@ -129,12 +130,14 @@
          $this->__TextField->set('ObjectID',xmlParser::generateUniqID());
 
          // prepare the text field
-         if(isset($this->__Attributes['text_class'])){
-            $this->__TextField->setAttribute('class',$this->__Attributes['text_class']);
+         $textClass = $this->getAttribute('text_class');
+         if($textClass !== null){
+            $this->__TextField->setAttribute('class',$textClass);
           // end if
          }
-         if(isset($this->__Attributes['text_style'])){
-            $this->__TextField->setAttribute('style',$this->__Attributes['text_style']);
+         $textStyle = $this->getAttribute('text_style');
+         if($textStyle !== null){
+            $this->__TextField->setAttribute('style',$textStyle);
           // end if
          }
 
@@ -200,16 +203,17 @@
        * Version 0.1, 20.06.2008<br />
        * Version 0.2, 05.11.2008 (Changed action base url generation)<br />
        * Version 0.3, 07.11.2008 (Fixed the action URL generation. See class ui_mediastream for more details.)<br />
+       * Version 0.4, 19.12.2009 (Added attribute to be able to disable the inline styles to have clean markup)<br />
        */
       public function transform(){
 
          // get url rewrite information from the registry
          $reg = &Singleton::getInstance('Registry');
-         $urlrewrite = $reg->retrieve('apf::core','URLRewriting');
-         $actionurl = $reg->retrieve('apf::core','CurrentRequestURL');
+         $urlRewrite = $reg->retrieve('apf::core','URLRewriting');
+         $currentReqUrl = $reg->retrieve('apf::core','CurrentRequestURL');
 
          // build action statement
-         if($urlrewrite === true){
+         if($urlRewrite === true){
             $actionParam = array(
                                  'modules_captcha_biz-action/showCaptcha' => 'name/'.$this->__TextFieldName
                                 );
@@ -222,25 +226,40 @@
           // end else
          }
 
+         // check, if the inline style should be disabled
+         $disableInlineStyle = $this->getAttribute('disable_inline');
+         $disableInlineStyle = $disableInlineStyle === 'true' ? true : false;
+
          // create desired media url
-         $actionURL = FrontcontrollerLinkHandler::generateLink($actionurl,$actionParam);
+         $currentReqUrl = FrontcontrollerLinkHandler::generateLink($currentReqUrl,$actionParam);
 
          // initialize captcha source
-         $captchaCode = '<div class="captcha"><img src="'.$actionURL.'" alt="CAPTCHA" style="float:left;" ';
+         $captchaCode = '<div class="captcha"><img src="'.$currentReqUrl.'" alt="CAPTCHA" ';
+         if($disableInlineStyle === false){
+            $captchaCode .= 'style="float:left;" ';
+         }
 
          // add class and style attributes if desired
-         if(isset($this->__Attributes['image_class'])){
-            $captchaCode .= 'class="'.$this->__Attributes['image_class'].'" ';
+         $imgClass = $this->getAttribute('image_class');
+         if($imgClass !== null){
+            $captchaCode .= 'class="'.$imgClass.'" ';
           // end if
          }
-         if(isset($this->__Attributes['image_style'])){
-            $captchaCode .= 'style="'.$this->__Attributes['image_style'].'" ';
+         $imgStyle = $this->getAttribute('image_style');
+         if($imgStyle !== null){
+            $captchaCode .= 'style="'.$imgStyle.'" ';
           // end if
          }
 
          // concatinate the html code and return it
-         return $captchaCode.'/> <div style="line-height: 40px; float: left; margin-left: 20px;">'
-            .$this->__TextField->transform().'</div><br style="clear: left;" /></div>';
+         if($disableInlineStyle === true){
+            return $captchaCode.'/><div>'
+               .$this->__TextField->transform().'</div></div>';
+         }
+         else {
+            return $captchaCode.'/><div style="line-height: 40px; float: left; margin-left: 20px;">'
+               .$this->__TextField->transform().'</div><div style="clear: left;"></div></div>';
+         }
 
        // end function
       }
