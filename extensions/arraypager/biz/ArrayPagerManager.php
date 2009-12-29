@@ -14,7 +14,7 @@
     *
     * @author Lutz Mahlstedt
     * @version
-    * Version 0.1, 15.12.2009<br />
+    * Version 0.1, 21.12.2009<br />
     */
    final class ArrayPagerManager extends coreObject {
       private $__PagerConfig = NULL;
@@ -186,9 +186,9 @@
                $objectDocument->setAttribute ('Config',
                        array ('ParameterPage'     => $this->__PagerConfig['Pager.ParameterPage'],
                        'ParameterEntries'  => $this->__PagerConfig['Pager.ParameterEntries'],
-                       'Entries'           => RequestHandler::getValue ($this->__PagerConfig['Pager.ParameterEntries'],
+                       'Entries'           => intval (RequestHandler::getValue ($this->__PagerConfig['Pager.ParameterEntries'],
                        $this->__PagerConfig['Pager.Entries']
-                       ),
+                       )),
                        'EntriesPossible'   => $this->__PagerConfig['Pager.EntriesPossible'],
                        'EntriesChangeable' => $this->__PagerConfig['Pager.EntriesChangeable']
                        )
@@ -257,15 +257,23 @@
        * @author Lutz Mahlstedt
        * @version
        * Version 0.1, 21.12.2009<br />
+   * Version 0.2, 23.12.2009 Check whether $arrayData is an array or not<br />
        */
       public function registerPager ($stringPager,
               &$arrayData
       ) {
-         $objectArrayPagerMapper = $this->__getDataMapper ();
+         if (is_array ($arrayData) === TRUE) {
+            $objectArrayPagerMapper = $this->__getDataMapper ();
 
-         $objectArrayPagerMapper->registerEntries ($stringPager,
-                 $arrayData
-         );
+            $objectArrayPagerMapper->registerEntries ($stringPager,
+                    $arrayData
+            );
+         }
+         else {
+            trigger_error ('[ArrayPagerManager->registerPager()] Can not register pager named "'.$stringPager.'" because the given data is not an array!',
+                    E_USER_WARNING
+            );
+         }
       }
 
       /**

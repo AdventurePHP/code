@@ -25,7 +25,7 @@
 
       private $_LOCALS;
 
-      function ArrayPager () {
+      function arraypager_controller () {
       }
 
       function transformContent () {
