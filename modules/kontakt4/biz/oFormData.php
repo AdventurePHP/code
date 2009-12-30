@@ -20,13 +20,13 @@
    */
 
    /**
-   *  @namespace modules::kontakt4::biz
+   *  @package modules::kontakt4::biz
    *  @class oFormData
    *
-   *  Implementiert das Domänenobjekt FormData, das alle Daten des Formulars hält.<br />
+   *  Implementiert das Domï¿½nenobjekt FormData, das alle Daten des Formulars hï¿½lt.<br />
    *  Dient als Schnittstelleobjekt zwischen pres und biz.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 03.06.2006<br />
    */

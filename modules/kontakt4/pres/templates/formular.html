@@ -1,11 +1,13 @@
 <@controller namespace="modules::kontakt4::pres::documentcontroller" file="kontakt_v4_controller" class="kontakt_v4_controller" @>
 <style type="text/css">
-   .contact-form input,textarea,select {
+   .contact-form div > input,
+   .contact-form div > textarea,
+   .contact-form div > select {
       border: 1px solid black;
       background-color: #eeeeee;
       width: 280px;
    }
-   .contact-form textarea {
+   .contact-form div > textarea {
       height: 200px;
       width: 400px !important;
       overflow: auto;
@@ -101,7 +103,7 @@
          <div class="control">
             <form:select name="Empfaenger" />
          </div>
-         <div class="clearleft" />
+         <div class="clearleft"></div>
       </div>
       <div>
          <div class="label">
@@ -110,7 +112,7 @@
          <div class="control">
             <form:text name="AbsenderName" />
          </div>
-         <div class="clearleft" />
+         <div class="clearleft"></div>
       </div>
       <div>
          <div class="label">
@@ -119,7 +121,7 @@
          <div class="control">
             <form:text name="AbsenderAdresse" />
          </div>
-         <div class="clearleft" />
+         <div class="clearleft"></div>
       </div>
       <div>
          <div class="label">
@@ -128,7 +130,7 @@
          <div class="control">
             <form:text name="Betreff" />
          </div>
-         <div class="clearleft" />
+         <div class="clearleft"></div>
       </div>
       <div class="fullsizebox">
          <div>

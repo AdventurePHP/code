@@ -28,7 +28,7 @@
 
 
    /**
-   *  @namespace modules::kontakt4::biz
+   *  @package modules::kontakt4::biz
    *  @class contactManager
    *
    *  Implementiert die Businessschicht des Kontaktformulars.<br />

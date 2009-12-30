@@ -20,12 +20,12 @@
    */
 
    /**
-   *  @namespace modules::kontakt4::biz
+   *  @package modules::kontakt4::biz
    *  @class oRecipient
    *
-   *  Implementiert das Domänenobjekt, das die Empfänger der Konfiguration hält.<br />
+   *  Implementiert das Domï¿½nenobjekt, das die Empfï¿½nger der Konfiguration hï¿½lt.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 03.06.2005<br />
    */

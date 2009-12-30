@@ -22,7 +22,7 @@
    import('tools::link','FrontcontrollerLinkHandler');
 
    /**
-    * @namespace modules::kontakt4::pres::documentcontroller
+    * @package modules::kontakt4::pres::documentcontroller
     * @class kontakt_v4_controller
     *
     * Document controller for the form view of the contact module.

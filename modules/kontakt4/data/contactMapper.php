@@ -24,12 +24,12 @@
 
 
    /**
-   *  @namespace modules::kontakt4::data
+   *  @package modules::kontakt4::data
    *  @class contactMapper
    *
    *  Implementiert die Datenschicht des Kontaktformulars<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 03.06.2006<br />
    *  Version 0.2, 04.06.2006<br />
@@ -44,9 +44,9 @@
       /**
       *  @public
       *
-      *  Läd die gesamte Empfänger-Liste.<br />
+      *  Lï¿½d die gesamte Empfï¿½nger-Liste.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 03.06.2006<br />
       *  Version 0.2, 04.06.2006<br />
@@ -86,7 +86,7 @@
          }
 
 
-         // Recipients zurückgeben
+         // Recipients zurï¿½ckgeben
          return $Recipients;
 
        // end function
@@ -96,9 +96,9 @@
       /**
       *  @public
       *
-      *  Läd ein Empängerobjekt für einen gegebene Id.<br />
+      *  Lï¿½d ein Empï¿½ngerobjekt fï¿½r einen gegebene Id.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 03.06.2006<br />
       *  Version 0.2, 04.06.2006<br />
