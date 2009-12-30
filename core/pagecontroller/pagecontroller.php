@@ -40,7 +40,7 @@
    *  - OutputFilter              : the definition of the output filter
    *
    *  The file also contains the pagecontroller core implementation with the classes Page,
-   *  Document, TagLib, coreObject, xmlParser and baseController (the basic MVC document controller).
+   *  Document, TagLib, coreObject, XmlParser and baseController (the basic MVC document controller).
    *
    *  @author Christian Achatz
    *  @version
@@ -175,7 +175,7 @@
    }
 
    /**
-    * @namespace core::pagecontroller
+    * @package core::pagecontroller
     * @function printObject
     * @see http://php.net/print_r
     *
@@ -218,9 +218,8 @@
    }
 
    /**
-    * @namespace core::pagecontroller
-    * @class xmlParser
-    * @static
+    * @package core::pagecontroller
+    * @class XmlParser
     *
     * Static parser for XML / XSL Strings.
     *
@@ -228,9 +227,9 @@
     * @version
     * Version 0.1, 22.12.2006<br />
     */
-   final class xmlParser {
+   final class XmlParser {
 
-      private function xmlParser(){
+      private function XmlParser(){
       }
 
       /**
@@ -285,7 +284,7 @@
          $attributesString = substr($tagString,$tagAttributeDel + 1,$posEndAttrib - $tagAttributeDel);
 
          // parse the tag's attributes
-         $tagAttributes = xmlParser::getAttributesFromString($attributesString);
+         $tagAttributes = XmlParser::getAttributesFromString($attributesString);
 
          // Check, whether the tag is self-closing. If not, read the content.
          $content = null;
@@ -300,7 +299,7 @@
 
             // check, if explicitly-closing tag exists
             if(strpos($tagString,'</'.$prefix.':'.$class.'>') === false){
-               trigger_error('[xmlParser::getTagAttributes()] No closing tag found for tag "&lt;'
+               trigger_error('[XmlParser::getTagAttributes()] No closing tag found for tag "&lt;'
                        .$prefix.':'.$class.' /&gt;"! Tag string: "'.htmlentities($tagString).'".',
                        E_USER_ERROR);
              // end if
@@ -392,7 +391,7 @@
 
             // limit parse loop count to avoid enless while loops
             if($parserLoops == $parserMaxLoops){
-               trigger_error('[xmlParser::getAttributesFromString()] Error while parsing: "'.htmlentities($attributesString).'". Maximum number of loops exceeded!',E_USER_ERROR);
+               trigger_error('[XmlParser::getAttributesFromString()] Error while parsing: "'.htmlentities($attributesString).'". Maximum number of loops exceeded!',E_USER_ERROR);
              // end if
             }
 
@@ -454,7 +453,7 @@
    }
 
    /**
-    * @namespace core::pagecontroller
+    * @package core::pagecontroller
     * @class coreObject
     * @abstract
     *
@@ -947,7 +946,7 @@
    }
 
    /**
-    * @namespace core::pagecontroller
+    * @package core::pagecontroller
     * @class TagLib
     *
     * This class represents a taglib and thus is used as a taglib definition. Each time,
@@ -1046,7 +1045,7 @@
    }
 
    /**
-    * @namespace core::pagecontroller
+    * @package core::pagecontroller
     * @class Page
     *
     * The Page object represents the root node of  a web page. It is used as a container for the
@@ -1087,7 +1086,7 @@
       public function Page(){
 
          // set internal attributes
-         $this->__ObjectID = xmlParser::generateUniqID();
+         $this->__ObjectID = XmlParser::generateUniqID();
 
          // apply input filter if desired (e.g. front controller is not used)
          $reg = &Singleton::getInstance('Registry');
@@ -1144,7 +1143,7 @@
 
          // load the design
          $this->__Document->loadDesign($namespace,$design);
-         $this->__Document->set('ObjectID',xmlParser::generateUniqID());
+         $this->__Document->set('ObjectID',XmlParser::generateUniqID());
          $this->__Document->setByReference('ParentObject',$this);
 
        // end function
@@ -1194,54 +1193,57 @@
    }
 
    /**
-   *  @namespace core::pagecontroller
-   *  @class Document
-   *
-   *  Represents a node within the APF DOM tree. Each document can compose several other documents
-   *  by use of the $__Children property (composite tree).
-   *
-   *  @author Christian Schäfer
-   *  @version
-   *  Version 0.1, 28.12.2006<br />
-   */
-   class Document extends coreObject
-   {
+    * @package core::pagecontroller
+    * @class Document
+    *
+    * Represents a node within the APF DOM tree. Each document can compose several other documents
+    * by use of the $__Children property (composite tree).
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
+   class Document extends coreObject {
 
       /**
-      *  @protected
-      */
+       * @protected
+       * @var string The content of the tag. Example:
+       * <pre>&lt;foo:bar&gt;This is the content of the tag.&lt;/foo:bar&gt;</pre>
+       */
       protected $__Content;
 
       /**
-      *  @protected
-      */
-      protected $__DocumentController;
+       * @protected
+       * @var string The name of the document controller to use at transformation time.
+       */
+      protected $__DocumentController = null;
 
       /**
-      *  @protected
-      */
+       * @protected
+       * @var TagLib[] List of known taglibs.
+       */
       protected $__TagLibs;
 
       /**
-      *  @protected
-      */
+       * @protected
+       * @var int The maximum number of parser loops to protect against infinit loops.
+       */
       protected $__MaxLoops = 100;
 
-
       /**
-      *  @public
-      *
-      *  Initializes the built-in taglibs, used to create the APF DOM tree.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
-      */
+       * @public
+       *
+       * Initializes the built-in taglibs, used to create the APF DOM tree.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
+       */
       public function Document(){
 
          // set the object id
-         $this->__ObjectID = xmlParser::generateUniqID();
+         $this->__ObjectID = XmlParser::generateUniqID();
 
          // add the known taglibs (core taglibs!)
          $this->__TagLibs[] = new TagLib('core::pagecontroller','core','addtaglib');
@@ -1253,19 +1255,19 @@
       }
 
       /**
-      *  @public
-      *
-      *  This method is used to add more known taglibs to a document.
-      *
-      *  @param string $namespace The namespace of the taglib
-      *  @param string $prefix The prefix of the taglib
-      *  @param string $class The class name of the taglib
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
-      */
+       * @public
+       *
+       * This method is used to add more known taglibs to a document.
+       *
+       * @param string $namespace The namespace of the taglib
+       * @param string $prefix The prefix of the taglib
+       * @param string $class The class name of the taglib
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
+       */
       public function addTagLib($namespace,$prefix,$class){
 
          // add the taglib to the current node
@@ -1282,37 +1284,37 @@
       }
 
       /**
-      *  @protected
-      *
-      *  Returns the full name of the taglib class file. The name consists of the prefix followed by
-      *  the string "_taglib_" ans the suffix (=class).
-      *
-      *  @param string $prefix The prefix of the taglib
-      *  @param string $class The class name of the taglib
-      *  @return string The full file name of the taglib class
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
+       * @protected
+       *
+       * Returns the full name of the taglib class file. The name consists of the prefix followed by
+       * the string "_taglib_" ans the suffix (=class).
+       *
+       * @param string $prefix The prefix of the taglib
+       * @param string $class The class name of the taglib
+       * @return string The full file name of the taglib class
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
       protected function __getModuleName($prefix,$class){
          return $prefix.'_taglib_'.$class;
        // end function
       }
 
       /**
-      *  @public
-      *
-      *  Loads the initial template for the initial document.
-      *
-      *  @param string $Namespace; Namespace des initialen Templates
-      *  @param string $Design; Name des initialen Designs
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 15.01.2007 (Now document controller are extracted first)<br />
-      */
+       * @public
+       *
+       * Loads the initial template for the initial document.
+       *
+       * @param string $Namespace; Namespace des initialen Templates
+       * @param string $Design; Name des initialen Designs
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 15.01.2007 (Now document controller are extracted first)<br />
+       */
       public function loadDesign($Namespace,$Design){
 
          // read the content of the template
@@ -1385,11 +1387,14 @@
        * Version 0.4, 09.04.2007 (Removed double attributes setting, added language injection)<br />
        * Version 0.5, 02.04.2008 (Bugfix: the token is now displayed in the HTML error page)<br />
        * Version 0.6, 06.06.2009 (Improvement: content is not copied during parsing any more)<br />
+       * Version 0.7, 30.12.2009 (Introduced benchmark marks for the onParseTime() event.)<br />
        */
       protected function __extractTagLibTags(){
 
          $tagLibLoops = 0;
          $i = 0;
+
+         $t = &Singleton::getInstance('BenchmarkTimer');
 
          // Parse the known taglibs. Here, we have to use a while loop, because one parser loop
          // can result in an increasing amount of known taglibs (core:addtaglib!).
@@ -1457,7 +1462,7 @@
                }
 
                // get the tag attributes of the current tag
-               $attributes = xmlParser::getTagAttributes($tagString);
+               $attributes = XmlParser::getTagAttributes($tagString);
                $object = new $module();
 
                // inject context of the parent object
@@ -1472,11 +1477,11 @@
                // initialize object id, that is used to reference the object
                // within the APF DOM tree and to provide a unique key for the
                // children index.
-               $objectId = xmlParser::generateUniqID();
+               $objectId = XmlParser::generateUniqID();
                $object->set('ObjectID',$objectId);
 
                // replace the position of the taglib with a place holder
-               // token string: <$ObjectID />.
+               // token string: <$objectId />.
                // this needs to be done, to be able to place the content of the
                // transformed taglib at transformation time correctly
                $this->__Content = substr_replace($this->__Content,'<'.$objectId.' />',$tagStartPos,$tagStringLength);
@@ -1488,7 +1493,11 @@
                $object->set('Content',$attributes['content']);
 
                // call onParseTime() to enable the taglib to initialize itself
+               $benchId = '('.get_class($this).') '.$this->__ObjectID.'::__Children['.$objectId
+                       .']::onParseTime()';
+               $t->start($benchId);
                $object->onParseTime();
+               $t->stop($benchId);
 
                // add current object to the APF DOM tree (no reference, because this leads to NPEs!)
                $this->__Children[$objectId] = $object;
@@ -1510,15 +1519,15 @@
          // other APF DOM nodes to do extended initialization.
          if(count($this->__Children) > 0){
 
-            $T = &Singleton::getInstance('BenchmarkTimer');
-            $T->start('('.get_class($this).') '.$this->__ObjectID.'::__Children[]::onAfterAppend()');
+            $benchId = '('.get_class($this).') '.$this->__ObjectID.'::__Children[]::onAfterAppend()';
+            $t->start($benchId);
 
             foreach($this->__Children as $objectId => $DUMMY){
                $this->__Children[$objectId]->onAfterAppend();
              // end for
             }
 
-            $T->stop('('.get_class($this).') '.$this->__ObjectID.'::__Children[]::onAfterAppend()');
+            $t->stop($benchId);
 
           // end if
          }
@@ -1549,7 +1558,7 @@
             $tagEndPos = strpos($this->__Content,$controllerEndTag,$tagStartPos);
             $controllerTag = substr($this->__Content,$tagStartPos + strlen($controllerStartTag),
                ($tagEndPos - $tagStartPos) - 1 - strlen($controllerStartTag));
-            $controllerAttributes = xmlParser::getAttributesFromString($controllerTag);
+            $controllerAttributes = XmlParser::getAttributesFromString($controllerTag);
 
             // check for class definition
             if(!isset($controllerAttributes['class'])){
@@ -1607,7 +1616,7 @@
          // execute the document controller if applicable
          if(!empty($this->__DocumentController)){
 
-            $id = '('.$this->__DocumentController.') '.(xmlParser::generateUniqID()).'::transformContent()';
+            $id = '('.$this->__DocumentController.') '.(XmlParser::generateUniqID()).'::transformContent()';
             $t->start($id);
 
             if(!class_exists($this->__DocumentController)){
@@ -1775,7 +1784,7 @@
    }
 
    /**
-    * @namespace core::pagecontroller
+    * @package core::pagecontroller
     * @class core_taglib_addtaglib
     *
     * Represents the functionality of the core:addtaglib tag. Adds a further taglib to the known
@@ -1826,7 +1835,7 @@
    }
 
    /**
-    * @namespace core::pagecontroller
+    * @package core::pagecontroller
     * @class html_taglib_placeholder
     *
     * Represents a place holder within a template file. Can be filled within a documen controller
@@ -1860,7 +1869,7 @@
    }
 
    /**
-    * @namespace core::pagecontroller
+    * @package core::pagecontroller
     * @class html_taglib_template
     *
     * Represents a reusable html fragment (template) within a template file. The tag's functionality
@@ -2069,7 +2078,7 @@
    }
 
    /**
-    * @namespace core::pagecontroller
+    * @package core::pagecontroller
     * @class template_taglib_placeholder
     *
     * Implements the place holder tag with in a html:template tag. The tag does not hav further children.
@@ -2102,7 +2111,7 @@
    }
 
    /**
-    * @namespace core::pagecontroller
+    * @package core::pagecontroller
     * @class template_taglib_addtaglib
     *
     * Represents the core:addtaglib functionality for the html:template tag. Includes further
