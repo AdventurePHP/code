@@ -20,144 +20,152 @@
     */
 
    /**
-    * @namespace core::benchmark
+    * @package core::benchmark
     * @class BenchmarkTimer
     *
     * This class implements the benchmark timer used for measurement of the core components
     * and your software. Must be used as a singleton to guarantee, that all benchmark tags
-    * are included within the report. Usage:
+    * are included within the report. Usage (for each time!):
     * <pre>
-    * $T = &Singleton::getInstance('BenchmarkTimer');
-    * $T->start('my_tag');
+    * $t = &Singleton::getInstance('BenchmarkTimer');
+    * $t->start('my_tag');
     * ...
-    * $T->stop('my_tag');
-    * ...
-    * echo $T->createReport();
+    * $t->stop('my_tag');
+    * </pre>
+    * In order to create a benchmark report (typically at the end of your bootstrap file,
+    * please note the following:
+    * <pre>
+    * $t = &Singleton::getInstance('BenchmarkTimer');
+    * echo $t->createReport();
     * </pre>
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 31.12.2006<br />
-    * Version 0.1, 01.01.2007<br />
+    * Version 0.2, 01.01.2007<br />
+    * Version 0.3, 29.12.2009 (Refeactoring due to new HTML markup for the process report.)<br />
     */
    final class BenchmarkTimer {
 
       /**
-      *  @private
-      *  The benchmark root process.
-      */
+       * @private
+       * @var BenchmarkProcess The benchmark root process.
+       */
       private $__RootProcess = null;
 
       /**
-      *  @private
-      *  The process table, that contains all running processes (hash table).
-      */
+       * @private
+       * @var BenchmarkProcess[] The process table, that contains all running processes (hash table).
+       */
       private $__RunningProcesses = array();
 
       /**
-      *  @private
-      *  References the current parent process (=last process created).
-      */
+       * @private
+       * @var BenchmarkProcess References the current parent process (=last process created).
+       */
       private $__CurrentParent = null;
 
       /**
-      *  @private
-      *  Stores the process count.
-      */
+       * @private
+       * @var int Stores the process count.
+       */
       private $__CurrentProcessID = 0;
 
       /**
-      *  @private
-      *  Defines the critical time for the benchmark report.
-      */
+       * @private
+       * @var float Defines the critical time for the benchmark report.
+       */
       private $__CriticalTime = 0.5;
 
       /**
-      *  @private
-      *  Line counter for the report.
-      */
+       * @private
+       * @var int Line counter for the report.
+       */
       private $__LineCounter = 0;
 
+      private static $NEWLINE = "\n";
+
       /**
-      *  @public
-      *
-      *  Constructor of the BenchmarkTimer. Initializes the root process.
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
-      function BenchmarkTimer(){
-         $RootProcess = &$this->__createRootProcess();
-         $this->__addRunningProcess($RootProcess);
-         $this->__setCurrentParent($RootProcess);
+       * @public
+       *
+       * Constructor of the BenchmarkTimer. Initializes the root process.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
+      public function BenchmarkTimer(){
+         $rootProcess = &$this->__createRootProcess();
+         $this->__addRunningProcess($rootProcess);
+         $this->__setCurrentParent($rootProcess);
        // end function
       }
 
       /**
-      *  @public
-      *
-      *  Sets the critical time. If the critical time is reached, the time is printed in red digits.
-      *
-      *  @param string $time the critical time in seconds
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
-      function setCriticalTime($time){
+       * @public
+       *
+       * Sets the critical time. If the critical time is reached, the time is printed in red digits.
+       *
+       * @param float $time the critical time in seconds.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
+      public function setCriticalTime($time){
          $this->__CriticalTime = $time;
        // end function
       }
 
       /**
-      *  @public
-      *
-      *  Returns the critical time.
-      *
-      *  @return string $criticalTime the critical time
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
-      function getCriticalTime(){
+       * @public
+       *
+       * Returns the critical time.
+       *
+       * @return float The critical time.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
+      public function getCriticalTime(){
          return $this->__CriticalTime;
        // end function
       }
 
       /**
-      *  @public
-      *
-      *  This method is used to starts a new benchmark timer.
-      *
-      *  @param string $name the name of the benchmark tag
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
-      function start($name = ''){
+       * @public
+       *
+       * This method is used to starts a new benchmark timer.
+       *
+       * @param string $name The (unique!) name of the benchmark tag.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
+      public function start($name = null){
 
-         $StartTime = $this->__generateMicroTime();
+         $startTime = $this->__generateMicroTime();
 
-         if($name == ''){
+         if($name === null){
             trigger_error('[BenchmarkTimer::start()] Required parameter name is not set!');
           // end if
          }
 
-         if($this->__getRunningProcessByName($name)!=null){
-            trigger_error('[BenchmarkTimer::start()] Benchmark process with name '.$name.' is already running! Use a different one!');
+         if($this->__getRunningProcessByName($name) !== null){
+            trigger_error('[BenchmarkTimer::start()] Benchmark process with name "'.$name
+                    .'" is already running! Use a different one!');
           // end if
          }
          else{
 
-            $Parent = &$this->__getCurrentParent();
-            $Process = $this->__createProcess($name,$StartTime,$Parent);
-            $NewProcess = &$Process;
-            $Parent->appendProcess($NewProcess);
-            $this->__setCurrentParent($NewProcess);
-            $this->__addRunningProcess($NewProcess);
+            $parent = &$this->__getCurrentParent();
+            $process = $this->__createProcess($name,$startTime,$parent);
+            $newProcess = &$process; // note process as reference to have the same process instance!
+            $parent->appendProcess($newProcess);
+            $this->__setCurrentParent($newProcess);
+            $this->__addRunningProcess($newProcess);
 
           // end else
          }
@@ -166,17 +174,17 @@
       }
 
       /**
-      *  @public
-      *
-      *  Stops the benchmark timer, started with start().
-      *
-      *  @param string $name name of the desired benchmark tag
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
-      function stop($name){
+       * @public
+       *
+       * Stops the benchmark timer, started with start().
+       *
+       * @param string $name The (unique!) name of the benchmark tag.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
+      public function stop($name){
 
          $stopTime = $this->__generateMicroTime();
 
@@ -188,7 +196,8 @@
           // end if
          }
          else{
-            trigger_error('[BenchmarkTimer::stop()] Process with name '.$name.' is not running yet!');
+            trigger_error('[BenchmarkTimer::stop()] Process with name "'.$name
+                    .'" is not running yet!');
           // end else
          }
 
@@ -196,16 +205,16 @@
       }
 
       /**
-      *  @private
-      *
-      *  Returns the id of the next process.
-      *
-      *  @return int $if the next internal process id
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
+       * @private
+       *
+       * Returns the id of the next process.
+       *
+       * @return int The next internal process id.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
       private function __getID(){
          $this->__CurrentProcessID += 1;
          return $this->__CurrentProcessID;
@@ -213,16 +222,16 @@
       }
 
       /**
-      *  @private
-      *
-      *  Returns the current timestamp in milliseconds.
-      *
-      *  @return string $microTime current timestamp in milliseconds
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
+       * @private
+       *
+       * Returns the current timestamp in milliseconds.
+       *
+       * @return string Current timestamp in milliseconds.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
       private function __generateMicroTime(){
 
          if(intval(phpversion()) == 5){
@@ -241,19 +250,19 @@
       }
 
       /**
-      *  @private
-      *
-      *  Creates the process and returns it.
-      *
-      *  @param string $name the name of the process
-      *  @param string $startTime the start timestamp
-      *  @param object $parent reference on the parent object
-      *  @return object $process the process
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
+       * @private
+       *
+       * Creates the process and returns it.
+       *
+       * @param string $name the name of the process.
+       * @param string $startTime the start timestamp.
+       * @param BenchmarkProcess $parent reference on the parent object.
+       * @return BenchmarkProcess The process itself.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
       private function __createProcess($name,$startTime,&$parent){
 
          $process = new BenchmarkProcess();
@@ -268,16 +277,16 @@
       }
 
       /**
-      *  @private
-      *
-      *  Creates the root process and returns it.
-      *
-      *  @return BenchmarkProcess $rootProcess the root process
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
+       * @private
+       *
+       * Creates the root process and returns it.
+       *
+       * @return BenchmarkProcess The root process.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
       private function &__createRootProcess(){
 
          $startTime = $this->__generateMicroTime();
@@ -293,16 +302,16 @@
       }
 
       /**
-      *  @private
-      *
-      *  Stopps the root process and returns it.
-      *
-      *  @return BenchmarkProcess $rootProcess the stopped root process
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
+       * @private
+       *
+       * Stopps the root process and returns it.
+       *
+       * @return BenchmarkProcess The stopped root process.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
       private function &__getRootProcess(){
 
          $rootProcess = &$this->__RootProcess;
@@ -313,16 +322,16 @@
       }
 
       /**
-      *  @private
-      *
-      *  Adds a process to the list of running processes.
-      *
-      *  @param BenchmarkProcess $process a reference on the running process
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
+       * @private
+       *
+       * Adds a process to the list of running processes.
+       *
+       * @param BenchmarkProcess $process A reference on the running process.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
       private function __addRunningProcess(&$process){
          $name = $process->getProcessName();
          $this->__RunningProcesses[$name] = &$process;
@@ -330,33 +339,33 @@
       }
 
       /**
-      *  @private
-      *
-      *  Deletes a running process from the hash table.
-      *
-      *  @param string $name the name of the process
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
+       * @private
+       *
+       * Deletes a running process from the hash table.
+       *
+       * @param string $name The name of the process.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
       private function __removeRunningProcess($name){
          unset($this->__RunningProcesses[$name]);
        // end function
       }
 
       /**
-      *  @private
-      *
-      *  Returns a running process by it's name.
-      *
-      *  @param string $name name of the desired process
-      *  @return null | benchmarkProcess $process null or the desired object reference
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
+       * @private
+       *
+       * Returns a running process by it's name.
+       *
+       * @param string $name Name of the desired process.
+       * @return BenchmarkProcess Null or the desired object reference.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
       private function &__getRunningProcessByName($name){
 
          if(isset($this->__RunningProcesses[$name])){
@@ -373,259 +382,285 @@
        }
 
       /**
-      *  @private
-      *
-      *  References the currently created process.
-      *
-      *  @param BenchmarkProcess $process the reference on the desired benchmark process
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
+       * @private
+       *
+       * References the currently created process.
+       *
+       * @param BenchmarkProcess $process The reference on the desired benchmark process.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
       private function __setCurrentParent(&$process){
          $this->__CurrentParent = &$process;
        // end function
        }
 
       /**
-      *  @private
-      *
-      *  Returns the currently created process.
-      *
-      *  @return BenchmarkProcess $process the reference on the desired benchmark process
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
+       * @private
+       *
+       * Returns the currently created process.
+       *
+       * @return BenchmarkProcess The reference on the desired benchmark process.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
       private function &__getCurrentParent(){
          return $this->__CurrentParent;
        // end function
       }
 
       /**
-      *  @public
-      *
-      *  Generates the report of the recorded benchmark tags.
-      *
-      *  @return string $report the HTML source code of the benchmark
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
-      function createReport(){
+       * @public
+       *
+       * Generates the report of the recorded benchmark tags.
+       *
+       * @return string The HTML source code of the benchmark.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
+      public function createReport(){
 
          // get process tree
-         $ProcessTree = $this->__getRootProcess();
+         $processTree = $this->__getRootProcess();
 
          // initialize buffer
-         $Buffer = (string)'';
+         $buffer = (string)'';
 
          // generate header
-         $Buffer .= $this->__generateHeader();
+         $buffer .= $this->__generateHeader();
 
          // generate report recursivly
-         $Buffer .= $this->__createReport4Process($ProcessTree);
+         $buffer .= $this->__createReport4Process($processTree);
 
          // generate footer
-         $Buffer .= $this->__generateFooter();
+         $buffer .= $this->__generateFooter();
 
          // return report
-         return $Buffer;
+         return $buffer;
 
        // end function
       }
 
       /**
-      *  @private
-      *
-      *  Generates the report for one single process.
-      *
-      *  @param BenchmarkProcess $process the current process
-      *  @return string $report4Line the report for the current process
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 01.01.2007<br />
-      */
+       * @private
+       *
+       * Marks classes to format the process run time with.
+       *
+       * @param float $time The process run time.
+       * @return string The markup of the process time.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 29.12.2009<br />
+       */
+      private function getMarkedUpProcessTimeClass($time){
+
+         $class = (string)'';
+         if($time > $this->__CriticalTime){
+            $class .= 'warn';
+         }
+         else{
+            $class .= 'ok';
+         }
+         return $class;
+
+       // end function
+      }
+
+      /**
+       * @private
+       *
+       * Generates the report for one single process.
+       *
+       * @param BenchmarkProcess $process the current process.
+       * @return string The report for the current process.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 01.01.2007<br />
+       * Version 0.2, 29.12.2009 (Refactored markup)<br />
+       */
       private function __createReport4Process(&$process){
 
          $buffer = (string)'';
-         $buffer .= $this->__generateReportLine($process->getProcessName(),$process->getProcessLevel(),$process->getProcessRuntime());
+         $level = $process->getProcessLevel();
+
+         // add closing dl only if level greater than 0 to have
+         // correct definition list leveling!
+         if($level > 0){
+            $buffer = (string)'<dl>';
+         }
+
+         // assemble class for the current line
+         $class = (string)'';
+         if(($this->__LineCounter % 2) == 0 ){
+            $class .= 'even';
+          // end if
+         }
+         else{
+            $class .= 'odd';
+          // end else
+         }
+
+         // increment the line counter to be able to distinguish between even and odd lines
+         $this->__LineCounter++;
+         
+         $buffer .= self::$NEWLINE;
+         $buffer .= '    <dt class="'.$class.'">'.$process->getProcessName().'</dt>';
+         $buffer .= self::$NEWLINE;
+
+         // add specific run time class to mark run times greater that the critical time
+         $time = $process->getProcessRuntime();
+         $buffer .= '    <dd class="'.$class.' '
+            .$this->getMarkedUpProcessTimeClass($time).'">'.$time.' s';
 
          // display children
          if($process->hasChildProcesses()){
 
             $processChildren = $process->getProcesses();
-
-            foreach($processChildren as $Offset => $Child){
-               $buffer .= $this->__createReport4Process($Child);
+            foreach($processChildren as $offset => $child){
+               $buffer .= self::$NEWLINE;
+               $buffer .= $this->__createReport4Process($child);
              // end foreach
             }
 
+            $buffer .= self::$NEWLINE;
+
           // end if
          }
 
+         $buffer .= '</dd>';
+         $buffer .= self::$NEWLINE;
+
+         // add closing dl only if level greater than 0 to have
+         // correct definition list leveling!
+         if($level > 0){
+            $buffer .= '</dl>';
+         }
+         
          return $buffer;
 
        // end function
       }
 
       /**
-      *  @private
-      *
-      *  Generates the indent by the level provided.
-      *
-      *  @param int $level the level of the current process
-      *  @return string $string the tab string
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 01.01.2007<br />
-      */
-      private function __generateTab($level){
-
-         $string = (string)'';
-
-         for($i = 0; $i < $level; $i++){
-            $string .= str_repeat('&nbsp;',6);
-          // end for
-         }
-
-         return $string;
-
-       // end function
-      }
-
-      /**
-      *  @private
-      *
-      *  Generates the header.
-      *
-      *  @return string $buffer the report header
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 01.01.2007<br />
-      *  Version 0.2, 24.06.2007 (Text align is set to left)<br />
-      */
+       * @private
+       *
+       * Generates the header.
+       *
+       * @return string The report header.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 01.01.2007<br />
+       * Version 0.2, 24.06.2007 (Text align is set to left)<br />
+       * Version 0.3, 29.12.2009 (Refactored markup)<br />
+       */
       private function __generateHeader(){
 
          $buffer = (string)'';
-         $buffer .= '<div style="width: 100%; background-color: white; border: 1px dashed black; margin-top: 10px; padding: 10px; font-size: 12px; font-family: Arial, Helvetica, sans-serif; text-align: left;">';
-         $buffer .= "\n";
-         $buffer .= '  <font style="font-size: 16px; font-variant: small-caps;">Benchmark - Report:</font>';
-         $buffer .= "\n";
-         $buffer .= '  <br />';
-         $buffer .= "\n";
-         $buffer .= '  <br />';
-         $buffer .= "\n";
-         $buffer .= '  <br />';
-         $buffer .= "\n";
-         $buffer .= '  <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; border-bottom: 1px solid black; background-color: #dddddd; font-size: 12px; font-family: Arial, Helvetica, sans-serif; padding: 2px;">';
-         $buffer .= "\n";
-         $buffer .= '    <tr>';
-         $buffer .= "\n";
-         $buffer .= '      <td style="width: 80%;">';
-         $buffer .= "\n";
-         $buffer .= '        <strong>Processtree</strong>';
-         $buffer .= "\n";
-         $buffer .= '      </td>';
-         $buffer .= "\n";
-         $buffer .= '      <td style="width: 20%; text-align: right; padding-right: 75px;">';
-         $buffer .= "\n";
-         $buffer .= '        <strong>Time</strong>';
-         $buffer .= "\n";
-         $buffer .= '      </td>';
-         $buffer .= '    <tr>';
-         $buffer .= "\n";
+         $buffer .= self::$NEWLINE;
+         $buffer .= '<style type="text/css">
+#APF-Benchmark-Report {
+   font-size: 0.8em;
+   padding: 0.4em;
+   background-color: #fff;
+}
+#APF-Benchmark-Report .even {
+   background-color: #fff;
+}
+#APF-Benchmark-Report .odd {
+   background-color: #ccc;
+}
+#APF-Benchmark-Report .ok, #APF-Benchmark-Report .warn {
+   color: #080;
+   font-weight: bold;
+}
+#APF-Benchmark-Report .warn {
+   color: #f00;
+}
+#APF-Benchmark-Report .header {
+   border-bottom: 1px solid #ccc;
+   border-top: 1px solid #ccc;
+   font-weight: bold;
+}
+#APF-Benchmark-Report .header:before {
+    content: \'\';
+}
+#APF-Benchmark-Report dl {
+   margin: 0;
+   border-left: 1px solid #ccc;
+   color: #000;
+   font-size: 1em;
+   font-weight: normal;
+   line-height: 1.5em;
+   margin: 0 0 0 2em;
+}
+#APF-Benchmark-Report > dl {
+   margin: 0;
+   border-right: 1px solid #ccc;
+}
+#APF-Benchmark-Report .odd  > dl {
+   border-left: 1px solid #fff;
+}
+#APF-Benchmark-Report dt {
+   float: left;
+   line-height: 1.5em;
+}
+#APF-Benchmark-Report dt:before {
+   color: #666;
+   content: \'¬ª \';
+   padding: 0 0.3em;
+}
+#APF-Benchmark-Report dd {
+   text-align: right;
+}
+#APF-Benchmark-Report:after {
+   clear: both;
+   content: " ";
+   display: block;
+   visibility: hidden;
+   }
+</style>';
+         $buffer .= self::$NEWLINE;
+         $buffer .= '<div id="APF-Benchmark-Report">';
+         $buffer .= self::$NEWLINE;
+         $buffer .= '  <h2>Benchmark report</h2>';
+         $buffer .= self::$NEWLINE;
+         $buffer .= '  <dl>';
+         $buffer .= self::$NEWLINE;
+         $buffer .= '    <dt class="header">Processtree</dt>';
+         $buffer .= self::$NEWLINE;
+         $buffer .= '    <dd class="header">Time</dd>';
          return $buffer;
 
        // end function
       }
 
       /**
-      *  @private
-      *
-      *  Generates the footer.
-      *
-      *  @return string $buffer the footer
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 01.01.2007<br />
-      */
+       * @private
+       *
+       * Generates the footer.
+       *
+       * @return string The footer.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 01.01.2007<br />
+       * Version 0.2, 29.12.2009 (Refactored markup)<br />
+       */
       private function __generateFooter(){
 
-         $buffer = (string)'</div>';
-         $buffer .= "\n";
-         return $buffer;
-
-       // end function
-      }
-
-      /**
-      *  @private
-      *
-      *  Generiert eine Zeile in der Prozes-‹bersicht.<br />
-      *
-      *  @param string $name name of the process
-      *  @param string $level level of the process
-      *  @param string $time runtime of the process
-      *  @return string $reportLine one line within the process view
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 01.01.2007<br />
-      *  Version 0.2, 08.03.2008 (Changed labels)<br />
-      */
-      private function __generateReportLine($name,$level,$time){
-
-         // generate display name
-         $name = $this->__generateTab($level).'&#187&nbsp;&nbsp;&nbsp;'.$name;
          $buffer = (string)'';
-
-         if(($this->__LineCounter % 2) == 0 ){
-            $buffer .= '  <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; font-size: 12px; font-family: Arial, Helvetica, sans-serif;">';
-          // end if
-         }
-         else{
-            $buffer .= '  <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #eeeeee; font-size: 12px; font-family: Arial, Helvetica, sans-serif;">';
-          // end else
-         }
-
-         $buffer .= "\n";
-         $buffer .= '    <tr>';
-         $buffer .= "\n";
-         $buffer .= '      <td style="width: 80%">';
-         $buffer .= "\n";
-         $buffer .= '        '.$name;
-         $buffer .= "\n";
-         $buffer .= '      </td>';
-         $buffer .= "\n";
-         $buffer .= '      <td style="width: 20%; text-align: right;">';
-         $buffer .= "\n";
-
-         if($time > $this->__CriticalTime){
-            $buffer .= '        <font style="color: red; font-weight: bold;">'.trim($time).'&nbsp;s&nbsp;</font>';
-          // end if
-         }
-         else{
-            $buffer .= '        <font style="color: green; font-weight: bold;">'.trim($time).'&nbsp;s&nbsp;</font>';
-          // end else
-         }
-
-         $buffer .= "\n";
-         $buffer .= '      </td>';
-         $buffer .= "\n";
-         $buffer .= '    </tr>';
-         $buffer .= "\n";
-         $buffer .= '  </table>';
-         $buffer .= "\n";
-
-         $this->__LineCounter++;
+         $buffer .= '</dl>';
+         $buffer .= self::$NEWLINE;
+         $buffer .= '</div>';
          return $buffer;
 
        // end function
@@ -635,136 +670,135 @@
    }
 
    /**
-   *  @namespace core::benchmark
-   *  @class benchmarkProcess
-   *
-   *  Represents a benchmark process node within the benchmark tree.
-   *
-   *  @author Christian Sch‰fer
-   *  @version
-   *  Version 0.1, 31.12.2006<br />
-   */
+    * @package core::benchmark
+    * @class BenchmarkProcess
+    *
+    * Represents a benchmark process node within the benchmark tree.
+    *
+    * @author Christian Sch√§fer
+    * @version
+    * Version 0.1, 31.12.2006<br />
+    */
    final class BenchmarkProcess {
 
       /**
-      *  @private
-      *  ID of the process.
-      */
+       * @private
+       * @var int ID of the process.
+       */
       private $__ProcessID;
 
       /**
-      *  @private
-      *  Name of the process.
-      */
+       * @private
+       * @var string Name of the process.
+       */
       private $__ProcessName;
 
       /**
-      *  @private
-      *  Level of the process.
-      */
+       * @private
+       * @var int Level of the process.
+       */
       private $__ProcessLevel;
 
       /**
-      *  @private
-      *  Start time of the process.
-      */
+       * @private
+       * @var int Start time of the process.
+       */
       private $__ProcessStartTime = null;
 
       /**
-      *  @private
-      *  Stop time of the process.
-      */
+       * @private
+       * @var int Stop time of the process.
+       */
       private $__ProcessStopTime = null;
 
       /**
-      *  @private
-      *  Reference on the process' parent.
-      */
+       * @private
+       * @var BenchmarkProcess Reference on the process' parent.
+       */
       private $__ParentProcess = null;
 
       /**
-      *  @private
-      *  List of child processes.
-      */
+       * @private
+       * @var BenchmarkProcess[] List of child processes.
+       */
       private $__Processes = array();
 
-
-      function BenchmarkProcess(){
+      public function BenchmarkProcess(){
       }
 
-      function setProcessID($ID){
-         $this->__ProcessID = $ID;
+      public function setProcessID($id){
+         $this->__ProcessID = $id;
        // end function
       }
 
-      function getProcessID(){
+      public function getProcessID(){
          return $this->__ProcessID;
        // end function
       }
 
-      function setProcessName($Name){
-         $this->__ProcessName = $Name;
+      public function setProcessName($name){
+         $this->__ProcessName = $name;
        // end function
       }
 
-      function getProcessName(){
+      public function getProcessName(){
          return $this->__ProcessName;
        // end function
       }
 
-      function setProcessLevel($Level){
-         $this->__ProcessLevel = $Level;
+      public function setProcessLevel($level){
+         $this->__ProcessLevel = $level;
        // end function
       }
 
-      function getProcessLevel(){
+      public function getProcessLevel(){
          return $this->__ProcessLevel;
        // end function
       }
 
-      function setProcessStartTime($StartTime){
-         $this->__ProcessStartTime = $StartTime;
+      public function setProcessStartTime($startTime){
+         $this->__ProcessStartTime = $startTime;
        // end function
       }
 
-      function getProcessStartTime(){
+      public function getProcessStartTime(){
          return $this->__ProcessStartTime;
        // end function
       }
 
-      function setProcessStopTime($StopTime){
-         $this->__ProcessStopTime = $StopTime;
+      public function setProcessStopTime($stopTime){
+         $this->__ProcessStopTime = $stopTime;
        // end function
       }
 
-      function getProcessStopTime(){
+      public function getProcessStopTime(){
          return $this->__ProcessStopTime;
        // end function
       }
 
-      function setParentProcess(&$Process){
-         $this->__ParentProcess = &$Process;
+      public function setParentProcess(&$process){
+         $this->__ParentProcess = &$process;
        // end function
       }
 
-      function &getParentProcess(){
+      public function &getParentProcess(){
          return $this->__ParentProcess;
        // end function
       }
 
-      function appendProcess(&$Process){
-         $ProcessID = $Process->getProcessID();
-         $this->__Processes[$ProcessID] = &$Process;
+      public function appendProcess(&$process){
+         $ProcessID = $process->getProcessID();
+         $this->__Processes[$ProcessID] = &$process;
        // end function
       }
 
-      function getProcesses(){
+      public function getProcesses(){
          return $this->__Processes;
 
        // end function
       }
 
-      function hasChildProcesses(){
+      public function hasChildProcesses(){
 
          if(count($this->__Processes) > 0){
             return true;
@@ -778,23 +812,20 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Returns the process' runtime.
-      *
-      *  @author Christian Sch‰fer
-      *  @version
-      *  Version 0.1, 31.12.2006<br />
-      */
-      function getProcessRuntime(){
+       * @public
+       *
+       * Returns the process' runtime.
+       *
+       * @author Christian Sch√§fer
+       * @version
+       * Version 0.1, 31.12.2006<br />
+       */
+      public function getProcessRuntime(){
 
          if($this->__ProcessStopTime == null){
             return '--------------------';
-          // end if
          }
-
          return number_format($this->__ProcessStopTime - $this->__ProcessStartTime,10);
 
        // end function
