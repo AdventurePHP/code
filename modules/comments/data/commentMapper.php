@@ -22,12 +22,12 @@
    import('modules::comments::biz','ArticleComment');
 
    /**
-    * @namespace modules::comments::date
+    * @package modules::comments::date
     * @class commentMapper
     *
     * Represents the data layer component of the comment function. Loads and saves entries.
     *
-    * @author Christian W. Schäfer
+    * @author Christian W. Schï¿½fer
     * @version
     * Version 0.1, 22.08.2007
     */
@@ -44,7 +44,7 @@
        * @param string $commentId ID des Eintrags
        * @return ArticleComment A comment object.
        *
-       * @author Christian W.Schäfer
+       * @author Christian W.Schï¿½fer
        * @version
        * Version 0.1, 22.08.2007<br />
        */
@@ -121,7 +121,7 @@
        * @param string[] $resultSet MySQL (database) result array.
        * @return ArticleComment A initialized domain object.
        *
-       * @author Christian W.Schäfer
+       * @author Christian W.Schï¿½fer
        * @version
        * Version 0.1, 22.08.2007<br />
        */

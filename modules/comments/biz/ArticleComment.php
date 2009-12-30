@@ -20,15 +20,15 @@
    */
 
    /**
-   *  @namespace modules::comments::biz
+   *  @package modules::comments::biz
    *  @class ArticleComment
    *
-   *  Implementiert das Business-Objekt für das Modul Artikel-Kommentare.<br />
+   *  Implementiert das Business-Objekt fï¿½r das Modul Artikel-Kommentare.<br />
    *
-   *  @author Christian W. Schäfer
+   *  @author Christian W. Schï¿½fer
    *  @version
    *  Version 0.1, 22.08.2007<br />
-   *  Version 0.2, 03.09.2007 (Dokumentation ergänzt)<br />
+   *  Version 0.2, 03.09.2007 (Dokumentation ergï¿½nzt)<br />
    */
    class ArticleComment extends coreObject
    {

@@ -26,7 +26,7 @@
 
 
    /**
-    * @namespace modules::comments::pres::documentcontroller
+    * @package modules::comments::pres::documentcontroller
     * @class comment_listing_v1_controller
     *
     * Implements the document controller for the 'listing.html' template.

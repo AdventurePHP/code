@@ -25,7 +25,7 @@
    import('core::session','SessionManager');
 
    /**
-   *  @namespace modules::comments::biz
+   *  @package modules::comments::biz
    *  @class commentManager
    *
    *  Implementiert die Business-Schicht des Comments-Moduls.<br />

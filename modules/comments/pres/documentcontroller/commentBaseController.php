@@ -24,12 +24,12 @@
 
 
    /**
-   *  @namespace modules::comments::pres::documentcontroller
+   *  @package modules::comments::pres::documentcontroller
    *  @class commentBaseController
    *
-   *  Implementiert den BaseController für die Kommentar-Funktion.<br />
+   *  Implementiert den BaseController fï¿½r die Kommentar-Funktion.<br />
    *
-   *  @author Christian W. Schäfer
+   *  @author Christian W. Schï¿½fer
    *  @version
    *  Version 0.1, 21.08.2007<br />
    */
@@ -38,7 +38,7 @@
 
       /**
       *  @protected
-      *  Kategorie-Schlüssel.
+      *  Kategorie-Schlï¿½ssel.
       */
       protected $__CategoryKey;
 
@@ -50,9 +50,9 @@
       /**
       *  @protected
       *
-      *  Läd den CategoryKey vom Eltern-Objekt.<br />
+      *  Lï¿½d den CategoryKey vom Eltern-Objekt.<br />
       *
-      *  @author Christian W. Schäfer
+      *  @author Christian W. Schï¿½fer
       *  @version
       *  Version 0.1, 21.08.2007<br />
       */

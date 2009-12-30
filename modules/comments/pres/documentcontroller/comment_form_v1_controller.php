@@ -24,7 +24,7 @@
    import('tools::link','FrontcontrollerLinkHandler');
 
    /**
-    * @namespace modules::comments::pres::documentcontroller
+    * @package modules::comments::pres::documentcontroller
     * @class comment_form_v1_controller
     *
     * Implements the document controller for the 'form.html' template.
