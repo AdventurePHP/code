@@ -22,7 +22,7 @@
    import('tools::link','FrontcontrollerLinkHandler');
 
    /**
-    * @namespace modules::guestbook2009::pres::controller
+    * @package modules::guestbook2009::pres::controller
     * @class admin_controller
     * 
     * Implements the document controller for the admin main view. Generates the links

@@ -20,12 +20,12 @@
    */
 
    /**
-   *  @namespace modules::guestbook::biz
+   *  @package modules::guestbook::biz
    *  @class Guestbook
    *
    *  Guestbook domain object.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
@@ -85,7 +85,7 @@
       *
       *  @return array $entries The entries list
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       */
@@ -102,7 +102,7 @@
       *
       *  @param Entry[] $entries A list of entries
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       */
@@ -119,7 +119,7 @@
       *
       *  @param Entry $entry An entry object
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       */

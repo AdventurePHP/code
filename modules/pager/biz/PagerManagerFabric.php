@@ -22,7 +22,7 @@
    import('modules::pager::biz','PagerManager');
 
    /**
-    * @namespace modules::pager::biz
+    * @package modules::pager::biz
     * @class PagerManagerFabric
     *
     * Implements the factory of the pager manager. Initializes concrete PagerManager

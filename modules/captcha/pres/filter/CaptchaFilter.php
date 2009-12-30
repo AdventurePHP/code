@@ -22,7 +22,7 @@
    import('tools::form::filter','AbstractFormFilter');
 
    /**
-    * @namespace modules::captcha::pres::filter
+    * @package modules::captcha::pres::filter
     * @class CaptchaFilter
     *
     * Implements a filter for the captcha field.

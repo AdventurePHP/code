@@ -25,7 +25,7 @@
    import('modules::pager::data','PagerMapper');
 
    /**
-    * @namespace modules::pager::biz
+    * @package modules::pager::biz
     * @class PagerManager
     *
     * Represents a concrete pager.

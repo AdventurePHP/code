@@ -26,7 +26,7 @@
    import('tools::link','FrontcontrollerLinkHandler');
 
    /**
-    * @namespace modules::captcha::pres::taglib
+    * @package modules::captcha::pres::taglib
     * @module form_taglib_captcha
     *
     * Implements a CAPTCHA-Taglib to extend a form's features. Inherits from form_control
@@ -127,7 +127,7 @@
 
          // create text field
          $this->__TextField = new form_taglib_text();
-         $this->__TextField->set('ObjectID',xmlParser::generateUniqID());
+         $this->__TextField->set('ObjectID',XmlParser::generateUniqID());
 
          // prepare the text field
          $textClass = $this->getAttribute('text_class');

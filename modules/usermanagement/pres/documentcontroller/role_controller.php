@@ -22,7 +22,7 @@
    import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
 
    /**
-   *  @namespace modules::usermanagement::pres::documentcontroller
+   *  @package modules::usermanagement::pres::documentcontroller
    *  @class umgt_role_controller
    *
    *  Implements the documentcontroller to display the role sub menu.

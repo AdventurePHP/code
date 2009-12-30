@@ -23,7 +23,7 @@
 
 
    /**
-   *  @namespace modules::captcha::biz::actions
+   *  @package modules::captcha::biz::actions
    *  @class ShowCaptchaImageAction
    *
    *  Front controller action that displays a captcha image.

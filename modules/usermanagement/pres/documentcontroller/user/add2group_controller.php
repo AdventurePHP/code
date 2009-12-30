@@ -26,7 +26,7 @@
 
 
    /**
-   *  @namespace modules::usermanagement::pres::documentcontroller
+   *  @package modules::usermanagement::pres::documentcontroller
    *  @class umgt_add2group_controller
    *
    *  Implements the controller to add a user to a group.

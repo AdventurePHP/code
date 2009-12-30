@@ -24,7 +24,7 @@
 
 
    /**
-   *  @namespace modules::schwarzesbrett::pres::documentcontroller::pager
+   *  @package modules::schwarzesbrett::pres::documentcontroller::pager
    *  @class pager_2_v1_controller
    *
    *  Implementiert den DocumentController fï¿½r den PagerManager. Folgende Features sind enthalten<br />
@@ -69,7 +69,7 @@
       *  Version 0.4, 11.03.2007 (Komplett auf PageController V2 migriert)<br />
       *  Version 0.5, 29.08.2007 (Anker-Name mit eingebunden)<br />
       *  Version 0.6, 16.11.2007 (Switched to FrontcontrollerLinkHandler)<br />
-      *  Version 0.7, 02.03.2008 (Mehrsprachigkeit der Beschriftung eingeführt)<br />
+      *  Version 0.7, 02.03.2008 (Mehrsprachigkeit der Beschriftung eingefï¿½hrt)<br />
       */
       function transformContent(){
 

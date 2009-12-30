@@ -23,7 +23,7 @@
 
 
    /**
-   *  @namespace modules::usermangement::pres::taglib
+   *  @package modules::usermangement::pres::taglib
    *  @class umgt_taglib_media
    *
    *  Implements the image displaying tablib. Based on the *:mediastream taglib.

@@ -22,7 +22,7 @@
    import('tools::link','FrontcontrollerLinkHandler');
 
    /**
-    * @namespace modules::guestbook2009::pres
+    * @package modules::guestbook2009::pres
     * @class backend_base_controller
     *
     * Provides basic functionality to display the selection menu for

@@ -23,7 +23,7 @@
    import('modules::guestbook2009::biz','Entry');
 
    /**
-    * @namespace modules::guestbook2009::pres::controller
+    * @package modules::guestbook2009::pres::controller
     * @class create_controller
     *
     * Implements the document controller, that handles the "create new entry" view.

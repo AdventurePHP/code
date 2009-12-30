@@ -20,12 +20,12 @@
     */
 
    /**
-    * @namespace modules::socialbookmark::biz
+    * @package modules::socialbookmark::biz
     * @class bookmarkEntry
     *
     * Represents a single bookmark service (e.g. google, technorati, ...).
     *
-    * @author Christian W. Schäfer
+    * @author Christian W. Schï¿½fer
     * @version
     * Version 0.1, 02.06.2007<br />
     */
@@ -39,14 +39,14 @@
 
       /**
        * @protected
-       * @var string Name des URL-Parameters für die zu bookmarkende URL.
+       * @var string Name des URL-Parameters fï¿½r die zu bookmarkende URL.
        */
       protected $__ServiceParams_URL;
 
 
       /**
        * @protected
-       * @var string Name des Titel-Parameters für die zu bookmarkende URL.
+       * @var string Name des Titel-Parameters fï¿½r die zu bookmarkende URL.
        */
       protected $__ServiceParams_Title;
 
@@ -78,7 +78,7 @@
        * @param string $imageURL Bildname ohne Endung.
        * @param string $imageExt Endung des Bildes.
        *
-       * @author Christian W. Schäfer
+       * @author Christian W. Schï¿½fer
        * @version
        * Version 0.1, 02.06.2007<br />
        */

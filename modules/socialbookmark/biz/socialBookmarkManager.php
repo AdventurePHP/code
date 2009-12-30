@@ -24,7 +24,7 @@
    import('modules::socialbookmark::biz','bookmarkEntry');
 
    /**
-    * @namespace modules::socialbookmark::biz
+    * @package modules::socialbookmark::biz
     * @class socialBookmarkManager
     *
     * Generiert einen Bookmark-HTML-Code. Um die angezeigten Services erweitern zu k�nnen die
@@ -225,7 +225,7 @@
                                                    ),
                                              false
                                             );
-         $code .= '" target="_blank" title="';
+         $code .= '" title="';
          $code .= $bookmarkEntry->get('Title');
          $code .= '" linkrewrite="false"><img src="';
 

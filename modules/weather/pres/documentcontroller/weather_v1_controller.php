@@ -20,7 +20,7 @@
    */
 
    /**
-   *  @namespace modules::weather::pres::documentcontroller
+   *  @package modules::weather::pres::documentcontroller
    *  @class weather_v1_controller
    *
    *  Implements an rss consumer to display current weather information.

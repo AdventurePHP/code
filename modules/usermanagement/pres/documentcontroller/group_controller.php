@@ -23,7 +23,7 @@
 
 
    /**
-   *  @namespace modules::usermanagement::pres::documentcontroller
+   *  @package modules::usermanagement::pres::documentcontroller
    *  @class umgt_group_controller
    *
    *  Displays the group sub menu.

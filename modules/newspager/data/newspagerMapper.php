@@ -24,7 +24,7 @@
 
 
    /**
-   *  @namespace modules::newspager::data
+   *  @package modules::newspager::data
    *  @class newspagerMapper
    *
    *  Data layer component for loading the news page objects.<br />

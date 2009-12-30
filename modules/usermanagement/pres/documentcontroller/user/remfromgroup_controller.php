@@ -26,7 +26,7 @@
 
 
    /**
-   *  @namespace modules::usermanagement::pres::documentcontroller
+   *  @package modules::usermanagement::pres::documentcontroller
    *  @class umgt_remfromgroup_controller
    *
    *  Implements the controller to remove a user from a group.

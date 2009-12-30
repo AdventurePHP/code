@@ -22,22 +22,22 @@
    import('modules::socialbookmark::biz','socialBookmarkManager');
 
    /**
-    * @namespace modules::socialbookmark::pres::taglib
+    * @package modules::socialbookmark::pres::taglib
     * @class social_taglib_bookmark
     *
-    * Implementiert eine TagLib für die Ausgabe von Bookmarks per Tag.<br />
-    * Optional können die Parameter<br />
+    * Implementiert eine TagLib fï¿½r die Ausgabe von Bookmarks per Tag.<br />
+    * Optional kï¿½nnen die Parameter<br />
     * <br />
     * - width (Breite der Bookmark-Icons)<br />
-    * - height (Höhe der Bookmark-Icons)<br />
+    * - height (Hï¿½he der Bookmark-Icons)<br />
     * <br />
     * angegeben werden. Beispiel:<br />
     * <br />
     * &lt;social:bookmark width="16" height="16"/&gt;<br />
     * <br />
-    * Um das Tag verwenden zu können muss der BookmarkManager konfiguriert sein!<br />
+    * Um das Tag verwenden zu kï¿½nnen muss der BookmarkManager konfiguriert sein!<br />
     *
-    * @author Christian W. Schäfer
+    * @author Christian W. Schï¿½fer
     * @version
     * Version 0.1, 08.09.2007<br />
     */
@@ -46,9 +46,9 @@
       /**
        * @public
        *
-       * Initialisiert die benötigten Attribute.
+       * Initialisiert die benï¿½tigten Attribute.
        *
-       * @author Christian W. Schäfer
+       * @author Christian W. Schï¿½fer
        * @version
        * Version 0.1, 08.09.2007<br />
        */
@@ -66,17 +66,17 @@
       *
       *  Erzeugt die Ausgabe mit Hilfe des BookmarkManager.<br />
       *
-      *  @author Christian W. Schäfer
+      *  @author Christian W. Schï¿½fer
       *  @version
       *  Version 0.1, 08.09.2007<br />
-      *  Version 0.2, 16.09.2007 (Attribute url, title und target hinzugefügt)<br />
+      *  Version 0.2, 16.09.2007 (Attribute url, title und target hinzugefï¿½gt)<br />
       */
       function transform(){
 
          // Bookmark-Manager holen
          $sBM = &$this->__getServiceObject('modules::socialbookmark::biz','socialBookmarkManager');
 
-         // Breite und Höhe konfigurieren
+         // Breite und Hï¿½he konfigurieren
          $sBM->set('Width',$this->__Attributes['width']);
          $sBM->set('Height',$this->__Attributes['height']);
 
@@ -94,7 +94,7 @@
           // end if
          }
 
-         // Bookmark-Quelltext zurückliefern
+         // Bookmark-Quelltext zurï¿½ckliefern
          return $sBM->getBookmarkCode();
 
        // end function

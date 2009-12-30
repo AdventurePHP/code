@@ -26,7 +26,7 @@
 
 
    /**
-   *  @namespace modules::usermanagement::pres::documentcontroller
+   *  @package modules::usermanagement::pres::documentcontroller
    *  @class umgt_ass2user_controller
    *
    *  Implements the controller to assign a role to a user.

@@ -20,12 +20,12 @@
    */
 
    /**
-   *  @namespace modules::guestbook::biz
+   *  @package modules::guestbook::biz
    *  @class Entry
    *
    *  Entry domain object.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
@@ -139,7 +139,7 @@
       *
       *  Returns the list of comments.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       */
@@ -154,7 +154,7 @@
       *
       *  Adds a comment to the current list.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       */

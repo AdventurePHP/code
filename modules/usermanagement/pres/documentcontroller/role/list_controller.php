@@ -24,7 +24,7 @@
 
 
    /**
-   *  @namespace modules::usermanagement::pres::documentcontroller
+   *  @package modules::usermanagement::pres::documentcontroller
    *  @class umgt_list_controller
    *
    *  Implements the controller list the existing roles.

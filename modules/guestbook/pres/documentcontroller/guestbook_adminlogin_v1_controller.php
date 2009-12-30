@@ -28,7 +28,7 @@
 
 
    /**
-   *  @namespace modules::guestbook::pres::documentcontroller
+   *  @package modules::guestbook::pres::documentcontroller
    *  @class guestbook_adminlogin_v1_controller
    *
    *  Implementiert den DocumentController f�r das Stylesheet 'adminlogin.html'.<br />

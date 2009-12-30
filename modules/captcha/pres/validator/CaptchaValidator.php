@@ -22,7 +22,7 @@
     import('tools::form::validator','TextFieldValidator');
 
    /**
-    * @namespace modules::captcha::pres::validator
+    * @package modules::captcha::pres::validator
     * @class CaptchaValidator
     * 
     * Implements a validator for the captcha field.

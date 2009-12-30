@@ -20,7 +20,7 @@
    */
 
    /**
-   *  @namespace modules::newspager::biz
+   *  @package modules::newspager::biz
    *  @class newspagerInput
    *
    *  Front controller input class.<br />

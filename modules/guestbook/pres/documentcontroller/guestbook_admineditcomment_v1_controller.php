@@ -24,12 +24,12 @@
 
 
    /**
-   *  @namespace modules::guestbook::pres::documentcontroller
+   *  @package modules::guestbook::pres::documentcontroller
    *  @class guestbook_admineditcomment_v1_controller
    *
-   *  Implementiert den DocumentController für das Stylesheet 'admineditcomment.html'.<br />
+   *  Implementiert den DocumentController fï¿½r das Stylesheet 'admineditcomment.html'.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 19.05.2007<br />
    */
@@ -38,7 +38,7 @@
 
       /**
       *  @private
-      *  Hält lokal verwendete Variablen.
+      *  Hï¿½lt lokal verwendete Variablen.
       */
       private $_LOCALS;
 
@@ -62,7 +62,7 @@
       *
       *  Implementiert die asbtrakte Methode "transformContent" aus "coreObject".<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 19.05.2007<br />
       */
@@ -100,7 +100,7 @@
             // Eintrag laden
             $Comment = $gM->loadComment($this->_LOCALS['commentid']);
 
-            // Werte füllen
+            // Werte fï¿½llen
             $Title = & $Form__Comment->getFormElementByName('Title');
             $Title->setAttribute('value',$Comment->get('Title'));
 

@@ -23,7 +23,7 @@
 
 
    /**
-   *  @namespace modules::usermanagement::pres::documentcontroller
+   *  @package modules::usermanagement::pres::documentcontroller
    *  @class umgt_permissionset_controller
    *
    *  Displays the permission set sub menu.

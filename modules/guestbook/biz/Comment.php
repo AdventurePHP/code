@@ -20,12 +20,12 @@
    */
 
    /**
-   *  @namespace modules::guestbook::biz
+   *  @package modules::guestbook::biz
    *  @class Comment
    *
    *  Comment domain object.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */

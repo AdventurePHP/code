@@ -23,12 +23,12 @@
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
 
    /**
-   *  @namespace modules::guestbook::pres::documentcontroller
+   *  @package modules::guestbook::pres::documentcontroller
    *  @class guestbook_createentry_v1_controller
    *
-   *  Implementiert den DocumentController für das Stylesheet 'createentry.html'.<br />
+   *  Implementiert den DocumentController fï¿½r das Stylesheet 'createentry.html'.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
@@ -37,7 +37,7 @@
 
       /**
       *  @private
-      *  Hält lokal verwendete Variablen.
+      *  Hï¿½lt lokal verwendete Variablen.
       */
       private $_LOCALS;
 

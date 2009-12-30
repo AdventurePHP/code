@@ -24,7 +24,7 @@
    import('modules::genericormapper::data','GenericCriterionObject');
 
    /**
-    * @namespace modules::genericormapper::data
+    * @package modules::genericormapper::data
     * @class GenericORMapper
     *
     * Implements an abstract OR mapper, that can map any objects defined in the object

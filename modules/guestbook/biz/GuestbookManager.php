@@ -28,7 +28,7 @@
 
 
    /**
-   *  @namespace modules::guestbook::biz
+   *  @package modules::guestbook::biz
    *  @class GuestbookManager
    *
    *  Business component of the guestbook module.

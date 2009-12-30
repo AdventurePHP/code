@@ -22,7 +22,7 @@
    import('modules::genericormapper::data','GenericORMapper');
 
    /**
-    * @namespace modules::genericormapper::data
+    * @package modules::genericormapper::data
     * @class GenericORRelationMapper
     *
     * Implements the or data mapper, that handles objects and their relations .<br />

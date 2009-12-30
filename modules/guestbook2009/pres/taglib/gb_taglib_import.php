@@ -22,7 +22,7 @@
    import('modules::guestbook2009::biz','GuestbookModel');
 
    /**
-    * @namespace modules::guestbook2009::pres::taglib
+    * @package modules::guestbook2009::pres::taglib
     * @class gb_taglib_import
     *
     * Implements the taglib class to include the guestbook and to fill the model

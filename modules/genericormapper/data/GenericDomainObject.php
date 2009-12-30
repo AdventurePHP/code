@@ -20,7 +20,7 @@
     */
 
    /**
-    * @namespace modules::genericormapper::biz
+    * @package modules::genericormapper::biz
     * @class GenericDomainObject
     *
     * Generic class for all domain objects handled by the abstract or mapper.

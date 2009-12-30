@@ -23,7 +23,7 @@
 
 
    /**
-   *  @namespace modules::usermanagement::pres::documentcontroller
+   *  @package modules::usermanagement::pres::documentcontroller
    *  @class umgt_menu_controller
    *
    *  Displays the user management menu.

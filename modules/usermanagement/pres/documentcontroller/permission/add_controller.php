@@ -25,7 +25,7 @@
    import('tools::http','HeaderManager');
 
    /**
-    * @namespace modules::usermanagement::pres::documentcontroller
+    * @package modules::usermanagement::pres::documentcontroller
     * @class umgt_add_controller
     *
     * Implements the controller to add a permission.

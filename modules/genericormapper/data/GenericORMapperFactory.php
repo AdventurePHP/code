@@ -22,7 +22,7 @@
    import('modules::genericormapper::data','GenericORRelationMapper');
 
    /**
-   *  @namespace modules::genericormapper::data
+   *  @package modules::genericormapper::data
    *  @class GenericORMapperFactory
    *
    *  Implements the factory for the GenericORRelationMapper. Please do only unse the factory in

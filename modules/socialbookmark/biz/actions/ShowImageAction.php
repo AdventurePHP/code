@@ -23,12 +23,12 @@
    import('tools::http','HeaderManager');
 
    /**
-   *  @namespace modules::socialbookmark::biz::actions
+   *  @package modules::socialbookmark::biz::actions
    *  @class ShowImageAction
    *
    *  Implements a front controller action to display the bookmark icons.
    *
-   *  @author Christian W. Schäfer
+   *  @author Christian W. Schï¿½fer
    *  @version
    *  Version 0.1, 07.09.2007<br />
    */
@@ -43,7 +43,7 @@
       *
       *  Displays the image with respect of some caching headers.
       *
-      *  @author Christian W. Schäfer
+      *  @author Christian W. Schï¿½fer
       *  @version
       *  Version 0.1, 07.09.2007<br />
       *  Version 0.2, 26.04.2009 (Added caching header)<br />

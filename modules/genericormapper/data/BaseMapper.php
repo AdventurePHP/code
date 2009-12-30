@@ -24,7 +24,7 @@
 
 
    /**
-    * @namespace modules::genericormapper::data
+    * @package modules::genericormapper::data
     * @class BaseMapper
     *
     * Implements the base class for all concrete or-mapper implementations.<br />

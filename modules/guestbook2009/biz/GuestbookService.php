@@ -29,7 +29,7 @@
    import('modules::pager::biz','PagerManagerFabric');
    
    /**
-    * @namespace modules::guestbook2009::biz
+    * @package modules::guestbook2009::biz
     * @class GuestbookService
     * 
     * Implements the central business component of the guestbook. Must be initialized with

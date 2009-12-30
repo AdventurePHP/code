@@ -23,12 +23,12 @@
 
 
    /**
-   *  @namespace modules::guestbook::pres::documentcontroller
+   *  @package modules::guestbook::pres::documentcontroller
    *  @class guestbook_v1_controller
    *
-   *  Implementiert den DocumentController für das Stylesheet 'guestbook.html'.<br />
+   *  Implementiert den DocumentController fï¿½r das Stylesheet 'guestbook.html'.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
@@ -43,12 +43,12 @@
       *  @public
       *
       *  Implementiert die abstrakte Methode "transformContent()" aus "coreObject".<br />
-      *  Gibt den Header des Gästebuchs aus.<br />
+      *  Gibt den Header des Gï¿½stebuchs aus.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
-      *  Version 0.2, 21.04.2007 (Gästebuch wird nicht komplett gezogen, sondern nur der Header)<br />
+      *  Version 0.2, 21.04.2007 (Gï¿½stebuch wird nicht komplett gezogen, sondern nur der Header)<br />
       */
       function transformContent(){
 

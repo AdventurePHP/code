@@ -23,13 +23,13 @@
 
 
    /**
-   *  @namespace modules::schwarzesbrett::pres::documentcontroller::pager
+   *  @package modules::schwarzesbrett::pres::documentcontroller::pager
    *  @class pager_v1_controller
    *
-   *  Implementiert den DocumentController für den PagerManager. Einfacher Pager mit Anzeige von<br />
+   *  Implementiert den DocumentController fï¿½r den PagerManager. Einfacher Pager mit Anzeige von<br />
    *  Seitenzahlen.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 06.08.2006<br />
    */
@@ -48,15 +48,15 @@
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 06.08.2006<br />
-      *  Version 0.2, 26.11.2006 (Pager gibt einen Leer-String zurück, falls keine Seiten vorhanden)<br />
+      *  Version 0.2, 26.11.2006 (Pager gibt einen Leer-String zurï¿½ck, falls keine Seiten vorhanden)<br />
       *  Version 0.3, 03.01.2007 (PageController V2 ready)<br />
       *  Version 0.4, 11.03.2007 (Komplett auf PageController V2 migriert)<br />
       *  Version 0.5, 29.08.2007 (Anker-Name mit eingebunden)<br />
-      *  Version 0.6, 02.03.2008 (Mehrsprachigkeit eingeführt)<br />
+      *  Version 0.6, 02.03.2008 (Mehrsprachigkeit eingefï¿½hrt)<br />
       */
       function transformContent(){
 
-         // LOCALS füllen
+         // LOCALS fï¿½llen
          $this->_LOCALS = RequestHandler::getValues(array($this->__Attributes['Config']['ParameterCountName'] => $this->__Attributes['Config']['EntriesPerPage']));
 
 
@@ -92,7 +92,7 @@
           // end for
          }
 
-         // Anzeige sprachabhängig setzen
+         // Anzeige sprachabhï¿½ngig setzen
          $Template__Page = &$this->__getTemplate('Page_'.$this->__Language);
          $this->setPlaceHolder('Page',$Template__Page->transformTemplate());
 

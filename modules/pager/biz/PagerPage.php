@@ -20,12 +20,12 @@
    */
 
    /**
-   *  @namespace modules::pager::biz
+   *  @package modules::pager::biz
    *  @class PagerPage
    *
    *  Represents the business object of the pager module.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 06.08.2006<br />
    */

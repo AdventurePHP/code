@@ -23,7 +23,7 @@
    import('modules::genericormapper::data','GenericDomainObject');
 
    /**
-    * @namespace modules::usermanagement::pres::documentcontroller
+    * @package modules::usermanagement::pres::documentcontroller
     * @class umgtbaseController
     *
     * Implements a base controller for the concrete document controllers of

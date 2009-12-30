@@ -24,12 +24,12 @@
 
 
    /**
-   *  @namespace modules::guestbook::pres::documentcontroller
+   *  @package modules::guestbook::pres::documentcontroller
    *  @class guestbook_adminedit_v1_controller
    *
-   *  Implementiert den DocumentController für das Stylesheet 'adminedit.html'.<br />
+   *  Implementiert den DocumentController fï¿½r das Stylesheet 'adminedit.html'.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 05.05.2007<br />
    */
@@ -38,7 +38,7 @@
 
       /**
       *  @private
-      *  Hält lokal verwendete Variablen.
+      *  Hï¿½lt lokal verwendete Variablen.
       */
       private $_LOCALS;
 
@@ -69,7 +69,7 @@
       *
       *  Implementiert die asbtrakte Methode "transformContent" aus "coreObject".<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
@@ -115,7 +115,7 @@
             // Eintrag laden
             $Entry = $gM->loadEntry($this->_LOCALS['entryid']);
 
-            // Werte füllen
+            // Werte fï¿½llen
             $Name = & $Form__GuestbookEntry->getFormElementByName('Name');
             $Name->setAttribute('value',$Entry->get('Name'));
 

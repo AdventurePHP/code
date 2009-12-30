@@ -26,12 +26,12 @@
 
 
    /**
-   *  @namespace modules::guestbook::data
+   *  @package modules::guestbook::data
    *  @class GuestbookMapper
    *
    *  DataMapper of the guestbook.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 12.04.2007<br />
    *  Version 0.2, 07.01.2008 (Values are now quoted during insert/update)<br />
@@ -77,7 +77,7 @@
       *  @param string $entryID Id of the desired entry
       *  @return Entry $entry The entry object
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       *  Version 0.2, 26.03.2009 (Refactoring)<br />
@@ -101,7 +101,7 @@
       *  @param string $commentID Id of the desired comment
       *  @return Comment $comment The comment object
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       *  Version 0.2, 26.03.2009 (Refactoring)<br />
@@ -125,7 +125,7 @@
       *  @param string $guestbookID Id of the desired guestbook
       *  @return Guestbook $guestbook The guestbook object
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       *  Version 0.2, 26.03.2009 (Refactoring)<br />
@@ -149,7 +149,7 @@
       *  @param string $entryID Id of the desired entry
       *  @return Entry $entry The entry id with it's comments
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       *  Version 0.2, 26.03.2009 (Refactoring)<br />
@@ -183,7 +183,7 @@
       *  @param string $guestbookID Id of the desired guestbook
       *  @return Guestbook $guestbook The guestbook object
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       *  Version 0.2, 26.03.2009 (Refactoring)<br />
@@ -218,7 +218,7 @@
       *  @param Guestbook $guestbook The guestbook object
       *  @return string $guestbookID Id of the guestbook
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       *  Version 0.2, 14.04.2007 (Fixed bug during saving)<br />
@@ -312,7 +312,7 @@
       *  @param Entry $entry The entry object
       *  @return string $entryID Id of the entry
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       *  Version 0.2, 26.03.2009 (Refactoring)<br />
@@ -425,7 +425,7 @@
       *  @param Comment $comment The comment object
       *  @return string $commentID Id of the comment
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       *  Version 0.2, 26.03.2009 (Refactoring)<br />
@@ -481,7 +481,7 @@
       *
       *  @param Entry $entry The entry object
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       *  Version 0.2, 26.03.2009 (Refactoring)<br />
@@ -531,7 +531,7 @@
       *
       *  @param Comment $comment The comment object
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 19.05.2007<br />
       *  Version 0.2, 26.03.2009 (Refactoring)<br />
@@ -558,7 +558,7 @@
       *  @param array $entryResultSet The database result set
       *  @return Entry $entry The entry object
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       *  Version 0.2, 26.03.2009 (Refactoring)<br />
@@ -634,7 +634,7 @@
       *  @param array $guestbookResultSet The database result set
       *  @return Guestbook $guestbook The guestbook object
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       *  Version 0.2, 26.03.2009 (Refactoring)<br />
@@ -678,7 +678,7 @@
       *  @param array $commentResultSet The database result set
       *  @return Comment $comment The database result set
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2007<br />
       *  Version 0.2, 26.03.2009 (Refactoring)<br />

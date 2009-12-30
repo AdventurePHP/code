@@ -25,7 +25,7 @@
 
 
    /**
-   *  @namespace modules::usermanagement::pres::documentcontroller
+   *  @package modules::usermanagement::pres::documentcontroller
    *  @class umgt_details_controller
    *
    *  Implements the controller to show a group's details.

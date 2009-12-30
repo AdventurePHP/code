@@ -20,12 +20,12 @@
    */
 
    /**
-   *  @namespace modules::socialbookmark::biz::actions
+   *  @package modules::socialbookmark::biz::actions
    *  @class ShowImageInput
    *
-   *  Implementierung des FrontcontrollerInputs für das Socialbookmark-Modul.<br />
+   *  Implementierung des FrontcontrollerInputs fï¿½r das Socialbookmark-Modul.<br />
    *
-   *  @author Christian W. Schäfer
+   *  @author Christian W. Schï¿½fer
    *  @version
    *  Version 0.1, 07.09.2007<br />
    */

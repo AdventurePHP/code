@@ -22,7 +22,7 @@
    import('modules::usermanagement::biz','PasswordHashProvider');
 
    /**
-    * @namespace modules::usermanagement::biz
+    * @package modules::usermanagement::biz
     * @class DefaultPasswordHashProvider
     *
     * Implements the default password hash provider for the umgtManager.

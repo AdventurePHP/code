@@ -24,7 +24,7 @@
 
 
    /**
-   *  @namespace modules::pager::data
+   *  @package modules::pager::data
    *  @class PagerMapper
    *
    *  Represents the data layer of the pager.

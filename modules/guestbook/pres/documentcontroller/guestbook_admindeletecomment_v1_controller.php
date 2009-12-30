@@ -25,7 +25,7 @@
 
 
    /**
-   *  @namespace modules::guestbook::pres::documentcontroller
+   *  @package modules::guestbook::pres::documentcontroller
    *  @class guestbook_admindeletecomment_v1_controller
    *
    *  Implementiert den DocumentController f�r das Stylesheet 'admindeletecomment.html'.<br />

@@ -20,13 +20,13 @@
    */
 
    /**
-   *  @namespace modules::guestbook::pres::documentcontroller
+   *  @package modules::guestbook::pres::documentcontroller
    *  @class guestbookBaseController
    *  @abstract
    *
-   *  Abstrakter DocumentController, der Basis-Funktionen für weitere DocumentController des Moduls bereitstellt..<br />
+   *  Abstrakter DocumentController, der Basis-Funktionen fï¿½r weitere DocumentController des Moduls bereitstellt..<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
@@ -42,7 +42,7 @@
       *
       *  @return GuestbookManager $gM The guestbook manager
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */

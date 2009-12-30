@@ -23,7 +23,7 @@
 
 
    /**
-   *  @namespace modules::newspager::pres
+   *  @package modules::newspager::pres
    *  @class newspager_v1_controller
    *
    *  Document controller for the newspager module.<br />

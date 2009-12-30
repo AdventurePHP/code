@@ -22,7 +22,7 @@
    import('modules::genericormapper::data::tools','GenericORMapperSetup');
 
    /**
-    * @namespace modules::genericormapper::data::tools
+    * @package modules::genericormapper::data::tools
     * @class GenericORMapperUpdate
     *
     * The <strong>GenericORMapperUpdate</strong> can be used to update generic or mapper

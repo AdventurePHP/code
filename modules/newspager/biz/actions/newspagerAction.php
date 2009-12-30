@@ -23,7 +23,7 @@
 
 
    /**
-   *  @namespace modules::newspager::biz
+   *  @package modules::newspager::biz
    *  @class newspagerAction
    *
    *  Front controller action implemenatation for AJAX style loading of a news page.<br />

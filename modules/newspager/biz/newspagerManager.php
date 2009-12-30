@@ -23,7 +23,7 @@
 
 
    /**
-   *  @namespace modules::newspager::biz
+   *  @package modules::newspager::biz
    *  @class newspagerManager
    *
    *  Business component for loading the news page objects.<br />

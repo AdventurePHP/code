@@ -22,7 +22,7 @@
    import('modules::guestbook2009::biz','GuestbookService');
 
    /**
-    * @namespace modules::guestbook2009::pres::controller
+    * @package modules::guestbook2009::pres::controller
     * @class list_controller
     *
     * Implements the document controller for the guestbook's list view.

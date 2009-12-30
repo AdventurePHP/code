@@ -22,7 +22,7 @@
    import('modules::genericormapper::data','BaseMapper');
 
    /**
-    * @namespace modules::genericormapper::data
+    * @package modules::genericormapper::data
     * @class GenericORMapperSetup
     *
     * This tool allows you to setup a database for use with the generic or mapper. It enables

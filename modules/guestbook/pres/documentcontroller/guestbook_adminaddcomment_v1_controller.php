@@ -24,12 +24,12 @@
 
 
    /**
-   *  @namespace modules::guestbook::pres::documentcontroller
+   *  @package modules::guestbook::pres::documentcontroller
    *  @class guestbook_adminaddcomment_v1_controller
    *
-   *  Implementiert den DocumentController für das Stylesheet 'adminaddcomment.html'.<br />
+   *  Implementiert den DocumentController fï¿½r das Stylesheet 'adminaddcomment.html'.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 05.05.2007<br />
    */
@@ -38,7 +38,7 @@
 
       /**
       *  @protected
-      *  Hält lokal verwendete Variablen.
+      *  Hï¿½lt lokal verwendete Variablen.
       */
       protected $_LOCALS;
 
@@ -61,7 +61,7 @@
       *
       *  Implementiert die asbtrakte Methode "transformContent" aus "coreObject".<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.05.2007<br />
       */
@@ -70,7 +70,7 @@
          // Referenz auf das Formular holen
          $Form__GuestbookAddComment = &$this->__getForm('GuestbookAddComment');
 
-         // Aktion für Eintrag
+         // Aktion fï¿½r Eintrag
          if($Form__GuestbookAddComment->isSent() == true){
 
             if($Form__GuestbookAddComment->isValid()){
