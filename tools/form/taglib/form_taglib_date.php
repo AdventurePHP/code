@@ -299,13 +299,14 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 29.08.2009<br />
+       * Version 0.2, 30.12.2009 (Replaced split() with explode() because it is marked deprecated in PHP5.3.0)<br />
        */
       protected function __initYearRange(){
 
          // read the range for the year select box
          if(isset($this->__Attributes['yearrange'])){
 
-            $yearRange = split('-',$this->__Attributes['yearrange']);
+            $yearRange = explode('-',$this->__Attributes['yearrange']);
 
             if(count($yearRange) == 2){
                $this->__YearRange['Start'] = trim($yearRange[0]);
