@@ -36,7 +36,7 @@
 
       public function validate($input){
 
-         $birthday = explode('.', trim($string));
+         $birthday = explode('.', trim($input));
 
          // catch invalid strings
          if(count($birthday) !== 3) {
