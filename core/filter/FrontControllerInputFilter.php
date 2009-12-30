@@ -20,7 +20,7 @@
    */
 
    /**
-   *  @namespace core::filter
+   *  @package core::filter
    *  @class FrontControllerInputFilter
    *
    *  Implements the an input filter, that extracts the front controller actions and applies the,

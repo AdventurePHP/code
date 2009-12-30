@@ -20,7 +20,7 @@
    */
 
    /**
-    * @namespace core::singleton
+    * @package core::singleton
     * @class Singleton
     * @static
     *

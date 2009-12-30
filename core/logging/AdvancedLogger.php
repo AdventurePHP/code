@@ -57,7 +57,7 @@
 
 
    /**
-   *  @namespace core::logging
+   *  @package core::logging
    *  @class AdvancedLogEntry
    *
    *  Implements a  logEntry object.

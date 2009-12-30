@@ -24,7 +24,7 @@
 
 
    /**
-   *  @namespace core::exceptionhandler
+   *  @package core::exceptionhandler
    *  @class DefaultExceptionHandler
    *
    *  Implements the default APF exception handler for uncaught exceptions.

@@ -23,7 +23,7 @@
 
 
    /**
-   *  @namespace core::logging
+   *  @package core::logging
    *
    *  Wrapper for flushing the log buffer.
    *
@@ -39,7 +39,7 @@
 
 
    /**
-   *  @namespace core::logging
+   *  @package core::logging
    *  @class logEntry
    *
    *  Implements a  logEntry object.
@@ -123,7 +123,7 @@
 
 
    /**
-   *  @namespace core::logging
+   *  @package core::logging
    *  @class Logger
    *
    *  Implements a generic logger used in the framework's core components and your applications. The

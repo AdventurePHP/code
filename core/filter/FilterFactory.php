@@ -20,7 +20,7 @@
    */
 
    /**
-    * @namespace core::filter
+    * @package core::filter
     * @class FilterDefinition
     *
     * Represents the description of an APF filter.
@@ -66,7 +66,7 @@
 
 
    /**
-    * @namespace core::filter
+    * @package core::filter
     * @class AbstractFilter
     * @abstract
     *
@@ -105,7 +105,7 @@
 
 
    /**
-    * @namespace core::filter
+    * @package core::filter
     * @class FilterFactory
     *
     * Implements a simple factory to load filter classes derived from the AbstractFilter class.

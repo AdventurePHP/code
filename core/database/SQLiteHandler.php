@@ -22,10 +22,10 @@
    import('core::database','AbstractDatabaseHandler');
 
    /**
-   *  @namespace core::database
+   *  @package core::database
    *  @class SQLiteHandler
    *
-   *  Implementiert die Datenbankabstraktionsschicht für die SQLite-Schnittstelle.<br />
+   *  Implementiert die Datenbankabstraktionsschicht fï¿½r die SQLite-Schnittstelle.<br />
    *
    *  @author Christian Achatz
    *  @version
@@ -60,7 +60,7 @@
        */
       protected function __connect(){
 
-         // Verbindung öffnen
+         // Verbindung ï¿½ffnen
          $this->__dbConn = @sqlite_open($this->__dbName,$this->__dbMode,$this->__dbError);
 
          // Fehler ausgeben, falls vorhanden

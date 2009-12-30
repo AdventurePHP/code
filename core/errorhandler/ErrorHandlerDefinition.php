@@ -20,7 +20,7 @@
    */
 
    /**
-   *  @namespace core::errorhandler
+   *  @package core::errorhandler
    *  @class ErrorHandlerDefinition
    *
    *  Represents the definition of an error handler invoked by the framework.

@@ -20,7 +20,7 @@
    */
 
    /**
-    * @namespace core::service
+    * @package core::service
     * @class ServiceManager
     *
     * Provides a simple dependency injection container for objects created during application flow.

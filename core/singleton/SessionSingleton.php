@@ -23,7 +23,7 @@
    register_shutdown_function('saveSessionSingletonObjects');
 
    /**
-    * @namespace core::singleton
+    * @package core::singleton
     *
     * Implements a shutdown function to save all session singleton objects in the session.
     *
@@ -58,7 +58,7 @@
 
 
    /**
-    * @namespace core::singleton
+    * @package core::singleton
     * @class SessionSingleton
     * @static
     *

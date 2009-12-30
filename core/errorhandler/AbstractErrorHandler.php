@@ -21,7 +21,7 @@
 
    /**
    *  @abstract
-   *  @namespace core::errorhandler
+   *  @package core::errorhandler
    *  @class AbstractErrorHandler
    *
    *  Defines the interface, that a dedicated error handler must implement.

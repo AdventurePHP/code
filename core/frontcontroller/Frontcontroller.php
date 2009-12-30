@@ -26,7 +26,7 @@
 
 
    /**
-   *  @namespace core::frontcontroller
+   *  @package core::frontcontroller
    *  @class AbstractFrontcontrollerAction
    *  @abstract
    *
@@ -121,7 +121,7 @@
 
 
    /**
-   *  @namespace core::frontcontroller
+   *  @package core::frontcontroller
    *  @class FrontcontrollerInput
    *
    *  Implements a base class for input parameters for front controller actions.
@@ -198,7 +198,7 @@
 
 
    /**
-   *  @namespace core::frontcontroller
+   *  @package core::frontcontroller
    *  @class Frontcontroller
    *
    *  Implementiert den Frontcontroller.<br />

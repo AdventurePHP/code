@@ -20,7 +20,7 @@
     */
 
    /**
-    * @namespace core::filter
+    * @package core::filter
     * @class GenericOutputFilter
     *
     * Implements the an output filter, that rewrites links within a HTML code.

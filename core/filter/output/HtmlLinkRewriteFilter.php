@@ -20,7 +20,7 @@
    */
 
    /**
-    * @namespace core::filter::output
+    * @package core::filter::output
     * @class HtmlLinkRewriteFilter
     *
     * Implements a URL rewriting output filter for HTML source code. Rewriting can be adjusted
@@ -112,7 +112,7 @@
                   $currentLinkStartPos + $startTokenLength,
                   $currentLinkEndPos - $currentLinkStartPos - $startTokenLength);
 
-               $currentLinkAttributes = xmlParser::getAttributesFromString($currentLinkString);
+               $currentLinkAttributes = XmlParser::getAttributesFromString($currentLinkString);
 
                // rewrite link if desired
                if(isset($currentLinkAttributes[$attributeToken])){

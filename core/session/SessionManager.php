@@ -20,7 +20,7 @@
    */
 
    /**
-    * @namespace core::session
+    * @package core::session
     * @class SessionManager
     *
     * Provides advances session handling with namespaces. Example:
@@ -35,15 +35,13 @@
     * Version 0.2, 12.04.2006 (Added the possibility to create the class singleton.)<br />
     * Version 0.3, 02.08.2009 (Ensured PHP 5.3.x/6.x.x compatibility with session handling.)<br />
     */
-   final class SessionManager
-   {
+   final class SessionManager {
 
       /**
        * @private
        * The namespace of the current instance of the session manager.
        */
       private $__Namespace;
-
 
       /**
        * @public
@@ -82,7 +80,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -98,7 +95,6 @@
          $this->__Namespace = trim($namespace);
        // end function
       }
-
 
       /**
        * @public
@@ -116,7 +112,6 @@
          $_SESSION[$namespace] = array();
        // end function
       }
-
 
       /**
        * @public
@@ -144,7 +139,6 @@
 
        // end function
       }
-
 
       /**
        * @public
@@ -174,7 +168,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -191,7 +184,6 @@
          $_SESSION[$this->__Namespace][$attribute] = $value;
        // end function
       }
-
 
       /**
        * @public
@@ -211,7 +203,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -227,7 +218,6 @@
          unset($_SESSION[$this->__Namespace][$attribute]);
        // end function
       }
-
 
       /**
        * @public
@@ -245,7 +235,6 @@
          unset($_SESSION[$namespace][$attribute]);
        // end function
       }
-
 
       /**
        * @public

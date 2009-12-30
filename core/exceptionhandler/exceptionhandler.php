@@ -31,7 +31,7 @@
 
 
    /**
-   *  @namespace core::exceptionhandler
+   *  @package core::exceptionhandler
    *  @function exceptionHandler
    *
    *  This function is the global APF exception handler function. Calls the exception manager

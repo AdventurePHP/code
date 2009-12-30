@@ -23,7 +23,7 @@
 
 
    /**
-   *  @namespace core::filter::input
+   *  @package core::filter::input
    *  @class FrontcontrollerRewriteRequestFilter
    *
    *  Input filter for the front controller in combination with rewritten URLs.

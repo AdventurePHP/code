@@ -18,12 +18,12 @@
    */
 
    /**
-   *  @namespace core::pagecontroller
+   *  @package core::pagecontroller
    *  @class core_taglib_setproperty
    *
-   *  Bietet die Möglichkeit eine Eigenschaft eines Documents in der Template-Datei zu setzen.<br />
+   *  Bietet die MÃ¶glichkeit eine Eigenschaft eines Documents in der Template-Datei zu setzen.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 04.04.2007<br />
    *  Version 0.2, 22.04.2007 (Um rekursives Setzen erweitert)<br />
@@ -41,7 +41,7 @@
       *  Implementiert die abstrakte Methode "onAfterAppend" und setzt eine Eigenschaft der<br />
       *  Eltern-Klasse, sowie deren Kinder rekursiv.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 04.04.2007<br />
       *  Version 0.2, 22.04.2007 (Kompletter Baum ausgehend vom Parent wird mit dem Wert versorgt)<br />
@@ -77,9 +77,9 @@
       *  @since 0.2
       *
       *  Iteriert einen Objektbaum rekursiv und setzt die in den Attributen des Tags angegebenen<br />
-      *  Schlüssel => Wert-Paare in den Objekten per set().<br />
+      *  Schlï¿½ssel => Wert-Paare in den Objekten per set().<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 22.04.2007<br />
       */

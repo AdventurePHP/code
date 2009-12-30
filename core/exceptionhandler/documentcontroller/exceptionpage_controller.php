@@ -20,7 +20,7 @@
    */
 
    /**
-   *  @namespace core::exceptionhandler::documentcontroller
+   *  @package core::exceptionhandler::documentcontroller
    *  @class exceptionpage_controller
    *
    *  Implements the exception page's document controller.

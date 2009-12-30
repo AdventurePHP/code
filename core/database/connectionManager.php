@@ -20,7 +20,7 @@
     */
 
    /**
-    * @namespace core::database
+    * @package core::database
     * @class connectionManager
     *
     * The ConnectionManager is a database connection fabric. You can use it to create APF style

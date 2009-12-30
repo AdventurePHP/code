@@ -23,7 +23,7 @@
    import('core::logging','Logger');
 
    /**
-    * @namespace core::errorhandler
+    * @package core::errorhandler
     * @class DefaultErrorHandler
     *
     * Implements the default error handler of the APF. Logs errors to a logfile and displays the
@@ -98,7 +98,7 @@
        *
        * Creates a log entry containing the error occured.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 21.01.2007<br />
        * Version 0.2, 29.03.2007 (Changed to new logger)<br />
@@ -149,7 +149,7 @@
        *
        * Generates the error id.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 21.01.2007<br />
        */

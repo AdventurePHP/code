@@ -18,7 +18,7 @@
     */
 
    /**
-    * @namespace core::pagecontroller
+    * @package core::pagecontroller
     * @class core_taglib_appendnode
     *
     * Parses a template and appends the child nodes to the parent's child list. Hence, this taglib

@@ -23,7 +23,7 @@
 
 
    /**
-   *  @namespace core::filter::input
+   *  @package core::filter::input
    *  @class FrontcontrollerRequestFilter
    *
    *  Implements the input filter for front controller usage and rewite urls.

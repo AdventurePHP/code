@@ -23,7 +23,7 @@
 
 
    /**
-    * @namespace core::filter::input
+    * @package core::filter::input
     * @class StandardRequestFilter
     *
     * Implements the URL filter for the page controller in standard mode.

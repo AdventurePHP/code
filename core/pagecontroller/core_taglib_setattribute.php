@@ -18,12 +18,12 @@
    */
 
    /**
-   *  @namespace core::pagecontroller
+   *  @package core::pagecontroller
    *  @class core_taglib_setattribute
    *
-   *  Bietet die Möglichkeit ein Attribut eines Documents in der Template-Datei zu setzen.<br />
+   *  Bietet die Mï¿½glichkeit ein Attribut eines Documents in der Template-Datei zu setzen.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 04.04.2007<br />
    */
@@ -39,7 +39,7 @@
       *
       *  Implementiert die abstrakte Methode "onAfterAppend" und setzt ein Attribut der Eltern-Klasse.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 04.04.2007<br />
       */

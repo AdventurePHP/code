@@ -21,7 +21,7 @@
 
    /**
    *  @abstract
-   *  @namespace core::exceptionhandler
+   *  @package core::exceptionhandler
    *  @class AbstractExceptionHandler
    *
    *  Defines the interface, that a dedicated exception handler must implement.

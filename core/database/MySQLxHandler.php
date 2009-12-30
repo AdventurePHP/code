@@ -22,7 +22,7 @@
    import('core::database','AbstractDatabaseHandler');
 
    /**
-    * @namespace core::database
+    * @package core::database
     * @class MySQLxHandler
     *
     * This class implements a connection handler for the connectionManager to use with mysql
@@ -98,7 +98,7 @@
        *
        * Closes the database connection.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 2002<br />
        * Version 0.2, 10.04.2004<br />
@@ -130,7 +130,7 @@
        * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
        * @return resource The database result resource.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 24.12.2005<br />
        * Version 0.2, 16.01.2006<br />
@@ -265,7 +265,7 @@
        * @param resource $resultCursor The result resource pointer.
        * @return int The number of affected rows.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 04.01.2006<br />
        * Version 0.2, 07.03.2008<br />
@@ -350,7 +350,7 @@
        *
        * Returns the version of the database server.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 05.03.2006<br />
        * Version 0.2, 07.03.2008 (Now the connection is applied to the call.)<br />
@@ -365,7 +365,7 @@
        *
        * Returns the name of the current database.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 05.03.2006<br />
        */

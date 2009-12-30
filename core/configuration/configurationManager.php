@@ -20,7 +20,7 @@
     */
 
    /**
-    * @namespace core::configuration
+    * @package core::configuration
     * @class Configuration
     *
     * Represents a configuration object, that is loaded by the configurationManager. It stores
@@ -49,7 +49,7 @@
        * @param string $Name; Name of the cection
        * @return string[] Section or null.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.01.2007<br />
        */
@@ -76,7 +76,7 @@
        * @param string $name name of the subsection.
        * @return string[] Value of the configuration key or null.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 30.01.2007<br />
        * Version 0.2, 31.01.2007 (Added check for Subsection to be an array)<br />
@@ -106,7 +106,7 @@
        * @param string $name name of the config key.
        * @return string Value of the configuration key or null.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.01.2007<br />
        */
@@ -160,7 +160,7 @@
    }
 
    /**
-    * @namespace core::configuration
+    * @package core::configuration
     * @class configurationManager
     *
     * The configurationManager represents a configuration utility, that loads and handles configurations
@@ -401,7 +401,7 @@
        * @param string[] $subsectionArray The configuration array.
        * @return string[] $parsedArray The parsed array.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.01.2007<br />
        * Version 0.2, 19.04.2009 (Bugfix: Parsing subsections returned an empty array!)<br />
@@ -438,7 +438,7 @@
        * @param string $key The current configuration directive possibly containg a dot.
        * @param string[] $value Value of the offset specified with $key.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.01.2007<br />
        */

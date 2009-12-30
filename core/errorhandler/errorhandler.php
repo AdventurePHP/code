@@ -36,7 +36,7 @@
 
 
    /**
-   *  @namespace core::errorhandler
+   *  @package core::errorhandler
    *  @function errorHandler
    *
    *  This function is the global APF error handler function. Calls the error manager configured in
@@ -47,7 +47,7 @@
    *  @param string $errorFile error file
    *  @param string $errorLine error line
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 30.11.2005<br />
    *  Version 0.2, 04.12.2005<br />
