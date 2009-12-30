@@ -19,33 +19,33 @@
     * -->
     */
 
-   import('tools::form::taglib','error_taglib_placeholder');
-   import('tools::form::taglib','error_taglib_getstring');
+   import('tools::form::taglib','success_taglib_placeholder');
+   import('tools::form::taglib','success_taglib_getstring');
 
    /**
     * @package tools::form::taglib
-    * @class form_taglib_error
+    * @class form_taglib_success
     *
     * Implements a taglib, that outputs it's content, in case the form, the
-    * tag is defined in, is sent but not valid. This let's you easily define
-    * form error messages. The definition of the tag is as follows:
+    * tag is defined in, is sent *and* valid. This let's you easily define
+    * form success messages. The definition of the tag is as follows:
     * <pre>
-    * &lt;form:error&gt;
-    *   The content to display, in case the form is sent, but invalid!
-    *   [&lt;error:getstring namespace="" config="" key="" /&gt;]
-    *   [&lt;error:placeholder name="" /&gt;]
-    * &lt;/form:error&gt;
+    * &lt;form:success&gt;
+    *   The content to display, in case the form is sent *and* valid!
+    *   [&lt;success:getstring namespace="" config="" key="" /&gt;]
+    *   [&lt;success:placeholder name="" /&gt;]
+    * &lt;/form:success&gt;
     * </pre>
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 03.09.2009<br />
+    * Version 0.1, 30.12.2009<br />
     */
-   class form_taglib_error extends form_control {
+   class form_taglib_success extends form_control {
 
       public function form_taglib_error(){
-         $this->__TagLibs[] = new TagLib('tools::form::taglib','error','placeholder');
-         $this->__TagLibs[] = new TagLib('tools::form::taglib','error','getstring');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','success','placeholder');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','success','getstring');
        // end function
       }
 
@@ -57,7 +57,7 @@
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 03.09.2009<br />
+       * Version 0.1, 30.12.2009<br />
        */
       public function onParseTime(){
          $this->__extractTagLibTags();
@@ -71,7 +71,7 @@
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 03.09.2009<br />
+       * Version 0.1, 30.12.2009<br />
        */
       public function onAfterAppend(){
       }
@@ -80,16 +80,16 @@
        * @public
        *
        * Outputs the content of the tag, if the form, the tag is
-       * defined in is sent but invalid!
+       * defined in is sent *and* valid!
        *
        * @return string The content of the tag.
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 03.09.2009<br />
+       * Version 0.1, 30.12.2009<br />
        */
       public function transform(){
-         if($this->__ParentObject->isSent() && !$this->__ParentObject->isValid()){
+         if($this->__ParentObject->isSent() && $this->__ParentObject->isValid()){
             foreach($this->__Children as $objectId => $DUMMY){
                $this->__Content = str_replace(
                   '<'.$objectId.' />',$this->__Children[$objectId]->transform(),$this->__Content

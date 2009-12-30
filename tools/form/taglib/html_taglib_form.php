@@ -45,6 +45,7 @@
    import('tools::form::taglib','form_taglib_addvalidator');
    import('tools::form::taglib','form_taglib_listener');
    import('tools::form::taglib','form_taglib_error');
+   import('tools::form::taglib','form_taglib_success');
 
    /**
     * @package tools::form::taglib
@@ -52,7 +53,7 @@
     *
     * Represents a APF form element (DOM node).
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 05.01.2007<br />
     * Version 0.2, 12.01.2007 (Form is now handled as a template)<br />
@@ -64,6 +65,7 @@
     * Version 0.8, 22.09.2007 (Added the generic validator)<br />
     * Version 0.9, 01.06.2008 (Added the getFormElementsByType() method)<br />
     * Version 1.0, 16.06.2008 (API change: added getFormElementsByTagName())<br />
+    * Version 1.1, 30.12.2009 (Added the form:success tag)<br />
     */
    class html_taglib_form extends form_control {
 
@@ -79,7 +81,7 @@
        *
        * Initializes the known taglibs.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 05.01.2007<br />
        * Version 0.2, 13.01.2007<br />
@@ -110,6 +112,8 @@
          // takes place on transform time. But for clarity, we add it near the listeners.
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','error');
 
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','success');
+
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','button');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','reset');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','imagebutton');
@@ -137,7 +141,7 @@
        *
        * Parses the known taglibs.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 05.01.2007<br />
        */
