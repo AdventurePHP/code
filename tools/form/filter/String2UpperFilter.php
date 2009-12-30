@@ -22,7 +22,7 @@
    import('tools::form::filter','AbstractFormFilter');
    
    /**
-    * @namespace tools::form::filter
+    * @package tools::form::filter
     * @class String2UpperFilter
     *
     * Implements a filter, that converts all characters to upper letters.

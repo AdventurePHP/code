@@ -22,7 +22,7 @@
    import('tools::form::validator','SelectFieldValidator');
 
    /**
-    * @namespace tools::form::validator
+    * @package tools::form::validator
     * @class MultiSelectFieldValidator
     *
     * Implements a simple multi select field validator, that expects the value

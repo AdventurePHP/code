@@ -23,7 +23,7 @@
    import('tools::form::taglib','listener_taglib_getstring');
    
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_taglib_listener
     *
     * Implements a taglib, that outputs it's content, in case you notify

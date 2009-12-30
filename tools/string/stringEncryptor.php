@@ -20,12 +20,12 @@
    */
 
    /**
-   *  @namespace tools::string
+   *  @package tools::string
    *  @class stringEncryptor
    *
-   *  Abstrahiert Verschlüsselungs-Algorithmen für Strings. Dient der Generierung von Passwörtern.<br />
+   *  Abstrahiert Verschlï¿½sselungs-Algorithmen fï¿½r Strings. Dient der Generierung von Passwï¿½rtern.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 24.06.2006<br />
    *  Version 0.2, 02.06.2007 (Klasse erbt von coreObject, damit diese als ServiveObject genutzt werden kann)<br />
@@ -46,7 +46,7 @@
       *  Diese muss im Namespace config::tools::string::{CONTEXT}::iniconfig<br />
       *  vorgehalten werden.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 24.06.2006<br />
       *  Version 0.2, 02.06.2007 (Auf ConfigurationManager umgestellt)<br />

@@ -23,12 +23,12 @@
 
 
    /**
-   *  @namespace tools::html::taglib::doc
+   *  @package tools::html::taglib::doc
    *  @class doc_taglib_createobject
    *
    *  Implements a taglib that creates a child node by the content of a file.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 04.01.2006<br />
    *  Version 0.2, 29.09.2007 (Renamed to doc_taglib_createobject)<br />
@@ -41,7 +41,7 @@
       *
       *  Calls the parent's constructor to initialize the known taglibs.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 04.01.2006<br />
       *  Version 0.2, 29.09.2007 (Renamed to doc_taglib_createobject<br />
@@ -57,7 +57,7 @@
       *
       *  Reimplements the onParseTime().
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 04.01.2006<br />
       *  Version 0.2, 31.01.2009 (Replaced the variablenHandler)<br />
@@ -88,7 +88,7 @@
       *  Reads the content of a file using the param to indicate it's name. If the file does not
       *  exist, a file with name "404" is taken instead.
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 30.05.2006<br />
       *  Version 0.2, 31.05.2006 (Path changed from /apps/sites  to ./frontend/content)<br />

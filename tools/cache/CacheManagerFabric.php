@@ -20,7 +20,7 @@
     */
 
    /**
-    * @namespace tools::cache
+    * @package tools::cache
     * @class CacheManagerFabric
     *
     * Fabric for the cache manager. Must be created singleton using the service manager.

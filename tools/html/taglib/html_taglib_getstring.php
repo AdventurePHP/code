@@ -23,12 +23,12 @@
 
 
    /**
-   *  @namespace tools::html::taglib
+   *  @package tools::html::taglib
    *  @class html_taglib_getstring
    *
-   *  Implementiert die TagLib für den Tag "<html:getstring />".<br />
+   *  Implementiert die TagLib fï¿½r den Tag "<html:getstring />".<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 21.04.2006<br />
    */

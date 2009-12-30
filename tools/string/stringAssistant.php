@@ -20,13 +20,13 @@
    */
 
    /**
-   *  @namespace tools::string
+   *  @package tools::string
    *  @class stringAssistant
    *  @static
    *
-   *  Stellt Methoden zur erweiterten String-Bearbeitung zur Verfügung.<br />
+   *  Stellt Methoden zur erweiterten String-Bearbeitung zur Verfï¿½gung.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 12.02.2006<br />
    */
@@ -41,10 +41,10 @@
       *  @public
       *  @static
       *
-      *  Entfernt Sonderzeichen, die für die Speicherung in der Datenbank<br />
-      *  und das spätere Anzeigen in HTML-Code Probleme machen.<br />
+      *  Entfernt Sonderzeichen, die fï¿½r die Speicherung in der Datenbank<br />
+      *  und das spï¿½tere Anzeigen in HTML-Code Probleme machen.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 11.01.2005<br />
       */
@@ -77,28 +77,28 @@
       *  @public
       *  @static
       *
-      *  Ersetzt die im Web für Dateinamen nicht zulässigen Sonderzeichen und gibt<br />
-      *  bereinigten String zurück.<br />
+      *  Ersetzt die im Web fï¿½r Dateinamen nicht zulï¿½ssigen Sonderzeichen und gibt<br />
+      *  bereinigten String zurï¿½ck.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 2004<br />
       *  Version 0.2, 2004<br />
       *  Version 0.3, 26.01.2005<br />
       *  Version 0.4, 29.03.2005<br />
-      *  Version 0.5, 05.06.2006 (Optimierung der Ersetzung (' statt " in der Array-Aufzählung))<br />
+      *  Version 0.5, 05.06.2006 (Optimierung der Ersetzung (' statt " in der Array-Aufzï¿½hlung))<br />
       *  Version 0.6, 31.03.2007 ("?" in die Liste mit aufgenommen)<br />
       */
       static function replaceSpecialCharacters($String){
 
          $Ersatz = array(
-                         'ä' => 'ae',
-                         'ö' => 'oe',
-                         'ü' => 'ue',
-                         'Ä' => 'ae',
-                         'Ö' => 'oe',
-                         'Ü' => 'ue',
-                         'ß' => 'ss',
+                         'ï¿½' => 'ae',
+                         'ï¿½' => 'oe',
+                         'ï¿½' => 'ue',
+                         'ï¿½' => 'ae',
+                         'ï¿½' => 'oe',
+                         'ï¿½' => 'ue',
+                         'ï¿½' => 'ss',
                          '-' => '_',
                          ' ' => '',
                          '[' => '',
@@ -113,14 +113,14 @@
                          '%' => '_',
                          '!' => '_',
                          '$' => '_',
-                         '§' => '_',
+                         'ï¿½' => '_',
                          '/' => '_',
                          '\'' => '',
-                         '´' => '',
+                         'ï¿½' => '',
                          '`' => '',
                          '*' => '',
                          '#' => '',
-                         '°' => '',
+                         'ï¿½' => '',
                          '^' => '',
                          '<' => '',
                          '>' => '',
@@ -144,7 +144,7 @@
       *
       *  Codiert eine Zeichenkette in HTML-Entities.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 24.06.2007<br />
       */
@@ -153,7 +153,7 @@
          // Inhalt von Leerzeichen befreien
          $Content = trim($String);
 
-         // Puffer für Ausgabe initialisieren
+         // Puffer fï¿½r Ausgabe initialisieren
          $EncodedContent = (string)'';
 
          // Zeichen codieren
@@ -162,7 +162,7 @@
           // end for
          }
 
-         // Ergebnis zurückgeben
+         // Ergebnis zurï¿½ckgeben
          return $EncodedContent;
 
        // end function
@@ -175,7 +175,7 @@
       *
       *  Generiert einen String, der als Captcha-String verwendet werden kann.<br />
       *
-      *  @param int $Length Länge des Strings
+      *  @param int $Length Lï¿½nge des Strings
       *  @return string $CaptchaString Captcha-String
       *
       *  @author Christian Achatz
@@ -187,7 +187,7 @@
          // Shuffeln der Zufallszahlen
          srand(stringAssistant::generateSeed());
 
-         // Definition aller zulässigen Zeichen
+         // Definition aller zulï¿½ssigen Zeichen
          $StringBase = 'ABCDEFGHJKLMNPRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
 
          // String erzeugen
@@ -198,7 +198,7 @@
           // end while
          }
 
-         // String zurückgeben
+         // String zurï¿½ckgeben
          return $CaptchaString;
 
        // end function
@@ -209,9 +209,9 @@
       *  @public
       *  @static
       *
-      *  Generiert einen Zufallsstartwert für die PHP-Funktion srand().<br />
+      *  Generiert einen Zufallsstartwert fï¿½r die PHP-Funktion srand().<br />
       *
-      *  @return int $StartValue Startwert für die srand()-Funktion
+      *  @return int $StartValue Startwert fï¿½r die srand()-Funktion
       *
       *  @author Christian Achatz
       *  @version

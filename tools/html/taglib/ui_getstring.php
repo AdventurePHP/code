@@ -20,7 +20,7 @@
     */
 
    /**
-    * @namespace tools::html::taglib
+    * @package tools::html::taglib
     * @class ui_getstring
     * @abstract
     *

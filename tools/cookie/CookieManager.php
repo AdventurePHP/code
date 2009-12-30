@@ -20,7 +20,7 @@
    */
 
    /**
-   *  @namespace tools::cookie
+   *  @package tools::cookie
    *  @class CookieManager
    *
    *  The CookieManager is a tool, that provides sophisticated cookie handling. It features

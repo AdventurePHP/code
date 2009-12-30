@@ -20,12 +20,12 @@
    */
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_taglib_radio
     *
     * Represents a APF radio button.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 13.01.2007<br />
     */
@@ -41,7 +41,7 @@
        *
        * @return string The HTML code of the radio button
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 13.01.2007<br />
        * Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
@@ -56,7 +56,7 @@
        *
        * Re-implements the __presetValue() method for the radio button.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 13.01.2007<br />
        * Version 0.2, 13.01.2009 (Bugfix: now the 'checked' attribute is deleted, that in case of a manually defined 'ckecked' the button could be unchecked)<br />

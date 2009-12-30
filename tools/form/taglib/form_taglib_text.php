@@ -20,12 +20,12 @@
    */
 
    /**
-   *  @namespace tools::form::taglib
+   *  @package tools::form::taglib
    *  @class form_taglib_text
    *
    *  Represents a APF text field.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 05.01.2007<br />
    *  Version 0.2, 12.01.2007 (Umbenannt in "form_taglib_text")<br />
@@ -42,7 +42,7 @@
        *
        * @return string HTML code of the text field
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 05.01.2007<br />
        * Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />

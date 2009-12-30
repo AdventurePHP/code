@@ -20,11 +20,11 @@
    */
 
    /**
-   *  @namespace tools::html::taglib::documentcontroller
+   *  @package tools::html::taglib::documentcontroller
    *  @class iteratorBaseController
    *
-   *  Implementiert den Basis-DocumentController für die Verwendung des Iterator-Tags. Konkrete<br/>
-   *  DocumentController müssen von diesem Controller erben.<br />
+   *  Implementiert den Basis-DocumentController fï¿½r die Verwendung des Iterator-Tags. Konkrete<br/>
+   *  DocumentController mï¿½ssen von diesem Controller erben.<br />
    *
    *  @author Christian Achatz
    *  @version
@@ -40,7 +40,7 @@
       /**
       *  @protected
       *
-      *  Gibt die Referenz auf ein Iterator-Objekt zurück.<br />
+      *  Gibt die Referenz auf ein Iterator-Objekt zurï¿½ck.<br />
       *
       *  @param string $Name; Name des Iterators.
       *  @return html_taglib_iterator $Iterator; Referenz auf den Iterator
@@ -62,17 +62,17 @@
          }
 
 
-         // Prüfen, ob Kinder existieren
+         // Prï¿½fen, ob Kinder existieren
          if(count($this->__Document->__Children) > 0){
 
             // Templates aus dem aktuellen Document bereitstellen
             foreach($this->__Document->__Children as $ObjectID => $Child){
 
                // Klassen mit dem Namen "$TagLibModule" aus den Child-Objekten des
-               // aktuellen "Document"s als Referenz zurückgeben
+               // aktuellen "Document"s als Referenz zurï¿½ckgeben
                if(get_class($Child) == $TagLibModule){
 
-                  // Prüfen, ob das gefundene Template $Name heißt.
+                  // Prï¿½fen, ob das gefundene Template $Name heiï¿½t.
                   if($Child->getAttribute('name') == $Name){
                      return $this->__Document->__Children[$ObjectID];
                    // end if

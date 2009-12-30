@@ -22,7 +22,7 @@
    import('tools::form::validator','TextFieldValidator');
 
    /**
-    * @namespace tools::form::validator
+    * @package tools::form::validator
     * @class DefaultSelectFieldValidator
     *
     * Validates a textfield to contain a valid folder name.

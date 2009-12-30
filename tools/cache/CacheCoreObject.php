@@ -21,7 +21,7 @@
 
    /**
     * @abstract
-    * @namespace tools::cache
+    * @package tools::cache
     * @class CacheCoreObject
     *
     * Implements an abstact base class for the cache provider and the cache manager. Includes

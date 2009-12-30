@@ -25,7 +25,7 @@
 
 
    /**
-    * @namespace tools::html::taglib
+    * @package tools::html::taglib
     * @class iterator_taglib_item
     *
     * Implementiert die Repr�sentation eines Items.<br />

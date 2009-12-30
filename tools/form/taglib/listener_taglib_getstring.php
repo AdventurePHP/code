@@ -22,7 +22,7 @@
    import('tools::form::taglib','form_getstring');
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class listener_taglib_getstring
     *
     * Implements the &lt;listener:getstring /&gt; tag.

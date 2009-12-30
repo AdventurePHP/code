@@ -20,7 +20,7 @@
     */
     
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class listener_taglib_placeholder
     *
     * Represents a place holder within the &lt;form:listener /&gt; tag.

@@ -20,12 +20,12 @@
     */
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_taglib_placeholder
     *
     * Represents a APF form place holder.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 05.01.2007<br />
     * Version 0.2, 12.01.2006 (Renamed to "form_taglib_placeholder")<br />

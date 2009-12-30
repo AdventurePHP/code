@@ -20,7 +20,7 @@
     */
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_taglib_marker
     *
     * Represents the <form:marker /> tag, that can be used to dynamically create forms. Please

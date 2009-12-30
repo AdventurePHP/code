@@ -20,12 +20,12 @@
     */
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_taglib_checkbox
     *
     * Represents an APF form checkbox.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 13.01.2007<br />
     */
@@ -39,7 +39,7 @@
        *
        * Sets the checked attribute, if the checkbox name exists in the request.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 13.01.2007<br />
        * Version 0.2, 28.08.2009 (Moved presetting to this method)<br />
@@ -66,7 +66,7 @@
        *
        * @return string The HTML code of the checkbox.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 13.01.2007<br />
        * Version 0.2, 11.02.2007 (Moved presetting and validation to the onAfterAppend() method)<br />

@@ -22,7 +22,7 @@
    import('tools::form::filter','AbstractFormFilter');
    
    /**
-    * @namespace tools::form::filter
+    * @package tools::form::filter
     * @class OnlyHTMLEntitiesFilter
     *
     * Implements a filter, that encodes all relevant characters into their

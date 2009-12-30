@@ -20,12 +20,12 @@
     */
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_taglib_button
     *
     * Represents an APF form button.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 05.01.2007<br />
     * Version 0.2, 14.04.2007 (Added the onAfterAppend() method)<br />
@@ -41,7 +41,7 @@
        *
        * Indicates, if the form was sent.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 14.04.2007<br />
        */
@@ -74,7 +74,7 @@
        *
        * @return string The HTML code of the button.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 05.01.2007<br />
        */

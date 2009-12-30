@@ -20,17 +20,17 @@
    */
 
    /**
-   *  @namespace tools::datetime
+   *  @package tools::datetime
    *  @class dateTimeManager
    *  @static
    *
    *  Stellt Methoden zum Umgang mit Datum und Uhrzeit bereit.<br />
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 08.09.2004<br />
    *  Version 0.2, 21.01.2006<br />
-   *  Version 0.3, 27.03.2007 (Methode "showMonthLabel" vom "stringAssistant" übernommen)<br />
+   *  Version 0.3, 27.03.2007 (Methode "showMonthLabel" vom "stringAssistant" ï¿½bernommen)<br />
    */
    class dateTimeManager
    {
@@ -45,7 +45,7 @@
       *
       *  Generiert ein Datum der Form 00-00-0000.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 08.09.2004<br />
       */
@@ -61,7 +61,7 @@
       *
       *  Generiert ein Datum im Format 0000-00-00.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 08.09.2004<br />
       */
@@ -77,7 +77,7 @@
       *
       *  Generiert eine Uhrzeit.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 08.09.2004<br />
       */
@@ -93,7 +93,7 @@
       *
       *  Generiert einen Zeitstempel.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 08.09.2004<br />
       */
@@ -107,13 +107,13 @@
       *  @public
       *  @static
       *
-      *  Korrigiert bei einem durch $Wert übergebenem Datum oder Uhrzeit<br />
-      *  fehlende führende Nullen.<br />
+      *  Korrigiert bei einem durch $Wert ï¿½bergebenem Datum oder Uhrzeit<br />
+      *  fehlende fï¿½hrende Nullen.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 08.09.2004<br />
-      *  Version 0.2, 27.03.2007 (Code aufgeräumt)<br />
+      *  Version 0.2, 27.03.2007 (Code aufgerï¿½umt)<br />
       */
       static function addLeadingZero($Value){
 
@@ -136,10 +136,10 @@
       *  @public
       *  @static
       *
-      *  Gibt den zu einer Zahl korrespondierenden Monats-Text (Januar, Februar, ...) zurück.<br />
+      *  Gibt den zu einer Zahl korrespondierenden Monats-Text (Januar, Februar, ...) zurï¿½ck.<br />
       *  Ist kein passender Monat zu einer Zahl zu finden, wird 'n/a' ausgegeben.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 05.06.2006<br />
       */
@@ -174,7 +174,7 @@
                $Monat = 'April';
                break;
             case 3:
-               $Monat = 'März';
+               $Monat = 'Mï¿½rz';
                break;
             case 2:
                $Monat = 'Februar';
@@ -199,9 +199,9 @@
       *  @static
       *
       *  Funktion convertDate2Normal wandelt ein SQL-Datumsformat in das im Kalender<br />
-      *  gebräuchliche Format 00.00.0000 um.<br />
+      *  gebrï¿½uchliche Format 00.00.0000 um.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 26.02.2003<br />
       *  Version 0.2, 23.03.2004<br />
@@ -222,9 +222,9 @@
       *  @static
       *
       *  Zerlegt ein Datum in seine Bestandteile und gibt ein assoziatives<br />
-      *  Array mit den Offsets 'Jahr', 'Monat' und 'Tag' zurück.<br />
+      *  Array mit den Offsets 'Jahr', 'Monat' und 'Tag' zurï¿½ck.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, ??.??.????<br />
       */
@@ -266,9 +266,9 @@
       *  @static
       *
       *  Zerlegt eine Uhrzeit in seine Bestandteile und gibt ein assoziatives<br />
-      *  Array mit den Offsets 'Stunde', 'Minute' und 'Sekunde' zurück.<br />
+      *  Array mit den Offsets 'Stunde', 'Minute' und 'Sekunde' zurï¿½ck.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 09.09.2004<br />
       *  Version 0.2, 29.11.2004<br />
@@ -298,17 +298,17 @@
       *  @static
       *
       *  Gibt eine in der Zukunft oder der Vergangenheit liegende Uhrzeit<br />
-      *  zurück, die durch die aktuelle und die Differenz (Array mit den<br />
+      *  zurï¿½ck, die durch die aktuelle und die Differenz (Array mit den<br />
       *  Offsets 'Stunden', 'Minuten' und 'Sekunden') errechnet.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 12.04.2005<br />
       *  Version 0.1, 05.05.2005<br />
       */
       static function calculateTimeDifference($Uhrzeit,$Differenz = array()){
 
-         // Differenz aufschlüsseln
+         // Differenz aufschlï¿½sseln
          if(!isset($Differenz['Stunden'])){
             $DifferenzStunden = (int)0;
           // end if
@@ -342,7 +342,7 @@
          $Sekunden = (int)$ZerlegteUhrzeit['Sekunde'];
 
 
-         // Handling für Sekunden
+         // Handling fï¿½r Sekunden
          $Sekunden = $Sekunden + $DifferenzSekunden;
          while($Sekunden < 0){
             $Minuten = $Minuten - 1;
@@ -357,7 +357,7 @@
          }
 
 
-         // Handling für Minuten
+         // Handling fï¿½r Minuten
          $Minuten = $Minuten + $DifferenzMinuten;
          while($Minuten < 0){
             $Stunden = $Stunden - 1;
@@ -371,7 +371,7 @@
          }
 
 
-         // Handling für Stunden
+         // Handling fï¿½r Stunden
          $Stunden = $Stunden + $DifferenzStunden;
          while($Stunden > 23){
            $Stunden = $Stunden - 24;
@@ -399,10 +399,10 @@
       *  @static
       *
       *  Gibt ein in der Zukunft oder der Vergangenheit liegendes Datum<br />
-      *  zurück, das durch die aktuelle und die Differenz (Array mit den<br />
+      *  zurï¿½ck, das durch die aktuelle und die Differenz (Array mit den<br />
       *  Offsets 'Jahr', 'Monat' und 'Tag') errechnet.<br />
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 10.03.2006<br />
       *  Version 0.2, 11.03.2006<br />
@@ -412,7 +412,7 @@
           // Anzahl der Tage im Monat
           $TageImMonat[1] = 31;
 
-          // Schaltjahr berücksichtigen
+          // Schaltjahr berï¿½cksichtigen
           if((date('Y') % 4) == 0){
              $TageImMonat[2] = 29;
            // end if
@@ -434,7 +434,7 @@
           $TageImMonat[12] = 31;
 
 
-         // Differenz aufschlüsseln
+         // Differenz aufschlï¿½sseln
          $DifferenzJahr = (int) $Differenz['Jahr'];
          $DifferenzMonat = (int) $Differenz['Monat'];
          $DifferenzTag = (int) $Differenz['Tag'];
@@ -482,18 +482,18 @@
          }
 
 
-         // Korrektur für fehlende führende Null
+         // Korrektur fï¿½r fehlende fï¿½hrende Null
          $Tag = dateTimeManager::addLeadingZero($Tag);
          $Monat = dateTimeManager::addLeadingZero($Monat);
 
 
-         // Normales Datum im Format 00.00.0000 zurückgeben
+         // Normales Datum im Format 00.00.0000 zurï¿½ckgeben
          if(preg_match('/[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,4}/i',$Datum)){
             return $Tag.'-'.$Monat.'-'.$Jahr;
           // end if
          }
 
-         // SQL Datum im Format 0000-00-00 zurückgeben
+         // SQL Datum im Format 0000-00-00 zurï¿½ckgeben
          if(preg_match('/[0-9]{1,4}\-[0-9]{1,2}\-[0-9]{1,2}/i',$Datum)){
             return $Jahr.'-'.$Monat.'-'.$Tag;
           // end if
@@ -508,13 +508,13 @@
       *  @public
       *  @static
       *
-      *  Gibt Informationan über einen durch $Month und $Year spezifizierten Monat zurück.<br />
+      *  Gibt Informationan ï¿½ber einen durch $Month und $Year spezifizierten Monat zurï¿½ck.<br />
       *
       *  @param int $Month; Monat (1-12)
       *  @param int $Year; Jahr
-      *  @return array $MonthInfo; Informationen über ein Monat
+      *  @return array $MonthInfo; Informationen ï¿½ber ein Monat
       *
-      *  @author Christian Schäfer
+      *  @author Christian Schï¿½fer
       *  @version
       *  Version 0.1, 18.03.2007<br />
       */
@@ -547,7 +547,7 @@
          $Last_of_Month = mktime(0,0,0,$Month,$Days_in_Month,$Year);
 
 
-         // Rückgabe-Array vorbereiten
+         // Rï¿½ckgabe-Array vorbereiten
          $MonthInfo = array();
          $MonthInfo['First__Monthday_Number'] = 1;
          $MonthInfo['First__Weekday_Number'] = date('w', $First_of_Month);
@@ -564,7 +564,7 @@
          $MonthInfo['Year'] = $Year;
 
 
-         // Informationen zurückgeben
+         // Informationen zurï¿½ckgeben
          return $MonthInfo;
 
        // end function

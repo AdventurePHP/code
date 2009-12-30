@@ -20,7 +20,7 @@
     */
 
    /**
-    * @namespace tools::form::filter
+    * @package tools::form::filter
     * @class form_taglib_addfilter
     *
     * Implements the taglib, that lets you add a form element filter to

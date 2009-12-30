@@ -20,7 +20,7 @@
     */
     
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_element_observer
     * 
     * Implements a base class for the <em>form:addfilter</em> and

@@ -22,12 +22,12 @@
    import('tools::form::taglib','select_taglib_option');
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_taglib_select
     *
     * Represents an APF select field.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 07.01.2007<br />
     * Version 0.2, 12.01.2007 (Renamed to "form_taglib_select")<br />
@@ -39,7 +39,7 @@
        *
        * Initializes the child taglibs.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 07.01.2007<br />
        * Version 0.2, 03.03.2007 (Removed "&" before "new")<br />
@@ -54,7 +54,7 @@
        *
        * Parses the options and initializes the select field.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 07.01.2007<br />
        */
@@ -71,10 +71,10 @@
        *
        * @param string $displayNameOrValue The option's name or value to set to selected.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 07.01.2007<br />
-       * Version 0.2, 18.11.2007 (Fehlermeldung korrigiert und Möglichkeit eingeräumt per Value oder DisplayName selected zu setzen)<br />
+       * Version 0.2, 18.11.2007 (Fehlermeldung korrigiert und Mï¿½glichkeit eingerï¿½umt per Value oder DisplayName selected zu setzen)<br />
        */
       function setOption2Selected($displayNameOrValue){
 
@@ -111,14 +111,14 @@
        * @param string $value The option's value.
        * @param boolean $preSelected True in case, the option should be selected, false otherwise.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 07.01.2007<br />
        * Version 0.2, 07.06.2008 (objectId is not set to the added option)<br />
        */
       function addOption($displayName,$value,$preSelected = false){
 
-         $objectId = xmlParser::generateUniqID();
+         $objectId = XmlParser::generateUniqID();
          $this->__Children[$objectId] = new select_taglib_option();
 
          $this->__Children[$objectId]->set('ObjectID',$objectId);
@@ -150,7 +150,7 @@
        *
        * @return string The HTML code of the select field.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 07.01.2007<br />
        * Version 0.2, 12.01.2007 (Removed typos)<br />

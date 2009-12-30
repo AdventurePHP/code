@@ -20,12 +20,12 @@
    */
 
    /**
-   *  @namespace tools::form::taglib
+   *  @package tools::form::taglib
    *  @class select_taglib_option
    *
    *  Represents a select option of an APF select field.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 07.01.2007<br />
    *  Version 0.2, 12.01.2007 (Renamed to "select_taglib_option")<br />
@@ -54,7 +54,7 @@
        *
        * @return string The HTML source code.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 07.01.2007<br />
        */

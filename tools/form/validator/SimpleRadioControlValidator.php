@@ -22,7 +22,7 @@
    import('tools::form::validator','TextFieldValidator');
 
    /**
-    * @namespace tools::form::validator
+    * @package tools::form::validator
     * @class SimpleSelectControlValidator
     * 
     * Implements a validator for radio buttons.

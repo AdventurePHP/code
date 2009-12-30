@@ -23,7 +23,7 @@
    import('tools::form::taglib','form_taglib_select');
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_taglib_multiselect
     *
     * Represents the APF multiselect field.
@@ -41,7 +41,7 @@
        *
        * Initializes the known child taglibs, sets the validator style and addes the multiple attribute.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 07.01.2007<br />
        * Version 0.2, 03.03.2007 (Removed the "&" before the "new" operator)<br />

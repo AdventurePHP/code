@@ -22,7 +22,7 @@
    import('tools::html::taglib','ui_getstring');
 
    /**
-   *  @namespace tools::html::taglib
+   *  @package tools::html::taglib
    *  @class iterator_taglib_getstring
    *
    *  Implements the taglib class for the <pre><iterator:getstring /></pre> tag.

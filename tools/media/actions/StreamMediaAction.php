@@ -23,7 +23,7 @@
    import('tools::http','HeaderManager');
 
    /**
-   *  @namespace tools::media::actions
+   *  @package tools::media::actions
    *  @class StreamMediaAction
    *
    *  Implementation of the streamMesia action, that streams various media files (css, image, ...)

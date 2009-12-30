@@ -20,7 +20,7 @@
     */
     
    /**
-    * @namespace tools::form::filter
+    * @package tools::form::filter
     * @class AbstractFormValidator
     * 
     * This class defines the scheme of form validators. Implements some basic

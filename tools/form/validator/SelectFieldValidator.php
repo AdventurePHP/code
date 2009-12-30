@@ -22,7 +22,7 @@
    import('tools::form::validator','AbstractFormValidator');
 
    /**
-    * @namespace tools::form::validator
+    * @package tools::form::validator
     * @class SelectFieldValidator
     *
     * Implements a base class for all select field validators.

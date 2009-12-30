@@ -23,7 +23,7 @@
    import('tools::cache','CacheCoreObject');
    
    /**
-    * @namespace tools::cache
+    * @package tools::cache
     * @class CacheManager
     *
     * Implements the cache manager component. Due to the generic implementation, all forms of

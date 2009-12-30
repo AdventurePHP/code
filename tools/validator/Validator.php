@@ -20,12 +20,12 @@
     */
 
    /**
-    * @namespace tools::validator
+    * @package tools::validator
     * @class Validator
     *
     * Provides (static) methods for data validation purposes.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 00.00.2006<br />
     * Version 0.2, 12.07.2007<br />
@@ -46,7 +46,7 @@
        * @param string $input Data to check against the validation rule.
        * @return boolean true|false
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 12.01.2007<br />
        * Version 0.2, 16.06.2007 (Strings with character count < 3 signs are considered not valid)<br />
@@ -70,7 +70,7 @@
        * @param string $input Data to check against the validation rule.
        * @return boolean true|false
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 12.01.2007<br />
        */
@@ -93,7 +93,7 @@
        *  @param string $input Data to check against the validation rule.
        *  @return boolean true|false
        *
-       *  @author Christian Schäfer
+       *  @author Christian Schï¿½fer
        *  @version
        *  Version 0.1, 12.01.2007<br />
        */
@@ -116,7 +116,7 @@
        * @param string $input Data to check against the validation rule.
        * @return boolean true|false
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 12.01.2007<br />
        */
@@ -158,7 +158,7 @@
        * @param string $input Data to check against the validation rule.
        * @return boolean true|false
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 12.01.2007<br />
        */

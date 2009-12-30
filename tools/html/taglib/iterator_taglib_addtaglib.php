@@ -20,7 +20,7 @@
    */
 
    /**
-    * @namespace tools::html::taglib
+    * @package tools::html::taglib
     * @class iterator_taglib_addtaglib
     *
     * Implements an addtaglib facility for the iterator tag to include

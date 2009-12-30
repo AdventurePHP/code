@@ -20,12 +20,12 @@
     */
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_taglib_hidden
     *
     * Represents a HTML hidden field within the APF form tags.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 05.01.2007<br />
     */
@@ -41,7 +41,7 @@
        *
        * @return string The HTML code of the hidden field.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 05.01.2007<br />
        */

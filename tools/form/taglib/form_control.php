@@ -20,13 +20,13 @@
     */
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_control
     * @abstract
     *
     * Implements a base class for all APF form elements.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 05.01.2007<br />
     * Version 0.2, 02.06.2007 (Added the $__ExclusionArray, moved the __getAttributesAsString() to the coreObject class)<br />
@@ -219,7 +219,7 @@
        * @param string $name the name of the attribute
        * @param string $value the value to add to the attribute's value
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 09.01.2007<br />
        */

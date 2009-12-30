@@ -79,7 +79,7 @@
        *
        * Initializes the known taglibs.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 05.01.2007<br />
        * Version 0.2, 13.01.2007<br />
@@ -137,7 +137,7 @@
        *
        * Parses the known taglibs.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 05.01.2007<br />
        */
@@ -201,21 +201,21 @@
       }
 
       /**
-      *  @public
-      *
-      *  Adds a new form element at the end of the form. This method is intended to dynamically generate forms.
-      *
-      *  @param string $elementType Type of the element (e.g. "form:text")
-      *  @param string[] $elementAttributes Associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
-      *  @return string Id of the new form object or null (e.g. for addressing the new element)
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 05.01.2007<br />
-      *  Version 0.2, 05.09.2008 (The new form element now gets the current context and language)<br />
-      *  Version 0.3, 06.09.2008 (API change: now the tag name (e.g. "form:text") is expected as an argument)<br />
-      *  Version 0.4, 10.09.2008 (Added the $ElementAttributes param)<br />
-      */
+       * @public
+       *
+       * Adds a new form element at the end of the form. This method is intended to dynamically generate forms.
+       *
+       * @param string $elementType Type of the element (e.g. "form:text")
+       * @param string[] $elementAttributes Associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
+       * @return string Id of the new form object or null (e.g. for addressing the new element)
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.01.2007<br />
+       * Version 0.2, 05.09.2008 (The new form element now gets the current context and language)<br />
+       * Version 0.3, 06.09.2008 (API change: now the tag name (e.g. "form:text") is expected as an argument)<br />
+       * Version 0.4, 10.09.2008 (Added the $ElementAttributes param)<br />
+       */
       public function addFormElement($elementType,$elementAttributes = array()){
 
          // create form element
@@ -246,33 +246,33 @@
       }
 
       /**
-      *  @public
-      *
-      *  Adds content at the end of the form. This method is intended to dynamically generate forms.
-      *
-      *  @param string $content The desired content
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 05.01.2007<br />
-      */
+       * @public
+       *
+       * Adds content at the end of the form. This method is intended to dynamically generate forms.
+       *
+       * @param string $content The desired content
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.01.2007<br />
+       */
       public function addFormContent($content){
          $this->__Content .= $content;
        // end function
       }
 
       /**
-      *  @public
-      *
-      *  Adds content in front of a form marker. This method is intended to dynamically generate forms.
-      *
-      *  @param string $markerName the desired marker name
-      *  @param string $content the content to add
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 03.09.2008<br />
-      */
+       * @public
+       *
+       * Adds content in front of a form marker. This method is intended to dynamically generate forms.
+       *
+       * @param string $markerName the desired marker name
+       * @param string $content the content to add
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 03.09.2008<br />
+       */
       public function addFormContentBeforeMarker($markerName,$content){
 
          // get desired marker
@@ -305,17 +305,17 @@
       }
 
       /**
-      *  @public
-      *
-      *  Adds content behind a form marker. This method is intended to dynamically generate forms.
-      *
-      *  @param string $markerName the desired marker name
-      *  @param string $content the content to add
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 05.09.2008<br />
-      */
+       * @public
+       *
+       * Adds content behind a form marker. This method is intended to dynamically generate forms.
+       *
+       * @param string $markerName the desired marker name
+       * @param string $content the content to add
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.09.2008<br />
+       */
       public function addFormContentAfterMarker($markerName,$content){
 
          // get desired marker
@@ -348,20 +348,20 @@
       }
 
       /**
-      *  @public
-      *
-      *  Adds a new form element in front of a form marker. This method is intended to dynamically generate forms.
-      *
-      *  @param string $markerName the desired marker name
-      *  @param string $elementType type of the element (e.g. "form:text")
-      *  @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
-      *  @return string $ObjectID id of the new form object or null (e.g. for addressing the new element)
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 05.09.2008<br />
-      *  Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
-      */
+       * @public
+       *
+       * Adds a new form element in front of a form marker. This method is intended to dynamically generate forms.
+       *
+       * @param string $markerName the desired marker name
+       * @param string $elementType type of the element (e.g. "form:text")
+       * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
+       * @return string Id of the new form object or null (e.g. for addressing the new element)
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.09.2008<br />
+       * Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
+       */
       public function addFormElementBeforeMarker($markerName,$elementType,$elementAttributes = array()){
 
          // create new form element
@@ -396,20 +396,20 @@
       }
 
       /**
-      *  @public
-      *
-      *  Adds a new form element after a form marker. This method is intended to dynamically generate forms.
-      *
-      *  @param string $markerName the desired marker name
-      *  @param string $elementType type of the element (e.g. "form:text")
-      *  @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
-      *  @return string $ObjectID id of the new form object or null (e.g. for addressing the new element)
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 05.09.2008<br />
-      *  Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
-      */
+       * @public
+       *
+       * Adds a new form element after a form marker. This method is intended to dynamically generate forms.
+       *
+       * @param string $markerName the desired marker name
+       * @param string $elementType type of the element (e.g. "form:text")
+       * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
+       * @return string Id of the new form object or null (e.g. for addressing the new element)
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.09.2008<br />
+       * Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
+       */
       public function addFormElementAfterMarker($markerName,$elementType,$elementAttributes = array()){
 
          // create new form element
@@ -446,20 +446,20 @@
       }
 
       /**
-      *  @protected
-      *
-      *  Adds a new form element to the child list.
-      *
-      *  @param string $elementType type of the element (e.g. "form:text")
-      *  @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
-      *  @return string $ObjectID id of the new form object (e.g. for addressing the new element)
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 06.09.2008<br />
-      *  Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
-      *  Version 0.3, 12.11.2008 (Bugfix: language and context initialisation were wrong)<br />
-      */
+       * @protected
+       *
+       * Adds a new form element to the child list.
+       *
+       * @param string $elementType type of the element (e.g. "form:text")
+       * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
+       * @return string Id of the new form object (e.g. for addressing the new element)
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 06.09.2008<br />
+       * Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
+       * Version 0.3, 12.11.2008 (Bugfix: language and context initialisation were wrong)<br />
+       */
       protected function __createFormElement($elementType,$elementAttributes = array()){
 
          // define taglib class
@@ -469,7 +469,7 @@
          if(class_exists($tagLibClass)){
 
             // generate object id
-            $objectId = xmlParser::generateUniqID();
+            $objectId = XmlParser::generateUniqID();
 
             // create new form element
             $formObject = new $tagLibClass();
@@ -514,17 +514,17 @@
       }
 
       /**
-      *  @protected
-      *
-      *  Returns a reference on the desired marker or null.
-      *
-      *  @param string $markerName the desired marker name
-      *  @return form_taglib_marker $Marker the marker or null
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 03.09.2008<br />
-      */
+       * @protected
+       *
+       * Returns a reference on the desired marker or null.
+       *
+       * @param string $markerName the desired marker name
+       * @return form_taglib_marker $Marker the marker or null
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 03.09.2008<br />
+       */
       protected function &__getMarker($markerName){
 
          // check, weather the form has children
@@ -567,74 +567,16 @@
       }
 
       /**
-      *  @public
-      *
-      *  Convenience method to fill a place holder within the form.  
-      *
-      *  @param string $name The name of the place holder.
-      *  @param string $value The value to fill the place holder with.
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 12.01.2007<br />
-      */
-      public function setPlaceHolder($name,$value){
-
-         $tagLibClass = 'form_taglib_placeholder';
-
-         if(!class_exists($tagLibClass)){
-            trigger_error('[html_taglib_form::setPlaceHolder()] TagLib module '
-               .$tagLibClass.' is not loaded!',E_USER_ERROR);
-          // end if
-         }
-
-         $placeHolderCount = 0;
-         if(count($this->__Children) > 0){
-            foreach($this->__Children as $ObjectID => $Child){
-               if(get_class($Child) == $tagLibClass){
-                  if($Child->getAttribute('name') == $name){
-                     $this->__Children[$ObjectID]->set('Content',$value);
-                     $placeHolderCount++;
-                   // end if
-                  }
-                // end if
-               }
-             // end foreach
-            }
-          // end if
-         }
-         else{
-            trigger_error('[html_taglib_form::setPlaceHolder()] No placeholder object with name "'
-               .$name.'" composed in current for document controller "'
-               .($this->__ParentObject->__DocumentController).'"! Perhaps tag library '
-               .'form:placeholder is not loaded in form "'.$this->__Attributes['name'].'"!',
-               E_USER_ERROR);
-            exit();
-          // end else
-         }
-
-         if($placeHolderCount < 1){
-            trigger_error('[html_taglib_form::setPlaceHolder()] There are no placeholders found '
-               .'for name "'.$name.'" in template "'.($this->__Attributes['name'])
-               .'" in document controller "'.($this->__ParentObject->__DocumentController).'"!',
-               E_USER_WARNING);
-          // end if
-         }
-
-       // end function
-      }
-
-      /**
-      *  @public
-      *
-      *  Sets the action url of the form.
-      *
-      *  @param string $action The action URL of the form.
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 07.01.2007<br />
-      */
+       * @public
+       *
+       * Sets the action url of the form.
+       *
+       * @param string $action The action URL of the form.
+       *
+       * @author Christian Schï¿½fer
+       * @version
+       * Version 0.1, 07.01.2007<br />
+       */
       public function setAction($action){
          $this->__Attributes['action'] = $action;
        // end function
@@ -646,9 +588,9 @@
        * Returns a reverence on the form element identified by the given name.
        *
        * @param string $name The name of the desired form element.
-       * @return ui_element A reference on the form element.
+       * @return form_control A reference on the form element.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 07.01.2007<br />
        * Version 0.2, 12.09.2009 (Corrected debug message)<br />
@@ -682,17 +624,17 @@
       }
 
       /**
-      *  @public
-      *
-      *  Returns a reverence on the form element identified by the given id.
-      *
-      *  @param string $ID The ID of the desired form element.
-      *  @return ui_element A reference on the form element.
-      *
-      *  @author Christian SchÃ¤fer
-      *  @version
-      *  Version 0.1, 21.01.2007<br />
-      */
+       * @public
+       *
+       * Returns a reverence on the form element identified by the given id.
+       *
+       * @param string $ID The ID of the desired form element.
+       * @return form_control A reference on the form element.
+       *
+       * @author Christian SchÃ¤fer
+       * @version
+       * Version 0.1, 21.01.2007<br />
+       */
       public function &getFormElementByID($id){
 
          if(count($this->__Children) > 0){
@@ -726,19 +668,19 @@
       }
 
       /**
-      *  @public
-      *
-      *  Returns a reference on a form element addressed by it's internal object id.
-      *
-      *  @param string $objectID The object id of of the desired form element.
-      *  @return ui_element A reference on the form element.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 07.01.2007<br />
-      *  Version 0.2, 12.01.2007 (Corrected error message)<br />
-      *  Version 0.3, 06.09.2008 (Corrected error message again)<br />
-      */
+       * @public
+       *
+       * Returns a reference on a form element addressed by it's internal object id.
+       *
+       * @param string $objectID The object id of of the desired form element.
+       * @return form_control A reference on the form element.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 07.01.2007<br />
+       * Version 0.2, 12.01.2007 (Corrected error message)<br />
+       * Version 0.3, 06.09.2008 (Corrected error message again)<br />
+       */
       public function &getFormElementByObjectID($objectID){
 
          if(isset($this->__Children[$objectID])){
@@ -848,31 +790,31 @@
       }
 
       /**
-      *  @public
-      *
-      *  Defines, whether the form should be transformed at the definition place.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 01.06.2008<br />
-      */
+       * @public
+       *
+       * Defines, whether the form should be transformed at the definition place.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 01.06.2008<br />
+       */
       public function transformOnPlace(){
          $this->__TransformOnPlace = true;
        // end function
       }
 
       /**
-      *  @public
-      *
-      *  Re-implements the {@link transform} method for the form taglib.
-      *
-      *  @return string The content of the form (in case of transformOnPlace) or an empty string.
-      *
-      *  @author Christian Schï¿½fer
-      *  @version
-      *  Version 0.1, 12.01.2007<br />
-      *  Version 0.2, 01.06.2008 (Added the transformOnPlace() feature)<br />
-      */
+       * @public
+       *
+       * Re-implements the {@link transform} method for the form taglib.
+       *
+       * @return string The content of the form (in case of transformOnPlace) or an empty string.
+       *
+       * @author Christian Schï¿½fer
+       * @version
+       * Version 0.1, 12.01.2007<br />
+       * Version 0.2, 01.06.2008 (Added the transformOnPlace() feature)<br />
+       */
       public function transform(){
 
          // to transformation on place if desired

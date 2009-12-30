@@ -23,7 +23,7 @@
 
 
    /**
-   *  @namespace tools::mail
+   *  @package tools::mail
    *  @class mailSender
    *
    *  Provides a mail() wrapper.

@@ -20,12 +20,12 @@
     */
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_taglib_file
     *
     * Represents the APF form file field.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 13.01.2007<br />
     */
@@ -40,7 +40,7 @@
        * Executes the presetting and validation. Adds the "enctype" to the form,
        * so that the developer must not care about that!
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 13.01.2007<br />
        * Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
@@ -58,7 +58,7 @@
        *
        * @return string The HTML code of the file field.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 13.01.2007<br />
        * Version 0.2, 11.02.2007 (Moved presetting and Validierung to onAfterAppend())<br />

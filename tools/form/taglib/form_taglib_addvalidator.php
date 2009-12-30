@@ -20,7 +20,7 @@
     */
 
    /**
-    * @namespace tools::form::filter
+    * @package tools::form::filter
     * @class form_taglib_addvalidator
     *
     * Implements the taglib, that lets you add a form element validator to

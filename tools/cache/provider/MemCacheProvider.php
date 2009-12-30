@@ -20,7 +20,7 @@
    */
 
    /**
-   *  @namespace tools::cache::provider
+   *  @package tools::cache::provider
    *  @class MemCacheProvider
    *
    *  Implements the cache reader for serialized php objects stored in the memcached server.

@@ -20,7 +20,7 @@
     */
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_taglib_date
     *
     * Represents a APF form date control. Please remember the following things when using the control:
@@ -31,7 +31,7 @@
     *   <li>The range of the year can be defined as "1998 - 2009".</li>
     * </ul>
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 10.01.2007<br />
     * Version 0.2, 12.01.2007 (Renamed to "form_taglib_date")<br />
@@ -55,7 +55,7 @@
        *
        * Initializes the member variables.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 10.01.2007<br />
        */
@@ -76,7 +76,7 @@
        *
        * Creates the children select fields for the date control.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 10.01.2007<br />
        * Version 0.2, 26.08.2007 (The "class" And "style" attributes are now optional)<br />
@@ -185,7 +185,7 @@
        *
        * @return string The HTML code of the date control.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 10.01.2007<br />
        */

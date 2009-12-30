@@ -22,7 +22,7 @@
    import('tools::form::validator','TextFieldValidator');
 
    /**
-    * @namespace tools::form::validator
+    * @package tools::form::validator
     * @class NumberValidator
     *
     * Validates a given form control to contain a number.

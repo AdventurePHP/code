@@ -22,7 +22,7 @@
    import('tools::form::filter','AbstractFormFilter');
    
    /**
-    * @namespace tools::form::filter
+    * @package tools::form::filter
     * @class OnlyIntegersFilter
     *
     * Implements a filter, that only accepts integer values.

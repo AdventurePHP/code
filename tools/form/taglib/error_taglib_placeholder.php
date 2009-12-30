@@ -20,7 +20,7 @@
     */
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class error_taglib_placeholder
     *
     * Represents a place holder within the &lt;form:error /&gt; tag.

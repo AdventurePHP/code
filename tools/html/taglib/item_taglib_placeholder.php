@@ -20,7 +20,7 @@
    */
 
    /**
-   *  @namespace tools::html::taglib
+   *  @package tools::html::taglib
    *  @class item_taglib_placeholder
    *
    *  Implementiert einen Item-Platzhalter-Tag.<br />

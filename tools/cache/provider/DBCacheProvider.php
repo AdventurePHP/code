@@ -24,7 +24,7 @@
 
    /**
    *  @class DBCacheProvider
-   *  @namespace tools::cache::provider
+   *  @package tools::cache::provider
    *
    *  Implements the cache reader for normal content to the database.
    *

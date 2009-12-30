@@ -22,7 +22,7 @@
    /**
    *  @static
    *  @class FilesystemManager
-   *  @namespace tools::filesystem
+   *  @package tools::filesystem
    *
    *  Implements a helper tool for filesystem access, dir and file handling.
    *

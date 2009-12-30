@@ -20,7 +20,7 @@
    */
 
    /**
-   *  @namespace tools::form::taglib
+   *  @package tools::form::taglib
    *  @class form_taglib_addtaglib
    *
    *  Implements the &lt;form:addtaglib /&gt; tag.

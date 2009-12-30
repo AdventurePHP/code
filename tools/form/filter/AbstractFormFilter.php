@@ -20,7 +20,7 @@
     */
 
    /**
-    * @namespace tools::form::filter
+    * @package tools::form::filter
     * @class AbstractFormFilter
     * 
     * Defines the base class for all form filters. In case you want to implement your

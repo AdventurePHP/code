@@ -20,19 +20,19 @@
    */
 
    /**
-   *  @namespace tools::html::taglib
+   *  @package tools::html::taglib
    *  @class fcon_taglib_importdesign
    *
    *  Implementiert ein core::importdesign-Tag, das den aktuellen View aus dem Model der <br />
-   *  Anwendung ausliest. Der Tag kann per Attributen für jede Anwendung generisch konfiguriert <br />
+   *  Anwendung ausliest. Der Tag kann per Attributen fï¿½r jede Anwendung generisch konfiguriert <br />
    *  werden. Erwartet die Attribute
    *  <ul>
-   *    <li>templatenamespace: Namespace des Templates (Wert: gültiger Namespace)</li>
-   *    <li>modelnamespace: Namespace des Applikationsmodels (Wert: gültiger Namespace)</li>
+   *    <li>templatenamespace: Namespace des Templates (Wert: gï¿½ltiger Namespace)</li>
+   *    <li>modelnamespace: Namespace des Applikationsmodels (Wert: gï¿½ltiger Namespace)</li>
    *    <li>modelfile: Name der Datei des Models (Wert: Dateiname)</li>
    *    <li>modelclass: Name der Model-Klasse (Wert: Klassenname)</li>
    *    <li>modelparam: Name des Attributs des Models, das als Templatename verwendet werden soll</li>
-   *    <li>context: Setzt den Context des Knotens (Wert: Gültiger Context)</li>
+   *    <li>context: Setzt den Context des Knotens (Wert: Gï¿½ltiger Context)</li>
    *    <li>sessionsingleton: defines, if the model is retrieved sessionsingleton or just singleton (values: true|false)</li>
    *  </ul>
    *  Alle Parameter ausser "context" sind Pflichtparameter.<br />
@@ -132,7 +132,7 @@
           // end else
          }
 
-         // Prüfen, ob Model-Klasse bereits eingebunden wurde und ggf. nachholen
+         // Prï¿½fen, ob Model-Klasse bereits eingebunden wurde und ggf. nachholen
          if(!class_exists($ModelClass)){
             import($ModelNamespace,$ModelFile);
           // end if

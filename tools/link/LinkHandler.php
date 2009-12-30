@@ -20,7 +20,7 @@
     */
 
    /**
-    * @namespace tools::link
+    * @package tools::link
     * @class LinkHandler
     * @static
     *

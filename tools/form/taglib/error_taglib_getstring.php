@@ -22,7 +22,7 @@
    import('tools::form::taglib','form_getstring');
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class error_taglib_getstring
     *
     * Implements the &lt;error:getstring /&gt; tag.

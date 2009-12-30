@@ -24,7 +24,7 @@
    import('tools::html::taglib','iterator_taglib_getstring');
 
    /**
-    * @namespace tools::html::taglib
+    * @package tools::html::taglib
     * @class html_taglib_iterator
     *
     * Implements a taglib, that can display a list of objects (arrays with numeric offsets)

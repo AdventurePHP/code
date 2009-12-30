@@ -22,7 +22,7 @@
    import('tools::html::taglib','ui_getstring');
    
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_getstring
     *
     * Extends the ui_getstring class with the methods, that need to be implemented

@@ -22,11 +22,11 @@
    import('tools::form::filter','AbstractFormFilter');
 
    /**
-    * @namespace tools::form::filter
+    * @package tools::form::filter
     * @class SpecialCharacterFilter
     *
     * Implements a filter, that removes all characters except
-    * "0-9A-Za-z-_\.& !,:\?\+\(\)\/%$§"\'".
+    * "0-9A-Za-z-_\.& !,:\?\+\(\)\/%$ï¿½"\'".
     *
     * @author Christian Achatz
     * @version
@@ -35,7 +35,7 @@
    class SpecialCharacterFilter extends AbstractFormFilter {
 
       public function filter($input){
-         return preg_replace('/[^0-9A-Za-z-_\.& !,:\?\+\(\)\/%$§"\']/i','',$input);
+         return preg_replace('/[^0-9A-Za-z-_\.& !,:\?\+\(\)\/%$ï¿½"\']/i','',$input);
        // end function
       }
 

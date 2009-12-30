@@ -22,7 +22,7 @@
    import('tools::form::validator','SelectFieldValidator');
 
    /**
-    * @namespace tools::form::validator
+    * @package tools::form::validator
     * @class DefaultSelectFieldValidator
     *
     * Implements a simple validator for select fields. Expects the value of the select

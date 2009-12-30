@@ -20,12 +20,12 @@
    */
 
    /**
-   *  @namespace tools::image
+   *  @package tools::image
    *  @class ImageManager
    *
    *  Provides methods to manipulate images.
    *
-   *  @author Christian Schäfer
+   *  @author Christian Schï¿½fer
    *  @version
    *  Version 0.1, 08.09.2003<br />
    *  Version 0.2, 17.09.2004<br />

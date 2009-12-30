@@ -23,7 +23,7 @@
 
    /**
     * @abstract
-    * @namespace tools::cache
+    * @package tools::cache
     * @class AbstractCacheProvider
     *
     * Interface for concrete provider implementations. To access the configuration, the provider

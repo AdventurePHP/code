@@ -22,7 +22,7 @@
    import('tools::form::taglib','form_taglib_button');
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_taglib_imagebutton
     *
     * Represents an image button.

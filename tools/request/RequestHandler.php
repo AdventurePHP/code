@@ -20,7 +20,7 @@
    */
 
    /**
-    * @namespace tools::request
+    * @package tools::request
     * @class RequestHandler
     *
     * This component let's you easily retrieve values from the request.

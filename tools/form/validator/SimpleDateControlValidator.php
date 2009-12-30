@@ -22,7 +22,7 @@
    import('tools::form::validator','AbstractFormValidator');
 
    /**
-    * @namespace tools::form::validator
+    * @package tools::form::validator
     * @class SimpleDateControlValidator
     * 
     * Implements a simple date control validator. It expects the selected date to

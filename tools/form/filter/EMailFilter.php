@@ -22,7 +22,7 @@
    import('tools::form::filter','AbstractFormFilter');
    
    /**
-    * @namespace tools::form::filter
+    * @package tools::form::filter
     * @class EMailFilter
     *
     * Implements a filter, that removes all characters, that are not

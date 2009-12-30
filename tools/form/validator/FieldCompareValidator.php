@@ -22,7 +22,7 @@
    import('tools::form::validator','TextFieldValidator');
 
    /**
-    * @namespace tools::form::validator
+    * @package tools::form::validator
     * @class FieldCompareValidator
     *
     * Implements a validator, that compares the content of two text fields. In

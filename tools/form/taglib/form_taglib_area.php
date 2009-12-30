@@ -20,12 +20,12 @@
     */
 
    /**
-    * @namespace tools::form::taglib
+    * @package tools::form::taglib
     * @class form_taglib_area
     *
     * Represents a APF text area.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 13.01.2007<br />
     */
@@ -41,7 +41,7 @@
        *
        * @return string HTML code of the text area.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 05.01.2007<br />
        * Version 0.2, 11.02.2007 (Presetting und Validierung nach onAfterAppend() verschoben)<br />
@@ -56,7 +56,7 @@
        *
        * Implements the presetting method for the text area.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 13.01.2007<br />
        */

@@ -22,7 +22,7 @@
    import('core::frontcontroller','Frontcontroller');
 
    /**
-    * @namespace tools::link
+    * @package tools::link
     * @class FrontcontrollerLinkHandler
     *
     * Implements a LinkHandler for front controller purposes.
@@ -63,7 +63,7 @@
       public static function generateURLParams($actionNamespace,$actionName,$actionParams = array(),$urlRewriting = null){
 
          $t = &Singleton::getInstance('BenchmarkTimer');
-         $id = 'FrontcontrollerLinkHandler::generateURLParamsByAction('.xmlParser::generateUniqID().')';
+         $id = 'FrontcontrollerLinkHandler::generateURLParamsByAction('.XmlParser::generateUniqID().')';
          $t->start($id);
 
          // gather the delimiters used to define an action's url representation
