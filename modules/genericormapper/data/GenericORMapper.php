@@ -233,6 +233,7 @@
        * Version 0.1, 11.05.2008<br />
        * Version 0.2, 26.10.2008 (Added a check, if the desired object name exists in the mapping table.)<br />
        * Version 0.3, 27.12.2008 (Update is now done, if params are located in the params array)<br />
+       * Version 0.4, 02.01.2010 (Added ticks for property names to avoid key word issues)<br />
        */
       public function saveObject(&$object){
 
@@ -265,8 +266,9 @@
             foreach($object->getProperties() as $propertyName => $propertyValue){
 
                if(!in_array($propertyName,$attrExceptions)){
-                  
-                  $names[] = $propertyName;
+
+                  // Surround property names with ticks to avoid issues with reserved names!
+                  $names[] = '`'.$propertyName.'`';
 
                   // Check, whether the desired property is a BIT field. If yes, prepend with
                   // the binary marker! Details can be read about under
