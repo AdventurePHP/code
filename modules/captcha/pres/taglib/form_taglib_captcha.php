@@ -114,15 +114,16 @@
       }
 
       /**
-      *  @public
-      *
-      *  Implements the onAfterAppend method from the ui_element class.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 20.06.2008<br />
-      *  Version 0.2, 10.11.2008 (Added the "clearonerror" attribute. If set to "true", the field is cleared on error.)<br />
-      */
+       * @public
+       *
+       * Implements the onAfterAppend method from the ui_element class.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.06.2008<br />
+       * Version 0.2, 10.11.2008 (Added the "clearonerror" attribute. If set to "true", the field is cleared on error.)<br />
+       * Version 0.3, 04.01.2010 (Added the text_id attribute)<br />
+       */
       public function onParseTime(){
 
          // create text field
@@ -138,6 +139,11 @@
          $textStyle = $this->getAttribute('text_style');
          if($textStyle !== null){
             $this->__TextField->setAttribute('style',$textStyle);
+          // end if
+         }
+         $textId = $this->getAttribute('text_id');
+         if($textId !== null){
+            $this->__TextField->setAttribute('id',$textId);
           // end if
          }
 
@@ -204,6 +210,8 @@
        * Version 0.2, 05.11.2008 (Changed action base url generation)<br />
        * Version 0.3, 07.11.2008 (Fixed the action URL generation. See class ui_mediastream for more details.)<br />
        * Version 0.4, 19.12.2009 (Added attribute to be able to disable the inline styles to have clean markup)<br />
+       * Version 0.5, 04.01.2010 (Added clearonformerror attribute)<br />
+       * Version 0.6, 04.01.2010 (Added the image_id attribute)<br />
        */
       public function transform(){
 
@@ -249,6 +257,19 @@
          if($imgStyle !== null){
             $captchaCode .= 'style="'.$imgStyle.'" ';
           // end if
+         }
+         $imgId = $this->getAttribute('image_id');
+         if($imgId !== null){
+            $captchaCode .= 'id="'.$imgId.'" ';
+          // end if
+         }
+
+         // clear field on form errors
+         $cleanOnError = $this->getAttribute('clearonformerror');
+         if($cleanOnError === 'true'){
+            if(!$this->__ParentObject->isValid()){
+               $this->__TextField->setAttribute('value','');
+            }
          }
 
          // concatinate the html code and return it
