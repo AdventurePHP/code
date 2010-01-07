@@ -1,152 +1,78 @@
 <@controller namespace="modules::kontakt4::pres::documentcontroller" file="kontakt_v4_controller" class="kontakt_v4_controller" @>
-<style type="text/css">
-   .contact-form div > input,
-   .contact-form div > textarea,
-   .contact-form div > select {
-      border: 1px solid black;
-      background-color: #eeeeee;
-      width: 280px;
-   }
-   .contact-form div > textarea {
-      height: 200px;
-      width: 400px !important;
-      overflow: auto;
-   }
-   .contact-form .error-container {
-      width: 400px;
-      border: 1px solid red;
-   }
-   .contact-form {
-      text-align: left;
-      padding-left: 80px;
-      font-size: 12px;
-   }
-   .error-container > ul > li {
-      color: red;
-      font-weight: bold;
-   }
-   .error-container {
-      margin-top: 12px;
-   }
-   .contact-form .label {
-      float: left;
-      width: 120px;
-   }
-   .contact-form .control {
-      float: left;
-      width: 280px;
-      margin-bottom: 10px;
-   }
-   .contact-form .clearleft {
-      clear: left;
-   }
-   .contact-form .button {
-      width: 60px !important;
-   }
-   .contact-form .fullsizebox {
-      margin-bottom: 10px;
-      width: 400px;
-   }
-   .contact-form .buttonbox {
-      text-align: right;
-   }
-   .contact-form .captchabox input {
-      width: 60px;
-   }
-</style>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
 <core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
-<html:getstring namespace="modules::kontakt4" config="language" entry="formhint.text" />
-<br />
+<p>
+   <html:getstring namespace="modules::kontakt4" config="language" entry="formhint.text" />
+</p>
 <div class="contact-form">
    <html:form name="contact" method="post">
-      <form:error id="toperror">
-         <div class="error-container">
-            <ul>
-      </form:error>
-      <form:listener control="AbsenderName" id="sender-error">
-         <li><listener:placeholder name="content" /></li>
-      </form:listener>
-      <form:listener control="AbsenderAdresse" id="addr-error">
-         <li><listener:placeholder name="content" /></li>
-      </form:listener>
-      <form:listener control="Betreff" id="subject-error">
-         <li><listener:placeholder name="content" /></li>
-      </form:listener>
-      <form:listener control="Text" id="text-error">
-         <li><listener:placeholder name="content" /></li>
-      </form:listener>
-      <form:error id="bottomerror">
-            </ul>
-         </div>
-      </form:error>
-      <form:addvalidator
-         class="TextLengthValidator"
-         button="send"
-         control="AbsenderName|Betreff|Text"
-      />
-      <form:addvalidator
-         class="EMailValidator"
-         button="send"
-         control="AbsenderAdresse"
-      />
-      <form:addfilter
-         class="EMailFilter"
-         button="send"
-         control="AbsenderAdresse"
-      />
-      <br />
       <div>
-         <div class="label">
+         <form:error id="toperror">
+            <div class="error-container">
+               <ul>
+         </form:error>
+         <form:listener control="AbsenderName" id="sender-error">
+            <li><listener:placeholder name="content" /></li>
+         </form:listener>
+         <form:listener control="AbsenderAdresse" id="addr-error">
+            <li><listener:placeholder name="content" /></li>
+         </form:listener>
+         <form:listener control="Betreff" id="subject-error">
+            <li><listener:placeholder name="content" /></li>
+         </form:listener>
+         <form:listener control="Text" id="text-error">
+            <li><listener:placeholder name="content" /></li>
+         </form:listener>
+         <form:error id="bottomerror">
+               </ul>
+            </div>
+         </form:error>
+         <form:addvalidator
+            class="TextLengthValidator"
+            button="send"
+            control="AbsenderName|Betreff|Text"
+         />
+         <form:addvalidator
+            class="EMailValidator"
+            button="send"
+            control="AbsenderAdresse"
+         />
+         <form:addfilter
+            class="EMailFilter"
+            button="send"
+            control="AbsenderAdresse"
+         />
+         <label for="contact-form-recipient">
             <form:getstring namespace="modules::kontakt4" config="language" entry="form.person" />
-         </div>
-         <div class="control">
-            <form:select name="Empfaenger" />
-         </div>
-         <div class="clearleft"></div>
-      </div>
-      <div>
-         <div class="label">
+         </label>
+         <form:select id="contact-form-recipient" name="Empfaenger" />
+         <label for="contact-form-sendername">
             <form:getstring namespace="modules::kontakt4" config="language" entry="form.name" />
-         </div>
-         <div class="control">
-            <form:text name="AbsenderName" />
-         </div>
-         <div class="clearleft"></div>
-      </div>
-      <div>
-         <div class="label">
+         </label>
+         <form:text id="contact-form-sendername" name="AbsenderName" />
+         <label for="contact-form-recipient-email">
             <form:getstring namespace="modules::kontakt4" config="language" entry="form.email" />
-         </div>
-         <div class="control">
-            <form:text name="AbsenderAdresse" />
-         </div>
-         <div class="clearleft"></div>
-      </div>
-      <div>
-         <div class="label">
+         </label>
+         <form:text id="contact-form-recipient-email" name="AbsenderAdresse" />
+         <label for="contact-form-subject">
             <form:getstring namespace="modules::kontakt4" config="language" entry="form.subject" />
-         </div>
-         <div class="control">
-            <form:text name="Betreff" />
-         </div>
-         <div class="clearleft"></div>
-      </div>
-      <div class="fullsizebox">
-         <div>
+         </label>
+         <form:text id="contact-form-subject" name="Betreff" />
+         <label for="contact-form-textarea">
             <form:getstring namespace="modules::kontakt4" config="language" entry="form.comment" />
-         </div>
-         <div>
-            <form:area name="Text" />
-         </div>
-      </div>
-      <div class="fullsizebox captchabox">
-         <div>
-            <form:getstring namespace="modules::kontakt4" config="language" entry="form.captcha" />
-         </div>
-         <div>
+         </label>
+         <form:area id="contact-form-textarea" name="Text" cols="50" rows="6"/>
+         <div class="fullsizebox captchabox">
+            <label for="contact-form-captcha">
+               <form:getstring namespace="modules::kontakt4" config="language" entry="form.captcha" />
+            </label>
             <form:addtaglib namespace="modules::captcha::pres::taglib" prefix="form" class="captcha" />
-            <form:captcha name="captcha" clearonerror="true"/>
+            <form:captcha
+               name="captcha"
+               clearonerror="true"
+               text_id="contact-form-captcha"
+               disable_inline="true"
+            />
             <form:addvalidator
                namespace="modules::captcha::pres::validator"
                class="CaptchaValidator"
@@ -154,9 +80,9 @@
                button="send"
             />
          </div>
-      </div>
-      <div class="fullsizebox buttonbox">
-         <form:button name="send" class="button"/>
+         <div class="fullsizebox buttonbox">
+            <form:button name="send" class="button"/>
+         </div>
       </div>
    </html:form>
 </div>

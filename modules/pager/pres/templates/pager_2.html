@@ -2,12 +2,12 @@
 <div style="width: 100%; border: 0px solid black; text-align: right; padding-bottom: 2px;">
   <html:placeholder name="VorherigeSeite" /><html:placeholder name="Inhalt" /><html:placeholder name="NaechsteSeite" />
   <br />
-  <font style="font-size: 9px;"><html:placeholder name="EntriesPerPage_Display" /></font>&nbsp;|<html:placeholder name="EntriesPerPage" />
+  <span style="font-size: 9px;"><html:placeholder name="EntriesPerPage_Display" /></span>&nbsp;|<html:placeholder name="EntriesPerPage" />
 </div>
 <br />
 
 <html:template name="Page_Selected">
-  <a href="<template:placeholder name="Link" />" title="Seite <template:placeholder name="Seite" /> anzeigen"><font style="font-size: 16px; font-weight: bold;"><template:placeholder name="Seite" /></font></a>&nbsp;&nbsp;
+  <a href="<template:placeholder name="Link" />" title="Seite <template:placeholder name="Seite" /> anzeigen"><span style="font-size: 16px; font-weight: bold;"><template:placeholder name="Seite" /></span></a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="Page">
@@ -15,27 +15,27 @@
 </html:template>
 
 <html:template name="VorherigeSeite_Aktiv">
-  <a href="<template:placeholder name="Link" />" title="Vorherige Seite anzeigen!"><font style="font-size: 14px;">&laquo;</font></a>&nbsp;&nbsp;
+  <a href="<template:placeholder name="Link" />" title="Vorherige Seite anzeigen!"><span style="font-size: 14px;">&laquo;</span></a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="VorherigeSeite_Inaktiv">
-  <font style="font-size: 14px;">&laquo;</font>&nbsp;&nbsp;
+  <span style="font-size: 14px;">&laquo;</span>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="NaechsteSeite_Aktiv">
-  <a href="<template:placeholder name="Link" />" title="Nächste Seite anzeigen!"><font style="font-size: 14px;">&raquo;</font></a>
+  <a href="<template:placeholder name="Link" />" title="N&auml;chste Seite anzeigen!"><span style="font-size: 14px;">&raquo;</span></a>
 </html:template>
 
 <html:template name="NaechsteSeite_Inaktiv">
-  <font style="font-size: 14px;">&raquo;</font>
+  <span style="font-size: 14px;">&raquo;</span>
 </html:template>
 
 <html:template name="EntriesPerPage_Aktiv">
-  <a href="<template:placeholder name="Link" />" title="<template:placeholder name="Count" /> Einträge pro Seite anzeigen"><strong><template:placeholder name="Count" /></strong></a> |
+  <a href="<template:placeholder name="Link" />" title="<template:placeholder name="Count" /> Eintr&auml;ge pro Seite anzeigen"><strong><template:placeholder name="Count" /></strong></a> |
 </html:template>
 
 <html:template name="EntriesPerPage_Inaktiv">
-  <a href="<template:placeholder name="Link" />" title="<template:placeholder name="Count" /> Einträge pro Seite anzeigen"><template:placeholder name="Count" /></a> |
+  <a href="<template:placeholder name="Link" />" title="<template:placeholder name="Count" /> Eintr&auml;ge pro Seite anzeigen"><template:placeholder name="Count" /></a> |
 </html:template>
 
 <html:template name="EntriesPerPage_de">Eintr&auml;ge/Seite:</html:template>
