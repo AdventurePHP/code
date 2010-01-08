@@ -310,6 +310,9 @@
 
                if(!in_array($propertyName,$attrExceptions)){
 
+                  // escape value to avoid SQL injections
+                  $propertyValue = $this->__DBDriver->escapeValue($propertyValue);
+
                   // Check, whether the desired property is a BIT field. If yes, prepend with
                   // the binary marker! Details can be read about under
                   // http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=234.
