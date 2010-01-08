@@ -234,6 +234,7 @@
        * Version 0.2, 26.10.2008 (Added a check, if the desired object name exists in the mapping table.)<br />
        * Version 0.3, 27.12.2008 (Update is now done, if params are located in the params array)<br />
        * Version 0.4, 02.01.2010 (Added ticks for property names to avoid key word issues)<br />
+       * Version 0.5, 08.01.2010 (Added property value escaping in order to avoid sql injections)<br />
        */
       public function saveObject(&$object){
 
@@ -269,6 +270,9 @@
 
                   // Surround property names with ticks to avoid issues with reserved names!
                   $names[] = '`'.$propertyName.'`';
+
+                  // escape value to avoid SQL injections
+                  $propertyValue = $this->__DBDriver->escapeValue($propertyValue);
 
                   // Check, whether the desired property is a BIT field. If yes, prepend with
                   // the binary marker! Details can be read about under
