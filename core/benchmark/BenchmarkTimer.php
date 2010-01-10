@@ -86,6 +86,12 @@
       private static $NEWLINE = "\n";
 
       /**
+       * Indicator, that defines, if the benchmarker is enabled or not (for performance reasons!)
+       * @var boolean <em>true</em> in case, the benchmarker is enabled, <em>false</em> otherwise.
+       */
+      private $enabled = true;
+
+      /**
        * @public
        *
        * Constructor of the BenchmarkTimer. Initializes the root process.
@@ -99,6 +105,37 @@
          $this->__addRunningProcess($rootProcess);
          $this->__setCurrentParent($rootProcess);
        // end function
+      }
+
+      /**
+       * @public
+       *
+       * Enables the benchmarker for measurement of the predefined points.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.01.2010<br />
+       */
+      public function enable(){
+         $this->enabled = true;
+      }
+
+      /**
+       * @public
+       *
+       * Disables the benchmarker for measurement of the predefined points. This is often
+       * important for performance reasons, because release 1.11 introduced onParseTime()
+       * measurement, that could propably decrease the APF's performance!
+       * <p />
+       * Experiential tests proofed, that disabling the benchmarker can increase performance
+       * from ~0.185s to ~0.138s, what is ~25%!
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.01.2010<br />
+       */
+      public function disable(){
+         $this->enabled = false;
       }
 
       /**
@@ -146,6 +183,11 @@
        */
       public function start($name = null){
 
+         // return, if benchmarker is disabled
+         if($this->enabled === false){
+            return;
+         }
+
          $startTime = $this->__generateMicroTime();
 
          if($name === null){
@@ -185,6 +227,11 @@
        * Version 0.1, 31.12.2006<br />
        */
       public function stop($name){
+
+         // return, if benchmarker is disabled
+         if($this->enabled === false){
+            return;
+         }
 
          $stopTime = $this->__generateMicroTime();
 
@@ -425,6 +472,13 @@
        * Version 0.1, 31.12.2006<br />
        */
       public function createReport(){
+
+         // return, if benchmarker is disabled
+         if($this->enabled === false){
+            return 'Benchmarker is currently disabled. To generate a detailed report, please '
+               .'enable it calling <em>$t = &Singleton::getInstance(\'BenchmarkTimer\'); '
+               .'$t->enable();</em>!';
+         }
 
          // get process tree
          $processTree = $this->__getRootProcess();
