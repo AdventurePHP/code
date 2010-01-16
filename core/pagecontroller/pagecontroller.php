@@ -1305,20 +1305,21 @@
       /**
        * @public
        *
-       * Loads the initial template for the initial document.
+       * Loads the initial template for the initial document. Can also be used to load
+       * content from files within sub taglibs.
        *
-       * @param string $Namespace; Namespace des initialen Templates
-       * @param string $Design; Name des initialen Designs
+       * @param string $namespace Namespace of the initial templates.
+       * @param string $design Name of the initial template.
        *
        * @author Christian Schäfer
        * @version
        * Version 0.1, 28.12.2006<br />
        * Version 0.2, 15.01.2007 (Now document controller are extracted first)<br />
        */
-      public function loadDesign($Namespace,$Design){
+      public function loadDesign($namespace,$design){
 
          // read the content of the template
-         $this->__loadContentFromFile($Namespace,$Design);
+         $this->__loadContentFromFile($namespace,$design);
 
          // analyze document controller definitions
          $this->__extractDocumentController();
@@ -1345,6 +1346,9 @@
        * Version 0.3, 03.11.2008 (Added code of the responsible template to the error message to ease debugging)<br />
        */
       protected function __loadContentFromFile($namespace,$design){
+
+         // sanitize the design name to avoid xss or code injection
+         $design = preg_replace('/[^A-Za-z0-9\-_]/','',$design);
 
          $file = APPS__PATH.'/'.str_replace('::','/',$namespace).'/'.$design.'.html';
 
