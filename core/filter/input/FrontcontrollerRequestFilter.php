@@ -1,50 +1,46 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
-
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
    import('core::filter::input','AbstractRequestFilter');
 
-
    /**
-   *  @package core::filter::input
-   *  @class FrontcontrollerRequestFilter
-   *
-   *  Implements the input filter for front controller usage and rewite urls.
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 03.06.2007<br />
-   */
-   class FrontcontrollerRequestFilter extends AbstractRequestFilter
-   {
+    * @package core::filter::input
+    * @class FrontcontrollerRequestFilter
+    *
+    * Implements the input filter for front controller usage and rewite urls.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 03.06.2007<br />
+    */
+   class FrontcontrollerRequestFilter extends AbstractRequestFilter {
 
       function FrontcontrollerRequestFilter(){
       }
-
 
       /**
        * @public
        *
        * Filters the url params for front controller usage with normal urls.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 02.06.2007<br />
        * Version 0.2, 08.06.2007 (Renamed to "filter()")<br />

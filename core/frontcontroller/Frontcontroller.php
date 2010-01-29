@@ -1,124 +1,116 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    // setup the front controller input filter and disable the page controller filter
    $reg = &Singleton::getInstance('Registry');
    $reg->register('apf::core::filter','FrontControllerInputFilter',new FilterDefinition('core::filter','FrontControllerInputFilter'));
    $reg->register('apf::core::filter','PageControllerInputFilter',null);
 
-
    /**
-   *  @package core::frontcontroller
-   *  @class AbstractFrontcontrollerAction
-   *  @abstract
-   *
-   *  Implements an action interface for a front controller action.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 27.01.2007<br />
-   *  Version 0.2, 24.02.2007 (Added param "KeepInURL")<br />
-   *  Version 0.3, 08.11.2007 (Standardwert von KeepInURL auf false gesetzt)<br />
-   */
-   abstract class AbstractFrontcontrollerAction extends coreObject
-   {
+    * @package core::frontcontroller
+    * @class AbstractFrontcontrollerAction
+    * @abstract
+    *
+    * Implements an action interface for a front controller action.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.01.2007<br />
+    * Version 0.2, 24.02.2007 (Added param "KeepInURL")<br />
+    * Version 0.3, 08.11.2007 (Standardwert von KeepInURL auf false gesetzt)<br />
+    */
+   abstract class AbstractFrontcontrollerAction extends coreObject {
 
       /**
-      *  @private
-      *  Namespace of the action.
-      */
+       * @private
+       * @var string The namespace of the action.
+       */
       protected $__ActionNamespace;
 
-
       /**
-      *  @private
-      *  Name of the action.
-      */
+       * @private
+       * @var string The name of the action (used to identify the action within the action stack).
+       */
       protected $__ActionName;
 
-
       /**
-      *  @private
-      *  Input object of the action.
-      */
+       * @private
+       * @var FrontcontrollerInput Input object of the action.
+       */
       protected $__Input;
 
-
       /**
-      *  @private
-      *  Defines the type of the action. Allowed values
-      *  <ul>
-      *    <li>prepagecreate: executed before the page controller page is created</li>
-      *    <li>postpagecreate: executed after the page controller page is created</li>
-      *    <li>pretransform: executed before transformation of the page</li>
-      *    <li>posttransform: executed after transformation of the page</li>
-      *  </ul>
-      *  The default value is "prepagecreate".
-      */
+       * @private
+       * Defines the type of the action. Allowed values
+       * <ul>
+       *   <li>prepagecreate: executed before the page controller page is created</li>
+       *   <li>postpagecreate: executed after the page controller page is created</li>
+       *   <li>pretransform: executed before transformation of the page</li>
+       *   <li>posttransform: executed after transformation of the page</li>
+       * </ul>
+       * The default value is "prepagecreate".
+       */
       protected $__Type = 'prepagecreate';
 
-
       /**
-      *  @private
-      *  Indicates, if the action should be included in the URL. Values: true | false.
-      */
+       * @private
+       * @var boolean Indicates, if the action should be included in the URL. Values: true | false.
+       */
       protected $__KeepInURL = false;
 
-
-      function AbstractFrontcontrollerAction(){
+      public function AbstractFrontcontrollerAction(){
       }
 
-
       /**
-      *  @public
-      *
-      *  Returns the input object of the action.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 05.02.2007<br />
-      */
+       * @public
+       *
+       * Returns the input object of the action.
+       *
+       * @return FrontcontrollerInput The input object associated with the action.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.02.2007<br />
+       */
       function &getInput(){
          return $this->__Input;
        // end function
       }
 
-
       /**
-      *  @module run()
-      *  @abstract
-      *
-      *  Defines the interface method, that must be implemented by each concrete action. The method
-      *  is called by the front controller, when the action is executed.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 27.01.2007<br />
-      */
-      function run(){
+       * @module run()
+       * @abstract
+       *
+       * Defines the interface method, that must be implemented by each concrete action. The method
+       * is called by the front controller, when the action is executed.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 27.01.2007<br />
+       */
+      public function run(){
       }
 
     // end class
    }
-
 
    /**
    *  @package core::frontcontroller
@@ -130,12 +122,10 @@
    *  @version
    *  Version 0.1, 27.01.2007<br />
    */
-   class FrontcontrollerInput extends coreObject
-   {
+   class FrontcontrollerInput extends coreObject {
 
-      function FrontcontrollerInput(){
+      public function FrontcontrollerInput(){
       }
-
 
       /**
       *  @public
@@ -196,125 +186,118 @@
     // end class
    }
 
-
    /**
-   *  @package core::frontcontroller
-   *  @class Frontcontroller
-   *
-   *  Implementiert den Frontcontroller.<br />
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 27.01.2007<br />
-   *  Version 0.2, 01.03.2007 (Input-Objekte werden nun vom Frontcontroller geladen!)<br />
-   *  Version 0.3, 08.06.2007 (Gr��erer Umbau zu den PermanentActions und der URL-Filterung)<br />
-   *  Version 0.4, 01.07.2007 (__createInputObject() entfernt)<br />
-   */
-   class Frontcontroller extends coreObject
-   {
+    * @package core::frontcontroller
+    * @class Frontcontroller
+    *
+    * Implements the APF front controller. He enables the developer to execute actions
+    * defined within the bootstrap file or the url to enrich a page controller application
+    * with business logic.
+    * <p/>
+    * The controller has it's own timing model. Hence, he can be used for special jobs such
+    * as image delivery or creation of the business layer components concerning the time
+    * slots the actions are executed. Please refer to the documentation page for a
+    * timing diagram.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.01.2007<br />
+    * Version 0.2, 01.03.2007 (Input objects are now loaded by the front controller, too!)<br />
+    * Version 0.3, 08.06.2007 (Now permanent actions defined within the bootstrap file are introduced.)<br />
+    * Version 0.4, 01.07.2007 (Removed __createInputObject())<br />
+    */
+   class Frontcontroller extends coreObject {
 
       /**
-      *  @protected
-      *  Enth�lt die registrierten Actions.
-      */
+       * @protected
+       * @var AbstractFrontcontrollerAction[] The front controller's action stack.
+       */
       protected $__Actions = array();
 
-
       /**
-      *  @protected
-      *  Action-Keyword.
-      */
+       * @protected
+       * @var string The keyword used in the url to inidicate an action.
+       */
       protected $__ActionKeyword = 'action';
 
-
       /**
-      *  @protected
-      *  Trenner innerhalb des Namespaces einer Action.
-      */
+       * @protected
+       * @var string Namespace delimiter within the action definition in url.
+       */
       protected $__NamespaceURLDelimiter = '_';
 
-
       /**
-      *  @protected
-      *  Trenner zwischen Namespace und Action-Keyword.
-      */
+       * @protected
+       * @var string Namespace to action keyword delimiter within the action definition in url.
+       */
       protected $__NamespaceKeywordDelimiter = '-';
 
-
       /**
-      *  @protected
-      *  Trenner zwischen Action-Keyword und Action-Klasse.
-      */
+       * @protected
+       * @var string Delimiter between action keyword and action class within the action definition in url.
+       */
       protected $__KeywordClassDelimiter = ':';
 
-
       /**
-      *  @protected
-      *  Trenner zwischen Action-Keyword und Action-Klasse bei aktiviertem URLRewriting.
-      */
+       * @protected
+       * @var string Delimiter between action keyword and action class within the action definition in url (url rewriting case!)
+       */
       protected $__URLRewritingKeywordClassDelimiter = '/';
 
-
       /**
-      *  @protected
-      *  Trenner zwischen Input-Werten.
-      */
+       * @protected
+       * @var string Delimiter between input value couples.
+       */
       protected $__InputDelimiter = '|';
 
-
       /**
-      *  @protected
-      *  Trenner zwischen Input-Werten bei aktiviertem URLRewriting.
-      */
+       * @protected
+       * @var string Delimiter between input value couples (url rewriting case!).
+       */
       protected $__URLRewritingInputDelimiter = '/';
 
-
       /**
-      *  @protected
-      *  Trenner zwischen Key zu Value eines Input-Wertes.
-      */
+       * @protected
+       * @var string Delimiter between input param name and value.
+       */
       protected $__KeyValueDelimiter = ':';
 
-
       /**
-      *  @protected
-      *  Trenner zwischen Key zu Value eines Input-Wertes bei aktiviertem URLRewriting.
-      */
+       * @protected
+       * @var string Delimiter between input param name and value (url rewrite case!).
+       */
       protected $__URLRewritingKeyValueDelimiter = '/';
 
-
       /**
-      *  @protected
-      *  Namespace des Frontcontrollers.
-      */
+       * @protected
+       * @var string Namespace of the Frontcontroller class.
+       */
       protected $__Namespace = 'core::frontcontroller';
-
 
       function Frontcontroller(){
       }
 
-
       /**
-      *  @public
-      *
-      *  Executes the desired actions and creates the page output.
-      *
-      *  @param string $Namespace namespace of the templates
-      *  @param string $Template name of the templates
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 20.01.2007<br />
-      *  Version 0.2, 27.01.2007<br />
-      *  Version 0.3, 31.01.2007 (Context-Behandlung hinzugef�gt)<br />
-      *  Version 0.4, 03.02.2007 (Permanente Actions hinzugef�gt)<br />
-      *  Version 0.5, 08.06.2007 (URL-Filtering in generische Filter ausgelagert)<br />
-      *  Version 0.6, 01.07.2007 (Ausf�hrung von permanentpre und permanentpost gel�scht)<br />
-      *  Version 0.7, 29.09.2007 (Aufrufzeiten der Actions erweitert / ge�ndert)<br />
-      *  Version 0.8, 21.06.2008 (Introduced Registry to retrieve URLRewrite configuration)<br />
-      *  Version 0.9, 13.10.2008 (Removed $URLRewriting parameter, because URL rewriting must be configured in the registry)<br />
-      *  Version 1.0, 11.12.2008 (Switched to the new input filter concept)<br />
-      */
+       * @public
+       *
+       * Executes the desired actions and creates the page output.
+       *
+       * @param string $namespace Namespace of the templates.
+       * @param string $template Name of the templates.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.01.2007<br />
+       * Version 0.2, 27.01.2007<br />
+       * Version 0.3, 31.01.2007 (Context-Behandlung hinzugef�gt)<br />
+       * Version 0.4, 03.02.2007 (Permanente Actions hinzugef�gt)<br />
+       * Version 0.5, 08.06.2007 (URL-Filtering in generische Filter ausgelagert)<br />
+       * Version 0.6, 01.07.2007 (Ausf�hrung von permanentpre und permanentpost gel�scht)<br />
+       * Version 0.7, 29.09.2007 (Aufrufzeiten der Actions erweitert / ge�ndert)<br />
+       * Version 0.8, 21.06.2008 (Introduced Registry to retrieve URLRewrite configuration)<br />
+       * Version 0.9, 13.10.2008 (Removed $URLRewriting parameter, because URL rewriting must be configured in the registry)<br />
+       * Version 1.0, 11.12.2008 (Switched to the new input filter concept)<br />
+       */
       function start($namespace,$template){
 
          // set URLRewrite
@@ -340,16 +323,16 @@
          $this->__runActions('prepagecreate');
 
          // create new page
-         $Page = new Page('FrontControllerPage',$urlRewriting);
+         $page = new Page('FrontControllerPage',$urlRewriting);
 
          // set context
-         $Page->set('Context',$this->__Context);
+         $page->set('Context',$this->__Context);
 
          // set language
-         $Page->set('Language',$this->__Language);
+         $page->set('Language',$this->__Language);
 
          // load desired design
-         $Page->loadDesign($namespace,$template);
+         $page->loadDesign($namespace,$template);
 
          // execute actions after page creation (see timing model)
          $this->__runActions('postpagecreate');
@@ -358,7 +341,7 @@
          $this->__runActions('pretransform');
 
          // transform page
-         $pageContent = $Page->transform();
+         $pageContent = $page->transform();
 
          // execute actions after page transformation (see timing model)
          $this->__runActions('posttransform');
@@ -369,39 +352,36 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Gibt die Referenz auf eine Actions zur�ck.<br />
-      *
-      *  @param string $ActionName; Name der Action
-      *  @return object $Action | bool NULL; Die Action oder null
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 05.02.2007<br />
-      *  Version 0.2, 08.02.2007 (Noch nicht geladene Actions werden lazy nachgeladen und zur�ckgeliefert)<br />
-      *  Version 0.3, 11.02.2007 (ActionName ist nun der Name der Section, bzw. des Alias der Action)<br />
-      *  Version 0.4, 01.03.2007 (Input-Objekte werden nun vom Frontcontroller geladen!)<br />
-      *  Version 0.5, 01.03.2007 (Pr�fung ob Action-Klasse vorhanden ist hinzugef�gt!)<br />
-      *  Version 0.6, 08.03.2007 (Auf neuen configurationManager umgestellt)<br />
-      *  Version 0.7, 08.06.2007 (Automatisches Neuerstellen einer Action entfernt)<br />
-      *  Version 0.8, 08.11.2007 (Umstellung auf Hash-Offsets nachgezogen)<br />
-      */
-      function &getActionByName($ActionName){
+       * @public
+       *
+       * Returns the action specified by the input param.
+       *
+       * @param string $actionName The name of the action to return.
+       * @return AbstractFrontcontrollerAction The desired action or null.
+       *
+       * @author Christian Sch�fer
+       * @version
+       * Version 0.1, 05.02.2007<br />
+       * Version 0.2, 08.02.2007 (Noch nicht geladene Actions werden lazy nachgeladen und zur�ckgeliefert)<br />
+       * Version 0.3, 11.02.2007 (ActionName ist nun der Name der Section, bzw. des Alias der Action)<br />
+       * Version 0.4, 01.03.2007 (Input-Objekte werden nun vom Frontcontroller geladen!)<br />
+       * Version 0.5, 01.03.2007 (Pr�fung ob Action-Klasse vorhanden ist hinzugef�gt!)<br />
+       * Version 0.6, 08.03.2007 (Auf neuen configurationManager umgestellt)<br />
+       * Version 0.7, 08.06.2007 (Automatisches Neuerstellen einer Action entfernt)<br />
+       * Version 0.8, 08.11.2007 (Umstellung auf Hash-Offsets nachgezogen)<br />
+       */
+      function &getActionByName($actionName){
 
-         foreach($this->__Actions as $ActionHash => $DUMMY){
+         foreach($this->__Actions as $actionHash => $DUMMY){
 
-            // Pr�fen, ob Action mit dem �bergebenen Namen existiert
-            if($this->__Actions[$ActionHash]->get('ActionName') == $ActionName){
-               return $this->__Actions[$ActionHash];
+            if($this->__Actions[$actionHash]->get('ActionName') == $actionName){
+               return $this->__Actions[$actionHash];
              // end if
             }
 
           // end foreach
          }
-
 
          // return null, if action could not be found
          $null = null;
@@ -410,23 +390,21 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Gibt die Referenz auf eine Actions zur�ck.<br />
-      *
-      *  @return array $Actions; Array mit Action-Objekten
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 05.02.2007<br />
-      */
-      function &getActions(){
+       * @public
+       *
+       * Returns the action stack.
+       *
+       * @return AbstractFrontcontrollerAction[] The front controller action stack.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 05.02.2007<br />
+       */
+      public function &getActions(){
          return $this->__Actions;
        // end function
       }
-
 
       /**
       *  @private
@@ -442,24 +420,23 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Registriert eine Action beim FC und l�d die Parameter des Models aus einem Config-File.<br />
-      *  Erwartet eine Konfigurationsdatei mit Namen {APPS__ENVIRONMENT}_actionsconfig.ini unter<br />
-      *  dem Pfad {$ActionNamespace}::actions::{$this->__Context}.<br />
-      *
-      *  @param string $ActionNamespace; Namespace der Action
-      *  @param string $ActionName; Name der Action
-      *  @param array $ActionParams; (Input-)Parameter der Action
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 08.06.2007<br />
-      *  Version 0.2, 01.07.2007 (ActionNamespace wird nun zentral in addAction() �bersetzt)<br />
-      *  Version 0.3, 01.07.2007 (Parsen der Config-Parameter wird nun korrekt durchgef�hrt)<br />
-      */
+       * @public
+       *
+       * Registriert eine Action beim FC und l�d die Parameter des Models aus einem Config-File.<br />
+       * Erwartet eine Konfigurationsdatei mit Namen {APPS__ENVIRONMENT}_actionsconfig.ini unter<br />
+       * dem Pfad {$ActionNamespace}::actions::{$this->__Context}.<br />
+       *
+       * @param string $ActionNamespace; Namespace der Action
+       * @param string $ActionName; Name der Action
+       * @param array $ActionParams; (Input-)Parameter der Action
+       *
+       * @author Christian Sch�fer
+       * @version
+       * Version 0.1, 08.06.2007<br />
+       * Version 0.2, 01.07.2007 (ActionNamespace wird nun zentral in addAction() �bersetzt)<br />
+       * Version 0.3, 01.07.2007 (Parsen der Config-Parameter wird nun korrekt durchgef�hrt)<br />
+       */
       function registerAction($ActionNamespace,$ActionName,$ActionParams = array()){
 
          // Config f�r Input laden
@@ -498,157 +475,132 @@
           // end if
          }
 
-         // Action hinzuf�gen
          $this->addAction($ActionNamespace,$ActionName,$ActionParams);
 
        // end function
       }
 
-
-
       /**
-      *  @public
-      *
-      *  F�gt eine Action hinzu. Erwartet eine Konfigurationsdatei mit Namen <br />
-      *  {ENVIRONMENT}_actionsconfig.ini unter dem Pfad {$ActionNamespace}::actions::{$this->__Context}.<br />
-      *
-      *  @param string $ActionNamespace; Namespace der Action
-      *  @param string $ActionName; Name der Action
-      *  @param array $ActionParams; (Input-)Parameter der Action
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 05.06.2007<br />
-      *  Version 0.2, 01.07.2007 (Action-Konfiguration wird nun auch unter "{Namespace}::actions::{Context}" erwartet)<br />
-      *  Version 0.3, 02.09.2007 (Fehlermeldung erweitert)<br />
-      *  Version 0.4, 08.09.2007 (Input-Parameter aus Config werden jetz beachtet)<br />
-      *  Version 0.5, 08.11.2007 (Umstellung auf Hash-Offsets f�r Actions)<br />
-      *  Version 0.2, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
-      */
-      function addAction($ActionNamespace,$ActionName,$ActionParams = array()){
+       * @public
+       *
+       * Adds an action to the Frontcontroller action stack. Please note, that the namespace of
+       * the namespace of the action config is remapped using the <em>::action</em> suffix and
+       * the current context. The name of the config file is concatenated by the current
+       * environment and the string <em>_actionsconfig.ini</em>.
+       *
+       * @param string $namespace Namespace of the action.
+       * @param string $name Name of the action (section key of the config file).
+       * @param string[] $params (Input-)params of the action.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 05.06.2007<br />
+       * Version 0.2, 01.07.2007<br />
+       * Version 0.3, 02.09.2007<br />
+       * Version 0.4, 08.09.2007 (Bugfix: input params from config are now evaluated)<br />
+       * Version 0.5, 08.11.2007 (Changed action stack construction to hash offsets)<br />
+       * Version 0.2, 21.06.2008 (Replaced APPS__ENVIRONMENT constant with a value from the Registry)<br />
+       */
+      function addAction($namespace,$name,$params = array()){
 
-         // Namespace umwandeln
-         $ActionNamespace = $this->__getActionNamespaceByURLString($ActionNamespace);
-         $ActionNamespace .= '::actions';
+         // re-map namespace
+         $namespace = $this->__getActionNamespaceByURLString($namespace);
+         $namespace .= '::actions';
 
-         // Action-Config laden
-         $CfgObj = &$this->__getConfiguration($ActionNamespace,'actionconfig');
+         // load the action configuration
+         $config = &$this->__getConfiguration($namespace,'actionconfig');
 
-
-         // Pr�fen ob Konfiguration existent ist
-         if($CfgObj == null){
-            trigger_error('[Frontcontroller::__parseActions()] No configuration available for namespace "'.$ActionNamespace.'" and context "'.$this->__Context.'"!',E_USER_ERROR);
+         if($config == null){
+            trigger_error('[Frontcontroller::__parseActions()] No configuration available for namespace "'.$namespace.'" and context "'.$this->__Context.'"!',E_USER_ERROR);
             exit;
           // end if
          }
+         $actionConfig = $config->getSection($name);
 
-
-         // Configuration auslesen
-         $ActionSection = $CfgObj->getSection($ActionName);
-
-         if($ActionSection == null){
-            $Reg = &Singleton::getInstance('Registry');
-            $Environment = $Reg->retrieve('apf::core','Environment');
-            trigger_error('[Frontcontroller::__parseActions()] No config section for action key "'.$ActionName.'" available in configuration file "'.$Environment.'_actionconfig.ini" in namespace "'.$ActionNamespace.'" and context "'.$this->__Context.'"!',E_USER_ERROR);
-            exit;
+         // throw exception, in case the action config is not present
+         if($actionConfig == null){
+            $reg = &Singleton::getInstance('Registry');
+            $env = $reg->retrieve('apf::core','Environment');
+            throw new Exception('[Frontcontroller::__parseActions()] No config section for action key "'
+                    .$name.'" available in configuration file "'.$env.'_actionconfig.ini" in namespace "'
+                    .$namespace.'" and context "'.$this->__Context.'"!',E_USER_ERROR);
+            exit(1);
           // end if
          }
 
+         // include action implementation
+         import($actionConfig['FC.ActionNamespace'],$actionConfig['FC.ActionFile']);
 
-         // Action importieren
-         import($ActionSection['FC.ActionNamespace'],$ActionSection['FC.ActionFile']);
+         // include input implementation
+         import($actionConfig['FC.ActionNamespace'],$actionConfig['FC.InputFile']);
 
-
-         // Action importieren
-         import($ActionSection['FC.ActionNamespace'],$ActionSection['FC.InputFile']);
-
-
-         // Pr�fen, ob Action-Klasse vorhanden ist
-         if(!class_exists($ActionSection['FC.ActionClass'])){
-            trigger_error('[Frontcontroller::__parseActions()] Action class with name "'.$ActionSection['FC.ActionClass'].'" could not be found. Please check your action configuration file!',E_USER_ERROR);
-            exit;
+         // check for class beeing present
+         if(!class_exists($actionConfig['FC.ActionClass']) || !class_exists($actionConfig['FC.InputClass'])){
+            throw new Exception('[Frontcontroller::__parseActions()] Action class with name "'
+                    .$actionConfig['FC.ActionClass'].'" or input class with name "'
+                    .$actionConfig['FC.InputClass'].'" could not be found. Please check your action '
+                    . 'configuration file!',E_USER_ERROR);
+            exit(1);
           // end if
          }
 
+         // init action
+         $action = new $actionConfig['FC.ActionClass'];
+         $action->set('ActionNamespace',$namespace);
+         $action->set('ActionName',$name);
+         $action->set('Context',$this->__Context);
+         $action->set('Language',$this->__Language);
 
-         // Action initialisieren
-         $Action = new $ActionSection['FC.ActionClass'];
+         // init input
+         $input = new $actionConfig['FC.InputClass'];
 
+         // merge input params with the configured params (params included in the URL are kept!)
+         $input->setAttributes(array_merge(
+                 $this->__generateParamsFromInputConfig($actionConfig['FC.InputParams']),
+                 $params));
 
-         // ActionNamen bekannt machen
-         $Action->set('ActionNamespace',$ActionNamespace);
+         $input->setByReference('ParentObject',$action);
+         $action->set('Input',$input);
 
+         // set the frontcontroller as a parent object to the action
+         $action->setByReference('ParentObject',$this);
 
-         // ActionNamen bekannt machen
-         $Action->set('ActionName',$ActionName);
-
-
-         // Context �bergeben
-         $Action->set('Context',$this->__Context);
-
-
-         // Sprache �bergeben
-         $Action->set('Language',$this->__Language);
-
-
-         // Input Objekt erzeugen
-         $Input = new $ActionSection['FC.InputClass'];
-
-
-         // Input-Attribute setzen und mit den Standard-Werten aus der Config mergen (URL sticht!)
-         $Input->setAttributes(array_merge($this->__generateParamsFromInputConfig($ActionSection['FC.InputParams']),$ActionParams));
-
-
-         // Action bekannt machen
-         $Input->setByReference('ParentObject',$Action);
-         $Action->set('Input',$Input);
-
-
-         // Frontcontroller bekannt machen
-         $Action->setByReference('ParentObject',$this);
-
-
-         // Action in Action-Array einsetzen
-         $this->__Actions[md5($ActionNamespace.'~'.$ActionName)] = $Action;
+         // add the action as a child
+         $this->__Actions[md5($namespace.'~'.$name)] = $action;
 
        // end function
       }
 
-
       /**
-      *  @private
-      *
-      *  Erzeugt ein Array aus dem Konfigurationswert f�r Standard-Input-Parameter.<br />
-      *
-      *  @param string $InputConfig; Konfigurations-String
-      *
-      *  @author Christian W. Sch�fer
-      *  @version
-      *  Version 0.1, 08.09.2007<br />
-      */
-      protected function __generateParamsFromInputConfig($InputConfig = ''){
+       * @private
+       *
+       * Create an array from a input param string (scheme: <code>a:b|c:d</code>).
+       *
+       * @param string $inputConfig The config string contained in the action config.
+       * @return string[] The resulting param-value array.
+       *
+       * @author Christian W. Schäfer
+       * @version
+       * Version 0.1, 08.09.2007<br />
+       */
+      protected function __generateParamsFromInputConfig($inputConfig = ''){
 
-         // R�ckgabe-Array initialisieren
-         $InputParams = array();
+         $inputParams = array();
 
+         $inputConfig = trim($inputConfig);
 
-         // Input-String bereinigen
-         $InputConfig = trim($InputConfig);
+         if(strlen($inputConfig) > 0){
 
+            // first: explode couples by "|"
+            $paramsArray = explode($this->__InputDelimiter,$inputConfig);
 
-         // Parameter-Array erzeugen
-         if(strlen($InputConfig) > 0){
+            for($i = 0; $i < count($paramsArray); $i++){
 
-            // String an "|" zerlegen
-            $ParamsArray = explode($this->__InputDelimiter,$InputConfig);
+               // second: explode key and value by ":"
+               $tmpAry = explode($this->__KeyValueDelimiter,$paramsArray[$i]);
 
-            for($i = 0; $i < count($ParamsArray); $i++){
-
-               // String an ":" zerlegen
-               $TmpAry = explode($this->__KeyValueDelimiter,$ParamsArray[$i]);
-
-               if(isset($TmpAry[0]) && isset($TmpAry[1]) && !empty($TmpAry[0]) && !empty($TmpAry[1])){
-                  $InputParams[$TmpAry[0]] = $TmpAry[1];
+               if(isset($tmpAry[0]) && isset($tmpAry[1]) && !empty($tmpAry[0]) && !empty($tmpAry[1])){
+                  $inputParams[$tmpAry[0]] = $tmpAry[1];
                 // end if
                }
 
@@ -658,52 +610,42 @@
           // end if
          }
 
-
-         // Input-Parameter zur�ckgeben
-         return $InputParams;
+         return $inputParams;
 
        // end function
       }
 
-
       /**
-      *  @private
-      *
-      *  F�hrt diejenigen Actions aus, die dem �bergebenen Typ entsprechen.<br />
-      *
-      *  @param string $Type; Typ der Action (prepagecreate | postpagecreate | pretransform | posttransform)
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 27.01.2007<br />
-      *  Version 0.2, 31.01.2007 (Debug-Ausgaben konfigurierbar gemacht)<br />
-      *  Version 0.3, 03.02.2007 (Actions werden nun gebenchmarked)<br />
-      *  Version 0.4, 01.07.2007 (Debug-Ausgaben entfernt)<br />
-      *  Version 0.5, 08.11.2007 (Umstellung auf Hash-Offsets nachgezogen)<br />
-      *  Version 0.6, 28.03.2008 (Benchmark-Aufruf optimiert)<br />
-      */
-      protected function __runActions($Type = 'prepagecreate'){
+       * @private
+       *
+       * Executes all actions with the given type.
+       *
+       * @param string $type Type of the actions to execute (prepagecreate | postpagecreate | pretransform | posttransform).
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 27.01.2007<br />
+       * Version 0.2, 31.01.2007<br />
+       * Version 0.3, 03.02.2007 (Added benchmarker)<br />
+       * Version 0.4, 01.07.2007 (Removed debug output)<br />
+       * Version 0.5, 08.11.2007<br />
+       * Version 0.6, 28.03.2008 (Optimized benchmarker call)<br />
+       */
+      protected function __runActions($type = 'prepagecreate'){
 
-         // BenchmarkTimer holen
-         $T = &Singleton::getInstance('BenchmarkTimer');
+         $t = &Singleton::getInstance('BenchmarkTimer');
 
-         // Actions ausf�hren
-         foreach($this->__Actions as $ActionHash => $DUMMY){
+         foreach($this->__Actions as $actionHash => $DUMMY){
 
-            // Action ausf�hren, wenn Typ passt
-            if($this->__Actions[$ActionHash]->get('Type') == $Type){
+            // only execute, when the current action has a suitable type
+            if($this->__Actions[$actionHash]->get('Type') == $type){
 
-               // Timer starten
-               $ID = get_class($this->__Actions[$ActionHash]).'::run()';
-               $T->start($ID);
+               $id = get_class($this->__Actions[$actionHash]).'::run()';
+               $t->start($id);
 
+               $this->__Actions[$actionHash]->run();
 
-               // Action ausf�hren
-               $this->__Actions[$ActionHash]->run();
-
-
-               // Timer stoppen
-               $T->stop($ID);
+               $t->stop($id);
 
              // end if
             }
