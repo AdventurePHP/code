@@ -103,7 +103,7 @@
             $sessMgr = new SessionManager(SessionSingleton::showSessionNamespace());
             $cachedObject = $sessMgr->loadSessionData($cacheObjectName);
 
-            if($cachedObject !== false){
+            if($cachedObject !== null){
                $GLOBALS[$cacheContainer][$cacheObjectName] = unserialize($cachedObject);
              // end if
             }
