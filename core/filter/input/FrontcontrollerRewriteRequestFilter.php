@@ -85,7 +85,10 @@
          }
 
          // initialize param to analyze
-         $query = $_REQUEST['query'];
+         $query = (string)'';
+         if(isset($_REQUEST['query'])){
+            $query = $_REQUEST['query'];
+         }
          
          // delete the rewite param indicator
          unset($_REQUEST['query']);
