@@ -80,7 +80,8 @@
             $formName = $this->__ParentObject->getAttribute('name');
             trigger_error('['.get_class($this).'::onAfterAppend()] Required attribute '
                .'"control", "button", "class" or "namespace" missing. Please review your '
-               .'&lt;form:addfilter /&gt; taglib definition in form "'.$formName.'"!');
+               .'&lt;form:addvalidator /&gt; or &lt;form:addfilter /&gt; taglib definition in form "'
+                    .$formName.'"!');
             exit(1);
           // end if
          }

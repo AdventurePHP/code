@@ -1,0 +1,81 @@
+<?php
+   /**
+    * @package tools::form::model
+    * @class FileModel
+    *
+    * Represents a file object created during http file upload.
+    *
+    * @author Thalo
+    * @version
+    * Version 0.1, 14.01.2010<br />
+    */
+   final class FileModel {
+
+      /**
+       * @var string The name of the file.
+       */
+      private $name;
+
+      /**
+       * @var string The size of the file in <em>bytes</em>.
+       */
+      private $size;
+
+      /**
+       * @var string The extension of the file.
+       */
+      private $extension;
+
+      /**
+       * @var string The MIME type - if applicable.
+       */
+      private $mimeType;
+
+      /**
+       * @var string The name of the uploaded temporary file.
+       */
+      private $temporaryName;
+
+      public function getName() {
+         return $this->name;
+      }
+
+      public function setName($name) {
+         $this->name = $name;
+      }
+
+      public function getSize() {
+         return $this->size;
+      }
+
+      public function setSize($size) {
+         $this->size = (int)$size;
+      }
+
+      public function getExtension() {
+         return $this->extension;
+      }
+
+      public function setExtension($extension) {
+         return $this->extension = $extension;
+      }
+
+      public function getMimeType() {
+         return $this->mimeType;
+      }
+
+      public function setMimeType($mimeType) {
+         $this->mimeType = $mimeType;
+      }
+
+      public function getTemporaryName() {
+         return $this->temporaryName;
+      }
+
+      public function setTemporaryName($temporaryName) {
+         $this->temporaryName = $temporaryName;
+      }
+
+    // end class
+   }
+?>
