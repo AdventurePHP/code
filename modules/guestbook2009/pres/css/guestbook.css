@@ -231,3 +231,7 @@
 .gb--admin-delete-text {
    margin-bottom: 20px;
 }
+/* mark invalid form controls */
+.gb--create-form .apf-form-error {
+   border: 2px solid red;
+}

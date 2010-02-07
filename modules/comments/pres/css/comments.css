@@ -27,6 +27,11 @@
    margin-right: 10px;
 }
 
+/* mark invalid form controls */
+.cm--create-form .apf-form-error {
+   border: 2px solid red;
+}
+
 .cm--create-element-button {
    width: 90px !important;
 }
@@ -93,4 +98,11 @@
    margin-bottom: 60px;
    font-style: italic;
    font-weight: bold;
+}
+
+
+
+/* mark invalid form controls */
+.contact-form .apf-form-error {
+   border: 2px solid red;
 }
