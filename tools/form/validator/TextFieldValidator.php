@@ -45,8 +45,83 @@
        */
       public function notify(){
          $this->__Control->markAsInvalid();
-         $this->__Control->addAttribute('style','; border: 2px solid red;');
+         $this->markControl($this->__Control);
          $this->__Control->notifyValidationListeners();
+       // end function
+      }
+
+      /**
+       * @protected
+       *
+       * Marks a form control als invalid using a css class. See
+       * http://wiki.adventure-php-framework.org/de/Weiterentwicklung_Formular-Validierung
+       * for details.
+       *
+       * @param form_control $control The control to mark as invalid.
+       *
+       * @since 1.12
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 03.02.2010<br />
+       */
+      protected function markControl(&$control){
+         $marker = $this->getCssMarkerClass($control);
+         $this->appendCssClass($control,$marker);
+         $control->deleteAttribute(self::$CUSTOM_MARKER_CLASS_ATTRIBUTE);
+       // end function
+      }
+
+      /**
+       * @protected
+       *
+       * Evaluates the css class used to mark an invalid form control.
+       *
+       * @param form_control $control The control to validate.
+       * @return string The css marker class for validation notification.
+       *
+       * @since 1.12
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 06.02.2010<br />
+       */
+      protected function getCssMarkerClass(&$control){
+         $marker = $control->getAttribute(self::$CUSTOM_MARKER_CLASS_ATTRIBUTE);
+         if(empty($marker)){
+            $marker = self::$DEFAULT_MARKER_CLASS;
+         }
+         return $marker;
+       // end function
+      }
+
+      /**
+       * @protected
+       *
+       * Savely appends a css class. Resolves missing attribute.
+       *
+       * @param form_control $control The control to mark as invalid.
+       * @param string $class The css class to append.
+       *
+       * @since 1.12
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 03.02.2010<br />
+       */
+      protected function appendCssClass(&$control,$class){
+         
+         $attr = $control->getAttribute('class');
+
+         // initialize empty attribute
+         if(empty($attr)){
+            $attr = $class;
+         }
+         else {
+            $attr .= ' '.$class;
+         }
+         $control->setAttribute('class',$attr);
+
        // end function
       }
 

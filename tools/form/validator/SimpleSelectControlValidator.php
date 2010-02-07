@@ -19,7 +19,7 @@
     * -->
     */
 
-   import('tools::form::validator','TextFieldValidator');
+   import('tools::form::validator','SelectFieldValidator');
 
    /**
     * @package tools::form::validator
@@ -31,7 +31,7 @@
     * @version
     * Version 0.1, 29.08.2009<br />
     */
-   class SimpleSelectControlValidator extends TextFieldValidator {
+   class SimpleSelectControlValidator extends SelectFieldValidator {
 
       /**
        * @public

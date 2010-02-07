@@ -71,7 +71,7 @@
       public function FieldCompareValidator(form_control &$control,form_control &$button){
          $this->__Control = &$control;
          $this->__Button = &$button;
-         $this->__initializeReferenceControl();
+         $this->initializeReferenceControl();
        // end function
       }
       
@@ -127,8 +127,8 @@
       public function notify(){
          $this->__Control->markAsInvalid();
          $this->__RefControl->markAsInvalid();
-         $this->__Control->addAttribute('style','; border: 2px solid red;');
-         $this->__RefControl->addAttribute('style','; border: 2px solid red;');
+         $this->markControl($this->__Control);
+         $this->markControl($this->__RefControl);
          $this->__Control->notifyValidationListeners();
          $this->__RefControl->notifyValidationListeners();
        // end function
@@ -144,7 +144,7 @@
        * @version
        * Version 0.1, 12.09.2009<br />
        */
-      private function __initializeReferenceControl(){
+      private function initializeReferenceControl(){
 
          $refControlName = $this->__Control->getAttribute('ref');
          if($refControlName === null){

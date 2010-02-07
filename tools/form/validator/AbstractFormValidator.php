@@ -33,6 +33,18 @@
    abstract class AbstractFormValidator extends coreObject {
 
       /**
+       * @var string The default css class to mark invalid form controls.
+       * @since 1.12
+       */
+      protected static $DEFAULT_MARKER_CLASS = 'apf-form-error';
+
+      /**
+       * @var string The attribute, that can be used to define custom marker classes.
+       * @since 1.12
+       */
+      protected static $CUSTOM_MARKER_CLASS_ATTRIBUTE = 'valmarkerclass';
+
+      /**
        * Includes a reference on the control to validate.
        * @var form_control The control to validate.
        */

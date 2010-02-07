@@ -19,37 +19,21 @@
     * -->
     */
 
-   import('tools::form::validator','AbstractFormValidator');
+   import('tools::form::validator','TextFieldValidator');
 
    /**
     * @package tools::form::validator
     * @class SelectFieldValidator
     *
     * Implements a base class for all select field validators.
+    * <p/>
+    * As of release 1.12, this class is empty but present, because form validation
+    * marking is done by css classes now.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.08.2009<br />
     */
-   abstract class SelectFieldValidator extends AbstractFormValidator {
-
-      /**
-       * @public
-       * 
-       * Re-implements the notify() method, due to the fact, that select fields
-       * have to be handled differently.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 29.08.2009<br />
-       */
-      public function notify(){
-         $this->__Control->markAsInvalid();
-         $this->__Control->addAttribute('style','; background-color: red;');
-         $this->__Control->notifyValidationListeners();
-       // end function
-      }
-
-    // end function
+   abstract class SelectFieldValidator extends TextFieldValidator {
    }
 ?>
