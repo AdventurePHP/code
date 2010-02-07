@@ -75,12 +75,13 @@
       public function notify(){
 
          // add validation style to the text field
-         $this->__Control->getCaptchaTextField()->addAttribute('style','; border: 2px solid red;');
-         $this->__Control->getCaptchaTextField()->markAsInvalid();
+         $textField = &$this->__Control->getCaptchaTextField();
+         $textField->markAsInvalid();
+         $this->markControl($textField);
 
          // clear captcha field, if desired
          if($this->__Control->getAttribute('clearonerror') === 'true'){
-            $this->__Control->getCaptchaTextField()->setAttribute('value','');
+            $textField->setAttribute('value','');
           // end if
          }
 
