@@ -1,3 +1,8 @@
+/***************************************************************************************************
+* This is a sample style sheet for the contact module. If you intend to use it as is, add it to    *
+* your existing style sheets or include it to your website's head.                                 *
+***************************************************************************************************/
+
 .contact-form .error-container li {
    color: red;
 }
@@ -30,7 +35,7 @@
 }
 .contact-form .captcha:after {
    clear: both;
-   content: " ";
+   content: ' ';
    display: block;
    height: 0;
    margin-bottom: 0.6em;
@@ -40,4 +45,8 @@
    font-size: 0.9em;
    text-align: right;
    width: 30em;
+}
+/* mark invalid form controls */
+.contact-form .apf-form-error {
+   border: 2px solid red;
 }

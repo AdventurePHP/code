@@ -20,6 +20,7 @@
     */
 
    import('tools::link','FrontcontrollerLinkHandler');
+   import('modules::kontakt4::biz','oFormData');
 
    /**
     * @package modules::kontakt4::pres::documentcontroller
@@ -27,7 +28,7 @@
     *
     * Document controller for the form view of the contact module.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 03.06.2006<br />
     * Version 0.2, 04.06.2006<br />
@@ -57,15 +58,28 @@
          $form = &$this->__getForm('contact');
 
          // generate a generic action url, to be included in various pages
-         $action = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],$_REQUEST);
+         $action = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array());
          $form->setAction($action);
+
+         // fill recipient list
+         $recipients = & $form->getFormElementByName('Empfaenger');
+
+         $cM = &$this->__getServiceObject('modules::kontakt4::biz','contactManager');
+         $recipientList = $cM->loadRecipients();
+
+         for($i = 0; $i < count($recipientList); $i++){
+            $recipients->addOption($recipientList[$i]->get('Name'),$recipientList[$i]->get('oID'));
+          // end if
+         }
 
          if($form->isSent() && $form->isValid()){
 
             $oFD = new oFormData();
 
             $recipient = &$form->getFormElementByName('Empfaenger');
-            $oFD->set('RecipientID',$recipient->getAttribute('value'));
+            $option = &$recipient->getSelectedOption();
+            $recipientId = $option->getAttribute('value');
+            $oFD->set('RecipientID',$recipientId);
 
             $name = &$form->getFormElementByName('AbsenderName');
             $oFD->set('SenderName',$name->getAttribute('value'));
@@ -104,16 +118,8 @@
             $textError = &$form->getFormElementByID('text-error');
             $textError->setPlaceHolder('content',$config->getValue($this->__Language,'form.text.error'));
 
-            // fill recipient list
-            $recipients = & $form->getFormElementByName('Empfaenger');
-
-            $cM = &$this->__getServiceObject('modules::kontakt4::biz','contactManager');
-            $recipientList = $cM->loadRecipients();
-
-            for($i = 0; $i < count($recipientList); $i++){
-               $recipients->addOption($recipientList[$i]->get('Name'),$recipientList[$i]->get('oID'));
-             // end if
-            }
+            $captchaError = &$form->getFormElementByID('captcha-error');
+            $captchaError->setPlaceHolder('content',$config->getValue($this->__Language,'form.captcha.error'));
 
             $form->transformOnPlace();
 
