@@ -43,7 +43,7 @@
     */
    class form_taglib_success extends form_control {
 
-      public function form_taglib_error(){
+      public function form_taglib_success(){
          $this->__TagLibs[] = new TagLib('tools::form::taglib','success','placeholder');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','success','getstring');
        // end function
