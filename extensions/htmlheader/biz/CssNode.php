@@ -53,7 +53,7 @@
         */
        public function transform(){
            $link = $this->__buildFCLink($this->__namespace, $this->__filename, 'css');
-           return '<link href="' . $link . '" rel="stylesheet" type="text/css">
+           return '<link href="' . $link . '" rel="stylesheet" type="text/css" />
    ';
        }
 
