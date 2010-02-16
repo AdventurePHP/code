@@ -30,12 +30,12 @@
     * Version 0.1, 26.04.2008<br />
     * Version 0.2, 04.09.2009 (Added serialization support)<br />
     */
-   final class GenericDomainObject extends coreObject {
+   final class GenericDomainObject extends APFObject {
 
       /**
        * @protected
        * @var GenericORRelationMapper Data component, that can be used to lazy load attributes.
-       * To set the member, use setByReference() from coreObject.
+       * To set the member, use setByReference() from APFObject.
        */
       protected $__DataComponent = null;
 

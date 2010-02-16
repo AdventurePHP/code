@@ -30,7 +30,7 @@
    *  @version
    *  Version 0.1, 03.06.2006<br />
    */
-   class oFormData extends coreObject {
+   class oFormData extends APFObject {
 
       protected $__RecipientID;
       protected $__SenderName;

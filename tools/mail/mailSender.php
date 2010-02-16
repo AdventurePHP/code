@@ -38,7 +38,7 @@
    *  Version 0.5, 30.03.2007 (Switched to the ConfigurationManager)<br />
    *  Version 0.5, 03.09.2007 (Added BCC recipients capability and futher header)<br />
    */
-   class mailSender extends coreObject {
+   class mailSender extends APFObject {
 
       /**
        * @protected

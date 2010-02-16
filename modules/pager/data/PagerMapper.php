@@ -35,8 +35,7 @@
    *  Version 0.2, 19.02.2009 (Added the connection key handling)<br />
    *  Version 0.3, 24.01.2009 (Added session caching to gain performance)<br />
    */
-   final class PagerMapper extends coreObject
-   {
+   final class PagerMapper extends APFObject {
 
 
       /**

@@ -30,7 +30,7 @@
     * Version 0.1, 17.06.2008<br />
     * Version 0.2, 21.06.2008 (Added more indicators)<br />
     */
-   final class GenericCriterionObject extends coreObject {
+   final class GenericCriterionObject extends APFObject {
 
       /**
        * @protected

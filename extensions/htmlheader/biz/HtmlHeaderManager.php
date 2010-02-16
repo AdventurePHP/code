@@ -29,7 +29,7 @@
     *  @version 0.1, 20.09.2009<br>
     *  @version 0.2, 27.09.2009<br>
     */
-   class HtmlHeaderManager extends coreObject {
+   class HtmlHeaderManager extends APFObject {
        /**
         * Contains title of page.
         * @var string title

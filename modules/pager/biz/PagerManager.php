@@ -38,8 +38,7 @@
     * Version 0.4, 13.04.2007 (Added the possibility to add params from the application)<br />
     * Version 0.5, 25.01.2009 (Refactoring of the API, refactoring of the functionality)<br />
     */
-   final class PagerManager extends coreObject
-   {
+   final class PagerManager extends APFObject {
 
       /**
        * @private
@@ -148,10 +147,10 @@
       *
       *  Loads a list of domain objects using a given data layer component.
       *
-      *  @param coreObject $dataComponent instance of a data component, that loads the domain objects directly
+      *  @param APFObject $dataComponent instance of a data component, that loads the domain objects directly
       *  @param string $loadMethod name of the load method for the domain object
       *  @param string[] $addStmtParams additional statement parameters
-      *  @return coreObject[] List of domain objects for the current page.
+      *  @return APFObject[] List of domain objects for the current page.
       *
       *  @author Christian Achatz
       *  @version

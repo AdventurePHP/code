@@ -36,7 +36,7 @@
     * Version 0.2, 23.06.2008 (Mapper is now loaded by an internal method that uses the GenericORMapperFactory)<br />
     * Version 0.3, 31.01.2009 (Introduced the possibility to switch the hash algo)<br />
     */
-   class umgtManager extends coreObject {
+   class umgtManager extends APFObject {
 
       /**
        * @protected

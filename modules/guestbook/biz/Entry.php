@@ -29,8 +29,7 @@
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
-   class Entry extends coreObject
-   {
+   class Entry extends APFObject {
 
       /**
       *  @private

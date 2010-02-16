@@ -13,7 +13,7 @@
     *  @version
     *  Version 0.1, 21.12.2009<br />
     */
-   final class ArrayPagerMapper extends coreObject {
+   final class ArrayPagerMapper extends APFObject {
       public function ArrayPagerMapper () {
       }
 

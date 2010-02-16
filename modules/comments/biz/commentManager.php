@@ -35,7 +35,7 @@
    *  Version 0.1, 22.08.2007<br />
    *  Version 0.2, 28.12.2007 (Captcha-Unterst�tzung eingef�hrt)<br />
    */
-   class commentManager extends coreObject {
+   class commentManager extends APFObject {
 
       /**
       *  @protected

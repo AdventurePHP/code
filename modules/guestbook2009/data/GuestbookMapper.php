@@ -35,7 +35,7 @@
     * @version
     * Version 0.1, 03.05.2009<br />
     */
-   class GuestbookMapper extends coreObject {
+   class GuestbookMapper extends APFObject {
 
       /**
        * The database connection name.

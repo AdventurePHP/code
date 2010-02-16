@@ -66,8 +66,7 @@
    *  @version
    *  Version 0.1, 29.03.2007<br />
    */
-   class AdvancedLogEntry extends coreObject
-   {
+   class AdvancedLogEntry extends APFObject {
 
       /**
       *  @private
@@ -161,7 +160,7 @@
    *  @version
    *  Version 0.1, 09.11.2008<br />
    */
-   class AdvancedLoggerFactory extends coreObject
+   class AdvancedLoggerFactory extends APFObject
    {
 
       /**
@@ -247,7 +246,7 @@
    *  @version
    *  Version 0.1, 09.11.2008<br />
    */
-   class AdvancedLogger extends coreObject
+   class AdvancedLogger extends APFObject
    {
 
       /**

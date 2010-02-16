@@ -42,7 +42,7 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode "transformContent()" aus "coreObject".<br />
+      *  Implementiert die abstrakte Methode "transformContent()" aus "APFObject".<br />
       *  Gibt den Header des G�stebuchs aus.<br />
       *
       *  @author Christian Sch�fer

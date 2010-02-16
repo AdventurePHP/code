@@ -30,8 +30,7 @@
    *  Version 0.1, 22.08.2007<br />
    *  Version 0.2, 03.09.2007 (Dokumentation erg�nzt)<br />
    */
-   class ArticleComment extends coreObject
-   {
+   class ArticleComment extends APFObject {
 
       /**
       *  @protected

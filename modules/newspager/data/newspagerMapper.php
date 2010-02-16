@@ -33,8 +33,7 @@
    *  @version
    *  Version 0.1, 02.20.2008<br />
    */
-   class newspagerMapper extends coreObject
-   {
+   class newspagerMapper extends APFObject {
 
       /**
       *  @private

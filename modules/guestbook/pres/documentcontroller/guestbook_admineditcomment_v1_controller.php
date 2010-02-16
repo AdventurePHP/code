@@ -60,7 +60,7 @@
       /**
       *  @public
       *
-      *  Implementiert die asbtrakte Methode "transformContent" aus "coreObject".<br />
+      *  Implementiert die asbtrakte Methode "transformContent" aus "APFObject".<br />
       *
       *  @author Christian Sch�fer
       *  @version

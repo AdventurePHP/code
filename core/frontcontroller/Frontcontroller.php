@@ -37,7 +37,7 @@
     * Version 0.2, 24.02.2007 (Added param "KeepInURL")<br />
     * Version 0.3, 08.11.2007 (Standardwert von KeepInURL auf false gesetzt)<br />
     */
-   abstract class AbstractFrontcontrollerAction extends coreObject {
+   abstract class AbstractFrontcontrollerAction extends APFObject {
 
       /**
        * @private
@@ -122,7 +122,7 @@
    *  @version
    *  Version 0.1, 27.01.2007<br />
    */
-   class FrontcontrollerInput extends coreObject {
+   class FrontcontrollerInput extends APFObject {
 
       public function FrontcontrollerInput(){
       }
@@ -206,7 +206,7 @@
     * Version 0.3, 08.06.2007 (Now permanent actions defined within the bootstrap file are introduced.)<br />
     * Version 0.4, 01.07.2007 (Removed __createInputObject())<br />
     */
-   class Frontcontroller extends coreObject {
+   class Frontcontroller extends APFObject {
 
       /**
        * @protected

@@ -30,8 +30,7 @@
    *  @version
    *  Version 0.1, 30.01.2009<br />
    */
-   abstract class AbstractErrorHandler extends coreObject
-   {
+   abstract class AbstractErrorHandler extends APFObject {
 
       function AbstractErrorHandler(){
       }

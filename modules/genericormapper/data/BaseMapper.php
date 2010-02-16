@@ -36,7 +36,7 @@
     * Version 0.3, 26.10.2008 (Added the addMappingConfiguration() and addRelationConfiguration() methods)<br />
     * Version 0.4, 30.12.2008 (Prettified the benchmark ids)<br />
     */
-   class BaseMapper extends coreObject {
+   class BaseMapper extends APFObject {
 
       /**
        * @protected

@@ -31,7 +31,7 @@
     * @version
     * Version 0.1, 24.11.2008<br />
     */
-   abstract class CacheCoreObject extends coreObject {
+   abstract class CacheCoreObject extends APFObject {
 
       /**
        * @protected

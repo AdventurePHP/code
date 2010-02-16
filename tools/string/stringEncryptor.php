@@ -28,12 +28,11 @@
    *  @author Christian Sch�fer
    *  @version
    *  Version 0.1, 24.06.2006<br />
-   *  Version 0.2, 02.06.2007 (Klasse erbt von coreObject, damit diese als ServiveObject genutzt werden kann)<br />
+   *  Version 0.2, 02.06.2007 (Klasse erbt von APFObject, damit diese als ServiveObject genutzt werden kann)<br />
    */
-   class stringEncryptor extends coreObject
-   {
+   class stringEncryptor extends APFObject {
 
-      function stringEncryptor(){
+      public function stringEncryptor(){
       }
 
 
@@ -51,7 +50,7 @@
       *  Version 0.1, 24.06.2006<br />
       *  Version 0.2, 02.06.2007 (Auf ConfigurationManager umgestellt)<br />
       */
-      function getPasswordHash($password,$section = 'Standard'){
+      public function getPasswordHash($password,$section = 'Standard'){
 
          $config = &$this->__getConfiguration('tools::string','encryption');
          return crypt($password,$config->getValue($section,'PasswortSalt'));

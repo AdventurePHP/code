@@ -30,7 +30,7 @@
     * @version
     * Version 0.1, 24.08.2009<br />
     */
-   abstract class AbstractFormValidator extends coreObject {
+   abstract class AbstractFormValidator extends APFObject {
 
       /**
        * @var string The default css class to mark invalid form controls.

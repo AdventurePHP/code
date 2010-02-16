@@ -29,7 +29,7 @@
     * @version
     * Version 0.1, 02.06.2007<br />
     */
-   class bookmarkEntry extends coreObject {
+   class bookmarkEntry extends APFObject {
 
       /**
        * @protected

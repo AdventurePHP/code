@@ -16,7 +16,7 @@
     * @version
     * Version 0.1, 21.12.2009<br />
     */
-   final class ArrayPagerManager extends coreObject {
+   final class ArrayPagerManager extends APFObject {
       private $__PagerConfig = NULL;
 
       private $__AnchorName = NULL;

@@ -87,7 +87,7 @@
        * in the session singleton cache, the cached object is returned.
        *
        * @param string $className The name of the class, that should be created a session singleton instance from.
-       * @return coreObject The desired object's singleton instance.
+       * @return APFObject The desired object's singleton instance.
        *
        * @author Christian Achatz
        * @version

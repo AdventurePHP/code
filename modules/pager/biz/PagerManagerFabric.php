@@ -35,7 +35,7 @@
     * @version
     * Version 0.1, 13.04.2007<br />
     */
-   final class PagerManagerFabric extends coreObject {
+   final class PagerManagerFabric extends APFObject {
 
       /**
       *  @private

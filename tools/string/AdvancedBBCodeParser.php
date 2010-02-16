@@ -29,8 +29,7 @@
    *  @version
    *  Version 0.1, 28.10.2008
    */
-   final class BBCodeParserDefinition extends coreObject
-   {
+   final class BBCodeParserDefinition extends APFObject {
 
       /**
       *  @protected
@@ -38,13 +37,11 @@
       */
       protected $__Namespace;
 
-
       /**
       *  @protected
       *  Represents the class name of the parser provider an thus the file name (without extentsion!).
       */
       protected $__Class;
-
 
       /**
       *  @public
@@ -67,7 +64,6 @@
     // end class
    }
 
-
    /**
    *  @abstract
    *  @class BBCodeParserProvider
@@ -78,7 +74,7 @@
    *  @version
    *  Version 0.1, 28.10.2008
    */
-   abstract class BBCodeParserProvider extends coreObject
+   abstract class BBCodeParserProvider extends APFObject
    {
 
       function BBCodeParserProvider(){
@@ -104,7 +100,6 @@
     // end class
    }
 
-
    /**
    *  @class AdvancedBBCodeParser
    *
@@ -120,15 +115,13 @@
    *  @version
    *  Version 0.1, 28.10.2008
    */
-   class AdvancedBBCodeParser extends coreObject
-   {
+   class AdvancedBBCodeParser extends APFObject {
 
       /**
       *  @private
       *  Represents the list of provider.
       */
       private $__Provider = array();
-
 
       /**
       *  @public
@@ -148,7 +141,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -167,7 +159,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -183,7 +174,6 @@
          unset($this->__Provider[$name]);
        // end function
       }
-
 
       /**
       *  @private
@@ -223,7 +213,6 @@
 
        // end function
       }
-
 
       /**
       *  @public

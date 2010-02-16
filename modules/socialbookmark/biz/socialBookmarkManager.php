@@ -61,7 +61,7 @@
     * Version 0.1, 02.06.2007<br />
     * Version 0.2, 07.09.2007<br />
     */
-   class socialBookmarkManager extends coreObject {
+   class socialBookmarkManager extends APFObject {
 
       /**
        * @protected

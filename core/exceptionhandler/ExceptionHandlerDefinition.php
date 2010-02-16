@@ -30,7 +30,7 @@
     * @version
     * Version 0.1, 21.02.2009<br />
     */
-   final class ExceptionHandlerDefinition extends coreObject {
+   final class ExceptionHandlerDefinition extends APFObject {
 
       /**
        * @protected

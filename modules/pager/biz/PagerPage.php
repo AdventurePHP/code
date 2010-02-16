@@ -29,8 +29,7 @@
    *  @version
    *  Version 0.1, 06.08.2006<br />
    */
-   final class PagerPage extends coreObject
-   {
+   final class PagerPage extends APFObject {
 
       /**
       *  @protected

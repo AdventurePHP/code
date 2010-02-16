@@ -31,7 +31,7 @@
     * @version
     * Version 0.1, 22.08.2007
     */
-   class commentMapper extends coreObject {
+   class commentMapper extends APFObject {
 
       function commentMapper(){
       }

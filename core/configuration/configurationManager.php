@@ -175,7 +175,7 @@
     * Version 0.4, 16.11.2007 (Re-added $__NamespaceDelimiter)<br />
     * Version 0.5, 21.06.2008 (Introduced Registry to get the current Environment string)<br />
     */
-   class configurationManager extends coreObject {
+   class configurationManager extends APFObject {
 
       /**
        * @private
@@ -201,7 +201,7 @@
        * $cM = &Singleton::getInstance('configurationManager');<br />
        * $config = &$cM->getConfiguration('sites::mysite','actions','permanentactions');
        * </pre>
-       * Within classes inherited from coreObject, the <em>__getConfiguration()</em> wrapper can be used.
+       * Within classes inherited from APFObject, the <em>__getConfiguration()</em> wrapper can be used.
        *
        * @param string $namespace namespace of the requested configuration (will be prefixed with "config::")
        * @param string $context context of the configuration file

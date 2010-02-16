@@ -39,7 +39,7 @@
     * @version
     * Version 0.1, 21.05.2009<br />
     */
-   final class GuestbookService extends coreObject {
+   final class GuestbookService extends APFObject {
 
       /**
        * Stores the pager instance for further usage.

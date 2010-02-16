@@ -29,7 +29,7 @@
     * @author Christian Schäfer
     * @version
     * Version 0.1, 05.01.2007<br />
-    * Version 0.2, 02.06.2007 (Added the $__ExclusionArray, moved the __getAttributesAsString() to the coreObject class)<br />
+    * Version 0.2, 02.06.2007 (Added the $__ExclusionArray, moved the __getAttributesAsString() to the APFObject class)<br />
     * Version 0.3, 07.12.2008 (Added the filter functionality, that let's you filter user input)<br />
     */
    abstract class form_control extends Document {
@@ -334,7 +334,7 @@
       /**
        * @public
        *
-       * Extends the coreObject's attributes methods.
+       * Extends the APFObject's attributes methods.
        *
        * @param string $name the name of the attribute
        * @param string $value the value to add to the attribute's value

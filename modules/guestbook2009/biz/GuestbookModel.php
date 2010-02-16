@@ -27,7 +27,7 @@
     * @version
     * Version 0.1, 17.05.2009<br />
     */
-   class GuestbookModel extends coreObject {
+   class GuestbookModel extends APFObject {
 
       /**
        * @protected

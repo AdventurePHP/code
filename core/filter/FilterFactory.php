@@ -29,8 +29,7 @@
     * @version
     * Version 0.1, 08.12.2007<br />
     */
-   final class FilterDefinition extends coreObject
-   {
+   final class FilterDefinition extends APFObject {
 
       /**
       *  @protected
@@ -76,7 +75,7 @@
     * @version
     * Version 0.1, 08.06.2007<br />
     */
-   abstract class AbstractFilter extends coreObject
+   abstract class AbstractFilter extends APFObject
    {
 
       function AbstractFilter(){

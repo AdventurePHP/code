@@ -26,13 +26,13 @@
    *  @class GenericORMapperFactory
    *
    *  Implements the factory for the GenericORRelationMapper. Please do only unse the factory in
-   *  singleton mode. To achieve this, use the coreObject's __getServiceObject() method.
+   *  singleton mode. To achieve this, use the APFObject's __getServiceObject() method.
    *
    *  @author Christian Achatz
    *  @version
    *  Version 0.1, 23.06.2008<br />
    */
-   class GenericORMapperFactory extends coreObject {
+   class GenericORMapperFactory extends APFObject {
 
       /**
       *  @private

@@ -29,8 +29,7 @@
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
-   class Guestbook extends coreObject
-   {
+   class Guestbook extends APFObject {
 
       /**
       *  @private

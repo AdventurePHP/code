@@ -29,8 +29,7 @@
    *  @version
    *  Version 0.1, 30.01.2009<br />
    */
-   final class ErrorHandlerDefinition extends coreObject
-   {
+   final class ErrorHandlerDefinition extends APFObject {
 
       /**
       *  @protected

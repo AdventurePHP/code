@@ -63,7 +63,7 @@
       /**
       *  @public
       *
-      *  Implementiert die abstrakte Methode aus coreObject.<br />
+      *  Implementiert die abstrakte Methode aus APFObject.<br />
       *
       *  @author Christian Sch�fer
       *  @version

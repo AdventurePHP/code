@@ -17,7 +17,7 @@
     * @version
     * Version 0.1, 21.12.2009<br />
     */
-   final class ArrayPagerManagerFabric extends coreObject {
+   final class ArrayPagerManagerFabric extends APFObject {
       /**
        * @private
        * Cache list if concrete pager manager instances.

@@ -41,8 +41,7 @@
    *  @version
    *  Version 0.1, 13.11.2007<br />
    */
-   class fcon_taglib_importdesign extends core_taglib_importdesign
-   {
+   class fcon_taglib_importdesign extends core_taglib_importdesign {
 
       /**
       *  @public
@@ -62,7 +61,7 @@
       /**
       *  @public
       *
-      *  Implementierung der abstrakten Methode aus "coreObject". Bindet das Template, das in den
+      *  Implementierung der abstrakten Methode aus "APFObject". Bindet das Template, das in den
       *  Attributen beschreiben ist als neuen Objekt-Baum-Knoten ein.<br />
       *
       *  @author Christian Achatz

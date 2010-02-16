@@ -40,7 +40,7 @@
    *  - OutputFilter              : the definition of the output filter
    *
    *  The file also contains the pagecontroller core implementation with the classes Page,
-   *  Document, TagLib, coreObject, XmlParser and baseController (the basic MVC document controller).
+   *  Document, TagLib, APFObject, XmlParser and baseController (the basic MVC document controller).
    *
    *  @author Christian Achatz
    *  @version
@@ -454,7 +454,7 @@
 
    /**
     * @package core::pagecontroller
-    * @class coreObject
+    * @class APFObject
     * @abstract
     *
     * Represents the base objects of (nearly) all APF classes. Especially all GUI classes derive
@@ -467,7 +467,7 @@
     * Version 0.3, 28.10.2008 (Added the __ServiceType member to indicate the service manager creation type)<br />
     * Version 0.4, 03.11.2008 (Added initializing values to some of the class members)<br />
     */
-   abstract class coreObject {
+   abstract class APFObject {
 
       /**
        * @protected
@@ -513,7 +513,7 @@
       protected $__ServiceType = null;
 
 
-      public function coreObject(){
+      public function APFObject(){
       }
 
       /**
@@ -704,7 +704,7 @@
       *  Returns the content of a member by reference. This is used to guarantee php4 support.
       *
       *  @param string $attributeName Name of the desired attribute.
-      *  @return coreObject Desired object to reference or null in case of errors.
+      *  @return APFObject Desired object to reference or null in case of errors.
       *
       *  @author Christian Schäfer
       *  @version
@@ -808,7 +808,7 @@
        *
        * @param string $namespace The namespace of the service object definition.
        * @param string $name The namne of the service object.
-       * @return coreObject The preconfigured service object.
+       * @return APFObject The preconfigured service object.
        */
       protected function &__getDIServiceObject($namespace,$name){
 
@@ -828,7 +828,7 @@
        * @param string $namespace Namespace of the service object (currently ignored).
        * @param string $serviceName Name of the service object (=class name).
        * @param string $type The initializing type (see service manager for details).
-       * @return coreObject The desired service object.
+       * @return APFObject The desired service object.
        *
        * @author Christian Schäfer
        * @version
@@ -857,7 +857,7 @@
       *  @param string $serviceName Name of the service object (=class name).
       *  @param string $InitParam The initialization parameter.
       *  @param string $type The initializing type (see service manager for details).
-      *  @return coreObject The desired service object.
+      *  @return APFObject The desired service object.
       *
       *  @author Christian Schäfer
       *  @version
@@ -960,7 +960,7 @@
     * @version
     * Version 0.1, 28.12.2006<br />
     */
-   final class TagLib extends coreObject {
+   final class TagLib extends APFObject {
 
       /**
        * @protected
@@ -1061,7 +1061,7 @@
     * Version 0.2, 03.01.2007 (Introduced URL rewriting)<br />
     * Version 0.3, 08.06.2007 (URL rewriting was outsorced and "__rewriteRequestURI()" was removed)<br />
     */
-   class Page extends coreObject {
+   class Page extends APFObject {
 
       /**
       *  @protected
@@ -1206,7 +1206,7 @@
     * @version
     * Version 0.1, 28.12.2006<br />
     */
-   class Document extends coreObject {
+   class Document extends APFObject {
 
       /**
        * @protected
@@ -1920,7 +1920,7 @@
       /**
        * @public
        *
-       * Implements the onParseTime() method from the coreObject class. Uses the __extractTagLibTags()
+       * Implements the onParseTime() method from the APFObject class. Uses the __extractTagLibTags()
        * function to parse the known taglibs.
        *
        * @author Christian Achatz

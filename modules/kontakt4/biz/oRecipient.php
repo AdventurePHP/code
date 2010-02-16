@@ -29,8 +29,7 @@
    *  @version
    *  Version 0.1, 03.06.2005<br />
    */
-   class oRecipient extends coreObject
-   {
+   class oRecipient extends APFObject {
 
       protected $__Name;
       protected $__Adresse;

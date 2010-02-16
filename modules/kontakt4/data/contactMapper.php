@@ -34,8 +34,7 @@
    *  Version 0.1, 03.06.2006<br />
    *  Version 0.2, 04.06.2006<br />
    */
-   class contactMapper extends coreObject
-   {
+   class contactMapper extends APFObject {
 
       function contactMapper(){
       }

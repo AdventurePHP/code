@@ -30,7 +30,7 @@
     * @version
     * Version 0.1, 22.11.2008<br />
     */
-   final class CacheManagerFabric extends coreObject {
+   final class CacheManagerFabric extends APFObject {
 
       /**
        * @private

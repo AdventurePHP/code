@@ -37,8 +37,7 @@
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
-   class GuestbookManager extends coreObject
-   {
+   class GuestbookManager extends APFObject {
 
       /**
       *  @private

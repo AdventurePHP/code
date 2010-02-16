@@ -36,7 +36,7 @@
     * @version
     * Version 0.1, 03.06.2006<br />
     */
-   class contactManager extends coreObject {
+   class contactManager extends APFObject {
 
       public function contactManager(){
       }

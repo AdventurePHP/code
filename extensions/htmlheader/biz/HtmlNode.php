@@ -28,7 +28,7 @@
     * @author Ralf Schubert
     * @version 0.1, 25.09.2009<br>
     */
-   class HtmlNode extends coreObject{
+   class HtmlNode extends APFObject{
 
        /**
         * This checksum allows to compare nodes, in order to find duplicates.

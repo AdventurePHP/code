@@ -52,7 +52,7 @@
     * Version 0.1, 09.11.2007<br />
     * Version 0.2, 24.02.2008 (Existing connections are now cached)<br />
     */
-   final class connectionManager extends coreObject {
+   final class connectionManager extends APFObject {
 
       /**
        * @private

@@ -26,9 +26,9 @@
     * the current language and context. Introducing constructor injection would
     * lead to the situation, that the service objects could not be created
     * in SINGLETON or SESSIONSINGLETON mode with the generic implementations.
-    * Please note, that a service object must derive from the {@link coreObject} class,
+    * Please note, that a service object must derive from the {@link APFObject} class,
     * to be able to inject the context and language of the current instance of
-    * the page or front controller. For convenience, the {@link coreObject} contains the
+    * the page or front controller. For convenience, the {@link APFObject} contains the
     * __getDIServiceObject() method. Usage:
     * <br />
     * <pre>$initializedServiceObject =
@@ -71,7 +71,7 @@
     * Version 0.1, 18.04.2009<br />
     * Version 0.2, 19.04.2009 (Finished implementation)<br />
     */
-   final class DIServiceManager extends coreObject
+   final class DIServiceManager extends APFObject
    {
 
       /**
@@ -103,7 +103,7 @@
        *
        * @param string $configNamespace The namespace of the service object.
        * @param string $name The name of the desired service object.
-       * @return coreObject The preconfigured service object.
+       * @return APFObject The preconfigured service object.
        *
        * @author Christian Achatz
        * @version

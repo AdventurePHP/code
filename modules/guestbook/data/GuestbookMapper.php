@@ -36,10 +36,9 @@
    *  Version 0.1, 12.04.2007<br />
    *  Version 0.2, 07.01.2008 (Values are now quoted during insert/update)<br />
    */
-   class GuestbookMapper extends coreObject
-   {
+   class GuestbookMapper extends APFObject {
 
-      function GuestbookMapper(){
+      public function GuestbookMapper(){
       }
 
 

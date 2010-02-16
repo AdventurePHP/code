@@ -33,7 +33,7 @@
     * @version
     * Version 0.1, 10.02.2008<br />
     */
-   abstract class AbstractDatabaseHandler extends coreObject {
+   abstract class AbstractDatabaseHandler extends APFObject {
 
       /**
        * @protected

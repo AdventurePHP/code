@@ -63,7 +63,7 @@
        * @param string $namespace Namespace of the service object (currently ignored).
        * @param string $serviceName Name of the service object (=class name).
        * @param string $type The initializing type (see service manager for details).
-       * @return coreObject The desired service object.
+       * @return APFObject The desired service object.
        *
        * @author Christian Sch�fer
        * @version
@@ -84,14 +84,14 @@
 
             $serviceObject = &Singleton::getInstance($serviceName);
 
-            if(is_subclass_of($serviceObject,'coreObject')){
+            if(is_subclass_of($serviceObject,'APFObject')){
                $serviceObject->set('Context',$this->__Context);
                $serviceObject->set('Language',$this->__Language);
                $serviceObject->set('ServiceType','SINGLETON');
              // end if
             }
             else{
-               trigger_error('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass coreObject! So the context cannot be set correctly!',E_USER_WARNING);
+               trigger_error('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass APFObject! So the context cannot be set correctly!',E_USER_WARNING);
              // end else
             }
 
@@ -106,14 +106,14 @@
 
             $serviceObject = &SessionSingleton::getInstance($serviceName);
 
-            if(is_subclass_of($serviceObject,'coreObject')){
+            if(is_subclass_of($serviceObject,'APFObject')){
                $serviceObject->set('Context',$this->__Context);
                $serviceObject->set('Language',$this->__Language);
                $serviceObject->set('ServiceType','SESSIONSINGLETON');
              // end if
             }
             else{
-               trigger_error('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass coreObject! So the context cannot be set correctly!',E_USER_WARNING);
+               trigger_error('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass APFObject! So the context cannot be set correctly!',E_USER_WARNING);
              // end else
             }
 
@@ -124,14 +124,14 @@
             // "normally" create the object
             $serviceObject = new $serviceName();
 
-            if(is_subclass_of($serviceObject,'coreObject')){
+            if(is_subclass_of($serviceObject,'APFObject')){
                $serviceObject->set('Context',$this->__Context);
                $serviceObject->set('Language',$this->__Language);
                $serviceObject->set('ServiceType','NORMAL');
              // end if
             }
             else{
-               trigger_error('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass coreObject! So the context cannot be set correctly!',E_USER_WARNING);
+               trigger_error('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass APFObject! So the context cannot be set correctly!',E_USER_WARNING);
              // end else
             }
 
@@ -159,7 +159,7 @@
        * @param string $serviceName Name of the service object (=class name).
        * @param string $InitParam The initialization param for the service object.
        * @param string $type The initializing type (see service manager for details).
-       * @return coreObject The desired service object.
+       * @return APFObject The desired service object.
        *
        * @author Christian Schäfer
        * @version
