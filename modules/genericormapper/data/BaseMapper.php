@@ -80,7 +80,7 @@
        */
       protected $__LogStatements = false;
 
-      function BaseMapper(){
+      public function BaseMapper(){
       }
 
       /**
@@ -100,7 +100,7 @@
        * Version 0.5, 23.06.2008 (mapper now must be instanciated by the factory, that configures the mapper)<br />
        * Version 0.6, 03.05.2009 (added the LogStatements param)<br />
        */
-      function init($initParam){
+      public function init($initParam){
 
          // set the config namespace
          $this->__ConfigNamespace = $initParam['ConfigNamespace'];
@@ -191,19 +191,18 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Imports additional mapping information.
-      *
-      *  @param string $configNamespace the desired configuration namespace
-      *  @param string $configNameAffix the configuration affix of the desired configuration
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 26.10.2008<br />
-      */
+       * @public
+       *
+       * Imports additional mapping information.
+       *
+       * @param string $configNamespace the desired configuration namespace
+       * @param string $configNameAffix the configuration affix of the desired configuration
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 26.10.2008<br />
+       */
       function addMappingConfiguration($configNamespace,$configNameAffix){
 
          // Invoke benchmark timer
@@ -238,19 +237,18 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *
-      *  Imports additional relation information.
-      *
-      *  @param string $configNamespace the desired configuration namespace
-      *  @param string $configNameAffix the configuration affix of the desired configuration
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 26.10.2008<br />
-      */
+       * @public
+       *
+       * Imports additional relation information.
+       *
+       * @param string $configNamespace the desired configuration namespace
+       * @param string $configNameAffix the configuration affix of the desired configuration
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 26.10.2008<br />
+       */
       function addRelationConfiguration($configNamespace,$configNameAffix){
 
          // Invoke benchmark timer
@@ -285,20 +283,19 @@
        // end function
       }
 
-
       /**
-      *  @protected
-      *
-      *  Resolves the table and primary key name within the object definition configuration.
-      *
-      *  @param string $objectName nam of the current configuration section (=name of the current object)
-      *  @param array $objectSection current object definition params
-      *  @return string[] Enhanced object definition
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 26.10.2008<br />
-      */
+       * @protected
+       *
+       * Resolves the table and primary key name within the object definition configuration.
+       *
+       * @param string $objectName nam of the current configuration section (=name of the current object)
+       * @param array $objectSection current object definition params
+       * @return string[] Enhanced object definition
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 26.10.2008<br />
+       */
       protected function __generateMappingItem($objectName,$objectSection){
 
          // resolve standard properties, that derive from the definition
@@ -313,20 +310,19 @@
        // end function
       }
 
-
       /**
-      *  @protected
-      *
-      *  Resolves the table name, source and target id of the relation definition within the relation configuration.
-      *
-      *  @param string $relationName nam of the current configuration section (=name of the current relation)
-      *  @param array $relationSection current relation definition params
-      *  @return string[] Enhanced relation definition
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 26.10.2008<br />
-      */
+       * @protected
+       *
+       * Resolves the table name, source and target id of the relation definition within the relation configuration.
+       *
+       * @param string $relationName nam of the current configuration section (=name of the current relation)
+       * @param array $relationSection current relation definition params
+       * @return string[] Enhanced relation definition
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 26.10.2008<br />
+       */
       protected function __generateRelationItem($relationName,$relationSection){
 
          // Resolve standard properties, that derive from the definition

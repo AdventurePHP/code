@@ -43,7 +43,7 @@
        */
       private $bitIdentifier = 'BIT';
 
-      function GenericORMapper(){
+      public function GenericORMapper(){
       }
 
       /**

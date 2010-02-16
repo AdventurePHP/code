@@ -36,7 +36,7 @@
     */
    class GenericORRelationMapper extends GenericORMapper {
 
-      function GenericORRelationMapper(){
+      public function GenericORRelationMapper(){
       }
 
       /**
@@ -63,7 +63,6 @@
 
        // end function
       }
-
 
       /**
        * @public
@@ -92,7 +91,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -119,7 +117,6 @@
        // end function
       }
 
-
       /**
        * @protected
        *
@@ -132,6 +129,7 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 26.06.2008 (Extracted from __buildSelectStatementByCriterion())<br />
+       * Version 0.2, 16.02.2010 (Added value escaping to avoid SQL injection)<br />
        */
       protected function __buildWhere($objectName,GenericCriterionObject $criterion){
 
@@ -139,19 +137,22 @@
          $WHERE = array();
 
          // retrieve property indicators
-         $Properties = $criterion->get('Properties');
+         $properties = $criterion->get('Properties');
 
-         if(count($Properties) > 0){
+         if(count($properties) > 0){
 
             // add additional where statements
-            foreach($Properties as $PropertyName => $PropertyValue){
+            foreach($properties as $propertyName => $propertyValue){
 
-               if(substr_count($PropertyValue,'%') > 0 || substr_count($PropertyValue,'_') > 0){
-                  $WHERE[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$PropertyName.'` LIKE \''.$PropertyValue.'\'';
+               $propertyName = $this->__DBDriver->escapeValue($propertyName);
+               $propertyValue = $this->__DBDriver->escapeValue($propertyValue);
+               
+               if(substr_count($propertyValue,'%') > 0 || substr_count($propertyValue,'_') > 0){
+                  $WHERE[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$propertyName.'` LIKE \''.$propertyValue.'\'';
                 // end if
                }
                else{
-                  $WHERE[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$PropertyName.'` = \''.$PropertyValue.'\'';
+                  $WHERE[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$propertyName.'` = \''.$propertyValue.'\'';
                 // end else
                }
 
@@ -166,7 +167,6 @@
        // end function
       }
 
-
       /**
        * @protected
        *
@@ -179,6 +179,7 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 26.06.2008 (Extracted from __buildSelectStatementByCriterion())<br />
+       * Version 0.2, 16.02.2010 (Added value escaping to avoid SQL injection)<br />
        */
       protected function __buildOrder($objectName,GenericCriterionObject $criterion){
 
@@ -191,8 +192,10 @@
          if(count($orders) > 0){
 
             // create order list
-            foreach($orders as $PropertyName => $Direction){
-               $ORDER[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$PropertyName.'` '.$Direction;
+            foreach($orders as $propertyName => $direction){
+               $ORDER[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'
+                       .$this->__DBDriver->escapeValue($propertyName).'` '
+                       .$this->__DBDriver->escapeValue($direction);
              // end foreach
             }
 
@@ -203,7 +206,6 @@
 
        // end function
       }
-
 
       /**
        * @protected
@@ -245,7 +247,6 @@
        // end function
       }
 
-
       /**
        * @protected
        *
@@ -264,8 +265,9 @@
       protected function __buildSelectStatementByCriterion($objectName,GenericCriterionObject $criterion){
 
          // invoke benchmarker
-         $T = &Singleton::getInstance('BenchmarkTimer');
-         $T->start('GenericORRelationMapper::__buildSelectStatementByCriterion()');
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $id = 'GenericORRelationMapper::__buildSelectStatementByCriterion()';
+         $t->start($id);
 
          // generate relation joins
          $JOIN = array();
@@ -324,15 +326,11 @@
           // end if
          }
 
-         // stop benchmarker
-         $T->stop('GenericORRelationMapper::__buildSelectStatementByCriterion()');
-
-         // return statement
+         $t->stop($id);
          return $select;
 
        // end function
       }
-
 
       /**
        * @public
@@ -452,7 +450,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -554,7 +551,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -594,12 +590,10 @@
           // end else
          }
 
-         // return multiplicity
          return $multiplicity;
 
        // end function
       }
-
 
       /**
        * @public
@@ -683,7 +677,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -759,12 +752,10 @@
           // end for
          }
 
-         // return id
          return $ID;
 
        // end function
       }
-
 
       /**
        * @public
@@ -814,7 +805,6 @@
 
        // end function
       }
-
 
       /**
        * @public
@@ -866,7 +856,6 @@
 
        // end function
       }
-
 
       /**
        * @public
@@ -925,7 +914,6 @@
        // end function
       }
 
-
       /**
        * @protected
        *
@@ -962,12 +950,10 @@
           // end foreach
          }
 
-         // return list
          return $relationList;
 
        // end function
       }
-
 
       /**
        * @protected
@@ -1013,12 +999,10 @@
           // end foreach
          }
 
-         // return list
          return $relationList;
 
        // end function
       }
-
 
       /**
        * @protected
@@ -1061,7 +1045,6 @@
 
        // end function
       }
-
 
       /**
        * @public
