@@ -73,7 +73,9 @@
            // end if
            }
            else {
-               $path = 'http://' . $_SERVER['HTTP_HOST'] . str_replace($_SERVER['DOCUMENT_ROOT'],'', $_SERVER['SCRIPT_FILENAME']);
+               $tmpPath = str_replace($_SERVER['DOCUMENT_ROOT'],'', $_SERVER['SCRIPT_FILENAME']);
+               $slash =  (substr($tmpPath, 0,1) !== '/') ? '/' : '';
+               $path = 'http://' . $_SERVER['HTTP_HOST'] . $slash . $tmpPath;
                $actionParam = array(
                    'extensions_jscssinclusion_biz-action:sGCJ' => 'path:'.$namespace.'|type:'.$type.'|file:'.$filename
                );
