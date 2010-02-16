@@ -58,22 +58,22 @@
         */
        protected function __buildFCLink($namespace, $filename, $type){
            import('tools::link','FrontcontrollerLinkHandler');
-
+           $path = '';
            $reg = &Singleton::getInstance('Registry');
            $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
-           $libBasePath = $reg->retrieve('apf::core','LibPath');
-           $baseUrl = $reg->retrieve('apf::core','CurrentRequestURL');
            $namespace = str_replace('::','_',$namespace);
 
            $actionParam = array();
 
            if($urlRewriting === true) {
+               $path = $reg->retrieve('apf::core','URLBasePath');
                $actionParam = array(
                    'extensions_jscssinclusion_biz-action/sGCJ' => 'path/'.$namespace.'/type/'.$type.'/file/'.$filename
                );
            // end if
            }
            else {
+               $path = 'http://' . $_SERVER['HTTP_HOST'] . str_replace($_SERVER['DOCUMENT_ROOT'],'', $_SERVER['SCRIPT_FILENAME']);
                $actionParam = array(
                    'extensions_jscssinclusion_biz-action:sGCJ' => 'path:'.$namespace.'|type:'.$type.'|file:'.$filename
                );
@@ -81,7 +81,7 @@
            }
 
            // return url
-           return FrontcontrollerLinkHandler::generateLink($baseUrl,$actionParam);
+           return FrontcontrollerLinkHandler::generateLink($path,$actionParam);
 
        }
 
