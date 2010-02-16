@@ -777,7 +777,8 @@
 
          // transform the form including all child tags
          $htmlCode = (string)'<form ';
-         $htmlCode .= $this->__getAttributesAsString($this->__Attributes,array('name'));
+         $this->deleteAttribute('name'); // delete name attribute to be xhtml 1.1 strict compatible
+         $htmlCode .= $this->__getAttributesAsString($this->__Attributes);
          $htmlCode .= '>';
 
          if(count($this->__Children) > 0){

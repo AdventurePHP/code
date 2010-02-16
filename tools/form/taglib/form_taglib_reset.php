@@ -34,6 +34,11 @@
    class form_taglib_reset extends form_control {
 
       public function form_taglib_reset(){
+         $this->attributeWhiteList[] = 'name';
+         $this->attributeWhiteList[] = 'accesskey';
+         $this->attributeWhiteList[] = 'disabled';
+         $this->attributeWhiteList[] = 'tabindex';
+         $this->attributeWhiteList[] = 'value';
       }
 
       /**

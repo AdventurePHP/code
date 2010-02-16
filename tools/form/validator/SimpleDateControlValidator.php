@@ -85,7 +85,7 @@
          $year = &$this->__Control->getYearControl();
          $this->markControl($year);
 
-         $this->__Control->notifyValidationListeners();
+         $this->notifyValidationListeners($this->__Control);
 
        // end function
       }

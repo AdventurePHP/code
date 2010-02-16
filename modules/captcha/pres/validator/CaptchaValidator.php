@@ -86,7 +86,7 @@
          }
 
          // notify listeners to be able to handle the validation event
-         $this->__Control->notifyValidationListeners();
+         $this->notifyValidationListeners($this->__Control);
 
        // end function
       }

@@ -99,24 +99,6 @@
       /**
        * @public
        *
-       * Re-implements the AbstractFormValidator's method and removes the "ref"
-       * attribute from the main control to be XHTML 1.1/strict compatible.
-       *
-       * @return boolean True, in case the validator is active, false otherwise.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 12.09.2009<br />
-       */
-      public function isActive(){
-         $this->__Control->deleteAttribute('ref');
-         return parent::isActive();
-       // end function
-      }
-
-      /**
-       * @public
-       *
        * Re-implements the notify() method to both mark the main field as well as the
        * reference field as invalid and notify both control's listeners.
        *
@@ -129,8 +111,8 @@
          $this->__RefControl->markAsInvalid();
          $this->markControl($this->__Control);
          $this->markControl($this->__RefControl);
-         $this->__Control->notifyValidationListeners();
-         $this->__RefControl->notifyValidationListeners();
+         $this->notifyValidationListeners($this->__Control);
+         $this->notifyValidationListeners($this->__RefControl);
        // end function
       }
 

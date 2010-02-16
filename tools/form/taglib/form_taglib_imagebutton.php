@@ -31,8 +31,15 @@
     * @version
     * Version 0.1, 27.09.2009<br />
     * Version 0.2, 16.10.2009 (Made subclass of "normal" button to enable validation/filtering!)<br />
+    * Version 0.3, 12.02.2010 (Introduced attribute black and white listing)<br />
     */
    class form_taglib_imagebutton extends form_taglib_button {
+
+      public function form_taglib_imagebutton(){
+         parent::form_taglib_button();
+         $this->attributeWhiteList[] = 'src';
+         $this->attributeWhiteList[] = 'alt';
+      }
 
       /**
        * @public

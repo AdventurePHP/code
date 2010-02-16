@@ -81,7 +81,6 @@
        */
       private function getMaxSize(){
          $maxSize = $this->__Control->getAttribute(self::$ALLOWED_SIZE_ATTRIBUTE_NAME);
-         $this->__Control->deleteAttribute(self::$ALLOWED_SIZE_ATTRIBUTE_NAME);
          if(empty($maxSize)){
             return (int)1024000; // 1MB in bytes
          }

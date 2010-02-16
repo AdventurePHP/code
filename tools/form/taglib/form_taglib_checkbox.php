@@ -25,13 +25,20 @@
     *
     * Represents an APF form checkbox.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 13.01.2007<br />
+    * Version 0.2, 12.02.2010 (Introduced attribute black and white listing)<br />
     */
    class form_taglib_checkbox extends form_control {
 
-      function form_taglib_checkbox(){
+      public function form_taglib_checkbox(){
+         $this->attributeWhiteList[] = 'name';
+         $this->attributeWhiteList[] = 'accesskey';
+         $this->attributeWhiteList[] = 'disabled';
+         $this->attributeWhiteList[] = 'tabindex';
+         $this->attributeWhiteList[] = 'value';
+         $this->attributeWhiteList[] = 'checked';
       }
 
       /**
@@ -66,13 +73,13 @@
        *
        * @return string The HTML code of the checkbox.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 13.01.2007<br />
        * Version 0.2, 11.02.2007 (Moved presetting and validation to the onAfterAppend() method)<br />
        */
       function transform(){
-         return '<input type="checkbox" '.$this->__getAttributesAsString($this->__Attributes).' />';
+         return '<input type="checkbox" '.$this->getSanitizedAttributesAsString($this->__Attributes).' />';
        // end function
       }
 

@@ -25,14 +25,20 @@
     *
     * Represents an APF form button.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 05.01.2007<br />
     * Version 0.2, 14.04.2007 (Added the onAfterAppend() method)<br />
+    * Version 0.3, 12.02.2010 (Introduced attribute black and white listing)<br />
     */
    class form_taglib_button extends form_control {
 
-      function form_taglib_button(){
+      public function form_taglib_button(){
+         $this->attributeWhiteList[] = 'name';
+         $this->attributeWhiteList[] = 'accesskey';
+         $this->attributeWhiteList[] = 'disabled';
+         $this->attributeWhiteList[] = 'tabindex';
+         $this->attributeWhiteList[] = 'value';
       }
 
       /**
@@ -41,7 +47,7 @@
        *
        * Indicates, if the form was sent.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 14.04.2007<br />
        */
@@ -74,12 +80,12 @@
        *
        * @return string The HTML code of the button.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 05.01.2007<br />
        */
       function transform(){
-         return '<input type="submit" '.$this->__getAttributesAsString($this->__Attributes).' />';
+         return '<input type="submit" '.$this->getSanitizedAttributesAsString($this->__Attributes).' />';
        // end function
       }
 

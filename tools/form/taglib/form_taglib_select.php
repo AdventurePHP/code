@@ -20,6 +20,7 @@
     */
 
    import('tools::form::taglib','select_taglib_option');
+   import('tools::form::taglib','select_taglib_group');
 
    /**
     * @package tools::form::taglib
@@ -27,25 +28,37 @@
     *
     * Represents an APF select field.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 07.01.2007<br />
     * Version 0.2, 12.01.2007 (Renamed to "form_taglib_select")<br />
+    * Version 0.3, 15.02.2010 (Added option groups)<br />
     */
    class form_taglib_select extends form_control {
+
+      /**
+       * @protected
+       * @var boolean Marks the field as dynamic to do special presetting on transformation time. 
+       */
+      protected $isDynamicField = false;
 
       /**
        * @public
        *
        * Initializes the child taglibs.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 07.01.2007<br />
        * Version 0.2, 03.03.2007 (Removed "&" before "new")<br />
        */
-      function form_taglib_select(){
+      public function form_taglib_select(){
          $this->__TagLibs[] = new TagLib('tools::form::taglib','select','option');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','select','group');
+         $this->attributeWhiteList[] = 'disabled';
+         $this->attributeWhiteList[] = 'name';
+         $this->attributeWhiteList[] = 'size';
+         $this->attributeWhiteList[] = 'tabindex';
        // end function
       }
 
@@ -54,51 +67,13 @@
        *
        * Parses the options and initializes the select field.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 07.01.2007<br />
        */
-      function onParseTime(){
+      public function onParseTime(){
          $this->__extractTagLibTags();
-         $this->__presetValue();
-       // end function
-      }
-
-      /**
-       * @public
-       *
-       * Selects an option by a given name or value.
-       *
-       * @param string $displayNameOrValue The option's name or value to set to selected.
-       *
-       * @author Christian Sch�fer
-       * @version
-       * Version 0.1, 07.01.2007<br />
-       * Version 0.2, 18.11.2007 (Fehlermeldung korrigiert und M�glichkeit einger�umt per Value oder DisplayName selected zu setzen)<br />
-       */
-      function setOption2Selected($displayNameOrValue){
-
-         $optionCount = 0;
-
-         foreach($this->__Children as $objectId => $Child){
-
-            if(trim($this->__Children[$objectId]->get('Content')) == $displayNameOrValue
-               || $Child->getAttribute('value') == $displayNameOrValue){
-               $this->__Children[$objectId]->setAttribute('selected','selected');
-               $optionCount++;
-             // end if
-            }
-
-          // end foreach
-         }
-
-         if($optionCount < 1){
-            trigger_error('[form_taglib_select::setOption2Selected()] No option with name or value "'
-               .$displayNameOrValue.'" found in select field "'.$this->__Attributes['name']
-               .'" in form "'.$this->__ParentObject->getAttribute('name').'"!');
-          // end if
-         }
-
+         $this->setOption2Selected($this->getRequestValue());
        // end function
       }
 
@@ -111,12 +86,15 @@
        * @param string $value The option's value.
        * @param boolean $preSelected True in case, the option should be selected, false otherwise.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 07.01.2007<br />
-       * Version 0.2, 07.06.2008 (objectId is not set to the added option)<br />
+       * Version 0.2, 07.06.2008 (objectId is now set to the added option)<br />
        */
-      function addOption($displayName,$value,$preSelected = false){
+      public function addOption($displayName,$value,$preSelected = false){
+
+         // mark as dynamic field
+         $this->isDynamicField = true;
 
          $objectId = XmlParser::generateUniqID();
          $this->__Children[$objectId] = new select_taglib_option();
@@ -127,7 +105,6 @@
 
          if($preSelected == true){
             $this->__Children[$objectId]->setAttribute('selected','selected');
-          // end if
          }
          $this->__Children[$objectId]->set('Language',$this->__Language);
          $this->__Children[$objectId]->set('Context',$this->__Context);
@@ -146,50 +123,78 @@
       /**
        * @public
        *
-       * Generates the HTML code of the select field.
+       * Adds an option to a group specified by the applied label.
+       * 
+       * @param string $groupLabel The name of the group's label.
+       * @param string $displayName The display text of the option.
+       * @param string $value The option's value.
+       * @param boolean $preSelected True in case, the option should be selected, false otherwise.
        *
-       * @return string The HTML code of the select field.
-       *
-       * @author Christian Sch�fer
+       * @author Christian Achatz
        * @version
-       * Version 0.1, 07.01.2007<br />
-       * Version 0.2, 12.01.2007 (Removed typos)<br />
-       * Version 0.3, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
+       * Version 0.1, 15.02.2010<<br />
        */
-      function transform(){
+      public function addGroupOption($groupLabel,$displayName,$value,$preSelected = false){
 
-         $select = (string)'';
-         $select .= '<select '.$this->__getAttributesAsString($this->__Attributes).'>';
+         // mark as dynamic field
+         $this->isDynamicField = true;
 
-         if(count($this->__Children) > 0){
+         // retrieve or lazily create group
+         $group = &$this->getGroup($groupLabel);
+         if($group === null){
 
-            foreach($this->__Children as $objectId => $DUMMY){
+            $objectId = XmlParser::generateUniqID();
+            $this->__Children[$objectId] = new select_taglib_group();
+            $this->__Children[$objectId]->set('ObjectID',$objectId);
+            $this->__Children[$objectId]->setAttribute('label',$groupLabel);
 
-               if(isset($_REQUEST[$this->getAttribute('name')]) && !empty($_REQUEST[$this->getAttribute('name')])){
+            $this->__Children[$objectId]->set('Language',$this->__Language);
+            $this->__Children[$objectId]->set('Context',$this->__Context);
+            $this->__Children[$objectId]->onParseTime();
 
-                  if($this->__Children[$objectId]->getAttribute('value') == $_REQUEST[$this->getAttribute('name')]){
-                     $this->__Children[$objectId]->setAttribute('selected','selected');
-                   // end if
-                  }
-                  else{
-                     $this->__Children[$objectId]->deleteAttribute('selected');
-                   // end else
-                  }
+            // inject parent object (=this) to guarantee native DOM tree environment
+            $this->__Children[$objectId]->setByReference('ParentObject',$this);
+            $this->__Children[$objectId]->onAfterAppend();
 
-                // end if
-               }
+            // add xml marker, necessary for transformation
+            $this->__Content .= '<'.$objectId.' />';
 
-               $this->__Content = str_replace('<'.$objectId.' />',$this->__Children[$objectId]->transform(),$this->__Content);
-
-             // end foreach
-            }
+            // make group available for the subsequent call
+            $group = &$this->__Children[$objectId];
 
           // end if
          }
 
-         $select .= $this->__Content;
-         $select .= '</select>';
-         return $select;
+         // add option to group
+         $group->addOption($displayName,$value,$preSelected);
+
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Returns the desired group by a given group label.
+       *
+       * @param string $label The label of the group to return.
+       * @return select_taglib_group The desired group or null.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 15.02.2010<<br />
+       */
+      public function &getGroup($label){
+
+         $group = null;
+
+         foreach($this->__Children as $objectId => $DUMMY){
+            if($this->__Children[$objectId]->getAttribute('label') == $label){
+               $group = &$this->__Children[$objectId];
+               break;
+            }
+         }
+
+         return $group;
 
        // end function
       }
@@ -199,28 +204,107 @@
        *
        * Returns the selected option.
        *
-       * @return select_taglib_option The selected option taglib instance.
+       * @return select_taglib_option The selected option.
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 08.06.2008<br />
+       * Version 0.1, 15.02.2010<br />
        */
-      function &getSelectedOption(){
+      public function &getSelectedOption(){
 
-         // execute presetting lazily for dynamic forms
-         $this->__presetValue();
+         // lazily do request presetting when not already done
+         if($this->isDynamicField === true){
+            $this->setOption2Selected($this->getRequestValue());
+         }
 
          $selectedOption = null;
-
          foreach($this->__Children as $objectId => $DUMMY){
-            if($this->__Children[$objectId]->getAttribute('selected') == 'selected'){
-               $selectedOption = &$this->__Children[$objectId];
-             // end if
+
+            if(get_class($this->__Children[$objectId]) == 'select_taglib_group'){
+               $selectedOption = &$this->__Children[$objectId]->getSelectedOption();
             }
+            else{
+               if($this->__Children[$objectId]->getAttribute('selected') === 'selected'){
+                  $selectedOption = &$this->__Children[$objectId];
+                  break;
+               }
+            }
+
           // end foreach
          }
 
          return $selectedOption;
+         
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Pre-selects an option by a given display name or value.
+       *
+       * @param string $displayNameOrValue The display name or the value of the option to pre-select.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 15.02.2010<<br />
+       */
+      public function setOption2Selected($displayNameOrValue){
+
+         $this->isDynamicField = false;
+
+         foreach($this->__Children as $objectId => $DUMMY){
+
+            // treat groups as a special case, because a group has more options in it!
+            if(get_class($this->__Children[$objectId]) == 'select_taglib_group'){
+               $this->__Children[$objectId]->setOption2Selected($displayNameOrValue);
+            }
+            else{
+               if($this->__Children[$objectId]->getAttribute('value') == $displayNameOrValue
+                       || $this->__Children[$objectId]->get('Content') == $displayNameOrValue){
+                  $this->__Children[$objectId]->setAttribute('selected','selected');
+               }
+            }
+
+          // end foreach
+         }
+         
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Generates the HTML code of the select field.
+       *
+       * @return string The HTML code of the select field.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 07.01.2007<br />
+       * Version 0.2, 12.01.2007 (Removed typos)<br />
+       * Version 0.3, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
+       */
+      public function transform(){
+
+         // do lazy presetting, in case we are having a field with dynamic options
+         if($this->isDynamicField === true){
+            $value = $this->getRequestValue();
+            $this->setOption2Selected($this->getRequestValue());
+         }
+
+         // create html code
+         $select = (string)'';
+         $select .= '<select '.$this->__getAttributesAsString($this->__Attributes).'>';
+
+         foreach($this->__Children as $objectId => $DUMMY){
+            $this->__Content = str_replace('<'.$objectId.' />',
+                    $this->__Children[$objectId]->transform(),
+                    $this->__Content
+            );
+         }
+
+         return $select.$this->__Content.'</select>';
 
        // end function
       }
@@ -261,40 +345,6 @@
       /**
        * @protected
        *
-       * Re-implements the method from the base class to specialize the
-       * presetting for the select field.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 08.06.2008 (Method is now overridden due to validation error!)<br />
-       * Version 0.2, 29.08.2009 (Introduced presetting of sub-elements)<br />
-       */
-      protected function __presetValue(){
-
-         $value = $this->__getRequestValue();
-
-         if(count($this->__Children) > 0){
-
-            foreach($this->__Children as $objectId => $DUMMY){
-
-               // preselect options with the corresponding values or delete attribute
-               if($this->__Children[$objectId]->getAttribute('value') == $value){
-                  $this->__Children[$objectId]->setAttribute('selected','selected');
-                // end if
-               }
-
-             // end foreach
-            }
-
-          // end if
-         }
-
-       // end function
-      }
-
-      /**
-       * @protected
-       *
        * Returns the value of the present form control from the request.
        * Enables sub-elements of form controls (date control!).
        *
@@ -304,7 +354,7 @@
        * @version
        * Version 0.1, 29.08.2009<br />
        */
-      protected function __getRequestValue(){
+      protected function getRequestValue(){
 
          $name = $this->getAttribute('name');
          $value = (string)'NOVALUEINREQUEST';

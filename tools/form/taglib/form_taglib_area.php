@@ -31,7 +31,13 @@
     */
    class form_taglib_area extends form_control {
 
-      function form_taglib_area(){
+      public function form_taglib_area(){
+         $this->attributeWhiteList[] = 'name';
+         $this->attributeWhiteList[] = 'cols';
+         $this->attributeWhiteList[] = 'rows';
+         $this->attributeWhiteList[] = 'tabindex';
+         $this->attributeWhiteList[] = 'disabled';
+         $this->attributeWhiteList[] = 'readonly';
       }
 
       /**
@@ -47,7 +53,8 @@
        * Version 0.2, 11.02.2007 (Presetting und Validierung nach onAfterAppend() verschoben)<br />
        */
       function transform(){
-         return '<textarea '.$this->__getAttributesAsString($this->__Attributes).'>'.$this->__Content.'</textarea>';
+         return '<textarea '.$this->getSanitizedAttributesAsString($this->__Attributes).'>'
+            .$this->__Content.'</textarea>';
        // end function
       }
 
@@ -56,7 +63,7 @@
        *
        * Implements the presetting method for the text area.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 13.01.2007<br />
        */
@@ -71,6 +78,7 @@
 
       /**
        * @public
+       * @since 1.11
        *
        * Re-implements the method to fit the requirements of the text area field.
        *
@@ -106,31 +114,6 @@
             $this->__Content = $filter->filter($this->__Content);
           // end if
          }
-       // end function
-      }
-
-      /**
-       * @protected
-       *
-       * Reimplements the filter method for the text area.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 07.12.2008<br />
-       */
-      protected function __filter(){
-
-         // initialize filter
-         $this->__initializeFilter();
-
-         // filter input
-         if($this->__FilterObject === true){
-            $filter = FilterFactory::getFilter(new FilterDefinition($this->__FilterNamespace,$this->__FilterClass));
-            $filter->setInstruction($this->__FilterMethod);
-            $this->__Content = $filter->filter($this->__Content);
-          // end if
-         }
-
        // end function
       }
 

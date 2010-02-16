@@ -26,7 +26,7 @@
     *
     * Implements a base class for all APF form elements.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 05.01.2007<br />
     * Version 0.2, 02.06.2007 (Added the $__ExclusionArray, moved the __getAttributesAsString() to the coreObject class)<br />
@@ -48,13 +48,33 @@
        */
       protected $__ControlIsSent = false;
 
-      function form_control(){
+      /**
+       * @protected
+       * @since 1.12
+       * @var string[] The attributes, that are allowed to render into the XHTML/1.1 strict document.
+       */
+      protected $attributeWhiteList = array('id','style','class');
+
+      /**
+       * @protected
+       * @since 1.12
+       * @var string[] The attributes, that are *not* allowed to render into the XHTML/1.1 strict document.
+       */
+      protected $attributeBlackList = array();
+
+      public function form_control(){
       }
 
       /**
+       * @public
+       *
        * Initiate presetting of the form control. If you cannot use
        * value presetting, overwrite the protected method
        * <code>__presetValue()</code>.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 25.08.2009<br />
        */
       public function onParseTime(){
          $this->__presetValue();
@@ -167,6 +187,106 @@
          $this->deleteAttribute('checked');
        // end function
       }
+
+      /**
+       * @public
+       *
+       * Disables a form control for usage.
+       *
+       * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.02.2010<br />
+       */
+      public function disable(){
+         $this->setAttribute('disabled','disabled');
+      }
+
+      /**
+       * @public
+       *
+       * Enables a form control for user access.
+       *
+       * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.02.2010<br />
+       */
+      public function enable(){
+         $this->deleteAttribute('disabled');
+      }
+
+      /**
+       * @public
+       *
+       * Let's you query the user access status.
+       *
+       * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
+       *
+       * @return True in case the control is read only, false otherwise.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.02.2010<br />
+       */
+      public function isDisabled(){
+         if($this->getAttribute('disabled') == 'disabled'){
+            return true;
+         }
+         return false;
+      }
+      
+      /**
+       * @public
+       *
+       * Sets a form control to read only.
+       *
+       * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.02.2010<br />
+       */
+      public function setReadOnly(){
+         $this->setAttribute('readonly','readonly');
+      }
+
+      /**
+       * @public
+       *
+       * Enables a form control for write access.
+       *
+       * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.02.2010<br />
+       */
+      public function setReadWrite(){
+         $this->deleteAttribute('readonly');
+      }
+
+      /**
+       * @public
+       *
+       * Let's you query the read only status.
+       *
+       * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
+       *
+       * @return True in case the control is read only, false otherwise.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.02.2010<br />
+       */
+      public function isReadOnly(){
+         if($this->getAttribute('readonly') == 'readonly'){
+            return true;
+         }
+         return false;
+      }
       
       /**
        * @public
@@ -234,33 +354,6 @@
           // end else
          }
 
-       // end function
-      }
-
-      /**
-       * @public
-       *
-       * Notifies all validation listeners, who's control attribute is the same
-       * as the name of the present control. This enables you to insert listener
-       * tags, that output special content if notified. Hence, you can realize
-       * special error formatting.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 30.08.2009<br />
-       */
-      public function notifyValidationListeners(){
-
-         $listeners = &$this->__ParentObject->getFormElementsByTagName('form:listener');
-         $count = count($listeners);
-         $controlName = $this->getAttribute('name');
-
-         for($i = 0; $i < $count; $i++){
-            if($listeners[$i]->getAttribute('control') === $controlName){
-               $listeners[$i]->notify();
-            }
-         }
-         
        // end function
       }
 
@@ -378,6 +471,23 @@
          return null;
 
        // end function
+      }
+
+      /**
+       * @protected
+       *
+       * Converts an attributes array into a xml string including the black list
+       * and white list definition within the taglib instance.
+       *
+       * @param string[] $attributes The attributes to convert to string.
+       * @return string The attributes' xml string representation.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.02.2010<br />
+       */
+      protected function getSanitizedAttributesAsString($attributes){
+         return $this->__getAttributesAsString($attributes,array(),$this->attributeWhiteList);
       }
 
     // end class

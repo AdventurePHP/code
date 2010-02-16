@@ -58,20 +58,37 @@
       protected $__Button;
 
       /**
+       * Indicates the type of validator listeners, that should be notified.
+       * In case the type is set to <em>special</em>, only listeners having
+       * the <em>validator</em> attribute specified should be notified.
+       * @since 1.12
+       * @var string The validator type.
+       */
+      protected $__Type = null;
+
+      /**
+       * @since 1.12
+       * @var string Indicates the special validator behaviour.
+       */
+      protected static $SPECIAL_VALIDATOR_INDICATOR = 'special';
+
+      /**
        * @public
        *
        * Injects the control to validate and the button, that triggers the validation.
        *
        * @param form_control $control The control, that should be validated.
        * @param form_control $button The button, that triggers the validate event.
+       * @param string $type The validator's type regarding the listener notification.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 24.08.2009<br />
        */
-      public function AbstractFormValidator(form_control &$control,form_control &$button){
+      public function AbstractFormValidator(form_control &$control,form_control &$button,$type = null){
          $this->__Control = &$control;
          $this->__Button = &$button;
+         $this->__Type = $type;
        // end function
       }
 

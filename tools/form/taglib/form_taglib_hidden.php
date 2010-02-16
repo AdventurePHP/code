@@ -25,13 +25,16 @@
     *
     * Represents a HTML hidden field within the APF form tags.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 05.01.2007<br />
+    * Version 0.2, 12.02.2010 (Introduced attribute black and white listing)<br />
     */
    class form_taglib_hidden extends form_control {
 
       public function form_taglib_hidden(){
+         $this->attributeWhiteList[] = 'name';
+         $this->attributeWhiteList[] = 'value';
       }
 
       /**
@@ -41,12 +44,12 @@
        *
        * @return string The HTML code of the hidden field.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 05.01.2007<br />
        */
       public function transform(){
-         return '<input type="hidden" '.$this->__getAttributesAsString($this->__Attributes).' />';
+         return '<input type="hidden" '.$this->getSanitizedAttributesAsString($this->__Attributes).' />';
        // end function
       }
 

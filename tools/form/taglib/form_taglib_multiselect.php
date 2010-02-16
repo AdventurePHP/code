@@ -1,23 +1,23 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('tools::form::taglib','select_taglib_option');
    import('tools::form::taglib','form_taglib_select');
@@ -33,6 +33,7 @@
     * Version 0.1, 15.01.2007<br />
     * Version 0.2, 07.06.2008 (Reimplemented the transform() method)<br />
     * Version 0.3, 08.06.2008 (Reimplemented the __validate() method)<br />
+    * Version 0.3, 12.02.2010 (Introduced attribute black and white listing)<br />
     */
    class form_taglib_multiselect extends form_taglib_select {
 
@@ -41,7 +42,7 @@
        *
        * Initializes the known child taglibs, sets the validator style and addes the multiple attribute.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 07.01.2007<br />
        * Version 0.2, 03.03.2007 (Removed the "&" before the "new" operator)<br />
@@ -50,6 +51,11 @@
       function form_taglib_multiselect(){
          $this->__TagLibs[] = new TagLib('tools::form::taglib','select','option');
          $this->setAttribute('multiple','multiple');
+         $this->attributeWhiteList[] = 'disabled';
+         $this->attributeWhiteList[] = 'name';
+         $this->attributeWhiteList[] = 'size';
+         $this->attributeWhiteList[] = 'tabindex';
+         $this->attributeWhiteList[] = 'multiple';
        // end function
       }
 
@@ -102,12 +108,11 @@
        */
       function transform(){
 
-         // remove value attribute created by the validation
-         //unset($this->__Attributes['value']);
-
          // add brackets for the "name" attribute to ensure multi select capability!
-         $select = '<select name="'.$this->getAttribute('name').'[]" '
-            .$this->__getAttributesAsString($this->__Attributes,array('name')).'>';
+         $name = $this->getAttribute('name').'[]';
+         $this->deleteAttribute('name');
+         $select = '<select name="'.$name.'" '
+            .$this->__getAttributesAsString($this->__Attributes).'>';
          $select .= $this->__Content.'</select>';
 
          if(count($this->__Children) > 0){
@@ -161,7 +166,7 @@
       function &getSelectedOptions(){
 
          // call presetting lazy
-         $this->__presetValue(); // maybe not needed now?
+         $this->__presetValue();
 
          // create list
          $options = array();

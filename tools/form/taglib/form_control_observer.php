@@ -34,6 +34,12 @@
    class form_control_observer extends form_control {
 
       /**
+       * @since 1.12
+       * @var string The name of the attribute, that specifies the validator's type.
+       */
+      private static $TYPE_ATTRIBUTE_NAME = 'type';
+
+      /**
        * Overwrite the parent's onParseTime() method to not
        * initiate presetting.
        */
@@ -62,7 +68,7 @@
        * Constructs the desired form control observer using tag attributes.
        *
        * @@param string $injectionMethod The name of the method to inject the observer with.
-       * @return coreObject The form control observer.
+       * @return AbstractFormValidator The form control observer.
        *
        * @author Christian Achatz
        * @version
@@ -97,6 +103,7 @@
             // retrieve elements to pass to the validator and validate them
             $control = &$this->__ParentObject->getFormElementByName($controlName);
             $button = &$this->__ParentObject->getFormElementByName($buttonName);
+            $type = $this->getAttribute(self::$TYPE_ATTRIBUTE_NAME);
 
             if($control === null || $button === null){
                $formName = $this->__ParentObject->getAttribute('name');
@@ -110,9 +117,10 @@
             // include observer class
             import($namespace,$class);
 
-            // construct observer injecting the control to validate and the button,
-            // that triggers the event.
-            $observer = new $class($control,$button);
+            // Construct observer injecting the control to validate and the button,
+            // that triggers the event. As of 1.12, the type is presented to the
+            // validator to enable special listener notification.
+            $observer = new $class($control,$button,$type);
 
             // inject the observer into the form control
             $control->{$injectionMethod}($observer);

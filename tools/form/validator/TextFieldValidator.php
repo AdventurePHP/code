@@ -46,7 +46,67 @@
       public function notify(){
          $this->__Control->markAsInvalid();
          $this->markControl($this->__Control);
-         $this->__Control->notifyValidationListeners();
+         $this->notifyValidationListeners($this->__Control);
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Notifies all validation listeners, who's control attribute is the same
+       * as the name of the present control. This enables you to insert listener
+       * tags, that output special content if notified. Hence, you can realize
+       * special error formatting.
+       * <p/>
+       * In case the name of the special validator is unlike <em>null</em>, all
+       * listeners will be notified, that have the <em>validator</em> attribute
+       * specified. This lets you define dedicated listener, that are only
+       * displayed when triggered by a special validator.
+       *
+       * @param form_control $control The control who's listeners should be notified.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 30.08.2009<br />
+       * Version 0.2, 12.02.2010 (Moved to TextFieldValidator and introduced special listener notification)<br />
+       */
+      protected function notifyValidationListeners(&$control){
+
+         $listeners = &$control->getByReference('ParentObject')->getFormElementsByTagName('form:listener');
+         $count = count($listeners);
+         $controlName = $control->getAttribute('name');
+         $validatorName = $this->getValidatorName();
+         
+         for($i = 0; $i < $count; $i++){
+            // Here, we're using a little trick: empty attributes are considered "null"
+            // by the XmlParser. Thus, we can set the validator's name to null to
+            // indicate, that we want a "normal" listener (=no special listener) to be
+            // notified!
+            if($listeners[$i]->getAttribute('control') === $controlName 
+                    && $listeners[$i]->getAttribute('validator') === $validatorName){
+               $listeners[$i]->notify();
+            }
+         }
+
+       // end function
+      }
+
+      /**
+       * @protected
+       *
+       * Evaluates the name of the validator to be used during listener notification.
+       *
+       * @return string Indicates the name of the special validator to notify.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.02.2010<br />
+       */
+      protected function getValidatorName(){
+         if($this->__Type === self::$SPECIAL_VALIDATOR_INDICATOR){
+            return get_class($this);
+         }
+         return null;
        // end function
       }
 
@@ -68,7 +128,6 @@
       protected function markControl(&$control){
          $marker = $this->getCssMarkerClass($control);
          $this->appendCssClass($control,$marker);
-         $control->deleteAttribute(self::$CUSTOM_MARKER_CLASS_ATTRIBUTE);
        // end function
       }
 

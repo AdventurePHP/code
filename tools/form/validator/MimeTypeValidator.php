@@ -83,7 +83,6 @@
        */
       private function getAcceptedMIMETypes(){
          $accepts = $this->__Control->getAttribute(self::$ACCEPTS_ATTRIBUTE_NAME);
-         $this->__Control->deleteAttribute(self::$ACCEPTS_ATTRIBUTE_NAME);
          if(empty($accepts)){
             return array();
          }

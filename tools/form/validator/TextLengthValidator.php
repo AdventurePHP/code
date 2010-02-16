@@ -91,11 +91,6 @@
          if($minLength === null){
             $minLength = 3;
          }
-
-         // remove the "minlenght" attribute, so that it is not rendered on
-         // transformation time of the control
-         $this->__Control->deleteAttribute(self::$MIN_LENGTH_ATTRIBUTE_NAME);
-
          return (int)$minLength;
       }
 
@@ -113,13 +108,8 @@
        * Version 0.1, 06.02.2010<br />
        */
       private function getMaxLength(){
-         $maxLength = $this->__Control->getAttribute(self::$MAX_LENGTH_ATTRIBUTE_NAME);
-         
-         // remove the "maxlenght" attribute, so that it is not rendered on
-         // transformation time of the control
-         $this->__Control->deleteAttribute(self::$MAX_LENGTH_ATTRIBUTE_NAME);
-
          // max length beeing null is ok, because we consider it to indicate infinite length!
+         $maxLength = $this->__Control->getAttribute(self::$MAX_LENGTH_ATTRIBUTE_NAME);
          return (int)$maxLength;
       }
 

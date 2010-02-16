@@ -19,39 +19,22 @@
     * -->
     */
 
+   import('tools::form::taglib','select_taglib_option');
+
    /**
     * @package tools::form::taglib
-    * @class form_taglib_password
+    * @class group_taglib_option
     *
-    * Represents a APF password field.
+    * Represents a select option within an option group of an APF select field.
     *
-    * @author Christian Schäfer
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 12.01.2007<br />
-    * Version 0.2, 12.01.2007<br />
-    * Version 0.3, 12.02.2010 (Introduced attribute black and white listing)<br />
+    * Version 0.1, 12.02.2010<br />
     */
-   class form_taglib_password extends form_taglib_text {
+   class group_taglib_option extends select_taglib_option {
 
-      public function form_taglib_password(){
-         parent::form_taglib_text();
-      }
-
-      /**
-       * @public
-       *
-       * Returns the HTML source code of the text field.
-       *
-       * @return string HTML code of the password field.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 12.01.2007<br />
-       * Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
-       */
-      public function transform(){
-         return  '<input type="password" '.$this->getSanitizedAttributesAsString($this->__Attributes).' />';
-       // end function
+      public function group_taglib_option(){
+         parent::select_taglib_option();
       }
 
     // end class

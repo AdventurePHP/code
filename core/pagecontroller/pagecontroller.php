@@ -901,33 +901,36 @@
       /**
        * @protected
        *
-       * Creates an attribute string by a given attributes list. Exludes params provided by the
-       * second argument.
+       * Creates a string representation of the given attributes list, using a
+       * white list to especially include attributes.
        *
-       * @param array $attributes The list of attributes.
-       * @param array $exclusionList A list of attributes, that should not be contained in the attribute's string representation.
-       * @return string HTML sttribute string or empty string in case of no attributes.
+       * @param string[] $attributes The list of attributes to convert to an xml string.
+       * @param string[] $whiteList  The list of attributes, the string may contain.
+       * @return string The xml attributes string.
        *
-       * @author Christian Schäfer
+       * @author Christian Achatz
        * @version
-       * Version 0.1, 05.01.2007<br />
-       * Version 0.2, 07.01.2007 (Added $exclusionList behaviour)<br />
-       * Version 0.3, 02.06.2007 (Corrected typos and moved to "coreObject")<br />
+       * Version 0.1, 13.02.2010 (Replaced old implementation with the white list feature.)<br />
        */
-      protected function __getAttributesAsString($attributes,$exclusionList = array()){
+      protected function __getAttributesAsString($attributes,$whiteList = array()){
 
          if(count($attributes) > 0){
 
             $attributeParts = array();
 
-            foreach($attributes as $offset => $value){
-
-               if(!in_array($offset,$exclusionList)){
-                  $attributeParts[] = $offset.'="'.$value.'"';
-                // end if
+            // process white list entries only, when attribute is given
+            // code duplication is done here due to performance reasons!!!
+            if(count($whiteList) > 0){
+               foreach($attributes as $offset => $value){
+                  if(in_array($offset,$whiteList)){
+                     $attributeParts[] = $offset.'="'.$value.'"';
+                  }
                }
-
-             // end foreach
+            }
+            else{
+               foreach($attributes as $offset => $value){
+                  $attributeParts[] = $offset.'="'.$value.'"';
+               }
             }
 
             return implode(' ',$attributeParts);

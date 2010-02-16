@@ -30,10 +30,17 @@
     * @author Christian Schäfer
     * @version
     * Version 0.1, 13.01.2007<br />
+    * Version 0.2, 12.02.2010 (Introduced attribute black and white listing)<br />
     */
    class form_taglib_file extends form_taglib_text {
 
       public function form_taglib_file(){
+         $this->attributeWhiteList[] = 'name';
+         $this->attributeWhiteList[] = 'accesskey';
+         $this->attributeWhiteList[] = 'disabled';
+         $this->attributeWhiteList[] = 'readonly';
+         $this->attributeWhiteList[] = 'tabindex';
+         $this->attributeWhiteList[] = 'accept';
       }
 
       /**
@@ -66,7 +73,7 @@
        * Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
        */
       function transform(){
-         return '<input type="file" '.$this->__getAttributesAsString($this->__Attributes).' />';
+         return '<input type="file" '.$this->getSanitizedAttributesAsString($this->__Attributes).' />';
        // end function
       }
 

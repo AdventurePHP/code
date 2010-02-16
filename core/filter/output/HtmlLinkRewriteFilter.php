@@ -132,8 +132,10 @@
                 // end if
                }
 
-               $currentReplacedLinkString =
-                  $startToken.' '.$this->__getAttributesAsString($currentLinkAttributes,array('linkrewrite')).'>';
+               // remove the linkrewrite attribute and generate the link tag
+               unset($currentLinkAttributes['linkrewrite']);
+               $currentReplacedLinkString = $startToken.' '
+                  .$this->__getAttributesAsString($currentLinkAttributes).'>';
                $htmlContent = substr_replace($htmlContent,
                   $currentReplacedLinkString,
                   $currentLinkStartPos,
