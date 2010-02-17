@@ -487,7 +487,7 @@
        * Version 0.1, 12.02.2010<br />
        */
       protected function getSanitizedAttributesAsString($attributes){
-         return $this->__getAttributesAsString($attributes,array(),$this->attributeWhiteList);
+         return $this->__getAttributesAsString($attributes,$this->attributeWhiteList);
       }
 
     // end class
