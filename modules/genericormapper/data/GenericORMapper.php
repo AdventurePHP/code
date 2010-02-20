@@ -101,27 +101,27 @@
        *
        * Loads an object list by a list of object ids.<br />
        *
-       * @param string $ObjectName name of the object in mapping table
-       * @param array $IDs list of object ids
+       * @param string $objectName name of the object in mapping table
+       * @param array $ids list of object ids
        * @return GenericDomainObject[] The desired object list.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 14.05.2008<br />
        */
-      public function loadObjectListByIDs($ObjectName,$IDs = array()){
+      public function loadObjectListByIDs($objectName,$ids = array()){
 
          // initialize return list
-         $Objects = array();
-         $count = count($IDs);
+         $objects = array();
+         $count = count($ids);
 
          // load objects
          for($i = 0; $i < $count; $i++){
-            $Objects[] = $this->loadObjectByID($ObjectName,$IDs[$i]);
+            $objects[] = $this->loadObjectByID($objectName,$ids[$i]);
           // end for
          }
 
-         return $Objects;
+         return $objects;
 
        // end function
       }
@@ -242,9 +242,9 @@
          $objectName = $object->get('ObjectName');
 
          if(!isset($this->__MappingTable[$objectName])){
-            trigger_error('[GenericORMapper::saveObject()] The object name "'.$objectName
-                .'" does not exist in the mapping table! Hence, your object cannot be saved! '
-                .'Please check your object configuration.');
+            throw new GenericORMapperException('[GenericORMapper::saveObject()] The object name "'
+                .$objectName.'" does not exist in the mapping table! Hence, your object cannot be saved! '
+                .'Please check your object configuration.',E_USER_ERROR);
             return null;
           // end if
          }

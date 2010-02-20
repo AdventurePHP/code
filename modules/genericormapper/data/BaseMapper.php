@@ -21,6 +21,7 @@
 
    import('core::database','connectionManager');
    import('modules::genericormapper::data','GenericDomainObject');
+   import('modules::genericormapper::data','GenericORMapperException');
 
 
    /**

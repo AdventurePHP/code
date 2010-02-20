@@ -1,49 +1,47 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('modules::genericormapper::data','GenericORRelationMapper');
 
    /**
-   *  @package modules::genericormapper::data
-   *  @class GenericORMapperFactory
-   *
-   *  Implements the factory for the GenericORRelationMapper. Please do only unse the factory in
-   *  singleton mode. To achieve this, use the APFObject's __getServiceObject() method.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 23.06.2008<br />
-   */
+    * @package modules::genericormapper::data
+    * @class GenericORMapperFactory
+    *
+    * Implements the factory for the GenericORRelationMapper. Please do only unse the factory in
+    * singleton mode. To achieve this, use the APFObject's <em>__getServiceObject()</em> method.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.06.2008<br />
+    */
    class GenericORMapperFactory extends APFObject {
 
       /**
-      *  @private
-      *  Stores the or mapper instances.
-      */
+       * @private
+       * @var GenericORRelationMapper[] Stores the or mapper instances.
+       */
       private $__ORMapperCache = array();
 
-
-      function GenericORMapperFactory(){
+      public function GenericORMapperFactory(){
       }
-
 
       /**
        * @public

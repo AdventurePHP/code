@@ -1,23 +1,23 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('modules::genericormapper::data','GenericORMapper');
 
@@ -82,7 +82,9 @@
       public function loadObjectListByCriterion($objectName,GenericCriterionObject $criterion){
 
          if($criterion === null){
-            trigger_error('[GenericORRelationMapper::loadObjectListByCriterion()] No criterion object given as second argument! Please consult the manual.');
+            throw new GenericORMapperException('[GenericORRelationMapper::loadObjectListByCriterion()] '
+                    .'No criterion object given as second argument! Please consult the manual.',
+                    E_USER_ERROR);
             return null;
           // end if
          }
@@ -108,7 +110,8 @@
       public function loadObjectByCriterion($objectName,GenericCriterionObject $criterion){
 
          if($criterion === null){
-            trigger_error('[GenericORRelationMapper::loadObjectByCriterion()] No criterion object given as second argument! Please consult the manual.');
+            throw new GenericORMapperException('[GenericORRelationMapper::loadObjectByCriterion()] '
+                    .'No criterion object given as second argument! Please consult the manual.');
             return null;
           // end if
          }
@@ -356,7 +359,9 @@
 
          // check if object is present
          if($object === null){
-            trigger_error('[GenericORRelationMapper::loadRelatedObjects()] The given object is null. Perhaps the object does not exist in database any more. Please check your implementation!');
+            throw new GenericORMapperException('[GenericORRelationMapper::loadRelatedObjects()] '
+                    .'The given object is null. Perhaps the object does not exist in database any '
+                    .'more. Please check your implementation!');
             return null;
           // end if
          }
@@ -368,7 +373,7 @@
          // check for null relations to prevent "undefined index" errors.
          $targetObjectName = $this->__getRelatedObjectNameByRelationName($objectName,$relationName);
          if($targetObjectName === null){
-            trigger_error(
+            throw new GenericORMapperException(
                '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "'.$relationName
                .'" found! Please re-check your relation configuration.',
                E_USER_ERROR
@@ -379,7 +384,7 @@
 
          // BUG-142: wrong spelling of source and target object must result in descriptive error!
          if(!isset($this->__MappingTable[$targetObjectName])){
-            trigger_error(
+            throw new GenericORMapperException(
                '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "'
                .$targetObjectName.'" found in releation definition "'.$relationName
                .'"! Please re-check your relation configuration.',
@@ -470,7 +475,9 @@
 
          // check if object is present
          if($object === null){
-            trigger_error('[GenericORRelationMapper::loadNotRelatedObjects()] The given object is null. Perhaps the object does not exist in database any more. Please check your implementation!');
+            throw new GenericORMapperException('[GenericORRelationMapper::loadNotRelatedObjects()] '
+                    .'The given object is null. Perhaps the object does not exist in database any '
+                    .'more. Please check your implementation!');
             return null;
           // end if
          }
@@ -567,7 +574,9 @@
       public function loadRelationMultiplicity(&$object,$relationName){
 
          if(!isset($this->__RelationTable[$relationName])){
-            trigger_error('[GenericORRelationMapper::loadRelationMultiplicity()] Relation "'.$relationName.'" does not exist in relation table! Hence, the relation multiplicity cannot be loaded! Please check your relation configuration.');
+            throw new GenericORMapperException('[GenericORRelationMapper::loadRelationMultiplicity()] '
+                    .'Relation "'.$relationName.'" does not exist in relation table! Hence, the '
+                    .'relation multiplicity cannot be loaded! Please check your relation configuration.');
             $multiplicity = 0;
           // end if
          }
@@ -632,7 +641,10 @@
                   // gather information about the current relation
                   $objectID = $this->__MappingTable[$object->get('ObjectName')]['ID'];
                   if(!isset($this->__MappingTable[$relatedObjects[$relationKey][$i]->get('ObjectName')]['ID'])){
-                     trigger_error('[GenericORRelationMapper::saveObject()] The object name "'.$relatedObjects[$relationKey][$i]->get('ObjectName').'" does not exist in the mapping table! Hence, your object cannot be saved! Please check your object configuration.');
+                     throw new GenericORMapperException('[GenericORRelationMapper::saveObject()] '
+                             .'The object name "'.$relatedObjects[$relationKey][$i]->get('ObjectName')
+                             .'" does not exist in the mapping table! Hence, your object cannot be '
+                             .'saved! Please check your object configuration.');
                      break;
                    // end if
                   }
@@ -640,7 +652,10 @@
 
                   // check for relation
                   if(!isset($this->__RelationTable[$relationKey]['Table'])){
-                     trigger_error('[GenericORRelationMapper::saveObject()] Relation "'.$relationKey.'" does not exist in the relation table! Hence, your related object cannot be saved! Please check your relation configuration.');
+                     throw new GenericORMapperException('[GenericORRelationMapper::saveObject()] '
+                             .'Relation "'.$relationKey.'" does not exist in the relation table! '
+                             .'Hence, your related object cannot be saved! Please check your '
+                             .'relation configuration.');
                      break;
                    // end if
                   }
@@ -714,7 +729,10 @@
                $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
 
                if($this->__DBDriver->getNumRows($result) > 0){
-                  trigger_error('[GenericORRelationMapper::deleteObject()] Domain object "'.$objectName.'" with id "'.$object->getProperty($objectID).'" cannot be deleted, because it still has composed child objects!',E_USER_WARNING);
+                  throw new GenericORMapperException('[GenericORRelationMapper::deleteObject()] '
+                          .'Domain object "'.$objectName.'" with id "'.$object->getProperty($objectID)
+                          .'" cannot be deleted, because it still has composed child objects!',
+                          E_USER_WARNING);
                   return null;
                 // end if
                }
@@ -777,14 +795,18 @@
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$relationName])){
-            trigger_error('[GenericORRelationMapper::createAssociation()] Relation with name "'.$relationName.'" is not defined in the mapping table! Please check your relation configuration.',E_USER_WARNING);
+            throw new GenericORMapperException('[GenericORRelationMapper::createAssociation()] '
+                    .'Relation with name "'.$relationName.'" is not defined in the mapping table! '
+                    .'Please check your relation configuration.',E_USER_WARNING);
             return false;
           // end
          }
 
          // if relation is a composition, return with error
          if($this->__RelationTable[$relationName]['Type'] == 'COMPOSITION'){
-            trigger_error('[GenericORRelationMapper::createAssociation()] Compositions cannot be created with this method! Use saveObject() on the target object to create a composition!',E_USER_WARNING);
+            throw new GenericORMapperException('[GenericORRelationMapper::createAssociation()] '
+                    .'Compositions cannot be created with this method! Use saveObject() on the '
+                    .'target object to create a composition!',E_USER_WARNING);
             return false;
           // end if
          }
@@ -827,14 +849,18 @@
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$relationName])){
-            trigger_error('[GenericORRelationMapper::deleteAssociation()] Relation with name "'.$relationName.'" is not defined in the mapping table! Please check your relation configuration.',E_USER_WARNING);
+            throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociation()] '
+                    .'Relation with name "'.$relationName.'" is not defined in the mapping table! '
+                    .'Please check your relation configuration.',E_USER_WARNING);
             return false;
           // end
          }
 
          // if relation is a composition, return with error
          if($this->__RelationTable[$relationName]['Type'] == 'COMPOSITION'){
-            trigger_error('[GenericORRelationMapper::deleteAssociation()] Compositions cannot be deleted! Use deleteObject() on the target object instead!',E_USER_WARNING);
+            throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociation()] '
+                    .'Compositions cannot be deleted! Use deleteObject() on the target object instead!',
+                    E_USER_WARNING);
             return false;
           // end if
          }
@@ -876,14 +902,18 @@
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$relationName])){
-            trigger_error('[GenericORRelationMapper::isAssociated()] Relation with name "'.$relationName.'" is not defined in the relation table! Please check your relation configuration.',E_USER_WARNING);
+            throw new GenericORMapperException('[GenericORRelationMapper::isAssociated()] Relation '
+                    .'with name "'.$relationName.'" is not defined in the relation table! Please '
+                    .'check your relation configuration.',E_USER_WARNING);
             return false;
           // end
          }
 
          // if relation is a composition, return with error
          if($this->__RelationTable[$relationName]['Type'] == 'COMPOSITION'){
-            trigger_error('[GenericORRelationMapper::isAssociated()] The given relation ("'.$relationName.'") is not an association! Please check your relation configuration.',E_USER_WARNING);
+            throw new GenericORMapperException('[GenericORRelationMapper::isAssociated()] The given '
+                    .'relation ("'.$relationName.'") is not an association! Please check your '
+                    .'relation configuration.',E_USER_WARNING);
             return false;
           // end if
          }
@@ -983,7 +1013,8 @@
           // end else
          }
          else{
-            trigger_error('Direction of the composition not specified! Please use "source" or "target" as values!',E_USER_WARNING);
+            throw new GenericORMapperException('Direction of the composition not specified! Please '
+                    .'use "source" or "target" as values!',E_USER_WARNING);
             return $relationList;
           // end else
          }
@@ -1061,6 +1092,55 @@
        */
       public function __sleep(){
          return array('__MappingTable','__RelationTable','__Context','__Language','__importedConfigCache');
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Loads the amount of objects stored in the database. Additionally, the result can be
+       * influenced by the applied criterion.
+       * <p/>
+       * Please note, that this method ignores relation declarations within the criterion
+       * object. If you intend to load the amount of related objects, please use
+       * <em>loadRelationMultiplicity()</em>!
+       *
+       * @param string $objectName The name of object to load.
+       * @param GenericCriterionObject $criterion
+       * @return int The amount of objects
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 18.02.2010<br />
+       */
+      public function loadObjectCount($objectName, GenericCriterionObject $criterion = null){
+
+         // avoid SQL errors for invalid object names
+         if(!isset($this->__MappingTable[$objectName])){
+            throw new GenericORMapperException('[GenericORRelationMapper::loadObjectCount()] '
+                    .'Object with name "'.$objectName.'" is not existent in the current mapping '
+                    .'table. Please check your mapping configuration!',E_USER_ERROR);
+         }
+
+         // create statement
+         $countColumnName = 'objectcount';
+         $select = 'SELECT COUNT(`'.$this->__MappingTable[$objectName]['ID'].'`) AS '
+                 .$countColumnName.' FROM `'.$this->__MappingTable[$objectName]['Table'].'`';
+
+         // add limitations
+         if($criterion !== null){
+            $where = $this->__buildWhere($objectName,$criterion);
+            if(count($where) > 0){
+               $select .= ' WHERE '.implode(' AND ',$where);
+            }
+         }
+
+         // load count
+         $data = $this->__DBDriver->fetchData(
+                 $this->__DBDriver->executeTextStatement($select,$this->__LogStatements)
+         );
+         return (int)$data[$countColumnName];
+
        // end function
       }
 
