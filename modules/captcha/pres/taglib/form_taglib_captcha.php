@@ -128,7 +128,7 @@
 
          // create text field
          $this->__TextField = new form_taglib_text();
-         $this->__TextField->set('ObjectID',XmlParser::generateUniqID());
+         $this->__TextField->setObjectId(XmlParser::generateUniqID());
 
          // prepare the text field
          $textClass = $this->getAttribute('text_class');
@@ -152,12 +152,12 @@
          $this->__TextField->setAttribute('maxlength','5');
 
          // apply the onParseTime method to guarantee native APF environment
-         $this->__TextField->set('Language',$this->__Language);
-         $this->__TextField->set('Context',$this->__Context);
+         $this->__TextField->setLanguage($this->__Language);
+         $this->__TextField->setContext($this->__Context);
          $this->__TextField->onParseTime();
 
          // apply the onAfterAppend method to guarantee native APF environment
-         $this->__TextField->setByReference('ParentObject',$this->__ParentObject);
+         $this->__TextField->setParentObject($this->__ParentObject);
          $this->__TextField->onAfterAppend();
 
          // get the captcha string from session

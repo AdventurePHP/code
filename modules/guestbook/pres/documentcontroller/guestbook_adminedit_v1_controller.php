@@ -144,7 +144,7 @@
             $Yahoo->setAttribute('value',$Entry->get('Yahoo'));
 
             $Text = & $Form__GuestbookEntry->getFormElementByName('Text');
-            $Text->set('Content',$Entry->get('Text'));
+            $Text->setContent($Entry->get('Text'));
 
             $ID = & $Form__GuestbookEntry->getFormElementByName('entryid');
             $ID->setAttribute('value',$Entry->get('ID'));

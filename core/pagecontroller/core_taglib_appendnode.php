@@ -96,8 +96,8 @@
       function onAfterAppend(){
 
          // get parent children list
-         $parentChildren = &$this->__ParentObject->getByReference('Children');
-         $parentContent = $this->__ParentObject->get('Content');
+         $parentChildren = &$this->__ParentObject->getChildren();
+         $parentContent = $this->__ParentObject->getContent();
          $currentObjectId = $this->__ObjectID;
 
          foreach($this->__Children as $objectId => $DUMMY){
@@ -106,7 +106,7 @@
             $parentChildren[$objectId] = &$this->__Children[$objectId];
 
             // correct the parent object refrence
-            $parentChildren[$objectId]->setByReference('ParentObject',$this->__ParentObject);
+            $parentChildren[$objectId]->setParentObject($this->__ParentObject);
 
             // add a marker tag to the parent object after the tag's marker
             $parentContent = str_replace('<'.$currentObjectId.' />','<'.$currentObjectId.' /><'.$objectId.' />',$parentContent);
@@ -114,7 +114,7 @@
 
           // end foreach
          }
-         $this->__ParentObject->set('Content',$parentContent);
+         $this->__ParentObject->setContent($parentContent);
 
        // end function
       }

@@ -130,7 +130,7 @@
 
          $refControlName = $this->__Control->getAttribute('ref');
          if($refControlName === null){
-            $form = &$this->__Control->getByReference('ParentObject');
+            $form = &$this->__Control->getParentObject();
             $formName = $form->getAttribute('name');
             trigger_error('[FieldCompareValidator::__initializeReferenceControl()] The main field '
                .'definition does not include the "ref" attribute. This attribute must be specified '
@@ -141,7 +141,7 @@
             exit(1);
          }
 
-         $form = &$this->__Control->getByReference('ParentObject');
+         $form = &$this->__Control->getParentObject();
          $this->__RefControl = &$form->getFormElementByName($refControlName);
          
        // end function

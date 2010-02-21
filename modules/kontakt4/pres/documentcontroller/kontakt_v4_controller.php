@@ -91,7 +91,7 @@
             $oFD->set('Subject',$subject->getAttribute('value'));
 
             $text = &$form->getFormElementByName('Text');
-            $oFD->set('Text',$text->get('Content'));
+            $oFD->set('Text',$text->getContent());
 
             $cM = &$this->__getServiceObject('modules::kontakt4::biz','contactManager');
             $cM->sendContactForm($oFD);

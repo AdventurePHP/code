@@ -127,11 +127,11 @@
 
          // create page
          $stacktrace = new Page();
-         $stacktrace->set('Context','core::exceptionhandler');
+         $stacktrace->setContext('core::exceptionhandler');
          $stacktrace->loadDesign('core::exceptionhandler::templates','exceptionpage');
 
          // inject exception information into the document attributes array
-         $doc = $stacktrace->get('Document');
+         $doc = $stacktrace->getRootDocument();
          $doc->setAttribute('id',$this->__generateExceptionID());
          $doc->setAttribute('message',$this->__ExceptionMessage);
          $doc->setAttribute('number',$this->__ExceptionNumber);

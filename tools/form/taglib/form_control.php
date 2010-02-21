@@ -414,7 +414,7 @@
             foreach($this->__Children as $objectId => $DUMMY){
                if(get_class($this->__Children[$objectId]) == $tagLibClass){
                   if($this->__Children[$objectId]->getAttribute('name') == $name){
-                     $this->__Children[$objectId]->set('Content',$value);
+                     $this->__Children[$objectId]->setContent($value);
                      $placeHolderCount++;
                    // end if
                   }
@@ -427,7 +427,7 @@
          else{
             trigger_error('['.get_class($this).'::setPlaceHolder()] No place holder object with '
                .'name "'.$name.'" composed in current for document controller "'
-               .($this->__ParentObject->get('DocumentController')).'"! Perhaps tag library '
+               .($this->__ParentObject->getDocumentController()).'"! Perhaps tag library '
                .'form:placeholder is not loaded in form "'.$this->getAttribute('name').'"!',
                E_USER_ERROR);
             exit();
@@ -437,7 +437,7 @@
          if($placeHolderCount < 1){
             trigger_error('['.get_class($this).'::setPlaceHolder()] There are no place holders '
                .'found for name "'.$name.'" in template "'.($this->__Attributes['name'])
-               .'" in document controller "'.($this->__ParentObject->get('DocumentController'))
+               .'" in document controller "'.($this->__ParentObject->getDocumentController())
                .'"!',E_USER_WARNING);
           // end if
          }

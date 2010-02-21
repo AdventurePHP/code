@@ -84,7 +84,7 @@
                if(!empty($pass1)){
 
                   if($pass1 !== $pass2){
-                     $formEdit->set('isValid',false);
+                     $formEdit->markAsInvalid();
                      $passField1->addAttribute('style','border: 2px solid red;');
                      $passField2->addAttribute('style','border: 2px solid red;');
                      $this->setPlaceHolder('UserEdit',$formEdit->transformForm());

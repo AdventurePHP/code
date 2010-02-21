@@ -61,7 +61,7 @@
        * @return int The id of the current guestbook.
        */
       protected function __getGuestbookId(){
-         $parentDocument = &$this->__Document->getByReference('ParentObject');
+         $parentDocument = &$this->__Document->getParentObject();
          return $parentDocument->getAttribute('guestbookid');
        // end function
       }

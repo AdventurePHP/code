@@ -59,7 +59,7 @@
       protected function __loadCategoryKey(){
 
         // AttributCategoryKey vom Parent holen
-        $DocParent = &$this->__Document->getByReference('ParentObject');
+        $DocParent = &$this->__Document->getParentObject();
         $CategoryKey = $DocParent->getAttribute('categorykey');
 
         if($CategoryKey == null){

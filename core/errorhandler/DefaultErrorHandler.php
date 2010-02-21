@@ -127,11 +127,11 @@
 
          // create page
          $stacktrace = new Page('Stacktrace');
-         $stacktrace->set('Context','core::errorhandler');
+         $stacktrace->setContext('core::errorhandler');
          $stacktrace->loadDesign('core::errorhandler::templates','errorpage');
 
          // inject error information into the document attributes array
-         $doc = & $stacktrace->getByReference('Document');
+         $doc = &$stacktrace->getRootDocument();
          $doc->setAttribute('id',$this->__generateErrorID());
          $doc->setAttribute('message',$this->__ErrorMessage);
          $doc->setAttribute('number',$this->__ErrorNumber);

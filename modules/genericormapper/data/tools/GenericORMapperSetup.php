@@ -66,9 +66,17 @@
        * @protected
        * Stores the MySQL storage engine type.
        */
-      protected $__StorageEngine = 'MyISAM';
+      private $__StorageEngine = 'MyISAM';
 
-      function GenericORMapperSetup(){
+      public function GenericORMapperSetup(){
+      }
+
+      public function setStorageEngine($engine){
+         $this->__StorageEngine = $engine;
+      }
+
+      public function getStorageEngine(){
+         return $this->__StorageEngine;
       }
 
       /**
@@ -218,7 +226,7 @@
          $create .= '  PRIMARY KEY (`'.$tableAttributes['ID'].'`)'.PHP_EOL;
 
          // footer
-         $create .= ') ENGINE='.$this->__StorageEngine.' DEFAULT CHARSET=utf8;';
+         $create .= ') ENGINE='.$this->getStorageEngine().' DEFAULT CHARSET=utf8;';
 
          // print statement
          return $create;
@@ -299,7 +307,7 @@
          $create .= '  KEY `JOININDEX` (`'.$tableAttributes['SourceID'].'`,`'.$tableAttributes['TargetID'].'`)'.PHP_EOL;
 
          // footer
-         return $create .= ') ENGINE='.$this->__StorageEngine.' DEFAULT CHARSET=utf8;';
+         return $create .= ') ENGINE='.$this->getStorageEngine().' DEFAULT CHARSET=utf8;';
 
        // end function
       }

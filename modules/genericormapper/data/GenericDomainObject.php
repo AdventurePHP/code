@@ -35,7 +35,7 @@
       /**
        * @protected
        * @var GenericORRelationMapper Data component, that can be used to lazy load attributes.
-       * To set the member, use setByReference() from APFObject.
+       * To set the member, use setDataComponent().
        */
       protected $__DataComponent = null;
 
@@ -123,10 +123,11 @@
 
          // check weather data component is there
          if($this->__DataComponent === null){
-            trigger_error('[GenericDomainObject::loadRelatedObjects()] DataDomponent is not '
-               .'initialized, so related objects cannot be loaded! Please use the or mapper\'s '
-               .'loadRelatedObjects() method or call setByReference(\'DataComponent\',$orm), where '
-               .'$orm is an instance of the or mapper, on this object first!',E_USER_WARNING);
+            throw new GenericORMapperException('[GenericDomainObject::loadRelatedObjects()] '
+                    .'The data component is not initialized, so related objects cannot be loaded! '
+                    .'Please use the or mapper\'s loadRelatedObjects() method or call '
+                    .'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+                    .'object first!',E_USER_ERROR);
             return null;
           // end if
          }

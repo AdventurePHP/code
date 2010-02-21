@@ -74,7 +74,7 @@
        * @private
        * @var boolean Indicates, if the action should be included in the URL. Values: true | false.
        */
-      protected $__KeepInURL = false;
+      protected $__KeepInUrl = false;
 
       public function AbstractFrontcontrollerAction(){
       }
@@ -90,13 +90,155 @@
        * @version
        * Version 0.1, 05.02.2007<br />
        */
-      function &getInput(){
+      public function &getInput(){
          return $this->__Input;
        // end function
       }
 
       /**
-       * @module run()
+       * @public
+       *
+       * Injects the input param wrapper of the current action.
+       *
+       * @param FrontcontrollerInput $input The input object associated with the action.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setInput($input){
+         $this->__Input = $input;
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Sets the name of the action, that is used to refer it within the
+       * front controller's action stack.
+       *
+       * @param string $name The name of the action.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setActionName($name){
+         $this->__ActionName = $name;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the name of the action, that is used to refer it within the
+       * front controller's action stack.
+       *
+       * @return string The name of the action.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getActionName(){
+         return $this->__ActionName;
+      }
+
+      /**
+       * @public
+       *
+       * Sets the namespace of the action, that is used to refer it within the
+       * front controller's action stack.
+       *
+       * @param string $namespace The namespace of the action.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setActionNamespace($namespace){
+         $this->__ActionNamespace = $namespace;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the namespace of the action, that is used to refer it within the
+       * front controller's action stack.
+       *
+       * @return string The namespace of the action.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getActionNamespace(){
+         return $this->__ActionNamespace;
+      }
+
+      /**
+       * @public
+       *
+       * Sets the type of the action, that defines the execution time.
+       *
+       * @param string $type The type of the action.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setType($type){
+         $this->__Type = $type;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the type of the action, that defines the execution time.
+       *
+       * @return string The type of the action.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getType(){
+         return $this->__Type;
+      }
+
+      /**
+       * @public
+       *
+       * Set the indicator, whether the action should be keept in the url
+       * generating a fully qualified front controller link.
+       *
+       * @param string $keepInUrl The url generation indicator.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setKeepInUrl($keepInUrl){
+         $this->__KeepInUrl = $keepInUrl;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the indicator, whether the action should be keept in the url
+       * generating a fully qualified front controller link.
+       *
+       * @return string The url generation indicator.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getKeepInUrl(){
+         return $this->__KeepInUrl;
+      }
+
+      /**
+       * @public 
        * @abstract
        *
        * Defines the interface method, that must be implemented by each concrete action. The method
@@ -106,46 +248,45 @@
        * @version
        * Version 0.1, 27.01.2007<br />
        */
-      public function run(){
-      }
+      public abstract function run();
 
     // end class
    }
 
    /**
-   *  @package core::frontcontroller
-   *  @class FrontcontrollerInput
-   *
-   *  Implements a base class for input parameters for front controller actions.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 27.01.2007<br />
-   */
+    * @package core::frontcontroller
+    * @class FrontcontrollerInput
+    *
+    * Implements a base class for input parameters for front controller actions.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.01.2007<br />
+    */
    class FrontcontrollerInput extends APFObject {
 
       public function FrontcontrollerInput(){
       }
 
       /**
-      *  @public
-      *
-      *  Returns all input parameters as a URL formatted string.
-      *
-      *  @param boolean $urlRewriting True for activated url rewriting, false instead
-      *  @return string $attributesString URL formatted attributes string
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 10.02.2007<br />
-      *  Version 0.2, 08.11.2007 (Fehler bei leerem Input-Objekt korrigiert)<br />
-      *  Version 0.3, 21.06.2008 (Removed APPS__URL_REWRITING and introduced the Registry instead)<br />
-      */
+       * @public
+       *
+       * Returns all input parameters as a URL formatted string.
+       *
+       * @param boolean $urlRewriting True for activated url rewriting, false instead
+       * @return string $attributesString URL formatted attributes string
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.02.2007<br />
+       * Version 0.2, 08.11.2007 (Fehler bei leerem Input-Objekt korrigiert)<br />
+       * Version 0.3, 21.06.2008 (Removed APPS__URL_REWRITING and introduced the Registry instead)<br />
+       */
       function getAttributesAsString($urlRewriting = null){
 
          // get the current front controller
          $action = &$this->__ParentObject;
-         $fC = &$action->getByReference('ParentObject');
+         $fC = &$action->getParentObject();
 
          // set URLRewriting manually
          if($urlRewriting === null){
@@ -274,7 +415,7 @@
        */
       protected $__Namespace = 'core::frontcontroller';
 
-      function Frontcontroller(){
+      public function Frontcontroller(){
       }
 
       /**
@@ -298,7 +439,7 @@
        * Version 0.9, 13.10.2008 (Removed $URLRewriting parameter, because URL rewriting must be configured in the registry)<br />
        * Version 1.0, 11.12.2008 (Switched to the new input filter concept)<br />
        */
-      function start($namespace,$template){
+      public function start($namespace,$template){
 
          // set URLRewrite
          $reg = &Singleton::getInstance('Registry');
@@ -326,10 +467,10 @@
          $page = new Page('FrontControllerPage',$urlRewriting);
 
          // set context
-         $page->set('Context',$this->__Context);
+         $page->setContext($this->__Context);
 
          // set language
-         $page->set('Language',$this->__Language);
+         $page->setLanguage($this->__Language);
 
          // load desired design
          $page->loadDesign($namespace,$template);
@@ -371,11 +512,11 @@
        * Version 0.7, 08.06.2007 (Automatisches Neuerstellen einer Action entfernt)<br />
        * Version 0.8, 08.11.2007 (Umstellung auf Hash-Offsets nachgezogen)<br />
        */
-      function &getActionByName($actionName){
+      public function &getActionByName($actionName){
 
          foreach($this->__Actions as $actionHash => $DUMMY){
 
-            if($this->__Actions[$actionHash]->get('ActionName') == $actionName){
+            if($this->__Actions[$actionHash]->getActionName() == $actionName){
                return $this->__Actions[$actionHash];
              // end if
             }
@@ -437,7 +578,7 @@
        * Version 0.2, 01.07.2007 (ActionNamespace wird nun zentral in addAction() �bersetzt)<br />
        * Version 0.3, 01.07.2007 (Parsen der Config-Parameter wird nun korrekt durchgef�hrt)<br />
        */
-      function registerAction($ActionNamespace,$ActionName,$ActionParams = array()){
+      public function registerAction($ActionNamespace,$ActionName,$ActionParams = array()){
 
          // Config f�r Input laden
          $Config = &$this->__getConfiguration($ActionNamespace.'::actions','actionconfig');
@@ -501,7 +642,7 @@
        * Version 0.5, 08.11.2007 (Changed action stack construction to hash offsets)<br />
        * Version 0.2, 21.06.2008 (Replaced APPS__ENVIRONMENT constant with a value from the Registry)<br />
        */
-      function addAction($namespace,$name,$params = array()){
+      public function addAction($namespace,$name,$params = array()){
 
          // re-map namespace
          $namespace = $this->__getActionNamespaceByURLString($namespace);
@@ -546,10 +687,10 @@
 
          // init action
          $action = new $actionConfig['FC.ActionClass'];
-         $action->set('ActionNamespace',$namespace);
-         $action->set('ActionName',$name);
-         $action->set('Context',$this->__Context);
-         $action->set('Language',$this->__Language);
+         $action->setActionNamespace($namespace);
+         $action->setActionName($name);
+         $action->setContext($this->__Context);
+         $action->setLanguage($this->__Language);
 
          // init input
          $input = new $actionConfig['FC.InputClass'];
@@ -559,11 +700,11 @@
                  $this->__generateParamsFromInputConfig($actionConfig['FC.InputParams']),
                  $params));
 
-         $input->setByReference('ParentObject',$action);
-         $action->set('Input',$input);
+         $input->setParentObject($action);
+         $action->setInput($input);
 
          // set the frontcontroller as a parent object to the action
-         $action->setByReference('ParentObject',$this);
+         $action->setParentObject($this);
 
          // add the action as a child
          $this->__Actions[md5($namespace.'~'.$name)] = $action;
@@ -572,7 +713,7 @@
       }
 
       /**
-       * @private
+       * @protected
        *
        * Create an array from a input param string (scheme: <code>a:b|c:d</code>).
        *
@@ -616,7 +757,7 @@
       }
 
       /**
-       * @private
+       * @protected
        *
        * Executes all actions with the given type.
        *
@@ -638,7 +779,7 @@
          foreach($this->__Actions as $actionHash => $DUMMY){
 
             // only execute, when the current action has a suitable type
-            if($this->__Actions[$actionHash]->get('Type') == $type){
+            if($this->__Actions[$actionHash]->getType() == $type){
 
                $id = get_class($this->__Actions[$actionHash]).'::run()';
                $t->start($id);

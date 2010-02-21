@@ -66,7 +66,7 @@
                $articleComment->set('EMail',$email->getAttribute('value'));
 
                $comment = &$form->getFormElementByName('Comment');
-               $articleComment->set('Comment',$comment->get('Content'));
+               $articleComment->set('Comment',$comment->getContent());
 
                $M->saveEntry($articleComment);
 

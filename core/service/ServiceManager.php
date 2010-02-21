@@ -1,23 +1,23 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
     * @package core::service
@@ -42,7 +42,6 @@
        */
       private $__Context;
 
-
       /**
        * @private
        * @since 0.2
@@ -50,10 +49,8 @@
        */
       private $__Language;
 
-
       public function ServiceManager(){
       }
-
 
       /**
        * @public
@@ -65,7 +62,7 @@
        * @param string $type The initializing type (see service manager for details).
        * @return APFObject The desired service object.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 07.03.2007<br />
        * Version 0.2, 17.03.2007 (Adjusted error messages)<br />
@@ -85,9 +82,9 @@
             $serviceObject = &Singleton::getInstance($serviceName);
 
             if(is_subclass_of($serviceObject,'APFObject')){
-               $serviceObject->set('Context',$this->__Context);
-               $serviceObject->set('Language',$this->__Language);
-               $serviceObject->set('ServiceType','SINGLETON');
+               $serviceObject->setContext($this->__Context);
+               $serviceObject->setLanguage($this->__Language);
+               $serviceObject->setServiceType('SINGLETON');
              // end if
             }
             else{
@@ -107,9 +104,9 @@
             $serviceObject = &SessionSingleton::getInstance($serviceName);
 
             if(is_subclass_of($serviceObject,'APFObject')){
-               $serviceObject->set('Context',$this->__Context);
-               $serviceObject->set('Language',$this->__Language);
-               $serviceObject->set('ServiceType','SESSIONSINGLETON');
+               $serviceObject->setContext($this->__Context);
+               $serviceObject->setLanguage($this->__Language);
+               $serviceObject->setServiceType('SESSIONSINGLETON');
              // end if
             }
             else{
@@ -125,9 +122,9 @@
             $serviceObject = new $serviceName();
 
             if(is_subclass_of($serviceObject,'APFObject')){
-               $serviceObject->set('Context',$this->__Context);
-               $serviceObject->set('Language',$this->__Language);
-               $serviceObject->set('ServiceType','NORMAL');
+               $serviceObject->setContext($this->__Context);
+               $serviceObject->setLanguage($this->__Language);
+               $serviceObject->setServiceType('NORMAL');
              // end if
             }
             else{
@@ -147,7 +144,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -166,7 +162,7 @@
        * Version 0.1, 29.03.2007<br />
        * Version 0.2, 16.05.2009 (Added check for non existing service object returned by getServiceObject()))<br />
        */
-      function &getAndInitServiceObject($namespace,$serviceName,$initParam,$type = 'SINGLETON'){
+      public function &getAndInitServiceObject($namespace,$serviceName,$initParam,$type = 'SINGLETON'){
 
          $serviceObject = &$this->getServiceObject($namespace,$serviceName,$type);
 
@@ -184,7 +180,6 @@
        // end function
       }
 
-
       /**
        * @public
        *
@@ -192,11 +187,11 @@
        *
        * @param string $context The context of the service manager.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 07.03.2007<br />
        */
-      function setContext($context){
+      public function setContext($context){
          $this->__Context = $context;
        // end function
       }
@@ -209,11 +204,11 @@
        *
        * @param string $language Language of the service manager.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 22.04.2007<br />
        */
-      function setLanguage($language){
+      public function setLanguage($language){
          $this->__Language = $language;
        // end function
       }

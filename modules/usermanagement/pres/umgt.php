@@ -34,7 +34,7 @@
    $fC = &Singleton::getInstance('Frontcontroller');
 
    // set the current context (change the context to what ever you want)
-   $fC->set('Context','...');
+   $fC->setContext('...');
 
    // start the front controller
    $fC->start('modules::usermanagement::pres::templates','main');

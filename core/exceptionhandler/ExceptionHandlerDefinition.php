@@ -30,24 +30,25 @@
     * @version
     * Version 0.1, 21.02.2009<br />
     */
-   final class ExceptionHandlerDefinition extends APFObject {
+   final class ExceptionHandlerDefinition {
 
       /**
-       * @protected
+       * @private
        * @var string Defines the namespace of the exception handler implementation.
        */
-      protected $__Namespace = null;
+      private $__Namespace = null;
 
       /**
-       * @protected
+       * @private
        * @var string Indicates the class name of the exception handler implementation (=filename).
        */
-      protected $__Class = null;
+      private $__Class = null;
 
       /**
        * @public
        *
-       * Constructor of the exception handler description. Taks the namespace and the class as an argument.
+       * Constructor of the exception handler description. Takes the namespace and the
+       * class as an argument.
        *
        * @param string $namespace the namespace of the exception handler implementation
        * @param string $class the name of the class of the exception handler
@@ -60,6 +61,36 @@
          $this->__Namespace = $namespace;
          $this->__Class = $class;
        // end function
+      }
+
+      /**
+       * @public
+       *
+       * Returns the namespace of the exception handler implementation class.
+       *
+       * @return string The namespace of the exception handler implementation.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getNamespace(){
+         return $this->__Namespace;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the class name of the exception handler implementation class.
+       *
+       * @return string The class name of the exception handler implementation.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getClass(){
+         return $this->__Class;
       }
 
     // end class

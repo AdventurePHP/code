@@ -63,7 +63,7 @@
                 $title->setAttribute('value',$entry->getTitle());
 
                 $text = &$form->getFormElementByName('text');
-                $text->set('Content',$entry->getText());
+                $text->setContent($entry->getText());
                 
                 $hiddenEntryId = &$form->getFormElementByName('entryid');
                 $hiddenEntryId->setAttribute('value',$entry->getId());
@@ -94,7 +94,7 @@
                    $entry->setTitle($title->getAttribute('value'));
 
                    $text = &$form->getFormElementByName('text');
-                   $entry->setText($text->get('Content'));
+                   $entry->setText($text->getContent());
 
                    // retrieve the entry id from the hidden field
                    $hiddenEntryId = &$form->getFormElementByName('entryid');

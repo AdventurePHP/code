@@ -105,7 +105,7 @@
             $Title->setAttribute('value',$Comment->get('Title'));
 
             $Text = & $Form__Comment->getFormElementByName('Text');
-            $Text->set('Content',$Comment->get('Text'));
+            $Text->setContent($Comment->get('Text'));
 
             $EntryID = & $Form__Comment->getFormElementByName('entryid');
             $EntryID->setAttribute('value',$this->_LOCALS['entryid']);

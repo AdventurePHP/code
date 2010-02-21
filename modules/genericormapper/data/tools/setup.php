@@ -37,10 +37,10 @@
    $setupMapper = new GenericORMapperSetup();
 
    // set Context (important for the configuration files!)
-   $setupMapper->set('Context','{CONTEXT}');
+   $setupMapper->setContext('{CONTEXT}');
 
    // adapt storage engine (default is MyISAM)
-   $setupMapper->set('StorageEngine','MyISAM|INNODB');
+   $setupMapper->setStorageEngine('MyISAM|INNODB');
 
    // create database layout
    $setupMapper->setupDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}','{CONNECTION_NAME}');

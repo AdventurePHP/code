@@ -55,7 +55,7 @@
             $text = &$form->getFormElementByName('text');
             $entry = new Entry();
             $entry->setTitle($title->getAttribute('value'));
-            $entry->setText($text->get('Content'));
+            $entry->setText($text->getContent());
 
             $entry->setEditor($user);
 

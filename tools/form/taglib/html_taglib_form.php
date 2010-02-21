@@ -286,7 +286,7 @@
          if($marker !== null){
 
             // get the object if
-            $objectId = $marker->get('ObjectID');
+            $objectId = $marker->getObjectId();
 
             // add the desired content before the marker
             $this->__Content = str_replace('<'.$objectId.' />',$content.'<'.$objectId.' />',$this->__Content);
@@ -329,7 +329,7 @@
          if($marker !== null){
 
             // get the object if
-            $objectId = $marker->get('ObjectID');
+            $objectId = $marker->getObjectId();
 
             // add the desired content before the marker
             $this->__Content = str_replace('<'.$objectId.' />','<'.$objectId.' />'.$content,$this->__Content);
@@ -378,7 +378,7 @@
             $marker = &$this->__getMarker($markerName);
 
             // add the position placeholder to the content
-            $markerId = $marker->get('ObjectID');
+            $markerId = $marker->getObjectId();
             $this->__Content = str_replace('<'.$markerId.' />','<'.$objectId.' /><'.$markerId.' />',$this->__Content);
 
             // return object id of the new form element
@@ -426,7 +426,7 @@
             $marker = &$this->__getMarker($markerName);
 
             // add the position placeholder to the content
-            $markerId = $marker->get('ObjectID');
+            $markerId = $marker->getObjectId();
             $this->__Content = str_replace(
                '<'.$markerId.' />','<'.$markerId.' /><'.$objectId.' />',
                $this->__Content
@@ -479,9 +479,9 @@
             $formObject = new $tagLibClass();
 
             // add standard and user defined attributes
-            $formObject->set('ObjectID',$objectId);
-            $formObject->set('Language',$this->__Language);
-            $formObject->set('Context',$this->__Context);
+            $formObject->setObjectId($objectId);
+            $formObject->setLanguage($this->__Language);
+            $formObject->setContext($this->__Context);
 
             foreach($elementAttributes as $Key => $Value){
                $formObject->setAttribute($Key,$Value);
@@ -489,7 +489,7 @@
             }
 
             // add form element to DOM tree and call the onParseTime() method
-            $formObject->setByReference('ParentObject',$this);
+            $formObject->setParentObject($this);
             $formObject->onParseTime();
 
             // add new form element to children list
@@ -615,8 +615,8 @@
          }
 
          // display extended debug message in case no form element was found
-         $parent = &$this->getByReference('ParentObject');
-         $docCon = $parent->get('DocumentController');
+         $parent = &$this->getParentObject();
+         $docCon = $parent->getDocumentController();
          trigger_error('[html_taglib_form::getFormElementByName()] No form element with name "'
             .$name.'" composed in current form "'.$this->__Attributes['name']
             .'" in document controller "'.$docCon.'". Please double-check your taglib definitions '
@@ -655,10 +655,10 @@
          }
 
          // display extended debug message in case no form element was found
-         $parent = $this->get('ParentObject');
-         $grandParent = $parent->get('ParentObject');
+         $parent = &$this->getParentObject();
+         $grandParent = &$parent->getParentObject();
          if($grandParent !== null){
-            $docCon = $grandParent->get('DocumentController');
+            $docCon = $grandParent->getDocumentController();
          }
          else {
             $docCon = 'n/a';
@@ -694,8 +694,8 @@
          else{
 
             // note, that no suitable child has been found
-            $parent = $this->get('ParentObject');
-            $documentController =  $parent->get('DocumentController');
+            $parent = &$this->getParentObject();
+            $documentController = $parent->getDocumentController();
             trigger_error('[html_taglib_form::getFormElementByObjectID()] No form element with id "'
                .$objectID.'" composed in current form "'.$this->__Attributes['name']
                .'" in document controller "'.$documentController.'"!',E_USER_ERROR);
@@ -743,9 +743,9 @@
          }
 
          // display extended debug message in case no form elements were found
-         $parent = $this->get('ParentObject');
-         $grandParent = $parent->get('ParentObject');
-         $documentController = $grandParent->get('DocumentController');
+         $parent = &$this->getParentObject();
+         $grandParent = &$parent->getParentObject();
+         $documentController = $grandParent->getDocumentController();
          trigger_error('[html_taglib_form::getFormElementsByType()] No form elements composed in '.
             'current form "'.$this->__Attributes['name'].'" in document controller "'
             .$documentController.'"!',E_USER_ERROR);

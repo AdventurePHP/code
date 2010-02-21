@@ -121,6 +121,21 @@
        // end function
       }
 
+      /**
+       * @public
+       *
+       * Returns the instance of the current database instance to be able to natively
+       * execute statements against the database without extra configuration.
+       *
+       * @return AbstractDatabaseHandler The instance of the current database connection.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function &getDBDriver(){
+         return $this->__DBDriver;
+      }
 
       /**
        * @protected

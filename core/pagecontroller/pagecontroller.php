@@ -1,59 +1,59 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
-   *  @file pagecontroller.php
-   *
-   *  Setups the framework's core environment. Initializes the Registry, that stores parameters,
-   *  that are used within the complete framework. These are
-   *
-   *  - Environment      : environment, the application is executed in. The value is 'DEFAULT' in common
-   *  - URLRewriting     : indicates, is url rewriting should be used
-   *  - LogDir           : path, where logfiles are stored. The value is './logs' by default.
-   *  - URLBasePath      : absolute url base path of the application (not really necessary)
-   *  - LibPath          : path, where the framework and your own libraries reside. This path can be used
-   *                       to adress files with in the lib path directly (e.g. images or other ressources)
-   *  - CurrentRequestURL: the fully qualified request url
-   *
-   *  Further, the built-in input and output filters are initialized. For this reason, the following
-   *  registry entries are created within the "apf::core::filter" namespace:
-   *
-   *  - PageControllerInputFilter : the definition of the input filter
-   *  - OutputFilter              : the definition of the output filter
-   *
-   *  The file also contains the pagecontroller core implementation with the classes Page,
-   *  Document, TagLib, APFObject, XmlParser and baseController (the basic MVC document controller).
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 20.06.2008<br />
-   *  Version 0.2, 16.07.2008 (added the LibPath to the registry namespace apf::core)
-   *  Version 0.3, 07.08.2008 (Made LibPath readonly)<br />
-   *  Version 0.4, 13.08.2008 (Fixed some timing problems with the registry initialisation)<br />
-   *  Version 0.5, 14.08.2008 (Changed LogDir initialisation to absolute paths)<br />
-   *  Version 0.6, 05.11.2008 (Added the 'CurrentRequestURL' attribute to the 'apf::core' namespace of the registry)<br />
-   *  Version 0.7, 11.12.2008 (Added the input and output filter initialization)<br />
-   *  Version 0.8, 01.02.2009 (Added the protocol prefix to the URLBasePath)<br />
-   *  Version 0.9, 21.02.2009 (Added the exception handler, turned off the php5 support in the import() function of the PHP4 branch)<br />
-   */
+    * @file pagecontroller.php
+    *
+    * Setups the framework's core environment. Initializes the Registry, that stores parameters,
+    * that are used within the complete framework. These are
+    * <ul>
+    * <li>Environment      : environment, the application is executed in. The value is 'DEFAULT' in common</li>
+    * <li>URLRewriting     : indicates, is url rewriting should be used</li>
+    * <li>LogDir           : path, where logfiles are stored. The value is './logs' by default.</li>
+    * <li>URLBasePath      : absolute url base path of the application (not really necessary)</li>
+    * <li>LibPath          : path, where the framework and your own libraries reside. This path can be used
+    *                        to adress files with in the lib path directly (e.g. images or other ressources)</li>
+    * <li>CurrentRequestURL: the fully qualified request url</li>
+    * </ul>
+    * Further, the built-in input and output filters are initialized. For this reason, the following
+    * registry entries are created within the "apf::core::filter" namespace:
+    * <ul>
+    * <li>PageControllerInputFilter : the definition of the input filter</li>
+    * <li>OutputFilter              : the definition of the output filter</li>
+    * </ul>
+    * The file also contains the pagecontroller core implementation with the classes Page,
+    * Document, TagLib, APFObject, XmlParser and baseController (the basic MVC document controller).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.06.2008<br />
+    * Version 0.2, 16.07.2008 (added the LibPath to the registry namespace apf::core)
+    * Version 0.3, 07.08.2008 (Made LibPath readonly)<br />
+    * Version 0.4, 13.08.2008 (Fixed some timing problems with the registry initialisation)<br />
+    * Version 0.5, 14.08.2008 (Changed LogDir initialisation to absolute paths)<br />
+    * Version 0.6, 05.11.2008 (Added the 'CurrentRequestURL' attribute to the 'apf::core' namespace of the registry)<br />
+    * Version 0.7, 11.12.2008 (Added the input and output filter initialization)<br />
+    * Version 0.8, 01.02.2009 (Added the protocol prefix to the URLBasePath)<br />
+    * Version 0.9, 21.02.2009 (Added the exception handler, turned off the php5 support in the import() function of the PHP4 branch)<br />
+    */
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
    // Define the internally used base path for the adventure php framework libraries.             //
@@ -471,64 +471,228 @@
 
       /**
        * @protected
-       * Unique object identifier.
+       * @var string Unique object identifier.
        */
       protected $__ObjectID = null;
 
       /**
        * @protected
-       * Reference to the parent object.
+       * @var APFObject Reference to the parent object.
        */
       protected $__ParentObject = null;
 
       /**
-      *  @protected
-      *  List of the children of the current object.
-      */
+       * @protected
+       * @var APFObject[] List of the children of the current object.
+       */
       protected $__Children = array();
 
       /**
-      *  @protected
-      *  The attributes of an object (merely the XML tag attributes).
-      */
+       * @protected
+       * @var string[] The attributes of an object (merely the XML tag attributes).
+       */
       protected $__Attributes = array();
 
       /**
-      *  @protected
-      *  The context of the current object within the application.
-      */
+       * @protected
+       * @var string The context of the current object within the application.
+       */
       protected $__Context = null;
 
       /**
-      *  @protected
-      *  The language of the current object within the application.
-      */
+       * @protected
+       * @var string The language of the current object within the application.
+       */
       protected $__Language = 'de';
 
       /**
-      *  @since 0.3
-      *  @protected
-      *  Contains the service type, if the object was created with the ServiceManager.
-      */
+       * @since 0.3
+       * @protected
+       * @var string Contains the service type, if the object was created with the ServiceManager.
+       */
       protected $__ServiceType = null;
-
 
       public function APFObject(){
       }
 
       /**
-      *  @public
-      *
-      *  Retrieves an object's property.
-      *
-      *  @param string $attributeName Name of an object's property.
-      *  @return string The property's value.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 02.02.2007 (In case the attribute does not exist, null is returned now)<br />
-      */
+       * @public
+       *
+       * Sets the object id of the current APF object.
+       *
+       * @param string $objectId The object id.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setObjectId($objectId){
+         $this->__ObjectID = $objectId;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the object id of the current APF object.
+       *
+       * @return string The object id.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getObjectId(){
+         return $this->__ObjectID;
+      }
+
+      /**
+       * @public
+       *
+       * Sets the context of the current APF object.
+       *
+       * @param string $context The context.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setContext($context){
+         $this->__Context = $context;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the context of the current APF object.
+       *
+       * @return string The context.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getContext(){
+         return $this->__Context;
+      }
+
+      /**
+       * @public
+       *
+       * Sets the language of the current APF object.
+       *
+       * @param string $lang The language.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setLanguage($lang){
+         $this->__Language = $lang;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the language of the current APF object.
+       *
+       * @return string The language.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getLanguage(){
+         return $this->__Language;
+      }
+
+      /**
+       * @public
+       *
+       * Sets the service type of the current APF object.
+       *
+       * @param string $serviceType The service type.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setServiceType($serviceType){
+         $this->__ServiceType = $serviceType;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the service type of the current APF object.
+       *
+       * @return string The service type.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getServiceType(){
+         return $this->__ServiceType;
+      }
+
+      /**
+       * @public
+       *
+       * Injects the parent node of the current APF object.
+       *
+       * @param APFObject $parentObject The parent node.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setParentObject(&$parentObject){
+         $this->__ParentObject = &$parentObject;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the parent node of the current APF object.
+       *
+       * @return string The parent node.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function &getParentObject(){
+         return $this->__ParentObject;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the list of the current node's children.
+       *
+       * @return APFObject[] The current node's children.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function &getChildren(){
+         return $this->__Children;
+      }
+
+      /**
+       * @public
+       *
+       * Retrieves an object's property.
+       *
+       * @param string $attributeName Name of an object's property.
+       * @return string The property's value.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 02.02.2007 (In case the attribute does not exist, null is returned now)<br />
+       */
       public function get($Attribute){
 
          if(isset($this->{'__'.$Attribute})){
@@ -544,52 +708,52 @@
       }
 
       /**
-      *  @public
-      *
-      *  Sets an object's property.
-      *
-      *  @param string $attributeName Name of an object's property.
-      *  @param string $value The value to set.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
+       * @public
+       *
+       * Sets an object's property.
+       *
+       * @param string $attributeName Name of an object's property.
+       * @param string $value The value to set.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
       public function set($attributeName,$value){
          $this->{'__'.$attributeName} = $value;
        // end function
       }
 
       /**
-      *  @public
-      *
-      *  Appends a value to a given attribute list.
-      *
-      *  @param string $attributeName Name of the attribute to set.
-      *  @param string $value Value of the attribute.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 11.11.2007<br />
-      */
+       * @public
+       *
+       * Appends a value to a given attribute list.
+       *
+       * @param string $attributeName Name of the attribute to set.
+       * @param string $value Value of the attribute.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 11.11.2007<br />
+       */
       public function add($attributeName,$value){
          $this->{'__'.$attributeName}[] = $value;
        // end function
       }
 
       /**
-      *  @public
-      *
-      *  Returns the object's attribute.
-      *
-      *  @param string $name The name of the desired attribute.
-      *  @return string Returns the attribute's value or null in case of errors.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 02.02.2007 (Behandlung, falls Attribut nicht existiert hinzugef�gt)<br />
-      */
+       * @public
+       *
+       * Returns the object's attribute.
+       *
+       * @param string $name The name of the desired attribute.
+       * @return string Returns the attribute's value or null in case of errors.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 02.02.2007 (Behandlung, falls Attribut nicht existiert hinzugef�gt)<br />
+       */
       public function getAttribute($name){
 
          if(isset($this->__Attributes[$name])){
@@ -605,33 +769,33 @@
       }
 
       /**
-      *  @public
-      *
-      *  Sets an object's attribute.
-      *
-      *  @param string $name Name des Attributes, dessen Wert zur�ckgeliefert werden soll.
-      *  @param string $value Wert des Attributes, dessen Wert gesetzt werden soll.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
+       * @public
+       *
+       * Sets an object's attribute.
+       *
+       * @param string $name Name des Attributes, dessen Wert zur�ckgeliefert werden soll.
+       * @param string $value Wert des Attributes, dessen Wert gesetzt werden soll.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
       public function setAttribute($name,$value){
          $this->__Attributes[$name] = $value;
        // end function
       }
 
       /**
-      *  @public
-      *
-      *  Returns an object's attributes.
-      *
-      *  @return string[] Returns the list of attributes of the current object.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
+       * @public
+       *
+       * Returns an object's attributes.
+       *
+       * @return string[] Returns the list of attributes of the current object.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
       public function getAttributes(){
          return $this->__Attributes;
        // end function
@@ -660,7 +824,7 @@
        *
        * @param string[] $attributes The attributes list.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.12.2006<br />
        */
@@ -682,61 +846,16 @@
       }
 
       /**
-      *  @public
-      *
-      *  Sets an object's member by reference. This is used to guarantee php4 support.
-      *
-      *  @param string $attributeName Name of the attribute.
-      *  @param object $value Desired object to reference.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 16.01.2007<br />
-      */
-      public function setByReference($attributeName,&$value){
-         $this->{'__'.$attributeName} = & $value;
-       // end function
-      }
-
-      /**
-      *  @public
-      *
-      *  Returns the content of a member by reference. This is used to guarantee php4 support.
-      *
-      *  @param string $attributeName Name of the desired attribute.
-      *  @return APFObject Desired object to reference or null in case of errors.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 16.01.2007<br />
-      *  Version 0.2, 21.01.2007 (Bugfix: $Attribute war falsch geschreiben)<br />
-      */
-      public function &getByReference($attributeName){
-
-         if(isset($this->{'__'.$attributeName})){
-            return $this->{'__'.$attributeName};
-          // end if
-         }
-         else{
-            $return = null;
-            return $return;
-          // end else
-         }
-
-       // end function
-      }
-
-      /**
-      *  Interface definition of the transform() method. This function is used to transform a
-      *  DOM node within the page controller. It must be implemented by derived classes.
-      *
-      *  @public
-      *  @abstract
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
+       * Interface definition of the <em>transform()</em> method. This function is used to
+       * transform a DOM node within the page controller. It must be implemented by derived classes.
+       *
+       * @public
+       * @abstract
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
       public function transform(){
       }
 
@@ -757,46 +876,46 @@
       }
 
       /**
-      *  Interface definition of the onParseTime() method. This function is called after the creation
-      *  of a new DOM node. It must be implemented by derived classes.
-      *
-      *  @public
-      *  @abstract
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
+       * Interface definition of the onParseTime() method. This function is called after the creation
+       * of a new DOM node. It must be implemented by derived classes.
+       *
+       * @public
+       * @abstract
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
       public function onParseTime(){
       }
 
       /**
-      *  Interface definition of the onAfterAppend() method. This function is called after the DOM
-      *  node is appended to the DOM tree. It must be implemented by derived classes.
-      *
-      *  @public
-      *  @abstract
-      *
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
+       * Interface definition of the onAfterAppend() method. This function is called after the DOM
+       * node is appended to the DOM tree. It must be implemented by derived classes.
+       *
+       * @public
+       * @abstract
+       *
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
       public function onAfterAppend(){
       }
 
       /**
-      *  Interface definition of the transformContent() method. This function is applied to a
-      *  document controller during the transformation of a DOM node. It must be implemented by
-      *  each document controller to influence content generation.
-      *
-      *  @public
-      *  @abstract
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      */
+       * Interface definition of the transformContent() method. This function is applied to a
+       * document controller during the transformation of a DOM node. It must be implemented by
+       * each document controller to influence content generation.
+       *
+       * @public
+       * @abstract
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
       public function transformContent(){
       }
 
@@ -813,8 +932,8 @@
       protected function &__getDIServiceObject($namespace,$name){
 
          $diServiceMgr = &Singleton::getInstance('DIServiceManager');
-         $diServiceMgr->set('Context',$this->__Context);
-         $diServiceMgr->set('Language',$this->__Language);
+         $diServiceMgr->setContext($this->__Context);
+         $diServiceMgr->setLanguage($this->__Language);
          return $diServiceMgr->getServiceObject($namespace,$name);
 
        // end function
@@ -849,49 +968,47 @@
       }
 
       /**
-      *  @protected
-      *
-      *  Returns a initialized service object according to the current application context.
-      *
-      *  @param string $namespace Namespace of the service object (currently ignored).
-      *  @param string $serviceName Name of the service object (=class name).
-      *  @param string $InitParam The initialization parameter.
-      *  @param string $type The initializing type (see service manager for details).
-      *  @return APFObject The desired service object.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 29.03.2007<br />
-      *  Version 0.2, 22.04.2007 (Added language initializaton of the service manager)<br />
-      *  Version 0.3, 24.02.2008 (Added the service type param)<br />
-      */
+       * @protected
+       *
+       * Returns a initialized service object according to the current application context.
+       *
+       * @param string $namespace Namespace of the service object (currently ignored).
+       * @param string $serviceName Name of the service object (=class name).
+       * @param string $InitParam The initialization parameter.
+       * @param string $type The initializing type (see service manager for details).
+       * @return APFObject The desired service object.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 29.03.2007<br />
+       * Version 0.2, 22.04.2007 (Added language initializaton of the service manager)<br />
+       * Version 0.3, 24.02.2008 (Added the service type param)<br />
+       */
       protected function &__getAndInitServiceObject($namespace,$serviceName,$initParam,$type = 'SINGLETON'){
-
          $serviceManager = &Singleton::getInstance('ServiceManager');
          $serviceManager->setContext($this->__Context);
          $serviceManager->setLanguage($this->__Language);
          return $serviceManager->getAndInitServiceObject($namespace,$serviceName,$initParam,$type);
-
        // end function
       }
 
       /**
-      *  @protected
-      *
-      *  Returns a configuration object according to the current application context and the given
-      *  parameters.
-      *
-      *  @param string $namespace The namespace of the configuration file.
-      *  @param string $configName The name of the configuration file.
-      *  @param boolean $parseSubsections Indicates, whether the configuration manager should parse subsections.
-      *  @return Configuration The desired configuration object.
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 07.03.2007<br />
-      *  Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
-      *  Version 0.3, 10.03.2007 (Method now is considered protected)<br />
-      */
+       * @protected
+       *
+       * Returns a configuration object according to the current application context and the given
+       * parameters.
+       *
+       * @param string $namespace The namespace of the configuration file.
+       * @param string $configName The name of the configuration file.
+       * @param boolean $parseSubsections Indicates, whether the configuration manager should parse subsections.
+       * @return Configuration The desired configuration object.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 07.03.2007<br />
+       * Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
+       * Version 0.3, 10.03.2007 (Method now is considered protected)<br />
+       */
       protected function &__getConfiguration($namespace,$configName,$parseSubsections = false){
          $configurationManager = &Singleton::getInstance('configurationManager');
          return $configurationManager->getConfiguration($namespace,$this->__Context,$configName,$parseSubsections);
@@ -1064,28 +1181,27 @@
    class Page extends APFObject {
 
       /**
-      *  @protected
-      *  Container for the initial Document of the Page.
-      */
+       * @protected
+       * @var Document Container for the initial <em>Document</em> of the page.
+       */
       protected $__Document;
 
-
       /**
-      *  @public
-      *
-      *  Constructor of the page class. The class is the root node of the APF DOM tree.
-      *
-      *  @param string $name the optional name of the page
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 03.01.2007 (Introduced URL rewriting)<br />
-      *  Version 0.3, 08.06.2007 (URL rewriting is now outsourced to the filters)<br />
-      *  Version 0.4, 20.06.2008 (Replaced the usage of "APPS__URL_REWRITING" with a registry call)<br />
-      *  Version 0.5, 20.10.2008 (Removed second parameter due to registry introduction in 1.7-beta)<br />
-      *  Version 0.6, 11.12.2008 (Switched to the new input filter concept)<br />
-      */
+       * @public
+       *
+       * Constructor of the page class. The class is the root node of the APF DOM tree.
+       *
+       * @param string $name the optional name of the page
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 03.01.2007 (Introduced URL rewriting)<br />
+       * Version 0.3, 08.06.2007 (URL rewriting is now outsourced to the filters)<br />
+       * Version 0.4, 20.06.2008 (Replaced the usage of "APPS__URL_REWRITING" with a registry call)<br />
+       * Version 0.5, 20.10.2008 (Removed second parameter due to registry introduction in 1.7-beta)<br />
+       * Version 0.6, 11.12.2008 (Switched to the new input filter concept)<br />
+       */
       public function Page(){
 
          // set internal attributes
@@ -1111,61 +1227,76 @@
       }
 
       /**
-      *  @public
-      *
-      *  Creates the initial document (root) of the page object and loads the initial template. If
-      *  no context was set before, the namespace of the initial template is taken instead.
-      *
-      *  @param string $namespace namespace if the initial template
-      *  @param string $design (file)name if the initial template
-      *
-      *  @author Christian Schäfer
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 31.01.2007 (Now the context of the document is set)<br />
-      *  Version 0.3, 04.03.2007 (The namespace is taken as a context, if no other was set before)<br />
-      *  Version 0.4, 22.04.2007 (Now the language is applied to the document)<br />
-      *  Version 0.5, 08.03.2009 (Bugfix: protected variable __ParentObject might not be used)<br />
-      */
+       * @public
+       *
+       * Returns the root document of the APF DOM tree.
+       *
+       * @return Document The root document of the page controller's APF DOM tree.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.10.2010<br />
+       */
+      public function &getRootDocument(){
+         return $this->__Document;
+      }
+
+      /**
+       * @public
+       *
+       * Creates the initial document (root) of the page object and loads the initial template. If
+       * no context was set before, the namespace of the initial template is taken instead.
+       *
+       * @param string $namespace namespace if the initial template
+       * @param string $design (file)name if the initial template
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 31.01.2007 (Now the context of the document is set)<br />
+       * Version 0.3, 04.03.2007 (The namespace is taken as a context, if no other was set before)<br />
+       * Version 0.4, 22.04.2007 (Now the language is applied to the document)<br />
+       * Version 0.5, 08.03.2009 (Bugfix: protected variable __ParentObject might not be used)<br />
+       */
       public function loadDesign($namespace,$design){
 
          $this->__Document = new Document();
 
          // set the current context
          if(empty($this->__Context)){
-            $this->__Document->set('Context',$namespace);
+            $this->__Document->setContext($namespace);
           // end if
          }
          else{
-            $this->__Document->set('Context',$this->__Context);
+            $this->__Document->setContext($this->__Context);
           // end else
          }
 
          // set the current language
-         $this->__Document->set('Language',$this->__Language);
+         $this->__Document->setLanguage($this->__Language);
 
          // load the design
          $this->__Document->loadDesign($namespace,$design);
-         $this->__Document->set('ObjectID',XmlParser::generateUniqID());
-         $this->__Document->setByReference('ParentObject',$this);
+         $this->__Document->setObjectId(XmlParser::generateUniqID());
+         $this->__Document->setParentObject($this);
 
        // end function
       }
 
       /**
-      *  @public
-      *
-      *  Transforms the APF DOM tree of the current page. Returns the content of the transformed document.
-      *
-      *  @return string The content of the transformed page
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 28.12.2006<br />
-      *  Version 0.2, 03.01.2007 (Introduced URL rewriting)<br />
-      *  Version 0.3, 08.06.2007 (Moved the URL rewriting into a filter)<br />
-      *  Version 0.4, 11.12.2008 (Switched to the new input filter concept)<br />
-      */
+       * @public
+       *
+       * Transforms the APF DOM tree of the current page. Returns the content of the transformed document.
+       *
+       * @return string The content of the transformed page
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       * Version 0.2, 03.01.2007 (Introduced URL rewriting)<br />
+       * Version 0.3, 08.06.2007 (Moved the URL rewriting into a filter)<br />
+       * Version 0.4, 11.12.2008 (Switched to the new input filter concept)<br />
+       */
       public function transform(){
 
          // transform the current document
@@ -1255,6 +1386,53 @@
          $this->__TagLibs[] = new TagLib('core::pagecontroller','html','placeholder');
 
        // end function
+      }
+
+      /**
+       * @public
+       *
+       * Returns the textual content of the current node.
+       *
+       * @return string The content of the current node.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getContent(){
+         return $this->__Content;
+      }
+
+      /**
+       * @public
+       *
+       * Sets the textual content of the current node.
+       *
+       * @param string $content The content of the current node.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setContent($content){
+         $this->__Content = $content;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the name of the document controller in case the document should
+       * be transformed using an MVC controller. In case no controller is defined
+       * <em>null</em> is returned instead.
+       *
+       * @return string The name of the document controller.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getDocumentController(){
+         return $this->__DocumentController;
       }
 
       /**
@@ -1360,7 +1538,7 @@
             // get template code from parent object, if the parent exists
             $code = (string)'';
             if($this->__ParentObject !== null){
-               $code = ' Please check your template code ('.htmlentities($this->__ParentObject->get('Content')).').';
+               $code = ' Please check your template code ('.htmlentities($this->__ParentObject->getContent()).').';
              // end if
             }
 
@@ -1413,8 +1591,8 @@
              // end if
             }
 
-            $prefix = $this->__TagLibs[$i]->get('Prefix');
-            $class = $this->__TagLibs[$i]->get('Class');
+            $prefix = $this->__TagLibs[$i]->getPrefix();
+            $class = $this->__TagLibs[$i]->getClass();
             $module = $this->__getModuleName($prefix, $class);
             $token = $prefix.':'.$class;
             $tagLoops = 0;
@@ -1473,10 +1651,10 @@
                $object = new $module();
 
                // inject context of the parent object
-               $object->set('Context',$this->__Context);
+               $object->setContext($this->__Context);
 
                // inject language of the parent object
-               $object->set('Language',$this->__Language);
+               $object->setLanguage($this->__Language);
 
                // add the tag's atributes
                $object->setAttributes($attributes['attributes']);
@@ -1485,7 +1663,7 @@
                // within the APF DOM tree and to provide a unique key for the
                // children index.
                $objectId = XmlParser::generateUniqID();
-               $object->set('ObjectID',$objectId);
+               $object->setObjectId($objectId);
 
                // replace the position of the taglib with a place holder
                // token string: <$objectId />.
@@ -1494,10 +1672,10 @@
                $this->__Content = substr_replace($this->__Content,'<'.$objectId.' />',$tagStartPos,$tagStringLength);
 
                // advertise the parent object
-               $object->setByReference('ParentObject',$this);
+               $object->setParentObject($this);
 
                // add the content to the current APF DOM node
-               $object->set('Content',$attributes['content']);
+               $object->setContent($attributes['content']);
 
                // call onParseTime() to enable the taglib to initialize itself
                $benchId = '('.get_class($this).') '.$this->__ObjectID.'::__Children['.$objectId
@@ -1635,16 +1813,16 @@
             $docCon = new $this->__DocumentController;
 
             // inject context
-            $docCon->set('Context',$this->__Context);
+            $docCon->setContext($this->__Context);
 
             // inject current language
-            $docCon->set('Language',$this->__Language);
+            $docCon->setLanguage($this->__Language);
 
             // inject document reference to be able to access the current DOM document
-            $docCon->setByReference('Document',$this);
+            $docCon->setDocument($this);
 
             // inject the content to be able to access it
-            $docCon->set('Content',$content);
+            $docCon->setContent($content);
 
             // inject the current DOM node's attributes to easily access them
             if(is_array($this->__Attributes) && count($this->__Attributes) > 0){
@@ -1656,7 +1834,7 @@
             $docCon->transformContent();
 
             // retrieve the content
-            $content = $docCon->get('Content');
+            $content = $docCon->getContent();
 
             $t->stop($id);
 
@@ -1967,7 +2145,7 @@
                   if($this->__Children[$objectID]->getAttribute('name') == $name){
 
                      // set content of the placeholder
-                     $this->__Children[$objectID]->set('Content',$value);
+                     $this->__Children[$objectID]->setContent($value);
                      $placeHolderCount++;
 
                    // end if
@@ -2154,7 +2332,7 @@
 
       /**
        * @protected
-       * @var Document References the document, the document controller is used for transformation.
+       * @var Document References the document, the document controller is responsible for transformation.
        */
       protected $__Document;
 
@@ -2173,6 +2351,23 @@
        * Version 0.1, 28.12.2006<br />
        */
       public function transformContent(){
+      }
+
+      /**
+       * @public
+       *
+       * Injects the document into the document controller. This enables the developer
+       * to retrieve information and DOM elements stored in the node, the controller
+       * is responsible to transform.
+       *
+       * @param Document $document The dom node, the controller is intended to transform.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setDocument(&$document){
+         $this->__Document = &$document;
       }
 
       /**
@@ -2200,7 +2395,7 @@
 
          $placeHolderCount = 0;
 
-         $children = &$this->__Document->getByReference('Children');
+         $children = &$this->__Document->getChildren();
          if(count($children) > 0){
 
             foreach($children as $objectID => $DUMMY){
@@ -2208,7 +2403,7 @@
                if(get_class($children[$objectID]) == $tagLibClass){
 
                   if($children[$objectID]->getAttribute('name') == $name){
-                     $children[$objectID]->set('Content',$value);
+                     $children[$objectID]->setContent($value);
                      $placeHolderCount++;
                    // end if
                   }
@@ -2263,7 +2458,7 @@
           // end if
          }
 
-         $children = &$this->__Document->getByReference('Children');
+         $children = &$this->__Document->getChildren();
          if(count($children) > 0){
 
             foreach($children as $objectID => $DUMMY){
@@ -2324,7 +2519,7 @@
           // end if
          }
 
-         $children = &$this->__Document->getByReference('Children');
+         $children = &$this->__Document->getChildren();
          if(count($children) > 0){
 
             foreach($children as $objectID => $DUMMY){
@@ -2374,7 +2569,7 @@
        */
       protected function __placeholderExists($name){
 
-         $children = &$this->__Document->getByReference('Children');
+         $children = &$this->__Document->getChildren();
 
          foreach($children as $objectID => $DUMMY){
             if(get_class($children[$objectID]) == 'html_taglib_placeholder'){
@@ -2408,7 +2603,7 @@
        */
       protected function __templatePlaceholderExists(&$template,$name){
 
-         $children = &$template->getByReference('Children');
+         $children = &$template->getChildren();
 
          foreach($children as $objectID => $DUMMY){
             if(get_class($children[$objectID]) == 'template_taglib_placeholder'){

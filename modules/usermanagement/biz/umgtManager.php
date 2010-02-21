@@ -509,7 +509,7 @@
          $oRM = &$this->__getORMapper();
 
          // escape the input values
-         $dbDriver = &$oRM->getByReference('DBDriver');
+         $dbDriver = &$oRM->getDBDriver();
          $username = $dbDriver->escapeValue($username);
          $password = $dbDriver->escapeValue($password);
 
@@ -539,7 +539,7 @@
          $oRM = &$this->__getORMapper();
 
          // escape the input values
-         $dbDriver = &$oRM->getByReference('DBDriver');
+         $dbDriver = &$oRM->getDBDriver();
          $firstName = $dbDriver->escapeValue($firstName);
 
          // create the statement and select user
@@ -567,7 +567,7 @@
          $oRM = &$this->__getORMapper();
 
          // escape the input values
-         $dbDriver = &$oRM->getByReference('DBDriver');
+         $dbDriver = &$oRM->getDBDriver();
          $lastName = $dbDriver->escapeValue($lastName);
 
          // create the statement and select user
@@ -595,7 +595,7 @@
          $oRM = &$this->__getORMapper();
 
          // escape the input values
-         $dbDriver = &$oRM->getByReference('DBDriver');
+         $dbDriver = &$oRM->getDBDriver();
          $email = $dbDriver->escapeValue($email);
 
          // create the statement and select user
@@ -624,7 +624,7 @@
          $oRM = &$this->__getORMapper();
 
          // escape the input values
-         $dbDriver = &$oRM->getByReference('DBDriver');
+         $dbDriver = &$oRM->getDBDriver();
          $firstName = $dbDriver->escapeValue($firstName);
          $lastName = $dbDriver->escapeValue($lastName);
 
@@ -653,7 +653,7 @@
          $oRM = &$this->__getORMapper();
 
          // escape the input values
-         $dbDriver = &$oRM->getByReference('DBDriver');
+         $dbDriver = &$oRM->getDBDriver();
          $username = $dbDriver->escapeValue($username);
 
          // create the statement and select user
@@ -703,7 +703,7 @@
          $oRM = &$this->__getORMapper();
 
          // escape the input values
-         $dbDriver = &$oRM->getByReference('DBDriver');
+         $dbDriver = &$oRM->getDBDriver();
          $email = $dbDriver->escapeValue($email);
          $password = $dbDriver->escapeValue($password);
 

@@ -72,7 +72,7 @@
        */
       protected function notifyValidationListeners(&$control){
 
-         $listeners = &$control->getByReference('ParentObject')->getFormElementsByTagName('form:listener');
+         $listeners = &$control->getParentObject()->getFormElementsByTagName('form:listener');
          $count = count($listeners);
          $controlName = $control->getAttribute('name');
          $validatorName = $this->getValidatorName();

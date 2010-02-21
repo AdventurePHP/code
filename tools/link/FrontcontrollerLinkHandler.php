@@ -309,16 +309,16 @@
             $input->getAttributesAsString(false);
 
             // remove conventional sub path from action namespace
-            $actionNamespace = str_replace('::actions','',$actions[$key]->get('ActionNamespace'));
+            $actionNamespace = str_replace('::actions','',$actions[$key]->getActionNamespace());
 
             // create param offset
             $arrayKey = str_replace('::',$namespaceURLDelimiter,$actionNamespace)
                            .$namespaceKeywordDelimiter.$actionKeyword
                            .str_replace($keywordClassDelimiter,$normalKeywordClassDelimiter,$keywordClassDelimiter)
-                           .($actions[$key]->get('ActionName'));
+                           .($actions[$key]->getActionName());
 
             // check, whether the action should be kept in url
-            if($actions[$key]->get('KeepInURL') == true){
+            if($actions[$key]->getKeepInUrl() == true){
 
                // create input string
                $input = &$actions[$key]->getInput();

@@ -181,7 +181,7 @@
                );
 
                // add the necessary config params and pages
-               $objectDocument = $objectPager->getByReference ('Document');
+               $objectDocument = $objectPager->getRootDocument();
 
                $objectDocument->setAttribute ('Config',
                        array ('ParameterPage'     => $this->__PagerConfig['Pager.ParameterPage'],

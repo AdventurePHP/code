@@ -61,7 +61,7 @@
          $nM = &$this->__getAndInitServiceObject('modules::newspager::biz','newspagerManager',$DataDir);
 
          // set language
-         $nM->set('Language',$Language);
+         $nM->setLanguage($Language);
 
          // load news object
          $N = $nM->getNewsByPage($Page);

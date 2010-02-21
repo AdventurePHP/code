@@ -79,8 +79,8 @@
          // that we can address the element with it's plain name in the template.
          $name = $this->getAttribute('name');
          if(substr_count($name,'[') > 0 || substr_count($name,']') > 0){
-            $doc = $this->__ParentObject->get('ParentObject');
-            $docCon = $doc->get('DocumentController');
+            $doc = &$this->__ParentObject->getParentObject();
+            $docCon = $doc->getDocumentController();
             trigger_error('[form_taglib_multiselect::onParseTime()] The attribute "name" of the '
                .'&lt;form:multiselect /&gt; tag with name "'.$this->__Attributes['name']
                .'" in form "'.$this->__ParentObject->getAttribute('name').'" and document '

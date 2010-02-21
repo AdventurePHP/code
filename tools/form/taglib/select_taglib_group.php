@@ -72,19 +72,19 @@
          $objectId = XmlParser::generateUniqID();
          $this->__Children[$objectId] = new select_taglib_option();
 
-         $this->__Children[$objectId]->set('ObjectID',$objectId);
-         $this->__Children[$objectId]->set('Content',$displayName);
+         $this->__Children[$objectId]->setObjectId($objectId);
+         $this->__Children[$objectId]->setContent($displayName);
          $this->__Children[$objectId]->setAttribute('value',$value);
 
          if($preSelected == true){
             $this->__Children[$objectId]->setAttribute('selected','selected');
          }
-         $this->__Children[$objectId]->set('Language',$this->__Language);
-         $this->__Children[$objectId]->set('Context',$this->__Context);
+         $this->__Children[$objectId]->setLanguage($this->__Language);
+         $this->__Children[$objectId]->setContext($this->__Context);
          $this->__Children[$objectId]->onParseTime();
 
          // inject parent object (=this) to guarantee native DOM tree environment
-         $this->__Children[$objectId]->setByReference('ParentObject',$this);
+         $this->__Children[$objectId]->setParentObject($this);
          $this->__Children[$objectId]->onAfterAppend();
 
          // add xml marker, necessary for transformation
@@ -107,7 +107,7 @@
       public function setOption2Selected($displayNameOrValue){
          foreach($this->__Children as $objectId => $DUMMY){
             if($this->__Children[$objectId]->getAttribute('value') == $displayNameOrValue
-                    || $this->__Children[$objectId]->get('Content') == $displayNameOrValue){
+                    || $this->__Children[$objectId]->getContent() == $displayNameOrValue){
                $this->__Children[$objectId]->setAttribute('selected','selected');
             }
          }

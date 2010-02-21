@@ -1,23 +1,23 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
     * @package core::filter
@@ -32,18 +32,16 @@
    final class FilterDefinition extends APFObject {
 
       /**
-      *  @protected
-      *  The namespace of the filter class.
-      */
-      protected $__Namespace = null;
-
+       * @private
+       * @var string The namespace of the filter class.
+       */
+      private $__Namespace = null;
 
       /**
-      *  @protected
-      *  The name of the filter class (and file name as well).
-      */
-      protected $__Class = null;
-
+       * @private
+       * @var string The name of the filter class (and file name as well).
+       */
+      private $__Class = null;
 
       /**
        * @public
@@ -60,9 +58,38 @@
        // end function
       }
 
+      /**
+       * @public
+       *
+       * Returns the namespace of the filter implementation class.
+       *
+       * @return string The namespace of the filter implementation.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getNamespace(){
+         return $this->__Namespace;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the class name of the filter implementation class.
+       *
+       * @return string The class name of the filter implementation.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getClass(){
+         return $this->__Class;
+      }
+
     // end class
    }
-
 
    /**
     * @package core::filter
@@ -75,12 +102,10 @@
     * @version
     * Version 0.1, 08.06.2007<br />
     */
-   abstract class AbstractFilter extends APFObject
-   {
+   abstract class AbstractFilter extends APFObject {
 
-      function AbstractFilter(){
+      public function AbstractFilter(){
       }
-
 
       /**
        * @public
@@ -102,7 +127,6 @@
     // end class
    }
 
-
    /**
     * @package core::filter
     * @class FilterFactory
@@ -114,29 +138,27 @@
     * @version
     * Version 0.1, 08.06.2007<br />
     */
-   class FilterFactory
-   {
+   final class FilterFactory {
 
-      function FilterFactory(){
+      public function FilterFactory(){
       }
 
-
       /**
-      *  @public
-      *  @static
-      *
-      *  Returns an instance of the desired filter.<br />
-      *
-      *  @param FilterDefinition $filterDefinition the definition of the APF style filter
-      *  @return AbstractFilter $filterInstance the instance of the filter or null in case the filter class does not exist
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 08.06.2007<br />
-      *  Version 0.2, 13.08.2008 (Removed unused code)<br />
-      *  Version 0.3, 07.11.2008 (Bugfix: the namespace of filters outside "core::filter" could not be included)<br />
-      *  Version 0.4, 11.12.2008 (Switched to FilterDefinition for addressing a filter)<br />
-      */
+       * @public
+       * @static
+       *
+       * Returns an instance of the desired filter.<br />
+       *
+       * @param FilterDefinition $filterDefinition the definition of the APF style filter
+       * @return AbstractFilter $filterInstance the instance of the filter or null in case the filter class does not exist
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 08.06.2007<br />
+       * Version 0.2, 13.08.2008 (Removed unused code)<br />
+       * Version 0.3, 07.11.2008 (Bugfix: the namespace of filters outside "core::filter" could not be included)<br />
+       * Version 0.4, 11.12.2008 (Switched to FilterDefinition for addressing a filter)<br />
+       */
       static function getFilter($filterDefinition){
 
          // check definition
@@ -148,8 +170,8 @@
          }
 
          // gather the filter information
-         $namespace = $filterDefinition->get('Namespace');
-         $filterName = $filterDefinition->get('Class');
+         $namespace = $filterDefinition->getNamespace();
+         $filterName = $filterDefinition->getClass();
 
          // check, if the filter exists and include it
          if(file_exists(APPS__PATH.'/'.str_replace('::','/',$namespace).'/'.$filterName.'.php')){

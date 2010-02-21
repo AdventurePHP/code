@@ -92,12 +92,12 @@
          $year = new form_taglib_select();
 
          // apply context and language
-         $day->set('Language',$this->__Language);
-         $month->set('Language',$this->__Language);
-         $year->set('Language',$this->__Language);
-         $day->set('Context',$this->__Context);
-         $month->set('Context',$this->__Context);
-         $year->set('Context',$this->__Context);
+         $day->setLanguage($this->__Language);
+         $month->setLanguage($this->__Language);
+         $year->setLanguage($this->__Language);
+         $day->setContext($this->__Context);
+         $month->setContext($this->__Context);
+         $year->setContext($this->__Context);
 
          // apply css classes
          if(isset($this->__Attributes['class'])){
@@ -163,9 +163,9 @@
          $year->onParseTime();
 
          // reference the father object and add to the children list
-         $day->setByReference('ParentObject',$this);
-         $month->setByReference('ParentObject',$this);
-         $year->setByReference('ParentObject',$this);
+         $day->setParentObject($this);
+         $month->setParentObject($this);
+         $year->setParentObject($this);
          $this->__Children['d'] = $day;
          $this->__Children['m'] = $month;
          $this->__Children['y'] = $year;

@@ -165,7 +165,7 @@
             if(is_array($this->__DataContainer[$i])){
 
                foreach($placeHolders as $objectId => $DUMMY){
-                  $placeHolders[$objectId]->set('Content',$this->__DataContainer[$i][$placeHolders[$objectId]->getAttribute('name')]);
+                  $placeHolders[$objectId]->setContent($this->__DataContainer[$i][$placeHolders[$objectId]->getAttribute('name')]);
                 // end foreach
                }
 
@@ -176,7 +176,7 @@
             elseif(is_object($this->__DataContainer[$i])){
 
                foreach($placeHolders as $objectId => $DUMMY){
-                  $placeHolders[$objectId]->set('Content',$this->__DataContainer[$i]->{$getter}($placeHolders[$objectId]->getAttribute('name')));
+                  $placeHolders[$objectId]->setContent($this->__DataContainer[$i]->{$getter}($placeHolders[$objectId]->getAttribute('name')));
                 // end foreach
                }
 

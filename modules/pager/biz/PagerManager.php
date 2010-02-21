@@ -243,14 +243,14 @@
          $pager = new Page();
 
          // apply context and language (form configuration purposes!)
-         $pager->set('Language',$this->__Language);
-         $pager->set('Context',$this->__Context);
+         $pager->setLanguage($this->__Language);
+         $pager->setContext($this->__Context);
 
          // load the econfigured design
          $pager->loadDesign($this->__PagerConfig['Pager.DesignNamespace'],$this->__PagerConfig['Pager.DesignTemplate']);
 
          // add the necessary config params and pages
-         $document = &$pager->getByReference('Document');
+         $document = &$pager->getRootDocument();
          $document->setAttribute('Pages',$this->__createPages4PagerDisplay($addStmtParams));
          $document->setAttribute('Config',array('ParameterStartName' => $this->__PagerConfig['Pager.ParameterStartName'],
                                                 'ParameterCountName' => $this->__PagerConfig['Pager.ParameterCountName'],
