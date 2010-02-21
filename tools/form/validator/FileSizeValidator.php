@@ -26,7 +26,7 @@
     * @class FileSizeValidator
     *
     * Implements a simple validator, that checks the uploaded file
-    * to have the desired MIME type.
+    * to have the desired file size. Min and max size can be defined.
     *
     * @author Christian Achatz
     * @version
@@ -34,7 +34,8 @@
     */
    class FileSizeValidator extends TextFieldValidator {
 
-      private static $ALLOWED_SIZE_ATTRIBUTE_NAME = 'maxsize';
+      private static $MAX_ALLOWED_SIZE_ATTRIBUTE_NAME = 'maxsize';
+      private static $MIN_REQUIRED_SIZE_ATTRIBUTE_NAME = 'minsize';
 
       /**
        * @public
@@ -47,6 +48,7 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 03.02.2010<br />
+       * Version 0.2, 21.02.2010 (Added min required file size)<br />
        */
       public function validate($input){
 
@@ -58,7 +60,8 @@
 
             $size = (int)$fileModel->getSize();
             $allowed = (int)$this->getMaxSize();
-            if($size <= $allowed){
+            $required = (int)$this->getMinSize();
+            if($size >= $required && $size <= $allowed){
                return true;
             }
             
@@ -80,11 +83,30 @@
        * Version 0.1, 03.02.2010<br />
        */
       private function getMaxSize(){
-         $maxSize = $this->__Control->getAttribute(self::$ALLOWED_SIZE_ATTRIBUTE_NAME);
+         $maxSize = $this->__Control->getAttribute(self::$MAX_ALLOWED_SIZE_ATTRIBUTE_NAME);
          if(empty($maxSize)){
             return (int)1024000; // 1MB in bytes
          }
          return (int)$maxSize;
+      }
+
+      /**
+       * @private
+       *
+       * Returns the minimum required file size.
+       *
+       * @return int The minimum required file size.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 21.02.2010<br />
+       */
+      private function getMinSize(){
+         $minSize = $this->__Control->getAttribute(self::$MIN_REQUIRED_SIZE_ATTRIBUTE_NAME);
+         if(empty($minSize)){
+            return (int)0; // 0 bytes allowed!
+         }
+         return (int)$minSize;
       }
       
     // end class
