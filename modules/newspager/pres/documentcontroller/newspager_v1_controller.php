@@ -32,17 +32,15 @@
    *  @version
    *  Version 0.1, 02.20.2008<br />
    */
-   class newspager_v1_controller extends baseController
-   {
+   class newspager_v1_controller extends base_controller {
 
-      function newspager_v1_controller(){
+      public function newspager_v1_controller(){
       }
-
 
       /**
       *  @public
       *
-      *  Implements the abstract transformation function of the baseController class.<br />
+      *  Implements the abstract transformation function of the base_controller class.<br />
       *
       *  @author Christian Achatz
       *  @version

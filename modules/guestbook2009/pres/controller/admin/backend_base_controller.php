@@ -32,7 +32,7 @@
     * @version
     * Version 0.1, 18.05.2009<br />
     */
-   class backend_base_controller extends baseController {
+   class backend_base_controller extends base_controller {
 
       /**
        * Displays the select field using the choose.html template imported into

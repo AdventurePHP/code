@@ -31,7 +31,7 @@
     * @version
     * Version 0.1, 18.05.2009<br />
     */
-   class login_controller extends baseController {
+   class login_controller extends base_controller {
 
       public function transformContent(){
          

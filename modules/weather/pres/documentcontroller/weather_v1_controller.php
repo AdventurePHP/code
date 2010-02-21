@@ -31,16 +31,13 @@
    *  @version
    *  Version 0.1, 20.04.2008<br />
    */
-   class weather_v1_controller extends baseController
-   {
+   class weather_v1_controller extends base_controller {
 
       /**
       *  @protected
       *  Version von PHP
       */
       protected $__PHPVersion;
-
-
 
       /**
       *  @public
@@ -51,16 +48,15 @@
       *  @version
       *  Version 0.1, 26.04.2008<br />
       */
-      function weather_v1_controller(){
+      public function weather_v1_controller(){
          $this->__PHPVersion = (int)phpversion();
        // end function
       }
 
-
       /**
       *  @public
       *
-      *  Implements the abstract method transformContent() of the baseController class.<br />
+      *  Implements the abstract method transformContent() of the base_controller class.<br />
       *
       *  @author Christian Achatz
       *  @version

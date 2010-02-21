@@ -35,7 +35,7 @@
     * Version 0.3, 23.02.2007<br />
     * Version 0.4, 12.09.2009 (Refactoring due to changes of the form taglibs)<br />
     */
-   class kontakt_v4_controller extends baseController {
+   class kontakt_v4_controller extends base_controller {
 
       public function kontakt_v4_controller(){
       }

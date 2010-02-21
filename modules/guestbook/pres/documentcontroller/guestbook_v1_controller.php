@@ -32,12 +32,10 @@
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
-   class guestbook_v1_controller extends baseController
-   {
+   class guestbook_v1_controller extends base_controller {
 
-      function guestbook_v1_controller(){
+      public function guestbook_v1_controller(){
       }
-
 
       /**
       *  @public

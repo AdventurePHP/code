@@ -33,7 +33,7 @@
     * @version
     * Version 0.1, 26.12.2008<br />
     */
-   class umgtbaseController extends baseController {
+   class umgtbaseController extends base_controller {
 
       /**
        * @protected
@@ -62,5 +62,4 @@
 
     // end class
    }
-
 ?>

@@ -33,8 +33,7 @@
    *  @version
    *  Version 0.1, 21.08.2007<br />
    */
-   class commentBaseController extends baseController
-   {
+   class commentBaseController extends base_controller {
 
       /**
       *  @protected
@@ -42,10 +41,8 @@
       */
       protected $__CategoryKey;
 
-
-      function commentBaseController(){
+      public function commentBaseController(){
       }
-
 
       /**
       *  @protected

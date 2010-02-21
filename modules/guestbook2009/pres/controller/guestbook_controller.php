@@ -31,7 +31,7 @@
     * @version
     * Version 0.1, 21.05.2009<br />
     */
-   class guestbook_controller extends baseController {
+   class guestbook_controller extends base_controller {
 
       public function transformContent(){
 

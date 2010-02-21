@@ -75,18 +75,14 @@
       public function transform(){
 
          // setup the desired attributes
-         $this->__Attributes['namespace'] = 'modules::usermanagement::pres::icons';
+         $this->setAttribute('namespace','modules::usermanagement::pres::icons');
 
          // execute the parent's onParseTime()
          parent::onParseTime();
 
          // generate the image tag
-         $this->deleteAttribute('namespace');
-         $this->deleteAttribute('filename');
-         $this->deleteAttribute('extension');
-         $this->deleteAttribute('filebody');
-         $attributes = $this->__getAttributesAsString($this->__Attributes);
          $imgsrc = parent::transform();
+         $attributes = $this->__getAttributesAsString($this->getAttributes(),array('alt','title'));
          return '<img src="'.$imgsrc.'" '.$attributes.' style="width: 20px; height: 20px; border-width: 0px;" />';
 
        // end function

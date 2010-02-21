@@ -42,8 +42,7 @@
    *  Version 0.4, 11.03.2007 (Komplett auf PageController V2 migriert)<br />
    *  Version 0.5, 16.11.2007 (Auf FrontcontrollerLinkHandler umgestellt)<br />
    */
-   class pager_2_v1_controller extends baseController
-   {
+   class pager_2_v1_controller extends base_controller {
 
       /**
       *  @private
@@ -51,10 +50,8 @@
       */
       private $_LOCALS;
 
-
-      function pager_2_v1_controller(){
+      public function pager_2_v1_controller(){
       }
-
 
       /**
       *  @public

@@ -30,12 +30,10 @@
    *  @version
    *  Version 0.1, 02.06.2008<br />
    */
-   class iteratorBaseController extends baseController
-   {
+   class iteratorBaseController extends base_controller {
 
-      function iteratorBaseController(){
+      public function iteratorBaseController(){
       }
-
 
       /**
       *  @protected

@@ -32,7 +32,7 @@
     * Version 0.1, 03.05.2009<br />
     * Version 0.2, 06.06.2009 (Added dynamic link generation)<br />
     */
-   class list_controller extends baseController {
+   class list_controller extends base_controller {
 
       function transformContent(){
 

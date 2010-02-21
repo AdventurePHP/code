@@ -40,7 +40,7 @@
     * <li>OutputFilter              : the definition of the output filter</li>
     * </ul>
     * The file also contains the pagecontroller core implementation with the classes Page,
-    * Document, TagLib, APFObject, XmlParser and baseController (the basic MVC document controller).
+    * Document, TagLib, APFObject, XmlParser and base_controller (the basic MVC document controller).
     *
     * @author Christian Achatz
     * @version
@@ -1618,8 +1618,9 @@
                   $closingTagLength = 2;
 
                   if($tagEndPos === false){
-                     trigger_error('[Document::__extractTagLibTags()] No closing tag found for tag "&lt;'.$token.' /&gt;"!',E_USER_ERROR);
-                     exit();
+                     trigger_error('['.get_class($this).'::__extractTagLibTags()] No closing tag '
+                             .'found for tag "&lt;'.$token.' /&gt;"!',E_USER_ERROR);
+                     exit(1);
                    // end if
                   }
 
@@ -1843,8 +1844,8 @@
 
          // transform child nodes and replace XML marker to place the output at the right position
          if(count($this->__Children) > 0){
-            foreach($this->__Children as $objectID => $DUMMY){
-               $content = str_replace('<'.$objectID.' />',$this->__Children[$objectID]->transform(),$content);
+            foreach($this->__Children as $objectId => $DUMMY){
+               $content = str_replace('<'.$objectId.' />',$this->__Children[$objectId]->transform(),$content);
              // end foreach
             }
           // end if
@@ -2039,7 +2040,7 @@
        * @public
        *
        * Implements the transform() method. Returns the content of the tag, that is set by a
-       * document controller using the baseController's setPlaceHolder() method.
+       * document controller using the base_controller's setPlaceHolder() method.
        *
        * @author Christian Schäfer
        * @version
@@ -2317,7 +2318,7 @@
 
    /**
     * @package core::pagecontroller
-    * @class baseController
+    * @class base_controller
     * @abstract
     *
     * Defines the base class for all document controller classes. To add custom logic, implement
@@ -2328,7 +2329,7 @@
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 04.11.2007 (Removed the isButtonPushed() method)<br />
     */
-   abstract class baseController extends Document {
+   abstract class base_controller extends Document {
 
       /**
        * @protected
@@ -2336,7 +2337,7 @@
        */
       protected $__Document;
 
-      public function baseController(){
+      public function base_controller(){
       }
 
       /**

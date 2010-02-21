@@ -32,7 +32,7 @@
     * @version
     * Version 0.1, 10.05.2009<br />
     */
-   class create_controller extends baseController {
+   class create_controller extends base_controller {
 
       function transformContent(){
 

@@ -30,7 +30,7 @@
    *  @version
    *  Version 0.1, 12.04.2007<br />
    */
-   class guestbookBaseController extends baseController {
+   class guestbookBaseController extends base_controller {
 
       function guestbookBaseController(){
       }

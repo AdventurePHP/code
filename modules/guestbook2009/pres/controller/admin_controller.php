@@ -32,7 +32,7 @@
     * @version
     * Version 0.1, 18.05.2009<br />
     */
-   class admin_controller extends baseController {
+   class admin_controller extends base_controller {
       
        public function transformContent(){
 

@@ -21,7 +21,7 @@
     *  @version
     *  Version 0.1, 20.12.2009<br />
     */
-   class arraypager_controller extends baseController {
+   class arraypager_controller extends base_controller {
 
       private $_LOCALS;
 
