@@ -23,15 +23,26 @@
     *
     * Parses a template and appends the child nodes to the parent's child list. Hence, this taglib
     * can be used to swap shared templates / forms / ... Please make sure, that the imported template
-    * includes the necessary "*:addtaglib" statements for the relevant tag definitions. Usage:
+    * includes the necessary "*:addtaglib" statements for the relevant tag definitions.
+    * <p/>
+    * Usage:
     * <pre>&lt;core:addtaglib namespace="core::pagecontroller" prefix="core" class="appendnode" /&gt;
-    * &lt;core:appendnode namespace="..." template="..." /&gt;</pre>
+    * &lt;core:appendnode namespace="..." template="..."[ includestatic="true"]/&gt;</pre>
+    * <p/>
+    * In case the <em>includestatic</em> is present and set to <em>true</em>, the static content
+    * (e.g. html markup) is included in the parent's content, too.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 16.11.2008<br />
     */
    class core_taglib_appendnode extends Document {
+
+      /**
+       * @var string Indicates, whether the static content of an included templates
+       * should be appended to the target template (<em>true</em>) or not (<em>false</em>).
+       */
+      protected static $INCLUDE_STATIC_CONTENT_ATTRIBUTE_NAME = 'includestatic';
 
       /**
        *  @public
@@ -92,29 +103,63 @@
        * Version 0.1, 16.11.2008<br />
        * Version 0.2, 16.11.2008 (Bugfix: added a parent object reference correction for the new nodes)<br />
        * Version 0.3, 16.11.2008 (Enhancement: added a tag marker to the parent object to enable the transformOnPlace() feature)<br />
+       * Version 0.4, 22.02.2010 (Added possibility to include static content)<br />
        */
-      function onAfterAppend(){
+      public function onAfterAppend(){
 
          // get parent children list
          $parentChildren = &$this->__ParentObject->getChildren();
          $parentContent = $this->__ParentObject->getContent();
          $currentObjectId = $this->__ObjectID;
 
-         foreach($this->__Children as $objectId => $DUMMY){
+         // include static content, if desired.
+         // code duplication is done to speed up the DOM node relocation!
+         $includeStatic = $this->getAttribute(self::$INCLUDE_STATIC_CONTENT_ATTRIBUTE_NAME);
+         if($includeStatic === 'true'){
 
-            // append node to parent object's children list
-            $parentChildren[$objectId] = &$this->__Children[$objectId];
+            foreach($this->__Children as $objectId => $DUMMY){
 
-            // correct the parent object refrence
-            $parentChildren[$objectId]->setParentObject($this->__ParentObject);
+               // append node to parent object's children list
+               $parentChildren[$objectId] = &$this->__Children[$objectId];
 
-            // add a marker tag to the parent object after the tag's marker
-            $parentContent = str_replace('<'.$currentObjectId.' />','<'.$currentObjectId.' /><'.$objectId.' />',$parentContent);
-            $currentObjectId = $objectId;
+               // correct the parent object refrence
+               $parentChildren[$objectId]->setParentObject($this->__ParentObject);
 
-          // end foreach
+             // end foreach
+            }
+
+            // include complete content of the current document and append it to
+            // the place holder of the present tag's marker
+            $this->__ParentObject->setContent(
+                    str_replace('<'.$currentObjectId.' />',
+                            '<'.$currentObjectId.' />'.$this->__Content,
+                            $parentContent)
+            );
+
+          // end if
          }
-         $this->__ParentObject->setContent($parentContent);
+         else{
+            
+            foreach($this->__Children as $objectId => $DUMMY){
+
+               // append node to parent object's children list
+               $parentChildren[$objectId] = &$this->__Children[$objectId];
+
+               // correct the parent object refrence
+               $parentChildren[$objectId]->setParentObject($this->__ParentObject);
+
+               // add a marker tag to the parent object after the tag's marker
+               $parentContent = str_replace('<'.$currentObjectId.' />','<'.$currentObjectId.' /><'.$objectId.' />',$parentContent);
+               $currentObjectId = $objectId;
+
+             // end foreach
+            }
+
+            // include content of the current document
+            $this->__ParentObject->setContent($parentContent);
+
+          // end else
+         }
 
        // end function
       }
@@ -129,7 +174,7 @@
        * @version
        * Version 0.1, 16.11.2008<br />
        */
-      function transform(){
+      public function transform(){
          return (string)'';
        // end function
       }
