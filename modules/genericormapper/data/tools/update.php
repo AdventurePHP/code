@@ -19,7 +19,7 @@
     * -->
     */
 
-   echo 'This is a sample setup script, that must be adapted to your requirements! '
+   echo 'This is a sample update script, that must be adapted to your requirements! '
             .'Please do not use as is to avoid unexpected results! :)';
    exit(0);
 
@@ -34,17 +34,20 @@
    import('modules::genericormapper::data::tools','GenericORMapperUpdate');
 
    // create update tool
-   $updateMapper = new GenericORMapperUpdate();
+   $update = new GenericORMapperUpdate();
 
    // set Context (important for the configuration files!)
-   $updateMapper->setContext('{CONTEXT}');
+   $update->setContext('{CONTEXT}');
 
    // adapt storage engine (default is MyISAM)
-   $updateMapper->setStorageEngine('MyISAM|INNODB');
+   $update->setStorageEngine('MyISAM|INNODB');
+
+   // adapt data type of the indexed columns, that are used for object and relation ids
+   //$update->setIndexColumnDataType('INT(5) UNSIGNED');
 
    // update database layout
-   $updateMapper->updateDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}','{CONNECTION_NAME}');
+   $update->updateDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}','{CONNECTION_NAME}');
 
    // display statements only
-   $updateMapper->updateDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}','{CONNECTION_NAME}',false);
+   $update->updateDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}','{CONNECTION_NAME}',false);
 ?>

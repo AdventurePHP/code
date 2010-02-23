@@ -63,10 +63,16 @@
                                      );
 
       /**
-       * @protected
-       * Stores the MySQL storage engine type.
+       * @private
+       * @var string Stores the MySQL storage engine type.
        */
       private $__StorageEngine = 'MyISAM';
+
+      /**
+       * @private
+       * @var string The data type that is used for the indexed id columns.
+       */
+      private $indexColumnDataType = 'INT(5) UNSIGNED';
 
       public function GenericORMapperSetup(){
       }
@@ -77,6 +83,31 @@
 
       public function getStorageEngine(){
          return $this->__StorageEngine;
+      }
+
+      /**
+       * @public
+       *
+       * Let's you influence the data type of the indexed id columns to have
+       * a greater range of objects to store within the database.
+       * <p/>
+       * Please be aware, that the value set with this method is directly used
+       * within the create and update statements.
+       *
+       * @see http://dev.mysql.com/doc/refman/5.0/en/data-types.html
+       *
+       * @param string $dataType The column data type for indexed id columns.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.02.2010<br />
+       */
+      public function setIndexColumnDataType($dataType){
+         $this->indexColumnDataType = $dataType;
+      }
+
+      public function getIndexColumnDataType(){
+         return $this->indexColumnDataType;
       }
 
       /**
@@ -206,7 +237,7 @@
          $create = 'CREATE TABLE IF NOT EXISTS `'.$tableAttributes['Table'].'` ('.PHP_EOL;
 
          // id row
-         $create .= '  `'.$tableAttributes['ID'].'` INT(5) UNSIGNED NOT NULL auto_increment,'.PHP_EOL;
+         $create .= '  `'.$tableAttributes['ID'].'` '.$this->getIndexColumnDataType().' NOT NULL auto_increment,'.PHP_EOL;
 
          // object properties
          foreach($tableAttributes as $key => $value){
@@ -294,7 +325,7 @@
             $pkName = 'ASSID';
           // end if
          }
-         $create .= '  `'.$pkName.'` INT(5) UNSIGNED NOT NULL auto_increment,'.PHP_EOL;
+         $create .= '  `'.$pkName.'` '.$this->getIndexColumnDataType().' NOT NULL auto_increment,'.PHP_EOL;
 
          // source id
          $create .= '  `'.$tableAttributes['SourceID'].'` INT(5) UNSIGNED NOT NULL default \'0\','.PHP_EOL;

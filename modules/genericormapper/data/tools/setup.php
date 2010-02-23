@@ -34,17 +34,20 @@
    import('modules::genericormapper::data::tools','GenericORMapperSetup');
 
    // create setup tool
-   $setupMapper = new GenericORMapperSetup();
+   $setup = new GenericORMapperSetup();
 
    // set Context (important for the configuration files!)
-   $setupMapper->setContext('{CONTEXT}');
+   $setup->setContext('{CONTEXT}');
 
    // adapt storage engine (default is MyISAM)
-   $setupMapper->setStorageEngine('MyISAM|INNODB');
+   $setup->setStorageEngine('MyISAM|INNODB');
+
+   // adapt data type of the indexed columns, that are used for object and relation ids
+   //$setup->setIndexColumnDataType('INT(5) UNSIGNED');
 
    // create database layout
-   $setupMapper->setupDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}','{CONNECTION_NAME}');
+   $setup->setupDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}','{CONNECTION_NAME}');
 
    // display statements only
-   $setupMapper->setupDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}');
+   $setup->setupDatabase('{CONFIG_NAMESPACE}','{CONFIG_NAME_AFFIX}');
 ?>
