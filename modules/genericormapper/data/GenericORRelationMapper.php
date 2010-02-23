@@ -367,7 +367,7 @@
          }
 
          // gather information about the objects related to each other
-         $objectName = $object->get('ObjectName');
+         $objectName = $object->getObjectName();
          $sourceObject = $this->__MappingTable[$objectName];
          
          // check for null relations to prevent "undefined index" errors.
@@ -414,9 +414,9 @@
          foreach($relations as $innerRelationName => $DUMMY){
 
             // gather relation params
-            $relationObjectName = $relations[$innerRelationName]->get('ObjectName');
+            $relationObjectName = $relations[$innerRelationName]->getObjectName();
             $relationSourceObject = $this->__MappingTable[$relationObjectName];
-            $relationTargetObjectName = $this->__getRelatedObjectNameByRelationName($relations[$innerRelationName]->get('ObjectName'),$innerRelationName);
+            $relationTargetObjectName = $this->__getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(),$innerRelationName);
             $relationTargetObject = $this->__MappingTable[$relationTargetObjectName];
 
             // finally build join
@@ -483,7 +483,7 @@
          }
 
          // gather information about the objects *not* related to each other
-         $objectName = $object->get('ObjectName');
+         $objectName = $object->getObjectName();
          $sourceObject = $this->__MappingTable[$objectName];
          $targetObjectName = $this->__getRelatedObjectNameByRelationName($objectName,$relationName);
          $targetObject = $this->__MappingTable[$targetObjectName];
@@ -504,9 +504,9 @@
          foreach($relations as $innerRelationName => $DUMMY){
 
             // gather relation params
-            $relationObjectName = $relations[$innerRelationName]->get('ObjectName');
+            $relationObjectName = $relations[$innerRelationName]->getObjectName();
             $relationSourceObject = $this->__MappingTable[$relationObjectName];
-            $relationTargetObjectName = $this->__getRelatedObjectNameByRelationName($relations[$innerRelationName]->get('ObjectName'),$innerRelationName);
+            $relationTargetObjectName = $this->__getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(),$innerRelationName);
             $relationTargetObject = $this->__MappingTable[$relationTargetObjectName];
 
             // finally build join
@@ -583,7 +583,7 @@
          else{
 
             // gather information about the object and the relation
-            $objectName = $object->get('ObjectName');
+            $objectName = $object->getObjectName();
             $sourceObject = $this->__MappingTable[$objectName];
             $targetObjectName = $this->__getRelatedObjectNameByRelationName($objectName,$relationName);
             $targetObject = $this->__MappingTable[$targetObjectName];
@@ -639,16 +639,16 @@
                   $relatedObjectID = $this->saveObject($relatedObjects[$relationKey][$i]);
 
                   // gather information about the current relation
-                  $objectID = $this->__MappingTable[$object->get('ObjectName')]['ID'];
-                  if(!isset($this->__MappingTable[$relatedObjects[$relationKey][$i]->get('ObjectName')]['ID'])){
+                  $objectID = $this->__MappingTable[$object->getObjectName()]['ID'];
+                  if(!isset($this->__MappingTable[$relatedObjects[$relationKey][$i]->getObjectName()]['ID'])){
                      throw new GenericORMapperException('[GenericORRelationMapper::saveObject()] '
-                             .'The object name "'.$relatedObjects[$relationKey][$i]->get('ObjectName')
+                             .'The object name "'.$relatedObjects[$relationKey][$i]->getObjectName()
                              .'" does not exist in the mapping table! Hence, your object cannot be '
                              .'saved! Please check your object configuration.');
                      break;
                    // end if
                   }
-                  $relObjectIdPkName = $this->__MappingTable[$relatedObjects[$relationKey][$i]->get('ObjectName')]['ID'];
+                  $relObjectIdPkName = $this->__MappingTable[$relatedObjects[$relationKey][$i]->getObjectName()]['ID'];
 
                   // check for relation
                   if(!isset($this->__RelationTable[$relationKey]['Table'])){
@@ -714,7 +714,7 @@
          }
 
          // 1. get compositions, where source or target object is the current object
-         $objectName = $object->get('ObjectName');
+         $objectName = $object->getObjectName();
          $objectID = $this->__MappingTable[$objectName]['ID'];
          $targetCompositions = $this->__getCompositionsByObjectName($objectName,'source');
 
@@ -812,9 +812,9 @@
          }
 
          // create association
-         $SourceObjectName = $sourceObject->get('ObjectName');
+         $SourceObjectName = $sourceObject->getObjectName();
          $SourceObjectID = $this->__MappingTable[$SourceObjectName]['ID'];
-         $TargetObjectName = $targetObject->get('ObjectName');
+         $TargetObjectName = $targetObject->getObjectName();
          $TargetObjectID = $this->__MappingTable[$TargetObjectName]['ID'];
 
          $insert = 'INSERT INTO `'.$this->__RelationTable[$relationName]['Table'].'`
@@ -866,9 +866,9 @@
          }
 
          // get association and delete it
-         $SourceObjectName = $sourceObject->get('ObjectName');
+         $SourceObjectName = $sourceObject->getObjectName();
          $SourceObjectID = $this->__MappingTable[$SourceObjectName]['ID'];
-         $TargetObjectName = $targetObject->get('ObjectName');
+         $TargetObjectName = $targetObject->getObjectName();
          $TargetObjectID = $this->__MappingTable[$TargetObjectName]['ID'];
 
          $delete = 'DELETE FROM `'.$this->__RelationTable[$relationName]['Table'].'`
@@ -919,9 +919,9 @@
          }
 
          // check for association
-         $SourceObjectName = $sourceObject->get('ObjectName');
+         $SourceObjectName = $sourceObject->getObjectName();
          $SourceObjectID = $this->__MappingTable[$SourceObjectName]['ID'];
-         $TargetObjectName = $targetObject->get('ObjectName');
+         $TargetObjectName = $targetObject->getObjectName();
          $TargetObjectID = $this->__MappingTable[$TargetObjectName]['ID'];
 
          $delete = 'SELECT * FROM `'.$this->__RelationTable[$relationName]['Table'].'`

@@ -205,7 +205,7 @@
       public function deleteObject($object){
 
          // Get information about object to load
-         $objectName = $object->get('ObjectName');
+         $objectName = $object->getObjectName();
          $objectID = $this->__MappingTable[$objectName]['ID'];
          $ID = $object->getProperty($objectID);
 
@@ -239,7 +239,7 @@
       public function saveObject(&$object){
 
          // get information about object to load
-         $objectName = $object->get('ObjectName');
+         $objectName = $object->getObjectName();
 
          if(!isset($this->__MappingTable[$objectName])){
             throw new GenericORMapperException('[GenericORMapper::saveObject()] The object name "'

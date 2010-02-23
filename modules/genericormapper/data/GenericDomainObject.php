@@ -76,6 +76,22 @@
       /**
        * @public
        *
+       * Returns the name of the object as given during creation of the object
+       * or loading of the object by the GORM.
+       *
+       * @return string The name of the object.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.02.2010<br />
+       */
+      public function getObjectName(){
+         return $this->__ObjectName;
+      }
+
+      /**
+       * @public
+       *
        * Injects the current mapper instance for further usage (load related objects).
        *
        * @param GenericORRelationMapper $orm The current mapper instance.
@@ -299,7 +315,7 @@
 
          $stringRep = (string)'[GenericDomainObject ';
 
-         $properties = array_merge(array('ObjectName' => $this->__ObjectName),$this->__Properties);
+         $properties = array_merge(array('ObjectName' => $this->getObjectName()),$this->__Properties);
 
          $propCount = count($properties);
          $current = (int) 1;
