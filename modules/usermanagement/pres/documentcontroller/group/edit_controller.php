@@ -34,16 +34,15 @@
     * @version
     * Version 0.1, 27.12.2008<br />
     */
-   class umgt_edit_controller extends umgtbaseController
-   {
+   class umgt_edit_controller extends umgtbaseController {
 
       function transformContent(){
 
          $groupId = RequestHandler::getValue('groupid');
 
          $Form__Edit = &$this->__getForm('GroupEdit');
-         $groupId = &$Form__Edit->getFormElementByName('groupid');
-         $groupId->setAttribute('value',$groupId);
+         $groupIdField = &$Form__Edit->getFormElementByName('groupid');
+         $groupIdField->setAttribute('value',$groupId);
 
          $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
 
