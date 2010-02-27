@@ -28,22 +28,33 @@
     *  Css file node for HtmlHeaderManagers data.
     *
     *  @author Ralf Schubert
-    *  @version 0.1, 25.09.2009<br>
+    *  @version
+    *  0.1, 20.09.2009 <br />
+    *  0.2, 27.02.2010 (Added external file support) <br />
     */
    class CssNode extends HtmlNode{
 
+       protected $__url = null;
        protected $__namespace = null;
        protected $__filename = null;
+       protected $__rewriting = null;
+       protected $__fcaction = null;
 
        /**
         * Receives information and configures node.
-        * @param string $namespace Namespace of stylesheet
-        * @param string $filename Name of stylesheet (without .css)
+        * @param string $url Optional url.
+        * @param string $namespace Namespace of file
+        * @param string $filename Name of file (without .css)
+        * @param bool $urlRewriting Optional. Create rewriting Url.
+        * @param bool $fcaction Optional. Create link for FC-Action.
         */
-       public function CssNode($namespace, $filename){
+       public function CssNode($url, $namespace, $filename, $rewriting, $fcaction){
+           $this->__url = $url;
            $this->__namespace = $namespace;
            $this->__filename = $filename;
-           $this->__checksum = md5($namespace . $filename);
+           $this->__rewriting = $rewriting;
+           $this->__fcaction = $fcaction;
+           $this->__checksum = md5($url . $namespace . $filename);
        }
 
        /**
@@ -52,7 +63,14 @@
         * @return string The ready html-code.
         */
        public function transform(){
-           $link = $this->__buildFCLink($this->__namespace, $this->__filename, 'css');
+           $link = $this->__buildFCLink(
+                       $this->__url,
+                       $this->__namespace,
+                       $this->__filename, 
+                       $this->__rewriting,
+                       $this->__fcaction,
+                       'css'
+                   );
            return '<link href="' . $link . '" rel="stylesheet" type="text/css" />
    ';
        }

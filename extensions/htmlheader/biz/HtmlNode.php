@@ -19,6 +19,8 @@
     * -->
     */
 
+    import('tools::link','FrontcontrollerLinkHandler');
+    
    /**
     * @namespace extensions::htmlheader::biz
     * @class HtmlNode
@@ -26,7 +28,9 @@
     * General Node for HtmlHeaderManagers data.
     *
     * @author Ralf Schubert
-    * @version 0.1, 25.09.2009<br>
+    * @version
+    * 0.1, 25.09.2009 <br />
+    * 0.2, 27.02.2010 (Added external file support) <br />
     */
    class HtmlNode extends APFObject{
 
@@ -51,39 +55,68 @@
        /**
         * Builds a Link for the JsCssInclusion FC-action
         *
+        * @param string $url Optional url.
         * @param string $namespace Namespace of file
         * @param string $filename Name of file
+        * @param bool $urlRewriting Optional. Create rewriting Url.
+        * @param bool $fcaction Optional. Create link for FC-Action.
         * @param string $type Filetype
-        * @return string FC-action link.
+        * @return string elements' link.
         */
-       protected function __buildFCLink($namespace, $filename, $type){
-           import('tools::link','FrontcontrollerLinkHandler');
-           $path = '';
+       protected function __buildFCLink($url, $namespace, $filename, $urlRewriting, $fcaction, $type){
            $reg = &Singleton::getInstance('Registry');
-           $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
-           $namespace = str_replace('::','_',$namespace);
 
-           $actionParam = array();
+           if($urlRewriting === null){
+               $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
+           }
+           if($fcaction === null){
+               $fcaction = true;
+           }
 
-           if($urlRewriting === true) {
-               $path = $reg->retrieve('apf::core','URLBasePath');
-               $actionParam = array(
-                   'extensions_jscssinclusion_biz-action/sGCJ' => 'path/'.$namespace.'/type/'.$type.'/file/'.$filename
-               );
+           // Generate url if not given
+           if($url === null){
+               if($urlRewriting) {
+                    $url = $reg->retrieve('apf::core','URLBasePath');
+               }
+               else {
+                    $tmpPath = str_replace($_SERVER['DOCUMENT_ROOT'],'', $_SERVER['SCRIPT_FILENAME']);
+                    $slash =  (substr($tmpPath, 0,1) !== '/') ? '/' : '';
+                    $url = 'http://' . $_SERVER['HTTP_HOST'] . $slash . $tmpPath;
+               }
+               
+           // end if
+           }
+
+           if($fcaction){
+               $namespace = str_replace('::','_',$namespace);
+
+               if($urlRewriting) {
+                   $actionParam = array(
+                       'extensions_jscssinclusion_biz-action/sGCJ' => 'path/'.$namespace.'/type/'.$type.'/file/'.$filename
+                   );
+               // end if
+               }
+               else {
+
+                   $actionParam = array(
+                       'extensions_jscssinclusion_biz-action:sGCJ' => 'path:'.$namespace.'|type:'.$type.'|file:'.$filename
+                   );
+               // end else
+               }
+
+               // return url
+               return FrontcontrollerLinkHandler::generateLink($url,$actionParam);
            // end if
            }
            else {
-               $tmpPath = str_replace($_SERVER['DOCUMENT_ROOT'],'', $_SERVER['SCRIPT_FILENAME']);
-               $slash =  (substr($tmpPath, 0,1) !== '/') ? '/' : '';
-               $path = 'http://' . $_SERVER['HTTP_HOST'] . $slash . $tmpPath;
-               $actionParam = array(
-                   'extensions_jscssinclusion_biz-action:sGCJ' => 'path:'.$namespace.'|type:'.$type.'|file:'.$filename
-               );
+                $namespace = str_replace('::','/',$namespace);
+                $url .=  (substr($url, -1,1) !== '/') ? '/' : '';
+                
+                //return url
+                return $url . $namespace . '/' . $filename .'.'. $type;
            // end else
            }
-
-           // return url
-           return FrontcontrollerLinkHandler::generateLink($path,$actionParam);
+           
 
        }
 

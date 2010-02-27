@@ -19,6 +19,8 @@
     * -->
     */
 
+   import('extensions::htmlheader::biz','JsNode');
+   
    /**
     *  @namespace extensions::htmlheader::pres::taglib
     *  @class htmlheader_taglib_addjs
@@ -27,30 +29,69 @@
     *
     *  @example
     *  <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addjs" />
-    *  <htmlheader:addjs namespace="{CONTEXT}::pres::frontend::static::js" filename="jsfile" />
+    *  Use FC-Action to deliver file:
+    *  <htmlheader:addjs namespace="{CONTEXT}::pres::frontend::static::js::anything" filename="jsfile" />
     *  <ul>
     *    <li>namespace: Namespace of javascript file</li>
     *    <li>filename: Javascript filename without '.js'</li>
     *  </ul>
     *
+    * Use External file:
+    * <htmlheader:addjs
+    *    url="http://static/"
+    *    folder="js::anything"
+    *    filename="jsfile"
+    *    rewriting="false"
+    *    fcaction="false"
+    * />
+    *  <ul>
+    *    <li>url: URL of file server</li>
+    *    <li>folder: Folder of javascript file</li>
+    *    <li>filename: Javascript filename without '.js'</li>
+    *    <li>rewriting: Rewriting of target server enabled? (optional, option will be used from actual application otherwise)
+    *    <li>fcaction: Use an fc-action on target server? (optional, will be set to true by default)
+    *  </ul>
+    *
     *  @author Ralf Schubert
-    *  @version 0.1, 20.09.2009<br>
-    *  @version 0.2, 27.09.2009<br>
+    *  @version
+    *  0.1, 20.09.2009<br />
+    *  0.2, 27.09.2009<br />
+    *  0.3, 27.02.2010 (Added attributes for external file support) <br />
     */
    class htmlheader_taglib_addjs extends Document
    {
        public function onParseTime() {
            $HHM = $this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
+
+           $url = $this->getAttribute('url');
+           $folder = $this->getAttribute('folder');
            $namespace = $this->getAttribute('namespace');
            $filename = $this->getAttribute('filename');
-           if(empty($namespace)){
-               trigger_error('[htmlheader_taglib_addjs::onParseTime()] The attribute "namespace" is empty or not present.');
+
+           $rewriting = $this->getAttribute('rewriting');
+           $fcaction = $this->getAttribute('fcaction');
+
+           if($rewriting === "true"){
+               $rewriting = true;
            }
-           if(empty($filename)){
-               trigger_error('[htmlheader_taglib_addjs::onParseTime()] The attribute "filename" is empty or not present.');
+           elseif($rewriting === "false"){
+               $rewriting = false;
            }
-           import('extensions::htmlheader::biz','JsNode');
-           $JsNode = new JsNode($namespace, $filename);
+
+           if($fcaction === "true"){
+               $fcaction = true;
+           }
+           elseif($fcaction === "false"){
+               $fcaction = false;
+           }
+
+           if($url !== null){
+               $JsNode = new JsNode($url, $folder, $filename, $rewriting, $fcaction);
+           }
+           else {
+               $JsNode = new JsNode(null, $namespace, $filename, $rewriting, $fcaction);
+           }
+
            $HHM->addJs($JsNode);
        }
 

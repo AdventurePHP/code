@@ -18,7 +18,9 @@
     * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
     * -->
     */
-    
+
+   import('extensions::htmlheader::biz','CssNode');
+   
    /**
     *  @namespace extensions::htmlheader::pres::taglib
     *  @class htmlheader_taglib_addcss
@@ -27,30 +29,68 @@
     *
     *  @example
     *  <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addcss" />
-    *  <htmlheader:addcss namespace="{CONTEXT}::pres::frontend::static" filename="examplefile" />
+    *  Use FC-action to deliver file:
+    *  <htmlheader:addcss namespace="{CONTEXT}::pres::frontend::static::css:anything" filename="examplefile" />
     *  <ul>
     *    <li>namespace: Namespace of stylesheet file</li>
     *    <li>filename: Stylesheet filename without '.css'</li>
     *  </ul>
     *
+    *  Use External file:
+    *  <htmlheader:addcss
+    *    url="http://static/"
+    *    folder="css::anything"
+    *    filename="examplefile"
+    *    rewriting="false"
+    *    fcaction="false"
+    *  />
+    *  <ul>
+    *    <li>url: URL of file server</li>
+    *    <li>folder: Folder of css file</li>
+    *    <li>filename: Css filename without '.css'</li>
+    *    <li>rewriting: Rewriting of target server enabled? (optional, option will be used from actual application otherwise)
+    *    <li>fcaction: Use an fc-action on target server? (optional, will be set to true by default)
+    *  </ul>
+    * 
     *  @author Ralf Schubert
-    *  @version 0.1, 20.09.2009<br>
+    *  @version
+    *  0.1, 20.09.2009 <br />
+    *  0.2, 27.02.2010 (Added attributes for external file support) <br />
     */
    class htmlheader_taglib_addcss extends Document
    {
        public function onParseTime() {
            $HHM = $this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
+
+           $url = $this->getAttribute('url');
+           $folder = $this->getAttribute('folder');
            $namespace = $this->getAttribute('namespace');
            $filename = $this->getAttribute('filename');
-           if(empty($namespace)){
-               trigger_error('[htmlheader_taglib_addcss::onParseTime()] The attribute "namespace" is empty or not present.');
-           }
-           if(empty($filename)){
-               trigger_error('[htmlheader_taglib_addcss::onParseTime()] The attribute "filename" is empty or not present.');
-           }
-           import('extensions::htmlheader::biz','CssNode');
-           $CssNode = new CssNode($namespace, $filename);
 
+           $rewriting = $this->getAttribute('rewriting');
+           $fcaction = $this->getAttribute('fcaction');
+
+           if($rewriting === "true"){
+               $rewriting = true;
+           }
+           elseif($rewriting === "false"){
+               $rewriting = false;
+           }
+
+           if($fcaction === "true"){
+               $fcaction = true;
+           }
+           elseif($fcaction === "false"){
+               $fcaction = false;
+           }
+           
+           if($url !== null){
+               $CssNode = new CssNode($url, $folder, $filename, $rewriting, $fcaction);
+           }
+           else {
+               $CssNode = new CssNode(null, $namespace, $filename, $rewriting, $fcaction);
+           }
+           
            $HHM->addCss($CssNode);
        }
 

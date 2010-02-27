@@ -22,14 +22,20 @@ Examples:
 
 // Using taglibs
 <htmlheader:addjs namespace="sites::example::pres::frontend::static::js" filename="jquery.min" />
+<htmlheader:addjs url="http://static/" folder="js::anything" filename="jquery.min" rewriting="false" fcaction="false" />
 <htmlheader:addcss namespace="sites::example::pres::frontend::static::css" filename="stylesheet" />
+<htmlheader:addcss url="http://static/" folder="css::anything" filename="stylesheet" rewriting="false" fcaction="false" />
 <htmlheader:addtitle append="false">This is a example title</htmlheader:addtitle>
 -----------------------------------
 
 The parameters:
 -----------
+url: If you want to use an external file, set the url of target server.
+folder: If you use an external file, specify folder which contains the file.
 namespace: The namespace of the file.
 filename: The name of the file, without extension (e.g. '.css', '.js').
+rewriting: Optional. Generate url which uses url-rewriting? (Default: Same as application)
+fcaction: Optional Use fc action for delivering file? (Default: true)
 append: Set append to true if you want to add the given title at the end of the
         already existing title. Otherwise set to false, if you want to overwrite existing titles.
 -----------
@@ -51,14 +57,14 @@ $HHM->title = "Example title";
 // Import css-node class
 import('extensions::htmlheader::biz','CssNode');
 // Get instance and configure in constructor:
-$CssNode = new CssNode($namespace, $filename);
+$CssNode = new CssNode($url, $namespace, $filename, $rewriting, $fcaction);
 // Add Node to HHM
 $HHM->addCss($CssNode);
 
 // Import js-node class
 import('extensions::htmlheader::biz','JsNode');
 // Get instance and configure in constructor:
-$JsNode = new JsNode($namespace, $filename);
+$JsNode = new JsNode($url, $namespace, $filename, $rewriting, $fcaction);
 // Add Node to HHM
 $HHM->addCss($JsNode);
 -------------------------------------
