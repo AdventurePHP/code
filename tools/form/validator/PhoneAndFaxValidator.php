@@ -35,7 +35,7 @@
    class PhoneAndFaxValidator extends TextFieldValidator {
 
       public function validate($input){
-         if(preg_match('/^[0-9\-\+\(\)\/ ]{6,}+$/',trim($input))){
+         if(preg_match('/^[0-9\-\+\(\)\/ ]{6,}$/',trim($input))){
             return true;
          }
          return false;
