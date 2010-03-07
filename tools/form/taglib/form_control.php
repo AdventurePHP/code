@@ -55,13 +55,6 @@
        */
       protected $attributeWhiteList = array('id','style','class');
 
-      /**
-       * @protected
-       * @since 1.12
-       * @var string[] The attributes, that are *not* allowed to render into the XHTML/1.1 strict document.
-       */
-      protected $attributeBlackList = array();
-
       public function form_control(){
       }
 

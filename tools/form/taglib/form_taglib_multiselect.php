@@ -109,10 +109,8 @@
       function transform(){
 
          // add brackets for the "name" attribute to ensure multi select capability!
-         $name = $this->getAttribute('name').'[]';
-         $this->deleteAttribute('name');
-         $select = '<select name="'.$name.'" '
-            .$this->__getAttributesAsString($this->__Attributes).'>';
+         $name = array('name' => $this->getAttribute('name').'[]');
+         $select = '<select '.$this->__getAttributesAsString(array_merge($this->__Attributes,$name)).'>';
          $select .= $this->__Content.'</select>';
 
          if(count($this->__Children) > 0){

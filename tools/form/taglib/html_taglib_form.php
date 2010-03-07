@@ -133,6 +133,10 @@
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','marker');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','addtaglib');
 
+         // add additional attributes to whitelist
+         $this->attributeWhiteList[] = 'method';
+         $this->attributeWhiteList[] = 'action';
+
        // end function
       }
 
@@ -594,18 +598,20 @@
        * @param string $name The name of the desired form element.
        * @return form_control A reference on the form element.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 07.01.2007<br />
        * Version 0.2, 12.09.2009 (Corrected debug message)<br />
        */
       public function &getFormElementByName($name){
 
+         echo '<br />html:form->getFormElementByName()';
          if(count($this->__Children) > 0){
-
-            foreach($this->__Children as $ObjectID => $Child){
-               if($Child->getAttribute('name') == $name){
-                  return $this->__Children[$ObjectID];
+            echo '<br />search for: "'.$name.'"';
+            foreach($this->__Children as $objectId => $DUMMY){
+               echo '<br />$name: '.$this->__Children[$objectId]->getAttribute('name');
+               if($this->__Children[$objectId]->getAttribute('name') == $name){
+                  return $this->__Children[$objectId];
                 // end if
                }
              // end foreach
@@ -618,7 +624,7 @@
          $parent = &$this->getParentObject();
          $docCon = $parent->getDocumentController();
          trigger_error('[html_taglib_form::getFormElementByName()] No form element with name "'
-            .$name.'" composed in current form "'.$this->__Attributes['name']
+            .$name.'" composed in current form "'.$this->getAttribute('name')
             .'" in document controller "'.$docCon.'". Please double-check your taglib definitions '
             .'within this form (especially attributes, that are used for referencing other form '
             .'controls)!',E_USER_ERROR);
@@ -664,7 +670,7 @@
             $docCon = 'n/a';
          }
          trigger_error('[html_taglib_form::getFormElementByID()] No form element with id "'
-            .$id.'" composed in current form "'.$this->__Attributes['name']
+            .$id.'" composed in current form "'.$parent->getAttribute('name')
             .'" in document controller "'.$docCon.'"!',E_USER_ERROR);
          exit();
 
@@ -777,8 +783,7 @@
 
          // transform the form including all child tags
          $htmlCode = (string)'<form ';
-         $this->deleteAttribute('name'); // delete name attribute to be xhtml 1.1 strict compatible
-         $htmlCode .= $this->__getAttributesAsString($this->__Attributes);
+         $htmlCode .= $this->__getAttributesAsString($this->__Attributes,$this->attributeWhiteList);
          $htmlCode .= '>';
 
          if(count($this->__Children) > 0){
