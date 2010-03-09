@@ -605,11 +605,8 @@
        */
       public function &getFormElementByName($name){
 
-         echo '<br />html:form->getFormElementByName()';
          if(count($this->__Children) > 0){
-            echo '<br />search for: "'.$name.'"';
             foreach($this->__Children as $objectId => $DUMMY){
-               echo '<br />$name: '.$this->__Children[$objectId]->getAttribute('name');
                if($this->__Children[$objectId]->getAttribute('name') == $name){
                   return $this->__Children[$objectId];
                 // end if
