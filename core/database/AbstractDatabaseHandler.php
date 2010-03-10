@@ -315,6 +315,33 @@
        // end function
       }
 
+      /**
+       * @protected
+       *
+       * Configures the client connection's charset and collation.
+       *
+       * @see http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 08.02.2010<br />
+       */
+      protected function initCharsetAndCollation(){
+
+         if($this->__dbCharset !== null){
+            $this->executeTextStatement('SET character_set_client = \''.$this->__dbCharset.'\'');
+            $this->executeTextStatement('SET character_set_connection = \''.$this->__dbCharset.'\'');
+            $this->executeTextStatement('SET character_set_results = \''.$this->__dbCharset.'\'');
+         }
+
+         if($this->__dbCollation !== null){
+            $this->executeTextStatement('SET collation_connection = \''.$this->__dbCollation.'\'');
+            $this->executeTextStatement('SET collation_database = \''.$this->__dbCollation.'\'');
+         }
+         
+       // end function
+      }
+
     // end class
    }
 ?>

@@ -1,32 +1,33 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('core::database','AbstractDatabaseHandler');
+   import('core::database','DatabaseHandlerException');
 
    /**
     * @package core::database
     * @class MySQLxHandler
     *
     * This class implements a connection handler for the connectionManager to use with mysql
-    * databases.
+    * databases using the mysql extension.
     *
     * @author Christian Achatz
     * @version
@@ -61,33 +62,18 @@
          $this->__dbConn = mysql_connect($this->__dbHost,$this->__dbUser,$this->__dbPass,true);
 
          if(!is_resource($this->__dbConn)){
-            trigger_error('[MySQLxHandler->__connect()] Database connection could\'t be established ('.mysql_errno().': '.mysql_error().')!',E_USER_ERROR);
-            exit();
-          // end if
+            throw new DatabaseHandlerException('[MySQLxHandler->__connect()] Database connection '
+                    .'could\'t be established ('.mysql_errno().': '.mysql_error().')!',E_USER_ERROR);
          }
 
          // configure client connection
-         // See http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
-         // for more details
-         if($this->__dbCharset !== null){
-            $this->executeTextStatement('SET character_set_client = \''.$this->__dbCharset.'\'');
-            $this->executeTextStatement('SET character_set_connection = \''.$this->__dbCharset.'\'');
-            $this->executeTextStatement('SET character_set_results = \''.$this->__dbCharset.'\'');
-          // end if
-         }
-         if($this->__dbCollation !== null){
-            $this->executeTextStatement('SET collation_connection = \''.$this->__dbCollation.'\'');
-            $this->executeTextStatement('SET collation_database = \''.$this->__dbCollation.'\'');
-          // end if
-         }
+         $this->initCharsetAndCollation();
 
          // Select the database. The ugly @ sign is needed to provide nice error messages.
          $result = @mysql_select_db($this->__dbName,$this->__dbConn);
 
          if(!$result){
-            trigger_error('[MySQLxHandler->__connect()] Database couldn\'t be selected ('.mysql_errno().': '.mysql_error().')!',E_USER_ERROR);
-            exit();
-          // end if
+            throw new DatabaseHandlerException('[MySQLxHandler->__connect()] Database couldn\'t be selected ('.mysql_errno().': '.mysql_error().')!',E_USER_ERROR);
          }
 
        // end function
@@ -111,8 +97,9 @@
          $this->__dbConn = null;
 
          if(!$result){
-            trigger_error('[MySQLxHandler->__close()] An error occured during closing of the database connection ('.mysql_errno().': '.mysql_error().')!',E_USER_WARNING);
-          // end if
+            throw new DatabaseHandlerException('[MySQLxHandler->__close()] An error occured during '
+                    .'closing of the database connection ('.mysql_errno().': '.mysql_error().')!',
+                    E_USER_WARNING);
          }
 
        // end function
@@ -153,9 +140,7 @@
          $file = APPS__PATH.'/config/'.str_replace('::','/',$namespace).'/'.str_replace('::','/',$this->__Context).'/'.$env.'_'.$statementFile.'.sql';
 
          if(!file_exists($file)){
-            trigger_error('[MySQLxHandler->executeStatement()] There\'s no statement file with name "'.($env.'_'.$statementFile.'.sql').'" for given namespace "config::'.$namespace.'" and current context "'.$this->__Context.'"!',E_USER_ERROR);
-            exit(1);
-          // end if
+            throw new DatabaseHandlerException('[MySQLxHandler->executeStatement()] There\'s no statement file with name "'.($env.'_'.$statementFile.'.sql').'" for given namespace "config::'.$namespace.'" and current context "'.$this->__Context.'"!',E_USER_ERROR);
          }
 
          $statement = file_get_contents($file);
@@ -187,16 +172,12 @@
          $mysql_errno = mysql_errno($this->__dbConn);
 
          if(!empty($mysql_error) || !empty($mysql_errno)){
-
-            $message = '('.$mysql_errno.') '.$mysql_error.' (Statement: '.$statement.')';
+            $message = '[MySQLxHandler::executeStatement()] ('.$mysql_errno.') '.$mysql_error.' (Statement: '.$statement.')';
             $this->__dbLog->logEntry($this->__dbLogFileName,$message,'ERROR');
 
             if($this->__dbDebug == true){
-               trigger_error('[MySQLxHandler::executeStatement()] '.$message);
-             // end if
+               throw new DatabaseHandlerException('[MySQLxHandler::executeStatement()] '.$message);
             }
-
-          // end if
          }
 
          // track $__lastInsertID fur further usage
@@ -209,18 +190,18 @@
       }
 
       /**
-      *  @public
-      *
-      *  Quotes data for use in mysql statements.
-      *
-      *  @param string $Value string to quote
-      *  @return string $escapedValue quoted string
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 07.01.2008<br />
-      *  Version 0.2, 17.11.2008 (Bugfix: if the method is called before any other, the connection is null)<br />
-      */
+       * @public
+       *
+       * Quotes data for use in mysql statements.
+       *
+       * @param string $Value string to quote
+       * @return string $escapedValue quoted string
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 07.01.2008<br />
+       * Version 0.2, 17.11.2008 (Bugfix: if the method is called before any other, the connection is null)<br />
+       */
       public function escapeValue($value){
          return mysql_real_escape_string($value,$this->__dbConn);
        // end function
@@ -329,7 +310,7 @@
             $this->__dbLog->logEntry($this->__dbLogFileName,$message,'ERROR');
 
             if($this->__dbDebug == true){
-               trigger_error('[MySQLxHandler->executeTextStatement()] '.$message);
+               throw new DatabaseHandlerException('[MySQLxHandler->executeTextStatement()] '.$message);
              // end if
             }
 
@@ -365,12 +346,12 @@
        *
        * Returns the name of the current database.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 05.03.2006<br />
        */
       public function getDatabaseName(){
-         return $this->__db_name;
+         return $this->__dbName;
        // end function
       }
 
