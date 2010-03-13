@@ -79,11 +79,9 @@
          // presetting will fail!
          if($name === null || $value === null){
             $formName = $this->__ParentObject->getAttribute('name');
-            trigger_error('[form_taglib_radio::__presetValue()] Attribute "name" and or "value" is '
+            throw new FormException('[form_taglib_radio::__presetValue()] Attribute "name" and or "value" is '
                .'missing for &lt;form:radio /&gt; definition within form "'.$formName.'". '
                .'Please check your tag definition!',E_USER_ERROR);
-            exit(1);
-          // end if
          }
          
          if(isset($_REQUEST[$name])){

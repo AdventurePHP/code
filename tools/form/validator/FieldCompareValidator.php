@@ -132,13 +132,12 @@
          if($refControlName === null){
             $form = &$this->__Control->getParentObject();
             $formName = $form->getAttribute('name');
-            trigger_error('[FieldCompareValidator::__initializeReferenceControl()] The main field '
+            throw new FormException('[FieldCompareValidator::__initializeReferenceControl()] The main field '
                .'definition does not include the "ref" attribute. This attribute must be specified '
                .'to tell the validator, which form control can be used as reference. Please '
                .'check taglib definition of control "'.$this->__Control->getAttribute('name').'" '
                .'within form "'.$formName.'"!',
                E_USER_ERROR);
-            exit(1);
          }
 
          $form = &$this->__Control->getParentObject();

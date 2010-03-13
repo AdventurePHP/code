@@ -243,7 +243,7 @@
          else{
 
             // notify user and return null
-            trigger_error('[html_taglib_form::addFormElement()] Form element "'.$elementType
+            throw new FormException('[html_taglib_form::addFormElement()] Form element "'.$elementType
                .'" cannot be added due to previous errors!');
             return null;
 
@@ -300,7 +300,7 @@
          else{
 
             // display an error
-            trigger_error('[html_taglib_form::addFormContentBeforeMarker()] No marker object '
+            throw new FormException('[html_taglib_form::addFormContentBeforeMarker()] No marker object '
                .'with name "'.$markerName.'" composed in current form for document controller "'
                .($this->__ParentObject->__DocumentController).'"! Please check the definition of '
                .'the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
@@ -343,7 +343,7 @@
          else{
 
             // display an error
-            trigger_error('[html_taglib_form::addFormContentAfterMarker()] No marker object '
+            throw new FormException('[html_taglib_form::addFormContentAfterMarker()] No marker object '
                .'with name "'.$markerName.'" composed in current form for document controller "'
                .($this->__ParentObject->__DocumentController).'"! Please check the definition of '
                .'the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
@@ -393,7 +393,7 @@
          else{
 
             // notify user and return null
-            trigger_error('[html_taglib_form::addFormElementBeforeMarker()] Form element "'
+            throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] Form element "'
                .$elementType.'" cannot be added due to previous errors!');
             return null;
 
@@ -444,7 +444,7 @@
          else{
 
             // notify user and return null
-            trigger_error('[html_taglib_form::addFormElementBeforeMarker()] Form element "'.$elementType.'" cannot be added due to previous errors!');
+            throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] Form element "'.$elementType.'" cannot be added due to previous errors!');
             return null;
 
           // end else
@@ -510,7 +510,7 @@
          else{
 
             // throw error and return null as object id
-            trigger_error('[html_taglib_form::__createFormElement()] No form element with name "'
+            throw new FormException('[html_taglib_form::__createFormElement()] No form element with name "'
                .$elementType.'" found! Maybe the tag name is misspellt or the class is not '
                .'imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
             return null;
@@ -620,7 +620,7 @@
          // display extended debug message in case no form element was found
          $parent = &$this->getParentObject();
          $docCon = $parent->getDocumentController();
-         trigger_error('[html_taglib_form::getFormElementByName()] No form element with name "'
+         throw new FormException('[html_taglib_form::getFormElementByName()] No form element with name "'
             .$name.'" composed in current form "'.$this->getAttribute('name')
             .'" in document controller "'.$docCon.'". Please double-check your taglib definitions '
             .'within this form (especially attributes, that are used for referencing other form '
@@ -666,7 +666,7 @@
          else {
             $docCon = 'n/a';
          }
-         trigger_error('[html_taglib_form::getFormElementByID()] No form element with id "'
+         throw new FormException('[html_taglib_form::getFormElementByID()] No form element with id "'
             .$id.'" composed in current form "'.$parent->getAttribute('name')
             .'" in document controller "'.$docCon.'"!',E_USER_ERROR);
          exit();
@@ -699,7 +699,7 @@
             // note, that no suitable child has been found
             $parent = &$this->getParentObject();
             $documentController = $parent->getDocumentController();
-            trigger_error('[html_taglib_form::getFormElementByObjectID()] No form element with id "'
+            throw new FormException('[html_taglib_form::getFormElementByObjectID()] No form element with id "'
                .$objectID.'" composed in current form "'.$this->__Attributes['name']
                .'" in document controller "'.$documentController.'"!',E_USER_ERROR);
             exit();
@@ -749,7 +749,7 @@
          $parent = &$this->getParentObject();
          $grandParent = &$parent->getParentObject();
          $documentController = $grandParent->getDocumentController();
-         trigger_error('[html_taglib_form::getFormElementsByType()] No form elements composed in '.
+         throw new FormException('[html_taglib_form::getFormElementsByType()] No form elements composed in '.
             'current form "'.$this->__Attributes['name'].'" in document controller "'
             .$documentController.'"!',E_USER_ERROR);
          exit(1);

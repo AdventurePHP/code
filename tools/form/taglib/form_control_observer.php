@@ -84,12 +84,10 @@
 
          if(empty($controlDef) || empty($buttonName) || empty($class) || empty($namespace)){
             $formName = $this->__ParentObject->getAttribute('name');
-            trigger_error('['.get_class($this).'::onAfterAppend()] Required attribute '
+            throw new FormException('['.get_class($this).'::onAfterAppend()] Required attribute '
                .'"control", "button", "class" or "namespace" missing. Please review your '
                .'&lt;form:addvalidator /&gt; or &lt;form:addfilter /&gt; taglib definition in form "'
                     .$formName.'"!');
-            exit(1);
-          // end if
          }
 
          // handle multiple controls, that are separated by pipe to make form definition easier.
@@ -107,11 +105,9 @@
 
             if($control === null || $button === null){
                $formName = $this->__ParentObject->getAttribute('name');
-               trigger_error('['.get_class($this).'::onAfterAppend()] The form with name '
+               throw new FormException('['.get_class($this).'::onAfterAppend()] The form with name '
                   .'"'.$formName.'" does not contain a control with name "'.$controlName.'" or '
                   .'a button with name "'.$buttonName.'". Please check your taglib definition!');
-               exit(1);
-             // end if
             }
 
             // include observer class

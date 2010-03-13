@@ -56,11 +56,9 @@
          $buttonName = $this->getAttribute('name');
          if($buttonName === null){
             $formName = $this->__ParentObject->getAttribute('name');
-            trigger_error('[form_taglib_button::onAfterAppend()] Missing required attribute '
+            throw new FormException('[form_taglib_button::onAfterAppend()] Missing required attribute '
                .'"name" in &lt;form:button /&gt; tag in form "'.$formName.'". '
                .'Please check your form definition!',E_USER_ERROR);
-            exit(1);
-          // end if
          }
 
          // check name attribute in request to indicate, that the

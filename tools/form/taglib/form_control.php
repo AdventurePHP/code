@@ -19,6 +19,8 @@
     * -->
     */
 
+   import('tools::form','FormException');
+
    /**
     * @package tools::form::taglib
     * @class form_control
