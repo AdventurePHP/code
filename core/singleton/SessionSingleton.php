@@ -1,23 +1,23 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('core::session','SessionManager');
    register_shutdown_function('saveSessionSingletonObjects');
@@ -31,31 +31,24 @@
     * @version
     * Version 0.1, 24.02.2008<br />
     * Version 0.2, 26.02.2008 (Include of the SessionManager was noted wrong)<br />
+    * Version 0.3, 11.03.2010 (Refactoring to PHP5 only code)<br />
     */
    function saveSessionSingletonObjects(){
 
-      $cacheContainer = SessionSingleton::showCacheContainerOffset();
+      $cacheItems = SessionSingleton::getCacheItems();
 
-      if(isset($GLOBALS[$cacheContainer])){
-         $cacheCount = count($GLOBALS[$cacheContainer]);
+      if(count($cacheItems) > 0){
 
-         if($cacheCount > 0){
-            $sessMgr = new SessionManager(SessionSingleton::showSessionNamespace());
+         $sessMgr = new SessionManager(SessionSingleton::getSessionNamespace());
 
-            foreach($GLOBALS[$cacheContainer] as $key => $DUMMY){
-               $sessMgr->saveSessionData($key,serialize($GLOBALS[$cacheContainer][$key]));
-             // end for
-            }
-
-          // end if
+         foreach($cacheItems as $key => $DUMMY){
+            $sessMgr->saveSessionData($key,serialize($cacheItems[$key]));
          }
 
-       // end if
       }
 
     // end function
    }
-
 
    /**
     * @package core::singleton
@@ -72,12 +65,18 @@
     * @author Christian Schäfer
     * @version
     * Version 0.1, 24.02.2008<br />
+    * Version 0.2, 11.03.2010 (Refactoring to PHP5 only code)<br />
     */
    class SessionSingleton extends Singleton {
 
+      /**
+       * Stores the objects, that are requested as singletons.
+       * @var string[] The singleton cache.
+       */
+      private static $CACHE = array();
+
       private function SessionSingleton(){
       }
-
 
       /**
        * @public
@@ -95,27 +94,23 @@
        */
       public static function &getInstance($className){
 
-         $cacheContainer = SessionSingleton::showCacheContainerOffset();
-         $cacheObjectName = SessionSingleton::createCacheObjectName($className);
+         $cacheKey = SessionSingleton::createCacheObjectName($className);
 
-         if(!SessionSingleton::isInSingletonCache($className)){
+         if(!isset(self::$CACHE[$cacheKey])){
 
-            $sessMgr = new SessionManager(SessionSingleton::showSessionNamespace());
-            $cachedObject = $sessMgr->loadSessionData($cacheObjectName);
+            $sessMgr = new SessionManager(SessionSingleton::getSessionNamespace());
+            $cachedObject = $sessMgr->loadSessionData($cacheKey);
 
             if($cachedObject !== null){
-               $GLOBALS[$cacheContainer][$cacheObjectName] = unserialize($cachedObject);
-             // end if
+               self::$CACHE[$cacheKey] = unserialize($cachedObject);
             }
             else{
-
                if(!class_exists($className)){
-                  trigger_error('[SessionSingleton::getInstance()] Class "'.$className.'" cannot be found! Maybe the class name is misspelt!',E_USER_ERROR);
-                  exit(1);
-                // end if
+                  throw new Exception('[SessionSingleton::getInstance()] Class "'.$className.'" '
+                          .'cannot be found! Maybe the class name is misspelt!',E_USER_ERROR);
                }
 
-               $GLOBALS[$cacheContainer][$cacheObjectName] = new $className();
+               self::$CACHE[$cacheKey] = new $className();
 
              // end else
             }
@@ -123,107 +118,41 @@
           // end if
          }
 
-         return $GLOBALS[$cacheContainer][$cacheObjectName];
+         return self::$CACHE[$cacheKey];
 
        // end function
       }
 
-
       /**
        * @public
-       * @static
        *
-       * Removes the given instance from the cache.
+       * Returns the content of the session singleton cache to
+       * be stored within the session.
        *
-       * @param string $className The name of the singleton class.
+       * @return string[] The session singleton cache items.
        *
        * @author Christian Achatz
        * @version
-       *  Version 0.1, 24.02.2008<br />
+       * Version 0.1, 11.03.2010<br />
        */
-      public static function clearInstance($className){
-         unset($GLOBALS[SessionSingleton::showCacheContainerOffset()][SessionSingleton::createCacheObjectName($className)]);
-       // end function
+      public static function getCacheItems(){
+         return self::$CACHE;
       }
 
-
       /**
        * @public
-       * @static
        *
-       * Resets the entire singleton cache.
+       * Returns the namespace of the session, that the session singelton
+       * objects are stored in (needed by the shutdown function; thus public).
+       *
+       * @return string The session namespace, where the session singleton objects are saved.
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 24.02.2008<br />
+       * Version 0.1, 11.03.2010<br />
        */
-      public static function clearAll(){
-         $GLOBALS[SessionSingleton::showCacheContainerOffset()] = array();
-       // end function
-      }
-
-
-      /**
-       * @public
-       * @static
-       *
-       * Checks, whether a class is already in the singleton cache.
-       *
-       * @param string $className The name of the singleton class.
-       * @return boolean True in case it is, false otherwise.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 12.04.2006<br />
-       */
-      public static function isInSingletonCache($className){
-
-         if(isset($GLOBALS[SessionSingleton::showCacheContainerOffset()][SessionSingleton::createCacheObjectName($className)])){
-            return true;
-          // end if
-         }
-         else{
-            return false;
-          // end else
-         }
-
-       // end function
-      }
-
-
-      /**
-       * @public
-       * @static
-       *
-       * Returns the name of the cache container offset within the $GLOBALS array.
-       *
-       * @return string The name of the cache container offset.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 24.02.2008<br />
-       */
-      public static function showCacheContainerOffset(){
-         return (string)'SESSION_SINGLETON_CACHE';
-       // end function
-      }
-
-
-      /**
-       * @public
-       * @static
-       *
-       * Returns the namespace of the session cache for the session manager.
-       *
-       * @return string The namespace of the session singleton cache namespace in the session.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 24.02.2008<br />
-       */
-      public static function showSessionNamespace(){
-         return (string)'core::sessionsingleton';
-       // end function
+      public static function getSessionNamespace(){
+         return (string)'core::singleton::session';
       }
 
     // end class
