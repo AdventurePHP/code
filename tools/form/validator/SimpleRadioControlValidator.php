@@ -23,7 +23,7 @@
 
    /**
     * @package tools::form::validator
-    * @class SimpleSelectControlValidator
+    * @class SimpleRadioControlValidator
     * 
     * Implements a validator for radio buttons.
     *
@@ -49,7 +49,7 @@
 
          // here, we have to validate the request values instead of the
          // input we are given from the form taglib to get valid results.
-         // this has to be done because of dynamic filling of select fields!
+         // this has to be done because of dynamic filling of radio button!
          $name = $this->__Control->getAttribute('name');
          if(!isset($_REQUEST[$name]) || empty($_REQUEST[$name])){
             return false;
