@@ -41,7 +41,7 @@
        * @private
        * The namespace of the current instance of the session manager.
        */
-      private $__Namespace;
+      private $namespace;
 
       /**
        * @public
@@ -50,18 +50,22 @@
        * session in case it is not started yet.
        *
        * @param string $namespace The desired namespace.
+       * @throws Exception In case, the namespace is empty.
        *
        * @author Christian Schäfer
        * @version
        * Version 0.1, 08.03.2006<br />
        */
-      public function SessionManager($namespace = null){
+      public function SessionManager($namespace = ''){
+
+         // change in 1.12: session manager must not be created without a namespace!
+         if(empty($namespace)){
+            throw new Exception('Session manager cannot be created using an empty session namespace!'
+                    ,E_USER_ERROR);
+         }
 
          // set namespace
-         if($namespace !== null){
-            $this->setNamespace($namespace);
-          // end if
-         }
+         $this->namespace = $namespace;
 
          // start session, because session_register() is
          // deprecated as of PHP 5.3. so we have to use 
@@ -83,22 +87,6 @@
       /**
        * @public
        *
-       * Sets the namespace of the current instance of the SessionManager.
-       *
-       * @param string $namespace the desired namespace
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 08.03.2006<br />
-       */
-      public function setNamespace($namespace){
-         $this->__Namespace = trim($namespace);
-       // end function
-      }
-
-      /**
-       * @public
-       *
        * Deletes the session for a given namespace.
        *
        * @param string $namespace the desired namespace
@@ -108,8 +96,8 @@
        * Version 0.1, 08.03.2006<br />
        * Version 0.2, 18.07.2006 (Fixed bug, that after a post request, the session was valid again (Server: w3service.net)!)<br />
        */
-      public function destroySession($namespace){
-         $_SESSION[$namespace] = array();
+      public function destroySession(){
+         $_SESSION[$this->namespace] = array();
        // end function
       }
 
@@ -130,8 +118,8 @@
        * Version 0.4, 28.02.2010 (Added default value behaviour)<br />
        */
       public function loadSessionData($attribute,$default = null){
-         if(isset($_SESSION[$this->__Namespace][$attribute])){
-            return $_SESSION[$this->__Namespace][$attribute];
+         if(isset($_SESSION[$this->namespace][$attribute])){
+            return $_SESSION[$this->namespace][$attribute];
          }
          else{
             return $default;
@@ -142,28 +130,32 @@
       /**
        * @public
        *
-       * Loads data from session using an explicit namespace.
+       * Returns an associative array including all session keys registered
+       * up to the point of calling this method.
        *
-       * @param string $namespace The namespace of the value
-       * @param string $attribute The desired attribute.
-       * @param string $default The default value to load, when no data is available.
-       * @return string The desired session data or the default value (null, if not present).
+       * @return string[] The complete session data list.
        *
-       * @author Christian Schäfer
+       * @author Christian Achatz
        * @version
-       * Version 0.1, 08.03.2006<br />
-       * Version 0.2, 15.06.2006 (Now false is returned if the data is not present in the session)<br />
-       * Version 0.3, 30.01.2010 (Switched return value to null to be consistent with the RequestHandler)<br />
-       * Version 0.4, 28.02.2010 (Added default value behaviour)<br />
+       * Version 0.1, 15.03.2010<br />
        */
-      public function loadSessionDataByNamespace($namespace,$attribute,$default = null){
-         if(isset($_SESSION[$namespace][$attribute])){
-            return $_SESSION[$namespace][$attribute];
-         }
-         else{
-            return $default;
-         }
-       // end function
+      public function loadAllSessionData(){
+         return $_SESSION[$this->namespace];
+      }
+
+      /**
+       * @public
+       *
+       * Returns the list of registered session keys as a numeric array.
+       *
+       * @return string[] The list of registered session keys.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 15.03.2010<br />
+       */
+      public function getEntryDataKeys(){
+         return array_keys($_SESSION[$this->namespace]);
       }
 
       /**
@@ -179,25 +171,7 @@
        * Version 0.1, 08.03.2006<br />
        */
       public function saveSessionData($attribute,$value){
-         $_SESSION[$this->__Namespace][$attribute] = $value;
-       // end function
-      }
-
-      /**
-       * @public
-       *
-       * Saves session data using an explicit namespace.
-       *
-       * @param string $namespace the namespace of the value
-       * @param string $attribute the desired attribute
-       * @param string $value the value to save
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 08.03.2006<br />
-       */
-      public function saveSessionDataByNamespace($namespace,$attribute,$value){
-         $_SESSION[$namespace][$attribute] = $value;
+         $_SESSION[$this->namespace][$attribute] = $value;
        // end function
       }
 
@@ -213,24 +187,7 @@
        * Version 0.1, 08.03.2006<br />
        */
       function deleteSessionData($attribute){
-         unset($_SESSION[$this->__Namespace][$attribute]);
-       // end function
-      }
-
-      /**
-       * @public
-       *
-       * Deletes session data using an explicit namespace.
-       *
-       * @param string $namespace the namespace of the value
-       * @param string $attribute the desired attribute
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 08.03.2006<br />
-       */
-      public function deleteSessionDataByNamespace($namespace,$attribute){
-         unset($_SESSION[$namespace][$attribute]);
+         unset($_SESSION[$this->namespace][$attribute]);
        // end function
       }
 
