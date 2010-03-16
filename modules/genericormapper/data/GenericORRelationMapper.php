@@ -1089,10 +1089,32 @@
        * Version 0.1, 14.05.2008<br />
        * Version 0.2, 25.06.2008 (Removed "ApplicationID" from sleep list)<br />
        * Version 0.3, 26.10.2008 (Added "__importedConfigCache")<br />
+       * Version 0.4, 16.03.2010 (Added missing attributes due to bug 299)<br />
        */
       public function __sleep(){
-         return array('__MappingTable','__RelationTable','__Context','__Language','__importedConfigCache');
-       // end function
+         return array('__MappingTable',
+            '__RelationTable',
+            '__Context',
+            '__Language',
+            '__importedConfigCache',
+            '__DBConnectionName',
+            '__LogStatements',
+            '__ConfigNamespace',
+            '__ConfigNameAffix');
+      }
+
+      /**
+       * @public
+       *
+       * Implements the wakeup function to re-initialize the database connection after
+       * de-serialization.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 16.03.2010<br />
+       */
+      public function __wakeup(){
+         $this->createDatabaseConnection();
       }
 
       /**

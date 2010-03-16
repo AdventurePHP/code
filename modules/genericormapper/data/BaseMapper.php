@@ -58,6 +58,13 @@
       protected $__DBDriver = null;
 
       /**
+       * @since 1.12
+       * Stores the connection name to be able to restore the connection on wakeup.
+       * @var string The name of the connection to use.
+       */
+      protected $__DBConnectionName = null;
+
+      /**
        * @protected
        * @var string[] Object mapping table.
        */
@@ -109,16 +116,30 @@
          // set the config name affix
          $this->__ConfigNameAffix = $initParam['ConfigNameAffix'];
 
-         // get connection manager
-         $cM = &$this->__getServiceObject('core::database','connectionManager');
-
-         // initialize connection
-         $this->__DBDriver = &$cM->getConnection($initParam['ConnectionName']);
+         // create the connection
+         $this->__DBConnectionName = $initParam['ConnectionName'];
+         $this->createDatabaseConnection();
 
          // set debug mode, if desired
          $this->__LogStatements = $initParam['LogStatements'];
 
        // end function
+      }
+
+      /**
+       * @protected
+       * @since 1.12
+       *
+       * Initializes the database connection. This is used on creation of the mapper
+       * and on wakeup after session de-serialization.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 16.03.2010 (Introduced due to bug 299)<br />
+       */
+      protected function createDatabaseConnection(){
+         $cM = &$this->__getServiceObject('core::database','connectionManager');
+         $this->__DBDriver = &$cM->getConnection($this->__DBConnectionName);
       }
 
       /**
