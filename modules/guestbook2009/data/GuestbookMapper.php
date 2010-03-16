@@ -465,17 +465,15 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 06.05.2009<br />
+       * Version 0.2, 16.03.2010 (Bugfix 299: moved the service type to the GORM factory call)<br />
        */
       private function &__getGenericORMapper(){
-
-         $ormFact = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
+         $ormFact = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory',$this->__initType);
          return $ormFact->getGenericORMapper(
                                        'modules::guestbook2009::data',
                                        'guestbook2009',
-                                       $this->__connectionName,
-                                       $this->__initType
+                                       $this->__connectionName                                       
          );
-         
        // end function
       }
 

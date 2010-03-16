@@ -172,15 +172,15 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 23.06.2008<br />
+       * Version 0.2, 16.03.2010 (Bugfix 299: moved the service type to the GORM factory call)<br />
        */
       protected function &__getORMapper(){
-         $ormFactory = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
+         $ormFactory = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory',$this->__ServiceMode);
          return $ormFactory->getGenericORMapper(
                                  'modules::usermanagement',
                                  'umgt',
-                                 $this->__ConnectionKey,
-                                 $this->__ServiceMode
-          );
+                                 $this->__ConnectionKey
+         );
        // end function
       }
 
