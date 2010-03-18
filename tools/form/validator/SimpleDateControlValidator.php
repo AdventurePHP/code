@@ -73,45 +73,13 @@
 
          $this->__Control->markAsInvalid();
 
-         // for the date control, we have to obtain the special
-         // marker class from the date control and then apply
-         // them to the included select controls
-         $day = &$this->__Control->getDayControl();
-         $this->markControl($day);
-
-         $month = &$this->__Control->getMonthControl();
-         $this->markControl($month);
-
-         $year = &$this->__Control->getYearControl();
-         $this->markControl($year);
+         // due to the fact, that we introduced a surrounding span
+         // validation marking can be done as usual with "normal"
+         // text fields
+         $this->markControl($this->__Control);
 
          $this->notifyValidationListeners($this->__Control);
 
-       // end function
-      }
-
-      /**
-       * @protected
-       *
-       * Overwrites the method to adapt the behavior to the date control. Here,
-       * we have to take the marker class from the surrounding date control
-       * instead of the single select controls
-       *
-       * @param form_control $control The control to validate.
-       * @return string The css marker class for validation notification.
-       *
-       * @since 1.12
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 06.02.2010<br />
-       */
-      protected function getCssMarkerClass(&$control){
-         $marker = $this->__Control->getAttribute(self::$CUSTOM_MARKER_CLASS_ATTRIBUTE);
-         if(empty($marker)){
-            $marker = self::$DEFAULT_MARKER_CLASS;
-         }
-         return $marker;
        // end function
       }
 

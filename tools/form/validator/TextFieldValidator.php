@@ -145,7 +145,7 @@
        * @version
        * Version 0.1, 06.02.2010<br />
        */
-      protected function getCssMarkerClass(&$control){
+      protected function getCssMarkerClass(form_control &$control){
          $marker = $control->getAttribute(self::$CUSTOM_MARKER_CLASS_ATTRIBUTE);
          if(empty($marker)){
             $marker = self::$DEFAULT_MARKER_CLASS;

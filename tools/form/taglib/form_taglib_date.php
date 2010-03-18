@@ -31,7 +31,7 @@
     *   <li>The range of the year can be defined as "1998 - 2009".</li>
     * </ul>
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 10.01.2007<br />
     * Version 0.2, 12.01.2007 (Renamed to "form_taglib_date")<br />
@@ -55,7 +55,7 @@
        *
        * Initializes the member variables.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 10.01.2007<br />
        */
@@ -76,7 +76,7 @@
        *
        * Creates the children select fields for the date control.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 10.01.2007<br />
        * Version 0.2, 26.08.2007 (The "class" And "style" attributes are now optional)<br />
@@ -99,31 +99,21 @@
          $month->setContext($this->__Context);
          $year->setContext($this->__Context);
 
-         // apply css classes
-         if(isset($this->__Attributes['class'])){
-            $day->setAttribute('class',$this->__Attributes['class']);
-            $month->setAttribute('class',$this->__Attributes['class']);
-            $year->setAttribute('class',$this->__Attributes['class']);
-          // end if
-         }
-
-         // apply field names
+         // apply field names and calculate id to be able access
+         // the child elements using JS
          $name = $this->getAttribute('name');
-         $day->setAttribute('name',$name.'['.$this->__OffsetNames['Day'].']');
-         $month->setAttribute('name',$name.'['.$this->__OffsetNames['Month'].']');
-         $year->setAttribute('name',$name.'['.$this->__OffsetNames['Year'].']');
 
-         // apply css styles
-         if(isset($this->__Attributes['style'])){
-            $day->setAttribute('style',$this->__Attributes['style'].' width: 40px;');
-          // end if
-         }
-         else{
-            $day->setAttribute('style','width: 40px;');
-          // end else
-         }
-         $month->setAttribute('style','width: 40px;');
-         $year->setAttribute('style','width: 55px;');
+         $dayIdent = $name.'['.$this->__OffsetNames['Day'].']';
+         $monthIdent = $name.'['.$this->__OffsetNames['Month'].']';
+         $yearIdent = $name.'['.$this->__OffsetNames['Year'].']';
+
+         $day->setAttribute('name',$dayIdent);
+         $month->setAttribute('name',$monthIdent);
+         $year->setAttribute('name',$yearIdent);
+
+         $day->setAttribute('id',$dayIdent);
+         $month->setAttribute('id',$monthIdent);
+         $year->setAttribute('id',$yearIdent);
 
          // set the values for the day select box
          for($i = 1; $i <= 31; $i++){
@@ -179,26 +169,61 @@
       }
 
       /**
+       * @private
+       *
+       * Returns the id of the date element. In case the developer does not
+       * provide the <em>id</em> attribute within the tag definition, the
+       * <em>name</em> attribute is used instead.
+       *
+       * @return string The id to display within the HTML tag.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 18.03.2010<br />
+       */
+      private function getId(){
+         $id = $this->getAttribute('id');
+         if($id === null){
+            return $this->getAttribute('name');
+         }
+         return $id;
+      }
+
+      /**
        * @public
        *
        * Generated the HTML code of the date control.
        *
        * @return string The HTML code of the date control.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 10.01.2007<br />
+       * Version 0.2, 18.03.2010 (Introduced surrounding span to support client validation)<br />
        */
       public function transform(){
 
-         $buffer = (string)'';
+         // as of 1.12, the date control should be rendered using a
+         // surrounding span do enable the client validator extension
+         // to address the control more easily.
+         $buffer = (string)'<span id="'.$this->getId().'"';
+
+         $style = $this->getAttribute('style');
+         if($style != null){
+            $buffer .= ' style="'.$style.'">';
+         }
+
+         $class = $this->getAttribute('class');
+         if($class != null){
+            $buffer .= ' class="'.$class.'">';
+         }
          
          foreach($this->__Children as $section => $DUMMY){
             $buffer .= $this->__Children[$section]->transform();
           // end foreach
          }
 
-         return $buffer;
+         return $buffer.'</span>';
 
        // end function
       }
