@@ -210,14 +210,14 @@
 
          $style = $this->getAttribute('style');
          if($style != null){
-            $buffer .= ' style="'.$style.'">';
+            $buffer .= ' style="'.$style.'"';
          }
 
          $class = $this->getAttribute('class');
          if($class != null){
-            $buffer .= ' class="'.$class.'">';
+            $buffer .= ' class="'.$class.'"';
          }
-         
+         $buffer .= '>';
          foreach($this->__Children as $section => $DUMMY){
             $buffer .= $this->__Children[$section]->transform();
           // end foreach
