@@ -20,11 +20,11 @@
     */
 
    import('tools::link','FrontcontrollerLinkHandler');
-   import('modules::kontakt4::biz','oFormData');
+   import('modules::kontakt4::biz','ContactFormData');
 
    /**
     * @package modules::kontakt4::pres::documentcontroller
-    * @class kontakt_v4_controller
+    * @class contact_form_controller
     *
     * Document controller for the form view of the contact module.
     *
@@ -35,9 +35,9 @@
     * Version 0.3, 23.02.2007<br />
     * Version 0.4, 12.09.2009 (Refactoring due to changes of the form taglibs)<br />
     */
-   class kontakt_v4_controller extends base_controller {
+   class contact_form_controller extends base_controller {
 
-      public function kontakt_v4_controller(){
+      public function contact_form_controller(){
       }
 
       /**
@@ -45,7 +45,7 @@
        *
        * Displays the form and handles the user input.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 03.06.2006<br />
        * Version 0.2, 04.06.2006<br />
@@ -64,37 +64,38 @@
          // fill recipient list
          $recipients = & $form->getFormElementByName('Empfaenger');
 
-         $cM = &$this->__getServiceObject('modules::kontakt4::biz','contactManager');
+         $cM = &$this->__getServiceObject('modules::kontakt4::biz','ContactManager');
+         /* @var $recipientList ContactFormRecipient[] */
          $recipientList = $cM->loadRecipients();
 
          for($i = 0; $i < count($recipientList); $i++){
-            $recipients->addOption($recipientList[$i]->get('Name'),$recipientList[$i]->get('oID'));
+            $recipients->addOption($recipientList[$i]->getName(),$recipientList[$i]->getId());
           // end if
          }
 
          if($form->isSent() && $form->isValid()){
 
-            $oFD = new oFormData();
+            $formData = new ContactFormData();
 
             $recipient = &$form->getFormElementByName('Empfaenger');
             $option = &$recipient->getSelectedOption();
             $recipientId = $option->getAttribute('value');
-            $oFD->set('RecipientID',$recipientId);
+            $formData->setRecipientId($recipientId);
 
             $name = &$form->getFormElementByName('AbsenderName');
-            $oFD->set('SenderName',$name->getAttribute('value'));
+            $formData->setSenderName($name->getAttribute('value'));
 
             $email = &$form->getFormElementByName('AbsenderAdresse');
-            $oFD->set('SenderEMail',$email->getAttribute('value'));
+            $formData->setSenderEmail($email->getAttribute('value'));
 
             $subject = &$form->getFormElementByName('Betreff');
-            $oFD->set('Subject',$subject->getAttribute('value'));
+            $formData->setSubject($subject->getAttribute('value'));
 
             $text = &$form->getFormElementByName('Text');
-            $oFD->set('Text',$text->getContent());
+            $formData->setMessage($text->getContent());
 
-            $cM = &$this->__getServiceObject('modules::kontakt4::biz','contactManager');
-            $cM->sendContactForm($oFD);
+            $cM = &$this->__getServiceObject('modules::kontakt4::biz','ContactManager');
+            $cM->sendContactForm($formData);
 
           // end if
          }

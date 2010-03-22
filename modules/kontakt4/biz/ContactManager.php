@@ -19,16 +19,14 @@
     * -->
     */
 
-   import('modules::kontakt4::biz','oFormData');
-   import('modules::kontakt4::biz','oRecipient');
-   import('modules::kontakt4::data','contactMapper');
-   import('tools::mail','mailSender');
+   import('modules::kontakt4::biz','ContactFormData');
+   import('modules::kontakt4::biz','ContactFormRecipient');
    import('tools::link','LinkHandler');
    import('tools::http','HeaderManager');
 
    /**
     * @package modules::kontakt4::biz
-    * @class contactManager
+    * @class ContactManager
     *
     * Implements the business component for the contact form.
     *
@@ -36,9 +34,9 @@
     * @version
     * Version 0.1, 03.06.2006<br />
     */
-   class contactManager extends APFObject {
+   class ContactManager extends APFObject {
 
-      public function contactManager(){
+      public function ContactManager(){
       }
 
       /**
@@ -55,24 +53,24 @@
        * Version 0.5, 31.03.2007<br />
        * Version 0.6, 04.01.2008 (Corrected url generatin for non-rewrite urls)<br />
        */
-      public function sendContactForm($formData){
+      public function sendContactForm(ContactFormData $formData){
 
-         $cM = &$this->__getServiceObject('modules::kontakt4::data','contactMapper');
+         $cM = &$this->__getServiceObject('modules::kontakt4::data','ContactMapper');
 
          // set up the mail sender
          $MAIL = &$this->__getAndInitServiceObject('tools::mail','mailSender','ContactForm');
 
-         $Recipient = $cM->loadRecipientPerId($formData->get('RecipientID'));
-         $MAIL->setRecipient($Recipient->get('Adresse'),$Recipient->get('Name'));
+         $recipient = $cM->loadRecipientPerId($formData->getRecipientId());
+         $MAIL->setRecipient($recipient->getEmailAddress(),$recipient->getName());
 
          $Text = 'Sehr geehrter Empfänger, sehr geehrte Empfängerin,';
          $Text .= "\n\n";
-         $Text .= $formData->get('SenderName').' (E-Mail: '.$formData->get('SenderEMail').') hat Ihnen folgende Nachricht �ber das Kontaktformular zukommen lassen:';
+         $Text .= $formData->getSenderName().' (E-Mail: '.$formData->getSenderEmail().') hat Ihnen folgende Nachricht über das Kontaktformular zukommen lassen:';
          $Text .= "\n\n\n";
-         $Text .= $formData->get('Text');
+         $Text .= $formData->getMessage();
          $MAIL->setContent($Text);
 
-         $MAIL->setSubject($formData->get('Subject'));
+         $MAIL->setSubject($formData->getSubject());
 
          // send mail to notify the recipient
          $MAIL->sendMail();
@@ -81,24 +79,24 @@
          $MAIL->clearCCRecipients();
          $MAIL->clearContent();
 
-         $MAIL->setRecipient($formData->get('SenderEMail'),$formData->get('SenderName'));
+         $MAIL->setRecipient($formData->getSenderEmail(),$formData->getSenderName());
 
          $Text = 'Sehr geehrter Empfänger, sehr geehrte Empfängerin,';
          $Text .= "\n\n";
-         $Text .= 'Ihre Anfrage wurde an die Kontaktperson "'.$Recipient->get('Name').'" weitergeleitet. Wir setzen uns baldm�glich mit Ihnen in Verbindung!';
+         $Text .= 'Ihre Anfrage wurde an die Kontaktperson "'.$recipient->getName().'" weitergeleitet. Wir setzen uns baldmöglich mit Ihnen in Verbindung!';
          $Text .= "\n\n";
          $Text .= 'Hier nochmals Ihr Anfragetext:';
          $Text .= "\n";
-         $Text .= $formData->get('Text');
+         $Text .= $formData->getMessage();
          $MAIL->setContent($Text);
 
-         $MAIL->setSubject($formData->get('Subject'));
+         $MAIL->setSubject($formData->getSubject());
 
          // send mail to notify the sender
          $MAIL->sendMail();
 
          // redirect to the thanks page to avoid F5 bugs!
-         $link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('pagepart' => 'meldung'));
+         $link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('contactview' => 'thanks'));
 
          $reg = &Singleton::getInstance('Registry');
          $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
@@ -124,7 +122,7 @@
        * Version 0.2, 04.06.2006<br />
        */
       public function loadRecipients(){
-         $cM = & $this->__getServiceObject('modules::kontakt4::data','contactMapper');
+         $cM = & $this->__getServiceObject('modules::kontakt4::data','ContactMapper');
          return $cM->loadRecipients();
        // end function
       }
