@@ -125,13 +125,14 @@
     * @package core::pagecontroller
     * @function import
     *
-    * Imports classes or modules from a given namespace. Usage:
-    * <pre>
-    * import('core::frontcontroller','Frontcontroller');
-    * </pre>
+    * Imports classes or modules from a given namespace.
+    * <p/>
+    * Usage:
+    * <pre>import('core::frontcontroller','Frontcontroller');</pre>
     *
-    * @param string $namespace the namespace of the file (=relative path, starting at the root of your code base)
-    * @param string $file the body of the desired file / class to include (without extension)
+    * @param string $namespace the namespace of the file (=relative path, starting at the root of your code base).
+    * @param string $file the body of the desired file / class to include (without extension).
+    * @throws Exception In case the requested component does not exist.
     *
     * @author Christian Achatz
     * @version
@@ -144,6 +145,7 @@
     * Version 0.7, 20.06.2008 (Moved to pagecontroller.php due to the Registry introduction)<br />
     * Version 0.8, 13.11.2008 (Replaced the include_once() calls with include()s to gain performance)<br />
     * Version 0.9, 25.03.2009 (Cleared implementation for the PHP 5 branch)<br />
+    * Version 1.0, 08.03.2010 (Introduced exception instead of trigger_error())<br />
     */
    function import($namespace,$file){
 
@@ -153,22 +155,17 @@
       // check if the file is already included, if yes, return
       if(isset($GLOBALS['IMPORT_CACHE'][$file])){
          return true;
-       // end if
       }
       else{
          $GLOBALS['IMPORT_CACHE'][$file] = true;
-       // end else
       }
 
-      // handle non existing files
+      // handle non-existing files
       if(!file_exists($file)){
-         trigger_error('[import()] The given module ('.$file.') cannot be loaded!',E_USER_ERROR);
-         exit();
-       // end if
+         throw new Exception('[import()] The given module ('.$file.') cannot be loaded!',E_USER_ERROR);
       }
       else{
          include($file);
-       // end else
       }
 
     // end function
