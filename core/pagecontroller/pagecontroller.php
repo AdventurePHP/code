@@ -1679,8 +1679,8 @@
                $object->setContent($attributes['content']);
 
                // call onParseTime() to enable the taglib to initialize itself
-               $benchId = '('.get_class($this).') '.$this->__ObjectID.'::__Children['.$objectId
-                       .']::onParseTime()';
+               $benchId = '('.get_class($this).') '.$this->__ObjectID.'::__Children[('
+                       .get_class($object).') '.$objectId.']::onParseTime()';
                $t->start($benchId);
                $object->onParseTime();
                $t->stop($benchId);
