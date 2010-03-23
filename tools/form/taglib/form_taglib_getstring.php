@@ -33,7 +33,7 @@
     */
    class form_taglib_getstring extends form_getstring {
 
-      function form_taglib_getstring(){
+      public function form_taglib_getstring(){
       }
 
     // end class

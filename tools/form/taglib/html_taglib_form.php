@@ -487,8 +487,8 @@
             $formObject->setLanguage($this->__Language);
             $formObject->setContext($this->__Context);
 
-            foreach($elementAttributes as $Key => $Value){
-               $formObject->setAttribute($Key,$Value);
+            foreach($elementAttributes as $key => $value){
+               $formObject->setAttribute($key,$value);
              // end foreach
             }
 
@@ -539,14 +539,14 @@
          if(count($this->__Children) > 0){
 
             // have a look at the children
-            foreach($this->__Children as $ObjectID => $Child){
+            foreach($this->__Children as $objectId => $DUMMY){
 
                // check, if current children is a marker
-               if(get_class($Child) == 'form_taglib_marker'){
+               if(get_class($this->__Children[$objectId]) == 'form_taglib_marker'){
 
                   // check, if the name fits the method's argument
-                  if($Child->getAttribute('name') == $markerName){
-                     return $this->__Children[$ObjectID];
+                  if($this->__Children[$objectId]->getAttribute('name') == $markerName){
+                     return $this->__Children[$objectId];
                    // end if
                   }
 
@@ -646,9 +646,9 @@
 
          if(count($this->__Children) > 0){
 
-            foreach($this->__Children as $objectID => $DUMMY){
-               if($this->__Children[$objectID]->getAttribute('id') == $id){
-                  return $this->__Children[$objectID];
+            foreach($this->__Children as $objectId => $DUMMY){
+               if($this->__Children[$objectId]->getAttribute('id') == $id){
+                  return $this->__Children[$objectId];
                 // end if
                }
              // end foreach
@@ -679,7 +679,7 @@
        *
        * Returns a reference on a form element addressed by it's internal object id.
        *
-       * @param string $objectID The object id of of the desired form element.
+       * @param string $objectId The object id of of the desired form element.
        * @return form_control A reference on the form element.
        *
        * @author Christian Achatz
@@ -688,10 +688,10 @@
        * Version 0.2, 12.01.2007 (Corrected error message)<br />
        * Version 0.3, 06.09.2008 (Corrected error message again)<br />
        */
-      public function &getFormElementByObjectID($objectID){
+      public function &getFormElementByObjectID($objectId){
 
-         if(isset($this->__Children[$objectID])){
-            return $this->__Children[$objectID];
+         if(isset($this->__Children[$objectId])){
+            return $this->__Children[$objectId];
           // end if
          }
          else{
@@ -700,7 +700,7 @@
             $parent = &$this->getParentObject();
             $documentController = $parent->getDocumentController();
             throw new FormException('[html_taglib_form::getFormElementByObjectID()] No form element with id "'
-               .$objectID.'" composed in current form "'.$this->__Attributes['name']
+               .$objectId.'" composed in current form "'.$this->__Attributes['name']
                .'" in document controller "'.$documentController.'"!',E_USER_ERROR);
             exit();
 
@@ -730,10 +730,10 @@
          if(count($this->__Children) > 0){
 
             $formElements = array();
-            foreach($this->__Children as $objectID => $DUMMY){
+            foreach($this->__Children as $objectId => $DUMMY){
 
-               if(get_class($this->__Children[$objectID]) == $tagClassName){
-                  $formElements[] = &$this->__Children[$objectID];
+               if(get_class($this->__Children[$objectId]) == $tagClassName){
+                  $formElements[] = &$this->__Children[$objectId];
                 // end if
                }
 
@@ -772,6 +772,10 @@
        */
       public function transformForm(){
 
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $id = '(html_taglib_form) '.$this->__ObjectID.'::transformForm()';
+         $t->start($id);
+
          // add action attribute if not set
          $action = $this->getAttribute('action');
          if($action === null){
@@ -784,13 +788,22 @@
          $htmlCode .= '>';
 
          if(count($this->__Children) > 0){
-            foreach($this->__Children as $objectID => $Child){
-               $this->__Content = str_replace('<'.$objectID.' />',$Child->transform(),$this->__Content);
+            
+            foreach($this->__Children as $objectId => $DUMMY){
+               $childId = '('.get_class($this->__Children[$objectId]).') '.$objectId.'::transform()';
+               $t->start($childId);
+
+               $this->__Content = str_replace('<'.$objectId.' />',
+                       $this->__Children[$objectId]->transform(),$this->__Content);
+
+               $t->stop($childId);
             }
          }
 
          $htmlCode .= $this->__Content;
          $htmlCode .= '</form>';
+
+         $t->stop($id);
          return $htmlCode;
 
        // end function

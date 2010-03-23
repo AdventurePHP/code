@@ -59,10 +59,10 @@
        * Version 0.1, 21.04.2006<br />
        * Version 0.2, 17.10.2008 (Enhanced error messages)<br />
        */
-      function transform(){
+      public function transform(){
 
          $t = &Singleton::getInstance('BenchmarkTimer');
-         $id = '('.get_class($this).') '.$this->__ObjectID.'::transform()';
+         $id = '(ui_getstring) '.$this->__ObjectID.'::transform()';
          $t->start($id);
 
          // check for attribute "namespace"
