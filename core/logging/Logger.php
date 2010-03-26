@@ -96,7 +96,7 @@
        * @version
        * Version 0.1, 29.03.2007<br />
        */
-      public function logEntry($message,$severity) {
+      public function LogEntry($message,$severity) {
 
          $this->date = date('Y-m-d');
          $this->time = date('H:i:s');
