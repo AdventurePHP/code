@@ -67,7 +67,8 @@
 
       /**
        * @protected
-       * @var boolean Indicates, if the handler runs in debug mode.
+       * @var boolean Indicates, if the handler runs in debug mode. This means, that all
+       * statements executed are written into a dedecated logfile.
        */
       protected $__dbDebug = false;
 
@@ -154,18 +155,8 @@
             $this->__dbName = $initParam['DB.Name'];
 
             // set debug mode
-            if(isset($initParam['DB.DebugMode'])){
-
-               if($initParam['DB.DebugMode'] == 'true' || $initParam['DB.DebugMode'] == '1'){
-                  $this->__dbDebug = true;
-                // end if
-               }
-               else{
-                  $this->__dbDebug = false;
-                // end else
-               }
-
-             // end if
+            if(isset($initParam['DB.DebugMode']) && ($initParam['DB.DebugMode'] == 'true' || $initParam['DB.DebugMode'] == '1')){
+               $this->__dbDebug = true;
             }
 
             // set connection charset and collation

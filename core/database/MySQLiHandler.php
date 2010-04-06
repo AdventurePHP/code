@@ -142,7 +142,8 @@
           // end if
          }
 
-         if($logStatement == true){
+         // log statements in debug mode or when requested explicitly
+         if($this->__dbDebug == true || $logStatement == true){
             $this->__dbLog->logEntry($this->__dbLogFileName,
                '[MySQLiHandler::executeStatement()] Current statement: '.$statement,
                'DEBUG');
@@ -156,10 +157,7 @@
          if(!empty($this->__dbConn->error) || !empty($this->__dbConn->errno)){
             $message = '('.$this->__dbConn->errno.') '.$this->__dbConn->error.' (Statement: '.$statement.')';
             $this->__dbLog->logEntry($this->__dbLogFileName,$message,'ERROR');
-
-            if($this->__dbDebug == true){
-               throw new DatabaseHandlerException('[MySQLiHandler->executeStatement()] '.$message);
-            }
+            throw new DatabaseHandlerException('[MySQLiHandler->executeStatement()] '.$message);
          }
 
          // track $__lastInsertID for further usage
@@ -251,7 +249,8 @@
             }
          }
 
-         if($logStatement == true){
+         // log statements in debug mode or when requested explicitly
+         if($this->__dbDebug == true ||$logStatement == true){
             $this->__dbLog->logEntry($this->__dbLogFileName,
                '[MySQLiHandler::executeBindStatement()] Current statement: '.$statement,'DEBUG');
           // end if
@@ -475,7 +474,7 @@
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 20.09.2009<br />
+       * Version 0.1, 09.03.2010<br />
        */
       public function fetchData($resultCursor){
          if($resultCursor == null){
@@ -492,7 +491,7 @@
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 15.01.2006<br />
+       * Version 0.1, 09.03.2010<br />
        */
       public function setDataPointer($result,$offset){
          @mysqli_data_seek($result,$offset);
@@ -507,14 +506,12 @@
        * @param resource $resultCursor The result resource pointer.
        * @return int The number of affected rows.
        *
-       * @author Christian Sch�fer
+       * @author Christian Achatz
        * @version
-       * Version 0.1, 04.01.2006<br />
-       * Version 0.2, 07.03.2008<br />
+       * Version 0.1, 09.03.2010<br />
        */
       public function getAffectedRows($resultCursor){
          return mysqli_affected_rows($this->__dbConn);
-       // end function
       }
 
       /**
@@ -525,13 +522,12 @@
       *  @param $result the mysql result resource
       *  @return $numRows the number of selected rows
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Achatz
       *  @version
-      *  Version 0.1, 04.01.2006<br />
+      *  Version 0.1, 09.03.2010<br />
       */
       function getNumRows($result){
          return mysqli_num_rows($result);
-       // end function
       }
 
       /**
@@ -547,11 +543,12 @@
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 10.02.2008<br />
+       * Version 0.1, 09.03.2010<br />
        */
       public function executeTextStatement($statement,$logStatement = false){
 
-         if($logStatement == true){
+         // log statements in debug mode or when requested explicitly
+         if($this->__dbDebug == true || $logStatement == true){
             $this->__dbLog->logEntry($this->__dbLogFileName,
                '[MySQLiHandler::executeTextStatement()] Current statement: '.$statement,
                'DEBUG');
@@ -563,13 +560,9 @@
 
          // get current error to be able to do error handling
          if(!empty($this->__dbConn->error) || !empty($this->__dbConn->errno)){
-
             $message = '('.$this->__dbConn->errno.') '.$this->__dbConn->error.' (Statement: '.$statement.')';
             $this->__dbLog->logEntry($this->__dbLogFileName,$message,'ERROR');
-
-            if($this->__dbDebug == true){
-               throw new DatabaseHandlerException('[MySQLiHandler->executeTextStatement()] '.$message);
-            }
+            throw new DatabaseHandlerException('[MySQLiHandler->executeTextStatement()] '.$message);
          }
 
          // track $__lastInsertID for further usage
@@ -585,14 +578,12 @@
        *
        * Returns the version of the database server.
        *
-       * @author Christian Sch�fer
+       * @author Christian Achatz
        * @version
-       * Version 0.1, 05.03.2006<br />
-       * Version 0.2, 07.03.2008 (Now the connection is applied to the call.)<br />
+       * Version 0.1, 09.03.2010<br />
        */
       public function getServerInfo(){
          return mysqli_get_server_info($this->__dbConn);
-       // end function
       }
 
       /**
@@ -600,13 +591,12 @@
        *
        * Returns the name of the current database.
        *
-       * @author Christian Sch�fer
+       * @author Christian Achatz
        * @version
-       * Version 0.1, 05.03.2006<br />
+       * Version 0.1, 09.03.2010<br />
        */
       public function getDatabaseName(){
          return $this->__dbName;
-       // end function
       }
 
     // end class

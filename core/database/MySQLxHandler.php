@@ -157,7 +157,8 @@
           // end if
          }
 
-         if($logStatement == true){
+         // log statements in debug mode or when requested explicitly
+         if($this->__dbDebug == true || $logStatement == true){
             $this->__dbLog->logEntry($this->__dbLogFileName,
                '[MySQLxHandler::executeStatement()] Current statement: '.$statement,
                'DEBUG');
@@ -174,10 +175,7 @@
          if(!empty($mysql_error) || !empty($mysql_errno)){
             $message = '[MySQLxHandler::executeStatement()] ('.$mysql_errno.') '.$mysql_error.' (Statement: '.$statement.')';
             $this->__dbLog->logEntry($this->__dbLogFileName,$message,'ERROR');
-
-            if($this->__dbDebug == true){
-               throw new DatabaseHandlerException('[MySQLxHandler::executeStatement()] '.$message);
-            }
+            throw new DatabaseHandlerException('[MySQLxHandler::executeStatement()] '.$message);
          }
 
          // track $__lastInsertID fur further usage
@@ -204,7 +202,6 @@
        */
       public function escapeValue($value){
          return mysql_real_escape_string($value,$this->__dbConn);
-       // end function
       }
 
       /**
@@ -221,7 +218,6 @@
        */
       public function fetchData($resultCursor){
          return mysql_fetch_assoc($resultCursor);
-       // end function
       }
 
       /**
@@ -235,7 +231,6 @@
       */
       public function setDataPointer($result,$offset){
          @mysql_data_seek($result,$offset);
-       // end function
       }
 
       /**
@@ -253,7 +248,6 @@
        */
       public function getAffectedRows($resultCursor){
          return mysql_affected_rows($this->__dbConn);
-       // end function
       }
 
       /**
@@ -270,7 +264,6 @@
       */
       function getNumRows($result){
          return mysql_num_rows($result);
-       // end function
       }
 
       /**
@@ -290,7 +283,8 @@
        */
       public function executeTextStatement($statement,$logStatement = false){
 
-         if($logStatement == true){
+         // log statements in debug mode or when requested explicitly
+         if($this->__dbDebug == true || $logStatement == true){
             $this->__dbLog->logEntry($this->__dbLogFileName,
                '[MySQLxHandler::executeTextStatement()] Current statement: '.$statement,
                'DEBUG');
@@ -305,16 +299,9 @@
          $mysql_errno = mysql_errno($this->__dbConn);
 
          if(!empty($mysql_error) || !empty($mysql_errno)){
-
             $message = '('.$mysql_errno.') '.$mysql_error.' (Statement: '.$statement.')';
             $this->__dbLog->logEntry($this->__dbLogFileName,$message,'ERROR');
-
-            if($this->__dbDebug == true){
-               throw new DatabaseHandlerException('[MySQLxHandler->executeTextStatement()] '.$message);
-             // end if
-            }
-
-          // end if
+            throw new DatabaseHandlerException('[MySQLxHandler->executeTextStatement()] '.$message);
          }
 
          // track $__lastInsertID for further usage
@@ -338,7 +325,6 @@
        */
       public function getServerInfo(){
          return mysql_get_server_info($this->__dbConn);
-       // end function
       }
 
       /**
@@ -352,7 +338,6 @@
        */
       public function getDatabaseName(){
          return $this->__dbName;
-       // end function
       }
 
     // end class
