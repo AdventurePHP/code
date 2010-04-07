@@ -75,9 +75,9 @@
          }
 
          // display extended debug message in case no form element was found
-         $parent = $this->get('ParentObject');
-         $grandParent = $parent->get('ParentObject');
-         $docCon = ($grandParent !== null) ? $grandParent->get('DocumentController') : $docCon = 'n/a';
+         $parent = $this->getParentObject();
+         $grandParent = $parent->getParentObject();
+         $docCon = ($grandParent !== null) ? $grandParent->getDocumentController() : $docCon = 'n/a';
 
          throw new Exception('[html_taglib_list::getListById()] No list with id "'.$id
                  .'" in document controller "'.$docCon.'"!',E_USER_ERROR);
@@ -103,16 +103,16 @@
             $listObject = new $tagLibClass();
 
             // add standard and user defined attributes
-            $listObject->set('ObjectID',$objectId);
-            $listObject->set('Language',$this->__Language);
-            $listObject->set('Context',$this->__Context);
+            $listObject->setObjectId($objectId);
+            $listObject->setLanguage($this->__Language);
+            $listObject->setContext($this->__Context);
 
             foreach($elementAttributes as $Key => $Value) {
                $listObject->setAttribute($Key,$Value);
             }
 
             // add form element to DOM tree and call the onParseTime() method
-            $listObject->setByReference('ParentObject',$this);
+            $listObject->setParentObject($this);
             $listObject->onParseTime();
 
             // add new form element to children list

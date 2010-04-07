@@ -59,7 +59,7 @@
             foreach($this->__Children as $objectId => $DUMMY) {
                if(get_class($this->__Children[$objectId]) == $tagLibClass) {
                   if($this->__Children[$objectId]->getAttribute('name') == $name) {
-                     $this->__Children[$objectId]->set('Content',$value);
+                     $this->__Children[$objectId]->setContent($value);
                      $placeHolderCount++;
                   }
                }
@@ -68,7 +68,7 @@
          else {
             throw new Exception('['.get_class($this).'::setPlaceHolder()] No place holder object with '
                     .'name "'.$name.'" composed in current for document controller "'
-                    .($this->__ParentObject->get('DocumentController')).'"! Perhaps tag library '
+                    .($this->__ParentObject->getDocumentController()).'"! Perhaps tag library '
                     .'form:placeholder is not loaded in form "'.$this->getAttribute('name').'"!',
             E_USER_ERROR);
             exit();
@@ -77,7 +77,7 @@
          if($placeHolderCount < 1) {
             throw new Exception('['.get_class($this).'::setPlaceHolder()] There are no place holders '
                     .'found for name "'.$name.'" in template "'.($this->__Attributes['name'])
-                    .'" in document controller "'.($this->__ParentObject->get('DocumentController'))
+                    .'" in document controller "'.($this->__ParentObject->getDocumentController())
                     .'"!',E_USER_WARNING);
          }
       }
@@ -135,13 +135,13 @@
        */
       protected function __addElement( $sContent , $sClass , $sElement ) {
          $objectId = XmlParser::generateUniqID();
-         $sClassname = "list_taglib_$sElement";
+         $sClassname = 'list_taglib_'.$sElement;
          $this->__Children[$objectId] = new $sClassname;
 
-         $this->__Children[$objectId]->set('ObjectID',$objectId);
-         $this->__Children[$objectId]->set('Content',$sContent);
-         $this->__Children[$objectId]->set('Language',$this->__Language);
-         $this->__Children[$objectId]->set('Context',$this->__Context);
+         $this->__Children[$objectId]->setObjectId($objectId);
+         $this->__Children[$objectId]->setContent($sContent);
+         $this->__Children[$objectId]->setLanguage($this->__Language);
+         $this->__Children[$objectId]->setContext($this->__Context);
 
          if( !empty( $sClass ) ) {
             $this->__Children[$objectId]->setAttribute('class',$sClass);
@@ -150,7 +150,7 @@
          $this->__Children[$objectId]->onParseTime();
 
          // inject parent object (=this) to guarantee native DOM tree environment
-         $this->__Children[$objectId]->setByReference('ParentObject',$this);
+         $this->__Children[$objectId]->setParentObject($this);
          $this->__Children[$objectId]->onAfterAppend();
 
          // add xml marker, necessary for transformation
