@@ -208,7 +208,7 @@
       function &getSelectedOption(){
 
          // execute presetting lazily for dynamic forms
-         //$this->__presetValue();
+         $this->__presetValue();
 
          $selectedOption = null;
 
@@ -270,7 +270,7 @@
        * Version 0.2, 29.08.2009 (Introduced presetting of sub-elements)<br />
        */
       protected function __presetValue(){
-         //echo '<br />__presetValue()';
+
          $value = $this->__getRequestValue();
 
          if(count($this->__Children) > 0){
