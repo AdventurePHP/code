@@ -1,43 +1,41 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
-   *  @package tools::datetime
-   *  @class dateTimeManager
-   *  @static
-   *
-   *  Stellt Methoden zum Umgang mit Datum und Uhrzeit bereit.<br />
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 08.09.2004<br />
-   *  Version 0.2, 21.01.2006<br />
-   *  Version 0.3, 27.03.2007 (Methode "showMonthLabel" vom "stringAssistant" �bernommen)<br />
-   */
-   class dateTimeManager
-   {
+    * @package tools::datetime
+    * @class dateTimeManager
+    * @static
+    *
+    * Provides static methods to calculate with date and time.
+    *
+    * @author Christian Sch�fer
+    * @version
+    * Version 0.1, 08.09.2004<br />
+    * Version 0.2, 21.01.2006<br />
+    * Version 0.3, 27.03.2007 (Methode "showMonthLabel" vom "stringAssistant" �bernommen)<br />
+    */
+   final class dateTimeManager {
 
       private function dateTimeManager(){
       }
-
 
       /**
       *  @public
@@ -193,64 +191,64 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *  @static
-      *
-      *  Funktion convertDate2Normal wandelt ein SQL-Datumsformat in das im Kalender<br />
-      *  gebr�uchliche Format 00.00.0000 um.<br />
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 26.02.2003<br />
-      *  Version 0.2, 23.03.2004<br />
-      *  Version 0.3, 09.09.2004<br />
-      */
-      static function convertDate2Normal($SQLFormat){
-
-         $Temp = array();
-         $Temp = split('[-]',$SQLFormat);
-         return trim($Temp[2]).'.'.trim($Temp[1]).'.'.trim($Temp[0]);
-
-       // end function
+       * @public
+       * @static
+       *
+       * Funktion convertDate2Normal wandelt ein SQL-Datumsformat in das im Kalender
+       * gebräuchliche Format 00.00.0000 um.
+       *
+       * @param string $sqlDate The date in sql format.
+       * @return The date in "normal" notation.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 26.02.2003<br />
+       * Version 0.2, 23.03.2004<br />
+       * Version 0.3, 09.09.2004<br />
+       * Version 0.4, 30.12.2009 (Replaced split() with explode() because it is marked deprecated in PHP5.3.0)<br />
+       */
+      static function convertDate2Normal($sqlDate){
+         $temp = explode('-',$sqlDate);
+         return trim($temp[2]).'.'.trim($temp[1]).'.'.trim($temp[0]);
       }
 
-
       /**
-      *  @public
-      *  @static
-      *
-      *  Zerlegt ein Datum in seine Bestandteile und gibt ein assoziatives<br />
-      *  Array mit den Offsets 'Jahr', 'Monat' und 'Tag' zur�ck.<br />
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, ??.??.????<br />
-      */
-      static function splitDate($Datum){
+       * @public
+       * @static
+       *
+       * Zerlegt ein Datum in seine Bestandteile und gibt ein assoziatives
+       * Array mit den Offsets 'Jahr', 'Monat' und 'Tag' zurück.
+       *
+       * @param string $currentDate The current date.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, ??.??.????<br />
+       * Version 0.2, 30.12.2009 (Replaced split() with explode() because it is marked deprecated in PHP5.3.0)<br />
+       */
+      static function splitDate($currentDate){
 
-         $Temp = array();
          $return = array();
 
          // Normales Datum im Format 00.00.0000
-         if(preg_match('/[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,4}/i',$Datum)){
+         if(preg_match('/[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,4}/i',$currentDate)){
 
-            $Temp = split('[.]',$Datum);
-            $return['Jahr'] = trim($Temp[2]);
-            $return['Monat'] = trim($Temp[1]);
-            $return['Tag'] = trim($Temp[0]);
+            $temp = explode('.',$currentDate);
+            $return['Jahr'] = trim($temp[2]);
+            $return['Monat'] = trim($temp[1]);
+            $return['Tag'] = trim($temp[0]);
 
           // end if
          }
 
          // SQL Datum im Format 0000-00-00
-         if(preg_match('/[0-9]{1,4}\-[0-9]{1,2}\-[0-9]{1,2}/i',$Datum)){
+         if(preg_match('/[0-9]{1,4}\-[0-9]{1,2}\-[0-9]{1,2}/i',$currentDate)){
 
-            $Temp = split('[-]',$Datum);
-            $return['Jahr'] = trim($Temp[0]);
-            $return['Monat'] = trim($Temp[1]);
-            $return['Tag'] = trim($Temp[2]);
+            $temp = explode('-',$currentDate);
+            $return['Jahr'] = trim($temp[0]);
+            $return['Monat'] = trim($temp[1]);
+            $return['Tag'] = trim($temp[2]);
 
           // end if
          }
@@ -259,31 +257,32 @@
 
        // end function
       }
-
 
       /**
-      *  @public
-      *  @static
-      *
-      *  Zerlegt eine Uhrzeit in seine Bestandteile und gibt ein assoziatives<br />
-      *  Array mit den Offsets 'Stunde', 'Minute' und 'Sekunde' zur�ck.<br />
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 09.09.2004<br />
-      *  Version 0.2, 29.11.2004<br />
-      */
-      static function splitTime($Uhrzeit){
+       * @public
+       * @static
+       *
+       * Zerlegt eine Uhrzeit in seine Bestandteile und gibt ein assoziatives
+       * Array mit den Offsets 'Stunde', 'Minute' und 'Sekunde' zurück.
+       *
+       * @param $currentTime The current time.
+       *
+       * @author Christian Sch�fer
+       * @version
+       * Version 0.1, 09.09.2004<br />
+       * Version 0.2, 29.11.2004<br />
+       * Version 0.3, 30.12.2009 (Replaced split() with explode() because it is marked deprecated in PHP5.3.0)<br />
+       */
+      static function splitTime($currentTime){
 
-         $Temp = array();
          $return = array();
 
-         $Temp = split('[:]',$Uhrzeit);
-         $return['Stunde'] = trim($Temp[0]);
-         $return['Minute'] = trim($Temp[1]);
+         $temp = explode(':',$currentTime);
+         $return['Stunde'] = trim($temp[0]);
+         $return['Minute'] = trim($temp[1]);
 
-         if(isset($Temp[2])){
-            $return['Sekunde'] = trim($Temp[2]);
+         if(isset($temp[2])){
+            $return['Sekunde'] = trim($temp[2]);
           // end if
          }
 
@@ -291,7 +290,6 @@
 
        // end function
       }
-
 
       /**
       *  @public
