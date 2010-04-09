@@ -353,12 +353,13 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 29.08.2009<br />
+       * Version 0.2, 09.04.2010 (Replaced split() with explode() because it is marked deprecated in PHP5.3.0)<br />
        */
       protected function __initOffsetNames(){
 
          if(isset($this->__Attributes['offsetnames'])){
 
-            $offsetNames = split(';',$this->__Attributes['offsetnames']);
+            $offsetNames = explode(';',$this->__Attributes['offsetnames']);
 
             if(count($offsetNames) == 3){
                $this->__OffsetNames = array(
