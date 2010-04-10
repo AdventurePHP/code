@@ -142,7 +142,7 @@
          $this->__createRelationTable();
 
          // generate layout from the database (reverse engineering of the database)
-         $cM = &$this->__getServiceObject('core::database','connectionManager');
+         $cM = &$this->__getServiceObject('core::database','ConnectionManager');
          $sql = &$cM->getConnection($connectionName);
 
          // analyze the current database

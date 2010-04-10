@@ -113,7 +113,7 @@
       /**
        * @public
        *
-       * Setups the database. Uses the connectionManager, hence a valid database connection is required.
+       * Setups the database. Uses the ConnectionManager, hence a valid database connection is required.
        * If the third parameter ($ConnectionName) is left blank, the statements are displayed only.
        *
        * @param string $configNamespace namespace, where the desired mapper configuration is located
@@ -161,7 +161,7 @@
          else{
 
             // get connection manager
-            $cM = &$this->__getServiceObject('core::database','connectionManager');
+            $cM = &$this->__getServiceObject('core::database','ConnectionManager');
 
             // initialize connection
             $this->__DBDriver = &$cM->getConnection($connectionName);

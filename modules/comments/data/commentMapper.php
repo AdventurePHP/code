@@ -98,7 +98,7 @@
        */
       private function &__getConnection(){
 
-         $cM = &$this->__getServiceObject('core::database','connectionManager');
+         $cM = &$this->__getServiceObject('core::database','ConnectionManager');
          $config = $this->__getConfiguration('modules::comments','comments');
          $connectionKey = $config->getValue('Default','Database.ConnectionKey');
          if($connectionKey == null){

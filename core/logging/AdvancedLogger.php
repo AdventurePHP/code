@@ -1,34 +1,33 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    register_shutdown_function('flushAdvancedLogger');
 
-
    /**
-   *  Wrapper for flushing the advanced logger instances.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 09.11.2008<br />
-   */
+    * Wrapper for flushing the advanced logger instances.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.11.2008<br />
+    */
    function flushAdvancedLogger(){
 
       // get logger factory
@@ -55,17 +54,16 @@
     // end function
    }
 
-
    /**
-   *  @package core::logging
-   *  @class AdvancedLogEntry
-   *
-   *  Implements a  logEntry object.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 29.03.2007<br />
-   */
+    * @package core::logging
+    * @class AdvancedLogEntry
+    *
+    * Implements a  logEntry object.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.03.2007<br />
+    */
    class AdvancedLogEntry extends APFObject {
 
       /**
@@ -74,13 +72,11 @@
       */
       private $__Date;
 
-
       /**
       *  @private
       *  Time of the message.
       */
       private $__Time;
-
 
       /**
       *  @private
@@ -88,13 +84,11 @@
       */
       private $__Message;
 
-
       /**
       *  @private
       *  Message type (aka severity).
       */
       private $__Type;
-
 
       /**
       *  @public
@@ -117,7 +111,6 @@
 
        // end function
       }
-
 
       /**
       *  @public
@@ -149,30 +142,27 @@
     // end class
    }
 
-
    /**
-   *  @class AdvancedLoggerFactory
-   *
-   *  Implements the factory for the AdvancedLogger. Must be created singleton using the
-   *  service manager!
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 09.11.2008<br />
-   */
-   class AdvancedLoggerFactory extends APFObject
-   {
+    * @package core::logging
+    * @class AdvancedLoggerFactory
+    *
+    * Implements the factory for the AdvancedLogger. Must be created singleton using the
+    * service manager!
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.11.2008<br />
+    */
+   class AdvancedLoggerFactory extends APFObject {
 
       /**
-      *  @private
-      *  The logger cache.
-      */
+       * @private
+       * The logger cache.
+       */
       private $__Logger = array();
 
-
-      function AdvancedLoggerFactory(){
+      public function AdvancedLoggerFactory(){
       }
-
 
       /**
       *  @public
@@ -226,65 +216,61 @@
 
 
    /**
-   *  @class AdvancedLogger
-   *
-   *  Implements an advanced logger for the adventure php framework. In contrast to the default
-   *  logger, this component must be configured for each usage. The advantage of the component is
-   *  that multiple targets, log formats and output targets can be choosen.
-   *  Usage:
-   *  <pre>
-   *    $logFactory = &$this->__getServiceObject('core::logging','AdvancedLoggerFactory');
-   *    $log = &$logFactory->getAdvancedLogger('<section_name>');
-   *  </pre>
-   *  Please note, that flushing the log buffer to stdout and file is much more faster. Here's an
-   *  benchmark example of the three possibilities:
-   *  <pre>flushLogBuffer_file      0.0026059151 s
-   *  flushLogBuffer_stdout    0.0001997948 s
-   *  flushLogBuffer_database  0.0228970051 s</pre>
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 09.11.2008<br />
-   */
-   class AdvancedLogger extends APFObject
-   {
+    * @package core::logging
+    * @class AdvancedLogger
+    *
+    * Implements an advanced logger for the adventure php framework. In contrast to the default
+    * logger, this component must be configured for each usage. The advantage of the component is
+    * that multiple targets, log formats and output targets can be choosen.
+    * Usage:
+    * <pre>
+    *   $logFactory = &$this->__getServiceObject('core::logging','AdvancedLoggerFactory');
+    *    $log = &$logFactory->getAdvancedLogger('<section_name>');
+    * </pre>
+    * Please note, that flushing the log buffer to stdout and file is much more faster. Here's an
+    * benchmark example of the three possibilities:
+    * <pre>flushLogBuffer_file      0.0026059151 s
+    * flushLogBuffer_stdout    0.0001997948 s
+    * flushLogBuffer_database  0.0228970051 s</pre>
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.11.2008<br />
+    */
+   class AdvancedLogger extends APFObject {
 
       /**
-      *  @private
-      *  The log buffer;
-      */
+       * @private
+       * The log buffer;
+       */
       private $__LogBuffer = array();
 
-
       /**
-      *  @private
-      *  Contains the desired log configuration section.
-      */
+       * @private
+       * Contains the desired log configuration section.
+       */
       private $__LogConfig = null;
 
-
       /**
-      *  @private
-      *  New line character used for the file and stdout target.
-      */
+       * @private
+       * New line character used for the file and stdout target.
+       */
       private $__CRLF = PHP_EOL;
 
-
-      function AdvancedLogger(){
+      public function AdvancedLogger(){
       }
 
-
       /**
-      *  @public
-      *
-      *  Implements the init() method used by the service manager to initialize the service object.
-      *
-      *  @param string $initParam the desired configuration section
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 09.11.2008<br />
-      */
+       * @public
+       *
+       * Implements the init() method used by the service manager to initialize the service object.
+       *
+       * @param string $initParam the desired configuration section
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 09.11.2008<br />
+       */
       function init($initParam){
 
          // initialize the current log configuration section
@@ -315,7 +301,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -333,7 +318,6 @@
          $this->__LogBuffer[] = new AdvancedLogEntry($message,$type);
        // end function
       }
-
 
       /**
       *  @public
@@ -367,7 +351,6 @@
        // end function
       }
 
-
       /**
       *  @private
       *
@@ -394,8 +377,7 @@
          $logTable = $this->__LogConfig['LogTable'];
 
          // create database connection
-         import('core::database','connectionManager');
-         $cM = &$this->__getServiceObject('core::database','connectionManager');
+         $cM = &$this->__getServiceObject('core::database','ConnectionManager');
          $db = &$cM->getConnection($logDatabase);
 
          // flush log entries to the table
@@ -413,7 +395,6 @@
 
        // end function
       }
-
 
       /**
       *  @private
@@ -460,7 +441,6 @@
        // end function
       }
 
-
       /**
       *  @private
       *
@@ -479,7 +459,6 @@
 
        // end function
       }
-
 
       /**
       *  @private

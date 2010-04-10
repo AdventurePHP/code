@@ -26,7 +26,7 @@
     * @package core::database
     * @class MySQLxHandler
     *
-    * This class implements a connection handler for the connectionManager to use with mysql
+    * This class implements a connection handler for the ConnectionManager to use with mysql
     * databases using the mysql extension.
     *
     * @author Christian Achatz

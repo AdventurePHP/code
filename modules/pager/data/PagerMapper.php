@@ -1,53 +1,48 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
-   import('core::database','connectionManager');
    import('core::session','SessionManager');
 
-
    /**
-   *  @package modules::pager::data
-   *  @class PagerMapper
-   *
-   *  Represents the data layer of the pager.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 06.08.2006<br />
-   *  Version 0.2, 19.02.2009 (Added the connection key handling)<br />
-   *  Version 0.3, 24.01.2009 (Added session caching to gain performance)<br />
-   */
+    * @package modules::pager::data
+    * @class PagerMapper
+    *
+    * Represents the data layer of the pager.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 06.08.2006<br />
+    * Version 0.2, 19.02.2009 (Added the connection key handling)<br />
+    * Version 0.3, 24.01.2009 (Added session caching to gain performance)<br />
+    */
    final class PagerMapper extends APFObject {
 
-
       /**
-      *  @protected
-      *  Defines the database connection key. Must be filled within the init() method.
-      */
+       *  @protected
+       *  Defines the database connection key. Must be filled within the init() method.
+       */
       protected $__ConnectionKey = null;
 
-
-      function PagerMapper(){
+      public function PagerMapper(){
       }
-
 
       /**
       *  @public
@@ -125,7 +120,7 @@
 
          // load from database if not in session
          if($entriesCount === false){
-            $cM = &$this->__getServiceObject('core::database','connectionManager');
+            $cM = &$this->__getServiceObject('core::database','ConnectionManager');
             $SQL = &$cM->getConnection($this->__ConnectionKey);
             $result = $SQL->executeStatement($namespace,$statement,$params);
             $data = $SQL->fetchData($result);
@@ -187,7 +182,7 @@
          // load from database if not in session
          if($entryIDs === false){
 
-            $cM = &$this->__getServiceObject('core::database','connectionManager');
+            $cM = &$this->__getServiceObject('core::database','ConnectionManager');
             $SQL = &$cM->getConnection($this->__ConnectionKey);
             $result = $SQL->executeStatement($namespace,$statement,$params);
 

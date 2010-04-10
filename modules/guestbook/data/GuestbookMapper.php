@@ -1,46 +1,43 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('modules::guestbook::biz','Guestbook');
    import('modules::guestbook::biz','Entry');
    import('modules::guestbook::biz','Comment');
-   import('core::database','connectionManager');
-
 
    /**
-   *  @package modules::guestbook::data
-   *  @class GuestbookMapper
-   *
-   *  DataMapper of the guestbook.
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 12.04.2007<br />
-   *  Version 0.2, 07.01.2008 (Values are now quoted during insert/update)<br />
-   */
+    * @package modules::guestbook::data
+    * @class GuestbookMapper
+    *
+    * DataMapper of the guestbook.
+    *
+    * @author Christian Sch�fer
+    * @version
+    * Version 0.1, 12.04.2007<br />
+    * Version 0.2, 07.01.2008 (Values are now quoted during insert/update)<br />
+    */
    class GuestbookMapper extends APFObject {
 
       public function GuestbookMapper(){
       }
-
 
       /**
       *  @private
@@ -60,7 +57,7 @@
          $connectionKey = $config->getValue('Default','Database.ConnectionKey');
 
          // create database
-         $cM = &$this->__getServiceObject('core::database','connectionManager');
+         $cM = &$this->__getServiceObject('core::database','ConnectionManager');
          $this->__DatabaseConnection = &$cM->getConnection($connectionKey);
          return $this->__DatabaseConnection;
 

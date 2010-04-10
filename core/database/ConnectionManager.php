@@ -21,14 +21,14 @@
 
    /**
     * @package core::database
-    * @class connectionManager
+    * @class ConnectionManager
     *
     * The ConnectionManager is a database connection fabric. You can use it to create APF style
     * database connections. To gain performance and to enable APF style configuration the manager
     * must be created as a service object.
     * <p/>
     * <pre>
-    * $connMgr = &$this->__getServiceObject('core::database','connectionManager');
+    * $connMgr = &$this->__getServiceObject('core::database','ConnectionManager');
     * $dBConn = &$connMgr->getConnection('{ConnectionKey}');
     * </pre>
     * The appropriate configuration file must reside under the <em>core::database</em> namespace
@@ -52,7 +52,7 @@
     * Version 0.1, 09.11.2007<br />
     * Version 0.2, 24.02.2008 (Existing connections are now cached)<br />
     */
-   final class connectionManager extends APFObject {
+   final class ConnectionManager extends APFObject {
 
       /**
        * @private
@@ -60,7 +60,7 @@
        */
       private $__Connections = array();
 
-      function connectionManager(){
+      public function ConnectionManager(){
       }
 
       /**
@@ -102,7 +102,10 @@
          if($section == null){
             $reg = &Singleton::getInstance('Registry');
             $env = $reg->retrieve('apf::core','Environment');
-            trigger_error('[connectionManager::getConnection()] The given configuration section ("'.$connectionKey.'") does not exist in configuration file "'.$env.'_connections.ini" in namespace "core::database" for context "'.$this->__Context.'"!',E_USER_ERROR);
+            throw new IllegalArgumentException('[ConnectionManager::getConnection()] The given '
+                    .'configuration section ("'.$connectionKey.'") does not exist in configuration file "'
+                    .$env.'_connections.ini" in namespace "core::database" for context "'
+                    .$this->__Context.'"!',E_USER_ERROR);
             exit(1);
           // end if
          }

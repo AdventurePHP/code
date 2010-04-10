@@ -19,10 +19,8 @@
     * -->
     */
 
-   import('core::database','connectionManager');
    import('modules::genericormapper::data','GenericDomainObject');
    import('modules::genericormapper::data','GenericORMapperException');
-
 
    /**
     * @package modules::genericormapper::data
@@ -138,7 +136,7 @@
        * Version 0.1, 16.03.2010 (Introduced due to bug 299)<br />
        */
       protected function createDatabaseConnection(){
-         $cM = &$this->__getServiceObject('core::database','connectionManager');
+         $cM = &$this->__getServiceObject('core::database','ConnectionManager');
          $this->__DBDriver = &$cM->getConnection($this->__DBConnectionName);
       }
 
