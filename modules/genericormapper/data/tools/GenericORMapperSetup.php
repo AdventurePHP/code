@@ -63,10 +63,10 @@
                                      );
 
       /**
-       * @private
+       * @protected
        * @var string Stores the MySQL storage engine type.
        */
-      private $__StorageEngine = 'MyISAM';
+      protected $__StorageEngine = 'MyISAM';
 
       /**
        * @private
@@ -333,9 +333,8 @@
          // target id
          $create .= '  `'.$tableAttributes['TargetID'].'` INT(5) UNSIGNED NOT NULL default \'0\','.PHP_EOL;
 
-         // indices
-         $create .= '  PRIMARY KEY  (`'.$pkName.'`),'.PHP_EOL;
-         $create .= '  KEY `JOININDEX` (`'.$tableAttributes['SourceID'].'`,`'.$tableAttributes['TargetID'].'`)'.PHP_EOL;
+         // primary key over all JOIN columns
+         $create .= '  PRIMARY KEY  (`'.$pkName.'`,`'.$tableAttributes['SourceID'].'`,`'.$tableAttributes['TargetID'].'`)'.PHP_EOL;
 
          // footer
          return $create .= ') ENGINE='.$this->getStorageEngine().' DEFAULT CHARSET=utf8;';
