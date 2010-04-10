@@ -113,7 +113,7 @@
    import('core::exceptionhandler','exceptionhandler');
    import('core::service','ServiceManager');
    import('core::service','DIServiceManager');
-   import('core::configuration','configurationManager');
+   import('core::configuration','ConfigurationManager');
    import('core::benchmark','BenchmarkTimer');
    import('core::filter','FilterFactory');
 
@@ -1038,7 +1038,7 @@
        * Version 0.3, 10.03.2007 (Method now is considered protected)<br />
        */
       protected function &__getConfiguration($namespace,$configName,$parseSubsections = false){
-         $configurationManager = &Singleton::getInstance('configurationManager');
+         $configurationManager = &Singleton::getInstance('ConfigurationManager');
          return $configurationManager->getConfiguration($namespace,$this->__Context,$configName,$parseSubsections);
        // end function
       }

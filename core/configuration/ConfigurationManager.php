@@ -23,7 +23,7 @@
     * @package core::configuration
     * @class Configuration
     *
-    * Represents a configuration object, that is loaded by the configurationManager. It stores
+    * Represents a configuration object, that is loaded by the ConfigurationManager. It stores
     * section or subsections and their corresponding values.
     *
     * @author Christian Achatz
@@ -49,7 +49,7 @@
        * @param string $Name; Name of the cection
        * @return string[] Section or null.
        *
-       * @author Christian Schï¿½fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.01.2007<br />
        */
@@ -76,7 +76,7 @@
        * @param string $name name of the subsection.
        * @return string[] Value of the configuration key or null.
        *
-       * @author Christian Schï¿½fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 30.01.2007<br />
        * Version 0.2, 31.01.2007 (Added check for Subsection to be an array)<br />
@@ -106,7 +106,7 @@
        * @param string $name name of the config key.
        * @return string Value of the configuration key or null.
        *
-       * @author Christian Schï¿½fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.01.2007<br />
        */
@@ -131,7 +131,7 @@
        *
        * @param array $list configuration array
        *
-       * @author Christian Schï¿½fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.01.2007<br />
        */
@@ -147,7 +147,7 @@
        *
        * @return array $list the configuration array
        *
-       * @author Christian Schï¿½fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 03.02.2007<br />
        */
@@ -161,9 +161,9 @@
 
    /**
     * @package core::configuration
-    * @class configurationManager
+    * @class ConfigurationManager
     *
-    * The configurationManager represents a configuration utility, that loads and handles configurations
+    * The ConfigurationManager represents a configuration utility, that loads and handles configurations
     * that depend on the context and the environment tzhe application or module is executed in. The
     * manager must be instanciated singleton!
     *
@@ -175,7 +175,7 @@
     * Version 0.4, 16.11.2007 (Re-added $__NamespaceDelimiter)<br />
     * Version 0.5, 21.06.2008 (Introduced Registry to get the current Environment string)<br />
     */
-   class configurationManager extends APFObject {
+   class ConfigurationManager extends APFObject {
 
       /**
        * @private
@@ -189,7 +189,7 @@
        */
       private $__NamespaceDelimiter = '.';
 
-      public function configurationManager(){
+      public function ConfigurationManager(){
       }
 
       /**
@@ -198,7 +198,7 @@
        * Loads a configuration described through the given param. Configuration files must be stored
        * within the config namespace. Usage:
        * <pre>
-       * $cM = &Singleton::getInstance('configurationManager');<br />
+       * $cM = &Singleton::getInstance('ConfigurationManager');<br />
        * $config = &$cM->getConfiguration('sites::mysite','actions','permanentactions');
        * </pre>
        * Within classes inherited from APFObject, the <em>__getConfiguration()</em> wrapper can be used.
@@ -208,6 +208,7 @@
        * @param string $configName the name of the configuration file
        * @param bool $parseSubsections defines if subsections ("." notation) should be parsed as subsections
        * @return Configuration $CfgObj | bool NULL configuration object or null in case of failure
+       * @throws IllegalArgumentException In case the configuration cannot be loaded.
        *
        * @author Christian Achatz
        * @version
@@ -250,11 +251,13 @@
          else{
 
             // retrieve environment configuration from Registry
-            $Reg = &Singleton::getInstance('Registry');
-            $Environment = $Reg->retrieve('apf::core','Environment');
+            $reg = &Singleton::getInstance('Registry');
+            $env = $reg->retrieve('apf::core','Environment');
 
             // trigger error
-            trigger_error('[configurationManager->getConfiguration()] Requested configuration with name "'.$Environment.'_'.$configName.'.ini" cannot be loaded from namespace "'.$namespace.'" with context "'.$context.'"!',E_USER_ERROR);
+            throw new IllegalArgumentException('[ConfigurationManager->getConfiguration()] Requested '
+                    .'configuration with name "'.$env.'_'.$configName.'.ini" cannot be '
+                    .'loaded from namespace "'.$namespace.'" with context "'.$context.'"!',E_USER_ERROR);
             exit();
 
           // end else
@@ -275,7 +278,7 @@
        * @param string $configName the name of the configuration file
        * @return bool $configurationExistent true | false
        *
-       * @author Christian SchÃ¤fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 03.02.2007<br />
        * Version 0.2, 07.03.2007 (Renamed to configurationExists())<br />
@@ -304,7 +307,7 @@
        * @param string $configName the name of the configuration file
        * @return array $configuration | null configuration array or null
        *
-       * @author Christian Schï¿½fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.01.2007<br />
        * Version 0.2, 03.02.2007 (Outsourced the file name generation)<br />
@@ -321,7 +324,7 @@
        * @protected
        *
        * Creates the fully qualified path of the configuration file. If you want to have an own
-       * config file and folder layout, create a new class derived from the configurationManager
+       * config file and folder layout, create a new class derived from the ConfigurationManager
        * and overwrite this method.
        * See http://forum.adventure-php-framework.org/de/viewtopic.php?f=1&t=80&start=30#p531 for
        * details on the discussion.
@@ -365,7 +368,7 @@
        * @param string[] $configuration configuration array created with the parse_ini_file function.
        * @return string[] $configurationArray the parsed configuration list.
        *
-       * @author Christian Schï¿½fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.01.2007<br />
        */
@@ -400,8 +403,9 @@
        *
        * @param string[] $subsectionArray The configuration array.
        * @return string[] $parsedArray The parsed array.
+       * @throws IllegalArgumentException In case the sub section cannot be parsed.
        *
-       * @author Christian Schï¿½fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.01.2007<br />
        * Version 0.2, 19.04.2009 (Bugfix: Parsing subsections returned an empty array!)<br />
@@ -421,7 +425,8 @@
           // end if
          }
          else{
-            trigger_error('[configurationManager::__parseSubsections()] Given value is not an array!',E_USER_ERROR);
+            throw new IllegalArgumentException('[ConfigurationManager::__parseSubsections()] Given '
+                    .'value is not an array!',E_USER_ERROR);
           // end else
          }
 
@@ -438,7 +443,7 @@
        * @param string $key The current configuration directive possibly containg a dot.
        * @param string[] $value Value of the offset specified with $key.
        *
-       * @author Christian Schï¿½fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.01.2007<br />
        */

@@ -501,16 +501,16 @@
        * @param string $actionName The name of the action to return.
        * @return AbstractFrontcontrollerAction The desired action or null.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 05.02.2007<br />
-       * Version 0.2, 08.02.2007 (Noch nicht geladene Actions werden lazy nachgeladen und zur�ckgeliefert)<br />
-       * Version 0.3, 11.02.2007 (ActionName ist nun der Name der Section, bzw. des Alias der Action)<br />
-       * Version 0.4, 01.03.2007 (Input-Objekte werden nun vom Frontcontroller geladen!)<br />
-       * Version 0.5, 01.03.2007 (Pr�fung ob Action-Klasse vorhanden ist hinzugef�gt!)<br />
-       * Version 0.6, 08.03.2007 (Auf neuen configurationManager umgestellt)<br />
-       * Version 0.7, 08.06.2007 (Automatisches Neuerstellen einer Action entfernt)<br />
-       * Version 0.8, 08.11.2007 (Umstellung auf Hash-Offsets nachgezogen)<br />
+       * Version 0.2, 08.02.2007<br />
+       * Version 0.3, 11.02.2007<br />
+       * Version 0.4, 01.03.2007<br />
+       * Version 0.5, 01.03.2007<br />
+       * Version 0.6, 08.03.2007 (Switched to new ConfigurationManager)<br />
+       * Version 0.7, 08.06.2007<br />
+       * Version 0.8, 08.11.2007 (Switched to new hash offsets)<br />
        */
       public function &getActionByName($actionName){
 
@@ -548,14 +548,14 @@
       }
 
       /**
-      *  @private
-      *
-      *  Erzeugt aus einem URL-Namespace einen regul�ren Namespace.<br />
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 03.06.2007<br />
-      */
+       * @private
+       *
+       * Creates the url representation of a given namespace.
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 03.06.2007<br />
+       */
       protected function __getActionNamespaceByURLString($NamespaceString){
          return str_replace($this->__NamespaceURLDelimiter,'::',$NamespaceString);
        // end function
@@ -564,7 +564,7 @@
       /**
        * @public
        *
-       * Registriert eine Action beim FC und l�d die Parameter des Models aus einem Config-File.<br />
+       * Registriert eine Action beim FC und läd die Parameter des Models aus einem Config-File.<br />
        * Erwartet eine Konfigurationsdatei mit Namen {APPS__ENVIRONMENT}_actionsconfig.ini unter<br />
        * dem Pfad {$ActionNamespace}::actions::{$this->__Context}.<br />
        *
@@ -572,7 +572,7 @@
        * @param string $ActionName; Name der Action
        * @param array $ActionParams; (Input-)Parameter der Action
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 08.06.2007<br />
        * Version 0.2, 01.07.2007 (ActionNamespace wird nun zentral in addAction() �bersetzt)<br />
