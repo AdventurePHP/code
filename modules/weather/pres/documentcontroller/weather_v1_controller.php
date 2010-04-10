@@ -335,9 +335,9 @@
                fwrite($Socket,$Query);
 
                // Fetch response
-               $Response = (string)'';
+               $response = (string)'';
                while(!feof($Socket)){
-                 $Response .= fgets($Socket, 128);
+                 $response .= fgets($Socket, 128);
                 // end while
                }
 
@@ -347,17 +347,17 @@
              // end if
             }
             else{
-               trigger_error('Socket cannot be created');
-               $Response = (string)'';
+               throw new Exception('Socket cannot be created');
+               $response = (string)'';
              // end else
             }
 
             // Remove header and return string
-            $Response = substr($Response,strpos($Response,'<'));
+            $response = substr($response,strpos($response,'<'));
 
             // Check if xml is valid
-            if(preg_match('/<\?xml version="1\.0" encoding="iso-8859-1" \?>/i',$Response)){
-               return $Response;
+            if(preg_match('/<\?xml version="1\.0" encoding="iso-8859-1" \?>/i',$response)){
+               return $response;
              // end if
             }
             else{
@@ -368,7 +368,7 @@
           // end if
          }
          else{
-            trigger_error('[weather_v1_controller::__getRSSFeed()] Attribute "rss_source" not present in "core:importdesign" tag for weather module!');
+            throw new IllegalArgumentException('[weather_v1_controller::__getRSSFeed()] Attribute "rss_source" not present in "core:importdesign" tag for weather module!');
             return null;
           // end else
          }

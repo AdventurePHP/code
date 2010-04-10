@@ -53,7 +53,9 @@
          // get current data dir or trigger error
          $DataDir = $this->__Document->getAttribute('datadir');
          if($DataDir === null){
-            trigger_error('[newspager_v1_controller::transformContent()] Tag attribute "datadir" was not present in the &lt;core:importdesign /&gt; tag definition! Please specify a news content directory!');
+            throw new IllegalArgumentException('[newspager_v1_controller::transformContent()] Tag '
+                    .'attribute "datadir" was not present in the &lt;core:importdesign /&gt; tag '
+                    .'definition! Please specify a news content directory!');
             return;
           // end if
          }

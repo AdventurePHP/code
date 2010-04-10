@@ -59,27 +59,31 @@
       }
 
       /**
-       *  @public
+       * @public
        *
-       *  Load the content and parse the template.
+       * Load the content and parse the template.
        *
-       *  @author Christian Achatz
-       *  @version
-       *  Version 0.1, 16.11.2008<br />
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 16.11.2008<br />
        */
       public function onParseTime(){
 
          // check attributes
          $namespace = $this->getAttribute('namespace');
          if($namespace === null){
-            trigger_error('[core_taglib_appendnode::onParseTime()] Attribute "namespace" is not present or empty! Please provide the namespace of the desired template.',E_USER_ERROR);
+            throw new IllegalArgumentException('[core_taglib_appendnode::onParseTime()] Attribute '
+                    .'"namespace" is not present or empty! Please provide the namespace of the '
+                    .'desired template.',E_USER_ERROR);
             exit(1);
           // end if
          }
 
          $template = $this->getAttribute('template');
          if($template === null){
-            trigger_error('[core_taglib_appendnode::onParseTime()] Attribute "template" is not present or empty! Please provide the name of the desired template.',E_USER_ERROR);
+            throw new IllegalArgumentException('[core_taglib_appendnode::onParseTime()] Attribute '
+                    .'"template" is not present or empty! Please provide the name of the desired '
+                    .'template.',E_USER_ERROR);
             exit(1);
           // end if
          }

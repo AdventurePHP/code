@@ -135,8 +135,8 @@
          if($guestbook == null){
             $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
             $gbId = $model->get('GuestbookId');
-            trigger_error('[GuestbookManager::__mapGenericGuestbook2DomainObject()] No guestbook '
-               .'with id "'.$gbId.'" stored in database! Please check your guestbook tag '
+            throw new IllegalArgumentException('[GuestbookManager::__mapGenericGuestbook2DomainObject()] '
+               .'No guestbook with id "'.$gbId.'" stored in database! Please check your guestbook tag '
                .'inclusion.',E_USER_ERROR);
             exit();
           // end if

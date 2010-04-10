@@ -1613,7 +1613,8 @@
          while($i < count($this->__TagLibs)){
 
             if($tagLibLoops > $this->__MaxLoops){
-               trigger_error('[Document::__extractTagLibTags()] Maximum numbers of parsing loops reached!',E_USER_ERROR);
+               throw new ParserException('[Document::__extractTagLibTags()] Maximum numbers of '
+                       .'parsing loops reached!',E_USER_ERROR);
                exit();
              // end if
             }

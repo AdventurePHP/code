@@ -166,7 +166,7 @@
                      }
                      else{
 
-                        trigger_error('[DIServiceManager::getServiceObject()] Injection of'
+                        throw new IllegalArgumentException('[DIServiceManager::getServiceObject()] Injection of'
                            .' configuration value "'.$directive['value']. '" cannot be accomplished'
                            .' to service object "'.$class.'" from namespace "'.$namespace.'"! Method '
                            .$directive['method'].'() is not implemented!',E_USER_ERROR);
@@ -179,7 +179,7 @@
                   }
                   else{
 
-                     trigger_error('[DIServiceManager::getServiceObject()] Initialization of the'
+                     throw new IllegalArgumentException('[DIServiceManager::getServiceObject()] Initialization of the'
                         .' service object "'.$sectionName.'" cannot be accomplished, due to'
                         .' incorrect configuration! Please revise the "'.$initKey.'" sub section and'
                         .' consult the manual!',E_USER_ERROR);
@@ -222,7 +222,7 @@
                         }
                         else{
                            
-                           trigger_error('[DIServiceManager::getServiceObject()] Injection of service object "'.$directive['name'].
+                           throw new IllegalArgumentException('[DIServiceManager::getServiceObject()] Injection of service object "'.$directive['name'].
                               '" from namespace "'.$directive['namespace'].'" cannot be accomplished to service object "'.
                               $class.'" from namespace "'.$namespace.'"! Method '.$directive['method'].'() is not implemented!',
                               E_USER_ERROR);
@@ -236,7 +236,7 @@
                      else{
 
                         // print note with shortend information
-                        trigger_error('[DIServiceManager::getServiceObject()] Detected circular injection! '.
+                        throw new IllegalArgumentException('[DIServiceManager::getServiceObject()] Detected circular injection! '.
                            'Class "'.$class.'" from namespace "'.$namespace.'" with service type "'.$serviceType.
                            '" was already configured with service object "'.$directive['name'].'" from namespace "'.
                            $directive['namespace'].'"! Full stack trace can be taken from the logfile!', E_USER_ERROR);
@@ -257,7 +257,7 @@
                   }
                   else{
 
-                     trigger_error('[DIServiceManager::getServiceObject()] Initialization of the service object "'.
+                     throw new IllegalArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "'.
                         $sectionName.'" cannot be accomplished, due to incorrect configuration! Please revise the "'.$initKey.
                         '" sub section and consult the manual!',
                         E_USER_ERROR);
@@ -276,7 +276,7 @@
          }
          else{
 
-            trigger_error('[DIServiceManager::getServiceObject()] Initialization of the service object "'.
+            throw new IllegalArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "'.
                $sectionName.'" from namespace "'.$configNamespace.'" cannot be accomplished, due to missing
                or incorrect configuration! Please revise the configuration file and consult the manual!',
                E_USER_ERROR);

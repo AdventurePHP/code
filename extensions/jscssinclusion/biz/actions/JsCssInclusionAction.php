@@ -61,15 +61,18 @@
 
          // Check if all required attributes are given
          if(empty($path)){
-            trigger_error('[JsCssInclusionAction::run()] The attribute "path" is empty or not present.');
+            throw new IllegalArgumentException('[JsCssInclusionAction::run()] The attribute "path" '
+                    .'is empty or not present.');
             exit();
          }
          if(empty($file)){
-            trigger_error('[JsCssInclusionAction::run()] The attribute "file" is empty or not present.');
+            throw new IllegalArgumentException('[JsCssInclusionAction::run()] The attribute "file" '
+                    .'is empty or not present.');
             exit();
          }
          if(empty($type)){
-            trigger_error('[JsCssInclusionAction::run()] The attribute "type" is empty or not present.');
+            throw new IllegalArgumentException('[JsCssInclusionAction::run()] The attribute "type" '
+                    .'is empty or not present.');
             exit();
          }
 
@@ -91,7 +94,8 @@
                $mimeType = 'text/javascript';
                break;
             default:
-               trigger_error('[JsCssInclusionAction::run()] The attribute "type" must be either "css" or "js".');
+               throw new IllegalArgumentException('[JsCssInclusionAction::run()] The attribute '
+                       .'"type" must be either "css" or "js".');
                exit();
          }
 
@@ -105,8 +109,8 @@
             echo file_get_contents($filePath);
          }
          else {
-            trigger_error('[JsCssInclusionAction::run()] The requested file "'.$file.'.'.$ext
-               .'" cannot be found in namespace "'.str_replace('_','::',$namespace).'". Please '
+            throw new IncludeException('[JsCssInclusionAction::run()] The requested file "'.$file.'.'
+               .$ext.'" cannot be found in namespace "'.str_replace('_','::',$namespace).'". Please '
                .'check your taglib definition for tag &lt;htmlheader:add* /&gt;!',
                E_USER_ERROR);
          }

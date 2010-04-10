@@ -652,7 +652,9 @@
          $config = &$this->__getConfiguration($namespace,'actionconfig');
 
          if($config == null){
-            trigger_error('[Frontcontroller::__parseActions()] No configuration available for namespace "'.$namespace.'" and context "'.$this->__Context.'"!',E_USER_ERROR);
+            throw new IllegalArgumentException('[Frontcontroller::__parseActions()] No '
+                    .'configuration available for namespace "'.$namespace.'" and context "'
+                    .$this->__Context.'"!',E_USER_ERROR);
             exit;
           // end if
          }

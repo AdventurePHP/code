@@ -54,9 +54,9 @@
 
          // do not include the guestbook, if gbid is not set/existent
          if($guestbookId == null || ((int)$guestbookId) == 0){
-            trigger_error('[gb_taglib_import::onParseTime()] The attribute "gbid" is empty or not '
-               .'present or the value is not an id. Please specify the attribute correctly in '
-               .'order to include the guestbook module!');
+            throw new IllegalArgumentException('[gb_taglib_import::onParseTime()] The attribute '
+               .'"gbid" is empty or not present or the value is not an id. Please specify the '
+               .'attribute correctly in order to include the guestbook module!');
             return;
          }
 
