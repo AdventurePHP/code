@@ -230,7 +230,7 @@
 
    /**
     * @package core::pagecontroller
-    * @class XmlParserException
+    * @class ParserException
     *
     * Represents a APF parser exception.
     *
