@@ -191,12 +191,12 @@
          $startTime = $this->__generateMicroTime();
 
          if($name === null){
-            throw new IllegalArgumentException('[BenchmarkTimer::start()] Required parameter name is not set!');
+            throw new InvalidArgumentException('[BenchmarkTimer::start()] Required parameter name is not set!');
           // end if
          }
 
          if($this->__getRunningProcessByName($name) !== null){
-            throw new IllegalArgumentException('[BenchmarkTimer::start()] Benchmark process with name "'.$name
+            throw new InvalidArgumentException('[BenchmarkTimer::start()] Benchmark process with name "'.$name
                     .'" is already running! Use a different one!');
           // end if
          }
@@ -243,7 +243,7 @@
           // end if
          }
          else{
-            throw new IllegalArgumentException('[BenchmarkTimer::stop()] Process with name "'.$name
+            throw new InvalidArgumentException('[BenchmarkTimer::stop()] Process with name "'.$name
                     .'" is not running yet!');
           // end else
          }

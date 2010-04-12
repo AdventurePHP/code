@@ -368,7 +368,7 @@
           // end if
          }
          else{
-            throw new IllegalArgumentException('[weather_v1_controller::__getRSSFeed()] Attribute "rss_source" not present in "core:importdesign" tag for weather module!');
+            throw new InvalidArgumentException('[weather_v1_controller::__getRSSFeed()] Attribute "rss_source" not present in "core:importdesign" tag for weather module!');
             return null;
           // end else
          }

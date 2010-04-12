@@ -72,7 +72,7 @@
          // check attributes
          $namespace = $this->getAttribute('namespace');
          if($namespace === null){
-            throw new IllegalArgumentException('[core_taglib_appendnode::onParseTime()] Attribute '
+            throw new InvalidArgumentException('[core_taglib_appendnode::onParseTime()] Attribute '
                     .'"namespace" is not present or empty! Please provide the namespace of the '
                     .'desired template.',E_USER_ERROR);
             exit(1);
@@ -81,7 +81,7 @@
 
          $template = $this->getAttribute('template');
          if($template === null){
-            throw new IllegalArgumentException('[core_taglib_appendnode::onParseTime()] Attribute '
+            throw new InvalidArgumentException('[core_taglib_appendnode::onParseTime()] Attribute '
                     .'"template" is not present or empty! Please provide the name of the desired '
                     .'template.',E_USER_ERROR);
             exit(1);

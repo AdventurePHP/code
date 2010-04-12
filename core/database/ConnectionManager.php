@@ -102,7 +102,7 @@
          if($section == null){
             $reg = &Singleton::getInstance('Registry');
             $env = $reg->retrieve('apf::core','Environment');
-            throw new IllegalArgumentException('[ConnectionManager::getConnection()] The given '
+            throw new InvalidArgumentException('[ConnectionManager::getConnection()] The given '
                     .'configuration section ("'.$connectionKey.'") does not exist in configuration file "'
                     .$env.'_connections.ini" in namespace "core::database" for context "'
                     .$this->__Context.'"!',E_USER_ERROR);

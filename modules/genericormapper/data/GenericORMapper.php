@@ -41,7 +41,15 @@
       /**
        * @var string The identifier, that marks a property as BIT type. 
        */
-      private $bitIdentifier = 'BIT';
+      private static $BIT_FIELD_IDENTIFIER = 'BIT';
+
+      /**
+       * Bug 289: This identifier is used to distinguish between fiels, that can
+       * contain null values. This is necessary, because the MySQL client libs
+       * map MySQL NULL values to empty PHP strings.
+       * @var string Identifies fields, that can contain null values. 
+       */
+      private static $NULL_FIELD_IDENTIFIER = 'NULL DEFAULT NULL';
 
       public function GenericORMapper(){
       }
@@ -277,8 +285,22 @@
                   // Check, whether the desired property is a BIT field. If yes, prepend with
                   // the binary marker! Details can be read about under
                   // http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=234.
-                  if(stripos($this->__MappingTable[$objectName][$propertyName],$this->bitIdentifier) === false){
-                     $values[] = '\''.$propertyValue.'\'';
+                  if(stripos($this->__MappingTable[$objectName][$propertyName],self::$BIT_FIELD_IDENTIFIER) === false){
+
+                     // check, whether the field is a null value and translate PHP null values into
+                     // MySQL NULL value
+                     if(stripos($this->__MappingTable[$objectName][$propertyName],self::$NULL_FIELD_IDENTIFIER) === false){
+                        $values[] = '\''.$propertyValue.'\'';
+                     }
+                     else {
+                        if(empty($propertyValue)){
+                           $values[] = 'NULL';
+                        }
+                        else {
+                           $values[] = '\''.$propertyValue.'\'';
+                        }
+                     }
+                     
                    // end if
                   }
                   else {
@@ -316,8 +338,25 @@
                   // Check, whether the desired property is a BIT field. If yes, prepend with
                   // the binary marker! Details can be read about under
                   // http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=234.
-                  if(stripos($this->__MappingTable[$objectName][$propertyName],$this->bitIdentifier) === false){
-                     $queryParams[] = '`'.$propertyName.'` = \''.$propertyValue.'\'';
+                  if(stripos($this->__MappingTable[$objectName][$propertyName],self::$BIT_FIELD_IDENTIFIER) === false){
+
+                     // check, whether the field is a null value and translate PHP null values into
+                     // MySQL NULL value
+                     $value = (string)'';
+                     if(stripos($this->__MappingTable[$objectName][$propertyName],self::$NULL_FIELD_IDENTIFIER) === false){
+                        $value = '\''.$propertyValue.'\'';
+                     }
+                     else {
+                        if(empty($propertyValue)){
+                           $value = 'NULL';
+                           //echo '... null!';
+                        }
+                        else {
+                           $value = '\''.$propertyValue.'\'';
+                        }
+                     }
+                     $queryParams[] = '`'.$propertyName.'` = '.$value;
+
                    // end if
                   }
                   else {
@@ -436,7 +475,16 @@
 
             // map properties into object
             foreach($properties as $propertyName => $propertyValue){
+
+               // re-map empty values for null fields to PHP null values
+               if(isset($this->__MappingTable[$objectName][$propertyName])
+                       && stripos($this->__MappingTable[$objectName][$propertyName],self::$NULL_FIELD_IDENTIFIER) !== false
+                       && empty($propertyValue)){
+                  $propertyValue = null;
+               }
+
                $object->setProperty($propertyName,$propertyValue);
+
              // end foreach
             }
 

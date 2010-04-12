@@ -49,7 +49,7 @@
        * @param string $Name; Name of the cection
        * @return string[] Section or null.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.01.2007<br />
        */
@@ -76,7 +76,7 @@
        * @param string $name name of the subsection.
        * @return string[] Value of the configuration key or null.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 30.01.2007<br />
        * Version 0.2, 31.01.2007 (Added check for Subsection to be an array)<br />
@@ -106,7 +106,7 @@
        * @param string $name name of the config key.
        * @return string Value of the configuration key or null.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.01.2007<br />
        */
@@ -131,7 +131,7 @@
        *
        * @param array $list configuration array
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.01.2007<br />
        */
@@ -147,7 +147,7 @@
        *
        * @return array $list the configuration array
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 03.02.2007<br />
        */
@@ -255,7 +255,7 @@
             $env = $reg->retrieve('apf::core','Environment');
 
             // trigger error
-            throw new IllegalArgumentException('[ConfigurationManager->getConfiguration()] Requested '
+            throw new InvalidArgumentException('[ConfigurationManager->getConfiguration()] Requested '
                     .'configuration with name "'.$env.'_'.$configName.'.ini" cannot be '
                     .'loaded from namespace "'.$namespace.'" with context "'.$context.'"!',E_USER_ERROR);
             exit();
@@ -278,7 +278,7 @@
        * @param string $configName the name of the configuration file
        * @return bool $configurationExistent true | false
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 03.02.2007<br />
        * Version 0.2, 07.03.2007 (Renamed to configurationExists())<br />
@@ -307,7 +307,7 @@
        * @param string $configName the name of the configuration file
        * @return array $configuration | null configuration array or null
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.01.2007<br />
        * Version 0.2, 03.02.2007 (Outsourced the file name generation)<br />
@@ -368,7 +368,7 @@
        * @param string[] $configuration configuration array created with the parse_ini_file function.
        * @return string[] $configurationArray the parsed configuration list.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.01.2007<br />
        */
@@ -405,7 +405,7 @@
        * @return string[] $parsedArray The parsed array.
        * @throws IllegalArgumentException In case the sub section cannot be parsed.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.01.2007<br />
        * Version 0.2, 19.04.2009 (Bugfix: Parsing subsections returned an empty array!)<br />
@@ -425,7 +425,7 @@
           // end if
          }
          else{
-            throw new IllegalArgumentException('[ConfigurationManager::__parseSubsections()] Given '
+            throw new InvalidArgumentException('[ConfigurationManager::__parseSubsections()] Given '
                     .'value is not an array!',E_USER_ERROR);
           // end else
          }
@@ -443,7 +443,7 @@
        * @param string $key The current configuration directive possibly containg a dot.
        * @param string[] $value Value of the offset specified with $key.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 28.01.2007<br />
        */

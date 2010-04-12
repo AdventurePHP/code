@@ -179,7 +179,7 @@
           // end if
          }
          else{
-            throw new IllegalArgumentException('[PagerManager->loadEntriesByAppDataComponent()] '
+            throw new InvalidArgumentException('[PagerManager->loadEntriesByAppDataComponent()] '
                  .'Given data component ('.get_class($dataComponent).') has no method "'
                  .$loadMethod.'"! No entries can be loaded!',E_USER_WARNING);
             return array();

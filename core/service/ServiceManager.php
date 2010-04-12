@@ -88,7 +88,7 @@
              // end if
             }
             else{
-               throw new IllegalArgumentException('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass APFObject! So the context cannot be set correctly!',E_USER_WARNING);
+               throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass APFObject! So the context cannot be set correctly!',E_USER_WARNING);
              // end else
             }
 
@@ -110,7 +110,7 @@
              // end if
             }
             else{
-               throw new IllegalArgumentException('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass APFObject! So the context cannot be set correctly!',E_USER_WARNING);
+               throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass APFObject! So the context cannot be set correctly!',E_USER_WARNING);
              // end else
             }
 
@@ -128,14 +128,14 @@
              // end if
             }
             else{
-               throw new IllegalArgumentException('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass APFObject! So the context cannot be set correctly!',E_USER_WARNING);
+               throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass APFObject! So the context cannot be set correctly!',E_USER_WARNING);
              // end else
             }
 
           // end elseif
          }
          else{
-            throw new IllegalArgumentException('[ServiceManager->getServiceObject()] The given type ('.$type.') is not supported. Please provide one out of "SINGLETON", "SESSIONSINGLETON" or "NORMAL"',E_USER_WARNING);
+            throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The given type ('.$type.') is not supported. Please provide one out of "SINGLETON", "SESSIONSINGLETON" or "NORMAL"',E_USER_WARNING);
           // end else
          }
 
@@ -171,7 +171,7 @@
           // end if
          }
          else{
-            throw new IllegalArgumentException('[ServiceManager->getAndInitServiceObject()] The service object ('.$serviceName.') doesn\'t support initialization!',E_USER_WARNING);
+            throw new InvalidArgumentException('[ServiceManager->getAndInitServiceObject()] The service object ('.$serviceName.') doesn\'t support initialization!',E_USER_WARNING);
           // end else
          }
 

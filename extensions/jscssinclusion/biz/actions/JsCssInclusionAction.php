@@ -61,17 +61,17 @@
 
          // Check if all required attributes are given
          if(empty($path)){
-            throw new IllegalArgumentException('[JsCssInclusionAction::run()] The attribute "path" '
+            throw new InvalidArgumentException('[JsCssInclusionAction::run()] The attribute "path" '
                     .'is empty or not present.');
             exit();
          }
          if(empty($file)){
-            throw new IllegalArgumentException('[JsCssInclusionAction::run()] The attribute "file" '
+            throw new InvalidArgumentException('[JsCssInclusionAction::run()] The attribute "file" '
                     .'is empty or not present.');
             exit();
          }
          if(empty($type)){
-            throw new IllegalArgumentException('[JsCssInclusionAction::run()] The attribute "type" '
+            throw new InvalidArgumentException('[JsCssInclusionAction::run()] The attribute "type" '
                     .'is empty or not present.');
             exit();
          }
@@ -94,7 +94,7 @@
                $mimeType = 'text/javascript';
                break;
             default:
-               throw new IllegalArgumentException('[JsCssInclusionAction::run()] The attribute '
+               throw new InvalidArgumentException('[JsCssInclusionAction::run()] The attribute '
                        .'"type" must be either "css" or "js".');
                exit();
          }

@@ -59,7 +59,7 @@
       function register($namespace,$name,$value,$readOnly = false){
 
          if(isset($this->__RegistryStore[$namespace][$name]['readonly']) && $this->__RegistryStore[$namespace][$name]['readonly'] === true){
-            throw new IllegalArgumentException('[Registry::register()] The entry with name "'
+            throw new InvalidArgumentException('[Registry::register()] The entry with name "'
                     .$name.'" already exists in namespace "'.$namespace.'" and is read only! '
                     .'Please choose another name.',E_USER_WARNING);
           // end if

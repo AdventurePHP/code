@@ -310,6 +310,7 @@
        * @version
        * Version 0.1, 18.08.2008<br />
        * Version 0.2, 09.08.2009 (Changed output to a more simple one.)<br />
+       * Version 0.3, 01.03.2010 (Added mapping to display PHP null values als MySQL null values)<br />
        */
       public function toString(){
 
@@ -322,6 +323,10 @@
 
          foreach($properties as $name => $value){
 
+            // map PHP null to MySQL null
+            if($value == null){
+               $value = 'NULL';   
+            }
             $stringRep .= $name.'="'.$value.'"';
 
             if($current < $propCount) {
