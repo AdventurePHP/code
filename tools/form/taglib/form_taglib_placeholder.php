@@ -25,14 +25,33 @@
     *
     * Represents a APF form place holder.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 05.01.2007<br />
     * Version 0.2, 12.01.2006 (Renamed to "form_taglib_placeholder")<br />
     */
    class form_taglib_placeholder extends form_control {
 
-      function form_taglib_placeholder(){
+      public function form_taglib_placeholder(){
+      }
+
+      /**
+       * @public
+       *
+       * Re-implements the <em>transform()</em> method of the <em>Document</em> class
+       * to not have the overhead of the transformation implemented in <em>Document::transform()</em>.
+       * <p/>
+       * As a side-effect, the benchmark points set in <em>html_taglib_form::transformForm()</em>
+       * and <em>Document::transform()</em> do not overlap!
+       *
+       * @return string The content of the place holder.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 13.04.2010<br />
+       */
+      public function transform(){
+         return $this->__Content;
       }
 
     // end class
