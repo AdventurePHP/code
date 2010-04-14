@@ -195,12 +195,7 @@
           // end if
          }
 
-         if($this->__getRunningProcessByName($name) !== null){
-            throw new InvalidArgumentException('[BenchmarkTimer::start()] Benchmark process with name "'.$name
-                    .'" is already running! Use a different one!');
-          // end if
-         }
-         else{
+         if($this->__getRunningProcessByName($name) === null){
 
             $parent = &$this->__getCurrentParent();
             $process = $this->__createProcess($name,$startTime,$parent);
@@ -208,8 +203,11 @@
             $parent->appendProcess($newProcess);
             $this->__setCurrentParent($newProcess);
             $this->__addRunningProcess($newProcess);
-
-          // end else
+            
+         }
+         else{
+            throw new InvalidArgumentException('[BenchmarkTimer::start()] Benchmark process with name "'.$name
+                    .'" is already running! Use a different one!');
          }
 
        // end function
