@@ -47,6 +47,8 @@
    import('tools::form::taglib','form_taglib_error');
    import('tools::form::taglib','form_taglib_success');
 
+   import('tools::form::taglib','form_taglib_timecaptcha');
+
    /**
     * @package tools::form::taglib
     * @class html_taglib_form
@@ -132,6 +134,8 @@
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','getstring');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','marker');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','addtaglib');
+
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','timecaptcha');
 
          // add additional attributes to whitelist
          $this->attributeWhiteList[] = 'method';
