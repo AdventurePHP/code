@@ -89,26 +89,6 @@ class form_taglib_clienterror extends form_control {
          * !Important: Check for (event.target === this), because ValidationNotify 
          * triggered on child-inputs will be handed up to form-element.!
         */
-        /*$output .= '<script type="text/javascript">' .
-            JSMin::minify('
-                $(document).ready(function(){
-                    $("#'.$formID.'").bind(
-                        "ValidationNotify",
-                        function(event, param){
-                            if(event.target === this){
-                                var listener = $("#apf-error-' . $formID . '");
-                                if(param.valid === false){
-                                    listener.removeClass("apf-form-clienterror");
-                                }
-                                else {
-                                    listener.addClass("apf-form-clienterror");
-                                }
-                            }
-                        }
-                      );
-                });'
-            ) .
-        '</script>';*/
         $output .= '<script type="text/javascript">' .
             '$(document).ready(function(){'.
                     '.$("#'.$formID.'").bind('.
