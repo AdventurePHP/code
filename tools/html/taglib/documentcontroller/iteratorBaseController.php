@@ -1,101 +1,85 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
-   *  @package tools::html::taglib::documentcontroller
-   *  @class iteratorBaseController
-   *
-   *  Implementiert den Basis-DocumentController f�r die Verwendung des Iterator-Tags. Konkrete<br/>
-   *  DocumentController m�ssen von diesem Controller erben.<br />
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 02.06.2008<br />
-   */
+    * @package tools::html::taglib::documentcontroller
+    * @class iteratorBaseController
+    *
+    * Implements a document controller to be used with the iterator tag. Allows
+    * you to access an iterator similar to normal templates.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 02.06.2008<br />
+    */
    class iteratorBaseController extends base_controller {
 
       public function iteratorBaseController(){
       }
 
       /**
-      *  @protected
-      *
-      *  Gibt die Referenz auf ein Iterator-Objekt zur�ck.<br />
-      *
-      *  @param string $Name; Name des Iterators.
-      *  @return html_taglib_iterator $Iterator; Referenz auf den Iterator
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 02.06.2008<br />
-      */
-      protected function &__getIterator($Name){
+       * @protected
+       *
+       * Returns a reference on the desired iterator.
+       *
+       * @param string $name Name of the iterator.
+       * @return html_taglib_iterator The desired iterator.
+       * @throws IncludeException In case the iterator taglib is not loaded.
+       * @throws Exception In case the desired iterator cannot be returned.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 02.06.2008<br />
+       */
+      protected function &__getIterator($name){
 
-         // Deklariert das notwendige TagLib-Modul
-         $TagLibModule = 'html_taglib_iterator';
+         $tagLibClass = 'html_taglib_iterator';
 
-
-         // Falls TagLib-Modul nicht vorhanden -> Fehler!
-         if(!class_exists($TagLibModule)){
-            trigger_error('['.get_class($this).'::__getIteratorTemplate()] TagLib module "'.$TagLibModule.'" is not loaded!',E_USER_ERROR);
-          // end if
+         if(!class_exists($tagLibClass)){
+            throw new IncludeException('['.get_class($this).'::__getIteratorTemplate()] TagLib module "'.$tagLibClass.'" is not loaded!',E_USER_ERROR);
          }
 
+         $children = &$this->__Document->getChildren();
+         if(count($children) > 0){
 
-         // Pr�fen, ob Kinder existieren
-         if(count($this->__Document->__Children) > 0){
+            foreach($children as $objectId => $DUMMY){
 
-            // Templates aus dem aktuellen Document bereitstellen
-            foreach($this->__Document->__Children as $ObjectID => $Child){
-
-               // Klassen mit dem Namen "$TagLibModule" aus den Child-Objekten des
-               // aktuellen "Document"s als Referenz zur�ckgeben
-               if(get_class($Child) == $TagLibModule){
-
-                  // Pr�fen, ob das gefundene Template $Name hei�t.
-                  if($Child->getAttribute('name') == $Name){
-                     return $this->__Document->__Children[$ObjectID];
-                   // end if
+               // check, whether the desired node is the iterator we want to have
+               if(get_class($children[$objectId]) == $tagLibClass){
+                  if($children[$objectId]->getAttribute('name') == $name){
+                     return $children[$objectId];
                   }
-
-                // end if
                }
 
-             // end foreach
             }
 
           // end if
          }
          else{
-
-            // Falls keine Kinder existieren -> Fehler!
-            trigger_error('['.get_class($this).'::__getIteratorTemplate()] No iterator object with name "'.$Name.'" composed in current document for document controller "'.get_class($this).'"! Perhaps tag library html:iterator is not loaded in current template!',E_USER_ERROR);
+            throw new Exception('['.get_class($this).'::__getIteratorTemplate()] No iterator object with name "'.$name.'" composed in current document for document controller "'.get_class($this).'"! Perhaps tag library html:iterator is not loaded in current template!',E_USER_ERROR);
             exit();
-
           // end else
          }
 
-
-         // Falls das Template nicht gefunden werden kann -> Fehler!
-         trigger_error('['.get_class($this).'::__getIteratorTemplate()] Iterator with name "'.$Name.'" cannot be found!',E_USER_ERROR);
+         throw new Exception('['.get_class($this).'::__getIteratorTemplate()] Iterator with name "'.$name.'" cannot be found!',E_USER_ERROR);
          exit();
 
        // end function
