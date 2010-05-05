@@ -621,8 +621,9 @@
          $buffer .= '<style type="text/css">
 #APF-Benchmark-Report {
    font-size: 10px !important;
-   padding: 0.4em;
+   padding: 0.3em;
    background-color: #fff;
+   font-family: Arial, Helvetica, sans-serif;
 }
 #APF-Benchmark-Report .even {
    background-color: #fff;
