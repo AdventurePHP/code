@@ -1934,11 +1934,6 @@
        */
       public function onParseTime(){
 
-         // invoke timer
-         $T = &Singleton::getInstance('BenchmarkTimer');
-         $id = '('.get_class($this).') '.$this->__ObjectID.'::onParseTime()';
-         $T->start($id);
-
          // get attributes
          $namespace = trim($this->__Attributes['namespace']);
          $template = trim($this->__Attributes['template']);
@@ -1988,8 +1983,6 @@
 
          // extract further xml tags
          $this->__extractTagLibTags();
-
-         $T->stop($id);
 
        // end function
       }
