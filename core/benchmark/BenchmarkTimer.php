@@ -620,7 +620,7 @@
          $buffer .= self::$NEWLINE;
          $buffer .= '<style type="text/css">
 #APF-Benchmark-Report {
-   font-size: 0.8em;
+   font-size: 10px !important;
    padding: 0.4em;
    background-color: #fff;
 }
