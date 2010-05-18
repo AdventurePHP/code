@@ -40,7 +40,7 @@
    $update->setContext('{CONTEXT}');
 
    // adapt storage engine (default is MyISAM)
-   $update->setStorageEngine('MyISAM|INNODB');
+   //$update->setStorageEngine('MyISAM|INNODB');
 
    // adapt data type of the indexed columns, that are used for object and relation ids
    //$update->setIndexColumnDataType('INT(5) UNSIGNED');

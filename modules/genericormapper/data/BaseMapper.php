@@ -70,6 +70,13 @@
 
       /**
        * @protected
+       * @since 1.12
+       * @var string[] Additional indices for the object tables.
+       */
+      protected $__MappingIndexTable = array();
+
+      /**
+       * @protected
        * @var string[] Object relation table.
        */
       protected $__RelationTable = array();
@@ -85,6 +92,12 @@
        * @var boolean Indicates, whether the generated statements should be logged for debugging purposes.
        */
       protected $__LogStatements = false;
+
+      /**
+       * @protected
+       * @var string Identifies the param that defines additional indices relevant for database setup.
+       */
+      protected static $ADDITIONAL_INDICES_INDICATOR = 'AddIndices';
 
       public function BaseMapper(){
       }
@@ -182,7 +195,15 @@
 
          // resolve definitions
          foreach($this->__MappingTable as $objectName => $DUMMY){
+            
+            // add additional index definition to separate table
+            if(isset($this->__MappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR])){
+               $this->__MappingIndexTable[$objectName] = $this->__MappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR];
+               //unset($this->__MappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR]);
+            }
+
             $this->__MappingTable[$objectName] = $this->__generateMappingItem($objectName,$this->__MappingTable[$objectName]);
+
           // end foreach
          }
 
@@ -323,9 +344,9 @@
        *
        * Resolves the table and primary key name within the object definition configuration.
        *
-       * @param string $objectName nam of the current configuration section (=name of the current object)
-       * @param array $objectSection current object definition params
-       * @return string[] Enhanced object definition
+       * @param string $objectName Name of the current configuration section (=name of the current object).
+       * @param array $objectSection Current object definition params.
+       * @return string[] Enhanced object definition.
        *
        * @author Christian Achatz
        * @version
@@ -338,6 +359,8 @@
          $objectSection['Table'] = 'ent_'.strtolower($objectName);
          // - name of the primary key
          $objectSection['ID'] = $objectName.'ID';
+         // remove the additional table definition
+         unset($objectSection[self::$ADDITIONAL_INDICES_INDICATOR]);
 
          // return section
          return $objectSection;

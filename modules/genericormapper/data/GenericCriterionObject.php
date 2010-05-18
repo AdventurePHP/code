@@ -33,34 +33,34 @@
    final class GenericCriterionObject extends APFObject {
 
       /**
-       * @protected
+       * @private
        * @var string[] Stores the relation indicators.
        */
-      protected $__Relations = array();
+      private $__Relations = array();
 
       /**
-       * @protected
+       * @private
        * @var string[] Stores the limit indicator.
        */
-      protected $__Limit = array();
+      private $__Limit = array();
 
       /**
-       * @protected
+       * @private
        * @var string[] Stores the property indicator.
        */
-      protected $__Properties = array();
+      private $__Properties = array();
 
       /**
-       * @protected
+       * @private
        * @var string[] Stores the properties to load into the object.
        */
-      protected $__LoadedProperties = array();
+      private $__LoadedProperties = array();
 
       /**
-       * @protected
+       * @private
        * @var string[] Stores the order indicator.
        */
-      protected $__Orders = array();
+      private $__Orders = array();
 
       public function GenericCriterionObject(){
       }
@@ -77,9 +77,24 @@
        * @version
        * Version 0.1, 17.06.2008<br />
        */
-      function addRelationIndicator($relationName,$sourceObject){
+      public function addRelationIndicator($relationName,$sourceObject){
          $this->__Relations[$relationName] = $sourceObject;
        // end function
+      }
+
+      /**
+       * @public
+       *
+       * Returns the relation definitions for the current query.
+       *
+       * @return string[] The relation definitions.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.04.2010<br />
+       */
+      public function getRelations(){
+         return $this->__Relations;
       }
 
       /**
@@ -95,7 +110,7 @@
        * @version
        * Version 0.1, 17.06.2008<br />
        */
-      function addCountIndicator($startOrCount,$count = null){
+      public function addCountIndicator($startOrCount,$count = null){
 
          if($count === null){
             $this->__Limit['Count'] = $startOrCount;
@@ -113,6 +128,21 @@
       /**
        * @public
        *
+       * Returns the defined limitations for the current query.
+       *
+       * @return string[] The limit definition.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.04.2010<br />
+       */
+      public function getLimitDefinition(){
+         return $this->__Limit;
+      }
+
+      /**
+       * @public
+       *
        * Method to add a property to the where list.
        *
        * @param string $attributeName name of the attribute
@@ -122,7 +152,7 @@
        * @version
        * Version 0.1, 17.06.2008<br />
        */
-      function addPropertyIndicator($attributeName,$attributeValue){
+      public function addPropertyIndicator($attributeName,$attributeValue){
          $this->__Properties[$attributeName] = $attributeValue;
        // end function
       }
@@ -139,7 +169,7 @@
        * @version
        * Version 0.1, 17.06.2008<br />
        */
-      function addOrderIndicator($attributeName,$orderDirection = 'ASC'){
+      public function addOrderIndicator($attributeName,$orderDirection = 'ASC'){
          $this->__Orders[$attributeName] = $orderDirection;
        // end function
       }
@@ -147,17 +177,47 @@
       /**
        * @public
        *
+       * Returns the order indicators for the current query.
+       *
+       * @return string[] The order indicators.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.04.2010<br />
+       */
+      public function getOrderIndicators(){
+         return $this->__Orders;
+      }
+
+      /**
+       * @public
+       *
        * Method to add a property, that should be loaded into the result object or object list.
        *
-       * @param string $propertyName name of the desired property
+       * @param string $propertyName Name of the desired property
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 21.06.2008<br />
        */
-      function addLoadedProperty($propertyName){
+      public function addLoadedProperty($propertyName){
          $this->__LoadedProperties[] = $propertyName;
        // end function
+      }
+
+      /**
+       * @public
+       *
+       * Return the list of properties to load with the current query.
+       *
+       * @return string[] The properties to load.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.04.2010<br />
+       */
+      public function getLoadedProperties(){
+         return $this->__LoadedProperties;
       }
 
     // end class

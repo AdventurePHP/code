@@ -74,6 +74,12 @@
        */
       private $indexColumnDataType = 'INT(5) UNSIGNED';
 
+      /**
+       * @private
+       * @var string The character set of the tables to create.
+       */
+      private $tableCharset = 'utf8';
+
       public function GenericORMapperSetup(){
       }
 
@@ -108,6 +114,31 @@
 
       public function getIndexColumnDataType(){
          return $this->indexColumnDataType;
+      }
+
+      /**
+       * @public
+       * @since 1.12
+       *
+       * Let's you influence the character sets, the tables are created with. By default,
+       * utf8 is used to have good compatibility with most of the application cases. If
+       * you want to change it for certain reasons, use this method conjunction with an
+       * appropriate MySQL character set.
+       *
+       * @see http://dev.mysql.com/doc/refman/5.0/en/data-types.html
+       *
+       * @param string $tableCharset The desired charset (e.g. utf8).
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 15.04.2010<br />
+       */
+      public function setTableCharset($tableCharset){
+         $this->tableCharset = $tableCharset;
+      }
+
+      public function getTableCharset(){
+         return $this->tableCharset;
       }
 
       /**
@@ -208,9 +239,8 @@
          $setup = array();
          foreach($this->__MappingTable as $name => $attributes){
             $setup[] =
-               $this->__generateMappingTableLayout(
-                  $this->__MappingTable[$name]
-               ).PHP_EOL.PHP_EOL;
+               $this->__generateMappingTableLayout($name,$this->__MappingTable[$name])
+                       .PHP_EOL.PHP_EOL;
           // end foreach
          }
 
@@ -224,6 +254,7 @@
        *
        * Generates a create statement for the object mapping table.
        *
+       * @param string $objectName The name of the current object definition.
        * @param string[] $tableAttributes The mapping entry's attributes.
        * @return string The create statement.
        *
@@ -231,7 +262,7 @@
        * @version
        * Version 0.1, 11.10.2009<br />
        */
-      protected function __generateMappingTableLayout($tableAttributes){
+      protected function __generateMappingTableLayout($objectName,$tableAttributes){
          
          // header
          $create = 'CREATE TABLE IF NOT EXISTS `'.$tableAttributes['Table'].'` ('.PHP_EOL;
@@ -254,10 +285,19 @@
          $create .= '  `ModificationTimestamp` timestamp NOT NULL default \'0000-00-00 00:00:00\','.PHP_EOL;
 
          // primary key
-         $create .= '  PRIMARY KEY (`'.$tableAttributes['ID'].'`)'.PHP_EOL;
+         $create .= '  PRIMARY KEY (`'.$tableAttributes['ID'].'`)';
+
+         // additional indices
+         $additionalIndices = $this->getAdditionalIndexDefinition($objectName);
+         if($additionalIndices !== null){
+            $create .= ','.PHP_EOL.$additionalIndices.PHP_EOL;
+         }
+         else {
+            $create .= PHP_EOL;
+         }
 
          // footer
-         $create .= ') ENGINE='.$this->getStorageEngine().' DEFAULT CHARSET=utf8;';
+         $create .= ') ENGINE='.$this->getStorageEngine().' DEFAULT CHARSET='.$this->getTableCharset().';';
 
          // print statement
          return $create;
@@ -337,8 +377,50 @@
          $create .= '  PRIMARY KEY  (`'.$pkName.'`,`'.$tableAttributes['SourceID'].'`,`'.$tableAttributes['TargetID'].'`)'.PHP_EOL;
 
          // footer
-         return $create .= ') ENGINE='.$this->getStorageEngine().' DEFAULT CHARSET=utf8;';
+         return $create .= ') ENGINE='.$this->getStorageEngine().' DEFAULT CHARSET='.$this->getTableCharset().';';
 
+       // end function
+      }
+
+      protected function getAdditionalIndexDefinition($objectName){
+
+         // exit early returning null to indicate that no additional index definition is available
+         if(!isset($this->__MappingIndexTable[$objectName])){
+            return null;
+         }
+
+         $indices = array();
+
+         foreach(explode('|',$this->__MappingIndexTable[$objectName]) as $index){
+
+            $current = $index;
+            $type = (string)'';
+
+            // gather type
+            $startPos = strpos($current,'(');
+            $endPos = strpos($current,')',$startPos);
+            $type = substr($current,$startPos + 1,$endPos - $startPos - 1);
+
+            // replace index type to extract fields
+            $current = substr_replace($current,'',$startPos,$endPos + 1 - $startPos);
+
+            $fields = array();
+
+            foreach(explode(',',$current) as $field){
+               $fields[] = '`'.$field.'`';
+            }
+
+            $type .= ' KEY `'.preg_replace('/[^A-Za-z0-9]/','',$index).'` ('.implode(', ',$fields).')';
+
+            // resolve INDEX KEY
+            $type = preg_replace('/INDEX KEY/i','KEY',$type);
+
+            $indices[] = '  '.$type;
+
+         }
+
+         return implode(','.PHP_EOL,$indices);
+         
        // end function
       }
 

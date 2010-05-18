@@ -140,7 +140,7 @@
          $WHERE = array();
 
          // retrieve property indicators
-         $properties = $criterion->get('Properties');
+         $properties = $criterion->getLoadedProperties();
 
          if(count($properties) > 0){
 
@@ -190,7 +190,7 @@
          $ORDER = array();
 
          // retrieve order indicators
-         $orders = $criterion->get('Orders');
+         $orders = $criterion->getOrderIndicators();
 
          if(count($orders) > 0){
 
@@ -215,9 +215,9 @@
        *
        * Creates a list of properties by a given object name and a criterion object.<br />
        *
-       * @param string $objectName name of the desired objects
-       * @param GenericCriterionObject $criterion criterion object
-       * @return array List of properties.
+       * @param string $objectName Name of the desired objects.
+       * @param GenericCriterionObject $criterion Criterion object.
+       * @return string List of properties.
        *
        * @author Christian Achatz
        * @version
@@ -225,8 +225,15 @@
        */
       protected function __buildProperties($objectName,GenericCriterionObject $criterion){
 
+         // check for valid object definition
+         if(!isset($this->__MappingTable[$objectName])){
+            throw new GenericORMapperException('[GenericORRelationMapper::__buildProperties()] No '
+                    .'object with name \''.$objectName.'\' was found within the mapping table. '
+                    .'Please double check your mapping configuration file or refresh the mapping table!');
+         }
+
          // retrieve object properties to load
-         $objectProperties = $criterion->get('LoadedProperties');
+         $objectProperties = $criterion->getLoadedProperties();
          if(count($objectProperties) > 0){
 
             $propertyList = array();
@@ -276,7 +283,7 @@
          $JOIN = array();
          $WHERE = array();
 
-         $relations = $criterion->get('Relations');
+         $relations = $criterion->getRelations();
 
          if(count($relations) > 0){
 
@@ -288,7 +295,7 @@
                $TargetObjectName = $this->__getRelatedObjectNameByRelationName($objectName,$relationName);
                $ToTable = $this->__MappingTable[$TargetObjectName]['Table'];
                $SoureObjectID = $this->__MappingTable[$objectName]['ID'];
-               $TargetObjectID = $this->__MappingTable[$TargetObjectName]['ID'];;
+               $TargetObjectID = $this->__MappingTable[$TargetObjectName]['ID'];
 
                // add statement to join list
                $JOIN[] = 'INNER JOIN `'.$RelationTable.'` ON `'.$FromTable.'`.`'.$SoureObjectID.'` = `'.$RelationTable.'`.`'.$SoureObjectID.'`';
@@ -304,7 +311,7 @@
          }
 
          // build statement
-         $select = 'SELECT '.($this->__buildProperties($objectName,$criterion)).' FROM `'.$this->__MappingTable[$objectName]['Table'].'`';
+         $select = 'SELECT '.($this->__buildProperties($objectName,$criterion)).' FROM `'.$this->__MappingTable[$objectName]['Table'].'` ';
 
          if(count($JOIN) > 0){
             $select .= ' '.implode(' ',$JOIN);
@@ -323,7 +330,7 @@
           // end if
          }
 
-         $Limit = $criterion->get('Limit');
+         $Limit = $criterion->getLimitDefinition();
          if(count($Limit) > 0){
             $select .= ' LIMIT '.implode(',',$Limit);
           // end if
@@ -410,7 +417,7 @@
          // - add relation joins
          $where = array();
          $joins = (string)'';
-         $relations = $criterion->get('Relations');
+         $relations = $criterion->getRelations();
          foreach($relations as $innerRelationName => $DUMMY){
 
             // gather relation params
@@ -443,7 +450,7 @@
          }
 
          // add limit expression
-         $limit = $criterion->get('Limit');
+         $limit = $criterion->getLimitDefinition();
          if(count($limit) > 0){
             $select .= ' LIMIT '.implode(',',$limit);
           // end if
@@ -500,7 +507,7 @@
          // add relation joins
          $where = array();
          $joins = (string)'';
-         $relations = $criterion->get('Relations');
+         $relations = $criterion->getRelations();
          foreach($relations as $innerRelationName => $DUMMY){
 
             // gather relation params
@@ -546,7 +553,7 @@
          }
 
          // add limit definition
-         $limit = $criterion->get('Limit');
+         $limit = $criterion->getLimitDefinition();
          if(count($limit) > 0){
             $select .= ' LIMIT '.implode(',',$limit);
           // end if

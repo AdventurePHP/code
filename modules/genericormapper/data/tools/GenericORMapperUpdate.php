@@ -482,6 +482,7 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
          foreach($this->__NewMappings as $newMapping => $DUMMY){
             $this->__UpdateStatements[] =
                $this->__generateMappingTableLayout(
+                  $newMapping,
                   $this->__MappingTable[$newMapping]
                );
          }
