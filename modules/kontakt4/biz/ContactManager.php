@@ -98,8 +98,7 @@
          // redirect to the thanks page to avoid F5 bugs!
          $link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('contactview' => 'thanks'));
 
-         $reg = &Singleton::getInstance('Registry');
-         $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
+         $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
 
          if($urlRewriting != true){
             $link = str_replace('&amp;','&',$link);

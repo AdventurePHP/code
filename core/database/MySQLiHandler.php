@@ -183,8 +183,7 @@
        */
       private function getStatementFromFile($namespace,$statementFile){
 
-         $reg = &Singleton::getInstance('Registry');
-         $env = $reg->retrieve('apf::core','Environment');
+         $env = Registry::retrieve('apf::core','Environment');
          $file = APPS__PATH.'/config/'.str_replace('::','/',$namespace).'/'.str_replace('::','/',$this->__Context).'/'.$env.'_'.$statementFile.'.sql';
 
          if(!file_exists($file)){

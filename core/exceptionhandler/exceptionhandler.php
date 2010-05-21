@@ -26,8 +26,7 @@
    import('core::exceptionhandler','ExceptionHandlerDefinition');
 
    // setup the registry with the default APF exception handler
-   $reg = Singleton::getInstance('Registry');
-   $reg->register('apf::core','ExceptionHandler',new ExceptionHandlerDefinition('core::exceptionhandler','DefaultExceptionHandler'));
+   Registry::register('apf::core','ExceptionHandler',new ExceptionHandlerDefinition('core::exceptionhandler','DefaultExceptionHandler'));
 
    /**
     * @package core::exceptionhandler
@@ -45,8 +44,7 @@
    function exceptionHandler($exception){
 
       // raise error and display error message
-      $reg = Singleton::getInstance('Registry');
-      $exceptionHandlerDef = $reg->retrieve('apf::core','ExceptionHandler');
+      $exceptionHandlerDef = Registry::retrieve('apf::core','ExceptionHandler');
 
       if($exceptionHandlerDef !== null && get_class($exceptionHandlerDef) === 'ExceptionHandlerDefinition'){
 

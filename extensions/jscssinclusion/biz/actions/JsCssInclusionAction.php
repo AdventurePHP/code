@@ -100,8 +100,7 @@
          }
 
          // build full path and return file.
-         $reg = &Singleton::getInstance('Registry');
-         $libBasePath = $reg->retrieve('apf::core','LibPath');
+         $libBasePath = Registry::retrieve('apf::core','LibPath');
          $filePath = $libBasePath.'/'. $path .'/'.$file.'.'.$ext;
 
          if(file_exists($filePath)){

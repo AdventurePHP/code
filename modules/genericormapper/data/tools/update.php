@@ -27,8 +27,7 @@
    require('../../apps/core/pagecontroller/pagecontroller.php');
 
    // configure the registry if desired
-   $reg = &Singleton::getInstance('Registry');
-   $reg->register('apf::core','Environment','{ENVIRONMENT}');
+   Registry::register('apf::core','Environment','{ENVIRONMENT}');
 
    // include SetupMapper
    import('modules::genericormapper::data::tools','GenericORMapperUpdate');

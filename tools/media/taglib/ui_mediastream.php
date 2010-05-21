@@ -98,9 +98,8 @@
          if($this->__NoOutput === false){
 
             // get infos from the registry
-            $reg = &Singleton::getInstance('Registry');
-            $urlrewrite = $reg->retrieve('apf::core','URLRewriting');
-            $actionurl = $reg->retrieve('apf::core','CurrentRequestURL');
+            $urlrewrite = Registry::retrieve('apf::core','URLRewriting');
+            $actionurl = Registry::retrieve('apf::core','CurrentRequestURL');
 
             // build action statement
             $this->setAttribute('namespace',str_replace('::','_',$this->getAttribute('namespace')));

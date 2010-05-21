@@ -176,8 +176,7 @@
        * Version 0.4, 14.08.2008 (LogDir initialization was moved do the flushLogBuffer() method)<br />
        */
       public function Logger() {
-         $reg = &Singleton::getInstance('Registry');
-         $this->logDir = $reg->retrieve('apf::core','LogDir');
+         $this->logDir = Registry::retrieve('apf::core','LogDir');
        // end function
       }
 

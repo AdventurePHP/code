@@ -51,7 +51,6 @@
            return '';
        }
 
-
        /**
         * Builds a Link for the JsCssInclusion FC-action
         *
@@ -64,10 +63,9 @@
         * @return string elements' link.
         */
        protected function __buildFCLink($url, $namespace, $filename, $urlRewriting, $fcaction, $type){
-           $reg = &Singleton::getInstance('Registry');
 
            if($urlRewriting === null){
-               $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
+               $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
            }
            if($fcaction === null){
                $fcaction = true;
@@ -76,7 +74,7 @@
            // Generate url if not given
            if($url === null){
                if($urlRewriting) {
-                    $url = $reg->retrieve('apf::core','URLBasePath');
+                    $url = Registry::retrieve('apf::core','URLBasePath');
                }
                else {
                     $tmpPath = str_replace($_SERVER['DOCUMENT_ROOT'],'', $_SERVER['SCRIPT_FILENAME']);

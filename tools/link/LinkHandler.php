@@ -111,8 +111,7 @@
 
          // set URLRewrite
          if($urlRewriting === null){
-            $reg = &Singleton::getInstance('Registry');
-            $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
+            $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
           // end if
          }
 

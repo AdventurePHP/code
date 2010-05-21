@@ -216,9 +216,8 @@
       public function transform(){
 
          // get url rewrite information from the registry
-         $reg = &Singleton::getInstance('Registry');
-         $urlRewrite = $reg->retrieve('apf::core','URLRewriting');
-         $currentReqUrl = $reg->retrieve('apf::core','CurrentRequestURL');
+         $urlRewrite = Registry::retrieve('apf::core','URLRewriting');
+         $currentReqUrl = Registry::retrieve('apf::core','CurrentRequestURL');
 
          // build action statement
          if($urlRewrite === true){

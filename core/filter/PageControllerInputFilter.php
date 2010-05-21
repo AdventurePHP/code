@@ -58,8 +58,7 @@
          $t->start('PageControllerInputFilter::filter()');
 
          // setup filter
-         $reg = &Singleton::getInstance('Registry');
-         $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
+         $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
          $filter = null;
          if($urlRewriting === true){
             import('core::filter::input','PagecontrollerRewriteRequestFilter');

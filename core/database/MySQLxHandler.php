@@ -135,8 +135,7 @@
       public function executeStatement($namespace,$statementFile,$params = array(),$logStatement = false){
 
          // check, whether the desired statement file exists
-         $reg = &Singleton::getInstance('Registry');
-         $env = $reg->retrieve('apf::core','Environment');
+         $env = Registry::retrieve('apf::core','Environment');
          $file = APPS__PATH.'/config/'.str_replace('::','/',$namespace).'/'.str_replace('::','/',$this->__Context).'/'.$env.'_'.$statementFile.'.sql';
 
          if(!file_exists($file)){
@@ -225,7 +224,7 @@
       *
       *  Sets the data pointer to the given offset using the result resource.
       *
-      *  @author Christian Sch�fer
+      *  @author Christian Schäfer
       *  @version
       *  Version 0.1, 15.01.2006<br />
       */
@@ -241,7 +240,7 @@
        * @param resource $resultCursor The result resource pointer.
        * @return int The number of affected rows.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 04.01.2006<br />
        * Version 0.2, 07.03.2008<br />
@@ -318,7 +317,7 @@
        *
        * Returns the version of the database server.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 05.03.2006<br />
        * Version 0.2, 07.03.2008 (Now the connection is applied to the call.)<br />

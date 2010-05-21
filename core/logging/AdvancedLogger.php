@@ -34,8 +34,7 @@
       $aLF = &Singleton::getInstance('AdvancedLoggerFactory');
 
       // get registered logger
-      $reg = &Singleton::getInstance('Registry');
-      $logger = $reg->retrieve('apf::core','AdvancedLogger');
+      $logger = Registry::retrieve('apf::core','AdvancedLogger');
       $count = count($logger);
       if($count > 0){
 
@@ -189,8 +188,7 @@
 
             // register current instance in the registry so that the flush function can get the
             // instances from the service manager in correct service type configuration
-            $reg = &Singleton::getInstance('Registry');
-            $logger = $reg->retrieve('apf::core','AdvancedLogger');
+            $logger = Registry::retrieve('apf::core','AdvancedLogger');
             if(count($logger) == 0){
                $logger = array();
              // end if
@@ -200,7 +198,7 @@
                               'language' => $this->__Language,
                               'section' => $section
                              );
-            $reg->register('apf::core','AdvancedLogger',$logger);
+            Registry::register('apf::core','AdvancedLogger',$logger);
 
           // end if
          }
@@ -281,8 +279,7 @@
             $this->__LogConfig = $config->getSection($initParam);
 
             if($this->__LogConfig === null){
-               $reg = &Singleton::getInstance('Registry');
-               $env = $reg->retrieve('apf::core','Environment');
+               $env = Registry::retrieve('apf::core','Environment');
                trigger_error('[AdvancedLogger::init()] The configuration section ("'.$initParam.'") cannot be loaded from the logging configuration file "'.$env.'_logconfig.ini" for namespace "core::logging" and context "'.$this->__Context.'"!',E_USER_ERROR);
                exit();
              // end if

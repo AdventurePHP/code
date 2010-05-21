@@ -49,8 +49,7 @@
        */
       public function filter($input){
 
-         $reg = &Singleton::getInstance('Registry');
-         $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
+         $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
          if($urlRewriting === true){
             import('core::filter::output','HtmlLinkRewriteFilter');
             $filter = new HtmlLinkRewriteFilter();

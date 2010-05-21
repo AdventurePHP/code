@@ -63,8 +63,7 @@
             $section = $config->getSection($configSection);
 
             if($section === null){
-               $reg = &Singleton::getInstance('Registry');
-               $env = $reg->retrieve('apf::core','Environment');
+               $env = Registry::retrieve('apf::core','Environment');
                trigger_error('[CacheManagerFabric::getCacheManager()] The desired config section "'
                   .$configSection.'" does not exist within the cache configuration. Please check '
                   .'your cache configuration ("'.$env.'_cacheconfig.ini") for namespace '
@@ -85,6 +84,6 @@
        // end function
       }
 
-    // function
+    // end class
    }
 ?>

@@ -139,8 +139,7 @@
 
          // generate the current's page url, if no url was set
          if($this->__URL == ''){
-            $reg = &Singleton::getInstance('Registry');
-            $this->__URL = $reg->retrieve('apf::core','CurrentRequestURL');
+            $this->__URL = Registry::retrieve('apf::core','CurrentRequestURL');
           // end if
          }
 
@@ -212,9 +211,8 @@
          $t->start($ID);
 
          // Retrieve some parameters from the registry
-         $reg = &Singleton::getInstance('Registry');
-         $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
-         $urlBasePath = $reg->retrieve('apf::core','URLBasePath');
+         $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
+         $urlBasePath = Registry::retrieve('apf::core','URLBasePath');
 
          $code = (string)'';
          $code = $code .= '<a rel="nofollow" href="';

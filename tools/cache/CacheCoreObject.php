@@ -49,8 +49,7 @@
       protected function __getCacheConfigAttribute($name){
 
          if(!isset($this->__Attributes[$name])){
-            $reg = &Singleton::getInstance('Registry');
-            $env = $reg->retrieve('apf::core','Environment');
+            $env = Registry::retrieve('apf::core','Environment');
             trigger_error('['.get_class($this).'::__getCacheConfigAttribute()] The configuration directive "'.$name.'" is not present or empty. Please check your cache configuration ("'.$env.'_cacheconfig.ini") for namespace "tools::cache" and context "'.$this->__Context.'" or consult the documentation!',E_USER_ERROR);
             exit();
           // end if

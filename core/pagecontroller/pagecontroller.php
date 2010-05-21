@@ -89,11 +89,10 @@
    import('core::registry','Registry');
 
    // define base parameters of the framework's core and tools layer
-   $reg = &Singleton::getInstance('Registry');
-   $reg->register('apf::core','Environment','DEFAULT');
-   $reg->register('apf::core','URLRewriting',false);
-   $reg->register('apf::core','LogDir',str_replace('\\','/',getcwd()).'/logs');
-   $reg->register('apf::core','LibPath',APPS__PATH,true);
+   Registry::register('apf::core','Environment','DEFAULT');
+   Registry::register('apf::core','URLRewriting',false);
+   Registry::register('apf::core','LogDir',str_replace('\\','/',getcwd()).'/logs');
+   Registry::register('apf::core','LibPath',APPS__PATH,true);
 
    // define current request url entry
    $protocol = null;
@@ -105,8 +104,8 @@
       $protocol = 'http://';
     // end else
    }
-   $reg->register('apf::core','URLBasePath',$protocol.$_SERVER['HTTP_HOST']);
-   $reg->register('apf::core','CurrentRequestURL',$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],true);
+   Registry::register('apf::core','URLBasePath',$protocol.$_SERVER['HTTP_HOST']);
+   Registry::register('apf::core','CurrentRequestURL',$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],true);
 
    // include necessary core libraries for the pagecontroller
    import('core::errorhandler','errorhandler');
@@ -118,8 +117,8 @@
    import('core::filter','FilterFactory');
 
    // set up the input and output filter
-   $reg->register('apf::core::filter','PageControllerInputFilter',new FilterDefinition('core::filter','PageControllerInputFilter'));
-   $reg->register('apf::core::filter','OutputFilter',new FilterDefinition('core::filter','GenericOutputFilter'));
+   Registry::register('apf::core::filter','PageControllerInputFilter',new FilterDefinition('core::filter','PageControllerInputFilter'));
+   Registry::register('apf::core::filter','OutputFilter',new FilterDefinition('core::filter','GenericOutputFilter'));
 
    /**
     * @package core::pagecontroller
@@ -1236,19 +1235,13 @@
          $this->__ObjectID = XmlParser::generateUniqID();
 
          // apply input filter if desired (e.g. front controller is not used)
-         $reg = &Singleton::getInstance('Registry');
-         $filterDef = $reg->retrieve('apf::core::filter','PageControllerInputFilter');
+         $filterDef = Registry::retrieve('apf::core::filter','PageControllerInputFilter');
 
          if($filterDef !== null){
-            
             $inputFilter = FilterFactory::getFilter($filterDef);
-
             if($inputFilter !== null){
                $inputFilter->filter(null);
-             // end if
             }
-            
-          // end if
          }
 
        // end function
@@ -1331,19 +1324,13 @@
          $content = $this->__Document->transform();
 
          // apply output filter if desired
-         $reg = &Singleton::getInstance('Registry');
-         $filterDef = $reg->retrieve('apf::core::filter','OutputFilter');
+         $filterDef = Registry::retrieve('apf::core::filter','OutputFilter');
 
          if($filterDef !== null){
-
             $outputFilter = FilterFactory::getFilter($filterDef);
-
             if($outputFilter !== null){
                $content = $outputFilter->filter($content);
-             // end if
             }
-
-          // end if
          }
 
          return $content;

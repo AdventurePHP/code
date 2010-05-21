@@ -20,9 +20,8 @@
     */
 
    // setup the front controller input filter and disable the page controller filter
-   $reg = &Singleton::getInstance('Registry');
-   $reg->register('apf::core::filter','FrontControllerInputFilter',new FilterDefinition('core::filter','FrontControllerInputFilter'));
-   $reg->register('apf::core::filter','PageControllerInputFilter',null);
+   Registry::register('apf::core::filter','FrontControllerInputFilter',new FilterDefinition('core::filter','FrontControllerInputFilter'));
+   Registry::register('apf::core::filter','PageControllerInputFilter',null);
 
    /**
     * @package core::frontcontroller
@@ -290,8 +289,7 @@
 
          // set URLRewriting manually
          if($urlRewriting === null){
-            $reg = &Singleton::getInstance('Registry');
-            $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
+            $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
           // end if
          }
 
@@ -442,8 +440,7 @@
       public function start($namespace,$template){
 
          // set URLRewrite
-         $reg = &Singleton::getInstance('Registry');
-         $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
+         $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
 
          // check if the context is set. If not, use the current namespace
          if(empty($this->__Context)){
@@ -452,7 +449,7 @@
          }
 
          // apply front controller input filter
-         $filterDef = $reg->retrieve('apf::core::filter','FrontControllerInputFilter');
+         $filterDef = Registry::retrieve('apf::core::filter','FrontControllerInputFilter');
 
          if($filterDef !== null){
             $inputFilter = FilterFactory::getFilter($filterDef);
@@ -564,43 +561,42 @@
       /**
        * @public
        *
-       * Registriert eine Action beim FC und läd die Parameter des Models aus einem Config-File.<br />
-       * Erwartet eine Konfigurationsdatei mit Namen {APPS__ENVIRONMENT}_actionsconfig.ini unter<br />
-       * dem Pfad {$ActionNamespace}::actions::{$this->__Context}.<br />
+       * Registers an action to the front controller. This includes action configuration using
+       * the action oarams defined within the action mapping. Each action definition is expected
+       * to be stored in the <em>{ENVIRONMENT}_actionsconfig.ini</em> file under the namespace
+       * <em>{$namespace}::actions::{$this->__Context}.</em>
        *
-       * @param string $ActionNamespace; Namespace der Action
-       * @param string $ActionName; Name der Action
-       * @param array $ActionParams; (Input-)Parameter der Action
+       * @param string $namespace Namespace of the action to register.
+       * @param string $name Name of the action to register.
+       * @param array $params (Input-) params of the action.
        *
        * @author Christian Schäfer
        * @version
        * Version 0.1, 08.06.2007<br />
-       * Version 0.2, 01.07.2007 (ActionNamespace wird nun zentral in addAction() �bersetzt)<br />
-       * Version 0.3, 01.07.2007 (Parsen der Config-Parameter wird nun korrekt durchgef�hrt)<br />
+       * Version 0.2, 01.07.2007 (Action namespace is now translated at the addAction() method)<br />
+       * Version 0.3, 01.07.2007 (Config params are now parsed correctly)<br />
        */
-      public function registerAction($ActionNamespace,$ActionName,$ActionParams = array()){
+      public function registerAction($namespace,$name,$params = array()){
 
-         // Config f�r Input laden
-         $Config = &$this->__getConfiguration($ActionNamespace.'::actions','actionconfig');
+         $config = &$this->__getConfiguration($namespace.'::actions','actionconfig');
 
-         if($Config != null){
+         if($config != null){
 
-            // Parameter-Wert-Strings trennen
-            if(strlen(trim($Config->getValue($ActionName,'FC.InputParams'))) > 0){
+            // separate param strings
+            if(strlen(trim($config->getValue($name,'FC.InputParams'))) > 0){
 
-               // Parameter trennen
-               $Params = explode($this->__InputDelimiter,$Config->getValue($ActionName,'FC.InputParams'));
+               // separate params
+               $Params = explode($this->__InputDelimiter,$config->getValue($name,'FC.InputParams'));
 
                for($i = 0; $i < count($Params); $i++){
 
-                  // Parameter und Wert trennen
                   if(substr_count($Params[$i],$this->__KeyValueDelimiter) > 0){
 
                      $ParamValuePair = explode($this->__KeyValueDelimiter,$Params[$i]);
 
-                     // Paar zu den ActionParams hinzuf�gen
+                     // re-order and add to param list
                      if(isset($ParamValuePair[0]) && isset($ParamValuePair[1])){
-                        $ActionParams = array_merge($ActionParams,array($ParamValuePair[0] => $ParamValuePair[1]));
+                        $params = array_merge($params,array($ParamValuePair[0] => $ParamValuePair[1]));
                       // end if
                      }
 
@@ -616,7 +612,7 @@
           // end if
          }
 
-         $this->addAction($ActionNamespace,$ActionName,$ActionParams);
+         $this->addAction($namespace,$name,$params);
 
        // end function
       }
@@ -662,8 +658,7 @@
 
          // throw exception, in case the action config is not present
          if($actionConfig == null){
-            $reg = &Singleton::getInstance('Registry');
-            $env = $reg->retrieve('apf::core','Environment');
+            $env = Registry::retrieve('apf::core','Environment');
             throw new Exception('[Frontcontroller::__parseActions()] No config section for action key "'
                     .$name.'" available in configuration file "'.$env.'_actionconfig.ini" in namespace "'
                     .$namespace.'" and context "'.$this->__Context.'"!',E_USER_ERROR);

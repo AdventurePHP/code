@@ -156,8 +156,7 @@
        */
       public function executeStatement($namespace,$statementName,$params = array(),$logStatement = false){
 
-         $reg = &Singleton::getInstance('Registry');
-         $env = $reg->retrieve('apf::core','Environment');
+         $env = Registry::retrieve('apf::core','Environment');
          $file = APPS__PATH.'/config/'.str_replace('::','/',$namespace).'/'.str_replace('::','/',$this->__Context).'/statements/'.$env.'_'.$statementName.'.sql';
 
          if(!file_exists($file)){

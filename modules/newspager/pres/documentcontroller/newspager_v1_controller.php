@@ -74,8 +74,7 @@
          $this->setPlaceHolder('Content',$N->get('Content'));
 
          // set news service base url
-         $Reg = &Singleton::getInstance('Registry');
-         if($Reg->retrieve('apf::core','URLRewriting') === true){
+         if(Registry::retrieve('apf::core','URLRewriting') === true){
             $this->setPlaceHolder('NewsServiceBaseURL','/~/modules_newspager_biz-action/Pager/page/');
             $this->setPlaceHolder('NewsServiceLangParam','/lang/');
             $this->setPlaceHolder('NewsServiceDataDir','/datadir/'.base64_encode($DataDir));

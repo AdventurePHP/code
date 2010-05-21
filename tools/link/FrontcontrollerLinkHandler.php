@@ -27,7 +27,7 @@
     *
     * Implements a LinkHandler for front controller purposes.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 10.02.2007<br />
     * Version 0.2, 24.02.2007 (Added new method generateActionLink())<br />
@@ -74,8 +74,7 @@
 
          // set URLRewrite
          if($urlRewriting === null){
-            $reg = &Singleton::getInstance('Registry');
-            $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
+            $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
           // end if
          }
 
@@ -188,8 +187,7 @@
 
          // set URLRewrite
          if($urlRewriting === null){
-            $reg = &Singleton::getInstance('Registry');
-            $urlRewriting = $reg->retrieve('apf::core','URLRewriting');
+            $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
           // end if
          }
 

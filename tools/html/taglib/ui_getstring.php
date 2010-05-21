@@ -107,8 +107,7 @@
             if($value == null){
 
                // get environment variable from registry to display nice error message
-               $reg = &Singleton::getInstance('Registry');
-               $env = $reg->retrieve('apf::core','Environment');
+               $env = Registry::retrieve('apf::core','Environment');
 
                trigger_error('['.get_class($this).'->transform()] Given entry "'.$entry
                   .'" is not defined in section "'.$this->__Language.'" in configuration "'

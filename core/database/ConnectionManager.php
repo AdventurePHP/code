@@ -100,8 +100,7 @@
          $section = $config->getSection($connectionKey);
 
          if($section == null){
-            $reg = &Singleton::getInstance('Registry');
-            $env = $reg->retrieve('apf::core','Environment');
+            $env = Registry::retrieve('apf::core','Environment');
             throw new InvalidArgumentException('[ConnectionManager::getConnection()] The given '
                     .'configuration section ("'.$connectionKey.'") does not exist in configuration file "'
                     .$env.'_connections.ini" in namespace "core::database" for context "'

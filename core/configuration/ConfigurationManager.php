@@ -251,8 +251,7 @@
          else{
 
             // retrieve environment configuration from Registry
-            $reg = &Singleton::getInstance('Registry');
-            $env = $reg->retrieve('apf::core','Environment');
+            $env = Registry::retrieve('apf::core','Environment');
 
             // trigger error
             throw new InvalidArgumentException('[ConfigurationManager->getConfiguration()] Requested '
@@ -278,7 +277,7 @@
        * @param string $configName the name of the configuration file
        * @return bool $configurationExistent true | false
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 03.02.2007<br />
        * Version 0.2, 07.03.2007 (Renamed to configurationExists())<br />
@@ -307,7 +306,7 @@
        * @param string $configName the name of the configuration file
        * @return array $configuration | null configuration array or null
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.01.2007<br />
        * Version 0.2, 03.02.2007 (Outsourced the file name generation)<br />
@@ -353,8 +352,7 @@
          }
 
          // build the file name
-         $reg = &Singleton::getInstance('Registry');
-         $env = $reg->retrieve('apf::core','Environment');
+         $env = Registry::retrieve('apf::core','Environment');
          return APPS__PATH.'/config/'.$path.'/'.$env.'_'.$configName.'.ini';
 
        // end function
@@ -405,7 +403,7 @@
        * @return string[] $parsedArray The parsed array.
        * @throws IllegalArgumentException In case the sub section cannot be parsed.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schä�fer
        * @version
        * Version 0.1, 28.01.2007<br />
        * Version 0.2, 19.04.2009 (Bugfix: Parsing subsections returned an empty array!)<br />
@@ -443,7 +441,7 @@
        * @param string $key The current configuration directive possibly containg a dot.
        * @param string[] $value Value of the offset specified with $key.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.01.2007<br />
        */

@@ -31,8 +31,7 @@
    import('core::errorhandler','ErrorHandlerDefinition');
 
    // setup the registry with the default APF error handler
-   $reg = &Singleton::getInstance('Registry');
-   $reg->register('apf::core','ErrorHandler',new ErrorHandlerDefinition('core::errorhandler','DefaultErrorHandler'));
+   Registry::register('apf::core','ErrorHandler',new ErrorHandlerDefinition('core::errorhandler','DefaultErrorHandler'));
 
    /**
     * @package core::errorhandler
@@ -64,8 +63,7 @@
       }
 
       // raise error and display error message
-      $reg = &Singleton::getInstance('Registry');
-      $errorHandlerDef = $reg->retrieve('apf::core','ErrorHandler');
+      $errorHandlerDef = Registry::retrieve('apf::core','ErrorHandler');
 
       if($errorHandlerDef !== null && get_class($errorHandlerDef) === 'ErrorHandlerDefinition'){
 
