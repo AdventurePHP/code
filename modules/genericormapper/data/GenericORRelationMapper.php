@@ -133,14 +133,14 @@
        * @version
        * Version 0.1, 26.06.2008 (Extracted from __buildSelectStatementByCriterion())<br />
        * Version 0.2, 16.02.2010 (Added value escaping to avoid SQL injection)<br />
+       * Version 0.3, 28.05.2010 (Bugfix: corrected where definition creation)<br />
        */
       protected function __buildWhere($objectName,GenericCriterionObject $criterion){
 
-         // initialize return list
-         $WHERE = array();
+         $whereList = array();
 
          // retrieve property indicators
-         $properties = $criterion->getLoadedProperties();
+         $properties = $criterion->getPropertyDefinition();
 
          if(count($properties) > 0){
 
@@ -151,11 +151,11 @@
                $propertyValue = $this->__DBDriver->escapeValue($propertyValue);
                
                if(substr_count($propertyValue,'%') > 0 || substr_count($propertyValue,'_') > 0){
-                  $WHERE[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$propertyName.'` LIKE \''.$propertyValue.'\'';
+                  $whereList[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$propertyName.'` LIKE \''.$propertyValue.'\'';
                 // end if
                }
                else{
-                  $WHERE[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$propertyName.'` = \''.$propertyValue.'\'';
+                  $whereList[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$propertyName.'` = \''.$propertyValue.'\'';
                 // end else
                }
 
@@ -165,7 +165,7 @@
           // end if
          }
 
-         return $WHERE;
+         return $whereList;
 
        // end function
       }
@@ -280,8 +280,8 @@
          $t->start($id);
 
          // generate relation joins
-         $JOIN = array();
-         $WHERE = array();
+         $joinList = array();
+         $whereList = array();
 
          $relations = $criterion->getRelations();
 
@@ -298,11 +298,11 @@
                $TargetObjectID = $this->__MappingTable[$TargetObjectName]['ID'];
 
                // add statement to join list
-               $JOIN[] = 'INNER JOIN `'.$RelationTable.'` ON `'.$FromTable.'`.`'.$SoureObjectID.'` = `'.$RelationTable.'`.`'.$SoureObjectID.'`';
-               $JOIN[] = 'INNER JOIN `'.$ToTable.'` ON `'.$RelationTable.'`.`'.$TargetObjectID.'` = `'.$ToTable.'`.`'.$TargetObjectID.'`';
+               $joinList[] = 'INNER JOIN `'.$RelationTable.'` ON `'.$FromTable.'`.`'.$SoureObjectID.'` = `'.$RelationTable.'`.`'.$SoureObjectID.'`';
+               $joinList[] = 'INNER JOIN `'.$ToTable.'` ON `'.$RelationTable.'`.`'.$TargetObjectID.'` = `'.$ToTable.'`.`'.$TargetObjectID.'`';
 
                // add statement to where list
-               $WHERE[] = '`'.$ToTable.'`.`'.$TargetObjectID.'` = '.$relatedObject->getProperty($TargetObjectID);
+               $whereList[] = '`'.$ToTable.'`.`'.$TargetObjectID.'` = '.$relatedObject->getProperty($TargetObjectID);
 
              // end foreach
             }
@@ -313,26 +313,26 @@
          // build statement
          $select = 'SELECT '.($this->__buildProperties($objectName,$criterion)).' FROM `'.$this->__MappingTable[$objectName]['Table'].'` ';
 
-         if(count($JOIN) > 0){
-            $select .= ' '.implode(' ',$JOIN);
+         if(count($joinList) > 0){
+            $select .= ' '.implode(' ',$joinList);
           // end if
          }
 
-         $WHERE = array_merge($WHERE,$this->__buildWhere($objectName,$criterion));
-         if(count($WHERE) > 0){
-            $select .= ' WHERE '.implode(' AND ',$WHERE);
+         $whereList = array_merge($whereList,$this->__buildWhere($objectName,$criterion));
+         if(count($whereList) > 0){
+            $select .= ' WHERE '.implode(' AND ',$whereList);
           // end if
          }
 
-         $ORDER = $this->__buildOrder($objectName,$criterion);
-         if(count($ORDER) > 0){
-            $select .= ' ORDER BY '.implode(', ',$ORDER);
+         $order = $this->__buildOrder($objectName,$criterion);
+         if(count($order) > 0){
+            $select .= ' ORDER BY '.implode(', ',$order);
           // end if
          }
 
-         $Limit = $criterion->getLimitDefinition();
-         if(count($Limit) > 0){
-            $select .= ' LIMIT '.implode(',',$Limit);
+         $limit = $criterion->getLimitDefinition();
+         if(count($limit) > 0){
+            $select .= ' LIMIT '.implode(',',$limit);
           // end if
          }
 

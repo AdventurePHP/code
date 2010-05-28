@@ -29,6 +29,7 @@
     * @version
     * Version 0.1, 17.06.2008<br />
     * Version 0.2, 21.06.2008 (Added more indicators)<br />
+    * Version 0.3, 28.05.2010 (Bugfix: added method to return the property indicators)<br />
     */
    final class GenericCriterionObject extends APFObject {
 
@@ -154,6 +155,22 @@
        */
       public function addPropertyIndicator($attributeName,$attributeValue){
          $this->__Properties[$attributeName] = $attributeValue;
+       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Returns the attribute restrictions defined.
+       *
+       * @return string[] Attribute restrictions for the current query.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.05.2010<br />
+       */
+      public function getPropertyDefinition(){
+         return $this->__Properties;
        // end function
       }
 
