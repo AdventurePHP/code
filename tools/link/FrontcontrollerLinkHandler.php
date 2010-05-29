@@ -442,13 +442,16 @@
          // in case schema and host is given add it!
          if(isset($parsedURL['scheme']) && isset($parsedURL['host'])){
             $hostPart .= $parsedURL['scheme'].'://'.$parsedURL['host'];
-          // end if
          }
 
          // if only the host is present, apply it either
          if(!isset($parsedURL['scheme']) && isset($parsedURL['host'])){
             $hostPart .= '/'.$parsedURL['host'];
-          // end if
+         }
+
+         // in case a none-standard port is given, apply it!
+         if(!empty($parsedURL['port']) && $parsedURL['port'] != '80' && $parsedURL['port'] != '443'){
+            $hostPart .= ':'.$parsedURL['port'];
          }
 
          // assemble final url
