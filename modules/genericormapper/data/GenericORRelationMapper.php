@@ -633,7 +633,7 @@
          $id = parent::saveObject($object);
 
          // check if object has related objects in it
-         $relatedObjects = $object->get('RelatedObjects');
+         $relatedObjects = &$object->getAllRelatedObjects();
          if(count($relatedObjects) > 0){
 
             foreach($relatedObjects as $relationKey => $DUMMY){
