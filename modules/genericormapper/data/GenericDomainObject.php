@@ -397,6 +397,22 @@
       /**
        * @public
        *
+       * Implements the PHP wrapper for generating the string
+       * representation of the current domain object.
+       *
+       * @return string The string representation of the current domain object.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.06.2010<br />
+       */
+      public function __toString() {
+         return $this->toString();
+      }
+
+      /**
+       * @public
+       *
        * Implements php's magic __sleep() method to indicate, which class vars have to be serialized.
        *
        * @return string[] List of serializable properties.
