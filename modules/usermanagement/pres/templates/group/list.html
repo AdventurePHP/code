@@ -1,10 +1,14 @@
 <@controller namespace="modules::usermanagement::pres::documentcontroller::group" file="list_controller" class="umgt_list_controller" @>
-<table cellpadding="3" cellspacing="0" border="0">
-  <tr style="font-weight: bold; background-color: #eeeeee;">
-    <td>Display name</td>
-    <td>Action</td>
-  </tr>
-  <html:placeholder name="Grouplist" />
+<table class="vis-def">
+   <thead>
+      <tr>
+         <td>Display name</td>
+         <td>Action</td>
+      </tr>
+   </thead>
+   <tbody>
+      <html:placeholder name="Grouplist" />
+   </tbody>
 </table>
 
 <html:template name="Group">

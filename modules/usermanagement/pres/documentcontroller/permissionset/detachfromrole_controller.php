@@ -21,7 +21,7 @@
 
    import('modules::usermanagement::biz','umgtManager');
    import('tools::request','RequestHandler');
-   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
 
 
@@ -35,7 +35,7 @@
    *  @version
    *  Version 0.1, 29.12.2008<br />
    */
-   class umgt_detachfromrole_controller extends umgtbaseController
+   class umgt_detachfromrole_controller extends umgt_base_controller
    {
 
       function transformContent(){
@@ -46,7 +46,7 @@
          // initialize the form
          $Form__Role = &$this->__getForm('Role');
          $roleField = &$Form__Role->getFormElementByName('Role');
-         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         $uM = &$this->getManager();
          $permissionSet = $uM->loadPermissionSetByID($permissionSetId);
          $roles = $uM->loadRolesWithPermissionSet($permissionSet);
          $count = count($roles);

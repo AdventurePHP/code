@@ -21,7 +21,7 @@
 
    import('modules::usermanagement::biz','umgtManager');
    import('tools::request','RequestHandler');
-   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
 
    /**
@@ -34,7 +34,7 @@
     * @version
     * Version 0.1, 26.12.2008<br />
     */
-   class umgt_edit_controller extends umgtbaseController {
+   class umgt_edit_controller extends umgt_base_controller {
 
       /**
        * @public
@@ -57,7 +57,7 @@
          $fieldUserId->setAttribute('value',$userid);
 
          // get the manager
-         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         $uM = &$this->getManager();
 
          if($formEdit->isSent() == true){
 

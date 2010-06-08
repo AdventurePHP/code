@@ -21,10 +21,11 @@
 
    import('tools::link','FrontcontrollerLinkHandler');
    import('modules::genericormapper::data','GenericDomainObject');
+   import('tools::html::taglib::documentcontroller','iteratorBaseController');
 
    /**
     * @package modules::usermanagement::pres::documentcontroller
-    * @class umgtbaseController
+    * @class umgt_base_controller
     *
     * Implements a base controller for the concrete document controllers of
     * the usermanagement module. Includes helper functions.
@@ -33,7 +34,7 @@
     * @version
     * Version 0.1, 26.12.2008<br />
     */
-   class umgtbaseController extends base_controller {
+   class umgt_base_controller extends iteratorBaseController {
 
       /**
        * @protected
@@ -58,6 +59,43 @@
          return FrontcontrollerLinkHandler::generateLink($baseURL,$linkParams);
 
        // end function
+      }
+
+      /**
+       * @protected
+       *
+       * Initializes the umgt manager for usage within the presentation layer.
+       *
+       * @return umgtManager The manager of the usermanagement module.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 30.04.2010<br />
+       */
+      protected function &getManager(){
+         return $this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+      }
+
+      /**
+       * @protected
+       *
+       * Returns the media inclusion tag contained i nthe given template.
+       *
+       * @param html_taglib_template $template The template to search the media file tag in.
+       * @return umgt_taglib_media The media file inclusion tag.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.06.2010<br />
+       */
+      protected function &getIcon(html_taglib_template $template){
+         $children = &$template->getChildren();
+         foreach($children as $objectId => $DUMMY){
+            if($children[$objectId] instanceof umgt_taglib_media){
+               return $children[$objectId];
+            }
+         }
+         return null;
       }
 
     // end class

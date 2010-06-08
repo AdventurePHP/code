@@ -20,7 +20,7 @@
     */
 
    import('modules::usermanagement::biz','umgtManager');
-   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
 
    /**
@@ -33,8 +33,7 @@
     * @version
     * Version 0.1, 27.12.2008<br />
     */
-   class umgt_add_controller extends umgtbaseController
-   {
+   class umgt_add_controller extends umgt_base_controller {
 
       function transformContent(){
 
@@ -42,7 +41,7 @@
          if($formAdd->isSent() == true && $formAdd->isValid() == true){
 
             // get the business object
-            $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+            $uM = &$this->getManager();
 
             // get the form element's value
             $displayName = &$formAdd->getFormElementByName('DisplayName');

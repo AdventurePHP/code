@@ -20,7 +20,7 @@
    */
 
    import('modules::usermanagement::biz','umgtManager');
-   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
 
 
    /**
@@ -33,13 +33,13 @@
    *  @version
    *  Version 0.1, 27.12.2008<br />
    */
-   class umgt_list_controller extends umgtbaseController
+   class umgt_list_controller extends umgt_base_controller
    {
 
       function transformContent(){
 
          // load role list
-         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         $uM = &$this->getManager();
          $roleList = $uM->getPagedRoleList();
 
          // display list

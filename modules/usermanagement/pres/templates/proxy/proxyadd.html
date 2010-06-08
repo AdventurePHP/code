@@ -1,0 +1,41 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::proxy" file="proxyadd_controller" class="umgt_proxyadd_controller" @>
+<p>
+   Let's you add a visibility definition. Please choose an appropriate object type along with a
+   given user or group.
+</p>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:form name="visibilitydef" method="post">
+   <div>
+      <label for="proxytypeid">Visibility type:</label>
+      <form:select id="proxytypeid" name="proxytypeid" class="formfield" />
+   </div>
+   <div>
+      <label for="appobjectid">Application object id:</label>
+      <form:text id="appobjectid" name="appobjectid" class="formfield" maxlength="10" minlength="1"/>
+      <form:addvalidator
+         class="TextLengthValidator"
+         button="add"
+         control="appobjectid"
+      />
+   </div>
+   <form:listener control="users">
+      <div class="error-cont">
+         Please mark at least one user or group to create the visibility definition!
+      </div>
+   </form:listener>
+   <div>
+      <label for="users">Users:</label>
+      <form:multiselect id="users" name="users" class="formfield" size="6" alt="groups"/>
+   </div>
+   <div>
+      <label for="groups">Groups:</label>
+      <form:multiselect id="groups" name="groups" class="formfield" size="6"/>
+   </div>
+   <form:addvalidator
+      namespace="modules::usermanagement::pres::validator"
+      class="UserOrGroupActivatedValidator"
+      control="users"
+      button="add"
+   />
+   <form:button name="add" value="Add" class="formfield" />
+</html:form>

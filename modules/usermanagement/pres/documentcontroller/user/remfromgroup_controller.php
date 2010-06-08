@@ -21,7 +21,7 @@
 
    import('modules::usermanagement::biz','umgtManager');
    import('tools::request','RequestHandler');
-   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
 
 
@@ -35,14 +35,14 @@
    *  @version
    *  Version 0.1, 26.12.2008<br />
    */
-   class umgt_remfromgroup_controller extends umgtbaseController
+   class umgt_remfromgroup_controller extends umgt_base_controller
    {
 
       function transformContent(){
 
          $Form__Group = &$this->__getForm('Group');
          $groupField = &$Form__Group->getFormElementByName('Groups');
-         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         $uM = &$this->getManager();
          $userid = RequestHandler::getValue('userid');
          $user = $uM->loadUserbyId($userid);
          $groups = $uM->loadGroupsWithUser($user);

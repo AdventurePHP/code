@@ -21,6 +21,7 @@
 
    import('modules::usermanagement::biz','DefaultPasswordHashProvider');
    import('modules::genericormapper::data','GenericDomainObject');
+   import('modules::genericormapper::data','GenericCriterionObject');
     
    /**
     * @package modules::usermanagement::biz
@@ -1390,17 +1391,17 @@
       }
 
       /**
-      *  @public
-      *
-      *  Removes users from a given group.
-      *
-      *  @param GenericDomainObject[] $users a list of users
-      *  @param GenericDomainObject $group the desired group
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 27.12.2008<br />
-      */
+       * @public
+       *
+       * Removes users from a given group.
+       *
+       * @param GenericDomainObject[] $users a list of users
+       * @param GenericDomainObject $group the desired group
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 27.12.2008<br />
+       */
       public function detachUsersFromGroup($users,$group){
 
          for($i = 0; $i < count($users); $i++){
@@ -1409,6 +1410,353 @@
          }
 
        // end function
+      }
+
+      /**
+       * @public
+       *
+       * Creates a visibility definition relating an application proxy object to the users and
+       * groups, that should have access to the object.
+       *
+       * @param GenericDomainObject $visibilityType The visibility type (object type of application's the target object).
+       * @param GenericDomainObject $visibilityDefinition The visibility definition (object id of application's the target object).
+       * @param GenericDomainObject[] $users The list of users, that should have visibility permissions on the given application object.
+       * @param GenericDomainObject[] $groups The list of groups, that should have visibility permissions on the given application object.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 26.05.2010<br />
+       */
+      public function createVisibilityDefinition(GenericDomainObject $visibilityType, GenericDomainObject $visibilityDefinition, $users = array(), $groups = array()){
+
+         $orm = &$this->__getORMapper();
+
+         // try to reuse existing visibility definitions having the same
+         // combination of proxy + type!
+         $crit = new GenericCriterionObject();
+         $crit->addPropertyIndicator('AppObjectId',$visibilityDefinition->getProperty('AppObjectId'));
+         $crit->addRelationIndicator('AppProxy2AppProxyType',$visibilityType);
+         $storedVisibilityDefinition = $orm->loadObjectByCriterion('AppProxy',$crit);
+         if($storedVisibilityDefinition != null){
+            $visibilityDefinition = $storedVisibilityDefinition;
+         }
+
+         // append proxy to current application
+         $app = $this->__getCurrentApplication();
+         $visibilityDefinition->addRelatedObject('Application2AppProxy',$app);
+
+         // create domain structure
+         $visibilityDefinition->addRelatedObject('AppProxy2AppProxyType',$visibilityType);
+
+         foreach($users as $id => $DUMMY){
+            $visibilityDefinition->addRelatedObject('AppProxy2User',$users[$id]);
+         }
+         foreach($groups as $id => $group){
+            $visibilityDefinition->addRelatedObject('AppProxy2Group',$groups[$id]);
+         }
+
+         // save domain structure
+         return $orm->saveObject($visibilityDefinition);
+
+      }
+
+      public function deleteVisibilityDefinition(GenericDomainObject $visibilityDefinition){
+         $this->__getORMapper()->deleteObject($visibilityDefinition);
+      }
+
+      /**
+       * @public
+       *
+       * Revokes access of the passed users to the given application proxy object.
+       *
+       * @param GenericDomainObject $visibilityDefinition The application proxy object.
+       * @param GenericDomainObject[] $users A list of users, that should be revoked access to the given application proxy.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.06.2010<br />
+       */
+      public function detachUsersFromVisibilityDefinition(GenericDomainObject $visibilityDefinition,$users){
+         $orm = &$this->__getORMapper();
+         foreach($users as $user){
+            $orm->deleteAssociation('AppProxy2User',$visibilityDefinition,$user);
+         }
+      }
+
+      /**
+       * @public
+       *
+       * Revokes access of the passed groups to the given application proxy object.
+       *
+       * @param GenericDomainObject $visibilityDefinition The application proxy object.
+       * @param GenericDomainObject[] $groups A list of groups, that should be revoked access to the given application proxy.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.06.2010<br />
+       */
+      public function detachGroupsFromVisibilityDefinition(GenericDomainObject $visibilityDefinition,$groups){
+         $orm = &$this->__getORMapper();
+         foreach($groups as $group){
+            $orm->deleteAssociation('AppProxy2Group',$visibilityDefinition,$group);
+         }
+      }
+
+      public function attachUsers2VisibilityDefinition(GenericDomainObject $visibilityDefinition,$users){
+         $orm = &$this->__getORMapper();
+         foreach($users as $user){
+            $orm->createAssociation('AppProxy2User',$visibilityDefinition,$user);
+         }
+      }
+
+      public function attachGroups2VisibilityDefinition(GenericDomainObject $visibilityDefinition,$groups){
+         $orm = &$this->__getORMapper();
+         foreach($groups as $group){
+            $orm->createAssociation('AppProxy2Group',$visibilityDefinition,$group);
+         }
+      }
+
+      /**
+       * @return GenericDomainObject[] The list of visibility definitions for the current application.
+       */
+      public function getPagedVisibilityDefinitionList(){
+         $app = $this->__getCurrentApplication();
+         return $this->__getORMapper()->loadRelatedObjects($app,'Application2AppProxy');
+      }
+
+      /**
+       * @public
+       *
+       * Loads the list of users, that have visibility permissions on the given proxy object.
+       *
+       * @param GenericDomainObject $proxy The proxy object.
+       * @return GenericDomainObject[] The list of users, that have visibility permission.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 08.05.2010<br />
+       */
+      public function loadUsersWithVisibilityDefinition(GenericDomainObject $proxy){
+         return $this->__getORMapper()->loadRelatedObjects($proxy,'AppProxy2User');
+      }
+      
+      /**
+       * @public
+       *
+       * Loads the list of groups, that have visibility permissions on the given proxy object.
+       *
+       * @param GenericDomainObject $proxy The proxy object.
+       * @return GenericDomainObject[] The list of groups, that have visibility permission.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 08.05.2010<br />
+       */
+      public function loadGroupsWithVisibilityDefinition(GenericDomainObject $proxy){
+         return $this->__getORMapper()->loadRelatedObjects($proxy,'AppProxy2Group');
+      }
+
+      /**
+       * @public
+       *
+       * Loads a mixed list of users and groups, that have access to a given proxy.
+       * Sorts the result according to the display name of the user and group.
+       *
+       * @param GenericDomainObject $proxy The proxy the users and groups have access to.
+       * @return GenericDomainObject[] A mixed list of users and groups, that have access to a given proxy.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 04.06.2010<br />
+       */
+      public function loadUsersAndGroupsWithVisibilityDefinition(GenericDomainObject $proxy){
+         return array_merge(
+                 $this->loadUsersWithVisibilityDefinition($proxy),
+                 $this->loadGroupsWithVisibilityDefinition($proxy)
+         );
+      }
+
+      /**
+       * @public
+       *
+       * Loads the list of users, that do not have visibility permissions on the given application proxy.
+       *
+       * @param GenericDomainObject $visibilityDefinition The appropriate visibility definition.
+       * @return GenericDomainObject[] The users, that do not have visibility permissions in the given object.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 04.06.2010<br />
+       */
+      public function loadUsersNotWithVisibilityPermissions(GenericDomainObject $visibilityDefinition){
+         
+         $orm = &$this->__getORMapper();
+
+         $crit = new GenericCriterionObject();
+         $app = $this->__getCurrentApplication();
+         $crit->addRelationIndicator('Application2User',$app);
+
+         return $orm->loadNotRelatedObjects($visibilityDefinition,'AppProxy2User',$crit);
+
+      }
+
+      /**
+       * @public
+       *
+       * Loads the list of groups, that do not have visibility permissions on the given application proxy.
+       *
+       * @param GenericDomainObject $visibilityDefinition The appropriate visibility definition.
+       * @return GenericDomainObject[] The groups, that do not have visibility permissions in the given object.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 04.06.2010<br />
+       */
+      public function loadGroupsNotWithVisibilityPermissions(GenericDomainObject $visibilityDefinition){
+
+         $orm = &$this->__getORMapper();
+
+         $crit = new GenericCriterionObject();
+         $app = $this->__getCurrentApplication();
+         $crit->addRelationIndicator('Application2Group',$app);
+
+         return $orm->loadNotRelatedObjects($visibilityDefinition,'AppProxy2Group',$crit);
+         
+      }
+
+      /**
+       * @public
+       *
+       * Loads the list of proxies for the given proxy type.
+       *
+       * @param GenericDomainObject $type The proxy type.
+       * @return GenericDomainObject[] A list of proxy objects beeing associated to the given proxy type.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 08.05.2010<br />
+       */
+      public function loadProxies(GenericDomainObject $type){
+         return $this->__getORMapper()->loadRelatedObjects($type,'AppProxy2AppProxyType');
+      }
+
+      public function loadProxyById($id){
+         return $this->__getORMapper()->loadObjectByID('AppProxy',$id);
+      }
+
+      /**
+       * @public
+       *
+       * Saves a proxy type used to categorize a proxy object.
+       *
+       * @param GenericDomainObject $proxyType The proxy type to save.
+       * @return int The id of the proxy type.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 30.04.2010<br />
+       */
+      public function saveProxyType(&$proxyType){
+         $oRM = &$this->__getORMapper();
+         $app = $this->__getCurrentApplication();
+         $proxyType->addRelatedObject('Application2AppProxyType',$app);
+         // save the permission and return it's id
+         return $oRM->saveObject($proxyType);
+      }
+
+      /**
+       * @public
+       *
+       * Recursively deletes the proxy type and it's decendants (proxies + associations).
+       *
+       * @param GenericDomainObject $proxyType The proxy type to delete.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 08.05.2010<br />
+       */
+      public function deleteProxyType(GenericDomainObject $proxyType){
+         $proxies = $this->loadProxies($proxyType);
+         $orm = &$this->__getORMapper();
+         foreach($proxies as $proxy){
+            $orm->deleteObject($proxy);
+         }
+         $orm->deleteObject($proxyType);
+      }
+
+      /**
+       * @public
+       *
+       * Returns a proxy type object specified by the given id.
+       *
+       * @param int $id The id of the proxy type.
+       * @return GenericDomainObject The desired proxy type.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.04.2010<br />
+       */
+      public function loadProxyTypeById($id){
+         return $this->__getORMapper()->loadObjectByID('AppProxyType',$id);
+      }
+
+      /**
+       * @public
+       *
+       * Returns the type associated to the given application proxy object.
+       *
+       * @param GenericDomainObject $proxy The proxy object to load the type of.
+       * @return GenericDomainObject The desired proxy type.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.06.2010<br />
+       */
+      public function loadProxyType(GenericDomainObject $proxy){
+         $crit = new GenericCriterionObject();
+         $crit->addRelationIndicator('AppProxy2AppProxyType',$proxy);
+         return $this->__getORMapper()->loadObjectByCriterion('AppProxyType',$crit);
+      }
+
+      /**
+       * @public
+       * 
+       * Returns a list of proxy type objects. They represent a certain 
+       * data type (=class) within the application the user management
+       * module is integrated in. Managing visibility, proxy types in
+       * conjunction with proxy objects for the dedicated objects of the
+       * desired type must be created.
+       *
+       * @return GenericDomainObject[] List of proxy types.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.04.2010<br />
+       */
+      public function loadProxyTypes(){
+         $crit = new GenericCriterionObject();
+         $crit->addOrderIndicator('AppObjectName');
+         $orm = &$this->__getORMapper();
+         return $orm->loadObjectListByCriterion('AppProxyType',$crit);
+      }
+
+      /**
+       * @public
+       *
+       * Returns the configured instance of the generic o/r mapper the usermanagement
+       * business component is currently using.
+       * <p/>
+       * This can be used to directly query the usermanagement database in cases, the
+       * UmgtManager is missing a special feature.
+       *
+       * @return GenericORRelationMapper The instance of the GORM.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 23.04.2010<br />
+       */
+      public function &getORMapper(){
+         return $this->__getORMapper();
       }
 
     // end class

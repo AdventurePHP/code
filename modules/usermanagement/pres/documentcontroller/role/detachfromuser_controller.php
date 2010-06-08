@@ -21,7 +21,7 @@
 
    import('modules::usermanagement::biz','umgtManager');
    import('tools::request','RequestHandler');
-   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
 
 
@@ -35,7 +35,7 @@
    *  @version
    *  Version 0.1, 27.12.2008<br />
    */
-   class umgt_detachfromuser_controller extends umgtbaseController
+   class umgt_detachfromuser_controller extends umgt_base_controller
    {
 
       function transformContent(){
@@ -46,7 +46,7 @@
          // initialize the form
          $Form__User = &$this->__getForm('User');
          $user = &$Form__User->getFormElementByName('User');
-         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         $uM = &$this->getManager();
          $role = $uM->loadRoleByID($roleid);
          $users = $uM->loadUsersWithRole($role);
          $count = count($users);

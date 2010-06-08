@@ -1,0 +1,20 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::proxy" file="type_edit_controller" class="umgt_type_edit_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<p>Please change the name of the visibility type as desired:</p>
+<html:form name="add" method="post">
+   <form:error>
+      <div class="error-cont">
+         Please choose a different visbility name.
+      </div>
+   </form:error>
+   <label for="proxytypename">Visibility type name:</label>
+   <form:text id="proxytypename" name="proxytypename" class="formfield" maxlength="100" style="width: 200px;"/>
+   <form:addvalidator
+      control="proxytypename"
+      button="send"
+      class="TextLengthValidator"
+   />
+   <br />
+   <br />
+   <form:button name="send" value="Save" class="formfield"/>
+</html:form>

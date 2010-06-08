@@ -20,7 +20,7 @@
     */
 
    import('modules::usermanagement::biz','umgtManager');
-   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
 
    /**
     * @package modules::usermanagement::pres::documentcontroller
@@ -32,23 +32,23 @@
     * @version
     * Version 0.1, 26.12.2008<br />
     */
-   class umgt_list_controller extends umgtbaseController {
+   class umgt_list_controller extends umgt_base_controller {
 
       function transformContent(){
 
-         $T = &Singleton::getInstance('BenchmarkTimer');
-         $T->start('getPagedUserList()');
-         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $t->start('getPagedUserList()');
+         $uM = &$this->getManager();
          $userList = $uM->getPagedUserList();
-         $T->stop('getPagedUserList()');
+         $t->stop('getPagedUserList()');
 
          $buffer = '';
-         $template = $this->__getTemplate('ListUser');
+         $template = $this->__getTemplate('User');
          foreach($userList as $user){
             $template->setPlaceHolder('FirstName',$user->getProperty('FirstName'));
             $template->setPlaceHolder('LastName',$user->getProperty('LastName'));
             $template->setPlaceHolder('Username',$user->getProperty('Username'));
-            $userid = $user->getProperty('UserID');
+            $userid = $user->getObjectId();
             $template->setPlaceHolder('LinkUserDetails',$this->__generateLink(array('mainview' => 'user','userview' => 'details','userid' => $userid)));
             $template->setPlaceHolder('LinkUserEdit',$this->__generateLink(array('mainview' => 'user','userview' => 'edit','userid' => $userid)));
             $template->setPlaceHolder('LinkUserDelete',$this->__generateLink(array('mainview' => 'user','userview' => 'delete','userid' => $userid)));
@@ -58,7 +58,7 @@
           // end foreach
          }
 
-         $this->setPlaceHolder('TemplateUserList', $buffer);
+         $this->setPlaceHolder('UserList',$buffer);
 
        // end function
       }

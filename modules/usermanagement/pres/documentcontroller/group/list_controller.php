@@ -32,13 +32,13 @@
    *  @version
    *  Version 0.1, 27.12.2008<br />
    */
-   class umgt_list_controller extends umgtbaseController
+   class umgt_list_controller extends umgt_base_controller
    {
 
       function transformContent(){
 
          // load group list
-         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         $uM = &$this->getManager();
          $GroupList = $uM->getPagedGroupList();
 
          // display group list

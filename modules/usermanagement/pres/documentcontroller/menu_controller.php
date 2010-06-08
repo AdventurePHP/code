@@ -19,7 +19,7 @@
     * -->
     */
 
-   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
 
    /**
     * @package modules::usermanagement::pres::documentcontroller
@@ -31,7 +31,7 @@
     * @version
     * Version 0.1, 28.12.2008<br />
     */
-   class umgt_menu_controller extends umgtbaseController {
+   class umgt_menu_controller extends umgt_base_controller {
 
       /**
        * @public
@@ -46,7 +46,7 @@
       function transformContent(){
 
          // define the general param exclusion array
-         $generalExclusion = array('userid' => '','groupid' => '','roleid' => '','permissionsetid' => '','permissionid' => '');
+         $generalExclusion = array('userid' => '','groupid' => '','roleid' => '','permissionsetid' => '','permissionid' => '','proxyid' => '');
 
          // display the links
          $this->setPlaceHolder('home',$this->__generateLink(array_merge($generalExclusion,array('mainview' => '','userview' => '','groupview' => '','roleview' => '','permissionsetview' => '','permissionview' => ''))));
@@ -55,6 +55,7 @@
          $this->setPlaceHolder('manage_roles',$this->__generateLink(array_merge($generalExclusion,array('mainview' => 'role','roleview' => ''))));
          $this->setPlaceHolder('manage_permissionsets',$this->__generateLink(array_merge($generalExclusion,array('mainview' => 'permissionset','permissionsetview' => ''))));
          $this->setPlaceHolder('manage_permissions',$this->__generateLink(array_merge($generalExclusion,array('mainview' => 'permission','permissionview' => ''))));
+         $this->setPlaceHolder('manage_proxies',$this->__generateLink(array_merge($generalExclusion,array('mainview' => 'proxy','proxyview' => ''))));
 
        // end function
       }

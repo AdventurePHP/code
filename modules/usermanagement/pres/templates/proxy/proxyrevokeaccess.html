@@ -1,0 +1,13 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::proxy" file="revoke_access_controller" class="umgt_revoke_access_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<p>
+   Should the <html:placeholder name="object_type" /> <strong><html:placeholder name="displayname" /></strong> 
+   not have any access to visibility definition with id <strong><html:placeholder name="proxyid" /></strong> 
+   (type: <em><html:placeholder name="proxytype" /></em>)?
+</p>
+<html:form name="RevokeNo" method="post">
+  <form:button name="No" value="No" class="formfield"/>
+</html:form>
+<html:form name="RevokeYes" method="post">
+  <form:button name="Yes" value="Yes" class="formfield"/>
+</html:form>

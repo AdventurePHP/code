@@ -19,7 +19,7 @@
    *  -->
    */
 
-   import ('modules::usermanagement::pres::documentcontroller', 'umgtbaseController');
+   import ('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
 
 
    /**
@@ -32,7 +32,7 @@
    *  @version
    *  Version 0.1, 28.12.2008<br />
    */
-   class umgt_group_controller extends umgtbaseController
+   class umgt_group_controller extends umgt_base_controller
    {
 
       function transformContent(){

@@ -1,0 +1,29 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::proxy" file="proxy_details_controller" class="umgt_proxy_details_controller" @>
+<p>
+   The following list presents the visibility objects stored for the visibility definition with
+   object id <strong><html:placeholder name="appobjectid" /></strong> (type: 
+   <em><html:placeholder name="appproxytype" /></em>).
+</p>
+<table class="vis-def">
+   <thead>
+      <tr>
+         <td>User / group</td>
+         <td>Actions</td>
+      </tr>
+   </thead>
+   <tbody>
+      <html:placeholder name="list" />
+   </tbody>
+</table>
+<html:template name="listitem">
+   <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+   <tr>
+      <td>
+         <umgt:media />
+         <template:placeholder name="item" />
+      </td>
+      <td>
+         <a href="<template:placeholder name="delete_link"/>" title="Revoke access to user/group"><umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Revoke access to user/group" /></a>
+      </td>
+   </tr>
+</html:template>

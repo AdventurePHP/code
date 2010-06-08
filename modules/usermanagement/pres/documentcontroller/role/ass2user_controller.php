@@ -21,7 +21,7 @@
 
    import('modules::usermanagement::biz','umgtManager');
    import('tools::request','RequestHandler');
-   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
 
 
@@ -36,7 +36,7 @@
    *  Version 0.1, 27.12.2008<br />
    *  Version 0.2, 29.12.2008 (Applied API change of the usermanagement manager)<br />
    */
-   class umgt_ass2user_controller extends umgtbaseController
+   class umgt_ass2user_controller extends umgt_base_controller
    {
 
       /**
@@ -56,7 +56,7 @@
          // initialize the form
          $Form__User = &$this->__getForm('User');
          $user = &$Form__User->getFormElementByName('User');
-         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         $uM = &$this->getManager();
          $role = $uM->loadRoleById($roleid);
          $users = $uM->loadUsersNotWithRole($role);
          $count = count($users);

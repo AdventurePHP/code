@@ -1,7 +1,7 @@
 <@controller namespace="modules::usermanagement::pres::documentcontroller" file="user_controller" class="umgt_user_controller" @>
-<a href="<html:placeholder name="manage_user" />" title="User list" class="menu_links">User list</a>
-&nbsp;|&nbsp;
-<a href="<html:placeholder name="user_add" />" title="Add user" class="menu_links">Add user</a>
-<br />
-<br />
+<div class="umgt-menu">
+   <a href="<html:placeholder name="manage_user" />" title="User list" class="menu_links">User list</a>
+   &nbsp;|&nbsp;
+   <a href="<html:placeholder name="user_add" />" title="Add user" class="menu_links">Add user</a>
+</div>
 <core:importdesign namespace="modules::usermanagement::pres::templates::user" template="[userview = list]" incparam="userview" />

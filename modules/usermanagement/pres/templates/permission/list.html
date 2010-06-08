@@ -1,12 +1,16 @@
 <@controller namespace="modules::usermanagement::pres::documentcontroller::permission" file="list_controller" class="umgt_list_controller" @>
-<table cellpadding="3" cellspacing="0" border="0">
-  <tr style="font-weight: bold; background-color: #eeeeee;">
-    <td>Display name</td>
-    <td>Name</td>
-    <td>Value</td>
-    <td>Action</td>
-  </tr>
-  <html:placeholder name="ListPermissions" />
+<table class="vis-def">
+   <thead>
+      <tr>
+         <td>Display name</td>
+         <td>Name</td>
+         <td>Value</td>
+         <td>Action</td>
+      </tr>
+   </thead>
+   <tbody>
+      <html:placeholder name="ListPermissions" />
+   </tbody>
 </table>
 <html:template name="Permission">
   <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />

@@ -20,7 +20,7 @@
    */
 
    import('modules::usermanagement::biz','umgtManager');
-   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
 
 
    /**
@@ -33,12 +33,12 @@
    *  @version
    *  Version 0.1, 28.12.2008<br />
    */
-   class umgt_list_controller extends umgtbaseController
+   class umgt_list_controller extends umgt_base_controller
    {
 
       function transformContent(){
 
-         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         $uM = &$this->getManager();
          $permissionSetList = $uM->getPagedPermissionSetList();
          $buffer = (string)'';
          $template = &$this->__getTemplate('PermissionSet');

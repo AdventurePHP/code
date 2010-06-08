@@ -1,16 +1,19 @@
 <@controller namespace="modules::usermanagement::pres::documentcontroller::user" file="list_controller" class="umgt_list_controller" @>
-<table cellpadding="3" cellspacing="0" border="0">
-  <tr style="font-weight: bold; background-color: #eeeeee;">
-    <td>First name</td>
-    <td>Last name</td>
-    <td>Username</td>
-    <td>Action</td>
-  </tr>
-  <html:placeholder name="UserList" />
-  <html:placeholder name="TemplateUserList" />
+<table class="vis-def">
+   <thead>
+      <tr>
+         <td>First name</td>
+         <td>Last name</td>
+         <td>Username</td>
+         <td>Action</td>
+      </tr>
+   </thead>
+   <tbody>
+      <html:placeholder name="UserList" />
+   </tbody>
 </table>
 
-<html:template name="ListUser">
+<html:template name="User">
   <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
   <tr>
     <td><template:placeholder name="FirstName" /></td>

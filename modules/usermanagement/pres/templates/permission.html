@@ -1,7 +1,7 @@
 <@controller namespace="modules::usermanagement::pres::documentcontroller" file="permission_controller" class="umgt_permission_controller" @>
-<a href="<html:placeholder name="manage_permissions" />" title="Permission list" class="menu_links">Permission list</a>
-&nbsp;|&nbsp;
-<a href="<html:placeholder name="permission_add" />" title="Add permission" class="menu_links">Add permission</a>
-<br />
-<br />
+<div class="umgt-menu">
+   <a href="<html:placeholder name="manage_permissions" />" title="Permission list" class="menu_links">Permission list</a>
+   &nbsp;|&nbsp;
+   <a href="<html:placeholder name="permission_add" />" title="Add permission" class="menu_links">Add permission</a>
+</div>
 <core:importdesign namespace="modules::usermanagement::pres::templates::permission" template="[permissionview = list]" incparam="permissionview" />

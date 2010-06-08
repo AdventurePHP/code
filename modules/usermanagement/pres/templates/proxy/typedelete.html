@@ -1,0 +1,16 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::proxy" file="type_delete_controller" class="umgt_type_delete_controller" @>
+<p>
+   Should the visibility type <strong><html:placeholder name="name" /></strong> really be deleted?
+</p>
+<div class="umgt-warn">
+   Deleting a visibility object type includes removing all visibility definitions that were
+   created using this type! Please note, that the visibility definitions cannot be restored
+   automatically.
+</div>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<html:form name="ProxyTypeDelNo" method="post">
+  <form:button name="No" value="No" class="formfield"/>
+</html:form>
+<html:form name="ProxyTypeDelYes" method="post">
+  <form:button name="Yes" value="Yes" class="formfield"/>
+</html:form>

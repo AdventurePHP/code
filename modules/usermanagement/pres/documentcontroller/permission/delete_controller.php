@@ -20,7 +20,7 @@
    */
 
    import('modules::usermanagement::biz','umgtManager');
-   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
    import('tools::request','RequestHandler');
 
@@ -35,13 +35,13 @@
    *  @version
    *  Version 0.1, 27.12.2008<br />
    */
-   class umgt_delete_controller extends umgtbaseController
+   class umgt_delete_controller extends umgt_base_controller
    {
 
       function transformContent(){
 
          $permissionid = RequestHandler::getValue('permissionid');
-         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         $uM = &$this->getManager();
          $Permission = $uM->loadPermissionByID($permissionid);
          $this->setPlaceHolder('DisplayName',$Permission->getProperty('DisplayName'));
 

@@ -21,7 +21,7 @@
 
    import('modules::usermanagement::biz','umgtManager');
    import('tools::request','RequestHandler');
-   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
 
 
@@ -35,7 +35,7 @@
    *  @version
    *  Version 0.1, 27.12.2008<br />
    */
-   class umgt_useradd_controller extends umgtbaseController
+   class umgt_useradd_controller extends umgt_base_controller
    {
 
       /**
@@ -54,7 +54,7 @@
          $Form__User = &$this->__getForm('User');
          $user = &$Form__User->getFormElementByName('User');
          $groupid = RequestHandler::getValue('groupid');
-         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         $uM = &$this->getManager();
          $group = $uM->loadGroupById($groupid);
          $users = $uM->loadUsersNotWithGroup($group);
          $count = count($users);

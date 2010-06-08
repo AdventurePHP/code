@@ -1,8 +1,8 @@
 <@controller namespace="modules::usermanagement::pres::documentcontroller::user" file="delete_controller" class="umgt_delete_controller" @>
-Should the user <strong><html:placeholder name="DisplayName" /></strong> really be deleted?
-<br />
-<br />
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<p>
+   Should the user <strong><html:placeholder name="DisplayName" /></strong> really be deleted?
+</p>
 <html:form name="UserDelNo" method="post">
   <form:button name="No" value="No" class="formfield"/>
 </html:form>

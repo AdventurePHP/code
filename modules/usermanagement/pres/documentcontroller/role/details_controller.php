@@ -21,26 +21,24 @@
 
    import('tools::request','RequestHandler');
    import('modules::usermanagement::biz','umgtManager');
-   import('tools::html::taglib::documentcontroller','iteratorBaseController');
-
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
 
    /**
-   *  @package modules::usermanagement::pres::documentcontroller
-   *  @class umgt_details_controller
-   *
-   *  Implements the controller to list the existing roles.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 27.12.2008<br />
-   */
-   class umgt_details_controller extends iteratorBaseController
-   {
+    * @package modules::usermanagement::pres::documentcontroller
+    * @class umgt_details_controller
+    *
+    * Implements the controller to list the existing roles.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.12.2008<br />
+    */
+   class umgt_details_controller extends umgt_base_controller {
 
-      function transformContent(){
+      public function transformContent(){
 
          // load data
-         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         $uM = &$this->getManager();
          $roleid = RequestHandler::getValue('roleid');
          $role = $uM->loadRoleByID($roleid);
 

@@ -9,10 +9,21 @@
          border: 1px solid #000000;
          background-color: #eeeeee;
       }
-      .font_header {
+      .umgt-header {
          font-size: 28px;
          font-weight: bolder;
          color: #bbbbbb;
+         margin-bottom: .5em;
+      }
+      .umgt-menu {
+         margin-bottom: 1em;
+      }
+      .umgt-warn {
+         border: 2px solid orange;
+         padding: 10px;
+         color: orange;
+         font-weight: bold;
+         background: #efefef;
       }
       body {
          background-color: white;
@@ -92,20 +103,52 @@
          font-weight: bold;
          text-decoration: underline;
       }
+      .apf-form-error {
+         border: 2px solid red;
+      }
+      .error-cont {
+         margin: 5px;
+         padding: 5px;
+         border: 2px solid red;
+         background-color: #eeeeee;
+      }
+      form label {
+         display: block;
+      }
+      form input[type=submit] {
+         display: block;
+         margin-top: 20px;
+      }
+      table.vis-def {
+         border: 0px solid gray;
+      }
+      table.vis-def td {
+         padding: 4px;
+         vertical-align: top;
+      }
+      table.vis-def td img {
+         position: relative;
+         top: 4px;
+      }
+      table.vis-def tbody td {
+         border-bottom: 1px solid gray;
+      }
+      table.vis-def thead {
+         background-color: #cccccc;
+         font-weight: bold;
+      }
+      table.vis-def ul {
+         list-style-type: none;
+         margin: 0;
+         padding: 0;
+      }
   </style>
 </head>
 <body>
-  <font class="font_header">Usermanagement backend</font>
-  <br />
-  <br />
+  <h1 class="umgt-header">Usermanagement backend</h1>
 
-  <!-- Menu -->
   <core:importdesign namespace="modules::usermanagement::pres::templates" template="menu" />
 
-  <br />
-  <br />
-
-  <!-- Content -->
   <core:importdesign namespace="modules::usermanagement::pres::templates" template="[mainview = start]" incparam="mainview" />
 
 </body>

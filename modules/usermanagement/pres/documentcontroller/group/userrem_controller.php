@@ -1,50 +1,48 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('modules::usermanagement::biz','umgtManager');
    import('tools::request','RequestHandler');
-   import('modules::usermanagement::pres::documentcontroller','umgtbaseController');
+   import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
 
-
    /**
-   *  @package modules::usermanagement::pres::documentcontroller
-   *  @class umgt_userrem_controller
-   *
-   *  Implements the controller to remove a user from a group.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 26.12.2008<br />
-   */
-   class umgt_userrem_controller extends umgtbaseController
-   {
+    * @package modules::usermanagement::pres::documentcontroller
+    * @class umgt_userrem_controller
+    *
+    * Implements the controller to remove a user from a group.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.12.2008<br />
+    */
+   class umgt_userrem_controller extends umgt_base_controller {
 
-      function transformContent(){
+      public function transformContent(){
 
          // initialize the form
          $Form__User = &$this->__getForm('User');
          $user = &$Form__User->getFormElementByName('User');
          $groupid = RequestHandler::getValue('groupid');
-         $uM = &$this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         $uM = &$this->getManager();
          $group = $uM->loadGroupById($groupid);
          $users = $uM->loadUsersWithGroup($group);
          $count = count($users);
@@ -68,13 +66,19 @@
 
             $options = &$user->getSelectedOptions();
 
-            $userIDs = array();
+            $users = array();
             for($i = 0; $i < count($options); $i++){
-               $userIDs[] = $options[$i]->getAttribute('value');
+               $user = new GenericDomainObject('User');
+               $user->setProperty('UserID',$options[$i]->getAttribute('value'));
+               $users[] = $user;
+               unset($user);
              // end for
             }
 
-            $uM->removeUsersFromGroup($userIDs,$groupid);
+            $group = new GenericDomainObject('Group');
+            $group->setProperty('GroupID',$groupid);
+
+            $uM->detachUsersFromGroup($users,$group);
             HeaderManager::forward($this->__generateLink(array('mainview' => 'group', 'groupview' => '')));
 
           // end if
