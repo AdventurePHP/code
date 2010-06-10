@@ -19,7 +19,6 @@
     * -->
     */
 
-   import('modules::usermanagement::biz','umgtManager');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
    import('tools::request','RequestHandler');
@@ -36,7 +35,7 @@
     */
    class umgt_edit_controller extends umgt_base_controller {
 
-      function transformContent(){
+      public function transformContent(){
 
          // get current permission id
          $permissionid = RequestHandler::getValue('permissionid');

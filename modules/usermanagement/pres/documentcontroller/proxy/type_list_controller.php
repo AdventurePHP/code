@@ -39,7 +39,7 @@
          $buffer = (string)'';
          $template = &$this->__getTemplate('Type');
 
-         $list = $uM->loadProxyTypes();
+         $list = $uM->loadVisibilityDefinitionTypes();
          foreach($list as $id => $DUMMY){
             $template->setPlaceHolder('AppObjectName',$list[$id]->getProperty('AppObjectName'));
 

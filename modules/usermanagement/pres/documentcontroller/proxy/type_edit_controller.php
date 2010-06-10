@@ -40,7 +40,7 @@
             $proxyType->setProperty('AppProxyTypeID',$proxyTypeId);
             $proxyType->setProperty('AppObjectName',$proxyName->getAttribute('value'));
             try {
-               $uM->saveProxyType($proxyType);
+               $uM->saveVisibilityDefinitionType($proxyType);
                HeaderManager::forward($this->__generateLink(array('mainview' => 'proxy','proxyview' => 'typelist')));
             } catch(DatabaseHandlerException $dhe) {
                // mark field as invalid
@@ -52,7 +52,7 @@
 
          }
          else {
-            $proxyType = $uM->loadProxyTypeById($proxyTypeId);
+            $proxyType = $uM->loadVisibilityDefinitionTypeById($proxyTypeId);
             $name = &$form->getFormElementByName('proxytypename');
             $name->setAttribute('value',$proxyType->getProperty('AppObjectName'));
          }

@@ -25,7 +25,7 @@
     * @package modules::usermanagement::biz
     * @class DefaultPasswordHashProvider
     *
-    * Implements the default password hash provider for the umgtManager.
+    * Implements the default password hash provider for the UmgtManager.
     * See interface description for details on the functionility.
     *
     * @author Christian Achatz

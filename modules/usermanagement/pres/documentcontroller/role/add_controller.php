@@ -19,7 +19,6 @@
     * -->
     */
 
-   import('modules::usermanagement::biz','umgtManager');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
 
@@ -33,25 +32,24 @@
     * @version
     * Version 0.1, 27.12.2008<br />
     */
-   class umgt_add_controller extends umgt_base_controller
-   {
+   class umgt_add_controller extends umgt_base_controller {
 
-      function transformContent(){
+      public function transformContent(){
 
-         $Form__Add = &$this->__getForm('RoleAdd');
-         if($Form__Add->isSent() == true && $Form__Add->isValid() == true){
+         $form = &$this->__getForm('RoleAdd');
+         if($form->isSent() == true && $form->isValid() == true){
 
             $uM = &$this->getManager();
             $role = new GenericDomainObject('Role');
 
-            $displayName = &$Form__Add->getFormElementByName('DisplayName');
+            $displayName = &$form->getFormElementByName('DisplayName');
             $role->setProperty('DisplayName',$displayName->getAttribute('value'));
             $uM->saveRole($role);
             HeaderManager::forward($this->__generateLink(array('mainview' => 'role','roleview' => '','roleid' => '')));
 
           // end else
          }
-         $Form__Add->transformOnPlace();
+         $form->transformOnPlace();
 
        // end function
       }

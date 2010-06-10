@@ -20,7 +20,6 @@
     */
 
    import('tools::request','RequestHandler');
-   import('modules::usermanagement::biz','umgtManager');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
 
    /**

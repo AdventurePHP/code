@@ -35,11 +35,11 @@
 
          $uM = &$this->getManager();
          $proxyTypeId = RequestHandler::getValue('proxytypeid');
-         $proxyType = $uM->loadProxyTypeById($proxyTypeId);
+         $proxyType = $uM->loadVisibilityDefinitionTypeById($proxyTypeId);
 
          if($formNo->isSent() || $formYes->isSent()){
             if($formYes->isSent()){
-               $uM->deleteProxyType($proxyType);
+               $uM->deleteVisibilityDefinitionType($proxyType);
             }
             HeaderManager::redirect($this->__generateLink(array('mainview' => 'proxy','proxyview' => 'typelist', 'proxytypeid' => null)));
             return;

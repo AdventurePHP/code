@@ -19,7 +19,6 @@
     * -->
     */
 
-   import('modules::usermanagement::biz','umgtManager');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
 
    /**
@@ -34,7 +33,7 @@
     */
    class umgt_list_controller extends umgt_base_controller {
 
-      function transformContent(){
+      public function transformContent(){
 
          $t = &Singleton::getInstance('BenchmarkTimer');
          $t->start('getPagedUserList()');

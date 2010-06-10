@@ -19,7 +19,6 @@
     * -->
     */
 
-   import('modules::usermanagement::biz','umgtManager');
    import('tools::request','RequestHandler');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
@@ -34,10 +33,9 @@
     * @version
     * Version 0.1, 27.12.2008<br />
     */
-   class umgt_add_controller extends umgt_base_controller
-   {
+   class umgt_add_controller extends umgt_base_controller  {
 
-      function transformContent(){
+      public function transformContent(){
 
          $uM = &$this->getManager();
 

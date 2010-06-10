@@ -19,7 +19,6 @@
     * -->
     */
 
-   import('modules::usermanagement::biz','umgtManager');
    import('tools::request','RequestHandler');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');

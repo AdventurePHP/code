@@ -34,8 +34,8 @@
          $proxyIdControl->setAttribute('value',$proxyId);
 
          $uM = &$this->getManager();
-         $proxy = $uM->loadProxyById($proxyId);
-         $proxyType = $uM->loadProxyType($proxy);
+         $proxy = $uM->loadVisibilityDefinitionById($proxyId);
+         $proxyType = $uM->loadVisibilityDefinitionType($proxy);
 
          $this->setPlaceHolder('AppObjectId',$proxy->getProperty('AppObjectId'));
          $this->setPlaceHolder('ProxyType',$proxyType->getProperty('AppObjectName'));

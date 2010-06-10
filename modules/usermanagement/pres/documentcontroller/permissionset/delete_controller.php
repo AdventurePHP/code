@@ -19,26 +19,23 @@
    *  -->
    */
 
-   import('modules::usermanagement::biz','umgtManager');
    import('tools::request','RequestHandler');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
 
-
    /**
-   *  @package modules::usermanagement::pres::documentcontroller
-   *  @class umgt_delete_controller
-   *
-   *  Implements the controller to delete a permission set.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 27.12.2008<br />
-   */
-   class umgt_delete_controller extends umgt_base_controller
-   {
+    * @package modules::usermanagement::pres::documentcontroller
+    * @class umgt_delete_controller
+    *
+    * Implements the controller to delete a permission set.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.12.2008<br />
+    */
+   class umgt_delete_controller extends umgt_base_controller {
 
-      function transformContent(){
+      public function transformContent(){
 
          // get current permission set id
          $permissionSetId = RequestHandler::getValue('permissionsetid');

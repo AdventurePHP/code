@@ -22,6 +22,7 @@
    import('tools::link','FrontcontrollerLinkHandler');
    import('modules::genericormapper::data','GenericDomainObject');
    import('tools::html::taglib::documentcontroller','iteratorBaseController');
+   import('modules::usermanagement::biz','UmgtManager');
 
    /**
     * @package modules::usermanagement::pres::documentcontroller
@@ -66,14 +67,14 @@
        *
        * Initializes the umgt manager for usage within the presentation layer.
        *
-       * @return umgtManager The manager of the usermanagement module.
+       * @return UmgtManager The manager of the usermanagement module.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 30.04.2010<br />
        */
       protected function &getManager(){
-         return $this->__getAndInitServiceObject('modules::usermanagement::biz','umgtManager','Default');
+         return $this->__getAndInitServiceObject('modules::usermanagement::biz','UmgtManager','Default');
       }
 
       /**

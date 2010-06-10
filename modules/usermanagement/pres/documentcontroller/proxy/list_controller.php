@@ -19,7 +19,6 @@
     * -->
     */
 
-   import('modules::usermanagement::biz','umgtManager');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
 
    /**
@@ -48,7 +47,7 @@
             $template->setPlaceHolder('ProxyId',$proxyId);
             $template->setPlaceHolder('AppObjectId',$proxy->getProperty('AppObjectId'));
 
-            $type = $uM->loadProxyType($proxy);
+            $type = $uM->loadVisibilityDefinitionType($proxy);
             $template->setPlaceHolder('AppProxyType',$type->getProperty('AppObjectName'));
 
             $template->setPlaceHolder('proxy_details',$this->__generateLink(array('mainview' => 'proxy','proxyview' => 'details','proxyid' => $proxyId)));

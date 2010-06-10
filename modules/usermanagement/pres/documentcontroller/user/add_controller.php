@@ -19,7 +19,6 @@
     * -->
     */
 
-   import('modules::usermanagement::biz','umgtManager');
    import('tools::request','RequestHandler');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
    import('tools::http','HeaderManager');
@@ -36,7 +35,7 @@
     */
    class umgt_add_controller extends umgt_base_controller {
 
-      function transformContent(){
+      public function transformContent(){
 
          $formAdd = &$this->__getForm('UserForm');
          if($formAdd->isSent() == true && $formAdd->isValid() == true){

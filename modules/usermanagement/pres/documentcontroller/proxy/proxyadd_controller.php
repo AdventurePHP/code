@@ -54,7 +54,7 @@
          }
 
          // load the defined visibility types
-         $proxyTypes = $uM->loadProxyTypes();
+         $proxyTypes = $uM->loadVisibilityDefinitionTypes();
          $typeElement = &$form->getFormElementByName('proxytypeid');
 
          foreach($proxyTypes as $proxyType){

@@ -78,7 +78,7 @@
             $this->setPlaceHolder('displayname',$object->getProperty('DisplayName'));
             $this->setPlaceHolder('proxyid',$proxyId);
 
-            $proxyType = $uM->loadProxyType($proxy);
+            $proxyType = $uM->loadVisibilityDefinitionType($proxy);
             $this->setPlaceHolder('proxytype',$proxyType->getProperty('AppObjectName'));
 
             $formYes->transformOnPlace();

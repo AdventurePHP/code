@@ -27,8 +27,8 @@
          
          $uM = &$this->getManager();
          $proxyId = RequestHandler::getValue('proxyid');
-         $proxy = $uM->loadProxyById($proxyId);
-         $type = $uM->loadProxyType($proxy);
+         $proxy = $uM->loadVisibilityDefinitionById($proxyId);
+         $type = $uM->loadVisibilityDefinitionType($proxy);
 
          // display the proxy type's name
          $this->setPlaceHolder('appobjectid',$proxy->getProperty('AppObjectId'));

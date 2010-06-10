@@ -20,7 +20,6 @@
     */
 
    import('tools::request','RequestHandler');
-   import('modules::usermanagement::biz','umgtManager');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
 
    /**
@@ -35,17 +34,7 @@
     */
    class umgt_details_controller extends umgt_base_controller {
 
-      /**
-      *  @public
-      *
-      *  Displays the details of a permission set.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 27.12.2008<br />
-      *  Version 0.2, 29.12.2008 (Added the role list)<br />
-      */
-      function transformContent(){
+      public function transformContent(){
 
          // load data
          $uM = &$this->getManager();
