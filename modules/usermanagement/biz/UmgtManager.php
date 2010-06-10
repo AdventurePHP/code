@@ -25,7 +25,7 @@
     
    /**
     * @package modules::usermanagement::biz
-    * @module umgtManager
+    * @module UmgtManager
     *
     * Business component of the user management module. Uses the md5 algo to create password hashes.
     * If you desire to use another one, implement the PasswordHashProvider interface and add it to
@@ -37,7 +37,7 @@
     * Version 0.2, 23.06.2008 (Mapper is now loaded by an internal method that uses the GenericORMapperFactory)<br />
     * Version 0.3, 31.01.2009 (Introduced the possibility to switch the hash algo)<br />
     */
-   class umgtManager extends APFObject {
+   class UmgtManager extends APFObject {
 
       /**
        * @protected
@@ -69,7 +69,7 @@
        */
       protected $__PasswordHashProvider = null;
 
-      public function umgtManager(){
+      public function UmgtManager(){
       }
 
       /**
@@ -1460,6 +1460,17 @@
 
       }
 
+      /**
+       * @public
+       *
+       * Deletes a visibility definition including all associations.
+       *
+       * @param GenericDomainObject $visibilityDefinition The visibility definition to delete.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 06.06.2010<br />
+       */
       public function deleteVisibilityDefinition(GenericDomainObject $visibilityDefinition){
          $this->__getORMapper()->deleteObject($visibilityDefinition);
       }
@@ -1502,6 +1513,18 @@
          }
       }
 
+      /**
+       * @public
+       *
+       * Adds a given list of users to the applied visibility definition.
+       *
+       * @param GenericDomainObject $visibilityDefinition The desired visibility definition.
+       * @param GenericDomainObject[] $users The list of users to detach.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.06.2010<br />
+       */
       public function attachUsers2VisibilityDefinition(GenericDomainObject $visibilityDefinition,$users){
          $orm = &$this->__getORMapper();
          foreach($users as $user){
@@ -1509,6 +1532,18 @@
          }
       }
 
+      /**
+       * @public
+       *
+       * Adds a given list of groups to the applied visibility definition.
+       *
+       * @param GenericDomainObject $visibilityDefinition The desired visibility definition.
+       * @param GenericDomainObject[] $groups The list of users to detach.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.06.2010<br />
+       */
       public function attachGroups2VisibilityDefinition(GenericDomainObject $visibilityDefinition,$groups){
          $orm = &$this->__getORMapper();
          foreach($groups as $group){
@@ -1517,7 +1552,15 @@
       }
 
       /**
+       * @public
+       *
+       * Returns a list of all visibility definitions for the current application.
+       *
        * @return GenericDomainObject[] The list of visibility definitions for the current application.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.06.2010<br />
        */
       public function getPagedVisibilityDefinitionList(){
          $app = $this->__getCurrentApplication();
@@ -1627,36 +1670,116 @@
       /**
        * @public
        *
-       * Loads the list of proxies for the given proxy type.
+       * Loads the list of visibility definitions for the given type.
        *
-       * @param GenericDomainObject $type The proxy type.
-       * @return GenericDomainObject[] A list of proxy objects beeing associated to the given proxy type.
+       * @param GenericDomainObject $type The visibility definiton type.
+       * @return GenericDomainObject[] A list of visibility definitions of the given type.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 08.05.2010<br />
        */
-      public function loadProxies(GenericDomainObject $type){
+      public function loadVisibilityDefinitionsByType(GenericDomainObject $type){
          return $this->__getORMapper()->loadRelatedObjects($type,'AppProxy2AppProxyType');
       }
 
-      public function loadProxyById($id){
+      /**
+       * @public
+       *
+       * Loads all visibility definitions for the current user and it's group restricted by the
+       * given visibility definition type (e.g. <em>Page</em>).
+       *
+       * @param GenericDomainObject $user The currently logged-in user.
+       * @param GenericDomainObject $type The type of visibility definition (e.g. <em>Page</em>)
+       * @return GenericDomainObject[] A list of visibility definitions, the user and it'd groups have access to.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.06.2010<br />
+       */
+      public function loadAllVisibilityDefinitions(GenericDomainObject $user,GenericDomainObject $type){
+
+         $visDefs = $this->loadVisibilityDefinitionsByUser($user,$type);
+
+         $groups = $this->loadGroupsWithUser($user);
+         foreach($groups as $id => $DUMMY){
+            $visDefs = array_merge($visDefs,$this->loadVisibilityDefinitionsByGroup($groups[$id],$type));
+         }
+
+         return array_unique($visDefs);
+      }
+
+      /**
+       * @public
+       *
+       * Loads all visibility definition for the given user restricted by the
+       * given visibility definition type (e.g. <em>Page</em>).
+       *
+       * @param GenericDomainObject $user The currently logged-in user.
+       * @param GenericDomainObject $type The type of visibility definition (e.g. <em>Page</em>)
+       * @return GenericDomainObject[] A list of visibility definitions, the user has access to.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.06.2010<br />
+       */
+      public function loadVisibilityDefinitionsByUser(GenericDomainObject $user,GenericDomainObject $type){
+         $crit = new GenericCriterionObject();
+         $crit->addRelationIndicator('Application2AppProxy',$this->__getCurrentApplication());
+         $crit->addRelationIndicator('AppProxy2AppProxyType',$type);
+         return $this->__getORMapper()->loadRelatedObjects($user,'AppProxy2User',$crit);
+      }
+
+      /**
+       * @public
+       *
+       * Loads all visibility definition for the given group restricted by the
+       * given visibility definition type (e.g. <em>Page</em>).
+       *
+       * @param GenericDomainObject $group A desired group.
+       * @param GenericDomainObject $type The type of visibility definition (e.g. <em>Page</em>)
+       * @return GenericDomainObject[] A list of visibility definitions, the group has access to.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.06.2010<br />
+       */
+      public function loadVisibilityDefinitionsByGroup(GenericDomainObject $group,GenericDomainObject $type){
+         $crit = new GenericCriterionObject();
+         $crit->addRelationIndicator('Application2AppProxy',$this->__getCurrentApplication());
+         $crit->addRelationIndicator('AppProxy2AppProxyType',$type);
+         return $this->__getORMapper()->loadRelatedObjects($group,'AppProxy2Group',$crit);
+      }
+
+      /**
+       * @public
+       *
+       * Loads a visibility definition by it's object id.
+       *
+       * @param string $id The if of the visibility definition.
+       * @return GenericDomainObject The desired visibility definition.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 08.05.2010<br />
+       */
+      public function loadVisibilityDefinitionById($id){
          return $this->__getORMapper()->loadObjectByID('AppProxy',$id);
       }
 
       /**
        * @public
        *
-       * Saves a proxy type used to categorize a proxy object.
+       * Saves a visibility definition type used to categorize an application object.
        *
-       * @param GenericDomainObject $proxyType The proxy type to save.
-       * @return int The id of the proxy type.
+       * @param GenericDomainObject $proxyType The type to save.
+       * @return int The id of the type.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 30.04.2010<br />
        */
-      public function saveProxyType(&$proxyType){
+      public function saveVisibilityDefinitionType(&$proxyType){
          $oRM = &$this->__getORMapper();
          $app = $this->__getCurrentApplication();
          $proxyType->addRelatedObject('Application2AppProxyType',$app);
@@ -1675,8 +1798,8 @@
        * @version
        * Version 0.1, 08.05.2010<br />
        */
-      public function deleteProxyType(GenericDomainObject $proxyType){
-         $proxies = $this->loadProxies($proxyType);
+      public function deleteVisibilityDefinitionType(GenericDomainObject $proxyType){
+         $proxies = $this->loadVisibilityDefinitionsByType($proxyType);
          $orm = &$this->__getORMapper();
          foreach($proxies as $proxy){
             $orm->deleteObject($proxy);
@@ -1696,8 +1819,14 @@
        * @version
        * Version 0.1, 23.04.2010<br />
        */
-      public function loadProxyTypeById($id){
+      public function loadVisibilityDefinitionTypeById($id){
          return $this->__getORMapper()->loadObjectByID('AppProxyType',$id);
+      }
+
+      public function loadVisibilityDefinitionTypeByName($name){
+         $crit = new GenericCriterionObject();
+         $crit->addPropertyIndicator('AppObjectName',$name);
+         return $this->__getORMapper()->loadObjectByCriterion('AppProxyType',$crit);
       }
 
       /**
@@ -1712,7 +1841,7 @@
        * @version
        * Version 0.1, 05.06.2010<br />
        */
-      public function loadProxyType(GenericDomainObject $proxy){
+      public function loadVisibilityDefinitionType(GenericDomainObject $proxy){
          $crit = new GenericCriterionObject();
          $crit->addRelationIndicator('AppProxy2AppProxyType',$proxy);
          return $this->__getORMapper()->loadObjectByCriterion('AppProxyType',$crit);
@@ -1733,7 +1862,7 @@
        * @version
        * Version 0.1, 23.04.2010<br />
        */
-      public function loadProxyTypes(){
+      public function loadVisibilityDefinitionTypes(){
          $crit = new GenericCriterionObject();
          $crit->addOrderIndicator('AppObjectName');
          $orm = &$this->__getORMapper();
