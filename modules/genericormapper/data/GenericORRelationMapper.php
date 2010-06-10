@@ -362,7 +362,7 @@
        * Version 0.5, 25.10.2008 (Added the additional relation option via the criterion object)<br />
        * Version 0.6, 29.12.2008 (Added check, if given object is null)<br />
        */
-      public function loadRelatedObjects(&$object,$relationName,GenericCriterionObject $criterion = null){
+      public function loadRelatedObjects(GenericDomainObject &$object,$relationName,GenericCriterionObject $criterion = null){
 
          // check if object is present
          if($object === null){
