@@ -97,6 +97,7 @@
        * Version 1.0, 03.09.2008 (Added the form:marker tag)<br />
        * Version 1.1, 22.06.2009 (Added the form:reset tag)<br />
        * Version 1.2, 03.09.2009 (Added several new tags concerning the refactoring)<br />
+       * Version 1.3, 15.06.2010 (Bugfix: white listing did not recognize enctype attribute)<br />
        */
       public function html_taglib_form(){
 
@@ -140,6 +141,7 @@
          // add additional attributes to whitelist
          $this->attributeWhiteList[] = 'method';
          $this->attributeWhiteList[] = 'action';
+         $this->attributeWhiteList[] = 'enctype';
 
        // end function
       }

@@ -54,7 +54,7 @@
        * Version 0.1, 13.01.2007<br />
        * Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
        */
-      function onAfterAppend(){
+      public function onAfterAppend(){
          $this->__ParentObject->setAttribute('enctype','multipart/form-data');
          $this->__presetValue();
        // end function
@@ -72,7 +72,7 @@
        * Version 0.1, 13.01.2007<br />
        * Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
        */
-      function transform(){
+      public function transform(){
          return '<input type="file" '.$this->getSanitizedAttributesAsString($this->__Attributes).' />';
        // end function
       }
