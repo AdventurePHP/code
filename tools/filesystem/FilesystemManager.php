@@ -1,58 +1,56 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
-   *  @static
-   *  @class FilesystemManager
-   *  @package tools::filesystem
-   *
-   *  Implements a helper tool for filesystem access, dir and file handling.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 20.11.2008<br />
-   */
-   class FilesystemManager
-   {
+    * @static
+    * @class FilesystemManager
+    * @package tools::filesystem
+    *
+    * Implements a helper tool for filesystem access, dir and file handling.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.11.2008<br />
+    */
+   class FilesystemManager {
 
       private function FilesystemManager(){
       }
 
-
       /**
-      *  @static
-      *  @public
-      *
-      *  Deletes the content of a folder (without it's directories) or the entire folder, if
-      *  $recursive is switched to true.
-      *
-      *  @param string $folder the base folder
-      *  @param bool $recursive false = just current content, true = recursive
-      *  @return bool $status status code (true = ok, false = error)
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 20.11.2008<br />
-      *  Version 0.2, 24.11.2008 (Bugfix: recursion on windows systems broken due to directory seperator problems)<br />
-      */
+       * @static
+       * @public
+       *
+       * Deletes the content of a folder (without it's directories) or the entire folder, if
+       * $recursive is switched to true.
+       *
+       * @param string $folder the base folder
+       * @param bool $recursive false = just current content, true = recursive
+       * @return bool $status status code (true = ok, false = error)
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.11.2008<br />
+       * Version 0.2, 24.11.2008 (Bugfix: recursion on windows systems broken due to directory seperator problems)<br />
+       */
       public static function deleteFolder($folder,$recursive = false){
 
          // clear stat cache to prevent interference with previous calls
@@ -95,18 +93,17 @@
        // end function
       }
 
-
       /**
-      *  @static
-      *  @public
-      *
-      *  @param string $folder the desired folder to create
-      *  @param int $permissions the desired folder permissions. See "man umask" for details
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 21.11.2008<br />
-      */
+       * @static
+       * @public
+       *
+       * @param string $folder the desired folder to create
+       * @param int $permissions the desired folder permissions. See "man umask" for details
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 21.11.2008<br />
+       */
       public static function createFolder($folder,$permissions = 660){
 
          // normalize folder structure
@@ -168,24 +165,23 @@
        // end function
       }
 
-
       /**
-      *  @static
-      *  @public
-      *
-      *  Copies one file to another. If the target already exists, you can switch $force to true.
-      *  This indicates, that the target file will be overwritten.
-      *
-      *  @param string $sourceFile the source file path
-      *  @param string $targetFile the target file path
-      *  @param bool $force true = overwrite, false = return error
-      *  @return bool $status status code (true = ok, false = error)
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 20.11.2008<br />
-      *  Version 0.2, 29.11.2008 (Fixed bug, that non existing source was not indicated)<br />
-      */
+       * @static
+       * @public
+       *
+       * Copies one file to another. If the target already exists, you can switch $force to true.
+       * This indicates, that the target file will be overwritten.
+       *
+       * @param string $sourceFile the source file path
+       * @param string $targetFile the target file path
+       * @param bool $force true = overwrite, false = return error
+       * @return bool $status status code (true = ok, false = error)
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.11.2008<br />
+       * Version 0.2, 29.11.2008 (Fixed bug, that non existing source was not indicated)<br />
+       */
       public static function copyFile($sourceFile,$targetFile,$force = false){
 
          // create realpath from the source and target file
@@ -219,22 +215,21 @@
        // end if
       }
 
-
       /**
-      *  @static
-      *  @public
-      *
-      *  Removes a given file from the filesystem.
-      *
-      *  @param string $file the file to delete
-      *  @return bool $status status code (true = ok, false = error)
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 20.11.2008<br />
-      *  Version 0.2, 24.11.2008 (Bugfix: recursion on windows systems broken due to directory seperator problems)<br />
-      *  Version 0.3, 29.11.2008 (Added check, if the file to delete does exist)<br />
-      */
+       * @static
+       * @public
+       *
+       * Removes a given file from the filesystem.
+       *
+       * @param string $file the file to delete
+       * @return bool $status status code (true = ok, false = error)
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.11.2008<br />
+       * Version 0.2, 24.11.2008 (Bugfix: recursion on windows systems broken due to directory seperator problems)<br />
+       * Version 0.3, 29.11.2008 (Added check, if the file to delete does exist)<br />
+       */
       public static function removeFile($file){
 
          // check if file exists
@@ -250,28 +245,27 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *  @static
-      *
-      *  Uploads a file sent via PHP's file upload mechanism. The method checks, if the filesize is
-      *  not above the limit given and whether the mime type is one of the present. If the file is
-      *  not valid, false will be returned.
-      *
-      *  @param string $dir the target dir to upload the file to
-      *  @param string $temp_file the temporary file including it's directory
-      *  @param string $file_name name of the target file
-      *  @param string $file_size size of the current file in bytes
-      *  @param string $file_max_size allowed files size in bytes
-      *  @param string $file_type mime type of the current file
-      *  @param array $allowed_mime_types list of allowed mime types
-      *  @return bool $status true in case of success, false otherwise
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 24.11.2008 (Added the function to the new FilesystemManager class.)<br />
-      */
+       * @public
+       * @static
+       *
+       * Uploads a file sent via PHP's file upload mechanism. The method checks, if the filesize is
+       * not above the limit given and whether the mime type is one of the present. If the file is
+       * not valid, false will be returned.
+       *
+       * @param string $dir the target dir to upload the file to
+       * @param string $temp_file the temporary file including it's directory
+       * @param string $file_name name of the target file
+       * @param string $file_size size of the current file in bytes
+       * @param string $file_max_size allowed files size in bytes
+       * @param string $file_type mime type of the current file
+       * @param array $allowed_mime_types list of allowed mime types
+       * @return bool $status true in case of success, false otherwise
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 24.11.2008 (Added the function to the new FilesystemManager class.)<br />
+       */
       public static function uploadFile($dir,$temp_file,$file_name,$file_size,$file_max_size,$file_type,$allowed_mime_types){
 
          // check, if the mime type and the size is ok
@@ -313,24 +307,23 @@
        // end function
       }
 
-
       /**
-      *  @static
-      *  @public
-      *
-      *  Renames the source file to the target file. If the target already exists, you can switch
-      *  $force to true. This indicates, that the target file will be overwritten.
-      *
-      *  @param string $sourceFile the source file path
-      *  @param string $targetFile the target file path
-      *  @param bool $force true = overwrite, false = return error
-      *  @return bool $status status code (true = ok, false = error)
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 20.11.2008<br />
-      *  Version 0.2, 29.11.2008 (Fixed bug, that non existing source was not indicated)<br />
-      */
+       * @static
+       * @public
+       *
+       * Renames the source file to the target file. If the target already exists, you can switch
+       * $force to true. This indicates, that the target file will be overwritten.
+       *
+       * @param string $sourceFile the source file path
+       * @param string $targetFile the target file path
+       * @param bool $force true = overwrite, false = return error
+       * @return bool $status status code (true = ok, false = error)
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.11.2008<br />
+       * Version 0.2, 29.11.2008 (Fixed bug, that non existing source was not indicated)<br />
+       */
       public static function renameFile($sourceFile,$targetFile,$force = false){
 
          // create realpath from the source and target file
@@ -364,23 +357,22 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *  @static
-      *
-      *  Returns a list of files/dirs within the given folder. If $fullpath is set to true, the
-      *  full path to the file/dir is included in the list. Set to false, only the file/dir name
-      *  is included.
-      *
-      *  @param string $folder the folder that should be read out
-      *  @param bool $fullpath false (list contains only file/dir names) | true (full path is returned)
-      *  @return array $files a list of files within the given folder
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 29.11.2008<br />
-      */
+       * @public
+       * @static
+       *
+       * Returns a list of files/dirs within the given folder. If $fullpath is set to true, the
+       * full path to the file/dir is included in the list. Set to false, only the file/dir name
+       * is included.
+       *
+       * @param string $folder the folder that should be read out
+       * @param bool $fullpath false (list contains only file/dir names) | true (full path is returned)
+       * @return array $files a list of files within the given folder
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 29.11.2008<br />
+       */
       public static function getFolderContent($folder,$fullpath = false){
 
          // check if folder exists
@@ -411,33 +403,32 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *  @static
-      *
-      *  Returns the attributes of the given file. If the file exists, additional attributes are
-      *  included. The associative array contains the following offsets:
-      *  <ul>
-      *    <li>extension: the file extentsion</li>
-      *    <li>filename: the name of the file without the folder path</li>
-      *    <li>folderpath: the folder path</li>
-      *    <li>filebody: the filename without extension</li>
-      *    <li>modificationdate: the modification date in the format "YYYY-MM-DD" (if file exists only)</li>
-      *    <li>modificationtime: the modification time in the format "HH:MM:SS" (if file exists only)</li>
-      *    <li>size: the file size in bytes(if file exists only)</li>
-      *  </ul>
-      *  If the second argument contains a file attribute, the value is returned instead of a list!
-      *
-      *  @param string $file the desired file
-      *  @param string $attributeName the name of the attribute, that should be returned
-      *  @return array $files a list of files within the given folder
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 29.11.2008<br />
-      *  Version 0.2, 01.02.2009 (Added the possibility to only return one attribute)<br />
-      */
+       * @public
+       * @static
+       *
+       * Returns the attributes of the given file. If the file exists, additional attributes are
+       * included. The associative array contains the following offsets:
+       * <ul>
+       *   <li>extension: the file extentsion</li>
+       *   <li>filename: the name of the file without the folder path</li>
+       *   <li>folderpath: the folder path</li>
+       *   <li>filebody: the filename without extension</li>
+       *   <li>modificationdate: the modification date in the format "YYYY-MM-DD" (if file exists only)</li>
+       *   <li>modificationtime: the modification time in the format "HH:MM:SS" (if file exists only)</li>
+       *   <li>size: the file size in bytes(if file exists only)</li>
+       * </ul>
+       * If the second argument contains a file attribute, the value is returned instead of a list!
+       *
+       * @param string $file the desired file
+       * @param string $attributeName the name of the attribute, that should be returned
+       * @return array $files a list of files within the given folder
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 29.11.2008<br />
+       * Version 0.2, 01.02.2009 (Added the possibility to only return one attribute)<br />
+       */
       public static function getFileAttributes($file,$attributeName = null){
 
          // clear the stat cache to avoid interference with previous calls
@@ -484,20 +475,19 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *  @static
-      *
-      *  Returns the size of the given folder. The size includes all files and subfolders.
-      *
-      *  @param string $folder the desired folder
-      *  @return int $size the size of the given folder
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 29.11.2008<br />
-      */
+       * @public
+       * @static
+       *
+       * Returns the size of the given folder. The size includes all files and subfolders.
+       *
+       * @param string $folder the desired folder
+       * @return int $size the size of the given folder
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 29.11.2008<br />
+       */
       public static function getFolderSize($folder){
 
          // check if folder exists
