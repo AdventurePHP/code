@@ -247,12 +247,14 @@
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 15.02.2010<<br />
+       * Version 0.1, 15.02.2010<br />
+       * Version 0.2, 17.06.2010 (Bugfix: introduced unsetting for previously selected options)<br />
        */
       public function setOption2Selected($displayNameOrValue){
 
          $this->isDynamicField = false;
 
+         $selectedObjectId = null;
          foreach($this->__Children as $objectId => $DUMMY){
 
             // treat groups as a special case, because a group has more options in it!
@@ -263,10 +265,21 @@
                if($this->__Children[$objectId]->getAttribute('value') == $displayNameOrValue
                        || $this->__Children[$objectId]->getContent() == $displayNameOrValue){
                   $this->__Children[$objectId]->setAttribute('selected','selected');
+                  $selectedObjectId = $objectId;
                }
             }
 
           // end foreach
+         }
+
+         // unselect all other option to do not have interference with the currently selected option!
+         // this is only necessary within the simple select field - not multi select.
+         if(get_class($this) == 'form_taglib_select' && $selectedObjectId !== null){
+            foreach($this->__Children as $objectId => $DUMMY){
+               if($objectId != $selectedObjectId){
+                  $this->__Children[$objectId]->deleteAttribute('selected');
+               }
+            }
          }
          
        // end function
