@@ -271,6 +271,34 @@
       /**
        * @public
        *
+       * Allows you to initialize the date control with a given date (e.g. "2010-06-16").
+       *
+       * @param string $date The date to initialize the control with.
+       * @throws FormException In case of date parsing errors.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 16.06.2010<br />
+       */
+      public function setDate($date){
+         
+         $time = date_parse($date);
+         if(count($time['errors']) == 0 && count($time['warnings']) == 0){
+            $this->getDayControl()->setOption2Selected($this->__appendZero($time['day']));
+            $this->getMonthControl()->setOption2Selected($this->__appendZero($time['month']));
+            $this->getYearControl()->setOption2Selected($time['year']);
+         }
+         else{
+            throw new FormException('[form_taglib_date::setDate()] Given date "'.$date
+                    .'" cannot be parsed (Errors: '.implode(', ', $time['errors']).', warnings: '
+                    .implode(', ',$time['warnings']).')');
+         }
+         
+      }
+
+      /**
+       * @public
+       *
        * Returns a reference on the day control of the date control.
        *
        * @return form_taglib_select The day control.
