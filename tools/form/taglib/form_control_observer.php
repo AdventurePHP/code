@@ -117,6 +117,8 @@
             // that triggers the event. As of 1.12, the type is presented to the
             // validator to enable special listener notification.
             $observer = new $class($control,$button,$type);
+            $observer->setContext($this->__Context);
+            $observer->setLanguage($this->__Language);
 
             // inject the observer into the form control
             $control->{$injectionMethod}($observer);
