@@ -67,10 +67,12 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 12.09.2009<br />
+       * Version 0.2, 18.06.2010 (Bugfix: added type to signature to allow special validators)<br />
        */
-      public function FieldCompareValidator(form_control &$control,form_control &$button){
+      public function FieldCompareValidator(form_control &$control,form_control &$button,$type){
          $this->__Control = &$control;
          $this->__Button = &$button;
+         $this->__Type = $type;
          $this->initializeReferenceControl();
        // end function
       }
