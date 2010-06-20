@@ -22,6 +22,7 @@
    import('tools::link','FrontcontrollerLinkHandler');
 
    /**
+    * @package tools::media::taglib
     * @class ui_mediastream
     *
     * Implements the base class for the <*:mediastream /> tag implementations. Generates a
@@ -35,7 +36,7 @@
 
       /**
        * @protected
-       * @var boolen Indicates, of the tag should remain quite in case of attribute errors.
+       * @var boolean Indicates, of the tag should remain quite in case of attribute errors.
        */
       protected $__NoOutput = false;
 
@@ -84,7 +85,7 @@
        *
        * Generates the tag's output.
        *
-       * @return string $content the desired media url
+       * @return string The desired media url
        *
        * @author Christian Achatz
        * @version
@@ -92,6 +93,7 @@
        * Version 0.2, 01.11.2008<br />
        * Version 0.3, 05.11.2008 (Changed action base url generation)<br />
        * Version 0.4, 07.11.2008 (Refactored the url generation due to some addressing bugs)<br />
+       * Version 0.5, 20.06.2010 (Adapted parameter order to support old rewrite rules that do file extension matching for routing exceptions)<br />
        */
       public function transform(){
 
@@ -106,16 +108,18 @@
             if($urlrewrite === true){
                $actionParam = array(
                   'tools_media-action/streamMedia' => 'namespace/'
-                  .$this->getAttribute('namespace').'/filebody/'.$this->getAttribute('filebody')
-                  .'/extension/'.$this->getAttribute('extension')
+                  .$this->getAttribute('namespace').'/extension/'.$this->getAttribute('extension')
+                  .'/filebody/'.$this->getAttribute('filebody')
+                  
                );
              // end if
             }
             else{
                $actionParam = array(
                   'tools_media-action:streamMedia' => 'namespace:'
-                  .$this->getAttribute('namespace').'|filebody:'.$this->getAttribute('filebody')
-                  .'|extension:'.$this->getAttribute('extension')
+                  .$this->getAttribute('namespace').'|extension:'.$this->getAttribute('extension')
+                  .'|filebody:'.$this->getAttribute('filebody')
+                  
                );
              // end else
             }
