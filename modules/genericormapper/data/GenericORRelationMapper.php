@@ -67,6 +67,29 @@
       /**
        * @public
        *
+       * Implements the initializer method to use the mapper with the DI service manager. This
+       * method replaces the initialization using the <em>GenericORMapperFactory</em>. See
+       * documentation of the <em>GenericORMapperDIConfiguration</em> class on configuration
+       * definition.
+       *
+       * @param GenericORMapperDIConfiguration $config The DI service configuration to initialize the GORM with.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 30.06.2010<br />
+       */
+      public function initDI(GenericORMapperDIConfiguration $config){
+         $this->init(array('ConfigNamespace' => $config->getConfigNamespace(),
+                           'ConfigNameAffix' => $config->getConfigAffix(),
+                           'ConnectionName' => $config->getConnectionName(),
+                           'LogStatements' => $config->getDebugMode()
+                          )
+         );
+      }
+
+      /**
+       * @public
+       *
        * Load an object list by a given criterion object.
        *
        * @param string $objectName name of the desired objects.
