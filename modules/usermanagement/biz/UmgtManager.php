@@ -755,7 +755,7 @@
        * Returns a group domain object.
        *
        * @param int $groupID id of the desired group
-       * @return GenericDomainObject[] The group domain object.
+       * @return GenericDomainObject The group domain object.
        *
        * @author Christian Achatz
        * @version
@@ -765,6 +765,24 @@
          $oRM = &$this->__getORMapper();
          return $oRM->loadObjectByID('Group',$groupID);
        // end function
+      }
+
+      /**
+       * @public
+       *
+       * Loads a group by a given name.
+       *
+       * @param string $groupName The name of the group to load
+       * @return GenericCriterionObject The desired group domain object.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 29.06.2010<br />
+       */
+      public function loadGroupByName($groupName){
+         $crit = new GenericCriterionObject();
+         $crit->addPropertyIndicator('DisplayName',$groupName);
+         return $this->__getORMapper()->loadObjectByCriterion('Group',$crit);
       }
 
       /**
