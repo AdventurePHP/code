@@ -1774,7 +1774,7 @@
        *
        * Loads a visibility definition by it's object id.
        *
-       * @param string $id The if of the visibility definition.
+       * @param string $id The of the visibility definition.
        * @return GenericDomainObject The desired visibility definition.
        *
        * @author Christian Achatz
@@ -1783,6 +1783,24 @@
        */
       public function loadVisibilityDefinitionById($id){
          return $this->__getORMapper()->loadObjectByID('AppProxy',$id);
+      }
+
+      /**
+       * @public
+       *
+       * Loads a visibility definition by it's application object id.
+       *
+       * @param string $id The application object id of the visibility definition.
+       * @return GenericDomainObject The desired visibility definition.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 01.07.2010<br />
+       */
+      public function loadVisibilityDefinitionByAppObjectId($appObjectId){
+         $crit = new GenericCriterionObject();
+         $crit->addPropertyIndicator('AppObjectId',$appObjectId);
+         return $this->__getORMapper()->loadObjectByCriterion('AppProxy',$crit);
       }
 
       /**
