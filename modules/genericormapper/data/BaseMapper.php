@@ -259,11 +259,10 @@
        * @version
        * Version 0.1, 26.10.2008<br />
        */
-      function addMappingConfiguration($configNamespace,$configNameAffix){
+      public function addMappingConfiguration($configNamespace,$configNameAffix){
 
-         // Invoke benchmark timer
-         $T = &Singleton::getInstance('BenchmarkTimer');
-         $T->start('BaseMapper::addMappingConfiguration()');
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $t->start('BaseMapper::addMappingConfiguration()');
 
          // add config, if not already included
          $cacheKey = md5($configNamespace.$configNameAffix.'_objects');
@@ -288,9 +287,26 @@
           // end if
          }
 
-         $T->stop('BaseMapper::addMappingConfiguration()');
+         $t->stop('BaseMapper::addMappingConfiguration()');
 
        // end function
+      }
+
+      /**
+       * @public 
+       * 
+       * Allows you to initialize/enhance the generic or mapper's mapping configuration using
+       * the DI service manager. See documentation of the
+       * <em>GenericORMapperDIMappingConfiguration</em> class on configuration definition.
+       *
+       * @param GenericORMapperDIMappingConfiguration $config The additional mapping configuration.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 30.06.2010<br />
+       */
+      public function addDIMappingConfiguration(GenericORMapperDIMappingConfiguration $config){
+         $this->addMappingConfiguration($config->getConfigNamespace(),$config->getConfigAffix());
       }
 
       /**
@@ -305,11 +321,10 @@
        * @version
        * Version 0.1, 26.10.2008<br />
        */
-      function addRelationConfiguration($configNamespace,$configNameAffix){
+      public function addRelationConfiguration($configNamespace,$configNameAffix){
 
-         // Invoke benchmark timer
-         $T = &Singleton::getInstance('BenchmarkTimer');
-         $T->start('BaseMapper::addRelationConfiguration()');
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $t->start('BaseMapper::addRelationConfiguration()');
 
          // add config, if not already included
          $cacheKey = md5($configNamespace.$configNameAffix.'_relations');
@@ -334,9 +349,26 @@
           // end if
          }
 
-         $T->stop('BaseMapper::addRelationConfiguration()');
+         $t->stop('BaseMapper::addRelationConfiguration()');
 
        // end function
+      }
+
+      /**
+       * @public
+       *
+       * Allows you to initialize/enhance the generic or mapper's relation configuration using
+       * the DI service manager. See documentation of the
+       * <em>GenericORMapperDIMappingConfiguration</em> class on configuration definition.
+       *
+       * @param GenericORMapperDIRelationConfiguration $config The additional relation configuration.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 30.06.2010<br />
+       */
+      public function addDIRelationConfiguration(GenericORMapperDIRelationConfiguration $config){
+         $this->addRelationConfiguration($config->getConfigNamespace(),$config->getConfigAffix());
       }
 
       /**
