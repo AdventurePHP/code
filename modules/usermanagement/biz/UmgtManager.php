@@ -1788,16 +1788,20 @@
       /**
        * @public
        *
-       * Loads a visibility definition by it's application object id.
+       * Loads a visibility definition by it's application object id and the type.
+       * Providing the type is necessary due to the fact, that app objct id is not
+       * unique throughout the system but the combination with the type is.
        *
-       * @param string $id The application object id of the visibility definition.
+       * @param int $id The application object id of the visibility definition.
+       * @param GenericDomainObject $type The type of visibility definition.
        * @return GenericDomainObject The desired visibility definition.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 01.07.2010<br />
+       * Version 0.2, 02.07.2010 (Added type for conceptual uniqueness reasons)<br />
        */
-      public function loadVisibilityDefinitionByAppObjectId($appObjectId){
+      public function loadVisibilityDefinitionByAppObjectId($appObjectId,$type){
          $crit = new GenericCriterionObject();
          $crit->addPropertyIndicator('AppObjectId',$appObjectId);
          return $this->__getORMapper()->loadObjectByCriterion('AppProxy',$crit);
