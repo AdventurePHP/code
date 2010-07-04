@@ -33,11 +33,13 @@
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.08.2009<br />
+    * Version 0.2, 04.07.2010 (Added mode "strict")<br />
     */
    class TextLengthValidator extends TextFieldValidator {
 
       private static $MIN_LENGTH_ATTRIBUTE_NAME = 'minlength';
       private static $MAX_LENGTH_ATTRIBUTE_NAME = 'maxlength';
+      private static $MODE_ATTRIBUTE_NAME = 'mode';
 
       /**
        * @public
@@ -56,6 +58,12 @@
          
          $minlength = $this->getMinLength();
          $maxlength = $this->getMaxLength();
+         $mode = $this->getMode();
+         
+         // mode strict needs trim() on $input
+         if($mode === 'strict'){
+            $input = trim($input);
+         }
 
          // the maxlength beeing null, the text may contain an infinite number of characters
          if($maxlength === 0){
@@ -112,7 +120,24 @@
          $maxLength = $this->__Control->getAttribute(self::$MAX_LENGTH_ATTRIBUTE_NAME);
          return (int)$maxLength;
       }
-
+      
+      /**
+       * @private
+       *
+       * Returns the mode of validating, which should be used on the target control. 
+       * Tries to load the mode from the <em>mode</em> attribute within the target form control definition.
+       *
+       * @return string The mode name.
+       *
+       * @author Ralf Schubert
+       * @version
+       * Version 0.1, 04.07.2010<br />
+       */
+      private function getMode(){
+        $mode = $this->__Control->getAttribute(self::$MODE_ATTRIBUTE_NAME);
+        return $mode;
+      }
+      
     // end function
    }
 ?>
