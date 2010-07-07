@@ -200,7 +200,7 @@
        * Version 0.3, 20.09.2009 (Bugfix for bug 202. Password was hased twice on update.)<br />
        * Version 0.4, 27.09.2009 (Bugfix for bug related to 202. Password for new user was not hashed.)<br />
        */
-      public function saveUser($user){
+      public function saveUser(GenericDomainObject &$user){
 
          // get the mapper
          $oRM = &$this->__getORMapper();
@@ -254,6 +254,22 @@
       /**
        * @public
        *
+       * Saves an application object.
+       *
+       * @param GenericDomainObject $app The application object to save.
+       * @return int The id of the application.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 07.07.2010<br />
+       */
+      public function saveApplication(GenericDomainObject &$app){
+         return $this->__getORMapper()->saveObject($app);
+      }
+
+      /**
+       * @public
+       *
        * Saves a group object within the current application.
        *
        * @param GenericDomainObject $group current group.
@@ -263,7 +279,7 @@
        * @version
        * Version 0.1, 15.06.2008<br />
        */
-      public function saveGroup($group){
+      public function saveGroup(GenericDomainObject &$group){
          $oRM = &$this->__getORMapper();
          $app = $this->__getCurrentApplication();
          $group->addRelatedObject('Application2Group',$app);
@@ -284,7 +300,7 @@
        * @version
        * Version 0.1, 15.06.2008<br />
        */
-      public function saveRole($role){
+      public function saveRole(GenericDomainObject &$role){
          $oRM = &$this->__getORMapper();
          $app = $this->__getCurrentApplication();
          $role->addRelatedObject('Application2Role',$app);
@@ -306,7 +322,7 @@
        * Version 0.1, 15.06.2008<br />
        * Version 0.2, 28.12.2008 (Bugfix: unnecessary associations are now deleted)<br />
        */
-      public function savePermissionSet($permissionSet){
+      public function savePermissionSet(GenericDomainObject &$permissionSet){
 
          // get the mapper
          $oRM = &$this->__getORMapper();
@@ -353,7 +369,7 @@
        * Version 0.2, 16.06.2008 (The permission set is lazy loaded when not present)<br />
        * Version 0.3, 28.12.2008 (Changed the API concerning the new UML diagram)<br />
        */
-      public function savePermission($permission){
+      public function savePermission(GenericDomainObject &$permission){
          $oRM = &$this->__getORMapper();
          $app = $this->__getCurrentApplication();
          $permission->addRelatedObject('Application2Permission',$app);
@@ -917,6 +933,38 @@
          return $oRM->loadRelatedObjects($permissionSet,'Role2PermissionSet',$crit);
 
        // end function
+      }
+
+      /**
+       * @public
+       *
+       * Adds a permission to the given permission set.
+       *
+       * @param GenericDomainObject $permission The permission to assign to the permission set.
+       * @param GenericDomainObject $permissionSet The desired permission set to add the permission to.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 06.07.2010<br />
+       */
+      public function assignPermission2PermissionSet(GenericDomainObject $permission, GenericDomainObject $permissionSet){
+         $this->__getORMapper()->createAssociation('PermissionSet2Permission',$permission,$permissionSet);
+      }
+
+      /**
+       * @public
+       *
+       * Removes a permission from a given permission set.
+       *
+       * @param GenericDomainObject $permission The permission to remove from the permission set.
+       * @param GenericDomainObject $permissionSet The desired permission set fremove the permission from.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 06.07.2010<br />
+       */
+      public function detachPermission2PermissionSet(GenericDomainObject $permission, GenericDomainObject $permissionSet){
+         $this->__getORMapper()->deleteAssociation('PermissionSet2Permission',$permission,$permissionSet);
       }
 
       /**
@@ -1819,7 +1867,7 @@
        * @version
        * Version 0.1, 30.04.2010<br />
        */
-      public function saveVisibilityDefinitionType(&$proxyType){
+      public function saveVisibilityDefinitionType(GenericDomainObject &$proxyType){
          $oRM = &$this->__getORMapper();
          $app = $this->__getCurrentApplication();
          $proxyType->addRelatedObject('Application2AppProxyType',$app);
