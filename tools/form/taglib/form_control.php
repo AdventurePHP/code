@@ -33,6 +33,7 @@
     * Version 0.1, 05.01.2007<br />
     * Version 0.2, 02.06.2007 (Added the $__ExclusionArray, moved the __getAttributesAsString() to the APFObject class)<br />
     * Version 0.3, 07.12.2008 (Added the filter functionality, that let's you filter user input)<br />
+    * Version 0.4, 07.07.2010 (Added event attributes defined in xhtml 1.0 strict)<br />
     */
    abstract class form_control extends Document {
 
@@ -55,7 +56,7 @@
        * @since 1.12
        * @var string[] The attributes, that are allowed to render into the XHTML/1.1 strict document.
        */
-      protected $attributeWhiteList = array('id','style','class');
+      protected $attributeWhiteList = array('id','style','class','onclick','ondblclick','onmousedown','onmouseup','onmouseover','onmousemove','onmouseout','onkeypress','onkeydown','onkeyup');
 
       public function form_control(){
       }
