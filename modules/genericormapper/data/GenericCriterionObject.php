@@ -30,6 +30,7 @@
     * Version 0.1, 17.06.2008<br />
     * Version 0.2, 21.06.2008 (Added more indicators)<br />
     * Version 0.3, 28.05.2010 (Bugfix: added method to return the property indicators)<br />
+    * Version 0.4, 18.07.2010 (Added "Fluent Interface" support.)<br />
     */
    final class GenericCriterionObject extends APFObject {
 
@@ -74,12 +75,16 @@
        * @param string $relationName name of the relation between the object in the second argument and the object to load
        * @param GenericDomainObject $sourceObject related object
        *
+       * @return GenericCriterionObject Returns itself.
+       *
        * @author Christian Achatz
        * @version
        * Version 0.1, 17.06.2008<br />
+       * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
        */
       public function addRelationIndicator($relationName,$sourceObject){
          $this->__Relations[$relationName] = $sourceObject;
+         return $this;
        // end function
       }
 
@@ -107,9 +112,12 @@
        * @param int $startOrCount start pointer
        * @param int $count optional count parameter
        *
+       * @return GenericCriterionObject Returns itself.
+       * 
        * @author Christian Achatz
        * @version
        * Version 0.1, 17.06.2008<br />
+       * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
        */
       public function addCountIndicator($startOrCount,$count = null){
 
@@ -123,6 +131,7 @@
           // end else
          }
 
+         return $this;
        // end function
       }
 
@@ -148,13 +157,17 @@
        *
        * @param string $attributeName name of the attribute
        * @param string $attributeValue value of the attribute
-       *
+       * 
+       * @return GenericCriterionObject Returns itself.
+       * 
        * @author Christian Achatz
        * @version
        * Version 0.1, 17.06.2008<br />
+       * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
        */
       public function addPropertyIndicator($attributeName,$attributeValue){
          $this->__Properties[$attributeName] = $attributeValue;
+         return $this;
        // end function
       }
 
@@ -182,12 +195,16 @@
        * @param string $attributeName name of the attribute
        * @param string $orderDirection direction of ordering
        *
+       * @return GenericCriterionObject Returns itself.
+       *
        * @author Christian Achatz
        * @version
        * Version 0.1, 17.06.2008<br />
+       * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
        */
       public function addOrderIndicator($attributeName,$orderDirection = 'ASC'){
          $this->__Orders[$attributeName] = $orderDirection;
+         return $this;
        // end function
       }
 
@@ -213,12 +230,16 @@
        *
        * @param string $propertyName Name of the desired property
        *
+       * @return GenericCriterionObject Returns itself.
+       *
        * @author Christian Achatz
        * @version
        * Version 0.1, 21.06.2008<br />
+       * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
        */
       public function addLoadedProperty($propertyName){
          $this->__LoadedProperties[] = $propertyName;
+         return $this;
        // end function
       }
 
