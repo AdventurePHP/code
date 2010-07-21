@@ -34,6 +34,7 @@
     * Version 0.2, 02.06.2007 (Added the $__ExclusionArray, moved the __getAttributesAsString() to the APFObject class)<br />
     * Version 0.3, 07.12.2008 (Added the filter functionality, that let's you filter user input)<br />
     * Version 0.4, 07.07.2010 (Added event attributes defined in xhtml 1.0 strict)<br />
+    * Version 0.5, 21.07.2010 (Added function for adding attributes to the controls whitelist)<br />
     */
    abstract class form_control extends Document {
 
@@ -486,6 +487,22 @@
          return $this->__getAttributesAsString($attributes,$this->attributeWhiteList);
       }
 
+      /**
+       * @public
+       * @since 1.13
+       *
+       * Adds an additional attribute to the whitelist of the control.
+       *
+       * @param string $name The attribute which should be added to the whitelist.
+       *
+       * @author Ralf Schubert
+       * @version
+       * Version 0.1, 21.07.2010<br />
+       */
+      public function addAttributeToWhitelist($name){
+          $this->attributeWhiteList[] = $name;
+      }
+      
     // end class
    }
 ?>
