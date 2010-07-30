@@ -474,12 +474,17 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 09.03.2010<br />
+       * Version 0.2, 30.07.2010 (Changed return value to false if no row was found, in order to follow the interface definition)<br />
        */
       public function fetchData($resultCursor){
          if($resultCursor == null){
             return array();
          }
-         return $resultCursor->fetch_assoc();
+         $return = $resultCursor->fetch_assoc();
+         if($return === NULL){
+             return false;
+         }
+         return $return;
        // end function
       }
 

@@ -254,7 +254,7 @@
        * Fetches a record from the database using the given result resource.
        *
        * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
-       * @return string[] The associative result array.
+       * @return string[] The associative result array. Returns false if no row was found.
        *
        * @author Christian Achatz
        * @version
