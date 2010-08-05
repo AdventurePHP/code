@@ -35,6 +35,7 @@
     * @author Christian Achatz
     * @version
     * Version 0.1, 31.10.2008<br />
+    * Version 0.2, 05.08.2010 (Added cache sub key to make cms page caching possible)<br />
     */
    final class CacheManager extends CacheCoreObject {
 
@@ -42,7 +43,7 @@
        * @private
        * @var AbstractCacheProvider The current cache provider.
        */
-      private $__Provider = null;
+      private $provider = null;
 
       /**
        * @private
@@ -51,7 +52,7 @@
        * config value is not set properly.
        * @var boolean True, in case the cache is active, false otherwise.
        */
-      private $__Active = false;
+      private $active = false;
 
       public function CacheManager(){
       }
@@ -62,7 +63,7 @@
        * Implements the init() method used by the service manager. Initializes the cache
        * manager with the corresponding cache configuration section.
        *
-       * @param string[] $section the desired cache config section
+       * @param string[] $section the desired cache config section.
        *
        * @author Christian Achatz
        * @version
@@ -73,20 +74,18 @@
       public function init($initParam){
 
          // injects the config section
-         $this->__Attributes = $initParam;
+         $this->setAttributes($initParam);
 
          // include and create the provider
-         $namespace = $this->__getCacheConfigAttribute('Cache.Provider.Namespace');
-         $class = $this->__getCacheConfigAttribute('Cache.Provider.Class');
-         import($namespace,$class);
-         $this->__Provider = $this->__getServiceObject($namespace,$class,'NORMAL');
-         $this->__Provider->setAttributes($initParam);
+         $namespace = $this->getConfigAttribute('Cache.Provider.Namespace');
+         $class = $this->getConfigAttribute('Cache.Provider.Class');
+         $this->provider = $this->__getServiceObject($namespace,$class,'NORMAL');
+         $this->provider->setAttributes($initParam);
 
          // map the active configuration key
-         $active = $this->__getCacheConfigAttribute('Cache.Active');
+         $active = $this->getConfigAttribute('Cache.Active');
          if($active == 'true'){
-            $this->__Active = true;
-          // end if
+            $this->active = true;
          }
 
        // end function
@@ -96,27 +95,25 @@
        * @public
        *
        * Returns the content from the cache. If the content is not found in cache,
-       * the reader returns null.
+       * the provider returns null.
+       * <p/>
+       * The sub cache key was introduced in 1.13 to be able to cache different states
+       * of an object. This is especially necessary for page caching, where one single
+       * page can be called with different parameters (e.g. for CMS page caching).
        *
-       * @param string $cacheKey the application's cache key
-       * @return mixed $cacheContent the cache content concerning the reader implementation
+       * @param string $cacheKey The application's cache key.
+       * @param string $subCacheKey The application's sub cache key.
+       * @return mixed $cacheContent the cache content concerning the provider implementation.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 21.11.2008<br />
+       * Version 0.2, 05.08.2010 (Added cache sub key to make cms page caching possible)<br />
        */
-      public function getFromCache($cacheKey){
-
-         if($this->__Active === true){
-            return $this->__Provider->read($cacheKey);
-          // end if
-         }
-         else{
-            return null;
-          // end else
-         }
-
-       // end function
+      public function getFromCache($cacheKey,$subCacheKey){
+         return ($this->active === true) 
+                 ? $this->provider->read($cacheKey,$subCacheKey)
+                 : null;
       }
 
       /**
@@ -124,43 +121,42 @@
        *
        * Writes the desired content to the cache.
        *
-       * @param string $cacheKey the application's cache key
-       * @param mixed $cacheContent the content to cache
+       * @param string $cacheKey the application's cache key.
+       * @param string $subCacheKey The application's sub cache key.
+       * @param mixed $cacheContent the content to cache.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 21.11.2008<br />
+       * Version 0.2, 05.08.2010 (Added cache sub key to make cms page caching possible)<br />
        */
-      public function writeToCache($cacheKey,$content){
-
-         if($this->__Active === true){
-            return $this->__Provider->write($cacheKey,$content);
-          // end if
-         }
-         else{
-            return false;
-          // end else
-         }
-
-       // end function
+      public function writeToCache($cacheKey,$subCacheKey,$content){
+         return ($this->active === true)
+                 ? $this->provider->write($cacheKey,$content)
+                 : false;
       }
 
       /**
        * @public
        *
-       * Clears the whole cache in case the cache key is null, or the cache item specified  by
+       * Clears the whole cache in case the cache key is null, or the cache item specified by
        * the given cache key.
+       * <p/>
+       * Since 1.13, passing the sub cache key, only the specific part of the cache item will be
+       * cleared, that belongs to the cache sub key. In case the sub key is null, all
+       * entries are deleted belonging to the given cache key.
        *
-       * @param string $cacheKey the application's cache key
-       * @param bool $status true in case of success, otherwise false
+       * @param string $cacheKey the application's cache key.
+       * @param string $subCacheKey The application's sub cache key.
+       * @param bool $status true in case of success, otherwise false.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 21.11.2008<br />
+       * Version 0.2, 05.08.2010 (Added cache sub key to make cms page caching possible)<br />
        */
-      public function clearCache($cacheKey = null){
-         return $this->__Provider->clear($cacheKey);
-       // end function
+      public function clearCache($cacheKey = null,$subCacheKey = null){
+         return $this->provider->clear($cacheKey,$subCacheKey);
       }
 
     // end class
