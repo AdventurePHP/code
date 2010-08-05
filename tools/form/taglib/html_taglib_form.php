@@ -142,6 +142,7 @@
          $this->attributeWhiteList[] = 'method';
          $this->attributeWhiteList[] = 'action';
          $this->attributeWhiteList[] = 'enctype';
+         $this->attributeWhiteList[] = 'accept-charset'; // to explicitly specify an encoding
 
        // end function
       }
