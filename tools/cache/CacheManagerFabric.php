@@ -38,9 +38,6 @@
        */
       private $__CacheManagerCache = array();
 
-      function CacheManagerFabric(){
-      }
-
       /**
        * @public
        *
@@ -52,8 +49,9 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 22.11.2008<br />
+       * Version 0.2, 04.08.2010 (Bugfix: initializing two cache managers failed due to wrong service mode)<br />
        */
-      function &getCacheManager($configSection){
+      public function &getCacheManager($configSection){
 
          $cacheKey = md5($configSection);
          if(!isset($this->__CacheManagerCache[$cacheKey])){
@@ -74,7 +72,7 @@
 
             // create cache manager
             $this->__CacheManagerCache[$cacheKey] =
-               &$this->__getAndInitServiceObject('tools::cache','CacheManager',$section);
+               &$this->__getAndInitServiceObject('tools::cache','CacheManager',$section,'NORMAL');
 
           // end if
          }
