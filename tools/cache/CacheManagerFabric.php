@@ -36,27 +36,25 @@
        * @private
        * @var CacheManager[] Contains the cache manager instances.
        */
-      private $__CacheManagerCache = array();
-
-      function CacheManagerFabric(){
-      }
+      private $cacheManagerCache = array();
 
       /**
        * @public
        *
        * Returns the cache manager instance by the desired config section.
        *
-       * @param string $configSection the config section
-       * @return CacheManager The desired cache manager instance
+       * @param string $configSection the config section.
+       * @return CacheManager The desired cache manager instance.
+       * @throws InvalidArgumentException In case the given config section cannot be resolved.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 22.11.2008<br />
+       * Version 0.2, 04.08.2010 (Bugfix: initializing two cache managers failed due to wrong service mode)<br />
        */
-      function &getCacheManager($configSection){
+      public function &getCacheManager($configSection){
 
-         $cacheKey = md5($configSection);
-         if(!isset($this->__CacheManagerCache[$cacheKey])){
+         if(!isset($this->cacheManagerCache[$configSection])){
 
             // load config
             $config = &$this->__getConfiguration('tools::cache','cacheconfig');
@@ -64,22 +62,20 @@
 
             if($section === null){
                $env = Registry::retrieve('apf::core','Environment');
-               trigger_error('[CacheManagerFabric::getCacheManager()] The desired config section "'
+               throw new InvalidArgumentException('[CacheManagerFabric::getCacheManager()] The desired config section "'
                   .$configSection.'" does not exist within the cache configuration. Please check '
                   .'your cache configuration ("'.$env.'_cacheconfig.ini") for namespace '
                   .'"tools::cache" and context "'.$this->__Context.'"!',E_USER_ERROR);
-               exit();
-             // end if
             }
 
             // create cache manager
-            $this->__CacheManagerCache[$cacheKey] =
-               &$this->__getAndInitServiceObject('tools::cache','CacheManager',$section);
+            $this->cacheManagerCache[$configSection] =
+               $this->__getAndInitServiceObject('tools::cache','CacheManager',$section,'NORMAL');
 
           // end if
          }
 
-         return $this->__CacheManagerCache[$cacheKey];
+         return $this->cacheManagerCache[$configSection];
 
        // end function
       }

@@ -29,82 +29,46 @@
     * @version
     * Version 0.1, 23.11.2008<br />
     */
-   class DBCacheProvider extends AbstractCacheProvider {
+   class DBCacheProvider extends CacheBase implements CacheProvider {
 
-      public function DBCacheProvider(){
-      }
-
-      /**
-      *  @public
-      *
-      *  Returns the desired cache content or null in case of failure.
-      *
-      *  @param string $cacheKey the application's cache key
-      *  @return object $object desired object
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 23.10.2008<br />
-      */
-      function read($cacheKey){
+      public function read(CacheKey $cacheKey){
 
          // get configuration params
-         $namespace = $this->__getCacheConfigAttribute('Cache.Namespace');
-         $tableName = $this->__getCacheConfigAttribute('Cache.Table');
+         $namespace = $this->getConfigAttribute('Cache.Namespace');
+         $tableName = $this->getConfigAttribute('Cache.Table');
 
          // initialize database connection
-         $db = &$this->__getDatabaseConnection();
+         $db = &$this->getDatabaseConnection();
 
          // read from the database
          $select = 'SELECT `value` FROM `'.$tableName.'`
                     WHERE
                        `namespace` = \''.$namespace.'\'
                        AND
-                       `cachekey` = \''.$cacheKey.'\';';
+                       `cachekey` = \''.$cacheKey->getKey().'\';';
          $result = $db->executeTextStatement($select);
          $data = $db->fetchData($result);
 
-         if(isset($data['value'])){
-            return $data['value'];
-          // end if
-         }
-         else{
-            return null;
-          // end else
-         }
+         return isset($data['value']) ? $data['value'] : null;
 
        // end function
       }
 
-
-      /**
-      *  @public
-      *
-      *  Returns the desired cache content or null in case of failure.
-      *
-      *  @param string $cacheKey the application's cache key
-      *  @param string $cacheFile fully qualified cache file name
-      *  @param object $object desired object to serialize
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 23.11.2008<br />
-      */
-      function write($cacheKey,$object){
+      public function write(CacheKey $cacheKey,$object){
 
          // get configuration params
-         $namespace = $this->__getCacheConfigAttribute('Cache.Namespace');
-         $tableName = $this->__getCacheConfigAttribute('Cache.Table');
+         $namespace = $this->getConfigAttribute('Cache.Namespace');
+         $tableName = $this->getConfigAttribute('Cache.Table');
 
          // initialize database connection
-         $db = &$this->__getDatabaseConnection();
+         $db = &$this->getDatabaseConnection();
 
          // insert into the the database
          $select = 'SELECT `value` FROM `'.$tableName.'`
                     WHERE
                        `namespace` = \''.$namespace.'\'
                        AND
-                       `cachekey` = \''.$cacheKey.'\';';
+                       `cachekey` = \''.$cacheKey->getKey().'\';';
          $result = $db->executeTextStatement($select);
          $count = $db->getNumRows($result);
 
@@ -114,14 +78,14 @@
                      WHERE
                         `namespace` = \''.$namespace.'\'
                         AND
-                        `cachekey` = \''.$cacheKey.'\';';
+                        `cachekey` = \''.$cacheKey->getKey().'\';';
           // end if
          }
          else{
             $stmt = 'INSERT INTO `'.$tableName.'`
                      (`value`,`namespace`,`cachekey`)
                      VALUES
-                     (\''.$object.'\',\''.$namespace.'\',\''.$cacheKey.'\');';
+                     (\''.$object.'\',\''.$namespace.'\',\''.$cacheKey->getKey().'\');';
           // end else
          }
 
@@ -131,40 +95,25 @@
        // end function
       }
 
-
-      /**
-      *  @public
-      *
-      *  Implements the abstract provider's cache cleaning method.
-      *
-      *  @param string $cacheKey the cache key or null
-      *  @return string $result true|false
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 24.11.2008<br />
-      */
-      function clear($cacheKey = null){
+      public function clear(CacheKey $cacheKey = null){
 
          // get configuration params
-         $namespace = $this->__getCacheConfigAttribute('Cache.Namespace');
-         $tableName = $this->__getCacheConfigAttribute('Cache.Table');
+         $namespace = $this->getConfigAttribute('Cache.Namespace');
+         $tableName = $this->getConfigAttribute('Cache.Table');
 
          // initialize database connection
-         $db = &$this->__getDatabaseConnection();
+         $db = &$this->getDatabaseConnection();
 
          if($cacheKey === null){
             $delete = 'DELETE FROM `'.$tableName.'`
                        WHERE `namespace` = \''.$namespace.'\';';
-          // end if
          }
          else{
             $delete = 'DELETE FROM `'.$tableName.'`
                        WHERE
                           `namespace` = \''.$namespace.'\'
                           AND
-                          `cachekey` = \''.$cacheKey.'\';';
-          // end else
+                          `cachekey` = \''.$cacheKey->getKey().'\';';
          }
          $db->executeTextStatement($delete);
          return true;
@@ -172,21 +121,20 @@
        // end function
       }
 
-
       /**
-      *  @protected
-      *
-      *  Returns the database connection need.
-      *
-      *  @return AbstractDatabaseHandler $conn the database connection
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 24.11.2008<br />
-      */
-      protected function &__getDatabaseConnection(){
+       * @protected
+       *
+       * Returns the database connection need.
+       *
+       * @return AbstractDatabaseHandler The database connection.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 24.11.2008<br />
+       */
+      protected function &getDatabaseConnection(){
 
-         $connectionKey = $this->__getCacheConfigAttribute('Cache.Connection');
+         $connectionKey = $this->getConfigAttribute('Cache.Connection');
          $cM = &$this->__getServiceObject('core::database','ConnectionManager');
          return $cM->getConnection($connectionKey);
 

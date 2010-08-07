@@ -31,7 +31,7 @@
     * @version
     * Version 0.1, 24.11.2008<br />
     */
-   abstract class CacheCoreObject extends APFObject {
+   abstract class CacheBase extends APFObject {
 
       /**
        * @protected
@@ -41,22 +41,25 @@
        *
        * @param string $name name of the desired attribute.
        * @return string Value of the attribute.
+       * @throws InvalidArgumentException In case the desired attribute is not defined.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 24.11.2008<br />
        */
-      protected function __getCacheConfigAttribute($name){
+      protected function getConfigAttribute($name){
 
-         if(!isset($this->__Attributes[$name])){
+         $value = $this->getAttribute($name);
+         if($value == null){
             $env = Registry::retrieve('apf::core','Environment');
-            trigger_error('['.get_class($this).'::__getCacheConfigAttribute()] The configuration directive "'.$name.'" is not present or empty. Please check your cache configuration ("'.$env.'_cacheconfig.ini") for namespace "tools::cache" and context "'.$this->__Context.'" or consult the documentation!',E_USER_ERROR);
-            exit();
-          // end if
+            throw new InvalidArgumentException('['.get_class($this)
+                    .'::getConfigAttribute()] The configuration directive "'.$name.'" is not '
+                    .'present or empty. Please check your cache configuration ("'.$env
+                    .'_cacheconfig.ini") for namespace "tools::cache" and context "'
+                    .$this->__Context.'" or consult the documentation!',E_USER_ERROR);
          }
          else{
             return $this->__Attributes[$name];
-          // end else
          }
 
        // end function

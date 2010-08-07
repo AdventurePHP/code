@@ -19,8 +19,8 @@
     * -->
     */
 
-   import('tools::cache','AbstractCacheProvider');
-   import('tools::cache','CacheCoreObject');
+   import('tools::cache','CacheProvider');
+   import('tools::cache','CacheBase');
    
    /**
     * @package tools::cache
@@ -37,11 +37,11 @@
     * Version 0.1, 31.10.2008<br />
     * Version 0.2, 05.08.2010 (Added cache sub key to make cms page caching possible)<br />
     */
-   final class CacheManager extends CacheCoreObject {
+   final class CacheManager extends CacheBase {
 
       /**
        * @private
-       * @var AbstractCacheProvider The current cache provider.
+       * @var CacheProvider The current cache provider.
        */
       private $provider = null;
 
@@ -63,7 +63,7 @@
        * Implements the init() method used by the service manager. Initializes the cache
        * manager with the corresponding cache configuration section.
        *
-       * @param string[] $section the desired cache config section.
+       * @param string[] $section The desired cache config section.
        *
        * @author Christian Achatz
        * @version
@@ -101,18 +101,17 @@
        * of an object. This is especially necessary for page caching, where one single
        * page can be called with different parameters (e.g. for CMS page caching).
        *
-       * @param string $cacheKey The application's cache key.
-       * @param string $subCacheKey The application's sub cache key.
-       * @return mixed $cacheContent the cache content concerning the provider implementation.
+       * @param CacheKey $cacheKey The application's cache key.
+       * @return mixed The cache content concerning the provider implementation.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 21.11.2008<br />
        * Version 0.2, 05.08.2010 (Added cache sub key to make cms page caching possible)<br />
        */
-      public function getFromCache($cacheKey,$subCacheKey){
+      public function getFromCache(CacheKey $cacheKey){
          return ($this->active === true) 
-                 ? $this->provider->read($cacheKey,$subCacheKey)
+                 ? $this->provider->read($cacheKey)
                  : null;
       }
 
@@ -121,16 +120,15 @@
        *
        * Writes the desired content to the cache.
        *
-       * @param string $cacheKey the application's cache key.
-       * @param string $subCacheKey The application's sub cache key.
-       * @param mixed $cacheContent the content to cache.
+       * @param CacheKey $cacheKey the application's cache key.
+       * @param mixed The content to cache.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 21.11.2008<br />
        * Version 0.2, 05.08.2010 (Added cache sub key to make cms page caching possible)<br />
        */
-      public function writeToCache($cacheKey,$subCacheKey,$content){
+      public function writeToCache(CacheKey $cacheKey,$content){
          return ($this->active === true)
                  ? $this->provider->write($cacheKey,$content)
                  : false;
@@ -146,17 +144,16 @@
        * cleared, that belongs to the cache sub key. In case the sub key is null, all
        * entries are deleted belonging to the given cache key.
        *
-       * @param string $cacheKey the application's cache key.
-       * @param string $subCacheKey The application's sub cache key.
-       * @param bool $status true in case of success, otherwise false.
+       * @param CacheKey $cacheKey the application's cache key.
+       * @param bool True in case of success, otherwise false.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 21.11.2008<br />
        * Version 0.2, 05.08.2010 (Added cache sub key to make cms page caching possible)<br />
        */
-      public function clearCache($cacheKey = null,$subCacheKey = null){
-         return $this->provider->clear($cacheKey,$subCacheKey);
+      public function clearCache(CacheKey $cacheKey = null){
+         return $this->provider->clear($cacheKey);
       }
 
     // end class

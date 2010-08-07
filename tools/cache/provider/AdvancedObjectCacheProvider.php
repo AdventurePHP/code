@@ -19,21 +19,19 @@
     * -->
     */
 
-   import('tools::cache::provider','TextCacheProvider');
+   import('tools::cache::provider','AdvancedTextCacheProvider');
 
    /**
     * @package tools::cache::provider
-    * @class ObjectCacheProvider
+    * @class AdvancedObjectCacheProvider
     *
-    * Implements the cache provider for serialized php objects.
+    * Implements the cache provider for serialized php objects using the AdvancedTextCacheProvider.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 31.10.2008<br />
-    * Version 0.2, 23.11.2008 (The reader now inherits from the TextCacheReader because of same functionalities)<br />
-    * Version 0.3, 24.11.2008 (Refactoring tue to provider introduction.)<br />
+    * Version 0.1, 05.08.2010<br />
     */
-   class ObjectCacheProvider extends TextCacheProvider {
+   class AdvancedObjectCacheProvider extends AdvancedTextCacheProvider {
 
       public function read(CacheKey $cacheKey){
 
