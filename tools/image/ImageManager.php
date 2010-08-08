@@ -1,78 +1,78 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
-   *  @package tools::image
-   *  @class ImageManager
-   *
-   *  Provides methods to manipulate images.
-   *
-   *  @author Christian Schï¿½fer
-   *  @version
-   *  Version 0.1, 08.09.2003<br />
-   *  Version 0.2, 17.09.2004<br />
-   *  Version 0.3, 21.01.2006<br />
-   *  Version 0.4, 06.03.2007 (Several code changes)<br />
-   *  Version 0.5, 31.03.2007 (Refactoring and added PNG support)<br />
-   */
-   class ImageManager
-   {
+    * @package tools::image
+    * @class ImageManager
+    *
+    * Provides methods to manipulate images.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 08.09.2003<br />
+    * Version 0.2, 17.09.2004<br />
+    * Version 0.3, 21.01.2006<br />
+    * Version 0.4, 06.03.2007 (Several code changes)<br />
+    * Version 0.5, 31.03.2007 (Refactoring and added PNG support)<br />
+    */
+   class ImageManager {
 
       private function ImageManager(){
+         // utility class
       }
 
-
       /**
-      *  @public
-      *  @static
-      *
-      *  Returns information about an image. The return list contains the following offsets:
-      *  <ul>
-      *    <li>width: the width of the image</li>
-      *    <li>height: the height of the image</li>
-      *    <li>type: the type of the image</li>
-      *    <li>mimetype: the mime type of the image</li>
-      *    <li>bitdepth: the bitdepth of the image</li>
-      *    <li>colormode: the color mode (RGB or CMYK)</li>
-      *  </ul>
-      *  If the second argument contains a image attribute, the value is returned instead of a list!
-      *
-      *  @param string $image a full qualified image path
-      *  @param string $attributeName the name of the attribute, that should be returned
-      *  @return array $imageAttributes the attributes of an image
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 22.11.2004<br />
-      *  Version 0.2, 15.07.2006 (Added the extension in the attributes list; added another algo to guess the extension)<br />
-      *  Version 0.3, 31.01.2009 (Refactoring of the method. Now only the relevant image indicators are returned)<br />
-      *  Version 0.4, 01.02.2009 (Added a check, if the channel attribute is returned by getimagesize())<br />
-      */
+       * @public
+       * @static
+       *
+       * Returns information about an image. The return list contains the following offsets:
+       * <ul>
+       *   <li>width: the width of the image</li>
+       *   <li>height: the height of the image</li>
+       *   <li>type: the type of the image</li>
+       *   <li>mimetype: the mime type of the image</li>
+       *   <li>bitdepth: the bitdepth of the image</li>
+       *   <li>colormode: the color mode (RGB or CMYK)</li>
+       * </ul>
+       * If the second argument contains a image attribute, the value is returned instead of a list!
+       *
+       * @param string $image a full qualified image path.
+       * @param string $attributeName the name of the attribute, that should be returned.
+       * @return string[] The attributes of an image.
+       * @throws InvalidArgumentException In case the applied image does not exist.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 22.11.2004<br />
+       * Version 0.2, 15.07.2006 (Added the extension in the attributes list; added another algo to guess the extension)<br />
+       * Version 0.3, 31.01.2009 (Refactoring of the method. Now only the relevant image indicators are returned)<br />
+       * Version 0.4, 01.02.2009 (Added a check, if the channel attribute is returned by getimagesize())<br />
+       */
       static function getImageAttributes($image,$attributeName = null){
 
          // check if the image is present on disk
          if(!file_exists($image)){
-            trigger_error('[ImageManager::showImageAttributes()] The given image ("'.$image.'") does not exist! Hence, no attributes can be analyzed.');
-            return null;
-          // end if
+            throw new InvalidArgumentException('[ImageManager::showImageAttributes()] The given '
+                    .'image ("'.$image.'") does not exist! Hence, no attributes can be analyzed.',
+                    E_USER_ERROR);
          }
 
          // declare image flags
@@ -143,30 +143,30 @@
        // end function
       }
 
-
       /**
-      *  @public
-      *  @static
-      *
-      *  Resizes an image to the given dimensions. If a target image is given, the file is saved to
-      *  the desired file.
-      *
-      *  @param string $sourceImage full qualified path to the image file
-      *  @param int $width width of the resized image
-      *  @param int $height height of the resized image
-      *  @param string $targetImage full qualified path to the target image
-      *  @param int $jpgQuality the jpg quality (0-100)
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 31.01.2009<br />
-      */
+       * @public
+       * @static
+       *
+       * Resizes an image to the given dimensions. If a target image is given, the file is saved to
+       * the desired file.
+       *
+       * @param string $sourceImage full qualified path to the image file.
+       * @param int $width width of the resized image.
+       * @param int $height height of the resized image.
+       * @param string $targetImage full qualified path to the target image.
+       * @param int $jpgQuality the jpg quality (0-100).
+       * @throws InvalidArgumentException In case the applied image does not exist.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 31.01.2009<br />
+       */
       static function resizeImage($sourceImage,$width,$height,$targetImage = null,$jpgQuality = 80){
 
          // check if the image is present on disk
          if(!file_exists($sourceImage)){
-            trigger_error('[ImageManager::resizeImage()] The given image ("'.$sourceImage.'") does not exist! Hence, it cannot be resized.');
-          // end if
+            throw new InvalidArgumentException('[ImageManager::resizeImage()] The given image ("'
+                    .$sourceImage.'") does not exist! Hence, it cannot be resized.',E_USER_ERROR);
          }
 
          // gather the current dimensions of the image

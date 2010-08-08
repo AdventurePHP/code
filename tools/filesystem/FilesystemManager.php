@@ -20,11 +20,24 @@
     */
 
    /**
+    * @class FileException
+    * @package tools::filesystem
+    *
+    * Represents an exception, that is thrown on errors concerning file operations.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.08.2010<br />
+    */
+   class FileException extends Exception {
+   }
+
+   /**
     * @static
     * @class FilesystemManager
     * @package tools::filesystem
     *
-    * Implements a helper tool for filesystem access, dir and file handling.
+    * Implements a helper tool for filesystem access, directory and file handling.
     *
     * @author Christian Achatz
     * @version
@@ -40,11 +53,11 @@
        * @public
        *
        * Deletes the content of a folder (without it's directories) or the entire folder, if
-       * $recursive is switched to true.
+       * the <em>$recursive</em> argument is switched to true.
        *
-       * @param string $folder the base folder
-       * @param bool $recursive false = just current content, true = recursive
-       * @return bool $status status code (true = ok, false = error)
+       * @param string $folder the base folder.
+       * @param bool $recursive false = just current content, true = recursive.
+       * @return bool Status code (true = ok, false = error).
        *
        * @author Christian Achatz
        * @version
@@ -97,8 +110,10 @@
        * @static
        * @public
        *
-       * @param string $folder the desired folder to create
-       * @param int $permissions the desired folder permissions. See "man umask" for details
+       * Creates a folder recursively  with the given permission mask.
+       *
+       * @param string $folder the desired folder to create.
+       * @param int $permissions the desired folder permissions. See "man umask" for details.
        *
        * @author Christian Achatz
        * @version
@@ -172,15 +187,17 @@
        * Copies one file to another. If the target already exists, you can switch $force to true.
        * This indicates, that the target file will be overwritten.
        *
-       * @param string $sourceFile the source file path
-       * @param string $targetFile the target file path
-       * @param bool $force true = overwrite, false = return error
-       * @return bool $status status code (true = ok, false = error)
+       * @param string $sourceFile the source file path.
+       * @param string $targetFile the target file path.
+       * @param bool $force true = overwrite, false = return error.
+       * @return bool Status code (true = ok, false = error).
+       * @throws FileException In case the source file is not present.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 20.11.2008<br />
        * Version 0.2, 29.11.2008 (Fixed bug, that non existing source was not indicated)<br />
+       * Version 0.3, 07.08.2010 (Removed trigger_error(), introduced exception)<br />
        */
       public static function copyFile($sourceFile,$targetFile,$force = false){
 
@@ -188,9 +205,8 @@
          $source = str_replace('\\','/',realpath($sourceFile));
          $target = str_replace('\\','/',$targetFile);
          if(!file_exists($source)){
-            trigger_error('[FilesystemManager::copyFile()] The source file "'.$sourceFile.'" does not exist!',E_USER_NOTICE);
-            return false;
-          // end if
+            throw new FileException('[FilesystemManager::copyFile()] The source file "'
+                    .$sourceFile.'" does not exist!',E_USER_NOTICE);
          }
 
          // copy source to target
@@ -221,23 +237,24 @@
        *
        * Removes a given file from the filesystem.
        *
-       * @param string $file the file to delete
-       * @return bool $status status code (true = ok, false = error)
+       * @param string $file the file to delete.
+       * @return bool Status code (true = ok, false = error).
+       * @throws FileException In case the file to remove is not existent.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 20.11.2008<br />
        * Version 0.2, 24.11.2008 (Bugfix: recursion on windows systems broken due to directory seperator problems)<br />
        * Version 0.3, 29.11.2008 (Added check, if the file to delete does exist)<br />
+       * Version 0.4, 07.08.2010 (Removed trigger_error(), introduced exception)<br />
        */
       public static function removeFile($file){
 
          // check if file exists
          $realFile = str_replace('\\','/',realpath($file));
          if(!file_exists($realFile)){
-            trigger_error('[FilesystemManager::removeFile()] The file "'.$file.'" does not exist!',E_USER_NOTICE);
-            return false;
-          // end if
+            throw new FileException('[FilesystemManager::removeFile()] The file "'.$file
+                    .'" does not exist!',E_USER_NOTICE);
          }
 
          return unlink($realFile);
@@ -253,14 +270,14 @@
        * not above the limit given and whether the mime type is one of the present. If the file is
        * not valid, false will be returned.
        *
-       * @param string $dir the target dir to upload the file to
-       * @param string $temp_file the temporary file including it's directory
-       * @param string $file_name name of the target file
-       * @param string $file_size size of the current file in bytes
-       * @param string $file_max_size allowed files size in bytes
-       * @param string $file_type mime type of the current file
-       * @param array $allowed_mime_types list of allowed mime types
-       * @return bool $status true in case of success, false otherwise
+       * @param string $dir the target dir to upload the file to.
+       * @param string $temp_file the temporary file including it's directory.
+       * @param string $file_name name of the target file.
+       * @param string $file_size size of the current file in bytes.
+       * @param string $file_max_size allowed files size in bytes.
+       * @param string $file_type mime type of the current file.
+       * @param array $allowed_mime_types list of allowed mime types.
+       * @return bool True in case of success, false otherwise.
        *
        * @author Christian Achatz
        * @version
@@ -314,15 +331,17 @@
        * Renames the source file to the target file. If the target already exists, you can switch
        * $force to true. This indicates, that the target file will be overwritten.
        *
-       * @param string $sourceFile the source file path
-       * @param string $targetFile the target file path
-       * @param bool $force true = overwrite, false = return error
-       * @return bool $status status code (true = ok, false = error)
+       * @param string $sourceFile the source file path.
+       * @param string $targetFile the target file path.
+       * @param bool $force true = overwrite, false = return error.
+       * @return bool Status code (true = ok, false = error).
+       * @throws FileException In case the source file to rename is not existent.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 20.11.2008<br />
        * Version 0.2, 29.11.2008 (Fixed bug, that non existing source was not indicated)<br />
+       * Version 0.3, 07.08.2010 (Removed trigger_error(), introduced exception)<br />
        */
       public static function renameFile($sourceFile,$targetFile,$force = false){
 
@@ -330,9 +349,8 @@
          $source = str_replace('\\','/',realpath($sourceFile));
          $target = str_replace('\\','/',$targetFile);
          if(!file_exists($source)){
-            trigger_error('[FilesystemManager::renameFile()] The source file "'.$sourceFile.'" does not exist!',E_USER_NOTICE);
-            return false;
-          // end if
+            throw new FilesystemManager('[FilesystemManager::renameFile()] The source file "'
+                    .$sourceFile.'" does not exist!',E_USER_NOTICE);
          }
 
          // copy source to target
@@ -365,9 +383,9 @@
        * full path to the file/dir is included in the list. Set to false, only the file/dir name
        * is included.
        *
-       * @param string $folder the folder that should be read out
-       * @param bool $fullpath false (list contains only file/dir names) | true (full path is returned)
-       * @return array $files a list of files within the given folder
+       * @param string $folder the folder that should be read out.
+       * @param bool $fullpath false (list contains only file/dir names) | true (full path is returned).
+       * @return array A list of files within the given folder.
        *
        * @author Christian Achatz
        * @version
@@ -420,14 +438,16 @@
        * </ul>
        * If the second argument contains a file attribute, the value is returned instead of a list!
        *
-       * @param string $file the desired file
-       * @param string $attributeName the name of the attribute, that should be returned
-       * @return array $files a list of files within the given folder
+       * @param string $file the desired file.
+       * @param string $attributeName the name of the attribute, that should be returned.
+       * @return array A list of files within the given folder.
+       * @throws FileException In case the file to get the attributes from is not existent.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 29.11.2008<br />
        * Version 0.2, 01.02.2009 (Added the possibility to only return one attribute)<br />
+       * Version 0.3, 07.08.2010 (Removed trigger_error(), introduced exception)<br />
        */
       public static function getFileAttributes($file,$attributeName = null){
 
@@ -437,9 +457,8 @@
          // check if folder exists
          $realFile = str_replace('\\','/',realpath($file));
          if(!file_exists($realFile)){
-            trigger_error('[FilesystemManager::getFileAttributes()] The given file ("'.$file.'") does not exist!');
-            return array();
-          // end if
+            throw new FileException('[FilesystemManager::getFileAttributes()] The given file ("'
+                    .$file.'") does not exist!',E_USER_WARNING);
          }
 
          // gather attributes
@@ -453,17 +472,16 @@
          $attributes['modificationtime'] = date('H:i:s',$modTime);
          $attributes['size'] = intval(filesize($file));
 
-         // return attribute
+         // return single attribute
          if($attributeName !== null){
 
             if(isset($attributes[$attributeName])){
                return $attributes[$attributeName];
-             // end if
             }
             else{
-               trigger_error('[ImageManager::getImageAttributes()] The desired file attribute ("'.$attributes.'") does not exist!');
-               return null;
-             // end else
+               throw new FileException('[FilesytemManager::getFileAttributes()] The desired file '
+                       .'attribute ("'.$attributes.'") is not a valid attribute. Please consult the '
+                       .' API documentation!',E_USER_ERROR);
             }
 
           // end if
@@ -481,21 +499,22 @@
        *
        * Returns the size of the given folder. The size includes all files and subfolders.
        *
-       * @param string $folder the desired folder
-       * @return int $size the size of the given folder
+       * @param string $folder the desired folder.
+       * @return int $size the size of the given folder.
+       * @throws FileException In case the given folder is not existent.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 29.11.2008<br />
+       * Version 0.2, 07.08.2010 (Removed trigger_error(), introduced exception)<br />
        */
       public static function getFolderSize($folder){
 
          // check if folder exists
          $realFolder = str_replace('\\','/',realpath($folder));
          if(!file_exists($realFolder)){
-            trigger_error('[FilesystemManager::getFolderSize()] The given folder ("'.$folder.'") does not exist!');
-            return (int)0;
-          // end if
+            throw new FileException('[FilesystemManager::getFolderSize()] The given folder ("'
+                    .$folder.'") does not exist!',E_USER_ERROR);
          }
 
          // get content of the desired folder
