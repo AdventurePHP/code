@@ -54,10 +54,10 @@
       }
 
       public function run() {
-         $namespace = $this->__Input->getAttribute('path');
+         $namespace = $this->getInput()->getAttribute('path');
          $path = str_replace('_','/',strip_tags($namespace));
-         $file = strip_tags($this->__Input->getAttribute('file'));
-         $type = strip_tags($this->__Input->getAttribute('type'));
+         $file = strip_tags($this->getInput()->getAttribute('file'));
+         $type = strip_tags($this->getInput()->getAttribute('type'));
 
          // Check if all required attributes are given
          if(empty($path)){

@@ -47,7 +47,7 @@ final class JsCssPackagerAction extends AbstractFrontcontrollerAction {
     }
 
     public function run() {
-        $package = $this->__Input->getAttribute('package');
+        $package = $this->getInput()->getAttribute('package');
 
         // Check if all required attributes are given
         if(empty($package)) {
