@@ -32,9 +32,14 @@
     * @author Christian Achatz
     * @version
     * Version 0.1, 10.02.2008<br />
+    * Version 0.2, 07.08.2010 (Added *_FETCH_MODE constants and optional second fetchData() parameter)<br />
     */
    abstract class AbstractDatabaseHandler extends APFObject {
-
+   
+      const ASSOC_FETCH_MODE = 1;
+      const OBJECT_FETCH_MODE = 2;
+      const NUMERIC_FETCH_MODE = 3;
+      
       /**
        * @protected
        * @var boolean Indicates, whether the handler is already initialized or not.
@@ -254,13 +259,15 @@
        * Fetches a record from the database using the given result resource.
        *
        * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
+       * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
        * @return string[] The associative result array. Returns false if no row was found.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 20.09.2009<br />
+       * Version 0.2, 08.08.2010 (Added optional second parameter) <br />
        */
-      abstract public function fetchData($resultCursor);
+      abstract public function fetchData($resultCursor, $type = self::ASSOC_FETCH_MODE);
 
       /**
        * @public

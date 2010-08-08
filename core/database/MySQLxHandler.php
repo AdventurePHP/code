@@ -209,14 +209,24 @@
        * Fetches a record from the database using the given result resource.
        *
        * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
+       * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
        * @return string[] The associative result array.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 20.09.2009<br />
+       * Version 0.2, 08.08.2010 (Added optional second parameter) <br />
        */
-      public function fetchData($resultCursor){
-         return mysql_fetch_assoc($resultCursor);
+      public function fetchData($resultCursor, $type = self::ASSOC_FETCH_MODE){
+         if($type === self::ASSOC_FETCH_MODE){
+            return mysql_fetch_assoc($resultCursor);
+         }
+         elseif($type === self::OBJECT_FETCH_MODE){
+            return mysql_fetch_object($resultCursor);
+         }
+         else {
+            return mysql_fetch_row($resultCursor);
+         }
       }
 
       /**

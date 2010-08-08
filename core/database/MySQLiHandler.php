@@ -469,20 +469,32 @@
        * Fetches a record from the database using the given result resource.
        *
        * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
+       * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
        * @return string[] The associative result array.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 09.03.2010<br />
        * Version 0.2, 30.07.2010 (Changed return value to false if no row was found, in order to follow the interface definition)<br />
+       * Version 0.3, 08.08.2010 (Added optional second parameter) <br />
        */
-      public function fetchData($resultCursor){
+      public function fetchData($resultCursor, $type = self::ASSOC_FETCH_MODE){
          if($resultCursor == null){
             return array();
          }
-         $return = $resultCursor->fetch_assoc();
+         
+         if($type === self::ASSOC_FETCH_MODE){
+            $return = $resultCursor->fetch_assoc();
+         }
+         elseif($type === self::OBJECT_FETCH_MODE){
+            $return = $resultCursor->fetch_object();
+         }
+         else {
+            $return = $resultCursor->fetch_row();
+         }
+         
          if($return === NULL){
-             return false;
+            return false;
          }
          return $return;
        // end function
