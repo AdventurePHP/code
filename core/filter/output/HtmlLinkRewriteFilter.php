@@ -28,31 +28,30 @@
     * rewritten, "false" introduces the filter to not rewrite the link. Further, "mailto:" links
     * are not rewritten, too.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 05.05.2007 (First version of the link rewrite filter)<br />
     * Version 0.2, 08.05.2007 (Refactoring as a filter)<br />
     * Version 0.3, 17.06.2007 (Added form action rewriting)<br />
     */
-   class HtmlLinkRewriteFilter extends AbstractFilter
-   {
+   class HtmlLinkRewriteFilter extends AbstractFilter {
 
-      function HtmlLinkRewriteFilter(){
+      public function HtmlLinkRewriteFilter(){
       }
-
 
       /**
        * @public
        *
-       * Implements the filter methos for rewriting HTML links and form actions.
+       * Implements the filter methods for rewriting HTML links and form actions.
        *
        * @param string $input The HTML content to rewrite.
        * @return string The rewritten HTML content.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
-       * Version 0.1, 05.05.2007 (Erste Version des generischen Link-Rewritings)<br />
-       * Version 0.2, 08.05.2007 (Kapselung als Filter)<br />
+       * Version 0.1, 05.05.2007<br />
+       * Version 0.2, 08.05.2007 (Refactored to a real filter)<br />
+       * Version 0.3, 08.08.2010 (Bug 380: added empty sign to distinguish between real a tags and others)<br />
        */
       public function filter($input){
 
@@ -61,10 +60,10 @@
          $t->start('GenericOutputFilter::filter()');
 
          // filter links
-         $input = $this->__filter($input,'<a','>','href');
+         $input = $this->filterHtml($input,'<a ','>','href');
 
          // filter actions
-         $input = $this->__filter($input,'<form','>','action');
+         $input = $this->filterHtml($input,'<form ','>','action');
 
          $t->stop('GenericOutputFilter::filter()');
          return $input;
@@ -72,11 +71,12 @@
        // end function
       }
 
-
       /**
        * @private
        *
        * Generic filter method, that can filter various HTML tags/attributes.
+       * <p/>
+       * Html start tags must be passed with an trailing blank!
        *
        * @param string $htmlContent The HTML source code.
        * @param string $startToken The start token of the tag to parse.
@@ -84,14 +84,15 @@
        * @param string $attributeToken The name of the attribute to rewrite.
        * @return string The rewritten HTML content.
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 17.07.2007 (Refactored the filter method to be able to filter links and forms with the same method)<br />
        * Version 0.2, 11.12.2008 (Made the benchmark ids more explicit)<br />
        * Version 0.3, 13.12.2008 (Removed the benchmarker)<br />
        * Version 0.4, 13.07.2009 (Now "mailto:" links are not rewrited by default!)<br />
+       * Version 0.5, 08.08.2010 (Bug 380: removed extra blank when re-assembling the tag)<br />
        */
-      private function __filter($htmlContent,$startToken = '<a',$endToken = '>',$attributeToken = 'href'){
+      private function filterHtml($htmlContent,$startToken = '<a ',$endToken = '>',$attributeToken = 'href'){
 
          $searchOffset = 0;
          $tokenFound = true;
@@ -125,7 +126,7 @@
                    // end elseif
                   }
                   else{
-                     $currentLinkAttributes[$attributeToken] = $this->__replaceURISeparators($currentLinkAttributes[$attributeToken]);
+                     $currentLinkAttributes[$attributeToken] = $this->replaceURISeparators($currentLinkAttributes[$attributeToken]);
                    // end else
                   }
 
@@ -134,7 +135,7 @@
 
                // remove the linkrewrite attribute and generate the link tag
                unset($currentLinkAttributes['linkrewrite']);
-               $currentReplacedLinkString = $startToken.' '
+               $currentReplacedLinkString = $startToken // no empty sign must be added, due we have already one from the tag definition!
                   .$this->__getAttributesAsString($currentLinkAttributes).'>';
                $htmlContent = substr_replace($htmlContent,
                   $currentReplacedLinkString,
@@ -157,7 +158,6 @@
        // end function
       }
 
-
       /**
        * @private
        *
@@ -166,7 +166,7 @@
        * @param string $String; URL-Teil
        * @return string $String; Ersetzter URL-Teil
        *
-       * @author Christian Sch�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 14.03.2006<br />
        * Version 0.2, 16.04.2006<br />
@@ -175,7 +175,7 @@
        * Version 0.5, 02.06.2007 (Encoded ampersands werden nun auch ersetzte)<br />
        * Version 0.6, 08.06.2007 (von "Page" nach "htmlLinkRewriteFilter" umgezogen)<br />
        */
-      private function __replaceURISeparators($string){
+      private function replaceURISeparators($string){
 
          $replace = array('/?' => '/',
                           './?' => '/',
