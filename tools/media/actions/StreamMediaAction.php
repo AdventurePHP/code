@@ -33,8 +33,7 @@
    *  @version
    *  Version 0.1, 01.11.2008<br />
    */
-   class StreamMediaAction extends AbstractFrontcontrollerAction
-   {
+   class StreamMediaAction extends AbstractFrontcontrollerAction {
 
       /**
       *  @private
@@ -49,7 +48,7 @@
                                   'xml' => 'text/xml'
                                  );
 
-      function StreamMediaAction(){
+      public function StreamMediaAction(){
       }
 
       /**
@@ -62,16 +61,16 @@
       *  Version 0.1, 01.11.2008<br />
       *  Version 0.2, 26.04.2009 (Added caching header)<br />
       */
-      function run(){
+      public function run(){
 
          // read params from the input object
-         $namespace = str_replace('_','/',$this->__Input->getAttribute('namespace'));
-         $filebody = $this->__Input->getAttribute('filebody');
-         $extenstion = $this->__Input->getAttribute('extension');
+         $namespace = str_replace('_','/',$this->getInput()->getAttribute('namespace'));
+         $filebody = $this->getInput()->getAttribute('filebody');
+         $extenstion = $this->getInput()->getAttribute('extension');
          $filename = $filebody.'.'.$extenstion;
 
          // map extention to known mime type
-         $contentType = $this->__getContentType4Extension($extenstion);
+         $contentType = $this->getContentType4Extension($extenstion);
 
          // send desired header
          header('Content-Type: '.$contentType);
@@ -92,7 +91,6 @@
        // end function
       }
 
-
       /**
       *  @private
       *
@@ -105,7 +103,7 @@
       *  @version
       *  Version 0.1, 01.11.2008<br />
       */
-      function __getContentType4Extension($extension){
+      private function getContentType4Extension($extension){
 
          if(isset($this->__ExtensionMap[$extension])){
             return $this->__ExtensionMap[$extension];

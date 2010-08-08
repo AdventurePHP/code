@@ -21,7 +21,6 @@
 
    import('core::session','SessionManager');
 
-
    /**
    *  @package modules::captcha::biz::actions
    *  @class ShowCaptchaImageAction
@@ -32,8 +31,7 @@
    *  @version
    *  Version 0.1, 20.07.2008<br />
    */
-   class ShowCaptchaImageAction extends AbstractFrontcontrollerAction
-   {
+   class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
 
       /**
       *  @private
@@ -43,10 +41,8 @@
                            'XFILES.TTF'
                            );
 
-
-      function ShowCaptchaImageAction(){
+      public function ShowCaptchaImageAction(){
       }
-
 
       /**
       *  @public
@@ -57,12 +53,12 @@
       *  @version
       *  Version 0.1, 20.07.2008<br />
       */
-      function run(){
+      public function run(){
 
          $sessMgr = new SessionManager('modules::captcha');
 
          // read captcha string from the session.
-         $CaptchaStringName = $this->__Input->getAttribute('name');
+         $CaptchaStringName = $this->getInput()->getAttribute('name');
          $text = $sessMgr->loadSessionData($CaptchaStringName);
 
          // choose background

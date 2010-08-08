@@ -27,7 +27,7 @@
     *
     * Implements a LinkHandler for front controller purposes.
     *
-    * @author Christian SchÃ¤fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 10.02.2007<br />
     * Version 0.2, 24.02.2007 (Added new method generateActionLink())<br />
@@ -148,7 +148,7 @@
        *                           style (true) or not (false).
        * @return string The desired url.
        *
-       * @author Christian Schï¿½fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 24.02.2007<br />
        * Version 0.2, 08.07.2007 (Complete redesign due to redesign of the request filter)<br />

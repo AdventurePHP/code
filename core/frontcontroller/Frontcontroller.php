@@ -34,7 +34,8 @@
     * @version
     * Version 0.1, 27.01.2007<br />
     * Version 0.2, 24.02.2007 (Added param "KeepInURL")<br />
-    * Version 0.3, 08.11.2007 (Standardwert von KeepInURL auf false gesetzt)<br />
+    * Version 0.3, 08.11.2007 (Switched default value for "KeepInURL" to false)<br />
+    * Version 0.4, 07.08.2010 (Added the isActive() method to be able to self-deactivate actions on demand)<br />
     */
    abstract class AbstractFrontcontrollerAction extends APFObject {
 
@@ -42,19 +43,19 @@
        * @private
        * @var string The namespace of the action.
        */
-      protected $__ActionNamespace;
+      protected $actionNamespace;
 
       /**
        * @private
        * @var string The name of the action (used to identify the action within the action stack).
        */
-      protected $__ActionName;
+      protected $actionName;
 
       /**
        * @private
        * @var FrontcontrollerInput Input object of the action.
        */
-      protected $__Input;
+      protected $input;
 
       /**
        * @private
@@ -67,13 +68,13 @@
        * </ul>
        * The default value is "prepagecreate".
        */
-      protected $__Type = 'prepagecreate';
+      protected $type = 'prepagecreate';
 
       /**
        * @private
        * @var boolean Indicates, if the action should be included in the URL. Values: true | false.
        */
-      protected $__KeepInUrl = false;
+      private $keepInUrl = false;
 
       public function AbstractFrontcontrollerAction(){
       }
@@ -90,7 +91,7 @@
        * Version 0.1, 05.02.2007<br />
        */
       public function &getInput(){
-         return $this->__Input;
+         return $this->input;
        // end function
       }
 
@@ -106,7 +107,7 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function setInput($input){
-         $this->__Input = $input;
+         $this->input = $input;
        // end function
       }
 
@@ -123,7 +124,7 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function setActionName($name){
-         $this->__ActionName = $name;
+         $this->actionName = $name;
       }
 
       /**
@@ -139,7 +140,7 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function getActionName(){
-         return $this->__ActionName;
+         return $this->actionName;
       }
 
       /**
@@ -155,7 +156,7 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function setActionNamespace($namespace){
-         $this->__ActionNamespace = $namespace;
+         $this->actionNamespace = $namespace;
       }
 
       /**
@@ -171,7 +172,7 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function getActionNamespace(){
-         return $this->__ActionNamespace;
+         return $this->actionNamespace;
       }
 
       /**
@@ -186,7 +187,7 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function setType($type){
-         $this->__Type = $type;
+         $this->type = $type;
       }
 
       /**
@@ -201,7 +202,7 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function getType(){
-         return $this->__Type;
+         return $this->type;
       }
 
       /**
@@ -217,7 +218,7 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function setKeepInUrl($keepInUrl){
-         $this->__KeepInUrl = $keepInUrl;
+         $this->keepInUrl = $keepInUrl;
       }
 
       /**
@@ -233,7 +234,24 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function getKeepInUrl(){
-         return $this->__KeepInUrl;
+         return $this->keepInUrl;
+      }
+
+      /**
+       * @public
+       *
+       * Indicates, whether the action should be executed by the front controller or not.
+       * This method can be overridden in case an action should not be executed due to
+       * special concerns. This maybe the execution of another action or certain url params.
+       *
+       * @return boolean True, in case the action should be executed, false otherwise.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 07.08.2010<br />
+       */
+      public function isActive(){
+         return true;
       }
 
       /**
@@ -241,7 +259,7 @@
        * @abstract
        *
        * Defines the interface method, that must be implemented by each concrete action. The method
-       * is called by the front controller, when the action is executed.
+       * is called by the front controller when the action is executed.
        *
        * @author Christian Achatz
        * @version
@@ -272,8 +290,8 @@
        *
        * Returns all input parameters as a URL formatted string.
        *
-       * @param boolean $urlRewriting True for activated url rewriting, false instead
-       * @return string $attributesString URL formatted attributes string
+       * @param boolean $urlRewriting True for activated url rewriting, false instead.
+       * @return string URL formatted attributes string.
        *
        * @author Christian Achatz
        * @version
@@ -281,7 +299,7 @@
        * Version 0.2, 08.11.2007 (Fehler bei leerem Input-Objekt korrigiert)<br />
        * Version 0.3, 21.06.2008 (Removed APPS__URL_REWRITING and introduced the Registry instead)<br />
        */
-      function getAttributesAsString($urlRewriting = null){
+      public function getAttributesAsString($urlRewriting = null){
 
          // get the current front controller
          $action = &$this->__ParentObject;
@@ -295,29 +313,25 @@
 
          // define url delimiter
          if($urlRewriting == true){
-            $InputDelimiter = $fC->get('URLRewritingInputDelimiter');
-            $KeyValueDelimiter = $fC->get('URLRewritingKeyValueDelimiter');
+            $inputDelimiter = $fC->get('URLRewritingInputDelimiter');
+            $keyValueDelimiter = $fC->get('URLRewritingKeyValueDelimiter');
           // end if
          }
          else{
-            $InputDelimiter = $fC->get('InputDelimiter');
-            $KeyValueDelimiter = $fC->get('KeyValueDelimiter');
+            $inputDelimiter = $fC->get('InputDelimiter');
+            $keyValueDelimiter = $fC->get('KeyValueDelimiter');
           // end else
          }
 
          // fill consolidated attributes array
-         $AttributesArray = array();
+         $attributes = array();
          if(count($this->__Attributes) > 0){
-
-            foreach($this->__Attributes as $Key => $Value){
-               $AttributesArray[] = $Key.$KeyValueDelimiter.$Value;
-             // end if
+            foreach($this->__Attributes as $key => $value){
+               $attributes[] = $key.$keyValueDelimiter.$value;
             }
-
-          // end if
          }
 
-         return implode($InputDelimiter,$AttributesArray);
+         return implode($inputDelimiter,$attributes);
 
        // end function
       }
@@ -329,7 +343,7 @@
     * @package core::frontcontroller
     * @class Frontcontroller
     *
-    * Implements the APF front controller. He enables the developer to execute actions
+    * Implements the APF front controller. It enables the developer to execute actions
     * defined within the bootstrap file or the url to enrich a page controller application
     * with business logic.
     * <p/>
@@ -351,7 +365,7 @@
        * @protected
        * @var AbstractFrontcontrollerAction[] The front controller's action stack.
        */
-      protected $__Actions = array();
+      protected $actionStack = array();
 
       /**
        * @protected
@@ -458,7 +472,7 @@
          }
 
          // execute pre page create actions (see timing model)
-         $this->__runActions('prepagecreate');
+         $this->runActions('prepagecreate');
 
          // create new page
          $page = new Page('FrontControllerPage',$urlRewriting);
@@ -473,16 +487,16 @@
          $page->loadDesign($namespace,$template);
 
          // execute actions after page creation (see timing model)
-         $this->__runActions('postpagecreate');
+         $this->runActions('postpagecreate');
 
          // execute actions before transformation (see timing model)
-         $this->__runActions('pretransform');
+         $this->runActions('pretransform');
 
          // transform page
          $pageContent = $page->transform();
 
          // execute actions after page transformation (see timing model)
-         $this->__runActions('posttransform');
+         $this->runActions('posttransform');
 
          // display page content
          echo $pageContent;
@@ -511,10 +525,10 @@
        */
       public function &getActionByName($actionName){
 
-         foreach($this->__Actions as $actionHash => $DUMMY){
+         foreach($this->actionStack as $actionHash => $DUMMY){
 
-            if($this->__Actions[$actionHash]->getActionName() == $actionName){
-               return $this->__Actions[$actionHash];
+            if($this->actionStack[$actionHash]->getActionName() == $actionName){
+               return $this->actionStack[$actionHash];
              // end if
             }
 
@@ -540,7 +554,7 @@
        * Version 0.1, 05.02.2007<br />
        */
       public function &getActions(){
-         return $this->__Actions;
+         return $this->actionStack;
        // end function
       }
 
@@ -549,12 +563,15 @@
        *
        * Creates the url representation of a given namespace.
        *
-       * @author Christian Sch√§fer
+       * @param string $namespaceUrlRepresenation The url string.
+       * @return The namespace of the action.
+       *
+       * @author Christian Sch‰fer
        * @version
        * Version 0.1, 03.06.2007<br />
        */
-      protected function __getActionNamespaceByURLString($NamespaceString){
-         return str_replace($this->__NamespaceURLDelimiter,'::',$NamespaceString);
+      protected function getActionNamespaceByURLString($namespaceUrlRepresenation){
+         return str_replace($this->__NamespaceURLDelimiter,'::',$namespaceUrlRepresenation);
        // end function
       }
 
@@ -586,17 +603,17 @@
             if(strlen(trim($config->getValue($name,'FC.InputParams'))) > 0){
 
                // separate params
-               $Params = explode($this->__InputDelimiter,$config->getValue($name,'FC.InputParams'));
+               $staticParams = explode($this->__InputDelimiter,$config->getValue($name,'FC.InputParams'));
 
-               for($i = 0; $i < count($Params); $i++){
+               for($i = 0; $i < count($staticParams); $i++){
 
-                  if(substr_count($Params[$i],$this->__KeyValueDelimiter) > 0){
+                  if(substr_count($staticParams[$i],$this->__KeyValueDelimiter) > 0){
 
-                     $ParamValuePair = explode($this->__KeyValueDelimiter,$Params[$i]);
+                     $pairs = explode($this->__KeyValueDelimiter,$staticParams[$i]);
 
                      // re-order and add to param list
-                     if(isset($ParamValuePair[0]) && isset($ParamValuePair[1])){
-                        $params = array_merge($params,array($ParamValuePair[0] => $ParamValuePair[1]));
+                     if(isset($pairs[0]) && isset($pairs[1])){
+                        $params = array_merge($params,array($pairs[0] => $pairs[1]));
                       // end if
                      }
 
@@ -628,8 +645,10 @@
        * @param string $namespace Namespace of the action.
        * @param string $name Name of the action (section key of the config file).
        * @param string[] $params (Input-)params of the action.
+       * @throws InvalidArgumentException In case the action cannot be found within the appropriate
+       * configuration or the action implementation classes are not available.
        *
-       * @author Christian Sch√§fer
+       * @author Christian Sch‰fer
        * @version
        * Version 0.1, 05.06.2007<br />
        * Version 0.2, 01.07.2007<br />
@@ -641,7 +660,7 @@
       public function addAction($namespace,$name,$params = array()){
 
          // re-map namespace
-         $namespace = $this->__getActionNamespaceByURLString($namespace);
+         $namespace = $this->getActionNamespaceByURLString($namespace);
          $namespace .= '::actions';
 
          // load the action configuration
@@ -659,11 +678,10 @@
          // throw exception, in case the action config is not present
          if($actionConfig == null){
             $env = Registry::retrieve('apf::core','Environment');
-            throw new Exception('[Frontcontroller::__parseActions()] No config section for action key "'
-                    .$name.'" available in configuration file "'.$env.'_actionconfig.ini" in namespace "'
-                    .$namespace.'" and context "'.$this->__Context.'"!',E_USER_ERROR);
-            exit(1);
-          // end if
+            throw new InvalidArgumentException('[Frontcontroller::addAction()] No config '
+                    .'section for action key "'.$name.'" available in configuration file "'.$env
+                    .'_actionconfig.ini" in namespace "'.$namespace.'" and context "'
+                    .$this->__Context.'"!',E_USER_ERROR);
          }
 
          // include action implementation
@@ -674,12 +692,10 @@
 
          // check for class beeing present
          if(!class_exists($actionConfig['FC.ActionClass']) || !class_exists($actionConfig['FC.InputClass'])){
-            throw new Exception('[Frontcontroller::__parseActions()] Action class with name "'
+            throw new InvalidArgumentException('[Frontcontroller::addAction()] Action class with name "'
                     .$actionConfig['FC.ActionClass'].'" or input class with name "'
                     .$actionConfig['FC.InputClass'].'" could not be found. Please check your action '
                     . 'configuration file!',E_USER_ERROR);
-            exit(1);
-          // end if
          }
 
          // init action
@@ -694,7 +710,7 @@
 
          // merge input params with the configured params (params included in the URL are kept!)
          $input->setAttributes(array_merge(
-                 $this->__generateParamsFromInputConfig($actionConfig['FC.InputParams']),
+                 $this->generateParamsFromInputConfig($actionConfig['FC.InputParams']),
                  $params));
 
          $input->setParentObject($action);
@@ -704,7 +720,7 @@
          $action->setParentObject($this);
 
          // add the action as a child
-         $this->__Actions[md5($namespace.'~'.$name)] = $action;
+         $this->actionStack[md5($namespace.'~'.$name)] = $action;
 
        // end function
       }
@@ -717,11 +733,11 @@
        * @param string $inputConfig The config string contained in the action config.
        * @return string[] The resulting param-value array.
        *
-       * @author Christian W. Sch√§fer
+       * @author Christian W. Sch‰fer
        * @version
        * Version 0.1, 08.09.2007<br />
        */
-      protected function __generateParamsFromInputConfig($inputConfig = ''){
+      protected function generateParamsFromInputConfig($inputConfig = ''){
 
          $inputParams = array();
 
@@ -756,9 +772,15 @@
       /**
        * @protected
        *
-       * Executes all actions with the given type.
+       * Executes all actions with the given type. Possible types are
+       * <ul>
+       * <li>prepagecreate</li>
+       * <li>postpagecreate</li>
+       * <li>pretransform</li>
+       * <li>posttransform</li>
+       * </ul>
        *
-       * @param string $type Type of the actions to execute (prepagecreate | postpagecreate | pretransform | posttransform).
+       * @param string $type Type of the actions to execute.
        *
        * @author Christian Achatz
        * @version
@@ -768,24 +790,24 @@
        * Version 0.4, 01.07.2007 (Removed debug output)<br />
        * Version 0.5, 08.11.2007<br />
        * Version 0.6, 28.03.2008 (Optimized benchmarker call)<br />
+       * Version 0.7, 07.08.2010 (Added action activation indicator to disable actions on demand)<br />
        */
-      protected function __runActions($type = 'prepagecreate'){
+      protected function runActions($type = 'prepagecreate'){
 
          $t = &Singleton::getInstance('BenchmarkTimer');
 
-         foreach($this->__Actions as $actionHash => $DUMMY){
+         foreach($this->actionStack as $actionHash => $DUMMY){
 
             // only execute, when the current action has a suitable type
-            if($this->__Actions[$actionHash]->getType() == $type){
+            if($this->actionStack[$actionHash]->getType() == $type && $this->actionStack[$actionHash]->isActive()){
 
-               $id = get_class($this->__Actions[$actionHash]).'::run()';
+               $id = get_class($this->actionStack[$actionHash]).'::run()';
                $t->start($id);
 
-               $this->__Actions[$actionHash]->run();
+               $this->actionStack[$actionHash]->run();
 
                $t->stop($id);
 
-             // end if
             }
 
           // end for

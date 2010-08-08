@@ -32,10 +32,9 @@
    *  @version
    *  Version 0.1, 07.09.2007<br />
    */
-   class ShowImageAction extends AbstractFrontcontrollerAction
-   {
+   class ShowImageAction extends AbstractFrontcontrollerAction {
 
-      function ShowImageAction(){
+      public function ShowImageAction(){
       }
 
       /**
@@ -48,13 +47,13 @@
       *  Version 0.1, 07.09.2007<br />
       *  Version 0.2, 26.04.2009 (Added caching header)<br />
       */
-      function run(){
+      public function run(){
 
          // retrieve image information from the input object
-         $Image = APPS__PATH.'/modules/socialbookmark/pres/image/'.$this->__Input->getAttribute('img').'.'.$this->__Input->getAttribute('imgext');
+         $Image = APPS__PATH.'/modules/socialbookmark/pres/image/'.$this->getInput()->getAttribute('img').'.'.$this->getInput()->getAttribute('imgext');
 
          // send headers to allow caching
-         HeaderManager::send('Content-Type: image/'.$this->__Input->getAttribute('imgext'));
+         HeaderManager::send('Content-Type: image/'.$this->getInput()->getAttribute('imgext'));
          $delta = 7 * 24 * 60 * 60; // chaching for 7 days
          HeaderManager::send('Cache-Control: public; max-age='.$delta);
          $modifiedDate = date('D, d M Y H:i:s \G\M\T', time());

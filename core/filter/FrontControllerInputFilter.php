@@ -35,7 +35,6 @@
       function FrontControllerInputFilter(){
       }
 
-
       /**
        * @public
        *

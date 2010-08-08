@@ -21,7 +21,6 @@
 
    import('modules::newspager::biz','newspagerManager');
 
-
    /**
    *  @package modules::newspager::biz
    *  @class newspagerAction
@@ -32,12 +31,7 @@
    *  @version
    *  Version 0.1, 02.20.2008<br />
    */
-   class newspagerAction extends AbstractFrontcontrollerAction
-   {
-
-      function newspagerAction(){
-      }
-
+   class newspagerAction extends AbstractFrontcontrollerAction {
 
       /**
       *  @public
@@ -50,12 +44,12 @@
       *  Version 0.2, 05.02.2008 (language is now directly taken from the AJAX request)<br />
       *  Version 0.3, 18.09.2008 (Added dynamic data dir behaviour)<br />
       */
-      function run(){
+      public function run(){
 
          // get desired page number, language and data dir
-         $Page = $this->__Input->getAttribute('page');
-         $Language = $this->__Input->getAttribute('lang');
-         $DataDir = base64_decode($this->__Input->getAttribute('datadir'));
+         $Page = $this->getInput()->getAttribute('page');
+         $Language = $this->getInput()->getAttribute('lang');
+         $DataDir = base64_decode($this->getInput()->getAttribute('datadir'));
 
          // get manager
          $nM = &$this->__getAndInitServiceObject('modules::newspager::biz','newspagerManager',$DataDir);
