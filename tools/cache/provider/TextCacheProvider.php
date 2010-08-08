@@ -77,7 +77,7 @@
          $namespace = str_replace('::','/',$this->getConfigAttribute('Cache.Namespace'));
 
          $key = md5($cacheKey->getKey());
-         $subFolder = substr($cacheKey,0,2);
+         $subFolder = substr($key,0,2);
 
          return $baseFolder.'/'.$namespace.'/'.$subFolder.'/'.$key.'.apfc';
 
