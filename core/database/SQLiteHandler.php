@@ -22,15 +22,15 @@
    import('core::database','AbstractDatabaseHandler');
 
    /**
-   *  @package core::database
-   *  @class SQLiteHandler
-   *
-   *  Implementiert die Datenbankabstraktionsschicht f�r die SQLite-Schnittstelle.<br />
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 23.02.2008<br />
-   */
+    * @package core::database
+    * @class SQLiteHandler
+    *
+    * Implementiert die Datenbankabstraktionsschicht f�r die SQLite-Schnittstelle.<br />
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.02.2008<br />
+    */
    class SQLiteHandler extends AbstractDatabaseHandler {
 
       /**
@@ -54,20 +54,19 @@
        *
        * Implements the connect method to create a connection to the desired sqlite database.
        *
+       * @throws DatabaseHandlerException In case the database connection cannot be established.
+       *
        * @author Christian Achatz
        * @version
        * Version 0.1, 23.02.2008<br />
        */
       protected function __connect(){
 
-         // Verbindung �ffnen
          $this->__dbConn = @sqlite_open($this->__dbName,$this->__dbMode,$this->__dbError);
 
-         // Fehler ausgeben, falls vorhanden
          if(!is_resource($this->__dbConn)){
-            trigger_error('[SQLiteHandler->__connect()] Database "'.$this->__dbName.'" cannot be opened! Message: '.$this->__dbError,E_USER_ERROR);
-            exit(1);
-          // end if
+            throw new DatabaseHandlerException('[SQLiteHandler->__connect()] Database "'
+                    .$this->__dbName.'" cannot be opened! Message: '.$this->__dbError,E_USER_ERROR);
          }
 
        // end function
@@ -121,11 +120,6 @@
 
             $this->__dbLog->logEntry($this->__dbLogFileName,$message,'ERROR');
 
-            if($this->__dbDebug == true){
-               trigger_error('[SQLiteHandler->executeTextStatement()] '.$message);
-             // end if
-            }
-
           // end if
          }
 
@@ -148,6 +142,7 @@
        * @param string[] $params A list of statement parameters.
        * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
        * @return resource The database result resource.
+       * @throws DatabaseHandlerException In case the statement file does not exist.
        *
        * @author Christian Achatz
        * @version
@@ -160,9 +155,9 @@
          $file = APPS__PATH.'/config/'.str_replace('::','/',$namespace).'/'.str_replace('::','/',$this->__Context).'/statements/'.$env.'_'.$statementName.'.sql';
 
          if(!file_exists($file)){
-            trigger_error('[SQLiteHandler->executeStatement()] There\'s no statement file with name "'.($env.'_'.$statementName.'.sql').'" for given namespace "'.$namespace.'" and current context "'.$this->__Context.'"!');
-            exit();
-          // end if
+            throw new DatabaseHandlerException('[SQLiteHandler->executeStatement()] There\'s no '
+                    .'statement file with name "'.($env.'_'.$statementName.'.sql').'" for given '
+                    .'namespace "'.$namespace.'" and current context "'.$this->__Context.'"!',E_USER_ERROR);
          }
 
          $statement = file_get_contents($file);
@@ -193,11 +188,6 @@
             $message .= ' (Statement: '.$statement.')';
 
             $this->__dbLog->logEntry($this->__dbLogFileName,$message,'ERROR');
-
-            if($this->__dbDebug == true){
-               trigger_error('[SQLiteHandler->executeTextStatement()] '.$message);
-             // end if
-            }
 
           // end if
          }
