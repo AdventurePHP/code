@@ -57,10 +57,10 @@ class htmlheader_taglib_gethead extends Document {
             $output .= $this->__refresh->transform();
         }
         foreach($this->__stylesheets as $stylesheet) {
-            $output = $stylesheet->transform() . $output;
+            $output .= $stylesheet->transform();
         }
         foreach($this->__javascripts as $script) {
-            $output = $script->transform() . $output;
+            $output .= $script->transform();
         }
         foreach($this->__packages as $package) {
             $output .= $package->transform();
