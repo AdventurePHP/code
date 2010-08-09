@@ -359,6 +359,8 @@
        *
        * Prefills the value of the current control.
        *
+       * @throws FormException In case the form control has no name.
+       *
        * @author Christian Achatz
        * @version
        * Version 0.1, 07.01.2007<br />
@@ -370,10 +372,9 @@
             $controlName = $this->getAttribute('name');
             if($controlName === null){
                $formName = $this->__ParentObject->getAttribute('name');
-               trigger_error('['.get_class($this).'::__presetValue()] A form control is missing '
+               throw new FormException('['.get_class($this).'::__presetValue()] A form control is missing '
                   .' the required tag attribute "name". Please check the taglib definition of the '
-                  .'form with name "'.$formName.'"!');
-             // end if
+                  .'form with name "'.$formName.'"!',E_USER_ERROR);
             }
 
             if(isset($_REQUEST[$controlName]) && (!empty($_REQUEST[$controlName]) || $_REQUEST[$controlName] === '0')){
@@ -396,6 +397,7 @@
        *
        * @param string $name The name of the place holder.
        * @param string $value The value to fill the place holder with.
+       * @throws FormException In case the place holder cannot be set.
        *
        * @author Christian Achatz
        * @version
@@ -422,21 +424,18 @@
           // end if
          }
          else{
-            trigger_error('['.get_class($this).'::setPlaceHolder()] No place holder object with '
+            throw new FormException('['.get_class($this).'::setPlaceHolder()] No place holder object with '
                .'name "'.$name.'" composed in current for document controller "'
                .($this->__ParentObject->getDocumentController()).'"! Perhaps tag library '
                .'form:placeholder is not loaded in form "'.$this->getAttribute('name').'"!',
                E_USER_ERROR);
-            exit();
-          // end else
          }
 
          if($placeHolderCount < 1){
-            trigger_error('['.get_class($this).'::setPlaceHolder()] There are no place holders '
+            throw new FormException('['.get_class($this).'::setPlaceHolder()] There are no place holders '
                .'found for name "'.$name.'" in template "'.($this->__Attributes['name'])
                .'" in document controller "'.($this->__ParentObject->getDocumentController())
                .'"!',E_USER_WARNING);
-          // end if
          }
 
        // end function

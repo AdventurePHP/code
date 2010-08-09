@@ -35,13 +35,13 @@
        * @private
        * @var string The namespace of the filter class.
        */
-      private $__Namespace = null;
+      private $namespace = null;
 
       /**
        * @private
        * @var string The name of the filter class (and file name as well).
        */
-      private $__Class = null;
+      private $class = null;
 
       /**
        * @public
@@ -53,8 +53,8 @@
        * Version 0.1, 08.12.2007<br />
        */
       function FilterDefinition($namespace,$class){
-         $this->__Namespace = $namespace;
-         $this->__Class = $class;
+         $this->namespace = $namespace;
+         $this->class = $class;
        // end function
       }
 
@@ -70,7 +70,7 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function getNamespace(){
-         return $this->__Namespace;
+         return $this->namespace;
       }
 
       /**
@@ -85,7 +85,7 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function getClass(){
-         return $this->__Class;
+         return $this->class;
       }
 
     // end class
@@ -147,10 +147,11 @@
        * @public
        * @static
        *
-       * Returns an instance of the desired filter.<br />
+       * Returns an instance of the desired filter.
        *
-       * @param FilterDefinition $filterDefinition the definition of the APF style filter
-       * @return AbstractFilter $filterInstance the instance of the filter or null in case the filter class does not exist
+       * @param FilterDefinition $filterDefinition the definition of the APF style filter.
+       * @return AbstractFilter The instance of the filter or null in case the filter class does not exist.
+       * @throws InvalidArgumentException In case of configuration errors for the applied filter definition.
        *
        * @author Christian Achatz
        * @version
@@ -164,9 +165,9 @@
          // check definition
          $defClassName = get_class($filterDefinition);
          if($defClassName !== 'FilterDefinition'){
-            trigger_error('[FilterFactory::getFilter()] The given filter definition (class name: "'.$defClassName.'") is not an instance of the "FilterDefinition" class!',E_USER_ERROR);
-            return null;
-          // end if
+            throw new InvalidArgumentException('[FilterFactory::getFilter()] The given filter '
+                    .'definition (class name: "'.$defClassName.'") is not an instance of the '
+                    .'"FilterDefinition" class!',E_USER_ERROR);
          }
 
          // gather the filter information
@@ -180,9 +181,8 @@
           // end if
          }
          else{
-            trigger_error('[FilterFactory::getFilter()] Requested filter "'.$filterName.'" cannot be loaded from namespace "'.$namespace.'"!',E_USER_ERROR);
-            return null;
-          // end else
+            throw new InvalidArgumentException('[FilterFactory::getFilter()] Requested filter "'
+                    .$filterName.'" cannot be loaded from namespace "'.$namespace.'"!',E_USER_ERROR);
          }
 
        // end function
