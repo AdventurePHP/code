@@ -80,7 +80,7 @@ class JsCssPackager extends APFObject {
                 $cacheKey .= '_gzip';
             }
 
-            $cacheContent = $cM->getFromCache($cacheKey);
+            $cacheContent = $cM->getFromCache(new SimpleCacheKey($cacheKey));
             /* If package is already in cache, we check if it is not expired and return the cache content */
             if($cacheContent !== null) {
                 $cacheExpires = substr($cacheContent, -10);
@@ -98,8 +98,8 @@ class JsCssPackager extends APFObject {
             $cacheExpires = time()+($cfgPack['ServerCacheMinutes']*60);
             $newPackageGzip = gzencode($newPackage, 9);
 
-            $cM->writeToCache($name, $newPackage.$cacheExpires);
-            $cM->writeToCache($name . '_gzip', $newPackageGzip.$cacheExpires);
+            $cM->writeToCache(new SimpleCacheKey($name), $newPackage.$cacheExpires);
+            $cM->writeToCache(new SimpleCacheKey($name . '_gzip'), $newPackageGzip.$cacheExpires);
 
             if($gzip === true) {
                 return $newPackageGzip;
@@ -219,8 +219,7 @@ class JsCssPackager extends APFObject {
      */
     protected function __loadSingleFile($namespace, $file, $ext, $packageName) {
         $namespace = str_replace('::','/',$namespace);
-        $reg = &Singleton::getInstance('Registry');
-        $libBasePath = $reg->retrieve('apf::core','LibPath');
+        $libBasePath = Registry::retrieve('apf::core','LibPath');
         $filePath = $libBasePath.'/'. $namespace .'/'.$file.'.'.$ext;
 
         if(file_exists($filePath)) {
