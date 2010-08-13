@@ -48,7 +48,7 @@
         * @param bool $urlRewriting Optional. Create rewriting Url.
         * @param bool $fcaction Optional. Create link for FC-Action.
         */
-       public function CssNode($url, $namespace, $filename, $rewriting, $fcaction){
+       public function CssNode($url, $namespace, $filename, $rewriting = null, $fcaction = true){
            $this->__url = $url;
            $this->__namespace = $namespace;
            $this->__filename = $filename;
