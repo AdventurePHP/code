@@ -97,69 +97,21 @@
        * @static
        * @public
        *
-       * @param string $folder the desired folder to create
-       * @param int $permissions the desired folder permissions. See "man umask" for details
+       * @param string $folder the desired folder to create.
+       * @param int $permissions the desired folder permissions. See "man umask" for details.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 21.11.2008<br />
+       * Version 0.2, 13.08.2010 (Bugfix: default permissions are now set to ug+rwx; using php's built in recursive path creation)<br />
        */
-      public static function createFolder($folder,$permissions = 660){
+      public static function createFolder($folder,$permissions = 0770){
 
          // normalize folder structure
          $folder = str_replace('\\','/',$folder);
 
          if(!is_dir($folder)){
-
-            // split path into it's peaces
-            $folderArray = explode('/',$folder);
-
-            // if the first part is empty (due to trailing slash) remove it
-            if(empty($folderArray[0])){
-               array_shift($folderArray);
-             // end if
-            }
-
-            // initialize current path section
-            $currentPath = '/';
-
-            // initialize dir seperator
-            $dirDelimiter = '';
-
-            // Verzeichnisse rekursiv anlegen
-            for($i = 0; $i < count($folderArray); $i++){
-
-               $currentPath .= $dirDelimiter.$folderArray[$i];
-
-               // Special case WINDOWS: if the current path sequence is
-               // like "/e:", the "/" must be replaced
-               if(preg_match('=/[a-z]{1}:=i',$currentPath)){
-                  $currentPath = str_replace('/','',$currentPath);
-                // end if
-               }
-
-               // Special case for relative paths, that start with "." or ".."
-               if(substr($currentPath,0,2) == '/.'){
-                  $currentPath = str_replace('/.','.',$currentPath);
-                // end if
-               }
-               if(substr($currentPath,0,3) == '/..'){
-                  $currentPath = str_replace('/..','..',$currentPath);
-                // end if
-               }
-
-               // create folder if it is no symbolic link or dir
-               if($folderArray[$i] != '..' && $folderArray[$i] != '.' && !is_dir($currentPath)){
-                  mkdir($currentPath,$permissions);
-                // end if
-               }
-
-               $dirDelimiter = '/';
-
-             // end for
-            }
-
-          // end if
+            mkdir($folder,$permissions,true);
          }
 
        // end function
