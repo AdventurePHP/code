@@ -48,7 +48,7 @@
         * @param bool $urlRewriting Optional. Create rewriting Url.
         * @param bool $fcaction Optional. Create link for FC-Action.
         */
-       public function JsNode($url, $namespace, $filename, $rewriting, $fcaction){
+       public function JsNode($url, $namespace, $filename, $rewriting = null, $fcaction = null){
            $this->__url = $url;
            $this->__namespace = $namespace;
            $this->__filename = $filename;
