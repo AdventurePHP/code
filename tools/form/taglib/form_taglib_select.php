@@ -73,7 +73,10 @@
        */
       public function onParseTime(){
          $this->__extractTagLibTags();
-         $this->setOption2Selected($this->getRequestValue());
+         $value = $this->getRequestValue();
+         if($value !== null){
+            $this->setOption2Selected($value);
+         }
        // end function
       }
 
@@ -214,7 +217,10 @@
 
          // lazily do request presetting when not already done
          if($this->isDynamicField === true){
-            $this->setOption2Selected($this->getRequestValue());
+            $value = $this->getRequestValue();
+            if($value !== null){
+               $this->setOption2Selected($value);
+            }
          }
 
          $selectedOption = null;
@@ -292,18 +298,21 @@
        *
        * @return string The HTML code of the select field.
        *
-       * @author Christian Sch√§fer
+       * @author Christian Sch‰fer
        * @version
        * Version 0.1, 07.01.2007<br />
        * Version 0.2, 12.01.2007 (Removed typos)<br />
        * Version 0.3, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
+       * Version 0.4, 13.08.2010 (Bugfix: lazy dynamic presetting failed, when no value was sent)<br />
        */
       public function transform(){
 
          // do lazy presetting, in case we are having a field with dynamic options
          if($this->isDynamicField === true){
             $value = $this->getRequestValue();
-            $this->setOption2Selected($this->getRequestValue());
+            if($value !== null){
+               $this->setOption2Selected($value);
+            }
          }
 
          // create html code
@@ -361,7 +370,7 @@
        * Returns the value of the present form control from the request.
        * Enables sub-elements of form controls (date control!).
        *
-       * @return string The form control's value in request.
+       * @return string The form control's value in request or null in case the form is not sent.
        *
        * @author Christian Achatz
        * @version
@@ -370,7 +379,7 @@
       protected function getRequestValue(){
 
          $name = $this->getAttribute('name');
-         $value = (string)'NOVALUEINREQUEST';
+         $value = null;
 
          $subMarkerStart = '[';
          $subMarkerEnd = ']';
