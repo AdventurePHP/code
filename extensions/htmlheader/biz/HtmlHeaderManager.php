@@ -19,9 +19,6 @@
  * -->
  */
 
-import('extensions::htmlheader::biz','CssNode');
-import('extensions::htmlheader::biz','JsNode');
-
 /**
  *  @namespace extensions::htmlheader::biz
  *  @class HtmlHeaderManager
