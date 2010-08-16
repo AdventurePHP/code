@@ -51,7 +51,7 @@
        * Version 0.1, 13.01.2007<br />
        * Version 0.2, 28.08.2009 (Moved presetting to this method)<br />
        */
-      function onParseTime(){
+      public function onParseTime(){
 
          // check the box, desired
          $name = $this->getAttribute('name');

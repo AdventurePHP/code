@@ -306,12 +306,10 @@
          }
          else{
 
-            // display an error
             throw new FormException('[html_taglib_form::addFormContentBeforeMarker()] No marker object '
                .'with name "'.$markerName.'" composed in current form for document controller "'
                .($this->__ParentObject->__DocumentController).'"! Please check the definition of '
                .'the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
-            exit();
 
           // end else
          }
@@ -349,12 +347,10 @@
          }
          else{
 
-            // display an error
             throw new FormException('[html_taglib_form::addFormContentAfterMarker()] No marker object '
                .'with name "'.$markerName.'" composed in current form for document controller "'
                .($this->__ParentObject->__DocumentController).'"! Please check the definition of '
                .'the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
-            exit();
 
           // end else
          }
@@ -387,6 +383,12 @@
 
             // get desired marker
             $marker = &$this->__getMarker($markerName);
+            if($marker === null){
+               throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] No marker object '
+                  .'with name "'.$markerName.'" composed in current form for document controller "'
+                  .($this->__ParentObject->__DocumentController).'"! Please check the definition of '
+                  .'the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
+            }
 
             // add the position placeholder to the content
             $markerId = $marker->getObjectId();
@@ -435,6 +437,12 @@
 
             // get desired marker
             $marker = &$this->__getMarker($markerName);
+            if($marker === null){
+               throw new FormException('[html_taglib_form::addFormElementAfterMarker()] No marker object '
+                  .'with name "'.$markerName.'" composed in current form for document controller "'
+                  .($this->__ParentObject->__DocumentController).'"! Please check the definition of '
+                  .'the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
+            }
 
             // add the position placeholder to the content
             $markerId = $marker->getObjectId();
@@ -632,9 +640,32 @@
             .'" in document controller "'.$docCon.'". Please double-check your taglib definitions '
             .'within this form (especially attributes, that are used for referencing other form '
             .'controls)!',E_USER_ERROR);
-         exit(1);
 
        // end function
+      }
+
+      /**
+       * @public
+       *
+       * Returns a list of form controls with the given name.
+       *
+       * @param string $name The name of the form elements to collect (e.g. for radio buttons).
+       * @return form_control[] The list of form controls with the given name.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 16.08.2010<br />
+       */
+      public function &getFormElementsByName($name){
+         $elements = array();
+         if(count($this->__Children) > 0){
+            foreach($this->__Children as $objectId => $DUMMY){
+               if($this->__Children[$objectId]->getAttribute('name') == $name){
+                  $elements[] = &$this->__Children[$objectId];
+               }
+            }
+         }
+         return $elements;
       }
 
       /**
