@@ -1473,7 +1473,6 @@
          $moduleName = $this->__getModuleName($prefix,$class);
          if(!class_exists($moduleName)){
             import($namespace,$moduleName);
-          // end if
          }
 
        // end function
@@ -1558,7 +1557,6 @@
             }
 
             throw new IncludeException('[Document::__loadContentFromFile()] Design "'.$design.'" not existent in namespace "'.$namespace.'"!'.$code,E_USER_ERROR);
-            exit();
 
           // end if
          }
@@ -1602,8 +1600,6 @@
             if($tagLibLoops > $this->__MaxLoops){
                throw new ParserException('[Document::__extractTagLibTags()] Maximum numbers of '
                        .'parsing loops reached!',E_USER_ERROR);
-               exit();
-             // end if
             }
 
             $prefix = $this->__TagLibs[$i]->getPrefix();
@@ -1616,8 +1612,6 @@
 
                if($tagLoops > $this->__MaxLoops){
                   throw new ParserException('['.get_class($this).'::__extractTagLibTags()] Maximum numbers of parsing loops reached!',E_USER_ERROR);
-                  exit();
-                // end if
                }
 
                // Find start and end position of the tag. "Normally" a
@@ -1635,8 +1629,6 @@
                   if($tagEndPos === false){
                      throw new ParserException('['.get_class($this).'::__extractTagLibTags()] No closing tag '
                              .'found for tag "&lt;'.$token.' /&gt;"!',E_USER_ERROR);
-                     exit(1);
-                   // end if
                   }
 
                 // end if
@@ -1725,12 +1717,10 @@
 
             foreach($this->__Children as $objectId => $DUMMY){
                $this->__Children[$objectId]->onAfterAppend();
-             // end for
             }
 
             $t->stop($benchId);
 
-          // end if
          }
 
        // end function
@@ -1767,7 +1757,6 @@
                        .'specification does not contain a valid controller class definition. '
                        .'Please double check the template code and consult the documentation. '
                        .'Template code: '.htmlentities($this->__Content));
-               exit(1);
             }
 
             // lazily import document controller class
@@ -1922,8 +1911,8 @@
       public function onParseTime(){
 
          // get attributes
-         $namespace = trim($this->__Attributes['namespace']);
-         $template = trim($this->__Attributes['template']);
+         $namespace = $this->__Attributes['namespace'];
+         $template = $this->__Attributes['template'];
 
          // read context
          if(isset($this->__Attributes['context'])){
@@ -2172,7 +2161,6 @@
 
             // trow error, if no place holder with the desired name was found
             throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] No placeholder object with name "'.$name.'" composed in current template for document controller "'.($this->__ParentObject->__DocumentController).'"! Perhaps tag library template:placeHolder is not loaded in template "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
-            exit();
 
           // end else
          }
@@ -2180,7 +2168,6 @@
          // throw error, if no children are composed under the current tag
          if($placeHolderCount < 1){
             throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] There are no placeholders found for name "'.$name.'" in template "'.($this->__Attributes['name']).'" in document controller "'.($this->__ParentObject->__DocumentController).'"!',E_USER_WARNING);
-          // end if
          }
 
        // end function
@@ -2429,15 +2416,12 @@
             throw new InvalidArgumentException('['.get_class($this).'::setPlaceHolder()] No placeholder object with name "'
                .$name.'" composed in current document for document controller "'.get_class($this)
                .'"! Perhaps tag library html:placeholder is not loaded in current template!',E_USER_ERROR);
-            exit();
-          // end else
          }
 
          // warn, if no place holder is found
          if($placeHolderCount < 1){
             throw new InvalidArgumentException('['.get_class($this).'::setPlaceHolder()] There are no placeholders found for name "'
                .$name.'" in document controller "'.get_class($this).'"!',E_USER_WARNING);
-          // end if
          }
 
        // end function
@@ -2464,7 +2448,6 @@
             throw new InvalidArgumentException('['.get_class($this).'::__getForm()] TagLib "'.$tagLibClass
                .'" is not loaded! Please add the form taglib using the &lt;core:addtaglib /&gt; tag',
                E_USER_ERROR);
-          // end if
          }
 
          $children = &$this->__Document->getChildren();
@@ -2491,14 +2474,11 @@
             throw new InvalidArgumentException('['.get_class($this).'::__getForm()] No form object with name "'
                .$formName.'" composed in current document for document controller "'.get_class($this)
                .'"! Perhaps tag library html:form is not loaded in current document!',E_USER_ERROR);
-            exit();
-          // end else
          }
 
          throw new InvalidArgumentException('['.get_class($this).'::__getForm()] Form with name "'
             .$formName.'" cannot be found in document controller "'.get_class($this).'"!',
             E_USER_ERROR);
-         exit();
 
        // end function
       }
@@ -2525,7 +2505,6 @@
          if(!class_exists($tagLibClass)){
             throw new InvalidArgumentException('['.get_class($this).'::__getTemplate()] TagLib module "'
                .$tagLibClass.'" is not loaded!',E_USER_ERROR);
-          // end if
          }
 
          $children = &$this->__Document->getChildren();
@@ -2552,13 +2531,10 @@
             throw new InvalidArgumentException('['.get_class($this).'::__getTemplate()] No template object with name "'
                .$name.'" composed in current document for document controller "'.get_class($this)
                .'"! Perhaps tag library html:template is not loaded in current template!',E_USER_ERROR);
-            exit();
-          // end else
          }
 
          throw new InvalidArgumentException('['.get_class($this).'::__getTemplate()] Template with name "'
             .$name.'" cannot be found!',E_USER_ERROR);
-         exit();
 
        // end function
       }
