@@ -20,6 +20,7 @@
     */
 
    import('core::database','AbstractDatabaseHandler');
+   import('core::database','DatabaseHandlerException');
 
    /**
     * @package core::database
