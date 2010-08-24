@@ -89,8 +89,8 @@ class JsCssPackager extends APFObject {
                 }
                 else {
                     /* Cache is expired, delete it */
-                    $cM->clearCache($name);
-                    $cm->clearCache($name . '_gzip');
+                    $cM->clearCache(new SimpleCacheKey($name));
+                    $cM->clearCache(new SimpleCacheKey($name . '_gzip'));
                 }
             }
             /* Package was not in cache or was expired, we generate a new one, cache and deliver it. */
