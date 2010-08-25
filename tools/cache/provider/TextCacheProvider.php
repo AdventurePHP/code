@@ -96,7 +96,7 @@
 
             $cacheFile = $this->getCacheFile($cacheKey);
             try {
-               FilesystemManager::removeFile($file);
+               FilesystemManager::removeFile($cacheFile);
                return true;
             } catch(FileException $e){
                return false;
