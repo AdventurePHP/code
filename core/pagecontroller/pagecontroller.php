@@ -57,30 +57,33 @@
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
    // Define the internally used base path for the adventure php framework libraries.             //
+   // In case of symlink usage or multi-project installation, you can define it manually.         //
    /////////////////////////////////////////////////////////////////////////////////////////////////
+   if(!defined('APPS__PATH')){
 
-   // get current path
-   $path = explode('/',str_replace('\\','/',dirname(__FILE__)));
+      // get current path
+      $path = explode('/',str_replace('\\','/',dirname(__FILE__)));
 
-   // get relevant segments
-   $count = count($path);
-   $appsPath = array();
-   for($i = 0; $i < $count; $i++){
+      // get relevant segments
+      $count = count($path);
+      $appsPath = array();
+      for($i = 0; $i < $count; $i++){
 
-      if($path[$i] != 'core'){
-         $appsPath[] = $path[$i];
-       // end if
+         if($path[$i] != 'core'){
+            $appsPath[] = $path[$i];
+          // end if
+         }
+         else{
+            break;
+          // end else
+         }
+
+       // end for
       }
-      else{
-         break;
-       // end else
-      }
 
-    // end for
+      // define the APPS__PATH constant to be used in the import() function (performance hack!)
+      define('APPS__PATH',implode($appsPath,'/'));
    }
-
-   // define the APPS__PATH constant to be used in the import() function (performance hack!)
-   define('APPS__PATH',implode($appsPath,'/'));
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1377,7 +1380,7 @@
        * @protected
        * @var int The maximum number of parser loops to protect against infinit loops.
        */
-      protected $__MaxLoops = 100;
+      protected $maxLoops = 200;
 
       /**
        * @public
@@ -1597,7 +1600,7 @@
          // can result in an increasing amount of known taglibs (core:addtaglib!).
          while($i < count($this->__TagLibs)){
 
-            if($tagLibLoops > $this->__MaxLoops){
+            if($tagLibLoops > $this->maxLoops){
                throw new ParserException('[Document::__extractTagLibTags()] Maximum numbers of '
                        .'parsing loops reached!',E_USER_ERROR);
             }
@@ -1610,7 +1613,7 @@
 
             while(substr_count($this->__Content,'<'.$token) > 0){
 
-               if($tagLoops > $this->__MaxLoops){
+               if($tagLoops > $this->maxLoops){
                   throw new ParserException('['.get_class($this).'::__extractTagLibTags()] Maximum numbers of parsing loops reached!',E_USER_ERROR);
                }
 
