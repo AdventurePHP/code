@@ -47,9 +47,11 @@
        * Version 0.1, 07.01.2007<br />
        * Version 0.2, 03.03.2007 (Removed the "&" before the "new" operator)<br />
        * Version 0.3, 26.08.2007 (Added the "multiple" attribut)<br />
+       * Version 0.4, 28.08.2010 (Added option groups)<br />
        */
-      function form_taglib_multiselect(){
+      public function form_taglib_multiselect(){
          $this->__TagLibs[] = new TagLib('tools::form::taglib','select','option');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','select','group');
          $this->setAttribute('multiple','multiple');
          $this->attributeWhiteList[] = 'disabled';
          $this->attributeWhiteList[] = 'name';
@@ -70,7 +72,7 @@
        * Version 0.2, 07.06.2008 (Extended error message)<br />
        * Version 0.3, 15.08.2008 (Extended error message with the name of the control)<br />
        */
-      function onParseTime(){
+      public function onParseTime(){
 
          // parses the option tags
          $this->__extractTagLibTags();
@@ -105,7 +107,12 @@
        * @version
        * Version 0.1, 07.06.2008 (Reimplemented the transform() method because of a presetting error)<br />
        */
-      function transform(){
+      public function transform(){
+
+         // do lazy presetting, in case we are having a field with dynamic options
+         if($this->isDynamicField === true){
+            $this->__presetValue();
+         }
 
          // add brackets for the "name" attribute to ensure multi select capability!
          $name = array('name' => $this->getAttribute('name').'[]');
@@ -117,31 +124,12 @@
             $controlName = $this->getAttribute('name');
 
             foreach($this->__Children as $objectId => $DUMMY){
-
-               // check, if $_REQUEST[$controlName] is an array and if the value
-               // of the select field is included there.
-               if(isset($_REQUEST[$controlName]) && is_array($_REQUEST[$controlName])){
-                  if(in_array($this->__Children[$objectId]->getAttribute('value'),$_REQUEST[$controlName])){
-                     $this->__Children[$objectId]->setAttribute('selected','selected');
-                   // end if
-                  }
-                  else{
-                     $this->__Children[$objectId]->deleteAttribute('selected');
-                   // end else
-                  }
-
-                // end if
-               }
-
                $select = str_replace('<'.$objectId.' />',
                   $this->__Children[$objectId]->transform(),
                   $select
                );
-
-             // end foreach
             }
 
-          // end if
          }
 
          return $select;
@@ -160,25 +148,29 @@
        * @version
        * Version 0.1, 08.06.2008<br />
        */
-      function &getSelectedOptions(){
+      public function &getSelectedOptions(){
 
-         // call presetting lazy
-         $this->__presetValue();
-
-         // create list
-         $options = array();
-
-         foreach($this->__Children as $ObjectID => $DUMMY){
-
-            if($this->__Children[$ObjectID]->getAttribute('selected') == 'selected'){
-               $options[] = &$this->__Children[$ObjectID];
-             // end if
-            }
-
-          // end foreach
+         // call presetting lazy if we have dynamic field
+         if($this->isDynamicField === true){
+            $this->__presetValue();
          }
 
-         return $options;
+         $selectedOptions = array();
+         foreach ($this->__Children as $objectId => $DUMMY) {
+
+            if (get_class($this->__Children[$objectId]) == 'select_taglib_group') {
+               $options = &$this->__Children[$objectId]->getSelectedOptions();
+               foreach($options as $id => $DUMMY){
+                  $selectedOptions[] = &$options[$id];
+               }
+            } else {
+               if ($this->__Children[$objectId]->getAttribute('selected') === 'selected') {
+                  $selectedOptions[] = &$this->__Children[$objectId];
+               }
+            }
+            
+         }
+         return $selectedOptions;
 
        // end function
       }
@@ -194,34 +186,32 @@
        * Version 0.2, 16.01.2007 (Now checks, if the request param is set)<br />
        */
       protected function __presetValue(){
+         if(count($this->__Children) > 0){
+            foreach($this->getRequestValues() as $value){
+               $this->setOption2Selected($value);
+            }
+         }
+      }
 
-         // generate the offset of the request array from the name attribute
+      /**
+       * @private
+       *
+       * retrieves the selected values from the current request. Returns an
+       * empty array, if no options are found.
+       *
+       * @return string[] The currently selected values contained in th request.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.08.2010<br />
+       */
+      protected function getRequestValues(){
+         $values = array();
          $controlName = $this->getAttribute('name');
-
-         // get the request value
          if(isset($_REQUEST[$controlName])){
             $values = $_REQUEST[$controlName];
-          // end if
          }
-         else{
-            $values = array();
-          // end else
-         }
-
-         // preselect options
-         if(count($this->__Children) > 0){
-
-            foreach($this->__Children as $objectId => $DUMMY){
-               if(in_array($this->__Children[$objectId]->getAttribute('value'),$values)){
-                  $this->__Children[$objectId]->setAttribute('selected','selected');
-               }
-             // end foreach
-            }
-
-          // end if
-         }
-
-       // end function
+         return $values;
       }
 
     // end class

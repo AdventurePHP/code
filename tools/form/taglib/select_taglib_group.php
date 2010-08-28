@@ -51,7 +51,6 @@
        */
       public function onParseTime(){
          $this->__extractTagLibTags();
-       // end function
       }
 
       /**
@@ -111,7 +110,31 @@
                $this->__Children[$objectId]->setAttribute('selected','selected');
             }
          }
-       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Returns the selected options.
+       *
+       * @return select_taglib_option[] The selected options.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.08.2010<br />
+       */
+      public function &getSelectedOption(){
+
+         $selectedOption = null;
+
+         foreach($this->__Children as $objectId => $DUMMY){
+            if($this->__Children[$objectId]->getAttribute('selected') === 'selected'){
+               $selectedOption = &$this->__Children[$objectId];
+               break;
+            }
+         }
+
+         return $selectedOption;
       }
 
       /**
@@ -125,20 +148,17 @@
        * @version
        * Version 0.1, 15.02.2010<br />
        */
-      public function &getSelectedOption(){
-         
-         $selectedOption = null;
+      public function &getSelectedOptions(){
+
+         $selectedOptions = array();
 
          foreach($this->__Children as $objectId => $DUMMY){
             if($this->__Children[$objectId]->getAttribute('selected') === 'selected'){
-               $selectedOption = &$this->__Children[$objectId];
-               break;
+               $selectedOptions[] = &$this->__Children[$objectId];
             }
          }
          
-         return $selectedOption;
-      
-       // end function
+         return $selectedOptions;
       }
 
       /**
@@ -152,13 +172,12 @@
        * @version
        * Version 0.3, 13.02.2010<br />
        */
-      function transform(){
+      public function transform(){
          $html = '<optgroup '.$this->getSanitizedAttributesAsString($this->__Attributes).'>';
          foreach($this->__Children as $objectId => $DUMMY){
             $html .= $this->__Children[$objectId]->transform();
          }
          return $html.'</optgroup>';
-       // end function
       }
 
     // end class
