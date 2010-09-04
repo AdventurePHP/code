@@ -49,13 +49,17 @@
        */
       public function filter($input){
 
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $t->start('GenericOutputFilter::filter()');
+
          $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
          if($urlRewriting === true){
             import('core::filter::output','HtmlLinkRewriteFilter');
             $filter = new HtmlLinkRewriteFilter();
             $input = $filter->filter($input);
-          // end if
          }
+
+         $t->stop('GenericOutputFilter::filter()');
          
          return $input;
 
