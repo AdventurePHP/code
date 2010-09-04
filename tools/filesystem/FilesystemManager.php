@@ -452,7 +452,7 @@
        * Returns the size of the given folder. The size includes all files and subfolders.
        *
        * @param string $folder the desired folder.
-       * @return int $size the size of the given folder.
+       * @return int The size of the given folder.
        * @throws FileException In case the given folder is not existent.
        *
        * @author Christian Achatz
