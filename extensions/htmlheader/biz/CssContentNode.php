@@ -19,20 +19,33 @@
     * -->
     */
 
-   import('extensions::htmlheader::biz','HeaderNode');
+   import('extensions::htmlheader::biz','HtmlNode');
+   import('extensions::htmlheader::biz','CssNode');
 
    /**
-    * @namespace extensions::htmlheader::biz
-    * @Class CssNode
+    * @package extensions::htmlheader::biz
+    * @class CssContentNode
     *
-    * This interface specifies a <em>&lt;link /&gt;</em> or <em>&lt;style /&gt;</em> tag.
+    * Represents a css node with explicit content.
     *
-    * @author Ralf Schubert, Christian Achatz
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 20.09.2009 <br />
-    * Version 0.2, 27.02.2010 (Added external file support)<br />
-    * Version 0.3, 20.08.2010 (Class is now an interface)<br />
+    * Version 0.1, 18.08.2010<br />
     */
-   interface CssNode extends HeaderNode {
+   class CssContentNode extends HtmlNode implements CssNode {
+
+      public function __construct($content){
+         $this->setContent($content);
+         $this->setAttribute('type','text/css');
+      }
+
+      protected function getTagName() {
+         return 'style';
+      }
+
+      public function getChecksum() {
+         return md5($this->getContent());
+      }
+
    }
 ?>

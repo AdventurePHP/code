@@ -19,61 +19,16 @@
     * -->
     */
 
-   import('extensions::htmlheader::biz','HtmlNode');
-
    /**
     * @namespace extensions::htmlheader::biz
     * @class JsNode
     *
-    * Js file node for HtmlHeaderManagers data.
+    * This interface specifies a <em>&lt;script /&gt;</em> tag.
     *
-    * @author Ralf Schubert
+    * @author Christian Achatz
     * @version
-    * 0.1, 20.09.2009 <br />
-    * 0.2, 27.02.2010 (Added external file support) <br />
+    * Version 0.1, 20.08.2010<br />
     */
-   class JsNode extends HtmlNode{
-
-       protected $__url = null;
-       protected $__namespace = null;
-       protected $__filename = null;
-       protected $__rewriting = null;
-       protected $__fcaction = null;
-
-       /**
-        * Receives information and configures node.
-        * @param string $url Optional url.
-        * @param string $namespace Namespace of file
-        * @param string $filename Name of file (without .js)
-        * @param bool $urlRewriting Optional. Create rewriting Url.
-        * @param bool $fcaction Optional. Create link for FC-Action.
-        */
-       public function JsNode($url, $namespace, $filename, $rewriting = null, $fcaction = null){
-           $this->__url = $url;
-           $this->__namespace = $namespace;
-           $this->__filename = $filename;
-           $this->__rewriting = $rewriting;
-           $this->__fcaction = $fcaction;
-           $this->__checksum = md5($url . $namespace . $filename);
-       }
-
-       /**
-        * Transforms the node into html.
-        *
-        * @return string The ready html-code.
-        */
-       public function transform(){
-           $link = $this->__buildFCLink(
-                       $this->__url,
-                       $this->__namespace,
-                       $this->__filename,
-                       $this->__rewriting,
-                       $this->__fcaction,
-                       'js'
-                   );
-           return '<script src="' . $link . '" type="text/javascript"></script>
-   ';
-       }
-
+   interface JsNode extends HeaderNode {
    }
 ?>

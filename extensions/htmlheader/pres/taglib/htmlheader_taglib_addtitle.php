@@ -18,42 +18,61 @@
     * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
     * -->
     */
-    
+
+   import('extensions::htmlheader::biz', 'SimpleTitleNode');
+
    /**
-    *  @namespace extensions::htmlheader::pres::taglib
-    *  @class htmlheader_taglib_addtitle
+    * @namespace extensions::htmlheader::pres::taglib
+    * @class htmlheader_taglib_addtitle
     *
-    *  Taglib for adding a title to htmlheader.
+    * Taglib for adding a title to htmlheader.
     *
-    *  @example
-    *  <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addtitle" />
-    *  <htmlheader:addtitle append="false">Testwebpage title</htmlheader:addtitle>
-    *  Set append to true, if you want to add the given tag-content at the end of
-    *  the existing title instead of overwriting it.
+    * @example
+    * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addtitle" />
+    * <htmlheader:addtitle[ append="false"]>Testwebpage title</htmlheader:addtitle>
+    * Set append to true, if you want to add the given tag-content at the end of
+    * the existing title instead of overwriting it.
     *
-    *  @author Ralf Schubert
-    *  @version 0.1, 20.09.2009<br>
-    *  @version 0.2, 27.09.2009<br>
+    * @author Ralf Schubert
+    * @version 0.1, 20.09.2009<br>
+    * @version 0.2, 27.09.2009<br>
     */
-   class htmlheader_taglib_addtitle extends Document
-   {
-       public function onParseTime() {
-           $HHM = $this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
-           $append = false;
-           if($this->getAttribute('append') !== false){
-               $append = $this->getAttribute('append');
-           }
-           if(!empty($this->__Content)){
-               if($append == 'true'){
-                   $HHM->title .= $this->__Content;
+   class htmlheader_taglib_addtitle extends Document {
+
+      public function onParseTime() {
+
+         $header = $this->__getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+         /* @var $header HtmlHeaderManager */
+
+         $content = $this->getContent();
+         if (!empty($content)) {
+
+            $titleContent = '';
+            
+            if ($this->getAttribute('append') === 'true') {
+
+               $title = $header->getTitle();
+               /* @var $title SimpleTitleNode */
+               
+               if ($title !== null) {
+                  $titleContent = $title->getContent().$content;
+               } else {
+                  $titleContent = $content;
                }
-               else{
-                   $HHM->title = $this->__Content;
-               }
-           }
-       }
-       public function transform(){
-           return '';
-       }
+
+            } else {
+               $titleContent = $content;
+            }
+
+            $header->addNode(new SimpleTitleNode($titleContent));
+
+         }
+
+      }
+
+      public function transform() {
+         return '';
+      }
+
    }
 ?>

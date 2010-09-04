@@ -19,20 +19,32 @@
     * -->
     */
 
-   import('extensions::htmlheader::biz','HeaderNode');
+   import('extensions::htmlheader::biz','HtmlNode');
+   import('extensions::htmlheader::biz','TitleNode');
 
    /**
     * @namespace extensions::htmlheader::biz
-    * @Class CssNode
+    * @class SimpleTitleNode
     *
-    * This interface specifies a <em>&lt;link /&gt;</em> or <em>&lt;style /&gt;</em> tag.
+    * Implements title node.
     *
-    * @author Ralf Schubert, Christian Achatz
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 20.09.2009 <br />
-    * Version 0.2, 27.02.2010 (Added external file support)<br />
-    * Version 0.3, 20.08.2010 (Class is now an interface)<br />
+    * Version 0.1, 20.08.2010<br />
     */
-   interface CssNode extends HeaderNode {
+   class SimpleTitleNode extends HtmlNode implements TitleNode {
+
+      public function __construct($title){
+         $this->setContent($title);
+      }
+
+      public function getChecksum() {
+         return md5($this->getContent());
+      }
+
+      protected function getTagName() {
+         return 'title';
+      }
+
    }
 ?>

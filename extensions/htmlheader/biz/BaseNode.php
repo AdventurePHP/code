@@ -23,16 +23,14 @@
 
    /**
     * @namespace extensions::htmlheader::biz
-    * @Class CssNode
+    * @class BaseNode
     *
-    * This interface specifies a <em>&lt;link /&gt;</em> or <em>&lt;style /&gt;</em> tag.
+    * This interface specifies a <em>&lt;base /&gt;</em> tag.
     *
-    * @author Ralf Schubert, Christian Achatz
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 20.09.2009 <br />
-    * Version 0.2, 27.02.2010 (Added external file support)<br />
-    * Version 0.3, 20.08.2010 (Class is now an interface)<br />
+    * Version 0.1, 20.08.2010<br />
     */
-   interface CssNode extends HeaderNode {
+   interface BaseNode extends HeaderNode {
    }
 ?>

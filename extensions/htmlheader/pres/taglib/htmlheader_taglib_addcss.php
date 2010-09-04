@@ -19,7 +19,7 @@
     * -->
     */
 
-   import('extensions::htmlheader::biz','CssNode');
+   import('extensions::htmlheader::biz','DynamicCssNode');
    
    /**
     *  @namespace extensions::htmlheader::pres::taglib
@@ -57,8 +57,8 @@
     *  0.1, 20.09.2009 <br />
     *  0.2, 27.02.2010 (Added attributes for external file support) <br />
     */
-   class htmlheader_taglib_addcss extends Document
-   {
+   class htmlheader_taglib_addcss extends Document {
+      
        public function onParseTime() {
            $HHM = $this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
 
@@ -70,32 +70,33 @@
            $rewriting = $this->getAttribute('rewriting');
            $fcaction = $this->getAttribute('fcaction');
 
-           if($rewriting === "true"){
+           if($rewriting === 'true'){
                $rewriting = true;
            }
-           elseif($rewriting === "false"){
+           elseif($rewriting === 'false'){
                $rewriting = false;
            }
 
-           if($fcaction === "true"){
+           if($fcaction === 'true'){
                $fcaction = true;
            }
-           elseif($fcaction === "false"){
+           elseif($fcaction === 'false'){
                $fcaction = false;
            }
            
            if($url !== null){
-               $CssNode = new CssNode($url, $folder, $filename, $rewriting, $fcaction);
+               $node = new DynamicCssNode($url, $folder, $filename, $rewriting, $fcaction);
            }
            else {
-               $CssNode = new CssNode(null, $namespace, $filename, $rewriting, $fcaction);
+               $node = new DynamicCssNode(null, $namespace, $filename, $rewriting, $fcaction);
            }
            
-           $HHM->addCss($CssNode);
+           $HHM->addCss($node);
        }
 
        public function transform(){
            return '';
        }
+       
    }
 ?>

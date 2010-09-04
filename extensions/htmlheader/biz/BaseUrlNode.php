@@ -19,20 +19,32 @@
     * -->
     */
 
-   import('extensions::htmlheader::biz','HeaderNode');
+   import('extensions::htmlheader::biz', 'HtmlNode');
+   import('extensions::htmlheader::biz', 'BaseNode');
 
    /**
     * @namespace extensions::htmlheader::biz
-    * @Class CssNode
+    * @class BaseUrlNode
     *
-    * This interface specifies a <em>&lt;link /&gt;</em> or <em>&lt;style /&gt;</em> tag.
+    * Implements a simple base node. 
     *
-    * @author Ralf Schubert, Christian Achatz
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 20.09.2009 <br />
-    * Version 0.2, 27.02.2010 (Added external file support)<br />
-    * Version 0.3, 20.08.2010 (Class is now an interface)<br />
+    * Version 0.1, 20.08.2010<br />
     */
-   interface CssNode extends HeaderNode {
+   class BaseUrlNode extends HtmlNode implements BaseNode {
+
+      public function __construct($baseUrl){
+         $this->setAttribute('href',$baseUrl);
+      }
+
+      public function getChecksum() {
+         return md5($this->getAttribute('href'));
+      }
+
+      protected function getTagName() {
+         return 'base';
+      }
+      
    }
 ?>

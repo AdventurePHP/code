@@ -19,20 +19,31 @@
     * -->
     */
 
-   import('extensions::htmlheader::biz','HeaderNode');
+   import('extensions::htmlheader::biz','CssNode');
+   import('extensions::htmlheader::biz','StaticCssNode');
 
    /**
     * @namespace extensions::htmlheader::biz
-    * @Class CssNode
+    * @class ConditionalStaticCssNode
     *
-    * This interface specifies a <em>&lt;link /&gt;</em> or <em>&lt;style /&gt;</em> tag.
+    * Implements a conditional static css node.
     *
-    * @author Ralf Schubert, Christian Achatz
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 20.09.2009 <br />
-    * Version 0.2, 27.02.2010 (Added external file support)<br />
-    * Version 0.3, 20.08.2010 (Class is now an interface)<br />
+    * Version 0.1, 20.08.2010<br />
     */
-   interface CssNode extends HeaderNode {
+   class ConditionalStaticCssNode extends StaticCssNode implements CssNode {
+
+      private $condition;
+
+      public function __construct($file,$condition) {
+         parent::__construct($file);
+         $this->condition = $condition;
+      }
+
+      public function  transform() {
+         return '<!--[if '.$this->condition.']>'.parent::transform().'<![endif]-->';
+      }
+
    }
 ?>

@@ -19,20 +19,34 @@
     * -->
     */
 
-   import('extensions::htmlheader::biz','HeaderNode');
+   import('extensions::htmlheader::biz','HtmlNode');
+   import('extensions::htmlheader::biz','CssNode');
 
    /**
-    * @namespace extensions::htmlheader::biz
-    * @Class CssNode
+    * @package extensions::htmlheader::biz
+    * @class StaticCssNode
     *
-    * This interface specifies a <em>&lt;link /&gt;</em> or <em>&lt;style /&gt;</em> tag.
+    * Represents a node for static css inclusion.
     *
-    * @author Ralf Schubert, Christian Achatz
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 20.09.2009 <br />
-    * Version 0.2, 27.02.2010 (Added external file support)<br />
-    * Version 0.3, 20.08.2010 (Class is now an interface)<br />
+    * Version 0.1, 16.08.2010<br />
     */
-   interface CssNode extends HeaderNode {
+   class StaticCssNode extends HtmlNode implements CssNode {
+
+      public function __construct($file){
+         $this->setAttribute('href',$file);
+         $this->setAttribute('rel','stylesheet');
+         $this->setAttribute('type','text/css');
+      }
+
+      protected function getTagName() {
+         return 'link';
+      }
+
+      public function getChecksum() {
+         return md5($this->getAttribute('href'));
+      }
+
    }
 ?>

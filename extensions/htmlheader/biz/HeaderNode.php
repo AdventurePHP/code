@@ -19,41 +19,36 @@
     * -->
     */
 
-   import('extensions::htmlheader::biz', 'HtmlNode');
-   import('extensions::htmlheader::biz', 'MetaNode');
-
    /**
     * @namespace extensions::htmlheader::biz
-    * @class RefreshNode
+    * @class HeaderNode
     *
-    * Implements a meta node that introduces the browser to redirect
-    * to another page after a given time.
+    * This interface specifies a tag, that is included in the <em>&lt;head /&gt;</em>
+    * tag of the HTML page. It is the basis for all further node definitions and
+    * implementations.
+    * <p/>
+    * At present, the subsequent tags are represented by the listed node types (sub-interfaces):
+    * <ul>
+    * <li>BaseNode: BaseUrlNode</li>
+    * <li>MetaNode: SimpleMetaNode, HttpMetaNode, RefreshNode</li>
+    * <li>CssNode: StaticCsdsNode, CssContentNode, CssPackageNode, ConditionalDynamicCssNode, ConditionalStaticCssNode</li>
+    * <li>JsNode: DynamicJsNode, JsContentNode, JsPackageNode, StaticJsNode</li>
+    * <li>TitleNode: SimpleTitleNode</li>
+    * </ul>
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.08.2010<br />
     */
-   class RefreshNode extends HtmlNode implements MetaNode {
+   interface HeaderNode {
 
       /**
-       * Receives information and configures node.
-       * @param string $namespace Namespace of stylesheet
-       * @param string $filename Name of stylesheet (without .css)
-       * @param array $additionalParameters Optional. Array of url parameters.
+       * This checksum allows to compare nodes, in order to find duplicates.
+       * Must be filled by constructor.
+       *
+       * @var string Md5 checksum.
        */
-      public function __construct($target, $time, $additionalParameters = array()) {
-         $this->setAttribute('http-equiv', 'refresh');
-         $link = LinkHandler::generateLink($url, $additionalParameters);
-         $this->setAttribute('content', $time . ';URL=' . $link);
-      }
-
-      public function getChecksum() {
-         return md5($this->getAttribute('content'));
-      }
-
-      protected function getTagName() {
-         return 'meta';
-      }
+      public function getChecksum();
 
    }
 ?>

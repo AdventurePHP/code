@@ -19,20 +19,34 @@
     * -->
     */
 
-   import('extensions::htmlheader::biz','HeaderNode');
+   import('extensions::htmlheader::biz','HtmlNode');
+   import('extensions::htmlheader::biz','MetaNode');
 
    /**
-    * @namespace extensions::htmlheader::biz
-    * @Class CssNode
+    * @package extensions::htmlheader::biz
+    * @class SimpleMetaNode
     *
-    * This interface specifies a <em>&lt;link /&gt;</em> or <em>&lt;style /&gt;</em> tag.
+    * Represents a simple meta tag (e.g. for keywords).
     *
-    * @author Ralf Schubert, Christian Achatz
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 20.09.2009 <br />
-    * Version 0.2, 27.02.2010 (Added external file support)<br />
-    * Version 0.3, 20.08.2010 (Class is now an interface)<br />
+    * Version 0.1, 16.08.2010<br />
     */
-   interface CssNode extends HeaderNode {
+   class SimpleMetaNode extends HtmlNode implements MetaNode {
+
+      public function __construct($name,$content){
+         $this->setAttribute('name',$name);
+         $this->setAttribute('content',$content);
+      }
+
+      protected function getTagName() {
+         return 'meta';
+      }
+
+      public function getChecksum() {
+         return md5($this->getAttribute('name').$this->getAttribute('content'));
+      }
+
+
    }
 ?>

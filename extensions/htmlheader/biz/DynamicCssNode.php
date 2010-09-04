@@ -20,39 +20,48 @@
     */
 
    import('extensions::htmlheader::biz', 'HtmlNode');
-   import('extensions::htmlheader::biz', 'MetaNode');
+   import('extensions::htmlheader::biz', 'CssNode');
 
    /**
     * @namespace extensions::htmlheader::biz
-    * @class RefreshNode
+    * @Class DynamicCssNode
     *
-    * Implements a meta node that introduces the browser to redirect
-    * to another page after a given time.
+    * Css file node for HtmlHeaderManagers data.
     *
-    * @author Christian Achatz
+    * @author Ralf Schubert
     * @version
-    * Version 0.1, 20.08.2010<br />
+    * 0.1, 20.09.2009 <br />
+    * 0.2, 27.02.2010 (Added external file support) <br />
     */
-   class RefreshNode extends HtmlNode implements MetaNode {
+   class DynamicCssNode extends HtmlNode implements CssNode {
 
       /**
        * Receives information and configures node.
-       * @param string $namespace Namespace of stylesheet
-       * @param string $filename Name of stylesheet (without .css)
-       * @param array $additionalParameters Optional. Array of url parameters.
+       * @param string $url Optional url.
+       * @param string $namespace Namespace of file
+       * @param string $filename Name of file (without .css)
+       * @param bool $urlRewriting Optional. Create rewriting Url.
+       * @param bool $fcaction Optional. Create link for FC-Action.
        */
-      public function __construct($target, $time, $additionalParameters = array()) {
-         $this->setAttribute('http-equiv', 'refresh');
-         $link = LinkHandler::generateLink($url, $additionalParameters);
-         $this->setAttribute('content', $time . ';URL=' . $link);
+      public function __construct($url, $namespace, $filename, $rewriting = null, $fcaction = true) {
+         $this->setAttribute('href', $this->__buildFCLink(
+                         $url,
+                         $namespace,
+                         $filename,
+                         $rewriting,
+                         $fcaction,
+                         'css'
+         ));
+         $this->setAttribute('rel', 'stylesheet');
+         $this->setAttribute('type', 'text/css');
       }
 
       public function getChecksum() {
-         return md5($this->getAttribute('content'));
+         return md5($this->getAttribute('href'));
       }
 
       protected function getTagName() {
-         return 'meta';
+         return 'link';
       }
 
    }

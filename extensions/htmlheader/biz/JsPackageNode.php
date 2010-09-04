@@ -19,20 +19,37 @@
     * -->
     */
 
-   import('extensions::htmlheader::biz','HeaderNode');
+   import('extensions::htmlheader::biz','PackageNode');
+   import('extensions::htmlheader::biz','JsNode');
 
    /**
     * @namespace extensions::htmlheader::biz
-    * @Class CssNode
+    * @class JsPackageNode
     *
-    * This interface specifies a <em>&lt;link /&gt;</em> or <em>&lt;style /&gt;</em> tag.
+    * Implements a js node, that loads a js package.
     *
-    * @author Ralf Schubert, Christian Achatz
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 20.09.2009 <br />
-    * Version 0.2, 27.02.2010 (Added external file support)<br />
-    * Version 0.3, 20.08.2010 (Class is now an interface)<br />
+    * Version 0.1, 20.08.2010<br />
     */
-   interface CssNode extends HeaderNode {
+   class JsPackageNode extends PackageNode implements JsNode {
+
+      public function __construct($url, $name, $rewriting = null){
+         parent::__construct($url, $name, $rewriting);
+         $this->setAttribute('type','text/javascript');
+      }
+
+      protected function getTagName(){
+         return 'script';
+      }
+
+      protected function getLocationAttributeName(){
+         return 'src';
+      }
+
+      protected function getTypeIndicator(){
+         return 'js';
+      }
+      
    }
 ?>

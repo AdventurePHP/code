@@ -19,7 +19,7 @@
     * -->
     */
 
-   import('extensions::htmlheader::biz','JsNode');
+   import('extensions::htmlheader::biz','DynamicJsNode');
    
    /**
     *  @namespace extensions::htmlheader::pres::taglib
@@ -58,8 +58,8 @@
     *  0.2, 27.09.2009<br />
     *  0.3, 27.02.2010 (Added attributes for external file support) <br />
     */
-   class htmlheader_taglib_addjs extends Document
-   {
+   class htmlheader_taglib_addjs extends Document {
+      
        public function onParseTime() {
            $HHM = $this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
 
@@ -71,30 +71,29 @@
            $rewriting = $this->getAttribute('rewriting');
            $fcaction = $this->getAttribute('fcaction');
 
-           if($rewriting === "true"){
+           if($rewriting === 'true'){
                $rewriting = true;
            }
-           elseif($rewriting === "false"){
+           elseif($rewriting === 'false'){
                $rewriting = false;
            }
 
-           if($fcaction === "true"){
+           if($fcaction === 'true'){
                $fcaction = true;
            }
-           elseif($fcaction === "false"){
+           elseif($fcaction === 'false'){
                $fcaction = false;
            }
 
            if($url !== null){
-               $JsNode = new JsNode($url, $folder, $filename, $rewriting, $fcaction);
+               $node = new DynamicJsNode($url, $folder, $filename, $rewriting, $fcaction);
            }
            else {
-               $JsNode = new JsNode(null, $namespace, $filename, $rewriting, $fcaction);
+               $node = new DynamicJsNode(null, $namespace, $filename, $rewriting, $fcaction);
            }
 
-           $HHM->addJs($JsNode);
+           $HHM->addJs($node);
        }
-
 
        public function transform(){
            return '';

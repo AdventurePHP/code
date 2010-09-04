@@ -1,73 +1,89 @@
 <?php
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
-import('extensions::htmlheader::biz', 'HtmlNode');
+   import('extensions::htmlheader::biz','HtmlNode');
 
-/**
- * Description of PackageNode
- *
- * @author Ralf Schubert
- */
-class PackageNode extends HtmlNode {
+   /**
+    * @abstract
+    * @namespace extensions::htmlheader::biz
+    * @class PackageNode
+    *
+    * Provides basic functionality for css and js package nodes
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, ...<br />
+    * Version 0.2, 20.08.2010<br />
+    */
+   abstract class PackageNode extends HtmlNode {
 
-   protected $__url = null;
-   protected $__name = null;
-   protected $__type = null;
-   protected $__rewriting = null;
-
-   public function PackageNode($url, $name, $type, $rewriting) {
-      $this->__url = $url;
-      $this->__name = $name;
-      $this->__type = $type;
-      $this->__rewriting = $rewriting;
-      $this->__checksum = md5($url . $name . $type);
-   }
-
-   public function transform() {
-      $link = $this->__buildPackageLink(
-                      $this->__url,
-                      $this->__name,
-                      $this->__type,
-                      $this->__rewriting
-      );
-      if ($this->__type === 'js') {
-         return '<script src="' . $link . '" type="text/javascript"></script>' . PHP_EOL;
+      public function __construct($url, $name, $rewriting = null) {
+         $this->setAttribute($this->getLocationAttributeName(),$this->__buildPackageLink(
+                         $url,
+                         $name,
+                         $rewriting
+         ));
       }
-      return '<link href="' . $link . '" rel="stylesheet" type="text/css" />' . PHP_EOL;
-   }
 
-   protected function __buildPackageLink($url, $name, $type, $rewriting) {
 
-      if ($rewriting === null) {
-         $rewriting = Registry::retrieve('apf::core', 'URLRewriting');
+      protected abstract function getLocationAttributeName();
+
+      protected abstract function getTypeIndicator();
+
+      protected function getChecksum(){
+         return md5($this->getAttribute($this->getLocationAttributeName()));
       }
 
-      // Generate url if not given
-      if ($url === null) {
-         if ($rewriting) {
-            $url = Registry::retrieve('apf::core', 'URLBasePath');
-         } else {
-            $tmpPath = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
-            $slash = (substr($tmpPath, 0, 1) !== '/') ? '/' : '';
-            $url = 'http://' . $_SERVER['HTTP_HOST'] . $slash . $tmpPath;
+      protected function __buildPackageLink($url, $name, $rewriting) {
+
+         if ($rewriting === null) {
+            $rewriting = Registry::retrieve('apf::core', 'URLRewriting');
          }
-         // end if
+
+         // Generate url if not given
+         if ($url === null) {
+            if ($rewriting) {
+               $url = Registry::retrieve('apf::core', 'URLBasePath');
+            } else {
+               $tmpPath = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
+               $slash = (substr($tmpPath, 0, 1) !== '/') ? '/' : '';
+               $url = 'http://' . $_SERVER['HTTP_HOST'] . $slash . $tmpPath;
+            }
+            // end if
+         }
+
+         if ($rewriting) {
+            $actionParam = array(
+                'extensions_jscsspackager_biz-action/jcp' => 'package/' . $name . '.' . $this->getTypeIndicator()
+            );
+            // end if
+         } else {
+            $actionParam = array(
+                'extensions_jscsspackager_biz-action:jcp' => 'package:' . $name . '.' . $this->getTypeIndicator()
+            );
+            // end else
+         }
+
+         return FrontcontrollerLinkHandler::generateLink($url, $actionParam);
       }
 
-      if ($rewriting) {
-         $actionParam = array(
-             'extensions_jscsspackager_biz-action/jcp' => 'package/' . $name . '.' . $type
-         );
-         // end if
-      } else {
-         $actionParam = array(
-             'extensions_jscsspackager_biz-action:jcp' => 'package:' . $name . '.' . $type
-         );
-         // end else
-      }
-
-      // return url
-      return FrontcontrollerLinkHandler::generateLink($url, $actionParam);
    }
-
-}
 ?>

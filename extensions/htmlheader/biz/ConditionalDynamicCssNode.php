@@ -19,20 +19,31 @@
     * -->
     */
 
-   import('extensions::htmlheader::biz','HeaderNode');
+   import('extensions::htmlheader::biz','HtmlNode');
+   import('extensions::htmlheader::biz','DynamicCssNode');
 
    /**
     * @namespace extensions::htmlheader::biz
-    * @Class CssNode
+    * @class ConditionalDynamicCssNode
     *
-    * This interface specifies a <em>&lt;link /&gt;</em> or <em>&lt;style /&gt;</em> tag.
+    * Implements a conditional dynamic css node.
     *
-    * @author Ralf Schubert, Christian Achatz
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 20.09.2009 <br />
-    * Version 0.2, 27.02.2010 (Added external file support)<br />
-    * Version 0.3, 20.08.2010 (Class is now an interface)<br />
+    * Version 0.1, 20.08.2010<br />
     */
-   interface CssNode extends HeaderNode {
+   class ConditionalDynamicCssNode extends DynamicCssNode implements CssNode {
+
+      private $condition;
+
+      public function  __construct($namespace, $filename, $condition, $url = null, $rewriting = null, $fcaction = true) {
+         parent::__construct($url, $namespace, $filename, $rewriting, $fcaction);
+         $this->condition = $condition;
+      }
+
+      public function  transform() {
+         return '<!--[if '.$this->condition.']>'.parent::transform().'<![endif]-->';
+      }
+      
    }
 ?>
