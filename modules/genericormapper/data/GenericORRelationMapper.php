@@ -315,7 +315,7 @@
                // gather information about the object relations
                $RelationTable = $this->__RelationTable[$relationName]['Table'];
                $FromTable = $this->__MappingTable[$objectName]['Table'];
-               $TargetObjectName = $this->__getRelatedObjectNameByRelationName($objectName,$relationName);
+               $TargetObjectName = $this->getRelatedObjectNameByRelationName($objectName,$relationName);
                $ToTable = $this->__MappingTable[$TargetObjectName]['Table'];
                $SoureObjectID = $this->__MappingTable[$objectName]['ID'];
                $TargetObjectID = $this->__MappingTable[$TargetObjectName]['ID'];
@@ -401,7 +401,7 @@
          $sourceObject = $this->__MappingTable[$objectName];
          
          // check for null relations to prevent "undefined index" errors.
-         $targetObjectName = $this->__getRelatedObjectNameByRelationName($objectName,$relationName);
+         $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName,$relationName);
          if($targetObjectName === null){
             throw new GenericORMapperException(
                '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "'.$relationName
@@ -446,7 +446,7 @@
             // gather relation params
             $relationObjectName = $relations[$innerRelationName]->getObjectName();
             $relationSourceObject = $this->__MappingTable[$relationObjectName];
-            $relationTargetObjectName = $this->__getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(),$innerRelationName);
+            $relationTargetObjectName = $this->getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(),$innerRelationName);
             $relationTargetObject = $this->__MappingTable[$relationTargetObjectName];
 
             // finally build join
@@ -515,7 +515,7 @@
          // gather information about the objects *not* related to each other
          $objectName = $object->getObjectName();
          $sourceObject = $this->__MappingTable[$objectName];
-         $targetObjectName = $this->__getRelatedObjectNameByRelationName($objectName,$relationName);
+         $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName,$relationName);
          $targetObject = $this->__MappingTable[$targetObjectName];
 
          // create an empty criterion if the argument was null
@@ -536,7 +536,7 @@
             // gather relation params
             $relationObjectName = $relations[$innerRelationName]->getObjectName();
             $relationSourceObject = $this->__MappingTable[$relationObjectName];
-            $relationTargetObjectName = $this->__getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(),$innerRelationName);
+            $relationTargetObjectName = $this->getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(),$innerRelationName);
             $relationTargetObject = $this->__MappingTable[$relationTargetObjectName];
 
             // finally build join
@@ -615,7 +615,7 @@
             // gather information about the object and the relation
             $objectName = $object->getObjectName();
             $sourceObject = $this->__MappingTable[$objectName];
-            $targetObjectName = $this->__getRelatedObjectNameByRelationName($objectName,$relationName);
+            $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName,$relationName);
             $targetObject = $this->__MappingTable[$targetObjectName];
 
             // load multiplicity
@@ -1078,7 +1078,7 @@
        * @version
        * Version 0.1, 14.05.2008<br />
        */
-      protected function __getRelatedObjectNameByRelationName($objectName,$relationName){
+      protected function getRelatedObjectNameByRelationName($objectName,$relationName){
 
          // look for suitable related object
          foreach($this->__RelationTable as $SectionName => $Attributes){
@@ -1194,6 +1194,100 @@
          return (int)$data[$countColumnName];
 
        // end function
+      }
+
+      /**
+       * @public
+       *
+       * Loads a list of objects specified by the applied object type (object name as
+       * noted within the configuration) and the relation it should have.
+       *
+       * @param string $objectName The type of the objects to load.
+       * @param string $relationName The name of relation, the object should have to or not.
+       * @return GenericDomainObject[] The desired list of domain objects.
+       *
+       * @author Tobias Lückel
+       * @version
+       * Version 0.1, 01.09.2010<br />
+       */
+      public function loadObjectsWithRelation($objectName, $relationName) {
+         return $this->loadObjects4RelationName($objectName, $relationName, 'IS NULL');
+      }
+
+      /**
+       * @public
+       *
+       * Loads a list of objects specified by the applied object type (object name as
+       * noted within the configuration) and the relation it should *not* have.
+       *
+       * @param string $objectName The type of the objects to load.
+       * @param string $relationName The name of relation, the object should have to or not.
+       * @return GenericDomainObject[] The desired list of domain objects.
+       *
+       * @author Tobias Lückel
+       * @version
+       * Version 0.1, 01.09.2010<br />
+       */
+      public function loadObjectsWithoutRelation($objectName, $relationName) {
+         return $this->loadObjects4RelationName($objectName, $relationName, 'IS NULL');
+      }
+
+      /**
+       * @private
+       *
+       * Loads a list of objects specified by the applied object type (object name as
+       * noted within the configuration) and the relation it should have.
+       * <p/>
+       * Further, an indicator is applied to decide whether the object should have a
+       * relation or should not.
+       *
+       * @param string $objectName The type of the objects to load.
+       * @param string $relationName The name of relation, the object should have to or not.
+       * @param string $relationCondition The relation condition (has relation or has none).
+       * @return GenericDomainObject[] The desired list of domain objects.
+       *
+       * @author Tobias Lückel
+       * @version
+       * Version 0.1, 01.09.2010<br />
+       */
+      private function loadObjects4RelationName($objectName, $relationName, $relationCondition){
+
+         // gather information about the objects related to each other
+         $sourceObject = $this->__MappingTable[$objectName];
+
+         // check for null relations to prevent "undefined index" errors.
+         $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
+         if ($targetObjectName === null) {
+            throw new GenericORMapperException(
+                    '[GenericORRelationMapper::loadObjects4RelationName()] No relation with name "'
+                    . $relationName. '" found! Please re-check your relation configuration.',
+                    E_USER_ERROR
+            );
+         }
+
+         // BUG-142: wrong spelling of source and target object must result in descriptive error!
+         if (!isset($this->__MappingTable[$targetObjectName])) {
+            throw new GenericORMapperException(
+                    '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "'
+                    .$targetObjectName . '" found in releation definition "'.$relationName
+                    .'"! Please re-check your relation configuration.',
+                    E_USER_ERROR
+            );
+         }
+         $targetObject = $this->__MappingTable[$targetObjectName];
+
+         // build statement
+         $select = 'SELECT `'.$sourceObject['Table'].'`.* FROM `'.$sourceObject['Table'].'`';
+
+         // JOIN
+         $select .= ' LEFT OUTER JOIN `' . $this->__RelationTable[$relationName]['Table'] . '` ON `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = `' . $this->__RelationTable[$relationName]['Table'] . '`.`' . $sourceObject['ID'] . '`';
+
+         // - add relation joins
+         $select .= ' WHERE `' . $this->__RelationTable[$relationName]['Table'] . '`.`' . $targetObject['ID'] . '` '.$relationCondition;
+
+         // load target object list
+         return $this->loadObjectListByTextStatement($objectName, $select);
+
       }
 
     // end class
