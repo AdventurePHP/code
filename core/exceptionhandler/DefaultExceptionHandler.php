@@ -90,10 +90,10 @@
          $this->__ExceptionType = get_class($exception);
 
          // log exception
-         $this->__logException();
+         $this->logException();
 
          // build nice exception page
-         echo $this->__buildExeptionPage();
+         echo $this->buildExceptionPage();
 
        // end function
       }
@@ -107,8 +107,8 @@
        * @version
        * Version 0.1, 21.02.2009<br />
        */
-      protected function __logException(){
-         $message = '['.($this->__generateExceptionID()).'] '.$this->__ExceptionMessage.' (Number: '.$this->__ExceptionNumber.', File: '.$this->__ExceptionFile.', Line: '.$this->__ExceptionLine.')';
+      protected function logException(){
+         $message = '['.($this->generateExceptionID()).'] '.$this->__ExceptionMessage.' (Number: '.$this->__ExceptionNumber.', File: '.$this->__ExceptionFile.', Line: '.$this->__ExceptionLine.')';
          $L = Singleton::getInstance('Logger');
          $L->logEntry('php',$message,'EXCEPTION');
        // end function
@@ -123,7 +123,7 @@
        * @version
        * Version 0.1, 21.02.2009<br />
        */
-      protected function __buildExeptionPage(){
+      protected function buildExceptionPage(){
 
          // create page
          $stacktrace = new Page();
@@ -132,7 +132,7 @@
 
          // inject exception information into the document attributes array
          $doc = $stacktrace->getRootDocument();
-         $doc->setAttribute('id',$this->__generateExceptionID());
+         $doc->setAttribute('id',$this->generateExceptionID());
          $doc->setAttribute('message',$this->__ExceptionMessage);
          $doc->setAttribute('number',$this->__ExceptionNumber);
          $doc->setAttribute('file',$this->__ExceptionFile);
@@ -155,7 +155,7 @@
        * @version
        * Version 0.1, 21.02.2009<br />
        */
-      protected function __generateExceptionID(){
+      protected function generateExceptionID(){
          return md5($this->__ExceptionMessage.$this->__ExceptionNumber.$this->__ExceptionFile.$this->__ExceptionLine);
        // end function
       }
