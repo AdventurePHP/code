@@ -207,8 +207,8 @@
        * @param string $context context of the configuration file
        * @param string $configName the name of the configuration file
        * @param bool $parseSubsections defines if subsections ("." notation) should be parsed as subsections
-       * @return Configuration $CfgObj | bool NULL configuration object or null in case of failure
-       * @throws IllegalArgumentException In case the configuration cannot be loaded.
+       * @return Configuration The configuration or null in case of failure.
+       * @throws InvalidArgumentException In case the configuration cannot be loaded.
        *
        * @author Christian Achatz
        * @version
@@ -249,17 +249,10 @@
           // end if
          }
          else{
-
-            // retrieve environment configuration from Registry
             $env = Registry::retrieve('apf::core','Environment');
-
-            // trigger error
             throw new InvalidArgumentException('[ConfigurationManager->getConfiguration()] Requested '
                     .'configuration with name "'.$env.'_'.$configName.'.ini" cannot be '
                     .'loaded from namespace "'.$namespace.'" with context "'.$context.'"!',E_USER_ERROR);
-            exit();
-
-          // end else
          }
 
          return $this->__Configurations[$configHash];
@@ -283,17 +276,7 @@
        * Version 0.2, 07.03.2007 (Renamed to configurationExists())<br />
        */
       public function configurationExists($namespace,$context,$configName){
-
-         if(file_exists($this->__getConfigurationFileName($namespace,$context,$configName))){
-            return true;
-          // end if
-         }
-         else{
-            return false;
-          // end else
-         }
-
-       // end function
+         return file_exists($this->__getConfigurationFileName($namespace,$context,$configName));
       }
 
       /**
@@ -401,9 +384,9 @@
        *
        * @param string[] $subsectionArray The configuration array.
        * @return string[] $parsedArray The parsed array.
-       * @throws IllegalArgumentException In case the sub section cannot be parsed.
+       * @throws InvalidArgumentException In case the sub section cannot be parsed.
        *
-       * @author Christian Schä�fer
+       * @author Christian Schäfer
        * @version
        * Version 0.1, 28.01.2007<br />
        * Version 0.2, 19.04.2009 (Bugfix: Parsing subsections returned an empty array!)<br />
