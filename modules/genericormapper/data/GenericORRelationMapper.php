@@ -1204,14 +1204,15 @@
        *
        * @param string $objectName The type of the objects to load.
        * @param string $relationName The name of relation, the object should have to or not.
+       * @param GenericCriterionObject $criterion An additional criterion to specify custom limitations.
        * @return GenericDomainObject[] The desired list of domain objects.
        *
        * @author Tobias Lückel
        * @version
        * Version 0.1, 01.09.2010<br />
        */
-      public function loadObjectsWithRelation($objectName, $relationName) {
-         return $this->loadObjects4RelationName($objectName, $relationName, 'IS NULL');
+      public function loadObjectsWithRelation($objectName, $relationName, GenericCriterionObject $criterion = null) {
+         return $this->loadObjects4RelationName($objectName, $relationName, $criterion, 'IS NOT NULL');
       }
 
       /**
@@ -1222,14 +1223,15 @@
        *
        * @param string $objectName The type of the objects to load.
        * @param string $relationName The name of relation, the object should have to or not.
+       * @param GenericCriterionObject $criterion An additional criterion to specify custom limitations.
        * @return GenericDomainObject[] The desired list of domain objects.
        *
        * @author Tobias Lückel
        * @version
        * Version 0.1, 01.09.2010<br />
        */
-      public function loadObjectsWithoutRelation($objectName, $relationName) {
-         return $this->loadObjects4RelationName($objectName, $relationName, 'IS NULL');
+      public function loadObjectsWithoutRelation($objectName, $relationName, GenericCriterionObject $criterion = null) {
+         return $this->loadObjects4RelationName($objectName, $relationName, $criterion, 'IS NULL');
       }
 
       /**
@@ -1243,6 +1245,7 @@
        *
        * @param string $objectName The type of the objects to load.
        * @param string $relationName The name of relation, the object should have to or not.
+       * @param GenericCriterionObject $criterion An additional criterion to specify custom limitations.
        * @param string $relationCondition The relation condition (has relation or has none).
        * @return GenericDomainObject[] The desired list of domain objects.
        *
@@ -1250,7 +1253,7 @@
        * @version
        * Version 0.1, 01.09.2010<br />
        */
-      private function loadObjects4RelationName($objectName, $relationName, $relationCondition){
+      private function loadObjects4RelationName($objectName, $relationName, GenericCriterionObject $criterion, $relationCondition) {
 
          // gather information about the objects related to each other
          $sourceObject = $this->__MappingTable[$objectName];
@@ -1260,7 +1263,7 @@
          if ($targetObjectName === null) {
             throw new GenericORMapperException(
                     '[GenericORRelationMapper::loadObjects4RelationName()] No relation with name "'
-                    . $relationName. '" found! Please re-check your relation configuration.',
+                    . $relationName . '" found! Please re-check your relation configuration.',
                     E_USER_ERROR
             );
          }
@@ -1269,25 +1272,70 @@
          if (!isset($this->__MappingTable[$targetObjectName])) {
             throw new GenericORMapperException(
                     '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "'
-                    .$targetObjectName . '" found in releation definition "'.$relationName
-                    .'"! Please re-check your relation configuration.',
+                    . $targetObjectName . '" found in releation definition "' . $relationName
+                    . '"! Please re-check your relation configuration.',
                     E_USER_ERROR
             );
          }
          $targetObject = $this->__MappingTable[$targetObjectName];
 
+         if ($criterion == null) {
+            $criterion = new GenericCriterionObject();
+         }
+
          // build statement
-         $select = 'SELECT `'.$sourceObject['Table'].'`.* FROM `'.$sourceObject['Table'].'`';
+         $select = 'SELECT ' . ($this->__buildProperties($objectName, $criterion)) . ' FROM `' . $sourceObject['Table'] . '`';
 
          // JOIN
          $select .= ' LEFT OUTER JOIN `' . $this->__RelationTable[$relationName]['Table'] . '` ON `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = `' . $this->__RelationTable[$relationName]['Table'] . '`.`' . $sourceObject['ID'] . '`';
 
          // - add relation joins
-         $select .= ' WHERE `' . $this->__RelationTable[$relationName]['Table'] . '`.`' . $targetObject['ID'] . '` '.$relationCondition;
+         $where = array();
+         $joins = (string) '';
+         $relations = $criterion->getRelations();
+         foreach ($relations as $innerRelationName => $DUMMY) {
+            // gather relation params
+            $relationObjectName = $relations[$innerRelationName]->getObjectName();
+            $relationSourceObject = $this->__MappingTable[$relationObjectName];
+            $relationTargetObjectName = $this->getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(), $innerRelationName);
+            $relationTargetObject = $this->__MappingTable[$relationTargetObjectName];
+
+            // finally build join
+            $joins .= ' INNER JOIN `' . $this->__RelationTable[$innerRelationName]['Table'] . '` ON `' . $relationTargetObject['Table'] . '`.`' . $relationTargetObject['ID'] . '` = `' . $this->__RelationTable[$innerRelationName]['Table'] . '`.`' . $relationTargetObject['ID'] . '`
+                               INNER JOIN `' . $relationSourceObject['Table'] . '` ON `' . $this->__RelationTable[$innerRelationName]['Table'] . '`.`' . $relationSourceObject['ID'] . '` = `' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '`';
+
+            // add a where for each join
+            $where[] = '`' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '` = \'' . $relations[$innerRelationName]->getProperty($relationSourceObject['ID']) . '\'';
+
+            // end foreach
+         }
+
+         $select .= $joins;
+
+         // add where statement
+         $where = array_merge($where, $this->__buildWhere($targetObjectName, $criterion));
+
+         // - add relation joins
+         $where[] = '`' . $this->__RelationTable[$relationName]['Table'] . '`.`' . $targetObject['ID'] . '` ' . $relationCondition;
+
+         $select .= ' WHERE ' . implode(' AND ', $where);
+
+         // add order clause
+         $order = $this->__buildOrder($targetObjectName, $criterion);
+         if (count($order) > 0) {
+            $select .= ' ORDER BY ' . implode(', ', $order);
+            // end if
+         }
+
+         // add limit expression
+         $limit = $criterion->getLimitDefinition();
+         if (count($limit) > 0) {
+            $select .= ' LIMIT ' . implode(',', $limit);
+            // end if
+         }
 
          // load target object list
          return $this->loadObjectListByTextStatement($objectName, $select);
-
       }
 
     // end class
