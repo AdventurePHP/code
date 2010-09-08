@@ -51,6 +51,7 @@
        * @var string The link rewrite deactivation indicator.
        */
       private static $REWRITE_DEACTIVATE_PATTERN = '/linkrewrite="false"/i';
+      private static $REWRITE_CONTROL_PATTERN = '/linkrewrite="([A-Za-z]+)"/i';
 
       /**
        * @public
@@ -91,17 +92,20 @@
        * Version 0.1, 04.09.2010<br />
        */
       public static function replaceLink($hits) {
-
          // avoid link rewriting, if it is deactivated by attribute
          if(preg_match(self::$REWRITE_DEACTIVATE_PATTERN, $hits[1])
                || preg_match(self::$REWRITE_DEACTIVATE_PATTERN, $hits[3])) {
-            $hits[1] = preg_replace(self::$REWRITE_DEACTIVATE_PATTERN,'',$hits[1]);
-            $hits[3] = preg_replace(self::$REWRITE_DEACTIVATE_PATTERN,'',$hits[3]);
+            $hits[1] = preg_replace(self::$REWRITE_CONTROL_PATTERN,'',$hits[1]);
+            $hits[3] = preg_replace(self::$REWRITE_CONTROL_PATTERN,'',$hits[3]);
          } elseif (substr_count($hits[2], 'mailto:') > 0) {
             // do nothing
          } else {
+            $hits[1] = preg_replace(self::$REWRITE_CONTROL_PATTERN,'',$hits[1]);
             $hits[2] = strtr($hits[2], self::$REPLACE_PATTERN);
+            $hits[3] = preg_replace(self::$REWRITE_CONTROL_PATTERN,'',$hits[3]);
          }
+         $hits[1] = preg_replace(self::$REWRITE_CONTROL_PATTERN,'',$hits[1]);
+         $hits[3] = preg_replace(self::$REWRITE_CONTROL_PATTERN,'',$hits[3]);
          return '<a ' . $hits[1] . 'href="' . $hits[2] . '"' . $hits[3] . '>' . $hits[4] . '</a>';
       }
 
