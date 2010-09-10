@@ -22,6 +22,7 @@
    import('tools::html::taglib','iterator_taglib_item');
    import('tools::html::taglib','iterator_taglib_addtaglib');
    import('tools::html::taglib','iterator_taglib_getstring');
+   import('tools::html::taglib','iterator_taglib_placeholder');
 
    /**
     * @package tools::html::taglib
@@ -50,14 +51,14 @@
        * Data container. Array with numeric or associative offsets
        * or a list of objects.
        */
-      protected $__DataContainer = array();
+      protected $dataContainer = array();
 
       /**
        * @protected
        * Indicates, whether the iterator template should be displayed
        * at it's definition place (transform-on-place feature).
        */
-      protected $__TransformOnPlace = false;
+      protected $transformOnPlace = false;
 
       /**
        * @public
@@ -69,10 +70,11 @@
        * Version 0.1, 01.06.2008<br />
        * Version 0.2, 09.08.2009 (Added the addtaglib tag to enable custom tags.)<br />
        */
-      function html_taglib_iterator(){
+      public function __construct(){
          $this->__TagLibs[] = new TagLib('tools::html::taglib','iterator','item');
          $this->__TagLibs[] = new TagLib('tools::html::taglib','iterator','addtaglib');
          $this->__TagLibs[] = new TagLib('tools::html::taglib','iterator','getstring');
+         $this->__TagLibs[] = new TagLib('tools::html::taglib','iterator','placeholder');
        // end function
       }
 
@@ -85,7 +87,7 @@
        * @version
        * Version 0.1, 01.06.2008<br />
        */
-      function onParseTime(){
+      public function onParseTime(){
          $this->__extractTagLibTags();
        // end function
       }
@@ -102,8 +104,8 @@
        * @version
        * Version 0.1, 01.06.2008<br />
        */
-      function fillDataContainer($data){
-         $this->__DataContainer = $data;
+      public function fillDataContainer($data){
+         $this->dataContainer = $data;
        // end function
       }
 
@@ -116,8 +118,8 @@
        * @version
        * Version 0.1, 01.06.2008<br />
        */
-      function transformOnPlace(){
-         $this->__TransformOnPlace = true;
+      public function transformOnPlace(){
+         $this->transformOnPlace = true;
        // end function
       }
 
@@ -137,10 +139,10 @@
        * Version 0.3, 15.06.2008 (Bugfix: the item was not found using PHP5)<br />
        * Version 0.4, 09.08.2009 (Added new taglibs iterator:addtaglib and iterator:getstring due to request in forum)<br />
        */
-      function transformIterator(){
+      public function transformIterator(){
 
-         $T = &Singleton::getInstance('BenchmarkTimer');
-         $T->start('(html_taglib_iterator) '.$this->__ObjectID.'::transformIterator()');
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $t->start('(html_taglib_iterator) '.$this->__ObjectID.'::transformIterator()');
 
          $buffer = (string)'';
 
@@ -159,13 +161,13 @@
          // get the place holders
          $placeHolders = &$iteratorItem->getPlaceHolders();
 
-         $itemcount = count($this->__DataContainer);
+         $itemcount = count($this->dataContainer);
          for($i = 0; $i < $itemcount; $i++){
 
-            if(is_array($this->__DataContainer[$i])){
+            if(is_array($this->dataContainer[$i])){
 
                foreach($placeHolders as $objectId => $DUMMY){
-                  $placeHolders[$objectId]->setContent($this->__DataContainer[$i][$placeHolders[$objectId]->getAttribute('name')]);
+                  $placeHolders[$objectId]->setContent($this->dataContainer[$i][$placeHolders[$objectId]->getAttribute('name')]);
                 // end foreach
                }
 
@@ -173,10 +175,10 @@
 
              // end if
             }
-            elseif(is_object($this->__DataContainer[$i])){
+            elseif(is_object($this->dataContainer[$i])){
 
                foreach($placeHolders as $objectId => $DUMMY){
-                  $placeHolders[$objectId]->setContent($this->__DataContainer[$i]->{$getter}($placeHolders[$objectId]->getAttribute('name')));
+                  $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{$getter}($placeHolders[$objectId]->getAttribute('name')));
                 // end foreach
                }
 
@@ -185,14 +187,17 @@
              // end elseif
             }
             else{
-               trigger_error('[html_taglib_iterator::transformIterator()] Given list entry is not an array or object ('.$this->__DataContainer[$i].')! The data container must contain a list of associative arrays or objects!',E_USER_WARNING);
+               throw new InvalidArgumentException('[html_taglib_iterator::transformIterator()] '
+                       .'Given list entry is not an array or object ('.$this->dataContainer[$i]
+                       .')! The data container must contain a list of associative arrays or objects!',
+                       E_USER_WARNING);
              // end else
             }
 
           // end for
          }
 
-         $T->stop('(html_taglib_iterator) '.$this->__ObjectID.'::transformIterator()');
+         $t->stop('(html_taglib_iterator) '.$this->__ObjectID.'::transformIterator()');
 
          // add the surrounding content of the iterator to enable the
          // user to define some html code as well.
@@ -214,7 +219,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -226,18 +230,16 @@
       *  @version
       *  Version 0.1, 01.06.2008<br />
       */
-      function transform(){
+      public function transform(){
 
-         if($this->__TransformOnPlace === true){
+         if($this->transformOnPlace === true){
             return $this->transformIterator();
-          // end if
          }
 
          return (string)'';
 
        // end function
       }
-
 
       /**
        * @protected
@@ -257,19 +259,46 @@
          foreach($this->__Children as $objectId => $DUMMY){
             if(get_class($this->__Children[$objectId]) === 'iterator_taglib_item'){
                return $objectId;
-             // end if
             }
-          // end foreach
          }
 
          // defining no iterator item is not allowed!
-         trigger_error('[html_taglib_iterator::__getIteratorItemObjectId()] The definition for '
-            .'iterator "'.$this->getAttribute('name').'" does not contain a iterator item, '
-            .'hence this is no legal iterator tag definition. Please refer to the documentation.',
-            E_USER_ERROR);
-         exit(1);
+         throw new InvalidArgumentException('[html_taglib_iterator::__getIteratorItemObjectId()] '
+                 . 'The definition for iterator "'.$this->getAttribute('name').'" does not contain '
+                 .'a iterator item, hence this is no legal iterator tag definition. Please refer '
+                 .'to the documentation.',E_USER_ERROR);
 
        // end function
+      }
+
+      /**
+       * @public 
+       *
+       * Fills a place holder within the iterator.
+       *
+       * @param string $name The name of the place holder to set.
+       * @param string $value The value of the place holder.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.09.2010<br />
+       */
+      public function setPlaceHolder($name,$value){
+         $count = 0;
+         foreach($this->__Children as $objectId => $DUMMY){
+            if(get_class($this->__Children[$objectId]) == 'iterator_taglib_placeholder'){
+               $this->__Children[$objectId]->setContent($value);
+               $count++;
+            }
+         }
+
+         if($count == 0 || count($this->__Children) == 0){
+            throw new InvalidArgumentException('['.get_class($this).'::setPlaceHolder()] No place '
+                    . 'holder object with name "'.$name.'" can be found within html:iterator tag '
+                    .'with name "'.$this->getAttribute('name').'" requested in document controller '
+                    .'"'.($this->getParentObject()->getDocumentController()).'"!',E_USER_ERROR);
+         }
+
       }
 
     // end class
