@@ -608,7 +608,7 @@
       /**
        * @public
        *
-       * Returns a reverence on the form element identified by the given name.
+       * Returns a reference on the form element identified by the given name.
        *
        * @param string $name The name of the desired form element.
        * @return form_control A reference on the form element.
@@ -671,7 +671,7 @@
       /**
        * @public
        *
-       * Returns a reverence on the form element identified by the given id.
+       * Returns a reference on the form element identified by the given id.
        *
        * @param string $ID The ID of the desired form element.
        * @return form_control A reference on the form element.
