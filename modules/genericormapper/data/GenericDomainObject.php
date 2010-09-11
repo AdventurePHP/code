@@ -158,6 +158,38 @@
       /**
        * @public
        *
+       * Load one related object.
+       *
+       * @param string $relationName name of the desired relation
+       * @param GenericCriterionObject $criterion criterion object
+       * @return GenericDomainObject object that is related with the current object or null.
+       *
+       * @author Tobias Lückel
+       * @version
+       * Version 0.1, 09.09.2010<br />
+       */
+      public function loadRelatedObject($relationName,GenericCriterionObject $criterion = null){
+
+         // check weather data component is there
+         if($this->dataComponent === null){
+            throw new GenericORMapperException('[GenericDomainObject::loadRelatedObject()] '
+                    .'The data component is not initialized, so related object cannot be loaded! '
+                    .'Please use the or mapper\'s loadRelatedObject() method or call '
+                    .'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+                    .'object first!',E_USER_ERROR);
+            return null;
+          // end if
+         }
+
+         // return objects that are related to the current object
+         return $this->dataComponent->loadRelatedObject($this,$relationName,$criterion);
+
+       // end function
+      }
+      
+      /**
+       * @public
+       *
        * Loads a list of related objects.
        *
        * @param string $relationName name of the desired relation

@@ -365,6 +365,38 @@
        // end function
       }
 
+       /**
+       * @public
+       *
+       * Loads a related object by an object and an relation name.<br />
+       *
+       * @param GenericDomainObject $object current object
+       * @param string $relationName name of the desired relation
+       * @param GenericCriterionObject $criterion criterion object
+       * @return GenericDomainObject related object.
+       *
+       * @author Tobias Lückel
+       * @version
+       * Version 0.1, 09.09.2010<br />
+       */
+      public function loadRelatedObject(GenericDomainObject &$object,$relationName,GenericCriterionObject $criterion = null){
+        // create an empty criterion if the argument was null
+         if($criterion === null){
+            $criterion = new GenericCriterionObject();
+          // end if
+         }
+         $criterion->addCountIndicator(1);
+         $objectList = $this->loadRelatedObjects($object,$relationName,$criterion);
+
+         if(count($objectList) === 1) {
+            return $objectList[0];
+         }
+         return null;
+
+       // end function
+      }
+
+
       /**
        * @public
        *
