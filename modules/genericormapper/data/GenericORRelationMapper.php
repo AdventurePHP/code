@@ -607,29 +607,23 @@
             throw new GenericORMapperException('[GenericORRelationMapper::loadRelationMultiplicity()] '
                     .'Relation "'.$relationName.'" does not exist in relation table! Hence, the '
                     .'relation multiplicity cannot be loaded! Please check your relation configuration.');
-            $multiplicity = 0;
-          // end if
-         }
-         else{
-
-            // gather information about the object and the relation
-            $objectName = $object->getObjectName();
-            $sourceObject = $this->__MappingTable[$objectName];
-            $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName,$relationName);
-            $targetObject = $this->__MappingTable[$targetObjectName];
-
-            // load multiplicity
-            $relationTable = $this->__RelationTable[$relationName];
-            $select = 'SELECT COUNT(`'.$targetObject['ID'].'`) AS multiplicity FROM `'.$relationTable['Table'].'`
-                       WHERE `'.$sourceObject['ID'].'` = \''.$object->getProperty($sourceObject['ID']).'\';';
-            $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
-            $data = $this->__DBDriver->fetchData($result);
-            $multiplicity = $data['multiplicity'];
-
-          // end else
          }
 
-         return $multiplicity;
+         // gather information about the object and the relation
+         $objectName = $object->getObjectName();
+         $sourceObject = $this->__MappingTable[$objectName];
+         $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName,$relationName);
+         $targetObject = $this->__MappingTable[$targetObjectName];
+
+         // load multiplicity
+         $relationTable = $this->__RelationTable[$relationName];
+         $select = 'SELECT COUNT(`'.$targetObject['ID'].'`) AS multiplicity FROM `'.$relationTable['Table'].'`
+                    WHERE `'.$sourceObject['ID'].'` = \''.$object->getProperty($sourceObject['ID']).'\';';
+         $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
+         $data = $this->__DBDriver->fetchData($result);
+
+         // bug 453: explicitly cast to integer to avoid type save check errors.
+         return intval($data['multiplicity']);
 
        // end function
       }
