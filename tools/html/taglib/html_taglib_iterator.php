@@ -283,22 +283,22 @@
        * @version
        * Version 0.1, 10.09.2010<br />
        */
-      public function setPlaceHolder($name,$value){
+      public function setPlaceHolder($name, $value) {
          $count = 0;
-         foreach($this->__Children as $objectId => $DUMMY){
-            if(get_class($this->__Children[$objectId]) == 'iterator_taglib_placeholder'){
+         foreach ($this->__Children as $objectId => $DUMMY) {
+            if (get_class($this->__Children[$objectId]) == 'iterator_taglib_placeholder'
+                    && $this->__Children[$objectId]->getAttribute('name') === $name) {
                $this->__Children[$objectId]->setContent($value);
                $count++;
             }
          }
 
-         if($count == 0 || count($this->__Children) == 0){
-            throw new InvalidArgumentException('['.get_class($this).'::setPlaceHolder()] No place '
-                    . 'holder object with name "'.$name.'" can be found within html:iterator tag '
-                    .'with name "'.$this->getAttribute('name').'" requested in document controller '
-                    .'"'.($this->getParentObject()->getDocumentController()).'"!',E_USER_ERROR);
+         if ($count == 0 || count($this->__Children) == 0) {
+            throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place '
+                    . 'holder object with name "' . $name . '" can be found within html:iterator tag '
+                    . 'with name "' . $this->getAttribute('name') . '" requested in document controller '
+                    . '"' . ($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR);
          }
-
       }
 
     // end class
