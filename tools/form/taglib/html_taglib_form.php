@@ -820,6 +820,12 @@
             $this->setAttribute('action',$_SERVER['REQUEST_URI']);
          }
 
+         // add default method for convenience
+         $method = $this->getAttribute('method');
+         if($method === null){
+            $this->setAttribute('method',Registry::retrieve('apf::tools','FormDefaultMethod','post'));
+         }
+
          // transform the form including all child tags
          $htmlCode = (string)'<form ';
          $htmlCode .= $this->__getAttributesAsString($this->__Attributes,$this->attributeWhiteList);

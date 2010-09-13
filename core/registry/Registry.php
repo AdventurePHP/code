@@ -81,22 +81,24 @@
        * @public
        * @static
        *
-       * Retrieves a registry value from the registry.<br />
+       * Retrieves a registry value from the registry.
        *
-       * @param string $namespace namespace of the entry
-       * @param string $name name of the entry
+       * @param string $namespace Namespace of the entry.
+       * @param string $name Name of the entry.
+       * @param string $default The default value to return, if no key is registered.
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1,19.06.2008<br />
+       * Version 0.1, 19.06.2008<br />
+       * Version 0.2, 13.09.2010 (Added support for custom default value definition)<br />
        */
-      public static function retrieve($namespace,$name){
+      public static function retrieve($namespace,$name,$default = null){
 
          if(isset(self::$REGISTRY_STORE[$namespace][$name]['value'])){
             return self::$REGISTRY_STORE[$namespace][$name]['value'];
          }
          else{
-            return null;
+            return $default;
          }
 
        // end function
