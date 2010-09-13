@@ -399,21 +399,28 @@
       /**
        * @public
        *
-       * Returns an object by name and id.<br />
+       * Returns an object by name and id.
        *
-       * @param string $objectName name of the object in mapping table
-       * @param int $objectID database id of the desired object
+       * @param string $objectName The name of the object in mapping table.
+       * @param int $objectId The database id of the desired object.
        * @return GenericDomainObject The desired object.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 11.05.2008<br />
+       * Version 0.2, 13.09.2010 (Added security check for the given object id)<br />
        */
-      public function loadObjectByID($objectName,$objectID){
+      public function loadObjectByID($objectName,$objectId){
 
-         // Load properties
+         // check for invalid ids to avoid SQL injection
+         if(!is_numeric($objectId)){
+            throw new InvalidArgumentException('[GenericORMapper::loadObjectByID()] Given object '
+                    .'id "'.$objectId.'" is not an integer. Thus object with name "'.$objectName.'" '
+                    .'cannot be loaded!', E_USER_ERROR);
+         }
+
          $query = 'SELECT * FROM `'.$this->__MappingTable[$objectName]['Table'].'`
-                   WHERE `'.$this->__MappingTable[$objectName]['ID'].'` = \''.$objectID.'\';';
+                   WHERE `'.$this->__MappingTable[$objectName]['ID'].'` = \''.$objectId.'\';';
          $result = $this->__DBDriver->executeTextStatement($query,$this->__LogStatements);
 
          return $this->__mapResult2DomainObject($objectName,$this->__DBDriver->fetchData($result));
