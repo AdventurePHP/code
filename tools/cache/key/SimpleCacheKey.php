@@ -19,6 +19,8 @@
     * -->
     */
 
+   import('tools::cache','CacheKey');
+
    /**
     * @package tools::cache::key
     * @class SimpleCachKey
