@@ -1,13 +1,17 @@
 <@controller namespace="modules::pager::pres::documentcontroller" file="pager_2_v1_controller" class="pager_2_v1_controller" @>
-<div style="width: 100%; border: 0px solid black; text-align: right; padding-bottom: 2px;">
-  <html:placeholder name="VorherigeSeite" /><html:placeholder name="Inhalt" /><html:placeholder name="NaechsteSeite" />
-  <br />
-  <span style="font-size: 9px;"><html:placeholder name="EntriesPerPage_Display" /></span>&nbsp;|<html:placeholder name="EntriesPerPage" />
+<div class="apf-pager">
+   <div class="apf-pages">
+      <html:placeholder name="VorherigeSeite" /><html:placeholder name="Inhalt" /><html:placeholder name="NaechsteSeite" />
+   </div>
+   <html:template name="DynamicPageSize">
+      <div class="apf-page-size">
+         <span style="font-size: 9px;"><template:placeholder name="EntriesPerPage_Display" /></span>&nbsp;|<template:placeholder name="EntriesPerPage" />
+      </div>
+   </html:template>
 </div>
-<br />
 
 <html:template name="Page_Selected">
-  <a href="<template:placeholder name="Link" />" title="Seite <template:placeholder name="Seite" /> anzeigen"><span style="font-size: 16px; font-weight: bold;"><template:placeholder name="Seite" /></span></a>&nbsp;&nbsp;
+  <a class="active" href="<template:placeholder name="Link" />" title="Seite <template:placeholder name="Seite" /> anzeigen"><template:placeholder name="Seite" /></a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="Page">
@@ -15,11 +19,11 @@
 </html:template>
 
 <html:template name="VorherigeSeite_Aktiv">
-  <a href="<template:placeholder name="Link" />" title="Vorherige Seite anzeigen!"><span style="font-size: 14px;">&laquo;</span></a>&nbsp;&nbsp;
+  <a href="<template:placeholder name="Link" />" title="Vorherige Seite anzeigen!">&laquo;</a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="VorherigeSeite_Inaktiv">
-  <span style="font-size: 14px;">&laquo;</span>&nbsp;&nbsp;
+   <span class="first">&laquo;</span>
 </html:template>
 
 <html:template name="NaechsteSeite_Aktiv">
@@ -27,7 +31,7 @@
 </html:template>
 
 <html:template name="NaechsteSeite_Inaktiv">
-  <span style="font-size: 14px;">&raquo;</span>
+   <span>&raquo;</span>
 </html:template>
 
 <html:template name="EntriesPerPage_Aktiv">

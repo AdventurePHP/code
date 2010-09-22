@@ -1,0 +1,18 @@
+/***************************************************************************************************
+* This stylesheet can be used to apply the pre 1.13 style to the pager_2.html template.
+***************************************************************************************************/
+
+.apf-pager {
+   text-align: right;
+   margin-bottom: .5em;
+}
+.apf-pager .apf-pages {
+   font-size: 1.2em;
+}
+.apf-pager .apf-pages .active {
+   font-weight: bold;
+   font-size: 1.2em;
+}
+.apf-pager .apf-pages span.first {
+   margin-right: 1em;
+}
