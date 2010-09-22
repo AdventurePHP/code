@@ -21,6 +21,7 @@
 
    import('extensions::htmlheader::biz', 'HtmlNode');
    import('extensions::htmlheader::biz', 'MetaNode');
+   import('tools::link', 'LinkHandler');
 
    /**
     * @namespace extensions::htmlheader::biz
@@ -43,7 +44,7 @@
        */
       public function __construct($target, $time, $additionalParameters = array()) {
          $this->setAttribute('http-equiv', 'refresh');
-         $link = LinkHandler::generateLink($url, $additionalParameters);
+         $link = LinkHandler::generateLink($target, $additionalParameters);
          $this->setAttribute('content', $time . ';URL=' . $link);
       }
 

@@ -60,7 +60,7 @@
    class htmlheader_taglib_addcss extends Document {
       
        public function onParseTime() {
-           $HHM = $this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
+           $header = &$this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
 
            $url = $this->getAttribute('url');
            $folder = $this->getAttribute('folder');
@@ -90,8 +90,7 @@
            else {
                $node = new DynamicCssNode(null, $namespace, $filename, $rewriting, $fcaction);
            }
-           
-           $HHM->addCss($node);
+           $header->addNode($node);
        }
 
        public function transform(){

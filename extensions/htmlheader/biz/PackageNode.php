@@ -48,7 +48,7 @@
 
       protected abstract function getTypeIndicator();
 
-      protected function getChecksum(){
+      public function getChecksum(){
          return md5($this->getAttribute($this->getLocationAttributeName()));
       }
 
