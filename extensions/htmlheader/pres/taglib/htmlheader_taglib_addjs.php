@@ -61,7 +61,7 @@
    class htmlheader_taglib_addjs extends Document {
       
        public function onParseTime() {
-           $HHM = $this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
+           $header = $this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
 
            $url = $this->getAttribute('url');
            $folder = $this->getAttribute('folder');
@@ -92,7 +92,7 @@
                $node = new DynamicJsNode(null, $namespace, $filename, $rewriting, $fcaction);
            }
 
-           $HHM->addJs($node);
+           $header->addNode($node);
        }
 
        public function transform(){
