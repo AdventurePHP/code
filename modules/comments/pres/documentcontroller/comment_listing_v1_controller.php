@@ -104,7 +104,7 @@
                 FrontcontrollerLinkHandler::generateLink(
                                           $_SERVER['REQUEST_URI'],
                                           array(
-                                                $urlParams['StartName'] => '',
+                                                $urlParams['PageName'] => '',
                                                 $urlParams['CountName'] => '',
                                                 'coview' => 'form'
                                           )
