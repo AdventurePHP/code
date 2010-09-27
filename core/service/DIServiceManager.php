@@ -1,23 +1,23 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
     * The DIServiceManager provides a dependency injection container for
@@ -71,30 +71,25 @@
     * Version 0.1, 18.04.2009<br />
     * Version 0.2, 19.04.2009 (Finished implementation)<br />
     */
-   final class DIServiceManager extends APFObject
-   {
+   final class DIServiceManager extends APFObject {
 
       /**
        * @private
        * Injection call cache to avoid circular injections.
        */
-      private $__InjectionCallCache = array();
+      private $injectionCallCache = array();
 
       /**
        * @private
        * Defines the name of the service object configuration file.
        */
-      private $__ConfigFileName = 'serviceobjects';
+      private $configFileName = 'serviceobjects';
 
       /**
        * @private
        * Contains the service objects, that were already configured.
        */
-      private $__ServiceObjectCache = array();
-
-
-      public function DIServiceManager(){
-      }
+      private $serviceObjectCache = array();
 
       /**
        * @public
@@ -113,9 +108,8 @@
 
          // Check, whether service object was created before. If yes, deliver it from cache.
          $cacheKey = $configNamespace.'__'.$sectionName;
-         if(isset($this->__ServiceObjectCache[$cacheKey])){
-            return $this->__ServiceObjectCache[$cacheKey];
-          // end if
+         if(isset($this->serviceObjectCache[$cacheKey])){
+            return $this->serviceObjectCache[$cacheKey];
          }
 
          // Invoke benchmarker. Suppress warning for already started timers with circular calls!
@@ -126,7 +120,7 @@
 
          // Get config to determine, which object to create. Parse subsections, to be able to
          // easily separate the init/conf subsections.
-         $config = &$this->__getConfiguration($configNamespace,$this->__ConfigFileName,true);
+         $config = &$this->__getConfiguration($configNamespace,$this->configFileName,true);
 
          // check, whether the section contains the basic directives
          $serviceType = $config->getValue($sectionName,'servicetype');
@@ -207,10 +201,10 @@
                      $injectionKey = $namespace.'::'.$class.'['.$serviceType.']'.' injected with '.
                         $directive['method'].'('.$directive['namespace'].'::'.$directive['name'].')';
 
-                     if(!isset($this->__InjectionCallCache[$injectionKey])){
+                     if(!isset($this->injectionCallCache[$injectionKey])){
 
                         // add the current run to the recursion detection array
-                        $this->__InjectionCallCache[$injectionKey] = true;
+                        $this->injectionCallCache[$injectionKey] = true;
 
                         // get the dependent service object
                         $miObject = &$this->getServiceObject($directive['namespace'],$directive['name']);
@@ -226,7 +220,6 @@
                               '" from namespace "'.$directive['namespace'].'" cannot be accomplished to service object "'.
                               $class.'" from namespace "'.$namespace.'"! Method '.$directive['method'].'() is not implemented!',
                               E_USER_ERROR);
-                           exit();
 
                          // end else
                         }
@@ -235,20 +228,19 @@
                      }
                      else{
 
+                        // append error to log to provide debugging information
+                        $log = &Singleton::getInstance('Logger');
+                        $instructions = (string)'';
+                        foreach ($this->injectionCallCache as $injectionInstruction => $DUMMY){
+                           $instructions .= PHP_EOL.$injectionInstruction;
+                        }
+                        $log->logEntry('php','[DIServiceManager::getServiceObject()] Injection stack trace: '.$instructions,'TRACE');
+
                         // print note with shortend information
                         throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Detected circular injection! '.
                            'Class "'.$class.'" from namespace "'.$namespace.'" with service type "'.$serviceType.
                            '" was already configured with service object "'.$directive['name'].'" from namespace "'.
                            $directive['namespace'].'"! Full stack trace can be taken from the logfile!', E_USER_ERROR);
-
-                        // append error to log to provide debugging information
-                        $log = &Singleton::getInstance('Logger');
-                        $instructions = (string)'';
-                        foreach ($this->__InjectionCallCache as $injectionInstruction => $DUMMY){
-                           $instructions .= PHP_EOL.$injectionInstruction;
-                        }
-                        $log->logEntry('php','[DIServiceManager::getServiceObject()] Injection stack trace: '.$instructions,'TRACE');
-                        exit();
 
                       // end else
                      }
@@ -261,7 +253,6 @@
                         $sectionName.'" cannot be accomplished, due to incorrect configuration! Please revise the "'.$initKey.
                         '" sub section and consult the manual!',
                         E_USER_ERROR);
-                     exit();
 
                    // end else
                   }
@@ -280,7 +271,6 @@
                $sectionName.'" from namespace "'.$configNamespace.'" cannot be accomplished, due to missing
                or incorrect configuration! Please revise the configuration file and consult the manual!',
                E_USER_ERROR);
-            exit();
 
           // end else
          }
@@ -288,8 +278,8 @@
          $t->stop($benchId);
 
          // add service object to cache and return it
-         $this->__ServiceObjectCache[$cacheKey] = $serviceObject;
-         return $this->__ServiceObjectCache[$cacheKey];
+         $this->serviceObjectCache[$cacheKey] = $serviceObject;
+         return $this->serviceObjectCache[$cacheKey];
 
        // end function
       }
