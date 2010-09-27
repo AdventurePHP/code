@@ -442,11 +442,11 @@
        * @version
        * Version 0.1, 20.01.2007<br />
        * Version 0.2, 27.01.2007<br />
-       * Version 0.3, 31.01.2007 (Context-Behandlung hinzugefï¿½gt)<br />
-       * Version 0.4, 03.02.2007 (Permanente Actions hinzugefï¿½gt)<br />
-       * Version 0.5, 08.06.2007 (URL-Filtering in generische Filter ausgelagert)<br />
-       * Version 0.6, 01.07.2007 (Ausfï¿½hrung von permanentpre und permanentpost gelï¿½scht)<br />
-       * Version 0.7, 29.09.2007 (Aufrufzeiten der Actions erweitert / geï¿½ndert)<br />
+       * Version 0.3, 31.01.2007<br />
+       * Version 0.4, 03.02.2007 (Added permanent actions)<br />
+       * Version 0.5, 08.06.2007 (Outsourced URL filtering to generic input filter)<br />
+       * Version 0.6, 01.07.2007 (Removed permanentpre and permanentpost actions)<br />
+       * Version 0.7, 29.09.2007 (Added further benchmark tags)<br />
        * Version 0.8, 21.06.2008 (Introduced Registry to retrieve URLRewrite configuration)<br />
        * Version 0.9, 13.10.2008 (Removed $URLRewriting parameter, because URL rewriting must be configured in the registry)<br />
        * Version 1.0, 11.12.2008 (Switched to the new input filter concept)<br />
@@ -566,7 +566,7 @@
        * @param string $namespaceUrlRepresenation The url string.
        * @return The namespace of the action.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 03.06.2007<br />
        */
@@ -581,7 +581,7 @@
        * Registers an action to the front controller. This includes action configuration using
        * the action oarams defined within the action mapping. Each action definition is expected
        * to be stored in the <em>{ENVIRONMENT}_actionsconfig.ini</em> file under the namespace
-       * <em>{$namespace}::actions::{$this->__Context}.</em>
+       * <em>{$namespace}::{$this->__Context}.</em>
        *
        * @param string $namespace Namespace of the action to register.
        * @param string $name Name of the action to register.
@@ -592,10 +592,11 @@
        * Version 0.1, 08.06.2007<br />
        * Version 0.2, 01.07.2007 (Action namespace is now translated at the addAction() method)<br />
        * Version 0.3, 01.07.2007 (Config params are now parsed correctly)<br />
+       * Version 0.4, 27.09.2010 (Removed synthetic "actions" sub-namespace)<br />
        */
-      public function registerAction($namespace,$name,$params = array()){
+      public function registerAction($namespace, $name, array $params = array()){
 
-         $config = &$this->__getConfiguration($namespace.'::actions','actionconfig');
+         $config = &$this->__getConfiguration($namespace,'actionconfig');
 
          if($config != null){
 
@@ -638,9 +639,9 @@
        * @public
        *
        * Adds an action to the Frontcontroller action stack. Please note, that the namespace of
-       * the namespace of the action config is remapped using the <em>::action</em> suffix and
-       * the current context. The name of the config file is concatenated by the current
-       * environment and the string <em>_actionsconfig.ini</em>.
+       * the namespace of the action config is added the current context. The name of the
+       * config file is concatenated by the current environment and the string
+       * <em>_actionsconfig.ini</em>.
        *
        * @param string $namespace Namespace of the action.
        * @param string $name Name of the action (section key of the config file).
@@ -648,20 +649,20 @@
        * @throws InvalidArgumentException In case the action cannot be found within the appropriate
        * configuration or the action implementation classes are not available.
        *
-       * @author Christian Schäfer
+       * @author Christian SchÃ¤fer
        * @version
        * Version 0.1, 05.06.2007<br />
        * Version 0.2, 01.07.2007<br />
        * Version 0.3, 02.09.2007<br />
        * Version 0.4, 08.09.2007 (Bugfix: input params from config are now evaluated)<br />
        * Version 0.5, 08.11.2007 (Changed action stack construction to hash offsets)<br />
-       * Version 0.2, 21.06.2008 (Replaced APPS__ENVIRONMENT constant with a value from the Registry)<br />
+       * Version 0.6, 21.06.2008 (Replaced APPS__ENVIRONMENT constant with a value from the Registry)<br />
+       * Version 0.7, 27.09.2010 (Removed synthetic "actions" sub-namespace)<br />
        */
-      public function addAction($namespace,$name,$params = array()){
+      public function addAction($namespace, $name, array $params = array()){
 
          // re-map namespace
          $namespace = $this->getActionNamespaceByURLString($namespace);
-         $namespace .= '::actions';
 
          // load the action configuration
          $config = &$this->__getConfiguration($namespace,'actionconfig');
@@ -670,8 +671,6 @@
             throw new InvalidArgumentException('[Frontcontroller::__parseActions()] No '
                     .'configuration available for namespace "'.$namespace.'" and context "'
                     .$this->__Context.'"!',E_USER_ERROR);
-            exit;
-          // end if
          }
          $actionConfig = $config->getSection($name);
 
@@ -733,7 +732,7 @@
        * @param string $inputConfig The config string contained in the action config.
        * @return string[] The resulting param-value array.
        *
-       * @author Christian W. Schäfer
+       * @author Christian W. SchÃ¤fer
        * @version
        * Version 0.1, 08.09.2007<br />
        */
