@@ -20,7 +20,6 @@
     */
 
    import('core::exceptionhandler','AbstractExceptionHandler');
-   import('core::logging','Logger');
 
    /**
     * @package core::exceptionhandler
@@ -37,35 +36,32 @@
       /**
        * @var int The number of the exception.
        */
-      protected $__ExceptionNumber = null;
+      protected $exceptionNumber = null;
 
       /**
        * @var string The message of the exception.
        */
-      protected $__ExceptionMessage = null;
+      protected $exceptionMessage = null;
 
       /**
        * @var string The file, the exception occures in.
        */
-      protected $__ExceptionFile = null;
+      protected $exceptionFile = null;
 
       /**
        * @var int The line, the exception occures in
        */
-      protected $__ExceptionLine = null;
+      protected $exceptionLine = null;
 
       /**
        * @var string The exception type (name of the class).
        */
-      protected $__ExceptionType = null;
+      protected $exceptionType = null;
 
       /**
        * @var string[] The exception trace.
        */
-      protected $__ExceptionTrace = array();
-
-      public function DefaultExceptionHandler(){
-      }
+      protected $exceptionTrace = array();
 
       /**
        * @public
@@ -82,12 +78,12 @@
       public function handleException($exception){
 
          // fill attributes
-         $this->__ExceptionNumber = $exception->getCode();
-         $this->__ExceptionMessage = $exception->getMessage();
-         $this->__ExceptionFile = $exception->getFile();
-         $this->__ExceptionLine = $exception->getLine();
-         $this->__ExceptionTrace = $exception->getTrace();
-         $this->__ExceptionType = get_class($exception);
+         $this->exceptionNumber = $exception->getCode();
+         $this->exceptionMessage = $exception->getMessage();
+         $this->exceptionFile = $exception->getFile();
+         $this->exceptionLine = $exception->getLine();
+         $this->exceptionTrace = $exception->getTrace();
+         $this->exceptionType = get_class($exception);
 
          // log exception
          $this->logException();
@@ -108,9 +104,10 @@
        * Version 0.1, 21.02.2009<br />
        */
       protected function logException(){
-         $message = '['.($this->generateExceptionID()).'] '.$this->__ExceptionMessage.' (Number: '.$this->__ExceptionNumber.', File: '.$this->__ExceptionFile.', Line: '.$this->__ExceptionLine.')';
-         $L = Singleton::getInstance('Logger');
-         $L->logEntry('php',$message,'EXCEPTION');
+         $message = '['.($this->generateExceptionID()).'] '.$this->exceptionMessage.' (Number: '.$this->exceptionNumber.', File: '.$this->exceptionFile.', Line: '.$this->exceptionLine.')';
+         import('core::logging','Logger');
+         $log = Singleton::getInstance('Logger');
+         $log->logEntry('php',$message,'EXCEPTION');
        // end function
       }
 
@@ -125,6 +122,12 @@
        */
       protected function buildExceptionPage(){
 
+         // at this point we have to re-include the benchmark timer, because PHP
+         // sometimes forgets about this import and throws a
+         // Fatal error: Exception thrown without a stack frame in Unknown on line 0
+         // exception.
+         import('core::benchmark','BenchmarkTimer');
+         
          // create page
          $stacktrace = new Page();
          $stacktrace->setContext('core::exceptionhandler');
@@ -133,12 +136,12 @@
          // inject exception information into the document attributes array
          $doc = $stacktrace->getRootDocument();
          $doc->setAttribute('id',$this->generateExceptionID());
-         $doc->setAttribute('message',$this->__ExceptionMessage);
-         $doc->setAttribute('number',$this->__ExceptionNumber);
-         $doc->setAttribute('file',$this->__ExceptionFile);
-         $doc->setAttribute('line',$this->__ExceptionLine);
-         $doc->setAttribute('trace',array_reverse($this->__ExceptionTrace));
-         $doc->setAttribute('type',$this->__ExceptionType);
+         $doc->setAttribute('message',$this->exceptionMessage);
+         $doc->setAttribute('number',$this->exceptionNumber);
+         $doc->setAttribute('file',$this->exceptionFile);
+         $doc->setAttribute('line',$this->exceptionLine);
+         $doc->setAttribute('trace',array_reverse($this->exceptionTrace));
+         $doc->setAttribute('type',$this->exceptionType);
 
          // create exception page
          return $stacktrace->transform();
@@ -156,7 +159,7 @@
        * Version 0.1, 21.02.2009<br />
        */
       protected function generateExceptionID(){
-         return md5($this->__ExceptionMessage.$this->__ExceptionNumber.$this->__ExceptionFile.$this->__ExceptionLine);
+         return md5($this->exceptionMessage.$this->exceptionNumber.$this->exceptionFile.$this->exceptionLine);
        // end function
       }
 

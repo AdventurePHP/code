@@ -20,7 +20,6 @@
     */
 
    import('core::errorhandler','AbstractErrorHandler');
-   import('core::logging','Logger');
 
    /**
     * @package core::errorhandler
@@ -39,28 +38,25 @@
        * @private
        * @var string Error number.
        */
-      protected $__ErrorNumber;
+      protected $errorNumber;
 
       /**
        * @private
        * @var string Error message,
        */
-      protected $__ErrorMessage;
+      protected $errorMessage;
 
       /**
        * @private
        * @var string Error file.
        */
-      protected $__ErrorFile;
+      protected $errorFile;
 
       /**
        * @private
        * @var string Error line.
        */
-      protected $__ErrorLine;
-
-      function DefaultErrorHandler(){
-      }
+      protected $errorLine;
 
       /**
        * @public
@@ -76,13 +72,13 @@
        * @version
        * Version 0.1, 21.01.2007<br />
        */
-      function handleError($errorNumber,$errorMessage,$errorFile,$errorLine){
+      public function handleError($errorNumber,$errorMessage,$errorFile,$errorLine){
 
          // fill attributes
-         $this->__ErrorNumber = $errorNumber;
-         $this->__ErrorMessage = $errorMessage;
-         $this->__ErrorFile = $errorFile;
-         $this->__ErrorLine = $errorLine;
+         $this->errorNumber = $errorNumber;
+         $this->errorMessage = $errorMessage;
+         $this->errorFile = $errorFile;
+         $this->errorLine = $errorLine;
 
          // log error
          $this->__logError();
@@ -104,10 +100,10 @@
        * Version 0.2, 29.03.2007 (Changed to new logger)<br />
        */
       protected function __logError(){
-         $message = '['.($this->__generateErrorID()).'] '.$this->__ErrorMessage.' (Number: '.$this->__ErrorNumber.', File: '.$this->__ErrorFile.', Line: '.$this->__ErrorLine.')';
-         $L = &Singleton::getInstance('Logger');
-         $L->logEntry('php',$message,'ERROR');
-       // end function
+         $message = '['.($this->__generateErrorID()).'] '.$this->errorMessage.' (Number: '.$this->errorNumber.', File: '.$this->errorFile.', Line: '.$this->errorLine.')';
+         import('core::logging','Logger');
+         $log = &Singleton::getInstance('Logger');
+         $log->logEntry('php',$message,'ERROR');
       }
 
       /**
@@ -125,6 +121,12 @@
        */
       protected function __buildErrorPage(){
 
+         // at this point we have to re-include the benchmark timer, because PHP
+         // sometimes forgets about this import and throws a
+         // Fatal error: Exception thrown without a stack frame in Unknown on line 0
+         // exception.
+         import('core::benchmark','BenchmarkTimer');
+
          // create page
          $stacktrace = new Page('Stacktrace');
          $stacktrace->setContext('core::errorhandler');
@@ -133,10 +135,10 @@
          // inject error information into the document attributes array
          $doc = &$stacktrace->getRootDocument();
          $doc->setAttribute('id',$this->__generateErrorID());
-         $doc->setAttribute('message',$this->__ErrorMessage);
-         $doc->setAttribute('number',$this->__ErrorNumber);
-         $doc->setAttribute('file',$this->__ErrorFile);
-         $doc->setAttribute('line',$this->__ErrorLine);
+         $doc->setAttribute('message',$this->errorMessage);
+         $doc->setAttribute('number',$this->errorNumber);
+         $doc->setAttribute('file',$this->errorFile);
+         $doc->setAttribute('line',$this->errorLine);
 
          // create error page
          return $stacktrace->transform();
@@ -154,7 +156,7 @@
        * Version 0.1, 21.01.2007<br />
        */
       protected function __generateErrorID(){
-         return md5($this->__ErrorMessage.$this->__ErrorNumber.$this->__ErrorFile.$this->__ErrorLine);
+         return md5($this->errorMessage.$this->errorNumber.$this->errorFile.$this->errorLine);
        // end function
       }
 
