@@ -36,9 +36,6 @@
     */
    class GenericORRelationMapper extends GenericORMapper {
 
-      public function GenericORRelationMapper(){
-      }
-
       /**
        * @public
        *
@@ -533,7 +530,7 @@
        * Version 0.2, 25.10.2008 (Added additional where and relation clauses. Bugfix to the inner relation statement.)<br />
        * Version 0.3, 29.12.2008 (Added check, if given object is null)<br />
        */
-      public function loadNotRelatedObjects(&$object,$relationName,GenericCriterionObject $criterion = null){
+      public function loadNotRelatedObjects(GenericDomainObject &$object,$relationName,GenericCriterionObject $criterion = null){
 
          // check if object is present
          if($object === null){
@@ -633,7 +630,7 @@
        * @version
        * Version 0.1, 16.12.2008<br />
        */
-      public function loadRelationMultiplicity(&$object,$relationName){
+      public function loadRelationMultiplicity(GenericDomainObject &$object,$relationName){
 
          if(!isset($this->__RelationTable[$relationName])){
             throw new GenericORMapperException('[GenericORRelationMapper::loadRelationMultiplicity()] '
@@ -665,7 +662,7 @@
        *
        * Overwrites the saveObject() method of the parent class. Resolves relations.<br />
        *
-       * @param $relationName $Object current object
+       * @param GenericDomainObject $object The current object.
        * @return int Id of the saved object.
        *
        * @author Christian Achatz
@@ -676,7 +673,7 @@
        * Version 0.4, 15.06.2008 (Fixed bug that relation was not found due to twisted columns)<br />
        * Version 0.5, 26.10.2008 (Added a check for the object/relation to exist in the objec>t/relation table)<br />
        */
-      public function saveObject(&$object){
+      public function saveObject(GenericDomainObject &$object){
 
          // save the current object (uses parent function with no resolving for relations)
          $id = parent::saveObject($object);
@@ -753,7 +750,7 @@
        *
        * Overwrites the deleteObject() method of the parent class. Resolves relations.
        *
-       * @param object $object the object to delete
+       * @param GenericDomainObject $object the object to delete
        * @return int Database id of the object or null.
        *
        * @author Christian Achatz
@@ -761,7 +758,7 @@
        * Version 0.1, 11.05.2008<br />
        * Version 0.2, 30.05.2008 (Completed the method's code)<br />
        */
-      public function deleteObject($object){
+      public function deleteObject(GenericDomainObject $object){
 
          // return if given object is null
          if($object === null){
@@ -847,7 +844,7 @@
        * Version 0.2, 31.05.2008 (Code completed)<br />
        * Version 0.3, 08.06.2008 (Introduced a test to check weather relation exists or not)<br />
        */
-      public function createAssociation($relationName,$sourceObject,$targetObject){
+      public function createAssociation($relationName,GenericDomainObject $sourceObject,GenericDomainObject $targetObject){
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$relationName])){
@@ -901,7 +898,7 @@
        * Version 0.2, 31.05.2008 (Code completed)<br />
        * Version 0.3, 08.06.2008 (Introduced a test to check weather relation exists or not)<br />
        */
-      public function deleteAssociation($relationName,$sourceObject,$targetObject){
+      public function deleteAssociation($relationName,GenericDomainObject $sourceObject,GenericDomainObject $targetObject){
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$relationName])){
@@ -954,7 +951,7 @@
        * Version 0.1, 31.05.2008<br />
        * Version 0.1, 08.06.2008 (Introduced a test to check weather relation exists or not)<br />
        */
-      public function isAssociated($relationName,$sourceObject,$targetObject){
+      public function isAssociated($relationName,GenericDomainObject $sourceObject,GenericDomainObject $targetObject){
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$relationName])){

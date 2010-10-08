@@ -207,7 +207,7 @@
        * @version
        * Version 0.1, 11.05.2008<br />
        */
-      public function deleteObject($object){
+      public function deleteObject(GenericDomainObject $object){
 
          // Get information about object to load
          $objectName = $object->getObjectName();
@@ -230,7 +230,7 @@
        *
        * Saves an Object.
        *
-       * @param object $object the object to save
+       * @param GenericDomainObject $object the object to save.
        * @return int Database id of the object.
        *
        * @author Christian Achatz
@@ -241,7 +241,7 @@
        * Version 0.4, 02.01.2010 (Added ticks for property names to avoid key word issues)<br />
        * Version 0.5, 08.01.2010 (Added property value escaping in order to avoid sql injections)<br />
        */
-      public function saveObject(&$object){
+      public function saveObject(GenericDomainObject &$object){
 
          // get information about object to load
          $objectName = $object->getObjectName();
