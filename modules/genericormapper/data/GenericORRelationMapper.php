@@ -1310,7 +1310,7 @@
          }
 
          // build statement
-         $select = 'SELECT ' . ($this->__buildProperties($objectName, $criterion)) . ' FROM `' . $sourceObject['Table'] . '`';
+         $select = 'SELECT DISTINCT ' . ($this->__buildProperties($objectName, $criterion)) . ' FROM `' . $sourceObject['Table'] . '`';
 
          // JOIN
          $select .= ' LEFT OUTER JOIN `' . $this->__RelationTable[$relationName]['Table'] . '` ON `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = `' . $this->__RelationTable[$relationName]['Table'] . '`.`' . $sourceObject['ID'] . '`';
