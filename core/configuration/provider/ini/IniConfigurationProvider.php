@@ -41,12 +41,7 @@
        * @var boolean Set to true, the environment fallback will be activated.
        */
       private $activateEnvironmentFallback = false;
-
-      /**
-       * @var boolean Set to true, the configuration keys will be interpreted.
-       */
-      private $parseSubSections = false;
-
+      
       /**
        * @private
        * @var string The sub key delimiter.
@@ -59,14 +54,6 @@
 
       public function setActivateEnvironmentFallback($activateEnvironmentFallback) {
          $this->activateEnvironmentFallback = $activateEnvironmentFallback;
-      }
-
-      public function getParseSubSections() {
-         return $this->parseSubSections;
-      }
-
-      public function setParseSubSections($parseSubSections) {
-         $this->parseSubSections = $parseSubSections;
       }
 
       public function loadConfiguration($namespace, $context, $language, $environment, $name) {
@@ -126,13 +113,13 @@
 
          $config = new IniConfiguration();
          foreach($entries as $name => $value){
+            $config->setValue($name, $value);
+
+            // do always parse sub sections to have a clear API for the configuration provider
             $dot = strpos($name, self::$NAMESPACE_DELIMITER);
-            if($dot === false || $this->parseSubSections === false){
-               $config->setValue($name, $value);
-            } else {
+            if($dot !== false){
                $this->parseSubSection($config, $name, $value);
             }
-
          }
          return $config;
       }
@@ -156,11 +143,9 @@
          $dot = strpos($name, self::$NAMESPACE_DELIMITER);
          if ($dot === false) {
             $config->setValue($name, $value);
-            //echo '<br />No dot, setting '.$name.'='.$value;
          } else {
-            //echo '<br />"'.$name.'" contains dots, let\'s generate a sub section';
-            /*echo '<br />$nextSection: ' . */$subSectionName = substr($name, 0, $dot);
-            /*echo '<br />$rest: ' . */$remainingName = substr($name, $dot + strlen(self::$NAMESPACE_DELIMITER));
+            $subSectionName = substr($name, 0, $dot);
+            $remainingName = substr($name, $dot + strlen(self::$NAMESPACE_DELIMITER));
 
             $nextSection = $config->getSection($subSectionName);
             if($nextSection === null){
@@ -168,8 +153,6 @@
             }
 
             $this->parseSubSection($nextSection, $remainingName, $value);
-            //echo printObject();
-            //$nextSection->setValue($rest, $value);
             $config->setSection($subSectionName, $nextSection);
          }
       }

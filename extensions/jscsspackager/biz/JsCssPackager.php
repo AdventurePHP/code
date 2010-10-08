@@ -56,20 +56,7 @@ class JsCssPackager extends APFObject {
     * @return Configuration The current package configuration.
     */
    private function getPackageConfiguration() {
-
-      $provider = ConfigurationManager::retrieveProvider('ini');
-      /* @var $provider IniConfigurationProvider */
-
-      // enable the parse sub section feature
-      $currentSetting = $provider->getParseSubSections();
-      $provider->setParseSubSections(true);
-
-      $config = $this->getConfiguration('extensions::jscsspackager::biz','JsCssPackager.ini');
-
-      // reset the parse sub section feature to the previous value
-      $provider->setParseSubSections($currentSetting);
-
-      return $config;
+      return $this->getConfiguration('extensions::jscsspackager::biz','JsCssPackager.ini');
    }
 
    /**

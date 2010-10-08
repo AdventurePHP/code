@@ -291,21 +291,8 @@
        * Version 0.1, 04.10.2010<br />
        */
       private function getServiceConfiguration($configNamespace, $sectionName) {
-
-         $provider = ConfigurationManager::retrieveProvider('ini');
-         /* @var $provider IniConfigurationProvider */
-
-         // enable the parse sub section feature
-         $currentSetting = $provider->getParseSubSections();
-         $provider->setParseSubSections(true);
-
          $config = $this->getConfiguration($configNamespace,'serviceobjects.ini');
-
-         // reset the parse sub section feature to the previous value
-         $provider->setParseSubSections($currentSetting);
-
          return $config->getSection($sectionName);
-         
       }
 
     // end class
