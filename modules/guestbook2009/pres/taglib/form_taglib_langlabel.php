@@ -33,9 +33,16 @@
     */
    class form_taglib_langlabel extends langlabel_base {
 
-      public function form_taglib_langlabel(){
+      public function __construct(){
          parent::langlabel_base();
-       // end function
+      }
+
+      public function isSent(){
+         return false;
+      }
+
+      public function isValid(){
+         return true;
       }
 
     // end class

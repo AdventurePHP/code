@@ -51,9 +51,6 @@
        */
       private static $NULL_FIELD_IDENTIFIER = 'NULL DEFAULT NULL';
 
-      public function GenericORMapper(){
-      }
-
       /**
        * @public
        *

@@ -33,9 +33,6 @@
     */
    class commentMapper extends APFObject {
 
-      function commentMapper(){
-      }
-
       /**
        * @public
        *
@@ -50,7 +47,7 @@
        */
       public function loadArticleCommentByID($commentId){
 
-         $SQL = &$this->__getConnection();
+         $SQL = &$this->getConnection();
          $select = 'SELECT ArticleCommentID, Name, EMail, Comment, Date, Time 
                     FROM article_comments
                     WHERE ArticleCommentID = \''.$commentId.'\';';
@@ -59,7 +56,6 @@
 
        // end function
       }
-
 
       /**
        * @public
@@ -74,7 +70,7 @@
        */
       public function saveArticleComment($comment){
 
-         $SQL = &$this->__getConnection();
+         $SQL = &$this->getConnection();
          if($comment->get('ID') == null){
             $insert = 'INSERT INTO article_comments (Name, EMail, Comment, Date, Time, CategoryKey) VALUES (\''.$comment->get('Name').'\',\''.$comment->get('EMail').'\',\''.$comment->get('Comment').'\',CURDATE(),CURTIME(),\''.$comment->get('CategoryKey').'\');';
             $SQL->executeTextStatement($insert);
@@ -96,23 +92,21 @@
        * @version
        * Version 0.1, 09.06.2008<br />
        */
-      private function &__getConnection(){
+      private function &getConnection(){
 
          $cM = &$this->__getServiceObject('core::database','ConnectionManager');
-         $config = $this->__getConfiguration('modules::comments','comments');
-         $connectionKey = $config->getValue('Default','Database.ConnectionKey');
+         $config = $this->getConfiguration('modules::comments','comments.ini');
+         $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey');
          if($connectionKey == null){
             throw new InvalidArgumentException('[commentMapper::__getConnection()] The module\'s '
                .'configuration file does not contain a valid database connection key. Please '
                .'specify the database configuration according to the example configuration files!',
                E_USER_ERROR);
-            exit();
          }
          return $cM->getConnection($connectionKey);
 
        // end function
       }
-
 
       /**
        * @private

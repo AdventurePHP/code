@@ -123,6 +123,10 @@
    Registry::register('apf::core::filter','PageControllerInputFilter',new FilterDefinition('core::filter','PageControllerInputFilter'));
    Registry::register('apf::core::filter','OutputFilter',new FilterDefinition('core::filter','GenericOutputFilter'));
 
+   // set up configuration provider to let the developer customize it later on
+   import('core::configuration::provider::ini','IniConfigurationProvider');
+   ConfigurationManager::registerProvider('ini', new IniConfigurationProvider());
+
    /**
     * @package core::pagecontroller
     * @class IncludeException
@@ -854,7 +858,7 @@
        * @version
        * Version 0.1, 28.12.2006<br />
        */
-      public function setAttributes($attributes = array()){
+      public function setAttributes(array $attributes = array()){
 
          if(is_array($attributes) && count($attributes) > 0){
 
@@ -1025,24 +1029,24 @@
       /**
        * @protected
        *
-       * Returns a configuration object according to the current application context and the given
-       * parameters.
+       * Convenience method for loading a configuration depending on APF DOM attributes and
+       * the current environment.
        *
-       * @param string $namespace The namespace of the configuration file.
-       * @param string $configName The name of the configuration file.
-       * @param boolean $parseSubsections Indicates, whether the configuration manager should parse subsections.
-       * @return Configuration The desired configuration object.
+       * @param string $namespace The namespace of the configuration.
+       * @param string $name The name of the configuration including it's extension.
+       * @return Configuration The desired configuration.
        *
-       * @author Christian Schäfer
+       * @author Christian Achatz
        * @version
-       * Version 0.1, 07.03.2007<br />
-       * Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
-       * Version 0.3, 10.03.2007 (Method now is considered protected)<br />
+       * Version 0.1, 28.09.2010<br />
        */
-      protected function &__getConfiguration($namespace,$configName,$parseSubsections = false){
-         $configurationManager = &Singleton::getInstance('ConfigurationManager');
-         return $configurationManager->getConfiguration($namespace,$this->__Context,$configName,$parseSubsections);
-       // end function
+      protected function getConfiguration($namespace, $name){
+         return ConfigurationManager::loadConfiguration(
+              $namespace,
+              $this->getContext(),
+              $this->getLanguage(),
+              Registry::retrieve('apf::core', 'Environment'),
+              $name);
       }
 
       /**

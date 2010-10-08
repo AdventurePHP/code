@@ -57,7 +57,7 @@
          if(!isset($this->cacheManagerCache[$configSection])){
 
             // load config
-            $config = &$this->__getConfiguration('tools::cache','cacheconfig');
+            $config = $this->getConfiguration('tools::cache','cacheconfig.ini');
             $section = $config->getSection($configSection);
 
             if($section === null){
@@ -68,9 +68,15 @@
                   .'"tools::cache" and context "'.$this->__Context.'"!',E_USER_ERROR);
             }
 
+            // remap options to array to be able to initialize the cache manager using the service manager
+            $options = array();
+            foreach($section->getValueNames() as $key){
+               $options[$key] = $section->getValue($key);
+            }
+
             // create cache manager
             $this->cacheManagerCache[$configSection] =
-               $this->__getAndInitServiceObject('tools::cache','CacheManager',$section,'NORMAL');
+               $this->__getAndInitServiceObject('tools::cache','CacheManager',$options,'NORMAL');
 
           // end if
          }

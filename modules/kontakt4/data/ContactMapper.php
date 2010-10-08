@@ -34,9 +34,6 @@
     */
    class ContactMapper extends APFObject {
 
-      public function ContactMapper(){
-      }
-
       /**
        * @public
        *
@@ -48,24 +45,23 @@
        * Version 0.2, 04.06.2006<br />
        * Version 0.3, 04.03.2007 (Auf ConfigurationManager umgestellt)<br />
        */
-      function loadRecipients(){
+      public function loadRecipients(){
 
-         $config = $this->__getConfiguration('modules::kontakt4','empfaenger');
-         $sections = $config->getConfiguration();
+         $config = $this->getConfiguration('modules::kontakt4','empfaenger');
 
          $recipients = array();
+         foreach($config->getSectionNames() as $name){
 
-         foreach($config->getConfiguration() as $key => $values){
+            $section = $config->getSection($name);
 
             $count = count($recipients);
             $recipients[$count] = new ContactFormRecipient();
 
-            preg_match("/Kontakt ([0-9]+)/i",$key,$matches);
+            preg_match('/Kontakt ([0-9]+)/i',$name,$matches);
             $recipients[$count]->setId($matches[1]);
 
-            $recipients[$count]->setName($values['EmpfaengerName']);
-
-            $recipients[$count]->setEmailAddress($values['EmpfaengerAdresse']);
+            $recipients[$count]->setName($section->getValue('EmpfaengerName'));
+            $recipients[$count]->setEmailAddress($section->getValue('EmpfaengerAdresse'));
 
           // end foreach
          }
@@ -86,25 +82,20 @@
        * Version 0.2, 04.06.2006<br />
        * Version 0.3, 04.03.2007<br />
        */
-      function loadRecipientPerId($Id){
+      public function loadRecipientPerId($Id){
 
          $recipients = $this->loadRecipients();
 
          if(!is_array($recipients)){
             return array();
-          // end if
-         }
-         else{
+         } else {
 
             for($i = 0; $i < count($recipients); $i++){
                if($recipients[$i]->getId() == $Id){
                   return $recipients[$i];
-                // end if
                }
-             // end for
             }
 
-          // end else
          }
 
        // end function

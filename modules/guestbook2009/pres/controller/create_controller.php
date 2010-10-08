@@ -69,8 +69,8 @@
          // set language dependent button label by using the
          // language and context information of the current
          // DOM node.
-         $config = &$this->__getConfiguration('modules::guestbook2009::pres','language');
-         $buttonLabel = $config->getValue($this->__Language,'form.label.button');
+         $config = $this->getConfiguration('modules::guestbook2009::pres','language.ini');
+         $buttonLabel = $config->getSection($this->__Language)->getValue('form.label.button');
          $button = &$form->getFormElementByName('send');
          $button->setAttribute('value',$buttonLabel);
 

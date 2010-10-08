@@ -76,9 +76,6 @@
        */
       private $keepInUrl = false;
 
-      public function AbstractFrontcontrollerAction(){
-      }
-
       /**
        * @public
        *
@@ -282,9 +279,6 @@
     */
    class FrontcontrollerInput extends APFObject {
 
-      public function FrontcontrollerInput(){
-      }
-
       /**
        * @public
        *
@@ -426,9 +420,6 @@
        * @var string Namespace of the Frontcontroller class.
        */
       protected $__Namespace = 'core::frontcontroller';
-
-      public function Frontcontroller(){
-      }
 
       /**
        * @public
@@ -596,7 +587,7 @@
        */
       public function registerAction($namespace, $name, array $params = array()){
 
-         $config = &$this->__getConfiguration($namespace,'actionconfig');
+         $config = $this->getConfiguration($namespace,'actionconfig.ini');
 
          if($config != null){
 
@@ -665,7 +656,7 @@
          $namespace = $this->getActionNamespaceByURLString($namespace);
 
          // load the action configuration
-         $config = &$this->__getConfiguration($namespace,'actionconfig');
+         $config = $this->getConfiguration($namespace,'actionconfig.ini');
 
          if($config == null){
             throw new InvalidArgumentException('[Frontcontroller::__parseActions()] No '
@@ -684,32 +675,34 @@
          }
 
          // include action implementation
-         import($actionConfig['FC.ActionNamespace'],$actionConfig['FC.ActionFile']);
+         import($actionConfig->getValue('FC.ActionNamespace'),$actionConfig->getValue('FC.ActionFile'));
 
          // include input implementation
-         import($actionConfig['FC.ActionNamespace'],$actionConfig['FC.InputFile']);
+         import($actionConfig->getValue('FC.ActionNamespace'),$actionConfig->getValue('FC.InputFile'));
 
          // check for class beeing present
-         if(!class_exists($actionConfig['FC.ActionClass']) || !class_exists($actionConfig['FC.InputClass'])){
+         if(!class_exists($actionConfig->getValue('FC.ActionClass')) || !class_exists($actionConfig->getValue('FC.InputClass'))){
             throw new InvalidArgumentException('[Frontcontroller::addAction()] Action class with name "'
-                    .$actionConfig['FC.ActionClass'].'" or input class with name "'
-                    .$actionConfig['FC.InputClass'].'" could not be found. Please check your action '
+                    .$actionConfig->getValue('FC.ActionClass').'" or input class with name "'
+                    .$actionConfig->getValue('FC.InputClass').'" could not be found. Please check your action '
                     . 'configuration file!',E_USER_ERROR);
          }
 
          // init action
-         $action = new $actionConfig['FC.ActionClass'];
+         $actionClass = $actionConfig->getValue('FC.ActionClass');
+         $action = new $actionClass;
          $action->setActionNamespace($namespace);
          $action->setActionName($name);
          $action->setContext($this->__Context);
          $action->setLanguage($this->__Language);
 
          // init input
-         $input = new $actionConfig['FC.InputClass'];
+         $inputClass = $actionConfig->getValue('FC.InputClass');
+         $input = new $inputClass;
 
          // merge input params with the configured params (params included in the URL are kept!)
          $input->setAttributes(array_merge(
-                 $this->generateParamsFromInputConfig($actionConfig['FC.InputParams']),
+                 $this->generateParamsFromInputConfig($actionConfig->getValue('FC.InputParams')),
                  $params));
 
          $input->setParentObject($action);

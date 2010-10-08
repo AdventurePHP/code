@@ -17,12 +17,10 @@
     * Version 0.1, 21.12.2009<br />
     */
    final class ArrayPagerManager extends APFObject {
+      
       private $__PagerConfig = NULL;
 
       private $__AnchorName = NULL;
-
-      public function ArrayPagerManager () {
-      }
 
       /**
        * @public
@@ -37,21 +35,24 @@
        */
       public function init ($stringParameter) {
          // initialize the config
-         $objectConfiguration = $this->__getConfiguration ('extensions::arraypager',
-                 'arraypager'
+         $config = $this->getConfiguration ('extensions::arraypager',
+                 'arraypager.ini'
          );
 
-         $arrayParameter = array ('Pager.ParameterPage'    => 'page',
-                 'Pager.ParameterEntries' => 'entries',
-                 'Pager.Entries'          => 10,
-                 'Pager.EntriesPossible'  => '5|10|15'
+         // remap configuration
+         $configParams = array();
+         foreach($config->getValueNames() as $name){
+            $configParams[$name] = $config->getValue($name);
+         }
+
+         $arrayParameter = array(
+             'Pager.ParameterPage' => 'page',
+             'Pager.ParameterEntries' => 'entries',
+             'Pager.Entries' => 10,
+             'Pager.EntriesPossible' => '5|10|15'
          );
 
-         $this->__PagerConfig = array_merge ($arrayParameter,
-                 $objectConfiguration->getSection ($stringParameter)
-         );
-
-         unset ($objectConfiguration);
+         $this->__PagerConfig = array_merge ($arrayParameter,$configParams);
 
          if (isset ($this->__PagerConfig['Pager.EntriesChangeable']) === TRUE
                  AND $this->__PagerConfig['Pager.EntriesChangeable']         ==  'true'

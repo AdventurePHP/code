@@ -71,22 +71,16 @@
                $M->saveEntry($articleComment);
 
              // end if
-            }
-            else{
-               $this->__buildForm();
-             // end else
+            } else {
+               $this->buildForm();
             }
 
-          // end if
-         }
-         else{
-            $this->__buildForm();
-          // end else
+         } else {
+            $this->buildForm();
          }
 
        // end function
       }
-
 
       /**
        * @private
@@ -99,14 +93,14 @@
        * Version 0.2, 09.10.2008 (Changed captcha image url generation)<br />
        * Version 0.3, 13.06.2009 (Removed the captcha handling, introduced the captcha module)<br />
        */
-      private function __buildForm(){
+      private function buildForm(){
 
          $form = &$this->__getForm('AddComment');
          $form->setAttribute('action',$_SERVER['REQUEST_URI'].'#comments');
 
-         $config = &$this->__getConfiguration('modules::comments','language');
+         $config = $this->getConfiguration('modules::comments','language.ini');
          $button = &$form->getFormElementByName('Save');
-         $button->setAttribute('value',$config->getValue($this->__Language,'form.button'));
+         $button->setAttribute('value',$config->getSection($this->__Language)->getValue('form.button'));
 
          $form->transformOnPlace();
 

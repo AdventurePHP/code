@@ -46,7 +46,7 @@
        * Contains the current configuration.
        * @var string[]
        */
-      private $config = null;
+      private $section = null;
       
       /**
        * @private
@@ -75,14 +75,14 @@
       public function init($initParam) {
 
          // initialize the config
-         $config = &$this->__getConfiguration('modules::pager', 'pager');
-         $this->config = $config->getSection($initParam);
+         $config = $this->getConfiguration('modules::pager', 'pager');
+         $this->section = $config->getSection($initParam);
 
          // translate the cache directive
-         if (!isset($this->config['Pager.CacheInSession']) || $this->config['Pager.CacheInSession'] === 'false') {
-            $this->config['Pager.CacheInSession'] = false;
+         if ($this->section->getValue('Pager.CacheInSession') === null || $this->section->getValue('Pager.CacheInSession') === 'false') {
+            $this->section->setValue('Pager.CacheInSession', false);
          } else {
-            $this->config['Pager.CacheInSession'] = true;
+            $this->section->setValue('Pager.CacheInSession', true);
          }
 
        // end function
@@ -102,16 +102,16 @@
        */
       private function getStatementParams($addStmtParams = array()) {
          if ($this->isDynamicPageSizeActivated()) {
-            $entriesCount = (int) RequestHandler::getValue($this->config['Pager.ParameterCountName'], $this->config['Pager.EntriesPerPage']);
+            $entriesCount = (int) RequestHandler::getValue($this->section->getValue('Pager.ParameterCountName'), $this->section->getValue('Pager.EntriesPerPage'));
          } else {
-            $entriesCount = (int) $this->config['Pager.EntriesPerPage'];
+            $entriesCount = (int) $this->section->getValue('Pager.EntriesPerPage');
          }
 
          $defaultParams = array(
-             'Start' => (int) RequestHandler::getValue($this->config['Pager.ParameterPageName'], 1) * $entriesCount - $entriesCount,
+             'Start' => (int) RequestHandler::getValue($this->section->getValue('Pager.ParameterPageName'), 1) * $entriesCount - $entriesCount,
              'EntriesCount' => $entriesCount
          );
-         return array_merge($defaultParams, $this->generateStatementParams($this->config['Pager.EntriesStatement.Params']), $addStmtParams);
+         return array_merge($defaultParams, $this->generateStatementParams($this->section->getValue('Pager.EntriesStatement.Params')), $addStmtParams);
        // end function
       }
 
@@ -131,8 +131,8 @@
        *  Version 0.4, 24.01.2009 (Changed the API of the method. Moved the additional param handling to this method)<br />
        */
       public function loadEntries($addStmtParams = array()) {
-         $m = &$this->__getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->config['Pager.DatabaseConnection']);
-         return $m->loadEntries($this->config['Pager.StatementNamespace'], $this->config['Pager.EntriesStatement'], $this->getStatementParams($addStmtParams), $this->config['Pager.CacheInSession']);
+         $m = &$this->__getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
+         return $m->loadEntries($this->section->getValue('Pager.StatementNamespace'), $this->section->getValue('Pager.EntriesStatement'), $this->getStatementParams($addStmtParams), $this->section->getValue('Pager.CacheInSession'));
       }
 
       /**
@@ -173,7 +173,6 @@
             throw new InvalidArgumentException('[PagerManager->loadEntriesByAppDataComponent()] '
                     . 'Given data component (' . get_class($dataComponent) . ') has no method "'
                     . $loadMethod . '"! Thus, no entries can be loaded!', E_USER_WARNING);
-            return array();
          }
 
        // end function
@@ -233,15 +232,15 @@
          $pager->setContext($this->__Context);
 
          // load the econfigured design
-         $pager->loadDesign($this->config['Pager.DesignNamespace'], $this->config['Pager.DesignTemplate']);
+         $pager->loadDesign($this->section->getValue('Pager.DesignNamespace'), $this->section->getValue('Pager.DesignTemplate'));
 
          // add the necessary config params and pages
          $document = &$pager->getRootDocument();
          $document->setAttribute('Pages', $this->createPages4PagerDisplay($addStmtParams));
          $document->setAttribute('Config', array(
-               'ParameterPageName' => $this->config['Pager.ParameterPageName'],
-               'ParameterCountName' => $this->config['Pager.ParameterCountName'],
-               'EntriesPerPage' => $this->config['Pager.EntriesPerPage'],
+               'ParameterPageName' => $this->section->getValue('Pager.ParameterPageName'),
+               'ParameterCountName' => $this->section->getValue('Pager.ParameterCountName'),
+               'EntriesPerPage' => $this->section->getValue('Pager.EntriesPerPage'),
                'DynamicPageSizeActivated' => $this->isDynamicPageSizeActivated()
             )
          );
@@ -275,8 +274,8 @@
        */
       public function getPagerURLParameters() {
          return array(
-             'PageName' => $this->config['Pager.ParameterPageName'],
-             'CountName' => $this->config['Pager.ParameterCountName']
+             'PageName' => $this->section->getValue('Pager.ParameterPageName'),
+             'CountName' => $this->section->getValue('Pager.ParameterCountName')
          );
       }
 
@@ -306,11 +305,11 @@
          $start = (int) 1;
 
          $countPerPage = $this->getCountPerPage();
-         $currentStart = (int) RequestHandler::getValue($this->config['Pager.ParameterPageName'], 1) * $countPerPage;
+         $currentStart = (int) RequestHandler::getValue($this->section->getValue('Pager.ParameterPageName'), 1) * $countPerPage;
 
          // initialize page delimiter params
-         $M = &$this->__getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->config['Pager.DatabaseConnection']);
-         $entriesCount = $M->getEntriesCount($this->config['Pager.StatementNamespace'], $this->config['Pager.CountStatement'], $this->getStatementParams($addStmtParams), $this->config['Pager.CacheInSession']);
+         $M = &$this->__getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
+         $entriesCount = $M->getEntriesCount($this->section->getValue('Pager.StatementNamespace'), $this->section->getValue('Pager.CountStatement'), $this->getStatementParams($addStmtParams), $this->section->getValue('Pager.CacheInSession'));
 
          $pageCount = ceil($entriesCount / $countPerPage);
 
@@ -322,7 +321,7 @@
             $pages[$i] = new PagerPage();
 
             // generate the link
-            $link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array($this->config['Pager.ParameterPageName'] => $start));
+            $link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array($this->section->getValue('Pager.ParameterPageName') => $start));
             $pages[$i]->setLink($link);
 
             // set the number of the page
@@ -416,11 +415,11 @@
       public function getPageCount($addStmtParams = array()) {
          $countPerPage = $this->getCountPerPage();
 
-         $currentStart = (int) RequestHandler::getValue($this->config['Pager.ParameterPageName'], 1) * $countPerPage;
+         $currentStart = (int) RequestHandler::getValue($this->section->getValue('Pager.ParameterPageName'), 1) * $countPerPage;
 
          // initialize page delimiter params
-         $M = &$this->__getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->config['Pager.DatabaseConnection']);
-         $entriesCount = $M->getEntriesCount($this->config['Pager.StatementNamespace'], $this->config['Pager.CountStatement'], $this->getStatementParams($addStmtParams), $this->config['Pager.CacheInSession']);
+         $M = &$this->__getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
+         $entriesCount = $M->getEntriesCount($this->section->getValue('Pager.StatementNamespace'), $this->section->getValue('Pager.CountStatement'), $this->getStatementParams($addStmtParams), $this->section->getValue('Pager.CacheInSession'));
 
          return ceil($entriesCount / $countPerPage);
       }
@@ -438,11 +437,11 @@
        */
       public function getCountPerPage() {
          if ($this->isDynamicPageSizeActivated()) {
-            $countPerPage = (int) RequestHandler::getValue($this->config['Pager.ParameterCountName'], 0);
+            $countPerPage = (int) RequestHandler::getValue($this->section->getValue('Pager.ParameterCountName'), 0);
          }
 
          if (!$this->isDynamicPageSizeActivated() || $countPerPage === 0) { // avoid devision by zero!
-            $countPerPage = (int) $this->config['Pager.EntriesPerPage'];
+            $countPerPage = (int) $this->section->getValue('Pager.EntriesPerPage');
          }
 
          return $countPerPage;
@@ -462,9 +461,9 @@
        * Version 0.1, 22.08.2010
        */
       public function getPageLink($page, $baseURI = null) {
-         $linkParams = array($this->config['Pager.ParameterPageName'] => $page);
+         $linkParams = array($this->section->getValue('Pager.ParameterPageName') => $page);
          if ($this->isDynamicPageSizeActivated()) {
-            $linkParams[$this->config['Pager.ParameterCountName']] = $this->getCountPerPage();
+            $linkParams[$this->section->getValue('Pager.ParameterCountName')] = $this->getCountPerPage();
          }
 
          if ($baseURI == null) {
@@ -487,7 +486,7 @@
        * Version 0.1, 22.09.2010<br />
        */
       public function isDynamicPageSizeActivated() {
-         if (isset($this->config['Pager.AllowDynamicEntriesPerPage']) && $this->config['Pager.AllowDynamicEntriesPerPage'] === 'true') {
+         if ($this->section->getValue('Pager.AllowDynamicEntriesPerPage') !== null && $this->section->getValue('Pager.AllowDynamicEntriesPerPage') === 'true') {
             return true;
          } else {
             return false;

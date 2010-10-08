@@ -184,14 +184,20 @@
       protected function __createMappingTable(){
 
          // invoke benchmark timer
-         $T = &Singleton::getInstance('BenchmarkTimer');
-         $T->start('BaseMapper::__createMappingTable()');
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $t->start('BaseMapper::__createMappingTable()');
 
          // get object configuration
-         $ObjectsConfig = &$this->__getConfiguration($this->__ConfigNamespace,$this->__ConfigNameAffix.'_objects');
+         $objectsConfig = $this->getConfiguration($this->__ConfigNamespace,$this->__ConfigNameAffix.'_objects');
 
-         // extract configuration
-         $this->__MappingTable = $ObjectsConfig->getConfiguration();
+         // extract configuration to support pre 1.13 GORM config
+         foreach($objectsConfig->getSectionNames() as $sectionName){
+            $section = $objectsConfig->getSection($sectionName);
+            $this->__MappingTable[$sectionName] = array();
+            foreach($section->getValueNames() as $valueName){
+               $this->__MappingTable[$sectionName][$valueName] = $section->getValue($valueName);
+            }
+         }
 
          // resolve definitions
          foreach($this->__MappingTable as $objectName => $DUMMY){
@@ -207,7 +213,7 @@
           // end foreach
          }
 
-         $T->stop('BaseMapper::__createMappingTable()');
+         $t->stop('BaseMapper::__createMappingTable()');
 
        // end function
       }
@@ -226,23 +232,29 @@
        */
       protected function __createRelationTable(){
 
-         // Invoke benchmark timer
-         $T = &Singleton::getInstance('BenchmarkTimer');
-         $T->start('BaseMapper::__createRelationTable()');
+         // invoke benchmark timer
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $t->start('BaseMapper::__createRelationTable()');
 
          // Get relation configuration
-         $RelationsConfig = &$this->__getConfiguration($this->__ConfigNamespace,$this->__ConfigNameAffix.'_relations');
+         $relationsConfig = $this->getConfiguration($this->__ConfigNamespace,$this->__ConfigNameAffix.'_relations');
 
-         // extract configuration
-         $this->__RelationTable = $RelationsConfig->getConfiguration();
+         // extract configuration to support pre 1.13 GORM config
+         foreach($relationsConfig->getSectionNames() as $sectionName){
+            $section = $relationsConfig->getSection($sectionName);
+            $this->__RelationTable[$sectionName] = array();
+            foreach($section->getValueNames() as $valueName){
+               $this->__RelationTable[$sectionName][$valueName] = $section->getValue($valueName);
+            }
+         }
 
-         // Resolve definitions
+         // resolve definitions
          foreach($this->__RelationTable as $relationName => $DUMMY){
             $this->__RelationTable[$relationName] = $this->__generateRelationItem($relationName,$this->__RelationTable[$relationName]);
           // end foreach
          }
 
-         $T->stop('BaseMapper::__createRelationTable()');
+         $t->stop('BaseMapper::__createRelationTable()');
 
        // end function
       }
@@ -269,8 +281,18 @@
          if(!isset($this->__importedConfigCache[$cacheKey])){
 
             // import and merge config
-            $addConfig = &$this->__getConfiguration($configNamespace,$configNameAffix.'_objects');
-            $addObjects = $addConfig->getConfiguration();
+            $addConfig = $this->getConfiguration($configNamespace,$configNameAffix.'_objects.ini');
+
+            // extract configuration to support pre 1.13 GORM config
+            $addObjects = array();
+            foreach($addConfig->getSectionNames() as $sectionName){
+               $section = $addConfig->getSection($sectionName);
+               $addObjects[$sectionName] = array();
+               foreach($section->getValueNames() as $valueName){
+                  $addObjects[$sectionName][$valueName] = $section->getValue($valueName);
+               }
+            }
+
             foreach($addObjects as $objectName => $DUMMY){
 
                if(!isset($this->__MappingTable[$objectName])){
@@ -331,8 +353,18 @@
          if(!isset($this->__importedConfigCache[$cacheKey])){
 
             // import and merge config
-            $addConfig = &$this->__getConfiguration($configNamespace,$configNameAffix.'_relations');
-            $addRelations = $addConfig->getConfiguration();
+            $addConfig = $this->getConfiguration($configNamespace,$configNameAffix.'_relations.ini');
+
+            // extract configuration to support pre 1.13 GORM config
+            $addRelations = array();
+            foreach($addConfig->getSectionNames() as $sectionName){
+               $section = $addConfig->getSection($sectionName);
+               $addRelations[$sectionName] = array();
+               foreach($section->getValueNames() as $valueName){
+                  $addRelations[$sectionName][$valueName] = $section->getValue($valueName);
+               }
+            }
+
             foreach($addRelations as $relationName => $DUMMY){
 
                if(!isset($this->__RelationTable[$relationName])){

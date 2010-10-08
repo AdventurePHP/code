@@ -31,204 +31,223 @@
  *  Version 1.0, 18.03.2010<br />
  */
 class JsCssPackager extends APFObject {
-    /**
-     * @var Configuration Contains the configuration for packages
-     */
-    protected $__Cfg = null;
 
-    /**
-     * Load the configuration for packages.
-     *
-     * @param <type> $initParam The init-param. (unimportant for this)
-     *
-     * @author Ralf Schubert
-     * @version
-     * Version 1.0, 18.03.2010<br />
-     */
-    public function init($initParam) {
-        if($this->__Cfg === null) {
-            $this->__Cfg = &$this->__getConfiguration('extensions::jscsspackager::biz','JsCssPackager', true);
-        }
-    }
+   /**
+    * @var Configuration Contains the configuration for packages.
+    */
+   protected $config = null;
 
-    /**
-     * Loads the content of all files, included in the package with the given name.
-     *
-     * @param String $name The package name.
-     * @param Bool $gzip Return package compressed with gzip
-     *
-     * @return String The complete package.
-     *
-     * @author Ralf Schubert
-     * @version
-     * Version 1.0, 18.03.2010<br />
-     */
-    public function getPackage($name, $gzip = false) {
-        $cfgPack = $this->__Cfg->getSection($name);
+   /**
+    * Load the configuration for packages.
+    *
+    * @param <type> $initParam The init-param. (unimportant for this)
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 1.0, 18.03.2010<br />
+    */
+   public function init($initParam) {
+      if ($this->config === null) {
+         $this->config = $this->getPackageConfiguration();
+      }
+   }
 
-        if($cfgPack['ServerCacheMinutes'] === null) {
-            $cfgPack['ServerCacheMinutes'] = 0;
-        }
+   /**
+    * @return Configuration The current package configuration.
+    */
+   private function getPackageConfiguration() {
 
-        /* If ServerCacheMinutes is not 0, we use a filecache */
-        if((int)$cfgPack['ServerCacheMinutes'] !== 0) {
-            $cMF = &$this->__getServiceObject('tools::cache','CacheManagerFabric');
-            $cM = &$cMF->getCacheManager('jscsspackager_cache');
+      $provider = ConfigurationManager::retrieveProvider('ini');
+      /* @var $provider IniConfigurationProvider */
 
-            $cacheKey = $name;
-            if ($gzip === true) {
-                $cacheKey .= '_gzip';
+      // enable the parse sub section feature
+      $currentSetting = $provider->getParseSubSections();
+      $provider->setParseSubSections(true);
+
+      $config = $this->getConfiguration('extensions::jscsspackager::biz','JsCssPackager.ini');
+
+      // reset the parse sub section feature to the previous value
+      $provider->setParseSubSections($currentSetting);
+
+      return $config;
+   }
+
+   /**
+    * Loads the content of all files, included in the package with the given name.
+    *
+    * @param String $name The package name.
+    * @param Bool $gzip Return package compressed with gzip
+    *
+    * @return String The complete package.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 1.0, 18.03.2010<br />
+    */
+   public function getPackage($name, $gzip = false) {
+      $cfgPack = $this->config->getSection($name);
+
+      if ($cfgPack->getValue('ServerCacheMinutes') === null) {
+         $cfgPack->getValue('ServerCacheMinutes') = 0;
+      }
+
+      /* If ServerCacheMinutes is not 0, we use a filecache */
+      if ((int) $cfgPack->getValue('ServerCacheMinutes') !== 0) {
+         $cMF = &$this->__getServiceObject('tools::cache', 'CacheManagerFabric');
+         $cM = &$cMF->getCacheManager('jscsspackager_cache');
+
+         $cacheKey = $name;
+         if ($gzip === true) {
+            $cacheKey .= '_gzip';
+         }
+
+         $cacheContent = $cM->getFromCache(new SimpleCacheKey($cacheKey));
+         /* If package is already in cache, we check if it is not expired and return the cache content */
+         if ($cacheContent !== null) {
+            $cacheExpires = substr($cacheContent, -10);
+            if ($cacheExpires >= time()) {
+               return substr($cacheContent, 0, -10);
+            } else {
+               /* Cache is expired, delete it */
+               $cM->clearCache(new SimpleCacheKey($name));
+               $cM->clearCache(new SimpleCacheKey($name . '_gzip'));
             }
+         }
+         /* Package was not in cache or was expired, we generate a new one, cache and deliver it. */
+         $newPackage = $this->generatePackage($cfgPack, $name);
+         $cacheExpires = time() + ($cfgPack->getValue('ServerCacheMinutes') * 60);
+         $newPackageGzip = gzencode($newPackage, 9);
 
-            $cacheContent = $cM->getFromCache(new SimpleCacheKey($cacheKey));
-            /* If package is already in cache, we check if it is not expired and return the cache content */
-            if($cacheContent !== null) {
-                $cacheExpires = substr($cacheContent, -10);
-                if($cacheExpires >= time()) {
-                    return substr($cacheContent,0, -10);
-                }
-                else {
-                    /* Cache is expired, delete it */
-                    $cM->clearCache(new SimpleCacheKey($name));
-                    $cM->clearCache(new SimpleCacheKey($name . '_gzip'));
-                }
-            }
-            /* Package was not in cache or was expired, we generate a new one, cache and deliver it. */
-            $newPackage = $this->__generatepackage($cfgPack, $name);
-            $cacheExpires = time()+($cfgPack['ServerCacheMinutes']*60);
-            $newPackageGzip = gzencode($newPackage, 9);
+         $cM->writeToCache(new SimpleCacheKey($name), $newPackage . $cacheExpires);
+         $cM->writeToCache(new SimpleCacheKey($name . '_gzip'), $newPackageGzip . $cacheExpires);
 
-            $cM->writeToCache(new SimpleCacheKey($name), $newPackage.$cacheExpires);
-            $cM->writeToCache(new SimpleCacheKey($name . '_gzip'), $newPackageGzip.$cacheExpires);
+         if ($gzip === true) {
+            return $newPackageGzip;
+         }
+         return $newPackage;
+      }
 
-            if($gzip === true) {
-                return $newPackageGzip;
-            }
-            return $newPackage;
-        }
+      /* We generate the package new, because we don't use a cache */
+      $pack = $this->generatePackage($cfgPack, $name);
+      if ($gzip === true) {
+         return gzencode($pack, 9);
+      }
+      return $pack;
+   }
 
-        /* We generate the package new, because we don't use a cache */
-        $pack = $this->__generatePackage($cfgPack, $name);
-        if($gzip === true) {
-            return gzencode($pack, 9);
-        }
-        return $pack;
+   /**
+    * Generates a package from it's single files.
+    * Will Shrink output, if enabled.
+    *
+    * @param array $cfgPack The package configuration
+    * @param string $name The package name
+    * @return string All files put together to one string.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 1.0, 18.03.2010<br />
+    */
+   protected function generatePackage(Configuration $cfgPack, $name) {
+      $output = '';
+      foreach ($cfgPack->getValue('Files') as $file) {
+         $output .= $this->loadSingleFile($file['Namespace'], $file['Filename'], $cfgPack->getValue('PackageType'), $name);
+      }
 
-    }
+      if ($cfgPack->getValue('EnableShrinking') === 'true') {
+         switch ($cfgPack->getValue('PackageType')) {
+            case 'js':
+               $output = $this->shrinkJs($output);
+               break;
+            case 'css':
+               $output = $this->shrinkCSS($output);
+               break;
+         }
+      }
 
-    /**
-     * Generates a package from it's single files.
-     * Will Shrink output, if enabled.
-     *
-     * @param array $cfgPack The package configuration
-     * @param string $name The package name
-     * @return string All files put together to one string.
-     *
-     * @author Ralf Schubert
-     * @version
-     * Version 1.0, 18.03.2010<br />
-     */
-    protected function __generatePackage($cfgPack, $name) {
-        $output = '';
-        foreach($cfgPack['Files'] as $file) {
-            $output .= $this->__loadSingleFile($file['Namespace'], $file['Filename'], $cfgPack['PackageType'], $name);
-        }
+      return $output;
+   }
 
-        if($cfgPack['EnableShrinking'] === 'true') {
-            switch($cfgPack['PackageType']) {
-                case 'js':
-                    $output = $this->__shrinkJS($output);
-                    break;
-                case 'css':
-                    $output = $this->__shrinkCSS($output);
-                    break;
-            }
-        }
+   /**
+    * Shrinks a string containing javascript.
+    *
+    * @param string $input The javascript which should be shrinked.
+    * @return string The minified javascript.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 1.0, 18.03.2010<br />
+    */
+   protected function shrinkJs($input) {
+      import('extensions::jscsspackager::biz', 'JSMin');
+      return JSMin::minify($input);
+   }
 
-        return $output;
-    }
+   /**
+    * Shrinks a string containing css
+    *
+    * @param string $input The css which should be shrinked.
+    * @return string The minified css.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 1.0, 18.03.2010<br />
+    */
+   protected function shrinkCSS($input) {
+      $input = preg_replace('#\s+#', ' ', $input);
+      $input = preg_replace('#/\*.*?\*/#s', '', $input);
+      $input = str_replace('; ', ';', $input);
+      $input = str_replace(': ', ':', $input);
+      $input = str_replace(' {', '{', $input);
+      $input = str_replace('{ ', '{', $input);
+      $input = str_replace(', ', ',', $input);
+      $input = str_replace('} ', '}', $input);
+      $input = str_replace(';}', '}', $input);
+      return trim($input);
+   }
 
-    /**
-     * Shrinks a string containing javascript.
-     *
-     * @param string $input The javascript which should be shrinked.
-     * @return string The minified javascript.
-     *
-     * @author Ralf Schubert
-     * @version
-     * Version 1.0, 18.03.2010<br />
-     */
-    protected function __shrinkJs($input) {
-        import('extensions::jscsspackager::biz', 'JSMin');
-        return JSMin::minify($input);
-    }
+   /**
+    * Loads the period (in days) the package should be cached by client.
+    * Default is 0 (no client caching)
+    *
+    * @param String $name The package name.
+    * @return int The period the package should be cached by client in days.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 1.0, 18.03.2010<br />
+    */
+   public function getClientCachePeriod($name) {
+      if (($CCP = $this->config->getSection($name)->getValue('ClientCacheDays')) !== null) {
+         return (int) $CCP;
+      }
+      return 0;
+   }
 
-    /**
-     * Shrinks a string containing css
-     *
-     * @param string $input The css which should be shrinked.
-     * @return string The minified css.
-     *
-     * @author Ralf Schubert
-     * @version
-     * Version 1.0, 18.03.2010<br />
-     */
-    protected function __shrinkCSS($input) {
-        $input = preg_replace( '#\s+#', ' ', $input );
-        $input = preg_replace( '#/\*.*?\*/#s', '', $input );
-        $input = str_replace( '; ', ';', $input );
-        $input = str_replace( ': ', ':', $input );
-        $input = str_replace( ' {', '{', $input );
-        $input = str_replace( '{ ', '{', $input );
-        $input = str_replace( ', ', ',', $input );
-        $input = str_replace( '} ', '}', $input );
-        $input = str_replace( ';}', '}', $input );
-        return trim( $input );
-    }
+   /**
+    * Loads the content of a file.
+    *
+    * @param string $namespace The namespace of the file.
+    * @param string $file The name of the file.
+    * @param string $ext The extension of the file.
+    * @param string $packageName The name of the package, which contains the file.
+    * @return string The content of the file.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 1.0, 18.03.2010<br />
+    */
+   protected function loadSingleFile($namespace, $file, $ext, $packageName) {
+      $namespace = str_replace('::', '/', $namespace);
+      $libBasePath = Registry::retrieve('apf::core', 'LibPath');
+      $filePath = $libBasePath . '/' . $namespace . '/' . $file . '.' . $ext;
 
-    /**
-     * Loads the period (in days) the package should be cached by client.
-     * Default is 0 (no client caching)
-     *
-     * @param String $name The package name.
-     * @return int The period the package should be cached by client in days.
-     *
-     * @author Ralf Schubert
-     * @version
-     * Version 1.0, 18.03.2010<br />
-     */
-    public function getClientCachePeriod($name) {
-        if(($CCP = $this->__Cfg->getValue($name, 'ClientCacheDays')) !== null) {
-            return (int) $CCP;
-        }
-        return 0;
-    }
+      if (file_exists($filePath)) {
+         return file_get_contents($filePath);
+      }
+      throw new IncludeException('[JsCssPackager::loadSingleFile()] The requested file "' . $file . '.' . $ext
+              . '" cannot be found in namespace "' . str_replace('/', '::', $namespace) . '". Please
+                    check the configuration of package "' . $packageName . '"!');
+   }
 
-    /**
-     * Loads the content of a file.
-     *
-     * @param string $namespace The namespace of the file.
-     * @param string $file The name of the file.
-     * @param string $ext The extension of the file.
-     * @param string $packageName The name of the package, which contains the file.
-     * @return string The content of the file.
-     *
-     * @author Ralf Schubert
-     * @version
-     * Version 1.0, 18.03.2010<br />
-     */
-    protected function __loadSingleFile($namespace, $file, $ext, $packageName) {
-        $namespace = str_replace('::','/',$namespace);
-        $libBasePath = Registry::retrieve('apf::core','LibPath');
-        $filePath = $libBasePath.'/'. $namespace .'/'.$file.'.'.$ext;
-
-        if(file_exists($filePath)) {
-            return file_get_contents($filePath);
-        }
-        throw new IncludeException('[JsCssPackager::__loadSingleFile()] The requested file "'.$file.'.'.$ext
-                .'" cannot be found in namespace "'.str_replace('/','::',$namespace).'". Please
-                    check the configuration of package "'.$packageName.'"!');
-        return '';
-    }
 }
 ?>

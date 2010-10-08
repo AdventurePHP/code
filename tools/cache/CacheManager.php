@@ -54,9 +54,6 @@
        */
       private $active = false;
 
-      public function CacheManager(){
-      }
-
       /**
        * @public
        *

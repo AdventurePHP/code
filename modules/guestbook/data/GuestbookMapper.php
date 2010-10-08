@@ -36,9 +36,6 @@
     */
    class GuestbookMapper extends APFObject {
 
-      public function GuestbookMapper(){
-      }
-
       /**
       *  @private
       *
@@ -50,11 +47,11 @@
       *  @version
       *  Version 0.1, 26.03.2009<br />
       */
-      private function &__getConnection(){
+      private function &getConnection(){
 
          // get configuration
-         $config = &$this->__getConfiguration('modules::guestbook','guestbook');
-         $connectionKey = $config->getValue('Default','Database.ConnectionKey');
+         $config = $this->getConfiguration('modules::guestbook','guestbook.ini');
+         $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey');
 
          // create database
          $cM = &$this->__getServiceObject('core::database','ConnectionManager');
@@ -63,7 +60,6 @@
 
        // end function
       }
-
 
       /**
       *  @public
@@ -80,14 +76,13 @@
       */
       public function loadEntryByID($entryID){
 
-         $SQL = &$this->__getConnection();
+         $SQL = &$this->getConnection();
          $select = 'SELECT * FROM entry WHERE EntryID = \''.$entryID.'\';';
          $result = $SQL->executeTextStatement($select);
          return $this->__mapEntry2DomainObject($SQL->fetchData($result));
 
        // end function
       }
-
 
       /**
       *  @public
@@ -104,14 +99,13 @@
       */
       public function loadCommentByID($commentID){
 
-         $SQL = &$this->__getConnection();
+         $SQL = &$this->getConnection();
          $select = 'SELECT * FROM comment WHERE CommentID = \''.$commentID.'\';';
          $result = $SQL->executeTextStatement($select);
          return $this->__mapComment2DomainObject($SQL->fetchData($result));
 
        // end function
       }
-
 
       /**
       *  @public
@@ -128,14 +122,13 @@
       */
       public function loadGuestbookByID($guestbookID){
 
-         $SQL = &$this->__getConnection();
+         $SQL = &$this->getConnection();
          $select = 'SELECT * FROM guestbook WHERE GuestbookID = \''.$guestbookID.'\';';
          $result = $SQL->executeTextStatement($select);
          return $this->__mapGuestbook2DomainObject($SQL->fetchData($result));
 
        // end function
       }
-
 
       /**
       *  @public
@@ -152,7 +145,7 @@
       */
       public function loadEntryWithComments($entryID){
 
-         $SQL = &$this->__getConnection();
+         $SQL = &$this->getConnection();
          $entry = $this->loadEntryByID($entryID);
          $select = 'SELECT comment.CommentID AS ID FROM comment
                     INNER JOIN comp_entry_comment ON comment.CommentID = comp_entry_comment.CommentID
@@ -169,7 +162,6 @@
 
        // end function
       }
-
 
       /**
       *  @public
@@ -188,7 +180,7 @@
 
          $guestbook = $this->loadGuestbookByID($guestbookID);
 
-         $SQL = &$this->__getConnection();
+         $SQL = &$this->getConnection();
          $select = 'SELECT entry.EntryID AS ID FROM entry
                     INNER JOIN comp_guestbook_entry ON entry.EntryID = comp_guestbook_entry.EntryID
                     INNER JOIN guestbook ON comp_guestbook_entry.GuestbookID = guestbook.GuestbookID
@@ -204,7 +196,6 @@
 
        // end function
       }
-
 
       /**
       *  @public
@@ -222,7 +213,7 @@
       */
       public function saveGuestbook($guestbook){
 
-         $SQL = &$this->__getConnection();
+         $SQL = &$this->getConnection();
 
          // save the guestbook itself
          $guestbookID = $guestbook->get('ID');
@@ -299,7 +290,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -315,7 +305,7 @@
       */
       public function saveEntry($entry){
 
-         $SQL = &$this->__getConnection();
+         $SQL = &$this->getConnection();
          $entryID = $entry->get('ID');
 
          if($entryID != null){
@@ -412,7 +402,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -428,7 +417,7 @@
       */
       public function saveComment($comment){
 
-         $SQL = &$this->__getConnection();
+         $SQL = &$this->getConnection();
          $commentID = $comment->get('ID');
 
          if($commentID != null){
@@ -469,7 +458,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -484,7 +472,7 @@
       */
       public function deleteEntry($entry){
 
-         $SQL = &$this->__getConnection();
+         $SQL = &$this->getConnection();
          $select_commment = 'SELECT comment.CommentID AS ID FROM comment
                              INNER JOIN comp_entry_comment ON comment.CommentID = comp_entry_comment.CommentID
                              INNER JOIN entry ON comp_entry_comment.EntryID = entry.EntryID
@@ -519,7 +507,6 @@
        // end function
       }
 
-
       /**
       *  @public
       *
@@ -534,7 +521,7 @@
       */
       public function deleteComment($comment){
 
-         $SQL = &$this->__getConnection();
+         $SQL = &$this->getConnection();
 
          $delete_comp_comment = 'DELETE FROM comp_entry_comment WHERE CommentID = \''.$comment->get('ID').'\';';
          $SQL->executeTextStatement($delete_comp_comment);
@@ -544,7 +531,6 @@
 
        // end function
       }
-
 
       /**
       *  @private
@@ -621,7 +607,6 @@
        // end function
       }
 
-
       /**
       *  @private
       *
@@ -664,7 +649,6 @@
 
        // end function
       }
-
 
       /**
       *  @private

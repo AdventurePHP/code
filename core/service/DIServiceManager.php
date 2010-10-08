@@ -81,12 +81,6 @@
 
       /**
        * @private
-       * Defines the name of the service object configuration file.
-       */
-      private $configFileName = 'serviceobjects';
-
-      /**
-       * @private
        * Contains the service objects, that were already configured.
        */
       private $serviceObjectCache = array();
@@ -120,12 +114,12 @@
 
          // Get config to determine, which object to create. Parse subsections, to be able to
          // easily separate the init/conf subsections.
-         $config = &$this->__getConfiguration($configNamespace,$this->configFileName,true);
-
+         $section = $this->getServiceConfiguration($configNamespace, $sectionName);
+         
          // check, whether the section contains the basic directives
-         $serviceType = $config->getValue($sectionName,'servicetype');
-         $namespace = $config->getValue($sectionName,'namespace');
-         $class = $config->getValue($sectionName,'class');
+         $serviceType = $section->getValue('servicetype');
+         $namespace = $section->getValue('namespace');
+         $class = $section->getValue('class');
 
          // Check if configuration section was complete. If not throw an error.
          if($serviceType !== null && $namespace !== null && $class !== null){
@@ -145,28 +139,28 @@
             $serviceObject = &$this->__getServiceObject($namespace,$class,$serviceType);
 
             // do param injection (static configuration)
-            $cfTasks = $config->getSubSection($sectionName,'conf');
+            $cfTasks = $section->getSection('conf');
             if($cfTasks !== null){
 
-               foreach($cfTasks as $initKey => $directive){
+               foreach($cfTasks->getSectionNames() as $initKey){
+
+                  $directive = $cfTasks->getSection($initKey);
 
                   // be aware of the params needed for injection
-                  if(isset($directive['method']) && isset($directive['value'])){
+                  $method = $directive->getValue('method');
+                  $value = $directive->getValue('value');
+                  if($method !== null && $value !== null){
 
                      // check, if method exists to avoid fatals
-                     if(method_exists($serviceObject,$directive['method'])){
-                        $serviceObject->{$directive['method']}($directive['value']);
-                      // end if
-                     }
-                     else{
+                     if(method_exists($serviceObject,$method)){
+                        $serviceObject->{$method}($value);
+                     } else{
 
                         throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of'
-                           .' configuration value "'.$directive['value']. '" cannot be accomplished'
+                           .' configuration value "'.$directive->getValue('value'). '" cannot be accomplished'
                            .' to service object "'.$class.'" from namespace "'.$namespace.'"! Method '
-                           .$directive['method'].'() is not implemented!',E_USER_ERROR);
-                        exit();
+                           .$method.'() is not implemented!', E_USER_ERROR);
 
-                      // end else
                      }
 
                    // end if
@@ -177,9 +171,7 @@
                         .' service object "'.$sectionName.'" cannot be accomplished, due to'
                         .' incorrect configuration! Please revise the "'.$initKey.'" sub section and'
                         .' consult the manual!',E_USER_ERROR);
-                     exit();
 
-                   // end else
                   }
 
                 // end foreach
@@ -189,17 +181,22 @@
             }
 
             // do service object injection
-            $miTasks = $config->getSubSection($sectionName,'init');
+            $miTasks = $section->getSection('init');
             if($miTasks !== null){
 
-               foreach($miTasks as $initKey => $directive){
+               foreach($miTasks->getSectionNames() as $initKey){
+
+                  $directive = $miTasks->getSection($initKey);
 
                   // be aware of the params needed for injection
-                  if(isset($directive['method']) && isset($directive['namespace']) && isset($directive['name'])){
+                  $method = $directive->getValue('method');
+                  $namespace = $directive->getValue('namespace');
+                  $name = $directive->getValue('name');
+                  if($method !== null && $namespace !== null && $name !== null){
 
                      // check for circular injection
                      $injectionKey = $namespace.'::'.$class.'['.$serviceType.']'.' injected with '.
-                        $directive['method'].'('.$directive['namespace'].'::'.$directive['name'].')';
+                        $method.'('.$namespace.'::'.$name.')';
 
                      if(!isset($this->injectionCallCache[$injectionKey])){
 
@@ -207,21 +204,20 @@
                         $this->injectionCallCache[$injectionKey] = true;
 
                         // get the dependent service object
-                        $miObject = &$this->getServiceObject($directive['namespace'],$directive['name']);
+                        $miObject = &$this->getServiceObject($namespace,$name);
 
                         // inject the current service object with the created one
-                        if(method_exists($serviceObject,$directive['method'])){
-                           $serviceObject->{$directive['method']}($miObject);
+                        if(method_exists($serviceObject,$method)){
+                           $serviceObject->{$method}($miObject);
                          // end if
                         }
                         else{
                            
-                           throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of service object "'.$directive['name'].
-                              '" from namespace "'.$directive['namespace'].'" cannot be accomplished to service object "'.
-                              $class.'" from namespace "'.$namespace.'"! Method '.$directive['method'].'() is not implemented!',
+                           throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of service object "'.$name.
+                              '" from namespace "'.$namespace.'" cannot be accomplished to service object "'.
+                              $class.'" from namespace "'.$namespace.'"! Method '.$method.'() is not implemented!',
                               E_USER_ERROR);
 
-                         // end else
                         }
 
                       // end if
@@ -239,10 +235,9 @@
                         // print note with shortend information
                         throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Detected circular injection! '.
                            'Class "'.$class.'" from namespace "'.$namespace.'" with service type "'.$serviceType.
-                           '" was already configured with service object "'.$directive['name'].'" from namespace "'.
-                           $directive['namespace'].'"! Full stack trace can be taken from the logfile!', E_USER_ERROR);
+                           '" was already configured with service object "'.$name.'" from namespace "'.
+                           $namespace.'"! Full stack trace can be taken from the logfile!', E_USER_ERROR);
 
-                      // end else
                      }
 
                    // end if
@@ -254,7 +249,6 @@
                         '" sub section and consult the manual!',
                         E_USER_ERROR);
 
-                   // end else
                   }
 
                 // end foreach
@@ -272,7 +266,6 @@
                or incorrect configuration! Please revise the configuration file and consult the manual!',
                E_USER_ERROR);
 
-          // end else
          }
 
          $t->stop($benchId);
@@ -282,6 +275,37 @@
          return $this->serviceObjectCache[$cacheKey];
 
        // end function
+      }
+
+      /**
+       * @private
+       *
+       * Loads the service configuration.
+       *
+       * @param string $configNamespace The namespace of the service (a.k.a. config namespace).
+       * @param string $sectionName The name of the service (a.k.a. section name).
+       * @return IniConfiguration The appropriate configuration.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 04.10.2010<br />
+       */
+      private function getServiceConfiguration($configNamespace, $sectionName) {
+
+         $provider = ConfigurationManager::retrieveProvider('ini');
+         /* @var $provider IniConfigurationProvider */
+
+         // enable the parse sub section feature
+         $currentSetting = $provider->getParseSubSections();
+         $provider->setParseSubSections(true);
+
+         $config = $this->getConfiguration($configNamespace,'serviceobjects.ini');
+
+         // reset the parse sub section feature to the previous value
+         $provider->setParseSubSections($currentSetting);
+
+         return $config->getSection($sectionName);
+         
       }
 
     // end class

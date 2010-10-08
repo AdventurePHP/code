@@ -69,25 +69,25 @@
       *  @private
       *  Date of the message.
       */
-      private $__Date;
+      private $date;
 
       /**
       *  @private
       *  Time of the message.
       */
-      private $__Time;
+      private $time;
 
       /**
       *  @private
       *  Message text.
       */
-      private $__Message;
+      private $message;
 
       /**
       *  @private
       *  Message type (aka severity).
       */
-      private $__Type;
+      private $severity;
 
       /**
       *  @public
@@ -101,14 +101,11 @@
       *  @version
       *  Version 0.1, 29.03.2007<br />
       */
-      function AdvancedLogEntry($message,$type){
-
-         $this->__Date = date('Y-m-d');
-         $this->__Time = date('H:i:s');
-         $this->__Message = $message;
-         $this->__Type = $type;
-
-       // end function
+      public function __construct($message,$type){
+         $this->date = date('Y-m-d');
+         $this->time = date('H:i:s');
+         $this->message = $message;
+         $this->severity = $type;
       }
 
       /**
@@ -126,14 +123,14 @@
 
          $logString = (string)'';
          if($timestamp === true){
-            $logString .= '['.$this->__Date.' '.$this->__Time.'] ';
+            $logString .= '['.$this->date.' '.$this->time.'] ';
           // end if
          }
          if($type === true){
-            $logString .= '['.$this->__Type.'] ';
+            $logString .= '['.$this->severity.'] ';
           // end if
          }
-         return $logString.$this->__Message;
+         return $logString.$this->message;
 
        // end function
       }
@@ -158,10 +155,7 @@
        * @private
        * The logger cache.
        */
-      private $__Logger = array();
-
-      public function AdvancedLoggerFactory(){
-      }
+      private $logger = array();
 
       /**
       *  @public
@@ -175,23 +169,22 @@
       *  @version
       *  Version 0.1, 09.11.2008<br />
       */
-      function &getAdvancedLogger($section){
+      public function &getAdvancedLogger($section){
 
          // calculate logger cache key
          $loggerKey = md5($section);
 
          // create logger, if it does not exist
-         if(!isset($this->__Logger[$loggerKey])){
+         if(!isset($this->logger[$loggerKey])){
 
             // create logger
-            $this->__Logger[$loggerKey] = &$this->__getAndInitServiceObject('core::logging','AdvancedLogger',$section,'NORMAL');
+            $this->logger[$loggerKey] = &$this->__getAndInitServiceObject('core::logging','AdvancedLogger',$section,'NORMAL');
 
             // register current instance in the registry so that the flush function can get the
             // instances from the service manager in correct service type configuration
             $logger = Registry::retrieve('apf::core','AdvancedLogger');
             if(count($logger) == 0){
                $logger = array();
-             // end if
             }
             $logger[] = array(
                               'context' => $this->__Context,
@@ -199,19 +192,15 @@
                               'section' => $section
                              );
             Registry::register('apf::core','AdvancedLogger',$logger);
-
-          // end if
          }
 
-         // return advanced logger
-         return $this->__Logger[$loggerKey];
+         return $this->logger[$loggerKey];
 
        // end function
       }
 
     // end function
    }
-
 
    /**
     * @package core::logging
@@ -241,22 +230,19 @@
        * @private
        * The log buffer;
        */
-      private $__LogBuffer = array();
+      private $logBuffer = array();
 
       /**
        * @private
        * Contains the desired log configuration section.
        */
-      private $__LogConfig = null;
+      private $logConfig = null;
 
       /**
        * @private
        * New line character used for the file and stdout target.
        */
-      private $__CRLF = PHP_EOL;
-
-      public function AdvancedLogger(){
-      }
+      private static $CRLF = PHP_EOL;
 
       /**
        * @public
@@ -269,27 +255,28 @@
        * @version
        * Version 0.1, 09.11.2008<br />
        */
-      function init($initParam){
+      public function init($initParam){
 
          // initialize the current log configuration section
-         if($this->__LogConfig === null){
+         if($this->logConfig === null){
 
             // initialize config
-            $config = &$this->__getConfiguration('core::logging','logconfig');
-            $this->__LogConfig = $config->getSection($initParam);
+            $config = $this->getConfiguration('core::logging','logconfig');
+            $this->logConfig = $config->getSection($initParam);
 
-            if($this->__LogConfig === null){
+            if($this->logConfig === null){
                $env = Registry::retrieve('apf::core','Environment');
-               trigger_error('[AdvancedLogger::init()] The configuration section ("'.$initParam.'") cannot be loaded from the logging configuration file "'.$env.'_logconfig.ini" for namespace "core::logging" and context "'.$this->__Context.'"!',E_USER_ERROR);
-               exit();
-             // end if
+               throw new LoggerException('[AdvancedLogger::init()] The configuration section ("'
+                       .$initParam.'") cannot be loaded from the logging configuration file "'
+                       .$env.'_logconfig.ini" for namespace "core::logging" and context "'
+                       .$this->getContext().'"!',E_USER_ERROR);
             }
 
             // check for the target directive
-            if(!isset($this->__LogConfig['LogTarget'])){
-               trigger_error('[AdvancedLogger::init()] The configuration section ("'.$initParam.'") does not contain a "LogTarget" directive! Please check your configuration.',E_USER_ERROR);
-               exit();
-             // end if
+            if($this->logConfig->getValue('LogTarget') == null){
+               throw new LoggerException('[AdvancedLogger::init()] The configuration section ("'
+                       .$initParam.'") does not contain a "LogTarget" directive! Please check '
+                       .'your configuration.',E_USER_ERROR);
             }
 
           // end if
@@ -311,9 +298,8 @@
       *  @version
       *  Version 0.1, 09.11.2008<br />
       */
-      function logEntry($message,$type = 'INFO'){
-         $this->__LogBuffer[] = new AdvancedLogEntry($message,$type);
-       // end function
+      public function logEntry($message,$type = 'INFO'){
+         $this->logBuffer[] = new AdvancedLogEntry($message,$type);
       }
 
       /**
@@ -325,21 +311,23 @@
       *  @version
       *  Version 0.1, 09.11.2008<br />
       */
-      function flushLogBuffer(){
+      public function flushLogBuffer(){
 
-         switch($this->__LogConfig['LogTarget']){
+         switch($this->logConfig->getValue('LogTarget')){
 
             case 'file':
-               $this->__flush2File();
+               $this->flush2File();
                break;
             case 'database':
-               $this->__flush2Database();
+               $this->flush2Database();
                break;
             case 'stdout':
-               $this->__flush2Stdout();
+               $this->flush2Stdout();
                break;
             default:
-               trigger_error('[AdvancedLogger::flushLogBuffer()] The choosen log target ("'.$this->__LogConfig['LogTarget'].'") is not implementend. Please take one out of "file", "database" and "stdout"!',E_USER_ERROR);
+               throw new LoggerException('[AdvancedLogger::flushLogBuffer()] The choosen log target ("'
+                       .$this->logConfig->getValue('LogTarget').'") is not implementend. Please take '
+                       .'one out of "file", "database" and "stdout"!',E_USER_ERROR);
                break;
 
           // end switch
@@ -357,28 +345,26 @@
       *  @version
       *  Version 0.1, 09.11.2008<br />
       */
-      private function __flush2Database(){
+      private function flush2Database(){
 
          // read params from the configuration
-         if(!isset($this->__LogConfig['LogDatabase'])){
-            trigger_error('[AdvancedLogger::__flush2Database()] The configuration section does not contain a "LogDatabase" definition! Please check your configuration.');
-            return;
-          // end if
+         if($this->logConfig->getValue('LogDatabase') == null){
+            throw new LoggerException('[AdvancedLogger::flush2Database()] The configuration '
+                    .'section does not contain a "LogDatabase" definition! Please check your configuration.');
          }
-         if(!isset($this->__LogConfig['LogTable'])){
-            trigger_error('[AdvancedLogger::__flush2Database()] The configuration section does not contain a "LogTable" definition! Please check your configuration.');
-            return;
-          // end if
+         if($this->logConfig->getValue('LogTable') == null){
+            throw new LoggerException('[AdvancedLogger::flush2Database()] The configuration '
+                    .'section does not contain a "LogTable" definition! Please check your configuration.');
          }
-         $logDatabase = $this->__LogConfig['LogDatabase'];
-         $logTable = $this->__LogConfig['LogTable'];
+         $logDatabase = $this->logConfig->getValue('LogDatabase');
+         $logTable = $this->logConfig->getValue('LogTable');
 
          // create database connection
          $cM = &$this->__getServiceObject('core::database','ConnectionManager');
          $db = &$cM->getConnection($logDatabase);
 
          // flush log entries to the table
-         foreach($this->__LogBuffer as $entry){
+         foreach($this->logBuffer as $entry){
 
             $timestamp = $entry->get('Date').' '.$entry->get('Time');
             $insert = 'INSERT INTO `'.$logTable.'`
@@ -402,35 +388,31 @@
       *  @version
       *  Version 0.1, 09.11.2008<br />
       */
-      private function __flush2File(){
+      private function flush2File(){
 
          // read params from the configuration
-         if(!isset($this->__LogConfig['LogDir'])){
-            trigger_error('[AdvancedLogger::__flush2Database()] The configuration section does not contain a "LogDir" definition! Please check your configuration.');
-            return;
-          // end if
+         if($this->logConfig->getValue('LogDir') == null){
+            throw new LoggerException('[AdvancedLogger::flush2Database()] The configuration '
+                    .'section does not contain a "LogDir" definition! Please check your configuration.');
          }
-         if(!isset($this->__LogConfig['LogFileName'])){
-            trigger_error('[AdvancedLogger::__flush2Database()] The configuration section does not contain a "LogFileName" definition! Please check your configuration.');
-            return;
-          // end if
+         if($this->logConfig->getValue('LogFileName') == null){
+            throw new LoggerException('[AdvancedLogger::flush2Database()] The configuration '
+                    .'section does not contain a "LogFileName" definition! Please check your configuration.');
          }
-         $logDir = $this->__LogConfig['LogDir'];
-         $logFileName = date('Y_m_d').'_'.$this->__LogConfig['LogFileName'].'.log';
+         $logDir = $this->logConfig->getValue('LogDir');
+         $logFileName = date('Y_m_d').'_'.$this->logConfig->getValue('LogFileName').'.log';
 
          // create folder, if it does not exist
          if(!is_dir($logDir)){
-            trigger_error('[AdvancedLogger::__flush2File()] Given log directory "'.$logDir.'" does not exist! Please create it.');
-            return;
-          // end if
+            throw new LoggerException('[AdvancedLogger::flush2File()] Given log directory "'
+                    .$logDir.'" does not exist! Please create it.');
          }
 
          // flush buffer to file
          $fH = fopen($logDir.'/'.$logFileName,'a+');
 
-         foreach($this->__LogBuffer as $entry){
-            fwrite($fH,$this->__getLogEntryString($entry).$this->__CRLF);
-          // end foreach
+         foreach($this->logBuffer as $entry){
+            fwrite($fH,$this->getLogEntryString($entry).self::$CRLF);
          }
 
          fclose($fH);
@@ -447,13 +429,10 @@
       *  @version
       *  Version 0.1, 09.11.2008<br />
       */
-      private function __flush2Stdout(){
-
-         foreach($this->__LogBuffer as $entry){
-            echo $this->__getLogEntryString($entry).$this->__CRLF;
-          // end foreach
+      private function flush2Stdout(){
+         foreach($this->logBuffer as $entry){
+            echo $this->getLogEntryString($entry).self::CRLF;
          }
-
        // end function
       }
 
@@ -469,23 +448,22 @@
       *  @version
       *  Version 0.1, 09.11.2008<br />
       */
-      private function __getLogEntryString($entry){
+      private function getLogEntryString($entry){
 
          // configure timestamp
          $timestamp = true;
-         if(!isset($this->__LogConfig['LogTimestamp']) || $this->__LogConfig['LogTimestamp'] == 'false'){
+         if($this->logConfig->getValue('LogTimestamp') == null || $this->logConfig->getValue('LogTimestamp') == 'false'){
             $timestamp = false;
           // end if
          }
 
          // configure type
          $type = true;
-         if(!isset($this->__LogConfig['LogType']) || $this->__LogConfig['LogType'] == 'false'){
+         if($this->logConfig->getValue('LogType') == null || $this->logConfig->getValue('LogType') == 'false'){
             $type = false;
           // end if
          }
 
-         // return log string
          return $entry->toString($timestamp,$type);
 
        // end function

@@ -88,24 +88,25 @@
          if($this->__IsInitialized === false){
 
             // setup the component
-            $config = &$this->__getConfiguration('modules::usermanagement','umgtconfig');
+            $config = $this->getConfiguration('modules::usermanagement','umgtconfig.ini');
+            $section = $config->getSection($initParam);
 
-            $appID = $config->getValue($initParam,'ApplicationID');
+            $appID = $section->getValue('ApplicationID');
             if($appID !== null){
                $this->__ApplicationID = $appID;
              // end if
             }
 
-            $serviceMode = $config->getValue($initParam,'ServiceMode');
+            $serviceMode = $section->getValue('ServiceMode');
             if($serviceMode !== null){
                $this->__ServiceMode = $serviceMode;
              // end if
             }
-            $this->__ConnectionKey = $config->getValue($initParam,'ConnectionKey');
+            $this->__ConnectionKey = $section->getValue('ConnectionKey');
 
             // initialize password hash provider
-            $passHashProvNamespace = $config->getValue($initParam,'PasswordHashProvider.Namespace');
-            $passHashProvClass = $config->getValue($initParam,'PasswordHashProvider.Class');
+            $passHashProvNamespace = $section->getValue('PasswordHashProvider.Namespace');
+            $passHashProvClass = $section->getValue('PasswordHashProvider.Class');
             if($passHashProvNamespace === null || $passHashProvClass === null){
                // fallback to default provider
                $this->__PasswordHashProvider = new DefaultPasswordHashProvider();

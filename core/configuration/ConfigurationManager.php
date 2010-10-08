@@ -23,470 +23,286 @@
     * @package core::configuration
     * @class Configuration
     *
-    * Represents a configuration object, that is loaded by the ConfigurationManager. It stores
-    * section or subsections and their corresponding values.
+    * Defines the scheme, a APF configuration object must have. Each configuration
+    * provider can define it's own configuration instance based on this interface.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 28.01.2007<br />
+    * Version 0.1, 27.09.2010<br />
     */
-   final class Configuration {
+   interface Configuration {
 
       /**
-       * @private
-       * @var string[] Container for configuration entries.
+       * @return string
        */
-      private $__Configuration = array();
-
-      public function Configuration(){
-      }
+      function getValue($name);
 
       /**
-       * @public
+       * @return Configuration
+       */
+      function getSection($name);
+
+      function setValue($name, $value);
+
+      function setSection($name, Configuration $section);
+
+      /**
+       * Enumerates the names of the current configuration keys.
        *
-       * Returns a configuration section as an associative array.
+       * @return string[] The names of the config keys.
+       */
+      function getValueNames();
+
+      /**
+       * Enumerates the names of the current configuration sections.
        *
-       * @param string $Name; Name of the cection
-       * @return string[] Section or null.
+       * @return string[] The names of the section keys.
+       */
+      function getSectionNames();
+   }
+
+   /**
+    * @package core::configuration
+    * @class ConfigurationProvider
+    *
+    * Defines the scheme, a APF configuration provider must have. A configuration
+    * provider represents a configuration format (e.g. ini, xml, ...) and can be
+    * added to the ConfigurationManager to support multiple formats at the same time.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.09.2010<br />
+    */
+   interface ConfigurationProvider {
+
+      /**
+       * Returns the configuration specified by the given params.
        *
-       * @author Christian Sch�fer
+       * @param string $namespace The namespace of the configuration.
+       * @param string $context The current application's context.
+       * @param string $language The current application's language.
+       * @param string $environment The environment, the applications runs on.
+       * @param string $name The name of the configuration to load including it's extension.
+       * @return Configuration The desired configuration.
+       *
+       * @author Christian Achatz
        * @version
-       * Version 0.1, 28.01.2007<br />
+       * Version 0.1, 27.09.2010<br />
        */
-      public function getSection($name){
-
-         if(isset($this->__Configuration[$name])){
-            return $this->__Configuration[$name];
-          // end if
-         }
-         else{
-            return null;
-          // end else
-         }
-
-       // end function
-      }
+      function loadConfiguration($namespace, $context, $language, $environment, $name);
 
       /**
-       * @public
+       * Saves the configuration applied as an argument to the file specified by the given params.
        *
-       * Returns a configuration sub section as an associative array.
+       * @param string $namespace The namespace of the configuration.
+       * @param string $context The current application's context.
+       * @param string $language The current application's language.
+       * @param string $environment The environment, the applications runs on.
+       * @param string $name The name of the configuration to load including it's extension.
+       * @param Configuration $config The configuration to save.
        *
-       * @param string $section name of the section.
-       * @param string $name name of the subsection.
-       * @return string[] Value of the configuration key or null.
-       *
-       * @author Christian Sch�fer
+       * @author Christian Achatz
        * @version
-       * Version 0.1, 30.01.2007<br />
-       * Version 0.2, 31.01.2007 (Added check for Subsection to be an array)<br />
-       * Version 0.3, 16.11.2007 (removed senseless trim() during return)<br />
-       * Version 0.4, 19.04.2009 (Bugfix: added check for the subsection to exist)<br />
+       * Version 0.1, 27.09.2010<br />
        */
-      public function getSubSection($section,$name){
+      function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config);
 
-         if(isset($this->__Configuration[$section][$name]) && is_array($this->__Configuration[$section][$name])){
-            return $this->__Configuration[$section][$name];
-          // end if
-         }
-         else{
-            return null;
-          // end else
-         }
+   }
 
-       // end function
-      }
-
-      /**
-       * @public
-       *
-       * Returns a configuration value by section and attribute name.
-       *
-       * @param string $section name of the section.
-       * @param string $name name of the config key.
-       * @return string Value of the configuration key or null.
-       *
-       * @author Christian Sch�fer
-       * @version
-       * Version 0.1, 28.01.2007<br />
-       */
-      public function getValue($section,$name){
-
-         if(isset($this->__Configuration[$section][$name])){
-            return $this->__Configuration[$section][$name];
-          // end if
-         }
-         else{
-            return null;
-          // end else
-         }
-
-       // end function
-      }
-
-      /**
-       * @public
-       *
-       * Fills the internal configuration container with the configuration content.
-       *
-       * @param array $list configuration array
-       *
-       * @author Christian Sch�fer
-       * @version
-       * Version 0.1, 28.01.2007<br />
-       */
-      public function setConfiguration($list){
-         $this->__Configuration = $list;
-       // end function
-      }
-
-      /**
-       * @public
-       *
-       * Returns the entire configuration as an associative array.
-       *
-       * @return array $list the configuration array
-       *
-       * @author Christian Sch�fer
-       * @version
-       * Version 0.1, 03.02.2007<br />
-       */
-      public function getConfiguration(){
-         return $this->__Configuration;
-       // end function
-      }
-
-    // end class
+   /**
+    * @package core::configuration
+    * @class ConfigurationException
+    *
+    * Represents a specialized exception for configuration errors.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.09.2010<br />
+    */
+   class ConfigurationException extends Exception {
    }
 
    /**
     * @package core::configuration
     * @class ConfigurationManager
     *
-    * The ConfigurationManager represents a configuration utility, that loads and handles configurations
-    * that depend on the context and the environment tzhe application or module is executed in. The
-    * manager must be instanciated singleton!
+    * This class represents the central APF configuration facility introduced in release 1.13
+    * to have a clean and flexible way of multi-extension configuration support.
+    * <p/>
+    * The ConfigurationManager allows you register any amount of configuration providers that
+    * are delegated the configuration loading and saving. Each provider has it's own extension.
+    * <p/>
+    * While loading a configuration providing an unknown extension the manager falls back to
+    * the first provider registered.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 28.01.2007<br />
-    * Version 0.2, 07.03.2007 (Refactoring due to context introduction)<br />
-    * Version 0.3, 02.04.2007 (Additional testing with some fine tuning)<br />
-    * Version 0.4, 16.11.2007 (Re-added $__NamespaceDelimiter)<br />
-    * Version 0.5, 21.06.2008 (Introduced Registry to get the current Environment string)<br />
+    * Version 0.1, 27.09.2010<br />
     */
-   class ConfigurationManager extends APFObject {
+   final class ConfigurationManager {
 
       /**
-       * @private
-       * @var string[] Caches the configurations loaded before.
+       * Contains the registered providers as an associative array mapping the file extension
+       * to the appropriate provider.
+       * @var ConfigurationProvider[] The configuration provider instances.
        */
-      private $__Configurations = array();
+      private static $PROVIDER = array();
 
       /**
-       * @private
-       * @var string Subkey delimiter.
+       * @public
+       * @static
+       *
+       * Allows to register a configuration provider that is specified by the
+       * ConfigurationProvider interface. Please note, that the extension is
+       * the file extension of the configuration file.
+       *
+       * @param string $extension The file extension.
+       * @param ConfigurationProvider $provider The provider to register.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 27.09.2010<br />
        */
-      private $__NamespaceDelimiter = '.';
-
-      public function ConfigurationManager(){
+      public static function registerProvider($extension, ConfigurationProvider $provider) {
+         self::$PROVIDER[strtolower($extension)] = $provider;
       }
 
       /**
        * @public
+       * @static
        *
-       * Loads a configuration described through the given param. Configuration files must be stored
-       * within the config namespace. Usage:
-       * <pre>
-       * $cM = &Singleton::getInstance('ConfigurationManager');<br />
-       * $config = &$cM->getConfiguration('sites::mysite','actions','permanentactions');
-       * </pre>
-       * Within classes inherited from APFObject, the <em>__getConfiguration()</em> wrapper can be used.
+       * Allows to un-register a configuration provider specified by the extension.
        *
-       * @param string $namespace namespace of the requested configuration (will be prefixed with "config::")
-       * @param string $context context of the configuration file
-       * @param string $configName the name of the configuration file
-       * @param bool $parseSubsections defines if subsections ("." notation) should be parsed as subsections
-       * @return Configuration The configuration or null in case of failure.
-       * @throws InvalidArgumentException In case the configuration cannot be loaded.
+       * @param string $extension The file extension.
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 07.03.2007<br />
-       * Version 0.2, 02.04.2007 (An error is triggered if the config cannot be loaded)<br />
-       * Version 0.3, 21.06.2008 (Introduced the Registry component)<br />
+       * Version 0.1, 27.09.2010<br />
        */
-      public function &getConfiguration($namespace,$context,$configName,$parseSubsections = false){
-
-         // calculate config hash
-         $configHash = md5($namespace.$context.$configName);
-
-         // check if config exists
-         if($this->configurationExists($namespace,$context,$configName) == true){
-
-            // check if config is already loaded
-            if(!isset($this->__Configurations[$configHash])){
-
-               // load config
-               $Configuration = $this->__loadConfiguration($namespace,$context,$configName);
-               $CfgObj = new Configuration();
-
-               if($parseSubsections == true){
-                  $CfgObj->setConfiguration($this->__parseConfiguration($Configuration));
-                // end if
-               }
-               else{
-                  $CfgObj->setConfiguration($Configuration);
-                // end else
-               }
-
-               // cache config
-               $this->__Configurations[$configHash] = $CfgObj;
-
-             // end if
-            }
-
-          // end if
-         }
-         else{
-            $env = Registry::retrieve('apf::core','Environment');
-            throw new InvalidArgumentException('[ConfigurationManager->getConfiguration()] Requested '
-                    .'configuration with name "'.$env.'_'.$configName.'.ini" cannot be '
-                    .'loaded from namespace "'.$namespace.'" with context "'.$context.'"!',E_USER_ERROR);
-         }
-
-         return $this->__Configurations[$configHash];
-
-       // end function
+      public static function removeProvider($extension) {
+         unset(self::$PROVIDER[strtolower($extension)]);
+      }
+      
+      /**
+       * @public
+       * @static
+       *
+       * Returns a list of registered providers containing the file extensions the providers
+       * are registered for.
+       *
+       * @return string[] The registered providers.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 27.09.2010<br />
+       */
+      public static function getRegisteredProviders() {
+         return array_keys(self::$PROVIDER);
       }
 
       /**
        * @public
+       * @static
        *
-       * Checks, if a configuration file exists or not.
+       * Returns the configuration provider specified by the given extension.
        *
-       * @param string $namespace namespace of the requested configuration
-       * @param string $context context of the configuration file
-       * @param string $configName the name of the configuration file
-       * @return bool $configurationExistent true | false
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 03.02.2007<br />
-       * Version 0.2, 07.03.2007 (Renamed to configurationExists())<br />
-       */
-      public function configurationExists($namespace,$context,$configName){
-         return file_exists($this->__getConfigurationFileName($namespace,$context,$configName));
-      }
-
-      /**
-       * @private
-       *
-       * Loads a configuration file.
-       *
-       * @param string $namespace namespace of the requested configuration
-       * @param string $context context of the configuration file
-       * @param string $configName the name of the configuration file
-       * @return array $configuration | null configuration array or null
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 28.01.2007<br />
-       * Version 0.2, 03.02.2007 (Outsourced the file name generation)<br />
-       * Version 0.3, 07.03.2007<br />
-       * Version 0.4, 02.04.2007 (Removed else, because the existance is already checked before.)<br />
-       */
-      private function __loadConfiguration($namespace,$context,$configName){
-         $configFile = $this->__getConfigurationFileName($namespace,$context,$configName);
-         return parse_ini_file($configFile,true);
-       // end function
-      }
-
-      /**
-       * @protected
-       *
-       * Creates the fully qualified path of the configuration file. If you want to have an own
-       * config file and folder layout, create a new class derived from the ConfigurationManager
-       * and overwrite this method.
-       * See http://forum.adventure-php-framework.org/de/viewtopic.php?f=1&t=80&start=30#p531 for
-       * details on the discussion.
-       *
-       * @param string $namespace Namespace of the requested configuration (will be prefixed with "config")
-       * @param string $context Context of the configuration file
-       * @param string $configName The name of the configuration file
-       * @return string Name of the configuration file name
+       * @param string $extension The extension the provider is registered for.
+       * @return ConfigurationProvider The desired configuration provider.
+       * @throws ConfigurationException In case the provider is not registered.
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 03.02.2007<br />
-       * Version 0.2, 07.03.2007<br />
-       * Version 0.3, 21.06.2008 (Introduced the Registry component)<br />
-       * Version 0.4, 09.05.2009 (Made the function protected.)<br />
+       * Version 0.1, 27.09.2010<br />
        */
-      protected function __getConfigurationFileName($namespace,$context,$configName){
-
-         if(strlen($context) > 0){
-            $path = str_replace('::','/',$namespace).'/'.str_replace('::','/',$context);
-          // end if
-         }
-         else{
-            $path = str_replace('::','/',$namespace);
-          // end else
-         }
-
-         // build the file name
-         $env = Registry::retrieve('apf::core','Environment');
-         return APPS__PATH.'/config/'.$path.'/'.$env.'_'.$configName.'.ini';
-
-       // end function
+      public static function retrieveProvider($extension){
+         return self::getProvider($extension);
       }
 
       /**
-       * @private
+       * @public
+       * @static
        *
-       * Parses the configuration file.
+       * Delegates configuration loading to the specified provider.
        *
-       * @param string[] $configuration configuration array created with the parse_ini_file function.
-       * @return string[] $configurationArray the parsed configuration list.
-       *
-       * @author Christian Sch�fer
-       * @version
-       * Version 0.1, 28.01.2007<br />
-       */
-      private function __parseConfiguration($configuration = array()){
-
-         $configurationArray = array();
-
-         foreach($configuration as $Key => $Value){
-
-            // if value is an array, parse subsections
-            if(is_array($Value)){
-               $configurationArray[$Key] = $this->__parseSubsections($Value);
-             // end if
-            }
-            else{
-               $configurationArray[$Key] = $Value;
-             // end else
-            }
-
-          // end foreach
-         }
-
-         return $configurationArray;
-
-       // end function
-      }
-
-      /**
-       * @private
-       *
-       * Parses subsections.
-       *
-       * @param string[] $subsectionArray The configuration array.
-       * @return string[] $parsedArray The parsed array.
-       * @throws InvalidArgumentException In case the sub section cannot be parsed.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 28.01.2007<br />
-       * Version 0.2, 19.04.2009 (Bugfix: Parsing subsections returned an empty array!)<br />
-       * Version 0.3, 27.10.2009 (Bugfix: introduced __mergeArrayRecursive() due to problems with the PHP array merge function)<br />
-       */
-      private function __parseSubsections($subsectionArray){
-
-         $concatenatedArray = array();
-
-         if(is_array($subsectionArray)){
-
-            foreach($subsectionArray as $key => $value){
-               $concatenatedArray = $this->__mergeArrayRecursive($concatenatedArray,$this->__generateSubArray($key,$value));
-             // end foreach
-            }
-
-          // end if
-         }
-         else{
-            throw new InvalidArgumentException('[ConfigurationManager::__parseSubsections()] Given '
-                    .'value is not an array!',E_USER_ERROR);
-          // end else
-         }
-
-         return $concatenatedArray;
-
-       // end function
-      }
-
-      /**
-       * @private
-       *
-       * Generates sub arrays from the dot notated directices.
-       *
-       * @param string $key The current configuration directive possibly containg a dot.
-       * @param string[] $value Value of the offset specified with $key.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 28.01.2007<br />
-       */
-      private function __generateSubArray($key,$value){
-
-         $subArray = array();
-
-         if(substr_count($key,$this->__NamespaceDelimiter) > 0){
-
-            // search for the dot
-            $delPos = strpos($key,$this->__NamespaceDelimiter);
-
-            // extract offset
-            $offset = substr($key,0,$delPos);
-
-            // create remaining string
-            $remainingString = substr($key,$delPos + strlen($this->__NamespaceDelimiter),strlen($key));
-
-            // generate new offset recursivly
-            $subArray[$offset] = $this->__generateSubArray($remainingString,$value);
-
-          // end if
-         }
-         else{
-            $subArray[$key] = $value;
-          // end els
-         }
-
-         return $subArray;
-
-       // end function
-      }
-
-      /**
-       * @private
-       *
-       * Implements a pendant to php's array_merge_recursive(), because the native php
-       * function does not support numeric key merging.
-       *
-       * @see http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=223&p=1669#p1669
-       *
-       * @param string[] $one The first array.
-       * @param string[] $two The array to merge into the first array.
-       * @return string[] The merged array.
+       * @param string $namespace The namespace of the configuration.
+       * @param string $context The current application's context.
+       * @param string $language The current application's language.
+       * @param string $environment The environment, the applications runs on.
+       * @param string $name The name of the configuration to load including it's extension.
+       * @return Configuration The desired configuration.
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 25.10.2009<br />
+       * Version 0.1, 27.09.2010<br />
        */
-      private function __mergeArrayRecursive($one,$two){
-         foreach($two as $key => $value){
-            if(isset($one[$key])){
-               $one[$key] = $this->__mergeArrayRecursive($one[$key],$value);
-            }
-            else{
-               $one[$key] = $value;
-            }
-         }
-         return $one;
-       // end function
+      public static function loadConfiguration($namespace, $context, $language, $environment, $name) {
+         return self::getProvider($name)->loadConfiguration($namespace, $context, $language, $environment, $name);
       }
 
-    // end class
+      /**
+       * @public
+       * @static
+       * 
+       * Delegates the configuration saving to the specified provider.
+       *
+       * @param string $namespace The namespace of the configuration.
+       * @param string $context The current application's context.
+       * @param string $language The current application's language.
+       * @param string $environment The environment, the applications runs on.
+       * @param string $name The name of the configuration to load including it's extension.
+       * @param Configuration $config The configuration to save.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 27.09.2010<br />
+       */
+      public static function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
+         return self::getProvider($name)->saveConfiguration($namespace, $context, $language, $environment, $name, $config);
+      }
+
+      /**
+       * @private
+       * @static
+       *
+       * Returns a configuration provider identified by the given file extension. In case no
+       * provider can be found, the first registered provider is returned to have a fallack
+       * for pre 1.13 configuration style and to enable the developer to specify fallback
+       * providers by the order the providers are registered.
+       * <p/>
+       * In order you want to influence the fallback mechanism, the providers must be cleared
+       * using the following code:
+       * <code>foreach(ConfigurationManager::getRegisteredProviders() as $key){
+       *    ConfigurationManager::removeProvider($key);
+       * }</code>
+       *
+       * @param string $name The name of the configuration file to load.
+       * @return ConfigurationProvider The desired configuration provider.
+       * @throws ConfigurationException In case no provider can be found.
+       */
+      private static function getProvider($name) {
+
+         // try to resolve the provider by it's file extension
+         $extPos = strripos($name, '.');
+         if ($extPos !== false) {
+            $ext = strtolower(substr($name, $extPos + 1));
+            if (isset(self::$PROVIDER[$ext])) {
+               return self::$PROVIDER[$ext];
+            }
+         }
+
+         // In case no specific provider can be found, fall back to the first provider
+         // that is contained in the list. This is both necessary as fallback for
+         // old style file name specifications (file name without extension) and for
+         // re-mapping of ini configurations to other formats.
+         $extensions = array_keys(self::$PROVIDER);
+         if (count($extensions) > 0) {
+            return self::$PROVIDER[$extensions[0]];
+         }
+
+         // In case, no fallback is possible, we have to end here.
+         throw new ConfigurationException('Provider with extension "' . $ext . '" is not registered!',
+                 E_USER_ERROR);
+      }
+
    }
 ?>

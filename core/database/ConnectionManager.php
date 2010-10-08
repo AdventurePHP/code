@@ -58,10 +58,7 @@
        * @private
        * @var AbstractDatabaseHandler[] Cache for existing database connections.
        */
-      private $__Connections = array();
-
-      public function ConnectionManager(){
-      }
+      private $connections = array();
 
       /**
        * @public
@@ -88,13 +85,12 @@
          // check, if connection was already created
          $connectionHash = md5($connectionKey);
 
-         if(isset($this->__Connections[$connectionHash])){
-            return $this->__Connections[$connectionHash];
-          // end if
+         if(isset($this->connections[$connectionHash])){
+            return $this->connections[$connectionHash];
          }
 
          // read configuration
-         $config = &$this->__getConfiguration('core::database','connections');
+         $config = $this->getConfiguration('core::database','connections');
 
          // get config section
          $section = $config->getSection($connectionKey);
@@ -105,19 +101,22 @@
                     .'configuration section ("'.$connectionKey.'") does not exist in configuration file "'
                     .$env.'_connections.ini" in namespace "core::database" for context "'
                     .$this->__Context.'"!',E_USER_ERROR);
-            exit(1);
-          // end if
          }
 
          // include the handler
-         if(!class_exists($section['DB.Type'].'Handler')){
-            import('core::database',$section['DB.Type'].'Handler');
-          // end if
+         if(!class_exists($section->getValue('DB.Type').'Handler')){
+            import('core::database',$section->getValue('DB.Type').'Handler');
+         }
+
+         // remap options to array to be able to initialize the cache manager using the service manager
+         $options = array();
+         foreach($section->getValueNames() as $key){
+            $options[$key] = $section->getValue($key);
          }
 
          // create the handler
-         $this->__Connections[$connectionHash] = &$this->__getAndInitServiceObject('core::database',$section['DB.Type'].'Handler',$section,'NORMAL');
-         return $this->__Connections[$connectionHash];
+         $this->connections[$connectionHash] = &$this->__getAndInitServiceObject('core::database',$section->getValue('DB.Type').'Handler',$options,'NORMAL');
+         return $this->connections[$connectionHash];
 
        // end function
       }

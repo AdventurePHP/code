@@ -45,9 +45,6 @@
     */
    abstract class ui_getstring extends Document {
 
-      public function ui_getstring(){
-      }
-
       /**
        * @public
        *
@@ -61,71 +58,51 @@
        */
       public function transform(){
 
-         $t = &Singleton::getInstance('BenchmarkTimer');
-         $id = '(ui_getstring) '.$this->__ObjectID.'::transform()';
-         $t->start($id);
-
          // check for attribute "namespace"
          $namespace = $this->getAttribute('namespace');
          if($namespace === null){
-            trigger_error('['.get_class($this).'->transform()] No attribute "namespace" given in tag definition!');
-            $t->stop($id);
-            return (string)'';
-          // end if
+            throw new InvalidArgumentException('['.get_class($this).'->transform()] No attribute '
+                    .'"namespace" given in tag definition!',E_USER_ERROR);
          }
 
          // check for attribute "config"
          $configName = $this->getAttribute('config');
          if($configName === null){
-            trigger_error('['.get_class($this).'->transform()] No attribute "config" given in tag definition!');
-            $t->stop($id);
-            return (string)'';
-          // end if
+            throw new InvalidArgumentException('['.get_class($this).'->transform()] No attribute '
+                    .'"config" given in tag definition!',E_USER_ERROR);
          }
 
          // check for attribute "entry"
          $entry = $this->getAttribute('entry');
          if($entry === null){
-            trigger_error('['.get_class($this).'->transform()] No attribute "entry" given in tag definition!');
-            $t->stop($id);
-            return (string)'';
-          // end if
+            throw new InvalidArgumentException('['.get_class($this).'->transform()] No attribute '
+                    .'"entry" given in tag definition!',E_USER_ERROR);
          }
 
          // get configuration
-         $config = &$this->__getConfiguration($namespace,$configName);
+         $config = $this->getConfiguration($namespace,$configName);
          if($config == null){
-            $t->stop($id);
             return (string)'';
-          // end if
          }
-         else{
 
-            // get configuration values
-            $value = $config->getValue($this->__Language,$entry);
+         // get configuration values
+         $value = $config->getSection($this->__Language) === null
+                 ? null
+                 : $config->getSection($this->__Language)->getValue($entry);
 
-            if($value == null){
+         if($value == null){
 
-               // get environment variable from registry to display nice error message
-               $env = Registry::retrieve('apf::core','Environment');
+            // get environment variable from registry to display nice error message
+            $env = Registry::retrieve('apf::core','Environment');
 
-               trigger_error('['.get_class($this).'->transform()] Given entry "'.$entry
-                  .'" is not defined in section "'.$this->__Language.'" in configuration "'
-                  .$env.'_'.$configName.'.ini" in namespace "'.$namespace.'" and context "'
-                  .$this->__Context.'"!');
-               $t->stop($id);
-               return (string)'';
+            throw new InvalidArgumentException('[' . get_class($this) . '->transform()] Given entry "'
+                 . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'
+                 . $env . '_' . $configName . '.ini" in namespace "' . $namespace . '" and context "'
+                 . $this->getContext() . '"!', E_USER_ERROR);
+            return (string)'';
 
-             // end if
-            }
-            else{
-               $t->stop($id);
-               return $value;
-             // end if
-            }
-
-          // end else
          }
+         return $value;
 
        // end function
       }

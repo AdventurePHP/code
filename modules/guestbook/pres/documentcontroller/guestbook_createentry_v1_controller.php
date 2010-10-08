@@ -88,9 +88,9 @@
          else{
 
             // label button
-            $config = &$this->__getConfiguration('modules::guestbook','guestbook_lang');
+            $config = $this->getConfiguration('modules::guestbook','guestbook_lang.ini');
             $button = &$form->getFormElementByName('CreateGuestbookEntryButton');
-            $button->setAttribute('value',$config->getValue($this->__Language,'CreateEntry.Form.Button'));
+            $button->setAttribute('value',$config->getSection($this->__Language)->getValue('CreateEntry.Form.Button'));
 
             $form->transformOnPlace();
 

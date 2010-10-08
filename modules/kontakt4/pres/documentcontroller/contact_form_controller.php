@@ -36,10 +36,7 @@
     * Version 0.4, 12.09.2009 (Refactoring due to changes of the form taglibs)<br />
     */
    class contact_form_controller extends base_controller {
-
-      public function contact_form_controller(){
-      }
-
+      
       /**
        * @public
        *
@@ -53,7 +50,7 @@
        * Version 0.4, 27.05.2007<br />
        * Version 0.5, 12.09.2009 (Refactoring due to changes of the form taglibs)<br />
        */
-      function transformContent(){
+      public function transformContent(){
 
          $form = &$this->__getForm('contact');
 
@@ -102,25 +99,26 @@
          else{
 
             // label the button
-            $config = &$this->__getConfiguration('modules::kontakt4','language');
+            $config = $this->getConfiguration('modules::kontakt4','language');
+            $value = $config->getSection($this->__Language)->getValue('form.button');
             $button = &$form->getFormElementByName('send');
-            $button->setAttribute('value',$config->getValue($this->__Language,'form.button'));
+            $button->setAttribute('value',$value);
 
             // fill listeners with the language dependent values
             $senderError = &$form->getFormElementByID('sender-error');
-            $senderError->setPlaceHolder('content',$config->getValue($this->__Language,'form.name.error'));
+            $senderError->setPlaceHolder('content',$config->getSection($this->__Language)->getValue('form.name.error'));
 
             $addrError = &$form->getFormElementByID('addr-error');
-            $addrError->setPlaceHolder('content',$config->getValue($this->__Language,'form.email.error'));
+            $addrError->setPlaceHolder('content',$config->getSection($this->__Language)->getValue('form.email.error'));
 
             $subjectError = &$form->getFormElementByID('subject-error');
-            $subjectError->setPlaceHolder('content',$config->getValue($this->__Language,'form.subject.error'));
+            $subjectError->setPlaceHolder('content',$config->getSection($this->__Language)->getValue('form.subject.error'));
 
             $textError = &$form->getFormElementByID('text-error');
-            $textError->setPlaceHolder('content',$config->getValue($this->__Language,'form.text.error'));
+            $textError->setPlaceHolder('content',$config->getSection($this->__Language)->getValue('form.text.error'));
 
             $captchaError = &$form->getFormElementByID('captcha-error');
-            $captchaError->setPlaceHolder('content',$config->getValue($this->__Language,'form.captcha.error'));
+            $captchaError->setPlaceHolder('content',$config->getSection($this->__Language)->getValue('form.captcha.error'));
 
             $form->transformOnPlace();
 

@@ -32,9 +32,6 @@
     */
    class FrontcontrollerRequestFilter extends AbstractRequestFilter {
 
-      function FrontcontrollerRequestFilter(){
-      }
-
       /**
        * @public
        *

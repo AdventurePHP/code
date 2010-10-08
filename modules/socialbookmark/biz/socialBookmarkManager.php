@@ -99,9 +99,6 @@
        */
       protected $__BookmarkServices = array();
 
-      function socialBookmarkManager(){
-      }
-
       /**
        * @public
        *
@@ -113,9 +110,8 @@
        * @version
        * Version 0.1, 07.09.2007<br />
        */
-      function addBookmarkService($service){
+      public function addBookmarkService($service){
          $this->__BookmarkServices[] = $service;
-       // end function
       }
 
       /**
@@ -131,7 +127,7 @@
        * Version 0.2, 07.09.2007<br />
        * Version 0.3, 08.09.2007 (Profiling hinzugef�gt)<br />
        */
-      function getBookmarkCode(){
+      public function getBookmarkCode(){
 
          $t = &Singleton::getInstance('BenchmarkTimer');
          $ID = 'socialBookmarkManager::getBookmarkCode()';
@@ -144,38 +140,27 @@
          }
 
          // get services from config file
-         $config = &$this->__getConfiguration('modules::socialbookmark','bookmarkservices');
-         $services = $config->getConfiguration();
+         $services = $this->getConfiguration('modules::socialbookmark','bookmarkservices');
 
-         if($services != null){
+         foreach($services->getSectionNames() as $serviceName){
 
-            foreach($services as $service){
+            $service = $services->getSection($serviceName);
+            $this->__BookmarkServices[] =
+               new bookmarkEntry(
+                                 $service->getValue('BookmarkService.BaseURL'),
+                                 $service->getValue('BookmarkService.Param.URL'),
+                                 $service->getValue('BookmarkService.Param.Title'),
+                                 $service->getValue('BookmarkService.Display.Title'),
+                                 $service->getValue('BookmarkService.Display.Image'),
+                                 $service->getValue('BookmarkService.Display.ImageExt')
+               );
 
-               $this->__BookmarkServices[] =
-                  new bookmarkEntry(
-                                    $service['BookmarkService.BaseURL'],
-                                    $service['BookmarkService.Param.URL'],
-                                    $service['BookmarkService.Param.Title'],
-                                    $service['BookmarkService.Display.Title'],
-                                    $service['BookmarkService.Display.Image'],
-                                    $service['BookmarkService.Display.ImageExt']
-                  );
-
-             // end foreach
-            }
-
-          // end if
-         }
-         else{
-            trigger_error('[socialBookmarkManager::getBookmarkCode()] Configuration does not '
-               .'contain a valid bookmark service!',E_USER_WARNING);
-          // end if
          }
 
          $output = (string)'';
          
          for($i = 0; $i < count($this->__BookmarkServices); $i++){
-            $output .= $this->__generateBookmarkEntry($this->__BookmarkServices[$i]);
+            $output .= $this->generateBookmarkEntry($this->__BookmarkServices[$i]);
             $output .= PHP_EOL;
           // end for
          }
@@ -204,10 +189,10 @@
        * Version 0.5, 25.05.2008 (Page-Title wird nun �bergeben)<br />
        * Version 0.6, 21.06.2008 (Replaced APPS__URL_REWRITING with a value from the registry)<br />
        */
-      protected function __generateBookmarkEntry($bookmarkEntry){
+      protected function generateBookmarkEntry($bookmarkEntry){
 
          $t = &Singleton::getInstance('BenchmarkTimer');
-         $ID = 'socialBookmarkManager::__generateBookmarkEntry('.$bookmarkEntry->get('BookmarkService.Display.Title').')';
+         $ID = 'socialBookmarkManager::generateBookmarkEntry('.$bookmarkEntry->get('BookmarkService.Display.Title').')';
          $t->start($ID);
 
          // Retrieve some parameters from the registry
