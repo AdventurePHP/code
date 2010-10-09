@@ -105,8 +105,6 @@
             throw new GenericORMapperException('[GenericORRelationMapper::loadObjectListByCriterion()] '
                     .'No criterion object given as second argument! Please consult the manual.',
                     E_USER_ERROR);
-            return null;
-          // end if
          }
          return $this->loadObjectListByTextStatement($objectName,$this->__buildSelectStatementByCriterion($objectName,$criterion));
 
@@ -421,8 +419,6 @@
             throw new GenericORMapperException('[GenericORRelationMapper::loadRelatedObjects()] '
                     .'The given object is null. Perhaps the object does not exist in database any '
                     .'more. Please check your implementation!');
-            return null;
-          // end if
          }
 
          // gather information about the objects related to each other
@@ -437,8 +433,6 @@
                .'" found! Please re-check your relation configuration.',
                E_USER_ERROR
             );
-            exit(1);
-          // end if
          }
 
          // BUG-142: wrong spelling of source and target object must result in descriptive error!
@@ -449,7 +443,6 @@
                .'"! Please re-check your relation configuration.',
                E_USER_ERROR
             );
-            exit(1);
          }
          $targetObject = $this->__MappingTable[$targetObjectName];
 
@@ -537,8 +530,6 @@
             throw new GenericORMapperException('[GenericORRelationMapper::loadNotRelatedObjects()] '
                     .'The given object is null. Perhaps the object does not exist in database any '
                     .'more. Please check your implementation!');
-            return null;
-          // end if
          }
 
          // gather information about the objects *not* related to each other
@@ -698,8 +689,6 @@
                              .'The object name "'.$relatedObjects[$relationKey][$i]->getObjectName()
                              .'" does not exist in the mapping table! Hence, your object cannot be '
                              .'saved! Please check your object configuration.');
-                     break;
-                   // end if
                   }
                   $relObjectIdPkName = $this->__MappingTable[$relatedObjects[$relationKey][$i]->getObjectName()]['ID'];
 
@@ -709,8 +698,6 @@
                              .'Relation "'.$relationKey.'" does not exist in the relation table! '
                              .'Hence, your related object cannot be saved! Please check your '
                              .'relation configuration.');
-                     break;
-                   // end if
                   }
 
                   // create statement
@@ -786,8 +773,6 @@
                           .'Domain object "'.$objectName.'" with id "'.$object->getProperty($objectID)
                           .'" cannot be deleted, because it still has composed child objects!',
                           E_USER_WARNING);
-                  return null;
-                // end if
                }
 
              // end for
@@ -851,8 +836,6 @@
             throw new GenericORMapperException('[GenericORRelationMapper::createAssociation()] '
                     .'Relation with name "'.$relationName.'" is not defined in the mapping table! '
                     .'Please check your relation configuration.',E_USER_WARNING);
-            return false;
-          // end
          }
 
          // if relation is a composition, return with error
@@ -860,8 +843,6 @@
             throw new GenericORMapperException('[GenericORRelationMapper::createAssociation()] '
                     .'Compositions cannot be created with this method! Use saveObject() on the '
                     .'target object to create a composition!',E_USER_WARNING);
-            return false;
-          // end if
          }
 
          // create association
@@ -905,8 +886,6 @@
             throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociation()] '
                     .'Relation with name "'.$relationName.'" is not defined in the mapping table! '
                     .'Please check your relation configuration.',E_USER_WARNING);
-            return false;
-          // end
          }
 
          // if relation is a composition, return with error
@@ -914,8 +893,6 @@
             throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociation()] '
                     .'Compositions cannot be deleted! Use deleteObject() on the target object instead!',
                     E_USER_WARNING);
-            return false;
-          // end if
          }
 
          // get association and delete it
@@ -939,7 +916,7 @@
       /**
        * @public
        *
-       * Returns true if an association of the given type exists between the provided objects.<br />
+       * Returns true if an association of the given type exists between the provided objects.
        *
        * @param string $relationName Name of the relation to select
        * @param GenericDomainObject $sourceObject Source object for the relation
@@ -958,43 +935,92 @@
             throw new GenericORMapperException('[GenericORRelationMapper::isAssociated()] Relation '
                     .'with name "'.$relationName.'" is not defined in the relation table! Please '
                     .'check your relation configuration.',E_USER_WARNING);
-            return false;
-          // end
          }
 
          // if relation is a composition, return with error
          if($this->__RelationTable[$relationName]['Type'] == 'COMPOSITION'){
             throw new GenericORMapperException('[GenericORRelationMapper::isAssociated()] The given '
                     .'relation ("'.$relationName.'") is not an association! Please check your '
-                    .'relation configuration.',E_USER_WARNING);
-            return false;
-          // end if
+                    .'relation configuration.', E_USER_WARNING);
          }
 
          // check for association
-         $SourceObjectName = $sourceObject->getObjectName();
-         $SourceObjectID = $this->__MappingTable[$SourceObjectName]['ID'];
-         $TargetObjectName = $targetObject->getObjectName();
-         $TargetObjectID = $this->__MappingTable[$TargetObjectName]['ID'];
+         $sourceObjectName = $sourceObject->getObjectName();
+         $sourceObjectID = $this->__MappingTable[$sourceObjectName]['ID'];
+         $targetObjectName = $targetObject->getObjectName();
+         $targetObjectID = $this->__MappingTable[$targetObjectName]['ID'];
 
-         $delete = 'SELECT * FROM `'.$this->__RelationTable[$relationName]['Table'].'`
+         $select = 'SELECT * FROM `'.$this->__RelationTable[$relationName]['Table'].'`
                     WHERE
-                       `'.$SourceObjectID.'` = \''.$sourceObject->getProperty($SourceObjectID).'\'
+                       `'.$sourceObjectID.'` = \''.$sourceObject->getObjectId().'\'
                        AND
-                       `'.$TargetObjectID.'` = \''.$targetObject->getProperty($TargetObjectID).'\';';
-         $result = $this->__DBDriver->executeTextStatement($delete,$this->__LogStatements);
+                       `'.$targetObjectID.'` = \''.$targetObject->getObjectId().'\';';
+         $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
 
          // return if objects are associated
-         if($this->__DBDriver->getNumRows($result) > 0){
-            return true;
-          // end if
-         }
-         else{
-            return false;
-          // end else
-         }
+         return ($this->__DBDriver->getNumRows($result) > 0) ? true : false;
 
        // end function
+      }
+
+      /**
+       * @public
+       *
+       * Evaluates, whether the applied objects are connected by the given relation name. Please
+       * note, that relations of type COMPOSITION are directed. This means, that the method will
+       * return false, in case child and father are changed mixed.
+       *
+       * @param string $relationName The name of the relation between <em>$father</em> and <em>$child</em>.
+       * @param GenericDomainObject $child The object, that is composed under the <em>$father</em> object.
+       * @param GenericDomainObject $father The father object composing <em>$child</em>.
+       * @return true in case <em>$father</em> composes <em>$child</em> using the given relation name or false otherwise.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 09.10.2010<br />
+       */
+      public function isComposed($relationName, GenericDomainObject $child, GenericDomainObject $father){
+
+         // test, if relation exists in relation table
+         if(!isset($this->__RelationTable[$relationName])){
+            throw new GenericORMapperException('[GenericORRelationMapper::isComposed()] Relation '
+                    .'with name "'.$relationName.'" is not defined in the relation table! Please '
+                    .'check your relation configuration.', E_USER_ERROR);
+         }
+
+         // if relation is an association, return with error
+         if($this->__RelationTable[$relationName]['Type'] == 'ASSOCIATION'){
+            throw new GenericORMapperException('[GenericORRelationMapper::isComposed()] The given '
+                    .'relation ("'.$relationName.'") is not a composition! Please check your '
+                    .'relation configuration.',E_USER_ERROR);
+         }
+
+         $fatherObjectName = $father->getObjectName();
+         $fatherObjectId = $this->__MappingTable[$fatherObjectName]['ID'];
+         $childObjectName = $child->getObjectName();
+         $childObjectId = $this->__MappingTable[$childObjectName]['ID'];
+
+         // check relation configuration to have type-safe and directed results
+         if ($this->__RelationTable[$relationName]['SourceObject'] != $fatherObjectName
+                 || $this->__RelationTable[$relationName]['TargetObject'] != $childObjectName) {
+            throw new GenericORMapperException('[GenericORRelationMapper::isComposed()] Given '
+                    .'child object with name "'.$childObjectName.'" is not composable under '
+                    .'object with name "'.$fatherObjectName.'". Hence, requesting relation state '
+                    .'for relation with name "'.$relationName.'" invoking the applied objects is '
+                    .'not allowed due to configuration! Please double-check your code and configuration.',
+                    E_USER_ERROR);
+         }
+
+         $select = 'SELECT * FROM `'.$this->__RelationTable[$relationName]['Table'].'`
+                    WHERE
+                       `'.$fatherObjectId.'` = \''.$father->getObjectId().'\'
+                       AND
+                       `'.$childObjectId.'` = \''.$child->getObjectId().'\';';
+         $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
+
+         // return if objects are associated
+         return ($this->__DBDriver->getNumRows($result) > 0) ? true : false;
+
       }
 
       /**
