@@ -1,4 +1,25 @@
 <?php
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
+
+   import('core::configuration::provider','BaseConfigurationProvider');
    import('core::configuration::provider::ini','IniConfiguration');
 
    /**
@@ -19,42 +40,22 @@
     *    activated you may only specify the configuration files, that are really depending on
     *    the environment.
     * </li>
-    * <li>
-    *    Parse sub sections: in case $parseSubSections is set to true, configuration keys containing
-    *    a dot (".") are interpreted as sub-sections of the current section. Providing a key named
-    *    "conf.abc" and "conf.def" will generate a section "conf" with the two keys "abc" and "def".
-    * </li>
     * </ul>
+    * In case configuration keys contain a dot (".") they are interpreted as sub-sections of the
+    * current section. Providing a key named "conf.abc" and "conf.def" will generate a section
+    * "conf" with the two keys "abc" and "def".
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 27.09.2010<br />
     */
-   class IniConfigurationProvider implements ConfigurationProvider {
-      
-      /**
-       * @var boolean Set to true, the context is omitted within the configuration file path.
-       */
-      private $omitContext = false;
-
-      /**
-       * @var boolean Set to true, the environment fallback will be activated.
-       */
-      private $activateEnvironmentFallback = false;
+   class IniConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
       
       /**
        * @private
        * @var string The sub key delimiter.
        */
       private static $NAMESPACE_DELIMITER = '.';
-
-      public function setOmitContext($omitContext) {
-         $this->omitContext = $omitContext;
-      }
-
-      public function setActivateEnvironmentFallback($activateEnvironmentFallback) {
-         $this->activateEnvironmentFallback = $activateEnvironmentFallback;
-      }
 
       public function loadConfiguration($namespace, $context, $language, $environment, $name) {
 
@@ -179,33 +180,8 @@
          return $buffer;
       }
 
-      /**
-       * @param string $namespace The namespace of the desired config.
-       * @param string $context The current application's context.
-       * @param string $language The current application's language.
-       * @param string $environment The current environment.
-       * @param string $name The name of the desired config.
-       * @return string The appropriate file path.
-       */
-      private function getFilePath($namespace, $context, $language, $environment, $name) {
-
-         // fallback for missing file extensions (backward compatibility for pre-1.13 config files)
-         if (!preg_match('/\.ini$/i', $name)) {
-            $name = $name . '.ini';
-         }
-
-         // assemble the context
-         $contextPath = ($this->omitContext || $context === null )? '' : '/' . str_replace('::', '/', $context);
-
-         // assemble file name
-         $fileName = ($environment === null) ? '/' . $name : '/' . $environment . '_' . $name;
-
-         // using APPS__PATH is about 50 times faster than the registry!
-         return APPS__PATH
-            . '/config'
-            . '/' . str_replace('::', '/', $namespace)
-            . $contextPath
-            . $fileName;
+      protected function getConfigFileExtension() {
+         return 'ini';
       }
 
    }
