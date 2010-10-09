@@ -195,14 +195,17 @@
          }
 
          // assemble the context
-         $contextPath = $this->omitContext ? '' : '/' . str_replace('::', '/', $context);
+         $contextPath = ($this->omitContext || $context === null )? '' : '/' . str_replace('::', '/', $context);
+
+         // assemble file name
+         $fileName = ($environment === null) ? '/' . $name : '/' . $environment . '_' . $name;
 
          // using APPS__PATH is about 50 times faster than the registry!
          return APPS__PATH
             . '/config'
             . '/' . str_replace('::', '/', $namespace)
             . $contextPath
-            . '/' . $environment . '_' . $name;
+            . $fileName;
       }
 
    }
