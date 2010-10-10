@@ -39,24 +39,30 @@
     * Version 0.1, 28.08.2010<br />
     */
    class htmlheader_taglib_addstaticcss extends Document {
-      
-       public function onParseTime() {
-           $header = &$this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
-           /* @var $header HtmlHeaderManager */
 
-           $file = $this->getAttribute('file');
-           if($file == null){
-              throw new InvalidArgumentException('['.get_class($this).'::onParseTime()] Please '
-                      .'provide the "file" attribute in order to add a static stylesheet.',
-                      E_USER_ERROR);
-           }
-           
-           $header->addNode(new StaticCssNode($file));
-       }
+      public function onParseTime() {
+         $header = &$this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
+         /* @var $header HtmlHeaderManager */
 
-       public function transform(){
-           return '';
-       }
+         $file = $this->getAttribute('file');
+         if($file == null){
+            throw new InvalidArgumentException('['.get_class($this).'::onParseTime()] Please '
+               .'provide the "file" attribute in order to add a static stylesheet.',
+               E_USER_ERROR);
+         }
+         $node = new StaticCssNode($file);
+
+         $media = $this->getAttribute('media');
+         if ($media !== null) {
+            $node->setAttribute('media', $media);
+         }
+
+         $header->addNode($node);
+      }
+
+      public function transform(){
+         return '';
+      }
 
    }
 ?>

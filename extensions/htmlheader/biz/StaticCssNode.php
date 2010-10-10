@@ -38,6 +38,7 @@
          $this->setAttribute('href',$file);
          $this->setAttribute('rel','stylesheet');
          $this->setAttribute('type','text/css');
+         $this->setAttribute('media','screen');
       }
 
       protected function getTagName() {
