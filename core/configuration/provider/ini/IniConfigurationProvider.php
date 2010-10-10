@@ -64,16 +64,17 @@
          if(file_exists($fileName)){
             $rawConfig = parse_ini_file($fileName, true);
             return $this->parseConfig($rawConfig);
-         } else {
-            if($this->activateEnvironmentFallback){
-               return $this->loadConfiguration($namespace, $context, $language, 'DEFAULT', $name);
-            } else {
-               throw new ConfigurationException('[IniConfigurationProvider::loadConfiguration()] '
-                       .'Configuration with namepace "'.$namespace.'", context "'.$context.'", '
-                       .' language "'.$language.'", environment "'.$environment.'", and name '
-                       .'"'.$name.'" cannot be loaded!', E_USER_ERROR);
-            }
          }
+
+         if($this->activateEnvironmentFallback){
+            return $this->loadConfiguration($namespace, $context, $language, 'DEFAULT', $name);
+         }
+
+         throw new ConfigurationException('[IniConfigurationProvider::loadConfiguration()] '
+                 .'Configuration with namepace "'.$namespace.'", context "'.$context.'", '
+                 .' language "'.$language.'", environment "'.$environment.'", and name '
+                 .'"'.$name.'" cannot be loaded!', E_USER_ERROR);
+
       }
 
       /**

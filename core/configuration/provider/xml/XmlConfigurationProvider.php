@@ -64,16 +64,16 @@
 
             return $config;
             
-         } else {
-            if($this->activateEnvironmentFallback){
-               return $this->loadConfiguration($namespace, $context, $language, 'DEFAULT', $name);
-            } else {
-               throw new ConfigurationException('[XmlConfigurationProvider::loadConfiguration()] '
-                       .'Configuration with namepace "'.$namespace.'", context "'.$context.'", '
-                       .' language "'.$language.'", environment "'.$environment.'", and name '
-                       .'"'.$name.'" cannot be loaded!', E_USER_ERROR);
-            }
          }
+
+         if($this->activateEnvironmentFallback){
+            return $this->loadConfiguration($namespace, $context, $language, 'DEFAULT', $name);
+         }
+         
+         throw new ConfigurationException('[XmlConfigurationProvider::loadConfiguration()] '
+                 .'Configuration with namepace "'.$namespace.'", context "'.$context.'", '
+                 .' language "'.$language.'", environment "'.$environment.'", and name '
+                 .'"'.$name.'" cannot be loaded!', E_USER_ERROR);
 
       }
 
