@@ -40,6 +40,10 @@
     *    activated you may only specify the configuration files, that are really depending on
     *    the environment.
     * </li>
+    * <li>
+    *    Disable environment: in case $omitEnvironment is set to true, the environment is not
+    *    used as sub part of the file name.
+    * </li>
     * </ul>
     *
     * @author Christian Achatz

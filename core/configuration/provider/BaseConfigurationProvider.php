@@ -42,6 +42,11 @@
       protected $activateEnvironmentFallback = false;
 
       /**
+       * @var boolean Set to true, the environment is omitted within the configuration file path.
+       */
+      protected $omitEnvironment = false;
+
+      /**
        * @var string The file extension of the provider.
        */
       protected $extension = null;
@@ -52,6 +57,10 @@
 
       public function setActivateEnvironmentFallback($activateEnvironmentFallback) {
          $this->activateEnvironmentFallback = $activateEnvironmentFallback;
+      }
+
+      public function setOmitEnvironment($omitEnvironment) {
+         $this->omitEnvironment = $omitEnvironment;
       }
 
       public function setExtension($extension) {
@@ -77,7 +86,7 @@
          $contextPath = ($this->omitContext || $context === null ) ? '' : '/' . str_replace('::', '/', $context);
 
          // assemble file name
-         $fileName = ($environment === null) ? '/' . $name : '/' . $environment . '_' . $name;
+         $fileName = ($this->omitEnvironment || $environment === null) ? '/' . $name : '/' . $environment . '_' . $name;
 
          // using APPS__PATH is about 50 times faster than the registry!
          return APPS__PATH

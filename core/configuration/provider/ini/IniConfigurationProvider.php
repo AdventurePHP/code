@@ -40,6 +40,10 @@
     *    activated you may only specify the configuration files, that are really depending on
     *    the environment.
     * </li>
+    * <li>
+    *    Disable environment: in case $omitEnvironment is set to true, the environment is not
+    *    used as sub part of the file name.
+    * </li>
     * </ul>
     * In case configuration keys contain a dot (".") they are interpreted as sub-sections of the
     * current section. Providing a key named "conf.abc" and "conf.def" will generate a section
