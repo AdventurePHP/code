@@ -107,6 +107,17 @@
        */
       function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config);
 
+      /**
+       * Injects the file extension, the provider is registered with.
+       *
+       * @param string $extension The extension, the provider is registered with.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 27.09.2010<br />
+       */
+      function setExtension($extension);
+
    }
 
    /**
@@ -167,8 +178,10 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 27.09.2010<br />
+       * Version 0.2, 10.10.2010 (Added support to inject the extension into the provider to reuse a provider for several extensions)<br />
        */
       public static function registerProvider($extension, ConfigurationProvider $provider) {
+         $provider->setExtension($extension);
          self::$PROVIDER[strtolower($extension)] = $provider;
       }
 

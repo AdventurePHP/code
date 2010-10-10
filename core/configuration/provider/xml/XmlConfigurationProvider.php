@@ -123,9 +123,5 @@
 
       }
 
-      protected function getConfigFileExtension() {
-         return 'xml';
-      }
-
    }
 ?>

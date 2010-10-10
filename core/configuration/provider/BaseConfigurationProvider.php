@@ -42,19 +42,9 @@
       protected $activateEnvironmentFallback = false;
 
       /**
-       * @abstract
-       * @protected
-       *
-       * Defines the extension of the configuration provider to be able to fallback to the
-       * provider's extension if none is present.
-       *
-       * @return string The extension of the configuration file, tha provider expects.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 09.10.2010<br />
+       * @var string The file extension of the provider.
        */
-      abstract protected function getConfigFileExtension();
+      protected $extension = null;
 
       public function setOmitContext($omitContext) {
          $this->omitContext = $omitContext;
@@ -62,6 +52,10 @@
 
       public function setActivateEnvironmentFallback($activateEnvironmentFallback) {
          $this->activateEnvironmentFallback = $activateEnvironmentFallback;
+      }
+
+      public function setExtension($extension) {
+         $this->extension = $extension;
       }
 
       /**
@@ -75,9 +69,8 @@
       protected function getFilePath($namespace, $context, $language, $environment, $name) {
 
          // fallback for missing file extensions (backward compatibility for pre-1.13 config files)
-         $ext = $this->getConfigFileExtension();
-         if (!preg_match('/\.' . $ext . '$/i', $name)) {
-            $name = $name . '.' . $ext;
+         if (!preg_match('/\.' . $this->extension . '$/i', $name)) {
+            $name = $name . '.' . $this->extension;
          }
 
          // assemble the context

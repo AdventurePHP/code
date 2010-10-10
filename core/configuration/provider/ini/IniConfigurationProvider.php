@@ -181,9 +181,5 @@
          return $buffer;
       }
 
-      protected function getConfigFileExtension() {
-         return 'ini';
-      }
-
    }
 ?>
