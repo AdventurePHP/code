@@ -149,6 +149,11 @@
       private static $PROVIDER = array();
 
       /**
+       * @var Configuration[] The configuration files, that have been requested before.
+       */
+      private static $CONFIG_CACHE = array();
+
+      /**
        * @public
        * @static
        *
@@ -236,7 +241,11 @@
        * Version 0.1, 27.09.2010<br />
        */
       public static function loadConfiguration($namespace, $context, $language, $environment, $name) {
-         return self::getProvider($name)->loadConfiguration($namespace, $context, $language, $environment, $name);
+         $key = self::getCacheKey($namespace, $context, $language, $environment, $name);
+         if (!isset(self::$CONFIG_CACHE[$key])) {
+            self::$CONFIG_CACHE[$key] = self::getProvider($name)->loadConfiguration($namespace, $context, $language, $environment, $name);
+         }
+         return self::$CONFIG_CACHE[$key];
       }
 
       /**
@@ -257,7 +266,30 @@
        * Version 0.1, 27.09.2010<br />
        */
       public static function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
+         $key = self::getCacheKey($namespace, $context, $language, $environment, $name);
+         unset(self::$CONFIG_CACHE[$key]); // clear cache to not have to refresh manually
          return self::getProvider($name)->saveConfiguration($namespace, $context, $language, $environment, $name, $config);
+      }
+
+      /**
+       * @static
+       * @private
+       *
+       * Calculates the cache key for the current config.
+       *
+       * @param string $namespace The namespace of the configuration.
+       * @param string $context The current application's context.
+       * @param string $language The current application's language.
+       * @param string $environment The environment, the applications runs on.
+       * @param string $name The name of the configuration to load including it's extension.
+       * @return string The case key for the current config.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 27.09.2010<br />
+       */
+      private static function getCacheKey($namespace, $context, $language, $environment, $name){
+         return $namespace . $context . $language . $environment . $name;
       }
 
       /**
