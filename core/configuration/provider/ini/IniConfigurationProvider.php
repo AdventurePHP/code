@@ -66,7 +66,7 @@
             return $this->parseConfig($rawConfig);
          }
 
-         if($this->activateEnvironmentFallback){
+         if($this->activateEnvironmentFallback && $environment !== 'DEFAULT'){
             return $this->loadConfiguration($namespace, $context, $language, 'DEFAULT', $name);
          }
 
