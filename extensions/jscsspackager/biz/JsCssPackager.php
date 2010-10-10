@@ -74,12 +74,13 @@ class JsCssPackager extends APFObject {
    public function getPackage($name, $gzip = false) {
       $cfgPack = $this->config->getSection($name);
 
-      if ($cfgPack->getValue('ServerCacheMinutes') === null) {
-         $cfgPack->getValue('ServerCacheMinutes') = 0;
+      $ServerCacheMinutes = $cfgPack->getValue('ServerCacheMinutes');
+      if ($ServerCacheMinutes === null) {
+         $ServerCacheMinutes = 0;
       }
 
       /* If ServerCacheMinutes is not 0, we use a filecache */
-      if ((int) $cfgPack->getValue('ServerCacheMinutes') !== 0) {
+      if ((int) $ServerCacheMinutes !== 0) {
          $cMF = &$this->__getServiceObject('tools::cache', 'CacheManagerFabric');
          $cM = &$cMF->getCacheManager('jscsspackager_cache');
 
@@ -102,7 +103,7 @@ class JsCssPackager extends APFObject {
          }
          /* Package was not in cache or was expired, we generate a new one, cache and deliver it. */
          $newPackage = $this->generatePackage($cfgPack, $name);
-         $cacheExpires = time() + ($cfgPack->getValue('ServerCacheMinutes') * 60);
+         $cacheExpires = time() + ($ServerCacheMinutes * 60);
          $newPackageGzip = gzencode($newPackage, 9);
 
          $cM->writeToCache(new SimpleCacheKey($name), $newPackage . $cacheExpires);
@@ -136,8 +137,9 @@ class JsCssPackager extends APFObject {
     */
    protected function generatePackage(Configuration $cfgPack, $name) {
       $output = '';
-      foreach ($cfgPack->getValue('Files') as $file) {
-         $output .= $this->loadSingleFile($file['Namespace'], $file['Filename'], $cfgPack->getValue('PackageType'), $name);
+      $Files = $cfgPack->getSection('Files')->getSections();
+      foreach ($Files as $file) {
+         $output .= $this->loadSingleFile($file->getValue('Namespace'), $file->getValue('Filename'), $cfgPack->getValue('PackageType'), $name);
       }
 
       if ($cfgPack->getValue('EnableShrinking') === 'true') {
