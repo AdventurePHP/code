@@ -90,7 +90,7 @@
          }
 
          // read configuration
-         $config = $this->getConfiguration('core::database','connections');
+         $config = $this->getConfiguration('core::database','connections.ini');
 
          // get config section
          $section = $config->getSection($connectionKey);
