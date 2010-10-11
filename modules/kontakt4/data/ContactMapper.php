@@ -47,7 +47,7 @@
        */
       public function loadRecipients(){
 
-         $config = $this->getConfiguration('modules::kontakt4','empfaenger');
+         $config = $this->getConfiguration('modules::kontakt4','recipients.ini');
 
          $recipients = array();
          foreach($config->getSectionNames() as $name){
@@ -88,14 +88,12 @@
 
          if(!is_array($recipients)){
             return array();
-         } else {
+         }
 
-            for($i = 0; $i < count($recipients); $i++){
-               if($recipients[$i]->getId() == $Id){
-                  return $recipients[$i];
-               }
+         for($i = 0; $i < count($recipients); $i++){
+            if($recipients[$i]->getId() == $Id){
+               return $recipients[$i];
             }
-
          }
 
        // end function
