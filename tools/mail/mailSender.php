@@ -136,6 +136,11 @@
          $config = $this->getConfiguration('tools::mail', 'mailsender.ini');
          $section = $config->getSection($initParam);
 
+         if($section === null){
+            throw new InvalidArgumentException('[mailSender::init()] Section "'.$initParam
+                    .'" is not present within the mail sender\'s configuration!');
+         }
+
          // set sender
          $this->__Sender['Name'] = $section->getValue('Mail.SenderName');
          $this->__Sender['EMail'] = $section->getValue('Mail.SenderEMail');
