@@ -83,7 +83,7 @@ final class JsCssPackagerAction extends AbstractFrontcontrollerAction {
         
         // Check if gzip is supported
         $acceptGzip = false;
-        if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')){
+        if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')){
             $acceptGzip = true;
             // send gzip header
             HeaderManager::send("Content-Encoding: gzip");
