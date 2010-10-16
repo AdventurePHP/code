@@ -50,7 +50,7 @@
        * @version
        * Version 0.1, 06.08.2010<br />
        */
-      public function AdvancedCacheKey($cacheKey,$cacheSubKey){
+      public function __construct($cacheKey, $cacheSubKey){
          parent::SimpleCacheKey($cacheKey);
          $this->subKey = $cacheSubKey;
       }
