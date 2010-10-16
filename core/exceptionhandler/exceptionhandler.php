@@ -58,20 +58,27 @@
          // execute exception handler
          $excHandler = new $class();
 
-         if(is_subclass_of($excHandler,'AbstractExceptionHandler') === true){
-            $excHandler->handleException($exception);
-          // end if
-         }
-         else{
-            echo 'APF catchable exception: '.$exception->getMessage().' (code: '.$exception->getCode().') in '.$exception->getFile().' on line '.$exception->getLine().'!';
-          // end else
+         if (is_subclass_of($excHandler, 'AbstractExceptionHandler') === true) {
+            try {
+               $excHandler->handleException($exception);
+            } catch (Exception $exception) {
+               // catch exceptions thrown within the exception handler to avoid
+               // Fatal error: Exception thrown without a stack frame in Unknown on line 0
+               // errors.
+               echo 'APF catchable exception: ' . $exception->getMessage() . ' (code: ' 
+                       . $exception->getCode() . ') in ' . $exception->getFile() . ' on line '
+                       . $exception->getLine() . '!';
+            }
+         } else {
+            echo 'APF catchable exception: ' . $exception->getMessage() . ' (code: ' 
+                    . $exception->getCode() . ') in ' . $exception->getFile() . ' on line '
+                    . $exception->getLine() . '!';
          }
 
-       // end if
-      }
-      else{
-         echo 'APF catchable exception: '.$exception->getMessage().' (code: '.$exception->getCode().') in '.$exception->getFile().' on line '.$exception->getLine().'!';
-       // end if
+      } else {
+         echo 'APF catchable exception: ' . $exception->getMessage() . ' (code: ' 
+                 . $exception->getCode() . ') in ' . $exception->getFile() . ' on line '
+                 . $exception->getLine() . '!';
       }
 
     // end function
