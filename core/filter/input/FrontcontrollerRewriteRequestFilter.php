@@ -50,9 +50,6 @@
        */
       protected $__FrontcontrollerActionKeyword;
 
-      function FrontcontrollerRewriteRequestFilter(){
-      }
-
       /**
        * @public
        *
@@ -81,7 +78,6 @@
 
          if(isset($_REQUEST[$sessionName])){
             $PHPSESSID = $_REQUEST[$sessionName];
-          // end if
          }
 
          // initialize param to analyze
@@ -89,7 +85,7 @@
          if(isset($_REQUEST['query'])){
             $query = $_REQUEST['query'];
          }
-         
+
          // delete the rewite param indicator
          unset($_REQUEST['query']);
 
@@ -100,7 +96,8 @@
             // split url by delimiter
             $requestURLParts = explode($this->__ActionDelimiter,$query);
 
-            for($i = 0; $i < count($requestURLParts); $i++){
+            $count = count($requestURLParts);
+            for($i = 0; $i < $count; $i++){
 
                // remove leading slash
                $requestURLParts[$i] = $this->__deleteTrailingSlash($requestURLParts[$i]);
@@ -118,48 +115,36 @@
 
                      $actionParamsArray = array();
 
-                     if(count($actionParams) > 0){
+                     $actionParamCount = count($actionParams);
+                     if($actionParamCount > 0){
                         $x = 0;
-                        while($x <= (count($actionParams) - 1)){
-
+                        while($x <= ($actionParamCount - 1)){
                            if(isset($actionParams[$x + 1])){
                               $actionParamsArray[$actionParams[$x]] = $actionParams[$x + 1];
                            }
-                           $x = $x + 2; // increase by two, because nex offset is the value!
+                           $x = $x + 2; // increase by two, because next offset is the value!
 
-                         // end while
                         }
 
-                      // end if
                      }
 
                      $fC->addAction($actionNamespace,$actionName,$actionParamsArray);
 
-                   // end if
                   }
 
-                // end if
-               }
-               else{
-
+               } else {
                   $paramArray = $this->__createRequestArray($requestURLParts[$i]);
                   $_REQUEST = array_merge($_REQUEST,$paramArray);
-
-                // end else
                }
 
-             // end for
             }
 
-          // end if
-         }
-         else{
+         } else {
 
             // do page controller rewriting!
             $paramArray = $this->__createRequestArray($query);
             $_REQUEST = array_merge($_REQUEST,$paramArray);
 
-          // end if
          }
 
          // re-add POST params
