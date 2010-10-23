@@ -81,7 +81,7 @@
          $this->errorLine = $errorLine;
 
          // log error
-         $this->__logError();
+         $this->logError();
 
          // build nice error page
          echo $this->__buildErrorPage();
@@ -99,7 +99,7 @@
        * Version 0.1, 21.01.2007<br />
        * Version 0.2, 29.03.2007 (Changed to new logger)<br />
        */
-      protected function __logError(){
+      protected function logError(){
          $message = '['.($this->__generateErrorID()).'] '.$this->errorMessage.' (Number: '.$this->errorNumber.', File: '.$this->errorFile.', Line: '.$this->errorLine.')';
          import('core::logging','Logger');
          $log = &Singleton::getInstance('Logger');

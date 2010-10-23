@@ -31,12 +31,10 @@
    *  @version
    *  Version 0.1, 09.10.2008<br />
    */
-   class HeaderManager
-   {
+   class HeaderManager {
 
-      private function HeaderManager(){
+      private function __construct(){
       }
-
 
       /**
       *  @public
@@ -52,9 +50,7 @@
       */
       public static function forward($targetURL){
          header('Location: '.str_replace('&amp;','&',$targetURL));
-       // end function
       }
-
 
       /**
       *  @public
@@ -71,21 +67,9 @@
       *  Version 0.1, 09.10.2008<br />
       */
       public static function redirect($targetURL,$permanent = false){
-
-         if($permanent === true){
-            $statusCode = 301;
-          // end if
-         }
-         else{
-            $statusCode = 302;
-          // end else
-         }
-
-         header('Location: '.str_replace('&amp;','&',$targetURL),false,$statusCode);
-
-       // end function
+         $statusCode = $permanent === true ? 301 : 302;
+         header('Location: ' . str_replace('&amp;', '&', $targetURL), false, $statusCode);
       }
-
 
       /**
       *  @public
@@ -96,24 +80,20 @@
       *
       *  @param string $content the content of the header
       *  @param bool $replacePrevHeaders indicates, if previous headers should be overwritten
-      *  @param int $HTTPStatus the HTTP status code
+      *  @param int $httpStatus the HTTP status code
       *
       *  @author Christian Achatz
       *  @version
       *  Version 0.1, 09.10.2008<br />
       */
-      public static function send($content,$replacePrevHeaders = false,$HTTPStatus = false){
+      public static function send($content,$replacePrevHeaders = false,$httpStatus = false){
 
-         if($HTTPStatus === false){
-            header($content,$replacePrevHeaders);
-          // end if
-         }
-         else{
-            header($content,$replacePrevHeaders,$HTTPStatus);
-          // end else
+         if ($httpStatus === false) {
+            header($content, $replacePrevHeaders);
+         } else {
+            header($content, $replacePrevHeaders, $httpStatus);
          }
 
-       // end function
       }
 
     // end class

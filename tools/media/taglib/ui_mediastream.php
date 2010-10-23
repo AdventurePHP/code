@@ -35,15 +35,6 @@
    class ui_mediastream extends Document {
 
       /**
-       * @protected
-       * @var boolean Indicates, of the tag should remain quite in case of attribute errors.
-       */
-      protected $__NoOutput = false;
-
-      public function ui_mediastream(){
-      }
-
-      /**
        * @public
        *
        * Sets up and checks the tag attributes.
@@ -57,27 +48,19 @@
 
          // gather attributes
          if($this->getAttribute('namespace') === null){
-            trigger_error('['.get_class($this).'::onParseTime()] The tag definition does not contain a "namespace" definition!');
-            $this->__NoOutput = true;
-          // end if
+            throw new InvalidArgumentException('['.get_class($this).'::onParseTime()] The tag definition does not contain a "namespace" definition!');
          }
 
          $filename = $this->getAttribute('filename');
          if($filename === null){
-            trigger_error('['.get_class($this).'::onParseTime()] The tag definition does not contain a "filename" definition!');
-            $this->__NoOutput = true;
-          // end if
+            throw new InvalidArgumentException('['.get_class($this).'::onParseTime()] The tag definition does not contain a "filename" definition!');
          }
 
          // split filename into extension and body
-         if($this->__NoOutput === false){
-            $dot = strrpos($filename,'.');
-            $this->setAttribute('extension',substr($filename,$dot + 1));
-            $this->setAttribute('filebody',substr($filename,0,$dot));
-          // end if
-         }
+         $dot = strrpos($filename,'.');
+         $this->setAttribute('extension',substr($filename,$dot + 1));
+         $this->setAttribute('filebody',substr($filename,0,$dot));
 
-       // end function
       }
 
       /**
@@ -97,37 +80,29 @@
        */
       public function transform(){
 
-         if($this->__NoOutput === false){
+         // get infos from the registry
+         $urlrewrite = Registry::retrieve('apf::core','URLRewriting');
+         $actionurl = Registry::retrieve('apf::core','CurrentRequestURL');
 
-            // get infos from the registry
-            $urlrewrite = Registry::retrieve('apf::core','URLRewriting');
-            $actionurl = Registry::retrieve('apf::core','CurrentRequestURL');
+         // build action statement
+         $this->setAttribute('namespace',str_replace('::','_',$this->getAttribute('namespace')));
+         if($urlrewrite === true){
+            $actionParam = array(
+               'tools_media-action/streamMedia' => 'namespace/'
+               .$this->getAttribute('namespace').'/extension/'.$this->getAttribute('extension')
+               .'/filebody/'.$this->getAttribute('filebody')
 
-            // build action statement
-            $this->setAttribute('namespace',str_replace('::','_',$this->getAttribute('namespace')));
-            if($urlrewrite === true){
-               $actionParam = array(
-                  'tools_media-action/streamMedia' => 'namespace/'
-                  .$this->getAttribute('namespace').'/extension/'.$this->getAttribute('extension')
-                  .'/filebody/'.$this->getAttribute('filebody')
-                  
-               );
-             // end if
-            }
-            else{
-               $actionParam = array(
-                  'tools_media-action:streamMedia' => 'namespace:'
-                  .$this->getAttribute('namespace').'|extension:'.$this->getAttribute('extension')
-                  .'|filebody:'.$this->getAttribute('filebody')
-                  
-               );
-             // end else
-            }
+            );
+         } else {
+            $actionParam = array(
+               'tools_media-action:streamMedia' => 'namespace:'
+               .$this->getAttribute('namespace').'|extension:'.$this->getAttribute('extension')
+               .'|filebody:'.$this->getAttribute('filebody')
 
-            return FrontcontrollerLinkHandler::generateLink($actionurl,$actionParam);
-
-          // end if
+            );
          }
+
+         return FrontcontrollerLinkHandler::generateLink($actionurl,$actionParam);
 
        // end function
       }

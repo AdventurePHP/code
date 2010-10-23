@@ -30,12 +30,6 @@
    *  @version
    *  Version 0.1, 01.11.2008<br />
    */
-   class html_taglib_mediastream extends ui_mediastream
-   {
-
-      function html_taglib_mediastream(){
-      }
-
-    // end class
+   class html_taglib_mediastream extends ui_mediastream {
    }
 ?>

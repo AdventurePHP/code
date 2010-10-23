@@ -53,9 +53,8 @@
        *  @version
        *  Version 0.1, 16.11.2008<br />
        */
-      public function core_taglib_appendnode(){
-         parent::Document();
-       // end function
+      public function __construct(){
+         parent::__construct();
       }
 
       /**
@@ -75,8 +74,6 @@
             throw new InvalidArgumentException('[core_taglib_appendnode::onParseTime()] Attribute '
                     .'"namespace" is not present or empty! Please provide the namespace of the '
                     .'desired template.',E_USER_ERROR);
-            exit(1);
-          // end if
          }
 
          $template = $this->getAttribute('template');
@@ -84,8 +81,6 @@
             throw new InvalidArgumentException('[core_taglib_appendnode::onParseTime()] Attribute '
                     .'"template" is not present or empty! Please provide the name of the desired '
                     .'template.',E_USER_ERROR);
-            exit(1);
-          // end if
          }
 
          // load the content
@@ -180,7 +175,6 @@
        */
       public function transform(){
          return (string)'';
-       // end function
       }
 
     // end class

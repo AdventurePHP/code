@@ -34,8 +34,8 @@
     */
    class gb_taglib_import extends core_taglib_importdesign {
 
-      public function gb_taglib_import(){
-         parent::Document();
+      public function __construct(){
+         parent::__construct();
       }
 
       /**

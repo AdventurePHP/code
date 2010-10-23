@@ -542,9 +542,6 @@
        */
       protected $__ServiceType = null;
 
-      public function APFObject(){
-      }
-
       /**
        * @public
        *
@@ -935,21 +932,6 @@
       }
 
       /**
-       * Interface definition of the transformContent() method. This function is applied to a
-       * document controller during the transformation of a DOM node. It must be implemented by
-       * each document controller to influence content generation.
-       *
-       * @public
-       * @abstract
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 28.12.2006<br />
-       */
-      public function transformContent(){
-      }
-
-      /**
        * @protected
        *
        * Returns a service object, that is initialized by dependency injection.
@@ -1144,7 +1126,7 @@
        * @version
        * Version 0.1, 28.12.2006<br />
        */
-      public function TagLib($namespace,$prefix,$class){
+      public function __construct($namespace,$prefix,$class){
          $this->__Namespace = $namespace;
          $this->__Class = $class;
          $this->__Prefix = $prefix;
@@ -1236,7 +1218,7 @@
        * Version 0.5, 20.10.2008 (Removed second parameter due to registry introduction in 1.7-beta)<br />
        * Version 0.6, 11.12.2008 (Switched to the new input filter concept)<br />
        */
-      public function Page(){
+      public function __construct(){
 
          // set internal attributes
          $this->__ObjectID = XmlParser::generateUniqID();
@@ -1396,7 +1378,7 @@
        * Version 0.1, 28.12.2006<br />
        * Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
        */
-      public function Document(){
+      public function __construct(){
 
          // set the object id
          $this->__ObjectID = XmlParser::generateUniqID();
@@ -1895,9 +1877,8 @@
        * @version
        * Version 0.1, 28.12.2006<br />
        */
-      public function core_taglib_importdesign(){
-         parent::Document();
-       // end function
+      public function __construct(){
+         parent::__construct();
       }
 
       /**
@@ -1987,9 +1968,6 @@
     */
    class core_taglib_addtaglib extends Document {
 
-      public function core_taglib_addtaglib(){
-      }
-
       /**
        * @public
        *
@@ -2036,9 +2014,6 @@
     * Version 0.1, 28.12.2006<br />
     */
    class html_taglib_placeholder extends Document {
-
-      public function html_taglib_placeholder(){
-      }
 
       /**
        * @public
@@ -2094,7 +2069,7 @@
        * Version 0.6, 21.04.2007 (Added the template:addtaglib tag again)<br />
        * Version 0.7, 02.05.2007 (Removed the template:config tag)<br />
        */
-      public function html_taglib_template(){
+      public function __construct(){
          $this->__TagLibs[] = new TagLib('core::pagecontroller','template','placeholder');
          $this->__TagLibs[] = new TagLib('core::pagecontroller','template','addtaglib');
        // end function
@@ -2277,9 +2252,6 @@
     */
    class template_taglib_placeholder extends Document {
 
-      public function template_taglib_placeholder(){
-      }
-
       /**
        * @public
        *
@@ -2311,11 +2283,6 @@
     * Version 0.2, 10.11.2008 (Removed the registerTagLibModule() logic of the templates. Now the functionality is the same as core_taglib_addtaglib)<br />
     */
    class template_taglib_addtaglib extends core_taglib_addtaglib {
-
-      public function template_taglib_addtaglib(){
-      }
-
-    // end class
    }
 
    /**
@@ -2339,22 +2306,18 @@
        */
       protected $__Document;
 
-      public function base_controller(){
-      }
-
       /**
        * @public
-       * @abstract
        *
-       * Abstract method, that is called on transformation time of the current document. To add
-       * custom behavior, implement this method!
+       * Interface definition of the transformContent() method. This function is applied to a
+       * document controller during the transformation of a DOM node. It must be implemented by
+       * each document controller to influence content generation.
        *
        * @author Christian Schäfer
        * @version
        * Version 0.1, 28.12.2006<br />
        */
-      public function transformContent(){
-      }
+      public abstract function transformContent();
 
       /**
        * @public
@@ -2371,6 +2334,20 @@
        */
       public function setDocument(&$document){
          $this->__Document = &$document;
+      }
+
+      /**
+       * Returns the document that represents the present DOM node the
+       * controller is responsible for.
+       *
+       * @return Document The present DOM node.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.10.2010<br />
+       */
+      public function &getDocument(){
+         return $this->__Document;
       }
 
       /**
