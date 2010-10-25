@@ -20,8 +20,8 @@
     */
 
    // setup the front controller input filter and disable the page controller filter
-   Registry::register('apf::core::filter','FrontControllerInputFilter',new FilterDefinition('core::filter','FrontControllerInputFilter'));
-   Registry::register('apf::core::filter','PageControllerInputFilter',null);
+   Registry::register('apf::core::filter','FrontControllerInputFilter', new FilterDefinition('core::filter','FrontControllerInputFilter'));
+   Registry::register('apf::core::filter','PageControllerInputFilter', null);
 
    /**
     * @package core::frontcontroller
@@ -450,7 +450,6 @@
          // check if the context is set. If not, use the current namespace
          if(empty($this->__Context)){
             $this->__Context = $namespace;
-          // end if
          }
 
          // apply front controller input filter
@@ -489,10 +488,8 @@
          // execute actions after page transformation (see timing model)
          $this->runActions('posttransform');
 
-         // display page content
-         echo $pageContent;
+         return $pageContent;
 
-       // end function
       }
 
       /**
@@ -517,20 +514,15 @@
       public function &getActionByName($actionName){
 
          foreach($this->actionStack as $actionHash => $DUMMY){
-
             if($this->actionStack[$actionHash]->getActionName() == $actionName){
                return $this->actionStack[$actionHash];
-             // end if
             }
-
-          // end foreach
          }
 
          // return null, if action could not be found
          $null = null;
          return $null;
 
-       // end function
       }
 
       /**
@@ -546,7 +538,6 @@
        */
       public function &getActions(){
          return $this->actionStack;
-       // end function
       }
 
       /**
@@ -563,7 +554,6 @@
        */
       protected function getActionNamespaceByURLString($namespaceUrlRepresenation){
          return str_replace($this->__NamespaceURLDelimiter,'::',$namespaceUrlRepresenation);
-       // end function
       }
 
       /**
@@ -623,7 +613,6 @@
 
          $this->addAction($namespace,$name,$params);
 
-       // end function
       }
 
       /**
@@ -714,7 +703,6 @@
          // add the action as a child
          $this->actionStack[md5($namespace.'~'.$name)] = $action;
 
-       // end function
       }
 
       /**
@@ -750,15 +738,12 @@
                 // end if
                }
 
-             // end foreach
             }
 
-          // end if
          }
 
          return $inputParams;
 
-       // end function
       }
 
       /**
@@ -791,7 +776,8 @@
          foreach($this->actionStack as $actionHash => $DUMMY){
 
             // only execute, when the current action has a suitable type
-            if($this->actionStack[$actionHash]->getType() == $type && $this->actionStack[$actionHash]->isActive()){
+            if($this->actionStack[$actionHash]->getType() == $type
+                    && $this->actionStack[$actionHash]->isActive()){
 
                $id = get_class($this->actionStack[$actionHash]).'::run()';
                $t->start($id);
@@ -802,12 +788,9 @@
 
             }
 
-          // end for
          }
 
-       // end function
       }
 
-    // end class
    }
 ?>
