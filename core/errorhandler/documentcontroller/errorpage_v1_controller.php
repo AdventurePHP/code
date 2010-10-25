@@ -31,9 +31,6 @@
     */
    class errorpage_v1_controller extends base_controller {
 
-      public function errorpage_v1_controller(){
-      }
-
       /**
       *  @public
       *
@@ -47,7 +44,7 @@
       public function transformContent(){
 
          // build stacktrace
-         $errors = $this->__buildStackTrace();
+         $errors = $this->buildStackTrace();
          $buffer = (string)'';
 
          $errorEntry = &$this->__getTemplate('ErrorEntry');
@@ -58,32 +55,26 @@
             // don't display any further messages, because these belong to the error manager
             if(isset($errors[$i]['function']) && preg_match('/errorHandler|trigger_error/i',$errors[$i]['function'])){
                break;
-             // end if
             }
 
             if(isset($errors[$i]['function'])){
                $errorEntry->setPlaceHolder('Function',$errors[$i]['function']);
-             // end if
             }
 
             if(isset($errors[$i]['line'])){
                $errorEntry->setPlaceHolder('Line',$errors[$i]['line']);
-             // end if
             }
 
             if(isset($errors[$i]['file'])){
                $errorEntry->setPlaceHolder('File',$errors[$i]['file']);
-             // end if
             }
 
             if(isset($errors[$i]['class'])){
                $errorEntry->setPlaceHolder('Class',$errors[$i]['class']);
-             // end if
             }
 
             if(isset($errors[$i]['type'])){
                $errorEntry->setPlaceHolder('Type',$errors[$i]['type']);
-             // end if
             }
 
             $buffer .= $errorEntry->transformTemplate();
@@ -91,16 +82,14 @@
           // end for
          }
 
-         $this->setPlaceHolder('Stacktrace',$buffer);
-         $this->setPlaceHolder('ErrorID',$this->__Attributes['id']);
-         $this->setPlaceHolder('ErrorMessage',$this->__Attributes['message']);
-         $this->setPlaceHolder('ErrorNumber',$this->__Attributes['number']);
-         $this->setPlaceHolder('ErrorFile',$this->__Attributes['file']);
-         $this->setPlaceHolder('ErrorLine',$this->__Attributes['line']);
+         $this->setPlaceHolder('Stacktrace', $buffer);
+         $this->setPlaceHolder('ErrorID', $this->__Attributes['id']);
+         $this->setPlaceHolder('ErrorMessage', htmlspecialchars($this->__Attributes['message'], ENT_QUOTES));
+         $this->setPlaceHolder('ErrorNumber', $this->__Attributes['number']);
+         $this->setPlaceHolder('ErrorFile', $this->__Attributes['file']);
+         $this->setPlaceHolder('ErrorLine', $this->__Attributes['line']);
 
-       // end function
       }
-
 
       /**
        * @private
@@ -111,9 +100,8 @@
        * @version
        * Version 0.1, 21.01.2007<br />
        */
-      private function __buildStackTrace(){
+      private function buildStackTrace(){
          return array_reverse(debug_backtrace());
-       // end function
       }
 
     // end class

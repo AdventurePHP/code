@@ -31,9 +31,6 @@
     */
    class exceptionpage_controller extends base_controller {
 
-      public function exceptionpage_controller(){
-      }
-
       /**
        * @public
        *
@@ -57,46 +54,38 @@
 
             if(isset($exceptions[$i]['function'])){
                $templateExceptionEntry->setPlaceHolder('Function',$exceptions[$i]['function']);
-             // end if
             }
 
             if(isset($exceptions[$i]['line'])){
                $templateExceptionEntry->setPlaceHolder('Line',$exceptions[$i]['line']);
-             // end if
             }
 
             if(isset($exceptions[$i]['file'])){
                $templateExceptionEntry->setPlaceHolder('File',$exceptions[$i]['file']);
-             // end if
             }
 
             if(isset($exceptions[$i]['class'])){
                $templateExceptionEntry->setPlaceHolder('Class',$exceptions[$i]['class']);
-             // end if
             }
 
             if(isset($exceptions[$i]['type'])){
                $templateExceptionEntry->setPlaceHolder('Type',$exceptions[$i]['type']);
-             // end if
             }
 
             $buffer .= $templateExceptionEntry->transformTemplate();
 
-          // end for
          }
 
-         $this->setPlaceHolder('Stacktrace',$buffer);
+         $this->setPlaceHolder('Stacktrace', $buffer);
 
-         $this->setPlaceHolder('ExceptionID',$this->__Attributes['id']);
-         $this->setPlaceHolder('ExceptionType',$this->__Attributes['type']);
-         $this->setPlaceHolder('ExceptionMessage',$this->__Attributes['message']);
-         $this->setPlaceHolder('ExceptionNumber',$this->__Attributes['number']);
-         $this->setPlaceHolder('ExceptionFile',$this->__Attributes['file']);
-         $this->setPlaceHolder('ExceptionLine',$this->__Attributes['line']);
+         $this->setPlaceHolder('ExceptionID', $this->__Attributes['id']);
+         $this->setPlaceHolder('ExceptionType', $this->__Attributes['type']);
+         $this->setPlaceHolder('ExceptionMessage', htmlspecialchars($this->__Attributes['message'], ENT_QUOTES));
+         $this->setPlaceHolder('ExceptionNumber', $this->__Attributes['number']);
+         $this->setPlaceHolder('ExceptionFile', $this->__Attributes['file']);
+         $this->setPlaceHolder('ExceptionLine', $this->__Attributes['line']);
 
-       // end function
       }
 
-    // end class
    }
 ?>
