@@ -23,15 +23,15 @@
    import('modules::comments::biz','ArticleComment');
 
    /**
-   *  @package modules::comments::pres::documentcontroller
-   *  @class commentBaseController
-   *
-   *  Implementiert den BaseController f�r die Kommentar-Funktion.<br />
-   *
-   *  @author Christian W. Sch�fer
-   *  @version
-   *  Version 0.1, 21.08.2007<br />
-   */
+    * @package modules::comments::pres::documentcontroller
+    * @class commentBaseController
+    *
+    * Implementiert den BaseController f�r die Kommentar-Funktion.<br />
+    *
+    * @author Christian W. Sch�fer
+    * @version
+    * Version 0.1, 21.08.2007<br />
+    */
    abstract class commentBaseController extends base_controller {
 
       /**
@@ -57,16 +57,12 @@
 
         if($CategoryKey == null){
            $this->__CategoryKey = 'standard';
-         // end if
         }
         else{
            $this->__CategoryKey = $CategoryKey;
-         // end else
         }
 
-       // end function
       }
 
-    // end function
    }
 ?>

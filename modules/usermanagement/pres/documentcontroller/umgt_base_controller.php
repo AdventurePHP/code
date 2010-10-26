@@ -35,7 +35,7 @@
     * @version
     * Version 0.1, 26.12.2008<br />
     */
-   class umgt_base_controller extends iteratorBaseController {
+   abstract class umgt_base_controller extends iteratorBaseController {
 
       /**
        * @protected
@@ -54,12 +54,10 @@
 
          if($baseURL === null){
             $baseURL = $_SERVER['REQUEST_URI'];
-          // end if
          }
 
          return FrontcontrollerLinkHandler::generateLink($baseURL,$linkParams);
 
-       // end function
       }
 
       /**
@@ -99,6 +97,5 @@
          return null;
       }
 
-    // end class
    }
 ?>

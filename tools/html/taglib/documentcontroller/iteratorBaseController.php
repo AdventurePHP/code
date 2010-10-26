@@ -30,10 +30,7 @@
     * @version
     * Version 0.1, 02.06.2008<br />
     */
-   class iteratorBaseController extends base_controller {
-
-      public function iteratorBaseController(){
-      }
+   abstract class iteratorBaseController extends base_controller {
 
       /**
        * @protected
@@ -71,20 +68,13 @@
 
             }
 
-          // end if
-         }
-         else{
+         } else {
             throw new Exception('['.get_class($this).'::__getIteratorTemplate()] No iterator object with name "'.$name.'" composed in current document for document controller "'.get_class($this).'"! Perhaps tag library html:iterator is not loaded in current template!',E_USER_ERROR);
-            exit();
-          // end else
          }
 
          throw new Exception('['.get_class($this).'::__getIteratorTemplate()] Iterator with name "'.$name.'" cannot be found!',E_USER_ERROR);
-         exit();
 
-       // end function
       }
 
-    // end class
    }
 ?>
