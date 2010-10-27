@@ -1540,8 +1540,8 @@
 
             // get template code from parent object, if the parent exists
             $code = (string)'';
-            if($this->__ParentObject !== null){
-               $code = ' Please check your template code ('.htmlentities($this->__ParentObject->getContent()).').';
+            if($this->getParentObject() !== null){
+               $code = ' Please check your template code ('.htmlentities($this->getParentObject()->getContent()).').';
              // end if
             }
 
@@ -1980,8 +1980,7 @@
        * Version 0.2, 10.11.2008 (Changed implementation. We now use getAttribute() instead of direct internal attribute addressing)<br />
        */
       public function onParseTime(){
-         $this->__ParentObject->addTagLib($this->getAttribute('namespace'),$this->getAttribute('prefix'),$this->getAttribute('class'));
-       // end function
+         $this->getParentObject()->addTagLib($this->getAttribute('namespace'),$this->getAttribute('prefix'),$this->getAttribute('class'));
       }
 
       /**
@@ -1996,7 +1995,6 @@
        */
       public function transform(){
          return (string)'';
-       // end function
       }
 
     // end class
@@ -2142,14 +2140,14 @@
          else{
 
             // trow error, if no place holder with the desired name was found
-            throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] No placeholder object with name "'.$name.'" composed in current template for document controller "'.($this->__ParentObject->__DocumentController).'"! Perhaps tag library template:placeHolder is not loaded in template "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
+            throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] No placeholder object with name "'.$name.'" composed in current template for document controller "'.($this->getParentObject()->getDocumentController()).'"! Perhaps tag library template:placeHolder is not loaded in template "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
 
           // end else
          }
 
          // throw error, if no children are composed under the current tag
          if($placeHolderCount < 1){
-            throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] There are no placeholders found for name "'.$name.'" in template "'.($this->__Attributes['name']).'" in document controller "'.($this->__ParentObject->__DocumentController).'"!',E_USER_WARNING);
+            throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] There are no placeholders found for name "'.$name.'" in template "'.($this->__Attributes['name']).'" in document controller "'.($this->getParentObject()->getDocumentController()).'"!',E_USER_WARNING);
          }
 
        // end function

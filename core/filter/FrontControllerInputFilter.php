@@ -32,9 +32,6 @@
    */
    class FrontControllerInputFilter extends AbstractFilter {
 
-      function FrontControllerInputFilter(){
-      }
-
       /**
        * @public
        *

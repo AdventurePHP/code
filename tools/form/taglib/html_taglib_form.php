@@ -245,16 +245,9 @@
             // return object id of the new form element
             return $objectId;
 
-          // end if
-         }
-         else{
-
-            // notify user and return null
+         } else {
             throw new FormException('[html_taglib_form::addFormElement()] Form element "'.$elementType
                .'" cannot be added due to previous errors!');
-            return null;
-
-          // end else
          }
 
        // end function
@@ -273,7 +266,6 @@
        */
       public function addFormContent($content){
          $this->__Content .= $content;
-       // end function
       }
 
       /**
@@ -302,19 +294,15 @@
             // add the desired content before the marker
             $this->__Content = str_replace('<'.$objectId.' />',$content.'<'.$objectId.' />',$this->__Content);
 
-          // end if
-         }
-         else{
+         } else {
 
             throw new FormException('[html_taglib_form::addFormContentBeforeMarker()] No marker object '
                .'with name "'.$markerName.'" composed in current form for document controller "'
-               .($this->__ParentObject->__DocumentController).'"! Please check the definition of '
+               .($this->getParentObject()->getDocumentController()).'"! Please check the definition of '
                .'the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
 
-          // end else
          }
 
-       // end function
       }
 
       /**
@@ -343,19 +331,15 @@
             // add the desired content before the marker
             $this->__Content = str_replace('<'.$objectId.' />','<'.$objectId.' />'.$content,$this->__Content);
 
-          // end if
-         }
-         else{
+         } else {
 
             throw new FormException('[html_taglib_form::addFormContentAfterMarker()] No marker object '
                .'with name "'.$markerName.'" composed in current form for document controller "'
-               .($this->__ParentObject->__DocumentController).'"! Please check the definition of '
+               .($this->getParentObject()->getDocumentController()).'"! Please check the definition of '
                .'the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
 
-          // end else
          }
 
-       // end function
       }
 
       /**
@@ -386,7 +370,7 @@
             if($marker === null){
                throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] No marker object '
                   .'with name "'.$markerName.'" composed in current form for document controller "'
-                  .($this->__ParentObject->__DocumentController).'"! Please check the definition of '
+                  .($this->getParentObject()->getDocumentController()).'"! Please check the definition of '
                   .'the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
             }
 
@@ -397,19 +381,14 @@
             // return object id of the new form element
             return $objectId;
 
-          // end if
-         }
-         else{
+         } else {
 
             // notify user and return null
             throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] Form element "'
                .$elementType.'" cannot be added due to previous errors!');
-            return null;
 
-          // end else
          }
 
-       // end function
       }
 
       /**
@@ -440,7 +419,7 @@
             if($marker === null){
                throw new FormException('[html_taglib_form::addFormElementAfterMarker()] No marker object '
                   .'with name "'.$markerName.'" composed in current form for document controller "'
-                  .($this->__ParentObject->__DocumentController).'"! Please check the definition of '
+                  .($this->getParentObject()->getDocumentController()).'"! Please check the definition of '
                   .'the form with name "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
             }
 
@@ -454,18 +433,10 @@
             // return object id of the new form element
             return $objectId;
 
-          // end if
-         }
-         else{
-
-            // notify user and return null
+         } else {
             throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] Form element "'.$elementType.'" cannot be added due to previous errors!');
-            return null;
-
-          // end else
          }
 
-       // end function
       }
 
       /**
@@ -520,17 +491,10 @@
             // return object id for further addressing
             return $objectId;
 
-          // end if
-         }
-         else{
-
-            // throw error and return null as object id
+         } else {
             throw new FormException('[html_taglib_form::__createFormElement()] No form element with name "'
                .$elementType.'" found! Maybe the tag name is misspellt or the class is not '
                .'imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
-            return null;
-
-          // end else
          }
 
        // end function
@@ -707,9 +671,7 @@
          throw new FormException('[html_taglib_form::getFormElementByID()] No form element with id "'
             .$id.'" composed in current form "'.$parent->getAttribute('name')
             .'" in document controller "'.$docCon.'"!',E_USER_ERROR);
-         exit();
 
-       // end function
       }
 
       /**
@@ -730,20 +692,14 @@
 
          if(isset($this->__Children[$objectId])){
             return $this->__Children[$objectId];
-          // end if
          }
-         else{
 
-            // note, that no suitable child has been found
-            $parent = &$this->getParentObject();
-            $documentController = $parent->getDocumentController();
-            throw new FormException('[html_taglib_form::getFormElementByObjectID()] No form element with id "'
-               .$objectId.'" composed in current form "'.$this->__Attributes['name']
-               .'" in document controller "'.$documentController.'"!',E_USER_ERROR);
-            exit();
-
-          // end else
-         }
+         // note, that no suitable child has been found
+         $parent = &$this->getParentObject();
+         $documentController = $parent->getDocumentController();
+         throw new FormException('[html_taglib_form::getFormElementByObjectID()] No form element with id "'
+            .$objectId.'" composed in current form "'.$this->__Attributes['name']
+            .'" in document controller "'.$documentController.'"!',E_USER_ERROR);
 
        // end function
       }
@@ -790,7 +746,6 @@
          throw new FormException('[html_taglib_form::getFormElementsByType()] No form elements composed in '.
             'current form "'.$this->__Attributes['name'].'" in document controller "'
             .$documentController.'"!',E_USER_ERROR);
-         exit(1);
 
        // end function
       }
@@ -817,7 +772,8 @@
          // add action attribute if not set
          $action = $this->getAttribute('action');
          if($action === null){
-            $this->setAttribute('action',$_SERVER['REQUEST_URI']);
+            // escape current request uri to avoid XSS attacks
+            $this->setAttribute('action', htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES));
          }
 
          // add default method for convenience
@@ -864,7 +820,6 @@
        */
       public function transformOnPlace(){
          $this->__TransformOnPlace = true;
-       // end function
       }
 
       /**
