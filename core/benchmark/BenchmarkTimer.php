@@ -83,7 +83,7 @@
        */
       private $__LineCounter = 0;
 
-      private static $NEWLINE = "\n";
+      private static $NEWLINE = PHP_EOL;
 
       /**
        * Indicator, that defines, if the benchmarker is enabled or not (for performance reasons!)
@@ -100,11 +100,10 @@
        * @version
        * Version 0.1, 31.12.2006<br />
        */
-      public function BenchmarkTimer(){
+      public function __construct(){
          $rootProcess = &$this->__createRootProcess();
          $this->__addRunningProcess($rootProcess);
          $this->__setCurrentParent($rootProcess);
-       // end function
       }
 
       /**
@@ -775,9 +774,6 @@
        * @var BenchmarkProcess[] List of child processes.
        */
       private $__Processes = array();
-
-      public function BenchmarkProcess(){
-      }
 
       public function setProcessID($id){
          $this->__ProcessID = $id;

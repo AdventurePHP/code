@@ -40,17 +40,14 @@
        * @private
        * Context.
        */
-      private $__Context;
+      private $context;
 
       /**
        * @private
        * @since 0.2
        * Current language.
        */
-      private $__Language;
-
-      public function ServiceManager(){
-      }
+      private $language;
 
       /**
        * @public
@@ -71,7 +68,7 @@
        * Version 0.5, 25.02.2008 (Added performance optimization for the SessionSingleton objects)<br />
        * Version 0.6, 10.08.2009 (Added lazy import, so that the developer must not care about the inclusion of the component.)<br />
        */
-      function &getServiceObject($namespace,$serviceName,$type = 'SINGLETON'){
+      public function &getServiceObject($namespace,$serviceName,$type = 'SINGLETON'){
 
          // include serice object for convenience
          import($namespace,$serviceName);
@@ -82,8 +79,8 @@
             $serviceObject = &Singleton::getInstance($serviceName);
 
             if(is_subclass_of($serviceObject,'APFObject')){
-               $serviceObject->setContext($this->__Context);
-               $serviceObject->setLanguage($this->__Language);
+               $serviceObject->setContext($this->context);
+               $serviceObject->setLanguage($this->language);
                $serviceObject->setServiceType('SINGLETON');
              // end if
             }
@@ -104,8 +101,8 @@
             $serviceObject = &SessionSingleton::getInstance($serviceName);
 
             if(is_subclass_of($serviceObject,'APFObject')){
-               $serviceObject->setContext($this->__Context);
-               $serviceObject->setLanguage($this->__Language);
+               $serviceObject->setContext($this->context);
+               $serviceObject->setLanguage($this->language);
                $serviceObject->setServiceType('SESSIONSINGLETON');
              // end if
             }
@@ -122,21 +119,19 @@
             $serviceObject = new $serviceName();
 
             if(is_subclass_of($serviceObject,'APFObject')){
-               $serviceObject->setContext($this->__Context);
-               $serviceObject->setLanguage($this->__Language);
+               $serviceObject->setContext($this->context);
+               $serviceObject->setLanguage($this->language);
                $serviceObject->setServiceType('NORMAL');
              // end if
             }
             else{
                throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass APFObject! So the context cannot be set correctly!',E_USER_WARNING);
-             // end else
             }
 
           // end elseif
          }
          else{
             throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The given type ('.$type.') is not supported. Please provide one out of "SINGLETON", "SESSIONSINGLETON" or "NORMAL"',E_USER_WARNING);
-          // end else
          }
 
          return $serviceObject;
@@ -168,11 +163,9 @@
 
          if($serviceObject !== null && in_array('init',get_class_methods($serviceObject))){
             $serviceObject->init($initParam);
-          // end if
          }
          else{
             throw new InvalidArgumentException('[ServiceManager->getAndInitServiceObject()] The service object ('.$serviceName.') doesn\'t support initialization!',E_USER_WARNING);
-          // end else
          }
 
          return $serviceObject;
@@ -192,8 +185,7 @@
        * Version 0.1, 07.03.2007<br />
        */
       public function setContext($context){
-         $this->__Context = $context;
-       // end function
+         $this->context = $context;
       }
 
       /**
@@ -209,8 +201,7 @@
        * Version 0.1, 22.04.2007<br />
        */
       public function setLanguage($language){
-         $this->__Language = $language;
-       // end function
+         $this->language = $language;
       }
 
     // end class

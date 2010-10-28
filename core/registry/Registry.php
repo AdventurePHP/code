@@ -44,7 +44,7 @@
        */
       private static $REGISTRY_STORE = array();
 
-      private function Registry(){
+      private function __construct(){
       }
 
       /**

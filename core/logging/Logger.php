@@ -96,14 +96,11 @@
        * @version
        * Version 0.1, 29.03.2007<br />
        */
-      public function LogEntry($message,$severity) {
-
+      public function __construct($message,$severity) {
          $this->date = date('Y-m-d');
          $this->time = date('H:i:s');
          $this->message = $message;
          $this->severity = $severity;
-
-       // end function
       }
 
       /**
@@ -119,7 +116,6 @@
        */
       public function toString() {
          return '['.$this->date.' '.$this->time.'] ['.$this->severity.'] '.$this->message;
-       // end function
       }
 
     // end class
@@ -175,9 +171,8 @@
        * Version 0.3, 21.06.2008<br />
        * Version 0.4, 14.08.2008 (LogDir initialization was moved do the flushLogBuffer() method)<br />
        */
-      public function Logger() {
+      public function __construct() {
          $this->logDir = Registry::retrieve('apf::core','LogDir');
-       // end function
       }
 
       /**

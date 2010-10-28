@@ -52,10 +52,9 @@
        * @version
        * Version 0.1, 08.12.2007<br />
        */
-      function FilterDefinition($namespace,$class){
+      public function __construct($namespace, $class){
          $this->namespace = $namespace;
          $this->class = $class;
-       // end function
       }
 
       /**
@@ -104,9 +103,6 @@
     */
    abstract class AbstractFilter extends APFObject {
 
-      public function AbstractFilter(){
-      }
-
       /**
        * @public
        * @abstract
@@ -139,9 +135,6 @@
     * Version 0.1, 08.06.2007<br />
     */
    final class FilterFactory {
-
-      public function FilterFactory(){
-      }
 
       /**
        * @public
