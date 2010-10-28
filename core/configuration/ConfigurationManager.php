@@ -59,6 +59,35 @@
        * @return string[] The names of the section keys.
        */
       function getSectionNames();
+
+      /**
+       * @public
+       *
+       * Removes the section with the given name from the configuration.
+       * This can be used to manipulate configuration files for saving.
+       *
+       * @param string $name The name of the section to remove.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.10.2010<br />
+       */
+      function removeSection($name);
+
+      /**
+       * @public
+       *
+       * Removes the value with the given name from the configuration.
+       * This can be used to manipulate configuration files for saving.
+       *
+       * @param string $name The name of the value to remove.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.10.2010<br />
+       */
+      function removeValue($name);
+
    }
 
    /**

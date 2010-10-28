@@ -164,24 +164,55 @@
       }
 
       public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
+
          $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
 
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $t->start('saveConfiguration');
+
          $buffer = '';
-         /* @var $config IniConfiguration */
          foreach ($config->getSections() as $name => $section) {
             $buffer .= '[' . $name . ']' . PHP_EOL;
             $buffer .= $this->processSection($section);
             $buffer .= PHP_EOL;
          }
-
+         $t->stop('saveConfiguration');
          file_put_contents($fileName, $buffer);
       }
 
       private function processSection(IniConfiguration $section) {
+
          $buffer = '';
+         
+         // append simple values except the dot notation values
          foreach ($section->getValues() as $name => $value) {
-            $buffer .= $name . ' = "' . $value . '"' . PHP_EOL;
+            $dot = strpos($name, self::$NAMESPACE_DELIMITER);
+            if($dot === false){
+               $buffer .= $name . ' = "' . $value . '"' . PHP_EOL;
+            }
          }
+
+         // append regular sections (including the dot notation keys)
+         foreach($section->getSections() as $name => $subSection) {
+            $buffer .= $this->generateComplexConfigValue($subSection, $name);
+         }
+         return $buffer;
+      }
+
+      private function generateComplexConfigValue(IniConfiguration $config, $currentName) {
+
+         $buffer = '';
+         
+         // append simple values
+         foreach ($config->getValues() as $name => $value) {
+            $buffer .= $currentName . '.' . $name . ' = "' . $value . '"' . PHP_EOL;
+         }
+
+         // append sections
+         foreach ($config->getSections() as $name => $section) {
+            $buffer .= $this->generateComplexConfigValue($section, $currentName . '.' . $name);
+         }
+
          return $buffer;
       }
 

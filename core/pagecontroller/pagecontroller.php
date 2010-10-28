@@ -1034,6 +1034,30 @@
       /**
        * @protected
        *
+       * Convenience method for saving a configuration depending on APF DOM attributes and
+       * the current environment.
+       *
+       * @param string $namespace The namespace of the configuration.
+       * @param string $name The name of the configuration including it's extension.
+       * @param Configuration $config The configuration to save.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.10.2010<br />
+       */
+      protected function saveConfiguration($namespace, $name, Configuration $config) {
+         ConfigurationManager::saveConfiguration(
+                         $namespace,
+                         $this->getContext(),
+                         $this->getLanguage(),
+                         Registry::retrieve('apf::core', 'Environment'),
+                         $name,
+                         $config);
+      }
+
+      /**
+       * @protected
+       *
        * Creates a string representation of the given attributes list, using a
        * white list to especially include attributes.
        *

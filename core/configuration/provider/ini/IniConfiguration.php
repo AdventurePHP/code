@@ -73,5 +73,13 @@
          return array_keys($this->values);
       }
 
+      public function removeSection($name) {
+         unset($this->sections[$name]);
+      }
+
+      public function removeValue($name) {
+         unset($this->values[$name]);
+      }
+
    }
 ?>
