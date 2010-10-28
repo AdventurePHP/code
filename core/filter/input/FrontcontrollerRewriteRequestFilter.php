@@ -82,12 +82,12 @@
 
          // initialize param to analyze
          $query = (string)'';
-         if(isset($_REQUEST['query'])){
-            $query = $_REQUEST['query'];
+         if(isset($_REQUEST[self::$REWRITE_QUERY_PARAM])){
+            $query = $_REQUEST[self::$REWRITE_QUERY_PARAM];
          }
 
          // delete the rewite param indicator
-         unset($_REQUEST['query']);
+         unset($_REQUEST[self::$REWRITE_QUERY_PARAM]);
 
          // extract actions from the request url, in case the action keyword or the action
          // delimiter is present in url.

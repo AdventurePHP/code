@@ -33,8 +33,7 @@
     */
    abstract class AbstractRequestFilter extends AbstractFilter {
 
-      public function AbstractRequestFilter(){
-      }
+      protected static $REWRITE_QUERY_PARAM = 'apf-rewrited-query';
 
       /**
        * @protected

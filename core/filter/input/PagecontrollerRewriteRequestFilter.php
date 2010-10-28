@@ -38,9 +38,6 @@
        */
       protected $__RewriteURLDelimiter = '/';
 
-      public function PagecontrollerRewriteRequestFilter(){
-      }
-
       /**
        * @public
        *
@@ -67,14 +64,15 @@
          }
 
          // filter query
-         if(isset($_REQUEST['query']) && !empty($_REQUEST['query'])){
+         if(isset($_REQUEST[self::$REWRITE_QUERY_PARAM])
+                 && !empty($_REQUEST[self::$REWRITE_QUERY_PARAM])){
 
             // read the query string presented to the
             // bootstrap file by apache's mod_rewrite
-            $query = $_REQUEST['query'];
+            $query = $_REQUEST[self::$REWRITE_QUERY_PARAM];
 
             // delete the rewite param indicator
-            unset($_REQUEST['query']);
+            unset($_REQUEST[self::$REWRITE_QUERY_PARAM]);
 
             // backup the request array
             $requestBackup = $_REQUEST;
@@ -101,10 +99,8 @@
             // filter request array
             $this->__filterRequestArray();
 
-          // end if
          }
 
-       // end function
       }
 
     // end class

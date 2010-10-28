@@ -32,9 +32,6 @@
     */
    class StandardRequestFilter extends AbstractRequestFilter {
 
-      public function StandardRequestFilter(){
-      }
-
       /**
        * @public
        *
@@ -48,7 +45,6 @@
        */
       public function filter($input){
          $this->__filterRequestArray();
-       // end function
       }
 
     // end class
