@@ -19,6 +19,8 @@
     * -->
     */
 
+   import('extensions::forwardmessage::pres::taglib', 'message_taglib_getstring');
+
    /**
     * @package extensions::forwardmessage::pres::taglib
     * @class html_taglib_addforwardmessage
@@ -31,14 +33,23 @@
     */
    class html_taglib_addforwardmessage extends Document {
 
+      public function __construct() {
+         $this->__TagLibs[] = new TagLib('extensions::forwardmessage::pres::taglib', 'message', 'getstring');
+      }
+
       public function onParseTime() {
-         $forwardMessageMgr = &$this->__getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', 'SESSIONSINGLETON');
 
          if (!$name = $this->getAttribute('name')) {
-            throw new Exception('[html_taglib_addforwardmessage::onParseTime()] The attribute "name" is empty or not present.');
+            throw new InvalidArgumentException('[html_taglib_addforwardmessage::onParseTime()] '
+                 . 'The attribute "name" is empty or not present. Thus message cannot be added!');
          }
 
-         $forwardMessageMgr->addMessage($name, $this->__Content, $this->getAttribute('show') == 'true');
+         // analyze the message sub tag and make them feel to be in a "normal" environment
+         $this->__extractTagLibTags();
+
+         // add message that is the essence of the tag's transformed content
+         $forwardMessageMgr = &$this->__getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', 'SESSIONSINGLETON');
+         $forwardMessageMgr->addMessage($name, parent::transform(), $this->getAttribute('show') == 'true');
       }
 
       public function transform() {
