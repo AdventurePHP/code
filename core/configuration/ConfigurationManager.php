@@ -129,6 +129,7 @@
        * @param string $environment The environment, the applications runs on.
        * @param string $name The name of the configuration to load including it's extension.
        * @param Configuration $config The configuration to save.
+       * @throws ConfigurationException In case the file cannot be saved.
        *
        * @author Christian Achatz
        * @version

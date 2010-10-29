@@ -177,7 +177,11 @@
             $buffer .= PHP_EOL;
          }
          $t->stop('saveConfiguration');
-         file_put_contents($fileName, $buffer);
+         if (file_put_contents($fileName, $buffer) === false) {
+            throw new ConfigurationException('[XmlConfigurationProvider::saveConfiguration()] '
+                    . 'Configuration with name "' . $fileName . '" cannot be saved! Please check your '
+                    . 'file system configuration, the file name, or your environment configuration.');
+         }
       }
 
       private function processSection(IniConfiguration $section) {
