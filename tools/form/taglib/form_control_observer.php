@@ -59,7 +59,6 @@
        */
       public function transform(){
          return (string)'';
-       // end function
       }
 
       /**

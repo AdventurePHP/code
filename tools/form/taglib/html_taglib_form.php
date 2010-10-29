@@ -99,7 +99,7 @@
        * Version 1.2, 03.09.2009 (Added several new tags concerning the refactoring)<br />
        * Version 1.3, 15.06.2010 (Bugfix: white listing did not recognize enctype attribute)<br />
        */
-      public function html_taglib_form(){
+      public function __construct(){
 
          // Place the listener here, to ensure, that it is there, when the
          // notification is sent!
@@ -139,7 +139,7 @@
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','timecaptcha');
 
          // add additional attributes to whitelist
-         $this->attributeWhiteList[] = 'method';
+         $this->attributeWhiteList[] = self::$METHOD_ATTRIBUTE_NAME;
          $this->attributeWhiteList[] = 'action';
          $this->attributeWhiteList[] = 'enctype';
          $this->attributeWhiteList[] = 'accept-charset'; // to explicitly specify an encoding
@@ -157,12 +157,23 @@
        * Version 0.1, 05.01.2007<br />
        */
       public function onParseTime(){
-         $t = &Singleton::getInstance('BenchmarkTimer');
-         $id = '(html_taglib_form) '.$this->__ObjectID.'::onParseTime()';
-         $t->start($id);
+         //$t = &Singleton::getInstance('BenchmarkTimer');
+         //$id = '(html_taglib_form) '.$this->__ObjectID.'::onParseTime()';
+         //$t->start($id);
          $this->__extractTagLibTags();
-         $t->stop($id);
-       // end function
+
+         // add default method for convenience
+         $method = $this->getAttribute(self::$METHOD_ATTRIBUTE_NAME);
+         if ($method === null) {
+            $this->setAttribute(
+                    self::$METHOD_ATTRIBUTE_NAME,
+                    strtolower(
+                            Registry::retrieve('apf::tools', 'FormDefaultMethod', self::$METHOD_POST_VALUE_NAME)
+                    )
+            );
+         }
+
+         //$t->stop($id);
       }
 
       /**
@@ -526,31 +537,24 @@
                   // check, if the name fits the method's argument
                   if($this->__Children[$objectId]->getAttribute('name') == $markerName){
                      return $this->__Children[$objectId];
-                   // end if
                   }
 
-                // end if
                }
 
-             // end foreach
             }
 
             // return null, if no child was found (with a quick hack)
             $null = null;
             return $null;
 
-          // end if
-         }
-         else{
+         } else {
 
             // return null (with a quick hack)
             $null = null;
             return $null;
 
-          // end else
          }
 
-       // end function
       }
 
       /**
@@ -565,8 +569,7 @@
        * Version 0.1, 07.01.2007<br />
        */
       public function setAction($action){
-         $this->__Attributes['action'] = $action;
-       // end function
+         $this->setAttribute('action', $action);
       }
 
       /**
@@ -588,12 +591,9 @@
             foreach($this->__Children as $objectId => $DUMMY){
                if($this->__Children[$objectId]->getAttribute('name') == $name){
                   return $this->__Children[$objectId];
-                // end if
                }
-             // end foreach
             }
 
-          // end if
          }
 
          // display extended debug message in case no form element was found
@@ -605,7 +605,6 @@
             .'within this form (especially attributes, that are used for referencing other form '
             .'controls)!',E_USER_ERROR);
 
-       // end function
       }
 
       /**
@@ -651,12 +650,9 @@
             foreach($this->__Children as $objectId => $DUMMY){
                if($this->__Children[$objectId]->getAttribute('id') == $id){
                   return $this->__Children[$objectId];
-                // end if
                }
-             // end foreach
             }
 
-          // end if
          }
 
          // display extended debug message in case no form element was found
@@ -728,15 +724,12 @@
 
                if(get_class($this->__Children[$objectId]) == $tagClassName){
                   $formElements[] = &$this->__Children[$objectId];
-                // end if
                }
 
-             // end foreach
             }
 
             return $formElements;
 
-          // end if
          }
 
          // display extended debug message in case no form elements were found
@@ -776,12 +769,6 @@
             $this->setAttribute('action', htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES));
          }
 
-         // add default method for convenience
-         $method = $this->getAttribute('method');
-         if($method === null){
-            $this->setAttribute('method',Registry::retrieve('apf::tools','FormDefaultMethod','post'));
-         }
-
          // transform the form including all child tags
          $htmlCode = (string)'<form ';
          $htmlCode .= $this->__getAttributesAsString($this->__Attributes,$this->attributeWhiteList);
@@ -806,7 +793,6 @@
          $t->stop($id);
          return $htmlCode;
 
-       // end function
       }
 
       /**
@@ -839,12 +825,10 @@
          // to transformation on place if desired
          if($this->__TransformOnPlace === true){
             return $this->transformForm();
-          // end if
          }
 
          return (string)'';
 
-       // end function
       }
 
     // end class

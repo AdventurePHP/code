@@ -59,8 +59,8 @@
        */
       protected $attributeWhiteList = array('id','style','class','onclick','ondblclick','onmousedown','onmouseup','onmouseover','onmousemove','onmouseout','onkeypress','onkeydown','onkeyup');
 
-      public function form_control(){
-      }
+      protected static $METHOD_ATTRIBUTE_NAME = 'method';
+      protected static $METHOD_POST_VALUE_NAME = 'post';
 
       /**
        * @public
@@ -75,7 +75,6 @@
        */
       public function onParseTime(){
          $this->__presetValue();
-       // end function
       }
 
       /**
@@ -91,7 +90,6 @@
        */
       public function isValid(){
          return $this->__ControlIsValid;
-       // end function
       }
 
       /**
@@ -105,7 +103,6 @@
        */
       public function markAsInvalid(){
          $this->__ControlIsValid = false;
-       // end function
       }
 
       /**
@@ -119,7 +116,6 @@
        */
       public function markAsSent(){
          $this->__ControlIsSent = true;
-       // end function
       }
 
       /**
@@ -135,7 +131,6 @@
        */
       public function isSent(){
          return $this->__ControlIsSent;
-       // end function
       }
 
       /**
@@ -154,7 +149,6 @@
             return true;
          }
          return false;
-       // end function
       }
 
       /**
@@ -168,7 +162,6 @@
        */
       public function check(){
          $this->setAttribute('checked','checked');
-       // end function
       }
 
       /**
@@ -182,7 +175,6 @@
        */
       public function uncheck(){
          $this->deleteAttribute('checked');
-       // end function
       }
 
       /**
@@ -302,9 +294,7 @@
             $value = $this->getAttribute('value');
             $filteredValue = $filter->filter($value);
             $this->setAttribute('value',$filteredValue);
-          // end if
          }
-       // end function
       }
 
       /**
@@ -325,7 +315,6 @@
                $validator->notify();
             }
          }
-       // end function
       }
 
       /**
@@ -340,18 +329,15 @@
        * @version
        * Version 0.1, 09.01.2007<br />
        */
-      function addAttribute($name,$value){
+      public function addAttribute($name,$value){
 
          if(isset($this->__Attributes[$name])){
             $this->__Attributes[$name] .= $value;
-          // end if
          }
          else{
             $this->__Attributes[$name] = $value;
-          // end else
          }
 
-       // end function
       }
 
       /**
@@ -379,13 +365,10 @@
 
             if(isset($_REQUEST[$controlName]) && (!empty($_REQUEST[$controlName]) || $_REQUEST[$controlName] === '0')){
                $this->setAttribute('value',$_REQUEST[$controlName]);
-             // end if
             }
 
-          // end if
          }
 
-       // end function
       }
 
       /**
@@ -415,13 +398,9 @@
                   if($this->__Children[$objectId]->getAttribute('name') == $name){
                      $this->__Children[$objectId]->setContent($value);
                      $placeHolderCount++;
-                   // end if
                   }
-                // end if
                }
-             // end foreach
             }
-          // end if
          }
          else{
             throw new FormException('['.get_class($this).'::setPlaceHolder()] No place holder object with '
@@ -438,7 +417,6 @@
                .'"!',E_USER_WARNING);
          }
 
-       // end function
       }
 
       /**
@@ -466,7 +444,6 @@
 
          return null;
 
-       // end function
       }
 
       /**

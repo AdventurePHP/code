@@ -43,9 +43,8 @@
        * @version
        * Version 0.1, 30.08.2009<br />
        */
-      public function form_taglib_addfilter(){
+      public function __construct(){
          $this->setAttribute('namespace','tools::form::filter');
-       // end function
       }
 
       /**
@@ -59,7 +58,6 @@
        */
       public function onAfterAppend(){
          $this->__addObserver('addFilter');
-       // end functin
       }
 
     // end class

@@ -33,7 +33,7 @@
     */
    class form_taglib_button extends form_control {
 
-      public function form_taglib_button(){
+      public function __construct(){
          $this->attributeWhiteList[] = 'name';
          $this->attributeWhiteList[] = 'accesskey';
          $this->attributeWhiteList[] = 'disabled';
@@ -51,7 +51,7 @@
        * @version
        * Version 0.1, 14.04.2007<br />
        */
-      function onParseTime(){
+      public function onParseTime(){
 
          $buttonName = $this->getAttribute('name');
          if($buttonName === null){
@@ -62,13 +62,18 @@
          }
 
          // check name attribute in request to indicate, that the
-         // form was sent. Mark button as sent, too.
-         if(isset($_REQUEST[$buttonName])){
-            $this->__ControlIsSent = true;
-          // end if
+         // form was sent. Mark button as sent, too. Due to potential
+         // XSS issues, we distinguish between GET and POST requests
+         $method = strtolower($this->getParentObject()->getAttribute(self::$METHOD_ATTRIBUTE_NAME));
+         if ($method == self::$METHOD_POST_VALUE_NAME) {
+            if (isset($_POST[$buttonName])) {
+               $this->__ControlIsSent = true;
+            }
+         } else {
+            if (isset($_GET[$buttonName])) {
+               $this->__ControlIsSent = true;
+            }
          }
-
-       // end function
       }
 
       /**
@@ -82,9 +87,8 @@
        * @version
        * Version 0.1, 05.01.2007<br />
        */
-      function transform(){
+      public function transform(){
          return '<input type="submit" '.$this->getSanitizedAttributesAsString($this->__Attributes).' />';
-       // end function
       }
 
     // end class

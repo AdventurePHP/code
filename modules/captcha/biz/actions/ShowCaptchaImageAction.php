@@ -41,9 +41,6 @@
                            'XFILES.TTF'
                            );
 
-      public function ShowCaptchaImageAction(){
-      }
-
       /**
       *  @public
       *
@@ -101,6 +98,6 @@
        // end function
       }
 
-    // end function
+    // end class
    }
 ?>

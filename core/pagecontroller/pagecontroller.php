@@ -98,15 +98,7 @@
    Registry::register('apf::core','LibPath',APPS__PATH,true);
 
    // define current request url entry
-   $protocol = null;
-   if($_SERVER['SERVER_PORT'] == '443'){
-      $protocol = 'https://';
-    // end if
-   }
-   else{
-      $protocol = 'http://';
-    // end else
-   }
+   $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
    Registry::register('apf::core','URLBasePath',$protocol.$_SERVER['HTTP_HOST']);
    Registry::register('apf::core','CurrentRequestURL',$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],true);
 
@@ -259,7 +251,7 @@
     */
    final class XmlParser {
 
-      private function XmlParser(){
+      private function __construct(){
       }
 
       /**
@@ -465,18 +457,8 @@
        * @version
        * Version 0.1, 22.12.2006<br />
        */
-      public static function generateUniqID($md5 = true){
-
-         if($md5 == true){
-            return md5(uniqid(rand(),true));
-          // end if
-         }
-         else{
-            return uniqid(rand(),true);
-          // end else
-         }
-
-       // end function
+      public static function generateUniqID($md5 = true) {
+         return $md5 == true ? md5(uniqid(rand(), true)) : uniqid(rand(), true);
       }
 
     // end class
@@ -673,7 +655,7 @@
        * @version
        * Version 0.1, 20.02.2010<br />
        */
-      public function setParentObject(&$parentObject){
+      public function setParentObject(APFObject &$parentObject){
          $this->__ParentObject = &$parentObject;
       }
 
@@ -682,7 +664,7 @@
        *
        * Returns the parent node of the current APF object.
        *
-       * @return string The parent node.
+       * @return APFObject The parent node.
        *
        * @author Christian Achatz
        * @version
@@ -724,14 +706,10 @@
 
          if(isset($this->{'__'.$Attribute})){
             return $this->{'__'.$Attribute};
-          // end if
-         }
-         else{
+         } else {
             return null;
-          // end else
          }
 
-       // end function
       }
 
       /**
@@ -748,7 +726,6 @@
        */
       public function set($attributeName,$value){
          $this->{'__'.$attributeName} = $value;
-       // end function
       }
 
       /**
@@ -765,7 +742,6 @@
        */
       public function add($attributeName,$value){
          $this->{'__'.$attributeName}[] = $value;
-       // end function
       }
 
       /**
@@ -785,14 +761,10 @@
 
          if(isset($this->__Attributes[$name])){
             return $this->__Attributes[$name];
-          // end if
-         }
-         else{
+         } else {
             return null;
-          // end else
          }
 
-       // end function
       }
 
       /**
@@ -809,7 +781,6 @@
        */
       public function setAttribute($name,$value){
          $this->__Attributes[$name] = $value;
-       // end function
       }
 
       /**
@@ -825,7 +796,6 @@
        */
       public function getAttributes(){
          return $this->__Attributes;
-       // end function
       }
 
       /**
@@ -841,7 +811,6 @@
        */
       public function deleteAttribute($name){
          unset($this->__Attributes[$name]);
-       // end function
       }
 
       /**
@@ -861,15 +830,12 @@
 
             if(!is_array($this->__Attributes)){
                $this->__Attributes = array();
-             // end if
             }
 
             $this->__Attributes = array_merge($this->__Attributes,$attributes);
 
-          // end if
          }
 
-       // end function
       }
 
       /**
