@@ -163,12 +163,13 @@
        * @param string $relationName name of the desired relation
        * @param GenericCriterionObject $criterion criterion object
        * @return GenericDomainObject object that is related with the current object or null.
+       * @throws GenericORMapperException In case the data component is not initialized.
        *
        * @author Tobias Lückel
        * @version
        * Version 0.1, 09.09.2010<br />
        */
-      public function loadRelatedObject($relationName,GenericCriterionObject $criterion = null){
+      public function loadRelatedObject($relationName, GenericCriterionObject $criterion = null){
 
          // check weather data component is there
          if($this->dataComponent === null){
@@ -176,9 +177,7 @@
                     .'The data component is not initialized, so related object cannot be loaded! '
                     .'Please use the or mapper\'s loadRelatedObject() method or call '
                     .'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
-                    .'object first!',E_USER_ERROR);
-            return null;
-          // end if
+                    .'object first!', E_USER_ERROR);
          }
 
          // return objects that are related to the current object
@@ -195,6 +194,7 @@
        * @param string $relationName name of the desired relation
        * @param GenericCriterionObject $criterion criterion object
        * @return GenericDomainObject[] List of objects that are related with the current object or null.
+       * @throws GenericORMapperException In case the data component is not initialized.
        *
        * @author Christian Achatz
        * @version
@@ -203,7 +203,7 @@
        * Version 0.3, 16.06.2008 (Caching of objects disabled, due to recursion errors)<br />
        * Version 0.4, 25.06.2008 (Added a second parameter to have influence on the loaded list)<br />
        */
-      public function loadRelatedObjects($relationName,GenericCriterionObject $criterion = null){
+      public function loadRelatedObjects($relationName, GenericCriterionObject $criterion = null){
 
          // check weather data component is there
          if($this->dataComponent === null){
@@ -211,15 +211,101 @@
                     .'The data component is not initialized, so related objects cannot be loaded! '
                     .'Please use the or mapper\'s loadRelatedObjects() method or call '
                     .'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
-                    .'object first!',E_USER_ERROR);
-            return null;
-          // end if
+                    .'object first!', E_USER_ERROR);
          }
 
          // return objects that are related to the current object
          return $this->dataComponent->loadRelatedObjects($this,$relationName,$criterion);
 
-       // end function
+      }
+
+      /**
+       * @public
+       *
+       * Convenience method to create an association to another object without invoking the
+       * GenericORMapper directly.
+       *
+       * @param string $relationName The relation to create.
+       * @param GenericDomainObject $targetObject The object to relate the current domain object to.
+       * @throws GenericORMapperException In case the data component is not initialized.
+       *
+       * @author Christian Achatz, Ralf Schubert
+       * @version
+       * Version 0.1, 30.10.2010<br />
+       */
+      public function createAssociation($relationName, GenericDomainObject $targetObject) {
+
+         // check weather data component is there
+         if($this->dataComponent === null){
+            throw new GenericORMapperException('[GenericDomainObject::createAssociation()] '
+                    .'The data component is not initialized, so related objects cannot be loaded! '
+                    .'Please use the or mapper\'s createAssociation() method or call '
+                    .'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+                    .'object first!', E_USER_ERROR);
+         }
+
+         // create association as desired
+         $this->dataComponent->createAssociation($relationName, $this, $targetObject);
+
+      }
+
+      /**
+       * @public
+       *
+       * Convenience method to delete an association to another object without invoking the
+       * GenericORMapper directly.
+       *
+       * @param string $relationName The relation to delete.
+       * @param GenericDomainObject $targetObject The object to delete the current domain object's relation from.
+       * @throws GenericORMapperException In case the data component is not initialized.
+       *
+       * @author Christian Achatz, Ralf Schubert
+       * @version
+       * Version 0.1, 30.10.2010<br />
+       */
+      public function deleteAssociation($relationName, GenericDomainObject $targetObject) {
+
+         // check weather data component is there
+         if($this->dataComponent === null){
+            throw new GenericORMapperException('[GenericDomainObject::createAssociation()] '
+                    .'The data component is not initialized, so related objects cannot be loaded! '
+                    .'Please use the or mapper\'s createAssociation() method or call '
+                    .'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+                    .'object first!', E_USER_ERROR);
+         }
+
+         // delete association as desired
+         $this->dataComponent->deleteAssociation($relationName, $this, $targetObject);
+         
+      }
+
+      /**
+       * @public
+       *
+       * Convenience method to delete all association to another object without invoking the
+       * GenericORMapper directly.
+       *
+       * @param string $relationName The relation to create.
+       * @throws GenericORMapperException In case the data component is not initialized.
+       *
+       * @author Christian Achatz, Ralf Schubert
+       * @version
+       * Version 0.1, 30.10.2010<br />
+       */
+      public function deleteAssociations($relationName) {
+
+         // check weather data component is there
+         if($this->dataComponent === null){
+            throw new GenericORMapperException('[GenericDomainObject::createAssociation()] '
+                    .'The data component is not initialized, so related objects cannot be loaded! '
+                    .'Please use the or mapper\'s createAssociation() method or call '
+                    .'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
+                    .'object first!', E_USER_ERROR);
+         }
+
+         // delete associations as desired
+         $this->dataComponent->deleteAssociations($relationName, $this);
+
       }
 
       /**
@@ -244,7 +330,6 @@
             return $null;
          }
 
-       // end function
       }
 
       /**
@@ -277,13 +362,10 @@
        * Version 0.1, 15.04.2008<br />
        * Version 0.2, 03.05.2009 (Added check for null objects. In null cases, the object is not added.)<br />
        */
-      public function addRelatedObject($relationName,&$object){
-         
+      public function addRelatedObject($relationName, GenericDomainObject &$object){
          if($object !== null){
             $this->relatedObjects[$relationName][] = &$object;
          }
-
-       // end function
       }
 
       /**
@@ -298,9 +380,8 @@
        * @version
        * Version 0.1, 26.04.2008<br />
        */
-      public function setProperty($name,$value){
+      public function setProperty($name, $value){
          $this->properties[$name] = $value;
-       // end function
       }
 
       /**
@@ -319,14 +400,11 @@
 
          if(isset($this->properties[$name])){
             return $this->properties[$name];
-          // end if
          }
          else{
             return null;
-          // end else
          }
 
-       // end function
       }
 
       /**
@@ -363,7 +441,6 @@
        */
       public function getProperties(){
          return $this->properties;
-       // end function
       }
 
       /**
@@ -379,7 +456,6 @@
        */
       public function deleteProperty($name){
          unset($this->properties[$name]);
-       // end function
       }
 
       /**
@@ -414,16 +490,13 @@
 
             if($current < $propCount) {
                $stringRep .= ', ';
-             // end if
             }
 
             $current++;
          
-          // end foreach
          }
          return $stringRep.']';
 
-       // end function
       }
 
       /**
@@ -456,7 +529,6 @@
        */
       public function __sleep(){
          return array('objectName','properties','relatedObjects');
-       // end function
       }
 
     // end class

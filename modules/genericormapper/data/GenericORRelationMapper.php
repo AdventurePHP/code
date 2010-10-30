@@ -916,6 +916,48 @@
       /**
        * @public
        *
+       * This method enables you to delete all associations the given <em>$sourceObject</em>
+       * has to any other object concerning the relation definition.
+       * <p/>
+       * Please note, that the associations cannot be restored after this operation and that
+       * no exception can be defined at the moment.
+       *
+       * @param string $relationName The name of the relation that is uses as a selector.
+       * @param GenericDomainObject $sourceObject The source object that limits the deletion.
+       *
+       * @author Christian Achatz, Ralf Schubert
+       * @version
+       * Version 0.1, 30.10.2010<br />
+       */
+      public function deleteAssociations($relationName, GenericDomainObject $sourceObject) {
+
+         // test, if relation exists in relation table
+         if(!isset($this->__RelationTable[$relationName])){
+            throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociations()] Relation '
+                    .'with name "'.$relationName.'" is not defined in the relation table! Please '
+                    .'check your relation configuration.',E_USER_WARNING);
+         }
+
+         // if relation is a composition, return with error
+         if($this->__RelationTable[$relationName]['Type'] == 'COMPOSITION'){
+            throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociations()] The given '
+                    .'relation ("'.$relationName.'") is not an association! Please check your '
+                    .'relation configuration.', E_USER_WARNING);
+         }
+
+         $sourceObjectName = $sourceObject->getObjectName();
+         $sourceObjectID = $this->__MappingTable[$sourceObjectName]['ID'];
+
+         $delete = 'DELETE FROM `'.$this->__RelationTable[$relationName]['Table'].'`
+                    WHERE
+                       `'.$sourceObjectID.'` = \''.$sourceObject->getObjectId().'\';';
+         $this->__DBDriver->executeTextStatement($select, $this->__LogStatements);
+         
+      }
+
+      /**
+       * @public
+       *
        * Returns true if an association of the given type exists between the provided objects.
        *
        * @param string $relationName Name of the relation to select
