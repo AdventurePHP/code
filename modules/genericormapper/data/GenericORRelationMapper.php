@@ -951,7 +951,7 @@
          $delete = 'DELETE FROM `'.$this->__RelationTable[$relationName]['Table'].'`
                     WHERE
                        `'.$sourceObjectID.'` = \''.$sourceObject->getObjectId().'\';';
-         $this->__DBDriver->executeTextStatement($select, $this->__LogStatements);
+         $this->__DBDriver->executeTextStatement($delete, $this->__LogStatements);
          
       }
 
