@@ -19,18 +19,19 @@
     * -->
     */
 
-   import('core::configuration::provider','BaseConfiguration');
+   import('core::configuration::provider', 'BaseConfiguration');
 
    /**
-    * @package core::configuration::provider::xml
-    * @class XmlConfiguration
+    * @package core::configuration::provider::ini
+    * @class MemcachedConfiguration
     *
-    * Implements the configuration interface for the default APF xml scheme.
+    * Implements the configuration interface for the default APF scheme stored within
+    * a memcached store.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 09.10.2010<br />
+    * Version 0.1, 30.10.2010<br />
     */
-   class XmlConfiguration extends BaseConfiguration implements Configuration {
+   class MemcachedConfiguration extends BaseConfiguration implements Configuration {
    }
 ?>

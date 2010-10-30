@@ -167,16 +167,13 @@
 
          $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
 
-         $t = &Singleton::getInstance('BenchmarkTimer');
-         $t->start('saveConfiguration');
-
          $buffer = '';
-         foreach ($config->getSections() as $name => $section) {
+         foreach ($config->getSectionNames() as $name) {
             $buffer .= '[' . $name . ']' . PHP_EOL;
-            $buffer .= $this->processSection($section);
+            $buffer .= $this->processSection($config->getSection($name));
             $buffer .= PHP_EOL;
          }
-         $t->stop('saveConfiguration');
+
          if (file_put_contents($fileName, $buffer) === false) {
             throw new ConfigurationException('[XmlConfigurationProvider::saveConfiguration()] '
                     . 'Configuration with name "' . $fileName . '" cannot be saved! Please check your '
@@ -189,16 +186,16 @@
          $buffer = '';
          
          // append simple values except the dot notation values
-         foreach ($section->getValues() as $name => $value) {
+         foreach ($section->getValueNames() as $name) {
             $dot = strpos($name, self::$NAMESPACE_DELIMITER);
             if($dot === false){
-               $buffer .= $name . ' = "' . $value . '"' . PHP_EOL;
+               $buffer .= $name . ' = "' . $section->getValue($name) . '"' . PHP_EOL;
             }
          }
 
          // append regular sections (including the dot notation keys)
-         foreach($section->getSections() as $name => $subSection) {
-            $buffer .= $this->generateComplexConfigValue($subSection, $name);
+         foreach($section->getSectionNames() as $name) {
+            $buffer .= $this->generateComplexConfigValue($section->getSection($name), $name);
          }
          return $buffer;
       }
@@ -208,13 +205,13 @@
          $buffer = '';
          
          // append simple values
-         foreach ($config->getValues() as $name => $value) {
-            $buffer .= $currentName . '.' . $name . ' = "' . $value . '"' . PHP_EOL;
+         foreach ($config->getValueNames() as $name) {
+            $buffer .= $currentName . '.' . $name . ' = "' . $config->getValue($name) . '"' . PHP_EOL;
          }
 
          // append sections
-         foreach ($config->getSections() as $name => $section) {
-            $buffer .= $this->generateComplexConfigValue($section, $currentName . '.' . $name);
+         foreach ($config->getSectionNames() as $name) {
+            $buffer .= $this->generateComplexConfigValue($config->getSection($name), $currentName . '.' . $name);
          }
 
          return $buffer;
