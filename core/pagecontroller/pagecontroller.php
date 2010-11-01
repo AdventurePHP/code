@@ -167,8 +167,7 @@
       // check if the file is already included, if yes, return
       if(isset($GLOBALS['IMPORT_CACHE'][$file])){
          return true;
-      }
-      else{
+      } else {
          $GLOBALS['IMPORT_CACHE'][$file] = true;
       }
 
@@ -176,9 +175,8 @@
       if(!file_exists($file)){
          throw new IncludeException('[import()] The given module ('.$file.') cannot be loaded!',E_USER_ERROR);
       }
-      else{
-         include($file);
-      }
+
+      include($file);
 
     // end function
    }
@@ -209,11 +207,8 @@
 
       if($transformHtml == true){
          $buffer .= htmlentities(print_r($o,true));
-       // end if
-      }
-      else{
+      } else {
          $buffer .= print_R($o,true);
-       // end else
       }
 
       $buffer .= "</pre>\n";
@@ -287,7 +282,6 @@
          // as separator. This allows tags without attributes.
          if($tagAttributeDel === false || $tagAttributeDel > $posTagClosingSign){
             $tagAttributeDel = strpos($tagString,'>');
-          // end if
          }
 
          // search for separator between prefix and class
@@ -312,9 +306,7 @@
          $content = null;
          if(substr($tagString,$posEndAttrib - 1,1) == '/'){
             $content = (string)'';
-          // end if
-         }
-         else{
+         } else {
 
             // initialize the content as empty string
             $content = (string)'';
@@ -324,9 +316,7 @@
                throw new ParserException('[XmlParser::getTagAttributes()] No closing tag found for tag "&lt;'
                        .$prefix.':'.$class.' /&gt;"! Tag string: "'.htmlentities($tagString).'".',
                        E_USER_ERROR);
-             // end if
-            }
-            else{
+            } else {
 
                $found = true;
                $offset = 0;
@@ -346,27 +336,22 @@
                   // in case no futher position is found -> end at this point
                   if($offset === false){
                      $found = false;
-                   // end if
                   }
 
                   // in case more than max positions are found -> end at this point for security reasons
                   if($count > $maxCount){
                      $found = false;
-                   // end if
                   }
 
                   $count++;
 
-                // end while
                }
 
                // read the content of the tag
                $content = substr($tagString,$posEndAttrib + 1,($posEndContent - $posEndAttrib) - 1);
 
-             // end else
             }
 
-          // end else
          }
 
          $attributes = array();
@@ -414,7 +399,6 @@
             // limit parse loop count to avoid enless while loops
             if($parserLoops == $parserMaxLoops){
                throw new ParserException('[XmlParser::getAttributesFromString()] Error while parsing: "'.htmlentities($attributesString).'". Maximum number of loops exceeded!',E_USER_ERROR);
-             // end if
             }
 
             // find attribute
@@ -423,7 +407,6 @@
             // if no attribute was found -> end at this point
             if($foundAtr === false){
                 break;
-             // end if
             }
 
             // extract values
@@ -750,6 +733,7 @@
        * Returns the object's attribute.
        *
        * @param string $name The name of the desired attribute.
+       * @param string $default The default value for the attribute.
        * @return string Returns the attribute's value or null in case of errors.
        *
        * @author Christian Schäfer
@@ -757,14 +741,8 @@
        * Version 0.1, 28.12.2006<br />
        * Version 0.2, 02.02.2007 (Behandlung, falls Attribut nicht existiert hinzugef�gt)<br />
        */
-      public function getAttribute($name){
-
-         if(isset($this->__Attributes[$name])){
-            return $this->__Attributes[$name];
-         } else {
-            return null;
-         }
-
+      public function getAttribute($name, $default = null){
+         return isset($this->__Attributes[$name]) ? $this->__Attributes[$name] : $default;
       }
 
       /**
@@ -779,7 +757,7 @@
        * @version
        * Version 0.1, 28.12.2006<br />
        */
-      public function setAttribute($name,$value){
+      public function setAttribute($name, $value){
          $this->__Attributes[$name] = $value;
       }
 
@@ -827,13 +805,10 @@
       public function setAttributes(array $attributes = array()){
 
          if(is_array($attributes) && count($attributes) > 0){
-
             if(!is_array($this->__Attributes)){
                $this->__Attributes = array();
             }
-
             $this->__Attributes = array_merge($this->__Attributes,$attributes);
-
          }
 
       }

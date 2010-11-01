@@ -1623,15 +1623,26 @@
        *
        * Returns a list of all visibility definitions for the current application.
        *
+       * @param GenericDomainObject $type An optional visibility definitioyn type marker to limit the result.
        * @return GenericDomainObject[] The list of visibility definitions for the current application.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 05.06.2010<br />
+       * Version 0.2, 01.11.2010 (Added type restriction possibility)<br />
        */
-      public function getPagedVisibilityDefinitionList(){
+      public function getPagedVisibilityDefinitionList(GenericDomainObject $type = null){
          $app = $this->__getCurrentApplication();
-         return $this->__getORMapper()->loadRelatedObjects($app,'Application2AppProxy');
+
+         // limit result to the given type is desired
+         if($type === null){
+            $crit = null;
+         } else {
+            $crit = new GenericCriterionObject();
+            $crit->addRelationIndicator('AppProxy2AppProxyType', $type);
+         }
+
+         return $this->__getORMapper()->loadRelatedObjects($app, 'Application2AppProxy', $crit);
       }
 
       /**

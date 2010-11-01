@@ -1,6 +1,16 @@
 <@controller namespace="modules::usermanagement::pres::documentcontroller::proxy" file="list_controller" class="umgt_list_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
 <p>
    The following list presents the visibility definitions stored in the current application.
+</p>
+<p>
+   <html:form class="type-filter" name="type-filter">
+      Filter by object type:
+      <form:select name="proxytypeid">
+         <select:option value="0">- no filter -</select:option>
+      </form:select>
+      <form:button name="go" value="GO" />
+   </html:form>
 </p>
 <table class="vis-def">
    <thead>
@@ -15,27 +25,36 @@
 </table>
 
 <html:template name="Proxy">
-  <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
-  <tr>
-    <td>
-      <umgt:media filename="cc-connect_to_network-128x128.png" alt="Delete visibility definition" />
-      App object id: <strong><template:placeholder name="AppObjectId" /></strong>,
-      definition id: <strong><template:placeholder name="ProxyId" /></strong>,
-      app object type: <em><template:placeholder name="AppProxyType" /></em>
-    </td>
-    <td>
-      <a href="<template:placeholder name="proxy_details" />" title="View visibility definition details">
-        <umgt:media filename="cc-xmag-128x128.png" alt="View visibility definition details" title="View visibility definition details" />
-      </a>
-      <a href="<template:placeholder name="proxy_add_perm" />" title="Add user/groups to visibility definition">
-        <umgt:media filename="cc-forward2-128x128.png" alt="Add user/groups to visibility definition" title="Add user/groups to visibility definition" />
-      </a>
-      <a href="<template:placeholder name="proxy_rem_perm" />" title="Remove user/groups to visibility definition">
-        <umgt:media filename="cc-backward2-red-128x128.png" alt="Remove user/groups to visibility definition" title="Remove user/groups to visibility definition" />
-      </a>
-      <a href="<template:placeholder name="proxy_delete" />" title="Delete visibility definition">
-        <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete visibility definition" title="Delete visibility definition" />
-      </a>
-    </td>
-  </tr>
+   <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+   <tr>
+      <td>
+         <umgt:media filename="cc-connect_to_network-128x128.png" alt="Delete visibility definition" />
+         App object id: <strong><template:placeholder name="AppObjectId" /></strong>,
+         definition id: <strong><template:placeholder name="ProxyId" /></strong>,
+         app object type: <em><template:placeholder name="AppProxyType" /></em>
+      </td>
+     <td>
+         <a href="<template:placeholder name="proxy_details" />" title="View visibility definition details">
+            <umgt:media filename="cc-xmag-128x128.png" alt="View visibility definition details" title="View visibility definition details" />
+         </a>
+         <a href="<template:placeholder name="proxy_add_perm" />" title="Add user/groups to visibility definition">
+            <umgt:media filename="cc-forward2-128x128.png" alt="Add user/groups to visibility definition" title="Add user/groups to visibility definition" />
+         </a>
+         <a href="<template:placeholder name="proxy_rem_perm" />" title="Remove user/groups to visibility definition">
+            <umgt:media filename="cc-backward2-red-128x128.png" alt="Remove user/groups to visibility definition" title="Remove user/groups to visibility definition" />
+         </a>
+         <a href="<template:placeholder name="proxy_delete" />" title="Delete visibility definition">
+            <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete visibility definition" title="Delete visibility definition" />
+         </a>
+      </td>
+   </tr>
+</html:template>
+
+<html:template name="NoProxy">
+   <tr>
+      <td>
+         No visibility definition found for the current filter.
+      </td>
+     <td></td>
+   </tr>
 </html:template>

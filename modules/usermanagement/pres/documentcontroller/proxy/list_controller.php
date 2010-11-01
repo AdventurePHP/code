@@ -35,8 +35,35 @@
 
       public function transformContent(){
 
+         // display filter form
          $uM = &$this->getManager();
-         $proxies = $uM->getPagedVisibilityDefinitionList();
+         $form = &$this->__getForm('type-filter');
+
+         $types = $uM->loadVisibilityDefinitionTypes();
+         $select = &$form->getFormElementByName('proxytypeid');
+         /* @var $select form_taglib_select */
+         foreach($types as $type){
+            /* @var $type GenericDomainObject */
+            $select->addOption($type->getProperty('AppObjectName'), $type->getObjectId());
+         }
+
+         $form->transformOnPlace();
+
+         // load definition list managed by the filter in case it has been applied
+         if($form->isSent()){
+            $typeId = $form
+                         ->getFormElementByName('proxytypeid')
+                         ->getSelectedOption()
+                         ->getAttribute('value');
+            $type = $uM->loadVisibilityDefinitionTypeById($typeId);
+
+            // By convention: the filter can be removed by applying null.
+            // In case $typeId is "0", null is returned by loadVisibilityDefinitionTypeById()
+            // and this is what we want here. 
+            $proxies = $uM->getPagedVisibilityDefinitionList($type);
+         } else {
+            $proxies = $uM->getPagedVisibilityDefinitionList();
+         }
 
          $buffer = (string) '';
          $template = &$this->__getTemplate('Proxy');
@@ -57,9 +84,15 @@
 
             $buffer .= $template->transformTemplate();
          }
+
+         // in case no proxy object is found for the present filter, place a custom text
+         // denoting this situation.
+         if(count($proxies) == 0){
+            $buffer = $this->__getTemplate('NoProxy')->transformTemplate();
+         }
+
          $this->setPlaceHolder('ProxyList',$buffer);
-         
-       // end function
+
       }
 
     // end class
