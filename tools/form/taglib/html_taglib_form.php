@@ -157,10 +157,6 @@
        * Version 0.1, 05.01.2007<br />
        */
       public function onParseTime(){
-         //$t = &Singleton::getInstance('BenchmarkTimer');
-         //$id = '(html_taglib_form) '.$this->__ObjectID.'::onParseTime()';
-         //$t->start($id);
-         $this->__extractTagLibTags();
 
          // add default method for convenience
          $method = $this->getAttribute(self::$METHOD_ATTRIBUTE_NAME);
@@ -173,7 +169,8 @@
             );
          }
 
-         //$t->stop($id);
+         $this->__extractTagLibTags();
+
       }
 
       /**
