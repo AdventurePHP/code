@@ -308,13 +308,32 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 24.08.2009<br />
+       * Version 0.2, 01.11.2010 (Added support for optional validators)<br />
        */
       public function addValidator(AbstractFormValidator &$validator){
-         if($validator->isActive()){
-            if(!$validator->validate($this->getAttribute('value'))){
+         $value = $this->getAttribute('value');
+         if ($validator->isActive() && $this->isMandatory($value)) {
+            if (!$validator->validate($value)) {
                $validator->notify();
             }
          }
+      }
+
+      /**
+       * @protected
+       *
+       * Indicates, whether validation is mandatory or not. This enables to introduce
+       * optional validators that are only active in case a field is filled.
+       *
+       * @author Christian Achatz, Ralf Schubert
+       * @version
+       * Version 0.1, 01.11.2010<br />
+       */
+      protected function isMandatory($value) {
+         if($this->getAttribute('optional', 'false') === 'true'){
+            return !empty($value);
+         }
+         return true;
       }
 
       /**

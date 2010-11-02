@@ -57,9 +57,6 @@
        */
       protected $__CaptchaString = null;
 
-      public function form_taglib_captcha(){
-      }
-
       /**
        * @public
        * 
@@ -75,7 +72,6 @@
        */
       public function addValidator(AbstractFormValidator &$validator){
          $this->__TextField->addValidator($validator);
-       // end function
       }
 
       /**
@@ -94,7 +90,6 @@
        */
       public function addFilter(AbstractFormFilter &$filter){
          $this->__TextField->addFilter($filter);
-       // end function
       }
 
       /**
@@ -110,7 +105,6 @@
        */
       public function isValid(){
          return $this->__TextField->isValid();
-       // end function
       }
 
       /**
@@ -134,17 +128,14 @@
          $textClass = $this->getAttribute('text_class');
          if($textClass !== null){
             $this->__TextField->setAttribute('class',$textClass);
-          // end if
          }
          $textStyle = $this->getAttribute('text_style');
          if($textStyle !== null){
             $this->__TextField->setAttribute('style',$textStyle);
-          // end if
          }
          $textId = $this->getAttribute('text_id');
          if($textId !== null){
             $this->__TextField->setAttribute('id',$textId);
-          // end if
          }
 
          $this->__TextFieldName = md5($this->__ParentObject->getAttribute('name').'_captcha');
@@ -224,13 +215,10 @@
             $actionParam = array(
                                  'modules_captcha_biz-action/showCaptcha' => 'name/'.$this->__TextFieldName
                                 );
-          // end if
-         }
-         else{
+         } else {
             $actionParam = array(
                                  'modules_captcha_biz-action:showCaptcha' => 'name:'.$this->__TextFieldName
                                 );
-          // end else
          }
 
          // check, if the inline style should be disabled
@@ -250,17 +238,14 @@
          $imgClass = $this->getAttribute('image_class');
          if($imgClass !== null){
             $captchaCode .= 'class="'.$imgClass.'" ';
-          // end if
          }
          $imgStyle = $this->getAttribute('image_style');
          if($imgStyle !== null){
             $captchaCode .= 'style="'.$imgStyle.'" ';
-          // end if
          }
          $imgId = $this->getAttribute('image_id');
          if($imgId !== null){
             $captchaCode .= 'id="'.$imgId.'" ';
-          // end if
          }
 
          // clear field on form errors

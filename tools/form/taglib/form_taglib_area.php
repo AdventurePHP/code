@@ -55,7 +55,6 @@
       function transform(){
          return '<textarea '.$this->getSanitizedAttributesAsString($this->__Attributes).'>'
             .$this->__Content.'</textarea>';
-       // end function
       }
 
       /**
@@ -71,9 +70,7 @@
          $name = $this->getAttribute('name');
          if(isset($_REQUEST[$name])){
             $this->__Content = $_REQUEST[$name];
-          // end if
          }
-       // end function
       }
 
       /**
@@ -87,14 +84,14 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 28.08.2009<br />
+       * Version 0.2, 01.11.2010 (Introduced optional validation)<br />
        */
-      public function addValidator(AbstractFormValidator &$validator){
-         if($validator->isActive()){
-            if(!$validator->validate($this->__Content)){
+      public function addValidator(AbstractFormValidator &$validator) {
+         if ($validator->isActive() && $this->isMandatory($this->getContent())) {
+            if (!$validator->validate($this->getContent())) {
                $validator->notify();
             }
          }
-       // end function
       }
 
       /**
@@ -112,9 +109,7 @@
       public function addFilter(AbstractFormFilter &$filter){
          if($filter->isActive()){
             $this->__Content = $filter->filter($this->__Content);
-          // end if
          }
-       // end function
       }
 
     // end class
