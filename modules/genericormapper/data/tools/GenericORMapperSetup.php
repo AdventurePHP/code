@@ -368,10 +368,10 @@
          $create .= '  `'.$pkName.'` '.$this->getIndexColumnDataType().' NOT NULL auto_increment,'.PHP_EOL;
 
          // source id
-         $create .= '  `'.$tableAttributes['SourceID'].'` INT(5) UNSIGNED NOT NULL default \'0\','.PHP_EOL;
+         $create .= '  `'.$tableAttributes['SourceID'].'` '.$this->getIndexColumnDataType().' NOT NULL default \'0\','.PHP_EOL;
 
          // target id
-         $create .= '  `'.$tableAttributes['TargetID'].'` INT(5) UNSIGNED NOT NULL default \'0\','.PHP_EOL;
+         $create .= '  `'.$tableAttributes['TargetID'].'` '.$this->getIndexColumnDataType().' NOT NULL default \'0\','.PHP_EOL;
 
          // primary key over all JOIN columns
          $create .= '  PRIMARY KEY  (`'.$pkName.'`,`'.$tableAttributes['SourceID'].'`,`'.$tableAttributes['TargetID'].'`)'.PHP_EOL;
