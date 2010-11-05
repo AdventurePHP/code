@@ -134,11 +134,14 @@ class JsCssPackager extends APFObject {
     * @author Ralf Schubert
     * @version
     * Version 1.0, 18.03.2010<br />
+    * Version 1.1, 05.11.2010 (Fixed Bug, caused by incompatible use of new configuration methods)<br />
     */
    protected function generatePackage(Configuration $cfgPack, $name) {
       $output = '';
-      $Files = $cfgPack->getSection('Files')->getSections();
-      foreach ($Files as $file) {
+      $Files = $cfgPack->getSection('Files');
+      $FileSectionNames = $Files->getSectionNames();
+      foreach ($FileSectionNames as $FileSectionName) {
+         $file = $Files->getSection($FileSectionName);
          $output .= $this->loadSingleFile($file->getValue('Namespace'), $file->getValue('Filename'), $cfgPack->getValue('PackageType'), $name);
       }
 
