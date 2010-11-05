@@ -97,9 +97,8 @@
 
             throw new InvalidArgumentException('[' . get_class($this) . '->transform()] Given entry "'
                  . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'
-                 . $env . '_' . $configName . '.ini" in namespace "' . $namespace . '" and context "'
+                 . $env . '_' . $configName . '" in namespace "' . $namespace . '" and context "'
                  . $this->getContext() . '"!', E_USER_ERROR);
-            return (string)'';
 
          }
          return $value;
