@@ -60,16 +60,6 @@
       private $connectionName;
 
       /**
-       * @var string The current context to create the database connection with (ServiceManager dependency).
-       */
-      private $context;
-
-      /**
-       * @var string The current language to create the database connection with (ServiceManager dependency).
-       */
-      private $language;
-
-      /**
        * @var string The file extension registered with this provider.
        */
       private $extension;
@@ -80,9 +70,7 @@
        * @param string $language The language of the configuration provider.
        * @param string $connectionName The name of the database connection to use.
        */
-      public function __construct($context, $language, $connectionName) {
-         $this->context = $context;
-         $this->language = $language;
+      public function __construct($connectionName) {
          $this->connectionName = $connectionName;
       }
 
@@ -90,7 +78,7 @@
 
          $table = 'config_' . $this->getTableNameSuffix($namespace);
 
-         $conn = &$this->getConnection();
+         $conn = &$this->getConnection($context, $language);
          $select = 'SELECT `section`, `key`, `value` FROM `' . $table . '`
                            WHERE
                               `context` = \'' . $context . '\' AND
@@ -121,7 +109,7 @@
          $table = 'config_' . $this->getTableNameSuffix($namespace);
 
          // resolve entries by section since we have a flat structure only
-         $conn = &$this->getConnection();
+         $conn = &$this->getConnection($context, $language);
          $configName = $this->getConfigName($name);
 
          foreach ($config->getSectionNames() as $sectionName) {
@@ -164,7 +152,7 @@
        * Version 0.1, 29.10.2010<br />
        */
       private function getTableNameSuffix($namespace) {
-         return preg_replace('/([^a-z_]+)/i', '', strtolower($namespace));
+         return preg_replace('/([^a-z_]+)/i', '', strtolower(str_replace('::', '_', $namespace)));
       }
 
       /**
@@ -188,19 +176,21 @@
        *
        * Creates the database connection.
        *
+       * @param string $context The current context.
+       * @param string $language The current language.
        * @return AbstractDatabaseHandler The database connection to read the configuration from and store it.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 29.10.2010<br />
        */
-      private function &getConnection() {
+      private function &getConnection($context, $language) {
 
          // create service manager "manually", since we have no convenience method
          $service = &Singleton::getInstance('ServiceManager');
          /* @var $service ServiceManager */
-         $service->setContext($this->context);
-         $service->setLanguage($this->language);
+         $service->setContext($context);
+         $service->setLanguage($language);
          
          $connMgr = &$service->getServiceObject('core::database', 'ConnectionManager');
          /* @var $connMgr ConnectionManager */
