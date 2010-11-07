@@ -711,8 +711,8 @@
        */
       public function &getFormElementsByTagName($tagName){
 
-         $colon = strpos($tagName,':');
-         $tagClassName = trim(substr($tagName,0,$colon)).'_taglib_'.trim(substr($tagName,$colon + 1));
+         $colon = strpos($tagName, ':');
+         $tagClassName = substr($tagName, 0, $colon) . '_taglib_' . substr($tagName, $colon + 1);
 
          if(count($this->__Children) > 0){
 
