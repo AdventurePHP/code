@@ -31,9 +31,6 @@
     */
    class GenericOutputFilter extends AbstractFilter {
 
-      public function GenericOutputFilter(){
-      }
-
       /**
        * @public
        *
@@ -47,25 +44,25 @@
        * @version
        * Version 0.1, 11.12.2008<br />
        */
-      public function filter($input){
+      public function filter($input) {
 
          $t = &Singleton::getInstance('BenchmarkTimer');
-         $t->start('GenericOutputFilter::filter()');
 
-         $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
-         if($urlRewriting === true){
-            import('core::filter::output','HtmlLinkRewriteFilter');
+         // savely start the benchmark timer to avoid exceptions in exception handler
+         @$t->start('GenericOutputFilter::filter()');
+
+         $urlRewriting = Registry::retrieve('apf::core', 'URLRewriting');
+         if ($urlRewriting === true) {
+            import('core::filter::output', 'HtmlLinkRewriteFilter');
             $filter = new HtmlLinkRewriteFilter();
             $input = $filter->filter($input);
          }
 
          $t->stop('GenericOutputFilter::filter()');
-         
-         return $input;
 
-       // end function
+         return $input;
       }
 
-    // end class
+      // end class
    }
 ?>
