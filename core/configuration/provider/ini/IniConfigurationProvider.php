@@ -175,7 +175,7 @@
          }
 
          if (file_put_contents($fileName, $buffer) === false) {
-            throw new ConfigurationException('[XmlConfigurationProvider::saveConfiguration()] '
+            throw new ConfigurationException('[IniConfigurationProvider::saveConfiguration()] '
                     . 'Configuration with name "' . $fileName . '" cannot be saved! Please check your '
                     . 'file system configuration, the file name, or your environment configuration.');
          }
