@@ -47,7 +47,6 @@
          $this->__Control->markAsInvalid();
          $this->markControl($this->__Control);
          $this->notifyValidationListeners($this->__Control);
-       // end function
       }
 
       /**
@@ -88,7 +87,6 @@
             }
          }
 
-       // end function
       }
 
       /**
@@ -107,7 +105,6 @@
             return get_class($this);
          }
          return null;
-       // end function
       }
 
       /**
@@ -125,10 +122,9 @@
        * @version
        * Version 0.1, 03.02.2010<br />
        */
-      protected function markControl(&$control){
+      protected function markControl(form_control &$control){
          $marker = $this->getCssMarkerClass($control);
          $this->appendCssClass($control,$marker);
-       // end function
       }
 
       /**
@@ -151,7 +147,6 @@
             $marker = self::$DEFAULT_MARKER_CLASS;
          }
          return $marker;
-       // end function
       }
 
       /**
@@ -181,7 +176,6 @@
          }
          $control->setAttribute('class',$attr);
 
-       // end function
       }
 
     // end function

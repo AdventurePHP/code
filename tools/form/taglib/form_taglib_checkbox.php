@@ -32,7 +32,7 @@
     */
    class form_taglib_checkbox extends form_control {
 
-      public function form_taglib_checkbox(){
+      public function __construct() {
          $this->attributeWhiteList[] = 'name';
          $this->attributeWhiteList[] = 'accesskey';
          $this->attributeWhiteList[] = 'disabled';
@@ -78,9 +78,8 @@
        * Version 0.1, 13.01.2007<br />
        * Version 0.2, 11.02.2007 (Moved presetting and validation to the onAfterAppend() method)<br />
        */
-      function transform(){
+      public function transform(){
          return '<input type="checkbox" '.$this->getSanitizedAttributesAsString($this->__Attributes).' />';
-       // end function
       }
 
     // end class
