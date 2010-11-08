@@ -36,10 +36,10 @@
       /**
        * @protected
        *
-       * Returns the value of the cache config attribute or triggers an error (FATAL), if the
-       * attribute is not given within the attributes array.
+       * Returns the value of the cache config attribute or throws an exception,
+       * in case the attribute is not given within the attributes array.
        *
-       * @param string $name name of the desired attribute.
+       * @param string $name The name of the desired attribute.
        * @return string Value of the attribute.
        * @throws InvalidArgumentException In case the desired attribute is not defined.
        *
@@ -56,13 +56,10 @@
                     .'::getConfigAttribute()] The configuration directive "'.$name.'" is not '
                     .'present or empty. Please check your cache configuration ("'.$env
                     .'_cacheconfig.ini") for namespace "tools::cache" and context "'
-                    .$this->__Context.'" or consult the documentation!',E_USER_ERROR);
+                    .$this->getContext().'" or consult the documentation!', E_USER_ERROR);
          }
-         else{
-            return $this->__Attributes[$name];
-         }
-
-       // end function
+         return $value;
+         
       }
 
     // end class

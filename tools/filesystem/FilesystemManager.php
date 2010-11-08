@@ -45,7 +45,7 @@
     */
    class FilesystemManager {
 
-      private function FilesystemManager(){
+      private function  __construct() {
       }
 
       /**
@@ -69,41 +69,30 @@
          // clear stat cache to prevent interference with previous calls
          clearstatcache();
 
-         if(!is_dir($folder)){
+         if (!is_dir($folder)) {
             return false;
-          // end if
          }
-         else{
 
-            // grab content of current dir
-            $dirContent = glob(realpath($folder).'/*');
+         // grab content of current dir
+         $dirContent = glob(realpath($folder) . '/*');
 
-            foreach($dirContent as $file){
-               $file = str_replace('\\','/',$file);
-               if(is_dir($file)){
-                  FilesystemManager::deleteFolder($file,true);
-                // end if
-               }
-               else{
-                  FilesystemManager::removeFile($file);
-                // end else
-               }
-
-               clearstatcache();
-
-             // end foreach
+         foreach ($dirContent as $file) {
+            $file = str_replace('\\', '/', $file);
+            if (is_dir($file)) {
+               FilesystemManager::deleteFolder($file, true);
+            } else {
+               FilesystemManager::removeFile($file);
             }
 
-            rmdir($folder);
-
-          // end else
+            clearstatcache();
          }
+
+         rmdir($folder);
 
          clearstatcache();
 
          return true;
 
-       // end function
       }
 
       /**
@@ -126,7 +115,7 @@
          $folder = str_replace('\\','/',$folder);
 
          if(!is_dir($folder)){
-            mkdir($folder,$permissions,true);
+            mkdir($folder, $permissions, true);
          }
 
        // end function

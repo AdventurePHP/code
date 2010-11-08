@@ -41,11 +41,18 @@
             : null;
       }
 
-      public function write(CacheKey $cacheKey,$content){
+      public function write(CacheKey $cacheKey, $content){
+
+         // configure file mask
+         try {
+            $fileMask = printf('%04u', $this->getConfigAttribute('Cache.FolderPermission'));
+         } catch (InvalidArgumentException $e) {
+            $fileMask = 0770;
+         }
 
          // build cache file name and create cache folder
          $cacheFile = $this->getCacheFile($cacheKey);
-         FilesystemManager::createFolder(dirname($cacheFile));
+         FilesystemManager::createFolder(dirname($cacheFile), $fileMask);
 
          // write cache
          $fH = fopen($cacheFile,'w+');
