@@ -88,6 +88,7 @@
 
          // delete the rewite param indicator
          unset($_REQUEST[self::$REWRITE_QUERY_PARAM]);
+         unset($_GET[self::$REWRITE_QUERY_PARAM]);
 
          // extract actions from the request url, in case the action keyword or the action
          // delimiter is present in url.
@@ -147,13 +148,15 @@
 
          }
 
+         // re-initialize GET params to support e.g. form submition
+         $_GET = $_REQUEST;
+
          // re-add POST params
          $_REQUEST = array_merge($_REQUEST,$_POST);
 
          // add PHPSESSID to the request again
          if(!empty($PHPSESSID)){
             $_REQUEST[$sessionName] = $PHPSESSID;
-          // end if
          }
 
          // filter request array

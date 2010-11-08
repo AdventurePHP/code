@@ -60,7 +60,6 @@
 
          if(isset($_REQUEST[$sessionName])){
             $PHPSESSID = $_REQUEST[$sessionName];
-          // end if
          }
 
          // filter query
@@ -73,6 +72,7 @@
 
             // delete the rewite param indicator
             unset($_REQUEST[self::$REWRITE_QUERY_PARAM]);
+            unset($_GET[self::$REWRITE_QUERY_PARAM]);
 
             // backup the request array
             $requestBackup = $_REQUEST;
@@ -84,16 +84,18 @@
             $_REQUEST = $this->__createRequestArray($query);
 
             // merge backup into the request array
-            $_REQUEST = array_merge($_REQUEST,$requestBackup);
+            $_REQUEST = array_merge($_REQUEST, $requestBackup);
             unset($requestBackup);
 
+            // re-initialize GET params to support e.g. form submition
+            $_GET = $_REQUEST;
+
             // merge port params into the request again
-            $_REQUEST = array_merge($_REQUEST,$_POST);
+            $_REQUEST = array_merge($_REQUEST, $_POST);
 
             // reinsert the PHPSESSID value into the request array
-            if(!empty($PHPSESSID)){
+            if (!empty($PHPSESSID)) {
                $_REQUEST[$sessionName] = $PHPSESSID;
-             // end if
             }
 
             // filter request array
