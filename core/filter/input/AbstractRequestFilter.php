@@ -65,18 +65,15 @@
 
             if(isset($requestArray[$x + 1])){
                $returnArray[$requestArray[$x]] = $requestArray[$x + 1];
-             // end if
             }
 
             // increment offset with two, because the next offset is the key
             $x = $x + 2;
 
-          // end while
          }
 
          return $returnArray;
 
-       // end function
       }
 
       /**
@@ -95,11 +92,9 @@
 
          if(substr($url,0,1) == $this->__RewriteURLDelimiter){
             $url = substr($url,1);
-          // end if
          }
          return $url;
 
-       // end function
       }
 
       /**
@@ -118,27 +113,22 @@
          // get the current 'magic_quotes_gpc' config value
          $magicQuotesGPC = ini_get('magic_quotes_gpc');
 
-         foreach($_REQUEST as $Key => $Value){
+         foreach($_REQUEST as $key => $value){
 
             // remove slashes added before, if 'magic_quotes_gpc' is active
-            if(!is_array($Value)){
+            if(!is_array($value)){
 
                if($magicQuotesGPC == '1'){
-                  $_REQUEST[$Key] = htmlspecialchars(stripcslashes($Value));
-                // end if
+                  $_REQUEST[$key] = htmlspecialchars(stripcslashes($value));
                }
                else{
-                  $_REQUEST[$Key] = htmlspecialchars($Value);
-                // end
+                  $_REQUEST[$key] = htmlspecialchars($value);
                }
 
-             // end if
             }
 
-          // end foreach
          }
 
-       // end function
       }
 
     // end class

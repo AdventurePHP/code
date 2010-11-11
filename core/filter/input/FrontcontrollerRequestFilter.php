@@ -56,39 +56,36 @@
          $inputDelimiter = $fC->get('InputDelimiter');
          $keyValueDelimiter = $fC->get('KeyValueDelimiter');
 
-         foreach($_REQUEST as $Key => $Value){
+         foreach($_REQUEST as $key => $value){
 
-            if(substr_count($Key,$namespaceKeywordDelimiter.$actionKeyword.$keywordClassDelimiter) > 0){
+            if(substr_count($key,$namespaceKeywordDelimiter.$actionKeyword.$keywordClassDelimiter) > 0){
 
                // get namespace and class from the REQUEST key
-               $actionName = substr($Key,strpos($Key,$keywordClassDelimiter) + strlen($keywordClassDelimiter));
-               $actionNamespace = substr($Key,0,strpos($Key,$namespaceKeywordDelimiter));
+               $actionName = substr($key,strpos($key,$keywordClassDelimiter) + strlen($keywordClassDelimiter));
+               $actionNamespace = substr($key,0,strpos($key,$namespaceKeywordDelimiter));
 
                // initialize the input params
                $inputParams = array();
 
                // create param array
-               $paramsArray = explode($inputDelimiter,$Value);
+               $paramsArray = explode($inputDelimiter, $value);
 
                for($i = 0; $i < count($paramsArray); $i++){
 
                   $tmpArray = explode($keyValueDelimiter,$paramsArray[$i]);
 
-                  if(isset($tmpArray[0]) && isset($tmpArray[1]) && !empty($tmpArray[0]) && !empty($tmpArray[1])){
+                  if (isset($tmpArray[0]) && isset($tmpArray[1])
+                          && !empty($tmpArray[0]) && !empty($tmpArray[1])) {
                      $inputParams[$tmpArray[0]] = $tmpArray[1];
-                   // end if
                   }
 
-                // end foreach
                }
 
                // add action to the front controller
-               $fC->addAction($actionNamespace,$actionName,$inputParams);
+               $fC->addAction($actionNamespace, $actionName, $inputParams);
 
-             // end if
             }
 
-          // end foreach
          }
 
          // filter the request array
