@@ -27,7 +27,7 @@
     *
     * Implements a LinkHandler for front controller purposes.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 10.02.2007<br />
     * Version 0.2, 24.02.2007 (Added new method generateActionLink())<br />
@@ -36,7 +36,7 @@
     */
    class FrontcontrollerLinkHandler {
 
-      private function FrontcontrollerLinkHandler(){
+      private function __construct(){
       }
 
       /**
@@ -75,7 +75,6 @@
          // set URLRewrite
          if($urlRewriting === null){
             $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
-          // end if
          }
 
          // initialize the keyword-class delimiter
@@ -83,13 +82,10 @@
             $keywordClassDelimiter = $fC->get('URLRewritingKeywordClassDelimiter');
             $keyValueDelimiter = $fC->get('URLRewritingKeyValueDelimiter');
             $inputDelimiter = $fC->get('URLRewritingInputDelimiter');
-          // end if
-         }
-         else{
+         } else {
             $keywordClassDelimiter = $fC->get('KeywordClassDelimiter');
             $keyValueDelimiter = $fC->get('KeyValueDelimiter');
             $inputDelimiter = $fC->get('InputDelimiter');
-          // end else
          }
 
          $normalKeywordClassDelimiter = $fC->get('KeywordClassDelimiter');
@@ -120,7 +116,7 @@
        *
        * Implements a link creation tool for front controller based application. Generates links as
        * you know of the LinkHandler facility, but additionally includes actions, that define the
-       * class member <code>$__KeepInURL=true</code>. This means, that these actions are automatically
+       * class member <code>$keepInURL=true</code>. This means, that these actions are automatically
        * included in the url, that is returned by this method.
        * <p/>
        * The first param applies a basic url that is manipulated using the <em>$newParams</em>
@@ -148,7 +144,7 @@
        *                           style (true) or not (false).
        * @return string The desired url.
        *
-       * @author Christian Schäfer
+       * @author Christian Schï¿½fer
        * @version
        * Version 0.1, 24.02.2007<br />
        * Version 0.2, 08.07.2007 (Complete redesign due to redesign of the request filter)<br />
@@ -173,7 +169,6 @@
             trigger_error('[FrontcontrollerLinkHandler::generateLink()] Given url ('.$url.') is not a string! Given '
                .'parameters are ['.implode(',',$paramStringParts).']',E_USER_WARNING);
             $url = strval($url);
-          // end if
          }
 
          // decode ampersands to get correct url analyze results
@@ -188,16 +183,12 @@
          // set URLRewrite
          if($urlRewriting === null){
             $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
-          // end if
          }
 
          if($urlRewriting == true){
             $keywordClassDelimiter = $fC->get('URLRewritingKeywordClassDelimiter');
-          // end if
-         }
-         else{
+         } else {
             $keywordClassDelimiter = $fC->get('KeywordClassDelimiter');
-          // end else
          }
 
          $normalKeywordClassDelimiter = $fC->get('KeywordClassDelimiter');
@@ -209,13 +200,11 @@
          // resolve missing query string
          if(!isset($parsedURL['query'])){
             $parsedURL['query'] = (string)'';
-          // end if
          }
 
          // resolve missing path
          if(!isset($parsedURL['path'])){
             $parsedURL['path'] = (string)'';
-          // end if
          }
 
          // analyze url in rewrite style
@@ -236,33 +225,23 @@
                      if(substr_count($urlPathParts[$i],$namespaceKeywordDelimiter.$actionKeyword.$keywordClassDelimiter) < 1){
                         // analyze and merge params of the current part
                         $params = array_merge($params,FrontcontrollerLinkHandler::createArrayFromRequestString($urlPathParts[$i]));
-                      // end if
-                     }
-                     else{
+                     } else {
                         // register action directive and mark as dummy action. this is 
                         // important for the param merge!
                         $actionURLParts = explode('/',$urlPathParts[$i]);
                         $params = array_merge($params,array(trim($actionURLParts[0].$normalKeywordClassDelimiter.$actionURLParts[1]) => ''));
-                      // end else
                      }
 
-                   // end for
                   }
 
-                // end if
                }
 
-             // end if
-            }
-            else{
+            } else {
                // analyze url path
                $params = array_merge($params,FrontcontrollerLinkHandler::createArrayFromRequestString($parsedURL['path']));
-             // end else
             }
 
-          // end if
-         }
-         else{
+         } else {
 
             // plsit url by & and =
             $splitURL = explode('&',$parsedURL['query']);
@@ -279,21 +258,15 @@
                   // an action keyword
                   if(substr_count($splitURL[$i],$namespaceKeywordDelimiter.$actionKeyword.$keywordClassDelimiter) < 1){
                      $params[substr($splitURL[$i],0,$equalSign)] = substr($splitURL[$i],$equalSign+1,strlen($splitURL[$i]));
-                   // end if
-                  }
-                  else{
+                  } else {
                      // save action instruction as dummy (removed DUMMY in version > 0.4)
                      $params[substr($splitURL[$i],0,$equalSign)] = '';
-                   // end else
                   }
 
-                // end if
                }
 
-             // end for
             }
 
-          // end else
          }
 
          // add actions to the params
@@ -325,15 +298,11 @@
                // merge params
                $actionParams = array_merge_recursive($actionParams,array($arrayKey => $Array_Value));
 
-             // end if
-            }
-            else{
+            } else {
                // delete place holders (aka DUMMY)
                unset($params[$arrayKey]);
-             // end else
             }
 
-          // end foreach
          }
 
          // merge actions along with the params
@@ -363,29 +332,20 @@
 
                         if($currentOffset < $finalParamsCount){
                            $query .= $rewriteURLDelimiter.trim($key).'/'.trim($value).$rewriteURLDelimiter;
-                         // end if
-                        }
-                        else{
+                        } else {
                            $query .= $rewriteURLDelimiter.trim($key).'/'.trim($value);
-                         // end else
                         }
 
-                      // end if
-                     }
-                     else{
+                     } else {
                         $query .= '/'.trim($key).'/'.trim($value);
-                      // end else
                      }
 
-                   // end if
                   }
 
-                // end if
                }
 
                $currentOffset++;
 
-             // end foreach
             }
 
             // rewrite query and replace "/~//"
@@ -397,9 +357,7 @@
                             );
             $query = strtr($query,$replace);
 
-          // end if
-         }
-         else{
+         } else {
 
             foreach($finalParams as $key => $value){
 
@@ -412,29 +370,21 @@
                      // add '?' as first delimiter
                      if(strlen($query) == 0){
                         $query .= '?';
-                      // end if
-                     }
-                     else{
+                     } else {
                         $query .= '&';
-                      // end else
                      }
 
                      $query .= trim($key).'='.trim($value);
 
-                   // end if
                   }
 
-                // end if
                }
 
-             // end foreach
             }
-
 
             // encode ampersands
             $query = str_replace('&','&amp;',$query);
 
-          // end else
          }
 
          $hostPart = (string)'';
@@ -460,25 +410,18 @@
             // remove trailing slashes
             if(substr($query,0,1) == '/'){
                $query = substr($query,1);
-             // end if
             }
 
             $finishedURL = $hostPart.'/'.$query;
 
-          // end if
-         }
-         else{
+         } else {
             $finishedURL = $hostPart.$parsedURL['path'].$query;
-          // end else
          }
-
 
          $t->stop($id);
          return $finishedURL;
 
-       // end function
       }
-
 
       /**
        * @public
@@ -500,7 +443,6 @@
          // remove trailing slashes
          if(substr($requestString,0,1) == '/'){
             $requestString = substr($requestString,1);
-          // end if
          }
 
          $paramsArray = explode('/',strip_tags($requestString));
@@ -512,21 +454,17 @@
 
                if(isset($paramsArray[$x + 1])){
                   $urlParams[$paramsArray[$x]] = $paramsArray[$x + 1];
-                // end if
                }
 
                // increment by 2, because the next offset is the key!
                $x = $x + 2;
 
-             // end while
             }
 
-          // end if
          }
 
          return $urlParams;
 
-       // end function
       }
 
     // end class

@@ -70,9 +70,9 @@
        * @version
        * Version 0.1, 15.04.2008<br />
        */
-      public function GenericDomainObject($objectName){
+      public function __construct($objectName) {
          if(empty($objectName)){
-            throw new InvalidArgumentException('[GenericDomainObject::__constructor()] Creating a '
+            throw new InvalidArgumentException('[GenericDomainObject::__construct()] Creating a '
                     .'GenericDomainObject must include an object name specification. Otherwise, '
                     .'the GenericORMapper cannot handle this instance.',E_USER_ERROR);
          }
