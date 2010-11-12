@@ -48,6 +48,7 @@
    import('tools::form::taglib','form_taglib_success');
 
    import('tools::form::taglib','form_taglib_timecaptcha');
+   import('tools::form::taglib','form_taglib_csrfhash');
 
    /**
     * @package tools::form::taglib
@@ -137,6 +138,7 @@
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','addtaglib');
 
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','timecaptcha');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','csrfhash');
 
          // add additional attributes to whitelist
          $this->attributeWhiteList[] = self::$METHOD_ATTRIBUTE_NAME;
@@ -253,10 +255,10 @@
             // return object id of the new form element
             return $objectId;
 
-         } else {
-            throw new FormException('[html_taglib_form::addFormElement()] Form element "'.$elementType
-               .'" cannot be added due to previous errors!');
          }
+
+         throw new FormException('[html_taglib_form::addFormElement()] Form element "'.$elementType
+            .'" cannot be added due to previous errors!');
 
        // end function
       }
@@ -389,13 +391,11 @@
             // return object id of the new form element
             return $objectId;
 
-         } else {
-
-            // notify user and return null
-            throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] Form element "'
-               .$elementType.'" cannot be added due to previous errors!');
-
          }
+
+         // notify user and return null
+         throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] Form element "'
+            .$elementType.'" cannot be added due to previous errors!');
 
       }
 
@@ -441,9 +441,9 @@
             // return object id of the new form element
             return $objectId;
 
-         } else {
-            throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] Form element "'.$elementType.'" cannot be added due to previous errors!');
          }
+
+         throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] Form element "'.$elementType.'" cannot be added due to previous errors!');
 
       }
 
@@ -499,13 +499,12 @@
             // return object id for further addressing
             return $objectId;
 
-         } else {
-            throw new FormException('[html_taglib_form::__createFormElement()] No form element with name "'
-               .$elementType.'" found! Maybe the tag name is misspellt or the class is not '
-               .'imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
          }
 
-       // end function
+         throw new FormException('[html_taglib_form::__createFormElement()] No form element with name "'
+            .$elementType.'" found! Maybe the tag name is misspellt or the class is not '
+            .'imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
+
       }
 
       /**
@@ -657,8 +656,7 @@
          $grandParent = &$parent->getParentObject();
          if($grandParent !== null){
             $docCon = $grandParent->getDocumentController();
-         }
-         else {
+         } else {
             $docCon = 'n/a';
          }
          throw new FormException('[html_taglib_form::getFormElementByID()] No form element with id "'
