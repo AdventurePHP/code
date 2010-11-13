@@ -28,29 +28,23 @@
     * @version
     * Version 0.1, 09.11.2008<br />
     */
-   function flushAdvancedLogger(){
+   function flushAdvancedLogger() {
 
       // get logger factory
       $aLF = &Singleton::getInstance('AdvancedLoggerFactory');
 
       // get registered logger
-      $logger = Registry::retrieve('apf::core','AdvancedLogger');
+      $logger = Registry::retrieve('apf::core', 'AdvancedLogger');
       $count = count($logger);
-      if($count > 0){
+      if ($count > 0) {
 
-         for($i = 0; $i < $count; $i++){
+         for ($i = 0; $i < $count; $i++) {
 
             $log = &$aLF->getAdvancedLogger($logger[$i]['section']);
             $log->flushLogBuffer();
             unset($log);
-
-          // end for
          }
-
-       // end if
       }
-
-    // end function
    }
 
    /**
@@ -66,42 +60,42 @@
    class AdvancedLogEntry extends APFObject {
 
       /**
-      *  @private
-      *  Date of the message.
-      */
+       *  @private
+       *  Date of the message.
+       */
       private $date;
 
       /**
-      *  @private
-      *  Time of the message.
-      */
+       *  @private
+       *  Time of the message.
+       */
       private $time;
 
       /**
-      *  @private
-      *  Message text.
-      */
+       *  @private
+       *  Message text.
+       */
       private $message;
 
       /**
-      *  @private
-      *  Message type (aka severity).
-      */
+       *  @private
+       *  Message type (aka severity).
+       */
       private $severity;
 
       /**
-      *  @public
-      *
-      *  Constructor of the class. Creates a new logEntry object.
-      *
-      *  @param string $Message; Desrired error message
-      *  @param string $Type; Error message type
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 29.03.2007<br />
-      */
-      public function __construct($message,$type){
+       *  @public
+       *
+       *  Constructor of the class. Creates a new logEntry object.
+       *
+       *  @param string $Message; Desrired error message
+       *  @param string $Type; Error message type
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 29.03.2007<br />
+       */
+      public function __construct($message, $type) {
          $this->date = date('Y-m-d');
          $this->time = date('H:i:s');
          $this->message = $message;
@@ -109,33 +103,44 @@
       }
 
       /**
-      *  @public
-      *
-      *  Returns the message string used to write into a log file.<br />
-      *
-      *  @return string $Message; Complete error message including date and time
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 09.11.2008<br />
-      */
-      function toString($timestamp = true,$type = true){
+       *  @public
+       *
+       *  Returns the message string used to write into a log file.<br />
+       *
+       *  @return string $Message; Complete error message including date and time
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 09.11.2008<br />
+       */
+      public function toString($timestamp = true, $type = true) {
 
-         $logString = (string)'';
-         if($timestamp === true){
-            $logString .= '['.$this->date.' '.$this->time.'] ';
-          // end if
+         $logString = (string) '';
+         if ($timestamp === true) {
+            $logString .= '[' . $this->date . ' ' . $this->time . '] ';
          }
-         if($type === true){
-            $logString .= '['.$this->severity.'] ';
-          // end if
+         if ($type === true) {
+            $logString .= '[' . $this->severity . '] ';
          }
-         return $logString.$this->message;
-
-       // end function
+         return $logString . $this->message;
       }
 
-    // end class
+      public function getDate() {
+         return $this->date;
+      }
+
+      public function getTime() {
+         return $this->time;
+      }
+
+      public function getMessage() {
+         return $this->message;
+      }
+
+      public function getSeverity() {
+         return $this->severity;
+      }
+
    }
 
    /**
@@ -158,48 +163,45 @@
       private $logger = array();
 
       /**
-      *  @public
-      *
-      *  Returns the logger for the desired config section. Caches all previously created logger.
-      *
-      *  @param string $section the section, the logger should be initialized with
-      *  @return AdvancedLogger $logger the desired logger
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 09.11.2008<br />
-      */
-      public function &getAdvancedLogger($section){
+       *  @public
+       *
+       *  Returns the logger for the desired config section. Caches all previously created logger.
+       *
+       *  @param string $section the section, the logger should be initialized with
+       *  @return AdvancedLogger $logger the desired logger
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 09.11.2008<br />
+       */
+      public function &getAdvancedLogger($section) {
 
          // calculate logger cache key
          $loggerKey = md5($section);
 
          // create logger, if it does not exist
-         if(!isset($this->logger[$loggerKey])){
+         if (!isset($this->logger[$loggerKey])) {
 
             // create logger
-            $this->logger[$loggerKey] = &$this->__getAndInitServiceObject('core::logging','AdvancedLogger',$section,'NORMAL');
+            $this->logger[$loggerKey] = &$this->__getAndInitServiceObject('core::logging', 'AdvancedLogger', $section, 'NORMAL');
 
             // register current instance in the registry so that the flush function can get the
             // instances from the service manager in correct service type configuration
-            $logger = Registry::retrieve('apf::core','AdvancedLogger');
-            if(count($logger) == 0){
+            $logger = Registry::retrieve('apf::core', 'AdvancedLogger');
+            if (count($logger) == 0) {
                $logger = array();
             }
             $logger[] = array(
-                              'context' => $this->__Context,
-                              'language' => $this->__Language,
-                              'section' => $section
-                             );
-            Registry::register('apf::core','AdvancedLogger',$logger);
+                'context' => $this->__Context,
+                'language' => $this->__Language,
+                'section' => $section
+            );
+            Registry::register('apf::core', 'AdvancedLogger', $logger);
          }
 
          return $this->logger[$loggerKey];
-
-       // end function
       }
 
-    // end function
    }
 
    /**
@@ -231,13 +233,11 @@
        * The log buffer;
        */
       private $logBuffer = array();
-
       /**
        * @private
        * Contains the desired log configuration section.
        */
       private $logConfig = null;
-
       /**
        * @private
        * New line character used for the file and stdout target.
@@ -255,65 +255,61 @@
        * @version
        * Version 0.1, 09.11.2008<br />
        */
-      public function init($initParam){
+      public function init($initParam) {
 
          // initialize the current log configuration section
-         if($this->logConfig === null){
+         if ($this->logConfig === null) {
 
             // initialize config
-            $config = $this->getConfiguration('core::logging','logconfig');
+            $config = $this->getConfiguration('core::logging', 'logconfig');
             $this->logConfig = $config->getSection($initParam);
 
-            if($this->logConfig === null){
-               $env = Registry::retrieve('apf::core','Environment');
+            if ($this->logConfig === null) {
+               $env = Registry::retrieve('apf::core', 'Environment');
                throw new LoggerException('[AdvancedLogger::init()] The configuration section ("'
-                       .$initParam.'") cannot be loaded from the logging configuration file "'
-                       .$env.'_logconfig.ini" for namespace "core::logging" and context "'
-                       .$this->getContext().'"!',E_USER_ERROR);
+                       . $initParam . '") cannot be loaded from the logging configuration file "'
+                       . $env . '_logconfig.ini" for namespace "core::logging" and context "'
+                       . $this->getContext() . '"!', E_USER_ERROR);
             }
 
             // check for the target directive
-            if($this->logConfig->getValue('LogTarget') == null){
+            if ($this->logConfig->getValue('LogTarget') == null) {
                throw new LoggerException('[AdvancedLogger::init()] The configuration section ("'
-                       .$initParam.'") does not contain a "LogTarget" directive! Please check '
-                       .'your configuration.',E_USER_ERROR);
+                       . $initParam . '") does not contain a "LogTarget" directive! Please check '
+                       . 'your configuration.', E_USER_ERROR);
             }
-
-          // end if
          }
-
-       // end function
       }
 
       /**
-      *  @public
-      *
-      *  The logEntry() function let's you append a log message to the current AdvancedLogger instance.
-      *  Configuration is done by the init() method.
-      *
-      *  @param string $message the log entry's message
-      *  @param string $type the log entry's type (aka severity)
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 09.11.2008<br />
-      */
-      public function logEntry($message,$type = 'INFO'){
-         $this->logBuffer[] = new AdvancedLogEntry($message,$type);
+       *  @public
+       *
+       *  The logEntry() function let's you append a log message to the current AdvancedLogger instance.
+       *  Configuration is done by the init() method.
+       *
+       *  @param string $message the log entry's message
+       *  @param string $type the log entry's type (aka severity)
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 09.11.2008<br />
+       */
+      public function logEntry($message, $type = 'INFO') {
+         $this->logBuffer[] = new AdvancedLogEntry($message, $type);
       }
 
       /**
-      *  @public
-      *
-      *  Flushes the log buffer. Must be called after each request.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 09.11.2008<br />
-      */
-      public function flushLogBuffer(){
+       *  @public
+       *
+       *  Flushes the log buffer. Must be called after each request.
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 09.11.2008<br />
+       */
+      public function flushLogBuffer() {
 
-         switch($this->logConfig->getValue('LogTarget')){
+         switch ($this->logConfig->getValue('LogTarget')) {
 
             case 'file':
                $this->flush2File();
@@ -326,149 +322,133 @@
                break;
             default:
                throw new LoggerException('[AdvancedLogger::flushLogBuffer()] The choosen log target ("'
-                       .$this->logConfig->getValue('LogTarget').'") is not implementend. Please take '
-                       .'one out of "file", "database" and "stdout"!',E_USER_ERROR);
+                       . $this->logConfig->getValue('LogTarget') . '") is not implementend. Please take '
+                       . 'one out of "file", "database" and "stdout"!', E_USER_ERROR);
                break;
-
-          // end switch
          }
-
-       // end function
       }
 
       /**
-      *  @private
-      *
-      *  Implements the log flushing for the database target.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 09.11.2008<br />
-      */
-      private function flush2Database(){
+       *  @private
+       *
+       *  Implements the log flushing for the database target.
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 09.11.2008<br />
+       */
+      private function flush2Database() {
 
          // read params from the configuration
-         if($this->logConfig->getValue('LogDatabase') == null){
+         if ($this->logConfig->getValue('LogDatabase') == null) {
             throw new LoggerException('[AdvancedLogger::flush2Database()] The configuration '
-                    .'section does not contain a "LogDatabase" definition! Please check your configuration.');
+                    . 'section does not contain a "LogDatabase" definition! Please check your configuration.');
          }
-         if($this->logConfig->getValue('LogTable') == null){
+         if ($this->logConfig->getValue('LogTable') == null) {
             throw new LoggerException('[AdvancedLogger::flush2Database()] The configuration '
-                    .'section does not contain a "LogTable" definition! Please check your configuration.');
+                    . 'section does not contain a "LogTable" definition! Please check your configuration.');
          }
          $logDatabase = $this->logConfig->getValue('LogDatabase');
          $logTable = $this->logConfig->getValue('LogTable');
 
          // create database connection
-         $cM = &$this->__getServiceObject('core::database','ConnectionManager');
+         $cM = &$this->__getServiceObject('core::database', 'ConnectionManager');
          $db = &$cM->getConnection($logDatabase);
 
          // flush log entries to the table
-         foreach($this->logBuffer as $entry){
-
-            $timestamp = $entry->get('Date').' '.$entry->get('Time');
-            $insert = 'INSERT INTO `'.$logTable.'`
-                       (`Timestamp`,`Type`,`Message`)
-                       VALUES
-                       (\''.$timestamp.'\',\''.$entry->get('Type').'\',\''.$entry->get('Message').'\');';
+         foreach ($this->logBuffer as $entry) {
+            /* @var $entry AdvancedLogEntry */
+            $timestamp = $entry->getDate() . ' ' . $entry->getTime();
+            $insert = 'INSERT INTO `' . $logTable . '`
+                          (`Timestamp`,`Type`,`Message`)
+                          VALUES
+                          (\'' . $timestamp . '\',\'' . $entry->getSeverity() . '\',\'' . $entry->getMessage() . '\');';
             $db->executeTextStatement($insert);
-
-          // end foreach
          }
-
-       // end function
       }
 
       /**
-      *  @private
-      *
-      *  Implements the log flushing for the file target.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 09.11.2008<br />
-      */
-      private function flush2File(){
+       *  @private
+       *
+       *  Implements the log flushing for the file target.
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 09.11.2008<br />
+       */
+      private function flush2File() {
 
          // read params from the configuration
-         if($this->logConfig->getValue('LogDir') == null){
+         if ($this->logConfig->getValue('LogDir') == null) {
             throw new LoggerException('[AdvancedLogger::flush2Database()] The configuration '
-                    .'section does not contain a "LogDir" definition! Please check your configuration.');
+                    . 'section does not contain a "LogDir" definition! Please check your configuration.');
          }
-         if($this->logConfig->getValue('LogFileName') == null){
+         if ($this->logConfig->getValue('LogFileName') == null) {
             throw new LoggerException('[AdvancedLogger::flush2Database()] The configuration '
-                    .'section does not contain a "LogFileName" definition! Please check your configuration.');
+                    . 'section does not contain a "LogFileName" definition! Please check your configuration.');
          }
          $logDir = $this->logConfig->getValue('LogDir');
-         $logFileName = date('Y_m_d').'_'.$this->logConfig->getValue('LogFileName').'.log';
+         $logFileName = date('Y_m_d') . '_' . $this->logConfig->getValue('LogFileName') . '.log';
 
          // create folder, if it does not exist
-         if(!is_dir($logDir)){
+         if (!is_dir($logDir)) {
             throw new LoggerException('[AdvancedLogger::flush2File()] Given log directory "'
-                    .$logDir.'" does not exist! Please create it.');
+                    . $logDir . '" does not exist! Please create it.');
          }
 
          // flush buffer to file
-         $fH = fopen($logDir.'/'.$logFileName,'a+');
+         $fH = fopen($logDir . '/' . $logFileName, 'a+');
 
-         foreach($this->logBuffer as $entry){
-            fwrite($fH,$this->getLogEntryString($entry).self::$CRLF);
+         foreach ($this->logBuffer as $entry) {
+            fwrite($fH, $this->getLogEntryString($entry) . self::$CRLF);
          }
 
          fclose($fH);
-
-       // end function
       }
 
       /**
-      *  @private
-      *
-      *  Implements the log flushing for the stdout target.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 09.11.2008<br />
-      */
-      private function flush2Stdout(){
-         foreach($this->logBuffer as $entry){
-            echo $this->getLogEntryString($entry).self::CRLF;
+       *  @private
+       *
+       *  Implements the log flushing for the stdout target.
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 09.11.2008<br />
+       */
+      private function flush2Stdout() {
+         foreach ($this->logBuffer as $entry) {
+            echo $this->getLogEntryString($entry) . self::CRLF;
          }
-       // end function
       }
 
       /**
-      *  @private
-      *
-      *  Generates the log entry string by a given AdvancedLogEntry object.
-      *
-      *  @param AdvancedLogEntry $entry the current log entry
-      *  @return string $logString the corresponding log string
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 09.11.2008<br />
-      */
-      private function getLogEntryString($entry){
+       *  @private
+       *
+       *  Generates the log entry string by a given AdvancedLogEntry object.
+       *
+       *  @param AdvancedLogEntry $entry the current log entry
+       *  @return string $logString the corresponding log string
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 09.11.2008<br />
+       */
+      private function getLogEntryString($entry) {
 
          // configure timestamp
          $timestamp = true;
-         if($this->logConfig->getValue('LogTimestamp') == null || $this->logConfig->getValue('LogTimestamp') == 'false'){
+         if ($this->logConfig->getValue('LogTimestamp') == null || $this->logConfig->getValue('LogTimestamp') == 'false') {
             $timestamp = false;
-          // end if
          }
 
          // configure type
          $type = true;
-         if($this->logConfig->getValue('LogType') == null || $this->logConfig->getValue('LogType') == 'false'){
+         if ($this->logConfig->getValue('LogType') == null || $this->logConfig->getValue('LogType') == 'false') {
             $type = false;
-          // end if
          }
 
-         return $entry->toString($timestamp,$type);
-
-       // end function
+         return $entry->toString($timestamp, $type);
       }
 
-    // end class
    }
 ?>

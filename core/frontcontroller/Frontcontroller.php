@@ -89,7 +89,6 @@
        */
       public function &getInput(){
          return $this->input;
-       // end function
       }
 
       /**
@@ -105,7 +104,6 @@
        */
       public function setInput($input){
          $this->input = $input;
-       // end function
       }
 
       /**
@@ -264,7 +262,6 @@
        */
       public abstract function run();
 
-    // end class
    }
 
    /**
@@ -302,19 +299,15 @@
          // set URLRewriting manually
          if($urlRewriting === null){
             $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
-          // end if
          }
 
          // define url delimiter
          if($urlRewriting == true){
-            $inputDelimiter = $fC->get('URLRewritingInputDelimiter');
-            $keyValueDelimiter = $fC->get('URLRewritingKeyValueDelimiter');
-          // end if
-         }
-         else{
-            $inputDelimiter = $fC->get('InputDelimiter');
-            $keyValueDelimiter = $fC->get('KeyValueDelimiter');
-          // end else
+            $inputDelimiter = $fC->getURLRewritingInputDelimiter();
+            $keyValueDelimiter = $fC->getURLRewritingKeyValueDelimiter();
+         } else {
+            $inputDelimiter = $fC->getInputDelimiter();
+            $keyValueDelimiter = $fC->getKeyValueDelimiter();
          }
 
          // fill consolidated attributes array
@@ -327,7 +320,6 @@
 
          return implode($inputDelimiter,$attributes);
 
-       // end function
       }
 
     // end class
@@ -365,61 +357,101 @@
        * @protected
        * @var string The keyword used in the url to inidicate an action.
        */
-      protected $__ActionKeyword = 'action';
+      private $actionKeyword = 'action';
 
       /**
        * @protected
        * @var string Namespace delimiter within the action definition in url.
        */
-      protected $__NamespaceURLDelimiter = '_';
+      private $namespaceURLDelimiter = '_';
 
       /**
        * @protected
        * @var string Namespace to action keyword delimiter within the action definition in url.
        */
-      protected $__NamespaceKeywordDelimiter = '-';
+      private $namespaceKeywordDelimiter = '-';
 
       /**
        * @protected
        * @var string Delimiter between action keyword and action class within the action definition in url.
        */
-      protected $__KeywordClassDelimiter = ':';
+      private $keywordClassDelimiter = ':';
 
       /**
        * @protected
        * @var string Delimiter between action keyword and action class within the action definition in url (url rewriting case!)
        */
-      protected $__URLRewritingKeywordClassDelimiter = '/';
+      protected $urlRewritingKeywordClassDelimiter = '/';
 
       /**
        * @protected
        * @var string Delimiter between input value couples.
        */
-      protected $__InputDelimiter = '|';
+      private $inputDelimiter = '|';
 
       /**
        * @protected
        * @var string Delimiter between input value couples (url rewriting case!).
        */
-      protected $__URLRewritingInputDelimiter = '/';
+      private $urlRewritingInputDelimiter = '/';
 
       /**
        * @protected
        * @var string Delimiter between input param name and value.
        */
-      protected $__KeyValueDelimiter = ':';
+      private $keyValueDelimiter = ':';
 
       /**
        * @protected
        * @var string Delimiter between input param name and value (url rewrite case!).
        */
-      protected $__URLRewritingKeyValueDelimiter = '/';
+      private $urlRewritingKeyValueDelimiter = '/';
 
       /**
        * @protected
        * @var string Namespace of the Frontcontroller class.
        */
-      protected $__Namespace = 'core::frontcontroller';
+      private $namespace = 'core::frontcontroller';
+
+      public function getActionKeyword() {
+         return $this->actionKeyword;
+      }
+
+      public function getNamespaceURLDelimiter() {
+         return $this->namespaceURLDelimiter;
+      }
+
+      public function getNamespaceKeywordDelimiter() {
+         return $this->namespaceKeywordDelimiter;
+      }
+
+      public function getKeywordClassDelimiter() {
+         return $this->keywordClassDelimiter;
+      }
+
+      public function getURLRewritingKeywordClassDelimiter() {
+         return $this->urlRewritingKeywordClassDelimiter;
+      }
+
+      public function getInputDelimiter() {
+         return $this->inputDelimiter;
+      }
+
+      public function getURLRewritingInputDelimiter() {
+         return $this->urlRewritingInputDelimiter;
+      }
+
+      public function getKeyValueDelimiter() {
+         return $this->keyValueDelimiter;
+      }
+
+      public function getURLRewritingKeyValueDelimiter() {
+         return $this->urlRewritingKeyValueDelimiter;
+      }
+
+      public function getNamespace() {
+         return $this->namespace;
+      }
 
       /**
        * @public
@@ -448,8 +480,8 @@
          $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
 
          // check if the context is set. If not, use the current namespace
-         if(empty($this->__Context)){
-            $this->__Context = $namespace;
+         if($this->getContext() === null){
+            $this->setContext($namespace);
          }
 
          // apply front controller input filter
@@ -458,20 +490,19 @@
          if($filterDef !== null){
             $inputFilter = FilterFactory::getFilter($filterDef);
             $inputFilter->filter(null);
-          // end if
          }
 
          // execute pre page create actions (see timing model)
          $this->runActions('prepagecreate');
 
          // create new page
-         $page = new Page('FrontControllerPage',$urlRewriting);
+         $page = new Page();
 
          // set context
-         $page->setContext($this->__Context);
+         $page->setContext($this->getContext());
 
          // set language
-         $page->setLanguage($this->__Language);
+         $page->setLanguage($this->getLanguage());
 
          // load desired design
          $page->loadDesign($namespace,$template);
@@ -553,7 +584,7 @@
        * Version 0.1, 03.06.2007<br />
        */
       protected function getActionNamespaceByURLString($namespaceUrlRepresenation){
-         return str_replace($this->__NamespaceURLDelimiter,'::',$namespaceUrlRepresenation);
+         return str_replace($this->namespaceURLDelimiter,'::',$namespaceUrlRepresenation);
       }
 
       /**
@@ -585,30 +616,25 @@
             if(strlen(trim($config->getValue($name,'FC.InputParams'))) > 0){
 
                // separate params
-               $staticParams = explode($this->__InputDelimiter,$config->getValue($name,'FC.InputParams'));
+               $staticParams = explode($this->inputDelimiter,$config->getValue($name,'FC.InputParams'));
 
                for($i = 0; $i < count($staticParams); $i++){
 
-                  if(substr_count($staticParams[$i],$this->__KeyValueDelimiter) > 0){
+                  if(substr_count($staticParams[$i],$this->keyValueDelimiter) > 0){
 
-                     $pairs = explode($this->__KeyValueDelimiter,$staticParams[$i]);
+                     $pairs = explode($this->keyValueDelimiter,$staticParams[$i]);
 
                      // re-order and add to param list
                      if(isset($pairs[0]) && isset($pairs[1])){
                         $params = array_merge($params,array($pairs[0] => $pairs[1]));
-                      // end if
                      }
 
-                   // end if
                   }
 
-                // end for
                }
 
-             // end if
             }
 
-          // end if
          }
 
          $this->addAction($namespace,$name,$params);
@@ -648,7 +674,7 @@
          $config = $this->getConfiguration($namespace,'actionconfig.ini');
 
          if($config == null){
-            throw new InvalidArgumentException('[Frontcontroller::__parseActions()] No '
+            throw new InvalidArgumentException('[Frontcontroller::addAction()] No '
                     .'configuration available for namespace "'.$namespace.'" and context "'
                     .$this->__Context.'"!',E_USER_ERROR);
          }
@@ -726,16 +752,15 @@
          if(strlen($inputConfig) > 0){
 
             // first: explode couples by "|"
-            $paramsArray = explode($this->__InputDelimiter,$inputConfig);
+            $paramsArray = explode($this->inputDelimiter,$inputConfig);
 
             for($i = 0; $i < count($paramsArray); $i++){
 
                // second: explode key and value by ":"
-               $tmpAry = explode($this->__KeyValueDelimiter,$paramsArray[$i]);
+               $tmpAry = explode($this->keyValueDelimiter,$paramsArray[$i]);
 
                if(isset($tmpAry[0]) && isset($tmpAry[1]) && !empty($tmpAry[0]) && !empty($tmpAry[1])){
                   $inputParams[$tmpAry[0]] = $tmpAry[1];
-                // end if
                }
 
             }

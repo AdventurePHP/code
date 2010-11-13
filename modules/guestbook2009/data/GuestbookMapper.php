@@ -64,7 +64,6 @@
 
          $crit = new GenericCriterionObject();
          $crit->addOrderIndicator('CreationTimestamp','DESC');
-         //$crit->addRelationIndicator('Guestbook2Entry', $SourceObject)
 
          $gb = $this->__getCurrentGuestbook();
          return $this->__mapGenericEntries2DomainObjects(
@@ -138,8 +137,6 @@
             throw new InvalidArgumentException('[GuestbookManager::__mapGenericGuestbook2DomainObject()] '
                .'No guestbook with id "'.$gbId.'" stored in database! Please check your guestbook tag '
                .'inclusion.',E_USER_ERROR);
-            exit();
-          // end if
          }
 
          $orm = &$this->__getGenericORMapper();

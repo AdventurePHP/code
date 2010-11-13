@@ -50,11 +50,11 @@
 
          // get some front controller configuration params
          $fC = &Singleton::getInstance('Frontcontroller');
-         $namespaceKeywordDelimiter = $fC->get('NamespaceKeywordDelimiter');
-         $actionKeyword = $fC->get('ActionKeyword');
-         $keywordClassDelimiter = $fC->get('KeywordClassDelimiter');
-         $inputDelimiter = $fC->get('InputDelimiter');
-         $keyValueDelimiter = $fC->get('KeyValueDelimiter');
+         $namespaceKeywordDelimiter = $fC->getNamespaceKeywordDelimiter();
+         $actionKeyword = $fC->getActionKeyword();
+         $keywordClassDelimiter = $fC->getKeywordClassDelimiter();
+         $inputDelimiter = $fC->getInputDelimiter();
+         $keyValueDelimiter = $fC->getKeyValueDelimiter();
 
          foreach($_REQUEST as $key => $value){
 

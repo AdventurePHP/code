@@ -70,7 +70,7 @@
 
          // get the front controller and initialize the action keyword
          $fC = &Singleton::getInstance('Frontcontroller');
-         $this->__FrontcontrollerActionKeyword = $fC->get('NamespaceKeywordDelimiter').$fC->get('ActionKeyword');
+         $this->__FrontcontrollerActionKeyword = $fC->getNamespaceKeywordDelimiter().$fC->getActionKeyword();
 
          // extract the PHPSESSID from $_REQUEST if existent
          $PHPSESSID = (string)'';

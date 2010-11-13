@@ -68,9 +68,9 @@
 
          // gather the delimiters used to define an action's url representation
          $fC = &Singleton::getInstance('Frontcontroller');
-         $actionKeyword = $fC->get('ActionKeyword');
-         $namespaceKeywordDelimiter = $fC->get('NamespaceKeywordDelimiter');
-         $namespaceURLDelimiter = $fC->get('NamespaceURLDelimiter');
+         $actionKeyword = $fC->getActionKeyword();
+         $namespaceKeywordDelimiter = $fC->getNamespaceKeywordDelimiter();
+         $namespaceURLDelimiter = $fC->getNamespaceURLDelimiter();
 
          // set URLRewrite
          if($urlRewriting === null){
@@ -79,16 +79,16 @@
 
          // initialize the keyword-class delimiter
          if($urlRewriting == true){
-            $keywordClassDelimiter = $fC->get('URLRewritingKeywordClassDelimiter');
-            $keyValueDelimiter = $fC->get('URLRewritingKeyValueDelimiter');
-            $inputDelimiter = $fC->get('URLRewritingInputDelimiter');
+            $keywordClassDelimiter = $fC->getURLRewritingKeywordClassDelimiter();
+            $keyValueDelimiter = $fC->getURLRewritingKeyValueDelimiter();
+            $inputDelimiter = $fC->getURLRewritingInputDelimiter();
          } else {
-            $keywordClassDelimiter = $fC->get('KeywordClassDelimiter');
-            $keyValueDelimiter = $fC->get('KeyValueDelimiter');
-            $inputDelimiter = $fC->get('InputDelimiter');
+            $keywordClassDelimiter = $fC->getKeywordClassDelimiter();
+            $keyValueDelimiter = $fC->getKeyValueDelimiter();
+            $inputDelimiter = $fC->getInputDelimiter();
          }
 
-         $normalKeywordClassDelimiter = $fC->get('KeywordClassDelimiter');
+         $normalKeywordClassDelimiter = $fC->getKeywordClassDelimiter();
          $rewriteURLDelimiter = '/~/';
 
          // generate the action identifier
@@ -176,9 +176,9 @@
 
          // configure params
          $fC = &Singleton::getInstance('Frontcontroller');
-         $actionKeyword = $fC->get('ActionKeyword');
-         $namespaceKeywordDelimiter = $fC->get('NamespaceKeywordDelimiter');
-         $namespaceURLDelimiter = $fC->get('NamespaceURLDelimiter');
+         $actionKeyword = $fC->getActionKeyword();
+         $namespaceKeywordDelimiter = $fC->getNamespaceKeywordDelimiter();
+         $namespaceURLDelimiter = $fC->getNamespaceURLDelimiter();
 
          // set URLRewrite
          if($urlRewriting === null){
@@ -186,12 +186,12 @@
          }
 
          if($urlRewriting == true){
-            $keywordClassDelimiter = $fC->get('URLRewritingKeywordClassDelimiter');
+            $keywordClassDelimiter = $fC->getURLRewritingKeywordClassDelimiter();
          } else {
-            $keywordClassDelimiter = $fC->get('KeywordClassDelimiter');
+            $keywordClassDelimiter = $fC->getKeywordClassDelimiter();
          }
 
-         $normalKeywordClassDelimiter = $fC->get('KeywordClassDelimiter');
+         $normalKeywordClassDelimiter = $fC->getKeywordClassDelimiter();
          $rewriteURLDelimiter = '/~/';
 
          $params = array();
