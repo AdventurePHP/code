@@ -124,9 +124,8 @@
 
          // connection must be present, otherwise update is not possible
          if(empty($connectionName)){
-            trigger_error('[GenericORMapperUpdate::updateDatabase()] Connection name may not be null!',
+            throw new GenericORMapperException('[GenericORMapperUpdate::updateDatabase()] Connection name may not be null!',
                E_USER_ERROR);
-            exit(1);
          }
 
          // set the config namespace
@@ -305,7 +304,7 @@
                $this->__DatabaseRelationTables[] = $dataTables[$offset];
             }
             else{
-               trigger_error('Table '.$dataTables[$offset].' is not a GORM table!');
+               throw new GenericORMapperException('Table '.$dataTables[$offset].' is not a GORM table!');
             }
             
           // end while

@@ -25,7 +25,7 @@
     *
     * Provides methods to manipulate images.
     *
-    * @author Christian Schäfer
+    * @author Christian Schï¿½fer
     * @version
     * Version 0.1, 08.09.2003<br />
     * Version 0.2, 17.09.2004<br />
@@ -57,7 +57,7 @@
        * @param string $image a full qualified image path.
        * @param string $attributeName the name of the attribute, that should be returned.
        * @return string[] The attributes of an image.
-       * @throws InvalidArgumentException In case the applied image does not exist.
+       * @throws InvalidArgumentException In case the applied image or the applied attribute does not exist.
        *
        * @author Christian Achatz
        * @version
@@ -126,15 +126,10 @@
 
             if(isset($imageAttributes[$attributeName])){
                return $imageAttributes[$attributeName];
-             // end if
-            }
-            else{
-               trigger_error('[ImageManager::getImageAttributes()] The desired image attribute ("'.$attributeName.'") does not exist!');
-               return null;
-             // end else
+            } else {
+               throw new InvalidArgumentException('[ImageManager::getImageAttributes()] The desired image attribute ("'.$attributeName.'") does not exist!');
             }
 
-          // end if
          }
 
          // return the complete list
