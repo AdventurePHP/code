@@ -47,7 +47,7 @@
        * Version 0.3, 28.12.2007 (Added a captcha)<br />
        * Version 0.4, 13.06.2009 (Removed the captcha handling, introduced the captcha module)<br />
        */
-      function transformContent(){
+      public function transformContent(){
 
          $form = &$this->__getForm('AddComment');
 

@@ -43,7 +43,7 @@
        * Version 0.1, 2008<br />
        * Version 0.2, 28.12.2008 (Introducted the exclusion array to clean the links)<br />
        */
-      function transformContent(){
+      public function transformContent(){
 
          // define the general param exclusion array
          $generalExclusion = array('userid' => '','groupid' => '','roleid' => '','permissionsetid' => '','permissionid' => '','proxyid' => '');

@@ -1,163 +1,120 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('modules::guestbook::biz','GuestbookManager');
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
 
-
    /**
-   *  @package modules::guestbook::pres::documentcontroller
-   *  @class guestbook_adminedit_v1_controller
-   *
-   *  Implementiert den DocumentController f�r das Stylesheet 'adminedit.html'.<br />
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 05.05.2007<br />
-   */
-   class guestbook_adminedit_v1_controller extends guestbookBaseController
-   {
+    *  @package modules::guestbook::pres::documentcontroller
+    *  @class guestbook_adminedit_v1_controller
+    *
+    *  Implementiert den DocumentController f�r das Stylesheet 'adminedit.html'.<br />
+    *
+    *  @author Christian Sch�fer
+    *  @version
+    *  Version 0.1, 05.05.2007<br />
+    */
+   class guestbook_adminedit_v1_controller extends guestbookBaseController {
 
       /**
-      *  @private
-      *  H�lt lokal verwendete Variablen.
-      */
-      private $_LOCALS;
+       *  @public
+       *
+       *  Implementiert die asbtrakte Methode "transformContent" aus "APFObject".<br />
+       *
+       *  @author Christian Sch�fer
+       *  @version
+       *  Version 0.1, 05.05.2007<br />
+       */
+      public function transformContent() {
 
+         $values = RequestHandler::getValues(array('Name','EMail','City','Website','ICQ','MSN','Skype','AIM','Yahoo','Text','entryid'));
 
-      public function guestbook_adminedit_v1_controller(){
+         $form = &$this->__getForm('GuestbookEntry');
 
-         $this->_LOCALS = RequestHandler::getValues(array(
-                                                                'Name',
-                                                                'EMail',
-                                                                'City',
-                                                                'Website',
-                                                                'ICQ',
-                                                                'MSN',
-                                                                'Skype',
-                                                                'AIM',
-                                                                'Yahoo',
-                                                                'Text',
-                                                                'entryid'
-                                                               )
-                                                         );
+         if ($form->isSent()) {
 
-       // end function
-      }
+            if ($form->isValid()) {
 
+               $gM = &$this->getGuestbookManager();
 
-      /**
-      *  @public
-      *
-      *  Implementiert die asbtrakte Methode "transformContent" aus "APFObject".<br />
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 05.05.2007<br />
-      */
-      public function transformContent(){
+               $entry = new Entry();
+               $entry->setName($values['Name']);
+               $entry->setEmail($values['EMail']);
+               $entry->setCity($values['City']);
+               $entry->setWebsite($values['Website']);
+               $entry->setIcq($values['ICQ']);
+               $entry->setMsn($values['MSN']);
+               $entry->setSkype($values['Skype']);
+               $entry->setAim($values['AIM']);
+               $entry->setYahoo($values['Yahoo']);
+               $entry->setText($values['Text']);
+               $entry->setId($values['entryid']);
 
-         // Referenz auf das Formular holen
-         $Form__GuestbookEntry = &$this->__getForm('GuestbookEntry');
+               $gM->saveEntry($entry);
 
-         if($Form__GuestbookEntry->isSent() == true){
-
-            if($Form__GuestbookEntry->isValid()){
-
-               // Manager holen
-               $gM = &$this->__getGuestbookManager();
-
-               // Eintrag erzeugen
-               $Entry = new Entry();
-               $Entry->set('Name',$this->_LOCALS['Name']);
-               $Entry->set('EMail',$this->_LOCALS['EMail']);
-               $Entry->set('City',$this->_LOCALS['City']);
-               $Entry->set('Website',$this->_LOCALS['Website']);
-               $Entry->set('ICQ',$this->_LOCALS['ICQ']);
-               $Entry->set('MSN',$this->_LOCALS['MSN']);
-               $Entry->set('Skype',$this->_LOCALS['Skype']);
-               $Entry->set('AIM',$this->_LOCALS['AIM']);
-               $Entry->set('Yahoo',$this->_LOCALS['Yahoo']);
-               $Entry->set('Text',$this->_LOCALS['Text']);
-               $Entry->set('ID',$this->_LOCALS['entryid']);
-
-               // Eintrag speichern
-               $gM->saveEntry($Entry);
-
-             // end if
             }
 
-          // end if
-         }
-         else{
+         } else {
 
-            // Manager holen
-            $gM = &$this->__getGuestbookManager();
+            $gM = &$this->getGuestbookManager();
+            $entry = $gM->loadEntry($values['entryid']);
 
-            // Eintrag laden
-            $Entry = $gM->loadEntry($this->_LOCALS['entryid']);
+            $Name = & $form->getFormElementByName('Name');
+            $Name->setAttribute('value', $entry->getName());
 
-            // Werte f�llen
-            $Name = & $Form__GuestbookEntry->getFormElementByName('Name');
-            $Name->setAttribute('value',$Entry->get('Name'));
+            $EMail = & $form->getFormElementByName('EMail');
+            $EMail->setAttribute('value', $entry->getEmail());
 
-            $EMail = & $Form__GuestbookEntry->getFormElementByName('EMail');
-            $EMail->setAttribute('value',$Entry->get('EMail'));
+            $City = & $form->getFormElementByName('City');
+            $City->setAttribute('value', $entry->getCity());
 
-            $City = & $Form__GuestbookEntry->getFormElementByName('City');
-            $City->setAttribute('value',$Entry->get('City'));
+            $Website = & $form->getFormElementByName('Website');
+            $Website->setAttribute('value', $entry->getWebsite());
 
-            $Website = & $Form__GuestbookEntry->getFormElementByName('Website');
-            $Website->setAttribute('value',$Entry->get('Website'));
+            $ICQ = & $form->getFormElementByName('ICQ');
+            $ICQ->setAttribute('value', $entry->getIcq());
 
-            $ICQ = & $Form__GuestbookEntry->getFormElementByName('ICQ');
-            $ICQ->setAttribute('value',$Entry->get('ICQ'));
+            $MSN = & $form->getFormElementByName('MSN');
+            $MSN->setAttribute('value', $entry->getMsn());
 
-            $MSN = & $Form__GuestbookEntry->getFormElementByName('MSN');
-            $MSN->setAttribute('value',$Entry->get('MSN'));
+            $Skype = & $form->getFormElementByName('Skype');
+            $Skype->setAttribute('value', $entry->getSkype());
 
-            $Skype = & $Form__GuestbookEntry->getFormElementByName('Skype');
-            $Skype->setAttribute('value',$Entry->get('Skype'));
+            $AIM = & $form->getFormElementByName('AIM');
+            $AIM->setAttribute('value', $entry->getAim());
 
-            $AIM = & $Form__GuestbookEntry->getFormElementByName('AIM');
-            $AIM->setAttribute('value',$Entry->get('AIM'));
+            $Yahoo = & $form->getFormElementByName('Yahoo');
+            $Yahoo->setAttribute('value', $entry->getYahoo());
 
-            $Yahoo = & $Form__GuestbookEntry->getFormElementByName('Yahoo');
-            $Yahoo->setAttribute('value',$Entry->get('Yahoo'));
+            $Text = & $form->getFormElementByName('Text');
+            $Text->setContent($entry->getText());
 
-            $Text = & $Form__GuestbookEntry->getFormElementByName('Text');
-            $Text->setContent($Entry->get('Text'));
+            $ID = & $form->getFormElementByName('entryid');
+            $ID->setAttribute('value', $entry->getId());
 
-            $ID = & $Form__GuestbookEntry->getFormElementByName('entryid');
-            $ID->setAttribute('value',$Entry->get('ID'));
-
-          // end else
          }
 
-         // Formular anzeigen
-         $this->setPlaceHolder('Form',$Form__GuestbookEntry->transformForm());
+         $this->setPlaceHolder('Form', $form->transformForm());
 
-       // end function
       }
 
-    // end class
    }
 ?>

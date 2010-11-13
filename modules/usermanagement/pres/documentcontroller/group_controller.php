@@ -21,7 +21,6 @@
 
    import ('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
 
-
    /**
    *  @package modules::usermanagement::pres::documentcontroller
    *  @class umgt_group_controller
@@ -32,15 +31,12 @@
    *  @version
    *  Version 0.1, 28.12.2008<br />
    */
-   class umgt_group_controller extends umgt_base_controller
-   {
+   class umgt_group_controller extends umgt_base_controller {
 
-      function transformContent(){
+      public function transformContent(){
          $this->setPlaceHolder('manage_groups',$this->__generateLink(array('mainview' => 'group', 'groupview' => '','groupid' => '')));
          $this->setPlaceHolder('add_group',$this->__generateLink(array('mainview' => 'group', 'groupview' => 'add','groupid' => '')));
-       // end function
       }
 
-    // end class
    }
 ?>

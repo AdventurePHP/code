@@ -34,7 +34,7 @@
     */
    class list_controller extends base_controller {
 
-      function transformContent(){
+      public function transformContent(){
 
          // get the guestbook service
          $gS = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');

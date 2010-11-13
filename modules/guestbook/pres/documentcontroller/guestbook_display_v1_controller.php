@@ -1,23 +1,23 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('modules::guestbook::biz','GuestbookManager');
    import('tools::link','FrontcontrollerLinkHandler');
@@ -25,442 +25,266 @@
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
    import('tools::string','stringAssistant');
 
-
    /**
-   *  @package modules::guestbook::pres::documentcontroller
-   *  @class guestbook_display_v1_controller
-   *
-   *  Implementiert den DocumentController f�r das Stylesheet 'display.html'.<br />
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 12.04.2007<br />
-   *  Version 0.2, 07.01.2008 (�nderungen zur Mehrsprachigkeit, Spamschutz f�r E-Mails)<br />
-   */
-   class guestbook_display_v1_controller extends guestbookBaseController
-   {
+    *  @package modules::guestbook::pres::documentcontroller
+    *  @class guestbook_display_v1_controller
+    *
+    *  Implementiert den DocumentController f�r das Stylesheet 'display.html'.<br />
+    *
+    *  @author Christian Achatz
+    *  @version
+    *  Version 0.1, 12.04.2007<br />
+    *  Version 0.2, 07.01.2008 (�nderungen zur Mehrsprachigkeit, Spamschutz f�r E-Mails)<br />
+    */
+   class guestbook_display_v1_controller extends guestbookBaseController {
 
       /**
-      *  @protected
-      *  H�lt lokal verwendete Variablen.
-      */
-      protected $_LOCALS;
-
+       * @var SessionManager The instance of the session manager.
+       */
+      private $session;
 
       /**
-      *  @protected
-      *  H�lt eine Instanz des Session-Managers.
-      */
-      protected $__sessMgr;
-
-
-      /**
-      *  @public
-      *
-      *  Konstruktor der Klasse.<br />
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 05.05.2007<br />
-      */
-      public function guestbook_display_v1_controller(){
+       *  @public
+       *
+       *  Implementiert die abstrakte Methode "transformContent()".<br />
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 13.04.2007<br />
+       *  Version 0.2, 05.05.2007 (Admin-Link hinzugef�gt)<br />
+       */
+      public function transformContent() {
+         $this->session = new SessionManager($this->getGuestbookNamespace());
+         $gM = &$this->getGuestbookManager();
+         $this->setPlaceHolder('Content', $this->generateEntryList());
+         $this->setPlaceHolder('Pager', $gM->getPagerPresentation());
+         $this->setPlaceHolder('CreateEntry', $this->generateCreateEntryLink());
+         $this->setPlaceHolder('ControlGuestbook', $this->generateControlGuestbookLink());
       }
 
-
       /**
-      *  @public
-      *
-      *  Implementiert die abstrakte Methode "transformContent()".<br />
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 13.04.2007<br />
-      *  Version 0.2, 05.05.2007 (Admin-Link hinzugef�gt)<br />
-      */
-      public function transformContent(){
-         $this->__sessMgr = new SessionManager($this->__getGuestbookNamespace());
-         $gM = &$this->__getGuestbookManager();
-         $this->setPlaceHolder('Content',$this->__generateEntryList());
-         $this->setPlaceHolder('Pager',$gM->getPager());
-         $this->setPlaceHolder('CreateEntry',$this->__generateCreateEntryLink());
-         $this->setPlaceHolder('ControlGuestbook',$this->__generateControlGuestbookLink());
-       // end function
-      }
+       *  @private
+       *
+       *  Erzeugt die Ausgabe des "Eintrag verfassen"-Links.<br />
+       *
+       *  @return string $CreateEntry; HTML-Ausgabe des "Eintrag verfassen"-Links
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 13.04.2007<br />
+       *  Version 0.2, 07.01.2008 (Mehrsprachigkeit eingef�hrt)<br />
+       */
+      private function generateCreateEntryLink() {
 
+         $Template__CreateEntry = &$this->__getTemplate('CreateEntry_' . $this->__Language);
 
-      /**
-      *  @private
-      *
-      *  Erzeugt die Ausgabe des "Eintrag verfassen"-Links.<br />
-      *
-      *  @return string $CreateEntry; HTML-Ausgabe des "Eintrag verfassen"-Links
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 13.04.2007<br />
-      *  Version 0.2, 07.01.2008 (Mehrsprachigkeit eingef�hrt)<br />
-      */
-      private function __generateCreateEntryLink(){
+         $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'createentry', 'entryid' => ''));
+         $Template__CreateEntry->setPlaceHolder('Link', $Link);
 
-         // Referenz auf das Template holen
-         $Template__CreateEntry = &$this->__getTemplate('CreateEntry_'.$this->__Language);
-
-         // Link generieren und einsetzen
-         $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'createentry','entryid' => ''));
-         $Template__CreateEntry->setPlaceHolder('Link',$Link);
-
-         // Ausgabe zur�ckgeben
          return $Template__CreateEntry->transformTemplate();
 
-       // end function
       }
 
-
       /**
-      *  @private
-      *
-      *  Erzeugt die Ausgabe des "G�stebuch administrieren"-Links, bzw. im eingeloggten Zustand den<br />
-      *  Link zum verlassen des Admin-Modus.<br />
-      *
-      *  @return string $ControlGuestbook; HTML-Ausgabe des "G�stebuch administrieren"-Links
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 05.05.2007<br />
-      *  Version 0.2, 07.01.2008 (Mehrsprachigkeit eingef�hrt)<br />
-      */
-      private function __generateControlGuestbookLink(){
+       *  @private
+       *
+       *  Erzeugt die Ausgabe des "G�stebuch administrieren"-Links, bzw. im eingeloggten Zustand den<br />
+       *  Link zum verlassen des Admin-Modus.<br />
+       *
+       *  @return string $ControlGuestbook; HTML-Ausgabe des "G�stebuch administrieren"-Links
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 05.05.2007<br />
+       *  Version 0.2, 07.01.2008 (Mehrsprachigkeit eingef�hrt)<br />
+       */
+      private function generateControlGuestbookLink() {
 
-         if($this->__sessMgr->loadSessionData('AdminView') == 'true'){
+         if ($this->session->loadSessionData('AdminView') == 'true') {
 
-            // Referenz auf das Template holen
-            $Template__ControlGuestbook_Logout = &$this->__getTemplate('ControlGuestbook_Logout_'.$this->__Language);
+            $Template__ControlGuestbook_Logout = &$this->__getTemplate('ControlGuestbook_Logout_' . $this->__Language);
 
-            // Link generieren und einsetzen
-            $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'adminlogin','logout' => 'true','entryid' => ''));
-            $Template__ControlGuestbook_Logout->setPlaceHolder('Link',$Link);
+            $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'adminlogin', 'logout' => 'true', 'entryid' => ''));
+            $Template__ControlGuestbook_Logout->setPlaceHolder('Link', $Link);
 
-            // Ausgabe zur�ckgeben
             return $Template__ControlGuestbook_Logout->transformTemplate();
 
-          // end if
-         }
-         else{
+         } else {
 
-            // Referenz auf das Template holen
-            $Template__ControlGuestbook_Login = &$this->__getTemplate('ControlGuestbook_Login_'.$this->__Language);
+            $Template__ControlGuestbook_Login = &$this->__getTemplate('ControlGuestbook_Login_' . $this->__Language);
 
-            // Link generieren und einsetzen
-            $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'adminlogin','entryid' => ''));
-            $Template__ControlGuestbook_Login->setPlaceHolder('Link',$Link);
+            $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'adminlogin', 'entryid' => ''));
+            $Template__ControlGuestbook_Login->setPlaceHolder('Link', $Link);
 
-            // Ausgabe zur�ckgeben
             return $Template__ControlGuestbook_Login->transformTemplate();
 
-          // end else
          }
 
-       // end function
       }
 
-
       /**
-      *  @private
-      *
-      *  Erzeugt die Ausgabe der Eintrags-Liste.<br />
-      *
-      *  @return string $EntryList; HTML-Ausgabe der Eintrags-Liste
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 13.04.2007<br />
-      */
-      private function __generateEntryList(){
+       *  @private
+       *
+       *  Erzeugt die Ausgabe der Eintrags-Liste.<br />
+       *
+       *  @return string $EntryList; HTML-Ausgabe der Eintrags-Liste
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 13.04.2007<br />
+       */
+      private function generateEntryList() {
 
-         // Manager holen
-         $gM = &$this->__getGuestbookManager();
+         $gM = &$this->getGuestbookManager();
 
-         // Eintr�ge holen
          $Guestbook = $gM->loadGuestbook();
          $Entries = $Guestbook->getEntries();
 
-         // Ausgabe generieren
-         $Buffer = (string)'';
+         $Buffer = (string) '';
 
-         for($i = 0; $i < count($Entries); $i++){
-            $Buffer .= $this->__generateEntry($Entries[$i]);
-          // end for
+         for ($i = 0; $i < count($Entries); $i++) {
+            $Buffer .= $this->generateEntry($Entries[$i]);
          }
 
-         // Puffer ausgeben
          return $Buffer;
 
-       // end function
       }
 
+      private function generateEntry(Entry $entry) {
 
-      /**
-      *  @private
-      *
-      *  Erzeugt die Ausgabe eines Eintrags.<br />
-      *
-      *  @param Entry $Entry; Entry-Objekt
-      *  @return string $EntryOut; HTML-Ausgabe des Eintrags
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 13.04.2007<br />
-      *  Version 0.2, 07.01.2008 (E-Mail wird nun codiert dargestellt,Text mehrzeilig)<br />
-      */
-      private function __generateEntry($Entry){
-
-         // Referenz auf das Template holen
          $Template__Entry = &$this->__getTemplate('Entry');
 
-         // Werte setzen
-         $Template__Entry->setPlaceHolder('AdminDelete',$this->__showAdminDelete($Entry->get('ID')));
-         $Template__Entry->setPlaceHolder('AdminEdit',$this->__showAdminEdit($Entry->get('ID')));
-         $Template__Entry->setPlaceHolder('AdminAddComment',$this->__showAdminAddComment($Entry->get('ID')));
-         $Template__Entry->setPlaceHolder('ID',$Entry->get('ID'));
-         $Template__Entry->setPlaceHolder('Name',$Entry->get('Name'));
-         $Template__Entry->setPlaceHolder('EMail',stringAssistant::encodeCharactersToHTML($Entry->get('EMail')));
-         $Template__Entry->setPlaceHolder('City',$Entry->get('City'));
-         $Template__Entry->setPlaceHolder('Website',$Entry->get('Website'));
-         $Template__Entry->setPlaceHolder('ICQ',$Entry->get('ICQ'));
-         $Template__Entry->setPlaceHolder('MSN',$Entry->get('MSN'));
-         $Template__Entry->setPlaceHolder('Skype',$Entry->get('Skype'));
-         $Template__Entry->setPlaceHolder('AIM',$Entry->get('AIM'));
-         $Template__Entry->setPlaceHolder('Yahoo',$Entry->get('Yahoo'));
-         $Template__Entry->setPlaceHolder('Text',nl2br($Entry->get('Text')));
-         $Template__Entry->setPlaceHolder('Date',$Entry->get('Date'));
-         $Template__Entry->setPlaceHolder('Time',$Entry->get('Time'));
+         $Template__Entry->setPlaceHolder('AdminDelete', $this->showAdminDelete($entry->getId()));
+         $Template__Entry->setPlaceHolder('AdminEdit', $this->showAdminEdit($entry->getId()));
+         $Template__Entry->setPlaceHolder('AdminAddComment', $this->showAdminAddComment($entry->getId()));
+         $Template__Entry->setPlaceHolder('ID', $entry->getId());
+         $Template__Entry->setPlaceHolder('Name', $entry->getName());
+         $Template__Entry->setPlaceHolder('EMail', stringAssistant::encodeCharactersToHTML($entry->getEmail()));
+         $Template__Entry->setPlaceHolder('City', $entry->getCity());
+         $Template__Entry->setPlaceHolder('Website', $entry->getWebsite());
+         $Template__Entry->setPlaceHolder('ICQ', $entry->getIcq());
+         $Template__Entry->setPlaceHolder('MSN', $entry->getMsn());
+         $Template__Entry->setPlaceHolder('Skype', $entry->getSkype());
+         $Template__Entry->setPlaceHolder('AIM', $entry->getAim());
+         $Template__Entry->setPlaceHolder('Yahoo', $entry->getYahoo());
+         $Template__Entry->setPlaceHolder('Text', nl2br($entry->getText()));
+         $Template__Entry->setPlaceHolder('Date', $entry->getDate());
+         $Template__Entry->setPlaceHolder('Time', $entry->getTime());
 
-         // Comments einf�gen
-         $Comments = $Entry->getComments();
-         $CommentBuffer = (string)'';
+         $Comments = $entry->getComments();
+         $CommentBuffer = (string) '';
 
-         if(count($Comments) > 0){
+         if (count($Comments) > 0) {
 
-            for($i = 0; $i < count($Comments); $i++){
-               $CommentBuffer .= $this->__generateComment($Comments[$i],$Entry->get('ID'));
-             // end if
+            for ($i = 0; $i < count($Comments); $i++) {
+               $CommentBuffer .= $this->generateComment($Comments[$i], $entry->getId());
             }
 
-          // end if
          }
 
-         $Template__Entry->setPlaceHolder('Comments',$CommentBuffer);
+         $Template__Entry->setPlaceHolder('Comments', $CommentBuffer);
 
-         // Ausgabe zur�ckgeben
          return $Template__Entry->transformTemplate();
 
-       // end function
       }
 
-
-      /**
-      *  @private
-      *
-      *  Erzeugt die Ausgabe eines Kommentars.<br />
-      *
-      *  @param Comment $Comment; Comment-Objekt
-      *  @return string $CommentOut; HTML-Ausgabe des Kommenrats
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 14.04.2007<br />
-      */
-      private function __generateComment($Comment,$EntryID){
+      private function generateComment(Comment $comment, $entryId) {
 
          $Template__Comment = &$this->__getTemplate('Comment');
-         $Template__Comment->setPlaceHolder('AdminDeleteComment',$this->__showAdminDeleteComment($Comment->get('ID'),$EntryID));
-         $Template__Comment->setPlaceHolder('AdminEditComment',$this->__showAdminEditComment($Comment->get('ID'),$EntryID));
-         $Template__Comment->setPlaceHolder('Title',$Comment->get('Title'));
-         $Template__Comment->setPlaceHolder('Text',$Comment->get('Text'));
-         $Template__Comment->setPlaceHolder('Date',$Comment->get('Date'));
-         $Template__Comment->setPlaceHolder('Time',$Comment->get('Time'));
+         $Template__Comment->setPlaceHolder('AdminDeleteComment', $this->showAdminDeleteComment($comment->getId(), $entryId));
+         $Template__Comment->setPlaceHolder('AdminEditComment', $this->showAdminEditComment($comment->getId(), $entryId));
+         $Template__Comment->setPlaceHolder('Title', $comment->getTitle());
+         $Template__Comment->setPlaceHolder('Text', $comment->getText());
+         $Template__Comment->setPlaceHolder('Date', $comment->getDate());
+         $Template__Comment->setPlaceHolder('Time', $comment->getTime());
          return $Template__Comment->transformTemplate();
 
-       // end function
       }
 
+      private function showAdminDelete($entryId) {
 
-      /**
-      *  @private
-      *
-      *  Erzeugt einen Link f�r das L�schen eines Beitrags.<br />
-      *
-      *  @param string $EntryID; ID des Eintrags
-      *  @return string $CommentOut; HTML-Ausgabe des Kommenrats
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 14.04.2007<br />
-      */
-      private function __showAdminDelete($EntryID){
+         if ($this->session->loadSessionData('AdminView') == true) {
 
-         if($this->__sessMgr->loadSessionData('AdminView') == true){
-
-            // Template holen
             $Template__AdminDelete = &$this->__getTemplate('AdminDelete');
 
-            // Link generieren und einsetzen
-            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'admindelete','entryid' => $EntryID));
-            $Template__AdminDelete->setPlaceHolder('Link',$Link);
+            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'admindelete', 'entryid' => $entryId));
+            $Template__AdminDelete->setPlaceHolder('Link', $Link);
 
-            // Template zur�ckgeben
             return $Template__AdminDelete->transformTemplate();
 
-          // end if
          }
 
-         return (string)'';
+         return (string) '';
 
-       // end function
       }
 
+      private function showAdminEdit($entryId) {
 
-      /**
-      *  @private
-      *
-      *  Erzeugt den Link zum Editieren eines Eintrags.<br />
-      *
-      *  @param Comment $Comment; Comment-Objekt
-      *  @return string $CommentOut; HTML-Ausgabe des Kommenrats
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 14.04.2007<br />
-      */
-      private function __showAdminEdit($EntryID){
+         if ($this->session->loadSessionData('AdminView') == true) {
 
-         if($this->__sessMgr->loadSessionData('AdminView') == true){
-
-            // Template holen
             $Template__AdminEdit = &$this->__getTemplate('AdminEdit');
 
-            // Link generieren und einsetzen
-            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'adminedit','entryid' => $EntryID));
-            $Template__AdminEdit->setPlaceHolder('Link',$Link);
+            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'adminedit', 'entryid' => $entryId));
+            $Template__AdminEdit->setPlaceHolder('Link', $Link);
 
-            // Template zur�ckgeben
             return $Template__AdminEdit->transformTemplate();
 
-          // end if
          }
 
-         return (string)'';
+         return (string) '';
 
-       // end function
       }
 
+      private function showAdminAddComment($entryId) {
 
-      /**
-      *  @private
-      *
-      *  Erzeugt den Link zum Hinzuf�gen eines Kommentars.<br />
-      *
-      *  @param string $EntryID; ID des aktuell angezeigten Eintrags
-      *  @return string $CommentOut; HTML-Ausgabe des Kommenrats
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 14.04.2007<br />
-      */
-      private function __showAdminAddComment($EntryID){
+         if ($this->session->loadSessionData('AdminView') == true) {
 
-         if($this->__sessMgr->loadSessionData('AdminView') == true){
-
-            // Template holen
             $Template__AdminAddComment = &$this->__getTemplate('AdminAddComment');
 
-            // Link generieren und einsetzen
-            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'adminaddcomment','entryid' => $EntryID));
-            $Template__AdminAddComment->setPlaceHolder('Link',$Link);
+            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'adminaddcomment', 'entryid' => $entryId));
+            $Template__AdminAddComment->setPlaceHolder('Link', $Link);
 
-            // Template zur�ckgeben
             return $Template__AdminAddComment->transformTemplate();
 
-          // end if
          }
 
-         return (string)'';
+         return (string) '';
 
-       // end function
       }
 
+      private function showAdminDeleteComment($dommentId, $entryId) {
 
-      /**
-      *  @private
-      *
-      *  Erzeugt den Link zum L�schen eines Kommentars.<br />
-      *
-      *  @param string $CommentID; ID des Kommentars
-      *  @param string $EntryID; ID des Eintrags
-      *  @return string $AdminDeleteComment; HTML-Ausgabe f�r den Link zum L�schen eines Kommentars
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 19.04.2007<br />
-      */
-      private function __showAdminDeleteComment($CommentID,$EntryID){
+         if ($this->session->loadSessionData('AdminView') == true) {
 
-         if($this->__sessMgr->loadSessionData('AdminView') == true){
-
-            // Template holen
             $Template__AdminDeleteComment = &$this->__getTemplate('AdminDeleteComment');
 
-            // Link generieren und einsetzen
-            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'admindeletecomment','commentid' => $CommentID));
-            $Template__AdminDeleteComment->setPlaceHolder('Link',$Link);
+            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'admindeletecomment', 'commentid' => $dommentId));
+            $Template__AdminDeleteComment->setPlaceHolder('Link', $Link);
 
-            // Template zur�ckgeben
             return $Template__AdminDeleteComment->transformTemplate();
 
-          // end if
          }
 
-         return (string)'';
+         return (string) '';
 
-       // end function
       }
 
+      private function showAdminEditComment($commentId, $entryId) {
 
-      /**
-      *  @private
-      *
-      *  Erzeugt den Link zum Editieren eines Kommentars.<br />
-      *
-      *  @param string $CommentID; ID des Kommentars
-      *  @param string $EntryID; ID des Eintrags
-      *  @return string $AdminDeleteComment; HTML-Ausgabe f�r den Link zum Editieren eines Kommentars
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 19.04.2007<br />
-      */
-      private function __showAdminEditComment($CommentID,$EntryID){
+         if ($this->session->loadSessionData('AdminView') == true) {
 
-         if($this->__sessMgr->loadSessionData('AdminView') == true){
-
-            // Template holen
             $Template__AdminEditComment = &$this->__getTemplate('AdminEditComment');
 
-            // Link generieren und einsetzen
-            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'],array('gbview' => 'admineditcomment','commentid' => $CommentID, 'entryid' => $EntryID));
-            $Template__AdminEditComment->setPlaceHolder('Link',$Link);
+            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'admineditcomment', 'commentid' => $commentId, 'entryid' => $entryId));
+            $Template__AdminEditComment->setPlaceHolder('Link', $Link);
 
-            // Template zur�ckgeben
             return $Template__AdminEditComment->transformTemplate();
 
-          // end if
          }
 
-         return (string)'';
+         return (string) '';
 
-       // end function
       }
 
-    // end class
    }
 ?>

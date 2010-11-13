@@ -1,105 +1,71 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('modules::guestbook::biz','GuestbookManager');
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
 
-
    /**
-   *  @package modules::guestbook::pres::documentcontroller
-   *  @class guestbook_adminaddcomment_v1_controller
-   *
-   *  Implementiert den DocumentController f�r das Stylesheet 'adminaddcomment.html'.<br />
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 05.05.2007<br />
-   */
-   class guestbook_adminaddcomment_v1_controller extends guestbookBaseController
-   {
+    *  @package modules::guestbook::pres::documentcontroller
+    *  @class guestbook_adminaddcomment_v1_controller
+    *
+    *  Implementiert den DocumentController f�r das Stylesheet 'adminaddcomment.html'.<br />
+    *
+    *  @author Christian Achatz
+    *  @version
+    *  Version 0.1, 05.05.2007<br />
+    */
+   class guestbook_adminaddcomment_v1_controller extends guestbookBaseController {
 
-      /**
-      *  @protected
-      *  H�lt lokal verwendete Variablen.
-      */
-      protected $_LOCALS;
+      public function transformContent() {
 
+         $form = &$this->__getForm('GuestbookAddComment');
 
-      function guestbook_adminaddcomment_v1_controller(){
+         $values = RequestHandler::getValues(array(
+                     'Title',
+                     'Text',
+                     'entryid'
+                         )
+         );
 
-         $this->_LOCALS = RequestHandler::getValues(array(
-                                                                'Title',
-                                                                'Text',
-                                                                'entryid'
-                                                               )
-                                                         );
+         if ($form->isSent() == true) {
 
-       // end function
-      }
+            if ($form->isValid()) {
 
+               $gM = &$this->getGuestbookManager();
 
-      /**
-      *  @public
-      *
-      *  Implementiert die asbtrakte Methode "transformContent" aus "APFObject".<br />
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 05.05.2007<br />
-      */
-      function transformContent(){
+               $comment = new Comment();
+               $comment->setTitle($values['Title']);
+               $comment->setText($values['Text']);
 
-         // Referenz auf das Formular holen
-         $Form__GuestbookAddComment = &$this->__getForm('GuestbookAddComment');
+               $gM->saveComment($values['entryid'], $comment);
 
-         // Aktion f�r Eintrag
-         if($Form__GuestbookAddComment->isSent() == true){
-
-            if($Form__GuestbookAddComment->isValid()){
-
-               // Manager holen
-               $gM = &$this->__getGuestbookManager();
-
-               // Eintrag erzeugen
-               $Comment = new Comment();
-               $Comment->set('Title',$this->_LOCALS['Title']);
-               $Comment->set('Text',$this->_LOCALS['Text']);
-
-               // Eintrag speichern
-               $gM->saveComment($this->_LOCALS['entryid'],$Comment);
-
-             // end if
             }
 
-          // end if
          }
 
-         // Formular anzeigen
-         $ID = &$Form__GuestbookAddComment->getFormElementByName('entryid');
-         $ID->setAttribute('value',$this->_LOCALS['entryid']);
-         $this->setPlaceHolder('Form',$Form__GuestbookAddComment->transformForm());
+         $id = &$form->getFormElementByName('entryid');
+         $id->setAttribute('value', $values['entryid']);
+         $this->setPlaceHolder('Form', $form->transformForm());
 
-       // end function
       }
 
-    // end class
    }
 ?>

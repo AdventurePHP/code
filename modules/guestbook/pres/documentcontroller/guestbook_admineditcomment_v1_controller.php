@@ -1,127 +1,91 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    import('modules::guestbook::biz','GuestbookManager');
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
 
-
    /**
-   *  @package modules::guestbook::pres::documentcontroller
-   *  @class guestbook_admineditcomment_v1_controller
-   *
-   *  Implementiert den DocumentController f�r das Stylesheet 'admineditcomment.html'.<br />
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 19.05.2007<br />
-   */
-   class guestbook_admineditcomment_v1_controller extends guestbookBaseController
-   {
+    *  @package modules::guestbook::pres::documentcontroller
+    *  @class guestbook_admineditcomment_v1_controller
+    *
+    *  Implementiert den DocumentController f�r das Stylesheet 'admineditcomment.html'.<br />
+    *
+    *  @author Christian Sch�fer
+    *  @version
+    *  Version 0.1, 19.05.2007<br />
+    */
+   class guestbook_admineditcomment_v1_controller extends guestbookBaseController {
 
       /**
-      *  @private
-      *  H�lt lokal verwendete Variablen.
-      */
-      private $_LOCALS;
+       *  @public
+       *
+       *  Implementiert die asbtrakte Methode "transformContent" aus "APFObject".<br />
+       *
+       *  @author Christian Sch�fer
+       *  @version
+       *  Version 0.1, 19.05.2007<br />
+       */
+      public function transformContent() {
 
+         $values = RequestHandler::getValues(array('Title','Text','entryid','commentid'));
 
-      function guestbook_admineditcomment_v1_controller(){
+         $form = &$this->__getForm('Comment');
 
-         $this->_LOCALS = RequestHandler::getValues(array(
-                                                                'Title',
-                                                                'Text',
-                                                                'entryid',
-                                                                'commentid'
-                                                               )
-                                                         );
+         if ($form->isSent()) {
 
-       // end function
-      }
+            if ($form->isValid()) {
 
+               $gM = &$this->getGuestbookManager();
 
-      /**
-      *  @public
-      *
-      *  Implementiert die asbtrakte Methode "transformContent" aus "APFObject".<br />
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 19.05.2007<br />
-      */
-      public function transformContent(){
+               $comment = new Comment();
+               $comment->setTitle($values['Title']);
+               $comment->setText($values['Text']);
+               $comment->setId($values['commentid']);
 
-         // Referenz auf das Formular holen
-         $Form__Comment = &$this->__getForm('Comment');
+               $gM->saveComment($values['entryid'], $comment);
 
-         if($Form__Comment->isSent() == true){
-
-            if($Form__Comment->isValid()){
-
-               // Manager holen
-               $gM = &$this->__getGuestbookManager();
-
-               // Eintrag erzeugen
-               $Comment = new Comment();
-               $Comment->set('Title',$this->_LOCALS['Title']);
-               $Comment->set('Text',$this->_LOCALS['Text']);
-               $Comment->set('ID',$this->_LOCALS['commentid']);
-
-               // Eintrag speichern
-               $gM->saveComment($this->_LOCALS['entryid'],$Comment);
-
-             // end if
             }
 
-          // end if
-         }
-         else{
+         } else {
 
-            // Manager holen
-            $gM = &$this->__getGuestbookManager();
+            $gM = &$this->getGuestbookManager();
+            $comment = $gM->loadComment($values['commentid']);
 
-            // Eintrag laden
-            $Comment = $gM->loadComment($this->_LOCALS['commentid']);
+            $Title = & $form->getFormElementByName('Title');
+            $Title->setAttribute('value', $comment->getTitle());
 
-            // Werte f�llen
-            $Title = & $Form__Comment->getFormElementByName('Title');
-            $Title->setAttribute('value',$Comment->get('Title'));
+            $Text = & $form->getFormElementByName('Text');
+            $Text->setContent($comment->getText());
 
-            $Text = & $Form__Comment->getFormElementByName('Text');
-            $Text->setContent($Comment->get('Text'));
+            $EntryID = & $form->getFormElementByName('entryid');
+            $EntryID->setAttribute('value', $values['entryid']);
 
-            $EntryID = & $Form__Comment->getFormElementByName('entryid');
-            $EntryID->setAttribute('value',$this->_LOCALS['entryid']);
+            $CommentID = & $form->getFormElementByName('commentid');
+            $CommentID->setAttribute('value', $comment->getId());
 
-            $CommentID = & $Form__Comment->getFormElementByName('commentid');
-            $CommentID->setAttribute('value',$Comment->get('ID'));
-
-          // end else
          }
 
-         // Formular anzeigen
-         $this->setPlaceHolder('Form',$Form__Comment->transformForm());
+         $this->setPlaceHolder('Form', $form->transformForm());
 
-       // end function
       }
 
-    // end class
    }
 ?>

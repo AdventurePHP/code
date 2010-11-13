@@ -64,9 +64,6 @@
        */
       private $__Orders = array();
 
-      public function GenericCriterionObject(){
-      }
-
       /**
        * @public
        *

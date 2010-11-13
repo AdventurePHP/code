@@ -34,9 +34,6 @@
    */
    class newspager_v1_controller extends base_controller {
 
-      public function newspager_v1_controller(){
-      }
-
       /**
       *  @public
       *
@@ -48,7 +45,7 @@
       *  Version 0.2, 05.01.2008 (language is now published to the java script code)<br />
       *  Version 0.3, 18.09.2008 (Introduced datadir attribute to be able to operate the module in more than one application)<br />
       */
-      function transformContent(){
+      public function transformContent(){
 
          // get current data dir or trigger error
          $DataDir = $this->__Document->getAttribute('datadir');

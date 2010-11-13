@@ -33,7 +33,7 @@
     */
    class umgt_list_controller extends umgt_base_controller {
 
-      function transformContent(){
+      public function transformContent(){
 
          $uM = &$this->getManager();
          $permissionSetList = $uM->getPagedPermissionSetList();

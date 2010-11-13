@@ -50,7 +50,6 @@
       */
       public function weather_v1_controller(){
          $this->__PHPVersion = (int)phpversion();
-       // end function
       }
 
       /**
@@ -63,7 +62,7 @@
       *  Version 0.1, 20.04.2008<br />
       *  Version 0.2, 26.04.2008 (Transformation for PHP4 and PHP5 implemented separately)<br />
       */
-      function transformContent(){
+      public function transformContent(){
 
          // Fetch XML string
          $XML = $this->__getRSSFeed();

@@ -31,15 +31,12 @@
    *  @version
    *  Version 0.1, 29.12.2008<br />
    */
-   class umgt_role_controller extends umgt_base_controller
-   {
+   class umgt_role_controller extends umgt_base_controller {
 
-      function transformContent(){
+      public function transformContent(){
          $this->setPlaceHolder('manage_roles',$this->__generateLink(array('mainview' => 'role','roleview' => '')));
          $this->setPlaceHolder('role_add',$this->__generateLink(array('mainview' => 'role','roleview' => 'add')));
-       // end function
       }
 
-    // end function
    }
 ?>

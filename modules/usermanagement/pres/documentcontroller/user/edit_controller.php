@@ -45,7 +45,7 @@
        * Version 0.1, 26.12.2008<br />
        * Version 0.2, 02.01.2009 (Added the password fields handling)<br />
        */
-      function transformContent(){
+      public function transformContent(){
 
          // get the userid from the request
          $userid = RequestHandler::getValue('userid');

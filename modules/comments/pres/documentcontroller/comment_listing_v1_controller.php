@@ -52,7 +52,7 @@
       *  Version 0.4, 12.06.2008 (Removed display limitation quick hack)<br />
       *  Version 0.5, 30.01.2009 (Replaced the bbCodeParser with the AdvancedBBCodeParser)<br />
       */
-      function transformContent(){
+      public function transformContent(){
 
          $this->__loadCategoryKey();
          $M = &$this->__getAndInitServiceObject('modules::comments::biz','commentManager',$this->__CategoryKey);

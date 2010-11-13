@@ -34,7 +34,7 @@
     */
    class create_controller extends base_controller {
 
-      function transformContent(){
+      public function transformContent(){
 
          $form = &$this->__getForm('create_entry');
 

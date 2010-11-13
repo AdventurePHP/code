@@ -21,7 +21,6 @@
 
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
 
-
    /**
    *  @package modules::usermanagement::pres::documentcontroller
    *  @class umgt_permission_controller
@@ -32,15 +31,12 @@
    *  @version
    *  Version 0.1, 28.12.2008<br />
    */
-   class umgt_user_controller extends umgt_base_controller
-   {
+   class umgt_user_controller extends umgt_base_controller {
 
-      function transformContent(){
+      public function transformContent(){
          $this->setPlaceHolder('manage_user', $this->__generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
          $this->setPlaceHolder('user_add', $this->__generateLink(array('mainview' => 'user', 'userview' => 'add','userid' => '')));
-       // end function
       }
 
-    // end class
    }
 ?>

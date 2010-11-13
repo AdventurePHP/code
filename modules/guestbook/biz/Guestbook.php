@@ -1,132 +1,156 @@
 <?php
    /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
    /**
-   *  @package modules::guestbook::biz
-   *  @class Guestbook
-   *
-   *  Guestbook domain object.
-   *
-   *  @author Christian Sch�fer
-   *  @version
-   *  Version 0.1, 12.04.2007<br />
-   */
-   class Guestbook extends APFObject {
+    *  @package modules::guestbook::biz
+    *  @class Guestbook
+    *
+    *  Guestbook domain object.
+    *
+    *  @author Christian Sch�fer
+    *  @version
+    *  Version 0.1, 12.04.2007<br />
+    */
+   final class Guestbook {
 
       /**
-      *  @private
-      *  Id of the guestbook.
-      */
-      protected $__ID = null;
-
-
-      /**
-      *  @private
-      *  Name of the guestbook.
-      */
-      protected $__Name;
-
+       *  @private
+       *  Id of the guestbook.
+       */
+      private $id = null;
 
       /**
-      *  @private
-      *  Description of the guestbook.
-      */
-      protected $__Description;
-
-
-      /**
-      *  @private
-      *  Entries of the giestbook.
-      */
-      protected $__Entries = array();
-
+       *  @private
+       *  Name of the guestbook.
+       */
+      private $name;
 
       /**
-      *  @private
-      *  Admin username.
-      */
-      protected $__Admin_Username;
-
+       *  @private
+       *  Description of the guestbook.
+       */
+      private $description;
 
       /**
-      *  @private
-      *  Admin password.
-      */
-      protected $__Admin_Password;
+       *  @private
+       *  Entries of the giestbook.
+       */
+      private $entries = array();
 
+      /**
+       *  @private
+       *  Admin username.
+       */
+      private $adminUsername;
 
-      public function Guestbook(){
+      /**
+       *  @private
+       *  Admin password.
+       */
+      private $adminPassword;
+
+      /**
+       * @public
+       *
+       * Returns the list of entries of the guestbook.
+       *
+       * @return Entry[] The entries list
+       *
+       * @author Christian Sch�fer
+       * @version
+       * Version 0.1, 12.04.2007<br />
+       */
+      public function getEntries() {
+         return $this->entries;
       }
 
-
       /**
-      *  @public
-      *
-      *  Returns the list of entries of the guestbook.
-      *
-      *  @return array $entries The entries list
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 12.04.2007<br />
-      */
-      public function getEntries(){
-         return $this->__Entries;
-       // end function
+       *  @public
+       *
+       *  Fills the entry list.
+       *
+       *  @param Entry[] $entries A list of entries
+       *
+       *  @author Christian Achatz
+       *  @version
+       *  Version 0.1, 12.04.2007<br />
+       */
+      public function setEntries(array $entries) {
+         $this->entries = $entries;
       }
 
-
       /**
-      *  @public
-      *
-      *  Fills the entry list.
-      *
-      *  @param Entry[] $entries A list of entries
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 12.04.2007<br />
-      */
-      public function setEntries($entries){
-         $this->__Entries = $entries;
-       // end function
+       * @public
+       *
+       * Adds an entry to the list.
+       *
+       * @param Entry $entry An entry object
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.04.2007<br />
+       */
+      public function addEntry(Entry $entry) {
+         $this->entries[] = $entry;
       }
 
-
-      /**
-      *  @public
-      *
-      *  Adds an entry to the list.
-      *
-      *  @param Entry $entry An entry object
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 12.04.2007<br />
-      */
-      public function addEntry($entry){
-         $this->__Entries[] = $entry;
-       // end function
+      public function getId() {
+         return $this->id;
       }
 
-    // end class
+      public function setId($id) {
+         $this->id = $id;
+      }
+
+      public function getName() {
+         return $this->name;
+      }
+
+      public function setName($name) {
+         $this->name = $name;
+      }
+
+      public function getDescription() {
+         return $this->description;
+      }
+
+      public function setDescription($description) {
+         $this->description = $description;
+      }
+
+      public function getAdminUsername() {
+         return $this->adminUsername;
+      }
+
+      public function setAdminUsername($adminUsername) {
+         $this->adminUsername = $adminUsername;
+      }
+
+      public function getAdminPassword() {
+         return $this->adminPassword;
+      }
+
+      public function setAdminPassword($adminPassword) {
+         $this->adminPassword = $adminPassword;
+      }
+
    }
 ?>
