@@ -32,9 +32,6 @@
     */
    abstract class AbstractExceptionHandler extends APFObject {
 
-      public function AbstractExceptionHandler(){
-      }
-
       /**
        * @public
        *
@@ -46,7 +43,7 @@
        * @version
        * Version 0.1, 21.02.2009<br />
        */
-      public abstract function handleException($exception);
+      public abstract function handleException(Exception $exception);
 
     // end class
    }

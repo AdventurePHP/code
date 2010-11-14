@@ -26,7 +26,7 @@
    import('core::exceptionhandler','ExceptionHandlerDefinition');
 
    // setup the registry with the default APF exception handler
-   Registry::register('apf::core','ExceptionHandler',new ExceptionHandlerDefinition('core::exceptionhandler','DefaultExceptionHandler'));
+   Registry::register('apf::core', 'ExceptionHandler', new ExceptionHandlerDefinition('core::exceptionhandler', 'DefaultExceptionHandler'));
 
    /**
     * @package core::exceptionhandler
@@ -53,7 +53,7 @@
          $class = $exceptionHandlerDef->getClass();
 
          // include exception handler
-         import($namespace,$class);
+         import($namespace, $class);
 
          // execute exception handler
          $excHandler = new $class();

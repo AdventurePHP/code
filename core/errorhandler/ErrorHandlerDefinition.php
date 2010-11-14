@@ -36,13 +36,13 @@
        * @private
        * Defines the namespace of the error handler implementation.
        */
-      private $__Namespace = null;
+      private $namespace = null;
 
       /**
        * @private
        * Indicates the class name of the error handler implementation (=filename).
        */
-      private $__Class = null;
+      private $class = null;
 
       /**
        * @public
@@ -57,10 +57,9 @@
        * @version
        * Version 0.1, 08.12.2007<br />
        */
-      public function ErrorHandlerDefinition($namespace,$class){
-         $this->__Namespace = $namespace;
-         $this->__Class = $class;
-       // end function
+      public function __construct($namespace, $class) {
+         $this->namespace = $namespace;
+         $this->class = $class;
       }
 
       /**
@@ -75,7 +74,7 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function getNamespace(){
-         return $this->__Namespace;
+         return $this->namespace;
       }
 
       /**
@@ -90,7 +89,7 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function getClass(){
-         return $this->__Class;
+         return $this->class;
       }
 
     // end class

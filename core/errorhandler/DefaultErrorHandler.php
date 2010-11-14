@@ -84,9 +84,8 @@
          $this->logError();
 
          // build nice error page
-         echo $this->__buildErrorPage();
+         echo $this->buildErrorPage();
 
-       // end function
       }
 
       /**
@@ -100,7 +99,7 @@
        * Version 0.2, 29.03.2007 (Changed to new logger)<br />
        */
       protected function logError(){
-         $message = '['.($this->__generateErrorID()).'] '.$this->errorMessage.' (Number: '.$this->errorNumber.', File: '.$this->errorFile.', Line: '.$this->errorLine.')';
+         $message = '['.($this->generateErrorID()).'] '.$this->errorMessage.' (Number: '.$this->errorNumber.', File: '.$this->errorFile.', Line: '.$this->errorLine.')';
          import('core::logging','Logger');
          $log = &Singleton::getInstance('Logger');
          $log->logEntry('php',$message,'ERROR');
@@ -119,7 +118,7 @@
        * Version 0.4, 29.03.2007<br />
        * Version 0.5, 13.08.2008 (Removed text only error page messages)<br />
        */
-      protected function __buildErrorPage(){
+      protected function buildErrorPage(){
 
          // at this point we have to re-include the benchmark timer, because PHP
          // sometimes forgets about this import and throws a
@@ -134,7 +133,7 @@
 
          // inject error information into the document attributes array
          $doc = &$stacktrace->getRootDocument();
-         $doc->setAttribute('id',$this->__generateErrorID());
+         $doc->setAttribute('id',$this->generateErrorID());
          $doc->setAttribute('message',$this->errorMessage);
          $doc->setAttribute('number',$this->errorNumber);
          $doc->setAttribute('file',$this->errorFile);
@@ -143,7 +142,6 @@
          // create error page
          return $stacktrace->transform();
 
-       // end function
       }
 
       /**
@@ -155,9 +153,8 @@
        * @version
        * Version 0.1, 21.01.2007<br />
        */
-      protected function __generateErrorID(){
+      protected function generateErrorID(){
          return md5($this->errorMessage.$this->errorNumber.$this->errorFile.$this->errorLine);
-       // end function
       }
 
     // end class

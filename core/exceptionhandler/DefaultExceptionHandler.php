@@ -75,7 +75,7 @@
        * @version
        * Version 0.1, 21.02.2009<br />
        */
-      public function handleException($exception){
+      public function handleException(Exception $exception){
 
          // fill attributes
          $this->exceptionNumber = $exception->getCode();
@@ -91,7 +91,6 @@
          // build nice exception page
          echo $this->buildExceptionPage();
 
-       // end function
       }
 
       /**
@@ -108,7 +107,6 @@
          import('core::logging','Logger');
          $log = Singleton::getInstance('Logger');
          $log->logEntry('php',$message,'EXCEPTION');
-       // end function
       }
 
       /**
@@ -146,7 +144,6 @@
          // create exception page
          return $stacktrace->transform();
 
-       // end function
       }
 
       /**
@@ -160,7 +157,6 @@
        */
       protected function generateExceptionID(){
          return md5($this->exceptionMessage.$this->exceptionNumber.$this->exceptionFile.$this->exceptionLine);
-       // end function
       }
 
     // end class
