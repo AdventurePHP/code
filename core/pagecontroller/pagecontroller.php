@@ -71,14 +71,10 @@
 
          if($path[$i] != 'core'){
             $appsPath[] = $path[$i];
-          // end if
-         }
-         else{
+         } else {
             break;
-          // end else
          }
 
-       // end for
       }
 
       // define the APPS__PATH constant to be used in the import() function (performance hack!)
@@ -178,7 +174,6 @@
 
       include($file);
 
-    // end function
    }
 
    /**
@@ -218,7 +213,6 @@
 
       return $buffer;
 
-    // end function
    }
 
    /**
@@ -313,9 +307,9 @@
 
             // check, if explicitly-closing tag exists
             if(strpos($tagString,'</'.$prefix.':'.$class.'>') === false){
-               throw new ParserException('[XmlParser::getTagAttributes()] No closing tag found for tag "&lt;'
-                       .$prefix.':'.$class.' /&gt;"! Tag string: "'.htmlentities($tagString).'".',
-                       E_USER_ERROR);
+               throw new ParserException('[XmlParser::getTagAttributes()] No closing tag found for '
+                    . 'tag "<' . $prefix . ':' . $class . ' />"! Tag string: "' . $tagString . '".',
+                    E_USER_ERROR);
             } else {
 
                $found = true;
@@ -398,7 +392,8 @@
 
             // limit parse loop count to avoid enless while loops
             if($parserLoops == $parserMaxLoops){
-               throw new ParserException('[XmlParser::getAttributesFromString()] Error while parsing: "'.htmlentities($attributesString).'". Maximum number of loops exceeded!',E_USER_ERROR);
+               throw new ParserException('[XmlParser::getAttributesFromString()] Error while parsing: "'
+                    . $attributesString . '". Maximum number of loops exceeded!', E_USER_ERROR);
             }
 
             // find attribute
@@ -420,12 +415,10 @@
             // add to key => value array
             $attributes[trim($key)] = trim($attrValue);
 
-          // end while
          }
 
          return $attributes;
 
-       // end function
       }
 
       /**
@@ -887,13 +880,10 @@
        * Version 0.1, 18.04.2009<br />
        */
       protected function &__getDIServiceObject($namespace,$name){
-
          $diServiceMgr = &Singleton::getInstance('DIServiceManager');
          $diServiceMgr->setContext($this->__Context);
          $diServiceMgr->setLanguage($this->__Language);
          return $diServiceMgr->getServiceObject($namespace,$name);
-
-       // end function
       }
 
       /**
@@ -915,13 +905,10 @@
        * Version 0.5, 24.02.2008 (Added the service type param)<br />
        */
       protected function &__getServiceObject($namespace,$serviceName,$type = 'SINGLETON'){
-
          $serviceManager = &Singleton::getInstance('ServiceManager');
          $serviceManager->setContext($this->__Context);
          $serviceManager->setLanguage($this->__Language);
          return $serviceManager->getServiceObject($namespace,$serviceName,$type);
-
-       // end function
       }
 
       /**
@@ -946,7 +933,6 @@
          $serviceManager->setContext($this->__Context);
          $serviceManager->setLanguage($this->__Language);
          return $serviceManager->getAndInitServiceObject($namespace,$serviceName,$initParam,$type);
-       // end function
       }
 
       /**
@@ -1018,29 +1004,24 @@
 
             // process white list entries only, when attribute is given
             // code duplication is done here due to performance reasons!!!
-            if(count($whiteList) > 0){
-               foreach($attributes as $offset => $value){
-                  if(in_array($offset,$whiteList)){
-                     $attributeParts[] = $offset.'="'.$value.'"';
+            if (count($whiteList) > 0) {
+               foreach ($attributes as $offset => $value) {
+                  if (in_array($offset, $whiteList)) {
+                     $attributeParts[] = $offset . '="' . $value . '"';
                   }
                }
-            }
-            else{
-               foreach($attributes as $offset => $value){
-                  $attributeParts[] = $offset.'="'.$value.'"';
+            } else {
+               foreach ($attributes as $offset => $value) {
+                  $attributeParts[] = $offset . '="' . $value . '"';
                }
             }
 
             return implode(' ',$attributeParts);
 
-          // end if
-         }
-         else{
+         } else {
             return (string)'';
-          // end else
          }
 
-       // end function
       }
 
     // end class
@@ -1064,19 +1045,19 @@
        * @protected
        * @var string The namespace of the taglib.
        */
-      protected $__Namespace;
+      private $namespace;
 
       /**
        * @protected
        * @var string The prefix of the taglib.
        */
-      protected $__Prefix;
+      private $prefix;
 
       /**
        * @protected
        * @var string The class name of the taglib.
        */
-      protected $__Class;
+      private $class;
 
       /**
        * @public
@@ -1091,10 +1072,10 @@
        * @version
        * Version 0.1, 28.12.2006<br />
        */
-      public function __construct($namespace,$prefix,$class){
-         $this->__Namespace = $namespace;
-         $this->__Class = $class;
-         $this->__Prefix = $prefix;
+      public function __construct($namespace, $prefix, $class) {
+         $this->namespace = $namespace;
+         $this->class = $class;
+         $this->prefix = $prefix;
       }
 
       /**
@@ -1109,7 +1090,7 @@
        * Version 0.1, 12.09.2009<br />
        */
       public function getNamespace(){
-         return $this->__Namespace;
+         return $this->namespace;
       }
 
       /**
@@ -1124,7 +1105,7 @@
        * Version 0.1, 12.09.2009<br />
        */
       public function getPrefix(){
-         return $this->__Prefix;
+         return $this->prefix;
       }
 
       /**
@@ -1139,7 +1120,7 @@
        * Version 0.1, 12.09.2009<br />
        */
       public function getClass(){
-         return $this->__Class;
+         return $this->class;
       }
 
     // end class
@@ -1165,7 +1146,7 @@
        * @protected
        * @var Document Container for the initial <em>Document</em> of the page.
        */
-      protected $__Document;
+      private $document;
 
       /**
        * @public
@@ -1213,7 +1194,7 @@
        * Version 0.1, 20.10.2010<br />
        */
       public function &getRootDocument(){
-         return $this->__Document;
+         return $this->document;
       }
 
       /**
@@ -1235,25 +1216,25 @@
        */
       public function loadDesign($namespace,$design){
 
-         $this->__Document = new Document();
+         $this->document = new Document();
 
          // set the current context
          if(empty($this->__Context)){
-            $this->__Document->setContext($namespace);
+            $this->document->setContext($namespace);
           // end if
          }
          else{
-            $this->__Document->setContext($this->__Context);
+            $this->document->setContext($this->__Context);
           // end else
          }
 
          // set the current language
-         $this->__Document->setLanguage($this->__Language);
+         $this->document->setLanguage($this->__Language);
 
          // load the design
-         $this->__Document->loadDesign($namespace,$design);
-         $this->__Document->setObjectId(XmlParser::generateUniqID());
-         $this->__Document->setParentObject($this);
+         $this->document->loadDesign($namespace,$design);
+         $this->document->setObjectId(XmlParser::generateUniqID());
+         $this->document->setParentObject($this);
 
        // end function
       }
@@ -1275,7 +1256,7 @@
       public function transform(){
 
          // transform the current document
-         $content = $this->__Document->transform();
+         $content = $this->document->transform();
 
          // apply output filter if desired
          $filterDef = Registry::retrieve('apf::core::filter','OutputFilter');
@@ -1448,7 +1429,6 @@
        */
       protected function __getModuleName($prefix,$class){
          return $prefix.'_taglib_'.$class;
-       // end function
       }
 
       /**
@@ -1512,11 +1492,8 @@
 
             throw new IncludeException('[Document::__loadContentFromFile()] Design "'.$design.'" not existent in namespace "'.$namespace.'"!'.$code,E_USER_ERROR);
 
-          // end if
-         }
-         else{
+         } else {
             $this->__Content = file_get_contents($file);
-          // end else
          }
 
        // end function
@@ -1582,7 +1559,7 @@
 
                   if($tagEndPos === false){
                      throw new ParserException('['.get_class($this).'::__extractTagLibTags()] No closing tag '
-                             .'found for tag "&lt;'.$token.' /&gt;"!',E_USER_ERROR);
+                             .'found for tag "<'.$token.' />"!',E_USER_ERROR);
                   }
 
                 // end if
@@ -1710,7 +1687,7 @@
                throw new ParserException('[Document::__extractDocumentController()] Document controller '
                        .'specification does not contain a valid controller class definition. '
                        .'Please double check the template code and consult the documentation. '
-                       .'Template code: '.htmlentities($this->__Content));
+                       .'Template code: '.$this->getContent());
             }
 
             // lazily import document controller class
@@ -1765,8 +1742,6 @@
 
             if(!class_exists($this->__DocumentController)){
                throw new InvalidArgumentException('['.get_class($this).'::transform()] DocumentController "'.$this->__DocumentController.'" cannot be found! Maybe the class name is misspelt!',E_USER_ERROR);
-               exit();
-             // end if
             }
 
             $docCon = new $this->__DocumentController;
@@ -1877,11 +1852,8 @@
          $incParam = null;
          if(isset($this->__Attributes['incparam'])){
             $incParam = $this->__Attributes['incparam'];
-          // end if
-         }
-         else{
+         } else {
             $incParam = 'pagepart';
-          // end else
          }
 
          // check, if the inc param is present in the current request
@@ -1889,16 +1861,13 @@
 
             if(isset($_REQUEST[$incParam]) && !empty($_REQUEST[$incParam])){
                $template = $_REQUEST[$incParam];
-             // end if
-            }
-            else{
+            } else {
 
                // read template attribute from inc param
                $pagepartStartPos = strpos($template,'=');
                $pagepartEndPos = strlen($template) - 1;
                $template = trim(substr($template,$pagepartStartPos + 1,($pagepartEndPos - $pagepartStartPos) - 1));
 
-             // end else
             }
 
           // end if
@@ -1990,7 +1959,6 @@
        */
       public function transform(){
          return $this->__Content;
-       // end function
       }
 
     // end class
@@ -2035,7 +2003,6 @@
       public function __construct(){
          $this->__TagLibs[] = new TagLib('core::pagecontroller','template','placeholder');
          $this->__TagLibs[] = new TagLib('core::pagecontroller','template','addtaglib');
-       // end function
       }
 
       /**
@@ -2051,7 +2018,6 @@
        */
       public function onParseTime(){
          $this->__extractTagLibTags();
-       // end function
       }
 
       /**
@@ -2091,23 +2057,17 @@
                      $this->__Children[$objectID]->setContent($value);
                      $placeHolderCount++;
 
-                   // end if
                   }
 
-                // end if
                }
 
-             // end foreach
             }
 
-          // end if
-         }
-         else{
+         } else {
 
             // trow error, if no place holder with the desired name was found
             throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] No placeholder object with name "'.$name.'" composed in current template for document controller "'.($this->getParentObject()->getDocumentController()).'"! Perhaps tag library template:placeHolder is not loaded in template "'.$this->__Attributes['name'].'"!',E_USER_ERROR);
 
-          // end else
          }
 
          // throw error, if no children are composed under the current tag
@@ -2146,10 +2106,8 @@
 
             foreach($this->__Children as $objectId => $DUMMY){
                $content = str_replace('<'.$objectId.' />',$this->__Children[$objectId]->transform(),$content);
-             // end foreach
             }
 
-          // end if
          }
 
          return $content;
@@ -2168,7 +2126,6 @@
        */
       public function transformOnPlace(){
          $this->__TransformOnPlace = true;
-       // end function
       }
 
       /**
@@ -2191,13 +2148,11 @@
          // checks, if transformOnPlace is activated
          if($this->__TransformOnPlace === true){
             return $this->transformTemplate();
-          // end if
          }
 
          // return empty string
          return (string)'';
 
-       // end function
       }
 
     // end class
@@ -2227,7 +2182,6 @@
        */
       public function transform(){
          return $this->__Content;
-       // end function
       }
 
     // end class
@@ -2295,7 +2249,7 @@
        * @version
        * Version 0.1, 20.02.2010<br />
        */
-      public function setDocument(&$document){
+      public function setDocument(Document &$document){
          $this->__Document = &$document;
       }
 
@@ -2326,15 +2280,9 @@
        * Version 0.1, 28.12.2006<br />
        * Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
        */
-      protected function setPlaceHolder($name,$value){
+      protected function setPlaceHolder($name, $value){
 
          $tagLibClass = 'html_taglib_placeholder';
-
-         if(!class_exists($tagLibClass)){
-            throw new InvalidArgumentException('['.get_class($this).'::setPlaceHolder()] TagLib module '
-               .$tagLibClass.' is not loaded!',E_USER_ERROR);
-          // end if
-         }
 
          $placeHolderCount = 0;
 
@@ -2348,18 +2296,13 @@
                   if($children[$objectID]->getAttribute('name') == $name){
                      $children[$objectID]->setContent($value);
                      $placeHolderCount++;
-                   // end if
                   }
 
-                // end if
                }
 
-             // end foreach
             }
 
-          // end if
-         }
-         else{
+         } else {
             throw new InvalidArgumentException('['.get_class($this).'::setPlaceHolder()] No placeholder object with name "'
                .$name.'" composed in current document for document controller "'.get_class($this)
                .'"! Perhaps tag library html:placeholder is not loaded in current template!',E_USER_ERROR);
@@ -2393,7 +2336,7 @@
          $tagLibClass = 'html_taglib_form';
          if(!class_exists($tagLibClass)){
             throw new InvalidArgumentException('['.get_class($this).'::__getForm()] TagLib "'.$tagLibClass
-               .'" is not loaded! Please add the form taglib using the &lt;core:addtaglib /&gt; tag',
+               .'" is not loaded! Please add the form taglib using the <core:addtaglib /> tag',
                E_USER_ERROR);
          }
 
@@ -2406,18 +2349,13 @@
 
                   if($children[$objectID]->getAttribute('name') == $formName){
                      return $children[$objectID];
-                   // end if
                   }
 
-                // end if
                }
 
-             // end foreach
             }
 
-          // end if
-         }
-         else{
+         } else {
             throw new InvalidArgumentException('['.get_class($this).'::__getForm()] No form object with name "'
                .$formName.'" composed in current document for document controller "'.get_class($this)
                .'"! Perhaps tag library html:form is not loaded in current document!',E_USER_ERROR);
@@ -2449,10 +2387,6 @@
       protected function &__getTemplate($name){
 
          $tagLibClass = 'html_taglib_template';
-         if(!class_exists($tagLibClass)){
-            throw new InvalidArgumentException('['.get_class($this).'::__getTemplate()] TagLib module "'
-               .$tagLibClass.'" is not loaded!',E_USER_ERROR);
-         }
 
          $children = &$this->__Document->getChildren();
          if(count($children) > 0){
@@ -2463,18 +2397,13 @@
 
                   if($children[$objectID]->getAttribute('name') == $name){
                      return $children[$objectID];
-                   // end if
                   }
 
-                // end if
                }
 
-             // end foreach
             }
 
-          // end if
-         }
-         else{
+         } else {
             throw new InvalidArgumentException('['.get_class($this).'::__getTemplate()] No template object with name "'
                .$name.'" composed in current document for document controller "'.get_class($this)
                .'"! Perhaps tag library html:template is not loaded in current template!',E_USER_ERROR);
@@ -2507,11 +2436,8 @@
             if(get_class($children[$objectID]) == 'html_taglib_placeholder'){
                if($children[$objectID]->getAttribute('name') == $name){
                   return true;
-                // end if
                }
-             // end if
             }
-          // end foreach
          }
 
          return false;
@@ -2541,11 +2467,8 @@
             if(get_class($children[$objectID]) == 'template_taglib_placeholder'){
                if($children[$objectID]->getAttribute('name') == $name){
                   return true;
-                // end if
                }
-             // end if
             }
-          // end foreach
          }
 
          return false;
