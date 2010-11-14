@@ -23,7 +23,6 @@
    import('modules::guestbook2009::biz','Guestbook');
    import('modules::guestbook2009::biz','User');
    import('tools::http','HeaderManager');
-   import('modules::guestbook2009::biz','GuestbookModel');
    import('core::session','SessionManager');
    import('tools::link','FrontcontrollerLinkHandler');
    import('modules::pager::biz','PagerManagerFabric');
@@ -45,15 +44,13 @@
        * Stores the pager instance for further usage.
        * @var PagerManager
        */
-      private $__Pager = null;
-
+      private $pager = null;
 
       /**
        * Defines the name of the pager config section.
        * @var string
        */
-      private $__PagerConfigSection;
-
+      private $pagerConfigSection;
 
       /**
        * @public
@@ -68,7 +65,7 @@
        * Version 0.1, 13.06.2009<br />
        */
       public function setPagerConfigSection($pagerConfigSection){
-         $this->__PagerConfigSection = $pagerConfigSection;
+         $this->pagerConfigSection = $pagerConfigSection;
       }
 
       /**
@@ -87,13 +84,13 @@
          $t = &Singleton::getInstance('BenchmarkTimer');
          $t->start('loadPagedEntryList');
 
-         $pager = &$this->__getPager();
+         $pager = &$this->getPager();
 
          $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
-         $entryIds = $pager->loadEntries(array('GuestbookID' => $model->get('GuestbookId')));
+         $entryIds = $pager->loadEntries(array('GuestbookID' => $model->getGuestbookId()));
 
          $entries = array();
-         $mapper = &$this->__getMapper();
+         $mapper = &$this->getMapper();
          foreach($entryIds as $entryId){
             $entries[] = $mapper->loadEntry($entryId);
          }
@@ -117,9 +114,8 @@
        */
       public function getPagerOutput(){
          $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
-         $pager = &$this->__getPager();
-         return $pager->getPager(array('GuestbookID' => $model->get('GuestbookId')));
-       // end function
+         $pager = &$this->getPager();
+         return $pager->getPager(array('GuestbookID' => $model->getGuestbookId()));
       }
 
       /**
@@ -134,9 +130,8 @@
        * Version 0.1, 13.06.2009<br />
        */
       public function getPagerURLParams(){
-         $pager = &$this->__getPager();
+         $pager = &$this->getPager();
          return $pager->getPagerURLParameters();
-       // end function
       }
 
       /**
@@ -152,15 +147,14 @@
        * @version
        * Version 0.1, 13.06.2009<br />
        */
-      private function &__getPager(){
+      private function &getPager(){
          
-         if($this->__Pager === null){
+         if($this->pager === null){
             $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
-            $this->__Pager = &$pMF->getPagerManager($this->__PagerConfigSection);
-          // end if
+            $this->pager = &$pMF->getPagerManager($this->pagerConfigSection);
          }
          
-         return $this->__Pager;
+         return $this->pager;
       
        // end function
       }
@@ -177,9 +171,8 @@
        * Version 0.1, 21.05.2009<br />
        */
       public function loadEntryListForSelection(){
-         $mapper = &$this->__getMapper();
+         $mapper = &$this->getMapper();
          return $mapper->loadEntryListForSelection();
-       // end function
       }
 
       /**
@@ -194,9 +187,8 @@
        * Version 0.1, 21.05.2009<br />
        */
       public function loadEntry($id){
-         $mapper = &$this->__getMapper();
+         $mapper = &$this->getMapper();
          return $mapper->loadEntry($id);
-       // end function
       }
 
       /**
@@ -211,9 +203,8 @@
        * Version 0.1, 21.05.2009<br />
        */
       public function loadGuestbook(){
-         $mapper = &$this->__getMapper();
+         $mapper = &$this->getMapper();
          return $mapper->loadGuestbook();
-       // end function
       }
 
       /**
@@ -230,7 +221,7 @@
       public function deleteEntry($entry){
          
          if($entry !== null){
-            $mapper = &$this->__getMapper();
+            $mapper = &$this->getMapper();
             $mapper->deleteEntry($entry);
           // end if
          }
@@ -261,7 +252,7 @@
 
          // logout by cleaning the session
          $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
-         $guestbookId = $model->get('GuestbookId');
+         $guestbookId = $model->getGuestbookId();
          $session = new SessionManager('modules::guestbook2009::biz::'.$guestbookId);
          $session->deleteSessionData('LoggedIn');
          
@@ -291,7 +282,7 @@
       public function checkAccessAllowed(){
 
          $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
-         $guestbookId = $model->get('GuestbookId');
+         $guestbookId = $model->getGuestbookId();
          $session = new SessionManager('modules::guestbook2009::biz::'.$guestbookId);
          $loggedId = $session->loadSessionData('LoggedIn');
 
@@ -305,7 +296,6 @@
                )
             );
             HeaderManager::forward($startLink);
-          // end if
          }
 
        // end function
@@ -326,12 +316,12 @@
        */
       public function validateCredentials($user){
 
-         $mapper = &$this->__getMapper();
+         $mapper = &$this->getMapper();
          if($mapper->validateCredentials($user)){
 
             // log user in
             $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
-            $guestbookId = $model->get('GuestbookId');
+            $guestbookId = $model->getGuestbookId();
             $session = new SessionManager('modules::guestbook2009::biz::'.$guestbookId);
             $session->saveSessionData('LoggedIn','true');
 
@@ -345,7 +335,6 @@
             );
             HeaderManager::forward($adminLink);
 
-          // end if
          }
          return false;
       
@@ -365,7 +354,7 @@
        */
       public function saveEntry($entry){
 
-         $mapper = &$this->__getMapper();
+         $mapper = &$this->getMapper();
          $mapper->saveEntry($entry);
 
          // Forward to the desired view to prevent F5-bugs.
@@ -377,16 +366,13 @@
                   'gbview' => 'admin'
                )
             );
-          // end if
-         }
-         else{
+         } else {
             $link = FrontcontrollerLinkHandler::generateLink(
                $_SERVER['REQUEST_URI'],
                array(
                   'gbview' => 'list'
                )
             );
-          // end else
          }
          HeaderManager::forward($link);
 
@@ -404,7 +390,7 @@
        * @version
        * Version 0.1, 10.05.2009<br />
        */
-      private function &__getMapper(){
+      private function &getMapper(){
          return $this->__getDIServiceObject('modules::guestbook2009::data','GuestbookMapper');
       }
 

@@ -57,10 +57,9 @@
             throw new InvalidArgumentException('[gb_taglib_import::onParseTime()] The attribute '
                .'"gbid" is empty or not present or the value is not an id. Please specify the '
                .'attribute correctly in order to include the guestbook module!');
-            return;
          }
 
-         $model->set('GuestbookId',$guestbookId);
+         $model->setGuestbookId($guestbookId);
 
          $this->__Attributes['namespace'] = 'modules::guestbook2009::pres::templates';
          $this->__Attributes['template'] = 'guestbook';

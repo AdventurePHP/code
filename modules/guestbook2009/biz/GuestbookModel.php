@@ -27,15 +27,22 @@
     * @version
     * Version 0.1, 17.05.2009<br />
     */
-   class GuestbookModel extends APFObject {
+   final class GuestbookModel {
 
       /**
        * @protected
-       * Stores the id of the guestbook. It is filled by the taglib including the
+       * @var int Stores the id of the guestbook. It is filled by the taglib including the
        * guestbook and consumed by the service and data mapper.
        */
-      protected $__GuestbookId;
+      private $guestbookId;
 
-    // end class
+      public function getGuestbookId() {
+         return $this->guestbookId;
+      }
+
+      public function setGuestbookId($guestbookId) {
+         $this->guestbookId = $guestbookId;
+      }
+
    }
 ?>

@@ -133,7 +133,7 @@
 
          if($guestbook == null){
             $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
-            $gbId = $model->get('GuestbookId');
+            $gbId = $model->getGuestbookId();
             throw new InvalidArgumentException('[GuestbookManager::__mapGenericGuestbook2DomainObject()] '
                .'No guestbook with id "'.$gbId.'" stored in database! Please check your guestbook tag '
                .'inclusion.',E_USER_ERROR);
@@ -542,7 +542,7 @@
 
          $orm = &$this->__getGenericORMapper();
          $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
-         return $orm->loadObjectByID('Guestbook',$model->get('GuestbookId'));
+         return $orm->loadObjectByID('Guestbook',$model->getGuestbookId());
 
        // end function
       }
