@@ -439,6 +439,35 @@
       }
 
       /**
+       * @public
+       *
+       * This method is for concenient setting of multiple place holders. The applied
+       * array must contain a structure like this:
+       * <code>
+       * array(
+       *    'key-a' => 'value-a',
+       *    'key-b' => 'value-b',
+       *    'key-c' => 'value-c',
+       *    'key-d' => 'value-d',
+       *    'key-e' => 'value-e',
+       * )
+       * </code>
+       * Thereby, the <em>key-*</em> offsets define the name of the place holders, theire
+       * values are used as the place holder's values.
+       *
+       * @param array $placeHolderValues Key-value-couples to fill place holders.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.11.2010<br />
+       */
+      public function setPlaceHolders(array $placeHolderValues) {
+         foreach ($placeHolderValues as $key => $value) {
+            $this->setPlaceHolder($key, $value);
+         }
+      }
+
+      /**
        * @protected
        *
        * Returns the name of the taglib class (PHP class name), that is defined
