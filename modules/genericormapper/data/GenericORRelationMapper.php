@@ -654,6 +654,8 @@
        * Overwrites the saveObject() method of the parent class. Resolves relations.<br />
        *
        * @param GenericDomainObject $object The current object.
+       * @param boolean $saveEntireTree Indicates, whether the mapper saves the entire object
+       *                                tree (true) or only the root node (false).
        * @return int Id of the saved object.
        *
        * @author Christian Achatz
@@ -664,10 +666,15 @@
        * Version 0.4, 15.06.2008 (Fixed bug that relation was not found due to twisted columns)<br />
        * Version 0.5, 26.10.2008 (Added a check for the object/relation to exist in the objec>t/relation table)<br />
        */
-      public function saveObject(GenericDomainObject &$object){
+      public function saveObject(GenericDomainObject &$object, $saveEntireTree = true) {
 
          // save the current object (uses parent function with no resolving for relations)
          $id = parent::saveObject($object);
+
+         // in case the user likes to only save this object, the id is returned for further usage.
+         if($saveEntireTree === false){
+            return $id;
+         }
 
          // check if object has related objects in it
          $relatedObjects = &$object->getAllRelatedObjects();
