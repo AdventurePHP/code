@@ -240,6 +240,7 @@
        * @param string[] $fields
        * @return string[] The fields relevant for comparison.
        *
+       * @author Christian Achatz
        * @version
        * Version 0.1, 10.10.2009<br />
        * Version 0.2, 13.10.2009 (Corrected check for primary key)<br />
@@ -280,6 +281,11 @@
        * Analyzes the given database and stores the tables included.
        *
        * @param AbstractDatabaseHandler $sql The database connection to analyze.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 10.10.2009<br />
+       * Version 0.2, 21.11.2010 (Now ignoring tables that are not created by the GORM)<br />
        */
       private function analyzeDatabaseTables(AbstractDatabaseHandler $sql){
 
@@ -294,23 +300,16 @@
             $offset = $keys[0];
 
             // collect tables
-            if(substr_count($dataTables[$offset],'ent_') == 1){
+            if (substr_count($dataTables[$offset], 'ent_') == 1) {
                $this->__DatabaseMappingTables[] = $dataTables[$offset];
-            }
-            elseif(substr_count($dataTables[$offset],'ass_') == 1){
+            } elseif (substr_count($dataTables[$offset], 'ass_') == 1) {
                $this->__DatabaseRelationTables[] = $dataTables[$offset];
-            }
-            elseif(substr_count($dataTables[$offset],'cmp_') == 1){
+            } elseif (substr_count($dataTables[$offset], 'cmp_') == 1) {
                $this->__DatabaseRelationTables[] = $dataTables[$offset];
-            }
-            else{
-               throw new GenericORMapperException('Table '.$dataTables[$offset].' is not a GORM table!');
             }
             
-          // end while
          }
          
-       // end function
       }
 
       /**
