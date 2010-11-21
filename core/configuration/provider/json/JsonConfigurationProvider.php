@@ -129,6 +129,10 @@
 
       public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
          $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
+
+         // create file path if necessary to avoid "No such file or directory" errors
+         $this->createFilePath($fileName);
+
          if (file_put_contents($fileName, $this->resolveStructure($config)) === false) {
             throw new ConfigurationException('[JsonConfigurationProvider::saveConfiguration()] '
                     . 'Configuration with name "' . $fileName . '" cannot be saved! Please check your '

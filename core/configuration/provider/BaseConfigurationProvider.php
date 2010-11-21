@@ -51,6 +51,11 @@
        */
       protected $extension = null;
 
+      /**
+       * @var int The file permission to use to create folders.
+       */
+      protected $folderPermission = 0770;
+
       public function setOmitContext($omitContext) {
          $this->omitContext = $omitContext;
       }
@@ -65,6 +70,10 @@
 
       public function setExtension($extension) {
          $this->extension = $extension;
+      }
+
+      public function setFolderPermission($folderPermission) {
+         $this->folderPermission = $folderPermission;
       }
 
       /**
@@ -95,6 +104,25 @@
          . $contextPath
          . $fileName;
 
+      }
+
+      /**
+       * @protected
+       *
+       * Creates the configuration file's path in case if does not exist. This is used for
+       * saving configurations as <em>file_put_contents()</em> does not create missing folders.
+       *
+       * @param string $fileName The fully qualified name of the configuration file.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 21.11.2010<br />
+       */
+      protected function createFilePath($fileName) {
+         $path = dirname($fileName);
+         if (!file_exists($path)) {
+            mkdir($path, $this->folderPermission, true);
+         }
       }
 
    }

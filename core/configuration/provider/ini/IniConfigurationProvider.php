@@ -174,6 +174,9 @@
             $buffer .= PHP_EOL;
          }
 
+         // create file path if necessary to avoid "No such file or directory" errors
+         $this->createFilePath($fileName);
+
          if (file_put_contents($fileName, $buffer) === false) {
             throw new ConfigurationException('[IniConfigurationProvider::saveConfiguration()] '
                     . 'Configuration with name "' . $fileName . '" cannot be saved! Please check your '

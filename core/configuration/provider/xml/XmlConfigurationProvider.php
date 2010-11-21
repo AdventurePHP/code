@@ -91,6 +91,10 @@
 
          // directly save file to gain performance and decreas memory usage
          $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
+
+         // create file path if necessary to avoid "No such file or directory" errors
+         $this->createFilePath($fileName);
+
          if ($xml->asXML($fileName) === false) {
             throw new ConfigurationException('[XmlConfigurationProvider::saveConfiguration()] '
                     . 'Configuration with name "' . $fileName . '" cannot be saved! Please check your '
