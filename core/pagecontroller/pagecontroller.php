@@ -78,7 +78,7 @@
       }
 
       // define the APPS__PATH constant to be used in the import() function (performance hack!)
-      define('APPS__PATH',implode($appsPath,'/'));
+      define('APPS__PATH', implode($appsPath, '/'));
    }
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1477,26 +1477,23 @@
       protected function __loadContentFromFile($namespace,$design){
 
          // sanitize the design name to avoid xss or code injection
-         $design = preg_replace('/[^A-Za-z0-9\-_]/','',$design);
+         $design = preg_replace('/[^A-Za-z0-9\-_]/', '', $design);
 
-         $file = APPS__PATH.'/'.str_replace('::','/',$namespace).'/'.$design.'.html';
+         $file = APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $design . '.html';
 
-         if(!file_exists($file)){
+         if (!file_exists($file)) {
 
             // get template code from parent object, if the parent exists
-            $code = (string)'';
-            if($this->getParentObject() !== null){
-               $code = ' Please check your template code ('.htmlentities($this->getParentObject()->getContent()).').';
-             // end if
+            $code = (string) '';
+            if ($this->getParentObject() !== null) {
+               $code = ' Please check your template code (' . $this->getParentObject()->getContent() . ').';
             }
 
-            throw new IncludeException('[Document::__loadContentFromFile()] Design "'.$design.'" not existent in namespace "'.$namespace.'"!'.$code,E_USER_ERROR);
-
+            throw new IncludeException('[Document::__loadContentFromFile()] Design "' . $design . '" not existent in namespace "' . $namespace . '"!' . $code, E_USER_ERROR);
          } else {
             $this->__Content = file_get_contents($file);
          }
 
-       // end function
       }
 
       /**
