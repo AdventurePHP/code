@@ -370,22 +370,23 @@
        * @version
        * Version 0.1, 07.01.2007<br />
        * Version 0.2, 08.08.2008 (Fixed bug, that the number "0" was not automatically prefilled)<br />
+       * Version 0.3, 23.11.2010 (Bugfix: presetting did not work in combination with existing value attributes)<br />
        */
       protected function __presetValue(){
 
-         if(!isset($this->__Attributes['value']) || empty($this->__Attributes['value'])){
-            $controlName = $this->getAttribute('name');
-            if($controlName === null){
-               $formName = $this->__ParentObject->getAttribute('name');
-               throw new FormException('['.get_class($this).'::__presetValue()] A form control is missing '
-                  .' the required tag attribute "name". Please check the taglib definition of the '
-                  .'form with name "'.$formName.'"!',E_USER_ERROR);
-            }
+         // check, whether the control has a name. if not, complain about that, because presetting
+         // is only only possible for named controls!
+         $controlName = $this->getAttribute('name');
+         if ($controlName === null) {
+            $formName = $this->getParentObject()->getAttribute('name');
+            throw new FormException('[' . get_class($this) . '::__presetValue()] A form control is missing '
+                    . ' the required tag attribute "name". Please check the taglib definition of the '
+                    . 'form with name "' . $formName . '"!', E_USER_ERROR);
+         }
 
-            if(isset($_REQUEST[$controlName]) && (!empty($_REQUEST[$controlName]) || $_REQUEST[$controlName] === '0')){
-               $this->setAttribute('value',$_REQUEST[$controlName]);
-            }
-
+         // try to preset the field with the url parameter if applicable (or contains 0)
+         if (isset($_REQUEST[$controlName]) || (isset($_REQUEST[$controlName]) && $_REQUEST[$controlName] === '0')) {
+            $this->setAttribute('value', $_REQUEST[$controlName]);
          }
 
       }

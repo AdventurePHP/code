@@ -33,7 +33,7 @@
     */
    class form_taglib_text extends form_control {
 
-      public function form_taglib_text(){
+      public function __construct() {
          $this->attributeWhiteList[] = 'name';
          $this->attributeWhiteList[] = 'value';
          $this->attributeWhiteList[] = 'tabindex';
@@ -56,9 +56,8 @@
        * Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
        * Version 0.3, 13.02.2010 (Introduced attribute white listing)<br />
        */
-      function transform(){
+      public function transform(){
          return '<input type="text" '.$this->getSanitizedAttributesAsString($this->__Attributes).' />';
-       // end function
       }
 
     // end class

@@ -31,7 +31,7 @@
     */
    class form_taglib_area extends form_control {
 
-      public function form_taglib_area(){
+      public function __construct() {
          $this->attributeWhiteList[] = 'name';
          $this->attributeWhiteList[] = 'cols';
          $this->attributeWhiteList[] = 'rows';
@@ -52,7 +52,7 @@
        * Version 0.1, 05.01.2007<br />
        * Version 0.2, 11.02.2007 (Presetting und Validierung nach onAfterAppend() verschoben)<br />
        */
-      function transform(){
+      public function transform(){
          return '<textarea '.$this->getSanitizedAttributesAsString($this->__Attributes).'>'
             .$this->__Content.'</textarea>';
       }

@@ -33,8 +33,8 @@
     */
    class form_taglib_password extends form_taglib_text {
 
-      public function form_taglib_password(){
-         parent::form_taglib_text();
+      public function __construct(){
+         parent::__construct();
       }
 
       /**
@@ -51,7 +51,6 @@
        */
       public function transform(){
          return  '<input type="password" '.$this->getSanitizedAttributesAsString($this->__Attributes).' />';
-       // end function
       }
 
     // end class
