@@ -32,12 +32,6 @@
    *  Version 0.2, 10.11.2008 (Bugfix: tag was not transformed within a template)<br />
    *  Version 0.3, 10.11.2008 (Removed the onParseTime() method, because the registerTagLibModule() function now is obsolete)<br />
    */
-   class template_taglib_mediastream extends ui_mediastream
-   {
-
-      function template_taglib_mediastream(){
-      }
-
-    // end class
+   class template_taglib_mediastream extends ui_mediastream {
    }
 ?>
