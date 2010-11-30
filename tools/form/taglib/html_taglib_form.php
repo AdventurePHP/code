@@ -632,7 +632,7 @@
        *
        * Returns a reference on the form element identified by the given id.
        *
-       * @param string $ID The ID of the desired form element.
+       * @param string $id The ID of the desired form element.
        * @return form_control A reference on the form element.
        *
        * @author Christian Schäfer
@@ -653,15 +653,10 @@
 
          // display extended debug message in case no form element was found
          $parent = &$this->getParentObject();
-         $grandParent = &$parent->getParentObject();
-         if($grandParent !== null){
-            $docCon = $grandParent->getDocumentController();
-         } else {
-            $docCon = 'n/a';
-         }
+         $documentController = $parent->getDocumentController();
          throw new FormException('[html_taglib_form::getFormElementByID()] No form element with id "'
-            .$id.'" composed in current form "'.$parent->getAttribute('name')
-            .'" in document controller "'.$docCon.'"!',E_USER_ERROR);
+                 . $id . '" composed in current form "' . $this->getAttribute('name')
+                 . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
 
       }
 
@@ -689,10 +684,9 @@
          $parent = &$this->getParentObject();
          $documentController = $parent->getDocumentController();
          throw new FormException('[html_taglib_form::getFormElementByObjectID()] No form element with id "'
-            .$objectId.'" composed in current form "'.$this->__Attributes['name']
+            .$objectId.'" composed in current form "'.$this->getAttribute('name')
             .'" in document controller "'.$documentController.'"!',E_USER_ERROR);
 
-       // end function
       }
 
       /**
@@ -729,13 +723,11 @@
 
          // display extended debug message in case no form elements were found
          $parent = &$this->getParentObject();
-         $grandParent = &$parent->getParentObject();
-         $documentController = $grandParent->getDocumentController();
-         throw new FormException('[html_taglib_form::getFormElementsByType()] No form elements composed in '.
-            'current form "'.$this->__Attributes['name'].'" in document controller "'
-            .$documentController.'"!',E_USER_ERROR);
+         $documentController = $parent->getDocumentController();
+         throw new FormException('[html_taglib_form::getFormElementsByType()] No form elements composed in ' .
+                 'current form "' . $this->getAttribute('name') . '" in document controller "'
+                 . $documentController . '"!', E_USER_ERROR);
 
-       // end function
       }
 
       /**
