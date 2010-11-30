@@ -38,7 +38,10 @@
       public function handleError($errorNumber, $errorMessage, $errorFile, $errorLine) {
 
          // ignore errors, that have been excluded by configuration
-         $errorReporting = Registry::retrieve('apf::core::errorhandler', 'ConfigurableErrorReportingLevel', E_ALL);
+         $errorReporting = Registry::retrieve(
+                      'apf::core::errorhandler',
+                      'ConfigurableErrorReportingLevel',
+                      error_reporting()); // retrieve the error level from the PHP config for convenience
 
          if (($errorReporting & $errorNumber) == 0) {
             return;
