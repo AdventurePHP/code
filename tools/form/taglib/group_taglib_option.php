@@ -33,8 +33,8 @@
     */
    class group_taglib_option extends select_taglib_option {
 
-      public function group_taglib_option(){
-         parent::select_taglib_option();
+      public function __construct(){
+         parent::__construct();
       }
 
     // end class

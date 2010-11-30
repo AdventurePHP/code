@@ -34,7 +34,7 @@
    class form_taglib_langlabel extends langlabel_base {
 
       public function __construct(){
-         parent::langlabel_base();
+         parent::__construct();
       }
 
       public function isSent(){

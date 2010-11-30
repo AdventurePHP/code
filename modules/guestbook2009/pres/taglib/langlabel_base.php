@@ -44,10 +44,9 @@
        * @version
        * Version 0.1, 21.05.2009<br />
        */
-      public function langlabel_base(){
-         $this->__Attributes['namespace'] = 'modules::guestbook2009::pres';
-         $this->__Attributes['config'] = 'language';
-       // end function
+      public function __construct(){
+         $this->setAttribute('namespace', 'modules::guestbook2009::pres');
+         $this->setAttribute('config', 'language');
       }
 
     // end class

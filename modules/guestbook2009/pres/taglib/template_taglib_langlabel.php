@@ -33,9 +33,8 @@
     */
    class template_taglib_langlabel extends langlabel_base {
 
-      public function template_taglib_langlabel() {
-         parent::langlabel_base();
-       // end function
+      public function __construct() {
+         parent::__construct();
       }
 
     // end class

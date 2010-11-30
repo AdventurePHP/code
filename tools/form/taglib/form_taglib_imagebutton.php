@@ -35,8 +35,8 @@
     */
    class form_taglib_imagebutton extends form_taglib_button {
 
-      public function form_taglib_imagebutton(){
-         parent::form_taglib_button();
+      public function __construct() {
+         parent::__construct();
          $this->attributeWhiteList[] = 'src';
          $this->attributeWhiteList[] = 'alt';
       }
@@ -56,7 +56,6 @@
          return '<input type="image" '
             .$this->__getAttributesAsString($this->__Attributes)
             .' />';
-       // end function
       }
       
     // end class

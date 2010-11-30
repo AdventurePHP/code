@@ -35,7 +35,7 @@
 
       private $cacheKey;
 
-      public function SimpleCacheKey($cacheKey){
+      public function __construct($cacheKey) {
          $this->cacheKey = $cacheKey;
       }
 

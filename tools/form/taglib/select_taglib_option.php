@@ -33,7 +33,7 @@
     */
    class select_taglib_option extends form_control {
 
-      public function select_taglib_option(){
+      public function __construct(){
          $this->attributeWhiteList[] = 'value';
          $this->attributeWhiteList[] = 'selected';
          $this->attributeWhiteList[] = 'label';
@@ -63,10 +63,9 @@
        * @version
        * Version 0.1, 07.01.2007<br />
        */
-      function transform(){
+      public function transform(){
          return '<option '.$this->getSanitizedAttributesAsString($this->__Attributes).'>'
             .$this->__Content.'</option>';
-       // end function
       }
 
     // end class
