@@ -35,7 +35,7 @@
     */
    class MySQLxHandler extends AbstractDatabaseHandler {
 
-      public function MySQLxHandler(){
+      public function __construct() {
          $this->__dbLogFileName = 'mysqlx';
       }
 
@@ -260,18 +260,18 @@
       }
 
       /**
-      *  @public
-      *
-      *  Returns the number of selected rows by the given result resource.
-      *
-      *  @param $result the mysql result resource
-      *  @return $numRows the number of selected rows
-      *
-      *  @author Christian Sch�fer
-      *  @version
-      *  Version 0.1, 04.01.2006<br />
-      */
-      function getNumRows($result){
+       * @public
+       *
+       * Returns the number of selected rows by the given result resource.
+       *
+       * @param $result the mysql result resource
+       * @return $numRows the number of selected rows
+       *
+       * @author Christian Sch�fer
+       * @version
+       * Version 0.1, 04.01.2006<br />
+       */
+      public function getNumRows($result){
          return mysql_num_rows($result);
       }
 

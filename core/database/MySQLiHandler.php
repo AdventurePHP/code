@@ -40,7 +40,7 @@
        */
       private $__bindNumRows = 0;
 
-      public function MySQLiHandler(){
+      public function __construct() {
          $this->__dbLogFileName = 'mysqli';
       }
 
@@ -531,19 +531,20 @@
       }
 
       /**
-      *  @public
-      *
-      *  Returns the number of selected rows by the given result resource.
-      *
-      *  @param $result the mysql result resource
-      *  @return $numRows the number of selected rows
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 09.03.2010<br />
-      */
-      function getNumRows($result){
-         return mysqli_num_rows($result);
+       * @public
+       *
+       * Returns the number of selected rows by the given result resource.
+       *
+       * @param $result the mysql result resource
+       * @return $numRows the number of selected rows
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 09.03.2010<br />
+       * Version 0.2, 01.12.2010 (The mysqli lib returns false for selects on empty tables. This causes an error with mysqli_num_rows() using the GORM!)<br />
+       */
+      public function getNumRows($result) {
+         return $result === false ? 0 : mysqli_num_rows($result);
       }
 
       /**

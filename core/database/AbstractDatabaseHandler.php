@@ -119,9 +119,6 @@
        */
       protected $__dbCharset = null;
 
-      public function AbstractDatabaseHandler(){
-      }
-
       /**
        * @public
        *
