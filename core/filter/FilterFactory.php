@@ -28,8 +28,9 @@
     * @author Christian Achatz
     * @version
     * Version 0.1, 08.12.2007<br />
+    * Version 0.2, 14.12.2010 (Is now standalone class)<br />
     */
-   final class FilterDefinition extends APFObject {
+   final class FilterDefinition {
 
       /**
        * @private
@@ -87,7 +88,6 @@
          return $this->class;
       }
 
-    // end class
    }
 
    /**
@@ -97,7 +97,7 @@
     *
     * Abstract filter class.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 08.06.2007<br />
     */
@@ -120,7 +120,6 @@
        */
       abstract function filter($input);
 
-    // end class
    }
 
    /**
@@ -153,34 +152,21 @@
        * Version 0.3, 07.11.2008 (Bugfix: the namespace of filters outside "core::filter" could not be included)<br />
        * Version 0.4, 11.12.2008 (Switched to FilterDefinition for addressing a filter)<br />
        */
-      static function getFilter($filterDefinition){
-
-         // check definition
-         $defClassName = get_class($filterDefinition);
-         if($defClassName !== 'FilterDefinition'){
-            throw new InvalidArgumentException('[FilterFactory::getFilter()] The given filter '
-                    .'definition (class name: "'.$defClassName.'") is not an instance of the '
-                    .'"FilterDefinition" class!',E_USER_ERROR);
-         }
+      public static function getFilter(FilterDefinition $filterDefinition) {
 
          // gather the filter information
          $namespace = $filterDefinition->getNamespace();
          $filterName = $filterDefinition->getClass();
 
          // check, if the filter exists and include it
-         if(file_exists(APPS__PATH.'/'.str_replace('::','/',$namespace).'/'.$filterName.'.php')){
-            import($namespace,$filterName);
+         if (file_exists(APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $filterName . '.php')) {
+            import($namespace, $filterName);
             return new $filterName;
-          // end if
-         }
-         else{
-            throw new InvalidArgumentException('[FilterFactory::getFilter()] Requested filter "'
-                    .$filterName.'" cannot be loaded from namespace "'.$namespace.'"!',E_USER_ERROR);
          }
 
-       // end function
+         throw new InvalidArgumentException('[FilterFactory::getFilter()] Requested filter "'
+                 . $filterName . '" cannot be loaded from namespace "' . $namespace . '"!', E_USER_ERROR);
       }
 
-    // end class
    }
 ?>
