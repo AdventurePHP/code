@@ -159,13 +159,14 @@
          $filterName = $filterDefinition->getClass();
 
          // check, if the filter exists and include it
-         if (file_exists(APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $filterName . '.php')) {
+         try {
             import($namespace, $filterName);
             return new $filterName;
+         } catch (IncludeException $ie) {
+            throw new InvalidArgumentException('[FilterFactory::getFilter()] Requested filter "'
+                    . $filterName . '" cannot be loaded from namespace "' . $namespace . '"!', E_USER_ERROR);
          }
 
-         throw new InvalidArgumentException('[FilterFactory::getFilter()] Requested filter "'
-                 . $filterName . '" cannot be loaded from namespace "' . $namespace . '"!', E_USER_ERROR);
       }
 
    }

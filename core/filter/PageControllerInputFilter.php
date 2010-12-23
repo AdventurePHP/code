@@ -30,12 +30,7 @@
    *  @version
    *  Version 0.1, 11.12.2008<br />
    */
-   class PageControllerInputFilter extends AbstractFilter
-   {
-
-      function PageControllerInputFilter(){
-      }
-
+   class PageControllerInputFilter extends AbstractFilter {
 
       /**
       *  @public core::filter
