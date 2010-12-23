@@ -187,7 +187,7 @@
             return;
          }
 
-         $startTime = $this->__generateMicroTime();
+         $startTime = $this->generateMicroTime();
 
          if($name === null){
             throw new InvalidArgumentException('[BenchmarkTimer::start()] Required parameter name is not set!');
@@ -230,7 +230,7 @@
             return;
          }
 
-         $stopTime = $this->__generateMicroTime();
+         $stopTime = $this->generateMicroTime();
 
          if(isset($this->__RunningProcesses[$name])){
             $currentProcess = &$this->__getRunningProcessByName($name);
@@ -262,7 +262,6 @@
       private function __getID(){
          $this->__CurrentProcessID += 1;
          return $this->__CurrentProcessID;
-       // end function
       }
 
       /**
@@ -276,21 +275,8 @@
        * @version
        * Version 0.1, 31.12.2006<br />
        */
-      private function __generateMicroTime(){
-
-         if(intval(phpversion()) == 5){
-            $return = microtime(true);
-          // end if
-         }
-         else{
-            list($usec, $sec) = explode(' ',microtime());
-            $return = (float) $usec + (float) $sec;
-          // end for
-         }
-
-         return $return;
-
-       // end function
+      private function generateMicroTime(){
+         return microtime(true);
       }
 
       /**
@@ -333,7 +319,7 @@
        */
       private function &__createRootProcess(){
 
-         $startTime = $this->__generateMicroTime();
+         $startTime = $this->generateMicroTime();
          $rootProcess = new BenchmarkProcess();
          $rootProcess->setProcessID($this->__getID());
          $rootProcess->setProcessName(get_class($this));
@@ -359,7 +345,7 @@
       private function &__getRootProcess(){
 
          $rootProcess = &$this->__RootProcess;
-         $rootProcess->setProcessStopTime($this->__generateMicroTime());
+         $rootProcess->setProcessStopTime($this->generateMicroTime());
          return $rootProcess;
 
        // end function
@@ -836,29 +822,17 @@
       }
 
       public function appendProcess(&$process){
-         $ProcessID = $process->getProcessID();
-         $this->__Processes[$ProcessID] = &$process;
+         $processId = $process->getProcessID();
+         $this->__Processes[$processId] = &$process;
        // end function
       }
 
       public function getProcesses(){
          return $this->__Processes;
-
-       // end function
       }
 
-      public function hasChildProcesses(){
-
-         if(count($this->__Processes) > 0){
-            return true;
-          // end if
-         }
-         else{
-            return false;
-          // end else
-         }
-
-       // end function
+      public function hasChildProcesses() {
+         return count($this->__Processes) > 0;
       }
 
       /**
