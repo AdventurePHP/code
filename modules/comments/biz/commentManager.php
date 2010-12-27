@@ -19,10 +19,10 @@
    *  -->
    */
 
-   import('modules::comments::data','commentMapper');
-   import('tools::link','FrontcontrollerLinkHandler');
-   import('tools::string','stringAssistant');
-   import('core::session','SessionManager');
+   import('modules::comments::data', 'commentMapper');
+   import('tools::link', 'FrontcontrollerLinkHandler');
+   import('tools::string', 'stringAssistant');
+   import('core::session', 'SessionManager');
 
    /**
    *  @package modules::comments::biz
@@ -49,9 +49,6 @@
       */
       protected $__CaptchaString = null;
 
-      function commentManager(){
-      }
-
       /**
       *  @public
       *
@@ -64,19 +61,17 @@
       *  Version 0.1, 13.04.2007<br />
       *  Version 0.2, 28.12.2007 (Captcha-Unterst�tzung hinzugef�gt)<br />
       */
-      function init($initParam){
+      public function init($initParam) {
 
          $this->__CategoryKey = $initParam;
 
-         // Captcha String initialisieren
+         // initialize captcha string
          if($this->__CaptchaString == null){
             $sessMgr = new SessionManager('modules::comment');
             $this->__CaptchaString = $sessMgr->loadSessionData('CAPTCHA_STRING');
             $sessMgr->saveSessionData('CAPTCHA_STRING',stringAssistant::generateCaptchaString(5));
-          // end if
          }
 
-       // end function
       }
 
       /**
@@ -91,7 +86,7 @@
       *  Version 0.1, 21.08.2007<br />
       *  Version 0.2, 01.09.2007 (Verwendung des PagerManagers auf loadEntriesByAppDataComponent() umgestellt)<br />
       */
-      function loadEntries(){
+      public function loadEntries() {
 
          $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
          $pM = &$pMF->getPagerManager('ArticleComments');
@@ -99,7 +94,6 @@
          $M = &$this->__getServiceObject('modules::comments::data','commentMapper');
          return $pM->loadEntriesByAppDataComponent($M,'loadArticleCommentByID',array('CategoryKey' => $this->__CategoryKey));
 
-       // end function
       }
 
       /**
@@ -116,12 +110,11 @@
       *  Version 0.2, 29.08.2007 (Added the anchor name)<br />
       *  Version 0.3, 24.01.2009 (Introduced the $anchorName parameter)<br />
       */
-      function getPager($anchorName = null){
+      public function getPager($anchorName = null){
          $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
          $pM = &$pMF->getPagerManager('ArticleComments');
          $pM->setAnchorName($anchorName);
          return $pM->getPager(array('CategoryKey' => $this->__CategoryKey));
-       // end function
       }
 
       /**
@@ -135,11 +128,10 @@
       *  @version
       *  Version 0.1, 21.08.2007<br />
       */
-      function getURLParameter(){
+      public function getURLParameter(){
          $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
          $pM = &$pMF->getPagerManager('ArticleComments');
          return $pM->getPagerURLParameters();
-       // end function
       }
 
       /**
@@ -156,7 +148,7 @@
       *  Version 0.2, 28.12.2007 (Captcha eingef�hrt)<br />
       *  Version 0.3, 02.02.2008 (AJAX-Support hinzugef�gt)<br />
       */
-      function saveEntry($articleComment,$ajax = false){
+      public function saveEntry($articleComment,$ajax = false){
 
          $M = &$this->__getServiceObject('modules::comments::data','commentMapper');
 
@@ -173,12 +165,9 @@
             $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array('coview' => 'listing'));
             header('Location: '.$Link.'#comments');
 
-          // end if
          }
 
-       // end function
       }
 
-    // end class
    }
 ?>

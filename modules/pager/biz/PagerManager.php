@@ -136,21 +136,22 @@
       }
 
       /**
-       *  @public
+       * @public
        *
-       *  Loads a list of domain objects using a given data layer component.
+       * Loads a list of domain objects using a given data layer component.
        *
-       *  @param APFObject $dataComponent instance of a data component, that loads the domain objects directly
-       *  @param string $loadMethod name of the load method for the domain object
-       *  @param string[] $addStmtParams additional statement parameters
-       *  @return APFObject[] List of domain objects for the current page.
+       * @param APFObject $dataComponent instance of a data component, that loads the domain objects directly
+       * @param string $loadMethod name of the load method for the domain object
+       * @param string[] $addStmtParams additional statement parameters
+       * @return APFObject[] List of domain objects for the current page.
        *
-       *  @author Christian Achatz
-       *  @version
-       *  Version 0.1, 01.09.2007<br />
-       *  Version 0.2, 18.09.2007 (Introduced PHP 4 compatibility)<br />
-       *  Version 0.3, 24.01.2009 (Added the $addStmtParams param to the API)<br />
-       *  Version 0.4, 25.01.2009 (Refactored the function. Now uses the $this->loadEntries() to load the ids)<br />
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 01.09.2007<br />
+       * Version 0.2, 18.09.2007 (Introduced PHP 4 compatibility)<br />
+       * Version 0.3, 24.01.2009 (Added the $addStmtParams param to the API)<br />
+       * Version 0.4, 25.01.2009 (Refactored the function. Now uses the $this->loadEntries() to load the ids)<br />
+       * Version 0.5, 27.12.2010 (Bugfix: In case of empty results, no empty objects are returned any more.)<br />
        */
       public function loadEntriesByAppDataComponent(&$dataComponent, $loadMethod, $addStmtParams = array()) {
 
@@ -158,24 +159,24 @@
          if (in_array($loadMethod, get_class_methods($dataComponent))) {
 
             // select the ids of the desired entries
-            $entryIDs = $this->loadEntries($addStmtParams);
+            $entryIds = $this->loadEntries($addStmtParams);
+            if ($entryIds === false) {
+               return array();
+            }
 
             // load the entries using the data layer component
             $entries = array();
-            for ($i = 0; $i < count($entryIDs); $i++) {
-               $entries[] = $dataComponent->{$loadMethod}($entryIDs[$i]);
-               // end for
+            for ($i = 0; $i < count($entryIds); $i++) {
+               $entries[] = $dataComponent->{$loadMethod}($entryIds[$i]);
             }
 
             return $entries;
 
-         } else {
-            throw new InvalidArgumentException('[PagerManager->loadEntriesByAppDataComponent()] '
-                    . 'Given data component (' . get_class($dataComponent) . ') has no method "'
-                    . $loadMethod . '"! Thus, no entries can be loaded!', E_USER_WARNING);
          }
 
-       // end function
+         throw new InvalidArgumentException('[PagerManager->loadEntriesByAppDataComponent()] '
+                 . 'Given data component (' . get_class($dataComponent) . ') has no method "'
+                 . $loadMethod . '"! Thus, no entries can be loaded!', E_USER_ERROR);
       }
 
       /**
