@@ -41,9 +41,6 @@
        */
       protected $__ConnectionKey = null;
 
-      public function PagerMapper(){
-      }
-
       /**
       *  @public
       *
@@ -55,11 +52,9 @@
       *  @version
       *  Version 0.1, 19.01.2009<br />
       */
-      function init($initParam){
+      public function init($initParam){
          $this->__ConnectionKey = $initParam;
-       // end function
       }
-
 
       /**
       *  @private
@@ -77,9 +72,7 @@
       */
       protected function __getSessionKey($namespace,$statement,$params){
          return 'PagerMapper_'.md5($namespace.$statement.implode('',$params));
-       // end function
       }
-
 
       /**
       *  @public
@@ -100,7 +93,7 @@
       *  Version 0.4, 24.01.2009 (Added session caching)<br />
       *  Version 0.5, 25.01.2009 (Removed nullpointer bug due to session object definition)<br />
       */
-      function getEntriesCount($namespace,$statement,$params = array(),$cache = true){
+      public function getEntriesCount($namespace,$statement,$params = array(),$cache = true){
 
          // start benchmarker
          $t = &Singleton::getInstance('BenchmarkTimer');
@@ -111,11 +104,8 @@
             $session = new SessionManager('modules::pager::biz');
             $sessionKey = $this->__getSessionKey($namespace,$statement,$params).'_EntriesCount';
             $entriesCount = $session->loadSessionData($sessionKey);
-          // end if
-         }
-         else{
+         } else {
             $entriesCount = false;
-          // end else
          }
 
          // load from database if not in session
@@ -129,41 +119,37 @@
             // only save to session, when cache is enabled
             if($cache === true){
                $session->saveSessionData($sessionKey,$entriesCount);
-             // end if
             }
 
-          // end if
          }
 
-         // stop timer and return value
          $t->stop('PagerMapper::getEntriesCount()');
          return $entriesCount;
 
-       // end function
       }
 
 
       /**
-      *  @public
-      *
-      *  Returns a list of the object ids, that should be loaded for the current page.
-      *
-      *  @param string $namespace the namespace of the statement
-      *  @param string $statement the name of the statement file
-      *  @param array $params additional params for the statement
-      *  @param bool $cache decides if caching is active or not (true = yes, false = no)
-      *  @return array $entries a list of entry ids
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 05.08.2006<br />
-      *  Version 0.2, 19.01.2009 (Added the connection key handling)<br />
-      *  Version 0.3, 24.01.2009 (Added session caching)<br />
-      *  Version 0.4, 25.01.2009 (Removed nullpointer bug due to session object definition)<br />
+       * @public
+       *
+       * Returns a list of the object ids, that should be loaded for the current page.
+       *
+       * @param string $namespace the namespace of the statement
+       * @param string $statement the name of the statement file
+       * @param array $params additional params for the statement
+       * @param bool $cache decides if caching is active or not (true = yes, false = no)
+       * @return array $entries a list of entry ids
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 05.08.2006<br />
+       * Version 0.2, 19.01.2009 (Added the connection key handling)<br />
+       * Version 0.3, 24.01.2009 (Added session caching)<br />
+       * Version 0.4, 25.01.2009 (Removed nullpointer bug due to session object definition)<br />
+       * Version 0.5, 27.12.2010 (Bugfix: In case of empty results, no empty objects are returned any more.)<br />
       */
-      function loadEntries($namespace,$statement,$params = array(),$cache = true){
+      public function loadEntries($namespace, $statement, $params = array(), $cache = true) {
 
-         // start benchmarker
          $t = &Singleton::getInstance('BenchmarkTimer');
          $t->start('PagerMapper::loadEntries()');
 
@@ -171,49 +157,41 @@
          if($cache === true){
             $session = new SessionManager('modules::pager::biz');
             $sessionKey = $this-> __getSessionKey($namespace,$statement,$params).'_EntryIDs';
-            $entryIDs = $session->loadSessionData($sessionKey);
-          // end if
-         }
-         else{
-            $entryIDs = false;
-          // end else
+            $entryIds = $session->loadSessionData($sessionKey);
+         } else {
+            $entryIds = false;
          }
 
          // load from database if not in session
-         if($entryIDs === false){
+         if($entryIds === false){
 
             $cM = &$this->__getServiceObject('core::database','ConnectionManager');
             $SQL = &$cM->getConnection($this->__ConnectionKey);
             $result = $SQL->executeStatement($namespace,$statement,$params);
 
-            $entryIDs = array();
+            // map empty results to empty array
+            if ($result === false) {
+               return array();
+            }
 
+            $entryIds = array();
             while($data = $SQL->fetchData($result)){
-               $entryIDs[] = $data['DB_ID'];
-             // end while
+               $entryIds[] = $data['DB_ID'];
             }
 
             // only save to session, when cache is enabled
             if($cache === true){
-               $session->saveSessionData($sessionKey,serialize($entryIDs));
-             // end if
+               $session->saveSessionData($sessionKey,serialize($entryIds));
             }
 
-
-          // end if
-         }
-         else{
-            $entryIDs = unserialize($entryIDs);
-          // end else
+         } else {
+            $entryIds = unserialize($entryIds);
          }
 
-         // stop benchmarker and return list
          $t->stop('PagerMapper::loadEntries()');
-         return $entryIDs;
+         return $entryIds;
 
-       // end function
       }
 
-    // end class
    }
 ?>
