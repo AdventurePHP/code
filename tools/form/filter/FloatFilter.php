@@ -19,22 +19,23 @@
     * -->
     */
 
-   import('tools::form::validator','TextFieldValidator');
+   import('tools::form::filter','AbstractFormFilter');
 
    /**
-    * @package tools::form::validator
-    * @class NumberValidator
+    * @package tools::form::filter
+    * @class FloatFilter
     *
-    * Validates a given form control to contain a number.
+    * Implements a filter that can be used to convert text input of floating numbers
+    * into a float representation that matches the PHP syntax of floats.
     *
-    * @author Christian Achatz
+    * @author Lutz Mahlstedt
     * @version
-    * Version 0.1, 29.08.2009<br />
+    * Version 0.1, 13.05.2009<br />
     */
-   class NumberValidator extends TextFieldValidator {
-
-      public function validate($input) {
-         return is_numeric(trim($input));
+   class FloatFilter extends AbstractFormFilter {
+      
+      public function filter($input) {
+         return floatval(str_replace(',', '.', str_replace(' ', '', $stringInput)));
       }
 
    }
