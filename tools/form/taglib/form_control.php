@@ -57,7 +57,7 @@
        * @since 1.12
        * @var string[] The attributes, that are allowed to render into the XHTML/1.1 strict document.
        */
-      protected $attributeWhiteList = array('id','style','class','onclick','ondblclick','onmousedown','onmouseup','onmouseover','onmousemove','onmouseout','onkeypress','onkeydown','onkeyup');
+      protected $attributeWhiteList = array('id', 'style', 'class', 'accesskey', 'tabindex', 'onfocus', 'onblur', 'onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup');
 
       protected static $METHOD_ATTRIBUTE_NAME = 'method';
       protected static $METHOD_POST_VALUE_NAME = 'post';
