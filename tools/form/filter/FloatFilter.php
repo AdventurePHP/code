@@ -35,7 +35,7 @@
    class FloatFilter extends AbstractFormFilter {
       
       public function filter($input) {
-         return floatval(str_replace(',', '.', str_replace(' ', '', $stringInput)));
+         return floatval(str_replace(',', '.', str_replace(' ', '', $input)));
       }
 
    }
