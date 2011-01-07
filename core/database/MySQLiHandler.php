@@ -563,32 +563,33 @@
        * @version
        * Version 0.1, 09.03.2010<br />
        */
-      public function executeTextStatement($statement,$logStatement = false){
+      public function executeTextStatement($statement, $logStatement = false) {
 
          // log statements in debug mode or when requested explicitly
-         if($this->__dbDebug == true || $logStatement == true){
+         if ($this->__dbDebug == true || $logStatement == true) {
             $this->__dbLog->logEntry($this->__dbLogFileName,
-               '[MySQLiHandler::executeTextStatement()] Current statement: '.$statement,
-               'DEBUG');
-          // end if
+                    '[MySQLiHandler::executeTextStatement()] Current statement: ' . $statement,
+                    'DEBUG');
          }
 
          // execute the statement with use of the current connection!
          $this->__dbConn->real_query($statement);
 
-         // get current error to be able to do error handling
-         if(!empty($this->__dbConn->error) || !empty($this->__dbConn->errno)){
-            $message = '('.$this->__dbConn->errno.') '.$this->__dbConn->error.' (Statement: '.$statement.')';
-            $this->__dbLog->logEntry($this->__dbLogFileName,$message,'ERROR');
-            throw new DatabaseHandlerException('[MySQLiHandler->executeTextStatement()] '.$message);
+         // bug 547: map public connection properties to variables, to throw an exception for
+         // illegal statements. otherwise, empty() will always return true.
+         $error = $this->__dbConn->error;
+         $errno = $this->__dbConn->errno;
+
+         if (!empty($error) || !empty($errno)) {
+            $message = '(' . $this->__dbConn->errno . ') ' . $this->__dbConn->error . ' (Statement: ' . $statement . ')';
+            $this->__dbLog->logEntry($this->__dbLogFileName, $message, 'ERROR');
+            throw new DatabaseHandlerException('[MySQLiHandler->executeTextStatement()] ' . $message);
          }
 
          // track $__lastInsertID for further usage
          $this->__lastInsertID = $this->__dbConn->insert_id;
 
          return $this->__dbConn->store_result();
-
-       // end function
       }
 
       /**
