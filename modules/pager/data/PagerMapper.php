@@ -100,16 +100,15 @@
          $t->start('PagerMapper::getEntriesCount()');
 
          // try to load the entries count from the session
+         $entriesCount = null;
          if($cache === true){
             $session = new SessionManager('modules::pager::biz');
             $sessionKey = $this->__getSessionKey($namespace,$statement,$params).'_EntriesCount';
             $entriesCount = $session->loadSessionData($sessionKey);
-         } else {
-            $entriesCount = false;
          }
 
          // load from database if not in session
-         if($entriesCount === false){
+         if($entriesCount === null){
             $cM = &$this->__getServiceObject('core::database','ConnectionManager');
             $SQL = &$cM->getConnection($this->__ConnectionKey);
             $result = $SQL->executeStatement($namespace,$statement,$params);
