@@ -99,9 +99,6 @@
        */
       protected static $ADDITIONAL_INDICES_INDICATOR = 'AddIndices';
 
-      public function BaseMapper(){
-      }
-
       /**
        * @public
        *
@@ -210,12 +207,10 @@
 
             $this->__MappingTable[$objectName] = $this->__generateMappingItem($objectName,$this->__MappingTable[$objectName]);
 
-          // end foreach
          }
 
          $t->stop('BaseMapper::__createMappingTable()');
 
-       // end function
       }
 
       /**
@@ -251,12 +246,10 @@
          // resolve definitions
          foreach($this->__RelationTable as $relationName => $DUMMY){
             $this->__RelationTable[$relationName] = $this->__generateRelationItem($relationName,$this->__RelationTable[$relationName]);
-          // end foreach
          }
 
          $t->stop('BaseMapper::__createRelationTable()');
 
-       // end function
       }
 
       /**
@@ -297,21 +290,17 @@
 
                if(!isset($this->__MappingTable[$objectName])){
                   $this->__MappingTable[$objectName] = $this->__generateMappingItem($objectName,$addObjects[$objectName]);
-                // end else
                }
 
-             // end foreach
             }
 
             // mark object config as cached
             $this->__importedConfigCache[$cacheKey] = true;
 
-          // end if
          }
 
          $t->stop('BaseMapper::addMappingConfiguration()');
 
-       // end function
       }
 
       /**
@@ -369,21 +358,17 @@
 
                if(!isset($this->__RelationTable[$relationName])){
                   $this->__RelationTable[$relationName] = $this->__generateRelationItem($relationName,$addRelations[$relationName]);
-                // end else
                }
 
-             // end foreach
             }
 
             // mark relation config as cached
             $this->__importedConfigCache[$cacheKey] = true;
 
-          // end if
          }
 
          $t->stop('BaseMapper::addRelationConfiguration()');
 
-       // end function
       }
 
       /**
@@ -426,10 +411,8 @@
          // remove the additional table definition
          unset($objectSection[self::$ADDITIONAL_INDICES_INDICATOR]);
 
-         // return section
          return $objectSection;
 
-       // end function
       }
 
       /**
@@ -451,11 +434,8 @@
          // - table name
          if($relationSection['Type'] == 'COMPOSITION'){
             $relationSection['Table'] = 'cmp_'.strtolower($relationName);
-          // end if
-         }
-         else{
+         } else {
             $relationSection['Table'] = 'ass_'.strtolower($relationName);
-          // end else
          }
 
          // - name of the primary key of the source object
@@ -464,12 +444,9 @@
          // - name of the primary key of the target object
          $relationSection['TargetID'] = $relationSection['TargetObject'].'ID';
 
-         // return section
          return $relationSection;
 
-       // end function
       }
 
-    // end class
    }
 ?>
