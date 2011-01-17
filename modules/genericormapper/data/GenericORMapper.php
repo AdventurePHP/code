@@ -19,6 +19,7 @@
     * -->
     */
 
+   import('modules::genericormapper::data','GenericORMapperDataObject');
    import('modules::genericormapper::data','BaseMapper');
    import('modules::genericormapper::data','GenericDomainObject');
    import('modules::genericormapper::data','GenericCriterionObject');
@@ -35,6 +36,7 @@
     * @version
     * Version 0.1, 11.05.2008<br />
     * Version 0.2, 15.06.2008 (Added ` to the statements due to relation saving bug)<br />
+    * Version 0.3, 15.01.2011 (Added support for own domain objects)<br />
     */
    class GenericORMapper extends BaseMapper {
 
@@ -73,6 +75,12 @@
           // end if
          }
 
+         //create service object table if necessary
+         if(count($this->__ServiceObjectsTable) === 0){
+             $this->__createServiceObjectsTable();
+          // end if
+         }
+
        // end function
       }
 
@@ -86,7 +94,7 @@
        * @param string $namespace namespace of the statement
        * @param string $statementName name of the statement file
        * @param array $statementParams a list of statement parameters
-       * @return GenericDomainObject[] The desired object list.
+       * @return GenericORMapperDataObject[] The desired object list.
        *
        * @author Christian Achatz
        * @version
@@ -108,7 +116,7 @@
        *
        * @param string $objectName name of the object in mapping table
        * @param array $ids list of object ids
-       * @return GenericDomainObject[] The desired object list.
+       * @return GenericORMapperDataObject[] The desired object list.
        *
        * @author Christian Achatz
        * @version
@@ -139,7 +147,7 @@
        *
        * @param string $objectName Name of the object in mapping table
        * @param string $statement Sql statement
-       * @return GenericDomainObject[] The desired object list.
+       * @return GenericORMapperDataObject[] The desired object list.
        *
        * @author Christian Achatz
        * @version
@@ -159,7 +167,7 @@
        * @param string $namespace namespace of the statement
        * @param string $statementName name of the statement file
        * @param array $statementParams a list of statement parameters
-       * @return GenericDomainObject The desired object
+       * @return GenericORMapperDataObject The desired object
        *
        * @author Christian Achatz
        * @version
@@ -181,7 +189,7 @@
        *
        * @param string $objectName name of the object in mapping table
        * @param string $statement sql statement
-       * @return GenericDomainObject The desired object.
+       * @return GenericORMapperDataObject The desired object.
        *
        * @author Christian Achatz
        * @version
@@ -200,14 +208,14 @@
        *
        * Deletes an Object.
        *
-       * @param GenericDomainObject $object the object to delete
+       * @param GenericORMapperDataObject $object the object to delete
        * @return int Database id of the object.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 11.05.2008<br />
        */
-      public function deleteObject(GenericDomainObject $object){
+      public function deleteObject(GenericORMapperDataObject $object){
 
          // Get information about object to load
          $objectName = $object->getObjectName();
@@ -230,7 +238,7 @@
        *
        * Saves an Object.
        *
-       * @param GenericDomainObject $object the object to save.
+       * @param GenericORMapperDataObject $object the object to save.
        * @return int Database id of the object.
        *
        * @author Christian Achatz
@@ -240,8 +248,9 @@
        * Version 0.3, 27.12.2008 (Update is now done, if params are located in the params array)<br />
        * Version 0.4, 02.01.2010 (Added ticks for property names to avoid key word issues)<br />
        * Version 0.5, 08.01.2010 (Added property value escaping in order to avoid sql injections)<br />
+       * Version 0.6, 15.01.2011 (Added event handler calls)<br />
        */
-      public function saveObject(GenericDomainObject &$object){
+      public function saveObject(GenericORMapperDataObject &$object){
 
          // get information about object to load
          $objectName = $object->getObjectName();
@@ -259,6 +268,9 @@
                              'ModificationTimestamp',
                              'CreationTimestamp'
                             );
+
+         //call event handler
+         $object->beforeSave();
 
          // check if object must be saved or updated
          $id = $object->getProperty($pkName);
@@ -387,6 +399,9 @@
          // related object or create assocations. (added for release 1.11)
          $object->setDataComponent($this);
 
+         // call event handler
+         $object->afterSave();
+
          // return the database ID of the object for further usage
          return $id;
 
@@ -400,7 +415,7 @@
        *
        * @param string $objectName The name of the object in mapping table.
        * @param int $objectId The database id of the desired object.
-       * @return GenericDomainObject The desired object.
+       * @return GenericORMapperDataObject The desired object.
        *
        * @author Christian Achatz
        * @version
@@ -432,7 +447,7 @@
        *
        * @param string $objectName name of the object in mapping table
        * @param string $stmtResult sql statement result
-       * @return GenericDomainObject[] The desired object list.
+       * @return GenericORMapperDataObject[] The desired object list.
        *
        * @author Christian Achatz
        * @version
@@ -459,20 +474,27 @@
        *
        * @param string $ObjectName name of the object in mapping table
        * @param array $Properties properties of the object
-       * @return GenericDomainObject The desired object or null.
+       * @return GenericORMapperDataObject The desired object or null.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 11.05.2008<br />
        * Version 0.2, 30.05.2008 (Now returns null, if no properties are available)<br />
        * Version 0.3, 15.06.2008 (Now uses the constructor of GenericDomainObject to set the object name)<br />
+       * Version 0.4, 15.01.2011 (Added support for own domain objects and event handler)<br />
        */
       protected function __mapResult2DomainObject($objectName,$properties){
 
          if($properties !== false){
 
-            // create object
-            $object = new GenericDomainObject($objectName);
+            // create service object if needed
+            if(isset($this->__ServiceObjectsTable[$objectName])){
+                import($this->__ServiceObjectsTable[$objectName]['Namespace'], $this->__ServiceObjectsTable[$objectName]['Class']);
+                $object = new $this->__ServiceObjectsTable[$objectName]['Class']($objectName);
+            }
+            else {
+                $object = new GenericDomainObject($objectName);
+            }
 
             // set data component and object name
             $object->setDataComponent($this);
@@ -491,6 +513,9 @@
 
              // end foreach
             }
+
+            // call event handler
+            $object->afterLoad();
 
           // end if
          }

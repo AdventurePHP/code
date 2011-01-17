@@ -91,7 +91,7 @@
        *
        * @param string $objectName name of the desired objects.
        * @param GenericCriterionObject $criterion criterion object.
-       * @return GenericDomainObject[] List of domain objects.
+       * @return GenericORMapperDataObject[] List of domain objects.
        *
        * @author Christian Achatz
        * @version
@@ -118,7 +118,7 @@
        *
        * @param string $objectName name of the desired objects
        * @param GenericCriterionObject $criterion criterion object
-       * @return GenericDomainObject[] List of domain objects.
+       * @return GenericORMapperDataObject[] List of domain objects.
        *
        * @author Christian Achatz
        * @version
@@ -365,16 +365,16 @@
        *
        * Loads a related object by an object and an relation name.<br />
        *
-       * @param GenericDomainObject $object current object
+       * @param GenericORMapperDataObject $object current object
        * @param string $relationName name of the desired relation
        * @param GenericCriterionObject $criterion criterion object
-       * @return GenericDomainObject related object.
+       * @return GenericORMapperDataObject related object.
        *
        * @author Tobias Lückel
        * @version
        * Version 0.1, 09.09.2010<br />
        */
-      public function loadRelatedObject(GenericDomainObject &$object,$relationName,GenericCriterionObject $criterion = null){
+      public function loadRelatedObject(GenericORMapperDataObject &$object,$relationName,GenericCriterionObject $criterion = null){
         // create an empty criterion if the argument was null
          if($criterion === null){
             $criterion = new GenericCriterionObject();
@@ -397,10 +397,10 @@
        *
        * Loads a list of related objects by an object and an relation name.<br />
        *
-       * @param GenericDomainObject $object current object
+       * @param GenericORMapperDataObject $object current object
        * @param string $relationName name of the desired relation
        * @param GenericCriterionObject $criterion criterion object
-       * @return GenericDomainObject[] List of the releated objects.
+       * @return GenericORMapperDataObject[] List of the releated objects.
        *
        * @author Christian Achatz
        * @version
@@ -412,7 +412,7 @@
        * Version 0.5, 25.10.2008 (Added the additional relation option via the criterion object)<br />
        * Version 0.6, 29.12.2008 (Added check, if given object is null)<br />
        */
-      public function loadRelatedObjects(GenericDomainObject &$object,$relationName,GenericCriterionObject $criterion = null){
+      public function loadRelatedObjects(GenericORMapperDataObject &$object,$relationName,GenericCriterionObject $criterion = null){
 
          // check if object is present
          if($object === null){
@@ -512,10 +512,10 @@
        *
        * Loads a list of *not* related objects by an object and an relation name.
        *
-       * @param GenericDomainObject $object current object
+       * @param GenericORMapperDataObject $object current object
        * @param string $relationName name of the desired relation
        * @param GenericCriterionObject $criterion criterion object
-       * @return GenericDomainObject[] List of the *not* releated objects.
+       * @return GenericORMapperDataObject[] List of the *not* releated objects.
        *
        * @author Christian Achatz
        * @version
@@ -523,7 +523,7 @@
        * Version 0.2, 25.10.2008 (Added additional where and relation clauses. Bugfix to the inner relation statement.)<br />
        * Version 0.3, 29.12.2008 (Added check, if given object is null)<br />
        */
-      public function loadNotRelatedObjects(GenericDomainObject &$object,$relationName,GenericCriterionObject $criterion = null){
+      public function loadNotRelatedObjects(GenericORMapperDataObject &$object,$relationName,GenericCriterionObject $criterion = null){
 
          // check if object is present
          if($object === null){
@@ -613,7 +613,7 @@
        *
        * Loads the multiplicity of a relation defined by one object and the desired relation name.
        *
-       * @param GenericDomainObject $object current object
+       * @param GenericORMapperDataObject $object current object
        * @param string $relationName relation name
        * @return int The multiplicity of the relation.
        *
@@ -621,7 +621,7 @@
        * @version
        * Version 0.1, 16.12.2008<br />
        */
-      public function loadRelationMultiplicity(GenericDomainObject &$object,$relationName){
+      public function loadRelationMultiplicity(GenericORMapperDataObject &$object,$relationName){
 
          if(!isset($this->__RelationTable[$relationName])){
             throw new GenericORMapperException('[GenericORRelationMapper::loadRelationMultiplicity()] '
@@ -653,7 +653,7 @@
        *
        * Overwrites the saveObject() method of the parent class. Resolves relations.<br />
        *
-       * @param GenericDomainObject $object The current object.
+       * @param GenericORMapperDataObject $object The current object.
        * @param boolean $saveEntireTree Indicates, whether the mapper saves the entire object
        *                                tree (true) or only the root node (false).
        * @return int Id of the saved object.
@@ -666,7 +666,7 @@
        * Version 0.4, 15.06.2008 (Fixed bug that relation was not found due to twisted columns)<br />
        * Version 0.5, 26.10.2008 (Added a check for the object/relation to exist in the objec>t/relation table)<br />
        */
-      public function saveObject(GenericDomainObject &$object, $saveEntireTree = true) {
+      public function saveObject(GenericORMapperDataObject &$object, $saveEntireTree = true) {
 
          // save the current object (uses parent function with no resolving for relations)
          $id = parent::saveObject($object);
@@ -744,7 +744,7 @@
        *
        * Overwrites the deleteObject() method of the parent class. Resolves relations.
        *
-       * @param GenericDomainObject $object the object to delete
+       * @param GenericORMapperDataObject $object the object to delete
        * @return int Database id of the object or null.
        *
        * @author Christian Achatz
@@ -752,7 +752,7 @@
        * Version 0.1, 11.05.2008<br />
        * Version 0.2, 30.05.2008 (Completed the method's code)<br />
        */
-      public function deleteObject(GenericDomainObject $object){
+      public function deleteObject(GenericORMapperDataObject $object){
 
          // return if given object is null
          if($object === null){
@@ -826,8 +826,8 @@
        * Creates an association between two objects.<br />
        *
        * @param string $RelationName; Name ofthe relation to create
-       * @param GenericDomainObject $SourceObject; Source object for the relation
-       * @param GenericDomainObject $TargetObject; Target object for the relation
+       * @param GenericORMapperDataObject $SourceObject; Source object for the relation
+       * @param GenericORMapperDataObject $TargetObject; Target object for the relation
        * @return bool False (relation is not an association) or true (everything's fine)
        *
        * @author Christian Achatz
@@ -836,7 +836,7 @@
        * Version 0.2, 31.05.2008 (Code completed)<br />
        * Version 0.3, 08.06.2008 (Introduced a test to check weather relation exists or not)<br />
        */
-      public function createAssociation($relationName,GenericDomainObject $sourceObject,GenericDomainObject $targetObject){
+      public function createAssociation($relationName,GenericORMapperDataObject $sourceObject,GenericORMapperDataObject $targetObject){
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$relationName])){
@@ -876,8 +876,8 @@
        * can be deleted.<br />
        *
        * @param string $relationName Name ofthe relation to create
-       * @param GenericDomainObject $sourceObject Source object for the relation
-       * @param GenericDomainObject $targetObject Target object for the relation
+       * @param GenericORMapperDataObject $sourceObject Source object for the relation
+       * @param GenericORMapperDataObject $targetObject Target object for the relation
        * @return bool True (success) or false (error).
        *
        * @author Christian Achatz
@@ -886,7 +886,7 @@
        * Version 0.2, 31.05.2008 (Code completed)<br />
        * Version 0.3, 08.06.2008 (Introduced a test to check weather relation exists or not)<br />
        */
-      public function deleteAssociation($relationName,GenericDomainObject $sourceObject,GenericDomainObject $targetObject){
+      public function deleteAssociation($relationName,GenericORMapperDataObject $sourceObject,GenericORMapperDataObject $targetObject){
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$relationName])){
@@ -930,13 +930,13 @@
        * no exception can be defined at the moment.
        *
        * @param string $relationName The name of the relation that is uses as a selector.
-       * @param GenericDomainObject $sourceObject The source object that limits the deletion.
+       * @param GenericORMapperDataObject $sourceObject The source object that limits the deletion.
        *
        * @author Christian Achatz, Ralf Schubert
        * @version
        * Version 0.1, 30.10.2010<br />
        */
-      public function deleteAssociations($relationName, GenericDomainObject $sourceObject) {
+      public function deleteAssociations($relationName, GenericORMapperDataObject $sourceObject) {
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$relationName])){
@@ -968,8 +968,8 @@
        * Returns true if an association of the given type exists between the provided objects.
        *
        * @param string $relationName Name of the relation to select
-       * @param GenericDomainObject $sourceObject Source object for the relation
-       * @param GenericDomainObject $targetObject Target object for the relation
+       * @param GenericORMapperDataObject $sourceObject Source object for the relation
+       * @param GenericORMapperDataObject $targetObject Target object for the relation
        * @return bool True (association exists) or false (objects are not associated).
        *
        * @author Christian Achatz
@@ -977,7 +977,7 @@
        * Version 0.1, 31.05.2008<br />
        * Version 0.1, 08.06.2008 (Introduced a test to check weather relation exists or not)<br />
        */
-      public function isAssociated($relationName,GenericDomainObject $sourceObject,GenericDomainObject $targetObject){
+      public function isAssociated($relationName,GenericORMapperDataObject $sourceObject,GenericORMapperDataObject $targetObject){
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$relationName])){
@@ -1020,15 +1020,15 @@
        * return false, in case child and father are changed mixed.
        *
        * @param string $relationName The name of the relation between <em>$father</em> and <em>$child</em>.
-       * @param GenericDomainObject $child The object, that is composed under the <em>$father</em> object.
-       * @param GenericDomainObject $father The father object composing <em>$child</em>.
+       * @param GenericORMapperDataObject $child The object, that is composed under the <em>$father</em> object.
+       * @param GenericORMapperDataObject $father The father object composing <em>$child</em>.
        * @return true in case <em>$father</em> composes <em>$child</em> using the given relation name or false otherwise.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 09.10.2010<br />
        */
-      public function isComposed($relationName, GenericDomainObject $child, GenericDomainObject $father){
+      public function isComposed($relationName, GenericORMapperDataObject $child, GenericORMapperDataObject $father){
 
          // test, if relation exists in relation table
          if(!isset($this->__RelationTable[$relationName])){
@@ -1303,7 +1303,7 @@
        * @param string $objectName The type of the objects to load.
        * @param string $relationName The name of relation, the object should have to or not.
        * @param GenericCriterionObject $criterion An additional criterion to specify custom limitations.
-       * @return GenericDomainObject[] The desired list of domain objects.
+       * @return GenericORMapperDataObject[] The desired list of domain objects.
        *
        * @author Tobias Lückel
        * @version
@@ -1322,7 +1322,7 @@
        * @param string $objectName The type of the objects to load.
        * @param string $relationName The name of relation, the object should have to or not.
        * @param GenericCriterionObject $criterion An additional criterion to specify custom limitations.
-       * @return GenericDomainObject[] The desired list of domain objects.
+       * @return GenericORMapperDataObject[] The desired list of domain objects.
        *
        * @author Tobias Lückel
        * @version
@@ -1345,7 +1345,7 @@
        * @param string $relationName The name of relation, the object should have to or not.
        * @param GenericCriterionObject $criterion An additional criterion to specify custom limitations.
        * @param string $relationCondition The relation condition (has relation or has none).
-       * @return GenericDomainObject[] The desired list of domain objects.
+       * @return GenericORMapperDataObject[] The desired list of domain objects.
        *
        * @author Tobias Lückel
        * @version

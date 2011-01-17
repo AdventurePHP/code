@@ -31,8 +31,9 @@
     * Version 0.2, 21.06.2008 (Added more indicators)<br />
     * Version 0.3, 28.05.2010 (Bugfix: added method to return the property indicators)<br />
     * Version 0.4, 18.07.2010 (Added "Fluent Interface" support.)<br />
+    * Version 0.5, 15.01.2011 (Removed dependency on APFObject.)<br />
     */
-   final class GenericCriterionObject extends APFObject {
+   final class GenericCriterionObject{
 
       /**
        * @private

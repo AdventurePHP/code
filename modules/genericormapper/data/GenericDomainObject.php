@@ -19,8 +19,9 @@
     * -->
     */
 
+    import('modules::genericormapper::data','GenericORMapperDataObject');
    /**
-    * @package modules::genericormapper::biz
+    * @package modules::genericormapper::data
     * @class GenericDomainObject
     *
     * Generic class for all domain objects handled by the abstract or mapper.
@@ -30,8 +31,9 @@
     * Version 0.1, 26.04.2008<br />
     * Version 0.2, 04.09.2009 (Added serialization support)<br />
     * Version 0.3, 05.06.2010 (Added convenience methods for object name and id handling)<br />
+    * Version 0.4, 15.01.2011 (Added usage of GenericORMapperDataObject-interface and removed dependence on APFObject)<br />
     */
-   final class GenericDomainObject extends APFObject {
+   class GenericDomainObject implements GenericORMapperDataObject {
 
       /**
        * @private
@@ -41,10 +43,10 @@
       private $dataComponent = null;
 
       /**
-       * @private
+       * protected
        * @var string Name of the object (see mapping table!).
        */
-      private $objectName = null;
+      protected $objectName = null;
 
       /**
        * @private
@@ -54,7 +56,7 @@
 
       /**
        * @private
-       * @var GenericDomainObject[] Objects related to the current object. Sorted by composition or association key.
+       * @var GenericORMapperDataObject[] Objects related to the current object. Sorted by composition or association key.
        */
       private $relatedObjects = array();
 
@@ -70,7 +72,7 @@
        * @version
        * Version 0.1, 15.04.2008<br />
        */
-      public function __construct($objectName) {
+      public function __construct($objectName = null) {
          if(empty($objectName)){
             throw new InvalidArgumentException('[GenericDomainObject::__construct()] Creating a '
                     .'GenericDomainObject must include an object name specification. Otherwise, '
@@ -136,7 +138,7 @@
        * @version
        * Version 0.1, 11.10.2009<br />
        */
-      public function setDataComponent(&$orm){
+      public function setDataComponent(GenericORRelationMapper &$orm){
          $this->dataComponent = &$orm;
       }
 
@@ -162,7 +164,7 @@
        *
        * @param string $relationName name of the desired relation
        * @param GenericCriterionObject $criterion criterion object
-       * @return GenericDomainObject object that is related with the current object or null.
+       * @return GenericORMapperDataObject object that is related with the current object or null.
        * @throws GenericORMapperException In case the data component is not initialized.
        *
        * @author Tobias Lückel
@@ -193,7 +195,7 @@
        *
        * @param string $relationName name of the desired relation
        * @param GenericCriterionObject $criterion criterion object
-       * @return GenericDomainObject[] List of objects that are related with the current object or null.
+       * @return GenericORMapperDataObject[] List of objects that are related with the current object or null.
        * @throws GenericORMapperException In case the data component is not initialized.
        *
        * @author Christian Achatz
@@ -226,14 +228,14 @@
        * GenericORMapper directly.
        *
        * @param string $relationName The relation to create.
-       * @param GenericDomainObject $targetObject The object to relate the current domain object to.
+       * @param GenericORMapperDataObject $targetObject The object to relate the current domain object to.
        * @throws GenericORMapperException In case the data component is not initialized.
        *
        * @author Christian Achatz, Ralf Schubert
        * @version
        * Version 0.1, 30.10.2010<br />
        */
-      public function createAssociation($relationName, GenericDomainObject $targetObject) {
+      public function createAssociation($relationName, GenericORMapperDataObject $targetObject) {
 
          // check weather data component is there
          if($this->dataComponent === null){
@@ -256,14 +258,14 @@
        * GenericORMapper directly.
        *
        * @param string $relationName The relation to delete.
-       * @param GenericDomainObject $targetObject The object to delete the current domain object's relation from.
+       * @param GenericORMapperDataObject $targetObject The object to delete the current domain object's relation from.
        * @throws GenericORMapperException In case the data component is not initialized.
        *
        * @author Christian Achatz, Ralf Schubert
        * @version
        * Version 0.1, 30.10.2010<br />
        */
-      public function deleteAssociation($relationName, GenericDomainObject $targetObject) {
+      public function deleteAssociation($relationName, GenericORMapperDataObject $targetObject) {
 
          // check weather data component is there
          if($this->dataComponent === null){
@@ -314,7 +316,7 @@
        * Returns the reference on the list of related objects manually added to the object.
        *
        * @param string $relationName name of the desired relation
-       * @return GenericDomainObject[] A list of referenced objects that are related with the current object or null
+       * @return GenericORMapperDataObject[] A list of referenced objects that are related with the current object or null
        *
        * @author Christian Achatz
        * @version
@@ -339,7 +341,7 @@
        * *should* only be used internally. Unfortunately, PHP does not provide a package
        * view visibility setting.
        *
-       * @return string[GenericDomainObject[]] A list of generic domain objects with their respective relation name.
+       * @return string[GenericORMapperDataObject[]] A list of generic domain objects with their respective relation name.
        *
        * @author Christian Achatz
        * @version
@@ -355,14 +357,14 @@
        * Add a related object.
        *
        * @param string $relationName name of the desired relation
-       * @param GenericDomainObject $object Object that is related with the current object.
+       * @param GenericORMapperDataObject $object Object that is related with the current object.
        *
        * @author Christian Achatz
        * @version
        * Version 0.1, 15.04.2008<br />
        * Version 0.2, 03.05.2009 (Added check for null objects. In null cases, the object is not added.)<br />
        */
-      public function addRelatedObject($relationName, GenericDomainObject &$object){
+      public function addRelatedObject($relationName, GenericORMapperDataObject &$object){
          if($object !== null){
             $this->relatedObjects[$relationName][] = &$object;
          }
@@ -529,6 +531,42 @@
        */
       public function __sleep(){
          return array('objectName','properties','relatedObjects');
+      }
+
+      /**
+       * @public
+       *
+       * Implement event functions
+       *
+       * @author Ralf Schubert
+       * @version
+       * Version 0.1, 15.01.2011<br />
+       */
+      public function beforeSave(){
+      }
+      
+      /**
+       * @public
+       *
+       * Implement event functions
+       *
+       * @author Ralf Schubert
+       * @version
+       * Version 0.1, 15.01.2011<br />
+       */
+      public function afterSave(){
+      }
+
+      /**
+       * @public
+       *
+       * Implement event functions
+       *
+       * @author Ralf Schubert
+       * @version
+       * Version 0.1, 15.01.2011<br />
+       */
+      public function afterLoad(){
       }
 
     // end class
