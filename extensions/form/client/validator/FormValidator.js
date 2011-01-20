@@ -123,6 +123,7 @@
         markAsInvalid: function(){
             $(this).each(function(){
                 switch(this.tagName.toLowerCase()){
+                    case 'textarea':
                     case 'input':
                         /*delete [] from Name, if control is select, so we find the valmarkerclass*/
                         var controlName = $(this).attr('name')
