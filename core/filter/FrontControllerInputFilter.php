@@ -47,34 +47,28 @@
        * Version 0.1, 11.12.2008<br />
        * Version 0.2, 13.12.2008 (Added the benchmarker)<br />
        */
-      public function filter($input){
+      public function filter($input) {
 
          // invoke timer
          $t = &Singleton::getInstance('BenchmarkTimer');
          $t->start('FrontControllerInputFilter::filter()');
 
          // setup filter
-         $urlRewriting = Registry::retrieve('apf::core','URLRewriting');
+         $urlRewriting = Registry::retrieve('apf::core', 'URLRewriting');
          $filter = null;
-         if($urlRewriting === true){
-            import('core::filter::input','FrontcontrollerRewriteRequestFilter');
+         if ($urlRewriting === true) {
+            import('core::filter::input', 'FrontcontrollerRewriteRequestFilter');
             $filter = new FrontcontrollerRewriteRequestFilter();
-          // end if
-         }
-         else{
-            import('core::filter::input','FrontcontrollerRequestFilter');
+         } else {
+            import('core::filter::input', 'FrontcontrollerRequestFilter');
             $filter = new FrontcontrollerRequestFilter();
-          // end else
          }
 
          // apply filter
          $filter->filter(null);
 
          $t->stop('FrontControllerInputFilter::filter()');
-
-       // end function
       }
 
-    // end class
    }
 ?>

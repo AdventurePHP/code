@@ -226,7 +226,7 @@
        */
       public function getPager($addStmtParams = array()) {
 
-         $pager = new Page();
+         $pager = new Page(false);
 
          // apply context and language (form configuration purposes!)
          $pager->setLanguage($this->__Language);
@@ -252,7 +252,7 @@
          }
 
          // transform pager GUI representation
-         return $pager->transform();
+         return $pager->transform(false);
 
        // end function
       }

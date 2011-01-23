@@ -84,35 +84,45 @@
    /////////////////////////////////////////////////////////////////////////////////////////////////
 
    // include core libraries for the basic configuration
-   import('core::singleton','Singleton');
-   import('core::registry','Registry');
+   import('core::singleton', 'Singleton');
+   import('core::registry', 'Registry');
 
    // define base parameters of the framework's core and tools layer
-   Registry::register('apf::core','Environment','DEFAULT');
-   Registry::register('apf::core','URLRewriting',false);
-   Registry::register('apf::core','LogDir',str_replace('\\','/',getcwd()).'/logs');
-   Registry::register('apf::core','LibPath',APPS__PATH,true);
+   Registry::register('apf::core', 'Environment', 'DEFAULT');
+   Registry::register('apf::core', 'URLRewriting', false);
+   Registry::register('apf::core', 'LogDir', str_replace('\\', '/', getcwd()) . '/logs');
+   Registry::register('apf::core', 'LibPath', APPS__PATH, true);
 
    // define current request url entry
    $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
-   Registry::register('apf::core','URLBasePath',$protocol.$_SERVER['HTTP_HOST']);
-   Registry::register('apf::core','CurrentRequestURL',$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],true);
+   Registry::register('apf::core', 'URLBasePath', $protocol . $_SERVER['HTTP_HOST']);
+   Registry::register('apf::core', 'CurrentRequestURL', $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], true);
 
    // include necessary core libraries for the pagecontroller
-   import('core::errorhandler','errorhandler');
-   import('core::exceptionhandler','exceptionhandler');
-   import('core::service','ServiceManager');
-   import('core::service','DIServiceManager');
-   import('core::configuration','ConfigurationManager');
-   import('core::benchmark','BenchmarkTimer');
-   import('core::filter','FilterFactory');
+   import('core::errorhandler', 'errorhandler');
+   import('core::exceptionhandler', 'exceptionhandler');
+   import('core::service', 'ServiceManager');
+   import('core::service', 'DIServiceManager');
+   import('core::configuration', 'ConfigurationManager');
+   import('core::benchmark', 'BenchmarkTimer');
+   import('core::filter', 'FilterChain');
 
    // set up the input and output filter
-   Registry::register('apf::core::filter','PageControllerInputFilter',new FilterDefinition('core::filter','PageControllerInputFilter'));
-   Registry::register('apf::core::filter','OutputFilter',new FilterDefinition('core::filter','GenericOutputFilter'));
+   Registry::register('apf::core::filter', 'PageControllerInputFilter', new FilterDefinition('core::filter', 'PageControllerInputFilter'));
+   Registry::register('apf::core::filter', 'OutputFilter', new FilterDefinition('core::filter', 'GenericOutputFilter'));
+
+   // add the page controller filter that is a wrapper on the page controller's input
+   // filters concerning thr url rewriting configuration
+   import('core::filter', 'ChainedPageControllerInputFilter');
+   InputFilterChain::getInstance()->addFilter(new ChainedPageControllerInputFilter());
+
+   // add generic output filter that is a wrapper for the page controller's output
+   // filter to adapt the url layout if url rewriting is activated
+   import('core::filter', 'ChainedGenericOutputFilter');
+   OutputFilterChain::getInstance()->addFilter(new ChainedGenericOutputFilter());
 
    // set up configuration provider to let the developer customize it later on
-   import('core::configuration::provider::ini','IniConfigurationProvider');
+   import('core::configuration::provider::ini', 'IniConfigurationProvider');
    ConfigurationManager::registerProvider('ini', new IniConfigurationProvider());
 
    /**
@@ -155,7 +165,7 @@
     * Version 0.9, 25.03.2009 (Cleared implementation for the PHP 5 branch)<br />
     * Version 1.0, 08.03.2010 (Introduced exception instead of trigger_error())<br />
     */
-   function import($namespace,$file){
+   function import($namespace, $file) {
 
       // create the complete and absolute file name
       $file = APPS__PATH.'/'.str_replace('::','/',$namespace).'/'.$file.'.php';
@@ -1153,7 +1163,7 @@
        *
        * Constructor of the page class. The class is the root node of the APF DOM tree.
        *
-       * @param string $name the optional name of the page
+       * @param boolean $executeFilter Apply this optional parameter, in case the input filter chain should not be executed.
        *
        * @author Christian Achatz
        * @version
@@ -1164,22 +1174,16 @@
        * Version 0.5, 20.10.2008 (Removed second parameter due to registry introduction in 1.7-beta)<br />
        * Version 0.6, 11.12.2008 (Switched to the new input filter concept)<br />
        */
-      public function __construct(){
+      public function __construct($executeFilter = true){
 
          // set internal attributes
          $this->__ObjectID = XmlParser::generateUniqID();
 
          // apply input filter if desired (e.g. front controller is not used)
-         $filterDef = Registry::retrieve('apf::core::filter','PageControllerInputFilter');
-
-         if($filterDef !== null){
-            $inputFilter = FilterFactory::getFilter($filterDef);
-            if($inputFilter !== null){
-               $inputFilter->filter(null);
-            }
+         if ($executeFilter) {
+            InputFilterChain::getInstance()->filter(null);
          }
 
-       // end function
       }
 
       /**
@@ -1219,13 +1223,10 @@
          $this->document = new Document();
 
          // set the current context
-         if(empty($this->__Context)){
+         if (empty($this->__Context)) {
             $this->document->setContext($namespace);
-          // end if
-         }
-         else{
+         } else {
             $this->document->setContext($this->__Context);
-          // end else
          }
 
          // set the current language
@@ -1236,7 +1237,6 @@
          $this->document->setObjectId(XmlParser::generateUniqID());
          $this->document->setParentObject($this);
 
-       // end function
       }
 
       /**
@@ -1244,6 +1244,7 @@
        *
        * Transforms the APF DOM tree of the current page. Returns the content of the transformed document.
        *
+       * @param boolean Apply this optional parameter, in case the output filter chain should not be executed.
        * @return string The content of the transformed page
        *
        * @author Christian Achatz
@@ -1253,27 +1254,16 @@
        * Version 0.3, 08.06.2007 (Moved the URL rewriting into a filter)<br />
        * Version 0.4, 11.12.2008 (Switched to the new input filter concept)<br />
        */
-      public function transform(){
+      public function transform($executeFilter = true){
 
          // transform the current document
          $content = $this->document->transform();
 
-         // apply output filter if desired
-         $filterDef = Registry::retrieve('apf::core::filter','OutputFilter');
+         // apply output filter(s) if desired
+         return $executeFilter ? OutputFilterChain::getInstance()->filter($content) : $content;
 
-         if($filterDef !== null){
-            $outputFilter = FilterFactory::getFilter($filterDef);
-            if($outputFilter !== null){
-               $content = $outputFilter->filter($content);
-            }
-         }
-
-         return $content;
-
-       // end function
       }
 
-    // end class
    }
 
    /**

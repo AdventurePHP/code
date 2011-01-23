@@ -166,7 +166,7 @@
                     AND count ($arrayData)    >   0
             ) {
                // create pager page
-               $objectPager = new Page();
+               $objectPager = new Page(false);
 
                // apply context and language (form configuration purposes!)
                $objectPager->set ('Language',
@@ -206,7 +206,7 @@
                   );
                }
 
-               $stringOutput = $objectPager->transform ();
+               $stringOutput = $objectPager->transform (false);
             }
          }
          else {

@@ -127,7 +127,7 @@
          import('core::benchmark','BenchmarkTimer');
          
          // create page
-         $stacktrace = new Page();
+         $stacktrace = new Page(false);
          $stacktrace->setContext('core::exceptionhandler');
          $stacktrace->loadDesign('core::exceptionhandler::templates','exceptionpage');
 
@@ -142,7 +142,7 @@
          $doc->setAttribute('type',$this->exceptionType);
 
          // create exception page
-         return $stacktrace->transform();
+         return $stacktrace->transform(false);
 
       }
 

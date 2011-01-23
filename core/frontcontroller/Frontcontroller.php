@@ -20,8 +20,17 @@
     */
 
    // setup the front controller input filter and disable the page controller filter
-   Registry::register('apf::core::filter','FrontControllerInputFilter', new FilterDefinition('core::filter','FrontControllerInputFilter'));
-   Registry::register('apf::core::filter','PageControllerInputFilter', null);
+   Registry::register('apf::core::filter', 'FrontControllerInputFilter', new FilterDefinition('core::filter', 'FrontControllerInputFilter'));
+   Registry::register('apf::core::filter', 'PageControllerInputFilter', null);
+
+   // remove page controller filter since the url layout is different for the front controller
+   $chain = &InputFilterChain::getInstance();
+   $chain->removeFilter('ChainedPageControllerInputFilter');
+
+   // add the front controller filter that is a wrapper on the front controller's input
+   // filters concerning thr url rewriting configuration
+   import('core::filter', 'ChainedFrontControllerInputFilter');
+   $chain->addFilter(new ChainedFrontControllerInputFilter());
 
    /**
     * @package core::frontcontroller
@@ -485,12 +494,7 @@
          }
 
          // apply front controller input filter
-         $filterDef = Registry::retrieve('apf::core::filter','FrontControllerInputFilter');
-
-         if($filterDef !== null){
-            $inputFilter = FilterFactory::getFilter($filterDef);
-            $inputFilter->filter(null);
-         }
+         InputFilterChain::getInstance()->filter(null);
 
          // execute pre page create actions (see timing model)
          $this->runActions('prepagecreate');

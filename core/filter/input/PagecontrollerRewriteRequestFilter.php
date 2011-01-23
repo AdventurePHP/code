@@ -93,7 +93,7 @@
             // merge port params into the request again
             $_REQUEST = array_merge($_REQUEST, $_POST);
 
-            // reinsert the PHPSESSID value into the request array
+            // re-insert the PHPSESSID value into the request array
             if (!empty($PHPSESSID)) {
                $_REQUEST[$sessionName] = $PHPSESSID;
             }

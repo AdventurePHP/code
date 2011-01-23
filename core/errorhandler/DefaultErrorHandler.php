@@ -127,7 +127,7 @@
          import('core::benchmark','BenchmarkTimer');
 
          // create page
-         $stacktrace = new Page('Stacktrace');
+         $stacktrace = new Page(false);
          $stacktrace->setContext('core::errorhandler');
          $stacktrace->loadDesign('core::errorhandler::templates','errorpage');
 
@@ -140,7 +140,7 @@
          $doc->setAttribute('line',$this->errorLine);
 
          // create error page
-         return $stacktrace->transform();
+         return $stacktrace->transform(false);
 
       }
 

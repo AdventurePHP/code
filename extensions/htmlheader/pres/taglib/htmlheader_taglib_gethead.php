@@ -19,6 +19,8 @@
     * -->
     */
 
+   import('extensions::htmlheader::pres::filter', 'HtmlHeaderOutputFilter');
+
    /**
     * @package extensions::htmlheader::pres::taglib
     * @class htmlheader_taglib_gethead
@@ -36,56 +38,16 @@
     */
    class htmlheader_taglib_gethead extends Document {
 
-      /**
-       * @var string[] Defines the node types, that should be included before the textual nodes.
-       */
-      private static $jsFileNodes = array('StaticJsNode','DynamicJsNode');
+      const HTML_HEADER_INDICATOR = '<!--HTMLHEADER_TAGLIB_GETHAED-->';
 
       public function transform() {
 
-         $iM = &$this->__getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
-         /* @var $iM HtmlHeaderManager */
+         // register filter that replaces the token with real live data
+         OutputFilterChain::getInstance()->addFilter(new HtmlHeaderOutputFilter());
 
-         $output = '';
+         // place marker that will be replaced by the 
+         return self::HTML_HEADER_INDICATOR;
 
-         $title = $iM->getTitle();
-         if ($title !== null) {
-            $output .= $title->transform().PHP_EOL;
-         }
-
-         $baseNodes = $iM->getBaseNodes();
-         foreach ($baseNodes as $base) {
-            $output .= $base->transform().PHP_EOL;
-         }
-
-         $metaNodes = $iM->getMetaNodes();
-         foreach ($metaNodes as $metaNode) {
-            $output .= $metaNode->transform().PHP_EOL;
-         }
-
-         $stylesheets = $iM->getStylesheetNodes();
-         foreach ($stylesheets as $stylesheet) {
-            $output .= $stylesheet->transform().PHP_EOL;
-         }
-
-         // sort js files according to their dynamic or static character to not
-         // generate js errors by accessing functionality that has not been included
-         // this is done, by queing the static ones for later transformation but with
-         // respect to the order the scrips were added!
-         $javascripts = $iM->getJavascriptNodes();
-         $queue = array();
-         foreach ($javascripts as $script) {
-            if(in_array(get_class($script),self::$jsFileNodes)){
-               $output .= $script->transform().PHP_EOL;
-            } else {
-               $queue[] = $script;
-            }
-         }
-         foreach ($queue as $script) {
-            $output .= $script->transform().PHP_EOL;
-         }
-
-         return $output;
       }
 
    }
