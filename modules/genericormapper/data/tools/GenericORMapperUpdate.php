@@ -170,7 +170,6 @@
             foreach($this->__UpdateStatements as $statement){
                $sql->executeTextStatement($statement);
             }
-          // end if
          }
          else {
             echo '<pre>';
@@ -178,10 +177,8 @@
                echo $statement.PHP_EOL.PHP_EOL.PHP_EOL;
             }
             echo '</pre>';
-          // end else
          }
 
-       // end function
       }
 
       /**
@@ -221,12 +218,12 @@
       /**
        * Returns the type of
        *
-       * @param string $primaryKeyName The
+       * @param string $tableName The
        * @return string The relation type declarator.
        */
-      private function getRelationTypeLabel($primaryKeyName){
-         $primaryKeyName = strtolower($primaryKeyName);
-         if(substr_count($primaryKeyName,'ass') > 0){
+      private function getRelationTypeLabel($tableName){
+         $tableName = strtolower($tableName);
+         if(substr_count($tableName,'ass_') > 0){
             return 'ASSOCIATION';
          }
          return 'COMPOSITION';
@@ -332,13 +329,12 @@
                $fields[] = $dataCreate;
             }
 
-            $primaryKey = $this->getPrimaryKeyName($fields);
             $relationName = substr($relationTable,4);
-            $sourceId = $fields[1]['Field'];
-            $targetId = $fields[2]['Field'];
+            $sourceId = $fields[0]['Field'];
+            $targetId = $fields[1]['Field'];
 
             $this->__ReEngineeredRelationTable[$relationName] = array(
-               'Type' => $this->getRelationTypeLabel($primaryKey),
+               'Type' => $this->getRelationTypeLabel($relationTable),
                'Table' => $relationTable,
                'SourceID' => $sourceId,
                'TargetID' => $targetId,
@@ -346,10 +342,8 @@
                'TargetObject' => str_replace('ID','',$targetId),
             );
 
-          // end foreach
          }
 
-       // end function
       }
 
       /**
@@ -459,10 +453,8 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
                $objectFields
             );
 
-          // end foreach
          }
 
-       // end function
       }
 
       /**
@@ -479,16 +471,18 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
 
          foreach($this->__NewMappings as $newMapping => $DUMMY){
             $this->__UpdateStatements[] =
-               $this->__generateMappingTableLayout(
+               $this->generateMappingTableLayout(
                   $newMapping,
                   $this->__MappingTable[$newMapping]
                );
          }
+         
          foreach($this->__RemovedMappings as $removedMapping => $DUMMY){
             $this->__UpdateStatements[] = 'DROP TABLE '
                .$this->__ReEngineeredMappingTable[$removedMapping]['Table']
                .';';
          }
+
          foreach($this->__NewMappingAttributes as $newAttribute => $values){
 
             if(count($values) > 0){
@@ -499,17 +493,19 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
                      $this->__RowTypeMappingTo,
                      $dataType
                   );
+
+                  // add dynamic character set specification
+                  $dataType = str_replace('[charset]', $this->getTableCharset(), $dataType);
+
                   $this->__UpdateStatements[] = 'ALTER TABLE `'
                      .$this->__MappingTable[$newAttribute]['Table'].'` ADD `'
                      .$name.'` '.$dataType.';';
-                // end for
                }
 
-             // end if
             }
 
-          // end foreach
          }
+         
          foreach($this->__RemovedMappingAttributes as $removedAttribute => $values){
             
             if(count($values) > 0){
@@ -517,14 +513,12 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
                foreach($values as $name => $dataType){
                   $this->__UpdateStatements[] = 'ALTER TABLE `'
                      .$this->__MappingTable[$removedAttribute]['Table'].'` DROP `'.$name.'`;';
-                // end foreach
                }
                
-             // end if
             }
          
-          // end foreach
          }
+         
          foreach($this->__AlteredMappingAttributes as $alteredAttribute => $values){
 
             if(count($values) > 0){
@@ -535,20 +529,20 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
                      $this->__RowTypeMappingTo,
                      $this->__MappingTable[$alteredAttribute][$name]
                   );
+
+                  // add dynamic character set specification
+                  $dataType = str_replace('[charset]', $this->getTableCharset(), $dataType);
+                  
                   $this->__UpdateStatements[] = 'ALTER TABLE `'
                      .$this->__MappingTable[$alteredAttribute]['Table'].'` CHANGE `'.$name.'` '
                      .'`'.$name.'` '.$dataType.';';
 
-                // end if
                }
 
-             // end foreach
             }
          
-          // end foreach
          }
          
-       // end function
       }
 
       /**
@@ -603,19 +597,14 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
                      if($diff === 1){
                         $this->__AlteredMappingAttributes[$mappingKey][] = $key;
                      }
-                   // end if
                   }
 
-                // end foreach
                }
 
-             // end if
             }
 
-          // end foreach
          }
 
-       // end function
       }
 
       /**
@@ -663,19 +652,14 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
                         !== $this->__RelationTable[$relationKey][$key]){
                         $this->__AlteredRelationAttributes[] = $relationKey;
                      }
-                   // end if
                   }
 
-                // end foreach
                }
 
-             // end if
             }
 
-          // end foreach
          }
 
-       // end function
       }
 
       /**
@@ -691,7 +675,7 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
 
          foreach($this->__NewRelations as $newRelation => $DUMMY){
             $this->__UpdateStatements[] = 
-               $this->__generateRelationTableLayout($this->__RelationTable[$newRelation]);
+               $this->generateRelationTableLayout($this->__RelationTable[$newRelation]);
          }
          foreach($this->__RemovedRelations as $removedRelation => $DUMMY){
             $this->__UpdateStatements[] = 'DROP TABLE '
@@ -706,9 +690,7 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
                .'` TO `'.$this->__RelationTable[$alteredRelation]['Table'].'`;';
          }
 
-       // end function
       }
 
-    // end class
    }
 ?>

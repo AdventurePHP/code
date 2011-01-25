@@ -57,8 +57,8 @@
        * Replace strings for the datatype mapping.
        */
       protected $__RowTypeMappingTo = array(
-                                      'VARCHAR($1) character set utf8 NOT NULL default \'\'',
-                                      'TEXT character set utf8 NOT NULL',
+                                      'VARCHAR($1) character set [charset] NOT NULL default \'\'',
+                                      'TEXT character set [charset] NOT NULL',
                                       'DATE NOT NULL default \'0000-00-00\''
                                      );
 
@@ -79,9 +79,6 @@
        * @var string The character set of the tables to create.
        */
       private $tableCharset = 'utf8';
-
-      public function GenericORMapperSetup(){
-      }
 
       public function setStorageEngine($engine){
          $this->__StorageEngine = $engine;
@@ -165,10 +162,10 @@
          $this->__ConfigNameAffix = $configNameAffix;
 
          // setup object layout
-         $objects = $this->__generateObjectLayout();
+         $objects = $this->generateObjectLayout();
 
          // setup relation layout
-         $relations = $this->__generateRelationLayout();
+         $relations = $this->generateRelationLayout();
 
          // display only
          if($connectionName === null){
@@ -230,7 +227,7 @@
        * Version 0.4, 18.05.2009 (Changed primary key columns to UNSIGNED)<br />
        * Version 0.5, 11.10.2009 (Outsorced table statement creation due to introduction of the update feature)<br />
        */
-      protected function __generateObjectLayout(){
+      protected function generateObjectLayout(){
 
          // create mapping table
          $this->__createMappingTable();
@@ -239,7 +236,7 @@
          $setup = array();
          foreach($this->__MappingTable as $name => $attributes){
             $setup[] =
-               $this->__generateMappingTableLayout($name,$this->__MappingTable[$name])
+               $this->generateMappingTableLayout($name,$this->__MappingTable[$name])
                        .PHP_EOL.PHP_EOL;
           // end foreach
          }
@@ -262,7 +259,7 @@
        * @version
        * Version 0.1, 11.10.2009<br />
        */
-      protected function __generateMappingTableLayout($objectName,$tableAttributes){
+      protected function generateMappingTableLayout($objectName,$tableAttributes){
          
          // header
          $create = 'CREATE TABLE IF NOT EXISTS `'.$tableAttributes['Table'].'` ('.PHP_EOL;
@@ -271,13 +268,15 @@
          $create .= '  `'.$tableAttributes['ID'].'` '.$this->getIndexColumnDataType().' NOT NULL auto_increment,'.PHP_EOL;
 
          // object properties
-         foreach($tableAttributes as $key => $value){
-            if($key != 'ID' && $key != 'Table'){
-               $value = preg_replace($this->__RowTypeMappingFrom,$this->__RowTypeMappingTo,$value);
-               $create .= '  `'.$key.'` '.$value.','.PHP_EOL;
-             // end if
+         foreach ($tableAttributes as $key => $value) {
+            if ($key != 'ID' && $key != 'Table') {
+               $value = preg_replace($this->__RowTypeMappingFrom, $this->__RowTypeMappingTo, $value);
+
+               // add dynamic character set specification
+               $value = str_replace('[charset]', $this->getTableCharset(), $value);
+
+               $create .= '  `' . $key . '` ' . $value . ',' . PHP_EOL;
             }
-          // end if
          }
 
          // creation and modification information
@@ -319,7 +318,7 @@
        * Version 0.3, 18.05.2009 (Changed primary key columns to UNSIGNED)<br />
        * Version 0.4, 30.07.2009 (Changed foreign key columns to UNSIGNED)<br />
        */
-      protected function __generateRelationLayout(){
+      protected function generateRelationLayout(){
 
          // create relation table
          $this->__createRelationTable();
@@ -328,15 +327,13 @@
          $setup = array();
          foreach($this->__RelationTable as $name => $attributes){
             $setup[] = 
-               $this->__generateRelationTableLayout(
+               $this->generateRelationTableLayout(
                   $this->__RelationTable[$name]
                ).PHP_EOL.PHP_EOL;
-          // end foreach
          }
 
          return $setup;
 
-       // end function
       }
 
       /**
@@ -351,21 +348,10 @@
        * @version
        * Version 0.1, 11.10.2009<br />
        */
-      protected function __generateRelationTableLayout($tableAttributes){
+      protected function generateRelationTableLayout($tableAttributes){
 
          // header
          $create = 'CREATE TABLE IF NOT EXISTS `'.$tableAttributes['Table'].'` ('.PHP_EOL;
-
-         // id row
-         if($tableAttributes['Type'] == 'COMPOSITION'){
-            $pkName = 'CMPID';
-          // end if
-         }
-         else{
-            $pkName = 'ASSID';
-          // end if
-         }
-         $create .= '  `'.$pkName.'` '.$this->getIndexColumnDataType().' NOT NULL auto_increment,'.PHP_EOL;
 
          // source id
          $create .= '  `'.$tableAttributes['SourceID'].'` '.$this->getIndexColumnDataType().' NOT NULL default \'0\','.PHP_EOL;
@@ -373,13 +359,15 @@
          // target id
          $create .= '  `'.$tableAttributes['TargetID'].'` '.$this->getIndexColumnDataType().' NOT NULL default \'0\','.PHP_EOL;
 
-         // primary key over all JOIN columns
-         $create .= '  PRIMARY KEY  (`'.$pkName.'`,`'.$tableAttributes['SourceID'].'`,`'.$tableAttributes['TargetID'].'`)'.PHP_EOL;
+         // key for all forward JOINs
+         $create .= '  KEY `JOIN` (`'.$tableAttributes['SourceID'].'`, `'.$tableAttributes['TargetID'].'`),'.PHP_EOL;
+
+         // key for all reverse JOINs (see http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=548)
+         $create .= '  KEY `REVERSEJOIN` (`'.$tableAttributes['TargetID'].'`, `'.$tableAttributes['SourceID'].'`)'.PHP_EOL;
 
          // footer
          return $create .= ') ENGINE='.$this->getStorageEngine().' DEFAULT CHARSET='.$this->getTableCharset().';';
 
-       // end function
       }
 
       protected function getAdditionalIndexDefinition($objectName){
@@ -413,7 +401,7 @@
             $type .= ' KEY `'.preg_replace('/[^A-Za-z0-9]/','',$index).'` ('.implode(', ',$fields).')';
 
             // resolve INDEX KEY
-            $type = preg_replace('/INDEX KEY/i','KEY',$type);
+            $type = preg_replace('/INDEX KEY/i', 'KEY', $type);
 
             $indices[] = '  '.$type;
 
@@ -421,9 +409,7 @@
 
          return implode(','.PHP_EOL,$indices);
          
-       // end function
       }
 
-    // end class
    }
 ?>
