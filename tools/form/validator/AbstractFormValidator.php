@@ -87,11 +87,10 @@
        * @version
        * Version 0.1, 24.08.2009<br />
        */
-      public function AbstractFormValidator(form_control &$control,form_control &$button,$type = null){
+      public function __construct(form_control &$control,form_control &$button,$type = null){
          $this->__Control = &$control;
          $this->__Button = &$button;
          $this->__Type = $type;
-       // end function
       }
 
       /**
@@ -134,9 +133,7 @@
        */
       public function isActive(){
          return $this->__Button->isSent();
-       // end function
       }
       
-    // end class
    }
 ?>

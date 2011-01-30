@@ -67,7 +67,6 @@
          
          return false;
          
-       // end function
       }
 
       /**
@@ -88,7 +87,6 @@
          }
          return explode('|',$accepts);
       }
-      
-    // end class
+
    }
 ?>
