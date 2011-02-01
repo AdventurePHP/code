@@ -48,7 +48,7 @@
        * Version 0.1, 14.05.2008<br />
        */
       public function init($initParam){
-
+      
          // call parent init method
          parent::init($initParam);
 
@@ -1222,6 +1222,7 @@
       public function __sleep(){
          return array('__MappingTable',
             '__RelationTable',
+            '__ServiceObjectsTable',
             '__Context',
             '__Language',
             '__importedConfigCache',
