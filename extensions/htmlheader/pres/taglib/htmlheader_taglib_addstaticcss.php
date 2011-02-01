@@ -41,14 +41,17 @@
    class htmlheader_taglib_addstaticcss extends Document {
 
       public function onParseTime() {
-         $header = &$this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
+      }
+
+      public function transform(){
+         $header = &$this->__getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
          /* @var $header HtmlHeaderManager */
 
          $file = $this->getAttribute('file');
-         if($file == null){
-            throw new InvalidArgumentException('['.get_class($this).'::onParseTime()] Please '
-               .'provide the "file" attribute in order to add a static stylesheet.',
-               E_USER_ERROR);
+         if ($file == null) {
+            throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please '
+                    . 'provide the "file" attribute in order to add a static stylesheet.',
+                    E_USER_ERROR);
          }
          $node = new StaticCssNode($file);
 
@@ -58,9 +61,7 @@
          }
 
          $header->addNode($node);
-      }
 
-      public function transform(){
          return '';
       }
 

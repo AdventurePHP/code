@@ -61,43 +61,41 @@
    class htmlheader_taglib_addjs extends Document {
       
        public function onParseTime() {
-           $header = $this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
-
-           $url = $this->getAttribute('url');
-           $folder = $this->getAttribute('folder');
-           $namespace = $this->getAttribute('namespace');
-           $filename = $this->getAttribute('filename');
-
-           $rewriting = $this->getAttribute('rewriting');
-           $fcaction = $this->getAttribute('fcaction');
-
-           if($rewriting === 'true'){
-               $rewriting = true;
-           }
-           elseif($rewriting === 'false'){
-               $rewriting = false;
-           }
-
-           if($fcaction === 'true'){
-               $fcaction = true;
-           }
-           elseif($fcaction === 'false'){
-               $fcaction = false;
-           }
-
-           if($url !== null){
-               $node = new DynamicJsNode($url, $folder, $filename, $rewriting, $fcaction);
-           }
-           else {
-               $node = new DynamicJsNode(null, $namespace, $filename, $rewriting, $fcaction);
-           }
-
-           $header->addNode($node);
        }
 
-       public function transform(){
-           return '';
-       }
+       public function transform() {
+         $header = $this->__getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+
+         $url = $this->getAttribute('url');
+         $folder = $this->getAttribute('folder');
+         $namespace = $this->getAttribute('namespace');
+         $filename = $this->getAttribute('filename');
+
+         $rewriting = $this->getAttribute('rewriting');
+         $fcaction = $this->getAttribute('fcaction');
+
+         if ($rewriting === 'true') {
+            $rewriting = true;
+         } elseif ($rewriting === 'false') {
+            $rewriting = false;
+         }
+
+         if ($fcaction === 'true') {
+            $fcaction = true;
+         } elseif ($fcaction === 'false') {
+            $fcaction = false;
+         }
+
+         if ($url !== null) {
+            $node = new DynamicJsNode($url, $folder, $filename, $rewriting, $fcaction);
+         } else {
+            $node = new DynamicJsNode(null, $namespace, $filename, $rewriting, $fcaction);
+         }
+
+         $header->addNode($node);
+
+         return '';
+      }
 
    }
 ?>

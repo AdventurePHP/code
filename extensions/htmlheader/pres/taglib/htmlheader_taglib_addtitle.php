@@ -40,7 +40,10 @@
    class htmlheader_taglib_addtitle extends Document {
 
       public function onParseTime() {
+      }
 
+
+      public function transform() {
          $header = $this->__getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
          /* @var $header HtmlHeaderManager */
 
@@ -48,30 +51,25 @@
          if (!empty($content)) {
 
             $titleContent = '';
-            
+
             if ($this->getAttribute('append') === 'true') {
 
                $title = $header->getTitle();
                /* @var $title SimpleTitleNode */
-               
+
                if ($title !== null) {
-                  $titleContent = $title->getContent().$content;
+                  $titleContent = $title->getContent() . $content;
                } else {
                   $titleContent = $content;
                }
-
             } else {
                $titleContent = $content;
             }
 
             $header->addNode(new SimpleTitleNode($titleContent));
 
+            return '';
          }
-
-      }
-
-      public function transform() {
-         return '';
       }
 
    }

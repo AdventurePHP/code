@@ -18,9 +18,8 @@
     * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
     * -->
     */
+   import('extensions::htmlheader::biz', 'JsContentNode');
 
-   import('extensions::htmlheader::biz','JsContentNode');
-   
    /**
     * @package extensions::htmlheader::pres::taglib
     * @class htmlheader_taglib_addcss
@@ -38,16 +37,16 @@
     * Version 0.1, 28.08.2010<br />
     */
    class htmlheader_taglib_addjscontent extends Document {
-      
-       public function onParseTime() {
-           $header = &$this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
-           /* @var $header HtmlHeaderManager */
-           $header->addNode(new JsContentNode($this->getContent()));
-       }
 
-       public function transform(){
-           return '';
-       }
+      public function onParseTime() {
+      }
+
+      public function transform() {
+         $header = &$this->__getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+         /* @var $header HtmlHeaderManager */
+         $header->addNode(new JsContentNode($this->getContent()));
+         return '';
+      }
 
    }
 ?>

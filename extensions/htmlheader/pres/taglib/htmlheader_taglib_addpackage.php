@@ -34,24 +34,24 @@
    class htmlheader_taglib_addpackage extends Document {
 
        public function onParseTime() {
-
-           $header = $this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
-
-           $url = $this->getAttribute('url');
-           $name = $this->getAttribute('name');
-           $type = $this->getAttribute('type');
-           $rewriting = $this->getAttribute('rewriting') === 'true' ? true : false;
-
-           if($type == 'js'){
-              $node = new JsPackageNode($url, $name, $rewriting);
-           } else {
-              $node = new CssPackageNode($url, $name, $rewriting);
-           }
-           $header->addNode($node);
-           
        }
 
        public function transform() {
+         $header = $this->__getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+
+         $url = $this->getAttribute('url');
+         $name = $this->getAttribute('name');
+         $type = $this->getAttribute('type');
+         $rewriting = $this->getAttribute('rewriting') === 'true' ? true : false;
+
+         if ($type == 'js') {
+            $node = new JsPackageNode($url, $name, $rewriting);
+         } else {
+            $node = new CssPackageNode($url, $name, $rewriting);
+         }
+         $header->addNode($node);
+
+         return '';
        }
 
    }

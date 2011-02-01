@@ -40,14 +40,15 @@
    class htmlheader_taglib_addcsscontent extends Document {
       
        public function onParseTime() {
-           $header = &$this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
-           /* @var $header HtmlHeaderManager */
-           $header->addNode(new CssContentNode($this->getContent()));
        }
 
-       public function transform(){
-           return '';
-       }
+      public function transform() {
+         $header = &$this->__getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+         /* @var $header HtmlHeaderManager */
+         $header->addNode(new CssContentNode($this->getContent()));
+
+         return '';
+      }
 
    }
 ?>

@@ -18,9 +18,8 @@
     * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
     * -->
     */
+   import('extensions::htmlheader::biz', 'DynamicCssNode');
 
-   import('extensions::htmlheader::biz','DynamicCssNode');
-   
    /**
     *  @namespace extensions::htmlheader::pres::taglib
     *  @class htmlheader_taglib_addcss
@@ -51,51 +50,49 @@
     *    <li>rewriting: Rewriting of target server enabled? (optional, option will be used from actual application otherwise)
     *    <li>fcaction: Use an fc-action on target server? (optional, will be set to true by default)
     *  </ul>
-    * 
+    *
     *  @author Ralf Schubert
     *  @version
     *  0.1, 20.09.2009 <br />
     *  0.2, 27.02.2010 (Added attributes for external file support) <br />
     */
    class htmlheader_taglib_addcss extends Document {
-      
-       public function onParseTime() {
-           $header = &$this->__getServiceObject('extensions::htmlheader::biz','HtmlHeaderManager');
 
-           $url = $this->getAttribute('url');
-           $folder = $this->getAttribute('folder');
-           $namespace = $this->getAttribute('namespace');
-           $filename = $this->getAttribute('filename');
+      public function onParseTime() {
+      }
 
-           $rewriting = $this->getAttribute('rewriting');
-           $fcaction = $this->getAttribute('fcaction');
+      public function transform() {
+         $header = &$this->__getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
 
-           if($rewriting === 'true'){
-               $rewriting = true;
-           }
-           elseif($rewriting === 'false'){
-               $rewriting = false;
-           }
+         $url = $this->getAttribute('url');
+         $folder = $this->getAttribute('folder');
+         $namespace = $this->getAttribute('namespace');
+         $filename = $this->getAttribute('filename');
 
-           if($fcaction === 'true'){
-               $fcaction = true;
-           }
-           elseif($fcaction === 'false'){
-               $fcaction = false;
-           }
-           
-           if($url !== null){
-               $node = new DynamicCssNode($url, $folder, $filename, $rewriting, $fcaction);
-           }
-           else {
-               $node = new DynamicCssNode(null, $namespace, $filename, $rewriting, $fcaction);
-           }
-           $header->addNode($node);
-       }
+         $rewriting = $this->getAttribute('rewriting');
+         $fcaction = $this->getAttribute('fcaction');
 
-       public function transform(){
-           return '';
-       }
-       
+         if ($rewriting === 'true') {
+            $rewriting = true;
+         } elseif ($rewriting === 'false') {
+            $rewriting = false;
+         }
+
+         if ($fcaction === 'true') {
+            $fcaction = true;
+         } elseif ($fcaction === 'false') {
+            $fcaction = false;
+         }
+
+         if ($url !== null) {
+            $node = new DynamicCssNode($url, $folder, $filename, $rewriting, $fcaction);
+         } else {
+            $node = new DynamicCssNode(null, $namespace, $filename, $rewriting, $fcaction);
+         }
+         $header->addNode($node);
+
+         return '';
+      }
+
    }
 ?>
