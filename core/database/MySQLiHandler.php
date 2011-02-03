@@ -63,7 +63,6 @@
             throw new DatabaseHandlerException('[MySQLiHandler->__connect()] Database connection '
                     .'could\'t be established ('.mysqli_connect_errno($this->__dbConn).': '
                             .mysqli_connect_error($this->__dbConn).')!',E_USER_ERROR);
-          // end if
          }
 
          // configure client connection
@@ -112,6 +111,9 @@
       }
 
       /**
+       * @public
+       *
+       * Executes a statement stored within a statement file.
        *
        * @param string $namespace Namespace of the statement file.
        * @param string $statementName Name of the statement file (filebody!).
@@ -125,29 +127,16 @@
        * @version
        * Version 0.1, 10.03.2010<br />
        */
-      public function executeStatement($namespace,$statementFile,$params = array(),$logStatement = false){
+      public function executeStatement($namespace, $statementFile, $params = array(), $logStatement = false) {
 
          // load statement file content
-         $statement = $this->getStatementFromFile($namespace,$statementFile);
-
-         // set place holders
-         if(count($params) > 0){
-
-            // replace statement param by a escaped value
-            foreach($params as $key => $value){
-               $statement = str_replace('['.$key.']',$this->escapeValue($value),$statement);
-             // end foreach
-            }
-
-          // end if
-         }
+         $statement = $this->getPreparedStatement($namespace, $statementFile, $params);
 
          // log statements in debug mode or when requested explicitly
          if($this->__dbDebug == true || $logStatement == true){
             $this->__dbLog->logEntry($this->__dbLogFileName,
                '[MySQLiHandler::executeStatement()] Current statement: '.$statement,
                'DEBUG');
-          // end if
          }
 
          // execute the statement with use of the current connection!
@@ -165,35 +154,6 @@
 
          return $this->__dbConn->store_result();
 
-      }
-
-      /**
-       * @private
-       *
-       * Loads the content of a statement file.
-       *
-       * @param string $namespace Namespace of the statement file.
-       * @param string $statementName Name of the statement file (filebody!).
-       * @return string The content of the statement file.
-       * @throws DatabaseHandlerException In case the statement file cannot be loaded.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 10.03.2010<br />
-       */
-      private function getStatementFromFile($namespace,$statementFile){
-
-         $env = Registry::retrieve('apf::core','Environment');
-         $file = APPS__PATH.'/config/'.str_replace('::','/',$namespace).'/'.str_replace('::','/',$this->__Context).'/'.$env.'_'.$statementFile.'.sql';
-
-         if(!file_exists($file)){
-            throw new DatabaseHandlerException('[MySQLiHandler->getStatementFromFile()] There\'s '
-                    .'no statement file with name "'.($env.'_'.$statementFile.'.sql').'" for given '
-                    .'namespace "config::'.$namespace.'" and current context "'.$this->__Context.'"!',
-                    E_USER_ERROR);
-         }
-
-         return file_get_contents($file);
       }
 
       /**
@@ -216,8 +176,8 @@
        */
       public function executeBindStatement($namespace,$statementFile,$params = array(),$logStatement = false){
 
-         // load statement file content
-         $statement = $this->getStatementFromFile($namespace,$statementFile);
+         // load statement file content (params will be replaced "manually")
+         $statement = $this->getPreparedStatement($namespace, $statementFile);
 
          // place holder setting is a bit tricky here, because the bind params
          // must be present in the order defined in the statement. Thus we must
@@ -226,7 +186,7 @@
          $statementId = md5($statement);
          $id = $statementId.' re-order bind params';
          $t->start($id);
-         preg_match_all('/\[([A-Za-z0-9]+)\]/i',$statement,$matches,PREG_SET_ORDER);
+         preg_match_all('/\[([A-Za-z0-9_\-]+)\]/u', $statement, $matches, PREG_SET_ORDER);
 
          $sortedParams = array();
          $bindVariablesAvailable = (count($matches) > 0);

@@ -109,19 +109,14 @@
             $this->__dbLog->logEntry($this->__dbLogFileName,
                '[SQLiteHandler::executeTextStatement()] Current statement: '.$statement,
                'DEBUG');
-          // end if
          }
 
          $result = sqlite_query($this->__dbConn,$statement);
 
          if($result === false){
-
             $message = sqlite_error_string(sqlite_last_error($this->__dbConn));
             $message .= ' (Statement: '.$statement.')';
-
             $this->__dbLog->logEntry($this->__dbLogFileName,$message,'ERROR');
-
-          // end if
          }
 
          // remember last insert id for futher usage
@@ -150,47 +145,22 @@
        * Version 0.1, 24.02.2008<br />
        * Version 0.2, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
        */
-      public function executeStatement($namespace,$statementName,$params = array(),$logStatement = false){
+      public function executeStatement($namespace, $statementName, $params = array(), $logStatement = false) {
 
-         $env = Registry::retrieve('apf::core','Environment');
-         $file = APPS__PATH.'/config/'.str_replace('::','/',$namespace).'/'.str_replace('::','/',$this->__Context).'/statements/'.$env.'_'.$statementName.'.sql';
-
-         if(!file_exists($file)){
-            throw new DatabaseHandlerException('[SQLiteHandler->executeStatement()] There\'s no '
-                    .'statement file with name "'.($env.'_'.$statementName.'.sql').'" for given '
-                    .'namespace "'.$namespace.'" and current context "'.$this->__Context.'"!',E_USER_ERROR);
-         }
-
-         $statement = file_get_contents($file);
-
-         // replace params by str_replace()
-         if(count($params) > 0){
-
-            foreach($params as $key => $value){
-               $statement = str_replace('['.$key.']',$value,$statement);
-             // end foreach
-            }
-
-          // end if
-         }
+         $statement = $this->getPreparedStatement($namespace, $statementName, $params);
 
          if($logStatement == true){
             $this->__dbLog->logEntry($this->__dbLogFileName,
                '[SQLiteHandler::executeTextStatement()] Current statement: '.$statement,
                'DEBUG');
-          // end if
          }
 
          $result = sqlite_query($this->__dbConn,$statement);
 
          if($result === false){
-
             $message = sqlite_error_string(sqlite_last_error($this->__dbConn));
             $message .= ' (Statement: '.$statement.')';
-
             $this->__dbLog->logEntry($this->__dbLogFileName,$message,'ERROR');
-
-          // end if
          }
 
          // remember last insert id for futher usage
@@ -198,7 +168,6 @@
 
          return $result;
 
-       // end function
       }
 
       /**
@@ -216,16 +185,13 @@
        * Version 0.2, 08.08.2010 (Added optional second parameter) <br />
        */
       public function fetchData($resultCursor, $type = self::ASSOC_FETCH_MODE){
-         if($type === self::ASSOC_FETCH_MODE){
-            return sqlite_fetch_array($resultCursor,SQLITE_ASSOC);
-         }
-         elseif($type === self::OBJECT_FETCH_MODE){
+         if ($type === self::ASSOC_FETCH_MODE) {
+            return sqlite_fetch_array($resultCursor, SQLITE_ASSOC);
+         } elseif ($type === self::OBJECT_FETCH_MODE) {
             return sqlite_fetch_object($resultCursor);
+         } else {
+            return sqlite_fetch_array($resultCursor, SQLITE_NUM);
          }
-         else {
-            return sqlite_fetch_array($resultCursor,SQLITE_NUM);
-         }
-       // end function
       }
 
       /**
@@ -242,7 +208,6 @@
        */
       public function escapeValue($value){
          return sqlite_escape_string($value);
-       // end function
       }
 
       /**
@@ -259,7 +224,6 @@
        */
       public function getAffectedRows($resultCursor){
          return sqlite_num_rows($resultCursor);
-       // end function
       }
 
     // end class

@@ -19,7 +19,7 @@
     * -->
     */
 
-   import('core::logging','Logger');
+   import('core::logging', 'Logger');
 
    /**
     * @package core::database
@@ -138,19 +138,16 @@
             // set server host
             if(isset($initParam['DB.Host'])){
                $this->__dbHost = $initParam['DB.Host'];
-             // end if
             }
 
             // set user name
             if(isset($initParam['DB.User'])){
                $this->__dbUser = $initParam['DB.User'];
-             // end if
             }
 
             // set password
             if(isset($initParam['DB.Pass'])){
                $this->__dbPass = $initParam['DB.Pass'];
-             // end if
             }
 
             // set name of the database
@@ -166,27 +163,21 @@
                $charset = trim($initParam['DB.Charset']);
                if(!empty($charset)){
                   $this->__dbCharset = $charset;
-                // end if
                }
-             // end if
             }
             if(isset($initParam['DB.Collation'])){
                $collation = trim($initParam['DB.Collation']);
                if(!empty($collation)){
                   $this->__dbCollation = $collation;
-                // end if
                }
-             // end if
             }
 
             $this->__dbLog = &Singleton::getInstance('Logger');
             $this->__isInitialized = true;
             $this->__connect();
 
-          // end if
          }
 
-       // end function
       }
 
       /**
@@ -307,7 +298,6 @@
        */
       public function getLastID(){
          return $this->__lastInsertID;
-       // end function
       }
 
       /**
@@ -334,9 +324,46 @@
             $this->executeTextStatement('SET collation_database = \''.$this->__dbCollation.'\'');
          }
          
-       // end function
       }
 
-    // end class
+      /**
+       * @protected
+       * 
+       * Loads a statement file and auto-replaces the params applied as arguments.
+       *
+       * @param string $namespace The namespace of the statement file.
+       * @param string $name The name of the statatement's file body (e.g. load_entries.sql).
+       * @param array $params An associative array with param names and their respective values.
+       * @return string The prepared statement.
+       * @throws DatabaseHandlerException In case the statement file cannot be loaded.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 03.02.2011<br />
+       */
+      protected function getPreparedStatement($namespace, $name, $params = array()) {
+         try {
+            $config = $this->getConfiguration($namespace, $name);
+         } catch (ConfigurationException $e) {
+            $env = Registry::retrieve('apf::core', 'Environment');
+            throw new DatabaseHandlerException('[' . get_class($this) . '->getStatementFromFile()] There\'s '
+                    . 'no statement file with name "' . $env . '_' . $name . '" for given '
+                    . 'namespace "config::' . $namespace . '" and current context "' . $this->getContext() . '"!',
+                    E_USER_ERROR);
+         }
+
+         /* @var $config StatementConfiguration */
+         $statement = $config->getStatement();
+
+         // replace statement param by a escaped value
+         if (count($params) > 0) {
+            foreach ($params as $key => $value) {
+               $statement = str_replace('[' . $key . ']', $this->escapeValue($value), $statement);
+            }
+         }
+
+         return $statement;
+      }
+
    }
 ?>

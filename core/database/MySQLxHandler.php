@@ -134,34 +134,13 @@
        */
       public function executeStatement($namespace,$statementFile,$params = array(),$logStatement = false){
 
-         // check, whether the desired statement file exists
-         $env = Registry::retrieve('apf::core','Environment');
-         $file = APPS__PATH.'/config/'.str_replace('::','/',$namespace).'/'.str_replace('::','/',$this->__Context).'/'.$env.'_'.$statementFile.'.sql';
-
-         if(!file_exists($file)){
-            throw new DatabaseHandlerException('[MySQLxHandler->executeStatement()] There\'s no statement file with name "'.($env.'_'.$statementFile.'.sql').'" for given namespace "config::'.$namespace.'" and current context "'.$this->__Context.'"!',E_USER_ERROR);
-         }
-
-         $statement = file_get_contents($file);
-
-         // set place holders
-         if(count($params) > 0){
-
-            // replace statement param by a escaped value
-            foreach($params as $key => $value){
-               $statement = str_replace('['.$key.']',$this->escapeValue($value),$statement);
-             // end foreach
-            }
-
-          // end if
-         }
+         $statement = $this->getPreparedStatement($namespace, $statementFile, $params);
 
          // log statements in debug mode or when requested explicitly
          if($this->__dbDebug == true || $logStatement == true){
             $this->__dbLog->logEntry($this->__dbLogFileName,
                '[MySQLxHandler::executeStatement()] Current statement: '.$statement,
                'DEBUG');
-          // end if
          }
 
          // execute the statement with use of the current connection!
