@@ -70,21 +70,14 @@ final class ConnectionManager extends APFObject {
     * @author Christian Achatz
     * @version
     * Version 0.1, 02.02.2011<br />
+    * Version 0.2, 04.02.2011 (Switched initialization to a more comfortable implementation)<br />
     */
    public function __construct() {
-      try {
-         $provider = ConfigurationManager::retrieveProvider(self::$STATEMENT_FILE_EXTENSION);
-         if (!$provider instanceof StatementConfigurationProvider) {
-            $this->registerConfigurationProvider();
-         }
-      } catch (ConfigurationException $e) {
-         $this->registerConfigurationProvider();
+      $providers = ConfigurationManager::getRegisteredProviders();
+      if (!in_array(self::$STATEMENT_FILE_EXTENSION, $providers)) {
+         import('core::database::config', 'StatementConfigurationProvider');
+         ConfigurationManager::registerProvider(self::$STATEMENT_FILE_EXTENSION, new StatementConfigurationProvider());
       }
-   }
-
-   private function registerConfigurationProvider() {
-      import('core::database::config', 'StatementConfigurationProvider');
-      ConfigurationManager::registerProvider(self::$STATEMENT_FILE_EXTENSION, new StatementConfigurationProvider());
    }
 
    /**

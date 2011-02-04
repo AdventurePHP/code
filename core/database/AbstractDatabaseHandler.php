@@ -348,7 +348,8 @@
             $env = Registry::retrieve('apf::core', 'Environment');
             throw new DatabaseHandlerException('[' . get_class($this) . '->getStatementFromFile()] There\'s '
                     . 'no statement file with name "' . $env . '_' . $name . '" for given '
-                    . 'namespace "config::' . $namespace . '" and current context "' . $this->getContext() . '"!',
+                    . 'namespace "config::' . $namespace . '" and current context "' . $this->getContext() 
+                    . '"! Root cause: '.$e->getMessage(),
                     E_USER_ERROR);
          }
 
