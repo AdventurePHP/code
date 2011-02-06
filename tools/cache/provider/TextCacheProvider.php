@@ -45,9 +45,9 @@
 
          // configure file mask
          try {
-            $fileMask = printf('%04u', $this->getConfigAttribute('Cache.FolderPermission'));
+            $fileMask = sprintf('%04u', $this->getConfigAttribute('Cache.FolderPermission'));
          } catch (InvalidArgumentException $e) {
-            $fileMask = 0770;
+            $fileMask = '0770';
          }
 
          // build cache file name and create cache folder
@@ -55,12 +55,11 @@
          FilesystemManager::createFolder(dirname($cacheFile), $fileMask);
 
          // write cache
-         $fH = fopen($cacheFile,'w+');
-         fwrite($fH,$content);
+         $fH = fopen($cacheFile, 'w+');
+         fwrite($fH, $content);
          fclose($fH);
          return true;
 
-       // end function
       }
 
       /**
@@ -88,7 +87,6 @@
 
          return $baseFolder.'/'.$namespace.'/'.$subFolder.'/'.$key.'.apfc';
 
-       // end function
       }
 
       public function clear(CacheKey $cacheKey = null){
@@ -110,9 +108,7 @@
             }
          }
 
-       // end function
       }
 
-    // end class
    }
 ?>
