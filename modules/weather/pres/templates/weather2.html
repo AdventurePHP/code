@@ -1,0 +1,19 @@
+<@controller namespace="modules::weather::pres::documentcontroller" file="weather_v2_controller" class="weather_v2_controller" @>
+<html:template name="Information">
+  <div class="weather">
+    <h3><template:placeholder name="City" /></h3>
+    <span class="condition"><template:placeholder name="Condition" /></span><br />
+    <span class="temp"><template:placeholder name="Temp" /> °C</span>
+  </div>
+</html:template>
+
+<html:template name="NoEntries_de">
+  <h3>Fehler</h3>
+  Es konnten leider keine Informationen unter <strong><template:placeholder name="Source" /></strong>
+  abgerufen werden.
+</html:template>
+
+<html:template name="NoEntries_en">
+  <h3>Error</h3>
+  The information cannot be obtained from <strong><template:placeholder name="Source" /></strong>.
+</html:template>

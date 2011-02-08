@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<xml_api_reply version="1">
+   <weather module_id="0" tab_id="0" mobile_row="0" mobile_zipped="1" row="0" section="0" >
+      <forecast_information>
+         <city data="Nuremberg, Bavaria"/>
+         <postal_code data="Nuremberg"/>
+         <latitude_e6 data=""/>
+         <longitude_e6 data=""/>
+         <forecast_date data="2010-08-16"/>
+         <current_date_time data="2010-08-16 16:55:00 +0000"/>
+         <unit_system data="SI"/>
+      </forecast_information>
+      <current_conditions>
+         <condition data="Bedeckt"/>
+         <temp_f data="58"/>
+         <temp_c data="14"/>
+         <humidity data="Feuchtigkeit: 80 %"/>
+         <icon data="/ig/images/weather/cloudy.gif"/>
+         <wind_condition data="Wind: SW mit 13 km/h"/>
+      </current_conditions>
+      <forecast_conditions>
+         <day_of_week data="Mo."/>
+         <low data="13"/>
+         <high data="17"/>
+         <icon data="/ig/images/weather/chance_of_rain.gif"/>
+         <condition data="Vereinzelt Regen"/>
+      </forecast_conditions>
+      <forecast_conditions>
+         <day_of_week data="Di."/>
+         <low data="11"/>
+         <high data="17"/>
+         <icon data="/ig/images/weather/chance_of_rain.gif"/>
+         <condition data="Vereinzelt Regen"/>
+      </forecast_conditions>
+      <forecast_conditions>
+         <day_of_week data="Mi."/>
+         <low data="12"/>
+         <high data="18"/>
+         <icon data="/ig/images/weather/chance_of_rain.gif"/>
+         <condition data="Vereinzelt Regen"/>
+      </forecast_conditions>
+      <forecast_conditions>
+         <day_of_week data="Do."/>
+         <low data="12"/>
+         <high data="21"/>
+         <icon data="/ig/images/weather/chance_of_rain.gif"/>
+         <condition data="Vereinzelt Regen"/>
+      </forecast_conditions>
+   </weather>
+</xml_api_reply>
