@@ -20,6 +20,7 @@
  */
 
    import('tools::validator', 'Validator');
+   import('core::logging', 'Logger');
 
    /**
     *  @package tools::mail
