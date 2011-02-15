@@ -249,6 +249,7 @@
        * Version 0.4, 02.01.2010 (Added ticks for property names to avoid key word issues)<br />
        * Version 0.5, 08.01.2010 (Added property value escaping in order to avoid sql injections)<br />
        * Version 0.6, 15.01.2011 (Added event handler calls)<br />
+       * Version 0.7, 15.02.2011 (Moved eventhandler calls to GORM-function, because afterSave() was called before whole tree was saved)<br />
        */
       public function saveObject(GenericORMapperDataObject &$object){
 
@@ -269,8 +270,6 @@
                              'CreationTimestamp'
                             );
 
-         //call event handler
-         $object->beforeSave();
 
          // check if object must be saved or updated
          $id = $object->getProperty($pkName);
@@ -398,9 +397,6 @@
          // inject data component to be able to reuse the saved object loading
          // related object or create assocations. (added for release 1.11)
          $object->setDataComponent($this);
-
-         // call event handler
-         $object->afterSave();
 
          // return the database ID of the object for further usage
          return $id;
