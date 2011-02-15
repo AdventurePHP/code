@@ -365,7 +365,6 @@
          $attributes['content'] = $content;
          return $attributes;
 
-       // end function
       }
 
       /**
@@ -447,7 +446,6 @@
          return $md5 == true ? md5(uniqid(rand(), true)) : uniqid(rand(), true);
       }
 
-    // end class
    }
 
    /**
@@ -817,20 +815,6 @@
       }
 
       /**
-       * Interface definition of the <em>transform()</em> method. This function is used to
-       * transform a DOM node within the page controller. It must be implemented by derived classes.
-       *
-       * @public
-       * @abstract
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 28.12.2006<br />
-       */
-      public function transform(){
-      }
-
-      /**
        * Interface definition of the init() method. This function is used to initialize a service
        * object with the service manager. It must be implemented by derived classes.
        *
@@ -844,35 +828,6 @@
        * Version 0.1, 30.03.2007<br />
        */
       public function init($initParam){
-      }
-
-      /**
-       * Interface definition of the onParseTime() method. This function is called after the creation
-       * of a new DOM node. It must be implemented by derived classes.
-       *
-       * @public
-       * @abstract
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 28.12.2006<br />
-       */
-      public function onParseTime(){
-      }
-
-      /**
-       * Interface definition of the onAfterAppend() method. This function is called after the DOM
-       * node is appended to the DOM tree. It must be implemented by derived classes.
-       *
-       * @public
-       * @abstract
-       *
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 28.12.2006<br />
-       */
-      public function onAfterAppend(){
       }
 
       /**
@@ -1034,7 +989,6 @@
 
       }
 
-    // end class
    }
 
    /**
@@ -1133,7 +1087,6 @@
          return $this->class;
       }
 
-    // end class
    }
 
    /**
@@ -1320,12 +1273,11 @@
          $this->__ObjectID = XmlParser::generateUniqID();
 
          // add the known taglibs (core taglibs!)
-         $this->__TagLibs[] = new TagLib('core::pagecontroller','core','addtaglib');
-         $this->__TagLibs[] = new TagLib('core::pagecontroller','core','importdesign');
-         $this->__TagLibs[] = new TagLib('core::pagecontroller','html','template');
-         $this->__TagLibs[] = new TagLib('core::pagecontroller','html','placeholder');
+         $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core', 'addtaglib');
+         $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core', 'importdesign');
+         $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'template');
+         $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'placeholder');
 
-       // end function
       }
 
       /**
@@ -1380,27 +1332,25 @@
        *
        * This method is used to add more known taglibs to a document.
        *
-       * @param string $namespace The namespace of the taglib
-       * @param string $prefix The prefix of the taglib
-       * @param string $class The class name of the taglib
+       * @param TagLib $tag The tag lib to add.
        *
-       * @author Christian Schäfer
+       * @author Christian Schäfer, Christian Achatz
        * @version
        * Version 0.1, 28.12.2006<br />
        * Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
+       * Version 0.3, 14.02.2011 (Refactored method signature to be more type safe)<br />
        */
-      public function addTagLib($namespace,$prefix,$class){
+      public function addTagLib(TagLib $tag){
 
          // add the taglib to the current node
-         $this->__TagLibs[] = new TagLib($namespace,$prefix,$class);
+         $this->__TagLibs[] = $tag;
 
          // import taglib class
-         $moduleName = $this->__getModuleName($prefix,$class);
-         if(!class_exists($moduleName)){
-            import($namespace,$moduleName);
+         $moduleName = $this->__getModuleName($tag->getPrefix(), $tag->getClass());
+         if (!class_exists($moduleName)) {
+            import($tag->getNamespace(), $moduleName);
          }
 
-       // end function
       }
 
       /**
@@ -1697,6 +1647,35 @@
       }
 
       /**
+       * Interface definition of the onParseTime() method. This function is called after the creation
+       * of a new DOM node. It must be implemented by derived classes.
+       *
+       * @public
+       * @abstract
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
+      public function onParseTime(){
+      }
+
+      /**
+       * Interface definition of the onAfterAppend() method. This function is called after the DOM
+       * node is appended to the DOM tree. It must be implemented by derived classes.
+       *
+       * @public
+       * @abstract
+       *
+       *
+       * @author Christian Schäfer
+       * @version
+       * Version 0.1, 28.12.2006<br />
+       */
+      public function onAfterAppend(){
+      }
+
+      /**
        * @public
        *
        * Implements the method, that is called at transformation time (see DOM node life cycle). If
@@ -1892,16 +1871,23 @@
       /**
        * @public
        *
-       * Implements the onParseTime() method of the Document class. Adds the desired taglib to the
-       * parent object.
+       * Implements the onParseTime() method of the Document class. Adds the desired
+       * taglib to the parent object.
        *
-       * @author Christian Schäfer
+       * @author Christian Schäfer, Christian Achatz
        * @version
        * Version 0.1, 28.12.2006<br />
        * Version 0.2, 10.11.2008 (Changed implementation. We now use getAttribute() instead of direct internal attribute addressing)<br />
+       * Version 0.3, 14.02.2011 (Adapted to new Document::addTaglib() signature)<br />
        */
       public function onParseTime(){
-         $this->getParentObject()->addTagLib($this->getAttribute('namespace'),$this->getAttribute('prefix'),$this->getAttribute('class'));
+         $this->getParentObject()->addTagLib(
+                 new TagLib(
+                         $this->getAttribute('namespace'),
+                         $this->getAttribute('prefix'),
+                         $this->getAttribute('class')
+                 )
+         );
       }
 
       /**
@@ -1918,7 +1904,6 @@
          return (string)'';
       }
 
-    // end class
    }
 
    /**
