@@ -676,6 +676,9 @@
 
          // in case the user likes to only save this object, the id is returned for further usage.
          if($saveEntireTree === false){
+            // call event handler
+            $object->afterSave();
+            
             return $id;
          }
 
