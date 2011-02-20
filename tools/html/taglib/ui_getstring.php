@@ -103,9 +103,7 @@
          }
          return $value;
 
-       // end function
       }
 
-    // end class
    }
 ?>

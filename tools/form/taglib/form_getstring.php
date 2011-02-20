@@ -34,9 +34,6 @@
     */
    abstract class form_getstring extends ui_getstring {
 
-      public function form_getstring(){
-      }
-
       /**
        * @public
        *
@@ -50,7 +47,6 @@
        */
       public function isValid(){
          return true;
-       // end function
       }
 
       /**
@@ -66,9 +62,7 @@
        */
       public function isSent(){
          return false;
-       // end function
       }
 
-    // end class
    }
 ?>
