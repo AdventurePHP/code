@@ -376,7 +376,7 @@
       /**
        * @protected
        *
-       * Initializes the osset names of the fields.
+       * Initializes the offset names of the fields.
        *
        * @author Christian Achatz
        * @version
