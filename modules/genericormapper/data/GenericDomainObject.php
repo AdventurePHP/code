@@ -267,7 +267,7 @@
 
          // check weather data component is there
          if($this->dataComponent === null){
-            throw new GenericORMapperException('[GenericDomainObject::createAssociation()] '
+            throw new GenericORMapperException('[GenericDomainObject::deleteAssociation()] '
                     .'The data component is not initialized, so related objects cannot be loaded! '
                     .'Please use the or mapper\'s createAssociation() method or call '
                     .'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
@@ -296,7 +296,7 @@
 
          // check weather data component is there
          if($this->dataComponent === null){
-            throw new GenericORMapperException('[GenericDomainObject::createAssociation()] '
+            throw new GenericORMapperException('[GenericDomainObject::deleteAssociations()] '
                     .'The data component is not initialized, so related objects cannot be loaded! '
                     .'Please use the or mapper\'s createAssociation() method or call '
                     .'setDataComponent($orm), where $orm is an instance of the or mapper, on this '
@@ -419,13 +419,9 @@
        * Version 0.1, 26.04.2008<br />
        */
       public function setProperties($properties = array()){
-
          if(count($properties) > 0){
             $this->properties = $properties;
-          // end if
          }
-
-       // end function
       }
 
       /**
@@ -531,6 +527,5 @@
          return array('objectName','properties','relatedObjects');
       }
 
-    // end class
    }
 ?>
