@@ -511,6 +511,24 @@
       /**
        * @public
        *
+       * This method returns the current version of the present APF distribution. Please
+       * note that this revision is no warranty that all files within your current
+       * installation are subjected to the returned version number since the APF team
+       * cannot guarantee consistency throughout manual patching or manuel SVN updates.
+       *
+       * @return string The current APF version.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 26.02.2011<br />
+       */
+      public function getVersion() {
+         return '1.13-SVN';
+      }
+
+      /**
+       * @public
+       *
        * Sets the object id of the current APF object.
        *
        * @param string $objectId The object id.
