@@ -25,6 +25,7 @@
    import('tools::form::taglib','form_taglib_text');
    import('tools::form::taglib','form_taglib_select');
    import('tools::form::taglib','form_taglib_date');
+   import('tools::form::taglib','form_taglib_time');
    import('tools::form::taglib','form_taglib_placeholder');
    import('tools::form::taglib','form_taglib_password');
    import('tools::form::taglib','form_taglib_hidden');
@@ -125,6 +126,7 @@
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','text');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','select');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','date');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','time');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','placeholder');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','password');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','hidden');
@@ -197,7 +199,6 @@
 
          return false;
 
-       // end function
       }
 
       /**
@@ -222,7 +223,6 @@
 
          return true;
 
-       // end function
       }
 
       /**
@@ -260,7 +260,6 @@
          throw new FormException('[html_taglib_form::addFormElement()] Form element "'.$elementType
             .'" cannot be added due to previous errors!');
 
-       // end function
       }
 
       /**
@@ -818,6 +817,5 @@
 
       }
 
-    // end class
    }
 ?>
