@@ -126,7 +126,6 @@
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','text');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','select');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','date');
-         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','time');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','placeholder');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','password');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','hidden');
@@ -141,6 +140,12 @@
 
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','timecaptcha');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','form','csrfhash');
+
+         // analyzing the form:time tag must be done after the form:timecaptcha, since
+         // the tag parser analyzes the whole tag string and form:time is fully contained
+         // in form:timecaptcha. this restriction of the APF parser is accepted due to
+         // performance reasons!
+         $this->__TagLibs[] = new TagLib('tools::form::taglib','form','time');
 
          // add additional attributes to whitelist
          $this->attributeWhiteList[] = self::$METHOD_ATTRIBUTE_NAME;
