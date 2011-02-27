@@ -141,6 +141,7 @@ class form_taglib_getclientvalidator extends form_control {
                     'function(event) {'.
                     'if(!$(\'form[id='. $this->getFormId().']\').validate($(this).attr(\'name\'))){'.
                     'event.stopImmediatePropagation();'.
+                    'return false;'.
                     '}'.
                     '}'.
                     ');';
