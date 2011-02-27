@@ -140,7 +140,7 @@ class form_taglib_getclientvalidator extends form_control {
             $output['general'] .= ' $(\'form[id='. $this->getFormId().']\').find(\'input[name='.$definition['button'].']\').click('.
                     'function(event) {'.
                     'if(!$(\'form[id='. $this->getFormId().']\').validate($(this).attr(\'name\'))){'.
-                    'return false;'.
+                    'event.stopImmediatePropagation();'.
                     '}'.
                     '}'.
                     ');';
