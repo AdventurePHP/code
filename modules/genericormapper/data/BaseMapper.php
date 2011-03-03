@@ -34,6 +34,7 @@
     * Version 0.2, 14.05.2008<br />
     * Version 0.3, 26.10.2008 (Added the addMappingConfiguration() and addRelationConfiguration() methods)<br />
     * Version 0.4, 30.12.2008 (Prettified the benchmark ids)<br />
+    * Version 0.5, 15.01.2011 (Added support for domain objects)<br />
     */
    class BaseMapper extends APFObject {
 
@@ -80,6 +81,13 @@
        * @var string[] Object relation table.
        */
       protected $__RelationTable = array();
+
+      /**
+       * @protected
+       * @since 1.14
+       * @var string[] Domain object table
+       */
+      protected $__ServiceObjectsTable = array();
 
       /**
        * @protected
@@ -253,6 +261,50 @@
       }
 
       /**
+       * @protected
+       *
+       * Create the service object table.<br />
+       *
+       * @author Ralf Schubert
+       * @version
+       * Version 0.1, 15.01.2011<br />
+       */
+      protected function __createServiceObjectsTable(){
+         
+         // invoke benchmark timer
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $t->start('BaseMapper::__createServiceObjectsTable()');
+
+         $configIsPresent = true;
+         // get object configuration if there is one
+         try {
+            $serviceObjectsConfig = $this->getConfiguration($this->__ConfigNamespace,$this->__ConfigNameAffix.'_serviceobjects');
+         }
+         catch(ConfigurationException $e){
+             $configIsPresent = false;
+         }
+
+         if($configIsPresent){
+             foreach($serviceObjectsConfig->getSectionNames() as $sectionName){
+                $section = $serviceObjectsConfig->getSection($sectionName);
+                $this->__ServiceObjectsTable[$sectionName] = array();
+                foreach($section->getValueNames() as $valueName){
+                   $this->__ServiceObjectsTable[$sectionName][$valueName] = $section->getValue($valueName);
+                }
+                if($section->getSection('Base') !== null){
+                    $this->__ServiceObjectsTable[$sectionName]['Base'] = array(
+                        'Namespace' => $section->getSection('Base')->getValue('Namespace'),
+                        'Class' => $section->getSection('Base')->getValue('Class'),
+                    );
+                }
+             }
+         }
+
+         $t->stop('BaseMapper::__createServiceObjectsTable()');
+         
+      }
+
+      /**
        * @public
        *
        * Imports additional mapping information.
@@ -386,6 +438,78 @@
        */
       public function addDIRelationConfiguration(GenericORMapperDIRelationConfiguration $config){
          $this->addRelationConfiguration($config->getConfigNamespace(),$config->getConfigAffix());
+      }
+
+      /**
+       * @public
+       *
+       * Imports additional domain object mapping information.
+       *
+       * @param string $configNamespace the desired configuration namespace
+       * @param string $configNameAffix the configuration affix of the desired configuration
+       *
+       * @author Ralf Schubert
+       * @version
+       * Version 0.1, 15.01.2011<br />
+       */
+      public function addServiceObjectsConfiguration($configNamespace,$configNameAffix){
+
+         $t = &Singleton::getInstance('BenchmarkTimer');
+         $t->start('BaseMapper::addServiceObjectsConfiguration()');
+
+         // add config, if not already included
+         $cacheKey = md5($configNamespace.$configNameAffix.'_serviceobjects');
+         if(!isset($this->__importedConfigCache[$cacheKey])){
+
+            // import and merge config
+            $addConfig = $this->getConfiguration($configNamespace,$configNameAffix.'_serviceobjects.ini');
+
+            // extract configuration to support pre 1.13 GORM config
+            $addObjects = array();
+            foreach($addConfig->getSectionNames() as $sectionName){
+               $section = $addConfig->getSection($sectionName);
+               $addObjects[$sectionName] = array();
+               foreach($section->getValueNames() as $valueName){
+                  $addObjects[$sectionName][$valueName] = $section->getValue($valueName);
+               }
+               if($section->getSection('Base') !== null){
+                    $addObjects[$sectionName]['Base'] = array(
+                        'Namespace' => $section->getSection('Base')->getValue('Namespace'),
+                        'Class' => $section->getSection('Base')->getValue('Class'),
+                    );
+                }
+            }
+
+            foreach($addObjects as $objectName => $DUMMY){
+               if(!isset($this->__ServiceObjectsTable[$objectName])){
+                  $this->__ServiceObjectsTable[$objectName] = $DUMMY;
+               }
+            }
+
+            // mark object config as cached
+            $this->__importedConfigCache[$cacheKey] = true;
+
+         }
+
+         $t->stop('BaseMapper::addServiceObjectsConfiguration()');
+
+      }
+
+      /**
+       * @public
+       *
+       * Allows you to initialize/enhance the generic or mapper's service object configuration using
+       * the DI service manager. See documentation of the
+       * <em>GenericORMapperDIServiceObjectsConfiguration</em> class on configuration definition.
+       *
+       * @param GenericORMapperDIServiceObjectsConfiguration $config The additional service objects configuration.
+       *
+       * @author Ralf Schubert
+       * @version
+       * Version 0.1, 15.01.2011<br />
+       */
+      public function addDIServiceObjectsConfiguration(GenericORMapperDIDOMappingConfiguration $config){
+         $this->addServiceObjectsConfiguration($config->getConfigNamespace(),$config->getConfigAffix());
       }
 
       /**
