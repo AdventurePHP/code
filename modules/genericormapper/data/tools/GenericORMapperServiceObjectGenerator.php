@@ -42,13 +42,13 @@
          * @version 0.1,  15.01.2011<br />
          */
         public function generateServiceObjects($configNamespace,$configNameAffix){
-            $this->__ConfigNamespace = $configNamespace;
-            $this->__ConfigNameAffix = $configNameAffix;
+            $this->ConfigNamespace = $configNamespace;
+            $this->ConfigNameAffix = $configNameAffix;
 
-            $this->__createMappingTable();
-            $this->__createServiceObjectsTable();
-            foreach($this->__ServiceObjectsTable as $name => $DUMMY){
-                $this->__generateServiceObject($name);
+            $this->createMappingTable();
+            $this->createServiceObjectsTable();
+            foreach($this->ServiceObjectsTable as $name => $DUMMY){
+                $this->generateServiceObject($name);
             }
         }
 
@@ -60,15 +60,15 @@
          * @author Ralf Schubert
          * @version 0.1,  15.01.2011<br />
          */
-        protected function __generateServiceObject($name){
-            $filename = APPS__PATH.'/'.str_replace('::','/',$this->__ServiceObjectsTable[$name]['Namespace']).'/'.$this->__ServiceObjectsTable[$name]['Class'].'.php';
+        protected function generateServiceObject($name){
+            $filename = APPS__PATH.'/'.str_replace('::','/',$this->ServiceObjectsTable[$name]['Namespace']).'/'.$this->ServiceObjectsTable[$name]['Class'].'.php';
 
             // check if we need to update an old or create a new definition
             if(file_exists($filename)){
-                $this->__updateServiceObject($name, $filename);
+                $this->updateServiceObject($name, $filename);
             }
             else {
-                $this->__createNewServiceObject($name, $filename);
+                $this->createNewServiceObject($name, $filename);
             }
         }
 
@@ -81,12 +81,12 @@
          * @author Ralf Schubert
          * @version 0.1,  15.01.2011<br />
          */
-        protected function __createNewServiceObject($name){
-            $filename = APPS__PATH.'/'.str_replace('::','/',$this->__ServiceObjectsTable[$name]['Namespace']).'/'.$this->__ServiceObjectsTable[$name]['Class'].'.php';
+        protected function createNewServiceObject($name){
+            $filename = APPS__PATH.'/'.str_replace('::','/',$this->ServiceObjectsTable[$name]['Namespace']).'/'.$this->ServiceObjectsTable[$name]['Class'].'.php';
 
             $content = '<?php'.PHP_EOL . PHP_EOL.
-                    $this->__generateBaseObjectCode($name) . PHP_EOL .
-                    $this->__generateObjectCode($name) . PHP_EOL . PHP_EOL.
+                    $this->generateBaseObjectCode($name) . PHP_EOL . PHP_EOL .
+                    $this->generateObjectCode($name) . PHP_EOL . PHP_EOL.
                     '?>';
 
             file_put_contents($filename, $content);
@@ -102,17 +102,30 @@
          * @author Ralf Schubert
          * @version 0.1,  15.01.2011<br />
          */
-        protected function __updateServiceObject($name){
-            $filename = APPS__PATH.'/'.str_replace('::','/',$this->__ServiceObjectsTable[$name]['Namespace']).'/'.$this->__ServiceObjectsTable[$name]['Class'].'.php';
-            
+        protected function updateServiceObject($name){
+            $filename = APPS__PATH.'/'.str_replace('::','/',$this->ServiceObjectsTable[$name]['Namespace']).'/'.$this->ServiceObjectsTable[$name]['Class'].'.php';
+
             $content = file_get_contents($filename);
+            $newcode = $this->generateBaseObjectCode($name);
             
             // replace only base object area, don't change anything else!
-            $content = preg_replace(
-                    '%//<\*'.$this->__ServiceObjectsTable[$name]['Class'].'Base:start\*>(.)+<\*'.$this->__ServiceObjectsTable[$name]['Class'].'Base:end\*>%s',
-                    $this->__generateBaseObjectCode($name),
+
+            // <<< *IMPORTANT* There seems to be a bug in preg_replace() which
+            // causes a crash when trying to use the php-code from the old file
+            // as subject as shown here:
+            /*$content = preg_replace(
+                    '%//<\*'.$this->ServiceObjectsTable[$name]['Class'].'Base:start\*>(.)+<\*'.$this->ServiceObjectsTable[$name]['Class'].'Base:end\*>%s',
+                    $newcode,
                     $content
-            );
+            );*/
+            // *WORKAROUND* with preg_* functions not found, used some string funtions instead:
+            $starttag = '//<*'.$this->ServiceObjectsTable[$name]['Class'].'Base:start*>';
+            $endtag = '<*'.$this->ServiceObjectsTable[$name]['Class'].'Base:end*>';
+            $start = strpos($content, $starttag);
+            $length = strpos($content, $endtag, $start) + strlen($endtag) - $start;
+            $content = substr_replace($content, $newcode, $start, $length);
+            // If anyone has further information or a solution for this, please
+            // write a post in the APF-forum. PHP-version: found at 5.3.5  >>>
             
             file_put_contents($filename, $content);
         }
@@ -126,17 +139,17 @@
          * @author Ralf Schubert
          * @version 0.1,  15.01.2011<br />
          */
-        protected function __generateBaseObjectCode($name){
-            $code = '//<*'.$this->__ServiceObjectsTable[$name]['Class'].'Base:start*> DO NOT CHANGE THIS COMMENT!'. PHP_EOL.
+        protected function generateBaseObjectCode($name){
+            $code = '//<*'.$this->ServiceObjectsTable[$name]['Class'].'Base:start*> DO NOT CHANGE THIS COMMENT!'. PHP_EOL.
                     '/**'. PHP_EOL .
-                    ' * Automatically generated BaseObject for '. $this->__ServiceObjectsTable[$name]['Class']. '. !!DO NOT CHANGE THIS BASE-CLASS!!'. PHP_EOL .
+                    ' * Automatically generated BaseObject for '. $this->ServiceObjectsTable[$name]['Class']. '. !!DO NOT CHANGE THIS BASE-CLASS!!'. PHP_EOL .
                     ' * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!'. PHP_EOL .
-                    ' * You can change class "'.$this->__ServiceObjectsTable[$name]['Class'].'" which will extend this base-class.'.PHP_EOL.
+                    ' * You can change class "'.$this->ServiceObjectsTable[$name]['Class'].'" which will extend this base-class.'.PHP_EOL.
                     ' */'. PHP_EOL;
 
-            if(isset($this->__ServiceObjectsTable[$name]['Base'])){
-                $BaseNamespace = $this->__ServiceObjectsTable[$name]['Base']['Namespace'];
-                $BaseClass = $this->__ServiceObjectsTable[$name]['Base']['Class'];
+            if(isset($this->ServiceObjectsTable[$name]['Base'])){
+                $BaseNamespace = $this->ServiceObjectsTable[$name]['Base']['Namespace'];
+                $BaseClass = $this->ServiceObjectsTable[$name]['Base']['Class'];
             }
             else {
                 $BaseNamespace = $this->DefaultBaseNamespace;
@@ -144,19 +157,21 @@
             }
             
             $code.= 'import(\''.$BaseNamespace.'\', \''.$BaseClass.'\');'.PHP_EOL.
-                    'class '. $this->__ServiceObjectsTable[$name]['Class'] . 'Base extends '.$BaseClass . ' {'.PHP_EOL.PHP_EOL.
-                    '    protected $objectName = \''.$name.'\';'.PHP_EOL.
+                    'class '. $this->ServiceObjectsTable[$name]['Class'] . 'Base extends '.$BaseClass . ' {'.PHP_EOL.PHP_EOL.
+                    '    public function __construct($objectName = null){'.PHP_EOL.
+                    '        parent::__construct(\''.$name.'\');'.PHP_EOL.
+                    '    }'.PHP_EOL.
                     PHP_EOL;
 
-            foreach($this->__MappingTable[$name] as $Key => $DUMMY){
+            foreach($this->MappingTable[$name] as $Key => $DUMMY){
                 if($Key === 'ID' || $Key === 'Table')
                     continue;
-                $code .= $this->__generateGetterCode($Key);
-                $code .= $this->__generateSetterCode($Key);
+                $code .= $this->generateGetterCode($Key);
+                $code .= $this->generateSetterCode($Key);
             }
 
             $code.= '}'.PHP_EOL.
-                    '// DO NOT CHANGE THIS COMMENT! <*'.$this->__ServiceObjectsTable[$name]['Class'].'Base:end*>'.PHP_EOL;
+                    '// DO NOT CHANGE THIS COMMENT! <*'.$this->ServiceObjectsTable[$name]['Class'].'Base:end*>';
             return $code;
         }
 
@@ -169,7 +184,7 @@
          * @author Ralf Schubert
          * @version 0.1,  15.01.2011<br />
          */
-        protected function __generateGetterCode($name){
+        protected function generateGetterCode($name){
             return  '    public function get'.$name.'() {'.PHP_EOL.
                     '        return $this->getProperty(\''.$name.'\');'.PHP_EOL.
                     '    }'. PHP_EOL.PHP_EOL;
@@ -184,7 +199,7 @@
          * @author Ralf Schubert
          * @version 0.1,  15.01.2011<br />
          */
-        protected function __generateSetterCode($name){
+        protected function generateSetterCode($name){
             return  '    public function set'.$name.'($value) {'.PHP_EOL.
                     '        $this->setProperty(\''.$name.'\', $value);'.PHP_EOL.
                     '        return $this;'.PHP_EOL.
@@ -200,18 +215,20 @@
          * @author Ralf Schubert
          * @version 0.1,  15.01.2011<br />
          */
-        protected function __generateObjectCode($name){
+        protected function generateObjectCode($name){
             return
                 '/**'.PHP_EOL.
-                ' * Domain object for "' . $this->__ServiceObjectsTable[$name]['Class'] . '"'.PHP_EOL.
+                ' * Domain object for "' . $this->ServiceObjectsTable[$name]['Class'] . '"'.PHP_EOL.
                 ' * Use this class to add your own functions.'.PHP_EOL.
                 ' */'.PHP_EOL.
-                'class '.$this->__ServiceObjectsTable[$name]['Class'].' extends '.$this->__ServiceObjectsTable[$name]['Class'].'Base {'.PHP_EOL.
+                'class '.$this->ServiceObjectsTable[$name]['Class'].' extends '.$this->ServiceObjectsTable[$name]['Class'].'Base {'.PHP_EOL.
                 '    /**'.PHP_EOL.
-                '     * Overwrite parent\'s function because the objectName is already set.'.PHP_EOL.
+                '     * Call parent\'s function because the objectName needs to be set.'.PHP_EOL.
                 '     */'.PHP_EOL.
-                '    public function __construct($objectName = null){}'.PHP_EOL.
-                '    '.PHP_EOL.
+                '    public function __construct($objectName = null){'.PHP_EOL.
+                '        parent::__construct();'.PHP_EOL.
+                '    }'.PHP_EOL.
+                PHP_EOL.
                 '}';
         }
 

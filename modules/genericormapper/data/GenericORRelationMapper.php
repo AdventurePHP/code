@@ -53,8 +53,8 @@
          parent::init($initParam);
 
          // create relation table if necessary
-         if(count($this->__RelationTable) == 0){
-            $this->__createRelationTable();
+         if(count($this->RelationTable) == 0){
+            $this->createRelationTable();
           // end if
          }
 
@@ -106,7 +106,7 @@
                     .'No criterion object given as second argument! Please consult the manual.',
                     E_USER_ERROR);
          }
-         return $this->loadObjectListByTextStatement($objectName,$this->__buildSelectStatementByCriterion($objectName,$criterion));
+         return $this->loadObjectListByTextStatement($objectName,$this->buildSelectStatementByCriterion($objectName,$criterion));
 
        // end function
       }
@@ -133,7 +133,7 @@
             return null;
           // end if
          }
-         return $this->loadObjectByTextStatement($objectName,$this->__buildSelectStatementByCriterion($objectName,$criterion));
+         return $this->loadObjectByTextStatement($objectName,$this->buildSelectStatementByCriterion($objectName,$criterion));
 
        // end function
       }
@@ -149,11 +149,11 @@
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 26.06.2008 (Extracted from __buildSelectStatementByCriterion())<br />
+       * Version 0.1, 26.06.2008 (Extracted from buildSelectStatementByCriterion())<br />
        * Version 0.2, 16.02.2010 (Added value escaping to avoid SQL injection)<br />
        * Version 0.3, 28.05.2010 (Bugfix: corrected where definition creation)<br />
        */
-      protected function __buildWhere($objectName,GenericCriterionObject $criterion){
+      protected function buildWhere($objectName,GenericCriterionObject $criterion){
 
          $whereList = array();
 
@@ -165,15 +165,15 @@
             // add additional where statements
             foreach($properties as $propertyName => $propertyValue){
 
-               $propertyName = $this->__DBDriver->escapeValue($propertyName);
-               $propertyValue = $this->__DBDriver->escapeValue($propertyValue);
+               $propertyName = $this->DBDriver->escapeValue($propertyName);
+               $propertyValue = $this->DBDriver->escapeValue($propertyValue);
                
                if(substr_count($propertyValue,'%') > 0 || substr_count($propertyValue,'_') > 0){
-                  $whereList[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$propertyName.'` LIKE \''.$propertyValue.'\'';
+                  $whereList[] = '`'.$this->MappingTable[$objectName]['Table'].'`.`'.$propertyName.'` LIKE \''.$propertyValue.'\'';
                 // end if
                }
                else{
-                  $whereList[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$propertyName.'` = \''.$propertyValue.'\'';
+                  $whereList[] = '`'.$this->MappingTable[$objectName]['Table'].'`.`'.$propertyName.'` = \''.$propertyValue.'\'';
                 // end else
                }
 
@@ -199,10 +199,10 @@
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 26.06.2008 (Extracted from __buildSelectStatementByCriterion())<br />
+       * Version 0.1, 26.06.2008 (Extracted from buildSelectStatementByCriterion())<br />
        * Version 0.2, 16.02.2010 (Added value escaping to avoid SQL injection)<br />
        */
-      protected function __buildOrder($objectName,GenericCriterionObject $criterion){
+      protected function buildOrder($objectName,GenericCriterionObject $criterion){
 
          // initialize return list
          $ORDER = array();
@@ -214,9 +214,9 @@
 
             // create order list
             foreach($orders as $propertyName => $direction){
-               $ORDER[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'
-                       .$this->__DBDriver->escapeValue($propertyName).'` '
-                       .$this->__DBDriver->escapeValue($direction);
+               $ORDER[] = '`'.$this->MappingTable[$objectName]['Table'].'`.`'
+                       .$this->DBDriver->escapeValue($propertyName).'` '
+                       .$this->DBDriver->escapeValue($direction);
              // end foreach
             }
 
@@ -239,13 +239,13 @@
        *
        * @author Christian Achatz
        * @version
-       * Version 0.1, 26.06.2008 (Extracted from __buildSelectStatementByCriterion())<br />
+       * Version 0.1, 26.06.2008 (Extracted from buildSelectStatementByCriterion())<br />
        */
-      protected function __buildProperties($objectName,GenericCriterionObject $criterion){
+      protected function buildProperties($objectName,GenericCriterionObject $criterion){
 
          // check for valid object definition
-         if(!isset($this->__MappingTable[$objectName])){
-            throw new GenericORMapperException('[GenericORRelationMapper::__buildProperties()] No '
+         if(!isset($this->MappingTable[$objectName])){
+            throw new GenericORMapperException('[GenericORRelationMapper::buildProperties()] No '
                     .'object with name \''.$objectName.'\' was found within the mapping table. '
                     .'Please double check your mapping configuration file or refresh the mapping table!');
          }
@@ -257,7 +257,7 @@
             $propertyList = array();
 
             foreach($objectProperties as $objectProperty){
-               $propertyList[] = '`'.$this->__MappingTable[$objectName]['Table'].'`.`'.$objectProperty.'`';
+               $propertyList[] = '`'.$this->MappingTable[$objectName]['Table'].'`.`'.$objectProperty.'`';
              // end foreach
             }
 
@@ -266,7 +266,7 @@
           // end if
          }
          else{
-            $properties = '`'.$this->__MappingTable[$objectName]['Table'].'`.*';
+            $properties = '`'.$this->MappingTable[$objectName]['Table'].'`.*';
           // end else
          }
 
@@ -290,11 +290,11 @@
        * Version 0.2, 21.06.2008 (Code completed)<br />
        * Version 0.3, 25.06.2008 (Added LIKE-Feature. If the property indicator contains a '%' or '_', the resulting statement contains a LIKE clause instead of a = clause)<br />
        */
-      protected function __buildSelectStatementByCriterion($objectName,GenericCriterionObject $criterion){
+      protected function buildSelectStatementByCriterion($objectName,GenericCriterionObject $criterion){
 
          // invoke benchmarker
          $t = &Singleton::getInstance('BenchmarkTimer');
-         $id = 'GenericORRelationMapper::__buildSelectStatementByCriterion()';
+         $id = 'GenericORRelationMapper::buildSelectStatementByCriterion()';
          $t->start($id);
 
          // generate relation joins
@@ -308,12 +308,12 @@
             foreach($relations as $relationName => $relatedObject){
 
                // gather information about the object relations
-               $RelationTable = $this->__RelationTable[$relationName]['Table'];
-               $FromTable = $this->__MappingTable[$objectName]['Table'];
+               $RelationTable = $this->RelationTable[$relationName]['Table'];
+               $FromTable = $this->MappingTable[$objectName]['Table'];
                $TargetObjectName = $this->getRelatedObjectNameByRelationName($objectName,$relationName);
-               $ToTable = $this->__MappingTable[$TargetObjectName]['Table'];
-               $SoureObjectID = $this->__MappingTable[$objectName]['ID'];
-               $TargetObjectID = $this->__MappingTable[$TargetObjectName]['ID'];
+               $ToTable = $this->MappingTable[$TargetObjectName]['Table'];
+               $SoureObjectID = $this->MappingTable[$objectName]['ID'];
+               $TargetObjectID = $this->MappingTable[$TargetObjectName]['ID'];
 
                // add statement to join list
                $joinList[] = 'INNER JOIN `'.$RelationTable.'` ON `'.$FromTable.'`.`'.$SoureObjectID.'` = `'.$RelationTable.'`.`'.$SoureObjectID.'`';
@@ -329,20 +329,20 @@
          }
 
          // build statement
-         $select = 'SELECT '.($this->__buildProperties($objectName,$criterion)).' FROM `'.$this->__MappingTable[$objectName]['Table'].'` ';
+         $select = 'SELECT '.($this->buildProperties($objectName,$criterion)).' FROM `'.$this->MappingTable[$objectName]['Table'].'` ';
 
          if(count($joinList) > 0){
             $select .= ' '.implode(' ',$joinList);
           // end if
          }
 
-         $whereList = array_merge($whereList,$this->__buildWhere($objectName,$criterion));
+         $whereList = array_merge($whereList,$this->buildWhere($objectName,$criterion));
          if(count($whereList) > 0){
             $select .= ' WHERE '.implode(' AND ',$whereList);
           // end if
          }
 
-         $order = $this->__buildOrder($objectName,$criterion);
+         $order = $this->buildOrder($objectName,$criterion);
          if(count($order) > 0){
             $select .= ' ORDER BY '.implode(', ',$order);
           // end if
@@ -423,7 +423,7 @@
 
          // gather information about the objects related to each other
          $objectName = $object->getObjectName();
-         $sourceObject = $this->__MappingTable[$objectName];
+         $sourceObject = $this->MappingTable[$objectName];
          
          // check for null relations to prevent "undefined index" errors.
          $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName,$relationName);
@@ -436,7 +436,7 @@
          }
 
          // BUG-142: wrong spelling of source and target object must result in descriptive error!
-         if(!isset($this->__MappingTable[$targetObjectName])){
+         if(!isset($this->MappingTable[$targetObjectName])){
             throw new GenericORMapperException(
                '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "'
                .$targetObjectName.'" found in releation definition "'.$relationName
@@ -444,7 +444,7 @@
                E_USER_ERROR
             );
          }
-         $targetObject = $this->__MappingTable[$targetObjectName];
+         $targetObject = $this->MappingTable[$targetObjectName];
 
          // create an empty criterion if the argument was null
          if($criterion === null){
@@ -453,11 +453,11 @@
          }
 
          // build statement
-         $select = 'SELECT '.($this->__buildProperties($targetObjectName,$criterion)).' FROM `'.$targetObject['Table'].'`';
+         $select = 'SELECT '.($this->buildProperties($targetObjectName,$criterion)).' FROM `'.$targetObject['Table'].'`';
 
          // JOIN
-         $select .= 'INNER JOIN `'.$this->__RelationTable[$relationName]['Table'].'` ON `'.$targetObject['Table'].'`.`'.$targetObject['ID'].'` = `'.$this->__RelationTable[$relationName]['Table'].'`.`'.$targetObject['ID'].'`
-                     INNER JOIN `'.$sourceObject['Table'].'` ON `'.$this->__RelationTable[$relationName]['Table'].'`.`'.$sourceObject['ID'].'` = `'.$sourceObject['Table'].'`.`'.$sourceObject['ID'].'`';
+         $select .= 'INNER JOIN `'.$this->RelationTable[$relationName]['Table'].'` ON `'.$targetObject['Table'].'`.`'.$targetObject['ID'].'` = `'.$this->RelationTable[$relationName]['Table'].'`.`'.$targetObject['ID'].'`
+                     INNER JOIN `'.$sourceObject['Table'].'` ON `'.$this->RelationTable[$relationName]['Table'].'`.`'.$sourceObject['ID'].'` = `'.$sourceObject['Table'].'`.`'.$sourceObject['ID'].'`';
 
          // - add relation joins
          $where = array();
@@ -467,13 +467,13 @@
 
             // gather relation params
             $relationObjectName = $relations[$innerRelationName]->getObjectName();
-            $relationSourceObject = $this->__MappingTable[$relationObjectName];
+            $relationSourceObject = $this->MappingTable[$relationObjectName];
             $relationTargetObjectName = $this->getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(),$innerRelationName);
-            $relationTargetObject = $this->__MappingTable[$relationTargetObjectName];
+            $relationTargetObject = $this->MappingTable[$relationTargetObjectName];
 
             // finally build join
-            $joins .= ' INNER JOIN `'.$this->__RelationTable[$innerRelationName]['Table'].'` ON `'.$relationTargetObject['Table'].'`.`'.$relationTargetObject['ID'].'` = `'.$this->__RelationTable[$innerRelationName]['Table'].'`.`'.$relationTargetObject['ID'].'`
-                        INNER JOIN `'.$relationSourceObject['Table'].'` ON `'.$this->__RelationTable[$innerRelationName]['Table'].'`.`'.$relationSourceObject['ID'].'` = `'.$relationSourceObject['Table'].'`.`'.$relationSourceObject['ID'].'`';
+            $joins .= ' INNER JOIN `'.$this->RelationTable[$innerRelationName]['Table'].'` ON `'.$relationTargetObject['Table'].'`.`'.$relationTargetObject['ID'].'` = `'.$this->RelationTable[$innerRelationName]['Table'].'`.`'.$relationTargetObject['ID'].'`
+                        INNER JOIN `'.$relationSourceObject['Table'].'` ON `'.$this->RelationTable[$innerRelationName]['Table'].'`.`'.$relationSourceObject['ID'].'` = `'.$relationSourceObject['Table'].'`.`'.$relationSourceObject['ID'].'`';
 
             // add a where for each join
             $where[] = '`'.$relationSourceObject['Table'].'`.`'.$relationSourceObject['ID'].'` = \''.$relations[$innerRelationName]->getProperty($relationSourceObject['ID']).'\'';
@@ -483,12 +483,12 @@
          $select .= $joins;
 
          // add where statement
-         $where = array_merge($where,$this->__buildWhere($targetObjectName,$criterion));
+         $where = array_merge($where,$this->buildWhere($targetObjectName,$criterion));
          $where[] = '`'.$sourceObject['Table'].'`.`'.$sourceObject['ID'].'` = \''.$object->getProperty($sourceObject['ID']).'\'';
          $select .= ' WHERE '.implode(' AND ',$where);
 
          // add order clause
-         $order = $this->__buildOrder($targetObjectName,$criterion);
+         $order = $this->buildOrder($targetObjectName,$criterion);
          if(count($order) > 0){
             $select .= ' ORDER BY '.implode(', ',$order);
           // end if
@@ -534,9 +534,9 @@
 
          // gather information about the objects *not* related to each other
          $objectName = $object->getObjectName();
-         $sourceObject = $this->__MappingTable[$objectName];
+         $sourceObject = $this->MappingTable[$objectName];
          $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName,$relationName);
-         $targetObject = $this->__MappingTable[$targetObjectName];
+         $targetObject = $this->MappingTable[$targetObjectName];
 
          // create an empty criterion if the argument was null
          if($criterion === null){
@@ -545,7 +545,7 @@
          }
 
          // build statement
-         $select = 'SELECT '.($this->__buildProperties($targetObjectName,$criterion)).' FROM `'.$targetObject['Table'].'`';
+         $select = 'SELECT '.($this->buildProperties($targetObjectName,$criterion)).' FROM `'.$targetObject['Table'].'`';
 
          // add relation joins
          $where = array();
@@ -555,13 +555,13 @@
 
             // gather relation params
             $relationObjectName = $relations[$innerRelationName]->getObjectName();
-            $relationSourceObject = $this->__MappingTable[$relationObjectName];
+            $relationSourceObject = $this->MappingTable[$relationObjectName];
             $relationTargetObjectName = $this->getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(),$innerRelationName);
-            $relationTargetObject = $this->__MappingTable[$relationTargetObjectName];
+            $relationTargetObject = $this->MappingTable[$relationTargetObjectName];
 
             // finally build join
-            $joins .= ' INNER JOIN `'.$this->__RelationTable[$innerRelationName]['Table'].'` ON `'.$relationTargetObject['Table'].'`.`'.$relationTargetObject['ID'].'` = `'.$this->__RelationTable[$innerRelationName]['Table'].'`.`'.$relationTargetObject['ID'].'`
-                        INNER JOIN `'.$relationSourceObject['Table'].'` ON `'.$this->__RelationTable[$innerRelationName]['Table'].'`.`'.$relationSourceObject['ID'].'` = `'.$relationSourceObject['Table'].'`.`'.$relationSourceObject['ID'].'`';
+            $joins .= ' INNER JOIN `'.$this->RelationTable[$innerRelationName]['Table'].'` ON `'.$relationTargetObject['Table'].'`.`'.$relationTargetObject['ID'].'` = `'.$this->RelationTable[$innerRelationName]['Table'].'`.`'.$relationTargetObject['ID'].'`
+                        INNER JOIN `'.$relationSourceObject['Table'].'` ON `'.$this->RelationTable[$innerRelationName]['Table'].'`.`'.$relationSourceObject['ID'].'` = `'.$relationSourceObject['Table'].'`.`'.$relationSourceObject['ID'].'`';
 
             // add a where for each join
             $where[] = '`'.$relationSourceObject['Table'].'`.`'.$relationSourceObject['ID'].'` = \''.$relations[$innerRelationName]->getProperty($relationSourceObject['ID']).'\'';
@@ -571,7 +571,7 @@
          $select .= $joins;
 
          // add where clause
-         $where = array_merge($where,$this->__buildWhere($targetObjectName,$criterion));
+         $where = array_merge($where,$this->buildWhere($targetObjectName,$criterion));
          $where[] = '`'.$targetObject['Table'].'`.`'.$targetObject['ID'].'` NOT IN ( ';
          $select .= ' WHERE '.implode(' AND ',$where);
 
@@ -579,8 +579,8 @@
          $select .= ' SELECT `'.$targetObject['Table'].'`.`'.$targetObject['ID'].'` FROM `'.$targetObject['Table'].'`';
 
          // inner inner join to the target object
-         $select .= ' INNER JOIN `'.$this->__RelationTable[$relationName]['Table'].'` ON `'.$targetObject['Table'].'`.`'.$targetObject['ID'].'` = `'.$this->__RelationTable[$relationName]['Table'].'`.`'.$targetObject['ID'].'`
-                      INNER JOIN `'.$sourceObject['Table'].'` ON `'.$this->__RelationTable[$relationName]['Table'].'`.`'.$sourceObject['ID'].'` = `'.$sourceObject['Table'].'`.`'.$sourceObject['ID'].'`';
+         $select .= ' INNER JOIN `'.$this->RelationTable[$relationName]['Table'].'` ON `'.$targetObject['Table'].'`.`'.$targetObject['ID'].'` = `'.$this->RelationTable[$relationName]['Table'].'`.`'.$targetObject['ID'].'`
+                      INNER JOIN `'.$sourceObject['Table'].'` ON `'.$this->RelationTable[$relationName]['Table'].'`.`'.$sourceObject['ID'].'` = `'.$sourceObject['Table'].'`.`'.$sourceObject['ID'].'`';
 
          // add inner where
          $select .= ' WHERE `'.$sourceObject['Table'].'`.`'.$sourceObject['ID'].'` = \''.$object->getProperty($sourceObject['ID']).'\'';
@@ -589,7 +589,7 @@
          $select .= ' )';
 
          // add order clause
-         $order = $this->__buildOrder($targetObjectName,$criterion);
+         $order = $this->buildOrder($targetObjectName,$criterion);
          if(count($order) > 0){
             $select .= ' ORDER BY '.implode(', ',$order);
           // end if
@@ -623,7 +623,7 @@
        */
       public function loadRelationMultiplicity(GenericORMapperDataObject &$object,$relationName){
 
-         if(!isset($this->__RelationTable[$relationName])){
+         if(!isset($this->RelationTable[$relationName])){
             throw new GenericORMapperException('[GenericORRelationMapper::loadRelationMultiplicity()] '
                     .'Relation "'.$relationName.'" does not exist in relation table! Hence, the '
                     .'relation multiplicity cannot be loaded! Please check your relation configuration.');
@@ -631,16 +631,16 @@
 
          // gather information about the object and the relation
          $objectName = $object->getObjectName();
-         $sourceObject = $this->__MappingTable[$objectName];
+         $sourceObject = $this->MappingTable[$objectName];
          $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName,$relationName);
-         $targetObject = $this->__MappingTable[$targetObjectName];
+         $targetObject = $this->MappingTable[$targetObjectName];
 
          // load multiplicity
-         $relationTable = $this->__RelationTable[$relationName];
+         $relationTable = $this->RelationTable[$relationName];
          $select = 'SELECT COUNT(`'.$targetObject['ID'].'`) AS multiplicity FROM `'.$relationTable['Table'].'`
                     WHERE `'.$sourceObject['ID'].'` = \''.$object->getProperty($sourceObject['ID']).'\';';
-         $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
-         $data = $this->__DBDriver->fetchData($result);
+         $result = $this->DBDriver->executeTextStatement($select,$this->LogStatements);
+         $data = $this->DBDriver->fetchData($result);
 
          // bug 453: explicitly cast to integer to avoid type save check errors.
          return intval($data['multiplicity']);
@@ -696,17 +696,17 @@
                   $relatedObjectID = $this->saveObject($relatedObjects[$relationKey][$i]);
 
                   // gather information about the current relation
-                  $objectID = $this->__MappingTable[$object->getObjectName()]['ID'];
-                  if(!isset($this->__MappingTable[$relatedObjects[$relationKey][$i]->getObjectName()]['ID'])){
+                  $objectID = $this->MappingTable[$object->getObjectName()]['ID'];
+                  if(!isset($this->MappingTable[$relatedObjects[$relationKey][$i]->getObjectName()]['ID'])){
                      throw new GenericORMapperException('[GenericORRelationMapper::saveObject()] '
                              .'The object name "'.$relatedObjects[$relationKey][$i]->getObjectName()
                              .'" does not exist in the mapping table! Hence, your object cannot be '
                              .'saved! Please check your object configuration.');
                   }
-                  $relObjectIdPkName = $this->__MappingTable[$relatedObjects[$relationKey][$i]->getObjectName()]['ID'];
+                  $relObjectIdPkName = $this->MappingTable[$relatedObjects[$relationKey][$i]->getObjectName()]['ID'];
 
                   // check for relation
-                  if(!isset($this->__RelationTable[$relationKey]['Table'])){
+                  if(!isset($this->RelationTable[$relationKey]['Table'])){
                      throw new GenericORMapperException('[GenericORRelationMapper::saveObject()] '
                              .'Relation "'.$relationKey.'" does not exist in the relation table! '
                              .'Hence, your related object cannot be saved! Please check your '
@@ -715,18 +715,18 @@
 
                   // create statement
                   $select = 'SELECT *
-                             FROM `'.$this->__RelationTable[$relationKey]['Table'].'`
+                             FROM `'.$this->RelationTable[$relationKey]['Table'].'`
                              WHERE `'.$objectID.'` = \''.$id.'\'
                              AND `'.$relObjectIdPkName.'` = \''.$relatedObjectID.'\';';
 
-                  $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
-                  $relationcount = $this->__DBDriver->getNumRows($result);
+                  $result = $this->DBDriver->executeTextStatement($select,$this->LogStatements);
+                  $relationcount = $this->DBDriver->getNumRows($result);
 
                   // create relation if necessary
                   if($relationcount == 0){
-                     $insert = 'INSERT INTO `'.$this->__RelationTable[$relationKey]['Table'].'`
+                     $insert = 'INSERT INTO `'.$this->RelationTable[$relationKey]['Table'].'`
                                 (`'.$relObjectIdPkName.'`,`'.$objectID.'`) VALUES (\''.$relatedObjectID.'\',\''.$id.'\');';
-                     $this->__DBDriver->executeTextStatement($insert,$this->__LogStatements);
+                     $this->DBDriver->executeTextStatement($insert,$this->LogStatements);
                    // end if
                   }
 
@@ -771,8 +771,8 @@
 
          // 1. get compositions, where source or target object is the current object
          $objectName = $object->getObjectName();
-         $objectID = $this->__MappingTable[$objectName]['ID'];
-         $targetCompositions = $this->__getCompositionsByObjectName($objectName,'source');
+         $objectID = $this->MappingTable[$objectName]['ID'];
+         $targetCompositions = $this->getCompositionsByObjectName($objectName,'source');
 
          // 2. test, if the current object has child objects and though can't be deleted
          $targetcmpcount = count($targetCompositions);
@@ -782,9 +782,9 @@
 
                $select = 'SELECT * FROM `'.$targetCompositions[$i]['Table']. '`
                           WHERE `'.$objectID.'` = \''.$object->getProperty($objectID).'\';';
-               $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
+               $result = $this->DBDriver->executeTextStatement($select,$this->LogStatements);
 
-               if($this->__DBDriver->getNumRows($result) > 0){
+               if($this->DBDriver->getNumRows($result) > 0){
                   throw new GenericORMapperException('[GenericORRelationMapper::deleteObject()] '
                           .'Domain object "'.$objectName.'" with id "'.$object->getProperty($objectID)
                           .'" cannot be deleted, because it still has composed child objects!',
@@ -798,13 +798,13 @@
          }
 
          // 3. check for associations and delete them
-         $associations = $this->__getAssociationsByObjectName($objectName);
+         $associations = $this->getAssociationsByObjectName($objectName);
 
          $asscount = count($associations);
          for($i = 0; $i < $asscount; $i++){
             $delete = 'DELETE FROM `'.$associations[$i]['Table'].'`
                        WHERE `'.$objectID.'` = \''.$object->getProperty($objectID).'\';';
-            $this->__DBDriver->executeTextStatement($delete,$this->__LogStatements);
+            $this->DBDriver->executeTextStatement($delete,$this->LogStatements);
           // end if
          }
 
@@ -812,14 +812,14 @@
          $ID = parent::deleteObject($object);
 
          // 5. delete composition towards other object
-         $sourceCompositions = $this->__getCompositionsByObjectName($objectName,'target');
+         $sourceCompositions = $this->getCompositionsByObjectName($objectName,'target');
 
          $sourcecmpcount = count($sourceCompositions);
          for($i = 0; $i < $sourcecmpcount; $i++){
 
             $delete = 'DELETE FROM `'.$sourceCompositions[$i]['Table'].'`
                        WHERE `'.$objectID.'` = \''.$object->getProperty($objectID).'\';';
-            $this->__DBDriver->executeTextStatement($delete,$this->__LogStatements);
+            $this->DBDriver->executeTextStatement($delete,$this->LogStatements);
 
           // end for
          }
@@ -848,14 +848,14 @@
       public function createAssociation($relationName,GenericORMapperDataObject $sourceObject,GenericORMapperDataObject $targetObject){
 
          // test, if relation exists in relation table
-         if(!isset($this->__RelationTable[$relationName])){
+         if(!isset($this->RelationTable[$relationName])){
             throw new GenericORMapperException('[GenericORRelationMapper::createAssociation()] '
                     .'Relation with name "'.$relationName.'" is not defined in the mapping table! '
                     .'Please check your relation configuration.',E_USER_WARNING);
          }
 
          // if relation is a composition, return with error
-         if($this->__RelationTable[$relationName]['Type'] == 'COMPOSITION'){
+         if($this->RelationTable[$relationName]['Type'] == 'COMPOSITION'){
             throw new GenericORMapperException('[GenericORRelationMapper::createAssociation()] '
                     .'Compositions cannot be created with this method! Use saveObject() on the '
                     .'target object to create a composition!',E_USER_WARNING);
@@ -863,15 +863,15 @@
 
          // create association
          $SourceObjectName = $sourceObject->getObjectName();
-         $SourceObjectID = $this->__MappingTable[$SourceObjectName]['ID'];
+         $SourceObjectID = $this->MappingTable[$SourceObjectName]['ID'];
          $TargetObjectName = $targetObject->getObjectName();
-         $TargetObjectID = $this->__MappingTable[$TargetObjectName]['ID'];
+         $TargetObjectID = $this->MappingTable[$TargetObjectName]['ID'];
 
-         $insert = 'INSERT INTO `'.$this->__RelationTable[$relationName]['Table'].'`
+         $insert = 'INSERT INTO `'.$this->RelationTable[$relationName]['Table'].'`
                     (`'.$SourceObjectID.'`,`'.$TargetObjectID.'`)
                     VALUES
                     (\''.$sourceObject->getProperty($SourceObjectID).'\',\''.$targetObject->getProperty($TargetObjectID).'\');';
-         $this->__DBDriver->executeTextStatement($insert,$this->__LogStatements);
+         $this->DBDriver->executeTextStatement($insert,$this->LogStatements);
 
          return true;
 
@@ -898,14 +898,14 @@
       public function deleteAssociation($relationName,GenericORMapperDataObject $sourceObject,GenericORMapperDataObject $targetObject){
 
          // test, if relation exists in relation table
-         if(!isset($this->__RelationTable[$relationName])){
+         if(!isset($this->RelationTable[$relationName])){
             throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociation()] '
                     .'Relation with name "'.$relationName.'" is not defined in the mapping table! '
                     .'Please check your relation configuration.',E_USER_WARNING);
          }
 
          // if relation is a composition, return with error
-         if($this->__RelationTable[$relationName]['Type'] == 'COMPOSITION'){
+         if($this->RelationTable[$relationName]['Type'] == 'COMPOSITION'){
             throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociation()] '
                     .'Compositions cannot be deleted! Use deleteObject() on the target object instead!',
                     E_USER_WARNING);
@@ -913,16 +913,16 @@
 
          // get association and delete it
          $SourceObjectName = $sourceObject->getObjectName();
-         $SourceObjectID = $this->__MappingTable[$SourceObjectName]['ID'];
+         $SourceObjectID = $this->MappingTable[$SourceObjectName]['ID'];
          $TargetObjectName = $targetObject->getObjectName();
-         $TargetObjectID = $this->__MappingTable[$TargetObjectName]['ID'];
+         $TargetObjectID = $this->MappingTable[$TargetObjectName]['ID'];
 
-         $delete = 'DELETE FROM `'.$this->__RelationTable[$relationName]['Table'].'`
+         $delete = 'DELETE FROM `'.$this->RelationTable[$relationName]['Table'].'`
                     WHERE
                        `'.$SourceObjectID.'` = \''.$sourceObject->getProperty($SourceObjectID).'\'
                        AND
                        `'.$TargetObjectID.'` = \''.$targetObject->getProperty($TargetObjectID).'\';';
-         $this->__DBDriver->executeTextStatement($delete,$this->__LogStatements);
+         $this->DBDriver->executeTextStatement($delete,$this->LogStatements);
 
          return true;
 
@@ -948,26 +948,26 @@
       public function deleteAssociations($relationName, GenericORMapperDataObject $sourceObject) {
 
          // test, if relation exists in relation table
-         if(!isset($this->__RelationTable[$relationName])){
+         if(!isset($this->RelationTable[$relationName])){
             throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociations()] Relation '
                     .'with name "'.$relationName.'" is not defined in the relation table! Please '
                     .'check your relation configuration.',E_USER_WARNING);
          }
 
          // if relation is a composition, return with error
-         if($this->__RelationTable[$relationName]['Type'] == 'COMPOSITION'){
+         if($this->RelationTable[$relationName]['Type'] == 'COMPOSITION'){
             throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociations()] The given '
                     .'relation ("'.$relationName.'") is not an association! Please check your '
                     .'relation configuration.', E_USER_WARNING);
          }
 
          $sourceObjectName = $sourceObject->getObjectName();
-         $sourceObjectID = $this->__MappingTable[$sourceObjectName]['ID'];
+         $sourceObjectID = $this->MappingTable[$sourceObjectName]['ID'];
 
-         $delete = 'DELETE FROM `'.$this->__RelationTable[$relationName]['Table'].'`
+         $delete = 'DELETE FROM `'.$this->RelationTable[$relationName]['Table'].'`
                     WHERE
                        `'.$sourceObjectID.'` = \''.$sourceObject->getObjectId().'\';';
-         $this->__DBDriver->executeTextStatement($delete, $this->__LogStatements);
+         $this->DBDriver->executeTextStatement($delete, $this->LogStatements);
          
       }
 
@@ -989,14 +989,14 @@
       public function isAssociated($relationName,GenericORMapperDataObject $sourceObject,GenericORMapperDataObject $targetObject){
 
          // test, if relation exists in relation table
-         if(!isset($this->__RelationTable[$relationName])){
+         if(!isset($this->RelationTable[$relationName])){
             throw new GenericORMapperException('[GenericORRelationMapper::isAssociated()] Relation '
                     .'with name "'.$relationName.'" is not defined in the relation table! Please '
                     .'check your relation configuration.',E_USER_WARNING);
          }
 
          // if relation is a composition, return with error
-         if($this->__RelationTable[$relationName]['Type'] == 'COMPOSITION'){
+         if($this->RelationTable[$relationName]['Type'] == 'COMPOSITION'){
             throw new GenericORMapperException('[GenericORRelationMapper::isAssociated()] The given '
                     .'relation ("'.$relationName.'") is not an association! Please check your '
                     .'relation configuration.', E_USER_WARNING);
@@ -1004,19 +1004,19 @@
 
          // check for association
          $sourceObjectName = $sourceObject->getObjectName();
-         $sourceObjectID = $this->__MappingTable[$sourceObjectName]['ID'];
+         $sourceObjectID = $this->MappingTable[$sourceObjectName]['ID'];
          $targetObjectName = $targetObject->getObjectName();
-         $targetObjectID = $this->__MappingTable[$targetObjectName]['ID'];
+         $targetObjectID = $this->MappingTable[$targetObjectName]['ID'];
 
-         $select = 'SELECT * FROM `'.$this->__RelationTable[$relationName]['Table'].'`
+         $select = 'SELECT * FROM `'.$this->RelationTable[$relationName]['Table'].'`
                     WHERE
                        `'.$sourceObjectID.'` = \''.$sourceObject->getObjectId().'\'
                        AND
                        `'.$targetObjectID.'` = \''.$targetObject->getObjectId().'\';';
-         $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
+         $result = $this->DBDriver->executeTextStatement($select,$this->LogStatements);
 
          // return if objects are associated
-         return ($this->__DBDriver->getNumRows($result) > 0) ? true : false;
+         return ($this->DBDriver->getNumRows($result) > 0) ? true : false;
 
        // end function
       }
@@ -1040,27 +1040,27 @@
       public function isComposed($relationName, GenericORMapperDataObject $child, GenericORMapperDataObject $father){
 
          // test, if relation exists in relation table
-         if(!isset($this->__RelationTable[$relationName])){
+         if(!isset($this->RelationTable[$relationName])){
             throw new GenericORMapperException('[GenericORRelationMapper::isComposed()] Relation '
                     .'with name "'.$relationName.'" is not defined in the relation table! Please '
                     .'check your relation configuration.', E_USER_ERROR);
          }
 
          // if relation is an association, return with error
-         if($this->__RelationTable[$relationName]['Type'] == 'ASSOCIATION'){
+         if($this->RelationTable[$relationName]['Type'] == 'ASSOCIATION'){
             throw new GenericORMapperException('[GenericORRelationMapper::isComposed()] The given '
                     .'relation ("'.$relationName.'") is not a composition! Please check your '
                     .'relation configuration.',E_USER_ERROR);
          }
 
          $fatherObjectName = $father->getObjectName();
-         $fatherObjectId = $this->__MappingTable[$fatherObjectName]['ID'];
+         $fatherObjectId = $this->MappingTable[$fatherObjectName]['ID'];
          $childObjectName = $child->getObjectName();
-         $childObjectId = $this->__MappingTable[$childObjectName]['ID'];
+         $childObjectId = $this->MappingTable[$childObjectName]['ID'];
 
          // check relation configuration to have type-safe and directed results
-         if ($this->__RelationTable[$relationName]['SourceObject'] != $fatherObjectName
-                 || $this->__RelationTable[$relationName]['TargetObject'] != $childObjectName) {
+         if ($this->RelationTable[$relationName]['SourceObject'] != $fatherObjectName
+                 || $this->RelationTable[$relationName]['TargetObject'] != $childObjectName) {
             throw new GenericORMapperException('[GenericORRelationMapper::isComposed()] Given '
                     .'child object with name "'.$childObjectName.'" is not composable under '
                     .'object with name "'.$fatherObjectName.'". Hence, requesting relation state '
@@ -1069,15 +1069,15 @@
                     E_USER_ERROR);
          }
 
-         $select = 'SELECT * FROM `'.$this->__RelationTable[$relationName]['Table'].'`
+         $select = 'SELECT * FROM `'.$this->RelationTable[$relationName]['Table'].'`
                     WHERE
                        `'.$fatherObjectId.'` = \''.$father->getObjectId().'\'
                        AND
                        `'.$childObjectId.'` = \''.$child->getObjectId().'\';';
-         $result = $this->__DBDriver->executeTextStatement($select,$this->__LogStatements);
+         $result = $this->DBDriver->executeTextStatement($select,$this->LogStatements);
 
          // return if objects are associated
-         return ($this->__DBDriver->getNumRows($result) > 0) ? true : false;
+         return ($this->DBDriver->getNumRows($result) > 0) ? true : false;
 
       }
 
@@ -1094,20 +1094,20 @@
        * Version 0.1, 30.05.2008<br />
        * Version 0.2, 28.12.2008 (Bugfix: only associations are returned, where the object is involved)<br />
        */
-      protected function &__getAssociationsByObjectName($objectName){
+      protected function &getAssociationsByObjectName($objectName){
 
          // initialize list
          $relationList = array();
 
          // look for suitable relation entries
-         foreach($this->__RelationTable as $sectionName => $attributes){
+         foreach($this->RelationTable as $sectionName => $attributes){
 
             // only allow associations
             if($attributes['Type'] == 'ASSOCIATION'){
 
                // only add, if the current object is involved in the association
                if($attributes['SourceObject'] === $objectName || $attributes['TargetObject'] === $objectName){
-                  $relationList[] = &$this->__RelationTable[$sectionName];
+                  $relationList[] = &$this->RelationTable[$sectionName];
                 // end if
                }
 
@@ -1135,7 +1135,7 @@
        * @version
        * Version 0.1, 30.05.2008<br />
        */
-      protected function __getCompositionsByObjectName($objectName,$direction = null){
+      protected function getCompositionsByObjectName($objectName,$direction = null){
 
          // initialize list
          $relationList = array();
@@ -1157,10 +1157,10 @@
          }
 
          // look for suitable relation entries
-         foreach($this->__RelationTable as $sectionName => $attributes){
+         foreach($this->RelationTable as $sectionName => $attributes){
 
             if($attributes['Type'] == 'COMPOSITION' && $attributes[$directionAttribute] == $objectName){
-               $relationList[] = &$this->__RelationTable[$sectionName];
+               $relationList[] = &$this->RelationTable[$sectionName];
              // end if
             }
 
@@ -1188,7 +1188,7 @@
       protected function getRelatedObjectNameByRelationName($objectName,$relationName){
 
          // look for suitable related object
-         foreach($this->__RelationTable as $SectionName => $Attributes){
+         foreach($this->RelationTable as $SectionName => $Attributes){
 
             if($SectionName == $relationName){
 
@@ -1225,20 +1225,20 @@
        * @version
        * Version 0.1, 14.05.2008<br />
        * Version 0.2, 25.06.2008 (Removed "ApplicationID" from sleep list)<br />
-       * Version 0.3, 26.10.2008 (Added "__importedConfigCache")<br />
+       * Version 0.3, 26.10.2008 (Added "importedConfigCache")<br />
        * Version 0.4, 16.03.2010 (Added missing attributes due to bug 299)<br />
        */
       public function __sleep(){
-         return array('__MappingTable',
-            '__RelationTable',
-            '__ServiceObjectsTable',
+         return array('MappingTable',
+            'RelationTable',
+            'ServiceObjectsTable',
             '__Context',
             '__Language',
-            '__importedConfigCache',
-            '__DBConnectionName',
-            '__LogStatements',
-            '__ConfigNamespace',
-            '__ConfigNameAffix');
+            'importedConfigCache',
+            'DBConnectionName',
+            'LogStatements',
+            'ConfigNamespace',
+            'ConfigNameAffix');
       }
 
       /**
@@ -1276,7 +1276,7 @@
       public function loadObjectCount($objectName, GenericCriterionObject $criterion = null){
 
          // avoid SQL errors for invalid object names
-         if(!isset($this->__MappingTable[$objectName])){
+         if(!isset($this->MappingTable[$objectName])){
             throw new GenericORMapperException('[GenericORRelationMapper::loadObjectCount()] '
                     .'Object with name "'.$objectName.'" is not existent in the current mapping '
                     .'table. Please check your mapping configuration!',E_USER_ERROR);
@@ -1284,20 +1284,20 @@
 
          // create statement
          $countColumnName = 'objectcount';
-         $select = 'SELECT COUNT(`'.$this->__MappingTable[$objectName]['ID'].'`) AS '
-                 .$countColumnName.' FROM `'.$this->__MappingTable[$objectName]['Table'].'`';
+         $select = 'SELECT COUNT(`'.$this->MappingTable[$objectName]['ID'].'`) AS '
+                 .$countColumnName.' FROM `'.$this->MappingTable[$objectName]['Table'].'`';
 
          // add limitations
          if($criterion !== null){
-            $where = $this->__buildWhere($objectName,$criterion);
+            $where = $this->buildWhere($objectName,$criterion);
             if(count($where) > 0){
                $select .= ' WHERE '.implode(' AND ',$where);
             }
          }
 
          // load count
-         $data = $this->__DBDriver->fetchData(
-                 $this->__DBDriver->executeTextStatement($select,$this->__LogStatements)
+         $data = $this->DBDriver->fetchData(
+                 $this->DBDriver->executeTextStatement($select,$this->LogStatements)
          );
          return (int)$data[$countColumnName];
 
@@ -1364,7 +1364,7 @@
       private function loadObjects4RelationName($objectName, $relationName, GenericCriterionObject $criterion, $relationCondition) {
 
          // gather information about the objects related to each other
-         $sourceObject = $this->__MappingTable[$objectName];
+         $sourceObject = $this->MappingTable[$objectName];
 
          // check for null relations to prevent "undefined index" errors.
          $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
@@ -1377,7 +1377,7 @@
          }
 
          // BUG-142: wrong spelling of source and target object must result in descriptive error!
-         if (!isset($this->__MappingTable[$targetObjectName])) {
+         if (!isset($this->MappingTable[$targetObjectName])) {
             throw new GenericORMapperException(
                     '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "'
                     . $targetObjectName . '" found in releation definition "' . $relationName
@@ -1385,17 +1385,17 @@
                     E_USER_ERROR
             );
          }
-         $targetObject = $this->__MappingTable[$targetObjectName];
+         $targetObject = $this->MappingTable[$targetObjectName];
 
          if ($criterion == null) {
             $criterion = new GenericCriterionObject();
          }
 
          // build statement
-         $select = 'SELECT DISTINCT ' . ($this->__buildProperties($objectName, $criterion)) . ' FROM `' . $sourceObject['Table'] . '`';
+         $select = 'SELECT DISTINCT ' . ($this->buildProperties($objectName, $criterion)) . ' FROM `' . $sourceObject['Table'] . '`';
 
          // JOIN
-         $select .= ' LEFT OUTER JOIN `' . $this->__RelationTable[$relationName]['Table'] . '` ON `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = `' . $this->__RelationTable[$relationName]['Table'] . '`.`' . $sourceObject['ID'] . '`';
+         $select .= ' LEFT OUTER JOIN `' . $this->RelationTable[$relationName]['Table'] . '` ON `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $sourceObject['ID'] . '`';
 
          // - add relation joins
          $where = array();
@@ -1404,13 +1404,13 @@
          foreach ($relations as $innerRelationName => $DUMMY) {
             // gather relation params
             $relationObjectName = $relations[$innerRelationName]->getObjectName();
-            $relationSourceObject = $this->__MappingTable[$relationObjectName];
+            $relationSourceObject = $this->MappingTable[$relationObjectName];
             $relationTargetObjectName = $this->getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(), $innerRelationName);
-            $relationTargetObject = $this->__MappingTable[$relationTargetObjectName];
+            $relationTargetObject = $this->MappingTable[$relationTargetObjectName];
 
             // finally build join
-            $joins .= ' INNER JOIN `' . $this->__RelationTable[$innerRelationName]['Table'] . '` ON `' . $relationTargetObject['Table'] . '`.`' . $relationTargetObject['ID'] . '` = `' . $this->__RelationTable[$innerRelationName]['Table'] . '`.`' . $relationTargetObject['ID'] . '`
-                               INNER JOIN `' . $relationSourceObject['Table'] . '` ON `' . $this->__RelationTable[$innerRelationName]['Table'] . '`.`' . $relationSourceObject['ID'] . '` = `' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '`';
+            $joins .= ' INNER JOIN `' . $this->RelationTable[$innerRelationName]['Table'] . '` ON `' . $relationTargetObject['Table'] . '`.`' . $relationTargetObject['ID'] . '` = `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationTargetObject['ID'] . '`
+                               INNER JOIN `' . $relationSourceObject['Table'] . '` ON `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationSourceObject['ID'] . '` = `' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '`';
 
             // add a where for each join
             $where[] = '`' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '` = \'' . $relations[$innerRelationName]->getProperty($relationSourceObject['ID']) . '\'';
@@ -1421,15 +1421,15 @@
          $select .= $joins;
 
          // add where statement
-         $where = array_merge($where, $this->__buildWhere($targetObjectName, $criterion));
+         $where = array_merge($where, $this->buildWhere($targetObjectName, $criterion));
 
          // - add relation joins
-         $where[] = '`' . $this->__RelationTable[$relationName]['Table'] . '`.`' . $targetObject['ID'] . '` ' . $relationCondition;
+         $where[] = '`' . $this->RelationTable[$relationName]['Table'] . '`.`' . $targetObject['ID'] . '` ' . $relationCondition;
 
          $select .= ' WHERE ' . implode(' AND ', $where);
 
          // add order clause
-         $order = $this->__buildOrder($targetObjectName, $criterion);
+         $order = $this->buildOrder($targetObjectName, $criterion);
          if (count($order) > 0) {
             $select .= ' ORDER BY ' . implode(', ', $order);
             // end if

@@ -46,7 +46,7 @@
        * @protected
        * Indicators for the datatype mapping.
        */
-      protected $__RowTypeMappingFrom = array(
+      protected $RowTypeMappingFrom = array(
                                         '/^VARCHAR\(([0-9]+)\)$/i',
                                         '/^TEXT$/i',
                                         '/^DATE$/i'
@@ -56,7 +56,7 @@
        * @protected
        * Replace strings for the datatype mapping.
        */
-      protected $__RowTypeMappingTo = array(
+      protected $RowTypeMappingTo = array(
                                       'VARCHAR($1) character set [charset] NOT NULL default \'\'',
                                       'TEXT character set [charset] NOT NULL',
                                       'DATE NOT NULL default \'0000-00-00\''
@@ -66,7 +66,7 @@
        * @protected
        * @var string Stores the MySQL storage engine type.
        */
-      protected $__StorageEngine = 'MyISAM';
+      protected $StorageEngine = 'MyISAM';
 
       /**
        * @private
@@ -81,11 +81,11 @@
       private $tableCharset = 'utf8';
 
       public function setStorageEngine($engine){
-         $this->__StorageEngine = $engine;
+         $this->StorageEngine = $engine;
       }
 
       public function getStorageEngine(){
-         return $this->__StorageEngine;
+         return $this->StorageEngine;
       }
 
       /**
@@ -156,10 +156,10 @@
       public function setupDatabase($configNamespace,$configNameAffix,$connectionName = null){
 
          // set the config namespace
-         $this->__ConfigNamespace = $configNamespace;
+         $this->ConfigNamespace = $configNamespace;
 
          // set the config name affix
-         $this->__ConfigNameAffix = $configNameAffix;
+         $this->ConfigNameAffix = $configNameAffix;
 
          // setup object layout
          $objects = $this->generateObjectLayout();
@@ -192,17 +192,17 @@
             $cM = &$this->__getServiceObject('core::database','ConnectionManager');
 
             // initialize connection
-            $this->__DBDriver = &$cM->getConnection($connectionName);
+            $this->DBDriver = &$cM->getConnection($connectionName);
 
             // create object structure
             foreach($objects as $object){
-               $this->__DBDriver->executeTextStatement($object);
+               $this->DBDriver->executeTextStatement($object);
              // end function
             }
 
             // create relation structure
             foreach($relations as $relation){
-               $this->__DBDriver->executeTextStatement($relation);
+               $this->DBDriver->executeTextStatement($relation);
              // end function
             }
 
@@ -230,13 +230,13 @@
       protected function generateObjectLayout(){
 
          // create mapping table
-         $this->__createMappingTable();
+         $this->createMappingTable();
 
          // generate tables for objects
          $setup = array();
-         foreach($this->__MappingTable as $name => $attributes){
+         foreach($this->MappingTable as $name => $attributes){
             $setup[] =
-               $this->generateMappingTableLayout($name,$this->__MappingTable[$name])
+               $this->generateMappingTableLayout($name,$this->MappingTable[$name])
                        .PHP_EOL.PHP_EOL;
           // end foreach
          }
@@ -270,7 +270,7 @@
          // object properties
          foreach ($tableAttributes as $key => $value) {
             if ($key != 'ID' && $key != 'Table') {
-               $value = preg_replace($this->__RowTypeMappingFrom, $this->__RowTypeMappingTo, $value);
+               $value = preg_replace($this->RowTypeMappingFrom, $this->RowTypeMappingTo, $value);
 
                // add dynamic character set specification
                $value = str_replace('[charset]', $this->getTableCharset(), $value);
@@ -321,14 +321,14 @@
       protected function generateRelationLayout(){
 
          // create relation table
-         $this->__createRelationTable();
+         $this->createRelationTable();
 
          // generate tables for objects
          $setup = array();
-         foreach($this->__RelationTable as $name => $attributes){
+         foreach($this->RelationTable as $name => $attributes){
             $setup[] = 
                $this->generateRelationTableLayout(
-                  $this->__RelationTable[$name]
+                  $this->RelationTable[$name]
                ).PHP_EOL.PHP_EOL;
          }
 
@@ -373,13 +373,13 @@
       protected function getAdditionalIndexDefinition($objectName){
 
          // exit early returning null to indicate that no additional index definition is available
-         if(!isset($this->__MappingIndexTable[$objectName])){
+         if(!isset($this->MappingIndexTable[$objectName])){
             return null;
          }
 
          $indices = array();
 
-         foreach(explode('|',$this->__MappingIndexTable[$objectName]) as $index){
+         foreach(explode('|',$this->MappingIndexTable[$objectName]) as $index){
 
             $current = $index;
             $type = (string)'';

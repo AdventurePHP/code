@@ -48,59 +48,59 @@
       /**
        * @var string[] Mapping table reconstructed from the given database connection.
        */
-      private $__ReEngineeredMappingTable = array();
-      private $__DatabaseMappingTables = array();
+      private $ReEngineeredMappingTable = array();
+      private $DatabaseMappingTables = array();
 
       /**
        * @var string[] Relation table reconstructed from the given database connection.
        */
-      private $__ReEngineeredRelationTable = array();
-      private $__DatabaseRelationTables = array();
+      private $ReEngineeredRelationTable = array();
+      private $DatabaseRelationTables = array();
 
       /**
        * @var string[] Stores the new mapping entries.
        */
-      private $__NewMappings = array();
+      private $NewMappings = array();
 
       /**
        * @var string[] Stores the removed mapping entries.
        */
-      private $__RemovedMappings = array();
+      private $RemovedMappings = array();
 
       /**
        * @var string[] Stores the attributes of mapping entries, that have been added.
        */
-      private $__NewMappingAttributes = array();
+      private $NewMappingAttributes = array();
 
       /**
        * @var string[] Stores the attributes of mapping entries, that have been removed.
        */
-      private $__RemovedMappingAttributes = array();
+      private $RemovedMappingAttributes = array();
 
       /**
        * @var string[] Stores the attributes of mapping entries, that have been altered.
        */
-      private $__AlteredMappingAttributes = array();
+      private $AlteredMappingAttributes = array();
 
       /**
        * @var string[] Stores the new relation entries.
        */
-      private $__NewRelations = array();
+      private $NewRelations = array();
 
       /**
        * @var string[] Stores the removed relation entries.
        */
-      private $__RemovedRelations = array();
+      private $RemovedRelations = array();
 
       /**
        * @var string[] Stores the attributes of relation entries, that have been altered.
        */
-      private $__AlteredRelationAttributes = array();
+      private $AlteredRelationAttributes = array();
 
       /**
        * @var string[] Stores the update statements.
        */
-      private $__UpdateStatements = array();
+      private $UpdateStatements = array();
 
       /**
        * @public
@@ -129,16 +129,16 @@
          }
 
          // set the config namespace
-         $this->__ConfigNamespace = $configNamespace;
+         $this->ConfigNamespace = $configNamespace;
 
          // set the config name affix
-         $this->__ConfigNameAffix = $configNameAffix;
+         $this->ConfigNameAffix = $configNameAffix;
 
          // setup object layout (new)
-         $this->__createMappingTable();
+         $this->createMappingTable();
 
          // setup relation layout (new)
-         $this->__createRelationTable();
+         $this->createRelationTable();
 
          // generate layout from the database (reverse engineering of the database)
          $cM = &$this->__getServiceObject('core::database','ConnectionManager');
@@ -167,13 +167,13 @@
 
          // print alter statements or execute them immediately
          if($updateInPlace === true){
-            foreach($this->__UpdateStatements as $statement){
+            foreach($this->UpdateStatements as $statement){
                $sql->executeTextStatement($statement);
             }
          }
          else {
             echo '<pre>';
-            foreach($this->__UpdateStatements as $statement){
+            foreach($this->UpdateStatements as $statement){
                echo $statement.PHP_EOL.PHP_EOL.PHP_EOL;
             }
             echo '</pre>';
@@ -298,11 +298,11 @@
 
             // collect tables
             if (substr_count($dataTables[$offset], 'ent_') == 1) {
-               $this->__DatabaseMappingTables[] = $dataTables[$offset];
+               $this->DatabaseMappingTables[] = $dataTables[$offset];
             } elseif (substr_count($dataTables[$offset], 'ass_') == 1) {
-               $this->__DatabaseRelationTables[] = $dataTables[$offset];
+               $this->DatabaseRelationTables[] = $dataTables[$offset];
             } elseif (substr_count($dataTables[$offset], 'cmp_') == 1) {
-               $this->__DatabaseRelationTables[] = $dataTables[$offset];
+               $this->DatabaseRelationTables[] = $dataTables[$offset];
             }
             
          }
@@ -319,7 +319,7 @@
       private function reEngineerRelations(AbstractDatabaseHandler $sql){
 
          // create reverse engineered mapping entries
-         foreach($this->__DatabaseRelationTables as $relationTable){
+         foreach($this->DatabaseRelationTables as $relationTable){
 
             $selectCreate = 'SHOW COLUMNS FROM '.$relationTable;
             $resultCreate = $sql->executeTextStatement($selectCreate);
@@ -333,7 +333,7 @@
             $sourceId = $fields[0]['Field'];
             $targetId = $fields[1]['Field'];
 
-            $this->__ReEngineeredRelationTable[$relationName] = array(
+            $this->ReEngineeredRelationTable[$relationName] = array(
                'Type' => $this->getRelationTypeLabel($relationTable),
                'Table' => $relationTable,
                'SourceID' => $sourceId,
@@ -355,7 +355,7 @@
        */
       private function reEngineerMappings(AbstractDatabaseHandler $sql){
 
-         foreach($this->__DatabaseMappingTables as $objectTable){
+         foreach($this->DatabaseMappingTables as $objectTable){
 
             $selectCreate = 'SHOW COLUMNS FROM '.$objectTable;
             $resultCreate = $sql->executeTextStatement($selectCreate);
@@ -445,7 +445,7 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
              // end foreach
             }
 
-            $this->__ReEngineeredMappingTable[$objectName] = array_merge(
+            $this->ReEngineeredMappingTable[$objectName] = array_merge(
                array(
                   'ID' => $primaryKey,
                   'Table' => $objectTable
@@ -469,36 +469,36 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
        */
       private function generateMappingUpdateStatements(){
 
-         foreach($this->__NewMappings as $newMapping => $DUMMY){
-            $this->__UpdateStatements[] =
+         foreach($this->NewMappings as $newMapping => $DUMMY){
+            $this->UpdateStatements[] =
                $this->generateMappingTableLayout(
                   $newMapping,
-                  $this->__MappingTable[$newMapping]
+                  $this->MappingTable[$newMapping]
                );
          }
          
-         foreach($this->__RemovedMappings as $removedMapping => $DUMMY){
-            $this->__UpdateStatements[] = 'DROP TABLE '
-               .$this->__ReEngineeredMappingTable[$removedMapping]['Table']
+         foreach($this->RemovedMappings as $removedMapping => $DUMMY){
+            $this->UpdateStatements[] = 'DROP TABLE '
+               .$this->ReEngineeredMappingTable[$removedMapping]['Table']
                .';';
          }
 
-         foreach($this->__NewMappingAttributes as $newAttribute => $values){
+         foreach($this->NewMappingAttributes as $newAttribute => $values){
 
             if(count($values) > 0){
 
                foreach($values as $name => $dataType){
                   $dataType = preg_replace(
-                     $this->__RowTypeMappingFrom,
-                     $this->__RowTypeMappingTo,
+                     $this->RowTypeMappingFrom,
+                     $this->RowTypeMappingTo,
                      $dataType
                   );
 
                   // add dynamic character set specification
                   $dataType = str_replace('[charset]', $this->getTableCharset(), $dataType);
 
-                  $this->__UpdateStatements[] = 'ALTER TABLE `'
-                     .$this->__MappingTable[$newAttribute]['Table'].'` ADD `'
+                  $this->UpdateStatements[] = 'ALTER TABLE `'
+                     .$this->MappingTable[$newAttribute]['Table'].'` ADD `'
                      .$name.'` '.$dataType.';';
                }
 
@@ -506,35 +506,35 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
 
          }
          
-         foreach($this->__RemovedMappingAttributes as $removedAttribute => $values){
+         foreach($this->RemovedMappingAttributes as $removedAttribute => $values){
             
             if(count($values) > 0){
 
                foreach($values as $name => $dataType){
-                  $this->__UpdateStatements[] = 'ALTER TABLE `'
-                     .$this->__MappingTable[$removedAttribute]['Table'].'` DROP `'.$name.'`;';
+                  $this->UpdateStatements[] = 'ALTER TABLE `'
+                     .$this->MappingTable[$removedAttribute]['Table'].'` DROP `'.$name.'`;';
                }
                
             }
          
          }
          
-         foreach($this->__AlteredMappingAttributes as $alteredAttribute => $values){
+         foreach($this->AlteredMappingAttributes as $alteredAttribute => $values){
 
             if(count($values) > 0){
 
                foreach($values as $name){
                   $dataType = preg_replace(
-                     $this->__RowTypeMappingFrom,
-                     $this->__RowTypeMappingTo,
-                     $this->__MappingTable[$alteredAttribute][$name]
+                     $this->RowTypeMappingFrom,
+                     $this->RowTypeMappingTo,
+                     $this->MappingTable[$alteredAttribute][$name]
                   );
 
                   // add dynamic character set specification
                   $dataType = str_replace('[charset]', $this->getTableCharset(), $dataType);
                   
-                  $this->__UpdateStatements[] = 'ALTER TABLE `'
-                     .$this->__MappingTable[$alteredAttribute]['Table'].'` CHANGE `'.$name.'` '
+                  $this->UpdateStatements[] = 'ALTER TABLE `'
+                     .$this->MappingTable[$alteredAttribute]['Table'].'` CHANGE `'.$name.'` '
                      .'`'.$name.'` '.$dataType.';';
 
                }
@@ -553,49 +553,49 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
       private function analyzeMappingConfigurationChanges(){
          
          // gather overall mapping changes
-         $this->__NewMappings = array_diff_ukey(
-            $this->__MappingTable,
-            $this->__ReEngineeredMappingTable,
+         $this->NewMappings = array_diff_ukey(
+            $this->MappingTable,
+            $this->ReEngineeredMappingTable,
             array($this,'compareMappings')
          );
-         $this->__RemovedMappings = array_diff_ukey(
-            $this->__ReEngineeredMappingTable,
-            $this->__MappingTable,
+         $this->RemovedMappings = array_diff_ukey(
+            $this->ReEngineeredMappingTable,
+            $this->MappingTable,
             array($this,'compareMappings')
          );
 
          // evaluate changes within the attributes
-         foreach($this->__MappingTable as $mappingKey => $mappingValue){
+         foreach($this->MappingTable as $mappingKey => $mappingValue){
 
             // only scan entries, that are not within the new and removed ones!
-            if(!isset($this->__NewMappings[$mappingKey])
-               && !isset($this->__RemovedMappings[$mappingKey])){
+            if(!isset($this->NewMappings[$mappingKey])
+               && !isset($this->RemovedMappings[$mappingKey])){
 
                // new columns
-               $this->__NewMappingAttributes[$mappingKey] = array_diff_ukey(
-                  $this->__MappingTable[$mappingKey],
-                  $this->__ReEngineeredMappingTable[$mappingKey],
+               $this->NewMappingAttributes[$mappingKey] = array_diff_ukey(
+                  $this->MappingTable[$mappingKey],
+                  $this->ReEngineeredMappingTable[$mappingKey],
                   array($this,'compareMappings')
                );
 
                // removed columns
-               $this->__RemovedMappingAttributes[$mappingKey] = array_diff_ukey(
-                  $this->__ReEngineeredMappingTable[$mappingKey],
-                  $this->__MappingTable[$mappingKey],
+               $this->RemovedMappingAttributes[$mappingKey] = array_diff_ukey(
+                  $this->ReEngineeredMappingTable[$mappingKey],
+                  $this->MappingTable[$mappingKey],
                   array($this,'compareMappings')
                );
 
                // changed columns
-               foreach($this->__MappingTable[$mappingKey] as $key => $value){
+               foreach($this->MappingTable[$mappingKey] as $key => $value){
 
                   // only scan entries, that are also existent within the re-engineered mapping table!
-                  if(isset($this->__ReEngineeredMappingTable[$mappingKey][$key])){
+                  if(isset($this->ReEngineeredMappingTable[$mappingKey][$key])){
                      $diff = $this->compareMappingValues(
-                        $this->__MappingTable[$mappingKey][$key],
-                        $this->__ReEngineeredMappingTable[$mappingKey][$key]
+                        $this->MappingTable[$mappingKey][$key],
+                        $this->ReEngineeredMappingTable[$mappingKey][$key]
                      );
                      if($diff === 1){
-                        $this->__AlteredMappingAttributes[$mappingKey][] = $key;
+                        $this->AlteredMappingAttributes[$mappingKey][] = $key;
                      }
                   }
 
@@ -617,40 +617,40 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
       private function analyzeRelationConfigurationChanges(){
 
          // new relations
-         $this->__NewRelations = array_diff_ukey(
-            $this->__RelationTable,
-            $this->__ReEngineeredRelationTable,
+         $this->NewRelations = array_diff_ukey(
+            $this->RelationTable,
+            $this->ReEngineeredRelationTable,
             array($this,'compareRelations')
          );
 
          // removed relations
-         $this->__RemovedRelations = array_diff_ukey(
-            $this->__ReEngineeredRelationTable,
-            $this->__RelationTable,
+         $this->RemovedRelations = array_diff_ukey(
+            $this->ReEngineeredRelationTable,
+            $this->RelationTable,
             array($this,'compareRelations')
          );
 
          // evaluate changes within the attributes
-         foreach($this->__RelationTable as $relationKey => $relationValue){
+         foreach($this->RelationTable as $relationKey => $relationValue){
 
             // use lowercase relation key for re-engineered values!
             $reEngRelationKey = strtolower($relationKey);
 
             // only scan entries, that are not within the new and removed ones!
-            if(!isset($this->__NewRelations[$relationKey])
-               && !isset($this->__RemovedRelations[$relationKey])){
+            if(!isset($this->NewRelations[$relationKey])
+               && !isset($this->RemovedRelations[$relationKey])){
 
                // changed columns (we only check for relation type, because for all other
                // cases, a new relation *must* be created!)
-               foreach($this->__RelationTable[$relationKey] as $key => $DUMMY){
+               foreach($this->RelationTable[$relationKey] as $key => $DUMMY){
 
                   // only scan entries, that are also existent within the re-engineered
                   // relation table! Further, only respect the type key.
-                  if(isset($this->__ReEngineeredRelationTable[$reEngRelationKey][$key])
+                  if(isset($this->ReEngineeredRelationTable[$reEngRelationKey][$key])
                      && $key == 'Type'){
-                     if($this->__ReEngineeredRelationTable[$reEngRelationKey][$key]
-                        !== $this->__RelationTable[$relationKey][$key]){
-                        $this->__AlteredRelationAttributes[] = $relationKey;
+                     if($this->ReEngineeredRelationTable[$reEngRelationKey][$key]
+                        !== $this->RelationTable[$relationKey][$key]){
+                        $this->AlteredRelationAttributes[] = $relationKey;
                      }
                   }
 
@@ -673,21 +673,21 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
        */
       private function generateRelationUpdateStatements(){
 
-         foreach($this->__NewRelations as $newRelation => $DUMMY){
-            $this->__UpdateStatements[] = 
-               $this->generateRelationTableLayout($this->__RelationTable[$newRelation]);
+         foreach($this->NewRelations as $newRelation => $DUMMY){
+            $this->UpdateStatements[] = 
+               $this->generateRelationTableLayout($this->RelationTable[$newRelation]);
          }
-         foreach($this->__RemovedRelations as $removedRelation => $DUMMY){
-            $this->__UpdateStatements[] = 'DROP TABLE '
-               .$this->__ReEngineeredRelationTable[$removedRelation]['Table'].';';
+         foreach($this->RemovedRelations as $removedRelation => $DUMMY){
+            $this->UpdateStatements[] = 'DROP TABLE '
+               .$this->ReEngineeredRelationTable[$removedRelation]['Table'].';';
          }
 
-         // changed relation types: $this->__AlteredRelationAttributes
-         foreach($this->__AlteredRelationAttributes as $alteredRelation){
+         // changed relation types: $this->AlteredRelationAttributes
+         foreach($this->AlteredRelationAttributes as $alteredRelation){
             $reEngAlteredRelation = strtolower($alteredRelation);
-            $this->__UpdateStatements[] = 'RENAME TABLE `'
-               .$this->__ReEngineeredRelationTable[$reEngAlteredRelation]['Table']
-               .'` TO `'.$this->__RelationTable[$alteredRelation]['Table'].'`;';
+            $this->UpdateStatements[] = 'RENAME TABLE `'
+               .$this->ReEngineeredRelationTable[$reEngAlteredRelation]['Table']
+               .'` TO `'.$this->RelationTable[$alteredRelation]['Table'].'`;';
          }
 
       }

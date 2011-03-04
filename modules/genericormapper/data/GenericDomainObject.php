@@ -43,10 +43,10 @@
       private $dataComponent = null;
 
       /**
-       * protected
+       * private
        * @var string Name of the object (see mapping table!).
        */
-      protected $objectName = null;
+      private $objectName = null;
 
       /**
        * @private

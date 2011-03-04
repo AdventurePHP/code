@@ -42,64 +42,64 @@
        * @protected
        * @var string Namespace, where the configuration files are located.
        */
-      protected $__ConfigNamespace = null;
+      protected $ConfigNamespace = null;
 
       /**
        * @protected
        * @var string Name affix of the configuration files.
        */
-      protected $__ConfigNameAffix = null;
+      protected $ConfigNameAffix = null;
 
       /**
        * @protected
        * @var AbstractDatabaseHandler Instance of the database driver.
        */
-      protected $__DBDriver = null;
+      protected $DBDriver = null;
 
       /**
        * @since 1.12
        * Stores the connection name to be able to restore the connection on wakeup.
        * @var string The name of the connection to use.
        */
-      protected $__DBConnectionName = null;
+      protected $DBConnectionName = null;
 
       /**
        * @protected
        * @var string[] Object mapping table.
        */
-      protected $__MappingTable = array();
+      protected $MappingTable = array();
 
       /**
        * @protected
        * @since 1.12
        * @var string[] Additional indices for the object tables.
        */
-      protected $__MappingIndexTable = array();
+      protected $MappingIndexTable = array();
 
       /**
        * @protected
        * @var string[] Object relation table.
        */
-      protected $__RelationTable = array();
+      protected $RelationTable = array();
 
       /**
        * @protected
        * @since 1.14
        * @var string[] Domain object table
        */
-      protected $__ServiceObjectsTable = array();
+      protected $ServiceObjectsTable = array();
 
       /**
        * @protected
        * @var string[] Indicates, if a additional configuration was already imported.
        */
-      protected $__importedConfigCache = array();
+      protected $importedConfigCache = array();
 
       /**
        * @protected
        * @var boolean Indicates, whether the generated statements should be logged for debugging purposes.
        */
-      protected $__LogStatements = false;
+      protected $LogStatements = false;
 
       /**
        * @protected
@@ -127,17 +127,17 @@
       public function init($initParam){
 
          // set the config namespace
-         $this->__ConfigNamespace = $initParam['ConfigNamespace'];
+         $this->ConfigNamespace = $initParam['ConfigNamespace'];
 
          // set the config name affix
-         $this->__ConfigNameAffix = $initParam['ConfigNameAffix'];
+         $this->ConfigNameAffix = $initParam['ConfigNameAffix'];
 
          // create the connection
-         $this->__DBConnectionName = $initParam['ConnectionName'];
+         $this->DBConnectionName = $initParam['ConnectionName'];
          $this->createDatabaseConnection();
 
          // set debug mode, if desired
-         $this->__LogStatements = $initParam['LogStatements'];
+         $this->LogStatements = $initParam['LogStatements'];
 
        // end function
       }
@@ -155,7 +155,7 @@
        */
       protected function createDatabaseConnection(){
          $cM = &$this->__getServiceObject('core::database','ConnectionManager');
-         $this->__DBDriver = &$cM->getConnection($this->__DBConnectionName);
+         $this->DBDriver = &$cM->getConnection($this->DBConnectionName);
       }
 
       /**
@@ -171,7 +171,7 @@
        * Version 0.1, 20.02.2010<br />
        */
       public function &getDBDriver(){
-         return $this->__DBDriver;
+         return $this->DBDriver;
       }
 
       /**
@@ -186,38 +186,38 @@
        * Version 0.3, 22.06.2008 (Refactored object configuration adressing)<br />
        * Version 0.4, 26.10.2008 (Resolving functionality was outsourced to the __generateMappingItem() method)<br />
        */
-      protected function __createMappingTable(){
+      protected function createMappingTable(){
 
          // invoke benchmark timer
          $t = &Singleton::getInstance('BenchmarkTimer');
-         $t->start('BaseMapper::__createMappingTable()');
+         $t->start('BaseMapper::createMappingTable()');
 
          // get object configuration
-         $objectsConfig = $this->getConfiguration($this->__ConfigNamespace,$this->__ConfigNameAffix.'_objects');
+         $objectsConfig = $this->getConfiguration($this->ConfigNamespace,$this->ConfigNameAffix.'_objects.ini');
 
          // extract configuration to support pre 1.13 GORM config
          foreach($objectsConfig->getSectionNames() as $sectionName){
             $section = $objectsConfig->getSection($sectionName);
-            $this->__MappingTable[$sectionName] = array();
+            $this->MappingTable[$sectionName] = array();
             foreach($section->getValueNames() as $valueName){
-               $this->__MappingTable[$sectionName][$valueName] = $section->getValue($valueName);
+               $this->MappingTable[$sectionName][$valueName] = $section->getValue($valueName);
             }
          }
 
          // resolve definitions
-         foreach($this->__MappingTable as $objectName => $DUMMY){
+         foreach($this->MappingTable as $objectName => $DUMMY){
             
             // add additional index definition to separate table
-            if(isset($this->__MappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR])){
-               $this->__MappingIndexTable[$objectName] = $this->__MappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR];
-               //unset($this->__MappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR]);
+            if(isset($this->MappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR])){
+               $this->MappingIndexTable[$objectName] = $this->MappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR];
+               //unset($this->MappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR]);
             }
 
-            $this->__MappingTable[$objectName] = $this->__generateMappingItem($objectName,$this->__MappingTable[$objectName]);
+            $this->MappingTable[$objectName] = $this->generateMappingItem($objectName,$this->MappingTable[$objectName]);
 
          }
 
-         $t->stop('BaseMapper::__createMappingTable()');
+         $t->stop('BaseMapper::createMappingTable()');
 
       }
 
@@ -233,30 +233,30 @@
        * Version 0.3, 22.06.2008 (refactored relation configuration adressing)<br />
        * Version 0.4, 26.10.2008 (Resolving functionality was outsourced to the __generateRelationItem() method)<br />
        */
-      protected function __createRelationTable(){
+      protected function createRelationTable(){
 
          // invoke benchmark timer
          $t = &Singleton::getInstance('BenchmarkTimer');
-         $t->start('BaseMapper::__createRelationTable()');
+         $t->start('BaseMapper::createRelationTable()');
 
          // Get relation configuration
-         $relationsConfig = $this->getConfiguration($this->__ConfigNamespace,$this->__ConfigNameAffix.'_relations');
+         $relationsConfig = $this->getConfiguration($this->ConfigNamespace,$this->ConfigNameAffix.'_relations.ini');
 
          // extract configuration to support pre 1.13 GORM config
          foreach($relationsConfig->getSectionNames() as $sectionName){
             $section = $relationsConfig->getSection($sectionName);
-            $this->__RelationTable[$sectionName] = array();
+            $this->RelationTable[$sectionName] = array();
             foreach($section->getValueNames() as $valueName){
-               $this->__RelationTable[$sectionName][$valueName] = $section->getValue($valueName);
+               $this->RelationTable[$sectionName][$valueName] = $section->getValue($valueName);
             }
          }
 
          // resolve definitions
-         foreach($this->__RelationTable as $relationName => $DUMMY){
-            $this->__RelationTable[$relationName] = $this->__generateRelationItem($relationName,$this->__RelationTable[$relationName]);
+         foreach($this->RelationTable as $relationName => $DUMMY){
+            $this->RelationTable[$relationName] = $this->generateRelationItem($relationName,$this->RelationTable[$relationName]);
          }
 
-         $t->stop('BaseMapper::__createRelationTable()');
+         $t->stop('BaseMapper::createRelationTable()');
 
       }
 
@@ -269,16 +269,16 @@
        * @version
        * Version 0.1, 15.01.2011<br />
        */
-      protected function __createServiceObjectsTable(){
+      protected function createServiceObjectsTable(){
          
          // invoke benchmark timer
          $t = &Singleton::getInstance('BenchmarkTimer');
-         $t->start('BaseMapper::__createServiceObjectsTable()');
+         $t->start('BaseMapper::createServiceObjectsTable()');
 
          $configIsPresent = true;
          // get object configuration if there is one
          try {
-            $serviceObjectsConfig = $this->getConfiguration($this->__ConfigNamespace,$this->__ConfigNameAffix.'_serviceobjects');
+            $serviceObjectsConfig = $this->getConfiguration($this->ConfigNamespace,$this->ConfigNameAffix.'_serviceobjects.ini');
          }
          catch(ConfigurationException $e){
              $configIsPresent = false;
@@ -287,12 +287,12 @@
          if($configIsPresent){
              foreach($serviceObjectsConfig->getSectionNames() as $sectionName){
                 $section = $serviceObjectsConfig->getSection($sectionName);
-                $this->__ServiceObjectsTable[$sectionName] = array();
+                $this->ServiceObjectsTable[$sectionName] = array();
                 foreach($section->getValueNames() as $valueName){
-                   $this->__ServiceObjectsTable[$sectionName][$valueName] = $section->getValue($valueName);
+                   $this->ServiceObjectsTable[$sectionName][$valueName] = $section->getValue($valueName);
                 }
                 if($section->getSection('Base') !== null){
-                    $this->__ServiceObjectsTable[$sectionName]['Base'] = array(
+                    $this->ServiceObjectsTable[$sectionName]['Base'] = array(
                         'Namespace' => $section->getSection('Base')->getValue('Namespace'),
                         'Class' => $section->getSection('Base')->getValue('Class'),
                     );
@@ -300,7 +300,7 @@
              }
          }
 
-         $t->stop('BaseMapper::__createServiceObjectsTable()');
+         $t->stop('BaseMapper::createServiceObjectsTable()');
          
       }
 
@@ -323,7 +323,7 @@
 
          // add config, if not already included
          $cacheKey = md5($configNamespace.$configNameAffix.'_objects');
-         if(!isset($this->__importedConfigCache[$cacheKey])){
+         if(!isset($this->importedConfigCache[$cacheKey])){
 
             // import and merge config
             $addConfig = $this->getConfiguration($configNamespace,$configNameAffix.'_objects.ini');
@@ -340,14 +340,14 @@
 
             foreach($addObjects as $objectName => $DUMMY){
 
-               if(!isset($this->__MappingTable[$objectName])){
-                  $this->__MappingTable[$objectName] = $this->__generateMappingItem($objectName,$addObjects[$objectName]);
+               if(!isset($this->MappingTable[$objectName])){
+                  $this->MappingTable[$objectName] = $this->generateMappingItem($objectName,$addObjects[$objectName]);
                }
 
             }
 
             // mark object config as cached
-            $this->__importedConfigCache[$cacheKey] = true;
+            $this->importedConfigCache[$cacheKey] = true;
 
          }
 
@@ -391,7 +391,7 @@
 
          // add config, if not already included
          $cacheKey = md5($configNamespace.$configNameAffix.'_relations');
-         if(!isset($this->__importedConfigCache[$cacheKey])){
+         if(!isset($this->importedConfigCache[$cacheKey])){
 
             // import and merge config
             $addConfig = $this->getConfiguration($configNamespace,$configNameAffix.'_relations.ini');
@@ -408,14 +408,14 @@
 
             foreach($addRelations as $relationName => $DUMMY){
 
-               if(!isset($this->__RelationTable[$relationName])){
-                  $this->__RelationTable[$relationName] = $this->__generateRelationItem($relationName,$addRelations[$relationName]);
+               if(!isset($this->RelationTable[$relationName])){
+                  $this->RelationTable[$relationName] = $this->generateRelationItem($relationName,$addRelations[$relationName]);
                }
 
             }
 
             // mark relation config as cached
-            $this->__importedConfigCache[$cacheKey] = true;
+            $this->importedConfigCache[$cacheKey] = true;
 
          }
 
@@ -459,7 +459,7 @@
 
          // add config, if not already included
          $cacheKey = md5($configNamespace.$configNameAffix.'_serviceobjects');
-         if(!isset($this->__importedConfigCache[$cacheKey])){
+         if(!isset($this->importedConfigCache[$cacheKey])){
 
             // import and merge config
             $addConfig = $this->getConfiguration($configNamespace,$configNameAffix.'_serviceobjects.ini');
@@ -481,13 +481,13 @@
             }
 
             foreach($addObjects as $objectName => $DUMMY){
-               if(!isset($this->__ServiceObjectsTable[$objectName])){
-                  $this->__ServiceObjectsTable[$objectName] = $DUMMY;
+               if(!isset($this->ServiceObjectsTable[$objectName])){
+                  $this->ServiceObjectsTable[$objectName] = $DUMMY;
                }
             }
 
             // mark object config as cached
-            $this->__importedConfigCache[$cacheKey] = true;
+            $this->importedConfigCache[$cacheKey] = true;
 
          }
 
@@ -525,7 +525,7 @@
        * @version
        * Version 0.1, 26.10.2008<br />
        */
-      protected function __generateMappingItem($objectName,$objectSection){
+      protected function generateMappingItem($objectName,$objectSection){
 
          // resolve standard properties, that derive from the definition
          // - table name:
@@ -552,7 +552,7 @@
        * @version
        * Version 0.1, 26.10.2008<br />
        */
-      protected function __generateRelationItem($relationName,$relationSection){
+      protected function generateRelationItem($relationName,$relationSection){
 
          // Resolve standard properties, that derive from the definition
          // - table name

@@ -39,31 +39,31 @@
        * @private
        * @var string[] Stores the relation indicators.
        */
-      private $__Relations = array();
+      private $Relations = array();
 
       /**
        * @private
        * @var string[] Stores the limit indicator.
        */
-      private $__Limit = array();
+      private $Limit = array();
 
       /**
        * @private
        * @var string[] Stores the property indicator.
        */
-      private $__Properties = array();
+      private $Properties = array();
 
       /**
        * @private
        * @var string[] Stores the properties to load into the object.
        */
-      private $__LoadedProperties = array();
+      private $LoadedProperties = array();
 
       /**
        * @private
        * @var string[] Stores the order indicator.
        */
-      private $__Orders = array();
+      private $Orders = array();
 
       /**
        * @public
@@ -81,7 +81,7 @@
        * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
        */
       public function addRelationIndicator($relationName,$sourceObject){
-         $this->__Relations[$relationName] = $sourceObject;
+         $this->Relations[$relationName] = $sourceObject;
          return $this;
        // end function
       }
@@ -98,7 +98,7 @@
        * Version 0.1, 23.04.2010<br />
        */
       public function getRelations(){
-         return $this->__Relations;
+         return $this->Relations;
       }
 
       /**
@@ -120,12 +120,12 @@
       public function addCountIndicator($startOrCount,$count = null){
 
          if($count === null){
-            $this->__Limit['Count'] = $startOrCount;
+            $this->Limit['Count'] = $startOrCount;
           // end if
          }
          else{
-            $this->__Limit['Start'] = $startOrCount;
-            $this->__Limit['Count'] = $count;
+            $this->Limit['Start'] = $startOrCount;
+            $this->Limit['Count'] = $count;
           // end else
          }
 
@@ -145,7 +145,7 @@
        * Version 0.1, 23.04.2010<br />
        */
       public function getLimitDefinition(){
-         return $this->__Limit;
+         return $this->Limit;
       }
 
       /**
@@ -164,7 +164,7 @@
        * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
        */
       public function addPropertyIndicator($attributeName,$attributeValue){
-         $this->__Properties[$attributeName] = $attributeValue;
+         $this->Properties[$attributeName] = $attributeValue;
          return $this;
        // end function
       }
@@ -181,7 +181,7 @@
        * Version 0.1, 28.05.2010<br />
        */
       public function getPropertyDefinition(){
-         return $this->__Properties;
+         return $this->Properties;
        // end function
       }
 
@@ -201,7 +201,7 @@
        * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
        */
       public function addOrderIndicator($attributeName,$orderDirection = 'ASC'){
-         $this->__Orders[$attributeName] = $orderDirection;
+         $this->Orders[$attributeName] = $orderDirection;
          return $this;
        // end function
       }
@@ -218,7 +218,7 @@
        * Version 0.1, 23.04.2010<br />
        */
       public function getOrderIndicators(){
-         return $this->__Orders;
+         return $this->Orders;
       }
 
       /**
@@ -236,7 +236,7 @@
        * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
        */
       public function addLoadedProperty($propertyName){
-         $this->__LoadedProperties[] = $propertyName;
+         $this->LoadedProperties[] = $propertyName;
          return $this;
        // end function
       }
@@ -253,7 +253,7 @@
        * Version 0.1, 23.04.2010<br />
        */
       public function getLoadedProperties(){
-         return $this->__LoadedProperties;
+         return $this->LoadedProperties;
       }
 
     // end class

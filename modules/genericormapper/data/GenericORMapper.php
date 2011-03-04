@@ -70,14 +70,14 @@
          parent::init($initParam);
 
          // create mapping table if necessary
-         if(count($this->__MappingTable) == 0){
-            $this->__createMappingTable();
+         if(count($this->MappingTable) == 0){
+            $this->createMappingTable();
           // end if
          }
 
          //create service object table if necessary
-         if(count($this->__ServiceObjectsTable) === 0){
-             $this->__createServiceObjectsTable();
+         if(count($this->ServiceObjectsTable) === 0){
+             $this->createServiceObjectsTable();
           // end if
          }
 
@@ -102,9 +102,9 @@
        * Version 0.2, 25.06.2008 (Added the $StatementParams parameter)<br />
        */
       public function loadObjectListByStatement($objectName,$namespace,$statementName,$statementParams = array()){
-         return $this->__loadObjectListByStatementResult(
+         return $this->loadObjectListByStatementResult(
             $objectName,
-            $this->__DBDriver->executeStatement($namespace,$statementName,$statementParams,$this->__LogStatements)
+            $this->DBDriver->executeStatement($namespace,$statementName,$statementParams,$this->LogStatements)
          );
        // end function
       }
@@ -154,7 +154,7 @@
        * Version 0.1, 11.05.2008<br />
        */
       public function loadObjectListByTextStatement($objectName,$statement){
-         return $this->__loadObjectListByStatementResult($objectName,$this->__DBDriver->executeTextStatement($statement,$this->__LogStatements));
+         return $this->loadObjectListByStatementResult($objectName,$this->DBDriver->executeTextStatement($statement,$this->LogStatements));
        // end function
       }
 
@@ -175,9 +175,9 @@
        * Version 0.2, 25.06.2008 (Added the $StatementParams parameter)<br />
        */
       public function loadObjectByStatement($objectName,$namespace,$statementName,$statementParams = array()){
-         $result = $this->__DBDriver->executeStatement($namespace,$statementName,$statementParams,$this->__LogStatements);
-         $data = $this->__DBDriver->fetchData($result);
-         return $this->__mapResult2DomainObject($objectName,$data);
+         $result = $this->DBDriver->executeStatement($namespace,$statementName,$statementParams,$this->LogStatements);
+         $data = $this->DBDriver->fetchData($result);
+         return $this->mapResult2DomainObject($objectName,$data);
        // end function
       }
 
@@ -197,9 +197,9 @@
        * Version 0.2, 25.05.2008 (Corrected the call of the executeTextStatement() method)<br />
        */
       public function loadObjectByTextStatement($objectName,$statement){
-         $result = $this->__DBDriver->executeTextStatement($statement,$this->__LogStatements);
-         $data = $this->__DBDriver->fetchData($result);
-         return $this->__mapResult2DomainObject($objectName,$data);
+         $result = $this->DBDriver->executeTextStatement($statement,$this->LogStatements);
+         $data = $this->DBDriver->fetchData($result);
+         return $this->mapResult2DomainObject($objectName,$data);
        // end function
       }
 
@@ -219,14 +219,14 @@
 
          // Get information about object to load
          $objectName = $object->getObjectName();
-         $objectID = $this->__MappingTable[$objectName]['ID'];
+         $objectID = $this->MappingTable[$objectName]['ID'];
          $ID = $object->getProperty($objectID);
 
          // Build query
-         $delete = 'DELETE FROM `'.$this->__MappingTable[$objectName]['Table'].'`';
+         $delete = 'DELETE FROM `'.$this->MappingTable[$objectName]['Table'].'`';
          $delete .= ' WHERE `'.$objectID. '` = \''.$ID.'\';';
 
-         $this->__DBDriver->executeTextStatement($delete,$this->__LogStatements);
+         $this->DBDriver->executeTextStatement($delete,$this->LogStatements);
 
          return $ID;
 
@@ -256,14 +256,14 @@
          // get information about object to load
          $objectName = $object->getObjectName();
 
-         if(!isset($this->__MappingTable[$objectName])){
+         if(!isset($this->MappingTable[$objectName])){
             throw new GenericORMapperException('[GenericORMapper::saveObject()] The object name "'
                 .$objectName.'" does not exist in the mapping table! Hence, your object cannot be saved! '
                 .'Please check your object configuration.',E_USER_ERROR);
             return null;
           // end if
          }
-         $pkName = $this->__MappingTable[$objectName]['ID'];
+         $pkName = $this->MappingTable[$objectName]['ID'];
          $attrExceptions = array(
                              $pkName,
                              'ModificationTimestamp',
@@ -276,7 +276,7 @@
          if($id === null){
 
             // do an INSERT
-            $insert = 'INSERT INTO '.$this->__MappingTable[$objectName]['Table'];
+            $insert = 'INSERT INTO '.$this->MappingTable[$objectName]['Table'];
 
             $names = array();
             $values = array();
@@ -288,16 +288,16 @@
                   $names[] = '`'.$propertyName.'`';
 
                   // escape value to avoid SQL injections
-                  $propertyValue = $this->__DBDriver->escapeValue($propertyValue);
+                  $propertyValue = $this->DBDriver->escapeValue($propertyValue);
 
                   // Check, whether the desired property is a BIT field. If yes, prepend with
                   // the binary marker! Details can be read about under
                   // http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=234.
-                  if(stripos($this->__MappingTable[$objectName][$propertyName],self::$BIT_FIELD_IDENTIFIER) === false){
+                  if(stripos($this->MappingTable[$objectName][$propertyName],self::$BIT_FIELD_IDENTIFIER) === false){
 
                      // check, whether the field is a null value and translate PHP null values into
                      // MySQL NULL value
-                     if(stripos($this->__MappingTable[$objectName][$propertyName],self::$NULL_FIELD_IDENTIFIER) === false){
+                     if(stripos($this->MappingTable[$objectName][$propertyName],self::$NULL_FIELD_IDENTIFIER) === false){
                         $values[] = '\''.$propertyValue.'\'';
                      }
                      else {
@@ -325,15 +325,15 @@
             $insert .= ' ('.implode(', ',$names).')';
             $insert .= ' VALUES ('.implode(', ',$values).');';
 
-            $this->__DBDriver->executeTextStatement($insert,$this->__LogStatements);
-            $id = $this->__DBDriver->getLastID();
+            $this->DBDriver->executeTextStatement($insert,$this->LogStatements);
+            $id = $this->DBDriver->getLastID();
 
           // end if
          }
          else{
 
             // UPDATE object in database
-            $update = 'UPDATE '.$this->__MappingTable[$objectName]['Table'];
+            $update = 'UPDATE '.$this->MappingTable[$objectName]['Table'];
 
             $queryParams = array();
             foreach($object->getProperties() as $propertyName => $propertyValue){
@@ -341,17 +341,17 @@
                if(!in_array($propertyName,$attrExceptions)){
 
                   // escape value to avoid SQL injections
-                  $propertyValue = $this->__DBDriver->escapeValue($propertyValue);
+                  $propertyValue = $this->DBDriver->escapeValue($propertyValue);
 
                   // Check, whether the desired property is a BIT field. If yes, prepend with
                   // the binary marker! Details can be read about under
                   // http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=234.
-                  if(stripos($this->__MappingTable[$objectName][$propertyName],self::$BIT_FIELD_IDENTIFIER) === false){
+                  if(stripos($this->MappingTable[$objectName][$propertyName],self::$BIT_FIELD_IDENTIFIER) === false){
 
                      // check, whether the field is a null value and translate PHP null values into
                      // MySQL NULL value
                      $value = (string)'';
-                     if(stripos($this->__MappingTable[$objectName][$propertyName],self::$NULL_FIELD_IDENTIFIER) === false){
+                     if(stripos($this->MappingTable[$objectName][$propertyName],self::$NULL_FIELD_IDENTIFIER) === false){
                         $value = '\''.$propertyValue.'\'';
                      }
                      else {
@@ -383,7 +383,7 @@
 
             // execute update, only if the update is necessary
             if(count($queryParams) > 0){
-               $this->__DBDriver->executeTextStatement($update,$this->__LogStatements);
+               $this->DBDriver->executeTextStatement($update,$this->LogStatements);
              // end if
             }
 
@@ -427,11 +427,11 @@
                     .'cannot be loaded!', E_USER_ERROR);
          }
 
-         $query = 'SELECT * FROM `'.$this->__MappingTable[$objectName]['Table'].'`
-                   WHERE `'.$this->__MappingTable[$objectName]['ID'].'` = \''.$objectId.'\';';
-         $result = $this->__DBDriver->executeTextStatement($query,$this->__LogStatements);
+         $query = 'SELECT * FROM `'.$this->MappingTable[$objectName]['Table'].'`
+                   WHERE `'.$this->MappingTable[$objectName]['ID'].'` = \''.$objectId.'\';';
+         $result = $this->DBDriver->executeTextStatement($query,$this->LogStatements);
 
-         return $this->__mapResult2DomainObject($objectName,$this->__DBDriver->fetchData($result));
+         return $this->mapResult2DomainObject($objectName,$this->DBDriver->fetchData($result));
 
        // end function
       }
@@ -449,12 +449,12 @@
        * @version
        * Version 0.1, 11.05.2008<br />
        */
-      protected function __loadObjectListByStatementResult($objectName,$stmtResult){
+      protected function loadObjectListByStatementResult($objectName,$stmtResult){
 
          // Load list
          $objectList = array();
-         while($data = $this->__DBDriver->fetchData($stmtResult)){
-            $objectList[] = $this->__mapResult2DomainObject($objectName,$data);
+         while($data = $this->DBDriver->fetchData($stmtResult)){
+            $objectList[] = $this->mapResult2DomainObject($objectName,$data);
           // end while
          }
 
@@ -479,14 +479,14 @@
        * Version 0.3, 15.06.2008 (Now uses the constructor of GenericDomainObject to set the object name)<br />
        * Version 0.4, 15.01.2011 (Added support for own domain objects and event handler)<br />
        */
-      protected function __mapResult2DomainObject($objectName,$properties){
+      protected function mapResult2DomainObject($objectName,$properties){
 
          if($properties !== false){
 
             // create service object if needed
-            if(isset($this->__ServiceObjectsTable[$objectName])){
-                import($this->__ServiceObjectsTable[$objectName]['Namespace'], $this->__ServiceObjectsTable[$objectName]['Class']);
-                $object = new $this->__ServiceObjectsTable[$objectName]['Class']($objectName);
+            if(isset($this->ServiceObjectsTable[$objectName])){
+                import($this->ServiceObjectsTable[$objectName]['Namespace'], $this->ServiceObjectsTable[$objectName]['Class']);
+                $object = new $this->ServiceObjectsTable[$objectName]['Class']($objectName);
             }
             else {
                 $object = new GenericDomainObject($objectName);
@@ -499,8 +499,8 @@
             foreach($properties as $propertyName => $propertyValue){
 
                // re-map empty values for null fields to PHP null values
-               if(isset($this->__MappingTable[$objectName][$propertyName])
-                       && stripos($this->__MappingTable[$objectName][$propertyName],self::$NULL_FIELD_IDENTIFIER) !== false
+               if(isset($this->MappingTable[$objectName][$propertyName])
+                       && stripos($this->MappingTable[$objectName][$propertyName],self::$NULL_FIELD_IDENTIFIER) !== false
                        && empty($propertyValue)){
                   $propertyValue = null;
                }

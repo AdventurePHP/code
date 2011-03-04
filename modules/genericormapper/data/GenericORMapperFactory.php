@@ -49,7 +49,7 @@
        * @private
        * @var GenericORRelationMapper[] Stores the or mapper instances.
        */
-      private $__ORMapperCache = array();
+      private $ORMapperCache = array();
 
       public function GenericORMapperFactory(){
       }
@@ -85,8 +85,8 @@
          $cacheKey = md5($configNamespace.$configNameAffix.$connectionName);
 
          // create and initaialize a mapper instance
-         if(!isset($this->__ORMapperCache[$cacheKey])){
-            $this->__ORMapperCache[$cacheKey] =
+         if(!isset($this->ORMapperCache[$cacheKey])){
+            $this->ORMapperCache[$cacheKey] =
                &$this->__getAndInitServiceObject(
                   'modules::genericormapper::data',
                   'GenericORRelationMapper',
@@ -99,7 +99,7 @@
           // end if
          }
 
-         return $this->__ORMapperCache[$cacheKey];
+         return $this->ORMapperCache[$cacheKey];
 
        // end function
       }
