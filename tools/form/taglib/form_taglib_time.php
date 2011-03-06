@@ -114,14 +114,14 @@ class form_taglib_time extends form_control {
 
       // set the values for the hours select box
       for ($i = (int) $this->hoursRange['Start']; $i <= (int) $this->hoursRange['End']; $i++) {
-         $i = $this->__appendZero($i);
+         $i = $this->appendZero($i);
          $hours->addOption($i, $i);
       }
 
       // set the values for the minutes select box
       $i = 0;
       while ($i < 60) {
-         $i = $this->__appendZero($i);
+         $i = $this->appendZero($i);
          $minutes->addOption($i, $i);
          $i = $i + $this->minutesInterval;
       }
@@ -130,15 +130,15 @@ class form_taglib_time extends form_control {
       // set the values for the seconds select box
       if ($this->showSeconds != false) {
          for ($i = 0; $i < 60; $i++) {
-            $i = $this->__appendZero($i);
+            $i = $this->appendZero($i);
             $seconds->addOption($i, $i);
          }
       }
 
       // preset today's time on startup
       if (!isset($_REQUEST[$name])) {
-         $hours->setOption2Selected($this->__appendZero(date('G')));
-         $minutes->setOption2Selected($this->__appendZero(date('i')));
+         $hours->setOption2Selected($this->appendZero(date('G')));
+         $minutes->setOption2Selected($this->appendZero(date('i')));
          if ($this->showSeconds != false) {
             $seconds->setOption2Selected(date('s'));
          }
@@ -284,8 +284,8 @@ class form_taglib_time extends form_control {
 
       $time = date_parse($time);
       if (count($time['errors']) == 0 && count($time['warnings']) == 0) {
-         $this->getHoursControl()->setOption2Selected($this->__appendZero($time['hour']));
-         $this->getMinutesControl()->setOption2Selected($this->__appendZero($time['minute']));
+         $this->getHoursControl()->setOption2Selected($this->appendZero($time['hour']));
+         $this->getMinutesControl()->setOption2Selected($this->appendZero($time['minute']));
          if ($this->showSeconds != false) {
             $this->getSecondsControl()->setOption2Selected($time['second']);
          }
@@ -358,8 +358,8 @@ class form_taglib_time extends form_control {
          $hoursrange = explode('-', $this->__Attributes['hoursrange']);
 
          if (count($hoursrange) == 2) {
-            $this->hoursRange['Start'] = trim($this->__appendZero($hoursrange[0]));
-            $this->hoursRange['End'] = trim($this->__appendZero($hoursrange[1]));
+            $this->hoursRange['Start'] = trim($this->appendZero($hoursrange[0]));
+            $this->hoursRange['End'] = trim($this->appendZero($hoursrange[1]));
          }
       }
    }
@@ -407,11 +407,8 @@ class form_taglib_time extends form_control {
     * @version
     * Version 0.1, 21.2.2011<br />
     */
-   protected function __appendZero($input) {
-      if (strlen($input) < 2) {
-         $input = '0' . (string) $input;
-      }
-      return $input;
+   protected function appendZero($input) {
+      return sprintf('%02s', $input);
    }
 
 }
