@@ -121,10 +121,11 @@
        * @author Christian Achatz
        * @version
        * Version 0.1, 03.02.2010<br />
+       * Version 0.2, 07.03.2011 (use control's appendCssClass() now)<br />
        */
       protected function markControl(form_control &$control){
          $marker = $this->getCssMarkerClass($control);
-         $this->appendCssClass($control,$marker);
+         $control->appendCssClass($marker);
       }
 
       /**
@@ -147,35 +148,6 @@
             $marker = self::$DEFAULT_MARKER_CLASS;
          }
          return $marker;
-      }
-
-      /**
-       * @protected
-       *
-       * Savely appends a css class. Resolves missing attribute.
-       *
-       * @param form_control $control The control to mark as invalid.
-       * @param string $class The css class to append.
-       *
-       * @since 1.12
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 03.02.2010<br />
-       */
-      protected function appendCssClass(&$control,$class){
-         
-         $attr = $control->getAttribute('class');
-
-         // initialize empty attribute
-         if(empty($attr)){
-            $attr = $class;
-         }
-         else {
-            $attr .= ' '.$class;
-         }
-         $control->setAttribute('class',$attr);
-
       }
 
     // end function
