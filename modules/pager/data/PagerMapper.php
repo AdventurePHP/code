@@ -109,7 +109,7 @@
 
          // load from database if not in session
          if($entriesCount === null){
-            $cM = &$this->__getServiceObject('core::database','ConnectionManager');
+            $cM = &$this->getServiceObject('core::database','ConnectionManager');
             $SQL = &$cM->getConnection($this->__ConnectionKey);
             $result = $SQL->executeStatement($namespace,$statement,$params);
             $data = $SQL->fetchData($result);
@@ -164,7 +164,7 @@
          // load from database if not in session
          if($entryIds === false){
 
-            $cM = &$this->__getServiceObject('core::database','ConnectionManager');
+            $cM = &$this->getServiceObject('core::database','ConnectionManager');
             $SQL = &$cM->getConnection($this->__ConnectionKey);
             $result = $SQL->executeStatement($namespace,$statement,$params);
 

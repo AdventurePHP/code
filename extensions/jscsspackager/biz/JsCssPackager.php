@@ -81,7 +81,7 @@ class JsCssPackager extends APFObject {
 
       /* If ServerCacheMinutes is not 0, we use a filecache */
       if ((int) $ServerCacheMinutes !== 0) {
-         $cMF = &$this->__getServiceObject('tools::cache', 'CacheManagerFabric');
+         $cMF = &$this->getServiceObject('tools::cache', 'CacheManagerFabric');
          $cM = &$cMF->getCacheManager('jscsspackager_cache');
 
          $cacheKey = $name;

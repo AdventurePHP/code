@@ -88,10 +88,10 @@
       */
       public function loadEntries() {
 
-         $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
+         $pMF = &$this->getServiceObject('modules::pager::biz','PagerManagerFabric');
          $pM = &$pMF->getPagerManager('ArticleComments');
 
-         $M = &$this->__getServiceObject('modules::comments::data','commentMapper');
+         $M = &$this->getServiceObject('modules::comments::data','commentMapper');
          return $pM->loadEntriesByAppDataComponent($M,'loadArticleCommentByID',array('CategoryKey' => $this->__CategoryKey));
 
       }
@@ -111,7 +111,7 @@
       *  Version 0.3, 24.01.2009 (Introduced the $anchorName parameter)<br />
       */
       public function getPager($anchorName = null){
-         $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
+         $pMF = &$this->getServiceObject('modules::pager::biz','PagerManagerFabric');
          $pM = &$pMF->getPagerManager('ArticleComments');
          $pM->setAnchorName($anchorName);
          return $pM->getPager(array('CategoryKey' => $this->__CategoryKey));
@@ -129,7 +129,7 @@
       *  Version 0.1, 21.08.2007<br />
       */
       public function getURLParameter(){
-         $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
+         $pMF = &$this->getServiceObject('modules::pager::biz','PagerManagerFabric');
          $pM = &$pMF->getPagerManager('ArticleComments');
          return $pM->getPagerURLParameters();
       }
@@ -150,9 +150,9 @@
       */
       public function saveEntry($articleComment,$ajax = false){
 
-         $M = &$this->__getServiceObject('modules::comments::data','commentMapper');
+         $M = &$this->getServiceObject('modules::comments::data','commentMapper');
 
-         $articleComment->set('CategoryKey',$this->__CategoryKey);
+         $articleComment->setCategoryKey($this->__CategoryKey);
          $M->saveArticleComment($articleComment);
 
          // redirect to further view, if not in AJAX mode

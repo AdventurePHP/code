@@ -41,13 +41,13 @@
        * The database connection name.
        * @var string
        */
-      private $__connectionName;
+      private $connectionName;
 
       /**
        * The GenericORMapper init type.
        * @var string
        */
-      private $__initType;
+      private $initType;
       
       /**
        * @public
@@ -65,12 +65,11 @@
          $crit = new GenericCriterionObject();
          $crit->addOrderIndicator('CreationTimestamp','DESC');
 
-         $gb = $this->__getCurrentGuestbook();
-         return $this->__mapGenericEntries2DomainObjects(
+         $gb = $this->getCurrentGuestbook();
+         return $this->mapGenericEntries2DomainObjects(
             $gb->loadRelatedObjects('Guestbook2Entry',$crit)
          );
          
-       // end function
       }
 
       /**
@@ -88,13 +87,12 @@
          
          $sortCrit = new GenericCriterionObject();
          $sortCrit->addOrderIndicator('CreationTimestamp','DESC');
-         $gb = $this->__getCurrentGuestbook();
-         return $this->__mapGenericEntries2DomainObjects(
+         $gb = $this->getCurrentGuestbook();
+         return $this->mapGenericEntries2DomainObjects(
             $gb->loadRelatedObjects('Guestbook2Entry',$sortCrit),
             false
          );
 
-       // end function
       }
 
 
@@ -110,9 +108,8 @@
        * Version 0.1, 21.05.2009<br />
        */
       public function loadGuestbook(){
-         $gb = $this->__getCurrentGuestbook();
-         return $this->__mapGenericGuestbook2DomainObject($gb);
-       // end function
+         $gb = $this->getCurrentGuestbook();
+         return $this->mapGenericGuestbook2DomainObject($gb);
       }
 
 
@@ -129,19 +126,19 @@
        * @version
        * Version 0.1, 21.05.2009<br />
        */
-      private function __mapGenericGuestbook2DomainObject($guestbook){
+      private function mapGenericGuestbook2DomainObject($guestbook){
 
          if($guestbook == null){
-            $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+            $model = &$this->getServiceObject('modules::guestbook2009::biz','GuestbookModel');
             $gbId = $model->getGuestbookId();
             throw new InvalidArgumentException('[GuestbookManager::__mapGenericGuestbook2DomainObject()] '
                .'No guestbook with id "'.$gbId.'" stored in database! Please check your guestbook tag '
                .'inclusion.',E_USER_ERROR);
          }
 
-         $orm = &$this->__getGenericORMapper();
+         $orm = &$this->getGenericORMapper();
          $crit = new GenericCriterionObject();
-         $lang = $this->__getCurrentLanguage();
+         $lang = $this->getCurrentLanguage();
          $crit->addRelationIndicator('Attribute2Language',$lang);
 
          $attributes = $orm->loadRelatedObjects($guestbook,'Guestbook2LangDepValues',$crit);
@@ -156,12 +153,10 @@
                $domGuestbook->setDescription($attribute->getProperty('Value'));
             }
             
-          // end foreach
          }
 
          return $domGuestbook;
 
-       // end function
       }
 
 
@@ -182,13 +177,12 @@
          $crit = new GenericCriterionObject();
          $crit->addOrderIndicator('CreationTimestamp','DESC');
          $crit->addPropertyIndicator('EntryID',$id);
-         $gb = $this->__getCurrentGuestbook();
-         $entryList = $this->__mapGenericEntries2DomainObjects(
+         $gb = $this->getCurrentGuestbook();
+         $entryList = $this->mapGenericEntries2DomainObjects(
             $gb->loadRelatedObjects('Guestbook2Entry',$crit)
          );
          return $entryList[0];
 
-       // end function
       }
 
       /**
@@ -203,10 +197,9 @@
        * Version 0.1, 10.05.2009<br />
        */
       public function saveEntry($entry){
-         $genericEntry = $this->__mapDomainObject2GenericEntry($entry);
-         $orm = &$this->__getGenericORMapper();
+         $genericEntry = $this->mapDomainObject2GenericEntry($entry);
+         $orm = &$this->getGenericORMapper();
          $orm->saveObject($genericEntry);
-       // end function
       }
 
       /**
@@ -222,7 +215,7 @@
        */
       public function deleteEntry($domEntry){
 
-         $orm = &$this->__getGenericORMapper();
+         $orm = &$this->getGenericORMapper();
          $entry = new GenericDomainObject('Entry');
          $entry->setProperty('EntryID',$domEntry->getId());
 
@@ -243,7 +236,6 @@
          // now delete entry object (associations are deleted automatically)
          $orm->deleteObject($entry);
 
-       // end function
       }
 
 
@@ -264,14 +256,13 @@
          $authCrit = new GenericCriterionObject();
          $authCrit->addPropertyIndicator('Username',$user->getUsername());
          $authCrit->addPropertyIndicator('Password',md5($user->getPassword()));
-         $orm = &$this->__getGenericORMapper();
+         $orm = &$this->getGenericORMapper();
          $gbUser = $orm->loadObjectByCriterion('User',$authCrit);
          if($gbUser !== null){
             return true;
          }
          return false;
 
-       // end function
       }
 
 
@@ -287,9 +278,9 @@
        * @version
        * Version 0.1, 06.05.2009<br />
        */
-      private function __mapDomainObject2GenericEntry($domEntry){
+      private function mapDomainObject2GenericEntry($domEntry){
 
-         $lang = $this->__getCurrentLanguage();
+         $lang = $this->getCurrentLanguage();
 
          $domEditor = $domEntry->getEditor();
          $editor = new GenericDomainObject('User');
@@ -303,12 +294,12 @@
 
          // try to load an existing title attribute to avoid new attributes
          // on updates and merge changes
-         $title = $this->__getGenericAttribute($domEntry,'title');
+         $title = $this->getGenericAttribute($domEntry,'title');
          $title->setProperty('Name','title');
          $title->setProperty('Value',$domEntry->getTitle());
          $title->addRelatedObject('Attribute2Language',$lang);
 
-         $text = $this->__getGenericAttribute($domEntry,'text');
+         $text = $this->getGenericAttribute($domEntry,'text');
          $text->setProperty('Name','text');
          $text->setProperty('Value',$domEntry->getText());
          $text->addRelatedObject('Attribute2Language',$lang);
@@ -318,7 +309,7 @@
          $entry->addRelatedObject('Entry2LangDepValues',$title);
          $entry->addRelatedObject('Entry2LangDepValues',$text);
          $entry->addRelatedObject('Editor2Entry',$editor);
-         $gb = $this->__getCurrentGuestbook();
+         $gb = $this->getCurrentGuestbook();
          $entry->addRelatedObject('Guestbook2Entry',$gb);
 
          $entryId = $domEntry->getId();
@@ -328,7 +319,6 @@
 
          return $entry;
 
-       // end function
       }
 
       /**
@@ -345,17 +335,17 @@
        * @version
        * Version 0.1, 06.05.2009<br />
        */
-      private function __getGenericAttribute($domEntry,$name){
+      private function getGenericAttribute($domEntry,$name){
 
          // try to load
          $entry = new GenericDomainObject('Entry');
          $entry->setProperty('EntryID',$domEntry->getId());
 
-         $orm = &$this->__getGenericORMapper();
+         $orm = &$this->getGenericORMapper();
 
          $crit = new GenericCriterionObject();
          $crit->addPropertyIndicator('Name',$name);
-         $crit->addRelationIndicator('Attribute2Language',$this->__getCurrentLanguage());
+         $crit->addRelationIndicator('Attribute2Language',$this->getCurrentLanguage());
 
          $attributes = $orm->loadRelatedObjects($entry,'Entry2LangDepValues',$crit);
          if(isset($attributes[0])){
@@ -364,7 +354,6 @@
 
          return new GenericDomainObject('Attribute');
 
-       // end function
       }
       
       /**
@@ -380,22 +369,21 @@
        * @version
        * Version 0.1, 06.05.2009<br />
        */
-      private function __mapGenericEntries2DomainObjects($entries = array(),$addEditor = true){
+      private function mapGenericEntries2DomainObjects($entries = array(),$addEditor = true){
 
          // return empty array, because having no entries means nothing to do!
          if(count($entries) == 0){
             return array();
-          // end if
          }
 
          // invoke benchmarker to be able to monitor the performance
          $t = &Singleton::getInstance('BenchmarkTimer');
-         $t->start('__mapGenericEntries2DomainObjects()');
+         $t->start('mapGenericEntries2DomainObjects()');
          
          // load the language object for the current language to enable
          // language dependent mapping!
-         $orm = &$this->__getGenericORMapper();
-         $lang = $this->__getCurrentLanguage();
+         $orm = &$this->getGenericORMapper();
+         $lang = $this->getCurrentLanguage();
 
          // define the criterion
          $critEntries = new GenericCriterionObject();
@@ -422,7 +410,6 @@
                      $entry->setText($attribute->getProperty('Value'));
                   }
 
-                // end foreach
                }
 
                // add the editor's data
@@ -434,22 +421,18 @@
                   $editor->setWebsite($user[0]->getProperty('Website'));
                   $editor->setId($user[0]->getProperty('UserID'));
                   $entry->setEditor($editor);
-                // end if
                }
 
                $entry->setId($current->getProperty('EntryID'));
                $gbEntries[] = $entry;
 
-             // end if
             }
 
-          // end foreach
          }
 
-         $t->stop('__mapGenericEntries2DomainObjects()');
+         $t->stop('mapGenericEntries2DomainObjects()');
          return $gbEntries;
 
-       // end function
       }
 
       /**
@@ -464,14 +447,13 @@
        * Version 0.1, 06.05.2009<br />
        * Version 0.2, 16.03.2010 (Bugfix 299: moved the service type to the GORM factory call)<br />
        */
-      private function &__getGenericORMapper(){
-         $ormFact = &$this->__getServiceObject('modules::genericormapper::data','GenericORMapperFactory',$this->__initType);
+      private function &getGenericORMapper(){
+         $ormFact = &$this->getServiceObject('modules::genericormapper::data','GenericORMapperFactory',$this->initType);
          return $ormFact->getGenericORMapper(
                                        'modules::guestbook2009::data',
                                        'guestbook2009',
-                                       $this->__connectionName                                       
+                                       $this->connectionName
          );
-       // end function
       }
 
       /**
@@ -487,8 +469,7 @@
        * Version 0.1, 13.06.2009<br />
        */
       public function setConnectionName($connectionName){
-         $this->__connectionName = $connectionName;
-       // end function
+         $this->connectionName = $connectionName;
       }
 
       /**
@@ -504,8 +485,7 @@
        * Version 0.1, 13.06.2009<br />
        */
       public function setORMInitType($initType){
-         $this->__initType = $initType;
-       // end function
+         $this->initType = $initType;
       }
 
       /**
@@ -517,14 +497,13 @@
        * @version
        * Version 0.1, 06.05.2009<br />
        */
-      private function __getCurrentLanguage(){
+      private function getCurrentLanguage(){
 
          $crit = new GenericCriterionObject();
          $crit->addPropertyIndicator('ISOCode',$this->__Language);
-         $orm = &$this->__getGenericORMapper();
+         $orm = &$this->getGenericORMapper();
          return $orm->loadObjectByCriterion('Language',$crit);
 
-       // end function
       }
 
       /**
@@ -538,15 +517,11 @@
        * @version
        * Version 0.1, 16.05.2009<br />
        */
-      private function __getCurrentGuestbook(){
-
-         $orm = &$this->__getGenericORMapper();
-         $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
-         return $orm->loadObjectByID('Guestbook',$model->getGuestbookId());
-
-       // end function
+      private function getCurrentGuestbook(){
+         $orm = &$this->getGenericORMapper();
+         $model = &$this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+         return $orm->loadObjectByID('Guestbook', $model->getGuestbookId());
       }
 
-    // end class
    }
 ?>

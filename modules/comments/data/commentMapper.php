@@ -52,7 +52,7 @@ class commentMapper extends APFObject {
                     FROM article_comments
                     WHERE ArticleCommentID = \'' . $commentId . '\';';
       $result = $SQL->executeTextStatement($select);
-      return $this->__mapArticleComment2DomainObject($SQL->fetchData($result));
+      return $this->mapArticleComment2DomainObject($SQL->fetchData($result));
    }
 
    /**
@@ -66,15 +66,15 @@ class commentMapper extends APFObject {
     * @version
     * Version 0.1, 22.08.2007<br />
     */
-   public function saveArticleComment($comment) {
+   public function saveArticleComment(ArticleComment $comment) {
 
-      $SQL = &$this->getConnection();
-      if ($comment->get('ID') == null) {
+      $conn = &$this->getConnection();
+      if ($comment->getId() == null) {
          $insert = 'INSERT INTO article_comments
                        (Name, EMail, Comment, Date, Time, CategoryKey)
                        VALUES
-                       (\'' . $SQL->escapeValue($comment->get('Name')) . '\',\'' . $SQL->escapeValue($comment->get('EMail')) . '\',\'' . $SQL->escapeValue($comment->get('Comment')) . '\',CURDATE(),CURTIME(),\'' . $comment->get('CategoryKey') . '\');';
-         $SQL->executeTextStatement($insert);
+                       (\'' . $conn->escapeValue($comment->getName()) . '\',\'' . $conn->escapeValue($comment->getEmail()) . '\',\'' . $conn->escapeValue($comment->getComment()) . '\',CURDATE(),CURTIME(),\'' . $comment->getCategoryKey() . '\');';
+         $conn->executeTextStatement($insert);
       }
    }
 
@@ -92,7 +92,7 @@ class commentMapper extends APFObject {
     */
    private function &getConnection() {
 
-      $cM = &$this->__getServiceObject('core::database', 'ConnectionManager');
+      $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
       $config = $this->getConfiguration('modules::comments', 'comments.ini');
       $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey');
       if ($connectionKey == null) {
@@ -112,18 +112,18 @@ class commentMapper extends APFObject {
     * @param string[] $resultSet MySQL (database) result array.
     * @return ArticleComment A initialized domain object.
     *
-    * @author Christian W.Sch�fer
+    * @author Christian W.Schäfer
     * @version
     * Version 0.1, 22.08.2007<br />
     */
-   private function __mapArticleComment2DomainObject($resultSet) {
+   private function mapArticleComment2DomainObject($resultSet) {
       $comment = new ArticleComment();
-      $comment->set('ID', $resultSet['ArticleCommentID']);
-      $comment->set('Name', $resultSet['Name']);
-      $comment->set('EMail', $resultSet['EMail']);
-      $comment->set('Comment', $resultSet['Comment']);
-      $comment->set('Date', $resultSet['Date']);
-      $comment->set('Time', $resultSet['Time']);
+      $comment->setId($resultSet['ArticleCommentID']);
+      $comment->setName($resultSet['Name']);
+      $comment->setEmail($resultSet['EMail']);
+      $comment->setComment($resultSet['Comment']);
+      $comment->setDate($resultSet['Date']);
+      $comment->setTime($resultSet['Time']);
       return $comment;
    }
 

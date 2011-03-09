@@ -61,7 +61,7 @@
          // fill recipient list
          $recipients = & $form->getFormElementByName('Empfaenger');
 
-         $cM = &$this->__getServiceObject('modules::kontakt4::biz','ContactManager');
+         $cM = &$this->getServiceObject('modules::kontakt4::biz','ContactManager');
          /* @var $recipientList ContactFormRecipient[] */
          $recipientList = $cM->loadRecipients();
 
@@ -91,7 +91,7 @@
             $text = &$form->getFormElementByName('Text');
             $formData->setMessage($text->getContent());
 
-            $cM = &$this->__getServiceObject('modules::kontakt4::biz','ContactManager');
+            $cM = &$this->getServiceObject('modules::kontakt4::biz','ContactManager');
             $cM->sendContactForm($formData);
 
           // end if

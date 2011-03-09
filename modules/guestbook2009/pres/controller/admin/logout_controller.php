@@ -36,7 +36,7 @@
    class logout_controller extends backend_base_controller {
 
       public function transformContent(){
-         $gS = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
+         $gS = &$this->getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
          $gS->logout();
        // end function
       }

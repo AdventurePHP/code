@@ -172,7 +172,7 @@
 
       // check if the file is already included, if yes, return
       if(isset($GLOBALS['IMPORT_CACHE'][$file])){
-         return true;
+         return;
       } else {
          $GLOBALS['IMPORT_CACHE'][$file] = true;
       }
@@ -467,12 +467,6 @@
 
       /**
        * @protected
-       * @var string Unique object identifier.
-       */
-      protected $__ObjectID = null;
-
-      /**
-       * @protected
        * @var APFObject Reference to the parent object.
        */
       protected $__ParentObject = null;
@@ -508,6 +502,11 @@
        */
       protected $__ServiceType = null;
 
+      // these constants define the service type of the APF objects
+      const SERVICE_TYPE_NORMAL = 'NORMAL';
+      const SERVICE_TYPE_SINGLETON = 'SINGLETON';
+      const SERVICE_TYPE_SESSIONSINGLETON = 'SESSIONSINGLETON';
+
       /**
        * @public
        *
@@ -523,37 +522,7 @@
        * Version 0.1, 26.02.2011<br />
        */
       public function getVersion() {
-         return '1.13-SVN';
-      }
-
-      /**
-       * @public
-       *
-       * Sets the object id of the current APF object.
-       *
-       * @param string $objectId The object id.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 20.02.2010<br />
-       */
-      public function setObjectId($objectId){
-         $this->__ObjectID = $objectId;
-      }
-
-      /**
-       * @public
-       *
-       * Returns the object id of the current APF object.
-       *
-       * @return string The object id.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 20.02.2010<br />
-       */
-      public function getObjectId(){
-         return $this->__ObjectID;
+         return '1.14-SVN';
       }
 
       /**
@@ -704,10 +673,10 @@
        * Version 0.1, 28.12.2006<br />
        * Version 0.2, 02.02.2007 (In case the attribute does not exist, null is returned now)<br />
        */
-      public function get($Attribute){
+      public function get($attributeName){
 
-         if(isset($this->{'__'.$Attribute})){
-            return $this->{'__'.$Attribute};
+         if(isset($this->{'__'.$attributeName})){
+            return $this->{'__'.$attributeName};
          } else {
             return null;
          }
@@ -862,11 +831,19 @@
        * @version
        * Version 0.1, 18.04.2009<br />
        */
+      protected function &getDIServiceObject($namespace, $name) {
+         return DIServiceManager::getServiceObject(
+         $namespace,
+         $name,
+         $this->getContext(),
+         $this->getLanguage());
+      }
+
+      /**
+       * @deprecated Use APFObject::getDIServiceObject() instead!
+       */
       protected function &__getDIServiceObject($namespace,$name){
-         $diServiceMgr = &Singleton::getInstance('DIServiceManager');
-         $diServiceMgr->setContext($this->__Context);
-         $diServiceMgr->setLanguage($this->__Language);
-         return $diServiceMgr->getServiceObject($namespace,$name);
+         return $this->getDIServiceObject($namespace,$name);
       }
 
       /**
@@ -887,11 +864,20 @@
        * Version 0.4, 22.04.2007 (Added language initializaton of the service manager)<br />
        * Version 0.5, 24.02.2008 (Added the service type param)<br />
        */
-      protected function &__getServiceObject($namespace,$serviceName,$type = 'SINGLETON'){
-         $serviceManager = &Singleton::getInstance('ServiceManager');
-         $serviceManager->setContext($this->__Context);
-         $serviceManager->setLanguage($this->__Language);
-         return $serviceManager->getServiceObject($namespace,$serviceName,$type);
+      protected function &getServiceObject($namespace, $serviceName, $type = APFObject::SERVICE_TYPE_SINGLETON) {
+         return ServiceManager::getServiceObject(
+                 $namespace,
+                 $serviceName,
+                 $this->getContext(),
+                 $this->getLanguage());
+
+      }
+
+      /**
+       * @deprecated Use APFObject::getServiceObject() instead!
+       */
+      protected function &__getServiceObject($namespace, $serviceName, $type = APFObject::SERVICE_TYPE_SINGLETON) {
+         return $this->getServiceObject($namespace, $serviceName, $type);
       }
 
       /**
@@ -911,11 +897,21 @@
        * Version 0.2, 22.04.2007 (Added language initializaton of the service manager)<br />
        * Version 0.3, 24.02.2008 (Added the service type param)<br />
        */
-      protected function &__getAndInitServiceObject($namespace,$serviceName,$initParam,$type = 'SINGLETON'){
-         $serviceManager = &Singleton::getInstance('ServiceManager');
-         $serviceManager->setContext($this->__Context);
-         $serviceManager->setLanguage($this->__Language);
-         return $serviceManager->getAndInitServiceObject($namespace,$serviceName,$initParam,$type);
+      protected function &getAndInitServiceObject($namespace, $serviceName, $initParam, $type = APFObject::SERVICE_TYPE_SINGLETON) {
+         return ServiceManager::getAndInitServiceObject(
+                 $namespace,
+                 $serviceName,
+                 $this->getContext(),
+                 $this->getLanguage(),
+                 $initParam,
+                 $type);
+      }
+
+      /**
+       * @deprecated Use APFObject::getAndInitServiceObject() instead!
+       */
+      protected function &__getAndInitServiceObject($namespace, $serviceName, $initParam, $type = APFObject::SERVICE_TYPE_SINGLETON) {
+         return $this->getAndInitServiceObject($namespace, $serviceName, $initParam, $type);
       }
 
       /**
@@ -1252,6 +1248,12 @@
 
       /**
        * @protected
+       * @var string Unique object identifier.
+       */
+      protected $__ObjectID = null;
+
+      /**
+       * @protected
        * @var string The content of the tag. Example:
        * <pre>&lt;foo:bar&gt;This is the content of the tag.&lt;/foo:bar&gt;</pre>
        */
@@ -1296,6 +1298,37 @@
          $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'template');
          $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'placeholder');
 
+      }
+
+
+      /**
+       * @public
+       *
+       * Sets the object id of the current APF object.
+       *
+       * @param string $objectId The object id.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setObjectId($objectId){
+         $this->__ObjectID = $objectId;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the object id of the current APF object.
+       *
+       * @return string The object id.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function getObjectId(){
+         return $this->__ObjectID;
       }
 
       /**
@@ -1823,13 +1856,19 @@
       public function onParseTime(){
 
          // get attributes
-         $namespace = $this->__Attributes['namespace'];
-         $template = $this->__Attributes['template'];
+         $namespace = $this->getAttribute('namespace');
+         $template = $this->getAttribute('template');
 
-         // read context
-         if(isset($this->__Attributes['context'])){
-            $this->__Context = trim($this->__Attributes['context']);
-          // end if
+         // apply context if available
+         $context = $this->getAttribute('context');
+         if ($context !== null) {
+            $this->setContext($context);
+         }
+
+         // apply language if available
+         $language = $this->getAttribute('language');
+         if ($language !== null) {
+            $this->setLanguage($language);
          }
 
          // manager inc param
@@ -1854,7 +1893,6 @@
 
             }
 
-          // end if
          }
 
          // get content
@@ -1866,10 +1904,8 @@
          // extract further xml tags
          $this->__extractTagLibTags();
 
-       // end function
       }
 
-    // end class
    }
 
    /**

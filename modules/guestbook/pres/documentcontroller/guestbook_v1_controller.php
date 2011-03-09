@@ -34,7 +34,7 @@
    class guestbook_v1_controller extends base_controller {
 
       public function transformContent() {
-         $gM = &$this->__getAndInitServiceObject('modules::guestbook::biz', 'GuestbookManager', $this->getAttribute('guestbookid'));
+         $gM = &$this->getAndInitServiceObject('modules::guestbook::biz', 'GuestbookManager', $this->getAttribute('guestbookid'));
          $guestbook = $gM->loadGuestbook();
 
          $this->setPlaceHolder('Name', $guestbook->getName());

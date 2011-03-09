@@ -37,7 +37,7 @@
        }
 
        public function transform() {
-         $header = $this->__getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+         $header = $this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
 
          $url = $this->getAttribute('url');
          $name = $this->getAttribute('name');

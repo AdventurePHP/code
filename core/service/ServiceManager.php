@@ -1,209 +1,133 @@
 <?php
-   /**
-    * <!--
-    * This file is part of the adventure php framework (APF) published under
-    * http://adventure-php-framework.org.
-    *
-    * The APF is free software: you can redistribute it and/or modify
-    * it under the terms of the GNU Lesser General Public License as published
-    * by the Free Software Foundation, either version 3 of the License, or
-    * (at your option) any later version.
-    *
-    * The APF is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    * GNU Lesser General Public License for more details.
-    *
-    * You should have received a copy of the GNU Lesser General Public License
-    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-    * -->
-    */
+/**
+ * <!--
+ * This file is part of the adventure php framework (APF) published under
+ * http://adventure-php-framework.org.
+ *
+ * The APF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The APF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ * -->
+ */
+
+/**
+ * @package core::service
+ * @class ServiceManager
+ *
+ * Provides a simple dependency injection container for objects created during application flow.
+ * It initializes the service objects with the current context and language to be able to access
+ * context and environment sensitive configuration at any place of your application. For details
+ * see the service object configuration.
+ *
+ * @author Christian Schäfer
+ * @version
+ * Version 0.1, 07.03.2007<br />
+ * Version 0.2, 22.04.2007 (Added language attribute)<br />
+ * Version 0.3, 24.02.2008 (Added SESSIONSINGLETON feature)<br />
+ * Version 0.4, 04.03.2011 (Refactored to static class to not have performance overhead.)<br />
+ */
+final class ServiceManager {
 
    /**
-    * @package core::service
-    * @class ServiceManager
+    * @public
     *
-    * Provides a simple dependency injection container for objects created during application flow.
-    * It initializes the service objects with the current context and language to be able to access
-    * context and environment sensitive configuration at any place of your application. For details
-    * see the service object configuration.
+    * Returns a service object according to the current application context.
     *
-    * @author Christian Sch�fer
+    * @param string $namespace Namespace of the service object (currently ignored).
+    * @param string $serviceName Name of the service object (=class name).
+    * @param string $context The application context, the service object belongs to.
+    * @param string $language The language, the service object has.
+    * @param string $type The initializing type (see service manager for details).
+    * @return APFObject The desired service object.
+    *
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 07.03.2007<br />
-    * Version 0.2, 22.04.2007 (Added language attribute)<br />
-    * Version 0.3, 24.02.2008 (Added SESSIONSINGLETON feature)<br />
+    * Version 0.2, 17.03.2007 (Adjusted error messages)<br />
+    * Version 0.3, 22.04.2007 (Language is now injected)<br />
+    * Version 0.4, 24.02.2008 (Added SessionSingleton service type)<br />
+    * Version 0.5, 25.02.2008 (Added performance optimization for the SessionSingleton objects)<br />
+    * Version 0.6, 10.08.2009 (Added lazy import, so that the developer must not care about the inclusion of the component.)<br />
+    * Version 0.7, 04.03.2011 (Refactored to static method; enhanced code)<br />
     */
-   final class ServiceManager {
+   public static function &getServiceObject($namespace, $serviceName, $context, $language, $type = APFObject::SERVICE_TYPE_SINGLETON) {
 
-      /**
-       * @private
-       * Context.
-       */
-      private $context;
+      // include service object for convenience
+      import($namespace, $serviceName);
 
-      /**
-       * @private
-       * @since 0.2
-       * Current language.
-       */
-      private $language;
-
-      /**
-       * @public
-       *
-       * Returns a service object according to the current application context.
-       *
-       * @param string $namespace Namespace of the service object (currently ignored).
-       * @param string $serviceName Name of the service object (=class name).
-       * @param string $type The initializing type (see service manager for details).
-       * @return APFObject The desired service object.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 07.03.2007<br />
-       * Version 0.2, 17.03.2007 (Adjusted error messages)<br />
-       * Version 0.3, 22.04.2007 (Language is now injected)<br />
-       * Version 0.4, 24.02.2008 (Added SessionSingleton service type)<br />
-       * Version 0.5, 25.02.2008 (Added performance optimization for the SessionSingleton objects)<br />
-       * Version 0.6, 10.08.2009 (Added lazy import, so that the developer must not care about the inclusion of the component.)<br />
-       */
-      public function &getServiceObject($namespace,$serviceName,$type = 'SINGLETON'){
-
-         // include serice object for convenience
-         import($namespace,$serviceName);
-
-         $serviceObject = null;
-         if($type == 'SINGLETON'){
-
-            $serviceObject = &Singleton::getInstance($serviceName);
-
-            if(is_subclass_of($serviceObject,'APFObject')){
-               $serviceObject->setContext($this->context);
-               $serviceObject->setLanguage($this->language);
-               $serviceObject->setServiceType('SINGLETON');
-             // end if
-            }
-            else{
-               throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass APFObject! So the context cannot be set correctly!',E_USER_WARNING);
-             // end else
-            }
-
-          // end if
+      $serviceObject = null;
+      if ($type == APFObject::SERVICE_TYPE_SINGLETON) {
+         $serviceObject = &Singleton::getInstance($serviceName);
+      } elseif ($type == APFObject::SERVICE_TYPE_SESSIONSINGLETON) {
+         if (!class_exists('SessionSingleton')) {
+            import('core::singleton', 'SessionSingleton');
          }
-         elseif($type == 'SESSIONSINGLETON'){
-
-            if(!class_exists('SessionSingleton')){
-               import('core::singleton','SessionSingleton');
-             // end if
-            }
-
-            $serviceObject = &SessionSingleton::getInstance($serviceName);
-
-            if(is_subclass_of($serviceObject,'APFObject')){
-               $serviceObject->setContext($this->context);
-               $serviceObject->setLanguage($this->language);
-               $serviceObject->setServiceType('SESSIONSINGLETON');
-             // end if
-            }
-            else{
-               throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass APFObject! So the context cannot be set correctly!',E_USER_WARNING);
-             // end else
-            }
-
-          // end elseif
-         }
-         elseif($type == 'NORMAL'){
-
-            // "normally" create the object
-            $serviceObject = new $serviceName();
-
-            if(is_subclass_of($serviceObject,'APFObject')){
-               $serviceObject->setContext($this->context);
-               $serviceObject->setLanguage($this->language);
-               $serviceObject->setServiceType('NORMAL');
-             // end if
-            }
-            else{
-               throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The precisely now created object ('.$serviceName.') inherits not from superclass APFObject! So the context cannot be set correctly!',E_USER_WARNING);
-            }
-
-          // end elseif
-         }
-         else{
-            throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The given type ('.$type.') is not supported. Please provide one out of "SINGLETON", "SESSIONSINGLETON" or "NORMAL"',E_USER_WARNING);
-         }
-
-         return $serviceObject;
-
-       // end function
+         $serviceObject = &SessionSingleton::getInstance($serviceName);
+      } elseif ($type == APFObject::SERVICE_TYPE_NORMAL) {
+         $serviceObject = new $serviceName();
+      } else {
+         throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The given type ('
+                 . $type . ') is not supported. Please provide one out of "' . APFObject::SERVICE_TYPE_SINGLETON
+                 . '", "' . APFObject::SERVICE_TYPE_SESSIONSINGLETON . '" or "' . APFObject::SERVICE_TYPE_NORMAL
+                 . '"', E_USER_WARNING);
       }
 
-      /**
-       * @public
-       *
-       * Returns a service object, that is initialized with the given init param. The param itself
-       * can be a primitive data type, an array or an object. Context and language are injected
-       * as well.
-       *
-       * @param string $namespace The namespace of the service object's class (currently ignored).
-       * @param string $serviceName Name of the service object (=class name).
-       * @param string $InitParam The initialization param for the service object.
-       * @param string $type The initializing type (see service manager for details).
-       * @return APFObject The desired service object.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 29.03.2007<br />
-       * Version 0.2, 16.05.2009 (Added check for non existing service object returned by getServiceObject()))<br />
-       */
-      public function &getAndInitServiceObject($namespace,$serviceName,$initParam,$type = 'SINGLETON'){
-
-         $serviceObject = &$this->getServiceObject($namespace,$serviceName,$type);
-
-         if($serviceObject !== null && in_array('init',get_class_methods($serviceObject))){
-            $serviceObject->init($initParam);
-         }
-         else{
-            throw new InvalidArgumentException('[ServiceManager->getAndInitServiceObject()] The service object ('.$serviceName.') doesn\'t support initialization!',E_USER_WARNING);
-         }
-
-         return $serviceObject;
-
-       // end function
+      // inject the basic set of information to the APF style service
+      if (is_subclass_of($serviceObject, 'APFObject')) {
+         $serviceObject->setContext($context);
+         $serviceObject->setLanguage($language);
+         $serviceObject->setServiceType($type);
+      } else {
+         throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The precisely '
+                 . 'now created object (' . $serviceName . ') inherits not of superclass APFObject! '
+                 . 'So the context, language and service type cannot be set correctly!', E_USER_WARNING);
       }
 
-      /**
-       * @public
-       *
-       * Sets the context.
-       *
-       * @param string $context The context of the service manager.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 07.03.2007<br />
-       */
-      public function setContext($context){
-         $this->context = $context;
-      }
-
-      /**
-       * @public
-       * @since 0.2
-       *
-       * Sets the language.
-       *
-       * @param string $language Language of the service manager.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 22.04.2007<br />
-       */
-      public function setLanguage($language){
-         $this->language = $language;
-      }
-
-    // end class
+      return $serviceObject;
    }
+
+   /**
+    * @public
+    *
+    * Returns a service object, that is initialized with the given init param. The param itself
+    * can be a primitive data type, an array or an object. Context and language are injected
+    * as well.
+    *
+    * @param string $namespace The namespace of the service object's class (currently ignored).
+    * @param string $serviceName Name of the service object (=class name).
+    * @param string $context The application context, the service object belongs to.
+    * @param string $language The language, the service object has.
+    * @param string $initParam The initialization param for the service object.
+    * @param string $type The initializing type (see service manager for details).
+    * @return APFObject The desired service object.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 29.03.2007<br />
+    * Version 0.2, 16.05.2009 (Added check for non existing service object returned by getServiceObject()))<br />
+    * Version 0.3, 04.03.2011 (Refactored to static method)<br />
+    */
+   public static function &getAndInitServiceObject($namespace, $serviceName, $context, $language, $initParam, $type = APFObject::SERVICE_TYPE_SINGLETON) {
+
+      $serviceObject = &self::getServiceObject($namespace, $serviceName, $context, $language, $type);
+
+      if ($serviceObject !== null && is_subclass_of($serviceObject, 'APFObject')) {
+         $serviceObject->init($initParam);
+      } else {
+         throw new InvalidArgumentException('[ServiceManager->getAndInitServiceObject()] The service object (' . $serviceName . ') doesn\'t support initialization!', E_USER_WARNING);
+      }
+
+      return $serviceObject;
+   }
+
+}
 ?>

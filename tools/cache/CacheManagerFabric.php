@@ -76,7 +76,7 @@
 
             // create cache manager
             $this->cacheManagerCache[$configSection] =
-               $this->__getAndInitServiceObject('tools::cache','CacheManager',$options,'NORMAL');
+               $this->getAndInitServiceObject('tools::cache','CacheManager',$options,'NORMAL');
 
           // end if
          }

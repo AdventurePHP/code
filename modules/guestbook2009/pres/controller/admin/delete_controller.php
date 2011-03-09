@@ -48,7 +48,7 @@
 
              if($form_no->isSent() || $form_yes->isSent()){
 
-                $gS = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
+                $gS = &$this->getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
 
                 $entry = null;
                 if($form_yes->isSent()){

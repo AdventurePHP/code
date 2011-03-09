@@ -72,7 +72,7 @@
        * Version 0.1, 30.04.2010<br />
        */
       protected function &getManager(){
-         return $this->__getAndInitServiceObject('modules::usermanagement::biz','UmgtManager','Default');
+         return $this->getAndInitServiceObject('modules::usermanagement::biz','UmgtManager','Default');
       }
 
       /**

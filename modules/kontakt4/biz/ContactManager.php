@@ -36,9 +36,6 @@
     */
    class ContactManager extends APFObject {
 
-      public function ContactManager(){
-      }
-
       /**
        * @public
        *
@@ -55,10 +52,10 @@
        */
       public function sendContactForm(ContactFormData $formData){
 
-         $cM = &$this->__getServiceObject('modules::kontakt4::data','ContactMapper');
+         $cM = &$this->getServiceObject('modules::kontakt4::data','ContactMapper');
 
          // set up the mail sender
-         $MAIL = &$this->__getAndInitServiceObject('tools::mail','mailSender','ContactForm');
+         $MAIL = &$this->getAndInitServiceObject('tools::mail','mailSender','ContactForm');
 
          $recipient = $cM->loadRecipientPerId($formData->getRecipientId());
          $MAIL->setRecipient($recipient->getEmailAddress(),$recipient->getName());
@@ -102,12 +99,10 @@
 
          if($urlRewriting != true){
             $link = str_replace('&amp;','&',$link);
-          // end if
          }
 
          HeaderManager::forward($link);
 
-       // end function
       }
 
       /**
@@ -121,11 +116,9 @@
        * Version 0.2, 04.06.2006<br />
        */
       public function loadRecipients(){
-         $cM = & $this->__getServiceObject('modules::kontakt4::data','ContactMapper');
+         $cM = & $this->getServiceObject('modules::kontakt4::data','ContactMapper');
          return $cM->loadRecipients();
-       // end function
       }
 
-    // end class
    }
 ?>

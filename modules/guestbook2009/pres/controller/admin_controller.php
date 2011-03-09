@@ -37,7 +37,7 @@
        public function transformContent(){
 
           // invoke the service to check, if the current user may request this page
-          $gS = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
+          $gS = &$this->getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
           $gS->checkAccessAllowed();
 
           // generate the admin menu links using the fc linkhander to

@@ -74,7 +74,7 @@
       function transform(){
 
          // Bookmark-Manager holen
-         $sBM = &$this->__getServiceObject('modules::socialbookmark::biz','socialBookmarkManager');
+         $sBM = &$this->getServiceObject('modules::socialbookmark::biz','socialBookmarkManager');
 
          // Breite und H�he konfigurieren
          $sBM->set('Width',$this->__Attributes['width']);

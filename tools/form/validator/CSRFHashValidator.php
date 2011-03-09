@@ -51,7 +51,7 @@
          $class = $this->__Control->getAttribute('class');
          $salt = $this->__Control->getAttribute('salt');
 
-         $provider = &$this->__getServiceObject($namespace, $class);
+         $provider = &$this->getServiceObject($namespace, $class);
          $hash = $provider->generateHash($salt);
 
          return $hash === $input;

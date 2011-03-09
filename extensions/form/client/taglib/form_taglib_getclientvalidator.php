@@ -87,7 +87,7 @@ class form_taglib_getclientvalidator extends form_control {
         );
 
 
-        $CVSS = &$this->__getServiceObject('extensions::form::client', 'ClientValidationScriptStore', 'SINGLETON');
+        $CVSS = &$this->getServiceObject('extensions::form::client', 'ClientValidationScriptStore', 'SINGLETON');
 
         $scriptStore = $CVSS->getScriptStore();
         $valmarkerclassStore = $CVSS->getValmarkerclassStore();

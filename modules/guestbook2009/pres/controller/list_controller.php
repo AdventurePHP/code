@@ -37,7 +37,7 @@
       public function transformContent(){
 
          // get the guestbook service
-         $gS = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
+         $gS = &$this->getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
          $entryList = $gS->loadPagedEntryList();
 
          $tmpl_entry = &$this->__getTemplate('entry');

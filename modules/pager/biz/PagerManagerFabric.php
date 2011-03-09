@@ -28,7 +28,7 @@
     * Implements the factory of the pager manager. Initializes concrete PagerManager
     * instances and caches them for futher usage.
     * Application sample:
-    * <pre>$pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
+    * <pre>$pMF = &$this->getServiceObject('modules::pager::biz','PagerManagerFabric');
     * $pM = &$pMF->getPagerManager('{ConfigSection}',{AdditionalParamArray});</pre>
     *
     * @author Christian Achatz
@@ -63,7 +63,7 @@
 
          // initialize desired pager lazily
          if(!isset($this->__Pager[$pagerHash])){
-             $this->__Pager[$pagerHash] = &$this->__getAndInitServiceObject('modules::pager::biz','PagerManager',$configString,'NORMAL');
+             $this->__Pager[$pagerHash] = &$this->getAndInitServiceObject('modules::pager::biz','PagerManager',$configString,'NORMAL');
           // end if
          }
 

@@ -68,7 +68,7 @@
        * @return PagerManager The pager for the current guestbook instance.
        */
       private function &getPager() {
-         $pMF = &$this->__getServiceObject('modules::pager::biz', 'PagerManagerFabric');
+         $pMF = &$this->getServiceObject('modules::pager::biz', 'PagerManagerFabric');
          return $pMF->getPagerManager('Guestbook');
       }
 
@@ -277,7 +277,7 @@
        * @return GuestbookMapper The mapper instance of the guestbook implementation.
        */
       private function &getMapper(){
-         return $this->__getServiceObject('modules::guestbook::data', 'GuestbookMapper');
+         return $this->getServiceObject('modules::guestbook::data', 'GuestbookMapper');
       }
 
    }

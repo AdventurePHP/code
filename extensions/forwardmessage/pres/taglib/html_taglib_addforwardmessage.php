@@ -48,7 +48,7 @@
          $this->__extractTagLibTags();
 
          // add message that is the essence of the tag's transformed content
-         $forwardMessageMgr = &$this->__getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', 'SESSIONSINGLETON');
+         $forwardMessageMgr = &$this->getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', 'SESSIONSINGLETON');
          $forwardMessageMgr->addMessage($name, parent::transform(), $this->getAttribute('show') == 'true');
       }
 

@@ -86,7 +86,7 @@
 
          $pager = &$this->getPager();
 
-         $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+         $model = &$this->getServiceObject('modules::guestbook2009::biz','GuestbookModel');
          $entryIds = $pager->loadEntries(array('GuestbookID' => $model->getGuestbookId()));
 
          $entries = array();
@@ -113,7 +113,7 @@
        * Version 0.1, 13.06.2009<br />
        */
       public function getPagerOutput(){
-         $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+         $model = &$this->getServiceObject('modules::guestbook2009::biz','GuestbookModel');
          $pager = &$this->getPager();
          return $pager->getPager(array('GuestbookID' => $model->getGuestbookId()));
       }
@@ -150,7 +150,7 @@
       private function &getPager(){
          
          if($this->pager === null){
-            $pMF = &$this->__getServiceObject('modules::pager::biz','PagerManagerFabric');
+            $pMF = &$this->getServiceObject('modules::pager::biz','PagerManagerFabric');
             $this->pager = &$pMF->getPagerManager($this->pagerConfigSection);
          }
          
@@ -251,7 +251,7 @@
       public function logout(){
 
          // logout by cleaning the session
-         $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+         $model = &$this->getServiceObject('modules::guestbook2009::biz','GuestbookModel');
          $guestbookId = $model->getGuestbookId();
          $session = new SessionManager('modules::guestbook2009::biz::'.$guestbookId);
          $session->deleteSessionData('LoggedIn');
@@ -281,7 +281,7 @@
        */
       public function checkAccessAllowed(){
 
-         $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+         $model = &$this->getServiceObject('modules::guestbook2009::biz','GuestbookModel');
          $guestbookId = $model->getGuestbookId();
          $session = new SessionManager('modules::guestbook2009::biz::'.$guestbookId);
          $loggedId = $session->loadSessionData('LoggedIn');
@@ -320,7 +320,7 @@
          if($mapper->validateCredentials($user)){
 
             // log user in
-            $model = &$this->__getServiceObject('modules::guestbook2009::biz','GuestbookModel');
+            $model = &$this->getServiceObject('modules::guestbook2009::biz','GuestbookModel');
             $guestbookId = $model->getGuestbookId();
             $session = new SessionManager('modules::guestbook2009::biz::'.$guestbookId);
             $session->saveSessionData('LoggedIn','true');
@@ -391,7 +391,7 @@
        * Version 0.1, 10.05.2009<br />
        */
       private function &getMapper(){
-         return $this->__getDIServiceObject('modules::guestbook2009::data','GuestbookMapper');
+         return $this->getDIServiceObject('modules::guestbook2009::data','GuestbookMapper');
       }
 
     // end class

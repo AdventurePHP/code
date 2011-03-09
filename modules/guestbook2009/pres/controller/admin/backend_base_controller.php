@@ -50,7 +50,7 @@
          $form = &$this->__getForm('selectentry');
          $select = &$form->getFormElementByName('entryid');
 
-         $gS = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
+         $gS = &$this->getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
          $entriesList = $gS->loadEntryListForSelection();
          $entry = new Entry();
          foreach($entriesList as $entry){

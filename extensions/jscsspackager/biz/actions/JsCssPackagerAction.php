@@ -90,7 +90,7 @@ final class JsCssPackagerAction extends AbstractFrontcontrollerAction {
         }
         
         /* @var $packager JsCssPackager */
-        $packager = $this->__getAndInitServiceObject('extensions::jscsspackager::biz', 'JsCssPackager', null);
+        $packager = $this->getAndInitServiceObject('extensions::jscsspackager::biz', 'JsCssPackager', null);
         $output = $packager->getPackage($packName, $acceptGzip);
         // Get ClientCachePeriod (in days), and convert to seconds
         $clientCachePeriod = $packager->getClientCachePeriod($packName)*86400;

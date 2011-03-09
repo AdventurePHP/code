@@ -189,7 +189,7 @@
          else{
 
             // get connection manager
-            $cM = &$this->__getServiceObject('core::database','ConnectionManager');
+            $cM = &$this->getServiceObject('core::database','ConnectionManager');
 
             // initialize connection
             $this->DBDriver = &$cM->getConnection($connectionName);

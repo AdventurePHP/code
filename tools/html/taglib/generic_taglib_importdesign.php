@@ -170,7 +170,7 @@
          }
 
          // get model
-         $model = &$this->__getServiceObject($modelNamespace, $modelClass, $modelMode);
+         $model = &$this->getServiceObject($modelNamespace, $modelClass, $modelMode);
 
          // check for the get method
          if (!method_exists($model, $getMethod)) {

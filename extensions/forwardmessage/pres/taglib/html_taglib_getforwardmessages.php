@@ -32,7 +32,7 @@
    class html_taglib_getforwardmessages extends Document {
 
       public function transform() {
-         $forwardMessageMgr = &$this->__getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', 'SESSIONSINGLETON');
+         $forwardMessageMgr = &$this->getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', 'SESSIONSINGLETON');
          return implode('', $forwardMessageMgr->getMessages());
       }
 

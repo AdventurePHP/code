@@ -110,7 +110,7 @@
     *
     * Implements the advanced bbcode parser for the adventure php framework.
     * Usage:
-    * <pre>$bP = &$this->__getServiceObject('tools::string','AdvancedBBCodeParser');
+    * <pre>$bP = &$this->getServiceObject('tools::string','AdvancedBBCodeParser');
     * [$bP->addProvider(...,...);]
     * [$bP->removeProvider(...);]
     * $string = '...';
@@ -203,7 +203,7 @@
                import($namespace,$class);
 
                // convert definition and initialize provider
-               $this->provider[$providerName] = &$this->__getServiceObject($namespace,$class,'NORMAL');
+               $this->provider[$providerName] = &$this->getServiceObject($namespace,$class,'NORMAL');
 
              // end if
             }

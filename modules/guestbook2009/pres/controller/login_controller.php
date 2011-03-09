@@ -45,7 +45,7 @@
             $user->setUsername($fieldUser->getAttribute('value'));
             $user->setPassword($fieldPass->getAttribute('value'));
 
-            $gS = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
+            $gS = &$this->getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
             if(!$gS->validateCredentials($user)){
                $error = &$this->__getTemplate('error');
                $form->setPlaceHolder('error',$error->transformTemplate());

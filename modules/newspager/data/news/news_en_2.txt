@@ -1,0 +1,5 @@
+Article summary II
+Poor AJAX debugging tool support!
+Unfortunately only the firefox browser contains a powerful debugging and analyzing tool
+(firebug), that really helps tracing your application. Opera features a firefox-like toolbar,
+and the internet explorer does not contain any equivalent product.

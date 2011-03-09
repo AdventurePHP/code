@@ -44,7 +44,7 @@
        *  Version 0.1, 05.05.2007<br />
        */
       protected function &getGuestbookManager() {
-         return $this->__getAndInitServiceObject('modules::guestbook::biz', 'GuestbookManager', $this->getGuestbookId());
+         return $this->getAndInitServiceObject('modules::guestbook::biz', 'GuestbookManager', $this->getGuestbookId());
       }
 
       /**

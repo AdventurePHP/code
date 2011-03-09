@@ -94,7 +94,7 @@ class form_taglib_addclientvalidator extends form_control {
             $options[$control] = $rawOptions;
         }
 
-        $CVSS = &$this->__getServiceObject('extensions::form::client','ClientValidationScriptStore');
+        $CVSS = &$this->getServiceObject('extensions::form::client','ClientValidationScriptStore');
         $CVSS->addClientValidator($class, $button, $controls, $options, $onblur, $namespace);
     }
 

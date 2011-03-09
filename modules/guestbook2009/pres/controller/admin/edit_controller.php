@@ -43,7 +43,7 @@
           else{
 
              // prefill edit form by directly accessing the APF form objects
-             $gS = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
+             $gS = &$this->getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
              $form = &$this->__getForm('edit_entry');
              if($form->isSent() === false){
 

@@ -118,7 +118,6 @@
          $db->executeTextStatement($delete);
          return true;
 
-       // end function
       }
 
       /**
@@ -133,14 +132,10 @@
        * Version 0.1, 24.11.2008<br />
        */
       protected function &getDatabaseConnection(){
-
          $connectionKey = $this->getConfigAttribute('Cache.Connection');
-         $cM = &$this->__getServiceObject('core::database','ConnectionManager');
+         $cM = &$this->getServiceObject('core::database','ConnectionManager');
          return $cM->getConnection($connectionKey);
-
-       // end function
       }
 
-    // end class
    }
 ?>

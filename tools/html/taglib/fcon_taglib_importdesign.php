@@ -106,7 +106,7 @@
          }
 
          // read the name of the template from the model
-         $model = &$this->__getServiceObject($modelNamespace, $modelClass, $initMode);
+         $model = &$this->getServiceObject($modelNamespace, $modelClass, $initMode);
          $templateName = $model->getAttribute($modelParam);
 
          if (isset($this->__Attributes['context'])) {
@@ -123,6 +123,5 @@
 
       }
 
-    // end class
    }
 ?>

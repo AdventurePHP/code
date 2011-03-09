@@ -183,7 +183,7 @@
          if (!isset($this->logger[$loggerKey])) {
 
             // create logger
-            $this->logger[$loggerKey] = &$this->__getAndInitServiceObject('core::logging', 'AdvancedLogger', $section, 'NORMAL');
+            $this->logger[$loggerKey] = &$this->getAndInitServiceObject('core::logging', 'AdvancedLogger', $section, 'NORMAL');
 
             // register current instance in the registry so that the flush function can get the
             // instances from the service manager in correct service type configuration
@@ -212,10 +212,10 @@
     * logger, this component must be configured for each usage. The advantage of the component is
     * that multiple targets, log formats and output targets can be choosen.
     * Usage:
-    * <pre>
-    *   $logFactory = &$this->__getServiceObject('core::logging','AdvancedLoggerFactory');
-    *    $log = &$logFactory->getAdvancedLogger('<section_name>');
-    * </pre>
+    * <code>
+    * $logFactory = &$this->getServiceObject('core::logging','AdvancedLoggerFactory');
+    * $log = &$logFactory->getAdvancedLogger('<section_name>');
+    * </code>
     * Please note, that flushing the log buffer to stdout and file is much more faster. Here's an
     * benchmark example of the three possibilities:
     * <pre>flushLogBuffer_file      0.0026059151 s
@@ -352,7 +352,7 @@
          $logTable = $this->logConfig->getValue('LogTable');
 
          // create database connection
-         $cM = &$this->__getServiceObject('core::database', 'ConnectionManager');
+         $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
          $db = &$cM->getConnection($logDatabase);
 
          // flush log entries to the table

@@ -29,7 +29,7 @@
  * must be created as a service object.
  * <p/>
  * <pre>
- * $connMgr = &$this->__getServiceObject('core::database','ConnectionManager');
+ * $connMgr = &$this->getServiceObject('core::database','ConnectionManager');
  * $dBConn = &$connMgr->getConnection('{ConnectionKey}');
  * </pre>
  * The appropriate configuration file must reside under the <em>core::database</em> namespace
@@ -135,7 +135,7 @@ final class ConnectionManager extends APFObject {
       }
 
       // create the handler
-      $this->connections[$connectionHash] = &$this->__getAndInitServiceObject('core::database', $section->getValue('DB.Type') . 'Handler', $options, 'NORMAL');
+      $this->connections[$connectionHash] = &$this->getAndInitServiceObject('core::database', $section->getValue('DB.Type') . 'Handler', $options, 'NORMAL');
       return $this->connections[$connectionHash];
    }
 

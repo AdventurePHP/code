@@ -54,7 +54,7 @@
          $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey');
 
          // create database
-         $cM = &$this->__getServiceObject('core::database', 'ConnectionManager');
+         $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
          $this->__DatabaseConnection = &$cM->getConnection($connectionKey);
          return $this->__DatabaseConnection;
 

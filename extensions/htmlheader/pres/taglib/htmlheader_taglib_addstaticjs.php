@@ -45,7 +45,7 @@
        }
 
        public function transform() {
-         $header = &$this->__getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+         $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
          /* @var $header HtmlHeaderManager */
 
          $file = $this->getAttribute('file');

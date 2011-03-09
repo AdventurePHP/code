@@ -74,7 +74,7 @@
                     .'<form:csrfhash /> tag!');
          }
 
-         $provider = &$this->__getServiceObject($namespace, $class);
+         $provider = &$this->getServiceObject($namespace, $class);
          $this->hash = $provider->generateHash($salt);
 
          // preset the value to make it available for the validator

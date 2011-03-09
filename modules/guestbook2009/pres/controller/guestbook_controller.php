@@ -35,7 +35,7 @@
 
       public function transformContent(){
 
-         $gS = &$this->__getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
+         $gS = &$this->getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
          $guestbook = $gS->loadGuestbook();
          $this->setPlaceHolder('title', $guestbook->getTitle());
          $this->setPlaceHolder('description', $guestbook->getDescription());

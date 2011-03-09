@@ -42,7 +42,7 @@
       }
 
       public function transform() {
-         $header = &$this->__getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+         $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
          /* @var $header HtmlHeaderManager */
          $header->addNode(new JsContentNode($this->getContent()));
          return '';

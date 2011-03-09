@@ -76,7 +76,7 @@
          // include and create the provider
          $namespace = $this->getConfigAttribute('Cache.Provider.Namespace');
          $class = $this->getConfigAttribute('Cache.Provider.Class');
-         $this->provider = $this->__getServiceObject($namespace,$class,'NORMAL');
+         $this->provider = $this->getServiceObject($namespace,$class,'NORMAL');
          $this->provider->setAttributes($initParam);
 
          // map the active configuration key
