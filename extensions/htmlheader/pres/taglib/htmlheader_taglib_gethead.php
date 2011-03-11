@@ -38,7 +38,7 @@
     */
    class htmlheader_taglib_gethead extends Document {
 
-      const HTML_HEADER_INDICATOR = '<!--HTMLHEADER_TAGLIB_GETHAED-->';
+      const HTML_HEADER_INDICATOR = '<!--HTMLHEADER_TAGLIB_GETHEAD-->';
 
       public function transform() {
 
