@@ -41,8 +41,8 @@
          $permissionSetId = RequestHandler::getValue('permissionsetid');
 
          // initialize the forms
-         $Form__No = &$this->__getForm('PermissionSetDelNo');
-         $Form__Yes = &$this->__getForm('PermissionSetDelYes');
+         $Form__No = &$this->getForm('PermissionSetDelNo');
+         $Form__Yes = &$this->getForm('PermissionSetDelYes');
          $uM = &$this->getManager();
          $permissionSet = $uM->loadPermissionSetByID($permissionSetId);
          $this->setPlaceHolder('DisplayName',$permissionSet->getProperty('DisplayName'));

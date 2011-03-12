@@ -27,7 +27,7 @@
 
       protected function mapSelectedOptions2DomainObjects($elementName,$objectName){
 
-         $form = &$this->__getForm(self::$FORM_NAME);
+         $form = &$this->getForm(self::$FORM_NAME);
          $control = $form->getFormElementByName($elementName);
          $selectedOptions = $control->getSelectedOptions();
 

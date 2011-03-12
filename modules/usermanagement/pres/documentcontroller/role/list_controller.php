@@ -41,7 +41,7 @@
 
          // display list
          $buffer = (string) '';
-         $template = &$this->__getTemplate('Role');
+         $template = &$this->getTemplate('Role');
          foreach($roleList as $role){
 
             $roleID = $role->getProperty('RoleID');

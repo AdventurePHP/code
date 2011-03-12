@@ -61,10 +61,10 @@
          for ($i = 0; $i < count($this->__Attributes['Pages']); $i++) {
 
             if ($this->__Attributes['Pages'][$i]->isSelected() == true) {
-               $template = &$this->__getTemplate('Page_Selected');
+               $template = &$this->getTemplate('Page_Selected');
                $currentPage = $this->__Attributes['Pages'][$i]->getPage();
             } else {
-               $template = &$this->__getTemplate('Page');
+               $template = &$this->getTemplate('Page');
             }
 
             if (isset($this->__Attributes['AnchorName'])) {
@@ -88,7 +88,7 @@
             $page = $currentPage - 1;
             $link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array($this->__Attributes['Config']['ParameterPageName'] => $page));
 
-            $prevActive = & $this->__getTemplate('VorherigeSeite_Aktiv');
+            $prevActive = & $this->getTemplate('VorherigeSeite_Aktiv');
             if (isset($this->__Attributes['AnchorName'])) {
                $prevActive->setPlaceHolder('Link', $link . '#' . $this->__Attributes['AnchorName']);
             } else {
@@ -97,7 +97,7 @@
             $this->setPlaceHolder('VorherigeSeite', $prevActive->transformTemplate());
 
          } else {
-            $prevInactive = & $this->__getTemplate('VorherigeSeite_Inaktiv');
+            $prevInactive = & $this->getTemplate('VorherigeSeite_Inaktiv');
             $this->setPlaceHolder('VorherigeSeite', $prevInactive->transformTemplate());
          }
 
@@ -107,7 +107,7 @@
             $page = $currentPage + 1;
             $link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array($this->__Attributes['Config']['ParameterPageName'] => $page));
 
-            $nextActive = & $this->__getTemplate('NaechsteSeite_Aktiv');
+            $nextActive = & $this->getTemplate('NaechsteSeite_Aktiv');
 
             if (isset($this->__Attributes['AnchorName'])) {
                $nextActive->setPlaceHolder('Link', $link . '#' . $this->__Attributes['AnchorName']);
@@ -118,7 +118,7 @@
             $this->setPlaceHolder('NaechsteSeite', $nextActive->transformTemplate());
 
          } else {
-            $nextInactive = & $this->__getTemplate('NaechsteSeite_Inaktiv');
+            $nextInactive = & $this->getTemplate('NaechsteSeite_Inaktiv');
             $this->setPlaceHolder('NaechsteSeite', $nextInactive->transformTemplate());
          }
 
@@ -132,9 +132,9 @@
             foreach ($entriesPerPageConfig as $count) {
 
                if ($entriesPerPage == $count) {
-                  $template = &$this->__getTemplate('EntriesPerPage_Aktiv');
+                  $template = &$this->getTemplate('EntriesPerPage_Aktiv');
                } else {
-                  $template = &$this->__getTemplate('EntriesPerPage_Inaktiv');
+                  $template = &$this->getTemplate('EntriesPerPage_Inaktiv');
                }
 
                $link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array($this->__Attributes['Config']['ParameterPageName'] => '1', $this->__Attributes['Config']['ParameterCountName'] => $count));
@@ -150,11 +150,11 @@
 
             }
 
-            $dynPageSize = &$this->__getTemplate('DynamicPageSize');
+            $dynPageSize = &$this->getTemplate('DynamicPageSize');
             $dynPageSize->setPlaceHolder('EntriesPerPage', $buffer);
 
             // display language dependent labels
-            $entriesPerPageTmpl = &$this->__getTemplate('EntriesPerPage_' . $this->__Language);
+            $entriesPerPageTmpl = &$this->getTemplate('EntriesPerPage_' . $this->__Language);
             $dynPageSize->setPlaceHolder('EntriesPerPage_Display', $entriesPerPageTmpl->transformTemplate());
 
             $dynPageSize->transformOnPlace();

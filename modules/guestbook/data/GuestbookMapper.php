@@ -41,7 +41,7 @@
        *
        *  Returns the desired database connection for the guestbook.
        *
-       *  @return $databaseConnection The guestbook database connection
+       *  @return AbstractDatabaseHandler The guestbook database connection
        *
        *  @author Christian Achatz
        *  @version

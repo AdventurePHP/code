@@ -48,7 +48,7 @@ class comment_form_v1_controller extends commentBaseController {
     */
    public function transformContent() {
 
-      $form = &$this->__getForm('AddComment');
+      $form = &$this->getForm('AddComment');
 
       if ($form->isSent() == true) {
 
@@ -89,7 +89,7 @@ class comment_form_v1_controller extends commentBaseController {
     */
    private function buildForm() {
 
-      $form = &$this->__getForm('AddComment');
+      $form = &$this->getForm('AddComment');
       $form->setAttribute('action', $_SERVER['REQUEST_URI'] . '#comments');
 
       $config = $this->getConfiguration('modules::comments', 'language.ini');

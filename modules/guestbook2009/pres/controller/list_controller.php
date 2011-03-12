@@ -40,7 +40,7 @@
          $gS = &$this->getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
          $entryList = $gS->loadPagedEntryList();
 
-         $tmpl_entry = &$this->__getTemplate('entry');
+         $tmpl_entry = &$this->getTemplate('entry');
          $buffer = (string)'';
          foreach($entryList as $entry){
             

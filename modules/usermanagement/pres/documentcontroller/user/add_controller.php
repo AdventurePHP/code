@@ -37,7 +37,7 @@
 
       public function transformContent(){
 
-         $formAdd = &$this->__getForm('UserForm');
+         $formAdd = &$this->getForm('UserForm');
          if($formAdd->isSent() == true && $formAdd->isValid() == true){
 
             $formValues = RequestHandler::getValues(array(

@@ -39,7 +39,7 @@
 
          // init the form and load the relevant groups
          $userid = RequestHandler::getValue('userid');
-         $Form__Group = &$this->__getForm('Group');
+         $Form__Group = &$this->getForm('Group');
          $Group = &$Form__Group->getFormElementByName('Group');
          $uM = &$this->getManager();
          $user = $uM->loadUserById($userid);
@@ -48,7 +48,7 @@
 
          // display a note, if there are no groups to add the user to
          if($count == 0) {
-            $Template = &$this->__getTemplate('NoMoreGroups');
+            $Template = &$this->getTemplate('NoMoreGroups');
             $Template->transformOnPlace();
             return true;
           // end if

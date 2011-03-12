@@ -36,7 +36,7 @@
 
       public function transformContent(){
 
-         $form = &$this->__getForm('create_entry');
+         $form = &$this->getForm('create_entry');
 
          if($form->isSent() && $form->isValid()){
 

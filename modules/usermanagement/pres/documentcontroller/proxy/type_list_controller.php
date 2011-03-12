@@ -37,7 +37,7 @@
          $uM = &$this->getManager();
 
          $buffer = (string)'';
-         $template = &$this->__getTemplate('Type');
+         $template = &$this->getTemplate('Type');
 
          $list = $uM->loadVisibilityDefinitionTypes();
          foreach($list as $id => $DUMMY){

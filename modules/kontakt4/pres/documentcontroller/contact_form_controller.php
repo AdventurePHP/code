@@ -52,7 +52,7 @@
        */
       public function transformContent(){
 
-         $form = &$this->__getForm('contact');
+         $form = &$this->getForm('contact');
 
          // generate a generic action url, to be included in various pages
          $action = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],array());

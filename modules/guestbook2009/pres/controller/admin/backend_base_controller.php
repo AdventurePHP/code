@@ -47,7 +47,7 @@
       protected function __displayEntrySelection($adminView){
 
          // fill the select list
-         $form = &$this->__getForm('selectentry');
+         $form = &$this->getForm('selectentry');
          $select = &$form->getFormElementByName('entryid');
 
          $gS = &$this->getDIServiceObject('modules::guestbook2009::biz','GuestbookService');

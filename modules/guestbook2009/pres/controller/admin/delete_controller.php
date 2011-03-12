@@ -43,8 +43,8 @@
          }
          else{
 
-             $form_yes = &$this->__getForm('delete_yes');
-             $form_no = &$this->__getForm('delete_no');
+             $form_yes = &$this->getForm('delete_yes');
+             $form_no = &$this->getForm('delete_no');
 
              if($form_no->isSent() || $form_yes->isSent()){
 
@@ -70,7 +70,7 @@
                 $hidden_no_entryid->setAttribute('value',$entryId);
                 $form_no->transformOnPlace();
 
-                $template_confirm_text = $this->__getTemplate('confirm_text');
+                $template_confirm_text = $this->getTemplate('confirm_text');
                 $template_confirm_text->transformOnPlace();
                 
               // end else

@@ -61,7 +61,7 @@
             HeaderManager::redirect($link);
          }
 
-         $Form__AdminLogin = &$this->__getForm('AdminLogin');
+         $Form__AdminLogin = &$this->getForm('AdminLogin');
 
          if ($Form__AdminLogin->isValid() && $Form__AdminLogin->isSent()) {
 
@@ -98,10 +98,10 @@
        */
       private function displayForm($ShowLogInError = false) {
 
-         $adminLogin = &$this->__getForm('AdminLogin');
+         $adminLogin = &$this->getForm('AdminLogin');
 
          if ($ShowLogInError == true) {
-            $adminLogin->setPlaceHolder('LogInError', $this->__getTemplate('LogInError')->transformTemplate());
+            $adminLogin->setPlaceHolder('LogInError', $this->getTemplate('LogInError')->transformTemplate());
          }
 
          return $adminLogin->transformForm();

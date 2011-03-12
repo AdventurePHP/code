@@ -39,7 +39,7 @@
 
          // initialize the form
          $permissionsetid = RequestHandler::getValue('permissionsetid');
-         $Form__Edit = &$this->__getForm('PermissionSetEdit');
+         $Form__Edit = &$this->getForm('PermissionSetEdit');
          $PermissionSetID = &$Form__Edit->getFormElementByName('permissionsetid');
          $PermissionSetID->setAttribute('value',$permissionsetid);
 

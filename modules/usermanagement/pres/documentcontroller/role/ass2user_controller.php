@@ -42,7 +42,7 @@
          $roleid = RequestHandler::getValue('roleid');
 
          // initialize the form
-         $Form__User = &$this->__getForm('User');
+         $Form__User = &$this->getForm('User');
          $user = &$Form__User->getFormElementByName('User');
          $uM = &$this->getManager();
          $role = $uM->loadRoleById($roleid);
@@ -51,7 +51,7 @@
 
          // display a hint, if a role already assigned to all users
          if($count == 0){
-           $template = &$this->__getTemplate('NoMoreUser');
+           $template = &$this->getTemplate('NoMoreUser');
            $template->transformOnPlace();
            return true;
           // end if

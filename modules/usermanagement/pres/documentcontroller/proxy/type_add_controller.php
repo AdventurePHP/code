@@ -29,7 +29,7 @@
 
       public function transformContent(){
          
-         $form = &$this->__getForm('add');
+         $form = &$this->getForm('add');
 
          if($form->isSent() && $form->isValid()) {
 

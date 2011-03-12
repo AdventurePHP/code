@@ -46,8 +46,8 @@
          $this->setPlaceHolder('DisplayName', $Group->getProperty('DisplayName'));
 
          // prepare the forms and execute action
-         $Form__No = &$this->__getForm('GroupDelNo');
-         $Form__Yes = &$this->__getForm('GroupDelYes');
+         $Form__No = &$this->getForm('GroupDelNo');
+         $Form__Yes = &$this->getForm('GroupDelYes');
 
          if($Form__Yes->isSent()){
             $Group = new GenericDomainObject('Group');

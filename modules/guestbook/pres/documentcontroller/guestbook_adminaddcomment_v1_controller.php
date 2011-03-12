@@ -36,7 +36,7 @@
 
       public function transformContent() {
 
-         $form = &$this->__getForm('GuestbookAddComment');
+         $form = &$this->getForm('GuestbookAddComment');
 
          $values = RequestHandler::getValues(array(
                      'Title',

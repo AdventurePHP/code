@@ -1447,7 +1447,6 @@
          // parse known taglibs
          $this->__extractTagLibTags();
 
-       // end function
       }
 
       /**
@@ -1550,7 +1549,6 @@
                              .'found for tag "<'.$token.' />"!',E_USER_ERROR);
                   }
 
-                // end if
                }
 
                // extract the complete tag string from the current content
@@ -1570,7 +1568,6 @@
                   $tagStringLength = ($tagEndPos - $tagStartPos) + $closingTagLength;
                   $tagString = substr($this->__Content,$tagStartPos,$tagStringLength);
 
-                // end if
                }
 
                // get the tag attributes of the current tag
@@ -1619,12 +1616,10 @@
                // delete current object to avoid interference.
                unset($object);
 
-             // end while
             }
 
             $i++;
 
-          // end while
          }
 
          // call onAfterAppend() on each child to enable the taglib to interact with
@@ -1642,7 +1637,6 @@
 
          }
 
-       // end function
       }
 
       /**
@@ -1681,7 +1675,6 @@
             // lazily import document controller class
             if(!class_exists($controllerAttributes['class'])){
                import($controllerAttributes['namespace'],$controllerAttributes['file']);
-             // end if
             }
 
             // remark controller class
@@ -1691,10 +1684,8 @@
             $this->__Content = substr_replace($this->__Content,'',
                     $tagStartPos,($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
 
-          // end if
          }
 
-       // end function
       }
 
       /**
@@ -1778,7 +1769,6 @@
             // inject the current DOM node's attributes to easily access them
             if(is_array($this->__Attributes) && count($this->__Attributes) > 0){
                $docCon->setAttributes($this->__Attributes);
-             // end if
             }
 
             // execute the document controller by using a standard method
@@ -1789,26 +1779,21 @@
 
             $t->stop($id);
 
-          // end if
          }
 
          // transform child nodes and replace XML marker to place the output at the right position
          if(count($this->__Children) > 0){
             foreach($this->__Children as $objectId => $DUMMY){
                $content = str_replace('<'.$objectId.' />',$this->__Children[$objectId]->transform(),$content);
-             // end foreach
             }
-          // end if
          }
 
          $t->stop('('.get_class($this).') '.$this->__ObjectID.'::transform()');
 
          return $content;
 
-       // end function
       }
 
-    // end class
    }
 
    /**
@@ -1987,7 +1972,6 @@
          return $this->__Content;
       }
 
-    // end class
    }
 
    /**
@@ -2101,7 +2085,6 @@
             throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] There are no placeholders found for name "'.$name.'" in template "'.($this->__Attributes['name']).'" in document controller "'.($this->getParentObject()->getDocumentController()).'"!',E_USER_WARNING);
          }
 
-       // end function
       }
 
       /**
@@ -2110,7 +2093,7 @@
        * Returns the content of the template. Can be used to generate the template output
        * within a document controller. Usage:
        * <pre>
-       * $template = &$this->__getTemplate('MyTemplate');
+       * $template = &$this->getTemplate('MyTemplate');
        * $template->setPlaceHolder('URL','http://adventure-php-framework.org');
        * echo $template->transformTemplate();
        * </pre>
@@ -2138,7 +2121,6 @@
 
          return $content;
 
-       // end function
       }
 
       /**
@@ -2181,7 +2163,6 @@
 
       }
 
-    // end class
    }
 
    /**
@@ -2210,7 +2191,6 @@
          return $this->__Content;
       }
 
-    // end class
    }
 
    /**
@@ -2340,7 +2320,6 @@
                .$name.'" in document controller "'.get_class($this).'"!',E_USER_WARNING);
          }
 
-       // end function
       }
 
       /**
@@ -2373,6 +2352,13 @@
       }
 
       /**
+       * @deprecated Use base_controller::getForm() instead!
+       */
+      protected function &__getForm($formName) {
+         return $this->getForm($formName);
+      }
+
+      /**
        * @protected
        *
        * Returns the instance of the form specified by the given name. This method can be used to
@@ -2386,7 +2372,7 @@
        * Version 0.1, 12.01.2007<br />
        * Version 0.2, 14.06.2008 (Improved error handling.)<br />
        */
-      protected function &__getForm($formName){
+      protected function &getForm($formName) {
 
          $tagLibClass = 'html_taglib_form';
          if(!class_exists($tagLibClass)){
@@ -2420,7 +2406,13 @@
             .$formName.'" cannot be found in document controller "'.get_class($this).'"!',
             E_USER_ERROR);
 
-       // end function
+      }
+
+      /**
+       * @deprecated Use base_controller::getTemplate() instead!
+       */
+      protected function &__getTemplate($name) {
+         return $this->getTemplate($name);
       }
 
       /**
@@ -2439,7 +2431,7 @@
        * Version 0.3, 12.01.2006 (Renamed from "__getContentTemplate" to "__getTemplate" due to the introduction of "__getForm")<br />
        * Version 0.4, 23.04.2009 (Corrected PHP4 style object access)<br />
        */
-      protected function &__getTemplate($name){
+      protected function &getTemplate($name) {
 
          $tagLibClass = 'html_taglib_template';
 
@@ -2467,7 +2459,6 @@
          throw new InvalidArgumentException('['.get_class($this).'::__getTemplate()] Template with name "'
             .$name.'" cannot be found!',E_USER_ERROR);
 
-       // end function
       }
 
       /**
@@ -2497,7 +2488,6 @@
 
          return false;
 
-       // end function
       }
 
       /**
@@ -2528,9 +2518,7 @@
 
          return false;
 
-       // end function
       }
 
-    // end class
    }
 ?>

@@ -62,10 +62,6 @@
        */
       public static function generateURLParams($actionNamespace,$actionName,$actionParams = array(),$urlRewriting = null){
 
-         $t = &Singleton::getInstance('BenchmarkTimer');
-         $id = 'FrontcontrollerLinkHandler::generateURLParamsByAction('.XmlParser::generateUniqID().')';
-         $t->start($id);
-
          // gather the delimiters used to define an action's url representation
          $fC = &Singleton::getInstance('Frontcontroller');
          $actionKeyword = $fC->getActionKeyword();
@@ -104,10 +100,8 @@
             }
          }
 
-         $t->stop($id);
          return array($offset => implode($inputDelimiter,$params));
 
-       // end function
       }
       
       /**
@@ -154,10 +148,6 @@
        * Version 0.6, 21.06.2008 (Introduced the Registry to retrieve the URLRewriting information)<br />
        */
       public static function generateLink($url,$newParams = array(),$urlRewriting = null){
-
-         $t = &Singleton::getInstance('BenchmarkTimer');
-         $id = 'FrontcontrollerLinkHandler::generateLink('.md5($url).')';
-         $t->start($id);
 
          // check, if given url is a string. if not print warning and convert to string
          // if we do not convert to string parse_url() will fail!
@@ -418,7 +408,6 @@
             $finishedURL = $hostPart.$parsedURL['path'].$query;
          }
 
-         $t->stop($id);
          return $finishedURL;
 
       }

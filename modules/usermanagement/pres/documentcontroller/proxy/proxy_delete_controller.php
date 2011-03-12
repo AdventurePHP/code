@@ -44,8 +44,8 @@
          $proxy = new GenericDomainObject('AppProxy');
          $proxy->setObjectId($proxyId);
 
-         $formYes = &$this->__getForm('DelYes');
-         $formNo = &$this->__getForm('DelNo');
+         $formYes = &$this->getForm('DelYes');
+         $formNo = &$this->getForm('DelNo');
 
          if($formYes->isSent()){
             $uM->deleteVisibilityDefinition($proxy);

@@ -51,7 +51,7 @@
          $userid = RequestHandler::getValue('userid');
 
          // setup the form
-         $formEdit = &$this->__getForm('UserForm');
+         $formEdit = &$this->getForm('UserForm');
          $fieldUserId = &$formEdit->getFormElementByName('userid');
          $fieldUserId->setAttribute('value',$userid);
 

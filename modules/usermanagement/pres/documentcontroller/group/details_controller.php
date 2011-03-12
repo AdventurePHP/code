@@ -42,7 +42,7 @@
          $group = $uM->loadGroupByID($groupid);
 
          // display user data
-         $Template__User = &$this->__getTemplate('Group');
+         $Template__User = &$this->getTemplate('Group');
          $Template__User->setPlaceHolder('DisplayName',$group->getProperty('DisplayName'));
          $Template__User->transformOnPlace();
 

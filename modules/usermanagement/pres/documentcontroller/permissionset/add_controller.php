@@ -38,7 +38,7 @@
 
          // initialize the form
          $uM = &$this->getManager();
-         $Form__Add = &$this->__getForm('PermissionSetAdd');
+         $Form__Add = &$this->getForm('PermissionSetAdd');
 
          // prefill the multiselect field
          $perms = $uM->loadPermissionList();

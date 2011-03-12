@@ -38,7 +38,7 @@
       public function transformContent(){
 
          // initialize the form
-         $Form__User = &$this->__getForm('User');
+         $Form__User = &$this->getForm('User');
          $user = &$Form__User->getFormElementByName('User');
          $groupid = RequestHandler::getValue('groupid');
          $uM = &$this->getManager();
@@ -48,7 +48,7 @@
 
          // display hint, if no user is assignet to this group
          if($count == 0){
-           $template = &$this->__getTemplate('NoMoreUser');
+           $template = &$this->getTemplate('NoMoreUser');
            $template->transformOnPlace();
            return true;
           // end if

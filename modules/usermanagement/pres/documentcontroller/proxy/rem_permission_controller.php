@@ -28,7 +28,7 @@
       public function transformContent(){
 
          $proxyId = RequestHandler::getValue('proxyid');
-         $form = &$this->__getForm(self::$FORM_NAME);
+         $form = &$this->getForm(self::$FORM_NAME);
 
          $proxyIdControl = $form->getFormElementByName('proxyid');
          $proxyIdControl->setAttribute('value',$proxyId);

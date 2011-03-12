@@ -36,7 +36,7 @@
 
       public function transformContent(){
 
-         $formAdd = &$this->__getForm('GroupAdd');
+         $formAdd = &$this->getForm('GroupAdd');
          if($formAdd->isSent() == true && $formAdd->isValid() == true){
 
             // get the business object

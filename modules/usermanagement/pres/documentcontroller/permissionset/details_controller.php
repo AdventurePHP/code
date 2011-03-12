@@ -42,7 +42,7 @@
          $permissionSet = $uM->loadPermissionSetByID($permissionSetId);
 
          // display user data
-         $Template__PermissionSet = &$this->__getTemplate('PermissionSet');
+         $Template__PermissionSet = &$this->getTemplate('PermissionSet');
          $Template__PermissionSet->setPlaceHolder('DisplayName',$permissionSet->getProperty('DisplayName'));
          $Template__PermissionSet->transformOnPlace();
 

@@ -38,7 +38,7 @@
       public function transformContent(){
 
          $uM = &$this->getManager();
-         $form = &$this->__getForm('visibilitydef');
+         $form = &$this->getForm('visibilitydef');
 
          // prefill mode if "proxytypeid" and "appobjectid" are given
          $proxyTypeId = RequestHandler::getValue('proxytypeid');

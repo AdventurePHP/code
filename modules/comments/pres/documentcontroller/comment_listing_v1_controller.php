@@ -59,7 +59,7 @@ class comment_listing_v1_controller extends commentBaseController {
       $entries = $M->loadEntries();
 
       $buffer = (string) '';
-      $template = &$this->__getTemplate('ArticleComment');
+      $template = &$this->getTemplate('ArticleComment');
 
       // init bb code parser (remove some provider, that we don't need configuration files)
       $bP = &$this->getServiceObject('tools::string', 'AdvancedBBCodeParser');
@@ -82,7 +82,7 @@ class comment_listing_v1_controller extends commentBaseController {
 
       // display hint, if no entries are to display
       if (count($entries) < 1) {
-         $Template__NoEntries = &$this->__getTemplate('NoEntries');
+         $Template__NoEntries = &$this->getTemplate('NoEntries');
          $buffer = $Template__NoEntries->transformTemplate();
       }
 

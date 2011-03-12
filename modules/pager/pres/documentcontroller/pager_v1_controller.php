@@ -41,10 +41,10 @@
          for($i = 0; $i < $count; $i++){
 
             if($this->__Attributes['Pages'][$i]->isSelected() == true){
-               $tmplPage = &$this->__getTemplate('Page_Selected');
+               $tmplPage = &$this->getTemplate('Page_Selected');
             }
             else{
-               $tmplPage = &$this->__getTemplate('Page_Normal');
+               $tmplPage = &$this->getTemplate('Page_Normal');
             }
 
             if(isset($this->__Attributes['AnchorName'])){
@@ -59,7 +59,7 @@
 
          }
 
-         $tmplPage = &$this->__getTemplate('Page_'.$this->__Language);
+         $tmplPage = &$this->getTemplate('Page_'.$this->__Language);
          $this->setPlaceHolder('Page',$tmplPage->transformTemplate());
          $this->setPlaceHolder('Content',$buffer);
 

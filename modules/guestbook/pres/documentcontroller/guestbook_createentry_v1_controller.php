@@ -36,7 +36,7 @@
 
       public function transformContent() {
 
-         $form = &$this->__getForm('GuestbookEntry');
+         $form = &$this->getForm('GuestbookEntry');
 
          if ($form->isValid() && $form->isSent()) {
 

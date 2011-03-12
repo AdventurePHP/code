@@ -49,8 +49,8 @@
          $object = new GenericDomainObject($objectType);
          $object->setObjectId($objectId);
 
-         $formYes = &$this->__getForm('RevokeYes');
-         $formNo = &$this->__getForm('RevokeNo');
+         $formYes = &$this->getForm('RevokeYes');
+         $formNo = &$this->getForm('RevokeNo');
 
          if($formYes->isSent()){
             

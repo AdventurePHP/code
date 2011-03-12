@@ -47,7 +47,7 @@
 
          $values = RequestHandler::getValues(array('Name','EMail','City','Website','ICQ','MSN','Skype','AIM','Yahoo','Text','entryid'));
 
-         $form = &$this->__getForm('GuestbookEntry');
+         $form = &$this->getForm('GuestbookEntry');
 
          if ($form->isSent()) {
 

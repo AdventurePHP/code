@@ -53,7 +53,7 @@ class weather_v2_controller extends base_controller {
       } else {
 
          // Display error message
-         $Template__NoEntries = &$this->__getTemplate('NoEntries_' . $this->__Language);
+         $Template__NoEntries = &$this->getTemplate('NoEntries_' . $this->__Language);
          $Template__NoEntries->setPlaceHolder('Source', $this->__getXMLSource());
          $Template__NoEntries->transformOnPlace();
       }
@@ -73,7 +73,7 @@ class weather_v2_controller extends base_controller {
    protected function __transform($XML) {
 
       // Get references on the templates used
-      $Template__Information = &$this->__getTemplate('Information');
+      $Template__Information = &$this->getTemplate('Information');
 
       // Create DOM document and get an reference on the channel node
       $DomDoc = simplexml_load_string($XML);

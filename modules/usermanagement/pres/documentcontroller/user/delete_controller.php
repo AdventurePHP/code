@@ -41,8 +41,8 @@
          $uM = &$this->getManager();
          $User = $uM->loadUserById($userid);
          $this->setPlaceHolder('DisplayName', $User->getProperty('DisplayName'));
-         $Form__No = &$this->__getForm('UserDelNo');
-         $Form__Yes = &$this->__getForm('UserDelYes');
+         $Form__No = &$this->getForm('UserDelNo');
+         $Form__Yes = &$this->getForm('UserDelYes');
 
          if($Form__Yes->isSent()){
 

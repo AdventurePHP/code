@@ -41,7 +41,7 @@
          $roleid = RequestHandler::getValue('roleid');
 
          // initialize the form
-         $Form__Edit = &$this->__getForm('RoleEdit');
+         $Form__Edit = &$this->getForm('RoleEdit');
          $GroupID = &$Form__Edit->getFormElementByName('roleid');
          $GroupID->setAttribute('value',$roleid);
 

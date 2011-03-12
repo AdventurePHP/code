@@ -47,7 +47,7 @@
          $buffer = (string)'';
 
          // get template
-         $templateExceptionEntry = &$this->__getTemplate('ExceptionEntry');
+         $templateExceptionEntry = &$this->getTemplate('ExceptionEntry');
 
          // generate stacktrace
          for($i = 0; $i < count($exceptions); $i++){

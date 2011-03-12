@@ -42,8 +42,8 @@
          $role = $uM->loadRoleById($roleId);
          $this->setPlaceHolder('DisplayName',$role->getProperty('DisplayName'));
 
-         $formNo = &$this->__getForm('RoleDelNo');
-         $formYes = &$this->__getForm('RoleDelYes');
+         $formNo = &$this->getForm('RoleDelNo');
+         $formYes = &$this->getForm('RoleDelYes');
 
          if($formYes->isSent()){
 

@@ -47,7 +47,7 @@
          $errors = $this->buildStackTrace();
          $buffer = (string)'';
 
-         $errorEntry = &$this->__getTemplate('ErrorEntry');
+         $errorEntry = &$this->getTemplate('ErrorEntry');
 
          // generate stacktrace
          for($i = 0; $i < count($errors); $i++){

@@ -41,7 +41,7 @@
          $permissionSetId = RequestHandler::getValue('permissionsetid');
 
          // initialize the form
-         $Form__Role = &$this->__getForm('Role');
+         $Form__Role = &$this->getForm('Role');
          $role = &$Form__Role->getFormElementByName('Role');
          $uM = &$this->getManager();
          $permissionSet = $uM->loadPermissionSetByID($permissionSetId);
@@ -50,7 +50,7 @@
 
          // display a hint, if a role already assigned to all users
          if($count == 0){
-           $template = &$this->__getTemplate('NoMoreRole');
+           $template = &$this->getTemplate('NoMoreRole');
            $template->transformOnPlace();
            return true;
           // end if

@@ -41,7 +41,7 @@
 
          // display list
          $buffer = (string)'';
-         $template = &$this->__getTemplate('Permission');
+         $template = &$this->getTemplate('Permission');
          foreach($permissionList as $permission){
             $template->setPlaceHolder('DisplayName', $permission->getProperty('DisplayName'));
             $template->setPlaceHolder('Name',$permission->getProperty('Name'));

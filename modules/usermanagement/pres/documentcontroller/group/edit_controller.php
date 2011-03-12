@@ -39,7 +39,7 @@
 
          $groupId = RequestHandler::getValue('groupid');
 
-         $Form__Edit = &$this->__getForm('GroupEdit');
+         $Form__Edit = &$this->getForm('GroupEdit');
          $groupIdField = &$Form__Edit->getFormElementByName('groupid');
          $groupIdField->setAttribute('value',$groupId);
 

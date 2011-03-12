@@ -30,8 +30,8 @@
 
       public function transformContent() {
 
-         $formNo = &$this->__getForm('ProxyTypeDelNo');
-         $formYes = &$this->__getForm('ProxyTypeDelYes');
+         $formNo = &$this->getForm('ProxyTypeDelNo');
+         $formYes = &$this->getForm('ProxyTypeDelYes');
 
          $uM = &$this->getManager();
          $proxyTypeId = RequestHandler::getValue('proxytypeid');

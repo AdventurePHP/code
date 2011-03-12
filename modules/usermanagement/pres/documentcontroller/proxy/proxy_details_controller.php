@@ -35,7 +35,7 @@
          $this->setPlaceHolder('appproxytype',$type->getProperty('AppObjectName'));
 
          // load visbility permission list for the current permission
-         $template = &$this->__getTemplate('listitem');
+         $template = &$this->getTemplate('listitem');
          $buffer = (string)'';
          $list = $uM->loadUsersAndGroupsWithVisibilityDefinition($proxy);
 

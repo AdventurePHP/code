@@ -168,11 +168,14 @@ class UmgtManager extends APFObject {
     * Version 0.2, 16.03.2010 (Bugfix 299: moved the service type to the GORM factory call)<br />
     */
    public function &getORMapper() {
-      $ormFactory = &$this->getServiceObject('modules::genericormapper::data', 'GenericORMapperFactory', $this->gormServiceMode);
-      return $ormFactory->getGenericORMapper(
-              'modules::usermanagement',
-              'umgt',
-              $this->connectionKey
+       return $this->getServiceObject(
+                      'modules::genericormapper::data',
+                      'GenericORMapperFactory',
+                      $this->gormServiceMode)
+              ->getGenericORMapper(
+                      'modules::usermanagement',
+                      'umgt',
+                      $this->connectionKey
       );
    }
 
@@ -216,7 +219,6 @@ class UmgtManager extends APFObject {
             $user->deleteProperty('Password');
          }
 
-         // end if
       } else {
          // only create password for not empty strings!
          if (!empty($password)) {
@@ -224,9 +226,7 @@ class UmgtManager extends APFObject {
                     'Password',
                     $this->__createPasswordHash($password)
             );
-            // end if
          }
-         // end else
       }
 
       // set display name
@@ -237,7 +237,6 @@ class UmgtManager extends APFObject {
       $user->addRelatedObject('Application2User', $app);
       return $oRM->saveObject($user);
 
-      // end function
    }
 
    /**
@@ -274,7 +273,6 @@ class UmgtManager extends APFObject {
       $group->addRelatedObject('Application2Group', $app);
       // save the group and return it's id
       return $oRM->saveObject($group);
-      // end function
    }
 
    /**
@@ -295,7 +293,6 @@ class UmgtManager extends APFObject {
       $role->addRelatedObject('Application2Role', $app);
       // save the group and return it's id
       return $oRM->saveObject($role);
-      // end function
    }
 
    /**
@@ -325,7 +322,6 @@ class UmgtManager extends APFObject {
       $permissionIDs = array();
       for ($i = 0; $i < count($permissions); $i++) {
          $permissionIDs[] = $permissions[$i]->getProperty('PermissionID');
-         // end for
       }
 
       // delete the unnecessary relations
@@ -333,15 +329,12 @@ class UmgtManager extends APFObject {
       for ($i = 0; $i < count($allPermissions); $i++) {
          if (!in_array($allPermissions[$i]->getProperty('PermissionID'), $permissionIDs)) {
             $oRM->deleteAssociation('PermissionSet2Permission', $permissionSet, $allPermissions[$i]);
-            // end if
          }
-         // end for
       }
 
       // save the permission set and return it's id
       return $oRM->saveObject($permissionSet);
 
-      // end function
    }
 
    /**
@@ -364,7 +357,6 @@ class UmgtManager extends APFObject {
       $permission->addRelatedObject('Application2Permission', $app);
       // save the permission and return it's id
       return $oRM->saveObject($permission);
-      // end function
    }
 
    /**
@@ -392,7 +384,6 @@ class UmgtManager extends APFObject {
                     ORDER BY ent_user.LastName ASC, ent_user.FirstName ASC';
       return $ORM->loadObjectListByTextStatement('User', $select);
 
-      // end function
    }
 
    /**
@@ -419,7 +410,6 @@ class UmgtManager extends APFObject {
       // return list
       return $oRM->loadObjectListByCriterion('Group', $crit);
 
-      // end function
    }
 
    /**
@@ -437,7 +427,6 @@ class UmgtManager extends APFObject {
       $ORM = &$this->getORMapper();
       $select = 'SELECT * FROM ent_role ORDER BY DisplayName ASC';
       return $ORM->loadObjectListByTextStatement('Role', $select);
-      // end function
    }
 
    /**
@@ -455,7 +444,6 @@ class UmgtManager extends APFObject {
       $oRM = &$this->getORMapper();
       $select = 'SELECT * FROM ent_permissionset ORDER BY DisplayName ASC';
       return $oRM->loadObjectListByTextStatement('PermissionSet', $select);
-      // end function
    }
 
    /**
@@ -473,7 +461,6 @@ class UmgtManager extends APFObject {
       $oRM = &$this->getORMapper();
       $select = 'SELECT * FROM ent_permission ORDER BY DisplayName ASC';
       return $oRM->loadObjectListByTextStatement('Permission', $select);
-      // end function
    }
 
    /**
@@ -491,7 +478,6 @@ class UmgtManager extends APFObject {
    public function loadUserByID($userID) {
       $oRM = &$this->getORMapper();
       return $oRM->loadObjectByID('User', $userID);
-      // end function
    }
 
    /**
@@ -524,7 +510,6 @@ class UmgtManager extends APFObject {
       $select = 'SELECT * FROM ent_user WHERE Username = \'' . $username . '\' AND Password = \'' . $password . '\';';
       return $oRM->loadObjectByTextStatement('User', $select);
 
-      // end function
    }
 
    /**
@@ -552,7 +537,6 @@ class UmgtManager extends APFObject {
       $select = 'SELECT * FROM ent_user WHERE FirstName = \'' . $firstName . '\';';
       return $oRM->loadObjectByTextStatement('User', $select);
 
-      // end function
    }
 
    /**
@@ -580,7 +564,6 @@ class UmgtManager extends APFObject {
       $select = 'SELECT * FROM ent_user WHERE LastName = \'' . $lastName . '\';';
       return $oRM->loadObjectByTextStatement('User', $select);
 
-      // end function
    }
 
    /**
@@ -608,7 +591,6 @@ class UmgtManager extends APFObject {
       $select = 'SELECT * FROM ent_user WHERE EMail = \'' . $email . '\';';
       return $oRM->loadObjectByTextStatement('User', $select);
 
-      // end function
    }
 
    /**
@@ -638,7 +620,6 @@ class UmgtManager extends APFObject {
       $select = 'SELECT * FROM ent_user WHERE FirstName = \'' . $firstName . '\' AND LastName = \'' . $lastName . '\';';
       return $oRM->loadObjectByTextStatement('User', $select);
 
-      // end function
    }
 
    /**
@@ -666,7 +647,6 @@ class UmgtManager extends APFObject {
       $select = 'SELECT * FROM ent_user WHERE Username = \'' . $username . '\';';
       return $oRM->loadObjectByTextStatement('User', $select);
 
-      // end function
    }
 
    /**
@@ -685,7 +665,6 @@ class UmgtManager extends APFObject {
     */
    protected function __getDisplayName($user) {
       return $user->getProperty('LastName') . ', ' . $user->getProperty('FirstName');
-      // end function
    }
 
    /**
@@ -718,7 +697,6 @@ class UmgtManager extends APFObject {
       $select = 'SELECT * FROM ent_user WHERE EMail = \'' . $email . '\' AND Password = \'' . $password . '\';';
       return $oRM->loadObjectByTextStatement('User', $select);
 
-      // end function
    }
 
    /**
@@ -751,7 +729,6 @@ class UmgtManager extends APFObject {
       $oRM = &$this->getORMapper();
       return $oRM->loadObjectListByTextStatement('Permission', $select);
 
-      // end function
    }
 
    /**
@@ -769,7 +746,6 @@ class UmgtManager extends APFObject {
    public function loadGroupByID($groupID) {
       $oRM = &$this->getORMapper();
       return $oRM->loadObjectByID('Group', $groupID);
-      // end function
    }
 
    /**
@@ -805,7 +781,6 @@ class UmgtManager extends APFObject {
    public function loadRoleByID($roleID) {
       $oRM = &$this->getORMapper();
       return $oRM->loadObjectByID('Role', $roleID);
-      // end function
    }
 
    /**
@@ -823,7 +798,6 @@ class UmgtManager extends APFObject {
    public function loadPermissionSetByID($permissionSetID) {
       $oRM = &$this->getORMapper();
       return $oRM->loadObjectByID('PermissionSet', $permissionSetID);
-      // end function
    }
 
    /**
@@ -849,7 +823,6 @@ class UmgtManager extends APFObject {
       // load permission list
       return $oRM->loadObjectListByCriterion('Permission', $crit);
 
-      // end function
    }
 
    /**
@@ -867,7 +840,6 @@ class UmgtManager extends APFObject {
    public function loadPermissionByID($permID) {
       $oRM = &$this->getORMapper();
       return $oRM->loadObjectByID('Permission', $permID);
-      // end function
    }
 
    /**
@@ -894,7 +866,6 @@ class UmgtManager extends APFObject {
       // load roles, that are not associated
       return $oRM->loadNotRelatedObjects($permissionSet, 'Role2PermissionSet', $crit);
 
-      // end function
    }
 
    /**
@@ -921,7 +892,6 @@ class UmgtManager extends APFObject {
       // load roles, that are not associated
       return $oRM->loadRelatedObjects($permissionSet, 'Role2PermissionSet', $crit);
 
-      // end function
    }
 
    /**
@@ -976,10 +946,8 @@ class UmgtManager extends APFObject {
       // create the associations
       for ($i = 0; $i < count($roles); $i++) {
          $oRM->createAssociation('Role2PermissionSet', $roles[$i], $permissionSet);
-         // end for
       }
 
-      // end function
    }
 
    /**
@@ -1002,10 +970,8 @@ class UmgtManager extends APFObject {
       // delete the associations
       for ($i = 0; $i < count($roles); $i++) {
          $oRM->deleteAssociation('Role2PermissionSet', $roles[$i], $permissionSet);
-         // end for
       }
 
-      // end function
    }
 
    /**
@@ -1022,7 +988,6 @@ class UmgtManager extends APFObject {
    public function deleteUser($user) {
       $oRM = &$this->getORMapper();
       $oRM->deleteObject($user);
-      // end function
    }
 
    /**
@@ -1039,7 +1004,6 @@ class UmgtManager extends APFObject {
    public function deleteGroup($group) {
       $oRM = &$this->getORMapper();
       $oRM->deleteObject($group);
-      // end function
    }
 
    /**
@@ -1056,7 +1020,6 @@ class UmgtManager extends APFObject {
    public function deleteRole($role) {
       $oRM = &$this->getORMapper();
       $oRM->deleteObject($role);
-      // end function
    }
 
    /**
@@ -1073,7 +1036,6 @@ class UmgtManager extends APFObject {
    public function deletePermissionSet($permissionSet) {
       $oRM = &$this->getORMapper();
       $oRM->deleteObject($permissionSet);
-      // end function
    }
 
    /**
@@ -1090,7 +1052,6 @@ class UmgtManager extends APFObject {
    public function deletePermission($permission) {
       $oRM = &$this->getORMapper();
       $oRM->deleteObject($permission);
-      // end function
    }
 
    /**
@@ -1113,10 +1074,8 @@ class UmgtManager extends APFObject {
       // create the association
       for ($i = 0; $i < count($groups); $i++) {
          $oRM->createAssociation('Group2User', $user, $groups[$i]);
-         // end for
       }
 
-      // end function
    }
 
    /**
@@ -1136,10 +1095,8 @@ class UmgtManager extends APFObject {
 
       for ($i = 0; $i < count($users); $i++) {
          $this->assignUser2Groups($users[$i], array($group));
-         // end for
       }
 
-      // end function
    }
 
    /**
@@ -1162,10 +1119,8 @@ class UmgtManager extends APFObject {
       // create the association
       for ($i = 0; $i < count($users); $i++) {
          $orm->createAssociation('Role2User', $role, $users[$i]);
-         // end for
       }
 
-      // end function
    }
 
    /**
@@ -1184,7 +1139,6 @@ class UmgtManager extends APFObject {
    public function loadGroupsWithUser(&$user) {
       $orm = &$this->getORMapper();
       return $orm->loadRelatedObjects($user, 'Group2User');
-      // end function
    }
 
    /**
@@ -1211,7 +1165,6 @@ class UmgtManager extends APFObject {
       // load roles, that are not associated
       return $oRM->loadNotRelatedObjects($user, 'Group2User', $crit);
 
-      // end function
    }
 
    /**
@@ -1230,7 +1183,6 @@ class UmgtManager extends APFObject {
    public function loadUsersWithGroup(&$group) {
       $oRM = &$this->getORMapper();
       return $oRM->loadRelatedObjects($group, 'Group2User');
-      // end function
    }
 
    /**
@@ -1258,7 +1210,6 @@ class UmgtManager extends APFObject {
       // load the user list
       return $oRM->loadNotRelatedObjects($group, 'Group2User', $crit);
 
-      // end function
    }
 
    /**
@@ -1275,7 +1226,6 @@ class UmgtManager extends APFObject {
     */
    public function loadRolesWithUser(&$user) {
       return $user->loadRelatedObjects('Role2User');
-      // end function
    }
 
    /**
@@ -1303,7 +1253,6 @@ class UmgtManager extends APFObject {
       // load the user list
       return $oRM->loadNotRelatedObjects($user, 'Role2User', $crit);
 
-      // end function
    }
 
    /**
@@ -1320,7 +1269,6 @@ class UmgtManager extends APFObject {
     */
    public function loadUsersWithRole(&$role) {
       return $role->loadRelatedObjects('Role2User');
-      // end function
    }
 
    /**
@@ -1344,7 +1292,6 @@ class UmgtManager extends APFObject {
       $crit->addRelationIndicator('Application2User', $app);
       return $oRM->loadNotRelatedObjects($role, 'Role2User', $crit);
 
-      // end function
    }
 
    /**
@@ -1362,7 +1309,6 @@ class UmgtManager extends APFObject {
    public function loadPermissionsOfPermissionSet(&$permissionSet) {
       $oRM = &$this->getORMapper();
       return $oRM->loadRelatedObjects($permissionSet, 'PermissionSet2Permission');
-      // end function
    }
 
    /**
@@ -1380,7 +1326,6 @@ class UmgtManager extends APFObject {
    public function detachUserFromRole($user, $role) {
       $oRM = &$this->getORMapper();
       $oRM->deleteAssociation('Role2User', $role, $user);
-      // end function
    }
 
    /**
@@ -1399,10 +1344,8 @@ class UmgtManager extends APFObject {
 
       for ($i = 0; $i < count($users); $i++) {
          $this->detachUserFromRole($users[$i], $role);
-         // end for
       }
 
-      // end function
    }
 
    /**
@@ -1420,7 +1363,6 @@ class UmgtManager extends APFObject {
    public function detachUserFromGroup($user, $group) {
       $oRM = &$this->getORMapper();
       $oRM->deleteAssociation('Group2User', $user, $group);
-      // end function
    }
 
    /**
@@ -1439,10 +1381,8 @@ class UmgtManager extends APFObject {
 
       for ($i = 0; $i < count($groups); $i++) {
          $this->detachUserFromGroup($user, $groups[$i]);
-         // end for
       }
 
-      // end function
    }
 
    /**
@@ -1461,10 +1401,8 @@ class UmgtManager extends APFObject {
 
       for ($i = 0; $i < count($users); $i++) {
          $this->detachUserFromGroup($users[$i], $group);
-         // end for
       }
 
-      // end function
    }
 
    /**
@@ -1952,11 +1890,6 @@ class UmgtManager extends APFObject {
       $crit->addOrderIndicator('AppObjectName');
       $orm = &$this->getORMapper();
       return $orm->loadObjectListByCriterion('AppProxyType', $crit);
-   }
-
-
-   public function &_getORMapper() {
-      return $this->getORMapper();
    }
 
 }

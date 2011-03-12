@@ -42,7 +42,7 @@
          $User = $uM->loadUserByID($userid);
 
          // display user data
-         $Template__User = &$this->__getTemplate('User');
+         $Template__User = &$this->getTemplate('User');
          $Template__User->setPlaceHolder('FirstName',$User->getProperty('FirstName'));
          $Template__User->setPlaceHolder('LastName',$User->getProperty('LastName'));
          $Template__User->setPlaceHolder('EMail',$User->getProperty('EMail'));

@@ -37,7 +37,7 @@
 
          // display filter form
          $uM = &$this->getManager();
-         $form = &$this->__getForm('type-filter');
+         $form = &$this->getForm('type-filter');
 
          $types = $uM->loadVisibilityDefinitionTypes();
          $select = &$form->getFormElementByName('proxytypeid');
@@ -66,7 +66,7 @@
          }
 
          $buffer = (string) '';
-         $template = &$this->__getTemplate('Proxy');
+         $template = &$this->getTemplate('Proxy');
          foreach($proxies as $proxy){
 
             $proxyId = $proxy->getProperty('AppProxyID');
@@ -88,7 +88,7 @@
          // in case no proxy object is found for the present filter, place a custom text
          // denoting this situation.
          if(count($proxies) == 0){
-            $buffer = $this->__getTemplate('NoProxy')->transformTemplate();
+            $buffer = $this->getTemplate('NoProxy')->transformTemplate();
          }
 
          $this->setPlaceHolder('ProxyList',$buffer);

@@ -76,7 +76,7 @@
        */
       private function generateCreateEntryLink() {
 
-         $Template__CreateEntry = &$this->__getTemplate('CreateEntry_' . $this->__Language);
+         $Template__CreateEntry = &$this->getTemplate('CreateEntry_' . $this->__Language);
 
          $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'createentry', 'entryid' => ''));
          $Template__CreateEntry->setPlaceHolder('Link', $Link);
@@ -102,7 +102,7 @@
 
          if ($this->session->loadSessionData('AdminView') == 'true') {
 
-            $Template__ControlGuestbook_Logout = &$this->__getTemplate('ControlGuestbook_Logout_' . $this->__Language);
+            $Template__ControlGuestbook_Logout = &$this->getTemplate('ControlGuestbook_Logout_' . $this->__Language);
 
             $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'adminlogin', 'logout' => 'true', 'entryid' => ''));
             $Template__ControlGuestbook_Logout->setPlaceHolder('Link', $Link);
@@ -111,7 +111,7 @@
 
          } else {
 
-            $Template__ControlGuestbook_Login = &$this->__getTemplate('ControlGuestbook_Login_' . $this->__Language);
+            $Template__ControlGuestbook_Login = &$this->getTemplate('ControlGuestbook_Login_' . $this->__Language);
 
             $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'adminlogin', 'entryid' => ''));
             $Template__ControlGuestbook_Login->setPlaceHolder('Link', $Link);
@@ -152,7 +152,7 @@
 
       private function generateEntry(Entry $entry) {
 
-         $Template__Entry = &$this->__getTemplate('Entry');
+         $Template__Entry = &$this->getTemplate('Entry');
 
          $Template__Entry->setPlaceHolder('AdminDelete', $this->showAdminDelete($entry->getId()));
          $Template__Entry->setPlaceHolder('AdminEdit', $this->showAdminEdit($entry->getId()));
@@ -190,7 +190,7 @@
 
       private function generateComment(Comment $comment, $entryId) {
 
-         $Template__Comment = &$this->__getTemplate('Comment');
+         $Template__Comment = &$this->getTemplate('Comment');
          $Template__Comment->setPlaceHolder('AdminDeleteComment', $this->showAdminDeleteComment($comment->getId(), $entryId));
          $Template__Comment->setPlaceHolder('AdminEditComment', $this->showAdminEditComment($comment->getId(), $entryId));
          $Template__Comment->setPlaceHolder('Title', $comment->getTitle());
@@ -205,7 +205,7 @@
 
          if ($this->session->loadSessionData('AdminView') == true) {
 
-            $Template__AdminDelete = &$this->__getTemplate('AdminDelete');
+            $Template__AdminDelete = &$this->getTemplate('AdminDelete');
 
             $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'admindelete', 'entryid' => $entryId));
             $Template__AdminDelete->setPlaceHolder('Link', $Link);
@@ -222,7 +222,7 @@
 
          if ($this->session->loadSessionData('AdminView') == true) {
 
-            $Template__AdminEdit = &$this->__getTemplate('AdminEdit');
+            $Template__AdminEdit = &$this->getTemplate('AdminEdit');
 
             $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'adminedit', 'entryid' => $entryId));
             $Template__AdminEdit->setPlaceHolder('Link', $Link);
@@ -239,7 +239,7 @@
 
          if ($this->session->loadSessionData('AdminView') == true) {
 
-            $Template__AdminAddComment = &$this->__getTemplate('AdminAddComment');
+            $Template__AdminAddComment = &$this->getTemplate('AdminAddComment');
 
             $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'adminaddcomment', 'entryid' => $entryId));
             $Template__AdminAddComment->setPlaceHolder('Link', $Link);
@@ -256,7 +256,7 @@
 
          if ($this->session->loadSessionData('AdminView') == true) {
 
-            $Template__AdminDeleteComment = &$this->__getTemplate('AdminDeleteComment');
+            $Template__AdminDeleteComment = &$this->getTemplate('AdminDeleteComment');
 
             $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'admindeletecomment', 'commentid' => $dommentId));
             $Template__AdminDeleteComment->setPlaceHolder('Link', $Link);
@@ -273,7 +273,7 @@
 
          if ($this->session->loadSessionData('AdminView') == true) {
 
-            $Template__AdminEditComment = &$this->__getTemplate('AdminEditComment');
+            $Template__AdminEditComment = &$this->getTemplate('AdminEditComment');
 
             $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'admineditcomment', 'commentid' => $commentId, 'entryid' => $entryId));
             $Template__AdminEditComment->setPlaceHolder('Link', $Link);

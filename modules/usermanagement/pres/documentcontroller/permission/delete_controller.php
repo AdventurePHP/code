@@ -42,8 +42,8 @@
          $Permission = $uM->loadPermissionByID($permissionid);
          $this->setPlaceHolder('DisplayName',$Permission->getProperty('DisplayName'));
 
-         $Form__No = &$this->__getForm('PermissionDelNo');
-         $Form__Yes = &$this->__getForm('PermissionDelYes');
+         $Form__No = &$this->getForm('PermissionDelNo');
+         $Form__Yes = &$this->getForm('PermissionDelYes');
 
          if($Form__Yes->isSent()){
 

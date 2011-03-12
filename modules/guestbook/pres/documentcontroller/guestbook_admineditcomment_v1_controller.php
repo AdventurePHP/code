@@ -47,7 +47,7 @@
 
          $values = RequestHandler::getValues(array('Title','Text','entryid','commentid'));
 
-         $form = &$this->__getForm('Comment');
+         $form = &$this->getForm('Comment');
 
          if ($form->isSent()) {
 

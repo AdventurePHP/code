@@ -38,8 +38,8 @@
 
       public function transformContent() {
 
-         $Form__FormNo = &$this->__getForm('FormNo');
-         $Form__FormYes = &$this->__getForm('FormYes');
+         $Form__FormNo = &$this->getForm('FormNo');
+         $Form__FormYes = &$this->getForm('FormYes');
 
          $oSessMgr = new SessionManager($this->getGuestbookNamespace());
 

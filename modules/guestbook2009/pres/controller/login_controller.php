@@ -35,7 +35,7 @@
 
       public function transformContent(){
          
-         $form = &$this->__getForm('login');
+         $form = &$this->getForm('login');
 
          if($form->isSent() && $form->isValid()){
 
@@ -47,7 +47,7 @@
 
             $gS = &$this->getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
             if(!$gS->validateCredentials($user)){
-               $error = &$this->__getTemplate('error');
+               $error = &$this->getTemplate('error');
                $form->setPlaceHolder('error',$error->transformTemplate());
             }
 

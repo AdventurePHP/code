@@ -39,7 +39,7 @@
 
          // display group list
          $buffer = (string) '';
-         $template = &$this->__getTemplate('Group');
+         $template = &$this->getTemplate('Group');
 
          foreach($GroupList as $Group){
             $groupID = $Group->getProperty('GroupID');

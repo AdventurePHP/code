@@ -42,7 +42,7 @@
          $role = $uM->loadRoleByID($roleid);
 
          // display user data
-         $template = &$this->__getTemplate('Role');
+         $template = &$this->getTemplate('Role');
          $template->setPlaceHolder('DisplayName',$role->getProperty('DisplayName'));
          $template->transformOnPlace();
 

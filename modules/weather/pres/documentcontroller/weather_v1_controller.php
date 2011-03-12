@@ -84,7 +84,7 @@
          else{
 
             // Display error message
-            $Template__NoEntries = &$this->__getTemplate('NoEntries_'.$this->__Language);
+            $Template__NoEntries = &$this->getTemplate('NoEntries_'.$this->__Language);
             $Template__NoEntries->setPlaceHolder('Source',$this->__getRSSSource());
             $this->setPlaceHolder('Content',$Template__NoEntries->transformTemplate());
 
@@ -109,8 +109,8 @@
       protected function __transformPHP4($XML){
 
          // Get references on the templates used
-         $Template__Channel = &$this->__getTemplate('Channel');
-         $Template__Item = &$this->__getTemplate('Item');
+         $Template__Channel = &$this->getTemplate('Channel');
+         $Template__Item = &$this->getTemplate('Item');
 
          // Create DOM document and get an reference on the channel node
          $DomDoc = domxml_open_mem($XML);
@@ -180,8 +180,8 @@
       protected function __transformPHP5($XML){
 
          // Get references on the templates used
-         $Template__Channel = &$this->__getTemplate('Channel');
-         $Template__Item = &$this->__getTemplate('Item');
+         $Template__Channel = &$this->getTemplate('Channel');
+         $Template__Item = &$this->getTemplate('Item');
 
          // Create DOM document and get an reference on the channel node
          $DomDoc = simplexml_load_string($XML);

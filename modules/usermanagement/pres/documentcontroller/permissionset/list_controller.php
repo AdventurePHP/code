@@ -38,7 +38,7 @@
          $uM = &$this->getManager();
          $permissionSetList = $uM->getPagedPermissionSetList();
          $buffer = (string)'';
-         $template = &$this->__getTemplate('PermissionSet');
+         $template = &$this->getTemplate('PermissionSet');
 
          foreach($permissionSetList as $permissionSet){
 

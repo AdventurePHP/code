@@ -37,7 +37,7 @@
 
       public function transformContent(){
 
-         $Form__Group = &$this->__getForm('Group');
+         $Form__Group = &$this->getForm('Group');
          $groupField = &$Form__Group->getFormElementByName('Groups');
          $uM = &$this->getManager();
          $userid = RequestHandler::getValue('userid');
@@ -46,7 +46,7 @@
          $count = count($groups);
 
          if($count == 0){
-            $template = $this->__getTemplate('NoMoreGroups');
+            $template = $this->getTemplate('NoMoreGroups');
             $template->transformOnPlace();
             return true;
           // end if

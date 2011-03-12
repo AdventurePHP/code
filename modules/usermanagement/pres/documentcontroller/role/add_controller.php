@@ -36,7 +36,7 @@
 
       public function transformContent(){
 
-         $form = &$this->__getForm('RoleAdd');
+         $form = &$this->getForm('RoleAdd');
          if($form->isSent() == true && $form->isValid() == true){
 
             $uM = &$this->getManager();

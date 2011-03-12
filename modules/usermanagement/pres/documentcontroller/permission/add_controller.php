@@ -39,7 +39,7 @@
 
          $uM = &$this->getManager();
 
-         $Form__PermissionAdd = &$this->__getForm('PermissionAdd');
+         $Form__PermissionAdd = &$this->getForm('PermissionAdd');
 
          if($Form__PermissionAdd->isSent() == true && $Form__PermissionAdd->isValid() == true){
 
