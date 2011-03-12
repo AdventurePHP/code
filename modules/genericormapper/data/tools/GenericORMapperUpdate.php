@@ -318,6 +318,8 @@
        * Creates a relation mapping out of the database tables.
        *
        * @param AbstractDatabaseHandler $sql The database connection to analyze.
+       * @version
+       * Version 0.2, 07.03.2011 (Added support for relations between the same table)<br />
        */
       private function reEngineerRelations(AbstractDatabaseHandler $sql){
 
@@ -335,14 +337,16 @@
             $relationName = substr($relationTable,4);
             $sourceId = $fields[0]['Field'];
             $targetId = $fields[1]['Field'];
+            $sourceObject = str_replace('ID', '', $sourceId);
+            $targetObject = str_replace('ID', '', $targetId);
 
             $this->ReEngineeredRelationTable[$relationName] = array(
                'Type' => $this->getRelationTypeLabel($relationTable),
                'Table' => $relationTable,
                'SourceID' => $sourceId,
                'TargetID' => $targetId,
-               'SourceObject' => str_replace('ID','',$sourceId),
-               'TargetObject' => str_replace('ID','',$targetId),
+               'SourceObject' => str_replace('Source_', '', $sourceObject),
+               'TargetObject' => str_replace('Target_', '', $targetObject)
             );
 
          }
@@ -663,7 +667,7 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
          );
 
          // evaluate changes within the attributes
-         foreach($this->RelationTable as $relationKey => $relationValue){
+         foreach($this->RelationTable as $relationKey => $relationValue) {
 
             // use lowercase relation key for re-engineered values!
             $reEngRelationKey = strtolower($relationKey);
@@ -686,6 +690,26 @@ einer Zeichenkette das Gleiche wie bei NULL-Feldern.*/
                      }
                   }
 
+                  if(isset($this->ReEngineeredRelationTable[$reEngRelationKey][$key])
+                     && isset($this->ReEngineeredRelationTable[$reEngRelationKey]['TargetID'])
+                     && isset($this->ReEngineeredRelationTable[$reEngRelationKey]['Table'])
+                     && ($key == 'SourceID')) {
+                      $SourceIDColumn = str_replace('Source_', '', $this->ReEngineeredRelationTable[$reEngRelationKey][$key]);
+                      $TargetIDColumn = str_replace('Target_', '', $this->ReEngineeredRelationTable[$reEngRelationKey]['TargetID']);
+                        if($SourceIDColumn == $this->ReEngineeredRelationTable[$reEngRelationKey][$key] &&
+                           $TargetIDColumn == $this->ReEngineeredRelationTable[$reEngRelationKey]['TargetID']) {
+                         // header
+                         $update = 'ALTER TABLE `'.$this->ReEngineeredRelationTable[$reEngRelationKey]['Table'].'` '.PHP_EOL;
+
+                         // source id
+                         $update .= 'CHANGE `'.$SourceIDColumn.'`  `Source_'.$SourceIDColumn.'` '.$this->getIndexColumnDataType().' NOT NULL default \'0\','.PHP_EOL;
+
+                         // target id
+                         $update .= 'CHANGE `'.$TargetIDColumn.'`  `Target_'.$TargetIDColumn.'` '.$this->getIndexColumnDataType().' NOT NULL default \'0\''.PHP_EOL;
+
+                         $this->UpdateStatements[] = $update;
+                     }
+                  }
                }
 
             }
