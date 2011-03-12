@@ -165,6 +165,9 @@
          // generate relation update statements
          $this->generateRelationUpdateStatements();
 
+         // analyze potential changes in storage engines
+         $this->generateStorageEngineUpdate($sql);
+
          // print alter statements or execute them immediately
          if($updateInPlace === true){
             foreach($this->UpdateStatements as $statement){
@@ -344,6 +347,35 @@
 
          }
 
+      }
+
+      /**
+       * @private
+       *
+       * Analyzes the current set of database tables and adds an alter statement for the
+       * storage engine if necessary.
+       *
+       * @param AbstractDatabaseHandler $sql The current database connnection.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 12.03.2011<br />
+       */
+      private function generateStorageEngineUpdate(AbstractDatabaseHandler $sql) {
+
+         foreach ($this->DatabaseMappingTables as $objectTable) {
+
+            $selectEngine = 'SHOW CREATE TABLE `' . $objectTable . '`';
+            $resultEngine = $sql->executeTextStatement($selectEngine);
+            $dataEngine = $sql->fetchData($resultEngine);
+
+            preg_match('/\s*?ENGINE=([^\s]+)\s*?/', $dataEngine['Create Table'], $matches);
+            $engine = $matches[1];
+
+            if ($this->getStorageEngine() != $engine) {
+               $this->UpdateStatements[] = 'ALTER TABLE `' . $objectTable . '` ENGINE = ' . $this->getStorageEngine() . ';';
+            }
+         }
       }
 
       /**
