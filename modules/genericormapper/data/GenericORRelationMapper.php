@@ -112,17 +112,24 @@ class GenericORRelationMapper extends GenericORMapper {
       if (count($properties) > 0) {
 
          // add additional where statements
-         foreach ($properties as $propertyName => $propertyValue) {
+         foreach ($properties as $property) {
 
-            $propertyName = $this->DBDriver->escapeValue($propertyName);
-            $propertyValue = $this->DBDriver->escapeValue($propertyValue);
+            $propertyName = $this->DBDriver->escapeValue($property['Name']);
 
-            if (substr_count($propertyValue, '%') > 0 || substr_count($propertyValue, '_') > 0) {
-               $whereList[] = '`' . $this->MappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` LIKE \'' . $propertyValue . '\'';
+            if (is_object($property['Value']) === TRUE)
+            {
+               $whereList[] = '('.implode('',$this->buildWhere ($objectName,$property['Value'])).')';
             } else {
-               $whereList[] = '`' . $this->MappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` = \'' . $propertyValue . '\'';
+               $propertyValue = $this->DBDriver->escapeValue($property['Value']);
+
+               if ((substr_count($propertyValue, '%') > 0 || substr_count($propertyValue, '_') > 0) && $property['ComparisonOperator'] == '=') {
+                  $whereList[] = '`' . $this->MappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` LIKE \'' . $propertyValue . '\'';
+               } else {
+                  $whereList[] = '`' . $this->MappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` '.$property['ComparisonOperator'].' \'' . $propertyValue . '\'';
+               }
             }
 
+            $whereList = array(implode(' '.$property['LogicalOperator'].' ',$whereList));
          }
 
       }

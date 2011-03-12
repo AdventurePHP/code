@@ -55,6 +55,12 @@
 
       /**
        * @private
+       * @var string[] Stores the current logical operator.
+       */
+      private $LogicalOperator = 'AND';
+
+      /**
+       * @private
        * @var string[] Stores the properties to load into the object.
        */
       private $LoadedProperties = array();
@@ -64,6 +70,22 @@
        * @var string[] Stores the order indicator.
        */
       private $Orders = array();
+
+      /**
+       * @public
+       *
+       * Method to set the current link between properties.
+       *
+       * @return GenericCriterionObject Returns itself.
+       *
+       * @author Lutz Mahlstedt
+       * @version
+       * Version 0.1, 11.03.2011<br />
+       */
+      public function setLogicalOperator($operator){
+         $this->LogicalOperator = $operator;
+         return $this;
+      }
 
       /**
        * @public
@@ -111,7 +133,7 @@
        * @param int $count optional count parameter
        *
        * @return GenericCriterionObject Returns itself.
-       * 
+       *
        * @author Christian Achatz
        * @version
        * Version 0.1, 17.06.2008<br />
@@ -155,16 +177,20 @@
        *
        * @param string $attributeName name of the attribute
        * @param string $attributeValue value of the attribute
-       * 
+       *
        * @return GenericCriterionObject Returns itself.
-       * 
+       *
        * @author Christian Achatz
        * @version
        * Version 0.1, 17.06.2008<br />
        * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
        */
-      public function addPropertyIndicator($attributeName,$attributeValue){
-         $this->Properties[$attributeName] = $attributeValue;
+      public function addPropertyIndicator($attributeName,$attributeValue,$comparisonOperator = '='){
+         $this->Properties[] = array('Name' => $attributeName,
+                                     'Value' => $attributeValue,
+                                     'ComparisonOperator' => $comparisonOperator,
+                                     'LogicalOperator' => $this->LogicalOperator
+                                    );
          return $this;
        // end function
       }
