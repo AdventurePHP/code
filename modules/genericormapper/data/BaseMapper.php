@@ -104,7 +104,7 @@ class BaseMapper extends APFObject {
     * @since 1.14
     * @var string Defines the config file extension the GORM instance uses.
     */
-   private $configFileExtension;
+   private $configFileExtension = 'ini';
    
    /**
     * @protected
