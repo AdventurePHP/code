@@ -155,11 +155,14 @@ class form_taglib_file extends form_taglib_text {
     * @author Christian Achatz
     * @version
     * Version 0.1, 30.01.2011<br />
+    * Version 0.2, 12.03.2011 (Bug 632: non-optional form fields were not validated correctly)<br />
     */
    protected function isMandatory($value) {
-      return $this->hasUploadedFile();
+      if ($this->getAttribute('optional', 'false') === 'true') {
+         return $this->hasUploadedFile();
+      }
+      return true;
    }
 
 }
-
 ?>
