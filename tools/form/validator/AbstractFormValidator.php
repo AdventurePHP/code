@@ -38,7 +38,7 @@
        * @var string The default css class to mark invalid form controls.
        * @since 1.12
        */
-      protected static $DEFAULT_MARKER_CLASS = 'apf-form-error';
+      public static $DEFAULT_MARKER_CLASS = 'apf-form-error';
 
       /**
        * @var string The attribute, that can be used to define custom marker classes.
@@ -131,7 +131,7 @@
        * @version
        * Version 0.1, 28.08.2009<br />
        */
-      public function isActive(){
+      public function isActive() {
          return $this->__Button->isSent();
       }
       
