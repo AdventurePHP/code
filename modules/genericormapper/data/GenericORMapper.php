@@ -56,37 +56,6 @@
       /**
        * @public
        *
-       * Implements the interface method init() to be able to initialize the mapper with the service manager.
-       *
-       * @param array $initParam list of initialization parameters
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 14.05.2008<br />
-       */
-      public function init($initParam){
-
-         // call parent init method
-         parent::init($initParam);
-
-         // create mapping table if necessary
-         if(count($this->MappingTable) == 0){
-            $this->createMappingTable();
-          // end if
-         }
-
-         //create service object table if necessary
-         if(count($this->ServiceObjectsTable) === 0){
-             $this->createServiceObjectsTable();
-          // end if
-         }
-
-       // end function
-      }
-
-      /**
-       * @public
-       *
        * Loads an object list by a special statement. The statement must return the desired
        * object properties.
        *
@@ -104,9 +73,8 @@
       public function loadObjectListByStatement($objectName,$namespace,$statementName,$statementParams = array()){
          return $this->loadObjectListByStatementResult(
             $objectName,
-            $this->DBDriver->executeStatement($namespace,$statementName,$statementParams,$this->LogStatements)
+            $this->DBDriver->executeStatement($namespace,$statementName,$statementParams,$this->logStatements)
          );
-       // end function
       }
 
       /**
@@ -131,12 +99,10 @@
          // load objects
          for($i = 0; $i < $count; $i++){
             $objects[] = $this->loadObjectByID($objectName,$ids[$i]);
-          // end for
          }
 
          return $objects;
 
-       // end function
       }
 
       /**
@@ -154,8 +120,7 @@
        * Version 0.1, 11.05.2008<br />
        */
       public function loadObjectListByTextStatement($objectName,$statement){
-         return $this->loadObjectListByStatementResult($objectName,$this->DBDriver->executeTextStatement($statement,$this->LogStatements));
-       // end function
+         return $this->loadObjectListByStatementResult($objectName,$this->DBDriver->executeTextStatement($statement,$this->logStatements));
       }
 
       /**
@@ -175,10 +140,9 @@
        * Version 0.2, 25.06.2008 (Added the $StatementParams parameter)<br />
        */
       public function loadObjectByStatement($objectName,$namespace,$statementName,$statementParams = array()){
-         $result = $this->DBDriver->executeStatement($namespace,$statementName,$statementParams,$this->LogStatements);
+         $result = $this->DBDriver->executeStatement($namespace,$statementName,$statementParams,$this->logStatements);
          $data = $this->DBDriver->fetchData($result);
          return $this->mapResult2DomainObject($objectName,$data);
-       // end function
       }
 
       /**
@@ -197,10 +161,9 @@
        * Version 0.2, 25.05.2008 (Corrected the call of the executeTextStatement() method)<br />
        */
       public function loadObjectByTextStatement($objectName,$statement){
-         $result = $this->DBDriver->executeTextStatement($statement,$this->LogStatements);
+         $result = $this->DBDriver->executeTextStatement($statement,$this->logStatements);
          $data = $this->DBDriver->fetchData($result);
          return $this->mapResult2DomainObject($objectName,$data);
-       // end function
       }
 
       /**
@@ -226,11 +189,10 @@
          $delete = 'DELETE FROM `'.$this->MappingTable[$objectName]['Table'].'`';
          $delete .= ' WHERE `'.$objectID. '` = \''.$ID.'\';';
 
-         $this->DBDriver->executeTextStatement($delete,$this->LogStatements);
+         $this->DBDriver->executeTextStatement($delete,$this->logStatements);
 
          return $ID;
 
-       // end function
       }
 
       /**
@@ -261,7 +223,6 @@
                 .$objectName.'" does not exist in the mapping table! Hence, your object cannot be saved! '
                 .'Please check your object configuration.',E_USER_ERROR);
             return null;
-          // end if
          }
          $pkName = $this->MappingTable[$objectName]['ID'];
          $attrExceptions = array(
@@ -309,28 +270,21 @@
                         }
                      }
                      
-                   // end if
-                  }
-                  else {
+                  } else {
                      $values[] = 'b\''.$propertyValue.'\'';
-                   // end else
                   }
                   
-                // end if
                }
 
-             // end foreach
             }
 
             $insert .= ' ('.implode(', ',$names).')';
             $insert .= ' VALUES ('.implode(', ',$values).');';
 
-            $this->DBDriver->executeTextStatement($insert,$this->LogStatements);
+            $this->DBDriver->executeTextStatement($insert,$this->logStatements);
             $id = $this->DBDriver->getLastID();
 
-          // end if
-         }
-         else{
+         } else {
 
             // UPDATE object in database
             $update = 'UPDATE '.$this->MappingTable[$objectName]['Table'];
@@ -365,17 +319,12 @@
                      }
                      $queryParams[] = '`'.$propertyName.'` = '.$value;
 
-                   // end if
-                  }
-                  else {
+                  } else {
                      $queryParams[] = '`'.$propertyName.'` = b\''.$propertyValue.'\'';
-                   // end else
                   }
 
-                // end if
                }
 
-             // end foreach
             }
 
             $update .= ' SET '.implode(', ',$queryParams).', ModificationTimestamp = NOW()';
@@ -383,11 +332,9 @@
 
             // execute update, only if the update is necessary
             if(count($queryParams) > 0){
-               $this->DBDriver->executeTextStatement($update,$this->LogStatements);
-             // end if
+               $this->DBDriver->executeTextStatement($update,$this->logStatements);
             }
 
-          // end else
          }
 
          // initialize the object id, to enable the developer to directly
@@ -401,7 +348,6 @@
          // return the database ID of the object for further usage
          return $id;
 
-       // end function
       }
 
       /**
@@ -429,11 +375,10 @@
 
          $query = 'SELECT * FROM `'.$this->MappingTable[$objectName]['Table'].'`
                    WHERE `'.$this->MappingTable[$objectName]['ID'].'` = \''.$objectId.'\';';
-         $result = $this->DBDriver->executeTextStatement($query,$this->LogStatements);
+         $result = $this->DBDriver->executeTextStatement($query,$this->logStatements);
 
          return $this->mapResult2DomainObject($objectName,$this->DBDriver->fetchData($result));
 
-       // end function
       }
 
       /**
@@ -451,16 +396,13 @@
        */
       protected function loadObjectListByStatementResult($objectName,$stmtResult){
 
-         // Load list
          $objectList = array();
          while($data = $this->DBDriver->fetchData($stmtResult)){
             $objectList[] = $this->mapResult2DomainObject($objectName,$data);
-          // end while
          }
 
          return $objectList;
 
-       // end function
       }
 
       /**
@@ -507,24 +449,18 @@
 
                $object->setProperty($propertyName,$propertyValue);
 
-             // end foreach
             }
 
             // call event handler
             $object->afterLoad();
 
-          // end if
-         }
-         else{
+         } else {
             $object = null;
-          // end else
          }
 
          return $object;
 
-       // end function
       }
 
-    // end class
    }
 ?>

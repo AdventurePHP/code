@@ -46,9 +46,35 @@ final class GenericORMapperFactory extends APFObject {
 
    /**
     * @private
-    * @var GenericORRelationMapper[] Stores the or mapper instances.
+    * @var GenericORRelationMapper[] Stores the o/r mapper instances.
     */
    private $orMapperCache = array();
+
+   /**
+    * @private
+    * @since 1.14
+    * @var string Defines the config file extension the GORM instance uses.
+    */
+   private $configFileExtension = 'ini';
+
+   /**
+    * @public
+    *
+    * Injects the desired config file extension into the factory. The extension is
+    * passed to the GORM instance to allow dynamic file extension mapping in
+    * combination with the APF's configuration provider concept.
+    *
+    * @param string $initParam The config file extension to inject to the GORM instance.
+    *
+    * @see http://forum.adventure-php-framework.org/de/viewtopic.php?f=11&t=487
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.03.2011<br />
+    */
+   public function init($initParam) {
+      $this->configFileExtension = $initParam;
+   }
 
    /**
     * @public
@@ -80,18 +106,21 @@ final class GenericORMapperFactory extends APFObject {
       // calculate cache key
       $cacheKey = md5($configNamespace . $configNameAffix . $connectionName);
 
-      // create and initaialize a mapper instance
+      // create and initialize a GORM mapper instance
       if (!isset($this->orMapperCache[$cacheKey])) {
          $this->orMapperCache[$cacheKey] =
-                 &$this->getAndInitServiceObject(
+                 &$this->getServiceObject(
                          'modules::genericormapper::data',
                          'GenericORRelationMapper',
-                         array('ConfigNamespace' => $configNamespace,
-                             'ConfigNameAffix' => $configNameAffix,
-                             'ConnectionName' => $connectionName,
-                             'LogStatements' => $debugMode
-                         ),
                          'NORMAL');
+
+         // as of 1.14 the mapper is explicitly initialized by the provided setter
+         // methods to be able to directly create the service via the DI container
+         $this->orMapperCache[$cacheKey]->setConfigFileExtension($this->configFileExtension);
+         $this->orMapperCache[$cacheKey]->setConfigNamespace($configNamespace);
+         $this->orMapperCache[$cacheKey]->setConfigNameAffix($configNameAffix);
+         $this->orMapperCache[$cacheKey]->setConnectionName($connectionName);
+         $this->orMapperCache[$cacheKey]->setLogStatements($debugMode);
       }
 
       return $this->orMapperCache[$cacheKey];

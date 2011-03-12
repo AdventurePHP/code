@@ -129,10 +129,10 @@
          }
 
          // set the config namespace
-         $this->ConfigNamespace = $configNamespace;
+         $this->configNamespace = $configNamespace;
 
          // set the config name affix
-         $this->ConfigNameAffix = $configNameAffix;
+         $this->configNameAffix = $configNameAffix;
 
          // setup object layout (new)
          $this->createMappingTable();

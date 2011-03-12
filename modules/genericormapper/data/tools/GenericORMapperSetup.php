@@ -156,10 +156,10 @@
       public function setupDatabase($configNamespace,$configNameAffix,$connectionName = null){
 
          // set the config namespace
-         $this->ConfigNamespace = $configNamespace;
+         $this->configNamespace = $configNamespace;
 
          // set the config name affix
-         $this->ConfigNameAffix = $configNameAffix;
+         $this->configNameAffix = $configNameAffix;
 
          // setup object layout
          $objects = $this->generateObjectLayout();
