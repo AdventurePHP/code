@@ -240,9 +240,9 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     * Returns the number of selected rows by the given result resource.
     *
     * @param $result the mysql result resource
-    * @return $numRows the number of selected rows
+    * @return int The number of selected rows
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 04.01.2006<br />
     */
