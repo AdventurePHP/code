@@ -600,21 +600,20 @@ class BaseMapper extends APFObject {
       return $objectSection;
    }
 
-      /**
-       * @protected
-       *
-       * Resolves the table name, source and target id of the relation definition within the relation configuration.
-       *
-       * @param string $relationName nam of the current configuration section (=name of the current relation)
-       * @param array $relationSection current relation definition params
-       * @return string[] Enhanced relation definition
-       *
-       * @author Christian Achatz, Tobias Lückel
-       * @version
-       * Version 0.1, 26.10.2008<br />
-       * Version 0.2, 07.03.2011 (Added support for relations between the same table)<br />
-       */
-      protected function generateRelationItem($relationName,$relationSection){
+   /**
+    * @protected
+    *
+    * Resolves the table name, source and target id of the relation definition within the relation configuration.
+    *
+    * @param string $relationName nam of the current configuration section (=name of the current relation)
+    * @param array $relationSection current relation definition params
+    * @return string[] Enhanced relation definition
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.10.2008<br />
+    */
+   protected function generateRelationItem($relationName, $relationSection) {
 
       // Resolve standard properties, that derive from the definition
       // - table name
@@ -624,11 +623,11 @@ class BaseMapper extends APFObject {
          $relationSection['Table'] = 'ass_' . strtolower($relationName);
       }
 
-         // - name of the primary key of the source object
-         $relationSection['SourceID'] = 'Source_'.$relationSection['SourceObject'].'ID';
+      // - name of the primary key of the source object
+      $relationSection['SourceID'] = $relationSection['SourceObject'] . 'ID';
 
-         // - name of the primary key of the target object
-         $relationSection['TargetID'] = 'Target_'.$relationSection['TargetObject'].'ID';
+      // - name of the primary key of the target object
+      $relationSection['TargetID'] = $relationSection['TargetObject'] . 'ID';
 
       return $relationSection;
    }
