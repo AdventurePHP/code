@@ -663,61 +663,6 @@
       /**
        * @public
        *
-       * Retrieves an object's property.
-       *
-       * @param string $attributeName Name of an object's property.
-       * @return string The property's value.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 28.12.2006<br />
-       * Version 0.2, 02.02.2007 (In case the attribute does not exist, null is returned now)<br />
-       */
-      public function get($attributeName){
-
-         if(isset($this->{'__'.$attributeName})){
-            return $this->{'__'.$attributeName};
-         } else {
-            return null;
-         }
-
-      }
-
-      /**
-       * @public
-       *
-       * Sets an object's property.
-       *
-       * @param string $attributeName Name of an object's property.
-       * @param string $value The value to set.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 28.12.2006<br />
-       */
-      public function set($attributeName,$value){
-         $this->{'__'.$attributeName} = $value;
-      }
-
-      /**
-       * @public
-       *
-       * Appends a value to a given attribute list.
-       *
-       * @param string $attributeName Name of the attribute to set.
-       * @param string $value Value of the attribute.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 11.11.2007<br />
-       */
-      public function add($attributeName,$value){
-         $this->{'__'.$attributeName}[] = $value;
-      }
-
-      /**
-       * @public
-       *
        * Returns the object's attribute.
        *
        * @param string $name The name of the desired attribute.
