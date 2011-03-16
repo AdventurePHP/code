@@ -78,7 +78,7 @@
        *  Version 0.1, 21.12.2009<br />
        */
       protected function &__getDataMapper () {
-         return $this->__getServiceObject ('extensions::arraypager::data',
+         return $this->getServiceObject ('extensions::arraypager::data',
                  'ArrayPagerMapper'
          );
       }
