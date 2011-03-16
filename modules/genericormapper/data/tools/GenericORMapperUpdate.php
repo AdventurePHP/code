@@ -332,17 +332,19 @@
                $fields[] = $dataCreate;
             }
 
-            $relationName = substr($relationTable,4);
+            $relationName = substr($relationTable, 4);
             $sourceId = $fields[0]['Field'];
             $targetId = $fields[1]['Field'];
+            $sourceObject = str_replace('ID', '', $sourceId);
+            $targetObject = str_replace('ID', '', $targetId);
 
             $this->ReEngineeredRelationTable[$relationName] = array(
-               'Type' => $this->getRelationTypeLabel($relationTable),
-               'Table' => $relationTable,
-               'SourceID' => $sourceId,
-               'TargetID' => $targetId,
-               'SourceObject' => str_replace('ID','',$sourceId),
-               'TargetObject' => str_replace('ID','',$targetId),
+                'Type' => $this->getRelationTypeLabel($relationTable),
+                'Table' => $relationTable,
+                'SourceID' => $sourceId,
+                'TargetID' => $targetId,
+                'SourceObject' => str_replace('Source_', '', $sourceObject),
+                'TargetObject' => str_replace('Target_', '', $targetObject)
             );
 
          }

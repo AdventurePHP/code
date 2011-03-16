@@ -250,19 +250,19 @@ class GenericORRelationMapper extends GenericORMapper {
          foreach ($relations as $relationName => $relatedObject) {
 
             // gather information about the object relations
-            $RelationTable = $this->RelationTable[$relationName]['Table'];
-            $FromTable = $this->MappingTable[$objectName]['Table'];
-            $TargetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
-            $ToTable = $this->MappingTable[$TargetObjectName]['Table'];
-            $SoureObjectID = $this->MappingTable[$objectName]['ID'];
-            $TargetObjectID = $this->MappingTable[$TargetObjectName]['ID'];
+            $relationTable = $this->RelationTable[$relationName]['Table'];
+            $fromTable = $this->MappingTable[$objectName]['Table'];
+            $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
+            $toTable = $this->MappingTable[$targetObjectName]['Table'];
+            $soureObjectId = $this->MappingTable[$objectName]['ID'];
+            $targetObjectId = $this->MappingTable[$targetObjectName]['ID'];
 
             // add statement to join list
-            $joinList[] = 'INNER JOIN `' . $RelationTable . '` ON `' . $FromTable . '`.`' . $SoureObjectID . '` = `' . $RelationTable . '`.`' . $SoureObjectID . '`';
-            $joinList[] = 'INNER JOIN `' . $ToTable . '` ON `' . $RelationTable . '`.`' . $TargetObjectID . '` = `' . $ToTable . '`.`' . $TargetObjectID . '`';
+            $joinList[] = 'INNER JOIN `' . $relationTable . '` ON `' . $fromTable . '`.`' . $soureObjectId . '` = `' . $relationTable . '`.`' . $soureObjectId . '`';
+            $joinList[] = 'INNER JOIN `' . $toTable . '` ON `' . $relationTable . '`.`' . $targetObjectId . '` = `' . $toTable . '`.`' . $targetObjectId . '`';
 
             // add statement to where list
-            $whereList[] = '`' . $ToTable . '`.`' . $TargetObjectID . '` = ' . $relatedObject->getProperty($TargetObjectID);
+            $whereList[] = '`' . $toTable . '`.`' . $targetObjectId . '` = ' . $relatedObject->getProperty($targetObjectId);
 
          }
 

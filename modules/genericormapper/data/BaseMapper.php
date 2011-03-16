@@ -603,15 +603,17 @@ class BaseMapper extends APFObject {
    /**
     * @protected
     *
-    * Resolves the table name, source and target id of the relation definition within the relation configuration.
+    * Resolves the table name, source and target id of the relation definition within
+    * the relation configuration.
     *
-    * @param string $relationName nam of the current configuration section (=name of the current relation)
-    * @param array $relationSection current relation definition params
-    * @return string[] Enhanced relation definition
+    * @param string $relationName nam of the current configuration section (=name of the current relation).
+    * @param array $relationSection current relation definition params.
+    * @return string[] Enhanced relation definition.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 26.10.2008<br />
+    * Version 0.2, 16.03.2011 (Re-introduced Tobi's changes to allow self referencing relations)<br />
     */
    protected function generateRelationItem($relationName, $relationSection) {
 
@@ -624,10 +626,10 @@ class BaseMapper extends APFObject {
       }
 
       // - name of the primary key of the source object
-      $relationSection['SourceID'] = $relationSection['SourceObject'] . 'ID';
+      $relationSection['SourceID'] = 'Source_' . $relationSection['SourceObject'] . 'ID';
 
       // - name of the primary key of the target object
-      $relationSection['TargetID'] = $relationSection['TargetObject'] . 'ID';
+      $relationSection['TargetID'] = 'Target_' . $relationSection['TargetObject'] . 'ID';
 
       return $relationSection;
    }
