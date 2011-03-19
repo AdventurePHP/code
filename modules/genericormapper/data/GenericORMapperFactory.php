@@ -100,11 +100,12 @@ final class GenericORMapperFactory extends APFObject {
     * Version 0.3, 26.10.2008 (Bugfix: cache key now recognizes the creation type)<br />
     * Version 0.4, 03.05.2009 (Added the $debugMode param)<br />
     * Version 0.5, 16.03.2010 (Bugfix 299: removed the type to prevent identical mapper objects)<br />
+    * Version 0.6, 19.03.2011 (Added the $debugMode parameter to the cache key to allow different application cases for the same GORM config)<br />
     */
    public function &getGenericORMapper($configNamespace, $configNameAffix, $connectionName, $debugMode = false) {
 
       // calculate cache key
-      $cacheKey = md5($configNamespace . $configNameAffix . $connectionName);
+      $cacheKey = md5($configNamespace . $configNameAffix . $connectionName . $debugMode);
 
       // create and initialize a GORM mapper instance
       if (!isset($this->orMapperCache[$cacheKey])) {
