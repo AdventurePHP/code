@@ -20,7 +20,7 @@
     */
 
    import('extensions::htmlheader::biz','PackageNode');
-   import('extensions::htmlheader::biz','JsNode');
+   import('extensions::htmlheader::biz','CssNode');
 
    /**
     * @namespace extensions::htmlheader::biz
