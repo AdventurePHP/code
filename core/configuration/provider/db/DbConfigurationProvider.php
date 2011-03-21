@@ -185,14 +185,8 @@
        * Version 0.1, 29.10.2010<br />
        */
       private function &getConnection($context, $language) {
-
-         // create service manager "manually", since we have no convenience method
-         $service = &Singleton::getInstance('ServiceManager');
-         /* @var $service ServiceManager */
-         $service->setContext($context);
-         $service->setLanguage($language);
-         
-         $connMgr = &$service->getServiceObject('core::database', 'ConnectionManager');
+         // create service "manually", since we have no convenience method
+         $connMgr = &ServiceManager::getServiceObject('core::database', 'ConnectionManager', $context, $language);
          /* @var $connMgr ConnectionManager */
          return $connMgr->getConnection($this->connectionName);
       }
