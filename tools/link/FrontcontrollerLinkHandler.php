@@ -264,7 +264,7 @@ class FrontcontrollerLinkHandler {
          $input->getAttributesAsString(false);
 
          // create param offset
-         $arrayKey = str_replace('::', $namespaceURLDelimiter, $actionNamespace)
+         $arrayKey = str_replace('::', $namespaceURLDelimiter, $actions[$key]->getActionNamespace())
                  . $namespaceKeywordDelimiter . $actionKeyword
                  . str_replace($keywordClassDelimiter, $normalKeywordClassDelimiter, $keywordClassDelimiter)
                  . ($actions[$key]->getActionName());
