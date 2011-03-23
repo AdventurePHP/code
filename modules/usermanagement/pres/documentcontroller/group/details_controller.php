@@ -48,7 +48,7 @@
 
          // display users
          $users = $uM->loadUsersWithGroup($group);
-         $Iterator__Users = &$this->__getIterator('Users');
+         $Iterator__Users = &$this->getIterator('Users');
          $Iterator__Users->fillDataContainer($users);
          $Iterator__Users->transformOnPlace();
 

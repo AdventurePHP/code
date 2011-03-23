@@ -45,16 +45,16 @@ class weather_v2_controller extends base_controller {
    public function transformContent() {
 
       // Fetch XML string
-      $XML = $this->__getXML();
+      $XML = $this->getXML();
 
       // Check weather XML string is present
       if ($XML != null) {
-         $this->__transform($XML);
+         $this->transform($XML);
       } else {
 
          // Display error message
          $Template__NoEntries = &$this->getTemplate('NoEntries_' . $this->__Language);
-         $Template__NoEntries->setPlaceHolder('Source', $this->__getXMLSource());
+         $Template__NoEntries->setPlaceHolder('Source', $this->getXMLSource());
          $Template__NoEntries->transformOnPlace();
       }
    }
@@ -70,7 +70,7 @@ class weather_v2_controller extends base_controller {
     * @version
     * Version 0.1, 17.08.2010<br />
     */
-   protected function __transform($XML) {
+   protected function transform($XML) {
 
       // Get references on the templates used
       $Template__Information = &$this->getTemplate('Information');
@@ -103,10 +103,10 @@ class weather_v2_controller extends base_controller {
     * @version
     * Version 0.1, 17.08.2010<br />
     */
-   protected function __getXML() {
+   protected function getXML() {
 
       // fetch RSS source
-      $xmlSource = $this->__getXMLSource();
+      $xmlSource = $this->getXMLSource();
 
       if ($xmlSource != null) {
          $plainXml = file_get_contents($xmlSource);
@@ -158,7 +158,7 @@ class weather_v2_controller extends base_controller {
     * @version
     * Version 0.1, 17.08.2010<br />
     */
-   protected function __getXMLSource() {
+   protected function getXMLSource() {
       return $this->__Document->getAttribute('xml_source');
    }
 

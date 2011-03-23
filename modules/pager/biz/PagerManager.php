@@ -228,7 +228,7 @@ final class PagerManager extends APFObject {
     */
    public function getPager($addStmtParams = array()) {
 
-      $pager = new Page(false);
+      $pager = new Page();
 
       // apply context and language (form configuration purposes!)
       $pager->setLanguage($this->__Language);
@@ -254,7 +254,7 @@ final class PagerManager extends APFObject {
       }
 
       // transform pager GUI representation
-      return $pager->transform(false);
+      return $pager->transform();
 
    }
 

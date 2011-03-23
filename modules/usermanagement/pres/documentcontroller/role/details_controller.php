@@ -48,7 +48,7 @@
 
          // display users
          $users = $uM->loadUsersWithRole($role);
-         $iterator = &$this->__getIterator('Users');
+         $iterator = &$this->getIterator('Users');
          $iterator->fillDataContainer($users);
          $iterator->transformOnPlace();
 

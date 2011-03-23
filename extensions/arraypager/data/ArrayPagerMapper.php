@@ -29,7 +29,7 @@
        *  @version
        *  Version 0.1, 21.12.2009<br />
        */
-      protected function __getSessionKey ($stringPager) {
+      protected function getSessionKey ($stringPager) {
          return 'ArrayPagerMapper_'.md5 ($stringPager);
       }
 
@@ -65,7 +65,7 @@
        */
       public function loadEntries ($stringPager) {
          $objectSession = new SessionManager ('extensions::arraypager::biz');
-         $stringSessionKey = $this->__getSessionKey ($stringPager);
+         $stringSessionKey = $this->getSessionKey ($stringPager);
          $arrayEntries = $objectSession->loadSessionData ($stringSessionKey);
 
          return $arrayEntries;
@@ -85,7 +85,7 @@
               $arrayData
       ) {
          $objectSession = new SessionManager ('extensions::arraypager::biz');
-         $stringSessionKey = $this->__getSessionKey ($stringPager);
+         $stringSessionKey = $this->getSessionKey ($stringPager);
          $objectSession->saveSessionData ($stringSessionKey,
                  $arrayData
          );
@@ -102,7 +102,7 @@
        */
       public function unregisterEntries ($stringPager) {
          $objectSession = new SessionManager ('extensions::arraypager::biz');
-         $stringSessionKey = $this->__getSessionKey ($stringPager);
+         $stringSessionKey = $this->getSessionKey ($stringPager);
          $objectSession->deleteSessionData ($stringSessionKey);
       }
 
@@ -118,7 +118,7 @@
        */
       public function checkPager ($stringPager) {
          $objectSession = new SessionManager ('extensions::arraypager::biz');
-         $stringSessionKey = $this->__getSessionKey ($stringPager);
+         $stringSessionKey = $this->getSessionKey ($stringPager);
          $mixedData = $objectSession->loadSessionData ($stringSessionKey);
 
          $booleanExists = FALSE;

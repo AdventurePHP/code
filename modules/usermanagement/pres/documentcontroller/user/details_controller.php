@@ -50,13 +50,13 @@
 
          // display groups
          $Groups = $uM->loadGroupsWithUser($User);
-         $Iterator__Groups = &$this->__getIterator('Groups');
+         $Iterator__Groups = &$this->getIterator('Groups');
          $Iterator__Groups->fillDataContainer($Groups);
          $Iterator__Groups->transformOnPlace();
 
          // display roles
          $Roles = $uM->loadRolesWithUser($User);
-         $Iterator__Roles = &$this->__getIterator('Roles');
+         $Iterator__Roles = &$this->getIterator('Roles');
          $Iterator__Roles->fillDataContainer($Roles);
          $Iterator__Roles->transformOnPlace();
 

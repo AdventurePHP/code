@@ -48,13 +48,13 @@
 
          // display permissions
          $Permissions = $uM->loadPermissionsOfPermissionSet($permissionSet);
-         $Iterator__Permissions = &$this->__getIterator('Permissions');
+         $Iterator__Permissions = &$this->getIterator('Permissions');
          $Iterator__Permissions->fillDataContainer($Permissions);
          $Iterator__Permissions->transformOnPlace();
 
          // display roles
          $Roles = $uM->loadRolesWithPermissionSet($permissionSet);
-         $Iterator__Roles = &$this->__getIterator('Roles');
+         $Iterator__Roles = &$this->getIterator('Roles');
          $Iterator__Roles->fillDataContainer($Roles);
          $Iterator__Roles->transformOnPlace();
 
