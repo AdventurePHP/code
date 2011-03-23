@@ -18,19 +18,17 @@
     * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
     * -->
     */
-
-   // setup the front controller input filter and disable the page controller filter
-   Registry::register('apf::core::filter', 'FrontControllerInputFilter', new FilterDefinition('core::filter', 'FrontControllerInputFilter'));
-   Registry::register('apf::core::filter', 'PageControllerInputFilter', null);
-
-   // remove page controller filter since the url layout is different for the front controller
-   $chain = &InputFilterChain::getInstance();
-   $chain->removeFilter('ChainedPageControllerInputFilter');
-
+   import('core::filter', 'FilterChain');
+   
    // add the front controller filter that is a wrapper on the front controller's input
    // filters concerning thr url rewriting configuration
-   import('core::filter', 'ChainedFrontControllerInputFilter');
-   $chain->addFilter(new ChainedFrontControllerInputFilter());
+   import('core::filter', 'ChainedGenericInputFilter');
+   InputFilterChain::getInstance()->addFilter(new ChainedGenericInputFilter());
+
+   // add generic output filter that is a wrapper for the page controller's output
+   // filter to adapt the url layout if url rewriting is activated
+   import('core::filter', 'ChainedGenericOutputFilter');
+   OutputFilterChain::getInstance()->addFilter(new ChainedGenericOutputFilter());
 
    /**
     * @package core::frontcontroller
@@ -84,6 +82,11 @@
        * @var boolean Indicates, if the action should be included in the URL. Values: true | false.
        */
       private $keepInUrl = false;
+
+      /**
+       * @var Frontcontroller The front controller instance the action belongs to.
+       */
+      private $frontController;
 
       /**
        * @public
@@ -258,6 +261,14 @@
          return true;
       }
 
+      public function &getFrontController() {
+         return $this->frontController;
+      }
+
+      public function setFrontController(Frontcontroller &$frontController) {
+         $this->frontController = &$frontController;
+      }
+
       /**
        * @public 
        * @abstract
@@ -286,6 +297,19 @@
    class FrontcontrollerInput extends APFObject {
 
       /**
+       * @var AbstractFrontcontrollerAction The action the input belongs to.
+       */
+      private $action;
+
+      public function &getAction() {
+         return $this->action;
+      }
+
+      public function setAction(AbstractFrontcontrollerAction &$action) {
+         $this->action = &$action;
+      }
+
+      /**
        * @public
        *
        * Returns all input parameters as a URL formatted string.
@@ -302,8 +326,8 @@
       public function getAttributesAsString($urlRewriting = null){
 
          // get the current front controller
-         $action = &$this->__ParentObject;
-         $fC = &$action->getParentObject();
+         $action = &$this->getAction();
+         $fC = &$action->getFrontController();
 
          // set URLRewriting manually
          if($urlRewriting === null){
@@ -331,7 +355,6 @@
 
       }
 
-    // end class
    }
 
    /**
@@ -390,7 +413,7 @@
        * @protected
        * @var string Delimiter between action keyword and action class within the action definition in url (url rewriting case!)
        */
-      protected $urlRewritingKeywordClassDelimiter = '/';
+      private $urlRewritingKeywordClassDelimiter = '/';
 
       /**
        * @protected
@@ -415,12 +438,6 @@
        * @var string Delimiter between input param name and value (url rewrite case!).
        */
       private $urlRewritingKeyValueDelimiter = '/';
-
-      /**
-       * @protected
-       * @var string Namespace of the Frontcontroller class.
-       */
-      private $namespace = 'core::frontcontroller';
 
       public function getActionKeyword() {
          return $this->actionKeyword;
@@ -456,10 +473,6 @@
 
       public function getURLRewritingKeyValueDelimiter() {
          return $this->urlRewritingKeyValueDelimiter;
-      }
-
-      public function getNamespace() {
-         return $this->namespace;
       }
 
       /**
@@ -518,7 +531,7 @@
          $this->runActions('pretransform');
 
          // transform page
-         $pageContent = $page->transform();
+         $pageContent = OutputFilterChain::getInstance()->filter($page->transform());
 
          // execute actions after page transformation (see timing model)
          $this->runActions('posttransform');
@@ -680,7 +693,7 @@
          if($config == null){
             throw new InvalidArgumentException('[Frontcontroller::addAction()] No '
                     .'configuration available for namespace "'.$namespace.'" and context "'
-                    .$this->__Context.'"!',E_USER_ERROR);
+                    .$this->getContext().'"!',E_USER_ERROR);
          }
          $actionConfig = $config->getSection($name);
 
@@ -690,7 +703,7 @@
             throw new InvalidArgumentException('[Frontcontroller::addAction()] No config '
                     .'section for action key "'.$name.'" available in configuration file "'.$env
                     .'_actionconfig.ini" in namespace "'.$namespace.'" and context "'
-                    .$this->__Context.'"!',E_USER_ERROR);
+                    .$this->getContext().'"!',E_USER_ERROR);
          }
 
          // include action implementation
@@ -710,25 +723,28 @@
          // init action
          $actionClass = $actionConfig->getValue('FC.ActionClass');
          $action = new $actionClass;
+         /* @var $input AbstractFrontcontrollerAction */
+
          $action->setActionNamespace($namespace);
          $action->setActionName($name);
-         $action->setContext($this->__Context);
-         $action->setLanguage($this->__Language);
+         $action->setContext($this->getContext());
+         $action->setLanguage($this->getLanguage());
 
          // init input
          $inputClass = $actionConfig->getValue('FC.InputClass');
          $input = new $inputClass;
+         /* @var $input FrontcontrollerInput */
 
          // merge input params with the configured params (params included in the URL are kept!)
          $input->setAttributes(array_merge(
                  $this->generateParamsFromInputConfig($actionConfig->getValue('FC.InputParams')),
                  $params));
-
-         $input->setParentObject($action);
+         
+         $input->setAction($action);
          $action->setInput($input);
 
          // set the frontcontroller as a parent object to the action
-         $action->setParentObject($this);
+         $action->setFrontController($this);
 
          // add the action as a child
          $this->actionStack[md5($namespace.'~'.$name)] = $action;

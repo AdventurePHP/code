@@ -105,21 +105,6 @@
    import('core::service', 'DIServiceManager');
    import('core::configuration', 'ConfigurationManager');
    import('core::benchmark', 'BenchmarkTimer');
-   import('core::filter', 'FilterChain');
-
-   // set up the input and output filter
-   Registry::register('apf::core::filter', 'PageControllerInputFilter', new FilterDefinition('core::filter', 'PageControllerInputFilter'));
-   Registry::register('apf::core::filter', 'OutputFilter', new FilterDefinition('core::filter', 'GenericOutputFilter'));
-
-   // add the page controller filter that is a wrapper on the page controller's input
-   // filters concerning thr url rewriting configuration
-   import('core::filter', 'ChainedPageControllerInputFilter');
-   InputFilterChain::getInstance()->addFilter(new ChainedPageControllerInputFilter());
-
-   // add generic output filter that is a wrapper for the page controller's output
-   // filter to adapt the url layout if url rewriting is activated
-   import('core::filter', 'ChainedGenericOutputFilter');
-   OutputFilterChain::getInstance()->addFilter(new ChainedGenericOutputFilter());
 
    // set up configuration provider to let the developer customize it later on
    import('core::configuration::provider::ini', 'IniConfigurationProvider');
@@ -467,12 +452,6 @@
 
       /**
        * @protected
-       * @var APFObject Reference to the parent object.
-       */
-      protected $__ParentObject = null;
-
-      /**
-       * @protected
        * @var APFObject[] List of the children of the current object.
        */
       protected $__Children = array();
@@ -613,36 +592,6 @@
        */
       public function getServiceType(){
          return $this->__ServiceType;
-      }
-
-      /**
-       * @public
-       *
-       * Injects the parent node of the current APF object.
-       *
-       * @param APFObject $parentObject The parent node.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 20.02.2010<br />
-       */
-      public function setParentObject(APFObject &$parentObject){
-         $this->__ParentObject = &$parentObject;
-      }
-
-      /**
-       * @public
-       *
-       * Returns the parent node of the current APF object.
-       *
-       * @return APFObject The parent node.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 20.02.2010<br />
-       */
-      public function &getParentObject(){
-         return $this->__ParentObject;
       }
 
       /**
@@ -1065,38 +1014,9 @@
    class Page extends APFObject {
 
       /**
-       * @protected
-       * @var Document Container for the initial <em>Document</em> of the page.
+       * @var Document Container for the root <em>Document</em> of the page.
        */
       private $document;
-
-      /**
-       * @public
-       *
-       * Constructor of the page class. The class is the root node of the APF DOM tree.
-       *
-       * @param boolean $executeFilter Apply this optional parameter, in case the input filter chain should not be executed.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 28.12.2006<br />
-       * Version 0.2, 03.01.2007 (Introduced URL rewriting)<br />
-       * Version 0.3, 08.06.2007 (URL rewriting is now outsourced to the filters)<br />
-       * Version 0.4, 20.06.2008 (Replaced the usage of "APPS__URL_REWRITING" with a registry call)<br />
-       * Version 0.5, 20.10.2008 (Removed second parameter due to registry introduction in 1.7-beta)<br />
-       * Version 0.6, 11.12.2008 (Switched to the new input filter concept)<br />
-       */
-      public function __construct($executeFilter = true){
-
-         // set internal attributes
-         $this->__ObjectID = XmlParser::generateUniqID();
-
-         // apply input filter if desired (e.g. front controller is not used)
-         if ($executeFilter) {
-            InputFilterChain::getInstance()->filter(null);
-         }
-
-      }
 
       /**
        * @public
@@ -1130,24 +1050,24 @@
        * Version 0.4, 22.04.2007 (Now the language is applied to the document)<br />
        * Version 0.5, 08.03.2009 (Bugfix: protected variable __ParentObject might not be used)<br />
        */
-      public function loadDesign($namespace,$design){
+      public function loadDesign($namespace, $design){
 
          $this->document = new Document();
 
          // set the current context
-         if (empty($this->__Context)) {
+         $context = $this->getContext();
+         if (empty($context)) {
             $this->document->setContext($namespace);
          } else {
-            $this->document->setContext($this->__Context);
+            $this->document->setContext($context);
          }
 
          // set the current language
-         $this->document->setLanguage($this->__Language);
+         $this->document->setLanguage($this->getLanguage());
 
          // load the design
-         $this->document->loadDesign($namespace,$design);
+         $this->document->loadDesign($namespace, $design);
          $this->document->setObjectId(XmlParser::generateUniqID());
-         $this->document->setParentObject($this);
 
       }
 
@@ -1166,14 +1086,8 @@
        * Version 0.3, 08.06.2007 (Moved the URL rewriting into a filter)<br />
        * Version 0.4, 11.12.2008 (Switched to the new input filter concept)<br />
        */
-      public function transform($executeFilter = true){
-
-         // transform the current document
-         $content = $this->document->transform();
-
-         // apply output filter(s) if desired
-         return $executeFilter ? OutputFilterChain::getInstance()->filter($content) : $content;
-
+      public function transform(){
+         return $this->document->transform();
       }
 
    }
@@ -1196,6 +1110,12 @@
        * @var string Unique object identifier.
        */
       protected $__ObjectID = null;
+
+      /**
+       * @protected
+       * @var Document Reference to the parent object.
+       */
+      protected $__ParentObject = null;
 
       /**
        * @protected
@@ -1235,16 +1155,45 @@
       public function __construct(){
 
          // set the object id
-         $this->__ObjectID = XmlParser::generateUniqID();
+         $this->setObjectId(XmlParser::generateUniqID());
 
          // add the known taglibs (core taglibs!)
-         $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core', 'addtaglib');
-         $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core', 'importdesign');
-         $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'template');
-         $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'placeholder');
+         $this->addTagLib(new TagLib('core::pagecontroller', 'core', 'addtaglib'));
+         $this->addTagLib(new TagLib('core::pagecontroller', 'core', 'importdesign'));
+         $this->addTagLib(new TagLib('core::pagecontroller', 'html', 'template'));
+         $this->addTagLib(new TagLib('core::pagecontroller', 'html', 'placeholder'));
 
       }
 
+      /**
+       * @public
+       *
+       * Injects the parent node of the current APF object.
+       *
+       * @param APFObject $parentObject The parent node.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function setParentObject(Document &$parentObject){
+         $this->__ParentObject = &$parentObject;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the parent node of the current APF object.
+       *
+       * @return APFObject The parent node.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function &getParentObject(){
+         return $this->__ParentObject;
+      }
 
       /**
        * @public
@@ -1342,7 +1291,7 @@
          $this->__TagLibs[] = $tag;
 
          // import taglib class
-         $moduleName = $this->__getModuleName($tag->getPrefix(), $tag->getClass());
+         $moduleName = $this->getTaglibClassName($tag->getPrefix(), $tag->getClass());
          if (!class_exists($moduleName)) {
             import($tag->getNamespace(), $moduleName);
          }
@@ -1363,8 +1312,8 @@
        * @version
        * Version 0.1, 28.12.2006<br />
        */
-      protected function __getModuleName($prefix,$class){
-         return $prefix.'_taglib_'.$class;
+      protected function getTaglibClassName($prefix, $class) {
+         return $prefix . '_taglib_' . $class;
       }
 
       /**
@@ -1467,7 +1416,7 @@
 
             $prefix = $this->__TagLibs[$i]->getPrefix();
             $class = $this->__TagLibs[$i]->getClass();
-            $module = $this->__getModuleName($prefix, $class);
+            $module = $this->getTaglibClassName($prefix, $class);
             $token = $prefix.':'.$class;
             $tagLoops = 0;
 
@@ -1520,10 +1469,10 @@
                $object = new $module();
 
                // inject context of the parent object
-               $object->setContext($this->__Context);
+               $object->setContext($this->getContext());
 
                // inject language of the parent object
-               $object->setLanguage($this->__Language);
+               $object->setLanguage($this->getLanguage());
 
                // add the tag's atributes
                $object->setAttributes($attributes['attributes']);
@@ -1547,7 +1496,7 @@
                $object->setContent($attributes['content']);
 
                // call onParseTime() to enable the taglib to initialize itself
-               $benchId = '('.get_class($this).') '.$this->__ObjectID.'::__Children[('
+               $benchId = '('.get_class($this).') '.$this->getObjectId().'::__Children[('
                        .get_class($object).') '.$objectId.']::onParseTime()';
                $t->start($benchId);
                $object->onParseTime();
@@ -1571,7 +1520,7 @@
          // other APF DOM nodes to do extended initialization.
          if(count($this->__Children) > 0){
 
-            $benchId = '('.get_class($this).') '.$this->__ObjectID.'::__Children[]::onAfterAppend()';
+            $benchId = '('.get_class($this).') '.$this->getObjectId().'::__Children[]::onAfterAppend()';
             $t->start($benchId);
 
             foreach($this->__Children as $objectId => $DUMMY){
@@ -1682,7 +1631,7 @@
       public function transform(){
 
          $t = &Singleton::getInstance('BenchmarkTimer');
-         $t->start('('.get_class($this).') '.$this->__ObjectID.'::transform()');
+         $t->start('('.get_class($this).') '.$this->getObjectId().'::transform()');
 
          // create copy, to preserve it!
          $content = $this->__Content;
@@ -1700,10 +1649,10 @@
             $docCon = new $this->__DocumentController;
 
             // inject context
-            $docCon->setContext($this->__Context);
+            $docCon->setContext($this->getContext());
 
             // inject current language
-            $docCon->setLanguage($this->__Language);
+            $docCon->setLanguage($this->getLanguage());
 
             // inject document reference to be able to access the current DOM document
             $docCon->setDocument($this);
@@ -1733,7 +1682,7 @@
             }
          }
 
-         $t->stop('('.get_class($this).') '.$this->__ObjectID.'::transform()');
+         $t->stop('('.get_class($this).') '.$this->getObjectId().'::transform()');
 
          return $content;
 

@@ -32,9 +32,9 @@
  * getDIServiceObject() method. Usage:
  * <br />
  * <pre>$initializedServiceObject =
- *             &$this->__getDIServiceObject(
+ *             &$this->getDIServiceObject(
  *                        'namespace::of::the::configuration',
- *                        'ServiceObjectName'
+ *                        'ServiceName'
  *             );</pre>
  * <br />
  * Further, the DIServiceManager includes additional config param injection.
@@ -78,6 +78,7 @@ final class DIServiceManager {
     * @var array Injection call cache to avoid circular injections.
     */
    private static $INJECTION_CALL_CACHE = array();
+   
    /**
     * @var array Contains the service objects, that were already configured.
     */

@@ -32,12 +32,96 @@
  */
 class ChainedGenericOutputFilter implements ChainedContentFilter {
 
+   /**
+    * @var string[][] The link rewrite replace pattern definition.
+    */
+   private static $REPLACE_PATTERN = array(
+       '/?' => '/',
+       './?' => '/',
+       '=' => '/',
+       '&' => '/',
+       '&amp;' => '/',
+       '?' => '/'
+   );
+   
+   /**
+    * @var string The link rewrite deactivation indicator.
+    */
+   private static $REWRITE_DEACTIVATE_PATTERN = '/linkrewrite="false"/i';
+   private static $REWRITE_CONTROL_PATTERN = '/linkrewrite="([A-Za-z]+)"/i';
+
    public function filter(FilterChain &$chain, $input = null) {
-      $filterDef = Registry::retrieve('apf::core::filter', 'OutputFilter');
-      if ($filterDef !== null) {
-         $input = FilterFactory::getFilter($filterDef)->filter($input);
+
+      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t->start('ChainedGenericOutputFilter');
+
+      // in case the url rewrite mode is activated, rewrite
+      // the HTML content as before release 1.14.
+      $urlRewriting = Registry::retrieve('apf::core', 'URLRewriting');
+      if ($urlRewriting === true) {
+         $input = preg_replace_callback(
+                         '/<form (.*?)action="(.*?)"(.*?)>(.*?)<\/form>/ims',
+                         array('ChainedGenericOutputFilter', 'replaceForm'),
+                         preg_replace_callback(
+                                 '/<a (.*?)href="(.*?)"(.*?)>(.*?)<\/a>/ims',
+                                 array('ChainedGenericOutputFilter', 'replaceLink'),
+                                 $input)
+         );
       }
+
+      $t->stop('ChainedGenericOutputFilter');
+
+      // delegate filtering to the applied chain
       return $chain->filter($input);
+   }
+
+   /**
+    * @public
+    * @static
+    *
+    * Callback function for link rewriting.
+    *
+    * @param string $hits The matches on the current link tag.
+    * @return string The replaced link tag.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.09.2010<br />
+    */
+   public static function replaceLink($hits) {
+      // avoid link rewriting, if it is deactivated by attribute
+      if (preg_match(self::$REWRITE_DEACTIVATE_PATTERN, $hits[1])
+              || preg_match(self::$REWRITE_DEACTIVATE_PATTERN, $hits[3])) {
+         $hits[1] = preg_replace(self::$REWRITE_CONTROL_PATTERN, '', $hits[1]);
+         $hits[3] = preg_replace(self::$REWRITE_CONTROL_PATTERN, '', $hits[3]);
+      } elseif (substr_count($hits[2], 'mailto:') > 0) {
+         // do nothing
+      } else {
+         $hits[1] = preg_replace(self::$REWRITE_CONTROL_PATTERN, '', $hits[1]);
+         $hits[2] = strtr($hits[2], self::$REPLACE_PATTERN);
+         $hits[3] = preg_replace(self::$REWRITE_CONTROL_PATTERN, '', $hits[3]);
+      }
+      $hits[1] = preg_replace(self::$REWRITE_CONTROL_PATTERN, '', $hits[1]);
+      $hits[3] = preg_replace(self::$REWRITE_CONTROL_PATTERN, '', $hits[3]);
+      return '<a ' . $hits[1] . 'href="' . $hits[2] . '"' . $hits[3] . '>' . $hits[4] . '</a>';
+   }
+
+   /**
+    * @public
+    * @static
+    *
+    * Callback function for form action rewriting.
+    *
+    * @param string $hits The matches on the current form tag.
+    * @return string The replaced form tag.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.09.2010<br />
+    */
+   public static function replaceForm($hits) {
+      $hits[2] = strtr($hits[2], self::$REPLACE_PATTERN);
+      return '<form ' . $hits[1] . 'action="' . $hits[2] . '"' . $hits[3] . '>' . $hits[4] . '</form>';
    }
 
 }

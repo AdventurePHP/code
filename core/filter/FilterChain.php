@@ -21,55 +21,6 @@
 
 /**
  * @package core::filter
- * @class FilterDefinition
- *
- * Represents the description of an APF filter.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 08.12.2007<br />
- * Version 0.2, 14.12.2010 (Is now standalone class)<br />
- */
-final class FilterDefinition {
-
-   /**
-    * @private
-    * @var string The namespace of the filter class.
-    */
-   private $namespace = null;
-
-   /**
-    * @private
-    * @var string The name of the filter class (and file name as well).
-    */
-   private $class = null;
-
-   /**
-    * @public
-    *
-    * Constructor of the filter description. Taks the namespace and the class as an argument.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 08.12.2007<br />
-    */
-   public function __construct($namespace, $class) {
-      $this->namespace = $namespace;
-      $this->class = $class;
-   }
-
-   public function getNamespace() {
-      return $this->namespace;
-   }
-
-   public function getClass() {
-      return $this->class;
-   }
-
-}
-
-/**
- * @package core::filter
  * @class AbstractFilter
  * @abstract
  *
@@ -101,54 +52,6 @@ abstract class AbstractFilter extends APFObject {
 
 /**
  * @package core::filter
- * @class FilterFactory
- *
- * Implements a simple factory to load filter classes derived from the AbstractFilter class.
- * Each filter is described by the FilterDefinition class.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 08.06.2007<br />
- */
-final class FilterFactory {
-
-   /**
-    * @public
-    * @static
-    *
-    * Returns an instance of the desired filter.
-    *
-    * @param FilterDefinition $filterDefinition the definition of the APF style filter.
-    * @return AbstractFilter The instance of the filter or null in case the filter class does not exist.
-    * @throws InvalidArgumentException In case of configuration errors for the applied filter definition.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 08.06.2007<br />
-    * Version 0.2, 13.08.2008 (Removed unused code)<br />
-    * Version 0.3, 07.11.2008 (Bugfix: the namespace of filters outside "core::filter" could not be included)<br />
-    * Version 0.4, 11.12.2008 (Switched to FilterDefinition for addressing a filter)<br />
-    */
-   public static function getFilter(FilterDefinition $filterDefinition) {
-
-      // gather the filter information
-      $namespace = $filterDefinition->getNamespace();
-      $filterName = $filterDefinition->getClass();
-
-      // check, if the filter exists and include it
-      try {
-         import($namespace, $filterName);
-         return new $filterName;
-      } catch (IncludeException $ie) {
-         throw new InvalidArgumentException('[FilterFactory::getFilter()] Requested filter "'
-                 . $filterName . '" cannot be loaded from namespace "' . $namespace . '"!', E_USER_ERROR);
-      }
-   }
-
-}
-
-/**
- * @package core::filter
  * @class FilterChain
  *
  * Defines the structure of an APF filter chain used for input and output
@@ -165,18 +68,48 @@ final class FilterFactory {
 interface FilterChain {
 
    /**
+    * @public
+    *
+    * Executes the filter chain including all registered filters. The given
+    * argument takes the input that is to be filtered and the return value is
+    * the result of the filter chain execution.
+    * <p/>
+    * To register custom filters, use the <em>addFilter()</em> method.
+    *
     * @param string $input The input to filter.
     * @return string The output of the filter chain
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 13.01.2011<br />
     */
    public function filter($input);
 
    /**
+    * @public
+    *
+    * Let's you add a filter to the chain. Please note, that the execution 
+    * order corresponds to the order the filters are added.
+    *
     * @param ChainedContentFilter $filter The filter implementation to add.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 13.01.2011<br />
     */
    public function addFilter(ChainedContentFilter $filter);
 
    /**
+    * @public
+    *
+    * This method can be used to remove a filter from the chain. The filter
+    * to remove is addressed by it's implementation class' name.
+    *
     * @param string $class The class name of the filter to remove from the chain.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 13.01.2011<br />
     */
    public function removeFilter($class);
 }
@@ -198,6 +131,11 @@ interface FilterChain {
 interface ChainedContentFilter {
 
    /**
+    * @public
+    *
+    * This method must be implemented by each single chained filter to
+    * influence the result of the filter chain execution.
+    *
     * @param FilterChain $chain The instance of the current filter chain.
     * @param string $input The current input to filter.
     * @return The result of the filter execution.
@@ -255,12 +193,43 @@ abstract class AbstractFilterChain implements FilterChain {
       }
    }
 
-   public function reset() {
+   /**
+    * @public
+    *
+    * Resets the filter chain to the first filter to be executed again.
+    *
+    * @return AbstractFilterChain The current filter chain for further configuration.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 13.01.2011<br />
+    */
+   public function &reset() {
       $this->offset = 0;
+      return $this;
    }
 
-   public function isStarted() {
-      return $this->offset > 0;
+   /**
+    * @public
+    *
+    * This method clears the filter chain and resets it's state.
+    * <p/>
+    * Please use this method in case you want to re-order the registered
+    * filters to fit your custom requirements. After clearing the chain
+    * you can re-add the desired filters by using the <em>addFilter()</em>
+    * method.
+    *
+    * @return AbstractFilterChain The current filter chain for further configuration.
+    * 
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 22.03.2011<br />
+    */
+   public function &clear() {
+      $this->filters = array();
+      $this->count = 0;
+      $this->offset = 0;
+      return $this;
    }
 
 }
