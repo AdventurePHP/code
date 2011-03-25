@@ -49,43 +49,53 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
     */
    private $ReEngineeredMappingTable = array();
    private $DatabaseMappingTables = array();
+
    /**
     * @var string[] Relation table reconstructed from the given database connection.
     */
    private $ReEngineeredRelationTable = array();
    private $DatabaseRelationTables = array();
+
    /**
     * @var string[] Stores the new mapping entries.
     */
    private $NewMappings = array();
+
    /**
     * @var string[] Stores the removed mapping entries.
     */
    private $RemovedMappings = array();
+
    /**
     * @var string[] Stores the attributes of mapping entries, that have been added.
     */
    private $NewMappingAttributes = array();
+
    /**
     * @var string[] Stores the attributes of mapping entries, that have been removed.
     */
    private $RemovedMappingAttributes = array();
+
    /**
     * @var string[] Stores the attributes of mapping entries, that have been altered.
     */
    private $AlteredMappingAttributes = array();
+
    /**
     * @var string[] Stores the new relation entries.
     */
    private $NewRelations = array();
+
    /**
     * @var string[] Stores the removed relation entries.
     */
    private $RemovedRelations = array();
+
    /**
     * @var string[] Stores the attributes of relation entries, that have been altered.
     */
    private $AlteredRelationAttributes = array();
+   
    /**
     * @var string[] Stores the update statements.
     */
@@ -155,7 +165,12 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
       $this->generateRelationUpdateStatements();
 
       // analyze potential changes in storage engines
-      $this->generateStorageEngineUpdate($sql);
+      // NOTE: this option is commented out by now, since the mechanism
+      // implemented by 1.14-alpha is not sufficent for different storage
+      // engines by table. Within further checkins we will provide a
+      // mechanism to specify the storage engine per table. Then this
+      // functionality will be re-enabled!
+      //$this->generateStorageEngineUpdate($sql);
 
       // print alter statements or execute them immediately
       if ($updateInPlace === true) {
