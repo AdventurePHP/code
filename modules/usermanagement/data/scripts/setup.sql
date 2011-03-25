@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `ent_application` (
   `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`ApplicationID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ent_user` (
   `UserID` INT(5) UNSIGNED NOT NULL auto_increment,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `ent_user` (
   `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`UserID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ent_group` (
   `GroupID` INT(5) UNSIGNED NOT NULL auto_increment,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `ent_group` (
   `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`GroupID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ent_role` (
   `RoleID` INT(5) UNSIGNED NOT NULL auto_increment,
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `ent_role` (
   `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`RoleID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ent_permission` (
   `PermissionID` INT(5) UNSIGNED NOT NULL auto_increment,
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `ent_permission` (
   `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`PermissionID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ent_permissionset` (
   `PermissionSetID` INT(5) UNSIGNED NOT NULL auto_increment,
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `ent_permissionset` (
   `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`PermissionSetID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ent_appproxy` (
   `AppProxyID` INT(5) UNSIGNED NOT NULL auto_increment,
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `ent_appproxy` (
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`AppProxyID`),
   KEY `AppObjectIdINDEX` (`AppObjectId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ent_appproxytype` (
   `AppProxyTypeID` INT(5) UNSIGNED NOT NULL auto_increment,
@@ -75,105 +75,104 @@ CREATE TABLE IF NOT EXISTS `ent_appproxytype` (
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`AppProxyTypeID`),
   UNIQUE KEY `AppObjectNameUNIQUE` (`AppObjectName`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `cmp_application2group` (
-  `CMPID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
-  `GroupID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`CMPID`,`ApplicationID`,`GroupID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Source_ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_GroupID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_ApplicationID`, `Target_GroupID`),
+  KEY `REVERSEJOIN` (`Target_GroupID`, `Source_ApplicationID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ass_group2user` (
-  `ASSID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `GroupID` INT(5) UNSIGNED NOT NULL default '0',
-  `UserID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`ASSID`,`GroupID`,`UserID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Source_GroupID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_UserID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_GroupID`, `Target_UserID`),
+  KEY `REVERSEJOIN` (`Target_UserID`, `Source_GroupID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ass_role2user` (
-  `ASSID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `RoleID` INT(5) UNSIGNED NOT NULL default '0',
-  `UserID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`ASSID`,`RoleID`,`UserID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Source_RoleID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_UserID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_RoleID`, `Target_UserID`),
+  KEY `REVERSEJOIN` (`Target_UserID`, `Source_RoleID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ass_role2permissionset` (
-  `ASSID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `RoleID` INT(5) UNSIGNED NOT NULL default '0',
-  `PermissionSetID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`ASSID`,`RoleID`,`PermissionSetID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Source_RoleID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_PermissionSetID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_RoleID`, `Target_PermissionSetID`),
+  KEY `REVERSEJOIN` (`Target_PermissionSetID`, `Source_RoleID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `cmp_application2user` (
-  `CMPID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
-  `UserID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`CMPID`,`ApplicationID`,`UserID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Source_ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_UserID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_ApplicationID`, `Target_UserID`),
+  KEY `REVERSEJOIN` (`Target_UserID`, `Source_ApplicationID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `cmp_application2role` (
-  `CMPID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
-  `RoleID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`CMPID`,`ApplicationID`,`RoleID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Source_ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_RoleID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_ApplicationID`, `Target_RoleID`),
+  KEY `REVERSEJOIN` (`Target_RoleID`, `Source_ApplicationID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `cmp_application2permissionset` (
-  `CMPID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
-  `PermissionSetID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`CMPID`,`ApplicationID`,`PermissionSetID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Source_ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_PermissionSetID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_ApplicationID`, `Target_PermissionSetID`),
+  KEY `REVERSEJOIN` (`Target_PermissionSetID`, `Source_ApplicationID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ass_permissionset2permission` (
-  `ASSID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `PermissionSetID` INT(5) UNSIGNED NOT NULL default '0',
-  `PermissionID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`ASSID`,`PermissionSetID`,`PermissionID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Source_PermissionSetID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_PermissionID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_PermissionSetID`, `Target_PermissionID`),
+  KEY `REVERSEJOIN` (`Target_PermissionID`, `Source_PermissionSetID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `cmp_application2permission` (
-  `CMPID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
-  `PermissionID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`CMPID`,`ApplicationID`,`PermissionID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Source_ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_PermissionID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_ApplicationID`, `Target_PermissionID`),
+  KEY `REVERSEJOIN` (`Target_PermissionID`, `Source_ApplicationID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `cmp_application2appproxy` (
-  `CMPID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
-  `AppProxyID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`CMPID`,`ApplicationID`,`AppProxyID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Source_ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_AppProxyID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_ApplicationID`, `Target_AppProxyID`),
+  KEY `REVERSEJOIN` (`Target_AppProxyID`, `Source_ApplicationID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `cmp_application2appproxytype` (
-  `CMPID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
-  `AppProxyTypeID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`CMPID`,`ApplicationID`,`AppProxyTypeID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Source_ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_AppProxyTypeID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_ApplicationID`, `Target_AppProxyTypeID`),
+  KEY `REVERSEJOIN` (`Target_AppProxyTypeID`, `Source_ApplicationID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ass_appproxy2user` (
-  `ASSID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `AppProxyID` INT(5) UNSIGNED NOT NULL default '0',
-  `UserID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`ASSID`,`AppProxyID`,`UserID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Source_AppProxyID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_UserID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_AppProxyID`, `Target_UserID`),
+  KEY `REVERSEJOIN` (`Target_UserID`, `Source_AppProxyID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ass_appproxy2group` (
-  `ASSID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `AppProxyID` INT(5) UNSIGNED NOT NULL default '0',
-  `GroupID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`ASSID`,`AppProxyID`,`GroupID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
+  `Source_AppProxyID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_GroupID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_AppProxyID`, `Target_GroupID`),
+  KEY `REVERSEJOIN` (`Target_GroupID`, `Source_AppProxyID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ass_appproxy2appproxytype` (
-  `ASSID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `AppProxyID` INT(5) UNSIGNED NOT NULL default '0',
-  `AppProxyTypeID` INT(5) UNSIGNED NOT NULL default '0',
-  PRIMARY KEY  (`ASSID`,`AppProxyID`,`AppProxyTypeID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `Source_AppProxyID` INT(5) UNSIGNED NOT NULL default '0',
+  `Target_AppProxyTypeID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_AppProxyID`, `Target_AppProxyTypeID`),
+  KEY `REVERSEJOIN` (`Target_AppProxyTypeID`, `Source_AppProxyID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `ent_application` (`ApplicationID`, `DisplayName`, `CreationTimestamp`) VALUES (1, 'Default application', NOW());
