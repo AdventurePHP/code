@@ -742,9 +742,13 @@ class GenericORRelationMapper extends GenericORMapper {
 
       $asscount = count($associations);
       for ($i = 0; $i < $asscount; $i++) {
+         $SourceOrTarget = 'Source';
+         if($associations[$i]['SourceObject'] !== $object->getObjectName()){
+             $SourceOrTarget = 'Target';
+         }
+         
          $delete = 'DELETE FROM `' . $associations[$i]['Table'] . '`
-                       WHERE `Source_' . $objectID . '` = \'' . $object->getObjectId() . '\'
-                           OR `Target_' . $objectID . '` = \'' . $object->getObjectId() . '\';';
+                       WHERE `'.$SourceOrTarget.'_' . $objectID . '` = \'' . $object->getObjectId() . '\';';
          $this->DBDriver->executeTextStatement($delete, $this->logStatements);
       }
 
