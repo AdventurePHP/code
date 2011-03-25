@@ -743,7 +743,8 @@
                  $namespace,
                  $serviceName,
                  $this->getContext(),
-                 $this->getLanguage());
+                 $this->getLanguage(),
+                 $type);
 
       }
 
