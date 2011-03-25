@@ -728,7 +728,7 @@ class html_taglib_form extends form_control {
 
       // transform the form including all child tags
       $htmlCode = (string) '<form ';
-      $htmlCode .= $this->__getAttributesAsString($this->__Attributes, $this->attributeWhiteList);
+      $htmlCode .= $this->getSanitizedAttributesAsString($this->__Attributes);
       $htmlCode .= '>';
 
       if (count($this->__Children) > 0) {

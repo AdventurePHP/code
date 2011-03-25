@@ -33,7 +33,7 @@
    class list_taglib_elem_defdef extends list_control {
 
       public function transform() {
-         return '<dd '.$this->__getAttributesAsString($this->__Attributes).'>'.$this->__Content.'</dd>';
+         return '<dd '.$this->getAttributesAsString($this->__Attributes).'>'.$this->__Content.'</dd>';
       }
       
    }

@@ -49,7 +49,7 @@
        * Version 0.3, 26.08.2007 (Added the "multiple" attribut)<br />
        * Version 0.4, 28.08.2010 (Added option groups)<br />
        */
-      public function form_taglib_multiselect(){
+      public function __construct(){
          $this->__TagLibs[] = new TagLib('tools::form::taglib','select','option');
          $this->__TagLibs[] = new TagLib('tools::form::taglib','select','group');
          $this->setAttribute('multiple','multiple');
@@ -58,7 +58,6 @@
          $this->attributeWhiteList[] = 'size';
          $this->attributeWhiteList[] = 'tabindex';
          $this->attributeWhiteList[] = 'multiple';
-       // end function
       }
 
       /**
@@ -93,7 +92,6 @@
 
          $this->__presetValue();
 
-       // end function
       }
 
       /**
@@ -116,7 +114,7 @@
 
          // add brackets for the "name" attribute to ensure multi select capability!
          $name = array('name' => $this->getAttribute('name').'[]');
-         $select = '<select '.$this->__getAttributesAsString(array_merge($this->__Attributes,$name)).'>';
+         $select = '<select '.$this->getSanitizedAttributesAsString(array_merge($this->__Attributes,$name)).'>';
          $select .= $this->__Content.'</select>';
 
          if(count($this->__Children) > 0){
@@ -134,7 +132,6 @@
 
          return $select;
 
-       // end function
       }
 
       /**
@@ -172,7 +169,6 @@
          }
          return $selectedOptions;
 
-       // end function
       }
 
       /**
@@ -214,6 +210,5 @@
          return $values;
       }
 
-    // end class
    }
 ?>

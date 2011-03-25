@@ -508,8 +508,8 @@
        * @version
        * Version 0.1, 12.02.2010<br />
        */
-      protected function getSanitizedAttributesAsString($attributes){
-         return $this->__getAttributesAsString($attributes,$this->attributeWhiteList);
+      protected function getSanitizedAttributesAsString($attributes) {
+         return $this->getAttributesAsString($attributes, $this->attributeWhiteList);
       }
 
       /**

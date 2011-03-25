@@ -322,8 +322,9 @@
        * Version 0.1, 10.02.2007<br />
        * Version 0.2, 08.11.2007 (Fehler bei leerem Input-Objekt korrigiert)<br />
        * Version 0.3, 21.06.2008 (Removed APPS__URL_REWRITING and introduced the Registry instead)<br />
+       * Version 0.3, 25.03.2011 (Renamed to <em>getParameterURLRepresentation()</em> due to page controller refactoring)<br />
        */
-      public function getAttributesAsString($urlRewriting = null){
+      public function getParameterURLRepresentation($urlRewriting = null){
 
          // get the current front controller
          $action = &$this->getAction();

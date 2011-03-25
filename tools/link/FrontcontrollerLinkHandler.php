@@ -261,7 +261,7 @@ class FrontcontrollerLinkHandler {
 
          $input = &$actions[$key]->getInput();
          $input->getAttribute('lang');
-         $input->getAttributesAsString(false);
+         $input->getParameterURLRepresentation(false);
 
          // create param offset
          $arrayKey = str_replace('::', $namespaceURLDelimiter, $actions[$key]->getActionNamespace())
@@ -274,7 +274,7 @@ class FrontcontrollerLinkHandler {
 
             // create input string
             $input = &$actions[$key]->getInput();
-            $Array_Value = $input->getAttributesAsString(false);
+            $Array_Value = $input->getParameterURLRepresentation(false);
 
             // merge params
             $actionParams = array_merge_recursive($actionParams, array($arrayKey => $Array_Value));

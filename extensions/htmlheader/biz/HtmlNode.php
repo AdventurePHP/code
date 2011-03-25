@@ -61,7 +61,7 @@
          $html = '<'.$this->getTagName();
 
          if(count($attributes) > 0){
-            $html .= ' '.$this->__getAttributesAsString($attributes);
+            $html .= ' '.$this->getAttributesAsString($attributes);
          }
          
          $content = $this->getContent();
@@ -109,7 +109,6 @@
                $url = 'http://' . $_SERVER['HTTP_HOST'] . $slash . $tmpPath;
             }
 
-            // end if
          }
 
          if ($fcaction) {
@@ -119,25 +118,21 @@
                $actionParam = array(
                    'extensions_jscssinclusion_biz-action/sGCJ' => 'path/' . $namespace . '/type/' . $type . '/file/' . $filename
                );
-               // end if
             } else {
 
                $actionParam = array(
                    'extensions_jscssinclusion_biz-action:sGCJ' => 'path:' . $namespace . '|type:' . $type . '|file:' . $filename
                );
-               // end else
             }
 
             // return url
             return FrontcontrollerLinkHandler::generateLink($url, $actionParam);
-            // end if
          } else {
             $namespace = str_replace('::', '/', $namespace);
             $url .= ( substr($url, -1, 1) !== '/') ? '/' : '';
 
             //return url
             return $url . $namespace . '/' . $filename . '.' . $type;
-            // end else
          }
          
       }

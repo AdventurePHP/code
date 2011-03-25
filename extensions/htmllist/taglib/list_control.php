@@ -144,7 +144,7 @@
 
             // --- Create list
             $this->__Content = '<'.$this->__getListIdentifier().' '
-                    .$this->__getAttributesAsString($this->__Attributes).'>'
+                    .$this->getAttributesAsString($this->__Attributes).'>'
                     .$this->__Content.'</'.$this->__getListIdentifier().'>';
          }
 

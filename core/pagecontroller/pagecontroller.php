@@ -452,12 +452,6 @@
 
       /**
        * @protected
-       * @var APFObject[] List of the children of the current object.
-       */
-      protected $__Children = array();
-
-      /**
-       * @protected
        * @var string[] The attributes of an object (merely the XML tag attributes).
        */
       protected $__Attributes = array();
@@ -594,20 +588,6 @@
          return $this->__ServiceType;
       }
 
-      /**
-       * @public
-       *
-       * Returns the list of the current node's children.
-       *
-       * @return APFObject[] The current node's children.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 20.02.2010<br />
-       */
-      public function &getChildren(){
-         return $this->__Children;
-      }
 
       /**
        * @public
@@ -856,6 +836,13 @@
       }
 
       /**
+       * @deprectated Use <em>getAttributesAsString()</em> instead!
+       */
+      protected function __getAttributesAsString(array $attributes, array $whiteList = array()) {
+         return $this->getAttributesAsString($attributes, $whiteList);
+      }
+
+      /**
        * @protected
        *
        * Creates a string representation of the given attributes list, using a
@@ -869,7 +856,7 @@
        * @version
        * Version 0.1, 13.02.2010 (Replaced old implementation with the white list feature.)<br />
        */
-      protected function __getAttributesAsString($attributes,$whiteList = array()){
+      protected function getAttributesAsString(array $attributes, array $whiteList = array()) {
 
          if(count($attributes) > 0){
 
@@ -1138,6 +1125,12 @@
 
       /**
        * @protected
+       * @var APFObject[] List of the children of the current object.
+       */
+      protected $__Children = array();
+
+      /**
+       * @protected
        * @var int The maximum number of parser loops to protect against infinit loops.
        */
       protected $maxLoops = 200;
@@ -1253,6 +1246,21 @@
        */
       public function setContent($content){
          $this->__Content = $content;
+      }
+
+      /**
+       * @public
+       *
+       * Returns the list of the current node's children.
+       *
+       * @return APFObject[] The current node's children.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 20.02.2010<br />
+       */
+      public function &getChildren(){
+         return $this->__Children;
       }
 
       /**

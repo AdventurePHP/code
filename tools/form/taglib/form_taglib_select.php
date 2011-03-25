@@ -295,7 +295,7 @@ class form_taglib_select extends form_control {
 
       // create html code
       $select = (string) '';
-      $select .= '<select ' . $this->__getAttributesAsString($this->__Attributes) . '>';
+      $select .= '<select ' . $this->getSanitizedAttributesAsString($this->__Attributes) . '>';
 
       foreach ($this->__Children as $objectId => $DUMMY) {
          $this->__Content = str_replace('<' . $objectId . ' />',

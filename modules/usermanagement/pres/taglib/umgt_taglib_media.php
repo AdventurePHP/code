@@ -33,9 +33,6 @@
     */
    class umgt_taglib_media extends ui_mediastream {
 
-      public function umgt_taglib_media(){
-      }
-
       /**
        * @public
        *
@@ -82,12 +79,10 @@
 
          // generate the image tag
          $imgsrc = parent::transform();
-         $attributes = $this->__getAttributesAsString($this->getAttributes(),array('alt','title'));
+         $attributes = $this->getAttributesAsString($this->getAttributes(),array('alt','title'));
          return '<img src="'.$imgsrc.'" '.$attributes.' style="width: 20px; height: 20px; border-width: 0px;" />';
 
-       // end function
       }
 
-    // end class
    }
 ?>
