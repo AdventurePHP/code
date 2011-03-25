@@ -93,10 +93,12 @@
    Registry::register('apf::core', 'LogDir', str_replace('\\', '/', getcwd()) . '/logs');
    Registry::register('apf::core', 'LibPath', APPS__PATH, true);
 
-   // define current request url entry
-   $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
-   Registry::register('apf::core', 'URLBasePath', $protocol . $_SERVER['HTTP_HOST']);
-   Registry::register('apf::core', 'CurrentRequestURL', $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], true);
+   // define current request url entry (check if the indices exist is importand for cli-usage, because there they are neither available nor helpful)
+   if(isset($_SERVER['SERVER_PORT']) && isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])){
+       $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
+       Registry::register('apf::core', 'URLBasePath', $protocol . $_SERVER['HTTP_HOST']);
+       Registry::register('apf::core', 'CurrentRequestURL', $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], true);
+   }
 
    // include necessary core libraries for the pagecontroller
    import('core::errorhandler', 'errorhandler');
