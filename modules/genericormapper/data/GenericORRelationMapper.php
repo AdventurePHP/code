@@ -578,8 +578,14 @@ class GenericORRelationMapper extends GenericORMapper {
 
       // load multiplicity
       $relationTable = $this->RelationTable[$relationName];
-      $select = 'SELECT COUNT(`' . $targetObject['ID'] . '`) AS multiplicity FROM `' . $relationTable['Table'] . '`
-                    WHERE `' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\';';
+      if($relationTable['SourceObject'] === $objectName){
+          $select = 'SELECT COUNT(`Target_' . $targetObject['ID'] . '`) AS multiplicity FROM `' . $relationTable['Table'] . '`
+                        WHERE `Source_' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\';';
+      }
+      else {
+          $select = 'SELECT COUNT(`Source_' . $targetObject['ID'] . '`) AS multiplicity FROM `' . $relationTable['Table'] . '`
+                        WHERE `Target_' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\';';
+      }
       $result = $this->DBDriver->executeTextStatement($select, $this->logStatements);
       $data = $this->DBDriver->fetchData($result);
 
