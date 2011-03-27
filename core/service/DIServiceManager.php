@@ -204,7 +204,7 @@ final class DIServiceManager {
                      self::$INJECTION_CALL_CACHE[$injectionKey] = true;
 
                      // get the dependent service object
-                     $miObject = &ServiceManager::getServiceObject($namespace, $name, $context, $language);
+                     $miObject = &self::getServiceObject($namespace, $name, $context, $language);
 
                      // inject the current service object with the created one
                      if (method_exists($serviceObject, $method)) {
