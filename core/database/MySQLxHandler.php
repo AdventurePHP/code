@@ -131,7 +131,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     * Version 1.1, 26.03.2009 (Enhanced the error messages)<br />
     * Version 1.2, 03.05.2009 (Forth param set to true now results in a debug log entry instead of an error)<br />
     */
-   public function executeStatement($namespace, $statementFile, $params = array(), $logStatement = false) {
+   public function executeStatement($namespace, $statementFile, array $params = array(), $logStatement = false) {
 
       $statement = $this->getPreparedStatement($namespace, $statementFile, $params);
 

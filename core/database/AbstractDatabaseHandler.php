@@ -221,7 +221,7 @@
        * @version
        * Version 0.1, 10.02.2008<br />
        */
-      abstract public function executeStatement($namespace,$statementName,$params = array(),$logStatement = false);
+      abstract public function executeStatement($namespace, $statementName, array $params = array(), $logStatement = false);
 
       /**
        * @public
@@ -356,7 +356,7 @@
        * @version
        * Version 0.1, 03.02.2011<br />
        */
-      protected function getPreparedStatement($namespace, $name, $params = array()) {
+      protected function getPreparedStatement($namespace, $name, array $params = array()) {
          try {
             $config = $this->getConfiguration($namespace, $name);
          } catch (ConfigurationException $e) {

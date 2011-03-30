@@ -139,7 +139,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     * Version 0.1, 24.02.2008<br />
     * Version 0.2, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
     */
-   public function executeStatement($namespace, $statementName, $params = array(), $logStatement = false) {
+   public function executeStatement($namespace, $statementName, array $params = array(), $logStatement = false) {
 
       $statement = $this->getPreparedStatement($namespace, $statementName, $params);
 

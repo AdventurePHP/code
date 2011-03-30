@@ -133,7 +133,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 10.03.2010<br />
     */
-   public function executeStatement($namespace, $statementFile, $params = array(), $logStatement = false) {
+   public function executeStatement($namespace, $statementFile, array $params = array(), $logStatement = false) {
 
       // load statement file content
       $statement = $this->getPreparedStatement($namespace, $statementFile, $params);
@@ -184,7 +184,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 08.03.2010<br />
     */
-   public function executeBindStatement($namespace, $statementFile, $params = array(), $logStatement = false) {
+   public function executeBindStatement($namespace, $statementFile, array $params = array(), $logStatement = false) {
 
       // load statement file content (params will be replaced "manually")
       $statement = $this->getPreparedStatement($namespace, $statementFile);
@@ -277,7 +277,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 08.03.2010<br />
     */
-   public function executeTextBindStatement($statement, $params = array(), $logStatement = false) {
+   public function executeTextBindStatement($statement, array $params = array(), $logStatement = false) {
 
       $t = &Singleton::getInstance('BenchmarkTimer');
       $statementId = md5($statement);
@@ -375,7 +375,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 09.03.2010<br />
     */
-   private function bindParams(&$query, $params) {
+   private function bindParams(&$query, array $params) {
       $binds = array();
       foreach ($params as $key => $DUMMY) {
          $binds[] = $params[$key];
@@ -395,7 +395,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Fetches the result from a prepared query.
     *
     * @param MYSQLi_STMT $query The prepared query to fetch the result from.
-    * @return string[] The result array.
+    * @return string[] The result array or null in case we have no result.
     *
     * @author Christian Achatz
     * @version
@@ -403,6 +403,13 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     */
    private function fetchBindResult(&$query) {
       $metaData = $query->result_metadata();
+
+      // in case the meta data is not present (e.g. for INSERT statements),
+      // we cannot fetch any data. thus we return null to indicate no result
+      if($metaData === false){
+         return null;
+      }
+
       while ($field = $metaData->fetch_field()) {
          $resultParams[] = &$resultRow[$field->name];
       }
