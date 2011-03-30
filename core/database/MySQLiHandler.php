@@ -376,6 +376,12 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Version 0.1, 09.03.2010<br />
     */
    private function bindParams(&$query, array $params) {
+
+      // don't bind params in case we have none!
+      if (count($params) == 0) {
+         return;
+      }
+
       $binds = array();
       foreach ($params as $key => $DUMMY) {
          $binds[] = $params[$key];
