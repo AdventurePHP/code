@@ -38,6 +38,12 @@ import('modules::genericormapper::data', 'GenericORMapper');
 class GenericORRelationMapper extends GenericORMapper {
 
    /**
+    * 
+    */
+   const RELATION_SOURCE = 'rel_source';
+   const RELATION_TARGET = 'rel_target';
+
+   /**
     * @public
     *
     * Load an object list by a given criterion object.
@@ -84,7 +90,6 @@ class GenericORRelationMapper extends GenericORMapper {
          return null;
       }
       return $this->loadObjectByTextStatement($objectName, $this->buildSelectStatementByCriterion($objectName, $criterion));
-
    }
 
    /**
@@ -116,26 +121,23 @@ class GenericORRelationMapper extends GenericORMapper {
 
             $propertyName = $this->DBDriver->escapeValue($property['Name']);
 
-            if (is_object($property['Value']) === TRUE)
-            {
-               $whereList[] = '('.implode('',$this->buildWhere ($objectName,$property['Value'])).')';
+            if (is_object($property['Value']) === TRUE) {
+               $whereList[] = '(' . implode('', $this->buildWhere($objectName, $property['Value'])) . ')';
             } else {
                $propertyValue = $this->DBDriver->escapeValue($property['Value']);
 
                if ((substr_count($propertyValue, '%') > 0 || substr_count($propertyValue, '_') > 0) && $property['ComparisonOperator'] == '=') {
                   $whereList[] = '`' . $this->MappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` LIKE \'' . $propertyValue . '\'';
                } else {
-                  $whereList[] = '`' . $this->MappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` '.$property['ComparisonOperator'].' \'' . $propertyValue . '\'';
+                  $whereList[] = '`' . $this->MappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` ' . $property['ComparisonOperator'] . ' \'' . $propertyValue . '\'';
                }
             }
 
-            $whereList = array(implode(' '.$property['LogicalOperator'].' ',$whereList));
+            $whereList = array(implode(' ' . $property['LogicalOperator'] . ' ', $whereList));
          }
-
       }
 
       return $whereList;
-
    }
 
    /**
@@ -168,11 +170,9 @@ class GenericORRelationMapper extends GenericORMapper {
                     . $this->DBDriver->escapeValue($propertyName) . '` '
                     . $this->DBDriver->escapeValue($direction);
          }
-
       }
 
       return $ORDER;
-
    }
 
    /**
@@ -208,13 +208,11 @@ class GenericORRelationMapper extends GenericORMapper {
          }
 
          $properties = implode(', ', $propertyList);
-
       } else {
          $properties = '`' . $this->MappingTable[$objectName]['Table'] . '`.*';
       }
 
       return $properties;
-
    }
 
    /**
@@ -258,18 +256,16 @@ class GenericORRelationMapper extends GenericORMapper {
             $soureObjectId = $this->MappingTable[$objectName]['ID'];
             $targetObjectId = $this->MappingTable[$targetObjectName]['ID'];
 
-            $relationSourceObjectID = $this->getRelationIDColumnByRelationName($objectName, $relationName);
-            $relationTargetObjectID = $this->getRelationIDColumnByRelationName($targetObjectName, $relationName);
+            $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
+            $relationTargetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
             // add statement to join list
-            $joinList[] = 'INNER JOIN `' . $relationTable . '` ON `' . $fromTable . '`.`' . $soureObjectId . '` = `' . $relationTable . '`.`' . $relationSourceObjectID . '`';
-            $joinList[] = 'INNER JOIN `' . $toTable . '` ON `' . $relationTable . '`.`' . $relationTargetObjectID . '` = `' . $toTable . '`.`' . $targetObjectId . '`';
+            $joinList[] = 'INNER JOIN `' . $relationTable . '` ON `' . $fromTable . '`.`' . $soureObjectId . '` = `' . $relationTable . '`.`' . $relationSourceObjectId . '`';
+            $joinList[] = 'INNER JOIN `' . $toTable . '` ON `' . $relationTable . '`.`' . $relationTargetObjectId . '` = `' . $toTable . '`.`' . $targetObjectId . '`';
 
             // add statement to where list
             $whereList[] = '`' . $toTable . '`.`' . $targetObjectId . '` = ' . $relatedObject->getObjectId();
-
          }
-
       }
 
       // build statement
@@ -296,7 +292,6 @@ class GenericORRelationMapper extends GenericORMapper {
 
       $t->stop($id);
       return $select;
-
    }
 
    /**
@@ -325,7 +320,6 @@ class GenericORRelationMapper extends GenericORMapper {
          return $objectList[0];
       }
       return null;
-
    }
 
    /**
@@ -388,15 +382,15 @@ class GenericORRelationMapper extends GenericORMapper {
          $criterion = new GenericCriterionObject();
       }
 
-      $relationSourceObjectID = $this->getRelationIDColumnByRelationName($objectName, $relationName);
-      $relationTargetObjectID = $this->getRelationIDColumnByRelationName($targetObjectName, $relationName);
+      $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
+      $relationTargetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
       // build statement
       $select = 'SELECT ' . ($this->buildProperties($targetObjectName, $criterion)) . ' FROM `' . $targetObject['Table'] . '`';
 
       // JOIN
-      $select .= 'INNER JOIN `' . $this->RelationTable[$relationName]['Table'] . '` ON `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` = `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationTargetObjectID . '`
-                     INNER JOIN `' . $sourceObject['Table'] . '` ON `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationSourceObjectID . '` = `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '`';
+      $select .= 'INNER JOIN `' . $this->RelationTable[$relationName]['Table'] . '` ON `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` = `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationTargetObjectId . '`
+                     INNER JOIN `' . $sourceObject['Table'] . '` ON `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationSourceObjectId . '` = `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '`';
 
       // - add relation joins
       $where = array();
@@ -410,16 +404,15 @@ class GenericORRelationMapper extends GenericORMapper {
          $relationTargetObjectName = $this->getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(), $innerRelationName);
          $relationTargetObject = $this->MappingTable[$relationTargetObjectName];
 
-         $relationSourceObjectID = $this->getRelationIDColumnByRelationName($relationObjectName, $innerRelationName);
-         $relationTargetObjectID = $this->getRelationIDColumnByRelationName($relationTargetObjectName, $innerRelationName);
+         $relationSourceObjectId = $this->getRelationIdColumn($relationObjectName, $innerRelationName, self::RELATION_SOURCE);
+         $relationTargetObjectId = $this->getRelationIdColumn($relationTargetObjectName, $innerRelationName, self::RELATION_TARGET);
 
          // finally build join
-         $joins .= ' INNER JOIN `' . $this->RelationTable[$innerRelationName]['Table'] . '` ON `' . $relationTargetObject['Table'] . '`.`' . $relationTargetObject['ID'] . '` = `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationTargetObjectID . '`
-                        INNER JOIN `' . $relationSourceObject['Table'] . '` ON `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationSourceObjectID . '` = `' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '`';
+         $joins .= ' INNER JOIN `' . $this->RelationTable[$innerRelationName]['Table'] . '` ON `' . $relationTargetObject['Table'] . '`.`' . $relationTargetObject['ID'] . '` = `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationTargetObjectId . '`
+                        INNER JOIN `' . $relationSourceObject['Table'] . '` ON `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationSourceObjectId . '` = `' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '`';
 
          // add a where for each join
          $where[] = '`' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '` = \'' . $relations[$innerRelationName]->getObjectId() . '\'';
-
       }
       $select .= $joins;
 
@@ -442,7 +435,6 @@ class GenericORRelationMapper extends GenericORMapper {
 
       // load target object list
       return $this->loadObjectListByTextStatement($targetObjectName, $select);
-
    }
 
    /**
@@ -497,16 +489,15 @@ class GenericORRelationMapper extends GenericORMapper {
          $relationTargetObjectName = $this->getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(), $innerRelationName);
          $relationTargetObject = $this->MappingTable[$relationTargetObjectName];
 
-         $relationSourceObjectID = $this->getRelationIDColumnByRelationName($relationObjectName, $innerRelationName);
-         $relationTargetObjectID = $this->getRelationIDColumnByRelationName($relationTargetObjectName, $innerRelationName);
+         $relationSourceObjectId = $this->getRelationIdColumn($relationObjectName, $innerRelationName, self::RELATION_SOURCE);
+         $relationTargetObjectId = $this->getRelationIdColumn($relationTargetObjectName, $innerRelationName, self::RELATION_TARGET);
 
          // finally build join
-         $joins .= ' INNER JOIN `' . $this->RelationTable[$innerRelationName]['Table'] . '` ON `' . $relationTargetObject['Table'] . '`.`' . $relationTargetObject['ID'] . '` = `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationTargetObjectID . '`
-                        INNER JOIN `' . $relationSourceObject['Table'] . '` ON `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationSourceObjectID . '` = `' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '`';
+         $joins .= ' INNER JOIN `' . $this->RelationTable[$innerRelationName]['Table'] . '` ON `' . $relationTargetObject['Table'] . '`.`' . $relationTargetObject['ID'] . '` = `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationTargetObjectId . '`
+                        INNER JOIN `' . $relationSourceObject['Table'] . '` ON `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationSourceObjectId . '` = `' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '`';
 
          // add a where for each join
          $where[] = '`' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '` = \'' . $relations[$innerRelationName]->getObjectId() . '\'';
-
       }
       $select .= $joins;
 
@@ -515,15 +506,15 @@ class GenericORRelationMapper extends GenericORMapper {
       $where[] = '`' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` NOT IN ( ';
       $select .= ' WHERE ' . implode(' AND ', $where);
 
-      $relationSourceObjectID = $this->getRelationIDColumnByRelationName($objectName, $relationName);
-      $relationTargetObjectID = $this->getRelationIDColumnByRelationName($targetObjectName, $relationName);
+      $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
+      $relationTargetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
       // inner select
       $select .= ' SELECT `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` FROM `' . $targetObject['Table'] . '`';
 
       // inner inner join to the target object
-      $select .= ' INNER JOIN `' . $this->RelationTable[$relationName]['Table'] . '` ON `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` = `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationTargetObjectID . '`
-                      INNER JOIN `' . $sourceObject['Table'] . '` ON `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationSourceObjectID . '` = `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '`';
+      $select .= ' INNER JOIN `' . $this->RelationTable[$relationName]['Table'] . '` ON `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` = `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationTargetObjectId . '`
+                      INNER JOIN `' . $sourceObject['Table'] . '` ON `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationSourceObjectId . '` = `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '`';
 
       // add inner where
       $select .= ' WHERE `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\'';
@@ -545,7 +536,6 @@ class GenericORRelationMapper extends GenericORMapper {
 
       // load target object list
       return $this->loadObjectListByTextStatement($targetObjectName, $select);
-
    }
 
    /**
@@ -578,12 +568,11 @@ class GenericORRelationMapper extends GenericORMapper {
 
       // load multiplicity
       $relationTable = $this->RelationTable[$relationName];
-      if($relationTable['SourceObject'] === $objectName){
-          $select = 'SELECT COUNT(`Target_' . $targetObject['ID'] . '`) AS multiplicity FROM `' . $relationTable['Table'] . '`
+      if ($relationTable['SourceObject'] === $objectName) {
+         $select = 'SELECT COUNT(`Target_' . $targetObject['ID'] . '`) AS multiplicity FROM `' . $relationTable['Table'] . '`
                         WHERE `Source_' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\';';
-      }
-      else {
-          $select = 'SELECT COUNT(`Source_' . $targetObject['ID'] . '`) AS multiplicity FROM `' . $relationTable['Table'] . '`
+      } else {
+         $select = 'SELECT COUNT(`Source_' . $targetObject['ID'] . '`) AS multiplicity FROM `' . $relationTable['Table'] . '`
                         WHERE `Target_' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\';';
       }
       $result = $this->DBDriver->executeTextStatement($select, $this->logStatements);
@@ -591,7 +580,6 @@ class GenericORRelationMapper extends GenericORMapper {
 
       // bug 453: explicitly cast to integer to avoid type save check errors.
       return intval($data['multiplicity']);
-
    }
 
    /**
@@ -643,14 +631,14 @@ class GenericORRelationMapper extends GenericORMapper {
                $relatedObjectID = $this->saveObject($relatedObjects[$relationKey][$i]);
 
                // gather information about the current relation
-               $objectID = $this->getRelationIDColumnByRelationName($object->getObjectName(), $relationKey);
+               $objectID = $this->getRelationIdColumn($object->getObjectName(), $relationKey, self::RELATION_SOURCE);
                if (!isset($this->MappingTable[$relatedObjects[$relationKey][$i]->getObjectName()]['ID'])) {
                   throw new GenericORMapperException('[GenericORRelationMapper::saveObject()] '
                           . 'The object name "' . $relatedObjects[$relationKey][$i]->getObjectName()
                           . '" does not exist in the mapping table! Hence, your object cannot be '
                           . 'saved! Please check your object configuration.');
                }
-               $relObjectIdPkName = $this->getRelationIDColumnByRelationName($relatedObjects[$relationKey][$i]->getObjectName(), $relationKey);
+               $relObjectIdPkName = $this->getRelationIdColumn($relatedObjects[$relationKey][$i]->getObjectName(), $relationKey, self::RELATION_TARGET);
 
                // check for relation
                if (!isset($this->RelationTable[$relationKey]['Table'])) {
@@ -675,11 +663,8 @@ class GenericORRelationMapper extends GenericORMapper {
                                 (`' . $relObjectIdPkName . '`,`' . $objectID . '`) VALUES (\'' . $relatedObjectID . '\',\'' . $id . '\');';
                   $this->DBDriver->executeTextStatement($insert, $this->logStatements);
                }
-
             }
-
          }
-
       }
 
       // call event handler
@@ -687,7 +672,6 @@ class GenericORRelationMapper extends GenericORMapper {
 
       // return object id for further usage
       return $id;
-
    }
 
    /**
@@ -732,9 +716,7 @@ class GenericORRelationMapper extends GenericORMapper {
                        . '" cannot be deleted, because it still has composed child objects!',
                        E_USER_WARNING);
             }
-
          }
-
       }
 
       // 3. check for associations and delete them
@@ -743,12 +725,12 @@ class GenericORRelationMapper extends GenericORMapper {
       $asscount = count($associations);
       for ($i = 0; $i < $asscount; $i++) {
          $SourceOrTarget = 'Source';
-         if($associations[$i]['SourceObject'] !== $object->getObjectName()){
-             $SourceOrTarget = 'Target';
+         if ($associations[$i]['SourceObject'] !== $object->getObjectName()) {
+            $SourceOrTarget = 'Target';
          }
-         
+
          $delete = 'DELETE FROM `' . $associations[$i]['Table'] . '`
-                       WHERE `'.$SourceOrTarget.'_' . $objectID . '` = \'' . $object->getObjectId() . '\';';
+                       WHERE `' . $SourceOrTarget . '_' . $objectID . '` = \'' . $object->getObjectId() . '\';';
          $this->DBDriver->executeTextStatement($delete, $this->logStatements);
       }
 
@@ -764,11 +746,9 @@ class GenericORRelationMapper extends GenericORMapper {
          $delete = 'DELETE FROM `' . $sourceCompositions[$i]['Table'] . '`
                        WHERE `Target_' . $objectID . '` = \'' . $object->getObjectId() . '\';';
          $this->DBDriver->executeTextStatement($delete, $this->logStatements);
-
       }
 
       return $ID;
-
    }
 
    /**
@@ -807,9 +787,9 @@ class GenericORRelationMapper extends GenericORMapper {
 
       // create association
       $sourceObjectName = $sourceObject->getObjectName();
-      $sourceObjectId = $this->getRelationIDColumnByRelationName($sourceObjectName, $relationName);
+      $sourceObjectId = $this->getRelationIdColumn($sourceObjectName, $relationName, self::RELATION_SOURCE);
       $targetObjectName = $targetObject->getObjectName();
-      $targetObjectId = $this->getRelationIDColumnByRelationName($targetObjectName, $relationName);
+      $targetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
       $insert = 'INSERT INTO `' . $this->RelationTable[$relationName]['Table'] . '`
                     (`' . $sourceObjectId . '`,`' . $targetObjectId . '`)
@@ -818,7 +798,6 @@ class GenericORRelationMapper extends GenericORMapper {
       $this->DBDriver->executeTextStatement($insert, $this->logStatements);
 
       return true;
-
    }
 
    /**
@@ -856,20 +835,19 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       // get association and delete it
-      $SourceObjectName = $sourceObject->getObjectName();
-      $SourceObjectID = $this->getRelationIDColumnByRelationName($SourceObjectName, $relationName);
-      $TargetObjectName = $targetObject->getObjectName();
-      $TargetObjectID = $this->getRelationIDColumnByRelationName($TargetObjectName, $relationName);
+      $sourceObjectName = $sourceObject->getObjectName();
+      $sourceObjectId = $this->getRelationIdColumn($sourceObjectName, $relationName, self::RELATION_SOURCE);
+      $targetObjectName = $targetObject->getObjectName();
+      $targetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
       $delete = 'DELETE FROM `' . $this->RelationTable[$relationName]['Table'] . '`
                     WHERE
-                       `' . $SourceObjectID . '` = \'' . $sourceObject->getObjectId() . '\'
+                       `' . $sourceObjectId . '` = \'' . $sourceObject->getObjectId() . '\'
                        AND
-                       `' . $TargetObjectID . '` = \'' . $targetObject->getObjectId() . '\';';
+                       `' . $targetObjectId . '` = \'' . $targetObject->getObjectId() . '\';';
       $this->DBDriver->executeTextStatement($delete, $this->logStatements);
 
       return true;
-
    }
 
    /**
@@ -906,11 +884,11 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       $sourceObjectName = $sourceObject->getObjectName();
-      $sourceObjectID = $this->getRelationIDColumnByRelationName($sourceObjectName, $relationName);
+      $sourceObjectId = $this->getRelationIdColumn($sourceObjectName, $relationName, self::RELATION_SOURCE);
 
       $delete = 'DELETE FROM `' . $this->RelationTable[$relationName]['Table'] . '`
                     WHERE
-                       `' . $sourceObjectID . '` = \'' . $sourceObject->getObjectId() . '\';';
+                       `' . $sourceObjectId . '` = \'' . $sourceObject->getObjectId() . '\';';
       $this->DBDriver->executeTextStatement($delete, $this->logStatements);
    }
 
@@ -948,20 +926,19 @@ class GenericORRelationMapper extends GenericORMapper {
 
       // check for association
       $sourceObjectName = $sourceObject->getObjectName();
-      $sourceObjectID = $this->getRelationIDColumnByRelationName($sourceObjectName, $relationName);
+      $sourceObjectId = $this->getRelationIdColumn($sourceObjectName, $relationName, self::RELATION_SOURCE);
       $targetObjectName = $targetObject->getObjectName();
-      $targetObjectID = $this->getRelationIDColumnByRelationName($targetObjectName, $relationName);
+      $targetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
-      $select = 'SELECT * FROM `' . $this->RelationTable[$relationName]['Table'] . '`
+      echo $select = 'SELECT * FROM `' . $this->RelationTable[$relationName]['Table'] . '`
                     WHERE
-                       `' . $sourceObjectID . '` = \'' . $sourceObject->getObjectId() . '\'
+                       `' . $sourceObjectId . '` = \'' . $sourceObject->getObjectId() . '\'
                        AND
-                       `' . $targetObjectID . '` = \'' . $targetObject->getObjectId() . '\';';
+                       `' . $targetObjectId . '` = \'' . $targetObject->getObjectId() . '\';';
       $result = $this->DBDriver->executeTextStatement($select, $this->logStatements);
 
       // return if objects are associated
       return ($this->DBDriver->getNumRows($result) > 0) ? true : false;
-
    }
 
    /**
@@ -998,9 +975,7 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       $fatherObjectName = $father->getObjectName();
-      $fatherObjectId = $this->getRelationIDColumnByRelationName($fatherObjectName, $relationName);
       $childObjectName = $child->getObjectName();
-      $childObjectId = $this->getRelationIDColumnByRelationName($childObjectName, $relationName);
 
       // check relation configuration to have type-safe and directed results
       if ($this->RelationTable[$relationName]['SourceObject'] != $fatherObjectName
@@ -1013,7 +988,10 @@ class GenericORRelationMapper extends GenericORMapper {
                  E_USER_ERROR);
       }
 
-      $select = 'SELECT * FROM `' . $this->RelationTable[$relationName]['Table'] . '`
+      $fatherObjectId = $this->getRelationIdColumn($fatherObjectName, $relationName, self::RELATION_SOURCE);
+      $childObjectId = $this->getRelationIdColumn($childObjectName, $relationName, self::RELATION_TARGET);
+
+      echo $select = 'SELECT * FROM `' . $this->RelationTable[$relationName]['Table'] . '`
                     WHERE
                        `' . $fatherObjectId . '` = \'' . $father->getObjectId() . '\'
                        AND
@@ -1052,13 +1030,10 @@ class GenericORRelationMapper extends GenericORMapper {
             if ($attributes['SourceObject'] === $objectName || $attributes['TargetObject'] === $objectName) {
                $relationList[] = &$this->RelationTable[$sectionName];
             }
-
          }
-
       }
 
       return $relationList;
-
    }
 
    /**
@@ -1096,11 +1071,9 @@ class GenericORRelationMapper extends GenericORMapper {
          if ($attributes['Type'] == 'COMPOSITION' && $attributes[$directionAttribute] == $objectName) {
             $relationList[] = &$this->RelationTable[$sectionName];
          }
-
       }
 
       return $relationList;
-
    }
 
    /**
@@ -1140,35 +1113,34 @@ class GenericORRelationMapper extends GenericORMapper {
    /**
     * @protected
     *
-    * Returns the name of the ID Column concerning the given arguments.<br />
+    * Returns the name of the ID Column concerning the given arguments.
     *
-    * @param string $objectName Name of the current object
-    * @param string $relationName Name of the desired relation
+    * @param string $objectName Name of the current object.
+    * @param string $relationName Name of the desired relation.
+    * @param string $startPoint The desired relation start point in case of self references.
     * @return string Name of the ID Column
     *
     * @author Tobias Lückel
     * @version
     * Version 0.1, 24.03.2011<br />
     */
-   protected function getRelationIDColumnByRelationName($objectName, $relationName) {
+   protected function getRelationIdColumn($objectName, $relationName, $startPoint) {
 
-      // look for suitable related object
-      foreach ($this->RelationTable as $SectionName => $Attributes) {
+      if (isset($this->RelationTable[$relationName])) {
 
-         if ($SectionName == $relationName) {
-
-            if ($Attributes['SourceObject'] == $objectName) {
-               return $Attributes['SourceID'];
-            }
-
-            if ($Attributes['TargetObject'] == $objectName) {
-               return $Attributes['TargetID'];
-            }
+         // in case of self relations, the source and target column name must be
+         // evaluated by the desired point type
+         if ($this->RelationTable[$relationName]['SourceObject'] === $this->RelationTable[$relationName]['TargetObject']) {
+            return $startPoint === self::RELATION_SOURCE ? $this->RelationTable[$relationName]['SourceID'] : $this->RelationTable[$relationName]['TargetID'];
          }
+
+         // look for suitable related object
+         return $this->RelationTable[$relationName]['SourceObject'] == $objectName ? $this->RelationTable[$relationName]['SourceID'] : $this->RelationTable[$relationName]['TargetID'];
       }
 
-      // return null to indicate, that the desired object was not found or has no relations
-      return null;
+      throw new GenericORMapperException('[GenericORRelationMapper::getRelationIdColumn()] '
+              . 'The given relation "' . $relationName . '" is not defined within the current relation '
+              . 'table! Please revise your configuration.');
    }
 
    /**
@@ -1258,7 +1230,6 @@ class GenericORRelationMapper extends GenericORMapper {
                       $this->DBDriver->executeTextStatement($select, $this->logStatements)
       );
       return (int) $data[$countColumnName];
-
    }
 
    /**
@@ -1349,13 +1320,13 @@ class GenericORRelationMapper extends GenericORMapper {
          $criterion = new GenericCriterionObject();
       }
 
-      $relationSourceObjectId = $this->getRelationIDColumnByRelationName($objectName, $relationName);
+      $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
 
       // build statement
       $select = 'SELECT DISTINCT ' . ($this->buildProperties($objectName, $criterion)) . ' FROM `' . $sourceObject['Table'] . '`';
 
       // JOIN
-      $select .= ' LEFT OUTER JOIN `' . $this->RelationTable[$relationName]['Table'] . '` ON `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationSourceObjectID . '`';
+      $select .= ' LEFT OUTER JOIN `' . $this->RelationTable[$relationName]['Table'] . '` ON `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationSourceObjectId . '`';
 
       // - add relation joins
       $where = array();
@@ -1368,16 +1339,15 @@ class GenericORRelationMapper extends GenericORMapper {
          $relationTargetObjectName = $this->getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(), $innerRelationName);
          $relationTargetObject = $this->MappingTable[$relationTargetObjectName];
 
-         $relationSourceObjectID = $this->getRelationIDColumnByRelationName($relationObjectName, $innerRelationName);
-         $relationTargetObjectID = $this->getRelationIDColumnByRelationName($relationTargetObjectName, $innerRelationName);
+         $relationSourceObjectId = $this->getRelationIdColumn($relationObjectName, $innerRelationName, self::RELATION_SOURCE);
+         $relationTargetObjectId = $this->getRelationIdColumn($relationTargetObjectName, $innerRelationName, self::RELATION_TARGET);
 
          // finally build join
-         $joins .= ' INNER JOIN `' . $this->RelationTable[$innerRelationName]['Table'] . '` ON `' . $relationTargetObject['Table'] . '`.`' . $relationTargetObject['ID'] . '` = `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationTargetObjectID . '`
-                               INNER JOIN `' . $relationSourceObject['Table'] . '` ON `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationSourceObjectID . '` = `' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '`';
+         $joins .= ' INNER JOIN `' . $this->RelationTable[$innerRelationName]['Table'] . '` ON `' . $relationTargetObject['Table'] . '`.`' . $relationTargetObject['ID'] . '` = `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationTargetObjectId . '`
+                               INNER JOIN `' . $relationSourceObject['Table'] . '` ON `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationSourceObjectId . '` = `' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '`';
 
          // add a where for each join
          $where[] = '`' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '` = \'' . $relations[$innerRelationName]->getObjectId() . '\'';
-
       }
 
       $select .= $joins;
