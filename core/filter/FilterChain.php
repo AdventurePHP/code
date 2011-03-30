@@ -92,12 +92,13 @@ interface FilterChain {
     * order corresponds to the order the filters are added.
     *
     * @param ChainedContentFilter $filter The filter implementation to add.
+    * @return FilterChain The current filter chain instance for further usage.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 13.01.2011<br />
     */
-   public function addFilter(ChainedContentFilter $filter);
+   public function &addFilter(ChainedContentFilter $filter);
 
    /**
     * @public
@@ -106,12 +107,13 @@ interface FilterChain {
     * to remove is addressed by it's implementation class' name.
     *
     * @param string $class The class name of the filter to remove from the chain.
+    * @return FilterChain The current filter chain instance for further usage.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 13.01.2011<br />
     */
-   public function removeFilter($class);
+   public function &removeFilter($class);
 }
 
 /**
@@ -175,12 +177,21 @@ abstract class AbstractFilterChain implements FilterChain {
       return $this->offset < $this->count ? $this->filters[$this->offset++]->filter($this, $input) : $input;
    }
 
-   public function addFilter(ChainedContentFilter $filter) {
+   /**
+    * @param ChainedContentFilter $filter The filter implementation to add.
+    * @return AbstractFilterChain The current filter chain instance for further usage.
+    */
+   public function &addFilter(ChainedContentFilter $filter) {
       $this->filters[] = $filter;
       $this->count++;
+      return $this;
    }
 
-   public function removeFilter($class) {
+   /**
+    * @param string $class The class name of the filter to remove from the chain.
+    * @return AbstractFilterChain The current filter chain instance for further usage.
+    */
+   public function &removeFilter($class) {
 
       // since it is possible to remove a filter during chaing execution,
       // start at the current offset to disallow removal of filters that
@@ -191,6 +202,8 @@ abstract class AbstractFilterChain implements FilterChain {
             $this->count--;
          }
       }
+
+      return $this;
    }
 
    /**
