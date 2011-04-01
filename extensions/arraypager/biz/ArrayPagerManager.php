@@ -23,19 +23,31 @@ final class ArrayPagerManager extends APFObject {
     * Initializes the pager. Loads the desired config section.
     *
     * @param string $initParam the name of the config section.
+    * @throws ConfigurationException In case the configuration section cannot be loaded.
     *
     * @author Lutz Mahlstedt
     * @version
     * Version 0.1, 21.12.2009<br />
     */
    public function init($initParam) {
+
       // initialize the config
-      $config = $this->getConfiguration('extensions::arraypager', 'arraypager.ini');
+      $namespace = 'extensions::arraypager';
+      $configName = 'arraypager.ini';
+      $config = $this->getConfiguration($namespace, $configName);
 
       // remap configuration
       $configParams = array();
-      foreach ($config->getValueNames() as $name) {
-         $configParams[$name] = $config->getValue($name);
+      $section = $config->getSection($initParam);
+      if ($section === null) {
+         throw new ConfigurationException('[ArrayPagerManager::init()] Section with name "' . $initParam
+                 . '" cannot be found in configuration "' . $configNamen . '" unter namespace "'
+                 . $namespace . '" and context "' . $this->getContext() . '". '
+                 . 'Please double check you configuration!');
+      } else {
+         foreach ($section->getValueNames() as $name) {
+            $configParams[$name] = $section->getValue($name);
+         }
       }
 
       $arrayParameter = array(
@@ -85,7 +97,7 @@ final class ArrayPagerManager extends APFObject {
     * Version 0.1, 21.12.2009<br />
     */
    public function loadEntries($stringPager, $integerPage = NULL, $integerEntries = NULL) {
-      
+
       $mapper = $this->getDataMapper();
 
       $arrayData = $mapper->loadEntries($stringPager);
@@ -123,9 +135,8 @@ final class ArrayPagerManager extends APFObject {
                  TRUE
          );
       } else {
-         trigger_error('[ArrayPagerManager->loadEntries()] There is no pager named "' . $stringPager . '" registered!',
-                 E_USER_WARNING
-         );
+         throw new Exception('[ArrayPagerManager->loadEntries()] There is no pager named "'
+                 . $stringPager . '" registered!', E_USER_WARNING);
       }
    }
 
@@ -190,9 +201,8 @@ final class ArrayPagerManager extends APFObject {
             $stringOutput = $pager->transform();
          }
       } else {
-         trigger_error('[ArrayPagerManager->getPager()] There is no pager named "' . $stringPager . '" registered!',
-                 E_USER_WARNING
-         );
+         throw new Exception('[ArrayPagerManager->getPager()] There is no pager named "'
+                 . $stringPager . '" registered!', E_USER_WARNING);
       }
 
       return $stringOutput;
@@ -249,9 +259,8 @@ final class ArrayPagerManager extends APFObject {
                  $arrayData
          );
       } else {
-         trigger_error('[ArrayPagerManager->registerPager()] Can not register pager named "' . $stringPager . '" because the given data is not an array!',
-                 E_USER_WARNING
-         );
+         throw new Exception('[ArrayPagerManager->registerPager()] Can not register pager named "'
+                 . $stringPager . '" because the given data is not an array!', E_USER_WARNING);
       }
    }
 
