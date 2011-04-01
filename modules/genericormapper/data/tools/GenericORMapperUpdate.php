@@ -302,12 +302,15 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
          $offset = $keys[0];
 
          // collect tables
-         if (substr_count($dataTables[$offset], 'ent_') == 1) {
-            $this->DatabaseMappingTables[] = $dataTables[$offset];
-         } elseif (substr_count($dataTables[$offset], 'ass_') == 1) {
-            $this->DatabaseRelationTables[] = $dataTables[$offset];
-         } elseif (substr_count($dataTables[$offset], 'cmp_') == 1) {
-            $this->DatabaseRelationTables[] = $dataTables[$offset];
+         $tablePrefix = substr($dataTables[$offset], 0, 4);
+         switch($tablePrefix){
+             case 'ent_':
+                 $this->DatabaseMappingTables[] = $dataTables[$offset];
+                 break;
+             case 'ass_':
+             case 'cmp_':
+                 $this->DatabaseRelationTables[] = $dataTables[$offset];
+                 break;
          }
       }
    }
