@@ -930,7 +930,7 @@ class GenericORRelationMapper extends GenericORMapper {
       $targetObjectName = $targetObject->getObjectName();
       $targetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
-      echo $select = 'SELECT * FROM `' . $this->RelationTable[$relationName]['Table'] . '`
+      $select = 'SELECT * FROM `' . $this->RelationTable[$relationName]['Table'] . '`
                     WHERE
                        `' . $sourceObjectId . '` = \'' . $sourceObject->getObjectId() . '\'
                        AND
