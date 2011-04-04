@@ -81,7 +81,7 @@ class LinkHandler {
     * Version 1.1, 21.06.2008 (Introduced the Registry to retrieve the URLRewriting information)<br />
     * Version 1.2, 19.03.2011 (Introduced the $encodeAmpersands param to not encode ampersands for e.g. ajax request urls)<br />
     */
-   public static function generateLink($url, $parameter, $urlRewriting = null, $encodeAmpersands = true) {
+   public static function generateLink($url, array $parameter, $urlRewriting = null, $encodeAmpersands = true) {
 
       // check, if given url is a string. if not print warning and convert to string
       // if we do not convert to string parse_url() will fail!

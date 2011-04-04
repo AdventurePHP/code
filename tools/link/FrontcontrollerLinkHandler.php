@@ -148,7 +148,7 @@ class FrontcontrollerLinkHandler {
     * Version 0.5, 10.01.2008 (Fix for problem with DUMMY actions with URL_REWRITING = false)<br />
     * Version 0.6, 21.06.2008 (Introduced the Registry to retrieve the URLRewriting information)<br />
     */
-   public static function generateLink($url, $newParams = array(), $urlRewriting = null, $encodeAmpersands = true) {
+   public static function generateLink($url, array $newParams = array(), $urlRewriting = null, $encodeAmpersands = true) {
 
       // check, if given url is a string. if not print warning and convert to string
       // if we do not convert to string parse_url() will fail!
@@ -230,7 +230,7 @@ class FrontcontrollerLinkHandler {
          }
       } else {
 
-         // plsit url by & and =
+         // split url by & and =
          $splitURL = explode('&', $parsedURL['query']);
          $splitParameters = array();
 
