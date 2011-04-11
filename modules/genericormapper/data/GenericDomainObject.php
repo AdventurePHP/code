@@ -46,19 +46,19 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * private
     * @var string Name of the object (see mapping table!).
     */
-   private $objectName = null;
+   protected $objectName = null;
 
    /**
     * @private
     * @var string[] Properties of a domain object.
     */
-   private $properties = array();
+   protected $properties = array();
    
    /**
     * @private
     * @var GenericORMapperDataObject[] Objects related to the current object. Sorted by composition or association key.
     */
-   private $relatedObjects = array();
+   protected $relatedObjects = array();
 
    /**
     * @public
