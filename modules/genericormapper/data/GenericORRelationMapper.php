@@ -768,8 +768,16 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.2, 31.05.2008 (Code completed)<br />
     * Version 0.3, 08.06.2008 (Introduced a test to check weather relation exists or not)<br />
     * Version 0.4, 24.03.2011 (Added support for relations between the same table)<br />
+    * Version 0.5, 12.04.2011 (Throw a exception if sourceObject or targetObject not saved)<br />
     */
    public function createAssociation($relationName, GenericORMapperDataObject $sourceObject, GenericORMapperDataObject $targetObject) {
+
+      // test, if sourceObject and targetObject are saved
+      if($sourceObject->getObjectId()===null || $targetObject->getObjectId()===null) {
+          throw new GenericORMapperException('[GenericORRelationMapper::createAssociation()] '
+                  . 'SourceObject or targetObject not saved. Please save the objects first.',
+                  E_USER_WARNING);
+      }
 
       // test, if relation exists in relation table to avoid NPEs
       if (!isset($this->RelationTable[$relationName])) {
