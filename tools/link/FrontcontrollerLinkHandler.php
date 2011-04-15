@@ -18,11 +18,12 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::frontcontroller', 'Frontcontroller');
+import('tools::link', 'LinkGenerator');
 
 /**
  * @package tools::link
  * @class FrontcontrollerLinkHandler
+ * @deprecated Use the LinkGenerator instead.
  *
  * Implements a LinkHandler for front controller purposes.
  *
@@ -36,71 +37,6 @@ import('core::frontcontroller', 'Frontcontroller');
 class FrontcontrollerLinkHandler {
 
    private function __construct() {
-   }
-
-   /**
-    * @public
-    * @static
-    * @since 0.4
-    *
-    * Creates a param array, that contains an action definition and can be applied to the
-    * generateLink() method. Please note, that generating an action url param set is
-    * slower than generating it manually.
-    *
-    * @param string $actionNamespace Namespace of the action param to generate.
-    * @param string $actionName Name of the action.
-    * @param array $actionParams A list of action params to include in the definition.
-    * @param bool $urlRewriting Defines, whether the url parts should be generated in url rewrite
-    *                           style (true) or not (false).
-    * @return string[] List of params to manipulate an front controller link.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.10.2007<br />
-    * Version 0.2, 21.06.2008 (Introduced the Registry to retrieve the URLRewriting information)<br />
-    * Version 0.3, 19.03.2011 (Introduced the $encodeAmpersands param to not encode ampersands for e.g. ajax request urls)<br />
-    */
-   public static function generateURLParams($actionNamespace, $actionName, $actionParams = array(), $urlRewriting = null) {
-
-      // gather the delimiters used to define an action's url representation
-      $fC = &Singleton::getInstance('Frontcontroller');
-      $actionKeyword = $fC->getActionKeyword();
-      $namespaceKeywordDelimiter = $fC->getNamespaceKeywordDelimiter();
-      $namespaceURLDelimiter = $fC->getNamespaceURLDelimiter();
-
-      // set URLRewrite
-      if ($urlRewriting === null) {
-         $urlRewriting = Registry::retrieve('apf::core', 'URLRewriting');
-      }
-
-      // initialize the keyword-class delimiter
-      if ($urlRewriting == true) {
-         $keywordClassDelimiter = $fC->getURLRewritingKeywordClassDelimiter();
-         $keyValueDelimiter = $fC->getURLRewritingKeyValueDelimiter();
-         $inputDelimiter = $fC->getURLRewritingInputDelimiter();
-      } else {
-         $keywordClassDelimiter = $fC->getKeywordClassDelimiter();
-         $keyValueDelimiter = $fC->getKeyValueDelimiter();
-         $inputDelimiter = $fC->getInputDelimiter();
-      }
-
-      $normalKeywordClassDelimiter = $fC->getKeywordClassDelimiter();
-      $rewriteURLDelimiter = '/~/';
-
-      // generate the action identifier
-      $offset = str_replace('::', '_', $actionNamespace)
-              . $namespaceKeywordDelimiter . $actionKeyword
-              . $keywordClassDelimiter . $actionName;
-
-      // generate the param list
-      $params = array();
-      if (count($actionParams) > 0) {
-         foreach ($actionParams as $key => $value) {
-            $params[] = $key . $keyValueDelimiter . $value;
-         }
-      }
-
-      return array($offset => implode($inputDelimiter, $params));
    }
 
    /**
@@ -147,290 +83,22 @@ class FrontcontrollerLinkHandler {
     * Version 0.4, 09.11.2007 (Fix for problem with DUMMY actions and filtering for actions with KeepInURL=false)<br />
     * Version 0.5, 10.01.2008 (Fix for problem with DUMMY actions with URL_REWRITING = false)<br />
     * Version 0.6, 21.06.2008 (Introduced the Registry to retrieve the URLRewriting information)<br />
+    * Version 0.7, 10.04.2011 (Replaced internal functionality by the LinkGenerator)<br />
     */
    public static function generateLink($url, array $newParams = array(), $urlRewriting = null, $encodeAmpersands = true) {
 
-      // check, if given url is a string. if not print warning and convert to string
-      // if we do not convert to string parse_url() will fail!
-      if (!is_string($url)) {
-         $paramStringParts = array();
-         foreach ($newParams as $paramKey => $paramValue) {
-            $paramStringParts[] = $paramKey . '=' . $paramValue;
-         }
-         trigger_error('[FrontcontrollerLinkHandler::generateLink()] Given url (' . $url . ') is not a string! Given '
-                 . 'parameters are [' . implode(',', $paramStringParts) . ']', E_USER_WARNING);
-         $url = strval($url);
-      }
+      // to enable pre-1.14 behaviour, create an url representation lazily
+      $url = Url::fromString($url);
+      $url->mergeQuery($newParams);
 
-      // decode ampersands to get correct url analyze results
-      $url = str_replace('&amp;', '&', $url);
+      // retrieve current link scheme and save original
+      $current = LinkGenerator::getLinkScheme();
+      $scheme = clone $current;
 
-      // configure params
-      $fC = &Singleton::getInstance('Frontcontroller');
-      $actionKeyword = $fC->getActionKeyword();
-      $namespaceKeywordDelimiter = $fC->getNamespaceKeywordDelimiter();
-      $namespaceURLDelimiter = $fC->getNamespaceURLDelimiter();
+      // handle encoded ampersands setting
+      $scheme->setEncodeAmpersands($encodeAmpersands);
 
-      // set URLRewrite
-      if ($urlRewriting === null) {
-         $urlRewriting = Registry::retrieve('apf::core', 'URLRewriting');
-      }
-
-      if ($urlRewriting == true) {
-         $keywordClassDelimiter = $fC->getURLRewritingKeywordClassDelimiter();
-      } else {
-         $keywordClassDelimiter = $fC->getKeywordClassDelimiter();
-      }
-
-      $normalKeywordClassDelimiter = $fC->getKeywordClassDelimiter();
-      $rewriteURLDelimiter = '/~/';
-
-      $params = array();
-      $parsedURL = parse_url($url);
-
-      // resolve missing query string
-      if (!isset($parsedURL['query'])) {
-         $parsedURL['query'] = (string) '';
-      }
-
-      // resolve missing path
-      if (!isset($parsedURL['path'])) {
-         $parsedURL['path'] = (string) '';
-      }
-
-      // analyze url in rewrite style
-      if ($urlRewriting == true) {
-
-         // check, if action directives are contained
-         if (substr_count($parsedURL['path'], $namespaceKeywordDelimiter . $actionKeyword . $keywordClassDelimiter) > 0) {
-
-            // check, whether more url parts are contained
-            if (substr_count($parsedURL['path'], $rewriteURLDelimiter) > 0) {
-
-               // separate URL by /~/
-               $urlPathParts = explode($rewriteURLDelimiter, $parsedURL['path']);
-
-               for ($i = 0; $i < count($urlPathParts); $i++) {
-
-                  // only add pared params, when no action keyword is presend
-                  if (substr_count($urlPathParts[$i], $namespaceKeywordDelimiter . $actionKeyword . $keywordClassDelimiter) < 1) {
-                     // analyze and merge params of the current part
-                     $params = array_merge($params, FrontcontrollerLinkHandler::createArrayFromRequestString($urlPathParts[$i]));
-                  } else {
-                     // register action directive and mark as dummy action. this is
-                     // important for the param merge!
-                     $actionURLParts = explode('/', $urlPathParts[$i]);
-                     $params = array_merge($params, array(trim($actionURLParts[0] . $normalKeywordClassDelimiter . $actionURLParts[1]) => ''));
-                  }
-               }
-            }
-         } else {
-            // analyze url path
-            $params = array_merge($params, FrontcontrollerLinkHandler::createArrayFromRequestString($parsedURL['path']));
-         }
-      } else {
-
-         // split url by & and =
-         $splitURL = explode('&', $parsedURL['query']);
-         $splitParameters = array();
-
-         for ($i = 0; $i < count($splitURL); $i++) {
-
-            // only accepp params with more than 3 characters
-            if (strlen($splitURL[$i]) > 3) {
-
-               $equalSign = strpos($splitURL[$i], '=');
-
-               // create array with key => value couples, in case the url part does not contrain
-               // an action keyword
-               if (substr_count($splitURL[$i], $namespaceKeywordDelimiter . $actionKeyword . $keywordClassDelimiter) < 1) {
-                  $params[substr($splitURL[$i], 0, $equalSign)] = substr($splitURL[$i], $equalSign + 1, strlen($splitURL[$i]));
-               } else {
-                  // save action instruction as dummy (removed DUMMY in version > 0.4)
-                  $params[substr($splitURL[$i], 0, $equalSign)] = '';
-               }
-            }
-         }
-      }
-
-      // add actions to the params
-      $actions = &$fC->getActions();
-      $actionParams = array();
-
-      foreach ($actions as $key => $DUMMY) {
-
-         $input = &$actions[$key]->getInput();
-         $input->getAttribute('lang');
-         $input->getParameterURLRepresentation(false);
-
-         // create param offset
-         $arrayKey = str_replace('::', $namespaceURLDelimiter, $actions[$key]->getActionNamespace())
-                 . $namespaceKeywordDelimiter . $actionKeyword
-                 . str_replace($keywordClassDelimiter, $normalKeywordClassDelimiter, $keywordClassDelimiter)
-                 . ($actions[$key]->getActionName());
-
-         // check, whether the action should be kept in url
-         if ($actions[$key]->getKeepInUrl() == true) {
-
-            // create input string
-            $input = &$actions[$key]->getInput();
-            $Array_Value = $input->getParameterURLRepresentation(false);
-
-            // merge params
-            $actionParams = array_merge_recursive($actionParams, array($arrayKey => $Array_Value));
-         } else {
-            // delete place holders (aka DUMMY)
-            unset($params[$arrayKey]);
-         }
-      }
-
-      // merge actions along with the params
-      $params = array_merge($params, $actionParams);
-
-      // create the final param set (this allows deletions with offsets that are empty or null!)
-      $finalParams = array_merge($params, $newParams);
-
-      // create query string
-      $query = (string) '';
-
-      if ($urlRewriting == true) {
-
-         $finalParamsCount = count($finalParams);
-         $currentOffset = 1;
-
-         foreach ($finalParams as $key => $value) {
-
-            // only allow keys with more than 1 character and a minimum length of 0.
-            // this enables the developer to delete params by applying an empty string
-            // or null as the param's value. in case the value is an array, deny it!
-            if (!is_array($value)) {
-
-               if (strlen($key) > 1 && strlen($value) > 0) {
-
-                  if (substr_count($key, $namespaceKeywordDelimiter . $actionKeyword) > 0) {
-
-                     if ($currentOffset < $finalParamsCount) {
-                        $query .= $rewriteURLDelimiter . trim($key) . '/' . trim($value) . $rewriteURLDelimiter;
-                     } else {
-                        $query .= $rewriteURLDelimiter . trim($key) . '/' . trim($value);
-                     }
-                  } else {
-                     $query .= '/' . trim($key) . '/' . trim($value);
-                  }
-               }
-            }
-
-            $currentOffset++;
-         }
-
-         // rewrite query and replace "/~//"
-         $replace = array(
-             $rewriteURLDelimiter . $rewriteURLDelimiter => $rewriteURLDelimiter,
-             $rewriteURLDelimiter . '/' => $rewriteURLDelimiter,
-             ':' => '/',
-             '|' => '/'
-         );
-         $query = strtr($query, $replace);
-      } else {
-
-         foreach ($finalParams as $key => $value) {
-
-            // only allow keys with more than 1 character and a minimum length of 0.
-            // this enables the developer to delete params by applying an empty string
-            // or null as the param's value. in case the value is an array, deny it!
-            if (!is_array($value)) {
-               if (strlen($key) > 1 && strlen($value) > 0) {
-
-                  // add '?' as first delimiter
-                  if (strlen($query) == 0) {
-                     $query .= '?';
-                  } else {
-                     $query .= '&';
-                  }
-
-                  $query .= trim($key) . '=' . trim($value);
-               }
-            }
-         }
-
-         // encode ampersands if desired
-         if ($encodeAmpersands) {
-            $query = str_replace('&', '&amp;', $query);
-         }
-      }
-
-      $hostPart = (string) '';
-
-      // in case schema and host is given add it!
-      if (isset($parsedURL['scheme']) && isset($parsedURL['host'])) {
-         $hostPart .= $parsedURL['scheme'] . '://' . $parsedURL['host'];
-      }
-
-      // if only the host is present, apply it either
-      if (!isset($parsedURL['scheme']) && isset($parsedURL['host'])) {
-         $hostPart .= '/' . $parsedURL['host'];
-      }
-
-      // in case a none-standard port is given, apply it!
-      if (!empty($parsedURL['port']) && $parsedURL['port'] != '80' && $parsedURL['port'] != '443') {
-         $hostPart .= ':' . $parsedURL['port'];
-      }
-
-      // assemble final url
-      if ($urlRewriting == true) {
-
-         // remove trailing slashes
-         if (substr($query, 0, 1) == '/') {
-            $query = substr($query, 1);
-         }
-
-         $finishedURL = $hostPart . '/' . $query;
-      } else {
-         $finishedURL = $hostPart . $parsedURL['path'] . $query;
-      }
-
-      return $finishedURL;
-   }
-
-   /**
-    * @public
-    * @static
-    *
-    * Creates an array from a given rewrite url string.
-    *
-    * @param string $requestString The url substring
-    * @return string[] An associative array with params an values.
-    *
-    * @author Christian W. Sch�fer
-    * @version
-    * Version 0.1, 07.07.2007<br />
-    */
-   private static function createArrayFromRequestString($requestString) {
-
-      $urlParams = array();
-
-      // remove trailing slashes
-      if (substr($requestString, 0, 1) == '/') {
-         $requestString = substr($requestString, 1);
-      }
-
-      $paramsArray = explode('/', strip_tags($requestString));
-      if (count($paramsArray) > 0) {
-
-         $x = 0;
-
-         while ($x <= (count($paramsArray) - 1)) {
-
-            if (isset($paramsArray[$x + 1])) {
-               $urlParams[$paramsArray[$x]] = $paramsArray[$x + 1];
-            }
-
-            // increment by 2, because the next offset is the key!
-            $x = $x + 2;
-         }
-      }
-
-      return $urlParams;
+      return LinkGenerator::generateUrl($url, $scheme);
    }
 
 }

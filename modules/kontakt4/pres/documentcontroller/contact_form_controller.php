@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::link', 'FrontcontrollerLinkHandler');
+import('tools::link', 'LinkGenerator');
 import('modules::kontakt4::biz', 'ContactFormData');
 
 /**
@@ -54,7 +54,7 @@ class contact_form_controller extends base_controller {
       $form = &$this->getForm('contact');
 
       // generate a generic action url, to be included in various pages
-      $action = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI']);
+      $action = LinkGenerator::generateUrl(Url::fromCurrent());
       $form->setAction($action);
 
       // fill recipient list

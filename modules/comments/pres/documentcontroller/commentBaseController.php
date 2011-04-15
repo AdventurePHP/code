@@ -49,7 +49,7 @@
       *  @version
       *  Version 0.1, 21.08.2007<br />
       */
-      protected function __loadCategoryKey(){
+      protected function loadCategoryKey(){
 
         // AttributCategoryKey vom Parent holen
         $DocParent = &$this->__Document->getParentObject();

@@ -18,11 +18,12 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+import('tools::link', 'LinkGenerator');
 
 /**
  * @package tools::link
  * @class LinkHandler
- * @static
+ * @deprecated Use the LinkGenerator instead.
  *
  * Presents a method to generate and validate urls.
  *
@@ -80,153 +81,23 @@ class LinkHandler {
     * Version 1.0, 26.08.2007 (URL is now checked to be a string. URL params do no like multi dimensional arrays!)<br />
     * Version 1.1, 21.06.2008 (Introduced the Registry to retrieve the URLRewriting information)<br />
     * Version 1.2, 19.03.2011 (Introduced the $encodeAmpersands param to not encode ampersands for e.g. ajax request urls)<br />
+    * Version 1.3, 10.04.2011 (Replaced internal functionality by the LinkGenerator)<br />
     */
    public static function generateLink($url, array $parameter, $urlRewriting = null, $encodeAmpersands = true) {
 
-      // check, if given url is a string. if not print warning and convert to string
-      // if we do not convert to string parse_url() will fail!
-      if (!is_string($url)) {
-         $paramStringParts = array();
-         foreach ($parameter as $paramKey => $paramValue) {
-            $paramStringParts[] = $paramKey . '=' . $paramValue;
-         }
-         trigger_error('[LinkHandler::generateLink()] Given url (' . $url . ') is not a string! '
-                 . 'Given parameters are [' . implode(',', $paramStringParts) . ']', E_USER_WARNING);
-         $url = strval($url);
-      }
+      // to enable pre-1.14 behaviour, create an url representation lazily
+      $url = Url::fromString($url);
 
-      // decode ampersands
-      $url = str_replace('&amp;', '&', $url);
+      $url->mergeQuery($parameter);
 
-      $parsedURL = parse_url($url);
+      // retrieve current link scheme and save original
+      $current = LinkGenerator::getLinkScheme();
+      $scheme = clone $current;
 
-      // resolve missing query string
-      if (!isset($parsedURL['query'])) {
-         $parsedURL['query'] = (string) '';
-      }
+      // handle encoded ampersands setting
+      $scheme->setEncodeAmpersands($encodeAmpersands);
 
-      // resolve missing path
-      if (!isset($parsedURL['path'])) {
-         $parsedURL['path'] = (string) '';
-      }
-
-      // set URLRewrite
-      if ($urlRewriting === null) {
-         $urlRewriting = Registry::retrieve('apf::core', 'URLRewriting');
-      }
-
-      if ($urlRewriting == true) {
-
-         // extract request to array
-         $requestArray = explode('/', strip_tags($parsedURL['path']));
-         array_shift($requestArray);
-
-         $splitURL = array();
-         $x = 0;
-
-         // create key => value pairs from the current request
-         while ($x <= (count($requestArray) - 1)) {
-
-            if (isset($requestArray[$x + 1])) {
-               $splitURL[$requestArray[$x]] = $requestArray[$x + 1];
-            }
-
-            // increment by 2, because the next offset is the key!
-            $x = $x + 2;
-
-         }
-
-         $splitParameters = $splitURL;
-
-      } else {
-         $splitURL = explode('&', $parsedURL['query']);
-
-         $splitParameters = array();
-
-         for ($i = 0; $i < count($splitURL); $i++) {
-
-            // do only add parameters with length greater 3
-            if (strlen($splitURL[$i]) > 3) {
-               $equalSign = strpos($splitURL[$i], '=');
-               $splitParameters[substr($splitURL[$i], 0, $equalSign)] = substr($splitURL[$i], $equalSign + 1, strlen($splitURL[$i]));
-            }
-
-         }
-
-      }
-
-      // create the final param set (this allows deletions with offsets that are empty or null!)
-      $splitParameters = array_merge($splitParameters, $parameter);
-
-      $query = (string) '';
-
-      foreach ($splitParameters as $key => $value) {
-
-         // only allow keys with more than 1 character and a minimum length of 0.
-         // this enables the developer to delete params by applying an empty string
-         // or null as the param's value. in case the value is an array, deny it!
-         if (!is_array($value)) {
-
-            if (strlen($key) > 1 && strlen($value) > 0) {
-
-               // add '?' as first delimiter
-               if (strlen($query) == 0) {
-                  $query .= '?';
-               } else {
-                  $query .= '&';
-               }
-
-               $query .= trim($key) . '=' . trim($value);
-
-            }
-
-         }
-
-      }
-
-      $newURL = (string) '';
-
-      // in case schema and host is given add it!
-      if (isset($parsedURL['scheme']) && isset($parsedURL['host'])) {
-         $newURL .= $parsedURL['scheme'] . '://' . $parsedURL['host'];
-      }
-
-      // if only the host is present, apply it either
-      if (!isset($parsedURL['scheme']) && isset($parsedURL['host'])) {
-         $newURL .= '/' . $parsedURL['host'];
-      }
-
-      // in case a none-standard port is given, apply it!
-      if (!empty($parsedURL['port']) && $parsedURL['port'] != '80' && $parsedURL['port'] != '443') {
-         $newURL .= ':' . $parsedURL['port'];
-      }
-
-      // assemble final url
-      if ($urlRewriting == true) {
-         $finishedURL = $newURL . '/' . $query;
-      } else {
-         $finishedURL = $newURL . $parsedURL['path'] . $query;
-      }
-
-      // rewrite url
-      if ($urlRewriting == true) {
-
-         $replace = array('./?' => '/',
-             '/?' => '/',
-             '=' => '/',
-             '&' => '/'
-         );
-         $finishedURL = strtr($finishedURL, $replace);
-
-      } else {
-         // re-encode ampersands if desired
-         if ($encodeAmpersands) {
-            $finishedURL = str_replace('&', '&amp;', $finishedURL);
-         }
-      }
-
-      return $finishedURL;
-
+      return LinkGenerator::generateUrl($url, $scheme);
    }
 
 }

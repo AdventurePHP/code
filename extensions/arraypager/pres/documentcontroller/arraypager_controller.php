@@ -1,10 +1,25 @@
 <?php
-import('tools::link',
-        'FrontcontrollerLinkHandler'
-);
-import('tools::request',
-        'RequestHandler'
-);
+/**
+ * <!--
+ * This file is part of the adventure php framework (APF) published under
+ * http://adventure-php-framework.org.
+ *
+ * The APF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The APF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ * -->
+ */
+import('tools::link', 'LinkGenerator');
+import('tools::request', 'RequestHandler');
 
 /**
  *  @namespace extensions::arraypager::pres::documentcontroller
@@ -69,9 +84,9 @@ class arraypager_controller extends base_controller {
             $objectTemplate = $this->getTemplate('Page');
          }
 
-         $stringURL = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],
-                         array($this->__Attributes['Config']['ParameterPage'] => $integerPage)
-         );
+         $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
+                                 array($this->__Attributes['Config']['ParameterPage'] => $integerPage)
+                 ));
 
          // Pager zusammenbauen
          if (isset($this->__Attributes['AnchorName']) === TRUE) {
@@ -111,9 +126,9 @@ class arraypager_controller extends base_controller {
          $objectTemplatePreviousPage = $this->getTemplate('PreviousPage_Active');
 
          // Link generieren
-         $stringURL = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],
-                         array($this->__Attributes['Config']['ParameterPage'] => ($integerCurrentPage - 1))
-         );
+         $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
+                                 array($this->__Attributes['Config']['ParameterPage'] => ($integerCurrentPage - 1))
+                 ));
 
          if (isset($this->__Attributes['AnchorName']) === TRUE) {
             $objectTemplatePreviousPage->setPlaceHolder('URL',
@@ -140,9 +155,9 @@ class arraypager_controller extends base_controller {
       // NaechsteSeite
       if ($integerCurrentPage < $integerPageCount) {
          // Link generieren
-         $stringURL = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],
-                         array($this->__Attributes['Config']['ParameterPage'] => ($integerCurrentPage + 1))
-         );
+         $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
+                                 array($this->__Attributes['Config']['ParameterPage'] => ($integerCurrentPage + 1))
+                 ));
 
          $objectTemplateNextPage = $this->getTemplate('NextPage_Active');
 
@@ -182,11 +197,11 @@ class arraypager_controller extends base_controller {
             }
 
             // Link generieren
-            $stringURL = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'],
-                            array($this->__Attributes['Config']['ParameterPage'] => 1,
-                                $this->__Attributes['Config']['ParameterEntries'] => $integerEntries
-                            )
-            );
+            $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
+                                    array($this->__Attributes['Config']['ParameterPage'] => 1,
+                                        $this->__Attributes['Config']['ParameterEntries'] => $integerEntries
+                                    )
+                    ));
 
             if (isset($this->__Attributes['AnchorName']) === TRUE) {
                $objectTemplateEntries->setPlaceHolder('URL',
@@ -226,7 +241,6 @@ class arraypager_controller extends base_controller {
          unset($objectTemplateEntries);
       }
 
-      // Timer stoppen
       $objectBenchmark->stop('ArrayPager');
    }
 

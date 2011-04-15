@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::link', 'FrontcontrollerLinkHandler');
+import('tools::link', 'LinkGenerator');
 
 /**
  * @package tools::media::taglib
@@ -45,17 +45,18 @@ class ui_mediastream extends Document {
     */
    public function onParseTime() {
 
-      // gather attributes
       if ($this->getAttribute('namespace') === null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] The tag definition does not contain a "namespace" definition!');
+         throw new InvalidArgumentException('[' . get_class($this)
+                 . '::onParseTime()] The tag definition does not contain a "namespace" definition!');
       }
 
       $filename = $this->getAttribute('filename');
       if ($filename === null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] The tag definition does not contain a "filename" definition!');
+         throw new InvalidArgumentException('[' . get_class($this)
+                 . '::onParseTime()] The tag definition does not contain a "filename" definition!');
       }
 
-      // split filename into extension and body
+      // split filename into extension and body, since they are transfered in separate parts
       $dot = strrpos($filename, '.');
       $this->setAttribute('extension', substr($filename, $dot + 1));
       $this->setAttribute('filebody', substr($filename, 0, $dot));
@@ -75,30 +76,15 @@ class ui_mediastream extends Document {
     * Version 0.3, 05.11.2008 (Changed action base url generation)<br />
     * Version 0.4, 07.11.2008 (Refactored the url generation due to some addressing bugs)<br />
     * Version 0.5, 20.06.2010 (Adapted parameter order to support old rewrite rules that do file extension matching for routing exceptions)<br />
+    * Version 0.6, 09.04.2011 (Refactored to use release 1.14's new link generation concept)<br />
     */
    public function transform() {
-
-      // get infos from the registry
-      $urlrewrite = Registry::retrieve('apf::core', 'URLRewriting');
-      $actionurl = Registry::retrieve('apf::core', 'CurrentRequestURL');
-
-      // build action statement
-      $this->setAttribute('namespace', str_replace('::', '_', $this->getAttribute('namespace')));
-      if ($urlrewrite === true) {
-         $actionParam = array(
-             'tools_media-action/streamMedia' => 'namespace/'
-             . $this->getAttribute('namespace') . '/extension/' . $this->getAttribute('extension')
-             . '/filebody/' . $this->getAttribute('filebody')
-         );
-      } else {
-         $actionParam = array(
-             'tools_media-action:streamMedia' => 'namespace:'
-             . $this->getAttribute('namespace') . '|extension:' . $this->getAttribute('extension')
-             . '|filebody:' . $this->getAttribute('filebody')
-         );
-      }
-
-      return FrontcontrollerLinkHandler::generateLink($actionurl, $actionParam);
+      // generate action url using the APF's new link generation mechanism since 1.14
+      return LinkGenerator::generateActionUrl(Url::fromCurrent(), 'tools::media', 'streamMedia', array(
+          'namespace' => str_replace('::', '_', $this->getAttribute('namespace')),
+          'extension' => $this->getAttribute('extension'),
+          'filebody' => $this->getAttribute('filebody')
+      ));
    }
 
 }

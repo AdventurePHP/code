@@ -21,7 +21,7 @@
 import('modules::comments::pres::documentcontroller', 'commentBaseController');
 import('tools::datetime', 'dateTimeManager');
 import('tools::string', 'AdvancedBBCodeParser');
-import('tools::link', 'FrontcontrollerLinkHandler');
+import('tools::link', 'LinkGenerator');
 
 /**
  * @package modules::comments::pres::documentcontroller
@@ -52,7 +52,7 @@ class comment_listing_v1_controller extends commentBaseController {
     */
    public function transformContent() {
 
-      $this->__loadCategoryKey();
+      $this->loadCategoryKey();
       $M = &$this->getAndInitServiceObject('modules::comments::biz', 'commentManager', $this->__CategoryKey);
 
       // load the entries using the business component
@@ -67,7 +67,7 @@ class comment_listing_v1_controller extends commentBaseController {
       $bP->removeProvider('standard.font.size');
 
       $i = 1;
-      foreach($entries as $entry) {
+      foreach ($entries as $entry) {
 
          /* @var $entry ArticleComment */
          $template->setPlaceHolder('Number', $i++);
@@ -77,7 +77,6 @@ class comment_listing_v1_controller extends commentBaseController {
          $template->setPlaceHolder('Comment', $bP->parseCode($entry->getComment()));
 
          $buffer .= $template->transformTemplate();
-
       }
 
       // display hint, if no entries are to display
@@ -97,18 +96,15 @@ class comment_listing_v1_controller extends commentBaseController {
       $urlParams = $M->getURLParameter();
 
       // generate the add comment link
-      $this->setPlaceHolder(
-              'Link',
-              FrontcontrollerLinkHandler::generateLink(
-                      $_SERVER['REQUEST_URI'],
-                      array(
+      $this->setPlaceHolder('Link',
+              LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
                           $urlParams['PageName'] => '',
                           $urlParams['CountName'] => '',
                           'coview' => 'form'
+                              )
                       )
               )
       );
-
    }
 
 }

@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::link', 'FrontcontrollerLinkHandler');
+import('tools::link', 'LinkGenerator');
 import('tools::request', 'RequestHandler');
 import('modules::pager::biz', 'PagerPage');
 import('modules::pager::data', 'PagerMapper');
@@ -282,21 +282,22 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    *  @private
+    * @private
     *
-    *  Creates a list of pager pages and returns it.
+    * Creates a list of pager pages and returns it.
     *
-    *  @param string[] $addStmtParams list of additional statement params
-    *  @return PagerPage[] List of pages.
+    * @param string[] $addStmtParams list of additional statement params
+    * @return PagerPage[] List of pages.
     *
-    *  @author Christian Achatz
-    *  @version
-    *  Version 0.1, 05.08.2006<br />
-    *  Version 0.2, 06.08.2006<br />
-    *  Version 0.3, 14.08.2006 (Added a global configuration for url rewriting)<br />
-    *  Version 0.4, 16.11.2007 (Switched to the FrontcontrollerLinkHandler)<br />
-    *  Version 0.5, 26.04.2008 (Avoid division by zero)<br />
-    *  Version 0.6, 19.01.2009 (Changed the implementation due to refactoring)<br />
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 05.08.2006<br />
+    * Version 0.2, 06.08.2006<br />
+    * Version 0.3, 14.08.2006 (Added a global configuration for url rewriting)<br />
+    * Version 0.4, 16.11.2007 (Switched to the FrontcontrollerLinkHandler)<br />
+    * Version 0.5, 26.04.2008 (Avoid division by zero)<br />
+    * Version 0.6, 19.01.2009 (Changed the implementation due to refactoring)<br />
+    * Version 0.7, 10.04.2011 (Switched to LinkGenerator due to new link generation concept in 1.14)<br />
     */
    private function createPages4PagerDisplay($addStmtParams = array()) {
 
@@ -323,7 +324,7 @@ final class PagerManager extends APFObject {
          $pages[$i] = new PagerPage();
 
          // generate the link
-         $link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array($this->section->getValue('Pager.ParameterPageName') => $start));
+         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($this->section->getValue('Pager.ParameterPageName') => $start)));
          $pages[$i]->setLink($link);
 
          // set the number of the page
@@ -465,7 +466,7 @@ final class PagerManager extends APFObject {
          $baseURI = $_SERVER['REQUEST_URI'];
       }
 
-      return FrontcontrollerLinkHandler::generateLink($baseURI, $linkParams);
+      return LinkGenerator::generateUrl(Url::fromString($baseURI)->mergeQuery($linkParams));
    }
 
    /**

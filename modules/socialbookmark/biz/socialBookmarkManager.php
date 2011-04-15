@@ -18,8 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::link', 'FrontcontrollerLinkHandler');
-import('tools::link', 'LinkHandler');
+import('tools::link', 'LinkGenerator');
 import('modules::socialbookmark::biz', 'bookmarkEntry');
 import('tools::media::taglib', 'ui_mediastream');
 
@@ -191,14 +190,11 @@ class socialBookmarkManager extends APFObject {
    protected function generateBookmarkEntry(bookmarkEntry $bookmarkEntry) {
 
       $code = '<a rel="nofollow" href="';
-      $code .= LinkHandler::generateLink(
-                      $bookmarkEntry->getServiceBaseUrl(),
-                      array(
+      $code .= LinkGenerator::generateUrl(
+                      Url::fromString($bookmarkEntry->getServiceBaseUrl())->mergeQuery(array(
                           $bookmarkEntry->getUrlParamName() => $this->url,
                           $bookmarkEntry->getTitleParamName() => $this->title
-                      ),
-                      false
-      );
+                      )), new DefaultLinkScheme(true));
       $code .= '" title="';
       $code .= $bookmarkEntry->getTitle();
       $code .= '" linkrewrite="false"><img src="';

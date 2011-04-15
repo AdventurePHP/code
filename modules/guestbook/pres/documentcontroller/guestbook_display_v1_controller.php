@@ -18,9 +18,8 @@
     * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
     * -->
     */
-
    import('modules::guestbook::biz','GuestbookManager');
-   import('tools::link','FrontcontrollerLinkHandler');
+   import('tools::link','LinkGenerator');
    import('core::session','SessionManager');
    import('modules::guestbook::pres::documentcontroller','guestbookBaseController');
    import('tools::string','stringAssistant');
@@ -78,7 +77,7 @@
 
          $Template__CreateEntry = &$this->getTemplate('CreateEntry_' . $this->__Language);
 
-         $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'createentry', 'entryid' => ''));
+         $Link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'createentry', 'entryid' => '')));
          $Template__CreateEntry->setPlaceHolder('Link', $Link);
 
          return $Template__CreateEntry->transformTemplate();
@@ -104,7 +103,7 @@
 
             $Template__ControlGuestbook_Logout = &$this->getTemplate('ControlGuestbook_Logout_' . $this->__Language);
 
-            $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'adminlogin', 'logout' => 'true', 'entryid' => ''));
+            $Link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'adminlogin', 'logout' => 'true', 'entryid' => '')));
             $Template__ControlGuestbook_Logout->setPlaceHolder('Link', $Link);
 
             return $Template__ControlGuestbook_Logout->transformTemplate();
@@ -113,7 +112,7 @@
 
             $Template__ControlGuestbook_Login = &$this->getTemplate('ControlGuestbook_Login_' . $this->__Language);
 
-            $Link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'adminlogin', 'entryid' => ''));
+            $Link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'adminlogin', 'entryid' => '')));
             $Template__ControlGuestbook_Login->setPlaceHolder('Link', $Link);
 
             return $Template__ControlGuestbook_Login->transformTemplate();
@@ -207,8 +206,8 @@
 
             $Template__AdminDelete = &$this->getTemplate('AdminDelete');
 
-            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'admindelete', 'entryid' => $entryId));
-            $Template__AdminDelete->setPlaceHolder('Link', $Link);
+            $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'admindelete', 'entryid' => $entryId)));
+            $Template__AdminDelete->setPlaceHolder('Link', $link);
 
             return $Template__AdminDelete->transformTemplate();
 
@@ -224,7 +223,7 @@
 
             $Template__AdminEdit = &$this->getTemplate('AdminEdit');
 
-            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'adminedit', 'entryid' => $entryId));
+            $Link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'adminedit', 'entryid' => $entryId)));
             $Template__AdminEdit->setPlaceHolder('Link', $Link);
 
             return $Template__AdminEdit->transformTemplate();
@@ -241,7 +240,7 @@
 
             $Template__AdminAddComment = &$this->getTemplate('AdminAddComment');
 
-            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'adminaddcomment', 'entryid' => $entryId));
+            $Link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'adminaddcomment', 'entryid' => $entryId)));
             $Template__AdminAddComment->setPlaceHolder('Link', $Link);
 
             return $Template__AdminAddComment->transformTemplate();
@@ -258,7 +257,7 @@
 
             $Template__AdminDeleteComment = &$this->getTemplate('AdminDeleteComment');
 
-            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'admindeletecomment', 'commentid' => $dommentId));
+            $Link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'admindeletecomment', 'commentid' => $dommentId)));
             $Template__AdminDeleteComment->setPlaceHolder('Link', $Link);
 
             return $Template__AdminDeleteComment->transformTemplate();
@@ -275,7 +274,7 @@
 
             $Template__AdminEditComment = &$this->getTemplate('AdminEditComment');
 
-            $Link = LinkHandler::generateLink($_SERVER['REQUEST_URI'], array('gbview' => 'admineditcomment', 'commentid' => $commentId, 'entryid' => $entryId));
+            $Link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'admineditcomment', 'commentid' => $commentId, 'entryid' => $entryId)));
             $Template__AdminEditComment->setPlaceHolder('Link', $Link);
 
             return $Template__AdminEditComment->transformTemplate();

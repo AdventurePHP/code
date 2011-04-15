@@ -1,77 +1,64 @@
 <?php
-   /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+/**
+ *  <!--
+ *  This file is part of the adventure php framework (APF) published under
+ *  http://adventure-php-framework.org.
+ *
+ *  The APF is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The APF is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ *  -->
+ */
+import('tools::link', 'LinkGenerator');
 
-   import('tools::link','FrontcontrollerLinkHandler');
+/**
+ * @package modules::guestbook2009::pres::controller
+ * @class admin_controller
+ * 
+ * Implements the document controller for the admin main view. Generates the links
+ * for the subviews to edit or delete an entry.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 18.05.2009<br />
+ */
+class admin_controller extends base_controller {
 
-   /**
-    * @package modules::guestbook2009::pres::controller
-    * @class admin_controller
-    * 
-    * Implements the document controller for the admin main view. Generates the links
-    * for the subviews to edit or delete an entry.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 18.05.2009<br />
-    */
-   class admin_controller extends base_controller {
-      
-       public function transformContent(){
+   public function transformContent() {
 
-          // invoke the service to check, if the current user may request this page
-          $gS = &$this->getDIServiceObject('modules::guestbook2009::biz','GuestbookService');
-          $gS->checkAccessAllowed();
+      // invoke the service to check, if the current user may request this page
+      $gS = &$this->getDIServiceObject('modules::guestbook2009::biz', 'GuestbookService');
+      $gS->checkAccessAllowed();
 
-          // generate the admin menu links using the fc linkhander to
-          // be able to include the module in either page.
-          $editLink = FrontcontrollerLinkHandler::generateLink(
-             $_SERVER['REQUEST_URI'],
-             array(
-               'gbview' => 'admin',
-                'adminview' => 'edit'
-             )
-          );
-          $this->setPlaceHolder('editLink',$editLink);
+      // generate the admin menu links using the fc linkhander to
+      // be able to include the module in either page.
+      $editLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+                          'gbview' => 'admin',
+                          'adminview' => 'edit'
+                      )));
+      $this->setPlaceHolder('editLink', $editLink);
 
-          $deleteLink = FrontcontrollerLinkHandler::generateLink(
-             $_SERVER['REQUEST_URI'],
-             array(
-               'gbview' => 'admin',
-                'adminview' => 'delete'
-             )
-          );
-          $this->setPlaceHolder('deleteLink',$deleteLink);
+      $deleteLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+                          'gbview' => 'admin',
+                          'adminview' => 'delete'
+                      )));
+      $this->setPlaceHolder('deleteLink', $deleteLink);
 
-          $logoutLink = FrontcontrollerLinkHandler::generateLink(
-             $_SERVER['REQUEST_URI'],
-             array(
-               'gbview' => 'admin',
-                'adminview' => 'logout'
-             )
-          );
-          $this->setPlaceHolder('logoutLink',$logoutLink);
-
-        // end function
-       }
-   
-    // end class
+      $logoutLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+                          'gbview' => 'admin',
+                          'adminview' => 'logout'
+                      )));
+      $this->setPlaceHolder('logoutLink', $logoutLink);
    }
+
+}
 ?>

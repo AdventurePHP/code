@@ -20,7 +20,7 @@
  */
 import('modules::comments::pres::documentcontroller', 'commentBaseController');
 import('modules::comments::biz', 'commentManager');
-import('tools::link', 'FrontcontrollerLinkHandler');
+import('tools::link', 'LinkGenerator');
 
 /**
  * @package modules::comments::pres::documentcontroller
@@ -52,7 +52,7 @@ class comment_form_v1_controller extends commentBaseController {
 
       if ($form->isSent() == true) {
 
-         $this->__loadCategoryKey();
+         $this->loadCategoryKey();
          $M = &$this->getAndInitServiceObject('modules::comments::biz', 'commentManager', $this->__CategoryKey);
 
          if ($form->isValid() == true) {
@@ -98,7 +98,7 @@ class comment_form_v1_controller extends commentBaseController {
 
       $form->transformOnPlace();
 
-      $link = FrontcontrollerLinkHandler::generateLink($_SERVER['REQUEST_URI'], array('coview' => 'listing'));
+      $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('coview' => 'listing')));
       $this->setPlaceHolder('back', $link);
    }
 
