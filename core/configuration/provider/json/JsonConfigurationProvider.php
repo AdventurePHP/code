@@ -65,9 +65,9 @@
          }
 
          throw new ConfigurationException('[JsonConfigurationProvider::loadConfiguration()] '
-                 .'Configuration with namepace "'.$namespace.'", context "'.$context.'", '
-                 .' language "'.$language.'", environment "'.$environment.'", and name '
-                 .'"'.$name.'" cannot be loaded!', E_USER_ERROR);
+              . 'Configuration with namepace "' . $namespace . '", context "' . $context . '", '
+              . ' language "' . $language . '", environment "' . $environment . '", and name '
+              . '"' . $name . '" cannot be loaded (file name: ' . $fileName . ')!', E_USER_ERROR);
 
       }
 
