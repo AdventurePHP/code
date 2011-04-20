@@ -78,5 +78,25 @@ abstract class AbstractFormFilter extends AbstractFilter {
       return $this->__Button->isSent();
    }
 
+   /**
+    * @protected
+    * @since 1.14
+    * 
+    * Evaluates the regular expression that is used for filtering the
+    * control's input. In case the developer has defined a custom
+    * regexp it is returned instead of the default value.
+    * 
+    * @param String $default The default filter expression.
+    * @return string The effective filter expression.
+    * 
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 21.04.2011<br />
+    */
+   protected function getFilterExpression($default){
+      $expr = $this->__Control->getAttribute('filter-expr');
+      return $expr === null ? $default : $expr;
+   }
+
 }
 ?>
