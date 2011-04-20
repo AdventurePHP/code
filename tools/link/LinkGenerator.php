@@ -426,10 +426,35 @@ final class LinkGenerator {
    }
 
    /**
-    * @return LinkScheme
+    * @public
+    *
+    * Let's you retrieve the current link scheme, that has been configured
+    * for global usage within the bootstrap file.
+    *
+    * @return LinkScheme The current global link scheme.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.04.2011<br />
     */
    public static function getLinkScheme() {
       return self::$LINK_SCHEME;
+   }
+
+   /**
+    * @public
+    *
+    * Let's you retrieve a clone of the current link scheme for further
+    * configuration and explicit use.
+    *
+    * @return LinkScheme A clone of the current link scheme.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.04.2011<br />
+    */
+   public static function cloneLinkScheme() {
+      return clone self::$LINK_SCHEME;
    }
 
    /**
@@ -797,7 +822,9 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
 
 }
 
-// set up link scheme concerning the url rewriting configuration
+// set up link scheme concerning the url rewriting configuration.
+// this can be done here, since import() ensures, that this file 
+// is only included once!
 if (Registry::retrieve('apf::core', 'URLRewriting', false)) {
    LinkGenerator::setLinkScheme(new RewriteLinkScheme());
 } else {

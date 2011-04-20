@@ -88,12 +88,10 @@ class FrontcontrollerLinkHandler {
    public static function generateLink($url, array $newParams = array(), $urlRewriting = null, $encodeAmpersands = true) {
 
       // to enable pre-1.14 behaviour, create an url representation lazily
-      $url = Url::fromString($url);
-      $url->mergeQuery($newParams);
+      $url = Url::fromString($url)->mergeQuery($newParams);
 
-      // retrieve current link scheme and save original
-      $current = LinkGenerator::getLinkScheme();
-      $scheme = clone $current;
+      // retrieve current link scheme to save original
+      $scheme = LinkGenerator::cloneLinkScheme();
 
       // handle encoded ampersands setting
       $scheme->setEncodeAmpersands($encodeAmpersands);
