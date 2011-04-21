@@ -239,10 +239,6 @@ class FilesystemManager {
       // check, if the mime type and the size is ok
       if (in_array($file_type, $allowed_mime_types) && ($file_size < $file_max_size)) {
 
-         // delete special characters that should not be contained in file names
-         // BAD: dependency to the tools namespace! Due to this, the function is
-         // now commented out and the application must care of this issue itself!
-         //$file_name = stringAssistant::replaceSpecialCharacters($file_name);
          // if file is a valid uploaded file, handle it
          if (is_uploaded_file($temp_file)) {
 

@@ -195,7 +195,7 @@ function printObject($o, $transformHtml = false) {
    $buffer .= "\n<pre>";
 
    if ($transformHtml == true) {
-      $buffer .= htmlentities(print_r($o, true));
+      $buffer .= htmlentities(print_r($o, true), null, Registry::retrieve('apf::core', 'Charset'));
    } else {
       $buffer .= print_R($o, true);
    }
@@ -829,28 +829,24 @@ abstract class APFObject {
     */
    protected function getAttributesAsString(array $attributes, array $whiteList = array()) {
 
-      if (count($attributes) > 0) {
+      $attributeParts = array();
 
-         $attributeParts = array();
-
-         // process white list entries only, when attribute is given
-         // code duplication is done here due to performance reasons!!!
-         if (count($whiteList) > 0) {
-            foreach ($attributes as $offset => $value) {
-               if (in_array($offset, $whiteList)) {
-                  $attributeParts[] = $offset . '="' . $value . '"';
-               }
-            }
-         } else {
-            foreach ($attributes as $offset => $value) {
-               $attributeParts[] = $offset . '="' . $value . '"';
+      // process white list entries only, when attribute is given
+      // code duplication is done here due to performance reasons!!!
+      $charset = Registry::retrieve('apf::core', 'Charset');
+      if (count($whiteList) > 0) {
+         foreach ($attributes as $offset => $value) {
+            if (in_array($offset, $whiteList)) {
+               $attributeParts[] = $offset . '="' . htmlspecialchars($value , ENT_QUOTES, $charset, false) . '"';
             }
          }
-
-         return implode(' ', $attributeParts);
       } else {
-         return (string) '';
+         foreach ($attributes as $offset => $value) {
+            $attributeParts[] = $offset . '="' . htmlspecialchars($value , ENT_QUOTES, $charset, false) . '"';
+         }
       }
+
+      return implode(' ', $attributeParts);
    }
 
 }

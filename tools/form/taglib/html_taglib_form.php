@@ -723,7 +723,7 @@ class html_taglib_form extends form_control {
       $action = $this->getAttribute('action');
       if ($action === null) {
          // escape current request uri to avoid XSS attacks
-         $this->setAttribute('action', htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES));
+         $this->setAttribute('action', htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, Registry::retrieve('apf::core', 'Charset'), false));
       }
 
       // transform the form including all child tags
