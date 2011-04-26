@@ -213,7 +213,7 @@ final class GuestbookService extends APFObject {
     * @version
     * Version 0.1, 21.05.2009<br />
     */
-   public function deleteEntry($entry) {
+   public function deleteEntry(Entry $entry) {
 
       if ($entry !== null) {
          $mapper = &$this->getMapper();
@@ -286,14 +286,14 @@ final class GuestbookService extends APFObject {
     * Implements the login helper method called by the document controller. Returns false, in
     * case of login errors or logs the user in and redirects to the admin page.
     *
-    * @param string $user The user object containing the username and password typed by the user.
+    * @param User $user The user object containing the username and password typed by the user.
     * @return boolean False in case, the credential check failed, true otherwise.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 16.05.2009<br />
     */
-   public function validateCredentials($user) {
+   public function validateCredentials(User $user) {
 
       $mapper = &$this->getMapper();
       if ($mapper->validateCredentials($user)) {
@@ -325,7 +325,7 @@ final class GuestbookService extends APFObject {
     * @version
     * Version 0.1, 10.05.2009<br />
     */
-   public function saveEntry($entry) {
+   public function saveEntry(Entry $entry) {
 
       $mapper = &$this->getMapper();
       $mapper->saveEntry($entry);
