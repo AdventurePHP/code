@@ -149,7 +149,8 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
             }
         }
 
-        $this->addRelatedObject('User2MessageChannel', $Reader);
+        $this->getDataComponent()->createAssociation('User2MessageChannel', $Reader, $this);
+        $this->getDataComponent()->createAssociation('User2UnreadMessageChannel', $Reader, $this);
 
         // set all messages in channel as unread for the new reader
         $Messages = $this->getMessages();
