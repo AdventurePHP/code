@@ -34,6 +34,8 @@ import('modules::genericormapper::data', 'GenericORMapper');
  * Version 0.2, 15.06.2008 (Added ` to the statements due to relation saving bug)<br />
  * Version 0.3, 21.10.2008 (Improved some of the error messages)<br />
  * Version 0.4, 25.10.2008 (Added the loadNotRelatedObjects() method)<br />
+ * Version 0.5, 27.04.2011 (Sourced out criterion statement creation into an
+ *                          extra method and used uniqid)<br />
  */
 class GenericORRelationMapper extends GenericORMapper {
 
@@ -230,6 +232,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.2, 21.06.2008 (Code completed)<br />
     * Version 0.3, 25.06.2008 (Added LIKE-Feature. If the property indicator contains a '%' or '_', the resulting statement contains a LIKE clause instead of a = clause)<br />
     * Version 0.4, 24.03.2011 (Added support for relations between the same table)<br />
+    * Verison 0.5, 27.04.2011 (Sourced out criterion statement creation into an extra method)<br />
     */
    protected function buildSelectStatementByCriterion($objectName, GenericCriterionObject $criterion) {
 
@@ -239,35 +242,9 @@ class GenericORRelationMapper extends GenericORMapper {
       $t->start($id);
 
       // generate relation joins
-      $joinList = array();
-      $whereList = array();
-
-      $relations = $criterion->getRelations();
-
-      if (count($relations) > 0) {
-
-         foreach ($relations as $relationName => $relatedObject) {
-
-            // gather information about the object relations
-            $relationTable = $this->RelationTable[$relationName]['Table'];
-            $fromTable = $this->MappingTable[$objectName]['Table'];
-            $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
-            $toTable = $this->MappingTable[$targetObjectName]['Table'];
-            $soureObjectId = $this->MappingTable[$objectName]['ID'];
-            $targetObjectId = $this->MappingTable[$targetObjectName]['ID'];
-
-            $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
-            $relationTargetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
-
-            // add statement to join list
-            $joinList[] = 'INNER JOIN `' . $relationTable . '` ON `' . $fromTable . '`.`' . $soureObjectId . '` = `' . $relationTable . '`.`' . $relationSourceObjectId . '`';
-            $joinList[] = 'INNER JOIN `' . $toTable . '` ON `' . $relationTable . '`.`' . $relationTargetObjectId . '` = `' . $toTable . '`.`' . $targetObjectId . '`';
-
-            // add statement to where list
-            $whereList[] = '`' . $toTable . '`.`' . $targetObjectId . '` = ' . $relatedObject->getObjectId();
-         }
-      }
-
+      $joinList = $this->buildJoinStatementsByCriterion($objectName, $criterion);
+      $whereList = $this->buildWhereStatementsByCriterion($objectName, $criterion);
+      
       // build statement
       $select = 'SELECT ' . ($this->buildProperties($objectName, $criterion)) . ' FROM `' . $this->MappingTable[$objectName]['Table'] . '` ';
 
@@ -342,6 +319,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.5, 25.10.2008 (Added the additional relation option via the criterion object)<br />
     * Version 0.6, 29.12.2008 (Added check, if given object is null)<br />
     * Version 0.7, 24.03.2011 (Added support for relations between the same table)<br />
+    * Version 0.8, 27.04.2011 (Sourced out criterion statement creation into an extra method)<br />
     */
    public function loadRelatedObjects(GenericORMapperDataObject &$object, $relationName, GenericCriterionObject $criterion = null) {
 
@@ -385,40 +363,31 @@ class GenericORRelationMapper extends GenericORMapper {
       $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
       $relationTargetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
+      //get 'source' and 'target' uniqid's from criterion
+      $uniqueRelationSourceId = $criterion->getUniqueRelationId($relationName, true);
+      $uniqueRelationTargetId = $criterion->getUniqueRelationId($relationName, false);
+
       // build statement
       $select = 'SELECT ' . ($this->buildProperties($targetObjectName, $criterion)) . ' FROM `' . $targetObject['Table'] . '`';
 
       // JOIN
-      $select .= 'INNER JOIN `' . $this->RelationTable[$relationName]['Table'] . '` ON `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` = `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationTargetObjectId . '`
-                     INNER JOIN `' . $sourceObject['Table'] . '` ON `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationSourceObjectId . '` = `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '`';
+      $relationTable = $this->RelationTable[$relationName]['Table'];
+
+      $select .= 'INNER JOIN `' . $relationTable . '` AS `'.$uniqueRelationSourceId.'_'.$relationTable.'` ON `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` = `'.$uniqueRelationSourceId.'_'.$relationTable.'`.`' . $relationTargetObjectId . '`';
+      $select .= ' INNER JOIN `' . $sourceObject['Table'] . '` AS `'.$uniqueRelationTargetId.'_'.$sourceObject['Table'].'` ON `'.$uniqueRelationSourceId.'_'.$relationTable.'`.`' . $relationSourceObjectId . '` = `'.$uniqueRelationTargetId.'_'.$sourceObject['Table'].'`.`' . $sourceObject['ID'] . '`';
 
       // - add relation joins
-      $where = array();
-      $joins = (string) '';
+      $joinList = $this->buildJoinStatementsByCriterion($targetObjectName, $criterion);
+      $whereList = $this->buildWhereStatementsByCriterion($targetObjectName, $criterion);
       $relations = $criterion->getRelations();
-      foreach ($relations as $innerRelationName => $DUMMY) {
 
-         // gather relation params
-         $relationObjectName = $relations[$innerRelationName]->getObjectName();
-         $relationSourceObject = $this->MappingTable[$relationObjectName];
-         $relationTargetObjectName = $this->getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(), $innerRelationName);
-         $relationTargetObject = $this->MappingTable[$relationTargetObjectName];
-
-         $relationSourceObjectId = $this->getRelationIdColumn($relationObjectName, $innerRelationName, self::RELATION_SOURCE);
-         $relationTargetObjectId = $this->getRelationIdColumn($relationTargetObjectName, $innerRelationName, self::RELATION_TARGET);
-
-         // finally build join
-         $joins .= ' INNER JOIN `' . $this->RelationTable[$innerRelationName]['Table'] . '` ON `' . $relationTargetObject['Table'] . '`.`' . $relationTargetObject['ID'] . '` = `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationTargetObjectId . '`
-                        INNER JOIN `' . $relationSourceObject['Table'] . '` ON `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationSourceObjectId . '` = `' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '`';
-
-         // add a where for each join
-         $where[] = '`' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '` = \'' . $relations[$innerRelationName]->getObjectId() . '\'';
+      if (count($joinList) > 0) {
+        $select .= implode(' ', $joinList);
       }
-      $select .= $joins;
 
       // add where statement
-      $where = array_merge($where, $this->buildWhere($targetObjectName, $criterion));
-      $where[] = '`' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\'';
+      $where = array_merge($whereList, $this->buildWhere($targetObjectName, $criterion));
+      $where[] = '`'.$uniqueRelationTargetId.'_'.$sourceObject['Table'].'`.`' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\'';
       $select .= ' WHERE ' . implode(' AND ', $where);
 
       // add order clause
@@ -453,6 +422,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.2, 25.10.2008 (Added additional where and relation clauses. Bugfix to the inner relation statement.)<br />
     * Version 0.3, 29.12.2008 (Added check, if given object is null)<br />
     * Version 0.4, 24.03.2011 (Added support for relations between the same table)<br />
+    * Version 0.5, 27.04.2011 (Sourced out criterion statement creation into an extra method)<br />
     */
    public function loadNotRelatedObjects(GenericORMapperDataObject &$object, $relationName, GenericCriterionObject $criterion = null) {
 
@@ -478,46 +448,36 @@ class GenericORRelationMapper extends GenericORMapper {
       $select = 'SELECT ' . ($this->buildProperties($targetObjectName, $criterion)) . ' FROM `' . $targetObject['Table'] . '`';
 
       // add relation joins
-      $where = array();
-      $joins = (string) '';
-      $relations = $criterion->getRelations();
-      foreach ($relations as $innerRelationName => $DUMMY) {
+      $joinList = $this->buildJoinStatementsByCriterion($objectName, $criterion);
+      $whereList = $this->buildWhereStatementsByCriterion($objectName, $criterion);
 
-         // gather relation params
-         $relationObjectName = $relations[$innerRelationName]->getObjectName();
-         $relationSourceObject = $this->MappingTable[$relationObjectName];
-         $relationTargetObjectName = $this->getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(), $innerRelationName);
-         $relationTargetObject = $this->MappingTable[$relationTargetObjectName];
-
-         $relationSourceObjectId = $this->getRelationIdColumn($relationObjectName, $innerRelationName, self::RELATION_SOURCE);
-         $relationTargetObjectId = $this->getRelationIdColumn($relationTargetObjectName, $innerRelationName, self::RELATION_TARGET);
-
-         // finally build join
-         $joins .= ' INNER JOIN `' . $this->RelationTable[$innerRelationName]['Table'] . '` ON `' . $relationTargetObject['Table'] . '`.`' . $relationTargetObject['ID'] . '` = `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationTargetObjectId . '`
-                        INNER JOIN `' . $relationSourceObject['Table'] . '` ON `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationSourceObjectId . '` = `' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '`';
-
-         // add a where for each join
-         $where[] = '`' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '` = \'' . $relations[$innerRelationName]->getObjectId() . '\'';
+      if (count($joinList) > 0) {
+        $select .= implode(' ', $joinList);
       }
-      $select .= $joins;
 
       // add where clause
-      $where = array_merge($where, $this->buildWhere($targetObjectName, $criterion));
+      $where = array_merge($whereList, $this->buildWhere($targetObjectName, $criterion));
       $where[] = '`' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` NOT IN ( ';
       $select .= ' WHERE ' . implode(' AND ', $where);
 
       $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
       $relationTargetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
+      //get 'source' and 'target' uniqid's from criterion
+      $uniqueRelationSourceId = $criterion->getUniqueRelationId($relationName, true);
+      $uniqueRelationTargetId = $criterion->getUniqueRelationId($relationName, false);
+
       // inner select
       $select .= ' SELECT `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` FROM `' . $targetObject['Table'] . '`';
 
       // inner inner join to the target object
-      $select .= ' INNER JOIN `' . $this->RelationTable[$relationName]['Table'] . '` ON `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` = `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationTargetObjectId . '`
-                      INNER JOIN `' . $sourceObject['Table'] . '` ON `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationSourceObjectId . '` = `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '`';
+      $relationTable = $this->RelationTable[$relationName]['Table'];
+
+      $select .= ' INNER JOIN `' . $relationTable . '` AS `'.$uniqueRelationSourceId.'_'.$relationTable.'` ON `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` = `'.$uniqueRelationSourceId.'_'.$relationTable.'`.`' . $relationTargetObjectId . '`
+                      INNER JOIN `' . $sourceObject['Table'] . '` AS `'.$uniqueRelationTargetId.'_'.$sourceObject['Table'].'` ON `'.$uniqueRelationSourceId.'_'.$relationTable.'`.`' . $relationSourceObjectId . '` = `'.$uniqueRelationTargetId.'_'.$sourceObject['Table'].'`.`' . $sourceObject['ID'] . '`';
 
       // add inner where
-      $select .= ' WHERE `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\'';
+      $select .= ' WHERE `'.$uniqueRelationTargetId.'_'.$sourceObject['Table'].'`.`' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\'';
 
       // indicate end of inner statement
       $select .= ' )';
@@ -1297,8 +1257,11 @@ class GenericORRelationMapper extends GenericORMapper {
     * @version
     * Version 0.1, 01.09.2010<br />
     * Version 0.2, 24.03.2011 (Added support for relations between the same table)<br />
+    * Version 0.3, 27.04.2011 (BUGFIX: Removed explicit type 'GenericCriterionObject' of the parameter list, because
+    *                          'loadObjectsWithRelation' and 'loadObjectsWithoutRelation' should pass null value<br />
+    *                          BUGFIX: Corrected the where statement because of relations between the same table)<br />
     */
-   private function loadObjects4RelationName($objectName, $relationName, GenericCriterionObject $criterion, $relationCondition) {
+   private function loadObjects4RelationName($objectName, $relationName, $criterion, $relationCondition) {
 
       // gather information about the objects related to each other
       $sourceObject = $this->MappingTable[$objectName];
@@ -1329,42 +1292,32 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
+      $relationTargetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
+
+      //get 'source' and 'target' uniqid's from criterion
+      $uniqueRelationSourceId = $criterion->getUniqueRelationId($relationName, true);
 
       // build statement
       $select = 'SELECT DISTINCT ' . ($this->buildProperties($objectName, $criterion)) . ' FROM `' . $sourceObject['Table'] . '`';
 
       // JOIN
-      $select .= ' LEFT OUTER JOIN `' . $this->RelationTable[$relationName]['Table'] . '` ON `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = `' . $this->RelationTable[$relationName]['Table'] . '`.`' . $relationSourceObjectId . '`';
+      $relationTable = $this->RelationTable[$relationName]['Table'];
+
+      $select .= ' LEFT OUTER JOIN `' . $relationTable . '` AS `'.$uniqueRelationSourceId.'_'.$relationTable.'` ON `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = `'.$uniqueRelationSourceId.'_'.$relationTable.'`.`' . $relationSourceObjectId . '`';
 
       // - add relation joins
-      $where = array();
-      $joins = (string) '';
-      $relations = $criterion->getRelations();
-      foreach ($relations as $innerRelationName => $DUMMY) {
-         // gather relation params
-         $relationObjectName = $relations[$innerRelationName]->getObjectName();
-         $relationSourceObject = $this->MappingTable[$relationObjectName];
-         $relationTargetObjectName = $this->getRelatedObjectNameByRelationName($relations[$innerRelationName]->getObjectName(), $innerRelationName);
-         $relationTargetObject = $this->MappingTable[$relationTargetObjectName];
+      $joinList = $this->buildJoinStatementsByCriterion($objectName, $criterion);
+      $whereList = $this->buildWhereStatementsByCriterion($objectName, $criterion);
 
-         $relationSourceObjectId = $this->getRelationIdColumn($relationObjectName, $innerRelationName, self::RELATION_SOURCE);
-         $relationTargetObjectId = $this->getRelationIdColumn($relationTargetObjectName, $innerRelationName, self::RELATION_TARGET);
-
-         // finally build join
-         $joins .= ' INNER JOIN `' . $this->RelationTable[$innerRelationName]['Table'] . '` ON `' . $relationTargetObject['Table'] . '`.`' . $relationTargetObject['ID'] . '` = `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationTargetObjectId . '`
-                               INNER JOIN `' . $relationSourceObject['Table'] . '` ON `' . $this->RelationTable[$innerRelationName]['Table'] . '`.`' . $relationSourceObjectId . '` = `' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '`';
-
-         // add a where for each join
-         $where[] = '`' . $relationSourceObject['Table'] . '`.`' . $relationSourceObject['ID'] . '` = \'' . $relations[$innerRelationName]->getObjectId() . '\'';
+      if (count($joinList) > 0) {
+        $select .= implode(' ', $joinList);
       }
 
-      $select .= $joins;
-
       // add where statement
-      $where = array_merge($where, $this->buildWhere($targetObjectName, $criterion));
+      $where = array_merge($whereList, $this->buildWhere($targetObjectName, $criterion));
 
       // - add relation joins
-      $where[] = '`' . $this->RelationTable[$relationName]['Table'] . '`.`' . $targetObject['ID'] . '` ' . $relationCondition;
+      $where[] = '`'.$uniqueRelationSourceId.'_'.$relationTable.'`.`' . $relationTargetObjectId . '` ' . $relationCondition;
 
       $select .= ' WHERE ' . implode(' AND ', $where);
 
@@ -1383,6 +1336,78 @@ class GenericORRelationMapper extends GenericORMapper {
       // load target object list
       return $this->loadObjectListByTextStatement($objectName, $select);
    }
+
+   /**
+    * @protected
+    *
+    * Creates JOIN statements by a given object name and criterion<br />
+    *
+    * @param string $objectName The given object name
+    * @param GenericCriterionObject $criterion criterion object
+    * @return string[] JOIN statements.
+    *
+    * @author Tobias Lückel
+    * @version
+    * Version 0.1, 27.04.2011<br />
+    */
+    protected function buildJoinStatementsByCriterion($objectName, GenericCriterionObject $criterion) {
+        $joinList = array();
+
+        $relations = $criterion->getRelations();
+
+        foreach ($relations as $relationName => $relatedObject) {
+            // gets the 'source' and 'target' uniqid from criterion to avoid conflicts with other tables
+            $uniqueRelationSourceId = $criterion->getUniqueRelationId($relationName, true);
+            $uniqueRelationTargetId = $criterion->getUniqueRelationId($relationName, false);
+            // gather information about the object relations
+            $relationTable = $this->RelationTable[$relationName]['Table'];
+            $fromTable = $this->MappingTable[$objectName]['Table'];
+            $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
+            $toTable = $this->MappingTable[$targetObjectName]['Table'];
+            $soureObjectId = $this->MappingTable[$objectName]['ID'];
+            $targetObjectId = $this->MappingTable[$targetObjectName]['ID'];
+
+            $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
+            $relationTargetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
+
+            // add statement to join list
+            $joinList[] = 'INNER JOIN `' . $relationTable . '` AS `'.$uniqueRelationSourceId.'_'.$relationTable.'` ON `' . $fromTable . '`.`' . $soureObjectId . '` = `'.$uniqueRelationSourceId.'_'.$relationTable.'`.`' . $relationSourceObjectId . '`';
+            $joinList[] = 'INNER JOIN `' . $toTable . '` AS `'.$uniqueRelationTargetId.'_'.$toTable.'` ON `'.$uniqueRelationSourceId.'_'.$relationTable.'`.`' . $relationTargetObjectId . '` = `'.$uniqueRelationTargetId.'_'.$toTable.'`.`' . $targetObjectId . '`';
+        }
+        return $joinList;
+    }
+
+    /**
+    * @protected
+    *
+    * Creates WHERE statements by a given object name and criterion<br />
+    *
+    * @param string $objectName The given object name
+    * @param GenericCriterionObject $criterion criterion object
+    * @return string[] WHERE statements.
+    *
+    * @author Tobias Lückel
+    * @version
+    * Version 0.1, 27.04.2011<br />
+    */
+    protected function buildWhereStatementsByCriterion($objectName, GenericCriterionObject $criterion) {
+        $whereList = array();
+
+        $relations = $criterion->getRelations();
+
+        foreach ($relations as $relationName => $relatedObject) {
+            // gets the 'target' uniqid from criterion to avoid conflicts with other tables
+            $uniqueRelationTargetId = $criterion->getUniqueRelationId($relationName, false);
+            // gather information about the object relations
+            $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
+            $toTable = $this->MappingTable[$targetObjectName]['Table'];
+            $targetObjectId = $this->MappingTable[$targetObjectName]['ID'];
+
+            // add statement to where list
+            $whereList[] = '`'.$uniqueRelationTargetId.'_'.$toTable.'`.`' . $targetObjectId . '` = ' . $relatedObject->getObjectId();
+        }
+         return $whereList;
+    }
 
 }
 ?>

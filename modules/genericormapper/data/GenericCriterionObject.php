@@ -32,6 +32,7 @@
     * Version 0.3, 28.05.2010 (Bugfix: added method to return the property indicators)<br />
     * Version 0.4, 18.07.2010 (Added "Fluent Interface" support.)<br />
     * Version 0.5, 15.01.2011 (Removed dependency on APFObject.)<br />
+    * Version 0.6, 27.04.2011 (Added uniqid to avoid conflicts between tables.)<br />
     */
    final class GenericCriterionObject{
 
@@ -40,6 +41,12 @@
        * @var string[] Stores the relation indicators.
        */
       private $Relations = array();
+
+      /**
+       * @private
+       * @var string[] Stores an uniqid per relation name.
+       */
+      private $UniqueRelationIds = array('source'=>array(),'target'=>array());
 
       /**
        * @private
@@ -90,7 +97,8 @@
       /**
        * @public
        *
-       * Method to add a relation indicator.
+       * Method to add a relation indicator.<br />
+       * Generates a 'source' and 'target' uniqid for the relation name if not set.
        *
        * @param string $relationName name of the relation between the object in the second argument and the object to load
        * @param GenericDomainObject $sourceObject related object
@@ -101,9 +109,16 @@
        * @version
        * Version 0.1, 17.06.2008<br />
        * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
+       * Version 0.3, 27.04.2011 (Generate a uniqid for the relation name.)<br />
        */
       public function addRelationIndicator($relationName,$sourceObject){
          $this->Relations[$relationName] = $sourceObject;
+         if (!isset($this->UniqueRelationIds['source'][$relationName])) {
+             $this->UniqueRelationIds['source'][$relationName] = md5(uniqid(mt_rand(), true));
+         }
+         if (!isset($this->UniqueRelationIds['target'][$relationName])) {
+             $this->UniqueRelationIds['target'][$relationName] = md5(uniqid(mt_rand(), true));
+         }
          return $this;
        // end function
       }
@@ -121,6 +136,31 @@
        */
       public function getRelations(){
          return $this->Relations;
+      }
+
+      /**
+       * @public
+       *
+       * Returns a uniqid for the given relation name. If no uniqid is set, it will
+       * be generated.
+       *
+       * @param string $relationName The given relation name
+       * @param boolean $returningSource Indicates, if returning source uniqid or target uniqid. Default is true.
+       * @return string The uniqid
+       *
+       * @author Tobias Lückel
+       * @version
+       * Version 0.1, 27.04.2011<br />
+       */
+      public function getUniqueRelationId($relationName, $returningSoure = true) {
+          $location = 'source';
+          if (!$returningSoure) {
+              $location = 'target';
+          }
+          if (!isset($this->UniqueRelationIds[$location][$relationName])) {
+              $this->UniqueRelationIds[$location][$relationName] = md5(uniqid(mt_rand(), true));
+          }
+          return $this->UniqueRelationIds[$location][$relationName];
       }
 
       /**
