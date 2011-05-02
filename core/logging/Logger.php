@@ -151,6 +151,11 @@ class Logger {
    protected $logFolderPermissions = 0777;
 
    /**
+    * @var int The maximum number of log entries before the log buffer is flushed automatically.
+    */
+   protected $maxBufferLength = 300;
+
+   /**
     * @private
     * @var string Newline sign. Uses the PHP's standard newline sign if not configured in different way.
     */
@@ -175,6 +180,22 @@ class Logger {
    /**
     * @public
     *
+    * Calling this method you can define the maximum number of entries
+    * before auto-flush takes place.
+    *
+    * @param int $maxBufferLength The threshold number.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 02.05.2011<br />
+    */
+   public function setMaxBufferLength($maxBufferLength) {
+      $this->maxBufferLength = $maxBufferLength;
+   }
+
+   /**
+    * @public
+    *
     * Create a log entry.
     *
     * @param string $logFileName Name of the log file to log to
@@ -184,9 +205,16 @@ class Logger {
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.03.2007<br />
+    * Version 0.2, 02.05.2011 (Flushes the log buffer implicitly after a configured number of entries)<br />
     */
    public function logEntry($logFileName, $message, $type = 'INFO') {
+
       $this->logEntries[$logFileName][] = new LogEntry($message, $type);
+
+      // flush the log buffer in case the maximum number of entries is reached.
+      if (count($this->logEntries) > $this->maxBufferLength) {
+         $this->flushLogBuffer();
+      }
    }
 
    /**
