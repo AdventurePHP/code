@@ -52,8 +52,7 @@ class comment_listing_v1_controller extends commentBaseController {
     */
    public function transformContent() {
 
-      $this->loadCategoryKey();
-      $M = &$this->getAndInitServiceObject('modules::comments::biz', 'commentManager', $this->__CategoryKey);
+      $M = &$this->getAndInitServiceObject('modules::comments::biz', 'commentManager', $this->getCategoryKey());
 
       // load the entries using the business component
       $entries = $M->loadEntries();

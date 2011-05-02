@@ -22,6 +22,7 @@ import('modules::comments::data', 'commentMapper');
 import('tools::link', 'LinkGenerator');
 import('tools::string', 'stringAssistant');
 import('core::session', 'SessionManager');
+import('tools::http', 'HeaderManager');
 
 /**
  *  @package modules::comments::biz
@@ -40,13 +41,7 @@ class commentManager extends APFObject {
     *  @protected
     *  Schl�ssel f�r die auszuliefernde Kategorie.
     */
-   protected $__CategoryKey;
-   
-   /**
-    *  @protected
-    *  Captcha String zur Pr�fung der Eingabe.
-    */
-   protected $__CaptchaString = null;
+   protected $categoryKey;
 
    /**
     *  @public
@@ -61,15 +56,7 @@ class commentManager extends APFObject {
     *  Version 0.2, 28.12.2007 (Captcha-Unterst�tzung hinzugef�gt)<br />
     */
    public function init($initParam) {
-
-      $this->__CategoryKey = $initParam;
-
-      // initialize captcha string
-      if ($this->__CaptchaString == null) {
-         $sessMgr = new SessionManager('modules::comment');
-         $this->__CaptchaString = $sessMgr->loadSessionData('CAPTCHA_STRING');
-         $sessMgr->saveSessionData('CAPTCHA_STRING', stringAssistant::generateCaptchaString(5));
-      }
+      $this->categoryKey = $initParam;
    }
 
    /**
@@ -90,7 +77,7 @@ class commentManager extends APFObject {
       $pM = &$pMF->getPagerManager('ArticleComments');
 
       $M = &$this->getServiceObject('modules::comments::data', 'commentMapper');
-      return $pM->loadEntriesByAppDataComponent($M, 'loadArticleCommentByID', array('CategoryKey' => $this->__CategoryKey));
+      return $pM->loadEntriesByAppDataComponent($M, 'loadArticleCommentByID', array('CategoryKey' => $this->categoryKey));
    }
 
    /**
@@ -111,7 +98,7 @@ class commentManager extends APFObject {
       $pMF = &$this->getServiceObject('modules::pager::biz', 'PagerManagerFabric');
       $pM = &$pMF->getPagerManager('ArticleComments');
       $pM->setAnchorName($anchorName);
-      return $pM->getPager(array('CategoryKey' => $this->__CategoryKey));
+      return $pM->getPager(array('CategoryKey' => $this->categoryKey));
    }
 
    /**
@@ -137,31 +124,22 @@ class commentManager extends APFObject {
     *  Speichert einen Kommentar-Eintrag.<br />
     *
     *  @param ArticleComment $articleComment ArticleComment-Objekt
-    *  @param bool $ajax Indiziert, ob die Methode im AJAX-Style verwendet wird
     *
-    *  @author Christian Sch�fer
+    *  @author Christian Schäfer
     *  @version
     *  Version 0.1, 21.08.2007<br />
-    *  Version 0.2, 28.12.2007 (Captcha eingef�hrt)<br />
-    *  Version 0.3, 02.02.2008 (AJAX-Support hinzugef�gt)<br />
+    *  Version 0.2, 28.12.2007<br />
+    *  Version 0.3, 02.02.2008<br />
     */
-   public function saveEntry($articleComment, $ajax = false) {
+   public function saveEntry($articleComment) {
 
       $M = &$this->getServiceObject('modules::comments::data', 'commentMapper');
 
-      $articleComment->setCategoryKey($this->__CategoryKey);
+      $articleComment->setCategoryKey($this->categoryKey);
       $M->saveArticleComment($articleComment);
 
-      // redirect to further view, if not in AJAX mode
-      if ($ajax == false) {
-
-         // delete captcha session entry
-         $sessMgr = new SessionManager('modules::comment');
-         $sessMgr->deleteSessionData('CAPTCHA_STRING');
-
-         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('coview' => 'listing')));
-         header('Location: ' . $link . '#comments');
-      }
+      $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('coview' => 'listing')));
+      HeaderManager::forward($link . '#comments');
    }
 
 }

@@ -19,7 +19,6 @@
  *  -->
  */
 import('modules::comments::pres::documentcontroller', 'commentBaseController');
-import('modules::comments::biz', 'commentManager');
 import('tools::link', 'LinkGenerator');
 
 /**
@@ -52,8 +51,7 @@ class comment_form_v1_controller extends commentBaseController {
 
       if ($form->isSent() == true) {
 
-         $this->loadCategoryKey();
-         $M = &$this->getAndInitServiceObject('modules::comments::biz', 'commentManager', $this->__CategoryKey);
+         $M = &$this->getAndInitServiceObject('modules::comments::biz', 'commentManager', $this->getCategoryKey());
 
          if ($form->isValid() == true) {
 
@@ -94,7 +92,7 @@ class comment_form_v1_controller extends commentBaseController {
 
       $config = $this->getConfiguration('modules::comments', 'language.ini');
       $button = &$form->getFormElementByName('Save');
-      $button->setAttribute('value', $config->getSection($this->__Language)->getValue('form.button'));
+      $button->setAttribute('value', $config->getSection($this->getLanguage())->getValue('form.button'));
 
       $form->transformOnPlace();
 
