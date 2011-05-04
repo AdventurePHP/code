@@ -156,6 +156,11 @@ class Logger {
    protected $maxBufferLength = 300;
 
    /**
+    * @var int Counter for log file entries to handle the buffer length.
+    */
+   protected $logEntryCount = 0;
+
+   /**
     * @private
     * @var string Newline sign. Uses the PHP's standard newline sign if not configured in different way.
     */
@@ -212,7 +217,9 @@ class Logger {
       $this->logEntries[$logFileName][] = new LogEntry($message, $type);
 
       // flush the log buffer in case the maximum number of entries is reached.
-      if (count($this->logEntries) > $this->maxBufferLength) {
+      $this->logEntryCount++;
+      
+      if ($this->logEntryCount > $this->maxBufferLength) {
          $this->flushLogBuffer();
       }
    }
@@ -269,8 +276,9 @@ class Logger {
             }
          }
 
-         // reset the buffer
+         // reset the buffer and the counter
          $this->logEntries = array();
+         $this->logEntryCount = 0;
       }
    }
 
