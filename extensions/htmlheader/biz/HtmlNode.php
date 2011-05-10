@@ -40,6 +40,11 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
     */
    private $content = null;
 
+   /**
+    * @var int The priority of the header node.
+    */
+   private $priority = 0;
+
    public function getContent() {
       return $this->content;
    }
@@ -48,10 +53,20 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
       $this->content = $content;
    }
 
+   public function getPriority() {
+      return $this->priority;
+   }
+
+   public function setPriority($priority) {
+      $this->priority = intval($priority); // normalize priority to 0 for all faulty inputs
+   }
+
    /**
-    * Transforms the node into html.
+    * @public
+    * 
+    * Transforms the node to html.
     *
-    * @return string The ready html-code.
+    * @return string The ready html code.
     */
    public function transform() {
 
@@ -89,7 +104,7 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
     * @param string $type Filetype
     * @return string elements' link.
     */
-   protected function __buildFCLink($url, $namespace, $filename, $urlRewriting, $fcaction, $type) {
+   protected function buildFrontcontrollerLink($url, $namespace, $filename, $urlRewriting, $fcaction, $type) {
 
       if ($urlRewriting === null) {
          $urlRewriting = Registry::retrieve('apf::core', 'URLRewriting');

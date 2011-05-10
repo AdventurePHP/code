@@ -44,7 +44,7 @@
        * @param bool $fcaction Optional. Create link for FC-Action.
        */
       public function __construct($url, $namespace, $filename, $rewriting = null, $fcaction = true) {
-         $this->setAttribute('href', $this->__buildFCLink(
+         $this->setAttribute('href', $this->buildFrontcontrollerLink(
                          $url,
                          $namespace,
                          $filename,
