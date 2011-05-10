@@ -63,12 +63,7 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
          $output .= $metaNode->transform() . PHP_EOL;
       }
 
-      $nodes = $iM->getStylesheetNodes();
-      echo printObject($nodes);
       $stylesheets = $this->sortNodes($iM->getStylesheetNodes());
-      echo printObject($stylesheets);
-
-      //$stylesheets = $this->sortNodes($iM->getStylesheetNodes());
       foreach ($stylesheets as $stylesheet) {
          $output .= $stylesheet->transform() . PHP_EOL;
       }
