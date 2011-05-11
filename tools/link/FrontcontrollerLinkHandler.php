@@ -27,7 +27,7 @@ import('tools::link', 'LinkGenerator');
  *
  * Implements a LinkHandler for front controller purposes.
  *
- * @author Christian Sch�fer
+ * @author Christian Schäfer
  * @version
  * Version 0.1, 10.02.2007<br />
  * Version 0.2, 24.02.2007 (Added new method generateActionLink())<br />
@@ -86,6 +86,8 @@ class FrontcontrollerLinkHandler {
     * Version 0.7, 10.04.2011 (Replaced internal functionality by the LinkGenerator)<br />
     */
    public static function generateLink($url, array $newParams = array(), $urlRewriting = null, $encodeAmpersands = true) {
+
+      trigger_error('FrontcontrollerLinkHandler is deprecated, use the LinkGenerator instead.', E_USER_WARNING);
 
       // to enable pre-1.14 behaviour, create an url representation lazily
       $url = Url::fromString($url)->mergeQuery($newParams);

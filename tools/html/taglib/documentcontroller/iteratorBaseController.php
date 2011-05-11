@@ -33,9 +33,10 @@
 abstract class iteratorBaseController extends base_controller {
 
    /**
-    * @deprecated Use <em>getIterator()</em> instead!
+    * @deprecated Use iteratorBaseController::getIterator() instead!
     */
    protected function &__getIterator($name) {
+      trigger_error('iteratorBaseController::__getIterator() is deprecated, use iteratorBaseController::getIterator() instead!', E_USER_WARNING);
       return $this->getIterator($name);
    }
 

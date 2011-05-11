@@ -706,6 +706,7 @@ abstract class APFObject {
     * @deprecated Use APFObject::getDIServiceObject() instead!
     */
    protected function &__getDIServiceObject($namespace, $name) {
+      trigger_error('APFObject::__getDIServiceObject() is deprecated, use APFObject::getDIServiceObject() instead!', E_USER_WARNING);
       return $this->getDIServiceObject($namespace, $name);
    }
 
@@ -736,6 +737,7 @@ abstract class APFObject {
     * @deprecated Use APFObject::getServiceObject() instead!
     */
    protected function &__getServiceObject($namespace, $serviceName, $type = APFObject::SERVICE_TYPE_SINGLETON) {
+      trigger_error('APFObject::__getServiceObject() is deprecated, use APFObject::getServiceObject() instead!', E_USER_WARNING);
       return $this->getServiceObject($namespace, $serviceName, $type);
    }
 
@@ -765,6 +767,7 @@ abstract class APFObject {
     * @deprecated Use APFObject::getAndInitServiceObject() instead!
     */
    protected function &__getAndInitServiceObject($namespace, $serviceName, $initParam, $type = APFObject::SERVICE_TYPE_SINGLETON) {
+      trigger_error('APFObject::__getAndInitServiceObject() is deprecated, use APFObject::getAndInitServiceObject() instead!', E_USER_WARNING);
       return $this->getAndInitServiceObject($namespace, $serviceName, $initParam, $type);
    }
 
@@ -2191,6 +2194,7 @@ abstract class base_controller extends Document {
     * @deprecated Use base_controller::getForm() instead!
     */
    protected function &__getForm($formName) {
+      trigger_error('base_controller::__getForm() is deprecated, use base_controller::getForm() instead!', E_USER_WARNING);
       return $this->getForm($formName);
    }
 
@@ -2244,6 +2248,7 @@ abstract class base_controller extends Document {
     * @deprecated Use base_controller::getTemplate() instead!
     */
    protected function &__getTemplate($name) {
+      trigger_error('base_controller::__getTemplate() is deprecated, use base_controller::getTemplate() instead!', E_USER_WARNING);
       return $this->getTemplate($name);
    }
 

@@ -85,6 +85,8 @@ class LinkHandler {
     */
    public static function generateLink($url, array $parameter, $urlRewriting = null, $encodeAmpersands = true) {
 
+      trigger_error('LinkHandler is deprecated, use the LinkGenerator instead.', E_USER_WARNING);
+
       // to enable pre-1.14 behaviour, create an url representation lazily
       $url = Url::fromString($url)->mergeQuery($parameter);
 
