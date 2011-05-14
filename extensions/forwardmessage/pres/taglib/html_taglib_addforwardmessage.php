@@ -60,7 +60,7 @@ class html_taglib_addforwardmessage extends Document {
         $this->__extractTagLibTags();
 
         // add message that is the essence of the tag's transformed content
-        $forwardMessageMgr = &$this->__getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', 'SESSIONSINGLETON');
+        $forwardMessageMgr = &$this->getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', 'SESSIONSINGLETON');
         $forwardMessageMgr->addMessage($name, parent::transform(), $show, $group);
     }
 

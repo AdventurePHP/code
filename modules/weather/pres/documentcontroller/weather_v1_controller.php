@@ -213,7 +213,7 @@ class weather_v1_controller extends base_controller {
             return null;
          }
       } else {
-         throw new InvalidArgumentException('[weather_v1_controller::__getRSSFeed()] Attribute "rss_source" not present in "core:importdesign" tag for weather module!');
+         throw new InvalidArgumentException('[weather_v1_controller::getRSSFeed()] Attribute "rss_source" not present in "core:importdesign" tag for weather module!');
          return null;
       }
    }

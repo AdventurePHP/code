@@ -409,7 +409,7 @@
       public function setPlaceHolder($name,$value){
 
          // dynamically gather taglib name of the place holder to set
-         $tagLibClass = $this->__getClassNameByTagLibClass('placeholder');
+         $tagLibClass = $this->getClassNameByTagLibClass('placeholder');
 
          $placeHolderCount = 0;
          if(count($this->__Children) > 0){
@@ -483,7 +483,7 @@
        * @version
        * Version 0.1, 12.09.2009<br />
        */
-      protected function __getClassNameByTagLibClass($class){
+      protected function getClassNameByTagLibClass($class){
          
          foreach($this->__TagLibs as $tagLib){
             if($tagLib->getClass() == $class){

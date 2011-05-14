@@ -43,7 +43,7 @@ class html_taglib_getforwardmessages extends Document {
             $groups = explode(',', $groups);
         }
 
-        $forwardMessageMgr = &$this->__getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', 'SESSIONSINGLETON');
+        $forwardMessageMgr = &$this->getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', 'SESSIONSINGLETON');
         return implode('', $forwardMessageMgr->getMessages($groups));
     }
 

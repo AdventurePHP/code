@@ -29,7 +29,7 @@ import('extensions::postbox::biz', 'Message');
  * Represents a Postbox for a defined User. Must be loaded through PostboxFactory!
  * This is the central component of the extension.
  * @example:
- * $PostboxFactory = $this->__getDIServiceObject('extensions::postbox','PostboxFactory');
+ * $PostboxFactory = $this->getDIServiceObject('extensions::postbox','PostboxFactory');
  * $Postbox = $PostboxFactory->getPostbox($User);
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>

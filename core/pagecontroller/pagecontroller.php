@@ -813,6 +813,7 @@ abstract class APFObject {
     * @deprectated Use <em>getAttributesAsString()</em> instead!
     */
    protected function __getAttributesAsString(array $attributes, array $whiteList = array()) {
+      trigger_error('APFObject::__getAttributesAsString() is deprecated, use APFObject::getAttributesAsString() instead!', E_USER_WARNING);
       return $this->getAttributesAsString($attributes, $whiteList);
    }
 
@@ -2216,7 +2217,7 @@ abstract class base_controller extends Document {
 
       $tagLibClass = 'html_taglib_form';
       if (!class_exists($tagLibClass)) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::__getForm()] TagLib "' . $tagLibClass
+         throw new InvalidArgumentException('[' . get_class($this) . '::getForm()] TagLib "' . $tagLibClass
                  . '" is not loaded! Please add the form taglib using the <core:addtaglib /> tag',
                  E_USER_ERROR);
       }
@@ -2234,12 +2235,12 @@ abstract class base_controller extends Document {
             }
          }
       } else {
-         throw new InvalidArgumentException('[' . get_class($this) . '::__getForm()] No form object with name "'
+         throw new InvalidArgumentException('[' . get_class($this) . '::getForm()] No form object with name "'
                  . $formName . '" composed in current document for document controller "' . get_class($this)
                  . '"! Perhaps tag library html:form is not loaded in current document!', E_USER_ERROR);
       }
 
-      throw new InvalidArgumentException('[' . get_class($this) . '::__getForm()] Form with name "'
+      throw new InvalidArgumentException('[' . get_class($this) . '::getForm()] Form with name "'
               . $formName . '" cannot be found in document controller "' . get_class($this) . '"!',
               E_USER_ERROR);
    }
@@ -2285,12 +2286,12 @@ abstract class base_controller extends Document {
             }
          }
       } else {
-         throw new InvalidArgumentException('[' . get_class($this) . '::__getTemplate()] No template object with name "'
+         throw new InvalidArgumentException('[' . get_class($this) . '::getTemplate()] No template object with name "'
                  . $name . '" composed in current document for document controller "' . get_class($this)
                  . '"! Perhaps tag library html:template is not loaded in current template!', E_USER_ERROR);
       }
 
-      throw new InvalidArgumentException('[' . get_class($this) . '::__getTemplate()] Template with name "'
+      throw new InvalidArgumentException('[' . get_class($this) . '::getTemplate()] Template with name "'
               . $name . '" cannot be found!', E_USER_ERROR);
    }
 

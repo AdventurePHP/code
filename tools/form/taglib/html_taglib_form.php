@@ -222,7 +222,7 @@ class html_taglib_form extends form_control {
    public function addFormElement($elementType, $elementAttributes = array()) {
 
       // create form element
-      $objectId = $this->__createFormElement($elementType, $elementAttributes);
+      $objectId = $this->createFormElement($elementType, $elementAttributes);
 
       // add form element if id is not null
       if ($objectId !== null) {
@@ -268,7 +268,7 @@ class html_taglib_form extends form_control {
    public function addFormContentBeforeMarker($markerName, $content) {
 
       // get desired marker
-      $marker = &$this->__getMarker($markerName);
+      $marker = &$this->getMarker($markerName);
 
       // check if marker exists
       if ($marker !== null) {
@@ -302,7 +302,7 @@ class html_taglib_form extends form_control {
    public function addFormContentAfterMarker($markerName, $content) {
 
       // get desired marker
-      $marker = &$this->__getMarker($markerName);
+      $marker = &$this->getMarker($markerName);
 
       // check if marker exists
       if ($marker !== null) {
@@ -339,13 +339,13 @@ class html_taglib_form extends form_control {
    public function addFormElementBeforeMarker($markerName, $elementType, $elementAttributes = array()) {
 
       // create new form element
-      $objectId = $this->__createFormElement($elementType, $elementAttributes);
+      $objectId = $this->createFormElement($elementType, $elementAttributes);
 
       // add form element if id is not null
       if ($objectId !== null) {
 
          // get desired marker
-         $marker = &$this->__getMarker($markerName);
+         $marker = &$this->getMarker($markerName);
          if ($marker === null) {
             throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] No marker object '
                     . 'with name "' . $markerName . '" composed in current form for document controller "'
@@ -384,13 +384,13 @@ class html_taglib_form extends form_control {
    public function addFormElementAfterMarker($markerName, $elementType, $elementAttributes = array()) {
 
       // create new form element
-      $objectId = $this->__createFormElement($elementType, $elementAttributes);
+      $objectId = $this->createFormElement($elementType, $elementAttributes);
 
       // add form element if id is not null
       if ($objectId !== null) {
 
          // get desired marker
-         $marker = &$this->__getMarker($markerName);
+         $marker = &$this->getMarker($markerName);
          if ($marker === null) {
             throw new FormException('[html_taglib_form::addFormElementAfterMarker()] No marker object '
                     . 'with name "' . $markerName . '" composed in current form for document controller "'
@@ -427,7 +427,7 @@ class html_taglib_form extends form_control {
     * Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
     * Version 0.3, 12.11.2008 (Bugfix: language and context initialisation were wrong)<br />
     */
-   protected function __createFormElement($elementType, $elementAttributes = array()) {
+   protected function createFormElement($elementType, $elementAttributes = array()) {
 
       // define taglib class
       $tagLibClass = str_replace(':', '_taglib_', $elementType);
@@ -465,7 +465,7 @@ class html_taglib_form extends form_control {
          return $objectId;
       }
 
-      throw new FormException('[html_taglib_form::__createFormElement()] No form element with name "'
+      throw new FormException('[html_taglib_form::createFormElement()] No form element with name "'
               . $elementType . '" found! Maybe the tag name is misspellt or the class is not '
               . 'imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
    }
@@ -482,7 +482,7 @@ class html_taglib_form extends form_control {
     * @version
     * Version 0.1, 03.09.2008<br />
     */
-   protected function &__getMarker($markerName) {
+   protected function &getMarker($markerName) {
 
       // check, weather the form has children
       if (count($this->__Children) > 0) {

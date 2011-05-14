@@ -245,7 +245,7 @@ class html_taglib_iterator extends Document {
       }
 
       // defining no iterator item is not allowed!
-      throw new InvalidArgumentException('[html_taglib_iterator::__getIteratorItemObjectId()] '
+      throw new InvalidArgumentException('[html_taglib_iterator::getIteratorItemObjectId()] '
               . 'The definition for iterator "' . $this->getAttribute('name') . '" does not contain '
               . 'a iterator item, hence this is no legal iterator tag definition. Please refer '
               . 'to the documentation.', E_USER_ERROR);

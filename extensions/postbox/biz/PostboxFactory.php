@@ -19,7 +19,6 @@
  *  -->
  */
 
-
 /**
  * @package extensions::postbox::biz
  * @class PostboxFactory
@@ -27,49 +26,51 @@
  * This factory generates the Postbox-objects for given users.
  * Please use this Object as DIServiceObject.
  * @example:
- * $PostboxFactory = $this->__getDIServiceObject('extensions::postbox','PostboxFactory');
+ * $PostboxFactory = $this->getDIServiceObject('extensions::postbox','PostboxFactory');
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
  * @version 0.1,  22.02.2011<br />
  */
-class PostboxFactory extends APFObject{
-    /**
-     * @var GenericORRelationMapper
-     */
-    protected $ORM = null;
+class PostboxFactory extends APFObject {
 
-    /**
-     * Returns the Postbox for the given user.
-     * 
-     * @param GenericORMapperDataObject $User
-     * @return Postbox
-     */
-    public function getPostbox(GenericORMapperDataObject &$User){
-        if($this->ORM === null){
-            throw new Exception('[PostboxFactory::getPostbox()] GORM is not set! Load this Factory as DIServiceObject only!');
-        }
-        $Postbox = $this->__getServiceObject('extensions::postbox::biz', 'Postbox', 'NORMAL');
-        $Postbox->setORM($this->ORM);
+   /**
+    * @var GenericORRelationMapper
+    */
+   protected $ORM = null;
 
-        if($User->getDataComponent() === null){
-            $User->setDataComponent($this->ORM);
-        }
-        $Postbox->setUser($User);
+   /**
+    * Returns the Postbox for the given user.
+    *
+    * @param GenericORMapperDataObject $User
+    * @return Postbox
+    */
+   public function getPostbox(GenericORMapperDataObject &$User) {
+      if ($this->ORM === null) {
+         throw new Exception('[PostboxFactory::getPostbox()] GORM is not set! Load this Factory as DIServiceObject only!');
+      }
+      $Postbox = $this->getServiceObject('extensions::postbox::biz', 'Postbox', 'NORMAL');
+      $Postbox->setORM($this->ORM);
 
-        return $Postbox;
-    }
+      if ($User->getDataComponent() === null) {
+         $User->setDataComponent($this->ORM);
+      }
+      $Postbox->setUser($User);
 
-    public function init($initParam){
-    }
+      return $Postbox;
+   }
 
-    /**
-     * Used to inject the GenericORRelationMapper
-     * 
-     * @param GenericORRelationMapper $ORM
-     */
-    public function setORM(GenericORRelationMapper $ORM){
-        $this->ORM = $ORM;
-    }
+   public function init($initParam) {
+
+   }
+
+   /**
+    * Used to inject the GenericORRelationMapper
+    *
+    * @param GenericORRelationMapper $ORM
+    */
+   public function setORM(GenericORRelationMapper $ORM) {
+      $this->ORM = $ORM;
+   }
 
 }
 ?>
