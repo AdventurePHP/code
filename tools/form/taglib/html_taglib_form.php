@@ -19,36 +19,6 @@
  * -->
  */
 import('tools::form::taglib', 'form_control');
-import('tools::form::taglib', 'form_control_observer');
-
-import('tools::form::taglib', 'form_taglib_text');
-import('tools::form::taglib', 'form_taglib_select');
-import('tools::form::taglib', 'form_taglib_date');
-import('tools::form::taglib', 'form_taglib_time');
-import('tools::form::taglib', 'form_taglib_placeholder');
-import('tools::form::taglib', 'form_taglib_password');
-import('tools::form::taglib', 'form_taglib_hidden');
-import('tools::form::taglib', 'form_taglib_checkbox');
-import('tools::form::taglib', 'form_taglib_radio');
-import('tools::form::taglib', 'form_taglib_file');
-import('tools::form::taglib', 'form_taglib_area');
-import('tools::form::taglib', 'form_taglib_multiselect');
-import('tools::form::taglib', 'form_taglib_getstring');
-import('tools::form::taglib', 'form_taglib_addtaglib');
-import('tools::form::taglib', 'form_taglib_marker');
-
-import('tools::form::taglib', 'form_taglib_button');
-import('tools::form::taglib', 'form_taglib_reset');
-import('tools::form::taglib', 'form_taglib_imagebutton');
-
-import('tools::form::taglib', 'form_taglib_addfilter');
-import('tools::form::taglib', 'form_taglib_addvalidator');
-import('tools::form::taglib', 'form_taglib_listener');
-import('tools::form::taglib', 'form_taglib_error');
-import('tools::form::taglib', 'form_taglib_success');
-
-import('tools::form::taglib', 'form_taglib_timecaptcha');
-import('tools::form::taglib', 'form_taglib_csrfhash');
 
 /**
  * @package tools::form::taglib
@@ -172,6 +142,16 @@ class html_taglib_form extends form_control {
                          Registry::retrieve('apf::tools', 'FormDefaultMethod', self::$METHOD_POST_VALUE_NAME)
                  )
          );
+      }
+
+      // import dependent tags a little bit different, to increase performance up to factor 10!
+      foreach ($this->__TagLibs as $taglib) {
+         if (strpos($this->__Content, '<' . $taglib->getPrefix() . ':' . $taglib->getClass()) !== false) {
+            import(
+                    $taglib->getNamespace(),
+                    $this->getTaglibClassName($taglib->getPrefix(), $taglib->getClass())
+            );
+         }
       }
 
       $this->__extractTagLibTags();

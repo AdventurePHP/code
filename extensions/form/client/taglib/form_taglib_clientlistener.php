@@ -19,7 +19,6 @@
  *  -->
  */
 
-
 /**
  *  @package extensions::form::client
  *  @class form_taglib_clientlistener
@@ -42,7 +41,6 @@ class form_taglib_clientlistener extends form_control {
     public function form_taglib_clientlistener() {
         $this->__TagLibs[] = new TagLib('tools::form::taglib','listener','placeholder');
         $this->__TagLibs[] = new TagLib('tools::form::taglib','listener','getstring');
-        // end function
     }
 
     /**
