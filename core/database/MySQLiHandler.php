@@ -384,7 +384,8 @@ class MySQLiHandler extends AbstractDatabaseHandler {
 
       $binds = array();
       foreach ($params as $key => $DUMMY) {
-         $binds[] = $params[$key];
+         // Bug 694: bind via reference to avoid "expected to be a reference, value given in" errors.
+         $binds[] = &$params[$key];
       }
       call_user_func_array(
               array(&$query, 'bind_param'),
