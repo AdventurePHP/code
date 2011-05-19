@@ -689,10 +689,18 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
       $query = $url->getQuery();
       $queryString = '';
       foreach ($query as $name => $value) {
-         if (!empty($queryString) && !empty($value)) {
-            $queryString .= '&';
-         }
-         if (!empty($value)) {
+         if (empty($value)) {
+            // incluce actions that may have empty values
+            if (strpos($name, '-action') !== false) {
+               if (!empty($queryString)) {
+                  $queryString .= '&';
+               }
+               $queryString .= $name;
+            }
+         } else {
+            if (!empty($queryString)) {
+               $queryString .= '&';
+            }
             $queryString .= $name . '=' . $value;
          }
       }
@@ -712,7 +720,7 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
       if ($this->getEncodeAmpersands()) {
          return str_replace('&', '&amp;', $resultUrl);
       }
-      
+
       return $resultUrl;
    }
 
