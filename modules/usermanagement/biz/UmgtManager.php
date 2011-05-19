@@ -468,16 +468,16 @@ class UmgtManager extends APFObject {
     *
     * Returns a user domain object.
     *
-    * @param int $userID id of the desired user
+    * @param int $userId id of the desired user
     * @return GenericORMapperDataObject[] The user domain object.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     */
-   public function loadUserByID($userID) {
+   public function loadUserByID($userId) {
       $oRM = &$this->getORMapper();
-      return $oRM->loadObjectByID('User', $userID);
+      return $oRM->loadObjectByID('User', $userId);
    }
 
    /**
@@ -663,8 +663,9 @@ class UmgtManager extends APFObject {
     * @version
     * Version 0.1, 23.06.2009<br />
     */
-   protected function __getDisplayName($user) {
-      return $user->getProperty('LastName') . ', ' . $user->getProperty('FirstName');
+   protected function __getDisplayName(GenericORMapperDataObject $user) {
+      $displayName = $user->getProperty('DisplayName');
+      return empty($displayName) ? $user->getProperty('LastName') . ', ' . $user->getProperty('FirstName') : $user->getProperty('DisplayName');
    }
 
    /**
