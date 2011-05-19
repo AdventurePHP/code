@@ -341,7 +341,8 @@ final class Url {
       $params = array();
       foreach ($parts as $part) {
          $tmp = explode('=', $part);
-         if (isset($tmp[1])) {
+         // include only param couples and ensure to exclude action definitions
+         if (isset($tmp[1]) && strpos($tmp[0], '-action') === false) {
             $params[$tmp[0]] = $tmp[1];
          }
       }
