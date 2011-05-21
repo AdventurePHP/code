@@ -95,6 +95,11 @@
        */
       private function parseConfig($entries) {
 
+         // prevent errors with foreach loop
+         if ($entries === false) {
+            return null;
+         }
+
          $config = new IniConfiguration();
          foreach ($entries as $section => $entries) {
             $config->setSection($section, $this->parseSection($entries));

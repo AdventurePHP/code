@@ -33,12 +33,28 @@
    interface Configuration {
 
       /**
-       * @return string
+       * @public
+       *
+       * Returns the desired configuration key's value.
+       * 
+       * @return string The desired configuration value.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.10.2010<br />
        */
       function getValue($name);
 
       /**
-       * @return Configuration
+       * @public
+       *
+       * Returns the desired configuration section.
+       *
+       * @return Configuration The desired configuration section.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.10.2010<br />
        */
       function getSection($name);
 
@@ -47,16 +63,28 @@
       function setSection($name, Configuration $section);
 
       /**
+       * @public
+       * 
        * Enumerates the names of the current configuration keys.
        *
-       * @return string[] The names of the config keys.
+       * @return array The names of the config keys.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.10.2010<br />
        */
       function getValueNames();
 
       /**
+       * @public
+       * 
        * Enumerates the names of the current configuration sections.
        *
-       * @return string[] The names of the section keys.
+       * @return array The names of the section keys.
+       *
+       * @author Christian Achatz
+       * @version
+       * Version 0.1, 28.10.2010<br />
        */
       function getSectionNames();
 
