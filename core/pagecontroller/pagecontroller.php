@@ -867,7 +867,7 @@ abstract class APFObject {
  * @version
  * Version 0.1, 28.12.2006<br />
  */
-final class TagLib extends APFObject {
+final class TagLib {
 
    /**
     * @protected
