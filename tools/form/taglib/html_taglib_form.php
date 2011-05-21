@@ -430,16 +430,31 @@ class html_taglib_form extends form_control {
    protected function createFormElement($elementType, $elementAttributes = array()) {
 
       // define taglib class
-      $tagLibClass = str_replace(':', '_taglib_', $elementType);
+      $colon = strpos($elementType, ':');
+      $prefix = substr($elementType, 0, $colon);
+      $class = substr($elementType, $colon + 1);
+      $taglibClass = $this->getTaglibClassName($prefix, $class);
+
+      // lazily import APF-internal taglib class. this is necessary, since taglibs are
+      // not statically included as of 1.14 but loaded dynamically due to performance
+      // reasons!
+      if (!class_exists($taglibClass)) {
+         foreach ($this->__TagLibs as $taglib) {
+            /* @var $taglib TagLib */
+            if ($taglib->getPrefix() === $prefix && $taglib->getClass() === $class) {
+               import($taglib->getNamespace(), $taglibClass);
+            }
+         }
+      }
 
       // check, if class exists
-      if (class_exists($tagLibClass)) {
+      if (class_exists($taglibClass)) {
 
          // generate object id
          $objectId = XmlParser::generateUniqID();
 
          // create new form element
-         $formObject = new $tagLibClass();
+         $formObject = new $taglibClass();
 
          // add standard and user defined attributes
          $formObject->setObjectId($objectId);
@@ -448,7 +463,6 @@ class html_taglib_form extends form_control {
 
          foreach ($elementAttributes as $key => $value) {
             $formObject->setAttribute($key, $value);
-            // end foreach
          }
 
          // add form element to DOM tree and call the onParseTime() method
@@ -499,16 +513,11 @@ class html_taglib_form extends form_control {
                }
             }
          }
-
-         // return null, if no child was found (with a quick hack)
-         $null = null;
-         return $null;
-      } else {
-
-         // return null (with a quick hack)
-         $null = null;
-         return $null;
       }
+
+      // return null, if no child was found (with a quick hack)
+      $null = null;
+      return $null;
    }
 
    /**
