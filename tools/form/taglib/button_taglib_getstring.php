@@ -22,14 +22,24 @@ import('tools::form::taglib', 'form_getstring');
 
 /**
  * @package tools::form::taglib
- * @class form_taglib_getstring
+ * @class button_taglib_getstring
  *
- * Implements the taglib for the &lt;form:getstring /&gt; tag.
+ * Implements a taglib that let's you easily label your button within forms. This makes
+ * usage of the document controller obsolete.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 07.11.2007<br />
+ * Version 0.1, 21.05.2011<br />
  */
-class form_taglib_getstring extends form_getstring {
+class button_taglib_getstring extends form_getstring {
+
+   public function onAfterAppend() {
+      $this->getParentObject()->setAttribute('value', parent::transform());
+   }
+
+   public function transform() {
+      return '';
+   }
+
 }
 ?>
