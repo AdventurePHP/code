@@ -959,14 +959,14 @@ class GenericORRelationMapper extends GenericORMapper {
       $fatherObjectId = $this->getRelationIdColumn($fatherObjectName, $relationName, self::RELATION_SOURCE);
       $childObjectId = $this->getRelationIdColumn($childObjectName, $relationName, self::RELATION_TARGET);
 
-      echo $select = 'SELECT * FROM `' . $this->RelationTable[$relationName]['Table'] . '`
+      $select = 'SELECT * FROM `' . $this->RelationTable[$relationName]['Table'] . '`
                     WHERE
                        `' . $fatherObjectId . '` = \'' . $father->getObjectId() . '\'
                        AND
                        `' . $childObjectId . '` = \'' . $child->getObjectId() . '\';';
       $result = $this->DBDriver->executeTextStatement($select, $this->logStatements);
 
-      // return if objects are associated
+      // return if objects are composed
       return ($this->DBDriver->getNumRows($result) > 0) ? true : false;
    }
 
