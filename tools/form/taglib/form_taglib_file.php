@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -20,6 +19,7 @@
  * -->
  */
 import('tools::form::model', 'FileModel');
+import('tools::form::taglib', 'form_taglib_text');
 
 /**
  * @package tools::form::taglib
