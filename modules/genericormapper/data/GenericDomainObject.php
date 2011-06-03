@@ -41,19 +41,16 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * To set the member, use setDataComponent().
     */
    private $dataComponent = null;
-
    /**
     * private
     * @var string Name of the object (see mapping table!).
     */
    protected $objectName = null;
-
    /**
     * @private
     * @var string[] Properties of a domain object.
     */
    protected $properties = array();
-   
    /**
     * @private
     * @var GenericORMapperDataObject[] Objects related to the current object. Sorted by composition or association key.
@@ -184,7 +181,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
 
       // return objects that are related to the current object
       return $this->dataComponent->loadRelatedObject($this, $relationName, $criterion);
-
    }
 
    /**
@@ -462,7 +458,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     */
    public function toString() {
 
-      $stringRep = (string) '[GenericDomainObject ';
+      $stringRep = (string) '[' . get_class($this) . ' ';
 
       $properties = array_merge(array('ObjectName' => $this->getObjectName()), $this->properties);
 
@@ -558,5 +554,4 @@ class GenericDomainObject implements GenericORMapperDataObject {
    }
 
 }
-
 ?>
