@@ -31,7 +31,7 @@
  * <pre>
  * &lt;umgt:template condition="..." [options=""]&gt;
  *    ...
- * &lt;/umgt:template/gt;
+ * &lt;/umgt:template/&gt;
  * </pre>
  * The functionality of the tag is very close to the <em>&lt;html:template/&gt;</em> tag but
  * displays it's content only in case a condition matches.
