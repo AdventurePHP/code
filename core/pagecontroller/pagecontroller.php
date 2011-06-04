@@ -177,6 +177,10 @@ function import($namespace, $file) {
  *
  * Creates a print_r() output of the given object, array, string or integer.
  *
+ * @param object $o The object to display.
+ * @param boolean $transformHtml In case the HTML characters should be escaped (true) or not (false).
+ * @return The object's string representation.
+ *
  * @author Christian Schäfer
  * @version
  * Version 0.1, 04.02.3006<br />
@@ -414,6 +418,7 @@ final class XmlParser {
     *
     * Generates a uniqe id, that is used as the object id for the APF DOM tree.
     *
+    * @param boolean $md5 Indicates whether to use an md5 hash (true) or not (false).
     * @return string The unique id used as GUID for the APF DOM tree.
     *
     * @author Christian Schäfer
@@ -604,8 +609,8 @@ abstract class APFObject {
     *
     * Sets an object's attribute.
     *
-    * @param string $name Name des Attributes, dessen Wert zur�ckgeliefert werden soll.
-    * @param string $value Wert des Attributes, dessen Wert gesetzt werden soll.
+    * @param string $name Name of the attribute.
+    * @param string $value Value of the attribute.
     *
     * @author Christian Schäfer
     * @version
@@ -650,7 +655,7 @@ abstract class APFObject {
     *
     * Sets an object's attributes.
     *
-    * @param string[] $attributes The attributes list.
+    * @param array $attributes The attributes list.
     *
     * @author Christian Schäfer
     * @version
@@ -748,14 +753,14 @@ abstract class APFObject {
     *
     * @param string $namespace Namespace of the service object (currently ignored).
     * @param string $serviceName Name of the service object (=class name).
-    * @param string $InitParam The initialization parameter.
+    * @param string $initParam The initialization parameter.
     * @param string $type The initializing type (see service manager for details).
     * @return APFObject The desired service object.
     *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 29.03.2007<br />
-    * Version 0.2, 22.04.2007 (Added language initializaton of the service manager)<br />
+    * Version 0.2, 22.04.2007 (Added language initialization of the service manager)<br />
     * Version 0.3, 24.02.2008 (Added the service type param)<br />
     */
    protected function &getAndInitServiceObject($namespace, $serviceName, $initParam, $type = APFObject::SERVICE_TYPE_SINGLETON) {
@@ -823,8 +828,8 @@ abstract class APFObject {
     * Creates a string representation of the given attributes list, using a
     * white list to especially include attributes.
     *
-    * @param string[] $attributes The list of attributes to convert to an xml string.
-    * @param string[] $whiteList  The list of attributes, the string may contain.
+    * @param array $attributes The list of attributes to convert to an xml string.
+    * @param array $whiteList  The list of attributes, the string may contain.
     * @return string The xml attributes string.
     *
     * @author Christian Achatz
@@ -1031,7 +1036,6 @@ class Page extends APFObject {
     *
     * Transforms the APF DOM tree of the current page. Returns the content of the transformed document.
     *
-    * @param boolean Apply this optional parameter, in case the output filter chain should not be executed.
     * @return string The content of the transformed page
     *
     * @author Christian Achatz
@@ -1130,7 +1134,7 @@ class Document extends APFObject {
     *
     * Injects the parent node of the current APF object.
     *
-    * @param APFObject $parentObject The parent node.
+    * @param Document $parentObject The parent node.
     *
     * @author Christian Achatz
     * @version
@@ -1566,7 +1570,6 @@ class Document extends APFObject {
     * @public
     * @abstract
     *
-    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 28.12.2006<br />
@@ -1788,6 +1791,8 @@ class core_taglib_addtaglib extends Document {
     * Implements the Document's transform() method. Returns an empty string, because the addtaglib
     * tag should not generate output.
     *
+    * @return string Nothing, since this tag produces no output.
+    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 21.04.2007<br />
@@ -1816,6 +1821,8 @@ class html_taglib_placeholder extends Document {
     *
     * Implements the transform() method. Returns the content of the tag, that is set by a
     * document controller using the base_controller's setPlaceHolder() method.
+    *
+    * @return The content of the place holder.
     *
     * @author Christian Schäfer
     * @version
@@ -1888,8 +1895,8 @@ class html_taglib_template extends Document {
     *
     * API method to set a place holder's content within a document controller.
     *
-    * @param string $Name name of the place holder
-    * @param string $Value value of the place holder
+    * @param string $name name of the place holder.
+    * @param string $value value of the place holder.
     *
     * @author Christian Achatz
     * @version
@@ -1944,6 +1951,8 @@ class html_taglib_template extends Document {
     * $template->setPlaceHolder('URL','http://adventure-php-framework.org');
     * echo $template->transformTemplate();
     * </pre>
+    *
+    * @return string The content of the transformed template.
     *
     * @author Christian Achatz
     * @version
@@ -2026,6 +2035,8 @@ class template_taglib_placeholder extends Document {
     *
     * Implements the transform() method. Returns the content of the tag, that is set by a
     * document controller using the html_taglib_template's setPlaceHolder() method.
+    *
+    * @return string The content of the place holder.
     *
     * @author Christian Achatz
     * @version
