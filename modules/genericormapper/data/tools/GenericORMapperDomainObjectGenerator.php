@@ -22,21 +22,21 @@ import('modules::genericormapper::data', 'BaseMapper');
 
 /**
  * @package modules::genericormapper::data::tools
- * @class GenericORMapperServiceObjectGenerator
+ * @class GenericORMapperDomainObjectGenerator
  *
- * Automatically generates ServiceObjects for the GenericORMapper
- * which are defined in <em>*_serviceobjects.ini</em>.
+ * Automatically generates DomainObjects for the GenericORMapper
+ * which are defined in <em>*_domainobjects.ini</em>.
  *
  * @author Ralf Schubert
  * @version 0.1, 15.01.2011<br />
  */
-class GenericORMapperServiceObjectGenerator extends BaseMapper {
+class GenericORMapperDomainObjectGenerator extends BaseMapper {
 
    protected $DefaultBaseNamespace = 'modules::genericormapper::data';
    protected $DefaultBaseClass = 'GenericDomainObject';
 
    /**
-    * Generates all service objects which are defined in *_serviceobjects.ini
+    * Generates all service objects which are defined in *_domainobjects.ini
     *
     * @param string $configNamespace namespace, where the desired mapper configuration is located
     * @param string $configNameAffix name affix of the object and relation definition files

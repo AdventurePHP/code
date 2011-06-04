@@ -350,7 +350,7 @@ class BaseMapper extends APFObject {
       $configIsPresent = true;
       // get object configuration if there is one
       try {
-         $serviceObjectsConfig = $this->getConfiguration($this->configNamespace, $this->configNameAffix . '_serviceobjects.' . $this->getConfigFileExtension());
+         $serviceObjectsConfig = $this->getConfiguration($this->configNamespace, $this->configNameAffix . '_domainobjects.' . $this->getConfigFileExtension());
       } catch (ConfigurationException $e) {
          $configIsPresent = false;
       }
@@ -522,11 +522,11 @@ class BaseMapper extends APFObject {
       $t->start('BaseMapper::addServiceObjectsConfiguration()');
 
       // add config, if not already included
-      $cacheKey = md5($configNamespace . $configNameAffix . '_serviceobjects');
+      $cacheKey = md5($configNamespace . $configNameAffix . '_domainobjects');
       if (!isset($this->importedConfigCache[$cacheKey])) {
 
          // import and merge config
-         $addConfig = $this->getConfiguration($configNamespace, $configNameAffix . '_serviceobjects.' . $this->getConfigFileExtension());
+         $addConfig = $this->getConfiguration($configNamespace, $configNameAffix . '_domainobjects.' . $this->getConfigFileExtension());
 
          // extract configuration to support pre 1.13 GORM config
          $addObjects = array();
