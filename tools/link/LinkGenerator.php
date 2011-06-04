@@ -22,9 +22,9 @@
 /**
  * @package tools::link
  * @class UrlFormatException
- * 
+ *
  * Represents an exception that indicated illegal urls.
- * 
+ *
  * @author Christian Achatz
  * @version
  * Version 0.1, 08.04.2011<br />
@@ -57,7 +57,7 @@ final class Url {
     * @public
     *
     * Constructs a url for link generation purposes.
-    * 
+    *
     * @param string $scheme The url's scheme (e.g. http, ftp).
     * @param string $host The url's host (e.g. example.com).
     * @param int $port The url's port (e.g. 80, 443).
@@ -195,7 +195,7 @@ final class Url {
     * @public
     *
     * Let's you inject the desired amount of request parameters.
-    * 
+    *
     * @param array $query The query parameters to inject.
     * @return Url This object for further usage.
     *
@@ -210,7 +210,7 @@ final class Url {
 
    /**
     * @public
-    * 
+    *
     * This method let's you merge a list of parameters into the current url's
     * list. Setting a query parameter's value to <em>null</em> indicates to
     * delete the parameter within the LinkScheme implementation.
@@ -231,7 +231,23 @@ final class Url {
 
    /**
     * @public
-    * 
+    *
+    * This method resets the list of parameters.
+    *
+    * @return Url This object for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.06.2011<br />
+    */
+   public function resetQuery() {
+      $this->query = array();
+      return $this;
+   }
+
+   /**
+    * @public
+    *
     * This method can be used to set a query parameter. Setting it's value
     * to <em>null</em> indicates to delete the parameter within the
     * LinkScheme implementation.
@@ -269,7 +285,7 @@ final class Url {
       $parts = @parse_url($url);
       if ($parts === false || !is_array($parts)) {
          throw new UrlFormatException('The given url "' . $url
-                 . '" cannot be parsed due to semantical errors!');
+                                      . '" cannot be parsed due to semantical errors!');
       }
 
       // resolve missing parameters
@@ -523,7 +539,7 @@ abstract class BasicLinkScheme {
     *
     * Creates a base url string including scheme, host and port in case
     * it differs from the default ports.
-    * 
+    *
     * @param Url $url The current url representation.
     * @return string The formatted base url.
     *
@@ -581,7 +597,8 @@ abstract class BasicLinkScheme {
       }
 
       if (count($actionUrlRepresentation) > 0) {
-         $delimiter = $urlRewriting === true ? self::REWRITE_PARAM_TO_ACTION_DELIMITER : self::DEFAULT_PARAM_TO_ACTION_DELIMITER;
+         $delimiter = $urlRewriting === true ? self::REWRITE_PARAM_TO_ACTION_DELIMITER
+               : self::DEFAULT_PARAM_TO_ACTION_DELIMITER;
          return implode($delimiter, $actionUrlRepresentation);
       }
       return '';
@@ -611,7 +628,7 @@ abstract class BasicLinkScheme {
     * @protected
     *
     * Returns an url identifier that adresses the action described by the applied parameters.
-    * 
+    *
     * @param string $namespace The namespace of the action.
     * @param string $name The name of the action.
     * @param boolean $urlRewriting True for activated url rewriting, false instead.
@@ -622,7 +639,7 @@ abstract class BasicLinkScheme {
     * Version 0.1, 07.04.2011<br />
     */
    protected function formatActionIdentifier($namespace, $name, $urlRewriting) {
-      return str_replace('::', '_', $namespace) . '-action' . ($urlRewriting === true ? '/' : ':' ) . $name;
+      return str_replace('::', '_', $namespace) . '-action' . ($urlRewriting === true ? '/' : ':') . $name;
    }
 
    /**
@@ -726,10 +743,10 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
 
    public function formatActionLink(Url $url, $namespace, $name, array $params = array()) {
       return $this->formatLink(
-              $url->setQueryParameter(
-                      $this->formatActionIdentifier($namespace, $name, false),
-                      $this->formatActionParameters($params, false)
-      ));
+         $url->setQueryParameter(
+            $this->formatActionIdentifier($namespace, $name, false),
+            $this->formatActionParameters($params, false)
+         ));
    }
 
 }
@@ -823,10 +840,10 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
 
    public function formatActionLink(Url $url, $namespace, $name, array $params = array()) {
       return $this->formatLink(
-              $url->setQueryParameter(
-                      $this->formatActionIdentifier($namespace, $name, true),
-                      $this->formatActionParameters($params, true)
-      ));
+         $url->setQueryParameter(
+            $this->formatActionIdentifier($namespace, $name, true),
+            $this->formatActionParameters($params, true)
+         ));
    }
 
 }
