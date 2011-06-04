@@ -441,6 +441,7 @@ class Frontcontroller extends APFObject {
     *
     * @param string $namespace Namespace of the templates.
     * @param string $template Name of the templates.
+    * @return The content of the transformed page.
     *
     * @author Christian Achatz
     * @version
@@ -456,9 +457,6 @@ class Frontcontroller extends APFObject {
     * Version 1.0, 11.12.2008 (Switched to the new input filter concept)<br />
     */
    public function start($namespace, $template) {
-
-      // set URLRewrite
-      $urlRewriting = Registry::retrieve('apf::core', 'URLRewriting');
 
       // check if the context is set. If not, use the current namespace
       if ($this->getContext() === null) {
@@ -620,7 +618,7 @@ class Frontcontroller extends APFObject {
     *
     * @param string $namespace Namespace of the action.
     * @param string $name Name of the action (section key of the config file).
-    * @param string[] $params (Input-)params of the action.
+    * @param array $params (Input-)params of the action.
     * @throws InvalidArgumentException In case the action cannot be found within the appropriate
     * configuration or the action implementation classes are not available.
     *
