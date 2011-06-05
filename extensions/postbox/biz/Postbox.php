@@ -29,7 +29,7 @@ import('extensions::postbox::biz', 'Message');
  * Represents a Postbox for a defined User. Must be loaded through PostboxFactory!
  * This is the central component of the extension.
  * @example:
- * $PostboxFactory = $this->getDIServiceObject('extensions::postbox','PostboxFactory');
+ * $PostboxFactory = $this->getServiceObject('extensions::postbox::biz','PostboxFactory');
  * $Postbox = $PostboxFactory->getPostbox($User);
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
@@ -48,17 +48,24 @@ class Postbox extends APFObject {
     /**
      * Set's the data component.
      * @param GenericORRelationMapper $ORM
+     * @return Postbox Return's itself.
      */
     public function setORM(GenericORRelationMapper &$ORM) {
         $this->ORM = $ORM;
+        return $this;
     }
 
     /**
      * Set's the user who's postbox this will be.
      * @param GenericORMapperDataObject $User
+     * @return Postbox Return's itself.
      */
     public function setUser(GenericORMapperDataObject &$User) {
+        if ($User->getDataComponent() === null) {
+            $User->setDataComponent($this->ORM);
+        }
         $this->User = $User;
+        return $this;
     }
 
     /**
@@ -276,11 +283,13 @@ class Postbox extends APFObject {
      * add the current user to any channel anymore.
      * 
      * @param GenericORMapperDataObject $User The user which should be blocked.
+     * @return Postbox Return's itself.
      */
     public function addUserToBlacklist(GenericORMapperDataObject &$User){
         if(!$this->hasUserOnBlacklist($User)){
             $this->ORM->createAssociation('User2BlockedUser', $this->User, $User);
         }
+        return $this;
     }
 
     /**

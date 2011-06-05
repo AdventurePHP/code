@@ -25,7 +25,7 @@
  * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!
  * You can change class "Message" which will extend this base-class.
  */
-import('extensions::postbox::biz::abstractdomainobjects', 'AbstractMessage');
+import('extensions::postbox::biz', 'AbstractMessage');
 class MessageBase extends AbstractMessage {
 
     public function __construct($objectName = null){

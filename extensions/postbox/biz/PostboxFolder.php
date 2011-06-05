@@ -25,7 +25,7 @@
  * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!
  * You can change class "PostboxFolder" which will extend this base-class.
  */
-import('extensions::postbox::biz::abstractdomainobjects', 'AbstractPostboxFolder');
+import('extensions::postbox::biz', 'AbstractPostboxFolder');
 class PostboxFolderBase extends AbstractPostboxFolder {
 
     public function __construct($objectName = null){

@@ -25,7 +25,7 @@
  * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!
  * You can change class "RecipientList" which will extend this base-class.
  */
-import('extensions::postbox::biz::abstractdomainobjects', 'AbstractRecipientList');
+import('extensions::postbox::biz', 'AbstractRecipientList');
 class RecipientListBase extends AbstractRecipientList {
 
     public function __construct($objectName = null){

@@ -24,19 +24,11 @@
  * @class PostboxFactory
  *
  * This factory generates the Postbox-objects for given users.
- * Please use this Object as DIServiceObject.
- * @example:
- * $PostboxFactory = $this->getDIServiceObject('extensions::postbox','PostboxFactory');
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
  * @version 0.1,  22.02.2011<br />
  */
 class PostboxFactory extends APFObject {
-
-   /**
-    * @var GenericORRelationMapper
-    */
-   protected $ORM = null;
 
    /**
     * Returns the Postbox for the given user.
@@ -45,31 +37,8 @@ class PostboxFactory extends APFObject {
     * @return Postbox
     */
    public function getPostbox(GenericORMapperDataObject &$User) {
-      if ($this->ORM === null) {
-         throw new Exception('[PostboxFactory::getPostbox()] GORM is not set! Load this Factory as DIServiceObject only!');
-      }
-      $Postbox = $this->getServiceObject('extensions::postbox::biz', 'Postbox', 'NORMAL');
-      $Postbox->setORM($this->ORM);
-
-      if ($User->getDataComponent() === null) {
-         $User->setDataComponent($this->ORM);
-      }
-      $Postbox->setUser($User);
-
-      return $Postbox;
-   }
-
-   public function init($initParam) {
-
-   }
-
-   /**
-    * Used to inject the GenericORRelationMapper
-    *
-    * @param GenericORRelationMapper $ORM
-    */
-   public function setORM(GenericORRelationMapper $ORM) {
-      $this->ORM = $ORM;
+      $Postbox = &$this->getDIServiceObject('extensions::postbox','Postbox');
+      return $Postbox->setUser($User);
    }
 
 }

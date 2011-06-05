@@ -25,7 +25,7 @@
  * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!
  * You can change class "MessageChannel" which will extend this base-class.
  */
-import('extensions::postbox::biz::abstractdomainobjects', 'AbstractMessageChannel');
+import('extensions::postbox::biz', 'AbstractMessageChannel');
 class MessageChannelBase extends AbstractMessageChannel {
 
     public function __construct($objectName = null){
