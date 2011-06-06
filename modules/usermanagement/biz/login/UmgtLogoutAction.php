@@ -2,7 +2,7 @@
 
 import('tools::request', 'RequestHandler');
 
-class UmgtLoginAction extends AbstractFrontcontrollerAction {
+class UmgtLogoutAction extends AbstractFrontcontrollerAction {
 
    public function run() {
       $logout = $this->getInput()->getAttribute('logout', 'false');
