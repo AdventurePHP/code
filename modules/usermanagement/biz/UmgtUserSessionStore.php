@@ -1,33 +1,145 @@
 <?php
 
+/**
+ * <!--
+ * This file is part of the adventure php framework (APF) published under
+ * http://adventure-php-framework.org.
+ *
+ * The APF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The APF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ * -->
+ */
+
+/**
+ * @package modules::usermanagement::biz
+ * @class UmgtUserSessionStore
+ *
+ * Stores the user information for each application identifier separately to
+ * support multiple applications being executed at one context/application.
+ * <p/>
+ * In order to use the store within your application, please retrieve the store
+ * using the service manager:
+ * <pre>
+ * $store = &$this->getServiceObject(
+ *                         'modules::usermanagement::biz',
+ *                         'UmgtUserSessionStore',
+ *                         APFObject::SERVICE_TYPE_SESSIONSINGLETON);
+ * </pre>
+ * Otherwise, the scope of the object is not "session".
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 01.06.2011<br />
+ */
 class UmgtUserSessionStore extends APFObject {
 
    /**
-    * @var GenericDomainObject The current user;
+    * @var array The application-key-dependent session store.
     */
-   private $user;
+   private $store;
 
    /**
+    * @public
+    *
+    * Let's you retrieve the current user by a given application identifier. This key
+    * represents the application you want to store your login information.
+    *
+    * @param string $applicationIdentifier Identifies the application.
     * @return GenericDomainObject The currently logged-in user.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.06.2011<br />
     */
-   public function getUser() {
-      return $this->user;
+   public function getUser($applicationIdentifier) {
+      if (empty($applicationIdentifier)) {
+         throw new InvalidArgumentException($this->getExceptionMessage());
+      }
+      return isset($this->store[$applicationIdentifier]) ? $this->store[$applicationIdentifier] : null;
    }
 
-   public function setUser(GenericDomainObject $user) {
-      $this->user = $user;
+   /**
+    * @public
+    *
+    * Let's you store the current user by a given application identifier. This key
+    * represents the application you want to store your login information.
+    *
+    * @param string $applicationIdentifier Identifies the application.
+    * @param GenericDomainObject $user The user to store within the session.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.06.2011<br />
+    */
+   public function setUser($applicationIdentifier, GenericDomainObject $user) {
+      if (empty($applicationIdentifier)) {
+         throw new InvalidArgumentException($this->getExceptionMessage());
+      }
+      $this->store[$applicationIdentifier] = $user;
    }
 
-   public function isLoggedIn() {
-      return $this->user !== null;
+   /**
+    * @public
+    *
+    * Indicates, whether the user is logged in for the current application.
+    *
+    * @param string $applicationIdentifier Identifies the application.
+    * @return boolean True in case the user is logged in, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.06.2011<br />
+    */
+   public function isLoggedIn($applicationIdentifier) {
+      return $this->getUser($applicationIdentifier) !== null;
    }
 
-   public function isLoggedOut() {
-      return!$this->isLoggedIn();
+   /**
+    * @public
+    *
+    * Indicates, whether the user is logged out for the current application.
+    *
+    * @param string $applicationIdentifier Identifies the application.
+    * @return boolean True in case the user is logged out, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.06.2011<br />
+    */
+   public function isLoggedOut($applicationIdentifier) {
+      return !$this->isLoggedIn($applicationIdentifier);
    }
 
-   public function logout() {
-      $this->user = null;
+   /**
+    * @public
+    *
+    * Logs out the user for the current application.
+    *
+    * @param string $applicationIdentifier Identifies the application.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.06.2011<br />
+    */
+   public function logout($applicationIdentifier) {
+      if (empty($applicationIdentifier)) {
+         throw new InvalidArgumentException($this->getExceptionMessage());
+      }
+      unset($this->store[$applicationIdentifier]);
+   }
+
+   private function getExceptionMessage() {
+      return 'Application identifier must not be null or empty! Please check you application setup.';
    }
 
 }

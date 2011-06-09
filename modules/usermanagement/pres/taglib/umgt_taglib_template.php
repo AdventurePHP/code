@@ -53,10 +53,14 @@ class umgt_taglib_template extends html_taglib_template {
       $condSet = &$this->getServiceObject('modules::usermanagement::pres::condition', 'UserDependentContentConditionSet');
       /* @var $condSet UserDependentContentConditionSet */
 
-      if ($condSet->conditionMatches($this->getAttribute('condition'), $this->getAttribute('options'))) {
+      if ($condSet->conditionMatches($this->getApplicationIdentifier(), $this->getAttribute('condition'), $this->getAttribute('options'))) {
          return parent::transform();
       }
       return '';
+   }
+
+   private function getApplicationIdentifier() {
+      return $this->getAttribute('app-ident', $this->getContext());
    }
 
 }

@@ -70,9 +70,23 @@ class UserDependentContentConditionSet extends APFObject {
       return $this;
    }
 
-   public function conditionMatches($conditionKey, $options) {
+   /**
+    * @public
+    *
+    * Executes the conditions and evaluates the results.
+    *
+    * @param string $applicationIdentifier The identifier of the current application concerning the login state.
+    * @param string $conditionKey The current condition.
+    * @param string $options The options to apply to the conditions.
+    * @return bool True, in case one of the condition matches, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 01.06.2011
+    */
+   public function conditionMatches($applicationIdentifier, $conditionKey, $options) {
 
-      $user = $this->getUserSessionStore()->getUser();
+      $user = $this->getUserSessionStore()->getUser($applicationIdentifier);
 
       if ($user !== null) {
          // inject data conponent to be able to retrieve further parameters (e.g. related objects)

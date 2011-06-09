@@ -43,7 +43,8 @@ class umgt_login_controller extends base_controller {
 
       $sessionStore = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFObject::SERVICE_TYPE_SESSIONSINGLETON);
       /* @var $sessionStore UmgtUserSessionStore */
-      $user = $sessionStore->getUser();
+      $appIdent = $this->getApplicationIdentifier();
+      $user = $sessionStore->getUser($appIdent);
 
       if ($user === null) {
          $form = &$this->getForm('login');
@@ -70,11 +71,11 @@ class umgt_login_controller extends base_controller {
                   $form->transformOnPlace();
                } else {
                   // store user
-                  $sessionStore->setUser($user);
+                  $sessionStore->setUser($appIdent, $user);
 
                   // redirect to target page
                   $urlProvider = &$this->getDIServiceObject('modules::usermanagement::biz', 'LoginRedirectUrlProvider');
-                  /* @var $urlProvider LoginRedirectUrlProvider */
+                  /* @var $urlProvider UmgtRedirectUrlProvider */
                   HeaderManager::forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
                }
             } catch (Exception $e) {
@@ -125,6 +126,10 @@ class umgt_login_controller extends base_controller {
             return $umgt->loadUserByUsernameAndPassword($username, $password);
             break;
       }
+   }
+
+   private function getApplicationIdentifier() {
+      return $this->getAttribute('app-ident', $this->getContext());
    }
 
 }
