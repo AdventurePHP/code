@@ -18,6 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+import('core::singleton', 'SessionSingleton');
 
 /**
  * @package core::service
@@ -68,9 +69,6 @@ final class ServiceManager {
       if ($type == APFObject::SERVICE_TYPE_SINGLETON) {
          $serviceObject = &Singleton::getInstance($serviceName);
       } elseif ($type == APFObject::SERVICE_TYPE_SESSIONSINGLETON) {
-         if (!class_exists('SessionSingleton')) {
-            import('core::singleton', 'SessionSingleton');
-         }
          $serviceObject = &SessionSingleton::getInstance($serviceName);
       } elseif ($type == APFObject::SERVICE_TYPE_NORMAL) {
          $serviceObject = new $serviceName();
