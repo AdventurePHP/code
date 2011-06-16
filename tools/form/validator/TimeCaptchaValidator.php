@@ -62,8 +62,8 @@ class TimeCaptchaValidator extends TextFieldValidator {
         }
 
         $sessMgr = new SessionManager('tools::form::taglib::form_taglib_timecaptcha');
-        $sessTime = $sessMgr->loadSessionData('form_'.$this->__Control->__ParentObject->getAttribute('name'));
-        $sessMgr->deleteSessionData('form__'.$this->__Control->__ParentObject->getAttribute('name'));
+        $sessTime = $sessMgr->loadSessionData('form_'.$this->__Control->getParentObject()->getAttribute('name'));
+        $sessMgr->deleteSessionData('form__'.$this->__Control->getParentObject()->getAttribute('name'));
         unset($sessMgr);
 
         // If there is no stored time in session control is not valid.
