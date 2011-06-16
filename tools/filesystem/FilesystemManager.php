@@ -282,7 +282,7 @@ class FilesystemManager {
       $source = str_replace('\\', '/', realpath($sourceFile));
       $target = str_replace('\\', '/', $targetFile);
       if (!file_exists($source)) {
-         throw new FilesystemManager('[FilesystemManager::renameFile()] The source file "'
+         throw new FileException('[FilesystemManager::renameFile()] The source file "'
                  . $sourceFile . '" does not exist!', E_USER_NOTICE);
       }
 
