@@ -46,6 +46,7 @@ class UmgtLogoutAction extends AbstractFrontcontrollerAction {
          $urlProvider = &$this->getDIServiceObject('modules::usermanagement::biz', 'LogoutRedirectUrlProvider');
          /* @var $urlProvider UmgtRedirectUrlProvider */
          HeaderManager::forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
+         exit(0);
 
       }
    }

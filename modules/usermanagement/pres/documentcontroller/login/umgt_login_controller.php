@@ -77,6 +77,7 @@ class umgt_login_controller extends base_controller {
                   $urlProvider = &$this->getDIServiceObject('modules::usermanagement::biz', 'LoginRedirectUrlProvider');
                   /* @var $urlProvider UmgtRedirectUrlProvider */
                   HeaderManager::forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
+                  exit(0);
                }
             } catch (Exception $e) {
                $this->getTemplate('system-error')->transformOnPlace();
