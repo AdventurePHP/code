@@ -1,0 +1,38 @@
+<@controller namespace="extensions::news::pres::documentcontroller::backend" file="list_controller" class="list_controller" @>
+
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="iterator" />
+<html:iterator name="newslist">
+    <table id="news-backendlist">
+        <thead>
+            <tr>
+                <th><iterator:getstring namespace="extensions::news" config="labels.ini" entry="Title" /></th>
+                <th><iterator:getstring namespace="extensions::news" config="labels.ini" entry="Date" /></th>
+                <th><iterator:getstring namespace="extensions::news" config="labels.ini" entry="Action" /></th>
+            </tr>
+        </thead>
+        <tbody>
+            <iterator:item>
+                <item:addtaglib namespace="extensions::news::pres::taglib" prefix="news" class="media" />
+                <tr>
+                    <td><item:placeholder name="Title" /></td>
+                    <td><item:placeholder name="Date" /></td>
+                    <td>
+                        <a href="<item:placeholder name="LinkEdit" />">
+                            <news:media filename="cc-package_settings-128x128.png" label="Edit" />
+                        </a>
+                        <a href="<item:placeholder name="LinkDelete" />">
+                            <news:media filename="cc-trashcan_empty2-128x128.png" label="Delete" />
+                        </a>
+                    </td>
+                </tr>
+            </iterator:item>
+        </tbody>
+    </table>
+</html:iterator>
+
+<html:template name="noentry">
+    <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
+    <div id="news-noentry">
+        <template:getstring namespace="extensions::news" config="labels.ini" entry="NoEntry" />
+    </div>
+</html:template>

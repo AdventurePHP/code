@@ -1,0 +1,64 @@
+<@controller namespace="extensions::news::pres::documentcontroller::backend" file="edit_controller" class="edit_controller" @>
+
+<core:addtaglib namespace="tools::form::taglib"  prefix="html" class="form" />
+<html:form name="edit" id="news-edit">
+    <form:success>
+        <div class="news-edit-success">
+            <success:getstring namespace="extensions::news" config="labels.ini" entry="Form.Success" />
+        </div>
+    </form:success>
+    <form:error>
+        <div class="news-edit-error">
+            <error:getstring namespace="extensions::news" config="labels.ini" entry="Form.Error" />
+        </div>
+    </form:error>
+    <fieldset>
+        <label for="news-edit-title">
+            <form:getstring
+                namespace="extensions::news"
+                config="labels.ini"
+                entry="Form.Title" 
+            />:
+        </label>
+        <form:text id="news-edit-title" name="news-edit-title" maxlength="100" /><br />
+        
+        <label for="news-edit-user">
+            <form:getstring
+                namespace="extensions::news"
+                config="labels.ini"
+                entry="Form.User" 
+            />:
+        </label>
+        <form:text id="news-edit-user" name="news-edit-user" maxlength="100" /><br />
+        
+        <label for="news-edit-text">
+            <form:getstring
+                namespace="extensions::news"
+                config="labels.ini"
+                entry="Form.Text" 
+            />:
+        </label><br />
+        <form:area name="news-edit-text" id="news-edit-text"></form:area> 
+        <br />
+        <form:button id="news-edit-btn" name="send" value="" />
+    </fieldset>
+    
+    <form:addvalidator 
+        class="TextLengthValidator" 
+        button="send" 
+        control="news-edit-title|news-edit-text" 
+    />
+    <form:addfilter 
+        class="StripTagsFilter" 
+        button="send" 
+        control="news-edit-title|news-edit-user" 
+    />
+    
+</html:form>
+
+<html:template name="notfound">
+    <div class="news-edit-error">
+        <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
+        <template:getstring namespace="extensions::news" config="labels.ini" entry="Form.NotFound" />
+    </div>
+</html:template>

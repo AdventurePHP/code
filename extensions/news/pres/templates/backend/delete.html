@@ -1,0 +1,29 @@
+<@controller namespace="extensions::news::pres::documentcontroller::backend" file="delete_controller" class="delete_controller" @>
+<html:template name="delete">
+    <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
+    <div id="news-delete">
+        <template:getstring namespace="extensions::news" config="labels.ini" entry="Delete.Message" /><br />
+        <br />
+        <a href="<template:placeholder name="LinkYes" />">
+           <template:getstring namespace="extensions::news" config="labels.ini" entry="Delete.Yes" />
+        </a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="<template:placeholder name="LinkNo" />">
+           <template:getstring namespace="extensions::news" config="labels.ini" entry="Delete.No" />
+        </a>
+    </div>
+</html:template>
+
+<html:template name="error">
+    <template:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
+    <div class="news-delete-error">
+        <html:getstring namespace="extensions::news" config="labels.ini" entry="Delete.Error" />
+    </div>
+</html:template>
+
+<html:template name="success">
+    <template:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
+    <div class="news-delete-success">
+        <html:getstring namespace="extensions::news" config="labels.ini" entry="Delete.Success" /><br />
+    </div>
+</html:template>

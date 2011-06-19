@@ -1,0 +1,11 @@
+<@controller namespace="extensions::news::pres::documentcontroller::backend" file="menu_controller" class="menu_controller" @>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
+<div id="news-menu">
+   <a href="<html:placeholder name="list" />" title="<html:getstring namespace="extensions::news" config="labels.ini" entry="Menu.List" />" class="active">
+       <html:getstring namespace="extensions::news" config="labels.ini" entry="Menu.List" />
+   </a>
+   &nbsp;|&nbsp;
+   <a href="<html:placeholder name="new" />" title="<html:getstring namespace="extensions::news" config="labels.ini" entry="Menu.New" />" class="active">
+       <html:getstring namespace="extensions::news" config="labels.ini" entry="Menu.New" />
+   </a>
+</div>

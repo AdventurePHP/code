@@ -1,0 +1,83 @@
+#news-backendlist {
+    font-size:0.9em;
+}
+#news-menu {
+    margin-bottom:15px;
+    font-size:0.9em;
+}
+
+#news-edit input{
+    width:200px;
+    border: 1px solid gray;
+    margin-bottom: 2px;
+}
+#news-edit input#news-edit-btn {
+    width: 150px;
+    margin-top:20px;
+}
+#news-edit textarea {
+    width:400px;
+    height:200px;
+    border: 1px solid gray;
+}
+.news-edit-error, .news-delete-error {
+    background: url("../images/err-box.png") no-repeat scroll 10px 10px #FFEEEE;
+    border: 2px solid red;
+    color: #333333;
+    margin: 0 0 1em;
+    min-height: 1.5em;
+    padding: 10px 10px 10px 68px;
+}
+.news-edit-success, .news-delete-success {
+    background: url("../images/ok-box.png") no-repeat scroll 10px 10px #E1FCC4;
+    border: 2px solid green;
+    color: #333333;
+    margin: 1em 0;
+    min-height: 3em;
+    padding: 10px 10px 10px 68px;
+}
+#news-delete {
+    background: none repeat scroll 0 0 #EFEFEF;
+    border: 2px solid orange;
+    color: orange;
+    font-weight: bold;
+    padding: 10px;
+}
+#news{
+    width:500px;
+}
+#news-entries .label {
+    font-weight:bold;
+}
+.news-entry {
+    padding:10px 5px;
+    border-bottom:1px solid grey;
+}
+.news-entry:last-of-type{
+    border:0;
+}
+.news-entry-title {
+    font-size:1.2em;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.news-entry-date{
+    float:left;
+    font-size:0.8em;
+}
+.news-entry-text {
+    clear:left;
+    margin-top:20px;
+}
+.news-entry-author {
+    float:right;
+    font-size:0.8em;
+}
+#news-pager {
+    text-align:center;
+}
+#news-pager .active {
+    font-weight:bold;
+    text-decoration: underline;
+    font-size:1.1em;
+}
