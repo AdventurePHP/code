@@ -18,29 +18,32 @@
     * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
     * -->
     */
-    
+    import('modules::usermanagement::biz::provider', 'DefaultPasswordHashProvider');
    /**
-    * This interface defines the structure of a password hash provider
-    * used for the usermanagement manager.
+    * This is the old PasswordHashProvider which was used before 1.14
     *
-    * @author Christian Achatz
+    * @author Tobias Lückel
     * @version
-    * Version 0.1, 12.10.2009<br />
+    * Version 0.1, 04.04.2011<br />
     */
-   interface PasswordHashProvider {
+    class OldMD5PasswordHashProvider extends DefaultPasswordHashProvider {
 
-      /**
-       * Creates a password hash and returns it.
-       *
-       * @param string $password The password to creata a hash from.
-       * @return string The password hash.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 12.10.2009<br />
-       */
-      public function createPasswordHash($password);
-   
-    // end interface
-   }
+       /**
+        * Creates a password hash and returns it. This PasswordHashProvider is used
+        * for hashed passwords before version 1.14
+        *
+        * @param string $password The password to creata a hash from.
+        * @param string $dynamicSalt Dynamic salt for the hash algo.
+        * @return string The password hash.
+        *
+        * @author Tobias Lückel
+        * @version
+        * Version 0.1, 04.04.2011<br />
+        */
+        public function createPasswordHash($password, $dynamicSalt) {
+            return md5($password);
+        }
+
+    //end class
+    }
 ?>

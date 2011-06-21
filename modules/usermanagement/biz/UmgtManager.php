@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::biz', 'DefaultPasswordHashProvider');
 import('modules::genericormapper::data', 'GenericDomainObject');
 import('modules::genericormapper::data', 'GenericCriterionObject');
 
@@ -26,9 +25,11 @@ import('modules::genericormapper::data', 'GenericCriterionObject');
  * @package modules::usermanagement::biz
  * @module UmgtManager
  *
- * Business component of the user management module. Uses the md5 algo to create password hashes.
- * If you desire to use another one, implement the PasswordHashProvider interface and add it to
- * the umgt's configuration file. For details on the implementation, please consult the manual!
+ * Business component of the user management module. In standard case the component uses a crypt
+ * based provider to create password hashes. But you can add other providers to ensure compatibility
+ * with older versions. Hashes will then get updated to your configured default provider on-the-fly. 
+ * If you desire to use another one, implement the PasswordHashProvider interface
+ * and add it to the umgt's configuration file. For details on the implementation, please consult the manual!
  *
  * @author Christian Achatz
  * @version
@@ -57,12 +58,16 @@ class UmgtManager extends APFObject {
    protected $isInitialized = false;
    
    /**
-    * Stores the provider, that hashes the user's password.
-    * @var PasswordHashProvider The password hash provider.
+    * Stores the providers, that hashes the user's password.
+    * @var PasswordHashProvider[] The password hash providers.
     */
-   protected $passwordHashProvider = null;
+   protected $passwordHashProviders = array();
 
-   protected $gormServiceMode = null;
+    /**
+    * @protected
+    * @var string The service mode of the generic or mapper.
+    */
+    protected $gormServiceMode = APFObject::SERVICE_TYPE_SESSIONSINGLETON;
 
    public function __construct() {
       $this->gormServiceMode = APFObject::SERVICE_TYPE_SESSIONSINGLETON;
@@ -99,18 +104,39 @@ class UmgtManager extends APFObject {
 
          $this->connectionKey = $section->getValue('ConnectionKey');
 
-         // initialize password hash provider
-         $passHashProvNamespace = $section->getValue('PasswordHashProvider.Namespace');
-         $passHashProvClass = $section->getValue('PasswordHashProvider.Class');
-         if ($passHashProvNamespace === null || $passHashProvClass === null) {
-            // fallback to default provider
-            $this->passwordHashProvider = new DefaultPasswordHashProvider();
-         } else {
-            // use given provider
-            import($passHashProvNamespace, $passHashProvClass);
-            $this->passwordHashProvider = new $passHashProvClass();
+         //initialize the password hash providers
+         $passwordHashProvider = $section->getSection('PasswordHashProvider');
+         if($passwordHashProvider !== null) {
+             $providerSectionNames = $passwordHashProvider->getSectionNames();
+             
+             // single provider given (and fallback for old configurations)
+             if(count($providerSectionNames) === 0){
+                 $passHashNamespace = $passwordHashProvider->getValue('Namespace');
+                 $passHashClass = $passwordHashProvider->getValue('Class');
+                 if($passHashNamespace!==null && $passHashClass!==null) {
+                     $passwordHashProviderObject = $this->getAndInitServiceObject($passHashNamespace, $passHashClass, $initParam);
+                     $this->passwordHashProviders[] = $passwordHashProviderObject;
+                 }
+             }
+             // multiple providers given
+             else {
+                 foreach($providerSectionNames as $subSection) {
+                     $passHashNamespace = $passwordHashProvider->getSection($subSection)->getValue('Namespace');
+                     $passHashClass = $passwordHashProvider->getSection($subSection)->getValue('Class');
+                     if($passHashNamespace!==null && $passHashClass!==null) {
+                         $passwordHashProviderObject = $this->getAndInitServiceObject($passHashNamespace, $passHashClass, $initParam);
+                         $this->passwordHashProviders[] = $passwordHashProviderObject;
+                     }
+                 }
+             }
          }
-
+         
+         if(count($this->passwordHashProviders) === 0) {
+             //fallback to default provider
+             $defaultPasswordHashProvider = $this->getAndInitServiceObject('modules::usermanagement::biz::provider::crypt', 'CryptHardcodedSaltPasswordHashProvider', $initParam);
+             $this->passwordHashProviders[] = $defaultPasswordHashProvider;
+         }
+         
          // set to initialized
          $this->isInitialized = true;
       }
@@ -119,21 +145,99 @@ class UmgtManager extends APFObject {
    /**
     * @protected
     *
-    * Implements the central hashing method. If you desire to use another hash algo, extend the
-    * UmgtManager and reimplement this method! Be sure, to keep all other methods untouched.
+    * Implements the comparing of stored hash with given password,
+    * supporting fallback hash-providers and on-the-fly updating
+    * of hashes in database to new providers.
     *
     * @param string $password the password to hash
-    * @return string The desired hash of the given password.
+    * @param GenericORMapperDataObject $user current user.
+    * @return bool Returns true if password matches.
     *
-    * @author Christian Achatz
+    * @author Ralf Schubert
     * @version
-    * Version 0.1, 31.01.2009<br />
-    * Version 0.2, 12.10.2009 (Introduced password hash provider for release 1.11)<br />
+    * Version 0.1, 21.06.2011 <br />
     */
-   protected function createPasswordHash($password) {
-      return $this->passwordHashProvider->createPasswordHash($password);
-   }
+    public function comparePasswordHash($password, GenericORMapperDataObject &$user) {
+        // check if current default hash provider matches
+        $defaultHashedPassword = $this->createPasswordHash($password, $user);
+        if($user->getProperty('Password') === $defaultHashedPassword){
+            return true;
+        }
+        
+        // if there is no fallback provider, password didn't match
+        if(count($this->passwordHashProviders) === 1) {
+            return false;
+        }
+        
+        // check each fallback, but skip default provider
+        $firstSkipped = false;
+        foreach($this->passwordHashProviders as $passwordHashProvider) {
+            if(!$firstSkipped) {
+                $firstSkipped = true;
+                continue;
+            }
+            $hashedPassword = $passwordHashProvider->createPasswordHash($password, $this->getDynamicSalt($user));
+            if($user->getProperty('Password') === $hashedPassword){
+                // if fallback matched, first update hash in database to new provider (on-the-fly updating to new provider)
+                $user->setProperty('Password', $password);
+                $this->saveUser($user);
+                return true;
+            }
+        }
+        
+        // no fallback matched.
+        return false;
+    }
 
+    /**
+     * @protected
+     *
+     * Implements the central dynamic salt method. If you desire to use another
+     * dynamic salt, extend the UmgtManager and reimplement this method! Be sure,
+     * to keep all other methods untouched.
+     *
+     * @param GenericORMapperDataObject $user Current user
+     * @return string The dynamic salt
+     *
+     * @author Tobias Lückel
+     * @version
+     * Version 0.1, 05.04.2011<br />
+     */
+    public function getDynamicSalt(GenericORMapperDataObject &$user) {
+        
+        $dynamicSalt = $user->getProperty('DynamicSalt');
+        $dynamicSalt = ($dynamicSalt === null) ? '' : trim($dynamicSalt);
+        
+        if($dynamicSalt === '') {
+            $dynamicSalt = md5(rand(10000,99999));
+            $user->setProperty('DynamicSalt', $dynamicSalt);
+        }
+        return $dynamicSalt;
+        
+    }
+    
+    /**
+     * @public
+     *
+     * Hashes the password for the given user with the first configured 
+     * hash provider, which represents the current default provider.
+     * If you desire to use another hash algo, implement a PasswordHashProvider 
+     * and add it to the UmgtManager.
+     *
+     * @param string $password the password to hash
+     * @param GenericORMapperDataObject $user current user.
+     * @return string The desired hash of the given password.
+     *
+     * @author Tobias Lückel
+     * @version
+     * Version 0.1, 21.06.2011<br />
+     */
+    public function createPasswordHash($password, GenericORMapperDataObject &$user) {
+        return $this->passwordHashProviders[0]->createPasswordHash($password, $this->getDynamicSalt($user));
+    }
+    
+    
+    
    /**
     * @protected
     *
@@ -213,7 +317,7 @@ class UmgtManager extends APFObject {
          if ($storedUser->getProperty('Password') != $password) {
             $user->setProperty(
                     'Password',
-                    $this->createPasswordHash($password)
+                    $this->createPasswordHash($password, $user)
             );
          } else {
             $user->deleteProperty('Password');
@@ -224,13 +328,13 @@ class UmgtManager extends APFObject {
          if (!empty($password)) {
             $user->setProperty(
                     'Password',
-                    $this->createPasswordHash($password)
+                    $this->createPasswordHash($password, $user)
             );
          }
       }
 
       // set display name
-      $user->setProperty('DisplayName', $this->__getDisplayName($user));
+      $user->setProperty('DisplayName', $this->getDisplayName($user));
 
       // save the user and return it's id
       $app = $this->getCurrentApplication();
@@ -489,27 +593,22 @@ class UmgtManager extends APFObject {
     * @param string $password the user's password.
     * @return GenericORMapperDataObject The user domain object or null.
     *
-    * @author Christian Achatz
+    * @author Ralf Schubert
     * @version
     * Version 0.1, 30.12.2008<br />
     * Version 0.2, 02.01.2009 (Added sql injection security)<br />
     * Version 0.3, 31.01.2009 (Switched to the private hashing method)<br />
+    * Version 0.4, 21.06.2011 (Supports fallback hash providers now)<br />
     */
    public function loadUserByUsernameAndPassword($username, $password) {
 
-      // get the mapper
-      $oRM = &$this->getORMapper();
-
-      // escape the input values
-      $dbDriver = &$oRM->getDBDriver();
-      $username = $dbDriver->escapeValue($username);
-      $password = $dbDriver->escapeValue($password);
-
-      // create the statement and select user
-      $password = $this->createPasswordHash($password);
-      $select = 'SELECT * FROM ent_user WHERE Username = \'' . $username . '\' AND Password = \'' . $password . '\';';
-      return $oRM->loadObjectByTextStatement('User', $select);
-
+      $userObject = $this->loadUserByUserName($username);
+      if($userObject === null || !$this->comparePasswordHash($password, $userObject)) {
+          return null;
+      }
+      
+      return $userObject;
+      
    }
 
    /**
@@ -663,7 +762,7 @@ class UmgtManager extends APFObject {
     * @version
     * Version 0.1, 23.06.2009<br />
     */
-   protected function __getDisplayName(GenericORMapperDataObject $user) {
+   protected function getDisplayName(GenericORMapperDataObject $user) {
       $displayName = $user->getProperty('DisplayName');
       return empty($displayName) ? $user->getProperty('LastName') . ', ' . $user->getProperty('FirstName') : $user->getProperty('DisplayName');
    }
@@ -685,18 +784,12 @@ class UmgtManager extends APFObject {
     */
    public function loadUserByEMailAndPassword($email, $password) {
 
-      // get the mapper
-      $oRM = &$this->getORMapper();
-
-      // escape the input values
-      $dbDriver = &$oRM->getDBDriver();
-      $email = $dbDriver->escapeValue($email);
-      $password = $dbDriver->escapeValue($password);
-
-      // create the statenent and select user
-      $password = $this->createPasswordHash($password);
-      $select = 'SELECT * FROM ent_user WHERE EMail = \'' . $email . '\' AND Password = \'' . $password . '\';';
-      return $oRM->loadObjectByTextStatement('User', $select);
+      $userObject = $this->loadUserByEMail($email);
+      if($userObject === null || !$this->comparePasswordHash($password, $userObject)) {
+          return null;
+      }
+      
+      return $userObject;
 
    }
 
