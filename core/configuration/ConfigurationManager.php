@@ -43,7 +43,7 @@
        * @version
        * Version 0.1, 28.10.2010<br />
        */
-      function getValue($name);
+      function getValue($name, $defaultValue = null);
 
       /**
        * @public

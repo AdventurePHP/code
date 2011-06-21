@@ -49,8 +49,8 @@
          return array_keys($this->sections);
       }
 
-      public function getValue($name) {
-         return isset($this->values[$name]) ? $this->values[$name] : null;
+      public function getValue($name, $defaultValue = null) {
+         return isset($this->values[$name]) ? $this->values[$name] : $defaultValue;
       }
 
       public function getValueNames() {
