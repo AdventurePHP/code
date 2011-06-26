@@ -125,6 +125,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
       if (substr_count($query, self::$ACTION_TO_PARAM_DELIMITER) > 0 || substr_count($query, self::$FC_ACTION_KEYWORD . '/') > 0) {
 
          $fC = &Singleton::getInstance('Frontcontroller');
+         /* @var $fC Frontcontroller */
 
          // split url by delimiter
          $requestURLParts = explode(self::$ACTION_TO_PARAM_DELIMITER, $query);
