@@ -37,7 +37,7 @@
       private $values = array();
 
       /**
-       * @var XmlConfiguration[] Stores the sections of the current config.
+       * @var Configuration[] Stores the sections of the current config.
        */
       private $sections = array();
 
