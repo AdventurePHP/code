@@ -459,7 +459,8 @@ class Frontcontroller extends APFObject {
    public function start($namespace, $template) {
 
       // check if the context is set. If not, use the current namespace
-      if ($this->getContext() === null) {
+      $context = $this->getContext();
+      if (empty($context)) {
          $this->setContext($namespace);
       }
 
