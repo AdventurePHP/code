@@ -38,7 +38,9 @@ class news_taglib_media extends ui_mediastream {
     * @author Ralf Schubert
     */
    public function onParseTime() {
-
+      // setup the desired attribute to have more convenience
+      $this->setAttribute('namespace', 'modules::usermanagement::pres::icons');
+      parent::onParseTime();
    }
 
    /**
@@ -48,7 +50,6 @@ class news_taglib_media extends ui_mediastream {
     * Ralf Schubert
     */
    public function onAfterAppend() {
-
    }
 
    /**
@@ -63,28 +64,22 @@ class news_taglib_media extends ui_mediastream {
     */
    public function transform() {
 
-      // setup the desired attributes
-      $this->setAttribute('namespace', 'modules::usermanagement::pres::icons');
-
-      // execute the parent's onParseTime()
-      parent::onParseTime();
-
       // generate the image tag
-      $imgsrc = parent::transform();
-      
-      $Label = $this->getAttribute('label');
-      $Cfg = $this->getConfiguration('extensions::news', 'labels');
-      $Lang = $Cfg->getSection($this->getLanguage());
-      
-      $Title = $Lang->getValue($Label);
-      $this->setAttribute('title', $Title);
-      $this->setAttribute('alt', $Title);
-      
-      $Width = $this->getAttribute('width', '20px');
-      $Height = $this->getAttribute('height', '20px');
-      
+      $imgSrc = parent::transform();
+
+      $label = $this->getAttribute('label');
+      $cfg = $this->getConfiguration('extensions::news', 'labels');
+      $lang = $cfg->getSection($this->getLanguage());
+
+      $title = $lang->getValue($label);
+      $this->setAttribute('title', $title);
+      $this->setAttribute('alt', $title);
+
+      $width = $this->getAttribute('width', '20px');
+      $height = $this->getAttribute('height', '20px');
+
       $attributes = $this->getAttributesAsString($this->getAttributes(), array('alt', 'title'));
-      return '<img src="' . $imgsrc . '" ' . $attributes . ' style="width: ' . $Width . '; height: ' . $Height . '; border-width: 0px;" />';
+      return '<img src="' . $imgSrc . '" ' . $attributes . ' style="width: ' . $width . '; height: ' . $height . '; border-width: 0px;" />';
    }
 
 }
