@@ -21,51 +21,46 @@
 
    import('tools::request','RequestHandler');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
-   import('tools::http','HeaderManager');
 
    /**
     * @package modules::usermanagement::pres::documentcontroller
-    * @class umgt_delete_controller
+    * @class umgt_details_controller
     *
-    * Implements the controller to delete a user.
+    * Implements the controller to dispolay a user's details.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 26.12.2008<br />
     */
-   class umgt_delete_controller extends umgt_base_controller {
+   class umgt_details_controller extends umgt_base_controller {
 
       public function transformContent(){
 
-         $userid = RequestHandler::getValue('userid');
+         // load data
          $uM = &$this->getManager();
-         $User = $uM->loadUserById($userid);
-         $this->setPlaceHolder('DisplayName', $User->getProperty('DisplayName'));
-         $Form__No = &$this->getForm('UserDelNo');
-         $Form__Yes = &$this->getForm('UserDelYes');
+         $userid = RequestHandler::getValue('userid');
+         $User = $uM->loadUserByID($userid);
 
-         if($Form__Yes->isSent()){
+         // display user data
+         $Template__User = &$this->getTemplate('User');
+         $Template__User->setPlaceHolder('FirstName',$User->getProperty('FirstName'));
+         $Template__User->setPlaceHolder('LastName',$User->getProperty('LastName'));
+         $Template__User->setPlaceHolder('EMail',$User->getProperty('EMail'));
+         $Template__User->transformOnPlace();
 
-            $User = new GenericDomainObject('User');
-            $User->setProperty('UserID',$userid);
-            $uM->deleteUser($User);
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
+         // display groups
+         $Groups = $uM->loadGroupsWithUser($User);
+         $Iterator__Groups = &$this->getIterator('Groups');
+         $Iterator__Groups->fillDataContainer($Groups);
+         $Iterator__Groups->transformOnPlace();
 
-          // end if
-         }
-         elseif($Form__No->isSent()){
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
-          // end elseif
-         }
-         else{
-            $Form__No->transformOnPlace();
-            $Form__Yes->transformOnPlace();
-          // end else
-         }
+         // display roles
+         $Roles = $uM->loadRolesWithUser($User);
+         $Iterator__Roles = &$this->getIterator('Roles');
+         $Iterator__Roles->fillDataContainer($Roles);
+         $Iterator__Roles->transformOnPlace();
 
-       // end function
       }
 
-    // end class
    }
 ?>

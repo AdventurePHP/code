@@ -51,9 +51,7 @@
          }
          $this->setPlaceHolder('TypeList',$buffer);
 
-       // end function
       }
       
-    // end class
    }
 ?>

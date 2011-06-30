@@ -53,13 +53,10 @@
             $template->setPlaceHolder('role_detachfromuser',$this->__generateLink(array('mainview' => 'role','roleview' => 'detachfromuser','roleid' => $roleID)));
             $buffer .= $template->transformTemplate();
 
-          // end foreach
          }
          $this->setPlaceHolder('RoleList',$buffer);
 
-       // end function
       }
 
-    // end class
    }
 ?>

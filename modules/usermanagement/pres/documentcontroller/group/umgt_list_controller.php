@@ -50,14 +50,11 @@
             $template->setPlaceHolder('group_useradd',$this->__generateLink(array('mainview' => 'group','groupview' => 'useradd','groupid' => $groupID)));
             $template->setPlaceHolder('group_userrem',$this->__generateLink(array('mainview' => 'group','groupview' => 'userrem','groupid' => $groupID)));
             $buffer .= $template->transformTemplate();
-          // end foreach
          }
 
          $this->setPlaceHolder('Grouplist',$buffer);
 
-       // end function
       }
 
-    // end class
    }
 ?>

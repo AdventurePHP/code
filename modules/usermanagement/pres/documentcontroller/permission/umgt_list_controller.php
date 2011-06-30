@@ -19,42 +19,41 @@
     * -->
     */
 
-   import('tools::request','RequestHandler');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
 
    /**
     * @package modules::usermanagement::pres::documentcontroller
-    * @class umgt_details_controller
+    * @class umgt_list_controller
     *
-    * Implements the controller to list the existing roles.
+    * Implements the controller to list the existing permissions.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 27.12.2008<br />
     */
-   class umgt_details_controller extends umgt_base_controller {
+   class umgt_list_controller extends umgt_base_controller {
 
       public function transformContent(){
 
-         // load data
+         // load the permission list
          $uM = &$this->getManager();
-         $roleid = RequestHandler::getValue('roleid');
-         $role = $uM->loadRoleByID($roleid);
+         $permissionList = $uM->getPagedPermissionList();
 
-         // display user data
-         $template = &$this->getTemplate('Role');
-         $template->setPlaceHolder('DisplayName',$role->getProperty('DisplayName'));
-         $template->transformOnPlace();
+         // display list
+         $buffer = (string)'';
+         $template = &$this->getTemplate('Permission');
+         foreach($permissionList as $permission){
+            $template->setPlaceHolder('DisplayName', $permission->getProperty('DisplayName'));
+            $template->setPlaceHolder('Name',$permission->getProperty('Name'));
+            $template->setPlaceHolder('Value',$permission->getProperty('Value'));
+            $permID = $permission->getProperty('PermissionID');
+            $template->setPlaceHolder('permission_edit',$this->__generateLink(array('mainview' => 'permission','permissionview' => 'edit','permissionid' => $permID)));
+            $template->setPlaceHolder('permission_delete',$this->__generateLink(array('mainview' => 'permission','permissionview' => 'delete','permissionid' => $permID)));
+            $buffer .= $template->transformTemplate();
+         }
+         $this->setPlaceHolder('ListPermissions',$buffer);
 
-         // display users
-         $users = $uM->loadUsersWithRole($role);
-         $iterator = &$this->getIterator('Users');
-         $iterator->fillDataContainer($users);
-         $iterator->transformOnPlace();
-
-       // end function
       }
 
-    // end class
    }
 ?>

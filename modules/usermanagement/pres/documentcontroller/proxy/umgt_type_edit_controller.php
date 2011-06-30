@@ -58,9 +58,7 @@
          }
          $form->transformOnPlace();
 
-       // end function
       }
 
-    // end class
    }
 ?>

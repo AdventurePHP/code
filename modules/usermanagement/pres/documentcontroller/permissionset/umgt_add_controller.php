@@ -45,7 +45,6 @@
          $permission = &$Form__Add->getFormElementByName('Permission');
          foreach($perms as $perm){
             $permission->addOption($perm->getProperty('DisplayName'),$perm->getProperty('PermissionID'));
-          // end foreach
          }
 
          // add the permission set
@@ -62,19 +61,15 @@
                $permission->setProperty('PermissionID',$options[$i]->getAttribute('value'));
                $permissionSet->addRelatedObject('PermissionSet2Permission',$permission);
                unset($permission);
-             // end foreach
             }
 
             $uM->savePermissionSet($permissionSet);
             HeaderManager::forward($this->__generateLink(array('mainview' => 'permissionset','permissionsetview' => '','permissionsetid' => '')));
 
-          // end else
          }
          $this->setPlaceHolder('PermissionSetAdd',$Form__Add->transformForm());
 
-       // end function
       }
 
-    // end class
    }
 ?>

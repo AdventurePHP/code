@@ -47,13 +47,10 @@
             $uM->saveRole($role);
             HeaderManager::forward($this->__generateLink(array('mainview' => 'role','roleview' => '','roleid' => '')));
 
-          // end else
          }
          $form->transformOnPlace();
 
-       // end function
       }
 
-    // end class
    }
 ?>

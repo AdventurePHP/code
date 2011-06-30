@@ -21,52 +21,44 @@
 
    import('tools::request','RequestHandler');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
-   import('tools::http','HeaderManager');
 
    /**
     * @package modules::usermanagement::pres::documentcontroller
-    * @class umgt_delete_controller
+    * @class umgt_details_controller
     *
-    * Implements the controller to delete a role.
+    * Implements the controller to list the existing permission sets.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 27.12.2008<br />
     */
-   class umgt_delete_controller extends umgt_base_controller {
+   class umgt_details_controller extends umgt_base_controller {
 
       public function transformContent(){
 
-         $roleId = RequestHandler::getValue('roleid');
+         // load data
          $uM = &$this->getManager();
-         $role = $uM->loadRoleById($roleId);
-         $this->setPlaceHolder('DisplayName',$role->getProperty('DisplayName'));
+         $permissionSetId = RequestHandler::getValue('permissionsetid');
+         $permissionSet = $uM->loadPermissionSetByID($permissionSetId);
 
-         $formNo = &$this->getForm('RoleDelNo');
-         $formYes = &$this->getForm('RoleDelYes');
+         // display user data
+         $Template__PermissionSet = &$this->getTemplate('PermissionSet');
+         $Template__PermissionSet->setPlaceHolder('DisplayName',$permissionSet->getProperty('DisplayName'));
+         $Template__PermissionSet->transformOnPlace();
 
-         if($formYes->isSent()){
+         // display permissions
+         $Permissions = $uM->loadPermissionsOfPermissionSet($permissionSet);
+         $Iterator__Permissions = &$this->getIterator('Permissions');
+         $Iterator__Permissions->fillDataContainer($Permissions);
+         $Iterator__Permissions->transformOnPlace();
 
-            $role = new GenericDomainObject('Role');
-            $role->setProperty('RoleID',$roleId);
-            $uM->deleteRole($role);
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'role', 'roleview' => '','roleid' => '')));
+         // display roles
+         $Roles = $uM->loadRolesWithPermissionSet($permissionSet);
+         $Iterator__Roles = &$this->getIterator('Roles');
+         $Iterator__Roles->fillDataContainer($Roles);
+         $Iterator__Roles->transformOnPlace();
 
-          // end if
-         }
-         elseif($formNo->isSent()){
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'role', 'roleview' => '','roleid' => '')));
-          // end elseif
-         }
-         else{
-            $formNo->transformOnPlace();
-            $formYes->transformOnPlace();
-          // end else
-         }
-
-       // end function
       }
 
-    // end class
    }
 ?>

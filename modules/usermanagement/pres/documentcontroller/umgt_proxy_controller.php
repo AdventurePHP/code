@@ -38,9 +38,7 @@
          $this->setPlaceHolder('proxy_type_add',$this->__generateLink(array('mainview' => 'proxy','proxyview' => 'typeadd','proxytypeid' => '','appobjectid' => null,'proxyid' => null,'objectid' => null,'objecttype' => null)));
          $this->setPlaceHolder('proxy_add',$this->__generateLink(array('mainview' => 'proxy','proxyview' => 'proxyadd','proxytypeid' => '','appobjectid' => null,'proxyid' => null,'objectid' => null,'objecttype' => null)));
          $this->setPlaceHolder('proxy_type_list',$this->__generateLink(array('mainview' => 'proxy','proxyview' => 'typelist','proxytypeid' => '','appobjectid' => null,'proxyid' => null,'objectid' => null,'objecttype' => null)));
-       // end function
       }
 
-    // end function
    }
 ?>

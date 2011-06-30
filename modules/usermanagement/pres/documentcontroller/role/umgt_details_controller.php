@@ -26,7 +26,7 @@
     * @package modules::usermanagement::pres::documentcontroller
     * @class umgt_details_controller
     *
-    * Implements the controller to list the existing permission sets.
+    * Implements the controller to list the existing roles.
     *
     * @author Christian Achatz
     * @version
@@ -38,29 +38,21 @@
 
          // load data
          $uM = &$this->getManager();
-         $permissionSetId = RequestHandler::getValue('permissionsetid');
-         $permissionSet = $uM->loadPermissionSetByID($permissionSetId);
+         $roleid = RequestHandler::getValue('roleid');
+         $role = $uM->loadRoleByID($roleid);
 
          // display user data
-         $Template__PermissionSet = &$this->getTemplate('PermissionSet');
-         $Template__PermissionSet->setPlaceHolder('DisplayName',$permissionSet->getProperty('DisplayName'));
-         $Template__PermissionSet->transformOnPlace();
+         $template = &$this->getTemplate('Role');
+         $template->setPlaceHolder('DisplayName',$role->getProperty('DisplayName'));
+         $template->transformOnPlace();
 
-         // display permissions
-         $Permissions = $uM->loadPermissionsOfPermissionSet($permissionSet);
-         $Iterator__Permissions = &$this->getIterator('Permissions');
-         $Iterator__Permissions->fillDataContainer($Permissions);
-         $Iterator__Permissions->transformOnPlace();
+         // display users
+         $users = $uM->loadUsersWithRole($role);
+         $iterator = &$this->getIterator('Users');
+         $iterator->fillDataContainer($users);
+         $iterator->transformOnPlace();
 
-         // display roles
-         $Roles = $uM->loadRolesWithPermissionSet($permissionSet);
-         $Iterator__Roles = &$this->getIterator('Roles');
-         $Iterator__Roles->fillDataContainer($Roles);
-         $Iterator__Roles->transformOnPlace();
-
-       // end function
       }
 
-    // end class
    }
 ?>

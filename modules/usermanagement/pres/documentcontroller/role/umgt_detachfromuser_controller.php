@@ -25,71 +25,60 @@
 
    /**
     * @package modules::usermanagement::pres::documentcontroller
-    * @class umgt_ass2user_controller
+    * @class umgt_detachfromuser_controller
     *
-    * Implements the controller to assign a role to a user.
+    * Implements the controller to detach a role from a user.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 27.12.2008<br />
-    * Version 0.2, 29.12.2008 (Applied API change of the usermanagement manager)<br />
     */
-   class umgt_ass2user_controller extends umgt_base_controller {
+   class umgt_detachfromuser_controller extends umgt_base_controller {
 
       public function transformContent(){
 
-         // get role id
+         // get the current roleid
          $roleid = RequestHandler::getValue('roleid');
 
          // initialize the form
          $Form__User = &$this->getForm('User');
          $user = &$Form__User->getFormElementByName('User');
          $uM = &$this->getManager();
-         $role = $uM->loadRoleById($roleid);
-         $users = $uM->loadUsersNotWithRole($role);
+         $role = $uM->loadRoleByID($roleid);
+         $users = $uM->loadUsersWithRole($role);
          $count = count($users);
 
-         // display a hint, if a role already assigned to all users
+         // display a hint, if no users are assigned to this role
          if($count == 0){
            $template = &$this->getTemplate('NoMoreUser');
            $template->transformOnPlace();
            return true;
-          // end if
          }
 
-         // fill multiselect field
+         // fill the multiselect field
          for($i = 0; $i < $count; $i++){
             $user->addOption($users[$i]->getProperty('LastName').', '.$users[$i]->getProperty('FirstName'),$users[$i]->getProperty('UserID'));
-          // end for
          }
 
-         // assign role to the desired users
+         // detach users from the role
          if($Form__User->isSent() && $Form__User->isValid()){
 
             $options = &$user->getSelectedOptions();
             $newUsers = array();
-
-            for($i = 0; $i < count($options); $i++){
+            for($i = 0; $i< count($options); $i++){
                $newUser = new GenericDomainObject('User');
                $newUser->setProperty('UserID',$options[$i]->getAttribute('value'));
                $newUsers[] = $newUser;
                unset($newUser);
-             // end for
             }
-
-            $uM->assignRole2Users($role,$newUsers);
+            $uM->detachUsersFromRole($newUsers,$role);
             HeaderManager::forward($this->__generateLink(array('mainview' => 'role', 'roleview' => '','roleid' => '')));
 
-          // end if
-         }
-         else{
+         } else {
             $Form__User->transformOnPlace();
-          // end else
          }
 
-       // end function
       }
 
-    // end class
    }
 ?>

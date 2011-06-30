@@ -21,48 +21,45 @@
 
    import('tools::request','RequestHandler');
    import('modules::usermanagement::pres::documentcontroller','umgt_base_controller');
+   import('tools::http','HeaderManager');
 
    /**
     * @package modules::usermanagement::pres::documentcontroller
-    * @class umgt_details_controller
+    * @class umgt_delete_controller
     *
-    * Implements the controller to dispolay a user's details.
+    * Implements the controller to delete a role.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 26.12.2008<br />
+    * Version 0.1, 27.12.2008<br />
     */
-   class umgt_details_controller extends umgt_base_controller {
+   class umgt_delete_controller extends umgt_base_controller {
 
       public function transformContent(){
 
-         // load data
+         $roleId = RequestHandler::getValue('roleid');
          $uM = &$this->getManager();
-         $userid = RequestHandler::getValue('userid');
-         $User = $uM->loadUserByID($userid);
+         $role = $uM->loadRoleById($roleId);
+         $this->setPlaceHolder('DisplayName',$role->getProperty('DisplayName'));
 
-         // display user data
-         $Template__User = &$this->getTemplate('User');
-         $Template__User->setPlaceHolder('FirstName',$User->getProperty('FirstName'));
-         $Template__User->setPlaceHolder('LastName',$User->getProperty('LastName'));
-         $Template__User->setPlaceHolder('EMail',$User->getProperty('EMail'));
-         $Template__User->transformOnPlace();
+         $formNo = &$this->getForm('RoleDelNo');
+         $formYes = &$this->getForm('RoleDelYes');
 
-         // display groups
-         $Groups = $uM->loadGroupsWithUser($User);
-         $Iterator__Groups = &$this->getIterator('Groups');
-         $Iterator__Groups->fillDataContainer($Groups);
-         $Iterator__Groups->transformOnPlace();
+         if($formYes->isSent()){
 
-         // display roles
-         $Roles = $uM->loadRolesWithUser($User);
-         $Iterator__Roles = &$this->getIterator('Roles');
-         $Iterator__Roles->fillDataContainer($Roles);
-         $Iterator__Roles->transformOnPlace();
+            $role = new GenericDomainObject('Role');
+            $role->setProperty('RoleID',$roleId);
+            $uM->deleteRole($role);
+            HeaderManager::forward($this->__generateLink(array('mainview' => 'role', 'roleview' => '','roleid' => '')));
 
-       // end function
+         } elseif($formNo->isSent()) {
+            HeaderManager::forward($this->__generateLink(array('mainview' => 'role', 'roleview' => '','roleid' => '')));
+         } else {
+            $formNo->transformOnPlace();
+            $formYes->transformOnPlace();
+         }
+
       }
 
-    // end class
    }
 ?>
