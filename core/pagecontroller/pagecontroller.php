@@ -1530,15 +1530,19 @@ class Document extends APFObject {
          // check for class definition
          if (!isset($controllerAttributes['class'])) {
             throw new ParserException('[Document::__extractDocumentController()] Document controller '
-                    . 'specification does not contain a valid controller class definition. '
-                    . 'Please double check the template code and consult the documentation. '
-                    . 'Template code: ' . $this->getContent());
+                                      . 'specification does not contain a valid controller class definition. '
+                                      . 'Please double check the template code and consult the documentation. '
+                                      . 'Template code: ' . $this->getContent());
          }
 
-         // lazily import document controller class
-         if (!class_exists($controllerAttributes['class'])) {
-            import($controllerAttributes['namespace'], $controllerAttributes['file']);
+         // Lazily import document controller class.
+         // Thereby evaluate the file name using the class name (APF convention) with a fallback on
+         // pre 1.14 releases to be able to specify an alternative file.
+         $file = $controllerAttributes['class'];
+         if (isset($controllerAttributes['file'])) {
+            $file = $controllerAttributes['file'];
          }
+         import($controllerAttributes['namespace'], $file);
 
          // remark controller class
          $this->__DocumentController = $controllerAttributes['class'];
@@ -1614,6 +1618,7 @@ class Document extends APFObject {
          }
 
          $docCon = new $this->__DocumentController;
+         /* @var $docCon base_controller */
 
          // inject context
          $docCon->setContext($this->getContext());
@@ -1663,7 +1668,7 @@ class Document extends APFObject {
  * from the template specified by the tag's attributes within the current APF DOM tree. Each
  * importdesign tag can compose further tags.
  *
- * @author Christian Sch�fer
+ * @author Christian Schäfer
  * @version
  * Version 0.1, 28.12.2006<br />
  */
