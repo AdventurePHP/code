@@ -1,51 +1,151 @@
-<@controller namespace="core::errorhandler" file="documentcontroller/errorpage_v1_controller" class="errorpage_v1_controller" @>
-<div style="background-color: white; padding: 5px; border: 2px solid red; width: 100%;">
-  <div style="border-top: 1px solid black; border-bottom: 1px solid black; width: 100%; padding: 10px; background-color: #dddddd;">
-    <font style="font-size: 18px; font-weight: bold; color: red;">Error!</font>
-    <br />
-    <br />
-    <table width="100%" border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <td width="60" height="20" align="left" valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif">Error-ID:</font></td>
-        <td valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif"><strong><html:placeholder name="ErrorID" /><strong></font></td>
-      </tr>
-      <tr>
-        <td width="60" height="20" align="left" valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif">Message:</font></td>
-        <td valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif"><strong><html:placeholder name="ErrorMessage" /><strong></font></td>
-      </tr>
-      <tr>
-        <td width="60" height="20" align="left" valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif">Number:</font></td>
-        <td valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif"><strong><html:placeholder name="ErrorNumber" /><strong></font></td>
-      </tr>
-      <tr>
-        <td width="60" height="20" align="left" valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif">File:</font></td>
-        <td valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif"><strong><html:placeholder name="ErrorFile" /><strong></font></td>
-      </tr>
-      <tr>
-        <td width="60" height="20" align="left" valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif">Line:</font></td>
-        <td valign="middle"><font style="font-size: 11px;" face="Arial, Helvetica, sans-serif"><strong><html:placeholder name="ErrorLine" /><strong></font></td>
-      </tr>
-    </table>
-  </div>
-  <br />
-  <strong>STACKTRACE:</strong>
-  <br />
-  <div style="height: 150px; overflow: auto; border: 1px solid gray;">
-    <table cellpadding="0" cellspacing="0" border="0" style="width: 100%; padding: 2px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
-      <tr style="background-color: #dddddd; font-weight: bold;">
-        <td>Call</td>
-        <td>File</td>
-        <td>Line</td>
-      </tr>
-      <html:placeholder name="Stacktrace" />
-    </table>
-  </div>
+<@controller namespace="core::errorhandler::documentcontroller" file="errorpage_v1_controller" class="errorpage_v1_controller" @>
+<style type="text/css">
+   .apf-error,
+   .apf-error td {
+      font-size: 11px;
+      font-family: Arial, Helvetica, sans-serif;
+   }
+
+   .apf-error {
+      background-color: white;
+      border: 2px solid red;
+      width: 100%;
+   }
+
+   .apf-head {
+      border-top: 1px solid black;
+      border-bottom: 1px solid black;
+      padding: 10px;
+      background-color: #dddddd;
+      margin: 5px;
+   }
+
+   .apf-head h2 {
+      font-weight: bold;
+      margin: 0 auto .5em auto;
+      color: red;
+   }
+
+   .apf-head table td {
+      font-weight: bold;
+   }
+
+   .apf-error h3 {
+      margin: 2em auto 1em 5px;
+   }
+
+   .apf-error table {
+      width: 100%;
+      border: 0;
+      padding: 0;
+      margin: 0;
+      text-align: left;
+      vertical-align: middle;
+   }
+
+   .apf-error table td {
+      height: 20px;
+   }
+
+   .apf-error td {
+      padding-left: .3em;
+   }
+
+   .apf-stracktrace {
+      margin: 5px;
+      height: 150px;
+      overflow: auto;
+      border: 1px solid gray;
+   }
+
+   .apf-stracktrace table td {
+      border-bottom: 1px solid #dddddd;
+   }
+
+   .apf-stracktrace table thead {
+      background-color: #dddddd;
+      font-weight: bold;
+   }
+
+   .apf-stracktrace table td {
+      height: 16px;
+   }
+</style>
+<div class="apf-error">
+   <div class="apf-head">
+      <h2>Error!</h2>
+      <table>
+         <tr>
+            <td width="60">Error-ID:</td>
+            <td>
+               <html:placeholder name="ErrorID"/>
+            </td>
+         </tr>
+         <tr>
+            <td width="60">Message:</td>
+            <td>
+               <html:placeholder name="ErrorMessage"/>
+            </td>
+         </tr>
+         <tr>
+            <td width="60">Number:</td>
+            <td>
+               <html:placeholder name="ErrorNumber"/>
+            </td>
+         </tr>
+         <tr>
+            <td width="60">File:</td>
+            <td>
+               <html:placeholder name="ErrorFile"/>
+            </td>
+         </tr>
+
+         <tr>
+            <td width="60">Line:</td>
+            <td>
+               <html:placeholder name="ErrorLine"/>
+            </td>
+         </tr>
+      </table>
+   </div>
+
+   <h3>STACKTRACE:</h3>
+
+   <div class="apf-stracktrace">
+      <table>
+         <thead>
+         <tr>
+            <td>Call</td>
+            <td>File</td>
+            <td>Line</td>
+         </tr>
+         </thead>
+         <tbody>
+         <html:placeholder name="Stacktrace"/>
+         </tbody>
+      </table>
+   </div>
 </div>
 
 <html:template name="ErrorEntry">
-      <tr style="border-bottom: 1px solid #dddddd;">
-        <td style="border-bottom: 1px solid #dddddd;"><nobr><template:placeholder name="Class" /><template:placeholder name="Type" /><template:placeholder name="Function" />()</nobr></td>
-        <td style="border-bottom: 1px solid #dddddd;"><nobr><template:placeholder name="File" /></nobr></td>
-        <td style="border-bottom: 1px solid #dddddd;"><nobr><template:placeholder name="Line" /></nobr></td>
-      </tr>
+   <tr>
+      <td>
+         <nobr>
+            <template:placeholder name="Class"/>
+            <template:placeholder name="Type"/>
+            <template:placeholder name="Function"/>
+            ()
+         </nobr>
+      </td>
+      <td>
+         <nobr>
+            <template:placeholder name="File"/>
+         </nobr>
+      </td>
+      <td>
+         <nobr>
+            <template:placeholder name="Line"/>
+         </nobr>
+      </td>
+   </tr>
 </html:template>

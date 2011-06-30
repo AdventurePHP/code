@@ -1,31 +1,39 @@
-<@controller namespace="core::exceptionhandler" file="documentcontroller/exceptionpage_controller" class="exceptionpage_controller" @>
+<@controller namespace="core::exceptionhandler::documentcontroller" file="exceptionpage_controller" class="exceptionpage_controller" @>
 <style type="text/css">
    .apf-exception,
    .apf-exception td {
       font-size: 11px;
       font-family: Arial, Helvetica, sans-serif;
-
    }
+
    .apf-exception {
       background-color: white;
-      padding: 5px;
       border: 2px solid red;
       width: 100%;
    }
+
    .apf-head {
       border-top: 1px solid black;
       border-bottom: 1px solid black;
       padding: 10px;
       background-color: #dddddd;
+      margin: 5px;
    }
+
    .apf-head h2 {
       font-weight: bold;
       margin: 0 auto .5em auto;
       color: red;
    }
-   .apf-exception h3 {
-      margin: 2em auto 1em auto;
+
+   .apf-head table td {
+      font-weight: bold;
    }
+
+   .apf-exception h3 {
+      margin: 2em auto 1em 5px;
+   }
+
    .apf-exception table {
       width: 100%;
       border: 0;
@@ -34,78 +42,115 @@
       text-align: left;
       vertical-align: middle;
    }
+
    .apf-exception table td {
       height: 20px;
    }
+
    .apf-exception td {
       padding-left: .3em;
    }
+
    .apf-stracktrace {
-      height: 150px; 
+      margin: 5px;
+      height: 150px;
       overflow: auto;
       border: 1px solid gray;
    }
+
    .apf-stracktrace table td {
       border-bottom: 1px solid #dddddd;
    }
+
    .apf-stracktrace table thead {
       background-color: #dddddd;
       font-weight: bold;
    }
+
    .apf-stracktrace table td {
       height: 16px;
    }
 </style>
 <div class="apf-exception">
-  <div class="apf-head">
-    <h2>Uncaught exception!</h2>
-    <table>
-      <tr>
-        <td width="60">Exception-ID:</td>
-        <td><strong><html:placeholder name="ExceptionID" /><strong></td>
-      </tr>
-      <tr>
-        <td width="60">Type:</td>
-        <td><strong><html:placeholder name="ExceptionType" /><strong></td>
-      </tr>
-      <tr>
-        <td width="60">Message:</td>
-        <td><strong><html:placeholder name="ExceptionMessage" /><strong></td>
-      </tr>
-      <tr>
-        <td width="60">Number:</td>
-        <td><strong><html:placeholder name="ExceptionNumber" /><strong></td>
-      </tr>
-      <tr>
-        <td width="60">File:</td>
-        <td><strong><html:placeholder name="ExceptionFile" /><strong></td>
-      </tr>
-      <tr>
-        <td width="60">Line:</td>
-        <td><strong><html:placeholder name="ExceptionLine" /><strong></td>
-      </tr>
-    </table>
-  </div>
-  <h3>STACKTRACE:</h3>
-  <div class="apf-stracktrace">
-     <table>
-        <thead>
-           <tr>
-              <td>Call</td>
-              <td>File</td>
-              <td>Line</td>
-           </tr>
-        </thead>
-        <tbody>
-           <html:placeholder name="Stacktrace" />
-        </tbody>
-     </table>
-  </div>
+   <div class="apf-head">
+      <h2>Uncaught exception!</h2>
+      <table>
+         <tr>
+            <td width="60">Exception-ID:</td>
+            <td>
+               <html:placeholder name="ExceptionID"/>
+            </td>
+         </tr>
+         <tr>
+            <td width="60">Type:</td>
+            <td>
+               <html:placeholder name="ExceptionType"/>
+            </td>
+         </tr>
+         <tr>
+            <td width="60">Message:</td>
+            <td>
+               <html:placeholder name="ExceptionMessage"/>
+            </td>
+         </tr>
+         <tr>
+            <td width="60">Number:</td>
+            <td>
+               <html:placeholder name="ExceptionNumber"/>
+            </td>
+         </tr>
+         <tr>
+            <td width="60">File:</td>
+            <td>
+               <html:placeholder name="ExceptionFile"/>
+            </td>
+         </tr>
+         <tr>
+            <td width="60">Line:</td>
+            <td>
+               <html:placeholder name="ExceptionLine"/>
+            </td>
+         </tr>
+      </table>
+   </div>
+
+   <h3>STACKTRACE:</h3>
+
+   <div class="apf-stracktrace">
+      <table>
+         <thead>
+         <tr>
+            <td>Call</td>
+            <td>File</td>
+            <td>Line</td>
+         </tr>
+         </thead>
+         <tbody>
+         <html:placeholder name="Stacktrace"/>
+         </tbody>
+      </table>
+   </div>
 </div>
+
 <html:template name="ExceptionEntry">
-           <tr>
-              <td><nobr><template:placeholder name="Class" /><template:placeholder name="Type" /><template:placeholder name="Function" />()</nobr></td>
-              <td><nobr><template:placeholder name="File" /></nobr></td>
-              <td><nobr><template:placeholder name="Line" /></nobr></td>
-           </tr>
+   <tr>
+      <td>
+         <nobr>
+            <template:placeholder name="Class"/>
+            <template:placeholder name="Type"/>
+            <template:placeholder name="Function"/>
+            ()
+         </nobr>
+      </td>
+      <td>
+         <nobr>
+            <template:placeholder name="File"/>
+         </nobr>
+      </td>
+      <td>
+         <nobr>
+            <template:placeholder name="Line"/>
+         </nobr>
+      </td>
+   </tr>
 </html:template>
