@@ -1149,7 +1149,7 @@ class Document extends APFObject {
     *
     * Returns the parent node of the current APF object.
     *
-    * @return APFObject The parent node.
+    * @return Document The parent node.
     *
     * @author Christian Achatz
     * @version
@@ -1408,7 +1408,7 @@ class Document extends APFObject {
             $tagEndPos = strpos($this->__Content, '</' . $token . '>', $tagStartPos);
             $closingTagLength = strlen('</' . $token . '>');
 
-            // in case a explictly-closing tag could not be found, seach for self-closing tag
+            // in case a explicitly-closing tag could not be found, search for self-closing tag
             if ($tagEndPos === false) {
 
                $tagEndPos = strpos($this->__Content, '/>', $tagStartPos);
@@ -1424,12 +1424,12 @@ class Document extends APFObject {
             $tagStringLength = ($tagEndPos - $tagStartPos) + $closingTagLength;
             $tagString = substr($this->__Content, $tagStartPos, $tagStringLength);
 
-            // NEW (bugfix for errors while mixing self- and exclusivly closing tags):
+            // NEW (bug fix for errors while mixing self- and exclusively closing tags):
             // First, check if a opening tag was found within the previously taken tag string.
             // If yes, the tag string must be redefined.
             if (substr_count($tagString, '<' . $token) > 1) {
 
-               // find position of the self-colising tag
+               // find position of the self-closing tag
                $tagEndPos = strpos($this->__Content, '/>', $tagStartPos);
                $closingTagLength = 2;
 
@@ -1441,6 +1441,7 @@ class Document extends APFObject {
             // get the tag attributes of the current tag
             $attributes = XmlParser::getTagAttributes($tagString);
             $object = new $module();
+            /* @var $object Document */
 
             // inject context of the parent object
             $object->setContext($this->getContext());
@@ -1448,7 +1449,7 @@ class Document extends APFObject {
             // inject language of the parent object
             $object->setLanguage($this->getLanguage());
 
-            // add the tag's atributes
+            // add the tag's attributes
             $object->setAttributes($attributes['attributes']);
 
             // initialize object id, that is used to reference the object
@@ -1564,7 +1565,6 @@ class Document extends APFObject {
     * Version 0.1, 28.12.2006<br />
     */
    public function onParseTime() {
-      
    }
 
    /**
@@ -1579,7 +1579,6 @@ class Document extends APFObject {
     * Version 0.1, 28.12.2006<br />
     */
    public function onAfterAppend() {
-      
    }
 
    /**
