@@ -7,23 +7,24 @@ CREATE TABLE IF NOT EXISTS `ent_application` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ent_user` (
-  `UserID` INT(5) UNSIGNED NOT NULL auto_increment,
-  `DisplayName` VARCHAR(100) character set utf8 NOT NULL default '',
-  `FirstName` VARCHAR(100) character set utf8 NOT NULL default '',
-  `LastName` VARCHAR(100) character set utf8 NOT NULL default '',
-  `StreetName` VARCHAR(100) character set utf8 NOT NULL default '',
-  `StreetNumber` VARCHAR(100) character set utf8 NOT NULL default '',
-  `ZIPCode` VARCHAR(100) character set utf8 NOT NULL default '',
-  `City` VARCHAR(100) character set utf8 NOT NULL default '',
-  `EMail` VARCHAR(100) character set utf8 NOT NULL default '',
-  `Phone` VARCHAR(100) character set utf8 NOT NULL default '',
-  `Mobile` VARCHAR(100) character set utf8 NOT NULL default '',
-  `Username` VARCHAR(100) character set utf8 NOT NULL default '',
-  `Password` VARCHAR(100) character set utf8 NOT NULL default '',
-  `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
+  `UserID` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `DisplayName` varchar(100) NOT NULL DEFAULT '',
+  `FirstName` varchar(100) NOT NULL DEFAULT '',
+  `LastName` varchar(100) NOT NULL DEFAULT '',
+  `StreetName` varchar(100) NOT NULL DEFAULT '',
+  `StreetNumber` varchar(100) NOT NULL DEFAULT '',
+  `ZIPCode` varchar(100) NOT NULL DEFAULT '',
+  `City` varchar(100) NOT NULL DEFAULT '',
+  `EMail` varchar(100) NOT NULL DEFAULT '',
+  `Phone` varchar(100) NOT NULL DEFAULT '',
+  `Mobile` varchar(100) NOT NULL DEFAULT '',
+  `Username` varchar(100) NOT NULL DEFAULT '',
+  `Password` varchar(100) NOT NULL DEFAULT '',
+  `DynamicSalt` varchar(50) NOT NULL DEFAULT '',
+  `CreationTimestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModificationTimestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`UserID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `ent_group` (
   `GroupID` INT(5) UNSIGNED NOT NULL auto_increment,

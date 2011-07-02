@@ -89,7 +89,7 @@ class UserDependentContentConditionSet extends APFObject {
       $user = $this->getUserSessionStore()->getUser($applicationIdentifier);
 
       if ($user !== null) {
-         // inject data conponent to be able to retrieve further parameters (e.g. related objects)
+         // inject data component to be able to retrieve further parameters (e.g. related objects)
          $user->setDataComponent($this->getUmgtManager()->getORMapper());
       }
 
