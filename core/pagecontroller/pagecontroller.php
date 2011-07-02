@@ -2181,7 +2181,7 @@ abstract class base_controller extends Document {
    /**
     * @protected
     *
-    * This method is for concenient setting of multiple place holders. The applied
+    * This method is for convenient setting of multiple place holders. The applied
     * array must contain a structure like this:
     * <code>
     * array(
@@ -2204,6 +2204,49 @@ abstract class base_controller extends Document {
    protected function setPlaceHolders(array $placeHolderValues) {
       foreach ($placeHolderValues as $key => $value) {
          $this->setPlaceHolder($key, $value);
+      }
+   }
+
+   /**
+    * @protected
+    *
+    * Set's a place holder in case it exists. Otherwise it is ignored.
+    *
+    * @param string $name The name of the place holder.
+    * @param string $value The place holder's value.
+    *
+    * @author Christian Achatz, Werner Liemberger
+    * @version
+    * Version 0.1, 02.07.2011<br />
+    */
+   protected function setPlaceHolderIfExist($name, $value) {
+      try {
+         $this->setPlaceHolder($name, $value);
+      } catch (Exception $e) {
+         import('core::logging', 'Logger');
+         $log = &Singleton::getInstance('Logger');
+         /* @var $log Logger */
+         $log->logEntry('php', 'Place holder with name "' . $name . '" does not exist within the current document '
+                               . 'handled by document controller "' . get_class($this) . '". Please check your setup.',
+                        LogEntry::SEVERITY_WARNING);
+      }
+   }
+
+   /**
+    * @protected
+    *
+    * This method is for convenient setting of multiple place holders in case they exist within
+    * the current document. See <em>base_controller::setPlaceHolderIfExist()</em> for details.
+    *
+    * @param array $placeHolderValues Key-value-couples to fill place holders.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 02.07.2011<br />
+    */
+   protected function setPlaceHoldersIfExist(array $placeHolderValues) {
+      foreach ($placeHolderValues as $key => $value) {
+         $this->setPlaceHolderIfExist($key, $value);
       }
    }
 
@@ -2238,7 +2281,7 @@ abstract class base_controller extends Document {
                  E_USER_ERROR);
       }
 
-      $children = &$this->__Document->getChildren();
+      $children = &$this->getDocument()->getChildren();
       if (count($children) > 0) {
 
          foreach ($children as $objectID => $DUMMY) {
@@ -2289,7 +2332,7 @@ abstract class base_controller extends Document {
 
       $tagLibClass = 'html_taglib_template';
 
-      $children = &$this->__Document->getChildren();
+      $children = &$this->getDocument()->getChildren();
       if (count($children) > 0) {
 
          foreach ($children as $objectID => $DUMMY) {
@@ -2312,6 +2355,14 @@ abstract class base_controller extends Document {
    }
 
    /**
+    * @deprecated Use base_controller::placeHolderExists() instead!
+    */
+   protected function __placeholderExists($name) {
+      trigger_error('base_controller::__placeholderExists() is deprecated, use base_controller::placeHolderExists() instead!', E_USER_WARNING);
+      return $this->placeHolderExists($name);
+   }
+
+   /**
     * @protected
     *
     * Checks, if a place holder exists within the current document.
@@ -2323,10 +2374,11 @@ abstract class base_controller extends Document {
     * @version
     * Version 0.1, 11.03.2007<br />
     * Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
+    * Version 0.3, 02.07.2011 (Renaming to fit the APF naming convention)<br />
     */
-   protected function __placeholderExists($name) {
+   protected function placeHolderExists($name) {
 
-      $children = &$this->__Document->getChildren();
+      $children = &$this->getDocument()->getChildren();
 
       foreach ($children as $objectID => $DUMMY) {
          if (get_class($children[$objectID]) == 'html_taglib_placeholder') {
@@ -2337,6 +2389,14 @@ abstract class base_controller extends Document {
       }
 
       return false;
+   }
+
+   /**
+    * @deprecated Use base_controller::templatePlaceHolderExists() instead!
+    */
+   protected function __templatePlaceholderExists(html_taglib_template &$template, $name) {
+      trigger_error('base_controller::__templatePlaceholderExists() is deprecated, use base_controller::templatePlaceHolderExists() instead!', E_USER_WARNING);
+      return $this->templatePlaceHolderExists($template, $name);
    }
 
    /**
@@ -2352,8 +2412,9 @@ abstract class base_controller extends Document {
     * @version
     * Version 0.1, 11.03.2007<br />
     * Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
+    * Version 0.3, 02.07.2011 (Renaming to fit the APF naming convention)<br />
     */
-   protected function __templatePlaceholderExists(&$template, $name) {
+   protected function templatePlaceHolderExists(html_taglib_template &$template, $name) {
 
       $children = &$template->getChildren();
 

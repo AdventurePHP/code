@@ -59,6 +59,15 @@ class LoggerException extends Exception {
 class LogEntry {
 
    /**
+    * The following constants define common severity types to be used within log statements.
+    */
+   const SEVERITY_TRACE = 'TRACE';
+   const SEVERITY_INFO = 'INFO';
+   const SEVERITY_WARNING = 'WARN';
+   const SEVERITY_ERROR = 'ERROR';
+   const SEVERITY_FATAL = 'FATAL';
+
+   /**
     * @private
     * @var string Date of the message.
     */
