@@ -673,7 +673,7 @@ class Frontcontroller extends APFObject {
          import($actionAndInputNamespace, $inputClass);
       }
 
-      // check for class beeing present
+      // check for class being present
       if (!class_exists($actionClass) || !class_exists($inputClass)) {
          throw new InvalidArgumentException('[Frontcontroller::addAction()] Action class with name "'
                  . $actionClass . '" or input class with name "' . $inputClass
@@ -682,7 +682,7 @@ class Frontcontroller extends APFObject {
 
       // init action
       $action = new $actionClass;
-      /* @var $input AbstractFrontcontrollerAction */
+      /* @var $action AbstractFrontcontrollerAction */
 
       $action->setActionNamespace($namespace);
       $action->setActionName($name);
