@@ -23,7 +23,7 @@ import('core::configuration::provider', 'BaseConfigurationProvider');
 import('core::database::config', 'StatementConfiguration');
 
 /**
- * @package core::database::configuration
+ * @package core::database::config
  * @class StatementConfigurationProvider
  *
  * Implements the configuration provider to handle stored statements to treat them as "normal"
