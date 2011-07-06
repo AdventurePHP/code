@@ -38,9 +38,10 @@ class form_taglib_clientlistener extends form_control {
      *  @version
      *  Version 1.0, 18.03.2010<br />
      */
-    public function form_taglib_clientlistener() {
-        $this->__TagLibs[] = new TagLib('tools::form::taglib','listener','placeholder');
-        $this->__TagLibs[] = new TagLib('tools::form::taglib','listener','getstring');
+    public function __construct() {
+       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'listener', 'placeholder');
+       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'listener', 'getstring');
+       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'listener', 'addtaglib');
     }
 
     /**

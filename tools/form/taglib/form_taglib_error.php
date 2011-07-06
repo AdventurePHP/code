@@ -21,6 +21,7 @@
 
    import('tools::form::taglib','error_taglib_placeholder');
    import('tools::form::taglib','error_taglib_getstring');
+   import('tools::form::taglib','error_taglib_addtaglib');
 
    /**
     * @package tools::form::taglib
@@ -34,6 +35,7 @@
     *   The content to display, in case the form is sent, but invalid!
     *   [&lt;error:getstring namespace="" config="" key="" /&gt;]
     *   [&lt;error:placeholder name="" /&gt;]
+    *   [&lt;error:addtaglib namespace="" prefix="" class="" /&gt;]
     * &lt;/form:error&gt;
     * </pre>
     *
@@ -43,10 +45,10 @@
     */
    class form_taglib_error extends form_control {
 
-      public function form_taglib_error(){
-         $this->__TagLibs[] = new TagLib('tools::form::taglib','error','placeholder');
-         $this->__TagLibs[] = new TagLib('tools::form::taglib','error','getstring');
-       // end function
+      public function __construct() {
+         $this->__TagLibs[] = new TagLib('tools::form::taglib', 'error', 'placeholder');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib', 'error', 'getstring');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib', 'error', 'addtaglib');
       }
 
       /**
@@ -61,7 +63,6 @@
        */
       public function onParseTime(){
          $this->__extractTagLibTags();
-       // end function
       }
 
       /**
@@ -89,7 +90,7 @@
        * Version 0.1, 03.09.2009<br />
        */
       public function transform(){
-         if($this->__ParentObject->isSent() && !$this->__ParentObject->isValid()){
+         if($this->getParentObject()->isSent() && !$this->getParentObject()->isValid()){
             foreach($this->__Children as $objectId => $DUMMY){
                $this->__Content = str_replace(
                   '<'.$objectId.' />',$this->__Children[$objectId]->transform(),$this->__Content
@@ -98,9 +99,7 @@
             return $this->__Content;
          }
          return (string)'';
-       // end function
       }
 
-    // end class
    }
 ?>

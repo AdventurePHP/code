@@ -21,7 +21,8 @@
 
    import('tools::form::taglib','listener_taglib_placeholder');
    import('tools::form::taglib','listener_taglib_getstring');
-   
+   import('tools::form::taglib','listener_taglib_addtaglib');
+
    /**
     * @package tools::form::taglib
     * @class form_taglib_listener
@@ -41,6 +42,7 @@
     *   The content to display, in case the form is sent, but the control is invalid!
     *   [&lt;listener:getstring namespace="" config="" key="" /&gt;]
     *   [&lt;listener:placeholder name="" /&gt;]
+    *   [&lt;listener:addtaglib namespace="" prefix="" class="" /&gt;]
     * &lt;/form:listener&gt;
     * </pre>
     *

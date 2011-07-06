@@ -40,9 +40,9 @@ class form_taglib_clienterror extends form_control {
      *  Version 1.0, 18.03.2010<br />
      */
     public function __construct() {
-       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'listener', 'placeholder');
-       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'listener', 'getstring');
-       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'listener', 'addtaglib');
+       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'error', 'placeholder');
+       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'error', 'getstring');
+       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'error', 'addtaglib');
     }
 
     /**
