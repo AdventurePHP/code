@@ -39,10 +39,10 @@ class form_taglib_clienterror extends form_control {
      *  @version
      *  Version 1.0, 18.03.2010<br />
      */
-    public function form_taglib_clienterror() {
-        $this->__TagLibs[] = new TagLib('tools::form::taglib','listener','placeholder');
-        $this->__TagLibs[] = new TagLib('tools::form::taglib','listener','getstring');
-        // end function
+    public function __construct() {
+       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'listener', 'placeholder');
+       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'listener', 'getstring');
+       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'listener', 'addtaglib');
     }
 
     /**
@@ -52,7 +52,7 @@ class form_taglib_clienterror extends form_control {
      *  @version
      *  Version 1.0, 18.03.2010<br />
      */
-    function onParseTime() {
+    public function onParseTime() {
         $this->__extractTagLibTags();
     }
 
@@ -75,7 +75,7 @@ class form_taglib_clienterror extends form_control {
      *  @version
      *  Version 1.0, 18.03.2010<br />
      */
-    function transform() {
+    public function transform() {
         foreach($this->__Children as $objectId => $DUMMY) {
             $this->__Content = str_replace(
                     '<'.$objectId.' />',$this->__Children[$objectId]->transform(),$this->__Content

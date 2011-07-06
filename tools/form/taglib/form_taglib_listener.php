@@ -56,10 +56,10 @@
        */
       protected $__IsNotified = false;
 
-      public function form_taglib_listener(){
-         $this->__TagLibs[] = new TagLib('tools::form::taglib','listener','placeholder');
-         $this->__TagLibs[] = new TagLib('tools::form::taglib','listener','getstring');
-       // end function
+      public function __construct() {
+         $this->__TagLibs[] = new TagLib('tools::form::taglib', 'listener', 'placeholder');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib', 'listener', 'getstring');
+         $this->__TagLibs[] = new TagLib('tools::form::taglib', 'listener', 'addtaglib');
       }
 
       /**
@@ -73,7 +73,6 @@
        */
       public function notify(){
          $this->__IsNotified = true;
-       // end function
       }
 
       /**
@@ -87,7 +86,6 @@
        */
       public function onParseTime(){
          $this->__extractTagLibTags();
-       // end function
       }
 
       /**
@@ -123,9 +121,7 @@
             return $this->__Content;
          }
          return (string)'';
-       // end function
       }
 
-    // end class
    }
 ?>

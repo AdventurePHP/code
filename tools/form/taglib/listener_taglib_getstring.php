@@ -32,10 +32,5 @@
     * Version 0.1, 17.09.2009<br />
     */
    class listener_taglib_getstring extends form_getstring {
-
-      public function listener_taglib_getstring(){
-      }
-      
-    // end class
    }
 ?>
