@@ -656,8 +656,8 @@ abstract class BasicLinkScheme {
     * Version 0.1, 10.02.2007<br />
     * Version 0.2, 08.11.2007 (Corrected error with empty input object)<br />
     * Version 0.3, 21.06.2008 (Removed APPS__URL_REWRITING and introduced the Registry instead)<br />
-    * Version 0.3, 25.03.2011 (Renamed to <em>getParameterURLRepresentation()</em> due to page controller refactoring)<br />
-    * Version 0.4, 08.04.2011 (Moved from FrontcontrollerInput to the link scheme implementation for consistency)<br />
+    * Version 0.4, 25.03.2011 (Renamed to <em>getParameterURLRepresentation()</em> due to page controller refactoring)<br />
+    * Version 0.5, 08.04.2011 (Moved from FrontcontrollerInput to the link scheme implementation for consistency)<br />
     */
    protected function formatActionParameters(array $params, $urlRewriting) {
 
@@ -707,7 +707,7 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
       $queryString = '';
       foreach ($query as $name => $value) {
          if (empty($value)) {
-            // incluce actions that may have empty values
+            // include actions that may have empty values
             if (strpos($name, '-action') !== false) {
                if (!empty($queryString)) {
                   $queryString .= '&';
@@ -817,7 +817,9 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
       $query = $url->getQuery();
       if (count($query) > 0) {
          foreach ($query as $name => $value) {
-            if (!empty($value)) {
+            // allow empty params that are action definitions to not
+            // exclude actions with no params!
+            if (!empty($value) || (empty($value) && strpos($name, '-action') !== false)) {
                if (strpos($name, '-action') === false) {
                   $resultUrl .= '/' . $name . '/' . $value;
                } else {
