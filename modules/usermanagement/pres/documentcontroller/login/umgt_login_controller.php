@@ -85,8 +85,10 @@ class umgt_login_controller extends base_controller {
                /* @var $l Logger */
                $l->logEntry('login', 'Login is not possible due to ' . $e, 'ERROR');
             }
-         } else {
+         } elseif ($form->isSent() && !$form->isValid()) {
             $form->setPlaceHolder('login-error', $this->getTemplate('login-error')->transformTemplate());
+            $form->transformOnPlace();
+         } else {
             $form->transformOnPlace();
          }
       } else {
