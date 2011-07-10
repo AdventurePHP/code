@@ -18,6 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+import('tools::form::taglib', 'form_taglib_select');
 
 /**
  * @package tools::form::taglib
@@ -65,8 +66,8 @@ class form_taglib_date extends form_control {
       $this->offsetNames = array('Day' => 'Day', 'Month' => 'Month', 'Year' => 'Year');
 
       // initialize the year range
-      $this->yearRange['Start'] = (int) date('Y') - 10;
-      $this->yearRange['End'] = (int) date('Y') + 10;
+      $this->yearRange['Start'] = (int)date('Y') - 10;
+      $this->yearRange['End'] = (int)date('Y') + 10;
    }
 
    /**
@@ -126,7 +127,7 @@ class form_taglib_date extends form_control {
       }
 
       // set the values for the year select box
-      for ($i = (int) $this->yearRange['Start']; $i <= (int) $this->yearRange['End']; $i++) {
+      for ($i = (int)$this->yearRange['Start']; $i <= (int)$this->yearRange['End']; $i++) {
          $yearNumber = sprintf('%04s', $i);
          $year->addOption($yearNumber, $yearNumber);
       }
@@ -195,7 +196,7 @@ class form_taglib_date extends form_control {
       // as of 1.12, the date control should be rendered using a
       // surrounding span do enable the client validator extension
       // to address the control more easily.
-      $buffer = (string) '<span id="' . $this->getId() . '"';
+      $buffer = (string)'<span id="' . $this->getId() . '"';
 
       $style = $this->getAttribute('style');
       if ($style != null) {
@@ -273,8 +274,8 @@ class form_taglib_date extends form_control {
          $this->getYearControl()->setOption2Selected($time['year']);
       } else {
          throw new FormException('[form_taglib_date::setDate()] Given date "' . $date
-                 . '" cannot be parsed (Errors: ' . implode(', ', $time['errors']) . ', warnings: '
-                 . implode(', ', $time['warnings']) . ')');
+                                 . '" cannot be parsed (Errors: ' . implode(', ', $time['errors']) . ', warnings: '
+                                 . implode(', ', $time['warnings']) . ')');
       }
    }
 
@@ -365,9 +366,9 @@ class form_taglib_date extends form_control {
 
          if (count($offsetNames) == 3) {
             $this->offsetNames = array(
-                'Day' => $offsetNames[0],
-                'Month' => $offsetNames[1],
-                'Year' => $offsetNames[2]
+               'Day' => $offsetNames[0],
+               'Month' => $offsetNames[1],
+               'Year' => $offsetNames[2]
             );
          }
       }
@@ -390,4 +391,5 @@ class form_taglib_date extends form_control {
    }
 
 }
+
 ?>
