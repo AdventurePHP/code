@@ -815,7 +815,7 @@ abstract class APFObject {
    }
 
    /**
-    * @deprectated Use <em>getAttributesAsString()</em> instead!
+    * @deprecated Use <em>getAttributesAsString()</em> instead!
     */
    protected function __getAttributesAsString(array $attributes, array $whiteList = array()) {
       trigger_error('APFObject::__getAttributesAsString() is deprecated, use APFObject::getAttributesAsString() instead!', E_USER_WARNING);
