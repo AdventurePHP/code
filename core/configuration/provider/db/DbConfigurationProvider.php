@@ -47,12 +47,14 @@
     * </ul>
     * Please refer to the documentation for details on creating the configuration store or
     * take the <code>setup.sql</code> file located in the <code>data</code> folder of the provider.
+    * <p/>
+    * Since release 1.14 this provider supports environment fallback as well.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   class DbConfigurationProvider implements ConfigurationProvider {
+   class DbConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
       /**
        * @var string $connectionName The name of the connection to create.
@@ -88,6 +90,18 @@
          $result = $conn->executeTextStatement($select);
 
          $config = new DbConfiguration();
+
+         // in case of empty results, try to fallback to the DEFAULT environment
+         if ($conn->getNumRows($result) == 0 && $this->activateEnvironmentFallback === true && $environment !== 'DEFAULT') {
+            $environment = 'DEFAULT';
+            $select = 'SELECT `section`, `key`, `value` FROM `' . $table . '`
+                           WHERE
+                              `context` = \'' . $context . '\' AND
+                              `language` = \'' . $language . '\' AND
+                              `environment` = \'' . $environment . '\' AND
+                              `name` = \'' . $this->getConfigName($name) . '\'';
+            $result = $conn->executeTextStatement($select);
+         }
 
          while ($data = $conn->fetchData($result)) {
 
