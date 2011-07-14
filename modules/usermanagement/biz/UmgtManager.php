@@ -165,6 +165,20 @@ class UmgtManager extends APFObject {
          $this->isInitialized = true;
       }
    }
+   
+   /**
+    * @public
+    * 
+    * When serialising in session, passwordhashproviders need to be imported
+    * to avoid incomplete object bug.
+    * 
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 14.07.2011 <br />
+    */
+   public function __wakeup() {
+       $this->passwordHashProvidersAreImported = false;
+   }
 
    /**
     * @protected
