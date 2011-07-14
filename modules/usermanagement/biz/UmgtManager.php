@@ -63,6 +63,12 @@ class UmgtManager extends APFObject {
     */
    protected $passwordHashProviders = array();
 
+   /**
+    * Due to incomplete object problems, we need to now this state explicit
+    * @var boolean Indicates if we already imported the providers in this request
+    */
+   protected $passwordHashProvidersAreImported = false;
+   
     /**
     * @protected
     * @var string The service mode of the generic or mapper.
@@ -85,7 +91,50 @@ class UmgtManager extends APFObject {
     * Version 0.1, 30.12.2008<br />
     */
    public function init($initParam) {
+      
+      $PasswordHashProviderList = array();
+      
+      // we need to import the password hash providers on each request once, due to incomplete object
+      // bug, when saving in session.
+      if(!$this->passwordHashProvidersAreImported){
+          
+          $passwordHashProvider = $section->getSection('PasswordHashProvider');
+          if($passwordHashProvider !== null) {
+              $providerSectionNames = $passwordHashProvider->getSectionNames();
 
+              // single provider given (and fallback for old configurations)
+              if(count($providerSectionNames) === 0){
+                  $passHashNamespace = $passwordHashProvider->getValue('Namespace');
+                  $passHashClass = $passwordHashProvider->getValue('Class');
+                  if($passHashNamespace!==null && $passHashClass!==null) {
+                      import($passHashNamespace, $passHashClass);
+                      $PasswordHashProviderList[] = array($passHashNamespace, $passHashClass);
+                  }
+              }
+              // multiple providers given
+              else {
+                  foreach($providerSectionNames as $subSection) {
+                      $passHashNamespace = $passwordHashProvider->getSection($subSection)->getValue('Namespace');
+                      $passHashClass = $passwordHashProvider->getSection($subSection)->getValue('Class');
+                      if($passHashNamespace!==null && $passHashClass!==null) {
+                          import($passHashNamespace, $passHashClass);
+                          $PasswordHashProviderList[] = array($passHashNamespace, $passHashClass);
+                      }
+                  }
+              }
+              
+          }
+
+          if(count($PasswordHashProviderList) === 0) {
+              //fallback to default provider
+              import($passHashNamespace, $passHashClass);
+              $PasswordHashProviderList[] = array('modules::usermanagement::biz::provider::crypt', 'CryptHardcodedSaltPasswordHashProvider');
+          }
+          
+           $this->passwordHashProvidersAreImported = true;
+          
+      }
+         
       if ($this->isInitialized === false) {
 
          // setup the component
@@ -104,37 +153,12 @@ class UmgtManager extends APFObject {
 
          $this->connectionKey = $section->getValue('ConnectionKey');
 
-         //initialize the password hash providers
-         $passwordHashProvider = $section->getSection('PasswordHashProvider');
-         if($passwordHashProvider !== null) {
-             $providerSectionNames = $passwordHashProvider->getSectionNames();
-             
-             // single provider given (and fallback for old configurations)
-             if(count($providerSectionNames) === 0){
-                 $passHashNamespace = $passwordHashProvider->getValue('Namespace');
-                 $passHashClass = $passwordHashProvider->getValue('Class');
-                 if($passHashNamespace!==null && $passHashClass!==null) {
-                     $passwordHashProviderObject = $this->getAndInitServiceObject($passHashNamespace, $passHashClass, $initParam);
-                     $this->passwordHashProviders[] = $passwordHashProviderObject;
-                 }
-             }
-             // multiple providers given
-             else {
-                 foreach($providerSectionNames as $subSection) {
-                     $passHashNamespace = $passwordHashProvider->getSection($subSection)->getValue('Namespace');
-                     $passHashClass = $passwordHashProvider->getSection($subSection)->getValue('Class');
-                     if($passHashNamespace!==null && $passHashClass!==null) {
-                         $passwordHashProviderObject = $this->getAndInitServiceObject($passHashNamespace, $passHashClass, $initParam);
-                         $this->passwordHashProviders[] = $passwordHashProviderObject;
-                     }
-                 }
-             }
-         }
          
-         if(count($this->passwordHashProviders) === 0) {
-             //fallback to default provider
-             $defaultPasswordHashProvider = $this->getAndInitServiceObject('modules::usermanagement::biz::provider::crypt', 'CryptHardcodedSaltPasswordHashProvider', $initParam);
-             $this->passwordHashProviders[] = $defaultPasswordHashProvider;
+         // initialize the password hash providers
+         foreach($PasswordHashProviderList as $ProviderInfo){
+             $passwordHashProviderObject = $this->getAndInitServiceObject($ProviderInfo[0], $ProviderInfo[1], $initParam);
+             $this->passwordHashProviders[] = $passwordHashProviderObject;
+             unset($passwordHashProviderObject);
          }
          
          // set to initialized
