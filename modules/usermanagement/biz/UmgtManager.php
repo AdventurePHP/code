@@ -98,6 +98,10 @@ class UmgtManager extends APFObject {
       // bug, when saving in session.
       if(!$this->passwordHashProvidersAreImported){
           
+          // setup the component
+         $config = $this->getConfiguration('modules::usermanagement', 'umgtconfig.ini');
+         $section = $config->getSection($initParam);
+          
           $passwordHashProvider = $section->getSection('PasswordHashProvider');
           if($passwordHashProvider !== null) {
               $providerSectionNames = $passwordHashProvider->getSectionNames();
@@ -127,7 +131,7 @@ class UmgtManager extends APFObject {
 
           if(count($PasswordHashProviderList) === 0) {
               //fallback to default provider
-              import($passHashNamespace, $passHashClass);
+              import('modules::usermanagement::biz::provider::crypt', 'CryptHardcodedSaltPasswordHashProvider');
               $PasswordHashProviderList[] = array('modules::usermanagement::biz::provider::crypt', 'CryptHardcodedSaltPasswordHashProvider');
           }
           
@@ -136,10 +140,6 @@ class UmgtManager extends APFObject {
       }
          
       if ($this->isInitialized === false) {
-
-         // setup the component
-         $config = $this->getConfiguration('modules::usermanagement', 'umgtconfig.ini');
-         $section = $config->getSection($initParam);
 
          $appId = $section->getValue('ApplicationID');
          if ($appId !== null) {
