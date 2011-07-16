@@ -95,6 +95,17 @@
          }
          return null;
       }
+      
+       /**
+       * @return CanonicalNode The canonical node or null.
+       */
+      public function getCanonical() {
+         $canonical = $this->getNodesByType('CanonicalNode');
+         if(count($canonical) > 0){
+            return $canonical[count($canonical) - 1]; // always return the last title, to allow override!
+         }
+         return null;
+      }
 
       /**
        * @return CssNode[] The list of javascript nodes.
