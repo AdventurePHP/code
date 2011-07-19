@@ -1,122 +1,203 @@
 <?php
-   /**
-   *  <!--
-   *  This file is part of the adventure php framework (APF) published under
-   *  http://adventure-php-framework.org.
-   *
-   *  The APF is free software: you can redistribute it and/or modify
-   *  it under the terms of the GNU Lesser General Public License as published
-   *  by the Free Software Foundation, either version 3 of the License, or
-   *  (at your option) any later version.
-   *
-   *  The APF is distributed in the hope that it will be useful,
-   *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-   *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   *  GNU Lesser General Public License for more details.
-   *
-   *  You should have received a copy of the GNU Lesser General Public License
-   *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-   *  -->
-   */
+/**
+ * <!--
+ * This file is part of the adventure php framework (APF) published under
+ * http://adventure-php-framework.org.
+ *
+ * The APF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The APF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ * -->
+ */
+session_cache_limiter('none');
+import('tools::http', 'HeaderManager');
 
-   session_cache_limiter('none');
-   import('tools::http','HeaderManager');
+/**
+ * @package tools::media::actions
+ * @class StreamMediaAction
+ *
+ * Implementation of the streamMedia action, that streams various media files (css, image, ...)
+ * to the client. This action is the "backend" for the <*:mediastream /> tags.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 01.11.2008<br />
+ */
+class StreamMediaAction extends AbstractFrontcontrollerAction {
 
-   /**
-   *  @package tools::media::actions
-   *  @class StreamMediaAction
-   *
-   *  Implementation of the streamMesia action, that streams various media files (css, image, ...)
-   *  to the client. This action is the "backend" for the <stream:media /> tag.
-   *
-   *  @author Christian Achatz
-   *  @version
-   *  Version 0.1, 01.11.2008<br />
-   */
-   class StreamMediaAction extends AbstractFrontcontrollerAction {
+   public function run() {
 
-      /**
-      *  @private
-      *  Mapping table for associating file extensions with content type headers.
-      */
-      var $__ExtensionMap = array(
-                                  'png' => 'image/png',
-                                  'jpeg' => 'image/jpg',
-                                  'jpg' => 'image/jpg',
-                                  'gif' => 'image/gif',
-                                  'css' => 'text/css',
-                                  'xml' => 'text/xml'
-                                 );
+      // Bug 782: read params and sanitize them to avoid security issues
+      $namespace = $this->getSanitizedNamespace();
+      $fileBody = $this->getSanitizedFileBody();
+      $extension = $this->getSanitizedExtension();
+      $fileName = $fileBody . '.' . $extension;
 
-      public function StreamMediaAction(){
-      }
+      // Bug 782: check for allowed extension to avoid access to configuration files.
+      $allowedExtensions = $this->getAllowedExtensions();
+      if (isset($allowedExtensions[$extension])) {
 
-      /**
-      *  @public
-      *
-      *  Displays the requested image with respect to caching headers.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 01.11.2008<br />
-      *  Version 0.2, 26.04.2009 (Added caching header)<br />
-      */
-      public function run(){
+         $filePath = APPS__PATH . '/' . $namespace . '/' . $fileName;
+         if (file_exists($filePath)) {
 
-         // read params from the input object
-         $namespace = str_replace('_','/',$this->getInput()->getAttribute('namespace'));
-         $filebody = $this->getInput()->getAttribute('filebody');
-         $extenstion = $this->getInput()->getAttribute('extension');
-         $filename = $filebody.'.'.$extenstion;
+            // map extension to known mime type
+            $contentType = $allowedExtensions[$extension];
 
-         // map extention to known mime type
-         $contentType = $this->getContentType4Extension($extenstion);
+            // send desired header
+            header('Content-Type: ' . $contentType);
 
-         // send desired header
-         header('Content-Type: '.$contentType);
+            // send headers to allow caching
+            $delta = 7 * 24 * 60 * 60; // caching for 7 days
+            HeaderManager::send('Cache-Control: public; max-age=' . $delta);
+            $modifiedDate = date('D, d M Y H:i:s \G\M\T', time());
+            HeaderManager::send('Last-Modified: ' . $modifiedDate);
+            $expiresDate = date('D, d M Y H:i:s \G\M\T', time() + $delta);
+            HeaderManager::send('Expires: ' . $expiresDate);
 
-         // send headers to allow caching
-         $delta = 7 * 24 * 60 * 60; // chaching for 7 days
-         HeaderManager::send('Cache-Control: public; max-age='.$delta);
-         $modifiedDate = date('D, d M Y H:i:s \G\M\T', time());
-         HeaderManager::send('Last-Modified: '.$modifiedDate);
-         $expiresDate = date('D, d M Y H:i:s \G\M\T', time() + $delta);
-         HeaderManager::send('Expires: '.$expiresDate);
+            @readfile($filePath);
+            exit(0);
 
-         // send content
-         @readfile(APPS__PATH.'/'.$namespace.'/'.$filename);
-
-         exit(0);
-
-       // end function
-      }
-
-      /**
-      *  @private
-      *
-      *  Returns the content type suitable for the given file extension.
-      *
-      *  @param string $extension The given file extension.
-      *  @return string The desired content type or "application/octet-stream" when extension is unknown.
-      *
-      *  @author Christian Achatz
-      *  @version
-      *  Version 0.1, 01.11.2008<br />
-      */
-      private function getContentType4Extension($extension){
-
-         if(isset($this->__ExtensionMap[$extension])){
-            return $this->__ExtensionMap[$extension];
-          // end if
+         } else {
+            throw new Exception('File with name "' . $fileName . '" cannot be found under sub-path "' . $namespace . '"!');
          }
-         else{
-            return (string)'application/octet-stream';
-          // end else
-         }
-
-       // end function
       }
 
-    // end function
+      throw new Exception('You are not allowed to request "' . $fileName . '" under sub-path "' . $namespace . '"!');
    }
+
+   /**
+    * @private
+    *
+    * Removes un-allowed parts from the namespace (e.g. config namespace).
+    *
+    * @return string The namespace of the resource to load.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 18.07.2011<br />
+    */
+   private function getSanitizedNamespace() {
+      return str_replace('config/', '', // do not allow configuration files to be streamed
+                         str_replace('_', '/', // resolve url notation for namespaces
+                                     str_replace('..', '', // do not allow to step to the parent folder
+                                                 preg_replace('/[^A-Za-z0-9\-_\.]/', '',
+                                                              $this->getInput()->getAttribute('namespace')))
+                         )
+      );
+   }
+
+   /**
+    * @private
+    *
+    * Cleans up the file body.
+    *
+    * @return string The file body of the resource to load.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 18.07.2011<br />
+    */
+   private function getSanitizedFileBody() {
+      return preg_replace('/[^A-Za-z0-9\-_]/', '', $this->getInput()->getAttribute('filebody'));
+   }
+
+   /**
+    * @private
+    *
+    * Cleans up the file extension parameter.
+    *
+    * @return string The extension of the resource to load.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 18.07.2011<br />
+    */
+   private function getSanitizedExtension() {
+      return preg_replace('/[^A-Za-z0-9]/', '', $this->getInput()->getAttribute('extension'));
+   }
+
+   /**
+    * @private
+    *
+    * Returns the list of allowed extensions along with their MIME types.
+    * Falls back to internal values in case the optional configuration
+    * file is not present.
+    *
+    * @return array The list of allowed extensions.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 18.07.2011<br />
+    */
+   private function getAllowedExtensions() {
+      try {
+         return $this->getExtensions();
+      } catch (ConfigurationException $e) {
+         return array(
+            'png' => 'image/png',
+            'jpeg' => 'image/jpg',
+            'jpg' => 'image/jpg',
+            'gif' => 'image/gif',
+            'css' => 'text/css',
+            'js' => 'text/javascript'
+         );
+      }
+   }
+
+   /**
+    * @private
+    *
+    * Loads the configuration file that defines the allowed extensions.
+    * <p/>
+    * In order to define a custom set of allowed file extensions along with their MIME type,
+    * please create a configuration file with name <em>{ENVIRONMENT}_allowed_extensions.ini</em>
+    * under <em>/config/tools/media/{CONTEXT}</em>.
+    * <p/>
+    * The content of the configuration file is as follows:
+    * <code>
+    * [Default]
+    * jpg = "image/jpg"
+    * foo = "text/foo"
+    * bar = "text/bar"
+    * </code>
+    * This method converts the above content to this:
+    * <code>
+    * array('jpg' => 'image/jpg', 'foo' => 'text/foo', 'bar' => 'text/bar')
+    * </code>
+    *
+    * @throws ConfigurationException In case of missing configuration.
+    * @return array A list of allowed extensions.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 18.07.2011<br />
+    */
+   private function getExtensions() {
+
+      $config = $this->getConfiguration('tools::media', 'allowed_extensions.ini');
+      $section = $config->getSection('Default');
+
+      if ($section == null) {
+         throw new ConfigurationException('Section "Default" is missing!');
+      }
+
+      $extensions = array();
+      foreach ($config->getValueNames() as $name) {
+         $extensions[$name] = $config->getValue($name);
+      }
+
+      return $extensions;
+   }
+
+}
+
 ?>
