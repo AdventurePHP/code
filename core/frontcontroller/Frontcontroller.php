@@ -641,12 +641,6 @@ class Frontcontroller extends APFObject {
 
       // load the action configuration
       $config = $this->getConfiguration($namespace, 'actionconfig.ini');
-
-      if ($config == null) {
-         throw new InvalidArgumentException('[Frontcontroller::addAction()] No '
-                 . 'configuration available for namespace "' . $namespace . '" and context "'
-                 . $this->getContext() . '"!', E_USER_ERROR);
-      }
       $actionConfig = $config->getSection($name);
 
       // throw exception, in case the action config is not present
