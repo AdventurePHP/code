@@ -329,9 +329,7 @@
       protected function initCharsetAndCollation(){
 
          if($this->__dbCharset !== null){
-            $this->executeTextStatement('SET character_set_client = \''.$this->__dbCharset.'\'');
-            $this->executeTextStatement('SET character_set_connection = \''.$this->__dbCharset.'\'');
-            $this->executeTextStatement('SET character_set_results = \''.$this->__dbCharset.'\'');
+            $this->executeTextStatement('SET NAMES \''.$this->__dbCharset.'\'');
          }
 
          if($this->__dbCollation !== null){
