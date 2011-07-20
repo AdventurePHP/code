@@ -86,13 +86,19 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
     * Version 0.1, 18.07.2011<br />
     */
    private function getSanitizedNamespace() {
-      return str_replace('config/', '', // do not allow configuration files to be streamed
-                         str_replace('_', '/', // resolve url notation for namespaces
-                                     str_replace('..', '', // do not allow to step to the parent folder
-                                                 preg_replace('/[^A-Za-z0-9\-_\.]/', '',
-                                                              $this->getInput()->getAttribute('namespace')))
-                         )
+      $namespace = str_replace('_', '/', // resolve url notation for namespaces
+                               str_replace('..', '', // do not allow to step to the parent folder
+                                           preg_replace('/[^A-Za-z0-9\-_\.]/', '',
+                                                        $this->getInput()->getAttribute('namespace')))
+
       );
+
+      // Do not allow configuration files to be streamed.
+      // Thus replace all occurrences recursively!
+      while (strpos($namespace, 'config/') !== false) {
+         $namespace = str_replace('config/', '', $namespace);
+      }
+      return $namespace;
    }
 
    /**
