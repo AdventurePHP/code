@@ -113,19 +113,10 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
          $fcaction = true;
       }
 
-      // Generate url if not given
-      if ($url === null) {
-         if ($urlRewriting) {
-            $url = Registry::retrieve('apf::core', 'URLBasePath');
-         } else {
-            $tmpPath = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
-            $slash = (substr($tmpPath, 0, 1) !== '/') ? '/' : '';
-            $url = 'http://' . $_SERVER['HTTP_HOST'] . $slash . $tmpPath;
-         }
-      }
-
       if ($fcaction) {
-         return LinkGenerator::generateActionUrl(Url::fromString($url), 'extensions::jscssinclusion::biz', 'sGCJ', array(
+         $UrlObj = ($url === null) ? $UrlObj = Url::fromCurrent(true) : $UrlObj = Url::fromString($url);
+         
+         return LinkGenerator::generateActionUrl($UrlObj, 'extensions::jscssinclusion::biz', 'sGCJ', array(
              'path' => str_replace('::', '_', $namespace),
              'type' => $type,
              'file' => $filename
