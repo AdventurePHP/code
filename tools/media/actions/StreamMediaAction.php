@@ -94,13 +94,9 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
 
       // Do not allow configuration files to be streamed.
       // Thus replace all occurrences recursively!
-      while (preg_match('/config\//i', $namespace) > 0) {
-         $namespace = preg_replace('/config\//i', '', $namespace);
-      }
-
       // Further, changing to higher directories is not allowed, either!
-      while (strpos($namespace, '..') !== false) {
-         $namespace = str_replace('..', '', $namespace);
+      while (preg_match('/config\/|\.\./i', $namespace) > 0) {
+         $namespace = preg_replace('/config\/|\.\./i', '', $namespace);
       }
 
       return $namespace;
