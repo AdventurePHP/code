@@ -114,7 +114,7 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
       }
 
       if ($fcaction) {
-         $UrlObj = ($url === null) ? $UrlObj = Url::fromCurrent(true) : $UrlObj = Url::fromString($url);
+         $UrlObj = ($url === null) ? Url::fromCurrent(true) :  Url::fromString($url);
          
          return LinkGenerator::generateActionUrl($UrlObj, 'extensions::jscssinclusion::biz', 'sGCJ', array(
              'path' => str_replace('::', '_', $namespace),
