@@ -20,6 +20,7 @@
     */
 
    import('tools::http','HeaderManager');
+   import('extensions::jscssinclusion::filter', 'JsCssInclusionFilterChain');
 
    /**
     *  @namespace extensions::jscssinclustion::biz::actions
@@ -104,8 +105,9 @@
          $filePath = $libBasePath.'/'. $path .'/'.$file.'.'.$ext;
 
          if(file_exists($filePath)){
+            $this->initFilterChain($ext);
             HeaderManager::send('Content-type: '.$mimeType);
-            echo file_get_contents($filePath);
+            echo JsCssInclusionFilterChain::getInstance()->filter( file_get_contents($filePath) );
          }
          else {
             throw new IncludeException('[JsCssInclusionAction::run()] The requested file "'.$file.'.'
@@ -115,5 +117,31 @@
          }
          exit();
       }
+      
+      protected function initFilterChain($Filetype) {
+          
+          try {
+             $Cfg = $this->getConfiguration('extensions::jscssinclusion::biz', 'JsCssInclusion.ini');
+          }
+          catch(ConfigurationException $e){
+              return;
+          }
+          
+          $SectionName = ($Filetype === 'css') ? 'CssFilter' : 'JsFilter';
+          $Section = $Cfg->getSection($SectionName);
+          
+          if($Section !== null){
+              foreach($Section->getSectionNames() as $key){
+                  $FilterInformation = $Section->getSection($key);
+                  
+                  $Namespace = $FilterInformation->getValue('Namespace');
+                  $Name = $FilterInformation->getValue('Name');
+                  
+                  import($Namespace, $Name);
+                  JsCssInclusionFilterChain::getInstance()->addFilter(new $Name());
+              }
+          }
+      }
+      
    }
 ?>
