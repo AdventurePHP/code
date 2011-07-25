@@ -35,38 +35,47 @@ import('core::session', 'SessionManager');
 final class PagerMapper extends APFObject {
 
    /**
-    *  @protected
-    *  Defines the database connection key. Must be filled within the init() method.
+    * @protected
+    * Defines the database connection key. Must be filled within the init() method.
     */
-   protected $__ConnectionKey = null;
+   protected $connectionKey = null;
 
    /**
-    *  @public
+    * @public
     *
     *  Initializes the connection key of the mapper.
     *
-    *  @param string $initParam the database connection key
+    * @param string $initParam the database connection key
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 19.01.2009<br />
     */
    public function init($initParam) {
-      $this->__ConnectionKey = $initParam;
+      $this->connectionKey = $initParam;
    }
 
    /**
-    *  @private
+    * @return AbstractDatabaseHandler The current database connection.
+    */
+   private function &getConnection() {
+      $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
+      /* @var $cM ConnectionManager */
+      return $cM->getConnection($this->connectionKey);
+   }
+
+   /**
+    * @private
     *
     *  Returns the session key for the current statement and params.
     *
-    *  @param string $namespace namespace of the statement
-    *  @param string $statement name of the statement file
-    *  @param array $params statement params
-    *  @return string $sessionKey the desired session key
+    * @param string $namespace namespace of the statement
+    * @param string $statement name of the statement file
+    * @param array $params statement params
+    * @return string $sessionKey the desired session key
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 24.01.2009<br />
     */
    protected function getSessionKey($namespace, $statement, $params) {
@@ -74,18 +83,18 @@ final class PagerMapper extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Returns the number of entries of the current object.
     *
-    *  @param string $namespace the namespace of the statement
-    *  @param string $statement the name of the statement file
-    *  @param array $params additional params for the statement
-    *  @param bool $cache decides if caching is active or not (true = yes, false = no)
-    *  @return string $entriesCount the number of entries
+    * @param string $namespace the namespace of the statement
+    * @param string $statement the name of the statement file
+    * @param array $params additional params for the statement
+    * @param bool $cache decides if caching is active or not (true = yes, false = no)
+    * @return string $entriesCount the number of entries
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 06.08.2006<br />
     *  Version 0.2, 16.08.2006 (Added an argument for further statement params)<br />
     *  Version 0.3, 19.01.2009 (Added the connection key handling)<br />
@@ -94,8 +103,8 @@ final class PagerMapper extends APFObject {
     */
    public function getEntriesCount($namespace, $statement, $params = array(), $cache = true) {
 
-      // start benchmarker
       $t = &Singleton::getInstance('BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
       $t->start('PagerMapper::getEntriesCount()');
 
       // try to load the entries count from the session
@@ -108,10 +117,9 @@ final class PagerMapper extends APFObject {
 
       // load from database if not in session
       if ($entriesCount === null) {
-         $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
-         $SQL = &$cM->getConnection($this->__ConnectionKey);
-         $result = $SQL->executeStatement($namespace, $statement, $params);
-         $data = $SQL->fetchData($result);
+         $conn = &$this->getConnection();
+         $result = $conn->executeStatement($namespace, $statement, $params);
+         $data = $conn->fetchData($result);
          $entriesCount = $data['EntriesCount'];
 
          // only save to session, when cache is enabled
@@ -146,6 +154,7 @@ final class PagerMapper extends APFObject {
    public function loadEntries($namespace, $statement, $params = array(), $cache = true) {
 
       $t = &Singleton::getInstance('BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
       $t->start('PagerMapper::loadEntries()');
 
       // try to load the entries count from the session
@@ -154,15 +163,14 @@ final class PagerMapper extends APFObject {
          $sessionKey = $this->getSessionKey($namespace, $statement, $params) . '_EntryIDs';
          $entryIds = $session->loadSessionData($sessionKey);
       } else {
-         $entryIds = false;
+         $entryIds = null;
       }
 
       // load from database if not in session
-      if ($entryIds === false) {
+      if ($entryIds === null) {
 
-         $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
-         $SQL = &$cM->getConnection($this->__ConnectionKey);
-         $result = $SQL->executeStatement($namespace, $statement, $params);
+         $conn = &$this->getConnection();
+         $result = $conn->executeStatement($namespace, $statement, $params);
 
          // map empty results to empty array
          if ($result === false) {
@@ -170,7 +178,7 @@ final class PagerMapper extends APFObject {
          }
 
          $entryIds = array();
-         while ($data = $SQL->fetchData($result)) {
+         while ($data = $conn->fetchData($result)) {
             $entryIds[] = $data['DB_ID'];
          }
 
@@ -187,4 +195,5 @@ final class PagerMapper extends APFObject {
    }
 
 }
+
 ?>
