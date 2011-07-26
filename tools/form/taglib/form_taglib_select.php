@@ -375,5 +375,41 @@ class form_taglib_select extends form_control {
       return $value;
    }
 
+   /**
+   * @public
+   * 
+   * Re-implements the retrieving of values for select controls
+   * 
+   * @return select_taglib_option The selected option.
+   * 
+   * @since 1.14
+   * 
+   * @author Ralf Schubert
+   * @version
+   * Version 0.1, 26.07.2011<br />
+   */
+   public function getValue() {
+      return $this->getSelectedOption();
+   }
+   
+   /**
+   * @public
+   * 
+   * Re-implements the setting of values for select controls
+   * 
+   * @param string $value The display name or the value of the option to pre-select.
+   * @return form_taglib_select 
+   * 
+   * @since 1.14
+   * 
+   * @author Ralf Schubert
+   * @version
+   * Version 0.1, 26.07.2011<br />
+   */
+  public function setValue($value) {
+      $this->setOption2Selected($value);
+      return $this;
+  }
+  
 }
 ?>

@@ -209,6 +209,23 @@
          }
          return $values;
       }
+      
+      /**
+       * @public
+       * 
+       * Re-implements the retrieving of values for multiselect controls
+       * 
+       * @return select_taglib_option[] List of the options, that are selected.
+       * 
+       * @since 1.14
+       * 
+       * @author Ralf Schubert
+       * @version
+       * Version 0.1, 26.07.2011<br />
+       */
+      public function getValue() {
+          return $this->getSelectedOptions();
+      }
 
    }
 ?>
