@@ -296,9 +296,9 @@
        */
       public function addFilter(AbstractFormFilter &$filter){
          if($filter->isActive()){
-            $value = $this->getAttribute('value');
+            $value = $this->getValue();
             $filteredValue = $filter->filter($value);
-            $this->setAttribute('value',$filteredValue);
+            $this->setValue($filteredValue);
          }
       }
 
@@ -316,7 +316,7 @@
        * Version 0.2, 01.11.2010 (Added support for optional validators)<br />
        */
       public function addValidator(AbstractFormValidator &$validator){
-         $value = $this->getAttribute('value');
+         $value = $this->getValue();
          if ($validator->isActive() && $this->isMandatory($value)) {
             if (!$validator->validate($value)) {
                $validator->notify();
@@ -559,6 +559,46 @@
          }
          $this->setAttribute('class',$attr);
 
+      }
+      
+      /**
+       * @public
+       * 
+       * Returns the value of the form control. Does not always return the 'value'
+       * attribute. This returns the attribute/content which contains the user input.
+       * (For example textareas store the input in the content, not in the value
+       * attribute)
+       * 
+       * @return string The current value or content of the control.
+       * 
+       * @since 1.14
+       * 
+       * @author Ralf Schubert
+       * @version
+       * Version 0.1, 26.07.2011<br />
+       */
+      public function getValue() {
+          return $this->getAttribute('value', '');
+      }
+      
+      /**
+       * @public
+       * 
+       * Set's the value of the form control. Should not always set the 'value'
+       * attribute. This set's the same attribute/content as the user would type it.
+       * 
+       * @param string $value
+       * @return form_control 
+       * 
+       * @since 1.14
+       * 
+       * @author Ralf Schubert
+       * @version
+       * Version 0.1, 26.07.2011<br />
+       */
+      public function setValue($value) {
+          $this->setAttribute('value', $value);
+          return $this;
       }
       
    }

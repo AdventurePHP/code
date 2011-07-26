@@ -75,41 +75,42 @@
 
       /**
        * @public
-       * @since 1.11
-       *
-       * Re-implements the method to fit the requirements of the text area field.
-       *
-       * @param AbstractFormValidator $validator The validator to add.
-       *
-       * @author Christian Achatz
+       * 
+       * Re-implements the retrieving of values for text area, because
+       * the text area contains it's value in the content, not in an
+       * attribute.
+       * 
+       * @return string The current value or content of the control.
+       * 
+       * @since 1.14
+       * 
+       * @author Ralf Schubert
        * @version
-       * Version 0.1, 28.08.2009<br />
-       * Version 0.2, 01.11.2010 (Introduced optional validation)<br />
+       * Version 0.1, 26.07.2011<br />
        */
-      public function addValidator(AbstractFormValidator &$validator) {
-         if ($validator->isActive() && $this->isMandatory($this->getContent())) {
-            if (!$validator->validate($this->getContent())) {
-               $validator->notify();
-            }
-         }
+      public function getValue() {
+          return $this->__Content;
       }
-
+      
       /**
        * @public
-       * @since 1.11
-       *
-       * Re-implements the filter applyment for the text area.
-       *
-       * @param AbstractFormFilter $filter The desired filter.
-       *
-       * @author Christian Achatz
+       * 
+       * Re-implements the setting of values for text area, because
+       * the text area contains it's value in the content, not in an
+       * attribute.
+       * 
+       * @param string $value
+       * @return form_control 
+       * 
+       * @since 1.14
+       * 
+       * @author Ralf Schubert
        * @version
-       * Version 0.1, 30.08.2009<br />
+       * Version 0.1, 26.07.2011<br />
        */
-      public function addFilter(AbstractFormFilter &$filter){
-         if($filter->isActive()){
-            $this->__Content = $filter->filter($this->__Content);
-         }
+      public function setValue($value) {
+          $this->__Content = $value;
+          return $this;
       }
 
     // end class
