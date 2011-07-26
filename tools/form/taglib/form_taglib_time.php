@@ -410,6 +410,42 @@ class form_taglib_time extends form_control {
    protected function appendZero($input) {
       return sprintf('%02s', $input);
    }
+   
+   /**
+   * @public
+   * 
+   * Re-implements the retrieving of values for time controls
+   * 
+   * @return string The current value or content of the control.
+   * 
+   * @since 1.14
+   * 
+   * @author Ralf Schubert
+   * @version
+   * Version 0.1, 26.07.2011<br />
+   */
+  public function getValue() {
+      return $this->getTime();
+  }
+
+  /**
+   * @public
+   * 
+   * Re-implements the setting of values for time controls
+   * 
+   * @param string $value
+   * @return form_control 
+   * 
+   * @since 1.14
+   * 
+   * @author Ralf Schubert
+   * @version
+   * Version 0.1, 26.07.2011<br />
+   */
+  public function setValue($value) {
+      $this->setTime($value);
+      return $this;
+  }
 
 }
 ?>

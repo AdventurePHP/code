@@ -390,6 +390,41 @@ class form_taglib_date extends form_control {
       return sprintf('%02s', $input);
    }
 
+   /**
+   * @public
+   * 
+   * Re-implements the retrieving of values for date controls
+   * 
+   * @return string The current value or content of the control.
+   * 
+   * @since 1.14
+   * 
+   * @author Ralf Schubert
+   * @version
+   * Version 0.1, 26.07.2011<br />
+   */
+  public function getValue() {
+      return $this->getDate();
+  }
+
+  /**
+   * @public
+   * 
+   * Re-implements the setting of values for date controls
+   * 
+   * @param string $value
+   * @return form_control 
+   * 
+   * @since 1.14
+   * 
+   * @author Ralf Schubert
+   * @version
+   * Version 0.1, 26.07.2011<br />
+   */
+  public function setValue($value) {
+      $this->setDate($value);
+      return $this;
+  }
 }
 
 ?>
