@@ -813,6 +813,24 @@ abstract class APFObject {
       ConfigurationManager::saveConfiguration(
               $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('apf::core', 'Environment'), $name, $config);
    }
+   
+   /**
+    * @protected
+    * 
+    * Convenience method for deleting a configuration depending on APF DOM attributes and
+    * the current environment.
+    * 
+    * @param string $namespace The namespace of the configuration.
+    * @param string $name The name of the configuration including it's extension.
+    * 
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 27.07.2011<br />
+    */
+   protected function deleteConfiguration($namespace, $name) {
+       ConfigurationManager::deleteConfiguration(
+              $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('apf::core', 'Environment'), $name);
+   }
 
    /**
     * @deprecated Use <em>getAttributesAsString()</em> instead!

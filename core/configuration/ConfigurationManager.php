@@ -360,6 +360,28 @@ final class ConfigurationManager {
       unset(self::$CONFIG_CACHE[$key]); // clear cache to not have to refresh manually
       return self::getProvider($name)->saveConfiguration($namespace, $context, $language, $environment, $name, $config);
    }
+   
+   /**
+    * @public
+    * @static
+    * 
+    * Delegates the configuration deleting to the specified provider.
+    * 
+    * @param string $namespace The namespace of the configuration.
+    * @param string $context The current application's context.
+    * @param string $language The current application's language.
+    * @param string $environment The environment, the applications runs on.
+    * @param string $name The name of the configuration to delete including it's extension.
+    * 
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 27.07.2011<br />
+    */
+   public static function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+      $key = self::getCacheKey($namespace, $context, $language, $environment, $name);
+      unset(self::$CONFIG_CACHE[$key]); // clear cache to not have to refresh manually
+      self::getProvider($name)->deleteConfiguration($namespace, $context, $language, $environment, $name);
+   }
 
    /**
     * @static
