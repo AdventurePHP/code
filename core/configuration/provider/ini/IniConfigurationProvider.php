@@ -241,6 +241,16 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
 
       return $buffer;
    }
+   
+   public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+
+      $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
+      if (unlink($fileName) === false) {
+         throw new ConfigurationException('[IniConfigurationProvider::deleteConfiguration()] '
+                                          . 'Configuration with name "' . $fileName . '" cannot be deleted! Please check your '
+                                          . 'file system configuration, the file name, or your environment configuration.');
+      }
+   }
 
 }
 

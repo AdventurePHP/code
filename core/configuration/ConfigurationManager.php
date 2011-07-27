@@ -178,6 +178,22 @@ interface ConfigurationProvider {
     * Version 0.1, 27.09.2010<br />
     */
    function setExtension($extension);
+   
+   /**
+    * Deletes the configuration specified by the given params.
+    *
+    * @param string $namespace The namespace of the configuration.
+    * @param string $context The current application's context.
+    * @param string $language The current application's language.
+    * @param string $environment The environment, the applications runs on.
+    * @param string $name The name of the configuration to delete including it's extension.
+    * @throws ConfigurationException In case the file cannot be deleted.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 27.07.2011<br />
+    */
+   function deleteConfiguration($namespace, $context, $language, $environment, $name);
 
 }
 
