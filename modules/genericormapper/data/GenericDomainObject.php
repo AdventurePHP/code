@@ -19,6 +19,7 @@
  * -->
  */
 import('modules::genericormapper::data', 'GenericORMapperDataObject');
+import('modules::genericormapper::data', 'GenericORMapperException');
 
 /**
  * @package modules::genericormapper::data
