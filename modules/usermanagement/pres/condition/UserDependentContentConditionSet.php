@@ -26,6 +26,7 @@ import('modules::usermanagement::pres::condition', 'UmgtLoggedOutCondition');
 import('modules::usermanagement::pres::condition', 'UmgtLoggedInCondition');
 import('modules::usermanagement::pres::condition', 'UmgtGroupCondition');
 import('modules::usermanagement::pres::condition', 'UmgtRoleCondition');
+import('modules::usermanagement::pres::condition', 'UmgtNotRoleCondition');
 
 /**
  * @package modules::usermanagement::pres::condition
@@ -122,7 +123,7 @@ class UserDependentContentConditionSet extends APFObject {
 
       foreach ($this->conditions as $condition) {
          /* @var $condition UserDependentContentCondition */
-         if (strpos($conditionKey, $condition->getConditionIdentifier()) !== false) {
+         if ($conditionKey === $condition->getConditionIdentifier()) {
             return $condition;
          }
       }
@@ -161,4 +162,5 @@ $condSet->addCondition(new UmgtLoggedOutCondition());
 $condSet->addCondition(new UmgtLoggedInCondition());
 $condSet->addCondition(new UmgtGroupCondition());
 $condSet->addCondition(new UmgtRoleCondition());
+$condSet->addCondition(new UmgtNotRoleCondition());
 ?>
