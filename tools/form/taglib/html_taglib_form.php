@@ -85,7 +85,7 @@ class html_taglib_form extends form_control {
       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'error');
       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'success');
 
-      // Buttons are analyzed right early to be able to initalize form controls
+      // Buttons are analyzed right early to be able to initialize form controls
       // concerning the status of the form (e.g. sent!).
       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'button');
       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'reset');
@@ -115,41 +115,37 @@ class html_taglib_form extends form_control {
       // performance reasons!
       $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'time');
 
-      // add additional attributes to whitelist
+      // setup attributes within white-list
+      $this->attributeWhiteList = array_merge(self::$CORE_ATTRIBUTES, self::$EVENT_ATTRIBUTES, self::$I18N_ATTRIBUTES);
       $this->attributeWhiteList[] = self::$METHOD_ATTRIBUTE_NAME;
       $this->attributeWhiteList[] = 'action';
       $this->attributeWhiteList[] = 'enctype';
+      $this->attributeWhiteList[] = 'onsubmit';
+      $this->attributeWhiteList[] = 'onreset';
+      $this->attributeWhiteList[] = 'accept';
       $this->attributeWhiteList[] = 'accept-charset'; // to explicitly specify an encoding
    }
 
-   /**
-    * @public
-    *
-    * Parses the known taglibs.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 05.01.2007<br />
-    */
    public function onParseTime() {
 
       // add default method for convenience
       $method = $this->getAttribute(self::$METHOD_ATTRIBUTE_NAME);
       if ($method === null) {
          $this->setAttribute(
-                 self::$METHOD_ATTRIBUTE_NAME,
-                 strtolower(
-                         Registry::retrieve('apf::tools', 'FormDefaultMethod', self::$METHOD_POST_VALUE_NAME)
-                 )
+            self::$METHOD_ATTRIBUTE_NAME,
+            strtolower(
+               Registry::retrieve('apf::tools', 'FormDefaultMethod', self::$METHOD_POST_VALUE_NAME)
+            )
          );
       }
 
       // import dependent tags a little bit different, to increase performance up to factor 10!
       foreach ($this->__TagLibs as $taglib) {
+         /* @var $taglib TagLib */
          if (strpos($this->__Content, '<' . $taglib->getPrefix() . ':' . $taglib->getClass()) !== false) {
             import(
-                    $taglib->getNamespace(),
-                    $this->getTaglibClassName($taglib->getPrefix(), $taglib->getClass())
+               $taglib->getNamespace(),
+               $this->getTaglibClassName($taglib->getPrefix(), $taglib->getClass())
             );
          }
       }
@@ -235,7 +231,7 @@ class html_taglib_form extends form_control {
       }
 
       throw new FormException('[html_taglib_form::addFormElement()] Form element "' . $elementType
-              . '" cannot be added due to previous errors!');
+                              . '" cannot be added due to previous errors!');
    }
 
    /**
@@ -281,9 +277,9 @@ class html_taglib_form extends form_control {
       } else {
 
          throw new FormException('[html_taglib_form::addFormContentBeforeMarker()] No marker object '
-                 . 'with name "' . $markerName . '" composed in current form for document controller "'
-                 . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
-                 . 'the form with name "' . $this->__Attributes['name'] . '"!', E_USER_ERROR);
+                                 . 'with name "' . $markerName . '" composed in current form for document controller "'
+                                 . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
+                                 . 'the form with name "' . $this->__Attributes['name'] . '"!', E_USER_ERROR);
       }
    }
 
@@ -315,9 +311,9 @@ class html_taglib_form extends form_control {
       } else {
 
          throw new FormException('[html_taglib_form::addFormContentAfterMarker()] No marker object '
-                 . 'with name "' . $markerName . '" composed in current form for document controller "'
-                 . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
-                 . 'the form with name "' . $this->__Attributes['name'] . '"!', E_USER_ERROR);
+                                 . 'with name "' . $markerName . '" composed in current form for document controller "'
+                                 . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
+                                 . 'the form with name "' . $this->__Attributes['name'] . '"!', E_USER_ERROR);
       }
    }
 
@@ -348,9 +344,9 @@ class html_taglib_form extends form_control {
          $marker = &$this->getMarker($markerName);
          if ($marker === null) {
             throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] No marker object '
-                    . 'with name "' . $markerName . '" composed in current form for document controller "'
-                    . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
-                    . 'the form with name "' . $this->__Attributes['name'] . '"!', E_USER_ERROR);
+                                    . 'with name "' . $markerName . '" composed in current form for document controller "'
+                                    . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
+                                    . 'the form with name "' . $this->__Attributes['name'] . '"!', E_USER_ERROR);
          }
 
          // add the position placeholder to the content
@@ -363,7 +359,7 @@ class html_taglib_form extends form_control {
 
       // notify user and return null
       throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] Form element "'
-              . $elementType . '" cannot be added due to previous errors!');
+                              . $elementType . '" cannot be added due to previous errors!');
    }
 
    /**
@@ -393,16 +389,16 @@ class html_taglib_form extends form_control {
          $marker = &$this->getMarker($markerName);
          if ($marker === null) {
             throw new FormException('[html_taglib_form::addFormElementAfterMarker()] No marker object '
-                    . 'with name "' . $markerName . '" composed in current form for document controller "'
-                    . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
-                    . 'the form with name "' . $this->__Attributes['name'] . '"!', E_USER_ERROR);
+                                    . 'with name "' . $markerName . '" composed in current form for document controller "'
+                                    . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
+                                    . 'the form with name "' . $this->__Attributes['name'] . '"!', E_USER_ERROR);
          }
 
          // add the position placeholder to the content
          $markerId = $marker->getObjectId();
          $this->__Content = str_replace(
-                         '<' . $markerId . ' />', '<' . $markerId . ' /><' . $objectId . ' />',
-                         $this->__Content
+            '<' . $markerId . ' />', '<' . $markerId . ' /><' . $objectId . ' />',
+            $this->__Content
          );
 
          // return object id of the new form element
@@ -455,6 +451,7 @@ class html_taglib_form extends form_control {
 
          // create new form element
          $formObject = new $taglibClass();
+         /* @var $formObject form_control */
 
          // add standard and user defined attributes
          $formObject->setObjectId($objectId);
@@ -480,8 +477,8 @@ class html_taglib_form extends form_control {
       }
 
       throw new FormException('[html_taglib_form::createFormElement()] No form element with name "'
-              . $elementType . '" found! Maybe the tag name is misspellt or the class is not '
-              . 'imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
+                              . $elementType . '" found! Maybe the tag name is misspellt or the class is not '
+                              . 'imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
    }
 
    /**
@@ -527,7 +524,7 @@ class html_taglib_form extends form_control {
     *
     * @param string $action The action URL of the form.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 07.01.2007<br />
     */
@@ -562,10 +559,10 @@ class html_taglib_form extends form_control {
       $parent = &$this->getParentObject();
       $docCon = $parent->getDocumentController();
       throw new FormException('[html_taglib_form::getFormElementByName()] No form element with name "'
-              . $name . '" composed in current form "' . $this->getAttribute('name')
-              . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
-              . 'within this form (especially attributes, that are used for referencing other form '
-              . 'controls)!', E_USER_ERROR);
+                              . $name . '" composed in current form "' . $this->getAttribute('name')
+                              . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
+                              . 'within this form (especially attributes, that are used for referencing other form '
+                              . 'controls)!', E_USER_ERROR);
    }
 
    /**
@@ -619,8 +616,8 @@ class html_taglib_form extends form_control {
       $parent = &$this->getParentObject();
       $documentController = $parent->getDocumentController();
       throw new FormException('[html_taglib_form::getFormElementByID()] No form element with id "'
-              . $id . '" composed in current form "' . $this->getAttribute('name')
-              . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
+                              . $id . '" composed in current form "' . $this->getAttribute('name')
+                              . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
    }
 
    /**
@@ -647,8 +644,8 @@ class html_taglib_form extends form_control {
       $parent = &$this->getParentObject();
       $documentController = $parent->getDocumentController();
       throw new FormException('[html_taglib_form::getFormElementByObjectID()] No form element with id "'
-              . $objectId . '" composed in current form "' . $this->getAttribute('name')
-              . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
+                              . $objectId . '" composed in current form "' . $this->getAttribute('name')
+                              . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
    }
 
    /**
@@ -685,8 +682,8 @@ class html_taglib_form extends form_control {
       $parent = &$this->getParentObject();
       $documentController = $parent->getDocumentController();
       throw new FormException('[html_taglib_form::getFormElementsByType()] No form elements composed in ' .
-              'current form "' . $this->getAttribute('name') . '" in document controller "'
-              . $documentController . '"!', E_USER_ERROR);
+                              'current form "' . $this->getAttribute('name') . '" in document controller "'
+                              . $documentController . '"!', E_USER_ERROR);
    }
 
    /**
@@ -716,7 +713,7 @@ class html_taglib_form extends form_control {
       }
 
       // transform the form including all child tags
-      $htmlCode = (string) '<form ';
+      $htmlCode = (string)'<form ';
       $htmlCode .= $this->getSanitizedAttributesAsString($this->__Attributes);
       $htmlCode .= '>';
 
@@ -727,7 +724,7 @@ class html_taglib_form extends form_control {
             $t->start($childId);
 
             $this->__Content = str_replace('<' . $objectId . ' />',
-                            $this->__Children[$objectId]->transform(), $this->__Content);
+                                           $this->__Children[$objectId]->transform(), $this->__Content);
 
             $t->stop($childId);
          }
@@ -772,8 +769,9 @@ class html_taglib_form extends form_control {
          return $this->transformForm();
       }
 
-      return (string) '';
+      return (string)'';
    }
 
 }
+
 ?>
