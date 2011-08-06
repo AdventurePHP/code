@@ -27,7 +27,7 @@ import('modules::genericormapper::data', 'GenericCriterionObject');
  *
  * Business component of the user management module. In standard case the component uses a crypt
  * based provider to create password hashes. But you can add other providers to ensure compatibility
- * with older versions. Hashes will then get updated to your configured default provider on-the-fly. 
+ * with older versions. Hashes will then get updated to your configured default provider on-the-fly.
  * If you desire to use another one, implement the PasswordHashProvider interface
  * and add it to the umgt's configuration file. For details on the implementation, please consult the manual!
  *
@@ -56,7 +56,7 @@ class UmgtManager extends APFObject {
     * @var boolean indicates, if the component is already initialized.
     */
    protected $isInitialized = false;
-   
+
    /**
     * Stores the providers, that hashes the user's password.
     * @var PasswordHashProvider[] The password hash providers.
@@ -68,12 +68,12 @@ class UmgtManager extends APFObject {
     * @var boolean Indicates if we already imported the providers in this request
     */
    protected $passwordHashProvidersAreImported = false;
-   
-    /**
+
+   /**
     * @protected
     * @var string The service mode of the generic or mapper.
     */
-    protected $gormServiceMode = APFObject::SERVICE_TYPE_SESSIONSINGLETON;
+   protected $gormServiceMode = APFObject::SERVICE_TYPE_SESSIONSINGLETON;
 
    public function __construct() {
       $this->gormServiceMode = APFObject::SERVICE_TYPE_SESSIONSINGLETON;
@@ -91,54 +91,54 @@ class UmgtManager extends APFObject {
     * Version 0.1, 30.12.2008<br />
     */
    public function init($initParam) {
-      
+
       $PasswordHashProviderList = array();
-      
+
       // we need to import the password hash providers on each request once, due to incomplete object
       // bug, when saving in session.
-      if(!$this->passwordHashProvidersAreImported){
-          
-          // setup the component
+      if (!$this->passwordHashProvidersAreImported) {
+
+         // setup the component
          $config = $this->getConfiguration('modules::usermanagement', 'umgtconfig.ini');
          $section = $config->getSection($initParam);
-          
-          $passwordHashProvider = $section->getSection('PasswordHashProvider');
-          if($passwordHashProvider !== null) {
-              $providerSectionNames = $passwordHashProvider->getSectionNames();
 
-              // single provider given (and fallback for old configurations)
-              if(count($providerSectionNames) === 0){
-                  $passHashNamespace = $passwordHashProvider->getValue('Namespace');
-                  $passHashClass = $passwordHashProvider->getValue('Class');
-                  if($passHashNamespace!==null && $passHashClass!==null) {
-                      import($passHashNamespace, $passHashClass);
-                      $PasswordHashProviderList[] = array($passHashNamespace, $passHashClass);
-                  }
-              }
-              // multiple providers given
-              else {
-                  foreach($providerSectionNames as $subSection) {
-                      $passHashNamespace = $passwordHashProvider->getSection($subSection)->getValue('Namespace');
-                      $passHashClass = $passwordHashProvider->getSection($subSection)->getValue('Class');
-                      if($passHashNamespace!==null && $passHashClass!==null) {
-                          import($passHashNamespace, $passHashClass);
-                          $PasswordHashProviderList[] = array($passHashNamespace, $passHashClass);
-                      }
-                  }
-              }
-              
-          }
+         $passwordHashProvider = $section->getSection('PasswordHashProvider');
+         if ($passwordHashProvider !== null) {
+            $providerSectionNames = $passwordHashProvider->getSectionNames();
 
-          if(count($PasswordHashProviderList) === 0) {
-              //fallback to default provider
-              import('modules::usermanagement::biz::provider::crypt', 'CryptHardcodedSaltPasswordHashProvider');
-              $PasswordHashProviderList[] = array('modules::usermanagement::biz::provider::crypt', 'CryptHardcodedSaltPasswordHashProvider');
-          }
-          
-           $this->passwordHashProvidersAreImported = true;
-          
+            // single provider given (and fallback for old configurations)
+            if (count($providerSectionNames) === 0) {
+               $passHashNamespace = $passwordHashProvider->getValue('Namespace');
+               $passHashClass = $passwordHashProvider->getValue('Class');
+               if ($passHashNamespace !== null && $passHashClass !== null) {
+                  import($passHashNamespace, $passHashClass);
+                  $PasswordHashProviderList[] = array($passHashNamespace, $passHashClass);
+               }
+            }
+               // multiple providers given
+            else {
+               foreach ($providerSectionNames as $subSection) {
+                  $passHashNamespace = $passwordHashProvider->getSection($subSection)->getValue('Namespace');
+                  $passHashClass = $passwordHashProvider->getSection($subSection)->getValue('Class');
+                  if ($passHashNamespace !== null && $passHashClass !== null) {
+                     import($passHashNamespace, $passHashClass);
+                     $PasswordHashProviderList[] = array($passHashNamespace, $passHashClass);
+                  }
+               }
+            }
+
+         }
+
+         if (count($PasswordHashProviderList) === 0) {
+            //fallback to default provider
+            import('modules::usermanagement::biz::provider::crypt', 'CryptHardcodedSaltPasswordHashProvider');
+            $PasswordHashProviderList[] = array('modules::usermanagement::biz::provider::crypt', 'CryptHardcodedSaltPasswordHashProvider');
+         }
+
+         $this->passwordHashProvidersAreImported = true;
+
       }
-         
+
       if ($this->isInitialized === false) {
 
          $appId = $section->getValue('ApplicationID');
@@ -153,31 +153,31 @@ class UmgtManager extends APFObject {
 
          $this->connectionKey = $section->getValue('ConnectionKey');
 
-         
+
          // initialize the password hash providers
-         foreach($PasswordHashProviderList as $ProviderInfo){
-             $passwordHashProviderObject = $this->getAndInitServiceObject($ProviderInfo[0], $ProviderInfo[1], $initParam);
-             $this->passwordHashProviders[] = $passwordHashProviderObject;
-             unset($passwordHashProviderObject);
+         foreach ($PasswordHashProviderList as $ProviderInfo) {
+            $passwordHashProviderObject = $this->getAndInitServiceObject($ProviderInfo[0], $ProviderInfo[1], $initParam);
+            $this->passwordHashProviders[] = $passwordHashProviderObject;
+            unset($passwordHashProviderObject);
          }
-         
+
          // set to initialized
          $this->isInitialized = true;
       }
    }
-   
+
    /**
     * @public
-    * 
+    *
     * When serialising in session, passwordhashproviders need to be imported
     * to avoid incomplete object bug.
-    * 
+    *
     * @author Ralf Schubert
     * @version
     * Version 0.1, 14.07.2011 <br />
     */
    public function __wakeup() {
-       $this->passwordHashProvidersAreImported = false;
+      $this->passwordHashProvidersAreImported = false;
    }
 
    /**
@@ -195,87 +195,86 @@ class UmgtManager extends APFObject {
     * @version
     * Version 0.1, 21.06.2011 <br />
     */
-    public function comparePasswordHash($password, GenericORMapperDataObject &$user) {
-        // check if current default hash provider matches
-        $defaultHashedPassword = $this->createPasswordHash($password, $user);
-        if($user->getProperty('Password') === $defaultHashedPassword){
-            return true;
-        }
-        
-        // if there is no fallback provider, password didn't match
-        if(count($this->passwordHashProviders) === 1) {
-            return false;
-        }
-        
-        // check each fallback, but skip default provider
-        $firstSkipped = false;
-        foreach($this->passwordHashProviders as $passwordHashProvider) {
-            if(!$firstSkipped) {
-                $firstSkipped = true;
-                continue;
-            }
-            $hashedPassword = $passwordHashProvider->createPasswordHash($password, $this->getDynamicSalt($user));
-            if($user->getProperty('Password') === $hashedPassword){
-                // if fallback matched, first update hash in database to new provider (on-the-fly updating to new provider)
-                $user->setProperty('Password', $password);
-                $this->saveUser($user);
-                return true;
-            }
-        }
-        
-        // no fallback matched.
-        return false;
-    }
+   public function comparePasswordHash($password, GenericORMapperDataObject &$user) {
+      // check if current default hash provider matches
+      $defaultHashedPassword = $this->createPasswordHash($password, $user);
+      if ($user->getProperty('Password') === $defaultHashedPassword) {
+         return true;
+      }
 
-    /**
-     * @protected
-     *
-     * Implements the central dynamic salt method. If you desire to use another
-     * dynamic salt, extend the UmgtManager and reimplement this method! Be sure,
-     * to keep all other methods untouched.
-     *
-     * @param GenericORMapperDataObject $user Current user
-     * @return string The dynamic salt
-     *
-     * @author Tobias Lückel
-     * @version
-     * Version 0.1, 05.04.2011<br />
-     */
-    public function getDynamicSalt(GenericORMapperDataObject &$user) {
-        
-        $dynamicSalt = $user->getProperty('DynamicSalt');
-        $dynamicSalt = ($dynamicSalt === null) ? '' : trim($dynamicSalt);
-        
-        if($dynamicSalt === '') {
-            $dynamicSalt = md5(rand(10000,99999));
-            $user->setProperty('DynamicSalt', $dynamicSalt);
-        }
-        return $dynamicSalt;
-        
-    }
-    
-    /**
-     * @public
-     *
-     * Hashes the password for the given user with the first configured 
-     * hash provider, which represents the current default provider.
-     * If you desire to use another hash algo, implement a PasswordHashProvider 
-     * and add it to the UmgtManager.
-     *
-     * @param string $password the password to hash
-     * @param GenericORMapperDataObject $user current user.
-     * @return string The desired hash of the given password.
-     *
-     * @author Tobias Lückel
-     * @version
-     * Version 0.1, 21.06.2011<br />
-     */
-    public function createPasswordHash($password, GenericORMapperDataObject &$user) {
-        return $this->passwordHashProviders[0]->createPasswordHash($password, $this->getDynamicSalt($user));
-    }
-    
-    
-    
+      // if there is no fallback provider, password didn't match
+      if (count($this->passwordHashProviders) === 1) {
+         return false;
+      }
+
+      // check each fallback, but skip default provider
+      $firstSkipped = false;
+      foreach ($this->passwordHashProviders as $passwordHashProvider) {
+         if (!$firstSkipped) {
+            $firstSkipped = true;
+            continue;
+         }
+         $hashedPassword = $passwordHashProvider->createPasswordHash($password, $this->getDynamicSalt($user));
+         if ($user->getProperty('Password') === $hashedPassword) {
+            // if fallback matched, first update hash in database to new provider (on-the-fly updating to new provider)
+            $user->setProperty('Password', $password);
+            $this->saveUser($user);
+            return true;
+         }
+      }
+
+      // no fallback matched.
+      return false;
+   }
+
+   /**
+    * @protected
+    *
+    * Implements the central dynamic salt method. If you desire to use another
+    * dynamic salt, extend the UmgtManager and reimplement this method! Be sure,
+    * to keep all other methods untouched.
+    *
+    * @param GenericORMapperDataObject $user Current user
+    * @return string The dynamic salt
+    *
+    * @author Tobias Lückel
+    * @version
+    * Version 0.1, 05.04.2011<br />
+    */
+   public function getDynamicSalt(GenericORMapperDataObject &$user) {
+
+      $dynamicSalt = $user->getProperty('DynamicSalt');
+      $dynamicSalt = ($dynamicSalt === null) ? '' : trim($dynamicSalt);
+
+      if ($dynamicSalt === '') {
+         $dynamicSalt = md5(rand(10000, 99999));
+         $user->setProperty('DynamicSalt', $dynamicSalt);
+      }
+      return $dynamicSalt;
+
+   }
+
+   /**
+    * @public
+    *
+    * Hashes the password for the given user with the first configured
+    * hash provider, which represents the current default provider.
+    * If you desire to use another hash algo, implement a PasswordHashProvider
+    * and add it to the UmgtManager.
+    *
+    * @param string $password the password to hash
+    * @param GenericORMapperDataObject $user current user.
+    * @return string The desired hash of the given password.
+    *
+    * @author Tobias Lückel
+    * @version
+    * Version 0.1, 21.06.2011<br />
+    */
+   public function createPasswordHash($password, GenericORMapperDataObject &$user) {
+      return $this->passwordHashProviders[0]->createPasswordHash($password, $this->getDynamicSalt($user));
+   }
+
+
    /**
     * @protected
     *
@@ -310,14 +309,14 @@ class UmgtManager extends APFObject {
     * Version 0.2, 16.03.2010 (Bugfix 299: moved the service type to the GORM factory call)<br />
     */
    public function &getORMapper() {
-       return $this->getServiceObject(
-                      'modules::genericormapper::data',
-                      'GenericORMapperFactory',
-                      $this->gormServiceMode)
-              ->getGenericORMapper(
-                      'modules::usermanagement',
-                      'umgt',
-                      $this->connectionKey
+      return $this->getServiceObject(
+         'modules::genericormapper::data',
+         'GenericORMapperFactory',
+         $this->gormServiceMode)
+            ->getGenericORMapper(
+         'modules::usermanagement',
+         'umgt',
+         $this->connectionKey
       );
    }
 
@@ -354,8 +353,8 @@ class UmgtManager extends APFObject {
          // hashed twice!
          if ($storedUser->getProperty('Password') != $password) {
             $user->setProperty(
-                    'Password',
-                    $this->createPasswordHash($password, $user)
+               'Password',
+               $this->createPasswordHash($password, $user)
             );
          } else {
             $user->deleteProperty('Password');
@@ -365,8 +364,8 @@ class UmgtManager extends APFObject {
          // only create password for not empty strings!
          if (!empty($password)) {
             $user->setProperty(
-                    'Password',
-                    $this->createPasswordHash($password, $user)
+               'Password',
+               $this->createPasswordHash($password, $user)
             );
          }
       }
@@ -641,12 +640,12 @@ class UmgtManager extends APFObject {
    public function loadUserByUsernameAndPassword($username, $password) {
 
       $userObject = $this->loadUserByUserName($username);
-      if($userObject === null || !$this->comparePasswordHash($password, $userObject)) {
-          return null;
+      if ($userObject === null || !$this->comparePasswordHash($password, $userObject)) {
+         return null;
       }
-      
+
       return $userObject;
-      
+
    }
 
    /**
@@ -802,7 +801,8 @@ class UmgtManager extends APFObject {
     */
    protected function getDisplayName(GenericORMapperDataObject $user) {
       $displayName = $user->getProperty('DisplayName');
-      return empty($displayName) ? $user->getProperty('LastName') . ', ' . $user->getProperty('FirstName') : $user->getProperty('DisplayName');
+      return empty($displayName) ? $user->getProperty('LastName') . ', ' . $user->getProperty('FirstName')
+            : $user->getProperty('DisplayName');
    }
 
    /**
@@ -823,10 +823,10 @@ class UmgtManager extends APFObject {
    public function loadUserByEMailAndPassword($email, $password) {
 
       $userObject = $this->loadUserByEMail($email);
-      if($userObject === null || !$this->comparePasswordHash($password, $userObject)) {
-          return null;
+      if ($userObject === null || !$this->comparePasswordHash($password, $userObject)) {
+         return null;
       }
-      
+
       return $userObject;
 
    }
@@ -913,6 +913,24 @@ class UmgtManager extends APFObject {
    public function loadRoleByID($roleID) {
       $oRM = &$this->getORMapper();
       return $oRM->loadObjectByID('Role', $roleID);
+   }
+
+   /**
+    * @public
+    *
+    * Returns a role domain object identified by it's display name.
+    *
+    * @param $name The name of the role to load.
+    * @return GenericORMapperDataObject The desired role.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 06.08.2011<br />
+    */
+   public function loadRoleByName($name) {
+      $crit = new GenericCriterionObject();
+      $crit->addPropertyIndicator('DisplayName', $name);
+      return $this->getORMapper()->loadObjectByCriterion('Role', $crit);
    }
 
    /**
@@ -1139,14 +1157,14 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Deletes a role.
     *
-    *  @param GenericORMapperDataObject[] $role the role to delete
+    * @param GenericORMapperDataObject[] $role the role to delete
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 29.12.2008<br />
     */
    public function deleteRole(GenericORMapperDataObject $role) {
@@ -1155,14 +1173,14 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Deletes a PermissionSet.
     *
-    *  @param GenericORMapperDataObject $permissionSet the permission set
+    * @param GenericORMapperDataObject $permissionSet the permission set
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 28.12.2008<br />
     */
    public function deletePermissionSet(GenericORMapperDataObject $permissionSet) {
@@ -1171,14 +1189,14 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Deletes a Permission.
     *
-    *  @param GenericORMapperDataObject $permission the permission
+    * @param GenericORMapperDataObject $permission the permission
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 28.12.2008<br />
     */
    public function deletePermission(GenericORMapperDataObject $permission) {
@@ -1187,15 +1205,15 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Associates a user with a list of groups.
     *
-    *  @param GenericORMapperDataObject $user the user
-    *  @param GenericORMapperDataObject[] $groups the group list
+    * @param GenericORMapperDataObject $user the user
+    * @param GenericORMapperDataObject[] $groups the group list
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 28.12.2008<br />
     */
    public function assignUser2Groups(GenericORMapperDataObject $user, array $groups) {
@@ -1211,15 +1229,15 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Associates users with a group.
     *
-    *  @param GenericORMapperDataObject[] $users the user list
-    *  @param GenericORMapperDataObject $group the group
+    * @param GenericORMapperDataObject[] $users the user list
+    * @param GenericORMapperDataObject $group the group
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 28.12.2008<br />
     *  Version 0.2, 18.02.2009 (Bugfix: addUser2Groups() does not exist)<br />
     */
@@ -1300,15 +1318,15 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Loads all users, that are assigned to a given group.
     *
-    *  @param GenericORMapperDataObject $group the group
-    *  @return GenericORMapperDataObject[] The user list.
+    * @param GenericORMapperDataObject $group the group
+    * @return GenericORMapperDataObject[] The user list.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 29.12.2008<br />
     *  Version 0.2, 30.12.2008 (Removed null pointer typo)<br />
     */
@@ -1318,15 +1336,15 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Loads all users, that are not assigned to a given group.
     *
-    *  @param GenericORMapperDataObject $group the group
-    *  @return GenericORMapperDataObject[] The user list.
+    * @param GenericORMapperDataObject $group the group
+    * @return GenericORMapperDataObject[] The user list.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 27.12.2008<br />
     */
    public function loadUsersNotWithGroup(GenericORMapperDataObject &$group) {
@@ -1345,15 +1363,15 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Loads all roles, that are assigned to a given user.
     *
-    *  @param GenericORMapperDataObject $user the user
-    *  @return GenericORMapperDataObject[] The role list.
+    * @param GenericORMapperDataObject $user the user
+    * @return GenericORMapperDataObject[] The role list.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 27.12.2008<br />
     */
    public function loadRolesWithUser(GenericORMapperDataObject &$user) {
@@ -1361,15 +1379,15 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Loads all roles, that are not assigned to a given user.
     *
-    *  @param GenericORMapperDataObject $user the user
-    *  @return GenericORMapperDataObject[] The role list.
+    * @param GenericORMapperDataObject $user the user
+    * @return GenericORMapperDataObject[] The role list.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 27.12.2008<br />
     */
    public function loadRolesNotWithUser(GenericORMapperDataObject &$user) {
@@ -1388,15 +1406,15 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Loads a list of users, that have a certail role.
     *
-    *  @param GenericORMapperDataObject $role the role, the users should have
-    *  @return GenericORMapperDataObject[] Desired user list.
+    * @param GenericORMapperDataObject $role the role, the users should have
+    * @return GenericORMapperDataObject[] Desired user list.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 28.12.2008<br />
     */
    public function loadUsersWithRole(GenericORMapperDataObject &$role) {
@@ -1404,15 +1422,15 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Loads a list of users, that don't have the given role.
     *
-    *  @param GenericORMapperDataObject $role the role, the users should not have
-    *  @return GenericORMapperDataObject[] Desired user list.
+    * @param GenericORMapperDataObject $role the role, the users should not have
+    * @return GenericORMapperDataObject[] Desired user list.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 27.12.2008<br />
     *  Version 0.2, 28.12.2008 (Bugfix: criterion definition contained wrong relation indicator)<br />
     */
@@ -1427,15 +1445,15 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Loads the permissions associated with a permission set.
     *
-    *  @param GenericORMapperDataObject $permissionSet the permission set
-    *  @return GenericORMapperDataObject[] The list of permissions.
+    * @param GenericORMapperDataObject $permissionSet the permission set
+    * @return GenericORMapperDataObject[] The list of permissions.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 28.12.2008<br />
     */
    public function loadPermissionsOfPermissionSet(GenericORMapperDataObject &$permissionSet) {
@@ -1444,15 +1462,15 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Detaches a user from a role.
     *
-    *  @param GenericORMapperDataObject $user the user
-    *  @param GenericORMapperDataObject $role the desired role to detach the user from
+    * @param GenericORMapperDataObject $user the user
+    * @param GenericORMapperDataObject $role the desired role to detach the user from
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 28.12.2008<br />
     */
    public function detachUserFromRole(GenericORMapperDataObject $user, GenericORMapperDataObject $role) {
@@ -1461,15 +1479,15 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Detaches users from a role.
     *
-    *  @param GenericORMapperDataObject[] $users a list of users
-    *  @param GenericORMapperDataObject $role the desired role to detach the users from
+    * @param GenericORMapperDataObject[] $users a list of users
+    * @param GenericORMapperDataObject $role the desired role to detach the users from
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 28.12.2008<br />
     */
    public function detachUsersFromRole(array $users, GenericORMapperDataObject $role) {
@@ -1481,15 +1499,15 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Removes a user from the given groups.
     *
-    *  @param GenericORMapperDataObject $user the desired user
-    *  @param GenericORMapperDataObject $group the group
+    * @param GenericORMapperDataObject $user the desired user
+    * @param GenericORMapperDataObject $group the group
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 26.12.2008<br />
     */
    public function detachUserFromGroup(GenericORMapperDataObject $user, GenericORMapperDataObject $group) {
@@ -1498,15 +1516,15 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Removes a user from the given groups.
     *
-    *  @param GenericORMapperDataObject $user the desired user
-    *  @param GenericORMapperDataObject[] $groups a list of groups
+    * @param GenericORMapperDataObject $user the desired user
+    * @param GenericORMapperDataObject[] $groups a list of groups
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 26.12.2008<br />
     */
    public function detachUserFromGroups(GenericORMapperDataObject $user, array $groups) {
@@ -1749,8 +1767,8 @@ class UmgtManager extends APFObject {
     */
    public function loadUsersAndGroupsWithVisibilityDefinition(GenericORMapperDataObject $proxy) {
       return array_merge(
-              $this->loadUsersWithVisibilityDefinition($proxy),
-              $this->loadGroupsWithVisibilityDefinition($proxy)
+         $this->loadUsersWithVisibilityDefinition($proxy),
+         $this->loadGroupsWithVisibilityDefinition($proxy)
       );
    }
 
@@ -2024,4 +2042,5 @@ class UmgtManager extends APFObject {
    }
 
 }
+
 ?>
