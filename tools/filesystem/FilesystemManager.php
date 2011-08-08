@@ -168,7 +168,7 @@ class FilesystemManager {
       $target = str_replace('\\', '/', $targetFile);
       if (!file_exists($source)) {
          throw new FileException('[FilesystemManager::copyFile()] The source file "'
-                 . $sourceFile . '" does not exist!', E_USER_NOTICE);
+                                 . $sourceFile . '" does not exist!', E_USER_NOTICE);
       }
 
       // copy source to target
@@ -207,7 +207,7 @@ class FilesystemManager {
       $realFile = str_replace('\\', '/', realpath($file));
       if (!file_exists($realFile)) {
          throw new FileException('[FilesystemManager::removeFile()] The file "' . $file
-                 . '" does not exist!', E_USER_NOTICE);
+                                 . '" does not exist!', E_USER_NOTICE);
       }
 
       return unlink($realFile);
@@ -283,7 +283,7 @@ class FilesystemManager {
       $target = str_replace('\\', '/', $targetFile);
       if (!file_exists($source)) {
          throw new FileException('[FilesystemManager::renameFile()] The source file "'
-                 . $sourceFile . '" does not exist!', E_USER_NOTICE);
+                                 . $sourceFile . '" does not exist!', E_USER_NOTICE);
       }
 
       // copy source to target
@@ -376,7 +376,7 @@ class FilesystemManager {
       $realFile = str_replace('\\', '/', realpath($file));
       if (!file_exists($realFile)) {
          throw new FileException('[FilesystemManager::getFileAttributes()] The given file ("'
-                 . $file . '") does not exist!', E_USER_WARNING);
+                                 . $file . '") does not exist!', E_USER_WARNING);
       }
 
       // gather attributes
@@ -397,8 +397,8 @@ class FilesystemManager {
             return $attributes[$attributeName];
          } else {
             throw new FileException('[FilesytemManager::getFileAttributes()] The desired file '
-                    . 'attribute ("' . $attributes . '") is not a valid attribute. Please consult the '
-                    . ' API documentation!', E_USER_ERROR);
+                                    . 'attribute ("' . $attributes . '") is not a valid attribute. Please consult the '
+                                    . ' API documentation!', E_USER_ERROR);
          }
       }
 
@@ -427,27 +427,86 @@ class FilesystemManager {
       $realFolder = str_replace('\\', '/', realpath($folder));
       if (!file_exists($realFolder)) {
          throw new FileException('[FilesystemManager::getFolderSize()] The given folder ("'
-                 . $folder . '") does not exist!', E_USER_ERROR);
+                                 . $folder . '") does not exist!', E_USER_ERROR);
       }
 
       // get content of the desired folder
       $folderContent = FilesystemManager::getFolderContent($realFolder, true);
-      $size = (int) 0;
+      $size = (int)0;
 
       // collect size recursively
       $count = count($folderContent);
       for ($i = 0; $i < $count; $i++) {
 
          if (is_dir($folderContent[$i])) {
-            $size = (int) FilesystemManager::getFolderSize($folderContent[$i]) + $size;
+            $size = (int)FilesystemManager::getFolderSize($folderContent[$i]) + $size;
          } else {
             $fileAttributes = FilesystemManager::getFileAttributes($folderContent[$i]);
-            $size = (int) $fileAttributes['size'] + $size;
+            $size = (int)$fileAttributes['size'] + $size;
          }
       }
 
       return $size;
    }
 
+   /**
+    * @public
+    * @static
+    *
+    * This method formats the applied amount of bytes. You are able to provide the number of digits
+    * after the colon as well as the unit the value is transformed to.
+    * <p/>
+    * In case the unit is not defined, the <em>$decimal</em> parameter is used to guess the desired
+    * format and unit. In case nothing is provided, the method detects the target or source system
+    * to calculate the size in binary mode.
+    *
+    * @param byte $size The byte value to format.
+    * @param int $round The number of digits after the colon.
+    * @param boolean $server <em>true</em> in case the server OS should be detected to calculate the size,
+    *                        <em>false</em> in case the client OS should be used.
+    * @param string $unit The unit to transform the value to.
+    * @param boolean $decimal Returns (?) the unit of decimal prefix or the unit of the binary prefix.
+    * @return string The formatted size of the applied byte amount.
+    *
+    * @author Werner Liemberger <wpublicmail [at] gmail DOT com>
+    * @version
+    * Version 1.0, 08.08.2011<br />
+    */
+   public static function formatByte($size, $round = 2, $server = false, $unit = null, $decimal = null) {
+
+      $units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB');
+
+      if ($decimal === null) {
+         if ($server == false) {
+            $userAgent = strtolower($_SERVER['SERVER_SOFTWARE']);
+         } else {
+            $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
+         }
+         if (preg_match('/windows|win32/', $userAgent)) {
+            $decimal = false;
+         }
+      }
+
+      if ($decimal == false) {
+         $divisor = 1024;
+      } else {
+         $divisor = 1000;
+      }
+
+      if ($unit == null) {
+         $i = 0;
+         $j = count($units);
+         while ($size >= $divisor && $i < $j) {
+            $size /= $divisor;
+            $i++;
+         }
+         return round($size, $round) . ' ' . $units[$i];
+      } else {
+         $key = array_keys($units, $unit, true);
+         return round($size / pow($divisor, $key[0]), $round) . ' ' . $unit;
+      }
+   }
+
 }
+
 ?>
