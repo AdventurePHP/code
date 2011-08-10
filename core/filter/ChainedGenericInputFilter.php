@@ -39,7 +39,7 @@
  * In order to create your own url layout resolver, implement the
  * <em>ChainedContentFilter</em> interface and add it to the resetted filter
  * chain. Details and examples can be found within the manual.
- * 
+ *
  *
  * @author Christian Achatz
  * @version
@@ -74,6 +74,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
    public function filter(FilterChain &$chain, $input = null) {
 
       $t = &Singleton::getInstance('BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
       $t->start('ChainedGenericInputFilter');
 
       // apply desired filter method
@@ -103,7 +104,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
    private function filterRewriteUrl() {
 
       // extract the PHPSESSID from $_REQUEST if existent
-      $PHPSESSID = (string) '';
+      $PHPSESSID = (string)'';
       $sessionName = ini_get('session.name');
 
       if (isset($_REQUEST[$sessionName])) {
@@ -111,7 +112,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
       }
 
       // initialize param to analyze
-      $query = (string) '';
+      $query = (string)'';
       if (isset($_REQUEST[self::$REWRITE_QUERY_PARAM])) {
          $query = $_REQUEST[self::$REWRITE_QUERY_PARAM];
       }
@@ -196,7 +197,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
     * Version 0.1, 22.03.2011 (Initial migration from various filter classes into one)<br />
     */
    private function filterStandardUrl() {
-      
+
       $namespaceKeywordDelimiter = '-';
       $actionKeyword = 'action';
       $keywordClassDelimiter = ':';
@@ -204,6 +205,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
       $keyValueDelimiter = ':';
 
       $fC = &Singleton::getInstance('Frontcontroller');
+      /* @var $fC Frontcontroller */
 
       foreach ($_REQUEST as $key => $value) {
 
@@ -225,7 +227,8 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
                $tmpArray = explode($keyValueDelimiter, $paramsArray[$i]);
 
                if (isset($tmpArray[0]) && isset($tmpArray[1])
-                       && !empty($tmpArray[0]) && !empty($tmpArray[1])) {
+                   && !empty($tmpArray[0]) && !empty($tmpArray[1])
+               ) {
                   $inputParams[$tmpArray[0]] = $tmpArray[1];
                }
             }
@@ -260,7 +263,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
       $returnArray = array();
       $x = 0;
 
-      // walk throug the new request array and combine the key (offset x) and
+      // walk through the new request array and combine the key (offset x) and
       // the value (offset x + 1)
       while ($x <= (count($requestArray) - 1)) {
 
