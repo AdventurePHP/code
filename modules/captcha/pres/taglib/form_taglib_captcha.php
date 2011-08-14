@@ -19,6 +19,7 @@
  * -->
  */
 import('tools::form::taglib', 'form_control');
+import('tools::form::taglib', 'form_taglib_text');
 import('tools::request', 'RequestHandler');
 import('tools::string', 'stringAssistant');
 import('core::session', 'SessionManager');
@@ -210,8 +211,8 @@ class form_taglib_captcha extends form_control {
 
       // create desired media url
       $captchaUrl = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'modules::captcha::biz', 'showCaptcha', array(
-          'name' => $this->textFieldName
-      ));
+                                                                                                                      'name' => $this->textFieldName
+                                                                                                                 ));
 
       // initialize captcha source
       $captchaCode = '<div class="captcha"><img src="' . $captchaUrl . '" alt="CAPTCHA" ';
@@ -241,16 +242,17 @@ class form_taglib_captcha extends form_control {
          }
       }
 
-      // concatinate the html code and return it
+      // concatenate the html code and return it
       if ($disableInlineStyle === true) {
          return $captchaCode . '/><div>'
-         . $this->textField->transform() . '</div></div>';
+                . $this->textField->transform() . '</div></div>';
       } else {
          return $captchaCode . '/><div style="line-height: 40px; float: left; margin-left: 20px;">'
-         . $this->textField->transform() . '</div><div style="clear: left;"></div></div>';
+                . $this->textField->transform() . '</div><div style="clear: left;"></div></div>';
       }
 
    }
 
 }
+
 ?>
