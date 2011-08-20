@@ -78,7 +78,15 @@ class list_controller extends news_base_controller {
       $I->fillDataContainer($DataArray);
       $I->transformOnPlace();
    }
-
+   
+    /**
+    * Overwriting parent's function
+    * 
+    * @return string The application identifier (for login purposes).
+    */
+   protected function getAppKey() {
+      return $this->__Document->getParentObject()->getAttribute('app-ident', $this->getContext());
+   }
 }
 
 ?>
