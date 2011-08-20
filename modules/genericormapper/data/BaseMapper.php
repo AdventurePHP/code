@@ -570,7 +570,7 @@ class BaseMapper extends APFObject {
     * @version
     * Version 0.1, 15.01.2011<br />
     */
-   public function addDIServiceObjectsConfiguration(GenericORMapperDIDOMappingConfiguration $config) {
+   public function addDIServiceObjectsConfiguration(GenericORMapperDIServiceObjectsConfiguration $config) {
       $this->addServiceObjectsConfiguration($config->getConfigNamespace(), $config->getConfigAffix());
    }
 
