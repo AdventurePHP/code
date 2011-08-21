@@ -57,6 +57,7 @@ class form_taglib_select extends form_control {
       $this->attributeWhiteList[] = 'name';
       $this->attributeWhiteList[] = 'size';
       $this->attributeWhiteList[] = 'tabindex';
+      $this->attributeWhiteList[] = 'onchange';
    }
 
    /**
