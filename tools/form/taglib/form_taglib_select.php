@@ -36,7 +36,7 @@ import('tools::form::taglib', 'select_taglib_group');
 class form_taglib_select extends form_control {
 
    /**
-    * @var boolean Marks the field as dynamic to do special presetting on transformation time. 
+    * @var boolean Marks the field as dynamic to do special presetting on transformation time.
     */
    protected $isDynamicField = false;
 
@@ -216,6 +216,11 @@ class form_taglib_select extends form_control {
 
          if (get_class($this->__Children[$objectId]) == 'select_taglib_group') {
             $selectedOption = &$this->__Children[$objectId]->getSelectedOption();
+
+            // Bug-436: exit at the first hit to not overwrite this hit with another miss!
+            if ($selectedOption !== null) {
+               break;
+            }
          } else {
             if ($this->__Children[$objectId]->getAttribute('selected') === 'selected') {
                $selectedOption = &$this->__Children[$objectId];
@@ -251,7 +256,8 @@ class form_taglib_select extends form_control {
             $this->__Children[$objectId]->setOption2Selected($displayNameOrValue);
          } else {
             if ($this->__Children[$objectId]->getAttribute('value') == $displayNameOrValue
-                    || $this->__Children[$objectId]->getContent() == $displayNameOrValue) {
+                || $this->__Children[$objectId]->getContent() == $displayNameOrValue
+            ) {
                $this->__Children[$objectId]->setAttribute('selected', 'selected');
                $selectedObjectId = $objectId;
             }
@@ -294,13 +300,13 @@ class form_taglib_select extends form_control {
       }
 
       // create html code
-      $select = (string) '';
+      $select = (string)'';
       $select .= '<select ' . $this->getSanitizedAttributesAsString($this->__Attributes) . '>';
 
       foreach ($this->__Children as $objectId => $DUMMY) {
          $this->__Content = str_replace('<' . $objectId . ' />',
-                         $this->__Children[$objectId]->transform(),
-                         $this->__Content
+                                        $this->__Children[$objectId]->transform(),
+                                        $this->__Content
          );
       }
 
@@ -361,7 +367,7 @@ class form_taglib_select extends form_control {
          $endBracketPos = strpos($name, $subMarkerEnd);
          $mainName = substr($name, 0, $startBracketPos);
          $subName = substr($name, $startBracketPos + 1,
-                         $endBracketPos - $startBracketPos - strlen($subMarkerEnd)
+                           $endBracketPos - $startBracketPos - strlen($subMarkerEnd)
          );
          if (isset($_REQUEST[$mainName][$subName])) {
             $value = $_REQUEST[$mainName][$subName];
@@ -376,40 +382,41 @@ class form_taglib_select extends form_control {
    }
 
    /**
-   * @public
-   * 
-   * Re-implements the retrieving of values for select controls
-   * 
-   * @return select_taglib_option The selected option.
-   * 
-   * @since 1.14
-   * 
-   * @author Ralf Schubert
-   * @version
-   * Version 0.1, 26.07.2011<br />
-   */
+    * @public
+    *
+    * Re-implements the retrieving of values for select controls
+    *
+    * @return select_taglib_option The selected option.
+    *
+    * @since 1.14
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 26.07.2011<br />
+    */
    public function getValue() {
       return $this->getSelectedOption();
    }
-   
+
    /**
-   * @public
-   * 
-   * Re-implements the setting of values for select controls
-   * 
-   * @param string $value The display name or the value of the option to pre-select.
-   * @return form_taglib_select 
-   * 
-   * @since 1.14
-   * 
-   * @author Ralf Schubert
-   * @version
-   * Version 0.1, 26.07.2011<br />
-   */
-  public function setValue($value) {
+    * @public
+    *
+    * Re-implements the setting of values for select controls
+    *
+    * @param string $value The display name or the value of the option to pre-select.
+    * @return form_taglib_select
+    *
+    * @since 1.14
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 26.07.2011<br />
+    */
+   public function setValue($value) {
       $this->setOption2Selected($value);
       return $this;
-  }
-  
+   }
+
 }
+
 ?>
