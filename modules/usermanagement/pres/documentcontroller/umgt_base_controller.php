@@ -49,7 +49,7 @@ abstract class umgt_base_controller extends iteratorBaseController {
     * @version
     * Version 0.1, 26.12.2008<br />
     */
-   protected function __generateLink($linkParams, $baseURL = null) {
+   protected function generateLink($linkParams, $baseURL = null) {
       if ($baseURL === null) {
          $baseURL = $_SERVER['REQUEST_URI'];
       }

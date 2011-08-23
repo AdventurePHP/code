@@ -70,7 +70,7 @@
             }
 
             $uM->saveUser($user);
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'user','userview' => '')));
+            HeaderManager::forward($this->generateLink(array('mainview' => 'user','userview' => '')));
 
           // end else
          }

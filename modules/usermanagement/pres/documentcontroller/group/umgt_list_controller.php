@@ -44,11 +44,11 @@
          foreach($GroupList as $Group){
             $groupID = $Group->getProperty('GroupID');
             $template->setPlaceHolder('DisplayName',$Group->getProperty('DisplayName'));
-            $template->setPlaceHolder('group_edit',$this->__generateLink(array('mainview' => 'group', 'groupview' => 'edit', 'groupid' => $groupID)));
-            $template->setPlaceHolder('group_details',$this->__generateLink(array('mainview' => 'group','groupview' => 'details','groupid' => $groupID)));
-            $template->setPlaceHolder('group_delete',$this->__generateLink(array('mainview' => 'group','groupview' => 'delete','groupid' => $groupID)));
-            $template->setPlaceHolder('group_useradd',$this->__generateLink(array('mainview' => 'group','groupview' => 'useradd','groupid' => $groupID)));
-            $template->setPlaceHolder('group_userrem',$this->__generateLink(array('mainview' => 'group','groupview' => 'userrem','groupid' => $groupID)));
+            $template->setPlaceHolder('group_edit',$this->generateLink(array('mainview' => 'group', 'groupview' => 'edit', 'groupid' => $groupID)));
+            $template->setPlaceHolder('group_details',$this->generateLink(array('mainview' => 'group','groupview' => 'details','groupid' => $groupID)));
+            $template->setPlaceHolder('group_delete',$this->generateLink(array('mainview' => 'group','groupview' => 'delete','groupid' => $groupID)));
+            $template->setPlaceHolder('group_useradd',$this->generateLink(array('mainview' => 'group','groupview' => 'useradd','groupid' => $groupID)));
+            $template->setPlaceHolder('group_userrem',$this->generateLink(array('mainview' => 'group','groupview' => 'userrem','groupid' => $groupID)));
             $buffer .= $template->transformTemplate();
          }
 

@@ -48,10 +48,10 @@ class umgt_delete_controller extends umgt_base_controller {
          $User = new GenericDomainObject('User');
          $User->setProperty('UserID', $userid);
          $uM->deleteUser($User);
-         HeaderManager::forward($this->__generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
+         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
 
       } elseif ($Form__No->isSent()) {
-         HeaderManager::forward($this->__generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
+         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
       } else {
          $Form__No->transformOnPlace();
          $Form__Yes->transformOnPlace();

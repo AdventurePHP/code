@@ -99,7 +99,7 @@ class UmgtManager extends APFObject {
       if (!$this->passwordHashProvidersAreImported) {
 
          // setup the component
-         $config = $this->getConfiguration('modules::usermanagement', 'umgtconfig.ini');
+         $config = $this->getConfiguration('modules::usermanagement::biz', 'umgtconfig.ini');
          $section = $config->getSection($initParam);
 
          $passwordHashProvider = $section->getSection('PasswordHashProvider');
@@ -309,12 +309,14 @@ class UmgtManager extends APFObject {
     * Version 0.2, 16.03.2010 (Bugfix 299: moved the service type to the GORM factory call)<br />
     */
    public function &getORMapper() {
+      // TODO create OTM from a DI service, if the customer has defined such a configuration!
+
       return $this->getServiceObject(
          'modules::genericormapper::data',
          'GenericORMapperFactory',
          $this->gormServiceMode)
             ->getGenericORMapper(
-         'modules::usermanagement',
+         'modules::usermanagement::data',
          'umgt',
          $this->connectionKey
       );
@@ -439,48 +441,6 @@ class UmgtManager extends APFObject {
    /**
     * @public
     *
-    * Saves a permission set object within the current application.
-    *
-    * @param GenericORMapperDataObject $permissionSet a permission set.
-    * @return int The id of the permission set.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 15.06.2008<br />
-    * Version 0.2, 28.12.2008 (Bugfix: unnecessary associations are now deleted)<br />
-    */
-   public function savePermissionSet(GenericORMapperDataObject &$permissionSet) {
-
-      // get the mapper
-      $oRM = &$this->getORMapper();
-
-      // compose the permission set under the application
-      $app = $this->getCurrentApplication();
-      $permissionSet->addRelatedObject('Application2PermissionSet', $app);
-
-      // check for deleted associations
-      $permissions = &$permissionSet->getRelatedObjects('PermissionSet2Permission');
-      $permissionIDs = array();
-      for ($i = 0; $i < count($permissions); $i++) {
-         $permissionIDs[] = $permissions[$i]->getProperty('PermissionID');
-      }
-
-      // delete the unnecessary relations
-      $allPermissions = $this->loadPermissionList();
-      for ($i = 0; $i < count($allPermissions); $i++) {
-         if (!in_array($allPermissions[$i]->getProperty('PermissionID'), $permissionIDs)) {
-            $oRM->deleteAssociation('PermissionSet2Permission', $permissionSet, $allPermissions[$i]);
-         }
-      }
-
-      // save the permission set and return it's id
-      return $oRM->saveObject($permissionSet);
-
-   }
-
-   /**
-    * @public
-    *
     * Saves a permission object within the current application.
     *
     * @param GenericORMapperDataObject $permission the permission.
@@ -568,23 +528,6 @@ class UmgtManager extends APFObject {
       $ORM = &$this->getORMapper();
       $select = 'SELECT * FROM ent_role ORDER BY DisplayName ASC';
       return $ORM->loadObjectListByTextStatement('Role', $select);
-   }
-
-   /**
-    * @public
-    *
-    * Returns a list of permission sets concerning the current page.
-    *
-    * @return GenericORMapperDataObject[] List of permission sets.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2008<br />
-    */
-   public function getPagedPermissionSetList() {
-      $oRM = &$this->getORMapper();
-      $select = 'SELECT * FROM ent_permissionset ORDER BY DisplayName ASC';
-      return $oRM->loadObjectListByTextStatement('PermissionSet', $select);
    }
 
    /**
@@ -846,16 +789,13 @@ class UmgtManager extends APFObject {
     */
    public function loadUserPermissions(GenericORMapperDataObject &$user) {
 
-      // build select statement
       $select = 'SELECT `ent_permission`.* FROM `ent_permission`
-                    INNER JOIN ass_permissionset2permission ON ent_permission.PermissionID = ass_permissionset2permission.Target_PermissionID
-                    INNER JOIN ent_permissionset ON ass_permissionset2permission.Source_PermissionSetID = ent_permissionset.PermissionSetID
-                    INNER JOIN ass_role2permissionset ON ent_permissionset.PermissionSetID = ass_role2permissionset.Target_PermissionSetID
-                    INNER JOIN ent_role ON ass_role2permissionset.Source_RoleID = ent_role.RoleID
-                    INNER JOIN ass_role2user ON ent_role.RoleID = ass_role2user.Source_RoleID
-                    INNER JOIN ent_user ON ass_role2user.Target_UserID = ent_user.UserID
-                    WHERE ent_user.UserID = \'' . $user->getProperty('UserID') . '\'
-                    GROUP BY `ent_permission`.`PermissionID`;';
+                 INNER JOIN `ass_role2permission` ON `ent_permission`.`PermissionID` = `ass_role2permission`.`Target_PermissionID`
+                 INNER JOIN `ent_role` ON `ass_role2permission`.`Source_RoleID` = `ent_role`.`RoleID`
+                 INNER JOIN `ass_role2user` ON `ent_role`.`RoleID` = `ass_role2user`.`Source_RoleID`
+                 INNER JOIN `ent_user` ON `ass_role2user`.`Target_UserID` = `ent_user`.`UserID`
+                 WHERE `ent_user`.`UserID` = \'' . $user->getProperty('UserID') . '\'
+                 GROUP BY `ent_permission`.`PermissionID`;';
 
       // load permissions
       $oRM = &$this->getORMapper();
@@ -936,23 +876,6 @@ class UmgtManager extends APFObject {
    /**
     * @public
     *
-    * Loads a permission set by it's id.
-    *
-    * @param int $permissionSetID the permission set's id
-    * @return GenericORMapperDataObject The permission set.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2008<br />
-    */
-   public function loadPermissionSetByID($permissionSetID) {
-      $oRM = &$this->getORMapper();
-      return $oRM->loadObjectByID('PermissionSet', $permissionSetID);
-   }
-
-   /**
-    * @public
-    *
     * Loads a list of permissions of the current application.
     *
     * @return GenericORMapperDataObject[] The permission list.
@@ -995,141 +918,9 @@ class UmgtManager extends APFObject {
    /**
     * @public
     *
-    * Loads a list of roles, that are not associated with the permission set.
-    *
-    * @param GenericORMapperDataObject $permissionSet the desiried permission set
-    * @return GenericORMapperDataObject[] The roles, that are not associated.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2008<br />
-    */
-   public function loadRolesNotWithPermissionSet(GenericORMapperDataObject $permissionSet) {
-
-      // get the mapper
-      $oRM = &$this->getORMapper();
-
-      // setup driterion
-      $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Role', $this->getCurrentApplication());
-
-      // load roles, that are not associated
-      return $oRM->loadNotRelatedObjects($permissionSet, 'Role2PermissionSet', $crit);
-
-   }
-
-   /**
-    * @public
-    *
-    * Loads a list of roles, that are associated with the permission set.
-    *
-    * @param GenericORMapperDataObject $permissionSet the desiried permission set
-    * @return GenericORMapperDataObject[] The roles, that are associated.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2008<br />
-    */
-   public function loadRolesWithPermissionSet(GenericORMapperDataObject $permissionSet) {
-
-      // get the mapper
-      $oRM = &$this->getORMapper();
-
-      // setup driterion
-      $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Role', $this->getCurrentApplication());
-
-      // load roles, that are not associated
-      return $oRM->loadRelatedObjects($permissionSet, 'Role2PermissionSet', $crit);
-
-   }
-
-   /**
-    * @public
-    *
-    * Adds a permission to the given permission set.
-    *
-    * @param GenericORMapperDataObject $permission The permission to assign to the permission set.
-    * @param GenericORMapperDataObject $permissionSet The desired permission set to add the permission to.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 06.07.2010<br />
-    */
-   public function assignPermission2PermissionSet(GenericORMapperDataObject $permission, GenericORMapperDataObject $permissionSet) {
-      $this->getORMapper()->createAssociation('PermissionSet2Permission', $permission, $permissionSet);
-   }
-
-   /**
-    * @public
-    *
-    * Removes a permission from a given permission set.
-    *
-    * @param GenericORMapperDataObject $permission The permission to remove from the permission set.
-    * @param GenericORMapperDataObject $permissionSet The desired permission set fremove the permission from.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 06.07.2010<br />
-    */
-   public function detachPermission2PermissionSet(GenericORMapperDataObject $permission, GenericORMapperDataObject $permissionSet) {
-      $this->getORMapper()->deleteAssociation('PermissionSet2Permission', $permission, $permissionSet);
-   }
-
-   /**
-    * @public
-    *
-    * Associates a given permission set to a list of roles.
-    *
-    * @param GenericORMapperDataObject $permissionSet the desiried permission set
-    * @param GenericORMapperDataObject[] $roles the roles, that have to be associated
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2008<br />
-    */
-   public function assignPermissionSet2Roles(GenericORMapperDataObject $permissionSet, array $roles) {
-
-      // get the mapper
-      $oRM = &$this->getORMapper();
-
-      // create the associations
-      for ($i = 0; $i < count($roles); $i++) {
-         $oRM->createAssociation('Role2PermissionSet', $roles[$i], $permissionSet);
-      }
-
-   }
-
-   /**
-    * @public
-    *
-    * Removes a given permission set from a list of roles.
-    *
-    * @param GenericORMapperDataObject $permissionSet the desiried permission set
-    * @param GenericORMapperDataObject[] $roles the roles, that have to be associated
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2008<br />
-    */
-   public function detachPermissionSetFromRoles(GenericORMapperDataObject $permissionSet, array $roles) {
-
-      // get the mapper
-      $oRM = &$this->getORMapper();
-
-      // delete the associations
-      for ($i = 0; $i < count($roles); $i++) {
-         $oRM->deleteAssociation('Role2PermissionSet', $roles[$i], $permissionSet);
-      }
-
-   }
-
-   /**
-    * @public
-    *
     * Deletes a user.
     *
-    * @param GenericORMapperDataObject[] $user the user to delete
+    * @param GenericORMapperDataObject $user the user to delete
     *
     * @author Christian Achatz
     * @version
@@ -1145,7 +936,7 @@ class UmgtManager extends APFObject {
     *
     * Deletes a group.
     *
-    * @param GenericORMapperDataObject[] $group the group to delete
+    * @param GenericORMapperDataObject $group the group to delete
     *
     * @author Christian Achatz
     * @version
@@ -1161,7 +952,7 @@ class UmgtManager extends APFObject {
     *
     *  Deletes a role.
     *
-    * @param GenericORMapperDataObject[] $role the role to delete
+    * @param GenericORMapperDataObject $role the role to delete
     *
     * @author Christian Achatz
     * @version
@@ -1170,22 +961,6 @@ class UmgtManager extends APFObject {
    public function deleteRole(GenericORMapperDataObject $role) {
       $oRM = &$this->getORMapper();
       $oRM->deleteObject($role);
-   }
-
-   /**
-    * @public
-    *
-    *  Deletes a PermissionSet.
-    *
-    * @param GenericORMapperDataObject $permissionSet the permission set
-    *
-    * @author Christian Achatz
-    * @version
-    *  Version 0.1, 28.12.2008<br />
-    */
-   public function deletePermissionSet(GenericORMapperDataObject $permissionSet) {
-      $oRM = &$this->getORMapper();
-      $oRM->deleteObject($permissionSet);
    }
 
    /**
@@ -1447,23 +1222,6 @@ class UmgtManager extends APFObject {
    /**
     * @public
     *
-    *  Loads the permissions associated with a permission set.
-    *
-    * @param GenericORMapperDataObject $permissionSet the permission set
-    * @return GenericORMapperDataObject[] The list of permissions.
-    *
-    * @author Christian Achatz
-    * @version
-    *  Version 0.1, 28.12.2008<br />
-    */
-   public function loadPermissionsOfPermissionSet(GenericORMapperDataObject &$permissionSet) {
-      $oRM = &$this->getORMapper();
-      return $oRM->loadRelatedObjects($permissionSet, 'PermissionSet2Permission');
-   }
-
-   /**
-    * @public
-    *
     *  Detaches a user from a role.
     *
     * @param GenericORMapperDataObject $user the user
@@ -1558,6 +1316,144 @@ class UmgtManager extends APFObject {
    /**
     * @public
     *
+    * @return GenericORMapperDataObject[] The list of all permissions.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.08.2011<br />
+    */
+   public function getRoleList() {
+      $app = $this->getCurrentApplication();
+      return $this->getORMapper()->loadRelatedObjects($app, 'Application2Permission');
+   }
+
+   /**
+    * @public
+    *
+    * Loads the permission associated to the given role.
+    *
+    * @param GenericORMapperDataObject $role The role to load it's permissions.
+    * @return GenericORMapperDataObject[] The permissions that are assigned to the applied role.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.08.2011<br />
+    */
+   public function loadPermissionsWithRole(GenericORMapperDataObject $role) {
+      return $this->getORMapper()->loadRelatedObjects($role, 'Role2Permission');
+   }
+
+   /**
+    * @public
+    *
+    * Loads all roles that are connected to the applied permission.
+    *
+    * @param GenericORMapperDataObject $permission The permission to load the roles.
+    * @return GenericORMapperDataObject[] The roles, that are assigned the given permission.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 19.08.2011<br />
+    */
+   public function loadRolesWithPermission(GenericORMapperDataObject $permission) {
+      return $this->getORMapper()->loadRelatedObjects($permission, 'Role2Permission');
+   }
+
+   /**
+    * @public
+    *
+    * Loads all roles that are *not* connected to the applied permission.
+    *
+    * @param GenericORMapperDataObject $permission The permission to load the roles.
+    * @return GenericORMapperDataObject[] The roles, that are *not* assigned the given permission.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 19.08.2011<br />
+    */
+   public function loadRolesNotWithPermission(GenericORMapperDataObject $permission) {
+
+      // setup the criterion
+      $crit = new GenericCriterionObject();
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Role', $app);
+
+      // load the permission list
+      return $this->getORMapper()->loadNotRelatedObjects($permission, 'Role2Permission', $crit);
+
+   }
+
+   /**
+    * @public
+    *
+    * @param GenericORMapperDataObject $permission
+    * @param array $roles
+    * @return void
+    */
+   public function attachPermission2Roles(GenericORMapperDataObject $permission, array $roles) {
+
+      $orm = &$this->getORMapper();
+
+      foreach ($roles as $role) {
+         /* @var $role GenericORMapperDataObject */
+         $orm->createAssociation('Role2Permission', $role, $permission);
+      }
+
+   }
+
+   /**
+    * @public
+    *
+    * @param GenericORMapperDataObject $permission
+    * @param array $roles
+    * @return void
+    */
+   public function detachPermissionFromRoles(GenericORMapperDataObject $permission, array $roles) {
+
+      $orm = &$this->getORMapper();
+
+      foreach ($roles as $role) {
+         /* @var $role GenericORMapperDataObject */
+         $orm->deleteAssociation('Role2Permission', $role, $permission);
+      }
+   }
+
+   /**
+    * @public
+    *
+    * @param array $permissions
+    * @param GenericORMapperDataObject $role
+    * @return void
+    */
+   public function attachPermissions2Role(array $permissions, GenericORMapperDataObject $role) {
+
+      $orm = &$this->getORMapper();
+
+      foreach ($permissions as $permission) {
+         /* @var $permission GenericORMapperDataObject */
+         $orm->createAssociation('Role2Permission', $role, $permission);
+      }
+   }
+
+   /**
+    * @public
+    *
+    * @param array $permissions
+    * @param GenericORMapperDataObject $role
+    * @return void
+    */
+   public function detachPermissionsFromRole(array $permissions, GenericORMapperDataObject $role) {
+      $orm = &$this->getORMapper();
+
+      foreach ($permissions as $permission) {
+         /* @var $permission GenericORMapperDataObject */
+         $orm->deleteAssociation('Role2Permission', $role, $permission);
+      }
+   }
+
+   /**
+    * @public
+    *
     * Creates a visibility definition relating an application proxy object to the users and
     * groups, that should have access to the object.
     *
@@ -1565,6 +1461,7 @@ class UmgtManager extends APFObject {
     * @param GenericORMapperDataObject $visibilityDefinition The visibility definition (object id of application's the target object).
     * @param GenericORMapperDataObject[] $users The list of users, that should have visibility permissions on the given application object.
     * @param GenericORMapperDataObject[] $groups The list of groups, that should have visibility permissions on the given application object.
+    * @return int The id of the desired visibility definition.
     *
     * @author Christian Achatz
     * @version

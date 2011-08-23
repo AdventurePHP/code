@@ -34,8 +34,8 @@
    class umgt_user_controller extends umgt_base_controller {
 
       public function transformContent(){
-         $this->setPlaceHolder('manage_user', $this->__generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
-         $this->setPlaceHolder('user_add', $this->__generateLink(array('mainview' => 'user', 'userview' => 'add','userid' => '')));
+         $this->setPlaceHolder('manage_user', $this->generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
+         $this->setPlaceHolder('user_add', $this->generateLink(array('mainview' => 'user', 'userview' => 'add','userid' => '')));
       }
 
    }

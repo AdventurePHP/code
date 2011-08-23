@@ -53,11 +53,11 @@
             $Group = new GenericDomainObject('Group');
             $Group->setProperty('GroupID',$groupid);
             $uM->deleteGroup($Group);
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'group','groupview' => '','groupid' => '')));
+            HeaderManager::forward($this->generateLink(array('mainview' => 'group','groupview' => '','groupid' => '')));
           // end if
          }
          elseif($Form__No->isSent()){
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'group','groupview' => '','groupid' => '')));
+            HeaderManager::forward($this->generateLink(array('mainview' => 'group','groupview' => '','groupid' => '')));
           // end elseif
          }
          else{

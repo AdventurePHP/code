@@ -72,7 +72,7 @@ class umgt_useradd_controller extends umgt_base_controller {
          }
 
          $uM->assignUsers2Group($newUsers, $group);
-         HeaderManager::forward($this->__generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
 
       } else {
          $Form__User->transformOnPlace();

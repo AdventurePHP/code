@@ -64,7 +64,7 @@
             return;
          }
 
-         HeaderManager::forward($this->__generateLink(
+         HeaderManager::forward($this->generateLink(
            array(
               'mainview' => 'proxy',
               'proxyview' => null

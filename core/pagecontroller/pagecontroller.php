@@ -2113,6 +2113,8 @@ abstract class base_controller extends Document {
     * document controller during the transformation of a DOM node. It must be implemented by
     * each document controller to influence content generation.
     *
+    * @return void
+    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 28.12.2006<br />

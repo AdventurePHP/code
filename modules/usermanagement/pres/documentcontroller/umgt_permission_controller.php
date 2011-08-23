@@ -34,8 +34,8 @@
    class umgt_permission_controller extends umgt_base_controller {
 
       public function transformContent(){
-         $this->setPlaceHolder('manage_permissions',$this->__generateLink(array('mainview' => 'permission', 'permissionview' => '','permissionid' => '')));
-         $this->setPlaceHolder('permission_add',$this->__generateLink(array('mainview' => 'permission','permissionview' => 'add','permissionsetid' => '','permissionid' => '')));
+         $this->setPlaceHolder('manage_permissions',$this->generateLink(array('mainview' => 'permission', 'permissionview' => '','permissionid' => '')));
+         $this->setPlaceHolder('permission_add',$this->generateLink(array('mainview' => 'permission','permissionview' => 'add','permissionsetid' => '','permissionid' => '')));
        // end function
       }
 

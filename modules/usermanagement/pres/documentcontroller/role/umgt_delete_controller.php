@@ -50,10 +50,10 @@
             $role = new GenericDomainObject('Role');
             $role->setProperty('RoleID',$roleId);
             $uM->deleteRole($role);
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'role', 'roleview' => '','roleid' => '')));
+            HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '','roleid' => '')));
 
          } elseif($formNo->isSent()) {
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'role', 'roleview' => '','roleid' => '')));
+            HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '','roleid' => '')));
          } else {
             $formNo->transformOnPlace();
             $formYes->transformOnPlace();

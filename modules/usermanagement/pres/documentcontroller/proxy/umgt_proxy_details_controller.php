@@ -68,7 +68,7 @@
             // insert links
             $template->setPlaceHolder(
                     'delete_link',
-                    $this->__generateLink(
+                    $this->generateLink(
                             array(
                                'proxyview' => 'proxyrevokeaccess',
                                'proxyid' => $proxyId,

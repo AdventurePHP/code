@@ -49,7 +49,7 @@
             $uM->saveGroup($group);
 
             // redirect to the desired view
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'group', 'groupview' => '')));
+            HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '')));
 
           // end else
          }

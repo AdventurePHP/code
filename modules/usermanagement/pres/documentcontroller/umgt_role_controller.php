@@ -34,8 +34,8 @@
    class umgt_role_controller extends umgt_base_controller {
 
       public function transformContent(){
-         $this->setPlaceHolder('manage_roles',$this->__generateLink(array('mainview' => 'role','roleview' => '')));
-         $this->setPlaceHolder('role_add',$this->__generateLink(array('mainview' => 'role','roleview' => 'add')));
+         $this->setPlaceHolder('manage_roles',$this->generateLink(array('mainview' => 'role','roleview' => '')));
+         $this->setPlaceHolder('role_add',$this->generateLink(array('mainview' => 'role','roleview' => 'add')));
       }
 
    }

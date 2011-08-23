@@ -47,11 +47,11 @@ class umgt_list_controller extends umgt_base_controller {
          $template->setPlaceHolder('LastName', $user->getProperty('LastName'));
          $template->setPlaceHolder('Username', $user->getProperty('Username'));
          $userid = $user->getObjectId();
-         $template->setPlaceHolder('LinkUserDetails', $this->__generateLink(array('mainview' => 'user', 'userview' => 'details', 'userid' => $userid)));
-         $template->setPlaceHolder('LinkUserEdit', $this->__generateLink(array('mainview' => 'user', 'userview' => 'edit', 'userid' => $userid)));
-         $template->setPlaceHolder('LinkUserDelete', $this->__generateLink(array('mainview' => 'user', 'userview' => 'delete', 'userid' => $userid)));
-         $template->setPlaceHolder('LinkUserAdd2Group', $this->__generateLink(array('mainview' => 'user', 'userview' => 'add2group', 'userid' => $userid)));
-         $template->setPlaceHolder('LinkUserRemFromGroup', $this->__generateLink(array('mainview' => 'user', 'userview' => 'remfromgroup', 'userid' => $userid)));
+         $template->setPlaceHolder('LinkUserDetails', $this->generateLink(array('mainview' => 'user', 'userview' => 'details', 'userid' => $userid)));
+         $template->setPlaceHolder('LinkUserEdit', $this->generateLink(array('mainview' => 'user', 'userview' => 'edit', 'userid' => $userid)));
+         $template->setPlaceHolder('LinkUserDelete', $this->generateLink(array('mainview' => 'user', 'userview' => 'delete', 'userid' => $userid)));
+         $template->setPlaceHolder('LinkUserAdd2Group', $this->generateLink(array('mainview' => 'user', 'userview' => 'add2group', 'userid' => $userid)));
+         $template->setPlaceHolder('LinkUserRemFromGroup', $this->generateLink(array('mainview' => 'user', 'userview' => 'remfromgroup', 'userid' => $userid)));
          $buffer .= $template->transformTemplate();
       }
 

@@ -62,7 +62,7 @@
                }
 
                $uM->savePermission($permission);
-               HeaderManager::forward($this->__generateLink(array('mainview' => 'permission','permissionview' => '','permissionid' => '')));
+               HeaderManager::forward($this->generateLink(array('mainview' => 'permission','permissionview' => '','permissionid' => '')));
 
              // end if
             }

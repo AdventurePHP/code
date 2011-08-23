@@ -1,22 +1,28 @@
 <@controller namespace="modules::usermanagement::pres::documentcontroller::role" class="umgt_add_controller" @>
-Please fill in the following fields:
-<br />
-<br />
-
+<p>
+   Please fill in the following fields:
+</p>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
 <html:form name="RoleAdd" method="post">
-  <form:addvalidator
-    class="TextLengthValidator"
-    button="Add"
-    control="DisplayName"
-  />
-  <table cellpadding="0" cellspacing="0">
-    <tr>
-      <td><strong>Display name</strong>:</td>
-      <td><form:text name="DisplayName" style="width: 200px;" class="formfield" maxlength="100" /></td>
-    </tr>
-  </table>
-  <br />
-  <br />
-  <form:button name="Add" class="formfield" value="Add" />
+   <p>
+      <strong>Display name</strong>:
+      <form:text name="DisplayName" style="width: 200px;" class="formfield" maxlength="100" />
+      <form:addvalidator
+         class="TextLengthValidator"
+         button="Add"
+         control="DisplayName"
+      />
+   </p>
+   <p>
+      <strong>Permissions</strong>:
+      <form:multiselect name="Permission" size="4"/>
+      <form:addvalidator
+         class="MultiSelectFieldValidator"
+         button="Add"
+         control="Permission"
+      />
+   </p>
+   <p>
+      <form:button name="Add" class="formfield" value="Add" />
+   </p>
 </html:form>

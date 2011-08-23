@@ -50,12 +50,12 @@
             $Permission = new GenericDomainObject('Permission');
             $Permission->setProperty('PermissionID',$permissionid);
             $uM->deletePermission($Permission);
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'permission', 'permissionview' => '','permissionid' => '')));
+            HeaderManager::forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '','permissionid' => '')));
 
           // end if
          }
          elseif($Form__No->isSent()){
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'permission', 'permissionview' => '','permissionid' => '')));
+            HeaderManager::forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '','permissionid' => '')));
           // end elseif
          }
          else{

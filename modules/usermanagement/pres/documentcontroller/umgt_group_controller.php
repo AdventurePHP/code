@@ -34,8 +34,8 @@
    class umgt_group_controller extends umgt_base_controller {
 
       public function transformContent(){
-         $this->setPlaceHolder('manage_groups',$this->__generateLink(array('mainview' => 'group', 'groupview' => '','groupid' => '')));
-         $this->setPlaceHolder('add_group',$this->__generateLink(array('mainview' => 'group', 'groupview' => 'add','groupid' => '')));
+         $this->setPlaceHolder('manage_groups',$this->generateLink(array('mainview' => 'group', 'groupview' => '','groupid' => '')));
+         $this->setPlaceHolder('add_group',$this->generateLink(array('mainview' => 'group', 'groupview' => 'add','groupid' => '')));
       }
 
    }

@@ -41,7 +41,7 @@
             if($formYes->isSent()){
                $uM->deleteVisibilityDefinitionType($proxyType);
             }
-            HeaderManager::redirect($this->__generateLink(array('mainview' => 'proxy','proxyview' => 'typelist', 'proxytypeid' => null)));
+            HeaderManager::redirect($this->generateLink(array('mainview' => 'proxy','proxyview' => 'typelist', 'proxytypeid' => null)));
             return;
          }
 

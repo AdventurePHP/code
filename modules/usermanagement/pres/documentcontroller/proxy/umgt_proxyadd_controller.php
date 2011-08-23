@@ -126,7 +126,7 @@
             }
 
             $uM->createVisibilityDefinition($type,$definition,$users,$groups);
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'proxy', 'proxyview' => null,'proxytypeid' => null)));
+            HeaderManager::forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => null,'proxytypeid' => null)));
 
          }
          else{

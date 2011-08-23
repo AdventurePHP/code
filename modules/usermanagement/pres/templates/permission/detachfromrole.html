@@ -1,0 +1,21 @@
+<@controller namespace="modules::usermanagement::pres::documentcontroller::permission" class="umgt_detachfromrole_controller" @>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
+<html:form name="Role" method="post">
+   <form:addvalidator
+         class="MultiSelectFieldValidator"
+         button="Rem"
+         control="Roles"
+         />
+   <p>
+      In order to detach the <strong><form:placeholder name="permission-name"/></strong> permission, please
+      choose one or more of the following roles:
+   </p>
+   <p>
+      <form:multiselect name="Roles"/>
+   </p>
+   <p>
+
+      <form:button name="Rem" value="Remove" class="formfield"/>
+   </p>
+</html:form>
+<html:template name="NoMoreRoles">This permission is not assigned to any role!</html:template>

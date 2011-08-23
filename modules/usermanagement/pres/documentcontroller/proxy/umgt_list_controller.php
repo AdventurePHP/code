@@ -77,10 +77,10 @@
             $type = $uM->loadVisibilityDefinitionType($proxy);
             $template->setPlaceHolder('AppProxyType',$type->getProperty('AppObjectName'));
 
-            $template->setPlaceHolder('proxy_details',$this->__generateLink(array('mainview' => 'proxy','proxyview' => 'details','proxyid' => $proxyId)));
-            $template->setPlaceHolder('proxy_add_perm',$this->__generateLink(array('mainview' => 'proxy','proxyview' => 'proxyaddperm','proxyid' => $proxyId)));
-            $template->setPlaceHolder('proxy_rem_perm',$this->__generateLink(array('mainview' => 'proxy','proxyview' => 'proxyremperm','proxyid' => $proxyId)));
-            $template->setPlaceHolder('proxy_delete',$this->__generateLink(array('mainview' => 'proxy','proxyview' => 'proxydelete','proxyid' => $proxyId)));
+            $template->setPlaceHolder('proxy_details',$this->generateLink(array('mainview' => 'proxy','proxyview' => 'details','proxyid' => $proxyId)));
+            $template->setPlaceHolder('proxy_add_perm',$this->generateLink(array('mainview' => 'proxy','proxyview' => 'proxyaddperm','proxyid' => $proxyId)));
+            $template->setPlaceHolder('proxy_rem_perm',$this->generateLink(array('mainview' => 'proxy','proxyview' => 'proxyremperm','proxyid' => $proxyId)));
+            $template->setPlaceHolder('proxy_delete',$this->generateLink(array('mainview' => 'proxy','proxyview' => 'proxydelete','proxyid' => $proxyId)));
 
             $buffer .= $template->transformTemplate();
          }

@@ -1364,14 +1364,14 @@ class GenericORRelationMapper extends GenericORMapper {
          $fromTable = $this->MappingTable[$objectName]['Table'];
          $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
          $toTable = $this->MappingTable[$targetObjectName]['Table'];
-         $soureObjectId = $this->MappingTable[$objectName]['ID'];
+         $sourceObjectId = $this->MappingTable[$objectName]['ID'];
          $targetObjectId = $this->MappingTable[$targetObjectName]['ID'];
 
          $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
          $relationTargetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
          // add statement to join list
-         $joinList[] = 'INNER JOIN `' . $relationTable . '` AS `' . $uniqueRelationSourceId . '_' . $relationTable . '` ON `' . $fromTable . '`.`' . $soureObjectId . '` = `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationSourceObjectId . '`';
+         $joinList[] = 'INNER JOIN `' . $relationTable . '` AS `' . $uniqueRelationSourceId . '_' . $relationTable . '` ON `' . $fromTable . '`.`' . $sourceObjectId . '` = `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationSourceObjectId . '`';
          $joinList[] = 'INNER JOIN `' . $toTable . '` AS `' . $uniqueRelationTargetId . '_' . $toTable . '` ON `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationTargetObjectId . '` = `' . $uniqueRelationTargetId . '_' . $toTable . '`.`' . $targetObjectId . '`';
       }
       return $joinList;

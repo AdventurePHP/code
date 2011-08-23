@@ -1,17 +1,25 @@
 <@controller namespace="modules::usermanagement::pres::documentcontroller::role" class="umgt_details_controller" @>
 <core:addtaglib namespace="tools::html::taglib" prefix="html" class="iterator" />
-<strong>Role details:</strong>
-<br />
-<html:template name="Role">
-  <template:placeholder name="DisplayName" />
-</html:template>
-<br />
-<br />
-<strong>Users:</strong>
-<br />
+<h3>Role name:</h3>
+<p>
+   <html:placeholder name="DisplayName" />
+</p>
+
+<h3>Assigned permissions:</h3>
+<html:iterator name="Permissions">
+   <ul>
+      <iterator:item getter="getProperty">
+         <li><item:placeholder name="DisplayName" />
+            (<em><item:placeholder name="Name" />=<item:placeholder name="Value" /></em>)</li>
+      </iterator:item>
+   </ul>
+</html:iterator>
+
+<h3>Assigned users:</h3>
 <html:iterator name="Users">
-  <iterator:item getter="getProperty">
-    * <em><item:placeholder name="FirstName" />, <item:placeholder name="LastName" /></em>
-    <br />
-  </iterator:item>
+   <ul>
+      <iterator:item getter="getProperty">
+         <li><item:placeholder name="FirstName" />, <item:placeholder name="LastName" /></li>
+      </iterator:item>
+   </ul>
 </html:iterator>

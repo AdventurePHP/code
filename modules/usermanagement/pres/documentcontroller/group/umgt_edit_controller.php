@@ -60,7 +60,7 @@
                 // end for
                }
                $uM->saveGroup($group);
-               HeaderManager::forward($this->__generateLink(array('mainview' => 'group','groupview' => '','groupid' => '')));
+               HeaderManager::forward($this->generateLink(array('mainview' => 'group','groupview' => '','groupid' => '')));
 
              // end if
             }

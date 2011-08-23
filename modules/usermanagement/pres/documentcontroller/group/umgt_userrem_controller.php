@@ -78,7 +78,7 @@
             $group->setProperty('GroupID',$groupid);
 
             $uM->detachUsersFromGroup($users,$group);
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'group', 'groupview' => '')));
+            HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '')));
 
           // end if
          }

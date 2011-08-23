@@ -41,7 +41,7 @@
             $proxyType->setProperty('AppObjectName',$proxyName->getAttribute('value'));
             try {
                $uM->saveVisibilityDefinitionType($proxyType);
-               HeaderManager::forward($this->__generateLink(array('mainview' => 'proxy','proxyview' => 'typelist')));
+               HeaderManager::forward($this->generateLink(array('mainview' => 'proxy','proxyview' => 'typelist')));
             } catch(DatabaseHandlerException $dhe) {
                // mark field as invalid
                // due to the fact, that we have a

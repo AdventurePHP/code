@@ -96,7 +96,7 @@
 
                      // save the user
                      $uM->saveUser($user);
-                     HeaderManager::forward($this->__generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
+                     HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
 
                    // end else
                   }
@@ -105,7 +105,7 @@
                }
                else{
                   $uM->saveUser($user);
-                  HeaderManager::forward($this->__generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
+                  HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => '','userid' => '')));
                 // end else
                }
 

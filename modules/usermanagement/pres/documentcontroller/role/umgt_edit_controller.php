@@ -62,7 +62,7 @@ class umgt_edit_controller extends umgt_base_controller {
             }
 
             $uM->saveRole($role);
-            HeaderManager::forward($this->__generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
+            HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
 
          } else {
             $this->setPlaceHolder('RoleEdit', $Form__Edit->transformForm());

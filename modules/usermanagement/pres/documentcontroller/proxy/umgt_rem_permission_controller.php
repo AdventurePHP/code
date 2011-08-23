@@ -59,7 +59,7 @@
             $uM->detachGroupsFromVisibilityDefinition($proxy,$this->mapSelectedOptions2DomainObjects('groups','Group'));
 
             HeaderManager::forward(
-                    $this->__generateLink(
+                    $this->generateLink(
                             array(
                                'mainview' => 'proxy',
                                'proxyview' => 'details',

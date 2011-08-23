@@ -42,9 +42,7 @@
          $role = $uM->loadRoleByID($roleid);
 
          // display user data
-         $template = &$this->getTemplate('Role');
-         $template->setPlaceHolder('DisplayName',$role->getProperty('DisplayName'));
-         $template->transformOnPlace();
+         $this->setPlaceHolder('DisplayName',$role->getProperty('DisplayName'));
 
          // display users
          $users = $uM->loadUsersWithRole($role);
@@ -52,6 +50,12 @@
          $iterator->fillDataContainer($users);
          $iterator->transformOnPlace();
 
+         // display permissions
+         $permissions = $uM->loadPermissionsWithRole($role);
+         $iterator = &$this->getIterator('Permissions');
+         $iterator->fillDataContainer($permissions);
+         $iterator->transformOnPlace();
+         
       }
 
    }
