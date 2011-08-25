@@ -39,9 +39,6 @@ import('extensions::htmlheader::biz', 'StaticCssNode');
  */
 class htmlheader_taglib_addstaticcss extends Document {
 
-   public function onParseTime() {
-   }
-
    public function transform() {
       $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
       /* @var $header HtmlHeaderManager */

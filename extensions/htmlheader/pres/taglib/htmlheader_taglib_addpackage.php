@@ -32,9 +32,6 @@ import('extensions::htmlheader::biz', 'CssPackageNode');
  */
 class htmlheader_taglib_addpackage extends Document {
 
-   public function onParseTime() {
-   }
-
    public function transform() {
       $header = $this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
 

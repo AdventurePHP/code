@@ -18,40 +18,37 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::biz', 'StaticJsNode');
+import('extensions::htmlheader::biz', 'CssImageNode');
 
 /**
  * @package extensions::htmlheader::pres::taglib
- * @class htmlheader_taglib_addcss
+ * @class htmlheader_taglib_addcssimage
  *
- * Taglib for adding static stylesheets to the html header.
+ * Taglib for adding an image to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addstaticcss" />
- * <htmlheader:addstaticcss file="..." />
- * <ul>
- *   <li>file: The source location of the stylesheet</li>
- * </ul>
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addcssimage" />
+ * <htmlheader:addcssimage rel="icon" href="favicon.png" type="image/png" />
  *
- * @author Ralf Schubert
+ * @author Werner Liemberger
  * @version
- * 0.1, 20.09.2009 <br />
- * 0.2, 27.02.2010 (Added attributes for external file support) <br />
+ * Version 0.1, 25.8.2011<br />
  */
-class htmlheader_taglib_addstaticjs extends Document {
+class htmlheader_taglib_addcssimage extends Document {
 
    public function transform() {
       $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
       /* @var $header HtmlHeaderManager */
 
-      $file = $this->getAttribute('file');
-      if ($file == null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please '
-                 . 'provide the "file" attribute in order to add a static stylesheet.',
-                 E_USER_ERROR);
+      $href = $this->getAttribute('href');
+      if ($href == null) {
+         throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please provide the "href" '
+                                            . 'attribute in order to add a Css image.', E_USER_ERROR);
       }
+      $rel = $this->getAttribute('rel', 'icon');
+      $type = $this->getAttribute('type');
+      $node = new CssImageNode($href, $rel, $type);
 
-      $node = new StaticJsNode($file);
       $node->setPriority($this->getAttribute('priority'));
       $header->addNode($node);
 
@@ -59,4 +56,5 @@ class htmlheader_taglib_addstaticjs extends Document {
    }
 
 }
+
 ?>

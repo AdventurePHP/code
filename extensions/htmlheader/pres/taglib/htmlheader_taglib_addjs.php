@@ -59,9 +59,6 @@ import('extensions::htmlheader::biz', 'DynamicJsNode');
  */
 class htmlheader_taglib_addjs extends Document {
 
-   public function onParseTime() {
-   }
-
    public function transform() {
       $header = $this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
 

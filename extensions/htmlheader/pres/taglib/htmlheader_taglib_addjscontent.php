@@ -38,9 +38,6 @@ import('extensions::htmlheader::biz', 'JsContentNode');
  */
 class htmlheader_taglib_addjscontent extends Document {
 
-   public function onParseTime() {
-   }
-
    public function transform() {
       $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
       /* @var $header HtmlHeaderManager */
