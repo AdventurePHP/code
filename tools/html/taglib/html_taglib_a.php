@@ -24,11 +24,11 @@ import('tools::html::taglib', 'html_taglib_link');
  * @package tools::html::taglib
  * @class html_taglib_a
  *
- * Taglib erzeugt einen html Link basierend auf den übermittelten Parametern und
- * verwendet dazu den html_taglib_link.
+ * This taglib generates a html link tag based on the html_taglib_link taglib.
  *
  * @author: Werner Liemberger wpublicmail [at] gmail DOT com
- * @version 0.1, 06.08.2011<br />
+ * @version
+ * Version 0.1, 06.08.2011<br />
  */
 class html_taglib_a extends html_taglib_link {
 
@@ -40,16 +40,13 @@ class html_taglib_a extends html_taglib_link {
                                          'xml:lang', 'onblur');
 
    public function onParseTime() {
-      /*
-      * Alle Attribute die auch in der whitelist sind dort eintragen und dann leeren,
-      * damit sie nicht im url eingebaut werden.
-      */
-
+      // Move all vales from parameters which are in the white list into this array
+      // and remove them from the attribute array, because they should not be part oft the url.
       foreach ($this->attributeWhiteList as $elem) {
          $attr = $this->getAttribute($elem, null);
          if ($attr != null) {
             $this->attributeWhiteList[$elem] = $attr;
-            $this->setAttribute($attr, null);
+            $this->deleteAttribute($attr);
          }
       }
 
@@ -60,25 +57,23 @@ class html_taglib_a extends html_taglib_link {
    }
 
    public function transform() {
-      /*
-      * Wenn kein Content vorhanden ist, der den anzuklickenden Text darstellt,
-      * wird versucht den title zu setzten. Wenn dieser ebenfalls fehlt, wird eine
-      * Fehlermeldung erzeugt.
-      */
-      if ($this->__Content == '') {
-         $this->__Content = $this->attributeWhiteList['title'];
-      }
-      if ($this->__Content == null) {
-         throw new Exception('Es ist kein Text vorhanden der angeklickt werden kann.');
+      // If no Content is set, this taglib tries to set the title as content.
+      // If this is also missing it throws an Exception. This exception is needed,
+      // because otherwise you will get an invalid html.
+      $content = $this->getContent();
+      if (empty($content)) {
+         $content = $this->attributeWhiteList['title'];
       }
 
-      /*
-      * Fügt bei vorhandensein des aktuellen Links im Url die CSS Klasse active hinzu.
-      */
+      if (empty($content)) {
+         throw new InvalidArgumentException('No anchor text available!');
+      }
+
+      // if the current link is active, this taglib adds the css class active.
       if (substr_count($_SERVER['REQUEST_URI'], $this->attributeWhiteList['href']) > 0) {
          $this->setAttribute('class', $this->attributeWhiteList['class'] . ' active');
       }
-      return '<a ' . $this->getAttributesAsString($this->attributeWhiteList) . '>' . $this->__Content . '</a>';
+      return '<a ' . $this->getAttributesAsString($this->attributeWhiteList) . '>' . $content . '</a>';
    }
 }
 
