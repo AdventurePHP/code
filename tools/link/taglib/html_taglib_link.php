@@ -21,7 +21,7 @@
 import('tools::link', 'LinkGenerator');
 
 /**
- * @package tools::html::taglib
+ * @package tools::link::taglib
  * @class html_taglib_link
  *
  * This taglib generates a url with the given parameters taking care of the

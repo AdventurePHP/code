@@ -18,10 +18,10 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::html::taglib', 'html_taglib_link');
+import('tools::link::taglib', 'html_taglib_link');
 
 /**
- * @package tools::html::taglib
+ * @package tools::link::taglib
  * @class html_taglib_a
  *
  * This taglib generates a html link tag based on the html_taglib_link taglib.
