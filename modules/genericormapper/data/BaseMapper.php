@@ -506,7 +506,7 @@ class BaseMapper extends APFObject {
     * @version
     * Version 0.1, 15.01.2011<br />
     */
-   public function addServiceObjectsConfiguration($configNamespace, $configNameAffix) {
+   public function addDomainObjectsConfiguration($configNamespace, $configNameAffix) {
 
       $t = &Singleton::getInstance('BenchmarkTimer');
       $t->start('BaseMapper::addServiceObjectsConfiguration()');
@@ -552,16 +552,16 @@ class BaseMapper extends APFObject {
     *
     * Allows you to initialize/enhance the generic or mapper's service object configuration using
     * the DI service manager. See documentation of the
-    * <em>GenericORMapperDIServiceObjectsConfiguration</em> class on configuration definition.
+    * <em>GenericORMapperDIDomainObjectsConfiguration</em> class on configuration definition.
     *
-    * @param GenericORMapperDIServiceObjectsConfiguration $config The additional service objects configuration.
+    * @param GenericORMapperDIDomainObjectsConfiguration $config The additional service objects configuration.
     *
     * @author Ralf Schubert
     * @version
     * Version 0.1, 15.01.2011<br />
     */
-   public function addDIServiceObjectsConfiguration(GenericORMapperDIServiceObjectsConfiguration $config) {
-      $this->addServiceObjectsConfiguration($config->getConfigNamespace(), $config->getConfigAffix());
+   public function addDIDomainObjectsConfiguration(GenericORMapperDIDomainObjectsConfiguration $config) {
+      $this->addDomainObjectsConfiguration($config->getConfigNamespace(), $config->getConfigAffix());
    }
 
    /**

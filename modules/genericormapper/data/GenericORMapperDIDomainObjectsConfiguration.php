@@ -21,16 +21,16 @@
 
 /**
  * @namespace modules::genericormapper::data
- * @class GenericORMapperDIServiceObjectsConfiguration
+ * @class GenericORMapperDIDomainObjectsConfiguration
  *
- * Represents a configuration service to be able to add a further serviceobject mapping configuration to
+ * Represents a configuration service to be able to add a further domain object mapping configuration to
  * the generic or mapper with the <em>DIServiceManager</em>. In order to do so, a service
  * section must be created for this configuration that looks as follows:
  * <pre>
  * [GORM-CONFIG-ADDITIONAL-SERVICEOBJECTS]
  * servicetype = "SINGLETON"
  * namespace = "modules::genericormapper::data"
- * class = "GenericORMapperDIServiceObjectConfiguration"
+ * class = "GenericORMapperDIDomainObjectsConfiguration"
  * conf.namespace.method = "setConfigNamespace"
  * conf.namespace.value = "..."
  * conf.affix.method = "setConfigAffix"
@@ -43,7 +43,7 @@
  * namespace = "modules::genericormapper::data"
  * class = "GenericORRelationMapper"
  * ...
- * init.additionalrelation.method = "addDIServiceObjectsConfiguration"
+ * init.additionalrelation.method = "addDIDomainObjectsConfiguration"
  * init.additionalrelation.namespace = "..."
  * init.additionalrelation.name =  "GORM-CONFIG-ADDITIONAL-SERVICEOBJECTS"
  * </pre>
@@ -52,7 +52,7 @@
  * @version
  * Version 0.1, 15.01.2011<br />
  */
-final class GenericORMapperDIServiceObjectsConfiguration extends APFObject {
+final class GenericORMapperDIDomainObjectsConfiguration extends APFObject {
 
    /**
     * @var string The configuration namespace of the additional GORM domainobject mapping configuration.
