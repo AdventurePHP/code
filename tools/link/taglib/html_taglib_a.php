@@ -32,27 +32,29 @@ import('tools::link::taglib', 'html_taglib_link');
  */
 class html_taglib_a extends html_taglib_link {
 
-   protected $attributeWhiteList = array('id', 'style', 'class', 'onabort',
-                                         'onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover',
-                                         'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup',
-                                         'tabindex', 'dir', 'accesskey', 'title', 'charset', 'coords',
-                                         'href', 'hreflang', 'name', 'rel', 'rev', 'shape', 'target',
-                                         'xml:lang', 'onblur');
+   protected $attributeList = array('id' => null, 'style' => null, 'class' => null, 'onabort' => null,
+                                    'onclick' => null, 'ondblclick' => null, 'onmousedown' => null, 'onmouseup' => null,
+                                    'onmouseover' => null, 'onmousemove' => null, 'onmouseout' => null,
+                                    'onkeypress' => null, 'onkeydown' => null, 'onkeyup' => null, 'tabindex' => null,
+                                    'dir' => null, 'accesskey' => null, 'title' => null, 'charset' => null,
+                                    'coords' => null, 'href' => null, 'hreflang' => null, 'name' => null, 'rel' => null,
+                                    'rev' => null, 'shape' => null, 'target' => null, 'xml:lang' => null, 'onblur' => null);
 
    public function onParseTime() {
       // Move all vales from parameters which are in the white list into this array
       // and remove them from the attribute array, because they should not be part oft the url.
-      foreach ($this->attributeWhiteList as $elem) {
-         $attr = $this->getAttribute($elem, null);
+      foreach ($this->attributeList as $key => $elem) {
+         $attr = $this->getAttribute($key, null);
          if ($attr != null) {
-            $this->attributeWhiteList[$elem] = $attr;
+            $this->attributeList[$key] = $attr;
             $this->deleteAttribute($attr);
          }
       }
 
-      $this->attributeWhiteList['href'] = parent::transform();
-      if ($this->attributeWhiteList['href'] === null) {
-         throw new InvalidArgumentException('[html_taglib_a::onParseTime()] The Attribute "href" is missing. Please provide the destination!', E_USER_ERROR);
+      $this->attributeList['href'] = parent::transform();
+      if ($this->attributeList['href'] === null) {
+         throw new InvalidArgumentException('[html_taglib_a::onParseTime()] The Attribute "href" is missing. '
+                                            . 'Please provide the destination!', E_USER_ERROR);
       }
    }
 
@@ -62,7 +64,7 @@ class html_taglib_a extends html_taglib_link {
       // because otherwise you will get an invalid html.
       $content = $this->getContent();
       if (empty($content)) {
-         $content = $this->attributeWhiteList['title'];
+         $content = $this->attributeList['title'];
       }
 
       if (empty($content)) {
@@ -70,10 +72,19 @@ class html_taglib_a extends html_taglib_link {
       }
 
       // if the current link is active, this taglib adds the css class active.
-      if (substr_count($_SERVER['REQUEST_URI'], $this->attributeWhiteList['href']) > 0) {
-         $this->setAttribute('class', $this->attributeWhiteList['class'] . ' active');
+      if (!isset($this->attributeList['href'])) {
+         return '';
       }
-      return '<a ' . $this->getAttributesAsString($this->attributeWhiteList) . '>' . $content . '</a>';
+      if (substr_count($_SERVER['REQUEST_URI'], $this->attributeList['href']) > 0) {
+         $this->setAttribute('class', $this->attributeList['class'] . ' active');
+      }
+      foreach ($this->attributeList as $key => $elem) {
+         if ($elem === null) {
+            unset($this->attributeList[$key]);
+         }
+      }
+
+      return '<a ' . $this->getAttributesAsString($this->attributeList) . '>' . $content . '</a>';
    }
 }
 
