@@ -131,7 +131,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
             $name = $FilterInformation->getValue('Name');
 
             import($namespace, $name);
-            JsCssInclusionFilterChain::getInstance()->addFilter(new $name());
+            JsCssInclusionFilterChain::getInstance()->appendFilter(new $name());
          }
       }
    }

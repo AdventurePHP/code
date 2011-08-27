@@ -23,12 +23,12 @@ import('core::filter', 'FilterChain');
 // add the front controller filter that is a wrapper on the front controller's input
 // filters concerning thr url rewriting configuration
 import('core::filter', 'ChainedGenericInputFilter');
-InputFilterChain::getInstance()->addFilter(new ChainedGenericInputFilter());
+InputFilterChain::getInstance()->appendFilter(new ChainedGenericInputFilter());
 
 // add generic output filter that is a wrapper for the page controller's output
 // filter to adapt the url layout if url rewriting is activated
 import('core::filter', 'ChainedGenericOutputFilter');
-OutputFilterChain::getInstance()->addFilter(new ChainedGenericOutputFilter());
+OutputFilterChain::getInstance()->appendFilter(new ChainedGenericOutputFilter());
 
 /**
  * @package core::frontcontroller

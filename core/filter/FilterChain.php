@@ -88,8 +88,8 @@ interface FilterChain {
    /**
     * @public
     *
-    * Let's you add a filter to the chain. Please note, that the execution 
-    * order corresponds to the order the filters are added.
+    * Let's you add a filter to the end of the chain. Please note, that
+    * the execution order corresponds to the order the filters are added.
     *
     * @param ChainedContentFilter $filter The filter implementation to add.
     * @return FilterChain The current filter chain instance for further usage.
@@ -98,7 +98,22 @@ interface FilterChain {
     * @version
     * Version 0.1, 13.01.2011<br />
     */
-   public function &addFilter(ChainedContentFilter $filter);
+   public function &appendFilter(ChainedContentFilter $filter);
+
+   /**
+    * @public
+    *
+    * Let's you add a filter to the beginning of the chain. Please note, that
+    * the execution order corresponds to the order the filters are added.
+    *
+    * @param ChainedContentFilter $filter The filter implementation to add.
+    * @return FilterChain The current filter chain instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.08.2011<br />
+    */
+   public function &prependFilter(ChainedContentFilter $filter);
 
    /**
     * @public
@@ -181,11 +196,40 @@ abstract class AbstractFilterChain implements FilterChain {
     * @param ChainedContentFilter $filter The filter implementation to add.
     * @return AbstractFilterChain The current filter chain instance for further usage.
     */
-   public function &addFilter(ChainedContentFilter $filter) {
+   public function &appendFilter(ChainedContentFilter $filter) {
       $this->filters[] = $filter;
       $this->count++;
       return $this;
    }
+
+   /**
+    * @public
+    *
+    * Let's you add a filter to the beginning of the chain. Please note, that
+    * the execution order corresponds to the order the filters are added.
+    *
+    * @param ChainedContentFilter $filter The filter implementation to add.
+    * @return FilterChain The current filter chain instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.08.2011<br />
+    */
+   public function &prependFilter(ChainedContentFilter $filter) {
+
+      array_unshift($this->filters, $filter);
+      $this->count++;
+
+      // since it is possible to prepend a filter during chain execution,
+      // the current offset must be corrected to execute the remaining
+      // filters correctly (do not execute the filter at the current offset twice!)
+      if ($this->offset !== 0) {
+         $this->offset++;
+      }
+
+      return $this;
+   }
+
 
    /**
     * @param string $class The class name of the filter to remove from the chain.
@@ -193,7 +237,7 @@ abstract class AbstractFilterChain implements FilterChain {
     */
    public function &removeFilter($class) {
 
-      // since it is possible to remove a filter during chaing execution,
+      // since it is possible to remove a filter during chain execution,
       // start at the current offset to disallow removal of filters that
       // have already been executed.
       for ($i = $this->offset; $i < $this->count; $i++) {
@@ -233,7 +277,7 @@ abstract class AbstractFilterChain implements FilterChain {
     * method.
     *
     * @return AbstractFilterChain The current filter chain for further configuration.
-    * 
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 22.03.2011<br />
@@ -310,4 +354,5 @@ class OutputFilterChain extends AbstractFilterChain {
    }
 
 }
+
 ?>

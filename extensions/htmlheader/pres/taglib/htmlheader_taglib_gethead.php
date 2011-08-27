@@ -42,7 +42,7 @@ class htmlheader_taglib_gethead extends Document {
    public function transform() {
 
       // register filter that replaces the token with real live data
-      OutputFilterChain::getInstance()->addFilter(new HtmlHeaderOutputFilter());
+      OutputFilterChain::getInstance()->prependFilter(new HtmlHeaderOutputFilter());
 
       // place marker that will be replaced by the
       return self::HTML_HEADER_INDICATOR;
