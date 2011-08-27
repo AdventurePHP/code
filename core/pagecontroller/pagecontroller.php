@@ -493,7 +493,7 @@ abstract class APFObject {
     * Version 0.1, 26.02.2011<br />
     */
    public function getVersion() {
-      return '1.14-SVN';
+      return '1.14';
    }
 
    /**
