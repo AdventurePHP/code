@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -111,7 +110,7 @@ class UserDependentContentConditionSet extends APFObject {
     * @return UmgtManager
     */
    private function &getUmgtManager() {
-      return $this->getAndInitServiceObject('modules::usermanagement::biz', 'UmgtManager', 'Default');
+      return $this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
    }
 
    /**
@@ -147,7 +146,7 @@ class UserDependentContentConditionSet extends APFObject {
     * @return UmgtUserSessionStore The session store of the umgt module.
     */
    private function &getUserSessionStore() {
-      return $this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFObject::SERVICE_TYPE_SESSIONSINGLETON);
+      return $this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
    }
 
 }

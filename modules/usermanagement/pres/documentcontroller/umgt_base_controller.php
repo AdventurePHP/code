@@ -21,7 +21,6 @@
 import('tools::link', 'LinkGenerator');
 import('modules::genericormapper::data', 'GenericDomainObject');
 import('tools::html::taglib::documentcontroller', 'iteratorBaseController');
-import('modules::usermanagement::biz', 'UmgtManager');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
@@ -68,7 +67,7 @@ abstract class umgt_base_controller extends iteratorBaseController {
     * Version 0.1, 30.04.2010<br />
     */
    protected function &getManager() {
-      return $this->getAndInitServiceObject('modules::usermanagement::biz', 'UmgtManager', 'Default');
+      return $this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
    }
 
    /**

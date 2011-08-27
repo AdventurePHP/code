@@ -38,7 +38,7 @@ class UmgtLogoutAction extends AbstractFrontcontrollerAction {
    public function run() {
       $logout = $this->getInput()->getAttribute('logout', 'false');
       if ($logout === 'true') {
-         $sessionStore = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFObject::SERVICE_TYPE_SESSIONSINGLETON);
+         $sessionStore = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
          /* @var $sessionStore UmgtUserSessionStore */
          $sessionStore->logout($this->getApplicationIdentifier());
 

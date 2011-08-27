@@ -85,7 +85,7 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
      */
     public function setReadForUser(GenericORMapperDataObject &$User) {
         /* @var $DBDriver MySQLxHandler */
-        $DBDriver = $this->getDataComponent()->getDBDriver();
+        $DBDriver = $this->getDataComponent()->getDbDriver();
         $DBDriver->executeStatement(
                 'extensions::postbox',
                 'MessageChannel_setReadForUser.sql',
@@ -249,11 +249,9 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
 
             }
 
-        // end if
         }
         
         return $this;
-    // end function
     }
 
 

@@ -188,16 +188,16 @@ class GenericORMapperSetup extends BaseMapper {
          $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
 
          // initialize connection
-         $this->DBDriver = &$cM->getConnection($connectionName);
+         $this->dbDriver = &$cM->getConnection($connectionName);
 
          // create object structure
          foreach ($objects as $object) {
-            $this->DBDriver->executeTextStatement($object);
+            $this->dbDriver->executeTextStatement($object);
          }
 
          // create relation structure
          foreach ($relations as $relation) {
-            $this->DBDriver->executeTextStatement($relation);
+            $this->dbDriver->executeTextStatement($relation);
          }
 
       }
@@ -226,9 +226,9 @@ class GenericORMapperSetup extends BaseMapper {
 
       // generate tables for objects
       $setup = array();
-      foreach ($this->MappingTable as $name => $attributes) {
+      foreach ($this->mappingTable as $name => $attributes) {
          $setup[] =
-               $this->generateMappingTableLayout($name, $this->MappingTable[$name])
+               $this->generateMappingTableLayout($name, $this->mappingTable[$name])
                . PHP_EOL . PHP_EOL;
       }
 
@@ -313,10 +313,10 @@ class GenericORMapperSetup extends BaseMapper {
 
       // generate tables for objects
       $setup = array();
-      foreach ($this->RelationTable as $name => $attributes) {
+      foreach ($this->relationTable as $name => $attributes) {
          $setup[] =
                $this->generateRelationTableLayout(
-                  $this->RelationTable[$name]
+                  $this->relationTable[$name]
                ) . PHP_EOL . PHP_EOL;
       }
 
@@ -361,13 +361,13 @@ class GenericORMapperSetup extends BaseMapper {
    protected function getAdditionalIndexDefinition($objectName) {
 
       // exit early returning null to indicate that no additional index definition is available
-      if (!isset($this->MappingIndexTable[$objectName])) {
+      if (!isset($this->mappingIndexTable[$objectName])) {
          return null;
       }
 
       $indices = array();
 
-      foreach (explode('|', $this->MappingIndexTable[$objectName]) as $index) {
+      foreach (explode('|', $this->mappingIndexTable[$objectName]) as $index) {
 
          $current = $index;
          $type = (string)'';

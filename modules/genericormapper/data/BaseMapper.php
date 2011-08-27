@@ -53,7 +53,7 @@ class BaseMapper extends APFObject {
     * @protected
     * @var AbstractDatabaseHandler Instance of the database driver.
     */
-   protected $DBDriver = null;
+   protected $dbDriver = null;
 
    /**
     * @since 1.12
@@ -66,27 +66,27 @@ class BaseMapper extends APFObject {
     * @protected
     * @var string[] Object mapping table.
     */
-   protected $MappingTable = array();
+   protected $mappingTable = array();
 
    /**
     * @protected
     * @since 1.12
     * @var string[] Additional indices for the object tables.
     */
-   protected $MappingIndexTable = array();
+   protected $mappingIndexTable = array();
 
    /**
     * @protected
     * @var string[] Object relation table.
     */
-   protected $RelationTable = array();
+   protected $relationTable = array();
 
    /**
     * @protected
     * @since 1.14
     * @var string[] Domain object table
     */
-   protected $ServiceObjectsTable = array();
+   protected $serviceObjectsTable = array();
 
    /**
     * @protected
@@ -105,35 +105,12 @@ class BaseMapper extends APFObject {
     * @var string Defines the config file extension the GORM instance uses.
     */
    private $configFileExtension = 'ini';
-   
+
    /**
     * @protected
     * @var string Identifies the param that defines additional indices relevant for database setup.
     */
    protected static $ADDITIONAL_INDICES_INDICATOR = 'AddIndices';
-
-   /**
-    * @public
-    *
-    * Implements the initializer method to use the mapper with the DI service manager. This
-    * method replaces the initialization using the <em>GenericORMapperFactory</em>. See
-    * documentation of the <em>GenericORMapperDIConfiguration</em> class on configuration
-    * definition.
-    *
-    * @param GenericORMapperDIConfiguration $config The configuration to inject.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 30.06.2010<br />
-    * Version 0.2, 12.03.2011 (Moved to the BaseMapper class for consistency reasons.)<br />
-    */
-   public function initDI(GenericORMapperDIConfiguration $config) {
-      $this->setConfigFileExtension($config->getConfigFileExtension());
-      $this->setConfigNamespace($config->getConfigNamespace());
-      $this->setConfigNameAffix($config->getConfigAffix());
-      $this->setConnectionName($config->getConnectionName());
-      $this->setLogStatements($config->getDebugMode());
-   }
 
    public function getConfigNamespace() {
       return $this->configNamespace;
@@ -161,22 +138,6 @@ class BaseMapper extends APFObject {
     */
    public function setConfigNameAffix($configNameAffix) {
       $this->configNameAffix = $configNameAffix;
-
-      // create mapping table if necessary to gain performance
-      if (count($this->MappingTable) === 0) {
-         $this->createMappingTable();
-      }
-
-      // create relation table if necessary to gain performance
-      if (count($this->RelationTable) === 0) {
-         $this->createRelationTable();
-      }
-
-      // create service object table if necessary to gain performance
-      if (count($this->ServiceObjectsTable) === 0) {
-         $this->createServiceObjectsTable();
-      }
-
    }
 
    public function getConnectionName() {
@@ -185,7 +146,6 @@ class BaseMapper extends APFObject {
 
    public function setConnectionName($connectionName) {
       $this->connectionName = $connectionName;
-      $this->createDatabaseConnection();
    }
 
    public function getLogStatements() {
@@ -230,13 +190,47 @@ class BaseMapper extends APFObject {
     */
    protected function createDatabaseConnection() {
       $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
-      $this->DBDriver = &$cM->getConnection($this->connectionName);
+      /* @var $cM ConnectionManager */
+      $this->dbDriver = &$cM->getConnection($this->connectionName);
    }
 
    /**
     * @public
     *
-    * Returns the instance of the current database instance to be able to natively
+    * DI initialization method to setup and re-initialize (on session restore!) the password hash providers.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.08.2011<br />
+    */
+   public function setup() {
+
+      $this->createDatabaseConnection();
+
+      // create mapping table if necessary to gain performance
+      if (count($this->mappingTable) === 0) {
+         $this->createMappingTable();
+      }
+
+      // create relation table if necessary to gain performance
+      if (count($this->relationTable) === 0) {
+         $this->createRelationTable();
+      }
+
+      // create service object table if necessary to gain performance
+      if (count($this->serviceObjectsTable) === 0) {
+         $this->createServiceObjectsTable();
+      }
+
+      // do not initialize the lookup tables more than once per session.
+      $this->markAsInitialized();
+
+   }
+
+   /**
+    * @public
+    *
+    * Returns the instance of the current database instance to be able to native
     * execute statements against the database without extra configuration.
     *
     * @return AbstractDatabaseHandler The instance of the current database connection.
@@ -245,8 +239,8 @@ class BaseMapper extends APFObject {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function &getDBDriver() {
-      return $this->DBDriver;
+   public function &getDbDriver() {
+      return $this->dbDriver;
    }
 
    /**
@@ -273,22 +267,22 @@ class BaseMapper extends APFObject {
       // extract configuration to support pre 1.13 GORM config
       foreach ($objectsConfig->getSectionNames() as $sectionName) {
          $section = $objectsConfig->getSection($sectionName);
-         $this->MappingTable[$sectionName] = array();
+         $this->mappingTable[$sectionName] = array();
          foreach ($section->getValueNames() as $valueName) {
-            $this->MappingTable[$sectionName][$valueName] = $section->getValue($valueName);
+            $this->mappingTable[$sectionName][$valueName] = $section->getValue($valueName);
          }
       }
 
       // resolve definitions
-      foreach ($this->MappingTable as $objectName => $DUMMY) {
+      foreach ($this->mappingTable as $objectName => $DUMMY) {
 
          // add additional index definition to separate table
-         if (isset($this->MappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR])) {
-            $this->MappingIndexTable[$objectName] = $this->MappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR];
-            //unset($this->MappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR]);
+         if (isset($this->mappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR])) {
+            $this->mappingIndexTable[$objectName] = $this->mappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR];
+            //unset($this->mappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR]);
          }
 
-         $this->MappingTable[$objectName] = $this->generateMappingItem($objectName, $this->MappingTable[$objectName]);
+         $this->mappingTable[$objectName] = $this->generateMappingItem($objectName, $this->mappingTable[$objectName]);
       }
 
       $t->stop('BaseMapper::createMappingTable()');
@@ -318,15 +312,15 @@ class BaseMapper extends APFObject {
       // extract configuration to support pre 1.13 GORM config
       foreach ($relationsConfig->getSectionNames() as $sectionName) {
          $section = $relationsConfig->getSection($sectionName);
-         $this->RelationTable[$sectionName] = array();
+         $this->relationTable[$sectionName] = array();
          foreach ($section->getValueNames() as $valueName) {
-            $this->RelationTable[$sectionName][$valueName] = $section->getValue($valueName);
+            $this->relationTable[$sectionName][$valueName] = $section->getValue($valueName);
          }
       }
 
       // resolve definitions
-      foreach ($this->RelationTable as $relationName => $DUMMY) {
-         $this->RelationTable[$relationName] = $this->generateRelationItem($relationName, $this->RelationTable[$relationName]);
+      foreach ($this->relationTable as $relationName => $DUMMY) {
+         $this->relationTable[$relationName] = $this->generateRelationItem($relationName, $this->relationTable[$relationName]);
       }
 
       $t->stop('BaseMapper::createRelationTable()');
@@ -347,28 +341,24 @@ class BaseMapper extends APFObject {
       $t = &Singleton::getInstance('BenchmarkTimer');
       $t->start('BaseMapper::createServiceObjectsTable()');
 
-      $configIsPresent = true;
       // get object configuration if there is one
       try {
          $serviceObjectsConfig = $this->getConfiguration($this->configNamespace, $this->configNameAffix . '_domainobjects.' . $this->getConfigFileExtension());
-      } catch (ConfigurationException $e) {
-         $configIsPresent = false;
-      }
-
-      if ($configIsPresent) {
          foreach ($serviceObjectsConfig->getSectionNames() as $sectionName) {
             $section = $serviceObjectsConfig->getSection($sectionName);
-            $this->ServiceObjectsTable[$sectionName] = array();
+            $this->serviceObjectsTable[$sectionName] = array();
             foreach ($section->getValueNames() as $valueName) {
-               $this->ServiceObjectsTable[$sectionName][$valueName] = $section->getValue($valueName);
+               $this->serviceObjectsTable[$sectionName][$valueName] = $section->getValue($valueName);
             }
             if ($section->getSection('Base') !== null) {
-               $this->ServiceObjectsTable[$sectionName]['Base'] = array(
-                   'Namespace' => $section->getSection('Base')->getValue('Namespace'),
-                   'Class' => $section->getSection('Base')->getValue('Class'),
+               $this->serviceObjectsTable[$sectionName]['Base'] = array(
+                  'Namespace' => $section->getSection('Base')->getValue('Namespace'),
+                  'Class' => $section->getSection('Base')->getValue('Class'),
                );
             }
          }
+      } catch (ConfigurationException $e) {
+         // do nothing, since not all applications are using domain objects!
       }
 
       $t->stop('BaseMapper::createServiceObjectsTable()');
@@ -410,8 +400,8 @@ class BaseMapper extends APFObject {
 
          foreach ($addObjects as $objectName => $DUMMY) {
 
-            if (!isset($this->MappingTable[$objectName])) {
-               $this->MappingTable[$objectName] = $this->generateMappingItem($objectName, $addObjects[$objectName]);
+            if (!isset($this->mappingTable[$objectName])) {
+               $this->mappingTable[$objectName] = $this->generateMappingItem($objectName, $addObjects[$objectName]);
             }
          }
 
@@ -475,8 +465,8 @@ class BaseMapper extends APFObject {
 
          foreach ($addRelations as $relationName => $DUMMY) {
 
-            if (!isset($this->RelationTable[$relationName])) {
-               $this->RelationTable[$relationName] = $this->generateRelationItem($relationName, $addRelations[$relationName]);
+            if (!isset($this->relationTable[$relationName])) {
+               $this->relationTable[$relationName] = $this->generateRelationItem($relationName, $addRelations[$relationName]);
             }
          }
 
@@ -538,15 +528,15 @@ class BaseMapper extends APFObject {
             }
             if ($section->getSection('Base') !== null) {
                $addObjects[$sectionName]['Base'] = array(
-                   'Namespace' => $section->getSection('Base')->getValue('Namespace'),
-                   'Class' => $section->getSection('Base')->getValue('Class'),
+                  'Namespace' => $section->getSection('Base')->getValue('Namespace'),
+                  'Class' => $section->getSection('Base')->getValue('Class'),
                );
             }
          }
 
          foreach ($addObjects as $objectName => $DUMMY) {
-            if (!isset($this->ServiceObjectsTable[$objectName])) {
-               $this->ServiceObjectsTable[$objectName] = $DUMMY;
+            if (!isset($this->serviceObjectsTable[$objectName])) {
+               $this->serviceObjectsTable[$objectName] = $DUMMY;
             }
          }
 
@@ -635,4 +625,5 @@ class BaseMapper extends APFObject {
    }
 
 }
+
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -41,7 +40,7 @@ class umgt_login_controller extends base_controller {
 
    public function transformContent() {
 
-      $sessionStore = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFObject::SERVICE_TYPE_SESSIONSINGLETON);
+      $sessionStore = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
       /* @var $sessionStore UmgtUserSessionStore */
       $appIdent = $this->getApplicationIdentifier();
       $user = $sessionStore->getUser($appIdent);
@@ -111,12 +110,12 @@ class umgt_login_controller extends base_controller {
     * Version 0.1, 21.05.2011<br />
     */
    private function loadUser($username, $password) {
-      $umgt = &$this->getAndInitServiceObject('modules::usermanagement::biz', 'UmgtManager', 'Default');
+      $umgt = &$this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
       /* @var $umgt UmgtManager */
 
       try {
          $config = $this->getConfiguration('modules::usermanagement::pres', 'login');
-         $section = $config->getSection('Default');
+         $section = $config->getSection(UmgtManager::CONFIG_SECTION_NAME);
          $loginType = $section == null ? self::$USERNAME_AND_PASSWORD_LOGIN : $section->getValue('login.type');
       } catch (ConfigurationException $e) {
          $loginType = self::$USERNAME_AND_PASSWORD_LOGIN;

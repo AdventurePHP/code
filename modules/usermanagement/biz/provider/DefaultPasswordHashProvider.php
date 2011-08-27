@@ -19,6 +19,7 @@
  * -->
  */
 import('modules::usermanagement::biz::provider', 'PasswordHashProvider');
+import('modules::usermanagement::biz', 'UmgtManager');
 
 /**
  * This is the default PasswordHashProvider for the user management manager. It implements
@@ -28,42 +29,30 @@ import('modules::usermanagement::biz::provider', 'PasswordHashProvider');
  * @version
  * Version 0.1, 04.04.2011<br />
  */
-abstract class DefaultPasswordHashProvider extends APFObject implements PasswordHashProvider {
+abstract class DefaultPasswordHashProvider extends APFObject implements PasswordHashProvider, APFService {
 
    /**
-    * @protected
-    * @var boolean indicates, if the component is already initialized.
+    * @var string Indicates the default hard-coded salt.
     */
-   protected $isInitialized = false;
+   private static $DEFAULT_HARDCODED_SALT = 'AdventurePHPFramework';
 
    /**
-    * @protected
-    * @var string indicates the salt
+    * @throws Exception
+    * @return string The hard-coded salt contained within the configuration
     */
-   protected $hardcodedSalt = 'AdventurePHPFramework';
-
-   /**
-    * Implements the init method, because of access the config file
-    *
-    * @param string $initParam section name for the umgtconfig.ini
-    *
-    * @author Tobias Lückel
-    * @version
-    * Version 0.1, 04.04.2011<br />
-    */
-   public function init($initParam) {
-      if ($this->isInitialized === false) {
-         $config = $this->getConfiguration('modules::usermanagement::biz', 'umgtconfig.ini');
-         $section = $config->getSection($initParam);
-         if ($section === null) {
-            throw new Exception('[DefaultPasswordHashProvider::init()] No section
-                        with name"' . $initParam . '" found in the umgtconfig.ini!', E_USER_ERROR);
-         } else {
-            $salt = $section->getValue('Salt');
-            if ($salt !== null) {
-               $this->hardcodedSalt = $salt;
-            }
+   protected function getHardCodedSalt() {
+      $section = $this->getConfiguration('modules::usermanagement::biz', 'umgtconfig.ini')
+            ->getSection(UmgtManager::CONFIG_SECTION_NAME);
+      if ($section === null) {
+         throw new Exception('[DefaultPasswordHashProvider::init()] No section with name"'
+                             . UmgtManager::CONFIG_SECTION_NAME . '" found in the umgtconfig.ini!',
+            E_USER_ERROR);
+      } else {
+         $salt = $section->getValue('Salt');
+         if ($salt === null) {
+            return self::$DEFAULT_HARDCODED_SALT;
          }
+         return $salt;
       }
    }
 }

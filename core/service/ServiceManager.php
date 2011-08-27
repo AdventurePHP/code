@@ -19,6 +19,7 @@
  * -->
  */
 import('core::singleton', 'SessionSingleton');
+import('core::service', 'APFService');
 
 /**
  * @package core::service
@@ -48,7 +49,7 @@ final class ServiceManager {
     * @param string $context The application context, the service object belongs to.
     * @param string $language The language, the service object has.
     * @param string $type The initializing type (see service manager for details).
-    * @return APFObject The desired service object.
+    * @return APFService The desired service object.
     *
     * @author Christian Schäfer
     * @version
@@ -60,34 +61,34 @@ final class ServiceManager {
     * Version 0.6, 10.08.2009 (Added lazy import, so that the developer must not care about the inclusion of the component.)<br />
     * Version 0.7, 04.03.2011 (Refactored to static method; enhanced code)<br />
     */
-   public static function &getServiceObject($namespace, $serviceName, $context, $language, $type = APFObject::SERVICE_TYPE_SINGLETON) {
+   public static function &getServiceObject($namespace, $serviceName, $context, $language, $type = APFService::SERVICE_TYPE_SINGLETON) {
 
       // include service object for convenience
       import($namespace, $serviceName);
 
       $serviceObject = null;
-      if ($type == APFObject::SERVICE_TYPE_SINGLETON) {
+      if ($type == APFService::SERVICE_TYPE_SINGLETON) {
          $serviceObject = &Singleton::getInstance($serviceName);
-      } elseif ($type == APFObject::SERVICE_TYPE_SESSIONSINGLETON) {
+      } elseif ($type == APFService::SERVICE_TYPE_SESSION_SINGLETON) {
          $serviceObject = &SessionSingleton::getInstance($serviceName);
-      } elseif ($type == APFObject::SERVICE_TYPE_NORMAL) {
+      } elseif ($type == APFService::SERVICE_TYPE_NORMAL) {
          $serviceObject = new $serviceName();
       } else {
-         throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The given type ('
-                 . $type . ') is not supported. Please provide one out of "' . APFObject::SERVICE_TYPE_SINGLETON
-                 . '", "' . APFObject::SERVICE_TYPE_SESSIONSINGLETON . '" or "' . APFObject::SERVICE_TYPE_NORMAL
-                 . '"', E_USER_WARNING);
+         throw new InvalidArgumentException('[ServiceManager::getServiceObject()] The given type ('
+                                            . $type . ') is not supported. Please provide one out of "' . APFService::SERVICE_TYPE_SINGLETON
+                                            . '", "' . APFService::SERVICE_TYPE_SESSION_SINGLETON . '" or "' . APFService::SERVICE_TYPE_NORMAL
+                                            . '"', E_USER_WARNING);
       }
 
       // inject the basic set of information to the APF style service
-      if (is_subclass_of($serviceObject, 'APFObject')) {
+      if ($serviceObject instanceof APFService) {
          $serviceObject->setContext($context);
          $serviceObject->setLanguage($language);
          $serviceObject->setServiceType($type);
       } else {
-         throw new InvalidArgumentException('[ServiceManager->getServiceObject()] The precisely '
-                 . 'now created object (' . $serviceName . ') inherits not of superclass APFObject! '
-                 . 'So the context, language and service type cannot be set correctly!', E_USER_WARNING);
+         throw new InvalidArgumentException('[ServiceManager::getServiceObject()] The precisely '
+                                            . 'now created object (' . $serviceName . ') does not implement the APFService interface! '
+                                            . 'So the context, language and service type cannot be set correctly!', E_USER_WARNING);
       }
 
       return $serviceObject;
@@ -106,7 +107,7 @@ final class ServiceManager {
     * @param string $language The language, the service object has.
     * @param string $initParam The initialization param for the service object.
     * @param string $type The initializing type (see service manager for details).
-    * @return APFObject The desired service object.
+    * @return APFService The desired service object.
     *
     * @author Christian Schäfer
     * @version
@@ -114,18 +115,19 @@ final class ServiceManager {
     * Version 0.2, 16.05.2009 (Added check for non existing service object returned by getServiceObject()))<br />
     * Version 0.3, 04.03.2011 (Refactored to static method)<br />
     */
-   public static function &getAndInitServiceObject($namespace, $serviceName, $context, $language, $initParam, $type = APFObject::SERVICE_TYPE_SINGLETON) {
+   public static function &getAndInitServiceObject($namespace, $serviceName, $context, $language, $initParam, $type = APFService::SERVICE_TYPE_SINGLETON) {
 
       $serviceObject = &self::getServiceObject($namespace, $serviceName, $context, $language, $type);
 
-      if ($serviceObject !== null && is_subclass_of($serviceObject, 'APFObject')) {
+      if ($serviceObject !== null && $serviceObject instanceof APFService) {
          $serviceObject->init($initParam);
       } else {
-         throw new InvalidArgumentException('[ServiceManager->getAndInitServiceObject()] The service object (' . $serviceName . ') doesn\'t support initialization!', E_USER_WARNING);
+         throw new InvalidArgumentException('[ServiceManager::getAndInitServiceObject()] The service object (' . $serviceName . ') doesn\'t support initialization!', E_USER_WARNING);
       }
 
       return $serviceObject;
    }
 
 }
+
 ?>

@@ -33,7 +33,7 @@ import('modules::genericormapper::data', 'GenericDomainObject');
  * $store = &$this->getServiceObject(
  *                         'modules::usermanagement::biz',
  *                         'UmgtUserSessionStore',
- *                         APFObject::SERVICE_TYPE_SESSIONSINGLETON);
+ *                         APFService::SERVICE_TYPE_SESSION_SINGLETON);
  * </pre>
  * Otherwise, the scope of the object is not "session".
  *

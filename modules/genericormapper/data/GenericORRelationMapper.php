@@ -38,9 +38,6 @@ import('modules::genericormapper::data', 'GenericORMapper');
  *                          extra method and used uniqid)<br />
  */
 class GenericORRelationMapper extends GenericORMapper {
-   /**
-    * 
-    */
    const RELATION_SOURCE = 'rel_source';
    const RELATION_TARGET = 'rel_target';
 
@@ -63,8 +60,8 @@ class GenericORRelationMapper extends GenericORMapper {
 
       if ($criterion === null) {
          throw new GenericORMapperException('[GenericORRelationMapper::loadObjectListByCriterion()] '
-                 . 'No criterion object given as second argument! Please consult the manual.',
-                 E_USER_ERROR);
+                                            . 'No criterion object given as second argument! Please consult the manual.',
+            E_USER_ERROR);
       }
       return $this->loadObjectListByTextStatement($objectName, $this->buildSelectStatementByCriterion($objectName, $criterion));
    }
@@ -87,8 +84,7 @@ class GenericORRelationMapper extends GenericORMapper {
 
       if ($criterion === null) {
          throw new GenericORMapperException('[GenericORRelationMapper::loadObjectByCriterion()] '
-                 . 'No criterion object given as second argument! Please consult the manual.');
-         return null;
+                                            . 'No criterion object given as second argument! Please consult the manual.');
       }
       return $this->loadObjectByTextStatement($objectName, $this->buildSelectStatementByCriterion($objectName, $criterion));
    }
@@ -120,17 +116,17 @@ class GenericORRelationMapper extends GenericORMapper {
          // add additional where statements
          foreach ($properties as $property) {
 
-            $propertyName = $this->DBDriver->escapeValue($property['Name']);
+            $propertyName = $this->dbDriver->escapeValue($property['Name']);
 
             if (is_object($property['Value']) === TRUE) {
                $whereList[] = '(' . implode('', $this->buildWhere($objectName, $property['Value'])) . ')';
             } else {
-               $propertyValue = $this->DBDriver->escapeValue($property['Value']);
+               $propertyValue = $this->dbDriver->escapeValue($property['Value']);
 
                if ((substr_count($propertyValue, '%') > 0 || substr_count($propertyValue, '_') > 0) && $property['ComparisonOperator'] == '=') {
-                  $whereList[] = '`' . $this->MappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` LIKE \'' . $propertyValue . '\'';
+                  $whereList[] = '`' . $this->mappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` LIKE \'' . $propertyValue . '\'';
                } else {
-                  $whereList[] = '`' . $this->MappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` ' . $property['ComparisonOperator'] . ' \'' . $propertyValue . '\'';
+                  $whereList[] = '`' . $this->mappingTable[$objectName]['Table'] . '`.`' . $propertyName . '` ' . $property['ComparisonOperator'] . ' \'' . $propertyValue . '\'';
                }
             }
 
@@ -167,9 +163,9 @@ class GenericORRelationMapper extends GenericORMapper {
 
          // create order list
          foreach ($orders as $propertyName => $direction) {
-            $ORDER[] = '`' . $this->MappingTable[$objectName]['Table'] . '`.`'
-                    . $this->DBDriver->escapeValue($propertyName) . '` '
-                    . $this->DBDriver->escapeValue($direction);
+            $ORDER[] = '`' . $this->mappingTable[$objectName]['Table'] . '`.`'
+                       . $this->dbDriver->escapeValue($propertyName) . '` '
+                       . $this->dbDriver->escapeValue($direction);
          }
       }
 
@@ -192,10 +188,10 @@ class GenericORRelationMapper extends GenericORMapper {
    protected function buildProperties($objectName, GenericCriterionObject $criterion) {
 
       // check for valid object definition
-      if (!isset($this->MappingTable[$objectName])) {
+      if (!isset($this->mappingTable[$objectName])) {
          throw new GenericORMapperException('[GenericORRelationMapper::buildProperties()] No '
-                 . 'object with name \'' . $objectName . '\' was found within the mapping table. '
-                 . 'Please double check your mapping configuration file or refresh the mapping table!');
+                                            . 'object with name \'' . $objectName . '\' was found within the mapping table. '
+                                            . 'Please double check your mapping configuration file or refresh the mapping table!');
       }
 
       // retrieve object properties to load
@@ -205,12 +201,12 @@ class GenericORRelationMapper extends GenericORMapper {
          $propertyList = array();
 
          foreach ($objectProperties as $objectProperty) {
-            $propertyList[] = '`' . $this->MappingTable[$objectName]['Table'] . '`.`' . $objectProperty . '`';
+            $propertyList[] = '`' . $this->mappingTable[$objectName]['Table'] . '`.`' . $objectProperty . '`';
          }
 
          $properties = implode(', ', $propertyList);
       } else {
-         $properties = '`' . $this->MappingTable[$objectName]['Table'] . '`.*';
+         $properties = '`' . $this->mappingTable[$objectName]['Table'] . '`.*';
       }
 
       return $properties;
@@ -245,7 +241,7 @@ class GenericORRelationMapper extends GenericORMapper {
       $whereList = $this->buildWhereStatementsByCriterion($objectName, $criterion);
 
       // build statement
-      $select = 'SELECT ' . ($this->buildProperties($objectName, $criterion)) . ' FROM `' . $this->MappingTable[$objectName]['Table'] . '` ';
+      $select = 'SELECT ' . ($this->buildProperties($objectName, $criterion)) . ' FROM `' . $this->mappingTable[$objectName]['Table'] . '` ';
 
       if (count($joinList) > 0) {
          $select .= ' ' . implode(' ', $joinList);
@@ -325,34 +321,34 @@ class GenericORRelationMapper extends GenericORMapper {
       // check if object is present
       if ($object === null) {
          throw new GenericORMapperException('[GenericORRelationMapper::loadRelatedObjects()] '
-                 . 'The given object is null. Perhaps the object does not exist in database any '
-                 . 'more. Please check your implementation!');
+                                            . 'The given object is null. Perhaps the object does not exist in database any '
+                                            . 'more. Please check your implementation!');
       }
 
       // gather information about the objects related to each other
       $objectName = $object->getObjectName();
-      $sourceObject = $this->MappingTable[$objectName];
+      $sourceObject = $this->mappingTable[$objectName];
 
       // check for null relations to prevent "undefined index" errors.
       $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
       if ($targetObjectName === null) {
          throw new GenericORMapperException(
-                 '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "' . $relationName
-                 . '" found! Please re-check your relation configuration.',
-                 E_USER_ERROR
+            '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "' . $relationName
+            . '" found! Please re-check your relation configuration.',
+            E_USER_ERROR
          );
       }
 
       // BUG-142: wrong spelling of source and target object must result in descriptive error!
-      if (!isset($this->MappingTable[$targetObjectName])) {
+      if (!isset($this->mappingTable[$targetObjectName])) {
          throw new GenericORMapperException(
-                 '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "'
-                 . $targetObjectName . '" found in releation definition "' . $relationName
-                 . '"! Please re-check your relation configuration.',
-                 E_USER_ERROR
+            '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "'
+            . $targetObjectName . '" found in releation definition "' . $relationName
+            . '"! Please re-check your relation configuration.',
+            E_USER_ERROR
          );
       }
-      $targetObject = $this->MappingTable[$targetObjectName];
+      $targetObject = $this->mappingTable[$targetObjectName];
 
       // create an empty criterion if the argument was null
       if ($criterion === null) {
@@ -362,7 +358,7 @@ class GenericORRelationMapper extends GenericORMapper {
       $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
       $relationTargetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
-      //get 'source' and 'target' uniqid's from criterion
+      // get 'source' and 'target' uniqid's from criterion
       $uniqueRelationSourceId = $criterion->getUniqueRelationId($relationName, true);
       $uniqueRelationTargetId = $criterion->getUniqueRelationId($relationName, false);
 
@@ -370,7 +366,7 @@ class GenericORRelationMapper extends GenericORMapper {
       $select = 'SELECT ' . ($this->buildProperties($targetObjectName, $criterion)) . ' FROM `' . $targetObject['Table'] . '`';
 
       // JOIN
-      $relationTable = $this->RelationTable[$relationName]['Table'];
+      $relationTable = $this->relationTable[$relationName]['Table'];
 
       $select .= 'INNER JOIN `' . $relationTable . '` AS `' . $uniqueRelationSourceId . '_' . $relationTable . '` ON `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` = `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationTargetObjectId . '`';
       $select .= ' INNER JOIN `' . $sourceObject['Table'] . '` AS `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '` ON `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationSourceObjectId . '` = `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '`';
@@ -428,15 +424,15 @@ class GenericORRelationMapper extends GenericORMapper {
       // check if object is present
       if ($object === null) {
          throw new GenericORMapperException('[GenericORRelationMapper::loadNotRelatedObjects()] '
-                 . 'The given object is null. Perhaps the object does not exist in database any '
-                 . 'more. Please check your implementation!');
+                                            . 'The given object is null. Perhaps the object does not exist in database any '
+                                            . 'more. Please check your implementation!');
       }
 
       // gather information about the objects *not* related to each other
       $objectName = $object->getObjectName();
-      $sourceObject = $this->MappingTable[$objectName];
+      $sourceObject = $this->mappingTable[$objectName];
       $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
-      $targetObject = $this->MappingTable[$targetObjectName];
+      $targetObject = $this->mappingTable[$targetObjectName];
 
       // create an empty criterion if the argument was null
       if ($criterion === null) {
@@ -471,7 +467,7 @@ class GenericORRelationMapper extends GenericORMapper {
       $select .= ' SELECT `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` FROM `' . $targetObject['Table'] . '`';
 
       // inner inner join to the target object
-      $relationTable = $this->RelationTable[$relationName]['Table'];
+      $relationTable = $this->relationTable[$relationName]['Table'];
 
       $select .= ' INNER JOIN `' . $relationTable . '` AS `' . $uniqueRelationSourceId . '_' . $relationTable . '` ON `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` = `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationTargetObjectId . '`
                       INNER JOIN `' . $sourceObject['Table'] . '` AS `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '` ON `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationSourceObjectId . '` = `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '`';
@@ -514,20 +510,20 @@ class GenericORRelationMapper extends GenericORMapper {
     */
    public function loadRelationMultiplicity(GenericORMapperDataObject &$object, $relationName) {
 
-      if (!isset($this->RelationTable[$relationName])) {
+      if (!isset($this->relationTable[$relationName])) {
          throw new GenericORMapperException('[GenericORRelationMapper::loadRelationMultiplicity()] '
-                 . 'Relation "' . $relationName . '" does not exist in relation table! Hence, the '
-                 . 'relation multiplicity cannot be loaded! Please check your relation configuration.');
+                                            . 'Relation "' . $relationName . '" does not exist in relation table! Hence, the '
+                                            . 'relation multiplicity cannot be loaded! Please check your relation configuration.');
       }
 
       // gather information about the object and the relation
       $objectName = $object->getObjectName();
-      $sourceObject = $this->MappingTable[$objectName];
+      $sourceObject = $this->mappingTable[$objectName];
       $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
-      $targetObject = $this->MappingTable[$targetObjectName];
+      $targetObject = $this->mappingTable[$targetObjectName];
 
       // load multiplicity
-      $relationTable = $this->RelationTable[$relationName];
+      $relationTable = $this->relationTable[$relationName];
       if ($relationTable['SourceObject'] === $objectName) {
          $select = 'SELECT COUNT(`Target_' . $targetObject['ID'] . '`) AS multiplicity FROM `' . $relationTable['Table'] . '`
                         WHERE `Source_' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\';';
@@ -535,8 +531,8 @@ class GenericORRelationMapper extends GenericORMapper {
          $select = 'SELECT COUNT(`Source_' . $targetObject['ID'] . '`) AS multiplicity FROM `' . $relationTable['Table'] . '`
                         WHERE `Target_' . $sourceObject['ID'] . '` = \'' . $object->getObjectId() . '\';';
       }
-      $result = $this->DBDriver->executeTextStatement($select, $this->logStatements);
-      $data = $this->DBDriver->fetchData($result);
+      $result = $this->dbDriver->executeTextStatement($select, $this->logStatements);
+      $data = $this->dbDriver->fetchData($result);
 
       // bug 453: explicitly cast to integer to avoid type save check errors.
       return intval($data['multiplicity']);
@@ -592,36 +588,36 @@ class GenericORRelationMapper extends GenericORMapper {
 
                // gather information about the current relation
                $objectID = $this->getRelationIdColumn($object->getObjectName(), $relationKey, self::RELATION_SOURCE);
-               if (!isset($this->MappingTable[$relatedObjects[$relationKey][$i]->getObjectName()]['ID'])) {
+               if (!isset($this->mappingTable[$relatedObjects[$relationKey][$i]->getObjectName()]['ID'])) {
                   throw new GenericORMapperException('[GenericORRelationMapper::saveObject()] '
-                          . 'The object name "' . $relatedObjects[$relationKey][$i]->getObjectName()
-                          . '" does not exist in the mapping table! Hence, your object cannot be '
-                          . 'saved! Please check your object configuration.');
+                                                     . 'The object name "' . $relatedObjects[$relationKey][$i]->getObjectName()
+                                                     . '" does not exist in the mapping table! Hence, your object cannot be '
+                                                     . 'saved! Please check your object configuration.');
                }
                $relObjectIdPkName = $this->getRelationIdColumn($relatedObjects[$relationKey][$i]->getObjectName(), $relationKey, self::RELATION_TARGET);
 
                // check for relation
-               if (!isset($this->RelationTable[$relationKey]['Table'])) {
+               if (!isset($this->relationTable[$relationKey]['Table'])) {
                   throw new GenericORMapperException('[GenericORRelationMapper::saveObject()] '
-                          . 'Relation "' . $relationKey . '" does not exist in the relation table! '
-                          . 'Hence, your related object cannot be saved! Please check your '
-                          . 'relation configuration.');
+                                                     . 'Relation "' . $relationKey . '" does not exist in the relation table! '
+                                                     . 'Hence, your related object cannot be saved! Please check your '
+                                                     . 'relation configuration.');
                }
 
                // create statement
                $select = 'SELECT *
-                             FROM `' . $this->RelationTable[$relationKey]['Table'] . '`
+                             FROM `' . $this->relationTable[$relationKey]['Table'] . '`
                              WHERE `' . $objectID . '` = \'' . $id . '\'
                              AND `' . $relObjectIdPkName . '` = \'' . $relatedObjectID . '\';';
 
-               $result = $this->DBDriver->executeTextStatement($select, $this->logStatements);
-               $relationcount = $this->DBDriver->getNumRows($result);
+               $result = $this->dbDriver->executeTextStatement($select, $this->logStatements);
+               $relationcount = $this->dbDriver->getNumRows($result);
 
                // create relation if necessary
                if ($relationcount == 0) {
-                  $insert = 'INSERT INTO `' . $this->RelationTable[$relationKey]['Table'] . '`
+                  $insert = 'INSERT INTO `' . $this->relationTable[$relationKey]['Table'] . '`
                                 (`' . $relObjectIdPkName . '`,`' . $objectID . '`) VALUES (\'' . $relatedObjectID . '\',\'' . $id . '\');';
-                  $this->DBDriver->executeTextStatement($insert, $this->logStatements);
+                  $this->dbDriver->executeTextStatement($insert, $this->logStatements);
                }
             }
          }
@@ -657,7 +653,7 @@ class GenericORRelationMapper extends GenericORMapper {
 
       // 1. get compositions, where source or target object is the current object
       $objectName = $object->getObjectName();
-      $objectID = $this->MappingTable[$objectName]['ID'];
+      $objectID = $this->mappingTable[$objectName]['ID'];
       $targetCompositions = $this->getCompositionsByObjectName($objectName, 'source');
 
       // 2. test, if the current object has child objects and though can't be deleted
@@ -668,13 +664,13 @@ class GenericORRelationMapper extends GenericORMapper {
 
             $select = 'SELECT * FROM `' . $targetCompositions[$i]['Table'] . '`
                           WHERE `Source_' . $objectID . '` = \'' . $object->getObjectId() . '\';';
-            $result = $this->DBDriver->executeTextStatement($select, $this->logStatements);
+            $result = $this->dbDriver->executeTextStatement($select, $this->logStatements);
 
-            if ($this->DBDriver->getNumRows($result) > 0) {
+            if ($this->dbDriver->getNumRows($result) > 0) {
                throw new GenericORMapperException('[GenericORRelationMapper::deleteObject()] '
-                       . 'Domain object "' . $objectName . '" with id "' . $object->getObjectId()
-                       . '" cannot be deleted, because it still has composed child objects!',
-                       E_USER_WARNING);
+                                                  . 'Domain object "' . $objectName . '" with id "' . $object->getObjectId()
+                                                  . '" cannot be deleted, because it still has composed child objects!',
+                  E_USER_WARNING);
             }
          }
       }
@@ -691,7 +687,7 @@ class GenericORRelationMapper extends GenericORMapper {
 
          $delete = 'DELETE FROM `' . $associations[$i]['Table'] . '`
                        WHERE `' . $SourceOrTarget . '_' . $objectID . '` = \'' . $object->getObjectId() . '\';';
-         $this->DBDriver->executeTextStatement($delete, $this->logStatements);
+         $this->dbDriver->executeTextStatement($delete, $this->logStatements);
       }
 
       // 4. delete object itself
@@ -705,7 +701,7 @@ class GenericORRelationMapper extends GenericORMapper {
 
          $delete = 'DELETE FROM `' . $sourceCompositions[$i]['Table'] . '`
                        WHERE `Target_' . $objectID . '` = \'' . $object->getObjectId() . '\';';
-         $this->DBDriver->executeTextStatement($delete, $this->logStatements);
+         $this->dbDriver->executeTextStatement($delete, $this->logStatements);
       }
 
       return $ID;
@@ -735,22 +731,22 @@ class GenericORRelationMapper extends GenericORMapper {
       // test, if sourceObject and targetObject are saved
       if ($sourceObject->getObjectId() === null || $targetObject->getObjectId() === null) {
          throw new GenericORMapperException('[GenericORRelationMapper::createAssociation()] '
-                 . 'SourceObject or targetObject not saved. Please save the objects first.',
-                 E_USER_WARNING);
+                                            . 'SourceObject or targetObject not saved. Please save the objects first.',
+            E_USER_WARNING);
       }
 
       // test, if relation exists in relation table to avoid NPEs
-      if (!isset($this->RelationTable[$relationName])) {
+      if (!isset($this->relationTable[$relationName])) {
          throw new GenericORMapperException('[GenericORRelationMapper::createAssociation()] '
-                 . 'Relation with name "' . $relationName . '" is not defined in the mapping table! '
-                 . 'Please check your relation configuration.', E_USER_WARNING);
+                                            . 'Relation with name "' . $relationName . '" is not defined in the mapping table! '
+                                            . 'Please check your relation configuration.', E_USER_WARNING);
       }
 
       // if relation is a composition, return with error to avoid NPEs
-      if ($this->RelationTable[$relationName]['Type'] == 'COMPOSITION') {
+      if ($this->relationTable[$relationName]['Type'] == 'COMPOSITION') {
          throw new GenericORMapperException('[GenericORRelationMapper::createAssociation()] '
-                 . 'Compositions cannot be created with this method! Use saveObject() on the '
-                 . 'target object to create a composition!', E_USER_WARNING);
+                                            . 'Compositions cannot be created with this method! Use saveObject() on the '
+                                            . 'target object to create a composition!', E_USER_WARNING);
       }
 
       // create association
@@ -759,11 +755,11 @@ class GenericORRelationMapper extends GenericORMapper {
       $targetObjectName = $targetObject->getObjectName();
       $targetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
-      $insert = 'INSERT INTO `' . $this->RelationTable[$relationName]['Table'] . '`
+      $insert = 'INSERT INTO `' . $this->relationTable[$relationName]['Table'] . '`
                     (`' . $sourceObjectId . '`,`' . $targetObjectId . '`)
                     VALUES
                     (\'' . $sourceObject->getObjectId() . '\',\'' . $targetObject->getObjectId() . '\');';
-      $this->DBDriver->executeTextStatement($insert, $this->logStatements);
+      $this->dbDriver->executeTextStatement($insert, $this->logStatements);
 
       return true;
    }
@@ -789,17 +785,17 @@ class GenericORRelationMapper extends GenericORMapper {
    public function deleteAssociation($relationName, GenericORMapperDataObject $sourceObject, GenericORMapperDataObject $targetObject) {
 
       // test, if relation exists in relation table
-      if (!isset($this->RelationTable[$relationName])) {
+      if (!isset($this->relationTable[$relationName])) {
          throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociation()] '
-                 . 'Relation with name "' . $relationName . '" is not defined in the mapping table! '
-                 . 'Please check your relation configuration.', E_USER_WARNING);
+                                            . 'Relation with name "' . $relationName . '" is not defined in the mapping table! '
+                                            . 'Please check your relation configuration.', E_USER_WARNING);
       }
 
       // if relation is a composition, return with error
-      if ($this->RelationTable[$relationName]['Type'] == 'COMPOSITION') {
+      if ($this->relationTable[$relationName]['Type'] == 'COMPOSITION') {
          throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociation()] '
-                 . 'Compositions cannot be deleted! Use deleteObject() on the target object instead!',
-                 E_USER_WARNING);
+                                            . 'Compositions cannot be deleted! Use deleteObject() on the target object instead!',
+            E_USER_WARNING);
       }
 
       // get association and delete it
@@ -808,12 +804,12 @@ class GenericORRelationMapper extends GenericORMapper {
       $targetObjectName = $targetObject->getObjectName();
       $targetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
-      $delete = 'DELETE FROM `' . $this->RelationTable[$relationName]['Table'] . '`
+      $delete = 'DELETE FROM `' . $this->relationTable[$relationName]['Table'] . '`
                     WHERE
                        `' . $sourceObjectId . '` = \'' . $sourceObject->getObjectId() . '\'
                        AND
                        `' . $targetObjectId . '` = \'' . $targetObject->getObjectId() . '\';';
-      $this->DBDriver->executeTextStatement($delete, $this->logStatements);
+      $this->dbDriver->executeTextStatement($delete, $this->logStatements);
 
       return true;
    }
@@ -838,26 +834,26 @@ class GenericORRelationMapper extends GenericORMapper {
    public function deleteAssociations($relationName, GenericORMapperDataObject $sourceObject) {
 
       // test, if relation exists in relation table
-      if (!isset($this->RelationTable[$relationName])) {
+      if (!isset($this->relationTable[$relationName])) {
          throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociations()] Relation '
-                 . 'with name "' . $relationName . '" is not defined in the relation table! Please '
-                 . 'check your relation configuration.', E_USER_WARNING);
+                                            . 'with name "' . $relationName . '" is not defined in the relation table! Please '
+                                            . 'check your relation configuration.', E_USER_WARNING);
       }
 
       // if relation is a composition, return with error
-      if ($this->RelationTable[$relationName]['Type'] == 'COMPOSITION') {
+      if ($this->relationTable[$relationName]['Type'] == 'COMPOSITION') {
          throw new GenericORMapperException('[GenericORRelationMapper::deleteAssociations()] The given '
-                 . 'relation ("' . $relationName . '") is not an association! Please check your '
-                 . 'relation configuration.', E_USER_WARNING);
+                                            . 'relation ("' . $relationName . '") is not an association! Please check your '
+                                            . 'relation configuration.', E_USER_WARNING);
       }
 
       $sourceObjectName = $sourceObject->getObjectName();
       $sourceObjectId = $this->getRelationIdColumn($sourceObjectName, $relationName, self::RELATION_SOURCE);
 
-      $delete = 'DELETE FROM `' . $this->RelationTable[$relationName]['Table'] . '`
+      $delete = 'DELETE FROM `' . $this->relationTable[$relationName]['Table'] . '`
                     WHERE
                        `' . $sourceObjectId . '` = \'' . $sourceObject->getObjectId() . '\';';
-      $this->DBDriver->executeTextStatement($delete, $this->logStatements);
+      $this->dbDriver->executeTextStatement($delete, $this->logStatements);
    }
 
    /**
@@ -879,17 +875,17 @@ class GenericORRelationMapper extends GenericORMapper {
    public function isAssociated($relationName, GenericORMapperDataObject $sourceObject, GenericORMapperDataObject $targetObject) {
 
       // test, if relation exists in relation table
-      if (!isset($this->RelationTable[$relationName])) {
+      if (!isset($this->relationTable[$relationName])) {
          throw new GenericORMapperException('[GenericORRelationMapper::isAssociated()] Relation '
-                 . 'with name "' . $relationName . '" is not defined in the relation table! Please '
-                 . 'check your relation configuration.', E_USER_WARNING);
+                                            . 'with name "' . $relationName . '" is not defined in the relation table! Please '
+                                            . 'check your relation configuration.', E_USER_WARNING);
       }
 
       // if relation is a composition, return with error
-      if ($this->RelationTable[$relationName]['Type'] == 'COMPOSITION') {
+      if ($this->relationTable[$relationName]['Type'] == 'COMPOSITION') {
          throw new GenericORMapperException('[GenericORRelationMapper::isAssociated()] The given '
-                 . 'relation ("' . $relationName . '") is not an association! Please check your '
-                 . 'relation configuration.', E_USER_WARNING);
+                                            . 'relation ("' . $relationName . '") is not an association! Please check your '
+                                            . 'relation configuration.', E_USER_WARNING);
       }
 
       // check for association
@@ -898,15 +894,15 @@ class GenericORRelationMapper extends GenericORMapper {
       $targetObjectName = $targetObject->getObjectName();
       $targetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
 
-      $select = 'SELECT * FROM `' . $this->RelationTable[$relationName]['Table'] . '`
+      $select = 'SELECT * FROM `' . $this->relationTable[$relationName]['Table'] . '`
                     WHERE
                        `' . $sourceObjectId . '` = \'' . $sourceObject->getObjectId() . '\'
                        AND
                        `' . $targetObjectId . '` = \'' . $targetObject->getObjectId() . '\';';
-      $result = $this->DBDriver->executeTextStatement($select, $this->logStatements);
+      $result = $this->dbDriver->executeTextStatement($select, $this->logStatements);
 
       // return if objects are associated
-      return ($this->DBDriver->getNumRows($result) > 0) ? true : false;
+      return ($this->dbDriver->getNumRows($result) > 0) ? true : false;
    }
 
    /**
@@ -929,45 +925,46 @@ class GenericORRelationMapper extends GenericORMapper {
    public function isComposed($relationName, GenericORMapperDataObject $child, GenericORMapperDataObject $father) {
 
       // test, if relation exists in relation table
-      if (!isset($this->RelationTable[$relationName])) {
+      if (!isset($this->relationTable[$relationName])) {
          throw new GenericORMapperException('[GenericORRelationMapper::isComposed()] Relation '
-                 . 'with name "' . $relationName . '" is not defined in the relation table! Please '
-                 . 'check your relation configuration.', E_USER_ERROR);
+                                            . 'with name "' . $relationName . '" is not defined in the relation table! Please '
+                                            . 'check your relation configuration.', E_USER_ERROR);
       }
 
       // if relation is an association, return with error
-      if ($this->RelationTable[$relationName]['Type'] == 'ASSOCIATION') {
+      if ($this->relationTable[$relationName]['Type'] == 'ASSOCIATION') {
          throw new GenericORMapperException('[GenericORRelationMapper::isComposed()] The given '
-                 . 'relation ("' . $relationName . '") is not a composition! Please check your '
-                 . 'relation configuration.', E_USER_ERROR);
+                                            . 'relation ("' . $relationName . '") is not a composition! Please check your '
+                                            . 'relation configuration.', E_USER_ERROR);
       }
 
       $fatherObjectName = $father->getObjectName();
       $childObjectName = $child->getObjectName();
 
       // check relation configuration to have type-safe and directed results
-      if ($this->RelationTable[$relationName]['SourceObject'] != $fatherObjectName
-              || $this->RelationTable[$relationName]['TargetObject'] != $childObjectName) {
+      if ($this->relationTable[$relationName]['SourceObject'] != $fatherObjectName
+          || $this->relationTable[$relationName]['TargetObject'] != $childObjectName
+      ) {
          throw new GenericORMapperException('[GenericORRelationMapper::isComposed()] Given '
-                 . 'child object with name "' . $childObjectName . '" is not composable under '
-                 . 'object with name "' . $fatherObjectName . '". Hence, requesting relation state '
-                 . 'for relation with name "' . $relationName . '" invoking the applied objects is '
-                 . 'not allowed due to configuration! Please double-check your code and configuration.',
-                 E_USER_ERROR);
+                                            . 'child object with name "' . $childObjectName . '" is not composable under '
+                                            . 'object with name "' . $fatherObjectName . '". Hence, requesting relation state '
+                                            . 'for relation with name "' . $relationName . '" invoking the applied objects is '
+                                            . 'not allowed due to configuration! Please double-check your code and configuration.',
+            E_USER_ERROR);
       }
 
       $fatherObjectId = $this->getRelationIdColumn($fatherObjectName, $relationName, self::RELATION_SOURCE);
       $childObjectId = $this->getRelationIdColumn($childObjectName, $relationName, self::RELATION_TARGET);
 
-      $select = 'SELECT * FROM `' . $this->RelationTable[$relationName]['Table'] . '`
+      $select = 'SELECT * FROM `' . $this->relationTable[$relationName]['Table'] . '`
                     WHERE
                        `' . $fatherObjectId . '` = \'' . $father->getObjectId() . '\'
                        AND
                        `' . $childObjectId . '` = \'' . $child->getObjectId() . '\';';
-      $result = $this->DBDriver->executeTextStatement($select, $this->logStatements);
+      $result = $this->dbDriver->executeTextStatement($select, $this->logStatements);
 
       // return if objects are composed
-      return ($this->DBDriver->getNumRows($result) > 0) ? true : false;
+      return ($this->dbDriver->getNumRows($result) > 0) ? true : false;
    }
 
    /**
@@ -989,14 +986,14 @@ class GenericORRelationMapper extends GenericORMapper {
       $relationList = array();
 
       // look for suitable relation entries
-      foreach ($this->RelationTable as $sectionName => $attributes) {
+      foreach ($this->relationTable as $sectionName => $attributes) {
 
          // only allow associations
          if ($attributes['Type'] == 'ASSOCIATION') {
 
             // only add, if the current object is involved in the association
             if ($attributes['SourceObject'] === $objectName || $attributes['TargetObject'] === $objectName) {
-               $relationList[] = &$this->RelationTable[$sectionName];
+               $relationList[] = &$this->relationTable[$sectionName];
             }
          }
       }
@@ -1029,15 +1026,14 @@ class GenericORRelationMapper extends GenericORMapper {
          $directionAttribute = 'TargetObject';
       } else {
          throw new GenericORMapperException('Direction of the composition not specified! Please '
-                 . 'use "source" or "target" as values!', E_USER_WARNING);
-         return $relationList;
+                                            . 'use "source" or "target" as values!', E_USER_WARNING);
       }
 
       // look for suitable relation entries
-      foreach ($this->RelationTable as $sectionName => $attributes) {
+      foreach ($this->relationTable as $sectionName => $attributes) {
 
          if ($attributes['Type'] == 'COMPOSITION' && $attributes[$directionAttribute] == $objectName) {
-            $relationList[] = &$this->RelationTable[$sectionName];
+            $relationList[] = &$this->relationTable[$sectionName];
          }
       }
 
@@ -1060,7 +1056,7 @@ class GenericORRelationMapper extends GenericORMapper {
    protected function getRelatedObjectNameByRelationName($objectName, $relationName) {
 
       // look for suitable related object
-      foreach ($this->RelationTable as $sectionName => $attributes) {
+      foreach ($this->relationTable as $sectionName => $attributes) {
 
          if ($sectionName == $relationName) {
 
@@ -1094,21 +1090,23 @@ class GenericORRelationMapper extends GenericORMapper {
     */
    protected function getRelationIdColumn($objectName, $relationName, $startPoint) {
 
-      if (isset($this->RelationTable[$relationName])) {
+      if (isset($this->relationTable[$relationName])) {
 
          // in case of self relations, the source and target column name must be
          // evaluated by the desired point type
-         if ($this->RelationTable[$relationName]['SourceObject'] === $this->RelationTable[$relationName]['TargetObject']) {
-            return $startPoint === self::RELATION_SOURCE ? $this->RelationTable[$relationName]['SourceID'] : $this->RelationTable[$relationName]['TargetID'];
+         if ($this->relationTable[$relationName]['SourceObject'] === $this->relationTable[$relationName]['TargetObject']) {
+            return $startPoint === self::RELATION_SOURCE ? $this->relationTable[$relationName]['SourceID']
+                  : $this->relationTable[$relationName]['TargetID'];
          }
 
          // look for suitable related object
-         return $this->RelationTable[$relationName]['SourceObject'] == $objectName ? $this->RelationTable[$relationName]['SourceID'] : $this->RelationTable[$relationName]['TargetID'];
+         return $this->relationTable[$relationName]['SourceObject'] == $objectName
+               ? $this->relationTable[$relationName]['SourceID'] : $this->relationTable[$relationName]['TargetID'];
       }
 
       throw new GenericORMapperException('[GenericORRelationMapper::getRelationIdColumn()] '
-              . 'The given relation "' . $relationName . '" is not defined within the current relation '
-              . 'table! Please revise your configuration.');
+                                         . 'The given relation "' . $relationName . '" is not defined within the current relation '
+                                         . 'table! Please revise your configuration.');
    }
 
    /**
@@ -1127,16 +1125,18 @@ class GenericORRelationMapper extends GenericORMapper {
     */
    public function __sleep() {
       return array(
-          'MappingTable',
-          'RelationTable',
-          'ServiceObjectsTable',
-          '__Context',
-          '__Language',
-          'importedConfigCache',
-          'connectionName',
-          'logStatements',
-          'configNamespace',
-          'configNameAffix');
+         'mappingTable',
+         'relationTable',
+         'serviceObjectsTable',
+         '__Context',
+         '__Language',
+         'serviceType',
+         'isInitialized',
+         'importedConfigCache',
+         'connectionName',
+         'logStatements',
+         'configNamespace',
+         'configNameAffix');
    }
 
    /**
@@ -1174,16 +1174,16 @@ class GenericORRelationMapper extends GenericORMapper {
    public function loadObjectCount($objectName, GenericCriterionObject $criterion = null) {
 
       // avoid SQL errors for invalid object names
-      if (!isset($this->MappingTable[$objectName])) {
+      if (!isset($this->mappingTable[$objectName])) {
          throw new GenericORMapperException('[GenericORRelationMapper::loadObjectCount()] '
-                 . 'Object with name "' . $objectName . '" is not existent in the current mapping '
-                 . 'table. Please check your mapping configuration!', E_USER_ERROR);
+                                            . 'Object with name "' . $objectName . '" is not existent in the current mapping '
+                                            . 'table. Please check your mapping configuration!', E_USER_ERROR);
       }
 
       // create statement
       $countColumnName = 'objectcount';
-      $select = 'SELECT COUNT(`' . $this->MappingTable[$objectName]['ID'] . '`) AS '
-              . $countColumnName . ' FROM `' . $this->MappingTable[$objectName]['Table'] . '`';
+      $select = 'SELECT COUNT(`' . $this->mappingTable[$objectName]['ID'] . '`) AS '
+                . $countColumnName . ' FROM `' . $this->mappingTable[$objectName]['Table'] . '`';
 
       // add limitations
       if ($criterion !== null) {
@@ -1194,10 +1194,10 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       // load count
-      $data = $this->DBDriver->fetchData(
-                      $this->DBDriver->executeTextStatement($select, $this->logStatements)
+      $data = $this->dbDriver->fetchData(
+         $this->dbDriver->executeTextStatement($select, $this->logStatements)
       );
-      return (int) $data[$countColumnName];
+      return (int)$data[$countColumnName];
    }
 
    /**
@@ -1264,28 +1264,27 @@ class GenericORRelationMapper extends GenericORMapper {
    private function loadObjects4RelationName($objectName, $relationName, $criterion, $relationCondition) {
 
       // gather information about the objects related to each other
-      $sourceObject = $this->MappingTable[$objectName];
+      $sourceObject = $this->mappingTable[$objectName];
 
       // check for null relations to prevent "undefined index" errors.
       $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
       if ($targetObjectName === null) {
          throw new GenericORMapperException(
-                 '[GenericORRelationMapper::loadObjects4RelationName()] No relation with name "'
-                 . $relationName . '" found! Please re-check your relation configuration.',
-                 E_USER_ERROR
+            '[GenericORRelationMapper::loadObjects4RelationName()] No relation with name "'
+            . $relationName . '" found! Please re-check your relation configuration.',
+            E_USER_ERROR
          );
       }
 
       // BUG-142: wrong spelling of source and target object must result in descriptive error!
-      if (!isset($this->MappingTable[$targetObjectName])) {
+      if (!isset($this->mappingTable[$targetObjectName])) {
          throw new GenericORMapperException(
-                 '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "'
-                 . $targetObjectName . '" found in releation definition "' . $relationName
-                 . '"! Please re-check your relation configuration.',
-                 E_USER_ERROR
+            '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "'
+            . $targetObjectName . '" found in releation definition "' . $relationName
+            . '"! Please re-check your relation configuration.',
+            E_USER_ERROR
          );
       }
-      $targetObject = $this->MappingTable[$targetObjectName];
 
       if ($criterion == null) {
          $criterion = new GenericCriterionObject();
@@ -1301,7 +1300,7 @@ class GenericORRelationMapper extends GenericORMapper {
       $select = 'SELECT DISTINCT ' . ($this->buildProperties($objectName, $criterion)) . ' FROM `' . $sourceObject['Table'] . '`';
 
       // JOIN
-      $relationTable = $this->RelationTable[$relationName]['Table'];
+      $relationTable = $this->relationTable[$relationName]['Table'];
 
       $select .= ' LEFT OUTER JOIN `' . $relationTable . '` AS `' . $uniqueRelationSourceId . '_' . $relationTable . '` ON `' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '` = `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationSourceObjectId . '`';
 
@@ -1360,12 +1359,12 @@ class GenericORRelationMapper extends GenericORMapper {
          $uniqueRelationSourceId = $criterion->getUniqueRelationId($relationName, true);
          $uniqueRelationTargetId = $criterion->getUniqueRelationId($relationName, false);
          // gather information about the object relations
-         $relationTable = $this->RelationTable[$relationName]['Table'];
-         $fromTable = $this->MappingTable[$objectName]['Table'];
+         $relationTable = $this->relationTable[$relationName]['Table'];
+         $fromTable = $this->mappingTable[$objectName]['Table'];
          $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
-         $toTable = $this->MappingTable[$targetObjectName]['Table'];
-         $sourceObjectId = $this->MappingTable[$objectName]['ID'];
-         $targetObjectId = $this->MappingTable[$targetObjectName]['ID'];
+         $toTable = $this->mappingTable[$targetObjectName]['Table'];
+         $sourceObjectId = $this->mappingTable[$objectName]['ID'];
+         $targetObjectId = $this->mappingTable[$targetObjectName]['ID'];
 
          $relationSourceObjectId = $this->getRelationIdColumn($objectName, $relationName, self::RELATION_SOURCE);
          $relationTargetObjectId = $this->getRelationIdColumn($targetObjectName, $relationName, self::RELATION_TARGET);
@@ -1396,12 +1395,13 @@ class GenericORRelationMapper extends GenericORMapper {
       $relations = $criterion->getRelations();
 
       foreach ($relations as $relationName => $relatedObject) {
+         /* @var $relatedObject GenericORMapperDataObject */
          // gets the 'target' uniqid from criterion to avoid conflicts with other tables
          $uniqueRelationTargetId = $criterion->getUniqueRelationId($relationName, false);
          // gather information about the object relations
          $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
-         $toTable = $this->MappingTable[$targetObjectName]['Table'];
-         $targetObjectId = $this->MappingTable[$targetObjectName]['ID'];
+         $toTable = $this->mappingTable[$targetObjectName]['Table'];
+         $targetObjectId = $this->mappingTable[$targetObjectName]['ID'];
 
          // add statement to where list
          $whereList[] = '`' . $uniqueRelationTargetId . '_' . $toTable . '`.`' . $targetObjectId . '` = ' . $relatedObject->getObjectId();
@@ -1410,4 +1410,5 @@ class GenericORRelationMapper extends GenericORMapper {
    }
 
 }
+
 ?>

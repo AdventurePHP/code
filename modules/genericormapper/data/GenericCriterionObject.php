@@ -98,11 +98,12 @@ final class GenericCriterionObject {
    /**
     * @public
     *
-    * Method to add a relation indicator.<br />
-    * Generates a 'source' and 'target' uniqid for the relation name if not set.
+    * Method to add a relation indicator.
+    * <p/>
+    * Generates a 'source' and 'target' unique id for the relation name if not set.
     *
     * @param string $relationName name of the relation between the object in the second argument and the object to load
-    * @param GenericDomainObject $sourceObject related object
+    * @param GenericORMapperDataObject $sourceObject related object
     *
     * @return GenericCriterionObject Returns itself.
     *
@@ -112,7 +113,7 @@ final class GenericCriterionObject {
     * Version 0.2, 18.07.2010 (Added "Fluent Interface" support.)<br />
     * Version 0.3, 27.04.2011 (Generate a uniqid for the relation name.)<br />
     */
-   public function addRelationIndicator($relationName, $sourceObject) {
+   public function addRelationIndicator($relationName, GenericORMapperDataObject $sourceObject) {
       $this->relations[$relationName] = $sourceObject;
       if (!isset($this->uniqueRelationIds['source'][$relationName])) {
          $this->uniqueRelationIds['source'][$relationName] = md5(uniqid(mt_rand(), true));

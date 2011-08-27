@@ -40,22 +40,14 @@ import('modules::genericormapper::data', 'GenericCriterionObject');
 class UmgtManager extends APFObject {
 
    /**
-    * @protected
+    * @const string The name of the umgt manager's main config section.
+    */
+   const CONFIG_SECTION_NAME = 'Default';
+
+   /**
     * @var int Indicates the id of the current application/project.
     */
-   protected $applicationId = 1;
-
-   /**
-    * @protected
-    * @var string Indicates the database connection key.
-    */
-   protected $connectionKey = null;
-
-   /**
-    * @protected
-    * @var boolean indicates, if the component is already initialized.
-    */
-   protected $isInitialized = false;
+   private $applicationId = 1;
 
    /**
     * Stores the providers, that hashes the user's password.
@@ -64,45 +56,32 @@ class UmgtManager extends APFObject {
    protected $passwordHashProviders = array();
 
    /**
-    * Due to incomplete object problems, we need to now this state explicit
-    * @var boolean Indicates if we already imported the providers in this request
+    * @var array Marks all password hash providers used within this instance. This marker is
+    * used as reminder for session wake-up, too.
     */
-   protected $passwordHashProvidersAreImported = false;
+   protected $passwordHashProviderList = array();
 
    /**
-    * @protected
-    * @var string The service mode of the generic or mapper.
+    * @var GenericORRelationMapper The current instance of the generic o/r mapper.
     */
-   protected $gormServiceMode = APFObject::SERVICE_TYPE_SESSIONSINGLETON;
-
-   public function __construct() {
-      $this->gormServiceMode = APFObject::SERVICE_TYPE_SESSIONSINGLETON;
-   }
+   protected $orm;
 
    /**
     * @public
     *
-    * Implements the init() method for the service manager. Initializes the connection key.
+    * DI initialization method to setup and re-initialize (on session restore!) the password hash providers.
     *
-    * @param string $connectionKey the desired connection key
-    *
-    * @author Christian Achatz
+    * @author Christian Achatz, Ralf Schubert
     * @version
-    * Version 0.1, 30.12.2008<br />
+    * Version 0.1, 26.08.2011<br />
     */
-   public function init($initParam) {
-
-      $PasswordHashProviderList = array();
+   public function setup() {
 
       // we need to import the password hash providers on each request once, due to incomplete object
       // bug, when saving in session.
-      if (!$this->passwordHashProvidersAreImported) {
+      if (count($this->passwordHashProviderList) === 0) {
 
-         // setup the component
-         $config = $this->getConfiguration('modules::usermanagement::biz', 'umgtconfig.ini');
-         $section = $config->getSection($initParam);
-
-         $passwordHashProvider = $section->getSection('PasswordHashProvider');
+         $passwordHashProvider = $this->getConfigurationSection()->getSection('PasswordHashProvider');
          if ($passwordHashProvider !== null) {
             $providerSectionNames = $passwordHashProvider->getSectionNames();
 
@@ -111,73 +90,81 @@ class UmgtManager extends APFObject {
                $passHashNamespace = $passwordHashProvider->getValue('Namespace');
                $passHashClass = $passwordHashProvider->getValue('Class');
                if ($passHashNamespace !== null && $passHashClass !== null) {
-                  import($passHashNamespace, $passHashClass);
-                  $PasswordHashProviderList[] = array($passHashNamespace, $passHashClass);
+                  $this->passwordHashProviderList[] = array($passHashNamespace, $passHashClass);
                }
-            }
-               // multiple providers given
-            else {
+            } else { // multiple providers given
                foreach ($providerSectionNames as $subSection) {
                   $passHashNamespace = $passwordHashProvider->getSection($subSection)->getValue('Namespace');
                   $passHashClass = $passwordHashProvider->getSection($subSection)->getValue('Class');
                   if ($passHashNamespace !== null && $passHashClass !== null) {
-                     import($passHashNamespace, $passHashClass);
-                     $PasswordHashProviderList[] = array($passHashNamespace, $passHashClass);
+                     $this->passwordHashProviderList[] = array($passHashNamespace, $passHashClass);
                   }
                }
             }
 
          }
 
-         if (count($PasswordHashProviderList) === 0) {
-            //fallback to default provider
-            import('modules::usermanagement::biz::provider::crypt', 'CryptHardcodedSaltPasswordHashProvider');
-            $PasswordHashProviderList[] = array('modules::usermanagement::biz::provider::crypt', 'CryptHardcodedSaltPasswordHashProvider');
+         if (count($this->passwordHashProviderList) === 0) {
+            // fallback to default provider
+            $this->passwordHashProviderList[] = array('modules::usermanagement::biz::provider::crypt', 'CryptHardcodedSaltPasswordHashProvider');
          }
-
-         $this->passwordHashProvidersAreImported = true;
 
       }
 
-      if ($this->isInitialized === false) {
-
-         $appId = $section->getValue('ApplicationID');
-         if ($appId !== null) {
-            $this->applicationId = $appId;
-         }
-
-         $serviceMode = $section->getValue('ServiceMode');
-         if ($serviceMode !== null) {
-            $this->gormServiceMode = $serviceMode;
-         }
-
-         $this->connectionKey = $section->getValue('ConnectionKey');
-
-
-         // initialize the password hash providers
-         foreach ($PasswordHashProviderList as $ProviderInfo) {
-            $passwordHashProviderObject = $this->getAndInitServiceObject($ProviderInfo[0], $ProviderInfo[1], $initParam);
+      // initialize the password hash providers or re-initialize because it
+      // might contain incomplete objects
+      if (count($this->passwordHashProviders) === 0) {
+         $this->passwordHashProviders = array();
+         foreach ($this->passwordHashProviderList as $provider) {
+            $passwordHashProviderObject = $this->getServiceObject($provider[0], $provider[1]);
             $this->passwordHashProviders[] = $passwordHashProviderObject;
             unset($passwordHashProviderObject);
          }
-
-         // set to initialized
-         $this->isInitialized = true;
       }
+
+   }
+
+   /**
+    * @param int $applicationId The current application id.
+    */
+   public function setApplicationId($applicationId) {
+      $this->applicationId = $applicationId;
+   }
+
+   /**
+    * @return int The current application id.
+    */
+   public function getApplicationId() {
+      return $this->applicationId;
+   }
+
+   /**
+    * @return Configuration The configuration section used to initialize this service.
+    */
+   protected function getConfigurationSection() {
+      return $this->getConfiguration('modules::usermanagement::biz', 'umgtconfig.ini')->getSection(self::CONFIG_SECTION_NAME);
    }
 
    /**
     * @public
     *
-    * When serialising in session, passwordhashproviders need to be imported
-    * to avoid incomplete object bug.
+    * When serialising in session, password hash providers need to be imported
+    * to avoid incomplete object bug. Thus, "isInitialized" is not serialized.
+    *
+    * @return array The list of object properties to serialize.
     *
     * @author Ralf Schubert
     * @version
     * Version 0.1, 14.07.2011 <br />
     */
-   public function __wakeup() {
-      $this->passwordHashProvidersAreImported = false;
+   public function __sleep() {
+      return array(
+         '__Language',
+         '__Context',
+         'serviceType',
+         'applicationId',
+         'passwordHashProviderList'
+      );
    }
 
    /**
@@ -295,10 +282,10 @@ class UmgtManager extends APFObject {
    /**
     * @public
     *
-    * Returns the configured instance of the generic o/r mapper the usermanagement
+    * Returns the configured instance of the generic o/r mapper the user management
     * business component is currently using.
     * <p/>
-    * This can be used to directly query the usermanagement database in cases, the
+    * This can be used to directly query the user management database in cases, the
     * UmgtManager is missing a special feature.
     *
     * @return GenericORRelationMapper Instance of the generic or relation mapper.
@@ -307,19 +294,25 @@ class UmgtManager extends APFObject {
     * @version
     * Version 0.1, 23.06.2008<br />
     * Version 0.2, 16.03.2010 (Bugfix 299: moved the service type to the GORM factory call)<br />
+    * Version 0.1, 25.08.2011 (Switched to DI configuration)<br />
     */
    public function &getORMapper() {
-      // TODO create OTM from a DI service, if the customer has defined such a configuration!
+      return $this->orm;
+   }
 
-      return $this->getServiceObject(
-         'modules::genericormapper::data',
-         'GenericORMapperFactory',
-         $this->gormServiceMode)
-            ->getGenericORMapper(
-         'modules::usermanagement::data',
-         'umgt',
-         $this->connectionKey
-      );
+   /**
+    * @public
+    *
+    * Let's you inject the o/r mapper instance to use (used for DI configuration).
+    *
+    * @param GenericORRelationMapper $orm The o/r mapper instance to use.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 25.08.2011<br />
+    */
+   public function setORMapper(GenericORRelationMapper &$orm) {
+      $this->orm = &$orm;
    }
 
    /**
@@ -609,7 +602,7 @@ class UmgtManager extends APFObject {
       $oRM = &$this->getORMapper();
 
       // escape the input values
-      $dbDriver = &$oRM->getDBDriver();
+      $dbDriver = &$oRM->getDbDriver();
       $firstName = $dbDriver->escapeValue($firstName);
 
       // create the statement and select user
@@ -636,7 +629,7 @@ class UmgtManager extends APFObject {
       $oRM = &$this->getORMapper();
 
       // escape the input values
-      $dbDriver = &$oRM->getDBDriver();
+      $dbDriver = &$oRM->getDbDriver();
       $lastName = $dbDriver->escapeValue($lastName);
 
       // create the statement and select user
@@ -663,7 +656,7 @@ class UmgtManager extends APFObject {
       $oRM = &$this->getORMapper();
 
       // escape the input values
-      $dbDriver = &$oRM->getDBDriver();
+      $dbDriver = &$oRM->getDbDriver();
       $email = $dbDriver->escapeValue($email);
 
       // create the statement and select user
@@ -691,7 +684,7 @@ class UmgtManager extends APFObject {
       $oRM = &$this->getORMapper();
 
       // escape the input values
-      $dbDriver = &$oRM->getDBDriver();
+      $dbDriver = &$oRM->getDbDriver();
       $firstName = $dbDriver->escapeValue($firstName);
       $lastName = $dbDriver->escapeValue($lastName);
 
@@ -719,7 +712,7 @@ class UmgtManager extends APFObject {
       $oRM = &$this->getORMapper();
 
       // escape the input values
-      $dbDriver = &$oRM->getDBDriver();
+      $dbDriver = &$oRM->getDbDriver();
       $username = $dbDriver->escapeValue($username);
 
       // create the statement and select user

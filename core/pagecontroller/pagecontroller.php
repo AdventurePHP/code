@@ -188,7 +188,7 @@ function import($namespace, $file) {
  */
 function printObject($o, $transformHtml = false) {
 
-   $buffer = (string) '';
+   $buffer = (string)'';
    $buffer .= "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
    $buffer .= "<br />\n";
    $buffer .= "<strong>\n";
@@ -238,7 +238,6 @@ class ParserException extends Exception {
 final class XmlParser {
 
    private function __construct() {
-      
    }
 
    /**
@@ -249,7 +248,7 @@ final class XmlParser {
     *
     * @param string $tagString The string, that contains the tag definition.
     * @return string[] The attributes of the tag.
-    * 
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 22.12.2006<br />
@@ -297,17 +296,17 @@ final class XmlParser {
       // Check, whether the tag is self-closing. If not, read the content.
       $content = null;
       if (substr($tagString, $posEndAttrib - 1, 1) == '/') {
-         $content = (string) '';
+         $content = (string)'';
       } else {
 
          // initialize the content as empty string
-         $content = (string) '';
+         $content = (string)'';
 
          // check, if explicitly-closing tag exists
          if (strpos($tagString, '</' . $prefix . ':' . $class . '>') === false) {
             throw new ParserException('[XmlParser::getTagAttributes()] No closing tag found for '
-                    . 'tag "<' . $prefix . ':' . $class . ' />"! Tag string: "' . $tagString . '".',
-                    E_USER_ERROR);
+                                      . 'tag "<' . $prefix . ':' . $class . ' />"! Tag string: "' . $tagString . '".',
+               E_USER_ERROR);
          } else {
 
             $found = true;
@@ -322,10 +321,10 @@ final class XmlParser {
                // save old value
                $posEndContent = $offset;
 
-               // reasign the position of the tag end limiter
+               // re-assign the position of the tag end limiter
                $offset = strpos($tagString, $endTag, $offset + 1);
 
-               // in case no futher position is found -> end at this point
+               // in case no further position is found -> end at this point
                if ($offset === false) {
                   $found = false;
                }
@@ -386,7 +385,7 @@ final class XmlParser {
          // limit parse loop count to avoid enless while loops
          if ($parserLoops == $parserMaxLoops) {
             throw new ParserException('[XmlParser::getAttributesFromString()] Error while parsing: "'
-                    . $attributesString . '". Maximum number of loops exceeded!', E_USER_ERROR);
+                                      . $attributesString . '". Maximum number of loops exceeded!', E_USER_ERROR);
          }
 
          // find attribute
@@ -443,40 +442,81 @@ final class XmlParser {
  * @version
  * Version 0.1, 28.12.2006<br />
  * Version 0.2, 11.02.2007 (Added language and context)<br />
- * Version 0.3, 28.10.2008 (Added the __ServiceType member to indicate the service manager creation type)<br />
+ * Version 0.3, 28.10.2008 (Added the serviceType member to indicate the service manager creation type)<br />
  * Version 0.4, 03.11.2008 (Added initializing values to some of the class members)<br />
  */
-abstract class APFObject {
+abstract class APFObject implements APFDIService {
 
    /**
     * @protected
     * @var string[] The attributes of an object (merely the XML tag attributes).
     */
    protected $__Attributes = array();
-   
+
    /**
     * @protected
     * @var string The context of the current object within the application.
     */
    protected $__Context = null;
-   
+
    /**
     * @protected
     * @var string The language of the current object within the application.
     */
    protected $__Language = 'de';
-   
+
    /**
     * @since 0.3
     * @protected
     * @var string Contains the service type, if the object was created with the ServiceManager.
     */
-   protected $__ServiceType = null;
+   protected $serviceType = null;
 
-   // these constants define the service type of the APF objects
-   const SERVICE_TYPE_NORMAL = 'NORMAL';
-   const SERVICE_TYPE_SINGLETON = 'SINGLETON';
-   const SERVICE_TYPE_SESSIONSINGLETON = 'SESSIONSINGLETON';
+   /**
+    * @since 1.15
+    * @protected
+    * @var bool Stores the internal initialization status of the present APFDIService.
+    */
+   protected $isInitialized = false;
+
+   public function markAsInitialized() {
+      $this->isInitialized = true;
+   }
+
+   public function markAsPending() {
+      $this->isInitialized = false;
+   }
+
+   public function isInitialized() {
+      return $this->isInitialized;
+   }
+
+   public function init($initParam) {
+   }
+
+   public function setContext($context) {
+      $this->__Context = $context;
+   }
+
+   public function getContext() {
+      return $this->__Context;
+   }
+
+   public function setLanguage($lang) {
+      $this->__Language = $lang;
+   }
+
+   public function getLanguage() {
+      return $this->__Language;
+   }
+
+   public function setServiceType($serviceType) {
+      $this->serviceType = $serviceType;
+   }
+
+   public function getServiceType() {
+      return $this->serviceType;
+   }
 
    /**
     * @public
@@ -493,97 +533,7 @@ abstract class APFObject {
     * Version 0.1, 26.02.2011<br />
     */
    public function getVersion() {
-      return '1.14-SVN';
-   }
-
-   /**
-    * @public
-    *
-    * Sets the context of the current APF object.
-    *
-    * @param string $context The context.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function setContext($context) {
-      $this->__Context = $context;
-   }
-
-   /**
-    * @public
-    *
-    * Returns the context of the current APF object.
-    *
-    * @return string The context.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function getContext() {
-      return $this->__Context;
-   }
-
-   /**
-    * @public
-    *
-    * Sets the language of the current APF object.
-    *
-    * @param string $lang The language.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function setLanguage($lang) {
-      $this->__Language = $lang;
-   }
-
-   /**
-    * @public
-    *
-    * Returns the language of the current APF object.
-    *
-    * @return string The language.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function getLanguage() {
-      return $this->__Language;
-   }
-
-   /**
-    * @public
-    *
-    * Sets the service type of the current APF object.
-    *
-    * @param string $serviceType The service type.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function setServiceType($serviceType) {
-      $this->__ServiceType = $serviceType;
-   }
-
-   /**
-    * @public
-    *
-    * Returns the service type of the current APF object.
-    *
-    * @return string The service type.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
-   public function getServiceType() {
-      return $this->__ServiceType;
+      return '1.15-SVN';
    }
 
    /**
@@ -593,12 +543,12 @@ abstract class APFObject {
     *
     * @param string $name The name of the desired attribute.
     * @param string $default The default value for the attribute.
-    * @return string Returns the attribute's value or null in case of errors.
+    * @return string Returns the value or null in case of errors.
     *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 28.12.2006<br />
-    * Version 0.2, 02.02.2007 (Behandlung, falls Attribut nicht existiert hinzugef�gt)<br />
+    * Version 0.2, 02.02.2007 (Added default value handling)<br />
     */
    public function getAttribute($name, $default = null) {
       return isset($this->__Attributes[$name]) ? $this->__Attributes[$name] : $default;
@@ -672,23 +622,6 @@ abstract class APFObject {
    }
 
    /**
-    * Interface definition of the init() method. This function is used to initialize a service
-    * object with the service manager. It must be implemented by derived classes.
-    *
-    * @public
-    * @abstract
-    *
-    * @param string $initParam The initializing value of the service object. Data type may also be array or object.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 30.03.2007<br />
-    */
-   public function init($initParam) {
-      
-   }
-
-   /**
     * @protected
     *
     * Returns a service object, that is initialized by dependency injection.
@@ -704,15 +637,7 @@ abstract class APFObject {
     */
    protected function &getDIServiceObject($namespace, $name) {
       return DIServiceManager::getServiceObject(
-              $namespace, $name, $this->getContext(), $this->getLanguage());
-   }
-
-   /**
-    * @deprecated Use APFObject::getDIServiceObject() instead!
-    */
-   protected function &__getDIServiceObject($namespace, $name) {
-      trigger_error('APFObject::__getDIServiceObject() is deprecated, use APFObject::getDIServiceObject() instead!', E_USER_WARNING);
-      return $this->getDIServiceObject($namespace, $name);
+         $namespace, $name, $this->getContext(), $this->getLanguage());
    }
 
    /**
@@ -730,20 +655,12 @@ abstract class APFObject {
     * Version 0.1, 07.03.2007<br />
     * Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
     * Version 0.3, 10.03.2007 (Method now is considered protected)<br />
-    * Version 0.4, 22.04.2007 (Added language initializaton of the service manager)<br />
+    * Version 0.4, 22.04.2007 (Added language initialization of the service manager)<br />
     * Version 0.5, 24.02.2008 (Added the service type param)<br />
     */
-   protected function &getServiceObject($namespace, $serviceName, $type = APFObject::SERVICE_TYPE_SINGLETON) {
+   protected function &getServiceObject($namespace, $serviceName, $type = APFService::SERVICE_TYPE_SINGLETON) {
       return ServiceManager::getServiceObject(
-              $namespace, $serviceName, $this->getContext(), $this->getLanguage(), $type);
-   }
-
-   /**
-    * @deprecated Use APFObject::getServiceObject() instead!
-    */
-   protected function &__getServiceObject($namespace, $serviceName, $type = APFObject::SERVICE_TYPE_SINGLETON) {
-      trigger_error('APFObject::__getServiceObject() is deprecated, use APFObject::getServiceObject() instead!', E_USER_WARNING);
-      return $this->getServiceObject($namespace, $serviceName, $type);
+         $namespace, $serviceName, $this->getContext(), $this->getLanguage(), $type);
    }
 
    /**
@@ -763,17 +680,9 @@ abstract class APFObject {
     * Version 0.2, 22.04.2007 (Added language initialization of the service manager)<br />
     * Version 0.3, 24.02.2008 (Added the service type param)<br />
     */
-   protected function &getAndInitServiceObject($namespace, $serviceName, $initParam, $type = APFObject::SERVICE_TYPE_SINGLETON) {
+   protected function &getAndInitServiceObject($namespace, $serviceName, $initParam, $type = APFService::SERVICE_TYPE_SINGLETON) {
       return ServiceManager::getAndInitServiceObject(
-              $namespace, $serviceName, $this->getContext(), $this->getLanguage(), $initParam, $type);
-   }
-
-   /**
-    * @deprecated Use APFObject::getAndInitServiceObject() instead!
-    */
-   protected function &__getAndInitServiceObject($namespace, $serviceName, $initParam, $type = APFObject::SERVICE_TYPE_SINGLETON) {
-      trigger_error('APFObject::__getAndInitServiceObject() is deprecated, use APFObject::getAndInitServiceObject() instead!', E_USER_WARNING);
-      return $this->getAndInitServiceObject($namespace, $serviceName, $initParam, $type);
+         $namespace, $serviceName, $this->getContext(), $this->getLanguage(), $initParam, $type);
    }
 
    /**
@@ -792,7 +701,7 @@ abstract class APFObject {
     */
    protected function getConfiguration($namespace, $name) {
       return ConfigurationManager::loadConfiguration(
-              $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('apf::core', 'Environment'), $name);
+         $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('apf::core', 'Environment'), $name);
    }
 
    /**
@@ -811,33 +720,25 @@ abstract class APFObject {
     */
    protected function saveConfiguration($namespace, $name, Configuration $config) {
       ConfigurationManager::saveConfiguration(
-              $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('apf::core', 'Environment'), $name, $config);
+         $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('apf::core', 'Environment'), $name, $config);
    }
-   
+
    /**
     * @protected
-    * 
+    *
     * Convenience method for deleting a configuration depending on APF DOM attributes and
     * the current environment.
-    * 
+    *
     * @param string $namespace The namespace of the configuration.
     * @param string $name The name of the configuration including it's extension.
-    * 
+    *
     * @author Ralf Schubert
     * @version
     * Version 0.1, 27.07.2011<br />
     */
    protected function deleteConfiguration($namespace, $name) {
-       ConfigurationManager::deleteConfiguration(
-              $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('apf::core', 'Environment'), $name);
-   }
-
-   /**
-    * @deprecated Use <em>getAttributesAsString()</em> instead!
-    */
-   protected function __getAttributesAsString(array $attributes, array $whiteList = array()) {
-      trigger_error('APFObject::__getAttributesAsString() is deprecated, use APFObject::getAttributesAsString() instead!', E_USER_WARNING);
-      return $this->getAttributesAsString($attributes, $whiteList);
+      ConfigurationManager::deleteConfiguration(
+         $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('apf::core', 'Environment'), $name);
    }
 
    /**
@@ -864,12 +765,12 @@ abstract class APFObject {
       if (count($whiteList) > 0) {
          foreach ($attributes as $offset => $value) {
             if (in_array($offset, $whiteList)) {
-               $attributeParts[] = $offset . '="' . htmlspecialchars($value , ENT_QUOTES, $charset, false) . '"';
+               $attributeParts[] = $offset . '="' . htmlspecialchars($value, ENT_QUOTES, $charset, false) . '"';
             }
          }
       } else {
          foreach ($attributes as $offset => $value) {
-            $attributeParts[] = $offset . '="' . htmlspecialchars($value , ENT_QUOTES, $charset, false) . '"';
+            $attributeParts[] = $offset . '="' . htmlspecialchars($value, ENT_QUOTES, $charset, false) . '"';
          }
       }
 
@@ -897,13 +798,13 @@ final class TagLib {
     * @var string The namespace of the taglib.
     */
    private $namespace;
-   
+
    /**
     * @protected
     * @var string The prefix of the taglib.
     */
    private $prefix;
-   
+
    /**
     * @protected
     * @var string The class name of the taglib.
@@ -1087,32 +988,32 @@ class Document extends APFObject {
     * @var string Unique object identifier.
     */
    protected $__ObjectID = null;
-   
+
    /**
     * @protected
     * @var Document Reference to the parent object.
     */
    protected $__ParentObject = null;
-   
+
    /**
     * @protected
     * @var string The content of the tag. Example:
     * <pre>&lt;foo:bar&gt;This is the content of the tag.&lt;/foo:bar&gt;</pre>
     */
    protected $__Content;
-   
+
    /**
     * @protected
     * @var string The name of the document controller to use at transformation time.
     */
    protected $__DocumentController = null;
-   
+
    /**
     * @protected
     * @var TagLib[] List of known taglibs.
     */
    protected $__TagLibs;
-   
+
    /**
     * @protected
     * @var APFObject[] List of the children of the current object.
@@ -1363,7 +1264,7 @@ class Document extends APFObject {
       if (!file_exists($file)) {
 
          // get template code from parent object, if the parent exists
-         $code = (string) '';
+         $code = (string)'';
          if ($this->getParentObject() !== null) {
             $code = ' Please check your template code (' . $this->getParentObject()->getContent() . ').';
          }
@@ -1405,7 +1306,7 @@ class Document extends APFObject {
 
          if ($tagLibLoops > $this->maxLoops) {
             throw new ParserException('[Document::__extractTagLibTags()] Maximum numbers of '
-                    . 'parsing loops reached!', E_USER_ERROR);
+                                      . 'parsing loops reached!', E_USER_ERROR);
          }
 
          $prefix = $this->__TagLibs[$i]->getPrefix();
@@ -1434,7 +1335,7 @@ class Document extends APFObject {
 
                if ($tagEndPos === false) {
                   throw new ParserException('[' . get_class($this) . '::__extractTagLibTags()] No closing tag '
-                          . 'found for tag "<' . $token . ' />"!', E_USER_ERROR);
+                                            . 'found for tag "<' . $token . ' />"!', E_USER_ERROR);
                }
             }
 
@@ -1490,7 +1391,7 @@ class Document extends APFObject {
 
             // call onParseTime() to enable the taglib to initialize itself
             $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::__Children[('
-                    . get_class($object) . ') ' . $objectId . ']::onParseTime()';
+                       . get_class($object) . ') ' . $objectId . ']::onParseTime()';
             $t->start($benchId);
             $object->onParseTime();
             $t->stop($benchId);
@@ -1799,11 +1700,11 @@ class core_taglib_addtaglib extends Document {
     */
    public function onParseTime() {
       $this->getParentObject()->addTagLib(
-              new TagLib(
-                      $this->getAttribute('namespace'),
-                      $this->getAttribute('prefix'),
-                      $this->getAttribute('class')
-              )
+         new TagLib(
+            $this->getAttribute('namespace'),
+            $this->getAttribute('prefix'),
+            $this->getAttribute('class')
+         )
       );
    }
 
@@ -1820,7 +1721,7 @@ class core_taglib_addtaglib extends Document {
     * Version 0.1, 21.04.2007<br />
     */
    public function transform() {
-      return (string) '';
+      return (string)'';
    }
 
 }
@@ -2035,7 +1936,7 @@ class html_taglib_template extends Document {
       }
 
       // return empty string
-      return (string) '';
+      return (string)'';
    }
 
 }
@@ -2186,14 +2087,14 @@ abstract class base_controller extends Document {
          }
       } else {
          throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No placeholder object with name "'
-                 . $name . '" composed in current document for document controller "' . get_class($this)
-                 . '"! Perhaps tag library html:placeholder is not loaded in current template!', E_USER_ERROR);
+                                            . $name . '" composed in current document for document controller "' . get_class($this)
+                                            . '"! Perhaps tag library html:placeholder is not loaded in current template!', E_USER_ERROR);
       }
 
       // warn, if no place holder is found
       if ($placeHolderCount < 1) {
          throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] There are no placeholders found for name "'
-                 . $name . '" in document controller "' . get_class($this) . '"!', E_USER_WARNING);
+                                            . $name . '" in document controller "' . get_class($this) . '"!', E_USER_WARNING);
       }
    }
 
@@ -2270,14 +2171,6 @@ abstract class base_controller extends Document {
    }
 
    /**
-    * @deprecated Use base_controller::getForm() instead!
-    */
-   protected function &__getForm($formName) {
-      trigger_error('base_controller::__getForm() is deprecated, use base_controller::getForm() instead!', E_USER_WARNING);
-      return $this->getForm($formName);
-   }
-
-   /**
     * @protected
     *
     * Returns the instance of the form specified by the given name. This method can be used to
@@ -2285,7 +2178,7 @@ abstract class base_controller extends Document {
     *
     * @param string $formName The name of the form to return.
     * @return html_taglib_form The instance of the desired form.
-    * 
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 12.01.2007<br />
@@ -2296,8 +2189,8 @@ abstract class base_controller extends Document {
       $tagLibClass = 'html_taglib_form';
       if (!class_exists($tagLibClass)) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getForm()] TagLib "' . $tagLibClass
-                 . '" is not loaded! Please add the form taglib using the <core:addtaglib /> tag',
-                 E_USER_ERROR);
+                                            . '" is not loaded! Please add the form taglib using the <core:addtaglib /> tag',
+            E_USER_ERROR);
       }
 
       $children = &$this->getDocument()->getChildren();
@@ -2314,21 +2207,13 @@ abstract class base_controller extends Document {
          }
       } else {
          throw new InvalidArgumentException('[' . get_class($this) . '::getForm()] No form object with name "'
-                 . $formName . '" composed in current document for document controller "' . get_class($this)
-                 . '"! Perhaps tag library html:form is not loaded in current document!', E_USER_ERROR);
+                                            . $formName . '" composed in current document for document controller "' . get_class($this)
+                                            . '"! Perhaps tag library html:form is not loaded in current document!', E_USER_ERROR);
       }
 
       throw new InvalidArgumentException('[' . get_class($this) . '::getForm()] Form with name "'
-              . $formName . '" cannot be found in document controller "' . get_class($this) . '"!',
-              E_USER_ERROR);
-   }
-
-   /**
-    * @deprecated Use base_controller::getTemplate() instead!
-    */
-   protected function &__getTemplate($name) {
-      trigger_error('base_controller::__getTemplate() is deprecated, use base_controller::getTemplate() instead!', E_USER_WARNING);
-      return $this->getTemplate($name);
+                                         . $formName . '" cannot be found in document controller "' . get_class($this) . '"!',
+         E_USER_ERROR);
    }
 
    /**
@@ -2365,20 +2250,12 @@ abstract class base_controller extends Document {
          }
       } else {
          throw new InvalidArgumentException('[' . get_class($this) . '::getTemplate()] No template object with name "'
-                 . $name . '" composed in current document for document controller "' . get_class($this)
-                 . '"! Perhaps tag library html:template is not loaded in current template!', E_USER_ERROR);
+                                            . $name . '" composed in current document for document controller "' . get_class($this)
+                                            . '"! Perhaps tag library html:template is not loaded in current template!', E_USER_ERROR);
       }
 
       throw new InvalidArgumentException('[' . get_class($this) . '::getTemplate()] Template with name "'
-              . $name . '" cannot be found!', E_USER_ERROR);
-   }
-
-   /**
-    * @deprecated Use base_controller::placeHolderExists() instead!
-    */
-   protected function __placeholderExists($name) {
-      trigger_error('base_controller::__placeholderExists() is deprecated, use base_controller::placeHolderExists() instead!', E_USER_WARNING);
-      return $this->placeHolderExists($name);
+                                         . $name . '" cannot be found!', E_USER_ERROR);
    }
 
    /**
@@ -2408,14 +2285,6 @@ abstract class base_controller extends Document {
       }
 
       return false;
-   }
-
-   /**
-    * @deprecated Use base_controller::templatePlaceHolderExists() instead!
-    */
-   protected function __templatePlaceholderExists(html_taglib_template &$template, $name) {
-      trigger_error('base_controller::__templatePlaceholderExists() is deprecated, use base_controller::templatePlaceHolderExists() instead!', E_USER_WARNING);
-      return $this->templatePlaceHolderExists($template, $name);
    }
 
    /**
@@ -2449,4 +2318,5 @@ abstract class base_controller extends Document {
    }
 
 }
+
 ?>

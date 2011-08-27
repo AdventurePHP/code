@@ -38,7 +38,7 @@ class AbstractPostboxFolder extends GenericDomainObject {
      */
     public function hasUnreadMessages() {
         /* @var $DBDriver MySQLxHandler */
-        $DBDriver = $this->getDataComponent()->getDBDriver();
+        $DBDriver = $this->getDataComponent()->getDbDriver();
         $result = $DBDriver->executeStatement(
                         'postbox',
                         'PostboxFolder_hasUnreadMessages.sql',

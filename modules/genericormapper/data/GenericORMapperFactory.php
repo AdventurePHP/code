@@ -122,6 +122,7 @@ final class GenericORMapperFactory extends APFObject {
          $this->orMapperCache[$cacheKey]->setConfigNameAffix($configNameAffix);
          $this->orMapperCache[$cacheKey]->setConnectionName($connectionName);
          $this->orMapperCache[$cacheKey]->setLogStatements($debugMode);
+         $this->orMapperCache[$cacheKey]->setup();
       }
 
       return $this->orMapperCache[$cacheKey];

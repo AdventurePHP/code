@@ -508,7 +508,7 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
          $this->UpdateStatements[] =
                $this->generateMappingTableLayout(
                   $newMapping,
-                  $this->MappingTable[$newMapping]
+                  $this->mappingTable[$newMapping]
                );
       }
 
@@ -533,7 +533,7 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
                $dataType = str_replace('[charset]', $this->getTableCharset(), $dataType);
 
                $this->UpdateStatements[] = 'ALTER TABLE `'
-                                           . $this->MappingTable[$newAttribute]['Table'] . '` ADD `'
+                                           . $this->mappingTable[$newAttribute]['Table'] . '` ADD `'
                                            . $name . '` ' . $dataType . ';';
             }
          }
@@ -545,7 +545,7 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
 
             foreach ($values as $name => $dataType) {
                $this->UpdateStatements[] = 'ALTER TABLE `'
-                                           . $this->MappingTable[$removedAttribute]['Table'] . '` DROP `' . $name . '`;';
+                                           . $this->mappingTable[$removedAttribute]['Table'] . '` DROP `' . $name . '`;';
             }
          }
       }
@@ -558,14 +558,14 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
                $dataType = preg_replace(
                   $this->RowTypeMappingFrom,
                   $this->RowTypeMappingTo,
-                  $this->MappingTable[$alteredAttribute][$name]
+                  $this->mappingTable[$alteredAttribute][$name]
                );
 
                // add dynamic character set specification
                $dataType = str_replace('[charset]', $this->getTableCharset(), $dataType);
 
                $this->UpdateStatements[] = 'ALTER TABLE `'
-                                           . $this->MappingTable[$alteredAttribute]['Table'] . '` CHANGE `' . $name . '` '
+                                           . $this->mappingTable[$alteredAttribute]['Table'] . '` CHANGE `' . $name . '` '
                                            . '`' . $name . '` ' . $dataType . ';';
             }
          }
@@ -581,18 +581,18 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
 
       // gather overall mapping changes
       $this->NewMappings = array_diff_ukey(
-         $this->MappingTable,
+         $this->mappingTable,
          $this->ReEngineeredMappingTable,
          array($this, 'compareMappings')
       );
       $this->RemovedMappings = array_diff_ukey(
          $this->ReEngineeredMappingTable,
-         $this->MappingTable,
+         $this->mappingTable,
          array($this, 'compareMappings')
       );
 
       // evaluate changes within the attributes
-      foreach ($this->MappingTable as $mappingKey => $mappingValue) {
+      foreach ($this->mappingTable as $mappingKey => $mappingValue) {
 
          // only scan entries, that are not within the new and removed ones!
          if (!isset($this->NewMappings[$mappingKey])
@@ -601,7 +601,7 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
 
             // new columns
             $this->NewMappingAttributes[$mappingKey] = array_diff_ukey(
-               $this->MappingTable[$mappingKey],
+               $this->mappingTable[$mappingKey],
                $this->ReEngineeredMappingTable[$mappingKey],
                array($this, 'compareMappings')
             );
@@ -609,17 +609,17 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
             // removed columns
             $this->RemovedMappingAttributes[$mappingKey] = array_diff_ukey(
                $this->ReEngineeredMappingTable[$mappingKey],
-               $this->MappingTable[$mappingKey],
+               $this->mappingTable[$mappingKey],
                array($this, 'compareMappings')
             );
 
             // changed columns
-            foreach ($this->MappingTable[$mappingKey] as $key => $value) {
+            foreach ($this->mappingTable[$mappingKey] as $key => $value) {
 
                // only scan entries, that are also existent within the re-engineered mapping table!
                if (isset($this->ReEngineeredMappingTable[$mappingKey][$key])) {
                   $diff = $this->compareMappingValues(
-                     $this->MappingTable[$mappingKey][$key],
+                     $this->mappingTable[$mappingKey][$key],
                      $this->ReEngineeredMappingTable[$mappingKey][$key]
                   );
                   if ($diff === 1) {
@@ -642,7 +642,7 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
 
       // new relations
       $this->NewRelations = array_diff_ukey(
-         $this->RelationTable,
+         $this->relationTable,
          $this->ReEngineeredRelationTable,
          array($this, 'compareRelations')
       );
@@ -650,12 +650,12 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
       // removed relations
       $this->RemovedRelations = array_diff_ukey(
          $this->ReEngineeredRelationTable,
-         $this->RelationTable,
+         $this->relationTable,
          array($this, 'compareRelations')
       );
 
       // evaluate changes within the attributes
-      foreach ($this->RelationTable as $relationKey => $relationValue) {
+      foreach ($this->relationTable as $relationKey => $relationValue) {
 
          // use lowercase relation key for re-engineered values!
          $reEngRelationKey = strtolower($relationKey);
@@ -667,7 +667,7 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
 
             // changed columns (we only check for relation type, because for all other
             // cases, a new relation *must* be created!)
-            foreach ($this->RelationTable[$relationKey] as $key => $DUMMY) {
+            foreach ($this->relationTable[$relationKey] as $key => $DUMMY) {
 
                // only scan entries, that are also existent within the re-engineered
                // relation table! Further, only respect the type key.
@@ -675,7 +675,7 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
                    && $key == 'Type'
                ) {
                   if ($this->ReEngineeredRelationTable[$reEngRelationKey][$key]
-                      !== $this->RelationTable[$relationKey][$key]
+                      !== $this->relationTable[$relationKey][$key]
                   ) {
                      $this->AlteredRelationAttributes[] = $relationKey;
                   }
@@ -721,7 +721,7 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
 
       foreach ($this->NewRelations as $newRelation => $DUMMY) {
          $this->UpdateStatements[] =
-               $this->generateRelationTableLayout($this->RelationTable[$newRelation]);
+               $this->generateRelationTableLayout($this->relationTable[$newRelation]);
       }
       foreach ($this->RemovedRelations as $removedRelation => $DUMMY) {
          $this->UpdateStatements[] = 'DROP TABLE '
@@ -733,7 +733,7 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
          $reEngAlteredRelation = strtolower($alteredRelation);
          $this->UpdateStatements[] = 'RENAME TABLE `'
                                      . $this->ReEngineeredRelationTable[$reEngAlteredRelation]['Table']
-                                     . '` TO `' . $this->RelationTable[$alteredRelation]['Table'] . '`;';
+                                     . '` TO `' . $this->relationTable[$alteredRelation]['Table'] . '`;';
       }
    }
 
