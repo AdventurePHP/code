@@ -1362,6 +1362,13 @@ class GenericORRelationMapper extends GenericORMapper {
          $relationTable = $this->relationTable[$relationName]['Table'];
          $fromTable = $this->mappingTable[$objectName]['Table'];
          $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
+
+         // avoid "undefined index" errors
+         if ($targetObjectName === null) {
+            throw new GenericORMapperException('There is no relation defined with name "' . $relationName
+                                               . '" for object "' . $objectName . '"! Please re-check your criterion definition.');
+         }
+
          $toTable = $this->mappingTable[$targetObjectName]['Table'];
          $sourceObjectId = $this->mappingTable[$objectName]['ID'];
          $targetObjectId = $this->mappingTable[$targetObjectName]['ID'];

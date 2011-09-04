@@ -1,36 +1,55 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::role" class="umgt_list_controller" @>
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::role"
+   class="umgt_role_list_controller"
+@>
 <table class="vis-def">
    <thead>
       <tr>
+         <td>&nbsp;</td>
          <td>Display name</td>
+         <td>Permissions</td>
          <td>Action</td>
       </tr>
    </thead>
    <tbody>
-      <html:placeholder name="RoleList" />
+      <html:placeholder name="RoleList"/>
    </tbody>
 </table>
 
 <html:template name="Role">
-  <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
-  <tr>
-    <td><template:placeholder name="DisplayName" /></td>
-    <td>
-      <a href="<template:placeholder name="role_details" />" title="View role details">
-        <umgt:media filename="cc-xmag-128x128.png" alt="View Role details" title="View role details" />
-      </a>
-      <a href="<template:placeholder name="role_edit" />" title="Edit role">
-        <umgt:media filename="cc-package_settings-128x128.png" alt="Edit role" title="Edit Role" />
-      </a>
-      <a href="<template:placeholder name="role_delete" />" title="Delete role">
-        <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete role" title="Delete role" />
-      </a>
-      <a href="<template:placeholder name="role_ass2user" />" title="Assign role to user">
-        <umgt:media filename="cc-forward2-128x128.png" alt="Assign role to user" title="Assign role to user" />
-      </a>
-      <a href="<template:placeholder name="role_detachfromuser" />" title="Detach role from user">
-        <umgt:media filename="cc-backward2-red-128x128.png" alt="Detach role from user" title="Detach role from user" />
-      </a>
-    </td>
-  </tr>
+   <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media"/>
+   <tr>
+      <td>
+         <umgt:media filename="cc-yast_sysadmin-128x128.png" alt="Role" title="Role"/>
+      </td>
+      <td>
+         <template:placeholder name="DisplayName"/>
+      </td>
+      <td>
+         <template:placeholder name="Permissions"/>
+      </td>
+      <td class="actions">
+         <a href="<template:placeholder name=" role_details" />" title="View role details">
+            <umgt:media filename="cc-xmag-128x128.png" alt="View Role details" title="View role details"/>
+         </a>
+         <a href="<template:placeholder name=" role_edit" />" title="Edit role">
+            <umgt:media filename="cc-package_settings-128x128.png" alt="Edit role" title="Edit Role"/>
+         </a>
+         <a href="<template:placeholder name=" role_delete" />" title="Delete role">
+            <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete role" title="Delete role"/>
+         </a>
+
+         <umgt:media filename="permission_add.png" alt="Detach role from user" title="Detach role from user"/>
+         <umgt:media filename="permission_remove.png" alt="Detach role from user" title="Detach role from user"/>
+
+         <a href="<template:placeholder name=" role_ass2user" />" title="Assign role to user">
+            <umgt:media filename="group_add_user.png" alt="Assign role to user" title="Assign role to user"/>
+         </a>
+         <a href="<template:placeholder name=" role_detachfromuser" />" title="Detach role from user">
+            <umgt:media filename="group_remove_user.png" alt="Detach role from user" title="Detach role from user"/>
+         </a>
+         <umgt:media filename="cc-yast_kuser_add2group-128x128.png" alt="Detach role from user" title="Detach role from user"/>
+         <umgt:media filename="cc-yast_kuser_removefromgroup-128x128.png" alt="Detach role from user" title="Detach role from user"/>
+      </td>
+   </tr>
 </html:template>

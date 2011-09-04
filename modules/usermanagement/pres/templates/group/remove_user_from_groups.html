@@ -1,0 +1,30 @@
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::group"
+   class="umgt_group_remove_user_from_groups_controller"
+@>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
+<html:form name="Groups" method="post">
+   <form:addvalidator
+         class="MultiSelectFieldValidator"
+         button="Remove"
+         control="Groups"
+         />
+   <p>
+      Please choose one or more of the following groups:
+   </p>
+   <p>
+      <form:multiselect name="Groups" size="4"/>
+   </p>
+   <p>
+      <form:button name="Remove" value="Remove" class="formfield"/>
+   </p>
+</html:form>
+      
+<html:template name="NoGroups">
+   <p>
+      User <strong><template:placeholder name="User"/></strong> has no groups assigned at the moment!
+   </p>
+   <p>
+      To go back to the main view, please click <a href="<template:placeholder name="UserViewLink"/>">here</a>.
+   </p>
+</html:template>

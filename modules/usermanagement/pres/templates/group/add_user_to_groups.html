@@ -1,0 +1,30 @@
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::group"
+   class="umgt_group_add_user_to_groups_controller"
+@>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
+<html:form name="Groups" method="post">
+   <form:addvalidator
+         class="MultiSelectFieldValidator"
+         button="Add"
+         control="Groups"
+         />
+   <p>
+      Please choose one or more of the following groups:
+   </p>
+   <p>
+      <form:multiselect name="Groups" size="4"/>
+   </p>
+   <p>
+      <form:button name="Add" value="Add" class="formfield"/>
+   </p>
+</html:form>
+      
+<html:template name="NoMoreGroups">
+   <p>
+      All groups are already assigned to user <strong><template:placeholder name="User"/></strong>!
+   </p>
+   <p>
+      To go back to the main view, please click <a href="<template:placeholder name="UserViewLink"/>">here</a>.
+   </p>
+</html:template>

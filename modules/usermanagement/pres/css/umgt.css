@@ -1,0 +1,126 @@
+.umgt-content .formfield {
+   border: 1px solid #000000;
+   background-color: #eeeeee;
+}
+
+.umgt-header {
+   font-size: 28px;
+   font-weight: bolder;
+   color: #bbbbbb;
+   margin-bottom: .5em;
+}
+
+.umgt-menu {
+   margin-bottom: 1em;
+}
+
+.umgt-content .umgt-warn {
+   border: 2px solid orange;
+   padding: 10px;
+   color: orange;
+   font-weight: bold;
+   background: #efefef;
+}
+
+.umgt-content a:link,
+.umgt-content a:visited {
+   color: #bbbbbb;
+   font-weight: bold;
+   text-decoration: none;
+}
+
+.umgt-content a:focus,
+.umgt-content a:hover,
+.umgt-content a:active {
+   color: #bbbbbb;
+   font-weight: bold;
+   text-decoration: underline;
+}
+
+.umgt-menu a:link,
+.umgt-menu a:visited {
+   color: #bbbbbb;
+   font-weight: bold;
+   text-decoration: none;
+}
+
+.umgt-menu a:focus,
+.umgt-menu a:hover,
+.umgt-menu a:active {
+   color: #bbbbbb;
+   font-weight: bold;
+   text-decoration: none;
+}
+
+.umgt-content .apf-form-error {
+   border: 2px solid red;
+}
+
+.umgt-content .error-cont {
+   margin: 5px;
+   padding: 5px;
+   border: 2px solid red;
+   background-color: #eeeeee;
+}
+
+.umgt-content form label {
+   display: block;
+}
+
+.umgt-content form input[type=submit] {
+   display: block;
+   margin-top: 20px;
+}
+
+.umgt-content table.vis-def {
+   border: 0 solid gray;
+}
+
+.umgt-content table.vis-def td {
+   padding: 4px;
+   vertical-align: top;
+}
+
+.umgt-content table.vis-def tbody td {
+   border-bottom: 1px solid gray;
+}
+
+.umgt-content table.vis-def tbody td.actions {
+   white-space: nowrap;
+}
+
+.umgt-content table.vis-def tbody tr {
+   position: relative;
+}
+
+.umgt-content table.vis-def thead {
+   background-color: #cccccc;
+   font-weight: bold;
+}
+
+.umgt-content table.vis-def ul {
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+}
+
+.umgt-content form.type-filter {
+   margin-bottom: 15px;
+}
+
+.umgt-content form.type-filter select,
+.umgt-content form.type-filter input {
+   border: 1px solid gray;
+   background: #cccccc;
+}
+
+.umgt-content form.type-filter input[type=submit] {
+   display: inline-block;
+   margin-top: 0;
+}
+
+.umgt-content img.icon {
+   width: 40px;
+   height: 40px;
+   border: none;
+}

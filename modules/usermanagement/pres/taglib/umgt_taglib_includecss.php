@@ -18,38 +18,25 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::link', 'LinkGenerator');
 
 /**
  * @package modules::usermanagement::pres::taglib
- * @class umgt_taglib_logoutlink
+ * @class umgt_taglib_includecss
  *
- * Creates a logout link that points to the current page but defines the parameters
- * of the logout action for you (especially the application identifier).
+ * Includes the css required to display the user management backend.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 09.06.2011<br />
+ * Version 0.1, 30.08.2011<br />
  */
-class umgt_taglib_logoutlink extends Document {
+class umgt_taglib_includecss extends Document {
 
    public function transform() {
-
-      $params = array('logout' => 'true');
-
-      // add app identifier only in case we have one
-      $appIdent = $this->getApplicationIdentifier();
-      if (!empty($appIdent)) {
-         $params['app-ident'] = $appIdent;
-      }
-
-      return LinkGenerator::generateActionUrl(Url::fromCurrent(), 'modules::usermanagement::biz', 'logout', $params);
-   }
-
-   private function getApplicationIdentifier() {
-      // Context is not included since this would give internal information to the outside world!
-      // Further, the logout action resolved missing application identifiers itself!
-      return $this->getAttribute('app-ident');
+      return '<style type="text/css">'
+             . PHP_EOL
+             . file_get_contents(APPS__PATH . '/modules/usermanagement/pres/css/umgt.css')
+             . PHP_EOL
+             . '</style>';
    }
 
 }

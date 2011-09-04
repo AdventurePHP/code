@@ -73,7 +73,7 @@ class umgt_ass2user_controller extends umgt_base_controller {
             unset($newUser);
          }
 
-         $uM->assignRole2Users($role, $newUsers);
+         $uM->attachUsersToRole($newUsers, $role);
          HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
 
       } else {

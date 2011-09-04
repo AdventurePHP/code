@@ -1,124 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <title>Usermanagement backend</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <style type="text/css">
-      .umgt-content .formfield {
-         border: 1px solid #000000;
-         background-color: #eeeeee;
-      }
-      .umgt-header {
-         font-size: 28px;
-         font-weight: bolder;
-         color: #bbbbbb;
-         margin-bottom: .5em;
-      }
-      .umgt-menu {
-         margin-bottom: 1em;
-      }
-      .umgt-content .umgt-warn {
-         border: 2px solid orange;
-         padding: 10px;
-         color: orange;
-         font-weight: bold;
-         background: #efefef;
-      }
-      body {
-         background-color: white;
-         font-family: Arial, Helvetica, sans-serif;
-         font-size: 12px;
-         margin: 10px;
-         overflow: auto;
-         text-align: left;
-      }
-      .umgt-content a:link,
-      .umgt-content a:visited {
-         color: #bbbbbb;
-         font-weight: bold;
-         text-decoration: none;
-      }
-      .umgt-content a:focus,
-      .umgt-content a:hover,
-      .umgt-content a:active {
-         color: #bbbbbb;
-         font-weight: bold;
-         text-decoration: underline;
-      }
-      .umgt-menu a:link,
-      .umgt-menu a:visited {
-         color: #bbbbbb;
-         font-weight: bold;
-         text-decoration: none;
-      }
-      .umgt-menu a:focus,
-      .umgt-menu a:hover,
-      .umgt-menu a:active {
-         color: #bbbbbb;
-         font-weight: bold;
-         text-decoration: none;
-      }
-      .umgt-content .apf-form-error {
-         border: 2px solid red;
-      }
-      .umgt-content .error-cont {
-         margin: 5px;
-         padding: 5px;
-         border: 2px solid red;
-         background-color: #eeeeee;
-      }
-      .umgt-content form label {
-         display: block;
-      }
-      .umgt-content form input[type=submit] {
-         display: block;
-         margin-top: 20px;
-      }
-      .umgt-content table.vis-def {
-         border: 0px solid gray;
-      }
-      .umgt-content table.vis-def td {
-         padding: 4px;
-         vertical-align: top;
-      }
-      .umgt-content table.vis-def td img {
-         position: relative;
-         top: 4px;
-      }
-      .umgt-content table.vis-def tbody td {
-         border-bottom: 1px solid gray;
-      }
-      .umgt-content table.vis-def thead {
-         background-color: #cccccc;
-         font-weight: bold;
-      }
-      .umgt-content table.vis-def ul {
-         list-style-type: none;
-         margin: 0;
-         padding: 0;
-      }
-      .umgt-content form.type-filter {
-         margin-bottom: 15px;
-      }
-      .umgt-content form.type-filter select,
-      .umgt-content form.type-filter input {
-         border: 1px solid gray;
-         background: #cccccc;
-      }
-      .umgt-content form.type-filter input[type=submit] {
-         display: inline-block;
-         margin-top: 0;
-      }
-  </style>
-</head>
-<body>
-  <h1 class="umgt-header">Usermanagement backend</h1>
+   <head>
+      <title>Usermanagement backend</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <core:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="includecss" />
+      <umgt:includecss/>
+   </head>
+   <body>
+      <h1 class="umgt-header">Usermanagement backend</h1>
 
-  <core:importdesign namespace="modules::usermanagement::pres::templates" template="menu" />
+      <core:importdesign namespace="modules::usermanagement::pres::templates" template="menu"/>
 
-  <div class="umgt-content">
-     <core:importdesign namespace="modules::usermanagement::pres::templates" template="[mainview = start]" incparam="mainview" />
-  </div>
-</body>
+      <div class="umgt-content">
+         <core:importdesign
+               namespace="modules::usermanagement::pres::templates"
+               template="[mainview = start]"
+               incparam="mainview"
+            />
+      </div>
+   </body>
 </html>

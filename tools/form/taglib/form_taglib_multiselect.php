@@ -139,7 +139,7 @@
        *
        * Returns the selected options.
        *
-       * @return select_taglib_option[] List of the options, that are selected.
+       * @return array{select_taglib_option} List of the options, that are selected.
        *
        * @author Christian Achatz
        * @version

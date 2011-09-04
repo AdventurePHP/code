@@ -21,7 +21,7 @@
 import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
 
 /**
- * @package modules::usermanagement::pres::documentcontroller
+ * @package modules::usermanagement::pres::documentcontroller::permission
  * @class umgt_list_controller
  *
  * Implements the controller to list the existing permissions.
@@ -48,8 +48,8 @@ class umgt_list_controller extends umgt_base_controller {
          $id = $permission->getObjectId();
          $template->setPlaceHolder('permission_edit', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'edit', 'permissionid' => $id)));
          $template->setPlaceHolder('permission_delete', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'delete', 'permissionid' => $id)));
-         $template->setPlaceHolder('permission_ass2role', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'ass2role', 'permissionid' => $id)));
-         $template->setPlaceHolder('permission_detachfromrole', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'detachfromrole', 'permissionid' => $id)));
+         //$template->setPlaceHolder('permission_ass2role', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'ass2role', 'permissionid' => $id)));
+         //$template->setPlaceHolder('permission_detachfromrole', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'detachfromrole', 'permissionid' => $id)));
 
          $buffer .= $template->transformTemplate();
       }

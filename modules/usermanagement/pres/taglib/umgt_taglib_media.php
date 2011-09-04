@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -43,7 +42,6 @@ class umgt_taglib_media extends ui_mediastream {
     * Version 0.1, 26.12.2008<br />
     */
    public function onParseTime() {
-
    }
 
    /**
@@ -56,7 +54,6 @@ class umgt_taglib_media extends ui_mediastream {
     * Version 0.1, 26.12.2008<br />
     */
    public function onAfterAppend() {
-
    }
 
    /**
@@ -79,10 +76,16 @@ class umgt_taglib_media extends ui_mediastream {
       // execute the parent's onParseTime()
       parent::onParseTime();
 
+      // resolve missing alt attribute
+      $alt = $this->getAttribute('alt');
+      if ($alt === null) {
+         $this->setAttribute('alt', $this->getAttribute('title'));
+      }
+
       // generate the image tag
-      $imgsrc = parent::transform();
+      $imgSrc = parent::transform();
       $attributes = $this->getAttributesAsString($this->getAttributes(), array('alt', 'title'));
-      return '<img src="' . $imgsrc . '" ' . $attributes . ' style="width: 20px; height: 20px; border-width: 0px;" />';
+      return '<img src="' . $imgSrc . '" ' . $attributes . ' class="icon" />';
    }
 
 }

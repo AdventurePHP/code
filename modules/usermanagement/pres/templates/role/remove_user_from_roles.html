@@ -1,0 +1,29 @@
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::role"
+   class="umgt_remove_user_from_roles_controller"
+@>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
+<html:form name="Roles" method="post">
+   <form:addvalidator
+         class="MultiSelectFieldValidator"
+         button="Remove"
+         control="Roles"
+         />
+   <p>
+      Please choose one or more of the following roles:
+   </p>
+   <p>
+      <form:multiselect name="Roles" size="4"/>
+   </p>
+   <p>
+      <form:button name="Remove" value="Remove" class="formfield"/>
+   </p>
+</html:form>
+<html:template name="NoMoreRoles">
+   <p>
+      User <strong><template:placeholder name="User"/></strong> has no roles assigned at the moment!
+   </p>
+   <p>
+      To go back to the main view, please click <a href="<template:placeholder name="UserViewLink"/>">here</a>.
+   </p>
+</html:template>

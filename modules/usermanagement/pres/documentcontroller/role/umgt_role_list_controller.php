@@ -22,7 +22,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_list_controller
+ * @class umgt_role_list_controller
  *
  * Implements the controller list the existing roles.
  *
@@ -30,7 +30,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_list_controller extends umgt_base_controller {
+class umgt_role_list_controller extends umgt_base_controller {
 
    public function transformContent() {
 
@@ -45,6 +45,9 @@ class umgt_list_controller extends umgt_base_controller {
 
          $roleID = $role->getProperty('RoleID');
          $template->setPlaceHolder('DisplayName', $role->getProperty('DisplayName'));
+
+         $template->setPlaceHolder('Permissions', $this->getPermissionList($role));
+
          $template->setPlaceHolder('role_details', $this->generateLink(array('mainview' => 'role', 'roleview' => 'details', 'roleid' => $roleID)));
          $template->setPlaceHolder('role_edit', $this->generateLink(array('mainview' => 'role', 'roleview' => 'edit', 'roleid' => $roleID)));
          $template->setPlaceHolder('role_delete', $this->generateLink(array('mainview' => 'role', 'roleview' => 'delete', 'roleid' => $roleID)));
@@ -55,6 +58,17 @@ class umgt_list_controller extends umgt_base_controller {
       }
       $this->setPlaceHolder('RoleList', $buffer);
 
+   }
+
+   private function getPermissionList(GenericORMapperDataObject $role) {
+
+      $permissions = $this->getManager()->loadPermissionsWithRole($role);
+
+      $permissionList = array();
+      foreach ($permissions as $permission) {
+         $permissionList[] = $permission->getProperty('DisplayName');
+      }
+      return implode(', ', $permissionList);
    }
 
 }

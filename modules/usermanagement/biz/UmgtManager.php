@@ -540,13 +540,17 @@ class UmgtManager extends APFObject {
       return $oRM->loadObjectListByTextStatement('Permission', $select);
    }
 
+   public function getPermissionList() {
+      return $this->getORMapper()->loadRelatedObjects($this->getCurrentApplication(), 'Application2Permission');
+   }
+
    /**
     * @public
     *
     * Returns a user domain object.
     *
     * @param int $userId id of the desired user
-    * @return GenericORMapperDataObject[] The user domain object.
+    * @return GenericORMapperDataObject The user domain object.
     *
     * @author Christian Achatz
     * @version
@@ -837,7 +841,7 @@ class UmgtManager extends APFObject {
     * Returns a role domain object.
     *
     * @param int $roleID id of the desired role
-    * @return GenericORMapperDataObject[] The role domain object.
+    * @return GenericORMapperDataObject The role domain object.
     *
     * @author Christian Achatz
     * @version
@@ -984,7 +988,7 @@ class UmgtManager extends APFObject {
     * @version
     *  Version 0.1, 28.12.2008<br />
     */
-   public function assignUser2Groups(GenericORMapperDataObject $user, array $groups) {
+   public function attachUser2Groups(GenericORMapperDataObject $user, array $groups) {
 
       // get the mapper
       $oRM = &$this->getORMapper();
@@ -1009,12 +1013,10 @@ class UmgtManager extends APFObject {
     *  Version 0.1, 28.12.2008<br />
     *  Version 0.2, 18.02.2009 (Bugfix: addUser2Groups() does not exist)<br />
     */
-   public function assignUsers2Group(array $users, GenericORMapperDataObject $group) {
-
+   public function attachUsers2Group(array $users, GenericORMapperDataObject $group) {
       for ($i = 0; $i < count($users); $i++) {
-         $this->assignUser2Groups($users[$i], array($group));
+         $this->attachUser2Groups($users[$i], array($group));
       }
-
    }
 
    /**
@@ -1022,23 +1024,36 @@ class UmgtManager extends APFObject {
     *
     * Associates a role with a list of users.
     *
-    * @param GenericORMapperDataObject $role the role
-    * @param GenericORMapperDataObject[] $users the user list
+    * @param GenericORMapperDataObject[] $users The user list.
+    * @param GenericORMapperDataObject $role The role.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     */
-   public function assignRole2Users(GenericORMapperDataObject $role, array $users) {
-
-      // get the mapper
+   public function attachUsersToRole(array $users, GenericORMapperDataObject $role) {
       $orm = &$this->getORMapper();
-
-      // create the association
-      for ($i = 0; $i < count($users); $i++) {
-         $orm->createAssociation('Role2User', $role, $users[$i]);
+      foreach ($users as $user) {
+         $orm->createAssociation('Role2User', $role, $user);
       }
+   }
 
+   /**
+    * @public
+    *
+    * Associates a role with a list of users.
+    *
+    * @param GenericORMapperDataObject $user The user.
+    * @param GenericORMapperDataObject[] $roles The role list.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.12.2008<br />
+    */
+   public function attachUser2Roles(GenericORMapperDataObject $user, array $roles) {
+      foreach ($roles as $role) {
+         $this->attachUsersToRole(array($user), $role);
+      }
    }
 
    /**
@@ -1047,7 +1062,7 @@ class UmgtManager extends APFObject {
     * Loads all groups, that are assigned to a given user.
     *
     * @param GenericORMapperDataObject $user the user
-    * @return GenericORMapperDataObject[] The group list.
+    * @return array{GenericORMapperDataObject} The group list.
     *
     * @author Christian Achatz
     * @version
@@ -1166,7 +1181,7 @@ class UmgtManager extends APFObject {
       // setup the criterion
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
-      $crit->addRelationIndicator('Application2User', $app);
+      $crit->addRelationIndicator('Application2Role', $app);
 
       // load the user list
       return $oRM->loadNotRelatedObjects($user, 'Role2User', $crit);
@@ -1194,7 +1209,7 @@ class UmgtManager extends APFObject {
     *
     *  Loads a list of users, that don't have the given role.
     *
-    * @param GenericORMapperDataObject $role the role, the users should not have
+    * @param GenericORMapperDataObject $role The role, the users should not have
     * @return GenericORMapperDataObject[] Desired user list.
     *
     * @author Christian Achatz
@@ -1227,6 +1242,24 @@ class UmgtManager extends APFObject {
    public function detachUserFromRole(GenericORMapperDataObject $user, GenericORMapperDataObject $role) {
       $oRM = &$this->getORMapper();
       $oRM->deleteAssociation('Role2User', $role, $user);
+   }
+
+   /**
+    * @public
+    *
+    *  Detaches a user from one or more roles.
+    *
+    * @param GenericORMapperDataObject $user The user.
+    * @param GenericORMapperDataObject[] $roles The desired role to detach the user from.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.09.2011<br />
+    */
+   public function detachUserFromRoles(GenericORMapperDataObject $user, array $roles) {
+      foreach ($roles as $role) {
+         $this->detachUserFromRole($user, $role);
+      }
    }
 
    /**

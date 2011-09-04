@@ -37,51 +37,80 @@ class umgt_edit_controller extends umgt_base_controller {
    public function transformContent() {
 
       // get the current role id
-      $roleid = RequestHandler::getValue('roleid');
+      $roleId = RequestHandler::getValue('roleid');
 
       // initialize the form
-      $Form__Edit = &$this->getForm('RoleEdit');
-      $GroupID = &$Form__Edit->getFormElementByName('roleid');
-      $GroupID->setAttribute('value', $roleid);
+      $form = &$this->getForm('RoleEdit');
+      $permissionControl = &$form->getFormElementByName('Permission');
+      /* @var $permissionControl form_taglib_multiselect */
+
+      $hidden = &$form->getFormElementByName('roleid');
+      $hidden->setAttribute('value', $roleId);
 
       $uM = &$this->getManager();
+      $permissions = $uM->getPagedPermissionList();
 
-      if ($Form__Edit->isSent() == true) {
+      // load selected roles to be able to highlight them within the select field
+      $role = $uM->loadRoleByID($roleId);
+      $selectedPermissions = $role->loadRelatedObjects('Role2Permission');
 
-         if ($Form__Edit->isValid() == true) {
+      // fill multi-select field
+      $count = count($permissions);
+      for ($i = 0; $i < $count; $i++) {
+         $permissionControl->addOption(
+            $permissions[$i]->getProperty('DisplayName'),
+            $permissions[$i]->getObjectId(),
+            $this->isSelectedPermission($selectedPermissions, $permissions[$i])
+         );
+      }
 
-            $Fields = &$Form__Edit->getFormElementsByTagName('form:text');
+      if ($form->isSent() == true) {
+
+         if ($form->isValid() == true) {
+
+            $displayName = &$form->getFormElementByName('DisplayName');
+            $newlySelectedPermissions = &$permissionControl->getSelectedOptions();
 
             $role = new GenericDomainObject('Role');
-            $role->setProperty('RoleID', $roleid);
+            $role->setProperty('RoleID', $roleId);
+            $role->setProperty('DisplayName', $displayName->getValue());
 
-            $fieldcount = count($Fields);
-            for ($i = 0; $i < $fieldcount; $i++) {
-               $role->setProperty($Fields[$i]->getAttribute('name'), $Fields[$i]->getAttribute('value'));
-               // end for
+            foreach ($newlySelectedPermissions as $selectedPermission) {
+               /* @var $option select_taglib_option */
+               //$
             }
 
             $uM->saveRole($role);
             HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
 
          } else {
-            $this->setPlaceHolder('RoleEdit', $Form__Edit->transformForm());
+            $form->transformOnPlace();
          }
 
       } else {
 
          // load group
-         $role = $uM->loadRoleByID($roleid);
+         $role = $uM->loadRoleByID($roleId);
 
          // prefill form
-         $displayName = &$Form__Edit->getFormElementByName('DisplayName');
+         $displayName = &$form->getFormElementByName('DisplayName');
          $displayName->setAttribute('value', $role->getProperty('DisplayName'));
 
          // display form
-         $this->setPlaceHolder('RoleEdit', $Form__Edit->transformForm());
+         $form->transformOnPlace();
 
       }
 
+   }
+
+   private function isSelectedPermission(array $roles, GenericORMapperDataObject $currentRole) {
+      foreach ($roles as $role) {
+         /* @var $role GenericORMapperDataObject */
+         if ($role->getObjectId() == $currentRole->getObjectId()) {
+            return true;
+         }
+      }
+      return false;
    }
 
 }
