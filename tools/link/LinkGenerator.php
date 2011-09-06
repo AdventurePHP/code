@@ -314,6 +314,7 @@ final class Url {
     *
     * Creates a url representation from the current request url.
     *
+    * @param boolean $absolute True, in case the url should be absolute, false otherwise.
     * @return Url The current url representation.
     * @throws UrlFormatException In case the given string is not a valid url.
     *
@@ -323,6 +324,30 @@ final class Url {
     */
    public static function fromCurrent($absolute = false) {
       $url = self::fromString(Registry::retrieve('apf::core', 'CurrentRequestURL'));
+      if ($absolute === false) {
+         $url->setScheme(null);
+         $url->setHost(null);
+         $url->setPort(null);
+      }
+      return $url;
+   }
+
+   /**
+    * @public
+    * @static
+    *
+    * Creates a url representation from the referring url.
+    *
+    * @param boolean $absolute True, in case the url should be absolute, false otherwise.
+    * @return Url The current url representation.
+    * @throws UrlFormatException In case the given string is not a valid url.
+    *
+    * @author dave
+    * @version
+    * Version 0.1, 07.09.2011<br />
+    */
+   public static function fromReferer($absolute = false) {
+      $url = self::fromString($_SERVER['HTTP_REFERER']);
       if ($absolute === false) {
          $url->setScheme(null);
          $url->setHost(null);
