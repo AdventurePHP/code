@@ -395,8 +395,6 @@ class GenericORMapperSetup extends BaseMapper {
 
       }
 
-      echo printObject($indices);
-
       return implode(',' . PHP_EOL, $indices);
 
    }
