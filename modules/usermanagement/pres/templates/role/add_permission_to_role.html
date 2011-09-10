@@ -1,27 +1,28 @@
 <@controller
    namespace="modules::usermanagement::pres::documentcontroller::role"
-   class="umgt_ass2user_controller"
+   class="add_permission_to_role_controller"
 @>
+<h3>Add permissions to role</h3>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
-<html:form name="User" method="post">
+<html:form name="Permissions" method="post">
    <form:addvalidator
          class="MultiSelectFieldValidator"
          button="Assign"
-         control="User"
+         control="Permissions"
          />
    <p>
-      Please choose one or more of the following users:
+      Please choose one or more of the following permissions to add to role <strong><form:placeholder name="RoleName"/></strong>:
    </p>
    <p>
-      <form:multiselect name="User" size="4"/>
+      <form:multiselect name="Permissions" size="4"/>
    </p>
    <p>
       <form:button name="Assign" value="Assign" class="formfield"/>
    </p>
 </html:form>
-<html:template name="NoMoreUser">
+<html:template name="NoMorePermissions">
    <p>
-      All users are already assigned to role <strong><template:placeholder name="Role"/></strong>!
+      All permissions are already assigned to role <strong><template:placeholder name="Role"/></strong>!
    </p>
    <p>
       To go back to the main view, please click <a href="<template:placeholder name="RoleViewLink"/>">here</a>.

@@ -1,17 +1,29 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::role" class="umgt_detachfromuser_controller" @>
-<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::role"
+   class="umgt_detachfromuser_controller"
+@>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
 <html:form name="User" method="post">
-  <form:addvalidator
-    class="MultiSelectFieldValidator"
-    button="Det"
-    control="User"
-  />
-  In order to detach the role from a user, please choose one of the following users:
-  <br />
-  <br />
-  <form:multiselect name="User" size="5"/>
-  <br />
-  <br />
-  <form:button name="Det" value="Detatch" class="formfield"/>
+   <form:addvalidator
+         class="MultiSelectFieldValidator"
+         button="Det"
+         control="User"
+         />
+   <p>
+      In order to detach the role from a user, please choose one of the following users:
+   </p>
+   <p>
+      <form:multiselect name="User" size="4"/>
+   </p>
+   <p>
+      <form:button name="Det" value="Detach" class="formfield"/>
+   </p>
 </html:form>
-<html:template name="NoMoreUser">No more users are assigned to this role!</html:template>
+<html:template name="NoMoreUser">
+   <p>
+      No more users can be assigned to role <strong><template:placeholder name="Role"/></strong>!
+   </p>
+   <p>
+      To go back to the main view, please click <a href="<template:placeholder name="RoleViewLink"/>">here</a>.
+   </p>
+</html:template>

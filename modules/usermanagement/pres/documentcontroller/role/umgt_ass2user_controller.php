@@ -51,8 +51,10 @@ class umgt_ass2user_controller extends umgt_base_controller {
       // display a hint, if a role already assigned to all users
       if ($count == 0) {
          $template = &$this->getTemplate('NoMoreUser');
+         $template->setPlaceHolder('Role', $role->getProperty('DisplayName'));
+         $template->setPlaceHolder('RoleViewLink', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
          $template->transformOnPlace();
-         return true;
+         return;
       }
 
       // fill multi-select field

@@ -22,7 +22,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
 import('tools::http', 'HeaderManager');
 
 /**
- * @package modules::usermanagement::pres::documentcontroller
+ * @package modules::usermanagement::pres::documentcontroller::role
  * @class umgt_add_controller
  *
  * Implements the controller to add a role.

@@ -1,0 +1,31 @@
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::group"
+   class="umgt_group_remove_role_from_groups_controller"
+@>
+<h3>Remove role from groups</h3>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
+<html:form name="Groups" method="post">
+   <form:addvalidator
+         class="MultiSelectFieldValidator"
+         button="Remove"
+         control="Groups"
+         />
+   <p>
+      Please choose one or more of the following groups:
+   </p>
+   <p>
+      <form:multiselect name="Groups" size="4"/>
+   </p>
+   <p>
+      <form:button name="Remove" value="Remove" class="formfield"/>
+   </p>
+</html:form>
+
+<html:template name="NoMoreGroups">
+   <p>
+      No groups are assigned to role <strong><template:placeholder name="Role"/></strong>!
+   </p>
+   <p>
+      To go back to the main view, please click <a href="<template:placeholder name="RoleViewLink"/>">here</a>.
+   </p>
+</html:template>

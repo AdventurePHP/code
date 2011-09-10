@@ -1,4 +1,8 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::role" class="umgt_edit_controller" @>
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::role"
+   class="umgt_edit_controller"
+@>
+<h3>Edit role</h3>
 <p>
    Please fill in the following fields:
 </p>
@@ -13,15 +17,16 @@
             control="DisplayName"
             />
    </p>
+   <!--
    <p>
-      <strong>Permissions</strong>:
-      <form:multiselect name="Permission" size="4"/>
+      <strong>Comment</strong>:
+      <form:area name="Comment" optional="true"/>
       <form:addvalidator
-         class="MultiSelectFieldValidator"
+         class="TextLengthValidator"
          button="Edit"
-         control="Permission"
+         control="Comment"
       />
-   </p>
+   </p>-->
    <p>
       <form:button name="Edit" class="formfield" value="Save"/>
    </p>

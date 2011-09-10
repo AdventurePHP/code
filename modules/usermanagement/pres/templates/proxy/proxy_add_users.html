@@ -1,0 +1,28 @@
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::proxy"
+   class="umgt_proxy_add_users_controller"
+@>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<p>
+   Please select the users that should have visibility permissions on the application
+   object with id <strong><html:placeholder name="AppObjectId" /></strong> (type:
+   <em><html:placeholder name="ProxyType" /></em>) as well.
+</p>
+<html:form name="add_perm" method="post">
+   <form:listener control="users">
+      <div class="error-cont">
+         Please mark at least one user to add to the visibility definition!
+      </div>
+   </form:listener>
+   <div>
+      <label for="users">Users:</label>
+      <form:multiselect id="users" name="users" class="formfield" size="6"/>
+   </div>
+   <form:addvalidator
+      class="MultiSelectFieldValidator"
+      control="users"
+      button="add"
+   />
+   <form:button name="add" value="Add" class="formfield" />
+   <form:hidden name="proxyid" />
+</html:form>

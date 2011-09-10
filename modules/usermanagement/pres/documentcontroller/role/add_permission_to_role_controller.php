@@ -18,68 +18,65 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::request', 'RequestHandler');
 import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
 import('tools::http', 'HeaderManager');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::role
- * @class umgt_detachfromuser_controller
+ * @class add_permission_to_role_controller
  *
- * Implements the controller to detach a role from a user.
+ * Let's you add permissions to a role.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 27.12.2008<br />
+ * Version 0.1, 08.09.2011<br />
  */
-class umgt_detachfromuser_controller extends umgt_base_controller {
+class add_permission_to_role_controller extends umgt_base_controller {
 
    public function transformContent() {
 
-      // get the current roleid
-      $roleid = RequestHandler::getValue('roleid');
-
-      // initialize the form
-      $form = &$this->getForm('User');
-      $user = &$form->getFormElementByName('User');
-      /* @var $user form_taglib_multiselect */
-
+      $form = &$this->getForm('Permissions');
       $uM = &$this->getManager();
-      $role = $uM->loadRoleByID($roleid);
-      $users = $uM->loadUsersWithRole($role);
-      $count = count($users);
 
-      // display a hint, if no users are assigned to this role
-      if ($count == 0) {
-         $template = &$this->getTemplate('NoMoreUser');
+      $role = $uM->loadRoleByID(RequestHandler::getValue('roleid'));
+      $form->setPlaceHolder('RoleName', $role->getProperty('DisplayName'));
+
+      $permissions = $uM->loadPermissionsNotWithRole($role);
+
+      if (count($permissions) === 0) {
+         $template = &$this->getTemplate('NoMorePermissions');
          $template->setPlaceHolder('Role', $role->getProperty('DisplayName'));
          $template->setPlaceHolder('RoleViewLink', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
          $template->transformOnPlace();
          return;
       }
 
-      // fill the multi-select field
-      for ($i = 0; $i < $count; $i++) {
-         $user->addOption($users[$i]->getProperty('LastName') . ', ' . $users[$i]->getProperty('FirstName'), $users[$i]->getProperty('UserID'));
+      $permissionControl = &$form->getFormElementByName('Permissions');
+      /* @var $permissionControl form_taglib_multiselect */
+
+      foreach ($permissions as $permission) {
+         $permissionControl->addOption($permission->getProperty('DisplayName'), $permission->getObjectId());
       }
 
-      // detach users from the role
       if ($form->isSent() && $form->isValid()) {
 
-         $options = &$user->getSelectedOptions();
-         $newUsers = array();
-         for ($i = 0; $i < count($options); $i++) {
-            $newUser = new GenericDomainObject('User');
-            $newUser->setObjectId($options[$i]->getAttribute('value'));
-            $newUsers[] = $newUser;
-            unset($newUser);
+         $options = $permissionControl->getSelectedOptions();
+         $permissionsToAdd = array();
+         foreach ($options as $option) {
+            /* @var $option select_taglib_option */
+            $permissionToAdd = new GenericDomainObject('Permission');
+            $permissionToAdd->setObjectId($option->getValue());
+            $permissionsToAdd[] = $permissionToAdd;
+            unset($permissionToAdd);
          }
-         $uM->detachUsersFromRole($newUsers, $role);
+
+         $uM->attachPermissions2Role($permissionsToAdd, $role);
          HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
 
       } else {
          $form->transformOnPlace();
       }
+
 
    }
 

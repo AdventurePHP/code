@@ -43,16 +43,25 @@ class umgt_role_list_controller extends umgt_base_controller {
       $template = &$this->getTemplate('Role');
       foreach ($roleList as $role) {
 
-         $roleID = $role->getProperty('RoleID');
+         $roleId = $role->getObjectId();
          $template->setPlaceHolder('DisplayName', $role->getProperty('DisplayName'));
 
          $template->setPlaceHolder('Permissions', $this->getPermissionList($role));
+         $template->setPlaceHolder('Users', $this->getUserList($role));
+         $template->setPlaceHolder('Groups', $this->getGroupList($role));
 
-         $template->setPlaceHolder('role_details', $this->generateLink(array('mainview' => 'role', 'roleview' => 'details', 'roleid' => $roleID)));
-         $template->setPlaceHolder('role_edit', $this->generateLink(array('mainview' => 'role', 'roleview' => 'edit', 'roleid' => $roleID)));
-         $template->setPlaceHolder('role_delete', $this->generateLink(array('mainview' => 'role', 'roleview' => 'delete', 'roleid' => $roleID)));
-         $template->setPlaceHolder('role_ass2user', $this->generateLink(array('mainview' => 'role', 'roleview' => 'ass2user', 'roleid' => $roleID)));
-         $template->setPlaceHolder('role_detachfromuser', $this->generateLink(array('mainview' => 'role', 'roleview' => 'detachfromuser', 'roleid' => $roleID)));
+         $template->setPlaceHolder('role_details', $this->generateLink(array('mainview' => 'role', 'roleview' => 'details', 'roleid' => $roleId)));
+         $template->setPlaceHolder('role_edit', $this->generateLink(array('mainview' => 'role', 'roleview' => 'edit', 'roleid' => $roleId)));
+         $template->setPlaceHolder('role_delete', $this->generateLink(array('mainview' => 'role', 'roleview' => 'delete', 'roleid' => $roleId)));
+
+         $template->setPlaceHolder('AddPermissionToRole', $this->generateLink(array('mainview' => 'role', 'roleview' => 'add_permission_to_role', 'roleid' => $roleId)));
+         $template->setPlaceHolder('RemoveRoleFromPermission', $this->generateLink(array('mainview' => 'role', 'roleview' => 'remove_permission_from_role', 'roleid' => $roleId)));
+         $template->setPlaceHolder('AssignRoleToUser', $this->generateLink(array('mainview' => 'role', 'roleview' => 'ass2user', 'roleid' => $roleId)));
+         $template->setPlaceHolder('DetachRoleFromUser', $this->generateLink(array('mainview' => 'role', 'roleview' => 'detachfromuser', 'roleid' => $roleId)));
+
+         $template->setPlaceHolder('AddGroupToRole', $this->generateLink(array('mainview' => 'group', 'groupview' => 'add_role_to_groups', 'roleid' => $roleId)));
+         $template->setPlaceHolder('RemoveGroupFromRole', $this->generateLink(array('mainview' => 'group', 'groupview' => 'remove_role_from_groups', 'roleid' => $roleId)));
+
          $buffer .= $template->transformTemplate();
 
       }
@@ -69,6 +78,28 @@ class umgt_role_list_controller extends umgt_base_controller {
          $permissionList[] = $permission->getProperty('DisplayName');
       }
       return implode(', ', $permissionList);
+   }
+
+   private function getUserList(GenericORMapperDataObject $role) {
+
+      $users = $this->getManager()->loadUsersWithRole($role);
+
+      $userList = array();
+      foreach ($users as $user) {
+         $userList[] = $user->getProperty('Username');
+      }
+      return implode(', ', $userList);
+   }
+
+   private function getGroupList(GenericORMapperDataObject $role) {
+
+      $groups = $this->getManager()->loadGroupsWithRole($role);
+
+      $groupList = array();
+      foreach ($groups as $group) {
+         $groupList[] = $group->getProperty('DisplayName');
+      }
+      return implode(', ', $groupList);
    }
 
 }

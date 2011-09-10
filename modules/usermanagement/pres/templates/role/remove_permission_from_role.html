@@ -1,0 +1,30 @@
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::role"
+   class="remove_permission_from_role_controller"
+@>
+<h3>Remove permissions from role</h3>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
+<html:form name="Permissions" method="post">
+   <form:addvalidator
+         class="MultiSelectFieldValidator"
+         button="Remove"
+         control="Permissions"
+         />
+   <p>
+      Please choose one or more of the following permissions to add to role <strong><form:placeholder name="RoleName"/></strong>:
+   </p>
+   <p>
+      <form:multiselect name="Permissions" size="4"/>
+   </p>
+   <p>
+      <form:button name="Remove" value="Remove" class="formfield"/>
+   </p>
+</html:form>
+<html:template name="NoMorePermissions">
+   <p>
+      No permissions are assigned to role <strong><template:placeholder name="Role"/></strong>!
+   </p>
+   <p>
+      To go back to the main view, please click <a href="<template:placeholder name="RoleViewLink"/>">here</a>.
+   </p>
+</html:template>

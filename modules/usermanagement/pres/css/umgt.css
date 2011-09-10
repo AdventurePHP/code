@@ -124,3 +124,15 @@
    height: 40px;
    border: none;
 }
+
+.umgt-content .umgt-access-perms p {
+   margin: 0;
+}
+
+.umgt-content .umgt-access-perms p label {
+   display: inline-block;
+}
+
+.umgt-content .umgt-access-perms p input {
+   vertical-align: middle;
+}

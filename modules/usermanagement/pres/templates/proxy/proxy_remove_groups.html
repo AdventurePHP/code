@@ -1,28 +1,26 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::proxy" class="umgt_rem_permission_controller" @>
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::proxy"
+   class="umgt_proxy_remove_groups_controller"
+@>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
 <p>
-   Please select the users and groups that should no longer have visibility permissions on the
+   Please select the groups that should no longer have visibility permissions on the
    application object with id <strong><html:placeholder name="AppObjectId" /></strong> (type:
    <em><html:placeholder name="ProxyType" /></em>) as well.
 </p>
 <html:form name="add_perm" method="post">
-   <form:listener control="users">
+   <form:listener control="groups">
       <div class="error-cont">
-         Please mark at least one user or group to remove from the visibility definition!
+         Please mark at least one group to remove from the visibility definition!
       </div>
    </form:listener>
-   <div>
-      <label for="users">Users:</label>
-      <form:multiselect id="users" name="users" class="formfield" size="6" alt="groups"/>
-   </div>
    <div>
       <label for="groups">Groups:</label>
       <form:multiselect id="groups" name="groups" class="formfield" size="6"/>
    </div>
    <form:addvalidator
-      namespace="modules::usermanagement::pres::validator"
-      class="UserOrGroupActivatedValidator"
-      control="users"
+      class="MultiSelectFieldValidator"
+      control="groups"
       button="rem"
    />
    <form:button name="rem" value="Remove" class="formfield" />

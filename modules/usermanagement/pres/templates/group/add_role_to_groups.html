@@ -1,0 +1,31 @@
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::group"
+   class="umgt_group_add_role_to_groups_controller"
+@>
+<h3>Add role to groups</h3>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
+<html:form name="Groups" method="post">
+   <form:addvalidator
+         class="MultiSelectFieldValidator"
+         button="Add"
+         control="Groups"
+         />
+   <p>
+      Please choose one or more of the following groups:
+   </p>
+   <p>
+      <form:multiselect name="Groups" size="4"/>
+   </p>
+   <p>
+      <form:button name="Add" value="Add" class="formfield"/>
+   </p>
+</html:form>
+
+<html:template name="NoMoreGroups">
+   <p>
+      All groups are already assigned to role <strong><template:placeholder name="Role"/></strong>!
+   </p>
+   <p>
+      To go back to the main view, please click <a href="<template:placeholder name="RoleViewLink"/>">here</a>.
+   </p>
+</html:template>

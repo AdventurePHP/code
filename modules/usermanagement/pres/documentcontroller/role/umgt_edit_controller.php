@@ -41,44 +41,24 @@ class umgt_edit_controller extends umgt_base_controller {
 
       // initialize the form
       $form = &$this->getForm('RoleEdit');
-      $permissionControl = &$form->getFormElementByName('Permission');
-      /* @var $permissionControl form_taglib_multiselect */
 
       $hidden = &$form->getFormElementByName('roleid');
       $hidden->setAttribute('value', $roleId);
 
       $uM = &$this->getManager();
-      $permissions = $uM->getPagedPermissionList();
 
       // load selected roles to be able to highlight them within the select field
       $role = $uM->loadRoleByID($roleId);
-      $selectedPermissions = $role->loadRelatedObjects('Role2Permission');
-
-      // fill multi-select field
-      $count = count($permissions);
-      for ($i = 0; $i < $count; $i++) {
-         $permissionControl->addOption(
-            $permissions[$i]->getProperty('DisplayName'),
-            $permissions[$i]->getObjectId(),
-            $this->isSelectedPermission($selectedPermissions, $permissions[$i])
-         );
-      }
 
       if ($form->isSent() == true) {
 
          if ($form->isValid() == true) {
 
             $displayName = &$form->getFormElementByName('DisplayName');
-            $newlySelectedPermissions = &$permissionControl->getSelectedOptions();
 
             $role = new GenericDomainObject('Role');
             $role->setProperty('RoleID', $roleId);
             $role->setProperty('DisplayName', $displayName->getValue());
-
-            foreach ($newlySelectedPermissions as $selectedPermission) {
-               /* @var $option select_taglib_option */
-               //$
-            }
 
             $uM->saveRole($role);
             HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
@@ -88,9 +68,6 @@ class umgt_edit_controller extends umgt_base_controller {
          }
 
       } else {
-
-         // load group
-         $role = $uM->loadRoleByID($roleId);
 
          // prefill form
          $displayName = &$form->getFormElementByName('DisplayName');
@@ -102,17 +79,6 @@ class umgt_edit_controller extends umgt_base_controller {
       }
 
    }
-
-   private function isSelectedPermission(array $roles, GenericORMapperDataObject $currentRole) {
-      foreach ($roles as $role) {
-         /* @var $role GenericORMapperDataObject */
-         if ($role->getObjectId() == $currentRole->getObjectId()) {
-            return true;
-         }
-      }
-      return false;
-   }
-
 }
 
 ?>

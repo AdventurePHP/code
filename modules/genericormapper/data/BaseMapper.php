@@ -77,7 +77,7 @@ class BaseMapper extends APFObject {
 
    /**
     * @protected
-    * @var string[] Object relation table.
+    * @var array Object relation table.
     */
    protected $relationTable = array();
 

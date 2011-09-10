@@ -1,42 +1,59 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::group" class="umgt_list_controller" @>
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::group"
+   class="umgt_group_list_controller"
+@>
 <table class="vis-def">
    <thead>
       <tr>
          <td>&nbsp;</td>
          <td>Display name</td>
+         <td>User(s)</td>
+         <td>Role(s)</td>
          <td>Action</td>
       </tr>
    </thead>
    <tbody>
-      <html:placeholder name="Grouplist" />
+      <html:placeholder name="Grouplist"/>
    </tbody>
 </table>
 
 <html:template name="Group">
-  <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
-  <tr>
-     <td>
-         <umgt:media filename="cc-yast_kuser-128x128.png" alt="View group details" title="View group details" />
-     </td>
-    <td><template:placeholder name="DisplayName" /></td>
-    <td class="actions">
-      <a href="<template:placeholder name="group_details" />" title="View group details">
-        <umgt:media filename="cc-xmag-128x128.png" alt="View group details" title="View group details" />
-      </a>
-      <a href="<template:placeholder name="group_edit" />" title="Edit group">
-        <umgt:media filename="cc-package_settings-128x128.png" alt="Edit group" title="Edit group" />
-      </a>
-      <a href="<template:placeholder name="group_delete" />" title="Delete group">
-        <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete group" title="Delete group" />
-      </a>
-      <a href="<template:placeholder name="group_useradd" />" title="Add user to group">
-        <umgt:media filename="group_add_user.png" alt="Add user to group" title="Add user to group" />
-      </a>
-      <a href="<template:placeholder name="group_userrem" />" title="Remove users from group">
-        <umgt:media filename="group_remove_user.png" alt="Remove users from group" title="Remove users from group" />
-      </a>
-         <umgt:media filename="cc-yast_sysadmin_add2role-128x128.png" title="View user details" alt="View User Details"/>
-         <umgt:media filename="cc-yast_sysadmin_removefromrole-40x40.png" title="View user details" alt="View User Details"/>
-    </td>
-  </tr>
+   <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media"/>
+   <tr>
+      <td>
+         <umgt:media filename="cc-yast_kuser-128x128.png" alt="View group details" title="View group details"/>
+      </td>
+      <td>
+         <template:placeholder name="DisplayName"/>
+      </td>
+      <td>
+         <template:placeholder name="Users"/>
+      </td>
+      <td>
+         <template:placeholder name="Roles"/>
+      </td>
+      <td class="actions">
+         <a href="<template:placeholder name="group_details" />" title="View group details">
+            <umgt:media filename="cc-xmag-128x128.png" title="View group details"/>
+         </a>
+         <a href="<template:placeholder name="group_edit" />" title="Edit group">
+            <umgt:media filename="cc-package_settings-128x128.png" title="Edit group"/>
+         </a>
+         <a href="<template:placeholder name="group_delete" />" title="Delete group">
+            <umgt:media filename="cc-trashcan_empty2-128x128.png" title="Delete group"/>
+         </a>
+         <a href="<template:placeholder name="AddUsersToGroup" />" title="Add users to group">
+            <umgt:media filename="group_add_user.png" title="Add users to group"/>
+         </a>
+         <a href="<template:placeholder name="RemoveUsersFromGroup" />" title="Remove users from group">
+            <umgt:media filename="group_remove_user.png" title="Remove users from group"/>
+         </a>
+         <a href="<template:placeholder name="AddRolesToGroup" />" title="Add roles to group">
+            <umgt:media filename="cc-yast_sysadmin_add2role-128x128.png" title="Add roles to group"/>
+         </a>
+         <a href="<template:placeholder name="RemoveRolesFromGroup" />" title="Remove roles from group">
+            <umgt:media filename="cc-yast_sysadmin_removefromrole-40x40.png" title="Remove roles from group"/>
+         </a>
+      </td>
+   </tr>
 </html:template>

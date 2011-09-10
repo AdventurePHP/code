@@ -22,7 +22,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::proxy
- * @class umgt_list_controller
+ * @class umgt_proxy_list_controller
  *
  * Implements the controller listing the existing proxy objects.
  *
@@ -30,7 +30,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
  * @version
  * Version 0.1, 19.04.2010<br />
  */
-class umgt_list_controller extends umgt_base_controller {
+class umgt_proxy_list_controller extends umgt_base_controller {
 
    public function transformContent() {
 
@@ -68,18 +68,23 @@ class umgt_list_controller extends umgt_base_controller {
       $template = &$this->getTemplate('Proxy');
       foreach ($proxies as $proxy) {
 
-         $proxyId = $proxy->getProperty('AppProxyID');
+         $proxyId = $proxy->getObjectId();
 
-         $template->setPlaceHolder('ProxyId', $proxyId);
          $template->setPlaceHolder('AppObjectId', $proxy->getProperty('AppObjectId'));
 
          $type = $uM->loadVisibilityDefinitionType($proxy);
          $template->setPlaceHolder('AppProxyType', $type->getProperty('AppObjectName'));
 
+         $template->setPlaceHolder('Users', $this->getUsers($proxy));
+         $template->setPlaceHolder('Groups', $this->getGroups($proxy));
+
          $template->setPlaceHolder('proxy_details', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'details', 'proxyid' => $proxyId)));
-         $template->setPlaceHolder('proxy_add_perm', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxyaddperm', 'proxyid' => $proxyId)));
-         $template->setPlaceHolder('proxy_rem_perm', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxyremperm', 'proxyid' => $proxyId)));
          $template->setPlaceHolder('proxy_delete', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxydelete', 'proxyid' => $proxyId)));
+
+         $template->setPlaceHolder('proxy_add_user', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxy_add_users', 'proxyid' => $proxyId)));
+         $template->setPlaceHolder('proxy_remove_user', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxy_remove_users', 'proxyid' => $proxyId)));
+         $template->setPlaceHolder('proxy_add_group', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxy_add_groups', 'proxyid' => $proxyId)));
+         $template->setPlaceHolder('proxy_remove_group', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxy_remove_groups', 'proxyid' => $proxyId)));
 
          $buffer .= $template->transformTemplate();
       }
@@ -92,6 +97,25 @@ class umgt_list_controller extends umgt_base_controller {
 
       $this->setPlaceHolder('ProxyList', $buffer);
 
+   }
+
+
+   private function getUsers(GenericORMapperDataObject $proxy) {
+      $users = $this->getManager()->loadUsersWithVisibilityDefinition($proxy);
+      $userList = array();
+      foreach ($users as $user) {
+         $userList[] = $user->getProperty('Username');
+      }
+      return implode(', ', $userList);
+   }
+
+   private function getGroups(GenericORMapperDataObject $proxy) {
+      $groups = $this->getManager()->loadGroupsWithVisibilityDefinition($proxy);
+      $groupList = array();
+      foreach ($groups as $group) {
+         $groupList[] = $group->getProperty('DisplayName');
+      }
+      return implode(', ', $groupList);
    }
 
 }

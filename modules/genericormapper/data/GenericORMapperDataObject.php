@@ -73,7 +73,8 @@ interface GenericORMapperDataObject {
    public function deleteAssociations($relationName);
 
    /**
-    * @return GenericORMapperDataObject[]
+    * @param string $relationName The name of the relation to get the related objects with.
+    * @return GenericORMapperDataObject[] The list of related objects.
     */
    public function &getRelatedObjects($relationName);
 

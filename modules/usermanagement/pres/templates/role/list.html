@@ -7,7 +7,9 @@
       <tr>
          <td>&nbsp;</td>
          <td>Display name</td>
-         <td>Permissions</td>
+         <td>Permission(s)</td>
+         <td>User(s)</td>
+         <td>Group(s)</td>
          <td>Action</td>
       </tr>
    </thead>
@@ -28,28 +30,40 @@
       <td>
          <template:placeholder name="Permissions"/>
       </td>
+      <td>
+         <template:placeholder name="Users"/>
+      </td>
+      <td>
+         <template:placeholder name="Groups"/>
+      </td>
       <td class="actions">
-         <a href="<template:placeholder name=" role_details" />" title="View role details">
-            <umgt:media filename="cc-xmag-128x128.png" alt="View Role details" title="View role details"/>
+         <a href="<template:placeholder name="role_details" />" title="View role details">
+            <umgt:media filename="cc-xmag-128x128.png" title="View role details"/>
          </a>
-         <a href="<template:placeholder name=" role_edit" />" title="Edit role">
-            <umgt:media filename="cc-package_settings-128x128.png" alt="Edit role" title="Edit Role"/>
+         <a href="<template:placeholder name="role_edit" />" title="Edit role">
+            <umgt:media filename="cc-package_settings-128x128.png" title="Edit Role"/>
          </a>
-         <a href="<template:placeholder name=" role_delete" />" title="Delete role">
-            <umgt:media filename="cc-trashcan_empty2-128x128.png" alt="Delete role" title="Delete role"/>
+         <a href="<template:placeholder name="role_delete" />" title="Delete role">
+            <umgt:media filename="cc-trashcan_empty2-128x128.png" title="Delete role"/>
          </a>
-
-         <umgt:media filename="permission_add.png" alt="Detach role from user" title="Detach role from user"/>
-         <umgt:media filename="permission_remove.png" alt="Detach role from user" title="Detach role from user"/>
-
-         <a href="<template:placeholder name=" role_ass2user" />" title="Assign role to user">
-            <umgt:media filename="group_add_user.png" alt="Assign role to user" title="Assign role to user"/>
+         <a href="<template:placeholder name="AddPermissionToRole" />" title="Add permission to role">
+            <umgt:media filename="permission_add.png" title="Add permission to role"/>
          </a>
-         <a href="<template:placeholder name=" role_detachfromuser" />" title="Detach role from user">
-            <umgt:media filename="group_remove_user.png" alt="Detach role from user" title="Detach role from user"/>
+         <a href="<template:placeholder name="RemoveRoleFromPermission" />" title="Remove permission from role">
+            <umgt:media filename="permission_remove.png" title="Remove permission from role"/>
          </a>
-         <umgt:media filename="cc-yast_kuser_add2group-128x128.png" alt="Detach role from user" title="Detach role from user"/>
-         <umgt:media filename="cc-yast_kuser_removefromgroup-128x128.png" alt="Detach role from user" title="Detach role from user"/>
+         <a href="<template:placeholder name="AssignRoleToUser" />" title="Assign role to user">
+            <umgt:media filename="group_add_user.png" title="Assign role to user"/>
+         </a>
+         <a href="<template:placeholder name="DetachRoleFromUser" />" title="Detach role from user">
+            <umgt:media filename="group_remove_user.png" title="Detach role from user"/>
+         </a>
+         <a href="<template:placeholder name="AddGroupToRole" />" title="Add group to role">
+            <umgt:media filename="cc-yast_kuser_add2group-128x128.png" title="Add group to role"/>
+         </a>
+         <a href="<template:placeholder name="RemoveGroupFromRole" />" title="Remove group from role">
+            <umgt:media filename="cc-yast_kuser_removefromgroup-128x128.png" title="Remove group from role"/>
+         </a>
       </td>
    </tr>
 </html:template>

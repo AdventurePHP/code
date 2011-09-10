@@ -37,30 +37,35 @@ class umgt_useradd_controller extends umgt_base_controller {
    public function transformContent() {
 
       // initialize form
-      $Form__User = &$this->getForm('User');
-      $user = &$Form__User->getFormElementByName('User');
-      $groupid = RequestHandler::getValue('groupid');
+      $form = &$this->getForm('User');
+      $userControl = &$form->getFormElementByName('User');
+
+      /* @var $userControl form_taglib_multiselect */
+      $groupId = RequestHandler::getValue('groupid');
+
       $uM = &$this->getManager();
-      $group = $uM->loadGroupById($groupid);
+      $group = $uM->loadGroupById($groupId);
+
       $users = $uM->loadUsersNotWithGroup($group);
       $count = count($users);
 
       // display hint, if group has associated all users
       if ($count == 0) {
          $template = &$this->getTemplate('NoMoreUser');
+         $template->setPlaceHolder('Group', $group->getProperty('DisplayName'));
+         $template->setPlaceHolder('GroupViewLink', $this->generateLink(array('mainview' => 'group', 'groupview' => null, 'groupid' => null)));
          $template->transformOnPlace();
-         return true;
+         return;
       }
 
-      // fill multi select field
+      // fill multi-select field
       for ($i = 0; $i < $count; $i++) {
-         $user->addOption($users[$i]->getProperty('LastName') . ', ' . $users[$i]->getProperty('FirstName'), $users[$i]->getProperty('UserID'));
+         $userControl->addOption($users[$i]->getProperty('DisplayName'), $users[$i]->getObjectId());
       }
 
-      // add users, if selected
-      if ($Form__User->isSent() && $Form__User->isValid()) {
+      if ($form->isSent() && $form->isValid()) {
 
-         $options = &$user->getSelectedOptions();
+         $options = &$userControl->getSelectedOptions();
          $count = count($options);
 
          $newUsers = array();
@@ -71,11 +76,11 @@ class umgt_useradd_controller extends umgt_base_controller {
             unset($newUser);
          }
 
-         $uM->assignUsers2Group($newUsers, $group);
+         $uM->attachUsers2Group($newUsers, $group);
          HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
 
       } else {
-         $Form__User->transformOnPlace();
+         $form->transformOnPlace();
       }
 
    }

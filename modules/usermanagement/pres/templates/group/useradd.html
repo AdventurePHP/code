@@ -1,17 +1,29 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::group" class="umgt_useradd_controller" @>
-<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::group"
+   class="umgt_useradd_controller"
+@>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
 <html:form name="User" method="post">
-  <form:addvalidator
-    class="MultiSelectFieldValidator"
-    button="Add"
-    control="User"
-  />
-  Please choose one or more of the following users:
-  <br />
-  <br />
-  <form:multiselect name="User" size="4" />
-  <br />
-  <br />
-  <form:button name="Add" value="Add" class="formfield"/>
+   <form:addvalidator
+         class="MultiSelectFieldValidator"
+         button="Add"
+         control="User"
+         />
+   <p>
+      Please choose one or more of the following users:
+   </p>
+   <p>
+      <form:multiselect name="User" size="4"/>
+   </p>
+   <p>
+      <form:button name="Add" value="Add" class="formfield"/>
+   </p>
 </html:form>
-<html:template name="NoMoreUser">All users are already assigned to this group!</html:template>
+<html:template name="NoMoreUser">
+   <p>
+      All users are already assigned to group <strong><template:placeholder name="Group"/></strong>!
+   </p>
+   <p>
+      To go back to the main view, please click <a href="<template:placeholder name="GroupViewLink"/>">here</a>.
+   </p>
+</html:template>

@@ -231,11 +231,6 @@ class GenericORRelationMapper extends GenericORMapper {
     */
    protected function buildSelectStatementByCriterion($objectName, GenericCriterionObject $criterion) {
 
-      // invoke benchmarker
-      $t = &Singleton::getInstance('BenchmarkTimer');
-      $id = 'GenericORRelationMapper::buildSelectStatementByCriterion()';
-      $t->start($id);
-
       // generate relation joins
       $joinList = $this->buildJoinStatementsByCriterion($objectName, $criterion);
       $whereList = $this->buildWhereStatementsByCriterion($objectName, $criterion);
@@ -262,7 +257,6 @@ class GenericORRelationMapper extends GenericORMapper {
          $select .= ' LIMIT ' . implode(',', $limit);
       }
 
-      $t->stop($id);
       return $select;
    }
 
@@ -334,7 +328,7 @@ class GenericORRelationMapper extends GenericORMapper {
       if ($targetObjectName === null) {
          throw new GenericORMapperException(
             '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "' . $relationName
-            . '" found! Please re-check your relation configuration.',
+            . '" found for object "' . $objectName . '"! Please re-check your relation configuration.',
             E_USER_ERROR
          );
       }
@@ -432,6 +426,16 @@ class GenericORRelationMapper extends GenericORMapper {
       $objectName = $object->getObjectName();
       $sourceObject = $this->mappingTable[$objectName];
       $targetObjectName = $this->getRelatedObjectNameByRelationName($objectName, $relationName);
+
+      // check for null relations to prevent "undefined index" errors.
+      if ($targetObjectName === null) {
+         throw new GenericORMapperException(
+            '[GenericORRelationMapper::loadRelatedObjects()] No relation with name "' . $relationName
+            . '" found for object "' . $objectName . '"! Please re-check your relation configuration.',
+            E_USER_ERROR
+         );
+      }
+
       $targetObject = $this->mappingTable[$targetObjectName];
 
       // create an empty criterion if the argument was null

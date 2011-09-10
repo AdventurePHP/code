@@ -1,4 +1,7 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::proxy" class="umgt_proxyadd_controller" @>
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::proxy"
+   class="umgt_proxy_add_controller"
+@>
 <p>
    Let's you add a visibility definition. Please choose an appropriate object type along with a
    given user or group.
@@ -37,5 +40,26 @@
       control="users"
       button="add"
    />
+   <!--
+   <div class="umgt-access-perms">
+      <h4>Access permissions:</h4>
+      <p>
+         <form:checkbox id="read-perm" name="ReadPermission"/>
+         <label for="read-perm">Read permission</label>
+      </p>
+      <p>
+         <form:checkbox id="write-perm" name="WritePermission"/>
+         <label for="write-perm">Write permission</label>
+      </p>
+      <p>
+         <form:checkbox id="link-perm" name="LinkPermission"/>
+         <label for="link-perm">Link permission</label>
+      </p>
+      <p>
+         <form:checkbox id="delete-perm" name="DeletePermission"/>
+         <label for="delete-perm">Delete permission</label>
+      </p>
+   </div>
+   -->
    <form:button name="add" value="Add" class="formfield" />
 </html:form>
