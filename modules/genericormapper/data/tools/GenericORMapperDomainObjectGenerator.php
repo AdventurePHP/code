@@ -163,7 +163,7 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
                ' * ' . PHP_EOL .
                ' * This class provides the descriptive getter and setter methods for the "' . $this->serviceObjectsTable[$name]['Class'] . '" domain object.' . PHP_EOL .
                ' */' . PHP_EOL .
-               'class ' . $this->serviceObjectsTable[$name]['Class'] . 'Base extends ' . $baseClass . ' {' . PHP_EOL . PHP_EOL .
+               'abstract class ' . $this->serviceObjectsTable[$name]['Class'] . 'Base extends ' . $baseClass . ' {' . PHP_EOL . PHP_EOL .
                '   public function __construct($objectName = null){' . PHP_EOL .
                '      parent::__construct(\'' . $name . '\');' . PHP_EOL .
                '   }' . PHP_EOL .
