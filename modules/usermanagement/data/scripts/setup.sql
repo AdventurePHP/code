@@ -101,9 +101,9 @@ CREATE TABLE IF NOT EXISTS `ass_role2user` (
 
 CREATE TABLE IF NOT EXISTS `ass_role2group` (
   `Source_RoleID` INT(5) UNSIGNED NOT NULL default '0',
-  `Target_UserID` INT(5) UNSIGNED NOT NULL default '0',
-  KEY `JOIN` (`Source_RoleID`, `Target_UserID`),
-  KEY `REVERSEJOIN` (`Target_UserID`, `Source_RoleID`)
+  `Target_GroupID` INT(5) UNSIGNED NOT NULL default '0',
+  KEY `JOIN` (`Source_RoleID`, `Target_GroupID`),
+  KEY `REVERSEJOIN` (`Target_GroupID`, `Source_RoleID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `cmp_application2user` (
