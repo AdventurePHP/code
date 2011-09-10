@@ -87,9 +87,9 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
       $filename = APPS__PATH . '/' . str_replace('::', '/', $this->serviceObjectsTable[$name]['Namespace']) . '/' . $this->serviceObjectsTable[$name]['Class'] . '.php';
 
       $content = '<?php' . PHP_EOL . PHP_EOL .
-              $this->generateBaseObjectCode($name) . PHP_EOL . PHP_EOL .
-              $this->generateObjectCode($name) . PHP_EOL . PHP_EOL .
-              '?>';
+                 $this->generateBaseObjectCode($name) . PHP_EOL . PHP_EOL .
+                 $this->generateObjectCode($name) . PHP_EOL . PHP_EOL .
+                 '?>';
 
       file_put_contents($filename, $content);
    }
@@ -107,7 +107,7 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
       $filename = APPS__PATH . '/' . str_replace('::', '/', $this->serviceObjectsTable[$name]['Namespace']) . '/' . $this->serviceObjectsTable[$name]['Class'] . '.php';
 
       $content = file_get_contents($filename);
-      $newcode = $this->generateBaseObjectCode($name);
+      $newCode = $this->generateBaseObjectCode($name);
 
       // replace only base object area, don't change anything else!
       // <<< *IMPORTANT* There seems to be a bug in preg_replace() which
@@ -119,11 +119,11 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
         $content
         ); */
       // *WORKAROUND* with preg_* functions not found, used some string funtions instead:
-      $starttag = '//<*' . $this->serviceObjectsTable[$name]['Class'] . 'Base:start*>';
-      $endtag = '<*' . $this->serviceObjectsTable[$name]['Class'] . 'Base:end*>';
-      $start = strpos($content, $starttag);
-      $length = strpos($content, $endtag, $start) + strlen($endtag) - $start;
-      $content = substr_replace($content, $newcode, $start, $length);
+      $startTag = '//<*' . $this->serviceObjectsTable[$name]['Class'] . 'Base:start*>';
+      $endTag = '<*' . $this->serviceObjectsTable[$name]['Class'] . 'Base:end*>';
+      $start = strpos($content, $startTag);
+      $length = strpos($content, $endTag, $start) + strlen($endTag) - $start;
+      $content = substr_replace($content, $newCode, $start, $length);
       // If anyone has further information or a solution for this, please
       // write a post in the APF-forum. PHP-version: found at 5.3.5  >>>
 
@@ -144,33 +144,42 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
               '/**' . PHP_EOL .
               ' * Automatically generated BaseObject for ' . $this->serviceObjectsTable[$name]['Class'] . '. !!DO NOT CHANGE THIS BASE-CLASS!!' . PHP_EOL .
               ' * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!' . PHP_EOL .
-              ' * You can change class "' . $this->serviceObjectsTable[$name]['Class'] . '" which will extend this base-class.' . PHP_EOL .
+              ' * You can change class "' . $this->serviceObjectsTable[$name]['Class'] . '" which extends this base-class.' . PHP_EOL .
               ' */' . PHP_EOL;
 
       if (isset($this->serviceObjectsTable[$name]['Base'])) {
-         $BaseNamespace = $this->serviceObjectsTable[$name]['Base']['Namespace'];
-         $BaseClass = $this->serviceObjectsTable[$name]['Base']['Class'];
+         $baseNamespace = $this->serviceObjectsTable[$name]['Base']['Namespace'];
+         $baseClass = $this->serviceObjectsTable[$name]['Base']['Class'];
       } else {
-         $BaseNamespace = $this->DefaultBaseNamespace;
-         $BaseClass = $this->DefaultBaseClass;
+         $baseNamespace = $this->DefaultBaseNamespace;
+         $baseClass = $this->DefaultBaseClass;
       }
 
-      $code.= 'import(\'' . $BaseNamespace . '\', \'' . $BaseClass . '\');' . PHP_EOL .
-              'class ' . $this->serviceObjectsTable[$name]['Class'] . 'Base extends ' . $BaseClass . ' {' . PHP_EOL . PHP_EOL .
-              '    public function __construct($objectName = null){' . PHP_EOL .
-              '        parent::__construct(\'' . $name . '\');' . PHP_EOL .
-              '    }' . PHP_EOL .
-              PHP_EOL;
+      $code .= 'import(\'' . $baseNamespace . '\', \'' . $baseClass . '\');' . PHP_EOL .
+               PHP_EOL .
+               '/**' . PHP_EOL .
+               ' * @package ' . $this->serviceObjectsTable[$name]['Namespace'] . PHP_EOL .
+               ' * @class ' . $this->serviceObjectsTable[$name]['Class'] . 'Base' . PHP_EOL .
+               ' * ' . PHP_EOL .
+               ' * This class provides the descriptive getter and setter methods for the "' . $this->serviceObjectsTable[$name]['Class'] . '" domain object.' . PHP_EOL .
+               ' */' . PHP_EOL .
+               'class ' . $this->serviceObjectsTable[$name]['Class'] . 'Base extends ' . $baseClass . ' {' . PHP_EOL . PHP_EOL .
+               '   public function __construct($objectName = null){' . PHP_EOL .
+               '      parent::__construct(\'' . $name . '\');' . PHP_EOL .
+               '   }' . PHP_EOL .
+               PHP_EOL;
 
-      foreach ($this->mappingTable[$name] as $Key => $DUMMY) {
-         if ($Key === 'ID' || $Key === 'Table')
+      foreach ($this->mappingTable[$name] as $key => $DUMMY) {
+         if ($key === 'ID' || $key === 'Table') {
             continue;
-         $code .= $this->generateGetterCode($Key);
-         $code .= $this->generateSetterCode($Key);
+         }
+         $code .= $this->generateGetterCode($key);
+         $code .= $this->generateSetterCode($key, $this->serviceObjectsTable[$name]['Class']);
       }
 
-      $code.= '}' . PHP_EOL .
-              '// DO NOT CHANGE THIS COMMENT! <*' . $this->serviceObjectsTable[$name]['Class'] . 'Base:end*>';
+      $code .= '}' . PHP_EOL .
+               PHP_EOL .
+               '// DO NOT CHANGE THIS COMMENT! <*' . $this->serviceObjectsTable[$name]['Class'] . 'Base:end*>';
       return $code;
    }
 
@@ -184,25 +193,33 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
     * @version 0.1,  15.01.2011<br />
     */
    protected function generateGetterCode($name) {
-      return '    public function get' . $name . '() {' . PHP_EOL .
-      '        return $this->getProperty(\'' . $name . '\');' . PHP_EOL .
-      '    }' . PHP_EOL . PHP_EOL;
+      return '   /**' . PHP_EOL .
+             '    * @return string The value for property "' . $name . '".' . PHP_EOL .
+             '    */' . PHP_EOL .
+             '   public function get' . $name . '() {' . PHP_EOL .
+             '      return $this->getProperty(\'' . $name . '\');' . PHP_EOL .
+             '   }' . PHP_EOL . PHP_EOL;
    }
 
    /**
     * Generates the PHP code for a property's setter with the given name.
     *
     * @param string $name The property's name.
+    * @param string $className The name of the class.
     * @return string The PHP code.
     *
     * @author Ralf Schubert
     * @version 0.1,  15.01.2011<br />
     */
-   protected function generateSetterCode($name) {
-      return '    public function set' . $name . '($value) {' . PHP_EOL .
-      '        $this->setProperty(\'' . $name . '\', $value);' . PHP_EOL .
-      '        return $this;' . PHP_EOL .
-      '    }' . PHP_EOL . PHP_EOL;
+   protected function generateSetterCode($name, $className) {
+      return '   /**' . PHP_EOL .
+             '    * @param string $value The value to set for property "' . $name . '".' . PHP_EOL .
+             '    * @return ' . $className . ' The domain object for further usage.' . PHP_EOL .
+             '    */' . PHP_EOL .
+             '   public function set' . $name . '($value) {' . PHP_EOL .
+             '      $this->setProperty(\'' . $name . '\', $value);' . PHP_EOL .
+             '      return $this;' . PHP_EOL .
+             '   }' . PHP_EOL . PHP_EOL;
    }
 
    /**
@@ -216,20 +233,33 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
     */
    protected function generateObjectCode($name) {
       return
-      '/**' . PHP_EOL .
-      ' * Domain object for "' . $this->serviceObjectsTable[$name]['Class'] . '"' . PHP_EOL .
-      ' * Use this class to add your own functions.' . PHP_EOL .
-      ' */' . PHP_EOL .
-      'class ' . $this->serviceObjectsTable[$name]['Class'] . ' extends ' . $this->serviceObjectsTable[$name]['Class'] . 'Base {' . PHP_EOL .
-      '    /**' . PHP_EOL .
-      '     * Call parent\'s function because the objectName needs to be set.' . PHP_EOL .
-      '     */' . PHP_EOL .
-      '    public function __construct($objectName = null){' . PHP_EOL .
-      '        parent::__construct();' . PHP_EOL .
-      '    }' . PHP_EOL .
-      PHP_EOL .
-      '}';
+            '/**' . PHP_EOL .
+            ' * @package ' . $this->serviceObjectsTable[$name]['Namespace'] . PHP_EOL .
+            ' * @class ' . $this->serviceObjectsTable[$name]['Class'] . PHP_EOL .
+            ' * ' . PHP_EOL .
+            ' * This class represents the "' . $this->serviceObjectsTable[$name]['Class'] . '" domain object.' . PHP_EOL .
+            ' * <p/>' . PHP_EOL .
+            ' * Please use this class to add your own functionality.' . PHP_EOL .
+            ' */' . PHP_EOL .
+            'class ' . $this->serviceObjectsTable[$name]['Class'] . ' extends ' . $this->serviceObjectsTable[$name]['Class'] . 'Base {' . PHP_EOL .
+            PHP_EOL .
+            '   /**' . PHP_EOL .
+            '    * Call the parent\'s constructor because the object name needs to be set.' . PHP_EOL .
+            '    * <p/>' . PHP_EOL .
+            '    * To create an instance of this object, just call' . PHP_EOL .
+            '    * <code>' . PHP_EOL .
+            '    * $object = new ' . $this->serviceObjectsTable[$name]['Class'] . '();' . PHP_EOL .
+            '    * </code>' . PHP_EOL .
+            '    *' . PHP_EOL .
+            '    * @param string $objectName The internal object name of the domain object.' . PHP_EOL .
+            '    */' . PHP_EOL .
+            '   public function __construct($objectName = null){' . PHP_EOL .
+            '      parent::__construct();' . PHP_EOL .
+            '   }' . PHP_EOL .
+            PHP_EOL .
+            '}';
    }
 
 }
+
 ?>
