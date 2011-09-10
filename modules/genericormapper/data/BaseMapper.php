@@ -86,7 +86,7 @@ class BaseMapper extends APFObject {
     * @since 1.14
     * @var string[] Domain object table
     */
-   protected $serviceObjectsTable = array();
+   protected $domainObjectsTable = array();
 
    /**
     * @protected
@@ -218,8 +218,8 @@ class BaseMapper extends APFObject {
       }
 
       // create service object table if necessary to gain performance
-      if (count($this->serviceObjectsTable) === 0) {
-         $this->createServiceObjectsTable();
+      if (count($this->domainObjectsTable) === 0) {
+         $this->createDomainObjectsTable();
       }
 
       // do not initialize the lookup tables more than once per session.
@@ -259,6 +259,7 @@ class BaseMapper extends APFObject {
 
       // invoke benchmark timer
       $t = &Singleton::getInstance('BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::createMappingTable()');
 
       // get object configuration
@@ -304,6 +305,7 @@ class BaseMapper extends APFObject {
 
       // invoke benchmark timer
       $t = &Singleton::getInstance('BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::createRelationTable()');
 
       // Get relation configuration
@@ -335,10 +337,11 @@ class BaseMapper extends APFObject {
     * @version
     * Version 0.1, 15.01.2011<br />
     */
-   protected function createServiceObjectsTable() {
+   protected function createDomainObjectsTable() {
 
       // invoke benchmark timer
       $t = &Singleton::getInstance('BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::createServiceObjectsTable()');
 
       // get object configuration if there is one
@@ -346,12 +349,12 @@ class BaseMapper extends APFObject {
          $serviceObjectsConfig = $this->getConfiguration($this->configNamespace, $this->configNameAffix . '_domainobjects.' . $this->getConfigFileExtension());
          foreach ($serviceObjectsConfig->getSectionNames() as $sectionName) {
             $section = $serviceObjectsConfig->getSection($sectionName);
-            $this->serviceObjectsTable[$sectionName] = array();
+            $this->domainObjectsTable[$sectionName] = array();
             foreach ($section->getValueNames() as $valueName) {
-               $this->serviceObjectsTable[$sectionName][$valueName] = $section->getValue($valueName);
+               $this->domainObjectsTable[$sectionName][$valueName] = $section->getValue($valueName);
             }
             if ($section->getSection('Base') !== null) {
-               $this->serviceObjectsTable[$sectionName]['Base'] = array(
+               $this->domainObjectsTable[$sectionName]['Base'] = array(
                   'Namespace' => $section->getSection('Base')->getValue('Namespace'),
                   'Class' => $section->getSection('Base')->getValue('Class'),
                );
@@ -379,6 +382,7 @@ class BaseMapper extends APFObject {
    public function addMappingConfiguration($configNamespace, $configNameAffix) {
 
       $t = &Singleton::getInstance('BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addMappingConfiguration()');
 
       // add config, if not already included
@@ -444,6 +448,7 @@ class BaseMapper extends APFObject {
    public function addRelationConfiguration($configNamespace, $configNameAffix) {
 
       $t = &Singleton::getInstance('BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addRelationConfiguration()');
 
       // add config, if not already included
@@ -509,6 +514,7 @@ class BaseMapper extends APFObject {
    public function addDomainObjectsConfiguration($configNamespace, $configNameAffix) {
 
       $t = &Singleton::getInstance('BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addServiceObjectsConfiguration()');
 
       // add config, if not already included
@@ -535,8 +541,8 @@ class BaseMapper extends APFObject {
          }
 
          foreach ($addObjects as $objectName => $DUMMY) {
-            if (!isset($this->serviceObjectsTable[$objectName])) {
-               $this->serviceObjectsTable[$objectName] = $DUMMY;
+            if (!isset($this->domainObjectsTable[$objectName])) {
+               $this->domainObjectsTable[$objectName] = $DUMMY;
             }
          }
 

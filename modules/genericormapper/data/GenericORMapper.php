@@ -421,9 +421,9 @@ class GenericORMapper extends BaseMapper {
       if ($properties !== false) {
 
          // create service object if needed
-         if (isset($this->serviceObjectsTable[$objectName])) {
-            import($this->serviceObjectsTable[$objectName]['Namespace'], $this->serviceObjectsTable[$objectName]['Class']);
-            $object = new $this->serviceObjectsTable[$objectName]['Class']($objectName);
+         if (isset($this->domainObjectsTable[$objectName])) {
+            import($this->domainObjectsTable[$objectName]['Namespace'], $this->domainObjectsTable[$objectName]['Class']);
+            $object = new $this->domainObjectsTable[$objectName]['Class']($objectName);
          } else {
             $object = new GenericDomainObject($objectName);
          }

@@ -1131,7 +1131,7 @@ class GenericORRelationMapper extends GenericORMapper {
       return array(
          'mappingTable',
          'relationTable',
-         'serviceObjectsTable',
+         'domainObjectsTable',
          '__Context',
          '__Language',
          'serviceType',
