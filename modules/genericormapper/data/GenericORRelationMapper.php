@@ -69,11 +69,11 @@ class GenericORRelationMapper extends GenericORMapper {
    /**
     * @public
     *
-    * Load an object by a given criterion object.<br />
+    * Load an object by a given criterion object.
     *
-    * @param string $objectName name of the desired objects
-    * @param GenericCriterionObject $criterion criterion object
-    * @return GenericORMapperDataObject[] List of domain objects.
+    * @param string $objectName The name of the desired objects.
+    * @param GenericCriterionObject $criterion The selection criterion.
+    * @return GenericORMapperDataObject The desired domain object.
     *
     * @author Christian Achatz
     * @version
