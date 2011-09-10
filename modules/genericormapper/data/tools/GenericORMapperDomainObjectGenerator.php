@@ -175,6 +175,7 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
          }
          $code .= $this->generateGetterCode($key);
          $code .= $this->generateSetterCode($key, $this->serviceObjectsTable[$name]['Class']);
+         $code .= $this->generateDeleteCode($key, $this->serviceObjectsTable[$name]['Class']);
       }
 
       $code .= '}' . PHP_EOL .
@@ -198,6 +199,27 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
              '    */' . PHP_EOL .
              '   public function get' . $name . '() {' . PHP_EOL .
              '      return $this->getProperty(\'' . $name . '\');' . PHP_EOL .
+             '   }' . PHP_EOL . PHP_EOL;
+   }
+
+   /**
+    * Generates the PHP code for a property's delete method with the given name.
+    *
+    * @param string $name The property's name.
+    * @param string $className The name of the class.
+    * @return string The PHP code.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 10.09.2011<br />
+    */
+   protected function generateDeleteCode($name, $className) {
+      return '   /**' . PHP_EOL .
+             '    * @return ' . $className . ' The domain object for further usage.' . PHP_EOL .
+             '    */' . PHP_EOL .
+             '   public function delete' . $name . '() {' . PHP_EOL .
+             '      $this->deleteProperty(\'' . $name . '\');' . PHP_EOL .
+             '      return $this;' . PHP_EOL .
              '   }' . PHP_EOL . PHP_EOL;
    }
 
