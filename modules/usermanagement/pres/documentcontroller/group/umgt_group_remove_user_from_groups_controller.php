@@ -61,7 +61,7 @@ class umgt_group_remove_user_from_groups_controller extends umgt_base_controller
          $groupsToRemove = array();
          foreach ($options as $option) {
             /* @var $option select_taglib_option */
-            $groupToRemove = new GenericDomainObject('Group');
+            $groupToRemove = new UmgtGroup();
             $groupToRemove->setObjectId($option->getValue());
             $groupsToRemove[] = $groupToRemove;
             unset($groupToRemove);

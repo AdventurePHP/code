@@ -1,5 +1,5 @@
 <?php
-   /**
+/**
  * <!--
  * This file is part of the adventure php framework (APF) published under
  * http://adventure-php-framework.org.
@@ -36,25 +36,23 @@ class umgt_delete_controller extends umgt_base_controller {
 
    public function transformContent() {
 
-      $userid = RequestHandler::getValue('userid');
+      $userId = RequestHandler::getValue('userid');
       $uM = &$this->getManager();
-      $User = $uM->loadUserById($userid);
-      $this->setPlaceHolder('DisplayName', $User->getProperty('DisplayName'));
-      $Form__No = &$this->getForm('UserDelNo');
-      $Form__Yes = &$this->getForm('UserDelYes');
+      $user = $uM->loadUserById($userId);
+      $this->setPlaceHolder('DisplayName', $user->getProperty('DisplayName'));
+      $formNo = &$this->getForm('UserDelNo');
+      $formYes = &$this->getForm('UserDelYes');
 
-      if ($Form__Yes->isSent()) {
-
-         $User = new GenericDomainObject('User');
-         $User->setProperty('UserID', $userid);
-         $uM->deleteUser($User);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
-
-      } elseif ($Form__No->isSent()) {
-         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
+      if ($formYes->isSent()) {
+         $user = new UmgtUser();
+         $user->setObjectId($userId);
+         $uM->deleteUser($user);
+         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => null, 'userid' => null)));
+      } elseif ($formNo->isSent()) {
+         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => null, 'userid' => null)));
       } else {
-         $Form__No->transformOnPlace();
-         $Form__Yes->transformOnPlace();
+         $formNo->transformOnPlace();
+         $formYes->transformOnPlace();
       }
 
    }

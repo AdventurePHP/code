@@ -32,7 +32,8 @@ abstract class permission_base_controller extends umgt_base_controller {
 
       $objects = array();
       foreach ($selectedOptions as $selectedUser) {
-         $object = new GenericDomainObject($objectName);
+         $object = new $objectName;
+         /* @var $object UmgtUser|UmgtGroup */
          $object->setObjectId($selectedUser->getAttribute('value'));
          $objects[] = $object;
       }

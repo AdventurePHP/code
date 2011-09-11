@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -33,15 +32,14 @@ import('modules::usermanagement::pres::condition', 'UserDependentContentConditio
  */
 class UmgtNotRoleCondition extends UserDependentContentConditionBase implements UserDependentContentCondition {
 
-   public function matches($conditionKey, GenericDomainObject $user = null) {
+   public function matches($conditionKey, UmgtUser $user = null) {
 
       if ($user === null) {
          return true;
       }
 
       foreach ($this->getRoles($user) as $role) {
-         /* @var $role GenericDomainObject */
-         if (in_array($role->getProperty('DisplayName'), $this->getOptions())) {
+         if (in_array($role->getDisplayName(), $this->getOptions())) {
             return false;
          }
       }
@@ -52,7 +50,11 @@ class UmgtNotRoleCondition extends UserDependentContentConditionBase implements 
       return 'not-role';
    }
 
-   private function getRoles(GenericDomainObject $user) {
+   /**
+    * @param UmgtUser $user
+    * @return UmgtRole[]
+    */
+   private function getRoles(UmgtUser $user) {
       return $user->loadRelatedObjects('Role2User');
    }
 

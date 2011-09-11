@@ -56,9 +56,9 @@ class umgt_edit_controller extends umgt_base_controller {
 
             $displayName = &$form->getFormElementByName('DisplayName');
 
-            $role = new GenericDomainObject('Role');
-            $role->setProperty('RoleID', $roleId);
-            $role->setProperty('DisplayName', $displayName->getValue());
+            $role = new UmgtRole();
+            $role->setObjectId($roleId);
+            $role->setDisplayName($displayName->getValue());
 
             $uM->saveRole($role);
             HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));

@@ -65,11 +65,10 @@ class umgt_add2group_controller extends umgt_base_controller {
 
          $newGroups = array();
          for ($i = 0; $i < $count; $i++) {
-            $newGroup = new GenericDomainObject('Group');
-            $newGroup->setProperty('GroupID', $options[$i]->getAttribute('value'));
+            $newGroup = new UmgtGroup();
+            $newGroup->setObjectId($options[$i]->getAttribute('value'));
             $newGroups[] = $newGroup;
             unset($newGroup);
-            // end for
          }
 
          $uM->attachUser2Groups($user, $newGroups);

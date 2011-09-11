@@ -1,13 +1,17 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::user" class="umgt_details_controller" @>
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::user"
+   class="umgt_user_details_controller"
+@>
+<h3>Details for user &quot;<html:placeholder name="Username" />&quot;</h3>
 <core:addtaglib namespace="tools::html::taglib" prefix="html" class="iterator" />
-<h3>User details:</h3>
+<h4>User details:</h4>
 <html:template name="User">
   <template:placeholder name="FirstName" />, <template:placeholder name="LastName" />
   <br />
   <template:placeholder name="EMail" />
 </html:template>
 
-<h3>Groups:</h3>
+<h4>Groups:</h4>
 <html:iterator name="Groups">
   <iterator:item getter="getProperty">
     * <em><item:placeholder name="DisplayName" /></em>
@@ -15,7 +19,7 @@
   </iterator:item>
 </html:iterator>
 
-<h3>Roles:</h3>
+<h4>Roles:</h4>
 <html:iterator name="Roles">
   <iterator:item getter="getProperty">
     * <em><item:placeholder name="DisplayName" /></em>
@@ -23,7 +27,7 @@
   </iterator:item>
 </html:iterator>
       
-<h3>Objects:</h3>
+<h4>Objects:</h4>
 <html:iterator name="Proxies">
    <ul>
    <iterator:item getter="getProperty">
@@ -31,8 +35,7 @@
       <li>
          <umgt:media filename="cc-blockdevice2-128x128.png" title="Visibility definition" />
          App object id: <strong><item:placeholder name="AppObjectId" /></strong>,
-         definition id: <strong><item:placeholder name="ProxyId" /></strong>,
-         app object type: <em><item:placeholder name="AppProxyType" /></em>
+         definition id: <strong><item:placeholder name="AppProxyID" /></strong>
       </li>
    </iterator:item>
    </ul>

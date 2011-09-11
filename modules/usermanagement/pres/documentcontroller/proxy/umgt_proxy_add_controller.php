@@ -46,8 +46,8 @@ class umgt_proxy_add_controller extends umgt_base_controller {
       $selectedUsers = array();
       $selectedGroups = array();
       if ($proxyTypeId != null && $appObjectId != null) {
-         $proxy = new GenericDomainObject('AppProxy');
-         $proxy->setProperty('AppProxyID', $proxyId);
+         $proxy = new UmgtVisibilityDefinition();
+         $proxy->setObjectId($proxyId);
          $selectedUsers = $uM->loadUsersWithVisibilityDefinition($proxy);
          $selectedGroups = $uM->loadGroupsWithVisibilityDefinition($proxy);
       }
@@ -93,14 +93,14 @@ class umgt_proxy_add_controller extends umgt_base_controller {
       if ($form->isSent() && $form->isValid()) {
 
          // setup type
-         $type = new GenericDomainObject('AppProxyType');
+         $type = new UmgtVisibilityDefinitionType();
          $type->setProperty(
             'AppProxyTypeID',
             $form->getFormElementByName('proxytypeid')->getSelectedOption()->getAttribute('value')
          );
 
          // setup proxy
-         $definition = new GenericDomainObject('AppProxy');
+         $definition = new UmgtVisibilityDefinition();
          $definition->setProperty(
             'AppObjectId',
             $form->getFormElementByName('appobjectid')->getAttribute('value')
@@ -109,7 +109,7 @@ class umgt_proxy_add_controller extends umgt_base_controller {
          // setup users
          $users = array();
          foreach ($form->getFormElementByName('users')->getSelectedOptions() as $option) {
-            $user = new GenericDomainObject('User');
+            $user = new UmgtUser();
             $user->setProperty('UserID', $option->getAttribute('value'));
             $users[] = $user;
             unset($user);
@@ -118,7 +118,7 @@ class umgt_proxy_add_controller extends umgt_base_controller {
          // setup groups
          $groups = array();
          foreach ($form->getFormElementByName('groups')->getSelectedOptions() as $option) {
-            $group = new GenericDomainObject('Group');
+            $group = new UmgtGroup();
             $group->setProperty('GroupID', $option->getAttribute('value'));
             $groups[] = $group;
             unset($group);

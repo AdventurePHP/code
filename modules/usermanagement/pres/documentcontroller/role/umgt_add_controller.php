@@ -52,7 +52,7 @@ class umgt_add_controller extends umgt_base_controller {
       if ($form->isSent() == true && $form->isValid() == true) {
 
          $uM = &$this->getManager();
-         $role = new GenericDomainObject('Role');
+         $role = new UmgtRole();
 
          $displayName = &$form->getFormElementByName('DisplayName');
          $role->setProperty('DisplayName', $displayName->getAttribute('value'));
@@ -60,7 +60,7 @@ class umgt_add_controller extends umgt_base_controller {
          $options = &$permissionControl->getSelectedOptions();
 
          for ($i = 0; $i < count($options); $i++) {
-            $newPermission = new GenericDomainObject('Permission');
+            $newPermission = new UmgtPermission();
             $newPermission->setObjectId($options[$i]->getAttribute('value'));
             $role->addRelatedObject('Role2Permission', $newPermission);
             unset($newPermission);

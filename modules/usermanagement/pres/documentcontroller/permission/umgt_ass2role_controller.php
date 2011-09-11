@@ -71,7 +71,7 @@ class umgt_ass2role_controller extends umgt_base_controller {
          $newRoles = array();
 
          for ($i = 0; $i < count($options); $i++) {
-            $newRole = new GenericDomainObject('Role');
+            $newRole = new UmgtRole();
             $newRole->setObjectId($options[$i]->getAttribute('value'));
             $newRoles[] = $newRole;
             unset($newRole);

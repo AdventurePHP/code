@@ -61,7 +61,7 @@ class umgt_remove_user_from_roles_controller extends umgt_base_controller {
          $rolesToRemove = array();
          foreach ($options as $option) {
             /* @var $option select_taglib_option */
-            $roleToRemove = new GenericDomainObject('Role');
+            $roleToRemove = new UmgtRole();
             $roleToRemove->setObjectId($option->getValue());
             $rolesToRemove[] = $roleToRemove;
             unset($roleToRemove);

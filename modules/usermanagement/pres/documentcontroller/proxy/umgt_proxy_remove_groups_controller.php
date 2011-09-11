@@ -47,9 +47,9 @@ class umgt_proxy_remove_groups_controller extends permission_base_controller {
       }
 
       if ($form->isSent() && $form->isValid()) {
-         $proxy = new GenericDomainObject('AppProxy');
+         $proxy = new UmgtVisibilityDefinition();
          $proxy->setObjectId($proxyId);
-         $uM->detachGroupsFromVisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('groups', 'Group'));
+         $uM->detachGroupsFromVisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('groups', 'UmgtGroup'));
 
          HeaderManager::forward(
             $this->generateLink(

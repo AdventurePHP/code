@@ -18,7 +18,14 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::genericormapper::data', 'GenericDomainObject');
+import('modules::usermanagement::biz::model', 'UmgtApplication');
+import('modules::usermanagement::biz::model', 'UmgtGroup');
+import('modules::usermanagement::biz::model', 'UmgtPermission');
+import('modules::usermanagement::biz::model', 'UmgtRole');
+import('modules::usermanagement::biz::model', 'UmgtUser');
+import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinition');
+import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinitionType');
+
 import('modules::usermanagement::pres::condition', 'UserDependentContentCondition');
 
 import('modules::usermanagement::pres::condition', 'UmgtLoggedOutCondition');

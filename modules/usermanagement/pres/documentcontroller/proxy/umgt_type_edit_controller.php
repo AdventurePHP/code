@@ -36,7 +36,7 @@
          if($form->isSent() && $form->isValid()) {
 
             $proxyName = &$form->getFormElementByName('proxytypename');
-            $proxyType = new GenericDomainObject('AppProxyType');
+            $proxyType = new UmgtVisibilityDefinitionType();
             $proxyType->setProperty('AppProxyTypeID',$proxyTypeId);
             $proxyType->setProperty('AppObjectName',$proxyName->getAttribute('value'));
             try {

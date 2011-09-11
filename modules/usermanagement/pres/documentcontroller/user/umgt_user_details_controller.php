@@ -23,7 +23,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::user
- * @class umgt_details_controller
+ * @class umgt_user_details_controller
  *
  * Implements the controller to display a user's details.
  *
@@ -31,7 +31,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
  * @version
  * Version 0.1, 26.12.2008<br />
  */
-class umgt_details_controller extends umgt_base_controller {
+class umgt_user_details_controller extends umgt_base_controller {
 
    public function transformContent() {
 
@@ -41,25 +41,27 @@ class umgt_details_controller extends umgt_base_controller {
       $user = $uM->loadUserByID($userId);
 
       // display user data
-      $templateUser = &$this->getTemplate('User');
-      $templateUser->setPlaceHolder('FirstName', $user->getProperty('FirstName'));
-      $templateUser->setPlaceHolder('LastName', $user->getProperty('LastName'));
-      $templateUser->setPlaceHolder('EMail', $user->getProperty('EMail'));
-      $templateUser->transformOnPlace();
+      $this->setPlaceHolder('Username', $user->getUsername());
+
+      $template = &$this->getTemplate('User');
+      $template->setPlaceHolder('FirstName', $user->getProperty('FirstName'));
+      $template->setPlaceHolder('LastName', $user->getProperty('LastName'));
+      $template->setPlaceHolder('EMail', $user->getProperty('EMail'));
+      $template->transformOnPlace();
 
       // display groups
-      $Groups = $uM->loadGroupsWithUser($user);
+      $groups = $uM->loadGroupsWithUser($user);
       $iteratorGroups = &$this->getIterator('Groups');
-      $iteratorGroups->fillDataContainer($Groups);
+      $iteratorGroups->fillDataContainer($groups);
       $iteratorGroups->transformOnPlace();
 
       // display roles
-      $Roles = $uM->loadRolesWithUser($user);
+      $roles = $uM->loadRolesWithUser($user);
       $iteratorRoles = &$this->getIterator('Roles');
-      $iteratorRoles->fillDataContainer($Roles);
+      $iteratorRoles->fillDataContainer($roles);
       $iteratorRoles->transformOnPlace();
 
-      $proxies = $uM->getPagedVisibilityDefinitionList();
+      $proxies = $uM->loadAllVisibilityDefinitions($user);
       $iteratorProxies = &$this->getIterator('Proxies');
       $iteratorProxies->fillDataContainer($proxies);
       $iteratorProxies->transformOnPlace();

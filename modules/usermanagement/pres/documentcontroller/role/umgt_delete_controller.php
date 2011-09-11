@@ -47,7 +47,7 @@
 
          if($formYes->isSent()){
 
-            $role = new GenericDomainObject('Role');
+            $role = new UmgtRole();
             $role->setProperty('RoleID',$roleId);
             $uM->deleteRole($role);
             HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '','roleid' => '')));

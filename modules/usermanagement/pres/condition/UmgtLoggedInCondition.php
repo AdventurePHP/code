@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -33,7 +32,7 @@ import('modules::usermanagement::pres::condition', 'UserDependentContentConditio
  */
 class UmgtLoggedInCondition extends UserDependentContentConditionBase implements UserDependentContentCondition {
 
-   public function matches($conditionKey, GenericDomainObject $user = null) {
+   public function matches($conditionKey, UmgtUser $user = null) {
       return $user !== null;
    }
 

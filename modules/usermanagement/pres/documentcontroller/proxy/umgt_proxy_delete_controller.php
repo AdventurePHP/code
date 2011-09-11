@@ -40,7 +40,7 @@ class umgt_proxy_delete_controller extends umgt_base_controller {
 
       $proxyId = RequestHandler::getValue('proxyid');
 
-      $proxy = new GenericDomainObject('AppProxy');
+      $proxy = new UmgtVisibilityDefinition();
       $proxy->setObjectId($proxyId);
 
       $formYes = &$this->getForm('DelYes');

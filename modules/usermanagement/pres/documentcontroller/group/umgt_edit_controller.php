@@ -50,8 +50,8 @@ class umgt_edit_controller extends umgt_base_controller {
 
             $fields = &$form->getFormElementsByTagName('form:text');
 
-            $group = new GenericDomainObject('Group');
-            $group->setProperty('GroupID', $groupId);
+            $group = new UmgtGroup();
+            $group->setObjectId($groupId);
 
             $fieldCount = count($fields);
             for ($i = 0; $i < $fieldCount; $i++) {

@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::genericormapper::data', 'GenericDomainObject');
+import('modules::usermanagement::biz::model', 'UmgtUser');
 
 /**
  * @package modules::usermanagement::biz
@@ -55,7 +55,7 @@ class UmgtUserSessionStore extends APFObject {
     * represents the application you want to store your login information.
     *
     * @param string $applicationIdentifier Identifies the application.
-    * @return GenericDomainObject The currently logged-in user.
+    * @return UmgtUser The currently logged-in user.
     *
     * @author Christian Achatz
     * @version
@@ -75,13 +75,13 @@ class UmgtUserSessionStore extends APFObject {
     * represents the application you want to store your login information.
     *
     * @param string $applicationIdentifier Identifies the application.
-    * @param GenericDomainObject $user The user to store within the session.
+    * @param UmgtUser $user The user to store within the session.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.06.2011<br />
     */
-   public function setUser($applicationIdentifier, GenericDomainObject $user) {
+   public function setUser($applicationIdentifier, UmgtUser $user) {
       if (empty($applicationIdentifier)) {
          throw new InvalidArgumentException($this->getExceptionMessage());
       }

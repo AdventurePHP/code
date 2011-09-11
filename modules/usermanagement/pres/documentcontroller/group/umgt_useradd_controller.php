@@ -70,8 +70,8 @@ class umgt_useradd_controller extends umgt_base_controller {
 
          $newUsers = array();
          for ($i = 0; $i < $count; $i++) {
-            $newUser = new GenericDomainObject('User');
-            $newUser->setProperty('UserID', $options[$i]->getAttribute('value'));
+            $newUser = new UmgtUser();
+            $newUser->setObjectId($options[$i]->getAttribute('value'));
             $newUsers[] = $newUser;
             unset($newUser);
          }

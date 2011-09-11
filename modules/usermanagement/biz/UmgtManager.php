@@ -18,7 +18,14 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::genericormapper::data', 'GenericDomainObject');
+import('modules::usermanagement::biz::model', 'UmgtApplication');
+import('modules::usermanagement::biz::model', 'UmgtGroup');
+import('modules::usermanagement::biz::model', 'UmgtPermission');
+import('modules::usermanagement::biz::model', 'UmgtRole');
+import('modules::usermanagement::biz::model', 'UmgtUser');
+import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinition');
+import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinitionType');
+
 import('modules::genericormapper::data', 'GenericCriterionObject');
 
 /**
@@ -175,17 +182,17 @@ class UmgtManager extends APFObject {
     * of hashes in database to new providers.
     *
     * @param string $password the password to hash
-    * @param GenericORMapperDataObject $user current user.
+    * @param UmgtUser $user current user.
     * @return bool Returns true if password matches.
     *
     * @author Ralf Schubert
     * @version
     * Version 0.1, 21.06.2011 <br />
     */
-   public function comparePasswordHash($password, GenericORMapperDataObject &$user) {
+   public function comparePasswordHash($password, UmgtUser &$user) {
       // check if current default hash provider matches
       $defaultHashedPassword = $this->createPasswordHash($password, $user);
-      if ($user->getProperty('Password') === $defaultHashedPassword) {
+      if ($user->getPassword() === $defaultHashedPassword) {
          return true;
       }
 
@@ -202,15 +209,15 @@ class UmgtManager extends APFObject {
             continue;
          }
          $hashedPassword = $passwordHashProvider->createPasswordHash($password, $this->getDynamicSalt($user));
-         if ($user->getProperty('Password') === $hashedPassword) {
+         if ($user->getPassword() === $hashedPassword) {
             // if fallback matched, first update hash in database to new provider (on-the-fly updating to new provider)
-            $user->setProperty('Password', $password);
+            $user->setPassword($password);
             $this->saveUser($user);
             return true;
          }
       }
 
-      // no fallback matched.
+      // no fallback matched, this user cannot be authenticated after all second tries. :(
       return false;
    }
 
@@ -221,21 +228,21 @@ class UmgtManager extends APFObject {
     * dynamic salt, extend the UmgtManager and reimplement this method! Be sure,
     * to keep all other methods untouched.
     *
-    * @param GenericORMapperDataObject $user Current user
+    * @param UmgtUser $user Current user
     * @return string The dynamic salt
     *
     * @author Tobias Lückel
     * @version
     * Version 0.1, 05.04.2011<br />
     */
-   public function getDynamicSalt(GenericORMapperDataObject &$user) {
+   public function getDynamicSalt(UmgtUser &$user) {
 
-      $dynamicSalt = $user->getProperty('DynamicSalt');
+      $dynamicSalt = $user->getDynamicSalt();
       $dynamicSalt = ($dynamicSalt === null) ? '' : trim($dynamicSalt);
 
       if ($dynamicSalt === '') {
          $dynamicSalt = md5(rand(10000, 99999));
-         $user->setProperty('DynamicSalt', $dynamicSalt);
+         $user->setDynamicSalt($dynamicSalt);
       }
       return $dynamicSalt;
 
@@ -249,33 +256,32 @@ class UmgtManager extends APFObject {
     * If you desire to use another hash algo, implement a PasswordHashProvider
     * and add it to the UmgtManager.
     *
-    * @param string $password the password to hash
-    * @param GenericORMapperDataObject $user current user.
+    * @param string $password The password to hash
+    * @param UmgtUser $user The current user.
     * @return string The desired hash of the given password.
     *
     * @author Tobias Lückel
     * @version
     * Version 0.1, 21.06.2011<br />
     */
-   public function createPasswordHash($password, GenericORMapperDataObject &$user) {
+   public function createPasswordHash($password, UmgtUser &$user) {
       return $this->passwordHashProviders[0]->createPasswordHash($password, $this->getDynamicSalt($user));
    }
-
 
    /**
     * @protected
     *
     * Returns an initialized Application object.
     *
-    * @return GenericORMapperDataObject Ccurrent application domain object.
+    * @return UmgtApplication Current application domain object.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 15.06.2008<br />
     */
    protected function getCurrentApplication() {
-      $app = new GenericDomainObject('Application');
-      $app->setProperty('ApplicationID', $this->applicationId);
+      $app = new UmgtApplication();
+      $app->setObjectId($this->applicationId);
       return $app;
    }
 
@@ -320,7 +326,7 @@ class UmgtManager extends APFObject {
     *
     * Saves a user object within the current application.
     *
-    * @param GenericORMapperDataObject $user current user.
+    * @param UmgtUser $user current user.
     * @return int The id of the user.
     *
     * @author Christian Achatz
@@ -330,48 +336,42 @@ class UmgtManager extends APFObject {
     * Version 0.3, 20.09.2009 (Bugfix for bug 202. Password was hased twice on update.)<br />
     * Version 0.4, 27.09.2009 (Bugfix for bug related to 202. Password for new user was not hashed.)<br />
     */
-   public function saveUser(GenericORMapperDataObject &$user) {
+   public function saveUser(UmgtUser &$user) {
 
-      // get the mapper
-      $oRM = &$this->getORMapper();
+      $orm = &$this->getORMapper();
 
       // check, whether user is an existing user, and yes, resolve the
       // password conflict, described under http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=202
-      $userId = $user->getProperty('UserID');
-      $password = $user->getProperty('Password');
+      $userId = $user->getObjectId();
+      $password = $user->getPassword();
       if ($userId !== null && $password !== null) {
 
-         $storedUser = $oRM->loadObjectByID('User', $userId);
+         $storedUser = $orm->loadObjectByID('User', $userId);
+         /* @var $storedUser UmgtUser */
 
          // In case, the stored password is different to the current one,
          // hash the password. In all other cases, the password would be
          // hashed twice!
-         if ($storedUser->getProperty('Password') != $password) {
-            $user->setProperty(
-               'Password',
-               $this->createPasswordHash($password, $user)
-            );
+         if ($storedUser->getPassword() != $password) {
+            $user->setPassword($this->createPasswordHash($password, $user));
          } else {
-            $user->deleteProperty('Password');
+            $user->deletePassword();
          }
 
       } else {
          // only create password for not empty strings!
          if (!empty($password)) {
-            $user->setProperty(
-               'Password',
-               $this->createPasswordHash($password, $user)
-            );
+            $user->setPassword($this->createPasswordHash($password, $user));
          }
       }
 
       // set display name
-      $user->setProperty('DisplayName', $this->getDisplayName($user));
+      $user->setDisplayName($this->getDisplayName($user));
 
       // save the user and return it's id
       $app = $this->getCurrentApplication();
       $user->addRelatedObject('Application2User', $app);
-      return $oRM->saveObject($user);
+      return $orm->saveObject($user);
 
    }
 
@@ -380,14 +380,14 @@ class UmgtManager extends APFObject {
     *
     * Saves an application object.
     *
-    * @param GenericORMapperDataObject $app The application object to save.
+    * @param UmgtApplication $app The application object to save.
     * @return int The id of the application.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.07.2010<br />
     */
-   public function saveApplication(GenericORMapperDataObject &$app) {
+   public function saveApplication(UmgtApplication &$app) {
       return $this->getORMapper()->saveObject($app);
    }
 
@@ -396,19 +396,16 @@ class UmgtManager extends APFObject {
     *
     * Saves a group object within the current application.
     *
-    * @param GenericORMapperDataObject $group current group.
+    * @param UmgtGroup $group current group.
     * @return int The id of the group.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 15.06.2008<br />
     */
-   public function saveGroup(GenericORMapperDataObject &$group) {
-      $oRM = &$this->getORMapper();
-      $app = $this->getCurrentApplication();
-      $group->addRelatedObject('Application2Group', $app);
-      // save the group and return it's id
-      return $oRM->saveObject($group);
+   public function saveGroup(UmgtGroup &$group) {
+      $group->addRelatedObject('Application2Group', $this->getCurrentApplication());
+      return $this->getORMapper()->saveObject($group);
    }
 
    /**
@@ -416,19 +413,16 @@ class UmgtManager extends APFObject {
     *
     * Saves a role object within the current application.
     *
-    * @param GenericORMapperDataObject $role current role.
+    * @param UmgtRole $role current role.
     * @return int The id of the role.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 15.06.2008<br />
     */
-   public function saveRole(GenericORMapperDataObject &$role) {
-      $oRM = &$this->getORMapper();
-      $app = $this->getCurrentApplication();
-      $role->addRelatedObject('Application2Role', $app);
-      // save the group and return it's id
-      return $oRM->saveObject($role);
+   public function saveRole(UmgtRole &$role) {
+      $role->addRelatedObject('Application2Role', $this->getCurrentApplication());
+      return $this->getORMapper()->saveObject($role);
    }
 
    /**
@@ -436,7 +430,7 @@ class UmgtManager extends APFObject {
     *
     * Saves a permission object within the current application.
     *
-    * @param GenericORMapperDataObject $permission the permission.
+    * @param UmgtPermission $permission the permission.
     * @return int The id of the permission.
     *
     * @author Christian Achatz
@@ -445,12 +439,9 @@ class UmgtManager extends APFObject {
     * Version 0.2, 16.06.2008 (The permission set is lazy loaded when not present)<br />
     * Version 0.3, 28.12.2008 (Changed the API concerning the new UML diagram)<br />
     */
-   public function savePermission(GenericORMapperDataObject &$permission) {
-      $oRM = &$this->getORMapper();
-      $app = $this->getCurrentApplication();
-      $permission->addRelatedObject('Application2Permission', $app);
-      // save the permission and return it's id
-      return $oRM->saveObject($permission);
+   public function savePermission(UmgtPermission &$permission) {
+      $permission->addRelatedObject('Application2Permission', $this->getCurrentApplication());
+      return $this->getORMapper()->saveObject($permission);
    }
 
    /**
@@ -458,7 +449,7 @@ class UmgtManager extends APFObject {
     *
     * Returns a list of users concerning the current page.
     *
-    * @return GenericORMapperDataObject[] List of users.
+    * @return UmgtUser[] List of users.
     *
     * @author Christian Achatz
     * @version
@@ -466,18 +457,12 @@ class UmgtManager extends APFObject {
     * Version 0.2, 17.06.2008 (introduced query over current application)<br />
     */
    public function getPagedUserList() {
-
-      // initialize or mapper
-      $ORM = &$this->getORMapper();
-
-      // select by statement
       $select = 'SELECT ent_user.* FROM ent_user
                     INNER JOIN cmp_application2user ON ent_user.UserID = cmp_application2user.Target_UserID
                     INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                     WHERE ent_application.ApplicationID = \'' . $this->applicationId . '\'
                     ORDER BY ent_user.LastName ASC, ent_user.FirstName ASC';
-      return $ORM->loadObjectListByTextStatement('User', $select);
-
+      return $this->getORMapper()->loadObjectListByTextStatement('User', $select);
    }
 
    /**
@@ -485,7 +470,7 @@ class UmgtManager extends APFObject {
     *
     * Returns a list of groups concerning the current page.
     *
-    * @return GenericORMapperDataObject[] List of groups.
+    * @return UmgtGroup[] List of groups.
     *
     * @author Christian Achatz
     * @version
@@ -493,17 +478,11 @@ class UmgtManager extends APFObject {
     */
    public function getPagedGroupList() {
 
-      // get or mapper instance
-      $oRM = &$this->getORMapper();
-
-      // configure criterion object
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('Application2Group', $this->getCurrentApplication());
       $crit->addOrderIndicator('DisplayName', 'ASC');
 
-      // return list
-      return $oRM->loadObjectListByCriterion('Group', $crit);
-
+      return $this->getORMapper()->loadObjectListByCriterion('Group', $crit);
    }
 
    /**
@@ -511,16 +490,15 @@ class UmgtManager extends APFObject {
     *
     * Returns a list of roles concerning the current page.
     *
-    * @return GenericORMapperDataObject[] List of roles.
+    * @return UmgtRole[] List of roles.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     */
    public function getPagedRoleList() {
-      $ORM = &$this->getORMapper();
       $select = 'SELECT * FROM ent_role ORDER BY DisplayName ASC';
-      return $ORM->loadObjectListByTextStatement('Role', $select);
+      return $this->getORMapper()->loadObjectListByTextStatement('Role', $select);
    }
 
    /**
@@ -528,18 +506,28 @@ class UmgtManager extends APFObject {
     *
     * Returns a list of permissions concerning the current page.
     *
-    * @return GenericORMapperDataObject[] List of permissions.
+    * @return UmgtPermission[] List of permissions.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     */
    public function getPagedPermissionList() {
-      $oRM = &$this->getORMapper();
       $select = 'SELECT * FROM ent_permission ORDER BY DisplayName ASC';
-      return $oRM->loadObjectListByTextStatement('Permission', $select);
+      return $this->getORMapper()->loadObjectListByTextStatement('Permission', $select);
    }
 
+   /**
+    * @public
+    *
+    * Returns the whole list of permissions.
+    *
+    * @return UmgtPermission[] A list of all permissions.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.12.2008<br />
+    */
    public function getPermissionList() {
       return $this->getORMapper()->loadRelatedObjects($this->getCurrentApplication(), 'Application2Permission');
    }
@@ -550,15 +538,14 @@ class UmgtManager extends APFObject {
     * Returns a user domain object.
     *
     * @param int $userId id of the desired user
-    * @return GenericORMapperDataObject The user domain object.
+    * @return UmgtUser The user domain object.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     */
    public function loadUserByID($userId) {
-      $oRM = &$this->getORMapper();
-      return $oRM->loadObjectByID('User', $userId);
+      return $this->getORMapper()->loadObjectByID('User', $userId);
    }
 
    /**
@@ -568,7 +555,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $username the user's username.
     * @param string $password the user's password.
-    * @return GenericORMapperDataObject The user domain object or null.
+    * @return UmgtUser The user domain object or null.
     *
     * @author Ralf Schubert
     * @version
@@ -594,7 +581,7 @@ class UmgtManager extends APFObject {
     * Loads a user object by a given first name.
     *
     * @param string $firstName The first name of the user to load.
-    * @return GenericORMapperDataObject The user domain object or null.
+    * @return UmgtUser The user domain object or null.
     *
     * @author Christian Achatz
     * @version
@@ -602,16 +589,15 @@ class UmgtManager extends APFObject {
     */
    public function loadUserByFirstName($firstName) {
 
-      // get the mapper
-      $oRM = &$this->getORMapper();
+      $orm = &$this->getORMapper();
 
       // escape the input values
-      $dbDriver = &$oRM->getDbDriver();
+      $dbDriver = &$orm->getDbDriver();
       $firstName = $dbDriver->escapeValue($firstName);
 
       // create the statement and select user
       $select = 'SELECT * FROM ent_user WHERE FirstName = \'' . $firstName . '\';';
-      return $oRM->loadObjectByTextStatement('User', $select);
+      return $orm->loadObjectByTextStatement('User', $select);
 
    }
 
@@ -621,7 +607,7 @@ class UmgtManager extends APFObject {
     * Loads a user object by a given last name.
     *
     * @param string $lastName The last name of the user to load.
-    * @return GenericORMapperDataObject The user domain object or null.
+    * @return UmgtUser The user domain object or null.
     *
     * @author Christian Achatz
     * @version
@@ -629,16 +615,15 @@ class UmgtManager extends APFObject {
     */
    public function loadUserByLastName($lastName) {
 
-      // get the mapper
-      $oRM = &$this->getORMapper();
+      $orm = &$this->getORMapper();
 
       // escape the input values
-      $dbDriver = &$oRM->getDbDriver();
+      $dbDriver = &$orm->getDbDriver();
       $lastName = $dbDriver->escapeValue($lastName);
 
       // create the statement and select user
       $select = 'SELECT * FROM ent_user WHERE LastName = \'' . $lastName . '\';';
-      return $oRM->loadObjectByTextStatement('User', $select);
+      return $orm->loadObjectByTextStatement('User', $select);
 
    }
 
@@ -648,7 +633,7 @@ class UmgtManager extends APFObject {
     * Loads a user object by a given email.
     *
     * @param string $email The email of the user to load.
-    * @return GenericORMapperDataObject The user domain object or null.
+    * @return UmgtUser The user domain object or null.
     *
     * @author Christian Achatz
     * @version
@@ -656,16 +641,15 @@ class UmgtManager extends APFObject {
     */
    public function loadUserByEMail($email) {
 
-      // get the mapper
-      $oRM = &$this->getORMapper();
+      $orm = &$this->getORMapper();
 
       // escape the input values
-      $dbDriver = &$oRM->getDbDriver();
+      $dbDriver = &$orm->getDbDriver();
       $email = $dbDriver->escapeValue($email);
 
       // create the statement and select user
       $select = 'SELECT * FROM ent_user WHERE EMail = \'' . $email . '\';';
-      return $oRM->loadObjectByTextStatement('User', $select);
+      return $orm->loadObjectByTextStatement('User', $select);
 
    }
 
@@ -676,7 +660,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $firstName The first name of the user to load.
     * @param string $lastName The last name of the user to load.
-    * @return GenericORMapperDataObject The user domain object or null.
+    * @return UmgtUser The user domain object or null.
     *
     * @author Christian Achatz
     * @version
@@ -684,17 +668,16 @@ class UmgtManager extends APFObject {
     */
    public function loadUserByFirstNameAndLastName($firstName, $lastName) {
 
-      // get the mapper
-      $oRM = &$this->getORMapper();
+      $orm = &$this->getORMapper();
 
       // escape the input values
-      $dbDriver = &$oRM->getDbDriver();
+      $dbDriver = &$orm->getDbDriver();
       $firstName = $dbDriver->escapeValue($firstName);
       $lastName = $dbDriver->escapeValue($lastName);
 
       // create the statement and select user
       $select = 'SELECT * FROM ent_user WHERE FirstName = \'' . $firstName . '\' AND LastName = \'' . $lastName . '\';';
-      return $oRM->loadObjectByTextStatement('User', $select);
+      return $orm->loadObjectByTextStatement('User', $select);
 
    }
 
@@ -704,7 +687,7 @@ class UmgtManager extends APFObject {
     * Loads a user object by a user name.
     *
     * @param string $username The user name of the user to load.
-    * @return GenericORMapperDataObject The user domain object or null.
+    * @return UmgtUser The user domain object or null.
     *
     * @author Christian Achatz
     * @version
@@ -712,37 +695,16 @@ class UmgtManager extends APFObject {
     */
    public function loadUserByUserName($username) {
 
-      // get the mapper
-      $oRM = &$this->getORMapper();
+      $orm = &$this->getORMapper();
 
       // escape the input values
-      $dbDriver = &$oRM->getDbDriver();
+      $dbDriver = &$orm->getDbDriver();
       $username = $dbDriver->escapeValue($username);
 
       // create the statement and select user
       $select = 'SELECT * FROM ent_user WHERE Username = \'' . $username . '\';';
-      return $oRM->loadObjectByTextStatement('User', $select);
+      return $orm->loadObjectByTextStatement('User', $select);
 
-   }
-
-   /**
-    * @protected
-    *
-    * Implements the central method to create the display name of a user object. If you desire
-    * to use another algo, extend the UmgtManager and reimplement this method! Be sure, to keep
-    * all other methods untouched.
-    *
-    * @param GenericORMapperDataObject $user The user object to save.
-    * @return string The desired display name.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 23.06.2009<br />
-    */
-   protected function getDisplayName(GenericORMapperDataObject $user) {
-      $displayName = $user->getProperty('DisplayName');
-      return empty($displayName) ? $user->getProperty('LastName') . ', ' . $user->getProperty('FirstName')
-            : $user->getProperty('DisplayName');
    }
 
    /**
@@ -752,7 +714,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $email the user's email
     * @param string $password the user's password
-    * @return GenericORMapperDataObject The user domain object or null
+    * @return UmgtUser The user domain object or null
     *
     * @author Christian Achatz
     * @version
@@ -772,19 +734,40 @@ class UmgtManager extends APFObject {
    }
 
    /**
+    * @protected
+    *
+    * Implements the central method to create the display name of a user object. If you desire
+    * to use another algo, extend the UmgtManager and reimplement this method! Be sure, to keep
+    * all other methods untouched.
+    *
+    * @param UmgtUser $user The user object to save.
+    * @return string The desired display name.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.06.2009<br />
+    */
+   protected function getDisplayName(UmgtUser $user) {
+      $displayName = $user->getDisplayName();
+      return empty($displayName)
+            ? $user->getLastName() . ', ' . $user->getFirstName()
+            : $user->getDisplayName();
+   }
+
+   /**
     * @public
     *
     * Returns a list of Permission domain objects for the given user.
     *
-    * @param GenericORMapperDataObject $user the user object
-    * @return GenericORMapperDataObject[] $permissions the user's permissions
+    * @param UmgtUser $user the user object
+    * @return UmgtPermission[] $permissions the user's permissions
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     * Version 0.2, 02.01.2009 (Implemented the method)<br />
     */
-   public function loadUserPermissions(GenericORMapperDataObject $user) {
+   public function loadUserPermissions(UmgtUser $user) {
 
       $orm = &$this->getORMapper();
 
@@ -828,16 +811,15 @@ class UmgtManager extends APFObject {
     *
     * Returns a group domain object.
     *
-    * @param int $groupID id of the desired group
-    * @return GenericORMapperDataObject The group domain object.
+    * @param int $groupId id of the desired group
+    * @return UmgtGroup The group domain object.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     */
-   public function loadGroupByID($groupID) {
-      $oRM = &$this->getORMapper();
-      return $oRM->loadObjectByID('Group', $groupID);
+   public function loadGroupByID($groupId) {
+      return $this->getORMapper()->loadObjectByID('Group', $groupId);
    }
 
    /**
@@ -846,7 +828,7 @@ class UmgtManager extends APFObject {
     * Loads a group by a given name.
     *
     * @param string $groupName The name of the group to load
-    * @return GenericCriterionObject The desired group domain object.
+    * @return UmgtGroup The desired group domain object.
     *
     * @author Christian Achatz
     * @version
@@ -863,16 +845,15 @@ class UmgtManager extends APFObject {
     *
     * Returns a role domain object.
     *
-    * @param int $roleID id of the desired role
-    * @return GenericORMapperDataObject The role domain object.
+    * @param int $roleId id of the desired role
+    * @return UmgtRole The role domain object.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     */
-   public function loadRoleByID($roleID) {
-      $oRM = &$this->getORMapper();
-      return $oRM->loadObjectByID('Role', $roleID);
+   public function loadRoleByID($roleId) {
+      return $this->getORMapper()->loadObjectByID('Role', $roleId);
    }
 
    /**
@@ -881,7 +862,7 @@ class UmgtManager extends APFObject {
     * Returns a role domain object identified by it's display name.
     *
     * @param $name The name of the role to load.
-    * @return GenericORMapperDataObject The desired role.
+    * @return UmgtRole The desired role.
     *
     * @author Christian Achatz
     * @version
@@ -896,43 +877,17 @@ class UmgtManager extends APFObject {
    /**
     * @public
     *
-    * Loads a list of permissions of the current application.
-    *
-    * @return GenericORMapperDataObject[] The permission list.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 28.12.2008<br />
-    */
-   public function loadPermissionList() {
-
-      // get the mapper
-      $oRM = &$this->getORMapper();
-
-      // setup the criterion
-      $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Permission', $this->getCurrentApplication());
-
-      // load permission list
-      return $oRM->loadObjectListByCriterion('Permission', $crit);
-
-   }
-
-   /**
-    * @public
-    *
     * Loads a permission by it's id.
     *
-    * @param int $permID the permission's id
-    * @return GenericORMapperDataObject The desiried permission.
+    * @param int $permissionId the permission's id
+    * @return UmgtPermission The desiried permission.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 28.12.2008<br />
     */
-   public function loadPermissionByID($permID) {
-      $oRM = &$this->getORMapper();
-      return $oRM->loadObjectByID('Permission', $permID);
+   public function loadPermissionByID($permissionId) {
+      return $this->getORMapper()->loadObjectByID('Permission', $permissionId);
    }
 
    /**
@@ -940,15 +895,14 @@ class UmgtManager extends APFObject {
     *
     * Deletes a user.
     *
-    * @param GenericORMapperDataObject $user the user to delete
+    * @param UmgtUser $user The user to delete
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     */
-   public function deleteUser(GenericORMapperDataObject $user) {
-      $oRM = &$this->getORMapper();
-      $oRM->deleteObject($user);
+   public function deleteUser(UmgtUser $user) {
+      $this->getORMapper()->deleteObject($user);
    }
 
    /**
@@ -956,15 +910,14 @@ class UmgtManager extends APFObject {
     *
     * Deletes a group.
     *
-    * @param GenericORMapperDataObject $group the group to delete
+    * @param UmgtGroup $group The group to delete
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     */
-   public function deleteGroup(GenericORMapperDataObject $group) {
-      $oRM = &$this->getORMapper();
-      $oRM->deleteObject($group);
+   public function deleteGroup(UmgtGroup $group) {
+      $this->getORMapper()->deleteObject($group);
    }
 
    /**
@@ -972,15 +925,14 @@ class UmgtManager extends APFObject {
     *
     *  Deletes a role.
     *
-    * @param GenericORMapperDataObject $role the role to delete
+    * @param UmgtRole $role the role to delete
     *
     * @author Christian Achatz
     * @version
     *  Version 0.1, 29.12.2008<br />
     */
-   public function deleteRole(GenericORMapperDataObject $role) {
-      $oRM = &$this->getORMapper();
-      $oRM->deleteObject($role);
+   public function deleteRole(UmgtRole $role) {
+      $this->getORMapper()->deleteObject($role);
    }
 
    /**
@@ -988,15 +940,14 @@ class UmgtManager extends APFObject {
     *
     *  Deletes a Permission.
     *
-    * @param GenericORMapperDataObject $permission the permission
+    * @param UmgtPermission $permission the permission
     *
     * @author Christian Achatz
     * @version
     *  Version 0.1, 28.12.2008<br />
     */
-   public function deletePermission(GenericORMapperDataObject $permission) {
-      $oRM = &$this->getORMapper();
-      $oRM->deleteObject($permission);
+   public function deletePermission(UmgtPermission $permission) {
+      $this->getORMapper()->deleteObject($permission);
    }
 
    /**
@@ -1004,21 +955,20 @@ class UmgtManager extends APFObject {
     *
     *  Associates a user with a list of groups.
     *
-    * @param GenericORMapperDataObject $user the user
-    * @param GenericORMapperDataObject[] $groups the group list
+    * @param UmgtUser $user the user
+    * @param UmgtGroup[] $groups the group list
     *
     * @author Christian Achatz
     * @version
     *  Version 0.1, 28.12.2008<br />
     */
-   public function attachUser2Groups(GenericORMapperDataObject $user, array $groups) {
+   public function attachUser2Groups(UmgtUser $user, array $groups) {
 
-      // get the mapper
-      $oRM = &$this->getORMapper();
+      $orm = &$this->getORMapper();
 
-      // create the association
+      // create associations
       for ($i = 0; $i < count($groups); $i++) {
-         $oRM->createAssociation('Group2User', $user, $groups[$i]);
+         $orm->createAssociation('Group2User', $user, $groups[$i]);
       }
 
    }
@@ -1028,15 +978,15 @@ class UmgtManager extends APFObject {
     *
     *  Associates users with a group.
     *
-    * @param GenericORMapperDataObject[] $users the user list
-    * @param GenericORMapperDataObject $group the group
+    * @param UmgtUser[] $users the user list
+    * @param UmgtGroup $group the group
     *
     * @author Christian Achatz
     * @version
     *  Version 0.1, 28.12.2008<br />
     *  Version 0.2, 18.02.2009 (Bugfix: addUser2Groups() does not exist)<br />
     */
-   public function attachUsers2Group(array $users, GenericORMapperDataObject $group) {
+   public function attachUsers2Group(array $users, UmgtGroup $group) {
       for ($i = 0; $i < count($users); $i++) {
          $this->attachUser2Groups($users[$i], array($group));
       }
@@ -1047,14 +997,14 @@ class UmgtManager extends APFObject {
     *
     * Associates a role with a list of users.
     *
-    * @param GenericORMapperDataObject[] $users The user list.
-    * @param GenericORMapperDataObject $role The role.
+    * @param UmgtUser[] $users The user list.
+    * @param UmgtRole $role The role.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     */
-   public function attachUsersToRole(array $users, GenericORMapperDataObject $role) {
+   public function attachUsersToRole(array $users, UmgtRole $role) {
       $orm = &$this->getORMapper();
       foreach ($users as $user) {
          $orm->createAssociation('Role2User', $role, $user);
@@ -1066,14 +1016,14 @@ class UmgtManager extends APFObject {
     *
     * Associates a role with a list of users.
     *
-    * @param GenericORMapperDataObject $user The user.
-    * @param GenericORMapperDataObject[] $roles The role list.
+    * @param UmgtUser $user The user.
+    * @param UmgtRole[] $roles The role list.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     */
-   public function attachUser2Roles(GenericORMapperDataObject $user, array $roles) {
+   public function attachUser2Roles(UmgtUser $user, array $roles) {
       foreach ($roles as $role) {
          $this->attachUsersToRole(array($user), $role);
       }
@@ -1084,17 +1034,16 @@ class UmgtManager extends APFObject {
     *
     * Loads all groups, that are assigned to a given user.
     *
-    * @param GenericORMapperDataObject $user the user
-    * @return GenericORMapperDataObject[] The group list.
+    * @param UmgtUser $user the user
+    * @return UmgtGroup[] The group list.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     * Version 02, 05.09.2009 (Now using the GORM to load the related objects, to allow serialized objects to be used as arguments)<br />
     */
-   public function loadGroupsWithUser(GenericORMapperDataObject &$user) {
-      $orm = &$this->getORMapper();
-      return $orm->loadRelatedObjects($user, 'Group2User');
+   public function loadGroupsWithUser(UmgtUser &$user) {
+      return $this->getORMapper()->loadRelatedObjects($user, 'Group2User');
    }
 
    /**
@@ -1102,14 +1051,14 @@ class UmgtManager extends APFObject {
     *
     * Loads the groups that are assigned to the given role.
     *
-    * @param GenericORMapperDataObject $role The role to load the assigned groups.
-    * @return GenericORMapperDataObject[] The list of groups, that are assigned to the given role.
+    * @param UmgtRole $role The role to load the assigned groups.
+    * @return UmgtGroup[] The list of groups, that are assigned to the given role.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.09.2011<br />
     */
-   public function loadGroupsWithRole(GenericORMapperDataObject $role) {
+   public function loadGroupsWithRole(UmgtRole $role) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('Application2Group', $this->getCurrentApplication());
       return $this->getORMapper()->loadRelatedObjects($role, 'Role2Group', $crit);
@@ -1120,24 +1069,24 @@ class UmgtManager extends APFObject {
     *
     * Loads the groups that are *not* assigned to the given role.
     *
-    * @param GenericORMapperDataObject $role The role to load the *not* assigned groups.
-    * @return GenericORMapperDataObject[] The list of groups, that are *not* assigned to the given role.
+    * @param UmgtRole $role The role to load the *not* assigned groups.
+    * @return UmgtGroup[] The list of groups, that are *not* assigned to the given role.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 08.09.2011<br />
     */
-   public function loadGroupsNotWithRole(GenericORMapperDataObject $role) {
+   public function loadGroupsNotWithRole(UmgtRole $role) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('Application2Group', $this->getCurrentApplication());
       return $this->getORMapper()->loadNotRelatedObjects($role, 'Role2Group', $crit);
    }
 
    /**
-    * @param GenericORMapperDataObject $role
-    * @param GenericORMapperDataObject[] $groups
+    * @param UmgtRole $role
+    * @param UmgtGroup[] $groups
     */
-   public function attachRoleToGroups(GenericORMapperDataObject $role, array $groups) {
+   public function attachRoleToGroups(UmgtRole $role, array $groups) {
       $orm = &$this->getORMapper();
       foreach ($groups as $group) {
          $orm->createAssociation('Role2Group', $role, $group);
@@ -1145,10 +1094,10 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @param GenericORMapperDataObject $role
-    * @param GenericORMapperDataObject[] $groups
+    * @param UmgtRole $role
+    * @param UmgtGroup[] $groups
     */
-   public function detachRoleToGroups(GenericORMapperDataObject $role, array $groups) {
+   public function detachRoleToGroups(UmgtRole $role, array $groups) {
       $orm = &$this->getORMapper();
       foreach ($groups as $group) {
          $orm->deleteAssociation('Role2Group', $role, $group);
@@ -1160,25 +1109,17 @@ class UmgtManager extends APFObject {
     *
     * Loads all groups, that are not assigned to a given user.
     *
-    * @param GenericORMapperDataObject $user the user
-    * @return GenericORMapperDataObject[] The group list.
+    * @param UmgtUser $user the user
+    * @return UmgtGroup[] The group list.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2008<br />
     */
-   public function loadGroupsNotWithUser(GenericORMapperDataObject &$user) {
-
-      // get the mapper
-      $oRM = &$this->getORMapper();
-
-      // setup driterion
+   public function loadGroupsNotWithUser(UmgtUser &$user) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('Application2Group', $this->getCurrentApplication());
-
-      // load roles, that are not associated
-      return $oRM->loadNotRelatedObjects($user, 'Group2User', $crit);
-
+      return $this->getORMapper()->loadNotRelatedObjects($user, 'Group2User', $crit);
    }
 
    /**
@@ -1186,17 +1127,18 @@ class UmgtManager extends APFObject {
     *
     *  Loads all users, that are assigned to a given group.
     *
-    * @param GenericORMapperDataObject $group the group
-    * @return GenericORMapperDataObject[] The user list.
+    * @param UmgtGroup $group the group
+    * @return UmgtUser[] The user list.
     *
     * @author Christian Achatz
     * @version
     *  Version 0.1, 29.12.2008<br />
     *  Version 0.2, 30.12.2008 (Removed null pointer typo)<br />
     */
-   public function loadUsersWithGroup(GenericORMapperDataObject &$group) {
-      $oRM = &$this->getORMapper();
-      return $oRM->loadRelatedObjects($group, 'Group2User');
+   public function loadUsersWithGroup(UmgtGroup &$group) {
+      $crit = new GenericCriterionObject();
+      $crit->addRelationIndicator('Application2User', $this->getCurrentApplication());
+      return $this->getORMapper()->loadRelatedObjects($group, 'Group2User', $crit);
    }
 
    /**
@@ -1204,14 +1146,14 @@ class UmgtManager extends APFObject {
     *
     *  Loads all users, that are not assigned to a given group.
     *
-    * @param GenericORMapperDataObject $group the group
-    * @return GenericORMapperDataObject[] The user list.
+    * @param UmgtGroup $group the group
+    * @return UmgtUser[] The user list.
     *
     * @author Christian Achatz
     * @version
     *  Version 0.1, 27.12.2008<br />
     */
-   public function loadUsersNotWithGroup(GenericORMapperDataObject $group) {
+   public function loadUsersNotWithGroup(UmgtGroup $group) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('Application2User', $this->getCurrentApplication());
       return $this->getORMapper()->loadNotRelatedObjects($group, 'Group2User', $crit);
@@ -1222,14 +1164,14 @@ class UmgtManager extends APFObject {
     *
     *  Loads all roles, that are assigned to a given user.
     *
-    * @param GenericORMapperDataObject $user the user
-    * @return GenericORMapperDataObject[] The role list.
+    * @param UmgtUser $user the user
+    * @return UmgtRole[] The role list.
     *
     * @author Christian Achatz
     * @version
     *  Version 0.1, 27.12.2008<br />
     */
-   public function loadRolesWithUser(GenericORMapperDataObject $user) {
+   public function loadRolesWithUser(UmgtUser $user) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('Application2Role', $this->getCurrentApplication());
       return $this->getORMapper()->loadRelatedObjects($user, 'Role2User', $crit);
@@ -1240,14 +1182,14 @@ class UmgtManager extends APFObject {
     *
     *  Loads all roles, that are not assigned to a given user.
     *
-    * @param GenericORMapperDataObject $user the user
-    * @return GenericORMapperDataObject[] The role list.
+    * @param UmgtUser $user the user
+    * @return UmgtRole[] The role list.
     *
     * @author Christian Achatz
     * @version
     *  Version 0.1, 27.12.2008<br />
     */
-   public function loadRolesNotWithUser(GenericORMapperDataObject $user) {
+   public function loadRolesNotWithUser(UmgtUser $user) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('Application2Role', $this->getCurrentApplication());
       return $this->getORMapper()->loadNotRelatedObjects($user, 'Role2User', $crit);
@@ -1258,14 +1200,14 @@ class UmgtManager extends APFObject {
     *
     *  Loads a list of users, that have a certail role.
     *
-    * @param GenericORMapperDataObject $role the role, the users should have
-    * @return GenericORMapperDataObject[] Desired user list.
+    * @param UmgtRole $role the role, the users should have
+    * @return UmgtUser[] Desired user list.
     *
     * @author Christian Achatz
     * @version
     *  Version 0.1, 28.12.2008<br />
     */
-   public function loadUsersWithRole(GenericORMapperDataObject $role) {
+   public function loadUsersWithRole(UmgtRole $role) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('Application2User', $this->getCurrentApplication());
       return $this->getORMapper()->loadRelatedObjects($role, 'Role2User', $crit);
@@ -1276,15 +1218,15 @@ class UmgtManager extends APFObject {
     *
     * Loads a list of users, that don't have the given role.
     *
-    * @param GenericORMapperDataObject $role The role, the users should not have
-    * @return GenericORMapperDataObject[] Desired user list.
+    * @param UmgtRole $role The role, the users should not have
+    * @return UmgtUser[] Desired user list.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 27.12.2008<br />
     * Version 0.2, 28.12.2008 (Bugfix: criterion definition contained wrong relation indicator)<br />
     */
-   public function loadUsersNotWithRole(GenericORMapperDataObject $role) {
+   public function loadUsersNotWithRole(UmgtRole $role) {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2User', $app);
@@ -1296,14 +1238,14 @@ class UmgtManager extends APFObject {
     *
     * Loads all roles, that are *not* assigned the applied group.
     *
-    * @param GenericORMapperDataObject $group The group to load the roles with.
-    * @return GenericORMapperDataObject[] The list of roles, that are *not* assigned to the applied group.
+    * @param UmgtGroup $group The group to load the roles with.
+    * @return UmgtRole[] The list of roles, that are *not* assigned to the applied group.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.09.2011<br />
     */
-   public function loadRolesNotWithGroup(GenericORMapperDataObject $group) {
+   public function loadRolesNotWithGroup(UmgtGroup $group) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('Application2Role', $this->getCurrentApplication());
       return $this->getORMapper()->loadNotRelatedObjects($group, 'Role2Group', $crit);
@@ -1314,14 +1256,14 @@ class UmgtManager extends APFObject {
     *
     * Loads all roles, that are assigned the applied group
     *
-    * @param GenericORMapperDataObject $group The group to load the roles with.
-    * @return GenericORMapperDataObject[] The list of roles, that are assigned to the applied group.
+    * @param UmgtGroup $group The group to load the roles with.
+    * @return UmgtRole[] The list of roles, that are assigned to the applied group.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.09.2011<br />
     */
-   public function loadRolesWithGroup(GenericORMapperDataObject $group) {
+   public function loadRolesWithGroup(UmgtGroup $group) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('Application2Role', $this->getCurrentApplication());
       return $this->getORMapper()->loadRelatedObjects($group, 'Role2Group', $crit);
@@ -1332,16 +1274,15 @@ class UmgtManager extends APFObject {
     *
     *  Detaches a user from a role.
     *
-    * @param GenericORMapperDataObject $user the user
-    * @param GenericORMapperDataObject $role the desired role to detach the user from
+    * @param UmgtUser $user The user.
+    * @param UmgtRole $role The desired role to detach the user from.
     *
     * @author Christian Achatz
     * @version
     *  Version 0.1, 28.12.2008<br />
     */
-   public function detachUserFromRole(GenericORMapperDataObject $user, GenericORMapperDataObject $role) {
-      $oRM = &$this->getORMapper();
-      $oRM->deleteAssociation('Role2User', $role, $user);
+   public function detachUserFromRole(UmgtUser $user, UmgtRole $role) {
+      $this->getORMapper()->deleteAssociation('Role2User', $role, $user);
    }
 
    /**
@@ -1349,14 +1290,14 @@ class UmgtManager extends APFObject {
     *
     *  Detaches a user from one or more roles.
     *
-    * @param GenericORMapperDataObject $user The user.
-    * @param GenericORMapperDataObject[] $roles The desired role to detach the user from.
+    * @param UmgtUser $user The user.
+    * @param UmgtRole[] $roles The desired role to detach the user from.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 04.09.2011<br />
     */
-   public function detachUserFromRoles(GenericORMapperDataObject $user, array $roles) {
+   public function detachUserFromRoles(UmgtUser $user, array $roles) {
       foreach ($roles as $role) {
          $this->detachUserFromRole($user, $role);
       }
@@ -1367,14 +1308,14 @@ class UmgtManager extends APFObject {
     *
     *  Detaches users from a role.
     *
-    * @param GenericORMapperDataObject[] $users a list of users
-    * @param GenericORMapperDataObject $role the desired role to detach the users from
+    * @param UmgtUser[] $users a list of users
+    * @param UmgtRole $role the desired role to detach the users from
     *
     * @author Christian Achatz
     * @version
     *  Version 0.1, 28.12.2008<br />
     */
-   public function detachUsersFromRole(array $users, GenericORMapperDataObject $role) {
+   public function detachUsersFromRole(array $users, UmgtRole $role) {
       for ($i = 0; $i < count($users); $i++) {
          $this->detachUserFromRole($users[$i], $role);
       }
@@ -1385,16 +1326,15 @@ class UmgtManager extends APFObject {
     *
     *  Removes a user from the given groups.
     *
-    * @param GenericORMapperDataObject $user the desired user
-    * @param GenericORMapperDataObject $group the group
+    * @param UmgtUser $user the desired user
+    * @param UmgtGroup $group the group
     *
     * @author Christian Achatz
     * @version
     *  Version 0.1, 26.12.2008<br />
     */
-   public function detachUserFromGroup(GenericORMapperDataObject $user, GenericORMapperDataObject $group) {
-      $oRM = &$this->getORMapper();
-      $oRM->deleteAssociation('Group2User', $user, $group);
+   public function detachUserFromGroup(UmgtUser $user, UmgtGroup $group) {
+      $this->getORMapper()->deleteAssociation('Group2User', $user, $group);
    }
 
    /**
@@ -1402,19 +1342,17 @@ class UmgtManager extends APFObject {
     *
     *  Removes a user from the given groups.
     *
-    * @param GenericORMapperDataObject $user the desired user
-    * @param GenericORMapperDataObject[] $groups a list of groups
+    * @param UmgtUser $user the desired user
+    * @param UmgtGroup[] $groups a list of groups
     *
     * @author Christian Achatz
     * @version
     *  Version 0.1, 26.12.2008<br />
     */
-   public function detachUserFromGroups(GenericORMapperDataObject $user, array $groups) {
-
+   public function detachUserFromGroups(UmgtUser $user, array $groups) {
       for ($i = 0; $i < count($groups); $i++) {
          $this->detachUserFromGroup($user, $groups[$i]);
       }
-
    }
 
    /**
@@ -1422,14 +1360,14 @@ class UmgtManager extends APFObject {
     *
     * Removes users from a given group.
     *
-    * @param GenericORMapperDataObject[] $users a list of users
-    * @param GenericORMapperDataObject $group the desired group
+    * @param UmgtUser[] $users a list of users
+    * @param UmgtGroup $group the desired group
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 27.12.2008<br />
     */
-   public function detachUsersFromGroup(array $users, GenericORMapperDataObject $group) {
+   public function detachUsersFromGroup(array $users, UmgtGroup $group) {
 
       for ($i = 0; $i < count($users); $i++) {
          $this->detachUserFromGroup($users[$i], $group);
@@ -1440,7 +1378,7 @@ class UmgtManager extends APFObject {
    /**
     * @public
     *
-    * @return GenericORMapperDataObject[] The list of all permissions.
+    * @return UmgtRole[] The list of all permissions.
     *
     * @author Christian Achatz
     * @version
@@ -1456,14 +1394,14 @@ class UmgtManager extends APFObject {
     *
     * Loads the permission associated to the given role.
     *
-    * @param GenericORMapperDataObject $role The role to load it's permissions.
-    * @return GenericORMapperDataObject[] The permissions that are assigned to the applied role.
+    * @param UmgtRole $role The role to load it's permissions.
+    * @return UmgtPermission[] The permissions that are assigned to the applied role.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 23.08.2011<br />
     */
-   public function loadPermissionsWithRole(GenericORMapperDataObject $role) {
+   public function loadPermissionsWithRole(UmgtRole $role) {
       return $this->getORMapper()->loadRelatedObjects($role, 'Role2Permission');
    }
 
@@ -1472,14 +1410,14 @@ class UmgtManager extends APFObject {
     *
     * Loads the permission *not* associated to the given role.
     *
-    * @param GenericORMapperDataObject $role The role to load it's *not* associated permissions.
-    * @return GenericORMapperDataObject[] The permissions that are *not* assigned to the applied role.
+    * @param UmgtRole $role The role to load it's *not* associated permissions.
+    * @return UmgtPermission[] The permissions that are *not* assigned to the applied role.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.09.2011<br />
     */
-   public function loadPermissionsNotWithRole(GenericORMapperDataObject $role) {
+   public function loadPermissionsNotWithRole(UmgtRole $role) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('Application2Permission', $this->getCurrentApplication());
       return $this->getORMapper()->loadNotRelatedObjects($role, 'Role2Permission', $crit);
@@ -1490,14 +1428,14 @@ class UmgtManager extends APFObject {
     *
     * Loads all roles that are connected to the applied permission.
     *
-    * @param GenericORMapperDataObject $permission The permission to load the roles.
-    * @return GenericORMapperDataObject[] The roles, that are assigned the given permission.
+    * @param UmgtPermission $permission The permission to load the roles.
+    * @return UmgtRole[] The roles, that are assigned the given permission.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 19.08.2011<br />
     */
-   public function loadRolesWithPermission(GenericORMapperDataObject $permission) {
+   public function loadRolesWithPermission(UmgtPermission $permission) {
       return $this->getORMapper()->loadRelatedObjects($permission, 'Role2Permission');
    }
 
@@ -1506,68 +1444,51 @@ class UmgtManager extends APFObject {
     *
     * Loads all roles that are *not* connected to the applied permission.
     *
-    * @param GenericORMapperDataObject $permission The permission to load the roles.
-    * @return GenericORMapperDataObject[] The roles, that are *not* assigned the given permission.
+    * @param UmgtPermission $permission The permission to load the roles.
+    * @return UmgtRole[] The roles, that are *not* assigned the given permission.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 19.08.2011<br />
     */
-   public function loadRolesNotWithPermission(GenericORMapperDataObject $permission) {
-
-      // setup the criterion
+   public function loadRolesNotWithPermission(UmgtPermission $permission) {
       $crit = new GenericCriterionObject();
-      $app = $this->getCurrentApplication();
-      $crit->addRelationIndicator('Application2Role', $app);
-
-      // load the permission list
+      $crit->addRelationIndicator('Application2Role', $this->getCurrentApplication());
       return $this->getORMapper()->loadNotRelatedObjects($permission, 'Role2Permission', $crit);
-
    }
 
    /**
-    * @public
-    *
-    * @param GenericORMapperDataObject $permission
-    * @param array $roles
-    * @return void
+    * @param UmgtPermission $permission The permission to attach to the applied roles.
+    * @param UmgtRole[] $roles The roles to add the permission to.
     */
-   public function attachPermission2Roles(GenericORMapperDataObject $permission, array $roles) {
+   public function attachPermission2Roles(UmgtPermission $permission, array $roles) {
 
       $orm = &$this->getORMapper();
 
       foreach ($roles as $role) {
-         /* @var $role GenericORMapperDataObject */
          $orm->createAssociation('Role2Permission', $role, $permission);
       }
 
    }
 
    /**
-    * @public
-    *
-    * @param GenericORMapperDataObject $permission
-    * @param array $roles
-    * @return void
+    * @param UmgtPermission $permission The permission to detach from the applied roles.
+    * @param UmgtRole[] $roles The roles to remove the permission from.
     */
-   public function detachPermissionFromRoles(GenericORMapperDataObject $permission, array $roles) {
+   public function detachPermissionFromRoles(UmgtPermission $permission, array $roles) {
 
       $orm = &$this->getORMapper();
 
       foreach ($roles as $role) {
-         /* @var $role GenericORMapperDataObject */
          $orm->deleteAssociation('Role2Permission', $role, $permission);
       }
    }
 
    /**
-    * @public
-    *
-    * @param GenericORMapperDataObject[] $permissions
-    * @param GenericORMapperDataObject $role
-    * @return void
+    * @param UmgtPermission[] $permissions The permissions to attach to the applied role.
+    * @param UmgtRole $role The role to add the permissions to.
     */
-   public function attachPermissions2Role(array $permissions, GenericORMapperDataObject $role) {
+   public function attachPermissions2Role(array $permissions, UmgtRole $role) {
       $orm = &$this->getORMapper();
       foreach ($permissions as $permission) {
          $orm->createAssociation('Role2Permission', $role, $permission);
@@ -1575,12 +1496,10 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @public
-    *
-    * @param GenericORMapperDataObject[] $permissions
-    * @param GenericORMapperDataObject $role
+    * @param UmgtPermission[] $permissions The permissions to detach from the applied role.
+    * @param UmgtRole $role The role to remove the permissions from.
     */
-   public function detachPermissionsFromRole(array $permissions, GenericORMapperDataObject $role) {
+   public function detachPermissionsFromRole(array $permissions, UmgtRole $role) {
       $orm = &$this->getORMapper();
       foreach ($permissions as $permission) {
          $orm->deleteAssociation('Role2Permission', $role, $permission);
@@ -1592,14 +1511,14 @@ class UmgtManager extends APFObject {
     *
     * Assigns a group to a list of roles.
     *
-    * @param GenericORMapperDataObject $group The group to add to the applied roles.
-    * @param GenericORMapperDataObject[] $roles The roles to add the group to.
+    * @param UmgtGroup $group The group to add to the applied roles.
+    * @param UmgtRole[] $roles The roles to add the group to.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.09.2011<br />
     */
-   public function attachGroupToRoles(GenericORMapperDataObject $group, array $roles) {
+   public function attachGroupToRoles(UmgtGroup $group, array $roles) {
       $orm = &$this->getORMapper();
       foreach ($roles as $role) {
          $orm->createAssociation('Role2Group', $role, $group);
@@ -1611,14 +1530,14 @@ class UmgtManager extends APFObject {
     *
     * Removes a group from a list of roles.
     *
-    * @param GenericORMapperDataObject $group The group to remove from the applied roles.
-    * @param GenericORMapperDataObject[] $roles The roles to remove the group from.
+    * @param UmgtGroup $group The group to remove from the applied roles.
+    * @param UmgtRole[] $roles The roles to remove the group from.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.09.2011<br />
     */
-   public function detachGroupFromRoles(GenericORMapperDataObject $group, array $roles) {
+   public function detachGroupFromRoles(UmgtGroup $group, array $roles) {
       $orm = &$this->getORMapper();
       foreach ($roles as $role) {
          $orm->deleteAssociation('Role2Group', $role, $group);
@@ -1631,46 +1550,46 @@ class UmgtManager extends APFObject {
     * Creates a visibility definition relating an application proxy object to the users and
     * groups, that should have access to the object.
     *
-    * @param GenericORMapperDataObject $visibilityType The visibility type (object type of application's the target object).
-    * @param GenericORMapperDataObject $visibilityDefinition The visibility definition (object id of application's the target object).
-    * @param GenericORMapperDataObject[] $users The list of users, that should have visibility permissions on the given application object.
-    * @param GenericORMapperDataObject[] $groups The list of groups, that should have visibility permissions on the given application object.
+    * @param UmgtVisibilityDefinitionType $type The visibility type (object type of application's the target object).
+    * @param UmgtVisibilityDefinition $definition The visibility definition (object id of application's the target object).
+    * @param UmgtUser[] $users The list of users, that should have visibility permissions on the given application object.
+    * @param UmgtGroup[] $groups The list of groups, that should have visibility permissions on the given application object.
     * @return int The id of the desired visibility definition.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 26.05.2010<br />
     */
-   public function createVisibilityDefinition(GenericORMapperDataObject $visibilityType, GenericORMapperDataObject $visibilityDefinition, $users = array(), $groups = array()) {
+   public function createVisibilityDefinition(UmgtVisibilityDefinitionType $type, UmgtVisibilityDefinition $definition, array $users = array(), array $groups = array()) {
 
       $orm = &$this->getORMapper();
 
       // try to reuse existing visibility definitions having the same
       // combination of proxy + type!
       $crit = new GenericCriterionObject();
-      $crit->addPropertyIndicator('AppObjectId', $visibilityDefinition->getProperty('AppObjectId'));
-      $crit->addRelationIndicator('AppProxy2AppProxyType', $visibilityType);
+      $crit->addPropertyIndicator('AppObjectId', $definition->getAppObjectId());
+      $crit->addRelationIndicator('AppProxy2AppProxyType', $type);
       $storedVisibilityDefinition = $orm->loadObjectByCriterion('AppProxy', $crit);
       if ($storedVisibilityDefinition != null) {
-         $visibilityDefinition = $storedVisibilityDefinition;
+         $definition = $storedVisibilityDefinition;
       }
 
       // append proxy to current application
       $app = $this->getCurrentApplication();
-      $visibilityDefinition->addRelatedObject('Application2AppProxy', $app);
+      $definition->addRelatedObject('Application2AppProxy', $app);
 
       // create domain structure
-      $visibilityDefinition->addRelatedObject('AppProxy2AppProxyType', $visibilityType);
+      $definition->addRelatedObject('AppProxy2AppProxyType', $type);
 
       foreach ($users as $id => $DUMMY) {
-         $visibilityDefinition->addRelatedObject('AppProxy2User', $users[$id]);
+         $definition->addRelatedObject('AppProxy2User', $users[$id]);
       }
       foreach ($groups as $id => $group) {
-         $visibilityDefinition->addRelatedObject('AppProxy2Group', $groups[$id]);
+         $definition->addRelatedObject('AppProxy2Group', $groups[$id]);
       }
 
       // save domain structure
-      return $orm->saveObject($visibilityDefinition);
+      return $orm->saveObject($definition);
    }
 
    /**
@@ -1678,14 +1597,14 @@ class UmgtManager extends APFObject {
     *
     * Deletes a visibility definition including all associations.
     *
-    * @param GenericORMapperDataObject $visibilityDefinition The visibility definition to delete.
+    * @param UmgtVisibilityDefinition $definition The visibility definition to delete.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 06.06.2010<br />
     */
-   public function deleteVisibilityDefinition(GenericORMapperDataObject $visibilityDefinition) {
-      $this->getORMapper()->deleteObject($visibilityDefinition);
+   public function deleteVisibilityDefinition(UmgtVisibilityDefinition $definition) {
+      $this->getORMapper()->deleteObject($definition);
    }
 
    /**
@@ -1693,17 +1612,17 @@ class UmgtManager extends APFObject {
     *
     * Revokes access of the passed users to the given application proxy object.
     *
-    * @param GenericORMapperDataObject $visibilityDefinition The application proxy object.
-    * @param GenericORMapperDataObject[] $users A list of users, that should be revoked access to the given application proxy.
+    * @param UmgtVisibilityDefinition $definition The application proxy object.
+    * @param UmgtUser[] $users A list of users, that should be revoked access to the given application proxy.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.06.2010<br />
     */
-   public function detachUsersFromVisibilityDefinition(GenericORMapperDataObject $visibilityDefinition, array $users) {
+   public function detachUsersFromVisibilityDefinition(UmgtVisibilityDefinition $definition, array $users) {
       $orm = &$this->getORMapper();
       foreach ($users as $user) {
-         $orm->deleteAssociation('AppProxy2User', $visibilityDefinition, $user);
+         $orm->deleteAssociation('AppProxy2User', $definition, $user);
       }
    }
 
@@ -1712,17 +1631,17 @@ class UmgtManager extends APFObject {
     *
     * Revokes access of the passed groups to the given application proxy object.
     *
-    * @param GenericORMapperDataObject $visibilityDefinition The application proxy object.
-    * @param GenericORMapperDataObject[] $groups A list of groups, that should be revoked access to the given application proxy.
+    * @param UmgtVisibilityDefinition $definition The application proxy object.
+    * @param UmgtGroup[] $groups A list of groups, that should be revoked access to the given application proxy.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.06.2010<br />
     */
-   public function detachGroupsFromVisibilityDefinition(GenericORMapperDataObject $visibilityDefinition, array $groups) {
+   public function detachGroupsFromVisibilityDefinition(UmgtVisibilityDefinition $definition, array $groups) {
       $orm = &$this->getORMapper();
       foreach ($groups as $group) {
-         $orm->deleteAssociation('AppProxy2Group', $visibilityDefinition, $group);
+         $orm->deleteAssociation('AppProxy2Group', $definition, $group);
       }
    }
 
@@ -1731,17 +1650,17 @@ class UmgtManager extends APFObject {
     *
     * Adds a given list of users to the applied visibility definition.
     *
-    * @param GenericORMapperDataObject $visibilityDefinition The desired visibility definition.
-    * @param GenericORMapperDataObject[] $users The list of users to detach.
+    * @param UmgtVisibilityDefinition $definition The desired visibility definition.
+    * @param UmgtUser[] $users The list of users to detach.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.06.2010<br />
     */
-   public function attachUsers2VisibilityDefinition(GenericORMapperDataObject $visibilityDefinition, array $users) {
+   public function attachUsers2VisibilityDefinition(UmgtVisibilityDefinition $definition, array $users) {
       $orm = &$this->getORMapper();
       foreach ($users as $user) {
-         $orm->createAssociation('AppProxy2User', $visibilityDefinition, $user);
+         $orm->createAssociation('AppProxy2User', $definition, $user);
       }
    }
 
@@ -1750,17 +1669,17 @@ class UmgtManager extends APFObject {
     *
     * Adds a given list of groups to the applied visibility definition.
     *
-    * @param GenericORMapperDataObject $visibilityDefinition The desired visibility definition.
-    * @param GenericORMapperDataObject[] $groups The list of users to detach.
+    * @param UmgtVisibilityDefinition $definition The desired visibility definition.
+    * @param UmgtGroup[] $groups The list of users to detach.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.06.2010<br />
     */
-   public function attachGroups2VisibilityDefinition(GenericORMapperDataObject $visibilityDefinition, array $groups) {
+   public function attachGroups2VisibilityDefinition(UmgtVisibilityDefinition $definition, array $groups) {
       $orm = &$this->getORMapper();
       foreach ($groups as $group) {
-         $orm->createAssociation('AppProxy2Group', $visibilityDefinition, $group);
+         $orm->createAssociation('AppProxy2Group', $definition, $group);
       }
    }
 
@@ -1769,15 +1688,15 @@ class UmgtManager extends APFObject {
     *
     * Returns a list of all visibility definitions for the current application.
     *
-    * @param GenericORMapperDataObject $type An optional visibility definitioyn type marker to limit the result.
-    * @return GenericORMapperDataObject[] The list of visibility definitions for the current application.
+    * @param UmgtVisibilityDefinitionType $type An optional visibility definitioyn type marker to limit the result.
+    * @return UmgtVisibilityDefinition[] The list of visibility definitions for the current application.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.06.2010<br />
     * Version 0.2, 01.11.2010 (Added type restriction possibility)<br />
     */
-   public function getPagedVisibilityDefinitionList(GenericORMapperDataObject $type = null) {
+   public function getPagedVisibilityDefinitionList(UmgtVisibilityDefinitionType $type = null) {
       $app = $this->getCurrentApplication();
 
       // limit result to the given type is desired
@@ -1796,14 +1715,14 @@ class UmgtManager extends APFObject {
     *
     * Loads the list of users, that have visibility permissions on the given proxy object.
     *
-    * @param GenericORMapperDataObject $proxy The proxy object.
-    * @return GenericORMapperDataObject[] The list of users, that have visibility permission.
+    * @param UmgtVisibilityDefinition $proxy The proxy object.
+    * @return UmgtUser[] The list of users, that have visibility permission.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 08.05.2010<br />
     */
-   public function loadUsersWithVisibilityDefinition(GenericORMapperDataObject $proxy) {
+   public function loadUsersWithVisibilityDefinition(UmgtVisibilityDefinition $proxy) {
       return $this->getORMapper()->loadRelatedObjects($proxy, 'AppProxy2User');
    }
 
@@ -1812,14 +1731,14 @@ class UmgtManager extends APFObject {
     *
     * Loads the list of groups, that have visibility permissions on the given proxy object.
     *
-    * @param GenericORMapperDataObject $proxy The proxy object.
-    * @return GenericORMapperDataObject[] The list of groups, that have visibility permission.
+    * @param UmgtVisibilityDefinition $proxy The proxy object.
+    * @return UmgtGroup[] The list of groups, that have visibility permission.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 08.05.2010<br />
     */
-   public function loadGroupsWithVisibilityDefinition(GenericORMapperDataObject $proxy) {
+   public function loadGroupsWithVisibilityDefinition(UmgtVisibilityDefinition $proxy) {
       return $this->getORMapper()->loadRelatedObjects($proxy, 'AppProxy2Group');
    }
 
@@ -1829,14 +1748,14 @@ class UmgtManager extends APFObject {
     * Loads a mixed list of users and groups, that have access to a given proxy.
     * Sorts the result according to the display name of the user and group.
     *
-    * @param GenericORMapperDataObject $proxy The proxy the users and groups have access to.
+    * @param UmgtVisibilityDefinition $proxy The proxy the users and groups have access to.
     * @return GenericORMapperDataObject[] A mixed list of users and groups, that have access to a given proxy.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 04.06.2010<br />
     */
-   public function loadUsersAndGroupsWithVisibilityDefinition(GenericORMapperDataObject $proxy) {
+   public function loadUsersAndGroupsWithVisibilityDefinition(UmgtVisibilityDefinition $proxy) {
       return array_merge(
          $this->loadUsersWithVisibilityDefinition($proxy),
          $this->loadGroupsWithVisibilityDefinition($proxy)
@@ -1848,22 +1767,17 @@ class UmgtManager extends APFObject {
     *
     * Loads the list of users, that do not have visibility permissions on the given application proxy.
     *
-    * @param GenericORMapperDataObject $visibilityDefinition The appropriate visibility definition.
-    * @return GenericORMapperDataObject[] The users, that do not have visibility permissions in the given object.
+    * @param UmgtVisibilityDefinition $definition The appropriate visibility definition.
+    * @return UmgtUser[] The users, that do not have visibility permissions in the given object.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 04.06.2010<br />
     */
-   public function loadUsersNotWithVisibilityDefinition(GenericORMapperDataObject $visibilityDefinition) {
-
-      $orm = &$this->getORMapper();
-
+   public function loadUsersNotWithVisibilityDefinition(UmgtVisibilityDefinition $definition) {
       $crit = new GenericCriterionObject();
-      $app = $this->getCurrentApplication();
-      $crit->addRelationIndicator('Application2User', $app);
-
-      return $orm->loadNotRelatedObjects($visibilityDefinition, 'AppProxy2User', $crit);
+      $crit->addRelationIndicator('Application2User', $this->getCurrentApplication());
+      return $this->getORMapper()->loadNotRelatedObjects($definition, 'AppProxy2User', $crit);
    }
 
    /**
@@ -1871,22 +1785,17 @@ class UmgtManager extends APFObject {
     *
     * Loads the list of groups, that do not have visibility permissions on the given application proxy.
     *
-    * @param GenericORMapperDataObject $visibilityDefinition The appropriate visibility definition.
-    * @return GenericORMapperDataObject[] The groups, that do not have visibility permissions in the given object.
+    * @param UmgtVisibilityDefinition $definition The appropriate visibility definition.
+    * @return UmgtGroup[] The groups, that do not have visibility permissions in the given object.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 04.06.2010<br />
     */
-   public function loadGroupsNotWithVisibilityDefinition(GenericORMapperDataObject $visibilityDefinition) {
-
-      $orm = &$this->getORMapper();
-
+   public function loadGroupsNotWithVisibilityDefinition(UmgtVisibilityDefinition $definition) {
       $crit = new GenericCriterionObject();
-      $app = $this->getCurrentApplication();
-      $crit->addRelationIndicator('Application2Group', $app);
-
-      return $orm->loadNotRelatedObjects($visibilityDefinition, 'AppProxy2Group', $crit);
+      $crit->addRelationIndicator('Application2Group', $this->getCurrentApplication());
+      return $this->getORMapper()->loadNotRelatedObjects($definition, 'AppProxy2Group', $crit);
    }
 
    /**
@@ -1894,14 +1803,14 @@ class UmgtManager extends APFObject {
     *
     * Loads the list of visibility definitions for the given type.
     *
-    * @param GenericORMapperDataObject $type The visibility definiton type.
-    * @return GenericORMapperDataObject[] A list of visibility definitions of the given type.
+    * @param UmgtVisibilityDefinitionType $type The visibility definition type.
+    * @return UmgtVisibilityDefinition[] A list of visibility definitions of the given type.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 08.05.2010<br />
     */
-   public function loadVisibilityDefinitionsByType(GenericORMapperDataObject $type) {
+   public function loadVisibilityDefinitionsByType(UmgtVisibilityDefinitionType $type) {
       return $this->getORMapper()->loadRelatedObjects($type, 'AppProxy2AppProxyType');
    }
 
@@ -1911,15 +1820,15 @@ class UmgtManager extends APFObject {
     * Loads all visibility definitions for the current user and it's group restricted by the
     * given visibility definition type (e.g. <em>Page</em>).
     *
-    * @param GenericORMapperDataObject $user The currently logged-in user.
-    * @param GenericORMapperDataObject $type The type of visibility definition (e.g. <em>Page</em>)
-    * @return GenericORMapperDataObject[] A list of visibility definitions, the user and it'd groups have access to.
+    * @param UmgtUser $user The currently logged-in user.
+    * @param UmgtVisibilityDefinitionType $type The type of visibility definition (e.g. <em>Page</em>)
+    * @return UmgtVisibilityDefinition[] A list of visibility definitions, the user and it'd groups have access to.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 10.06.2010<br />
     */
-   public function loadAllVisibilityDefinitions(GenericORMapperDataObject $user, GenericORMapperDataObject $type) {
+   public function loadAllVisibilityDefinitions(UmgtUser $user, UmgtVisibilityDefinitionType $type = null) {
 
       $visDefs = $this->loadVisibilityDefinitionsByUser($user, $type);
 
@@ -1928,7 +1837,7 @@ class UmgtManager extends APFObject {
          $visDefs = array_merge($visDefs, $this->loadVisibilityDefinitionsByGroup($groups[$id], $type));
       }
 
-      return array_unique($visDefs);
+      return array_slice(array_unique($visDefs), 0); // array_slice is used to re-order the array efficiently
    }
 
    /**
@@ -1937,18 +1846,22 @@ class UmgtManager extends APFObject {
     * Loads all visibility definition for the given user restricted by the
     * given visibility definition type (e.g. <em>Page</em>).
     *
-    * @param GenericORMapperDataObject $user The currently logged-in user.
-    * @param GenericORMapperDataObject $type The type of visibility definition (e.g. <em>Page</em>)
-    * @return GenericORMapperDataObject[] A list of visibility definitions, the user has access to.
+    * @param UmgtUser $user The currently logged-in user.
+    * @param UmgtVisibilityDefinitionType $type The type of visibility definition (e.g. <em>Page</em>)
+    * @return UmgtVisibilityDefinition[] A list of visibility definitions, the user has access to.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 10.06.2010<br />
     */
-   public function loadVisibilityDefinitionsByUser(GenericORMapperDataObject $user, GenericORMapperDataObject $type) {
+   public function loadVisibilityDefinitionsByUser(UmgtUser $user, UmgtVisibilityDefinitionType $type = null) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('Application2AppProxy', $this->getCurrentApplication());
-      $crit->addRelationIndicator('AppProxy2AppProxyType', $type);
+
+      if ($type !== null) {
+         $crit->addRelationIndicator('AppProxy2AppProxyType', $type);
+      }
+
       return $this->getORMapper()->loadRelatedObjects($user, 'AppProxy2User', $crit);
    }
 
@@ -1958,18 +1871,22 @@ class UmgtManager extends APFObject {
     * Loads all visibility definition for the given group restricted by the
     * given visibility definition type (e.g. <em>Page</em>).
     *
-    * @param GenericORMapperDataObject $group A desired group.
-    * @param GenericORMapperDataObject $type The type of visibility definition (e.g. <em>Page</em>)
-    * @return GenericORMapperDataObject[] A list of visibility definitions, the group has access to.
+    * @param UmgtGroup $group A desired group.
+    * @param UmgtVisibilityDefinitionType $type The type of visibility definition (e.g. <em>Page</em>)
+    * @return UmgtVisibilityDefinition[] A list of visibility definitions, the group has access to.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 10.06.2010<br />
     */
-   public function loadVisibilityDefinitionsByGroup(GenericORMapperDataObject $group, GenericORMapperDataObject $type) {
+   public function loadVisibilityDefinitionsByGroup(UmgtGroup $group, UmgtVisibilityDefinitionType $type = null) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('Application2AppProxy', $this->getCurrentApplication());
-      $crit->addRelationIndicator('AppProxy2AppProxyType', $type);
+
+      if ($type !== null) {
+         $crit->addRelationIndicator('AppProxy2AppProxyType', $type);
+      }
+
       return $this->getORMapper()->loadRelatedObjects($group, 'AppProxy2Group', $crit);
    }
 
@@ -1979,7 +1896,7 @@ class UmgtManager extends APFObject {
     * Loads a visibility definition by it's object id.
     *
     * @param string $id The of the visibility definition.
-    * @return GenericORMapperDataObject The desired visibility definition.
+    * @return UmgtVisibilityDefinition The desired visibility definition.
     *
     * @author Christian Achatz
     * @version
@@ -1996,8 +1913,8 @@ class UmgtManager extends APFObject {
     * Providing the type is necessary due to the fact, that app objct id is not
     * unique throughout the system but the combination with the type is.
     *
-    * @param int $id The application object id of the visibility definition.
-    * @return GenericORMapperDataObject The desired visibility definition.
+    * @param int $appObjectId The application object id of the visibility definition.
+    * @return UmgtVisibilityDefinition The desired visibility definition.
     *
     * @author Christian Achatz
     * @version
@@ -2015,33 +1932,30 @@ class UmgtManager extends APFObject {
     *
     * Saves a visibility definition type used to categorize an application object.
     *
-    * @param GenericORMapperDataObject $proxyType The type to save.
+    * @param UmgtVisibilityDefinitionType $proxyType The type to save.
     * @return int The id of the type.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 30.04.2010<br />
     */
-   public function saveVisibilityDefinitionType(GenericORMapperDataObject &$proxyType) {
-      $oRM = &$this->getORMapper();
-      $app = $this->getCurrentApplication();
-      $proxyType->addRelatedObject('Application2AppProxyType', $app);
-      // save the permission and return it's id
-      return $oRM->saveObject($proxyType);
+   public function saveVisibilityDefinitionType(UmgtVisibilityDefinitionType &$proxyType) {
+      $proxyType->addRelatedObject('Application2AppProxyType', $this->getCurrentApplication());
+      return $this->getORMapper()->saveObject($proxyType);
    }
 
    /**
     * @public
     *
-    * Recursively deletes the proxy type and it's decendants (proxies + associations).
+    * Recursively deletes the proxy type and it's descendants (proxies + associations).
     *
-    * @param GenericORMapperDataObject $proxyType The proxy type to delete.
+    * @param UmgtVisibilityDefinitionType $proxyType The proxy type to delete.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 08.05.2010<br />
     */
-   public function deleteVisibilityDefinitionType(GenericORMapperDataObject &$proxyType) {
+   public function deleteVisibilityDefinitionType(UmgtVisibilityDefinitionType &$proxyType) {
       $proxies = $this->loadVisibilityDefinitionsByType($proxyType);
       $orm = &$this->getORMapper();
       foreach ($proxies as $proxy) {
@@ -2056,7 +1970,7 @@ class UmgtManager extends APFObject {
     * Returns a proxy type object specified by the given id.
     *
     * @param int $id The id of the proxy type.
-    * @return GenericORMapperDataObject The desired proxy type.
+    * @return UmgtVisibilityDefinitionType The desired proxy type.
     *
     * @author Christian Achatz
     * @version
@@ -2066,6 +1980,10 @@ class UmgtManager extends APFObject {
       return $this->getORMapper()->loadObjectByID('AppProxyType', $id);
    }
 
+   /**
+    * @param $name The name of the visibility definition type.
+    * @return UmgtVisibilityDefinitionType
+    */
    public function loadVisibilityDefinitionTypeByName($name) {
       $crit = new GenericCriterionObject();
       $crit->addPropertyIndicator('AppObjectName', $name);
@@ -2077,14 +1995,14 @@ class UmgtManager extends APFObject {
     *
     * Returns the type associated to the given application proxy object.
     *
-    * @param GenericORMapperDataObject $proxy The proxy object to load the type of.
-    * @return GenericORMapperDataObject The desired proxy type.
+    * @param UmgtVisibilityDefinition $proxy The proxy object to load the type of.
+    * @return UmgtVisibilityDefinitionType The desired proxy type.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.06.2010<br />
     */
-   public function loadVisibilityDefinitionType(GenericORMapperDataObject $proxy) {
+   public function loadVisibilityDefinitionType(UmgtVisibilityDefinition $proxy) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('AppProxy2AppProxyType', $proxy);
       return $this->getORMapper()->loadObjectByCriterion('AppProxyType', $crit);
@@ -2099,7 +2017,7 @@ class UmgtManager extends APFObject {
     * conjunction with proxy objects for the dedicated objects of the
     * desired type must be created.
     *
-    * @return GenericORMapperDataObject[] List of proxy types.
+    * @return UmgtVisibilityDefinitionType[] List of proxy types.
     *
     * @author Christian Achatz
     * @version
@@ -2108,8 +2026,7 @@ class UmgtManager extends APFObject {
    public function loadVisibilityDefinitionTypes() {
       $crit = new GenericCriterionObject();
       $crit->addOrderIndicator('AppObjectName');
-      $orm = &$this->getORMapper();
-      return $orm->loadObjectListByCriterion('AppProxyType', $crit);
+      return $this->getORMapper()->loadObjectListByCriterion('AppProxyType', $crit);
    }
 
 }

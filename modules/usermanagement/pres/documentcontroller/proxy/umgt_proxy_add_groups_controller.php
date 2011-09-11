@@ -46,9 +46,9 @@ class umgt_proxy_add_groups_controller extends permission_base_controller {
       }
 
       if ($form->isSent() && $form->isValid()) {
-         $proxy = new GenericDomainObject('AppProxy');
+         $proxy = new UmgtVisibilityDefinition();
          $proxy->setObjectId($proxyId);
-         $uM->attachGroups2VisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('groups', 'Group'));
+         $uM->attachGroups2VisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('groups', 'UmgtGroup'));
 
          HeaderManager::forward(
             $this->generateLink(

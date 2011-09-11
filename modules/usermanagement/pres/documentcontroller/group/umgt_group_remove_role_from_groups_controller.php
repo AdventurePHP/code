@@ -61,7 +61,7 @@ class umgt_group_remove_role_from_groups_controller extends umgt_base_controller
          $additionalGroups = array();
          foreach ($options as $option) {
             /* @var $option select_taglib_option */
-            $additionalGroup = new GenericDomainObject('Group');
+            $additionalGroup = new UmgtGroup();
             $additionalGroup->setObjectId($option->getValue());
             $additionalGroups[] = $additionalGroup;
             unset($additionalGroup);

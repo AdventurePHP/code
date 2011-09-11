@@ -34,15 +34,14 @@ import('modules::usermanagement::pres::condition', 'UserDependentContentConditio
  */
 class UmgtGroupCondition extends UserDependentContentConditionBase implements UserDependentContentCondition {
 
-   public function matches($conditionKey, GenericDomainObject $user = null) {
+   public function matches($conditionKey, UmgtUser $user = null) {
 
       if ($user === null) {
          return false;
       }
 
       foreach ($this->getGroups($user) as $group) {
-         /* @var $group GenericDomainObject */
-         if (in_array($group->getProperty('DisplayName'), $this->getOptions())) {
+         if (in_array($group->getDisplayName(), $this->getOptions())) {
             return true;
          }
       }
@@ -53,7 +52,11 @@ class UmgtGroupCondition extends UserDependentContentConditionBase implements Us
       return 'group';
    }
 
-   private function getGroups(GenericDomainObject $user) {
+   /**
+    * @param UmgtUser $user
+    * @return UmgtGroup[]
+    */
+   private function getGroups(UmgtUser $user) {
       return $user->loadRelatedObjects('Group2User');
    }
 

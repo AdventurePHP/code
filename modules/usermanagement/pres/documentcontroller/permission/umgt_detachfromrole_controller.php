@@ -70,7 +70,7 @@ class umgt_detachfromrole_controller extends umgt_base_controller {
          $options = &$rolesControl->getSelectedOptions();
          $newRoles = array();
          for ($i = 0; $i < count($options); $i++) {
-            $newRole = new GenericDomainObject('Role');
+            $newRole = new UmgtRole();
             $newRole->setObjectId($options[$i]->getAttribute('value'));
             $newRoles[] = $newRole;
             unset($newRole);

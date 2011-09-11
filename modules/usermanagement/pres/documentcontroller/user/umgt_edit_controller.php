@@ -62,8 +62,8 @@ class umgt_edit_controller extends umgt_base_controller {
          if ($formEdit->isValid() == true) {
 
             // setup the domain object
-            $user = new GenericDomainObject('User');
-            $user->setProperty('UserID', $userId);
+            $user = new UmgtUser();
+            $user->setObjectId($userId);
 
             // read the "normal" fields
             $textFields = &$formEdit->getFormElementsByTagName('form:text');

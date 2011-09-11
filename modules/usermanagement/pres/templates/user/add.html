@@ -1,7 +1,10 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::user" class="umgt_add_controller" @>
-Please fill in the following fields:
-<br />
-<br />
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::user"
+   class="umgt_user_add_controller"
+@>
+<p>
+   Please fill in the following fields:
+</p>
 <html:placeholder name="UserAdd" />
 <core:addtaglib namespace="core::pagecontroller" prefix="core" class="appendnode" />
 <core:appendnode namespace="modules::usermanagement::pres::templates::user" template="user_form" />

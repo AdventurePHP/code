@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -34,9 +33,11 @@
 interface UserDependentContentCondition {
 
    /**
+    * @param string $conditionKey The name of the condition.
+    * @param UmgtUser $user The current user.
     * @return boolean true in case the condition matches, false otherwise.
     */
-   function matches($conditionKey, GenericDomainObject $user = null);
+   function matches($conditionKey, UmgtUser $user = null);
 
    /**
     * @return string The condition key.

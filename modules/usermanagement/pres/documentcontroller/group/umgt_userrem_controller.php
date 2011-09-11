@@ -67,15 +67,15 @@ class umgt_userrem_controller extends umgt_base_controller {
 
          $users = array();
          for ($i = 0; $i < count($options); $i++) {
-            $userControl = new GenericDomainObject('User');
-            $userControl->setProperty('UserID', $options[$i]->getAttribute('value'));
+            $userControl = new UmgtUser();
+            $userControl->setObjectId($options[$i]->getAttribute('value'));
             $users[] = $userControl;
             unset($userControl);
             // end for
          }
 
-         $group = new GenericDomainObject('Group');
-         $group->setProperty('GroupID', $groupId);
+         $group = new UmgtGroup();
+         $group->setObjectId($groupId);
 
          $uM->detachUsersFromGroup($users, $group);
          HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => null, 'groupid' => null)));

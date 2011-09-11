@@ -69,7 +69,7 @@ class umgt_detachfromuser_controller extends umgt_base_controller {
          $options = &$user->getSelectedOptions();
          $newUsers = array();
          for ($i = 0; $i < count($options); $i++) {
-            $newUser = new GenericDomainObject('User');
+            $newUser = new UmgtUser();
             $newUser->setObjectId($options[$i]->getAttribute('value'));
             $newUsers[] = $newUser;
             unset($newUser);

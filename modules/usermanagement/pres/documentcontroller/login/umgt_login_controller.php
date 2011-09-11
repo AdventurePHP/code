@@ -103,7 +103,7 @@ class umgt_login_controller extends base_controller {
     *
     * @param string $username The given user name.
     * @param string $password The given password.
-    * @return GenericDomainObject The logged-in user or null.
+    * @return UmgtUser The logged-in user or null.
     *
     * @author Christian Achatz
     * @version

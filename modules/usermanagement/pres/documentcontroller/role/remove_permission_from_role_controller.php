@@ -64,7 +64,7 @@ class remove_permission_from_role_controller extends umgt_base_controller {
          $permissionsToAdd = array();
          foreach ($options as $option) {
             /* @var $option select_taglib_option */
-            $permissionToAdd = new GenericDomainObject('Permission');
+            $permissionToAdd = new UmgtPermission();
             $permissionToAdd->setObjectId($option->getValue());
             $permissionsToAdd[] = $permissionToAdd;
             unset($permissionToAdd);

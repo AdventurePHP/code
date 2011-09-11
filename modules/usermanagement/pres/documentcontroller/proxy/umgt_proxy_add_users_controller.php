@@ -46,9 +46,9 @@ class umgt_proxy_add_users_controller extends permission_base_controller {
       }
 
       if ($form->isSent() && $form->isValid()) {
-         $proxy = new GenericDomainObject('AppProxy');
+         $proxy = new UmgtVisibilityDefinition();
          $proxy->setObjectId($proxyId);
-         $uM->attachUsers2VisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('users', 'User'));
+         $uM->attachUsers2VisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('users', 'UmgtUser'));
 
          HeaderManager::forward(
             $this->generateLink(

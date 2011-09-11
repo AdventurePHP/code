@@ -42,7 +42,7 @@ class umgt_proxy_list_controller extends umgt_base_controller {
       $select = &$form->getFormElementByName('proxytypeid');
       /* @var $select form_taglib_select */
       foreach ($types as $type) {
-         /* @var $type GenericDomainObject */
+         /* @var $type UmgtVisibilityDefinition */
          $select->addOption($type->getProperty('AppObjectName'), $type->getObjectId());
       }
 

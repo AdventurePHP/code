@@ -61,7 +61,7 @@ class umgt_add_user_to_roles_controller extends umgt_base_controller {
          $additionalRoles = array();
          foreach ($options as $option) {
             /* @var $option select_taglib_option */
-            $additionalRole = new GenericDomainObject('Role');
+            $additionalRole = new UmgtRole();
             $additionalRole->setObjectId($option->getValue());
             $additionalRoles[] = $additionalRole;
             unset($additionalRole);
