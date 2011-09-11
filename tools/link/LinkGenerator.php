@@ -336,24 +336,27 @@ final class Url {
     * @public
     * @static
     *
-    * Creates a url representation from the referring url.
+    * Creates a url representation from the refering url.
     *
     * @param boolean $absolute True, in case the url should be absolute, false otherwise.
     * @return Url The current url representation.
-    * @throws UrlFormatException In case the given string is not a valid url.
+    * @throws UrlFormatException In case the given referer is not a valid url.
     *
     * @author dave
     * @version
     * Version 0.1, 07.09.2011<br />
     */
    public static function fromReferer($absolute = false) {
-      $url = self::fromString($_SERVER['HTTP_REFERER']);
-      if ($absolute === false) {
-         $url->setScheme(null);
-         $url->setHost(null);
-         $url->setPort(null);
+      if (isset($_SERVER['HTTP_REFERER'])) {
+         $url = self::fromString($_SERVER['HTTP_REFERER']);
+         if ($absolute === false) {
+            $url->setScheme(null);
+            $url->setHost(null);
+            $url->setPort(null);
+         }
+         return $url;
       }
-      return $url;
+      throw new UrlFormatException('Empty referer url cannot be used to create a url representation.');
    }
 
    /**
