@@ -24,7 +24,7 @@ import('tools::http', 'HeaderManager');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_add_controller
+ * @class umgt_permission_add_controller
  *
  * Implements the controller to add a permission.
  *
@@ -32,7 +32,7 @@ import('tools::http', 'HeaderManager');
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_add_controller extends umgt_base_controller {
+class umgt_permission_add_controller extends umgt_base_controller {
 
    public function transformContent() {
 
@@ -42,16 +42,14 @@ class umgt_add_controller extends umgt_base_controller {
 
       if ($form->isSent() == true && $form->isValid() == true) {
 
-         $values = RequestHandler::getValues(array('DisplayName', 'Name', 'Value'));
+         $displayName = $form->getFormElementByName('DisplayName');
+         $name = $form->getFormElementByName('Name');
+         $value = $form->getFormElementByName('Value');
 
          $permission = new UmgtPermission();
-
-         foreach ($values as $key => $value) {
-            if (!empty($value)) {
-               $permission->setProperty($key, $value);
-            }
-         }
-
+         $permission->setDisplayName($displayName->getValue());
+         $permission->setName($name->getValue());
+         $permission->setValue($value->getValue());
          $uM->savePermission($permission);
          HeaderManager::forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '')));
 

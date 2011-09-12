@@ -57,11 +57,11 @@ class umgt_detachfromrole_controller extends umgt_base_controller {
          return true;
       }
 
-      $form->setPlaceHolder('permission-name', $permission->getProperty('DisplayName'));
+      $form->setPlaceHolder('permission-name', $permission->getDisplayName());
 
       // fill the multiselect field
       for ($i = 0; $i < $count; $i++) {
-         $rolesControl->addOption($roles[$i]->getProperty('DisplayName'), $roles[$i]->getObjectId());
+         $rolesControl->addOption($roles[$i]->getDisplayName(), $roles[$i]->getObjectId());
       }
 
       // detach permission from the roles

@@ -23,8 +23,8 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
 import('tools::http', 'HeaderManager');
 
 /**
- * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_edit_controller
+ * @package modules::usermanagement::pres::documentcontroller::group
+ * @class umgt_group_edit_controller
  *
  * Implements the controller to edit a group.
  *
@@ -32,7 +32,7 @@ import('tools::http', 'HeaderManager');
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_edit_controller extends umgt_base_controller {
+class umgt_group_edit_controller extends umgt_base_controller {
 
    public function transformContent() {
 
@@ -42,40 +42,28 @@ class umgt_edit_controller extends umgt_base_controller {
       $groupIdField = &$form->getFormElementByName('groupid');
       $groupIdField->setAttribute('value', $groupId);
 
+      $displayName = &$form->getFormElementByName('DisplayName');
+
       $uM = &$this->getManager();
 
       if ($form->isSent() == true) {
 
          if ($form->isValid() == true) {
 
-            $fields = &$form->getFormElementsByTagName('form:text');
-
             $group = new UmgtGroup();
             $group->setObjectId($groupId);
-
-            $fieldCount = count($fields);
-            for ($i = 0; $i < $fieldCount; $i++) {
-               $group->setProperty($fields[$i]->getAttribute('name'), $fields[$i]->getAttribute('value'));
-            }
+            $group->setDisplayName($displayName->getValue());
             $uM->saveGroup($group);
             HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
 
          } else {
-            $this->setPlaceHolder('GroupEdit', $form->transformForm());
+            $form->transformOnPlace();
          }
 
       } else {
-
-         // load group
          $group = $uM->loadGroupByID($groupId);
-
-         // prefill form
-         $displayName = &$form->getFormElementByName('DisplayName');
-         $displayName->setAttribute('value', $group->getProperty('DisplayName'));
-
-         // display form
-         $this->setPlaceHolder('GroupEdit', $form->transformForm());
-
+         $displayName->setAttribute('value', $group->getDisplayName());
+         $form->transformOnPlace();
       }
 
    }

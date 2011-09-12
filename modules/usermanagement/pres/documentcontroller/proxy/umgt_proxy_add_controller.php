@@ -58,8 +58,8 @@ class umgt_proxy_add_controller extends umgt_base_controller {
 
       foreach ($proxyTypes as $proxyType) {
          $typeElement->addOption(
-            $proxyType->getProperty('AppObjectName'),
-            $proxyType->getProperty('AppProxyTypeID')
+            $proxyType->getAppObjectName(),
+            $proxyType->getObjectId()
          );
       }
 
@@ -68,12 +68,12 @@ class umgt_proxy_add_controller extends umgt_base_controller {
       $usersElement = &$form->getFormElementByName('users');
       foreach ($userList as $user) {
          $usersElement->addOption(
-            $user->getProperty('DisplayName'),
-            $user->getProperty('UserID')
+            $user->getDisplayName(),
+            $user->getObjectId()
          );
       }
       foreach ($selectedUsers as $selectedUser) {
-         $usersElement->setOption2Selected($selectedUser->getProperty('UserID'));
+         $usersElement->setOption2Selected($selectedUser->getObjectId());
       }
 
       // load groups
@@ -81,12 +81,12 @@ class umgt_proxy_add_controller extends umgt_base_controller {
       $groupsElement = &$form->getFormElementByName('groups');
       foreach ($groups as $group) {
          $groupsElement->addOption(
-            $group->getProperty('DisplayName'),
-            $group->getProperty('GroupID')
+            $group->getDisplayName(),
+            $group->getObjectId()
          );
       }
       foreach ($selectedGroups as $selectedGroup) {
-         $groupsElement->setOption2Selected($selectedGroup->getProperty('GroupID'));
+         $groupsElement->setOption2Selected($selectedGroup->getObjectId());
       }
 
       // store visibility definition
@@ -94,15 +94,13 @@ class umgt_proxy_add_controller extends umgt_base_controller {
 
          // setup type
          $type = new UmgtVisibilityDefinitionType();
-         $type->setProperty(
-            'AppProxyTypeID',
+         $type->setObjectId(
             $form->getFormElementByName('proxytypeid')->getSelectedOption()->getAttribute('value')
          );
 
          // setup proxy
          $definition = new UmgtVisibilityDefinition();
-         $definition->setProperty(
-            'AppObjectId',
+         $definition->setAppObjectId(
             $form->getFormElementByName('appobjectid')->getAttribute('value')
          );
 
@@ -110,7 +108,7 @@ class umgt_proxy_add_controller extends umgt_base_controller {
          $users = array();
          foreach ($form->getFormElementByName('users')->getSelectedOptions() as $option) {
             $user = new UmgtUser();
-            $user->setProperty('UserID', $option->getAttribute('value'));
+            $user->setObjectId($option->getAttribute('value'));
             $users[] = $user;
             unset($user);
          }
@@ -119,16 +117,16 @@ class umgt_proxy_add_controller extends umgt_base_controller {
          $groups = array();
          foreach ($form->getFormElementByName('groups')->getSelectedOptions() as $option) {
             $group = new UmgtGroup();
-            $group->setProperty('GroupID', $option->getAttribute('value'));
+            $group->setObjectId($option->getAttribute('value'));
             $groups[] = $group;
             unset($group);
          }
 
          // setup access permissions
-         $definition->setProperty('ReadPermission', $form->getFormElementByID('read-perm')->isChecked() ? 1 : 0);
-         $definition->setProperty('WritePermission', $form->getFormElementByID('write-perm')->isChecked() ? 1 : 0);
-         $definition->setProperty('LinkPermission', $form->getFormElementByID('link-perm')->isChecked() ? 1 : 0);
-         $definition->setProperty('DeletePermission', $form->getFormElementByID('delete-perm')->isChecked() ? 1 : 0);
+         $definition->setReadPermission($form->getFormElementByID('read-perm')->isChecked() ? 1 : 0);
+         $definition->setWritePermission($form->getFormElementByID('write-perm')->isChecked() ? 1 : 0);
+         $definition->setLinkPermission($form->getFormElementByID('link-perm')->isChecked() ? 1 : 0);
+         $definition->setDeletePermission($form->getFormElementByID('delete-perm')->isChecked() ? 1 : 0);
 
          $uM->createVisibilityDefinition($type, $definition, $users, $groups);
          HeaderManager::forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => null, 'proxytypeid' => null)));

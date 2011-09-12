@@ -39,13 +39,13 @@ class add_permission_to_role_controller extends umgt_base_controller {
       $uM = &$this->getManager();
 
       $role = $uM->loadRoleByID(RequestHandler::getValue('roleid'));
-      $form->setPlaceHolder('RoleName', $role->getProperty('DisplayName'));
+      $form->setPlaceHolder('RoleName', $role->getDisplayName());
 
       $permissions = $uM->loadPermissionsNotWithRole($role);
 
       if (count($permissions) === 0) {
          $template = &$this->getTemplate('NoMorePermissions');
-         $template->setPlaceHolder('Role', $role->getProperty('DisplayName'));
+         $template->setPlaceHolder('Role', $role->getDisplayName());
          $template->setPlaceHolder('RoleViewLink', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
          $template->transformOnPlace();
          return;
@@ -55,7 +55,7 @@ class add_permission_to_role_controller extends umgt_base_controller {
       /* @var $permissionControl form_taglib_multiselect */
 
       foreach ($permissions as $permission) {
-         $permissionControl->addOption($permission->getProperty('DisplayName'), $permission->getObjectId());
+         $permissionControl->addOption($permission->getDisplayName(), $permission->getObjectId());
       }
 
       if ($form->isSent() && $form->isValid()) {

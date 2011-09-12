@@ -42,14 +42,12 @@ class umgt_list_controller extends umgt_base_controller {
       $buffer = (string)'';
       $template = &$this->getTemplate('Permission');
       foreach ($permissionList as $permission) {
-         $template->setPlaceHolder('DisplayName', $permission->getProperty('DisplayName'));
-         $template->setPlaceHolder('Name', $permission->getProperty('Name'));
-         $template->setPlaceHolder('Value', $permission->getProperty('Value'));
+         $template->setPlaceHolder('DisplayName', $permission->getDisplayName());
+         $template->setPlaceHolder('Name', $permission->getName());
+         $template->setPlaceHolder('Value', $permission->getValue());
          $id = $permission->getObjectId();
          $template->setPlaceHolder('permission_edit', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'edit', 'permissionid' => $id)));
          $template->setPlaceHolder('permission_delete', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'delete', 'permissionid' => $id)));
-         //$template->setPlaceHolder('permission_ass2role', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'ass2role', 'permissionid' => $id)));
-         //$template->setPlaceHolder('permission_detachfromrole', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'detachfromrole', 'permissionid' => $id)));
 
          $buffer .= $template->transformTemplate();
       }

@@ -41,7 +41,7 @@
 
          $list = $uM->loadVisibilityDefinitionTypes();
          foreach($list as $id => $DUMMY){
-            $template->setPlaceHolder('AppObjectName',$list[$id]->getProperty('AppObjectName'));
+            $template->setPlaceHolder('AppObjectName',$list[$id]->getAppObjectName());
 
             $proxyTypeId = $list[$id]->getObjectId();
             $template->setPlaceHolder('type_edit',$this->generateLink(array('mainview' => 'proxy','proxyview' => 'typeedit','proxytypeid' => $proxyTypeId)));

@@ -50,45 +50,59 @@ class umgt_edit_controller extends umgt_base_controller {
       $userId = RequestHandler::getValue('userid');
 
       // setup the form
-      $formEdit = &$this->getForm('UserForm');
-      $fieldUserId = &$formEdit->getFormElementByName('userid');
+      $form = &$this->getForm('UserForm');
+      $fieldUserId = &$form->getFormElementByName('userid');
       $fieldUserId->setAttribute('value', $userId);
+
+      $firstName = &$form->getFormElementByName('FirstName');
+      $lastName = &$form->getFormElementByName('LastName');
+      $streetName = &$form->getFormElementByName('StreetName');
+      $streetNumber = &$form->getFormElementByName('StreetNumber');
+      $zipCode = &$form->getFormElementByName('ZIPCode');
+      $city = &$form->getFormElementByName('City');
+      $email = &$form->getFormElementByName('EMail');
+      $mobile = &$form->getFormElementByName('Mobile');
+      $username = &$form->getFormElementByName('Username');
 
       // get the manager
       $uM = &$this->getManager();
 
-      if ($formEdit->isSent() == true) {
+      if ($form->isSent() == true) {
 
-         if ($formEdit->isValid() == true) {
+         if ($form->isValid() == true) {
 
             // setup the domain object
             $user = new UmgtUser();
             $user->setObjectId($userId);
 
             // read the "normal" fields
-            $textFields = &$formEdit->getFormElementsByTagName('form:text');
-
-            for ($i = 0; $i < count($textFields); $i++) {
-               $user->setProperty($textFields[$i]->getAttribute('name'), $textFields[$i]->getAttribute('value'));
-            }
+            $user->setFirstName($firstName->getValue());
+            $user->setLastName($lastName->getValue());
+            $user->setStreetName($streetName->getValue());
+            $user->setStreetNumber($streetNumber->getValue());
+            $user->setZIPCode($zipCode->getValue());
+            $user->setCity($city->getValue());
+            $user->setEMail($email->getValue());
+            $user->setMobile($mobile->getValue());
+            $user->setUsername($username->getValue());
 
             // read the password field
-            $passField1 = &$formEdit->getFormElementByName('Password');
-            $passField2 = &$formEdit->getFormElementByName('Password2');
+            $passField1 = &$form->getFormElementByName('Password');
+            $passField2 = &$form->getFormElementByName('Password2');
             $pass1 = $passField1->getAttribute('value');
             $pass2 = $passField2->getAttribute('value');
 
             if (!empty($pass1)) {
 
                if ($pass1 !== $pass2) {
-                  $formEdit->markAsInvalid();
+                  $form->markAsInvalid();
                   $passField1->addAttribute('style', 'border: 2px solid red;');
                   $passField2->addAttribute('style', 'border: 2px solid red;');
-                  $this->setPlaceHolder('UserEdit', $formEdit->transformForm());
+                  $this->setPlaceHolder('UserEdit', $form->transformForm());
                } else {
 
                   // add the password to the object
-                  $user->setProperty('Password', $pass2);
+                  $user->setPassword($pass2);
 
                   // save the user
                   $uM->saveUser($user);
@@ -102,44 +116,25 @@ class umgt_edit_controller extends umgt_base_controller {
             }
 
          } else {
-            $this->setPlaceHolder('UserEdit', $formEdit->transformForm());
+            $form->transformOnPlace();
          }
 
       } else {
 
-         // load user
          $user = $uM->loadUserByID($userId);
 
          // prefill form
-         $firstName = &$formEdit->getFormElementByName('FirstName');
-         $firstName->setAttribute('value', $user->getProperty('FirstName'));
+         $firstName->setAttribute('value', $user->getFirstName());
+         $lastName->setAttribute('value', $user->getLastName());
+         $streetName->setAttribute('value', $user->getStreetName());
+         $streetNumber->setAttribute('value', $user->getStreetNumber());
+         $zipCode->setAttribute('value', $user->getZIPCode());
+         $city->setAttribute('value', $user->getCity());
+         $email->setAttribute('value', $user->getEMail());
+         $mobile->setAttribute('value', $user->getMobile());
+         $username->setAttribute('value', $user->getUsername());
 
-         $lastName = &$formEdit->getFormElementByName('LastName');
-         $lastName->setAttribute('value', $user->getProperty('LastName'));
-
-         $streetName = &$formEdit->getFormElementByName('StreetName');
-         $streetName->setAttribute('value', $user->getProperty('StreetName'));
-
-         $streetNumber = &$formEdit->getFormElementByName('StreetNumber');
-         $streetNumber->setAttribute('value', $user->getProperty('StreetNumber'));
-
-         $zipCode = &$formEdit->getFormElementByName('ZIPCode');
-         $zipCode->setAttribute('value', $user->getProperty('ZIPCode'));
-
-         $city = &$formEdit->getFormElementByName('City');
-         $city->setAttribute('value', $user->getProperty('City'));
-
-         $email = &$formEdit->getFormElementByName('EMail');
-         $email->setAttribute('value', $user->getProperty('EMail'));
-
-         $mobile = &$formEdit->getFormElementByName('Mobile');
-         $mobile->setAttribute('value', $user->getProperty('Mobile'));
-
-         $username = &$formEdit->getFormElementByName('Username');
-         $username->setAttribute('value', $user->getProperty('Username'));
-
-         // display form
-         $this->setPlaceHolder('UserEdit', $formEdit->transformForm());
+         $form->transformOnPlace();
 
       }
 

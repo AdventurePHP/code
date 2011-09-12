@@ -43,7 +43,7 @@ class umgt_group_add_user_to_groups_controller extends umgt_base_controller {
 
       if (count($groups) === 0) {
          $tmpl = &$this->getTemplate('NoMoreGroups');
-         $tmpl->setPlaceHolder('User', $user->getProperty('DisplayName'));
+         $tmpl->setPlaceHolder('User', $user->getDisplayName());
          $tmpl->setPlaceHolder('UserViewLink', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
          $tmpl->transformOnPlace();
          return;
@@ -52,7 +52,7 @@ class umgt_group_add_user_to_groups_controller extends umgt_base_controller {
       $groupsControl = &$form->getFormElementByName('Groups');
       /* @var $groupsControl form_taglib_multiselect */
       foreach ($groups as $group) {
-         $groupsControl->addOption($group->getProperty('DisplayName'), $group->getObjectId());
+         $groupsControl->addOption($group->getDisplayName(), $group->getObjectId());
       }
 
       if ($form->isSent() && $form->isValid()) {

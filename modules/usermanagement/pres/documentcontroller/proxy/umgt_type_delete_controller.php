@@ -46,7 +46,7 @@
          }
 
          // fill the intro text
-         $this->setPlaceHolder('name', $proxyType->getProperty('AppObjectName'));
+         $this->setPlaceHolder('name', $proxyType->getAppObjectName());
 
          $formNo->transformOnPlace();
          $formYes->transformOnPlace();

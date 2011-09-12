@@ -73,11 +73,11 @@ class umgt_revoke_access_controller extends umgt_base_controller {
          else {
             $object = $this->getManager()->loadGroupByID($objectId);
          }
-         $this->setPlaceHolder('displayname', $object->getProperty('DisplayName'));
+         $this->setPlaceHolder('displayname', $object->getDisplayName());
          $this->setPlaceHolder('proxyid', $proxyId);
 
          $proxyType = $uM->loadVisibilityDefinitionType($proxy);
-         $this->setPlaceHolder('proxytype', $proxyType->getProperty('AppObjectName'));
+         $this->setPlaceHolder('proxytype', $proxyType->getAppObjectName());
 
          $formYes->transformOnPlace();
          $formNo->transformOnPlace();

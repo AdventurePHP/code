@@ -1,9 +1,11 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::group" class="umgt_edit_controller" @>
-Please fill in the following fields:
-<br />
-<br />
-<html:placeholder name="GroupEdit" />
-
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::group"
+   class="umgt_group_edit_controller"
+@>
+<h3>Edit group</h3>
+<p>
+   Please fill in the following fields:
+</p>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
 <html:form name="GroupEdit" method="post">
   <form:addvalidator

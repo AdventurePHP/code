@@ -54,7 +54,7 @@ class umgt_proxy_delete_controller extends umgt_base_controller {
          $this->setPlaceHolder('proxyid', $proxyId);
 
          $proxyType = $uM->loadVisibilityDefinitionType($proxy);
-         $this->setPlaceHolder('proxytype', $proxyType->getProperty('AppObjectName'));
+         $this->setPlaceHolder('proxytype', $proxyType->getAppObjectName());
 
          $formYes->transformOnPlace();
          $formNo->transformOnPlace();

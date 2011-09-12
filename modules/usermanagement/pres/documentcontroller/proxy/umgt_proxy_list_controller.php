@@ -43,7 +43,7 @@ class umgt_proxy_list_controller extends umgt_base_controller {
       /* @var $select form_taglib_select */
       foreach ($types as $type) {
          /* @var $type UmgtVisibilityDefinition */
-         $select->addOption($type->getProperty('AppObjectName'), $type->getObjectId());
+         $select->addOption($type->getAppObjectName(), $type->getObjectId());
       }
 
       $form->transformOnPlace();
@@ -70,10 +70,10 @@ class umgt_proxy_list_controller extends umgt_base_controller {
 
          $proxyId = $proxy->getObjectId();
 
-         $template->setPlaceHolder('AppObjectId', $proxy->getProperty('AppObjectId'));
+         $template->setPlaceHolder('AppObjectId', $proxy->getAppObjectId());
 
          $type = $uM->loadVisibilityDefinitionType($proxy);
-         $template->setPlaceHolder('AppProxyType', $type->getProperty('AppObjectName'));
+         $template->setPlaceHolder('AppProxyType', $type->getAppObjectName());
 
          $template->setPlaceHolder('Users', $this->getUsers($proxy));
          $template->setPlaceHolder('Groups', $this->getGroups($proxy));
@@ -100,22 +100,22 @@ class umgt_proxy_list_controller extends umgt_base_controller {
    }
 
 
-   private function getUsers(GenericORMapperDataObject $proxy) {
+   private function getUsers(UmgtVisibilityDefinition $proxy) {
       $users = $this->getManager()->loadUsersWithVisibilityDefinition($proxy);
-      $userList = array();
+      $userList = '<ul>';
       foreach ($users as $user) {
-         $userList[] = $user->getProperty('Username');
+         $userList .= '<li>' . $user->getUsername() . '</li>';
       }
-      return implode(', ', $userList);
+      return $userList . '</ul>';
    }
 
-   private function getGroups(GenericORMapperDataObject $proxy) {
+   private function getGroups(UmgtVisibilityDefinition $proxy) {
       $groups = $this->getManager()->loadGroupsWithVisibilityDefinition($proxy);
-      $groupList = array();
+      $groupList = '<ul>';
       foreach ($groups as $group) {
-         $groupList[] = $group->getProperty('DisplayName');
+         $groupList .= '<li>' . $group->getDisplayName() . '</li>';
       }
-      return implode(', ', $groupList);
+      return $groupList . '</ul>';
    }
 
 }

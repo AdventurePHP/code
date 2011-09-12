@@ -30,8 +30,8 @@ class umgt_proxy_details_controller extends umgt_base_controller {
       $type = $uM->loadVisibilityDefinitionType($proxy);
 
       // display the proxy type's name
-      $this->setPlaceHolder('appobjectid', $proxy->getProperty('AppObjectId'));
-      $this->setPlaceHolder('appproxytype', $type->getProperty('AppObjectName'));
+      $this->setPlaceHolder('appobjectid', $proxy->getAppObjectId());
+      $this->setPlaceHolder('appproxytype', $type->getAppObjectName());
 
       // load visbility permission list for the current permission
       $template = &$this->getTemplate('listitem');
@@ -41,7 +41,7 @@ class umgt_proxy_details_controller extends umgt_base_controller {
       // sort list with respect to the display name of the current element
       $sortedList = array();
       foreach ($list as $offset => $DUMMY) {
-         $key = $list[$offset]->getProperty('DisplayName') . '-' . $list[$offset]->getObjectId();
+         $key = $list[$offset]->getDisplayName() . '-' . $list[$offset]->getObjectId();
          $sortedList[$key] = $list[$offset];
       }
       ksort($sortedList);
@@ -49,7 +49,7 @@ class umgt_proxy_details_controller extends umgt_base_controller {
       foreach ($sortedList as $item) {
 
          /* @var $item UmgtUser|UmgtGroup */
-         $template->setPlaceHolder('item', $item->getProperty('DisplayName'));
+         $template->setPlaceHolder('item', $item->getDisplayName());
 
          $icon = &$this->getIcon($template);
          if ($item->getObjectName() == 'User') {

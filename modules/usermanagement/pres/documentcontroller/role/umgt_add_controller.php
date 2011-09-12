@@ -46,7 +46,7 @@ class umgt_add_controller extends umgt_base_controller {
 
       // fill multi-select field
       for ($i = 0; $i < $count; $i++) {
-         $permissionControl->addOption($roles[$i]->getProperty('DisplayName'), $roles[$i]->getObjectId());
+         $permissionControl->addOption($roles[$i]->getDisplayName(), $roles[$i]->getObjectId());
       }
 
       if ($form->isSent() == true && $form->isValid() == true) {
@@ -55,7 +55,7 @@ class umgt_add_controller extends umgt_base_controller {
          $role = new UmgtRole();
 
          $displayName = &$form->getFormElementByName('DisplayName');
-         $role->setProperty('DisplayName', $displayName->getAttribute('value'));
+         $role->setDisplayName($displayName->getAttribute('value'));
 
          $options = &$permissionControl->getSelectedOptions();
 

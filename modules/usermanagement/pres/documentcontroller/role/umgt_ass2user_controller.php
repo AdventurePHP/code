@@ -43,6 +43,7 @@ class umgt_ass2user_controller extends umgt_base_controller {
       // initialize the form
       $form = &$this->getForm('User');
       $user = &$form->getFormElementByName('User');
+      /* @var $user form_taglib_multiselect */
       $uM = &$this->getManager();
       $role = $uM->loadRoleById($roleId);
       $users = $uM->loadUsersNotWithRole($role);
@@ -51,7 +52,7 @@ class umgt_ass2user_controller extends umgt_base_controller {
       // display a hint, if a role already assigned to all users
       if ($count == 0) {
          $template = &$this->getTemplate('NoMoreUser');
-         $template->setPlaceHolder('Role', $role->getProperty('DisplayName'));
+         $template->setPlaceHolder('Role', $role->getDisplayName());
          $template->setPlaceHolder('RoleViewLink', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
          $template->transformOnPlace();
          return;
@@ -59,7 +60,7 @@ class umgt_ass2user_controller extends umgt_base_controller {
 
       // fill multi-select field
       for ($i = 0; $i < $count; $i++) {
-         $user->addOption($users[$i]->getProperty('LastName') . ', ' . $users[$i]->getProperty('FirstName'), $users[$i]->getProperty('UserID'));
+         $user->addOption($users[$i]->getLastName() . ', ' . $users[$i]->getFirstName(), $users[$i]->getObjectId());
       }
 
       // assign role to the desired users

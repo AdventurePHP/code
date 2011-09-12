@@ -43,7 +43,7 @@ class umgt_add_group_to_roles_controller extends umgt_base_controller {
 
       if (count($roles) === 0) {
          $tmpl = &$this->getTemplate('NoMoreRoles');
-         $tmpl->setPlaceHolder('User', $group->getProperty('DisplayName'));
+         $tmpl->setPlaceHolder('User', $group->getDisplayName());
          $tmpl->setPlaceHolder('UserViewLink', $this->generateLink(array('mainview' => 'group', 'roleview' => null, 'groupid' => null)));
          $tmpl->transformOnPlace();
          return;
@@ -52,10 +52,10 @@ class umgt_add_group_to_roles_controller extends umgt_base_controller {
       $rolesControl = &$form->getFormElementByName('Roles');
       /* @var $rolesControl form_taglib_multiselect */
       foreach ($roles as $role) {
-         $rolesControl->addOption($role->getProperty('DisplayName'), $role->getObjectId());
+         $rolesControl->addOption($role->getDisplayName(), $role->getObjectId());
       }
 
-      $form->setPlaceHolder('GroupName', $group->getProperty('DisplayName'));
+      $form->setPlaceHolder('GroupName', $group->getDisplayName());
 
       if ($form->isSent() && $form->isValid()) {
 

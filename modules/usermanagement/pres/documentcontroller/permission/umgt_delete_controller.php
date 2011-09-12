@@ -39,7 +39,7 @@ class umgt_delete_controller extends umgt_base_controller {
       $permissionId = RequestHandler::getValue('permissionid');
       $uM = &$this->getManager();
       $permission = $uM->loadPermissionByID($permissionId);
-      $this->setPlaceHolder('DisplayName', $permission->getProperty('DisplayName'));
+      $this->setPlaceHolder('DisplayName', $permission->getDisplayName());
 
       $formNo = &$this->getForm('PermissionDelNo');
       $formYes = &$this->getForm('PermissionDelYes');

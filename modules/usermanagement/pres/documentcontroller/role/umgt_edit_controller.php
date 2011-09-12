@@ -71,7 +71,7 @@ class umgt_edit_controller extends umgt_base_controller {
 
          // prefill form
          $displayName = &$form->getFormElementByName('DisplayName');
-         $displayName->setAttribute('value', $role->getProperty('DisplayName'));
+         $displayName->setAttribute('value', $role->getDisplayName());
 
          // display form
          $form->transformOnPlace();

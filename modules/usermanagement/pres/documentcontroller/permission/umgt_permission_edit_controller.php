@@ -24,7 +24,7 @@ import('tools::request', 'RequestHandler');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_edit_controller
+ * @class umgt_permission_edit_controller
  *
  * Implements the controller to edit a permission.
  *
@@ -32,7 +32,7 @@ import('tools::request', 'RequestHandler');
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_edit_controller extends umgt_base_controller {
+class umgt_permission_edit_controller extends umgt_base_controller {
 
    public function transformContent() {
 
@@ -44,21 +44,21 @@ class umgt_edit_controller extends umgt_base_controller {
       $permissionIdControl = &$form->getFormElementByName('permissionid');
       $permissionIdControl->setAttribute('value', $permissionId);
 
+      $displayName = &$form->getFormElementByName('DisplayName');
+      $name = &$form->getFormElementByName('Name');
+      $value = &$form->getFormElementByName('Value');
+
       $uM = &$this->getManager();
 
       if ($form->isSent() == true) {
 
          if ($form->isValid() == true) {
 
-            $fields = &$form->getFormElementsByTagName('form:text');
             $permission = new UmgtPermission();
             $permission->setObjectId($permissionId);
-
-            $fieldCount = count($fields);
-            for ($i = 0; $i < $fieldCount; $i++) {
-               $permission->setProperty($fields[$i]->getAttribute('name'), $fields[$i]->getAttribute('value'));
-            }
-
+            $permission->setDisplayName($displayName->getValue());
+            $permission->setName($name->getValue());
+            $permission->setValue($value->getValue());
             $uM->savePermission($permission);
             HeaderManager::forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
 
@@ -68,20 +68,12 @@ class umgt_edit_controller extends umgt_base_controller {
 
       } else {
 
-         // load permission
          $permission = $uM->loadPermissionByID($permissionId);
 
-         // prefill form
-         $displayName = &$form->getFormElementByName('DisplayName');
          $displayName->setAttribute('value', $permission->getDisplayName());
-
-         $name = &$form->getFormElementByName('Name');
          $name->setAttribute('value', $permission->getName());
-
-         $value = &$form->getFormElementByName('Value');
          $value->setAttribute('value', $permission->getValue());
 
-         // display form
          $form->transformOnPlace();
 
       }

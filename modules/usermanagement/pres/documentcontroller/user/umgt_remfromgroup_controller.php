@@ -51,11 +51,11 @@ class umgt_remfromgroup_controller extends umgt_base_controller {
       if ($count == 0) {
          $template = $this->getTemplate('NoMoreGroups');
          $template->transformOnPlace();
-         return true;
+         return;
       }
 
       for ($i = 0; $i < $count; $i++) {
-         $groupField->addOption($groups[$i]->getProperty('DisplayName'), $groups[$i]->getProperty('GroupID'));
+         $groupField->addOption($groups[$i]->getDisplayName(), $groups[$i]->getObjectId());
       }
 
       if ($form->isSent() && $form->isValid()) {

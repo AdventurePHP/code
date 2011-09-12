@@ -44,7 +44,7 @@ class umgt_role_list_controller extends umgt_base_controller {
       foreach ($roleList as $role) {
 
          $roleId = $role->getObjectId();
-         $template->setPlaceHolder('DisplayName', $role->getProperty('DisplayName'));
+         $template->setPlaceHolder('DisplayName', $role->getDisplayName());
 
          $template->setPlaceHolder('Permissions', $this->getPermissionList($role));
          $template->setPlaceHolder('Users', $this->getUserList($role));
@@ -69,37 +69,37 @@ class umgt_role_list_controller extends umgt_base_controller {
 
    }
 
-   private function getPermissionList(GenericORMapperDataObject $role) {
+   private function getPermissionList(UmgtRole $role) {
 
       $permissions = $this->getManager()->loadPermissionsWithRole($role);
 
-      $permissionList = array();
+      $permissionList = '<ul>';
       foreach ($permissions as $permission) {
-         $permissionList[] = $permission->getProperty('DisplayName');
+         $permissionList .= '<li>' . $permission->getDisplayName() . '</li>';
       }
-      return implode(', ', $permissionList);
+      return $permissionList . '</ul>';
    }
 
-   private function getUserList(GenericORMapperDataObject $role) {
+   private function getUserList(UmgtRole $role) {
 
       $users = $this->getManager()->loadUsersWithRole($role);
 
-      $userList = array();
+      $userList = '<ul>';
       foreach ($users as $user) {
-         $userList[] = $user->getProperty('Username');
+         $userList .= '<li>' . $user->getDisplayName() . '</li>';
       }
-      return implode(', ', $userList);
+      return $userList . '</ul>';
    }
 
-   private function getGroupList(GenericORMapperDataObject $role) {
+   private function getGroupList(UmgtRole $role) {
 
       $groups = $this->getManager()->loadGroupsWithRole($role);
 
-      $groupList = array();
+      $groupList = '<ul>';
       foreach ($groups as $group) {
-         $groupList[] = $group->getProperty('DisplayName');
+         $groupList .= '<li>' . $group->getDisplayName() . '</li>';
       }
-      return implode(', ', $groupList);
+      return $groupList . '</ul>';
    }
 
 }

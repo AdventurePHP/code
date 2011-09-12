@@ -50,7 +50,7 @@ class umgt_delete_controller extends umgt_base_controller {
 
       if ($formYes->isSent()) {
          $group = new UmgtGroup();
-         $group->setProperty('GroupID', $groupId);
+         $group->setObjectId('GroupID', $groupId);
          $uM->deleteGroup($group);
          HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
       } elseif ($formNo->isSent()) {

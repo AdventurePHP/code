@@ -44,9 +44,9 @@ class umgt_user_details_controller extends umgt_base_controller {
       $this->setPlaceHolder('Username', $user->getUsername());
 
       $template = &$this->getTemplate('User');
-      $template->setPlaceHolder('FirstName', $user->getProperty('FirstName'));
-      $template->setPlaceHolder('LastName', $user->getProperty('LastName'));
-      $template->setPlaceHolder('EMail', $user->getProperty('EMail'));
+      $template->setPlaceHolder('FirstName', $user->getFirstName());
+      $template->setPlaceHolder('LastName', $user->getLastName());
+      $template->setPlaceHolder('EMail', $user->getEMail());
       $template->transformOnPlace();
 
       // display groups

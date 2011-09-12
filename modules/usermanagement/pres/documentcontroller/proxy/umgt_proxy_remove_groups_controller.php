@@ -37,13 +37,13 @@ class umgt_proxy_remove_groups_controller extends permission_base_controller {
       $proxy = $uM->loadVisibilityDefinitionById($proxyId);
       $proxyType = $uM->loadVisibilityDefinitionType($proxy);
 
-      $this->setPlaceHolder('AppObjectId', $proxy->getProperty('AppObjectId'));
-      $this->setPlaceHolder('ProxyType', $proxyType->getProperty('AppObjectName'));
+      $this->setPlaceHolder('AppObjectId', $proxy->getAppObjectId());
+      $this->setPlaceHolder('ProxyType', $proxyType->getAppObjectName());
 
       $groups = $uM->loadGroupsWithVisibilityDefinition($proxy);
       $groupsControl = &$form->getFormElementByName('groups');
       foreach ($groups as $id => $DUMMY) {
-         $groupsControl->addOption($groups[$id]->getProperty('DisplayName'), $groups[$id]->getObjectId());
+         $groupsControl->addOption($groups[$id]->getDisplayName(), $groups[$id]->getObjectId());
       }
 
       if ($form->isSent() && $form->isValid()) {

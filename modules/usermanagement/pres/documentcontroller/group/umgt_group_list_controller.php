@@ -43,7 +43,7 @@ class umgt_group_list_controller extends umgt_base_controller {
       foreach ($groups as $group) {
          $groupId = $group->getObjectId();
 
-         $template->setPlaceHolder('DisplayName', $group->getProperty('DisplayName'));
+         $template->setPlaceHolder('DisplayName', $group->getDisplayName());
          $template->setPlaceHolder('Users', $this->getUsers($group));
          $template->setPlaceHolder('Roles', $this->getRoles($group));
 
@@ -62,22 +62,22 @@ class umgt_group_list_controller extends umgt_base_controller {
 
    }
 
-   private function getUsers(GenericORMapperDataObject $group) {
+   private function getUsers(UmgtGroup $group) {
       $users = $this->getManager()->loadUsersWithGroup($group);
-      $userNames = array();
+      $userNames = '<ul>';
       foreach ($users as $user) {
-         $userNames[] = $user->getProperty('Username');
+         $userNames = '<li>' . $user->getDisplayName() . '</li>';
       }
-      return implode(', ', $userNames);
+      return $userNames . '</ul>';
    }
 
-   private function getRoles(GenericORMapperDataObject $group) {
+   private function getRoles(UmgtGroup $group) {
       $roles = $this->getManager()->loadRolesWithGroup($group);
-      $roleNames = array();
+      $roleNames = '<ul>';
       foreach ($roles as $role) {
-         $roleNames[] = $role->getProperty('DisplayName');
+         $roleNames .= '<li>' . $role->getDisplayName() . '</li>';
       }
-      return implode(', ', $roleNames);
+      return $roleNames . '</ul>';
    }
 }
 

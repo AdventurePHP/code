@@ -1749,7 +1749,7 @@ class UmgtManager extends APFObject {
     * Sorts the result according to the display name of the user and group.
     *
     * @param UmgtVisibilityDefinition $proxy The proxy the users and groups have access to.
-    * @return GenericORMapperDataObject[] A mixed list of users and groups, that have access to a given proxy.
+    * @return UmgtUser[]|UmgtGroup[] A mixed list of users and groups, that have access to a given proxy.
     *
     * @author Christian Achatz
     * @version

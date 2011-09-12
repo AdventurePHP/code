@@ -39,37 +39,35 @@ class umgt_user_add_controller extends umgt_base_controller {
       $form = &$this->getForm('UserForm');
       if ($form->isSent() == true && $form->isValid() == true) {
 
-         $formValues = RequestHandler::getValues(array(
-                                                      'DisplayName',
-                                                      'FirstName',
-                                                      'LastName',
-                                                      'StreetName',
-                                                      'StreetNumber',
-                                                      'ZIPCode',
-                                                      'City',
-                                                      'EMail',
-                                                      'Phone',
-                                                      'Mobile',
-                                                      'Username',
-                                                      'Password'
-                                                 )
-         );
+         $firstName = &$form->getFormElementByName('FirstName');
+         $lastName = &$form->getFormElementByName('LastName');
+         $streetName = &$form->getFormElementByName('StreetName');
+         $streetNumber = &$form->getFormElementByName('StreetNumber');
+         $zipCode = &$form->getFormElementByName('ZIPCode');
+         $city = &$form->getFormElementByName('City');
+         $email = &$form->getFormElementByName('EMail');
+         $mobile = &$form->getFormElementByName('Mobile');
+         $username = &$form->getFormElementByName('Username');
 
          $uM = &$this->getManager();
          $user = new UmgtUser();
 
-         foreach ($formValues as $key => $value) {
-            if (!empty($value)) {
-               $user->setProperty($key, $value);
-            }
-         }
+         $user->setFirstName($firstName->getValue());
+         $user->setLastName($lastName->getValue());
+         $user->setStreetName($streetName->getValue());
+         $user->setStreetNumber($streetNumber->getValue());
+         $user->setZIPCode($zipCode->getValue());
+         $user->setCity($city->getValue());
+         $user->setEMail($email->getValue());
+         $user->setMobile($mobile->getValue());
+         $user->setUsername($username->getValue());
 
          $uM->saveUser($user);
          HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => null)));
 
       }
 
-      $this->setPlaceHolder('UserAdd', $form->transformForm());
+      $form->transformOnPlace();
 
    }
 

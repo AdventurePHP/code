@@ -41,6 +41,7 @@ class umgt_add2group_controller extends umgt_base_controller {
       $userid = RequestHandler::getValue('userid');
       $formGroup = &$this->getForm('Group');
       $group = &$formGroup->getFormElementByName('Group');
+      /* @var $group form_taglib_multiselect */
       $uM = &$this->getManager();
       $user = $uM->loadUserById($userid);
       $groups = $uM->loadGroupsNotWithUser($user);
@@ -49,12 +50,12 @@ class umgt_add2group_controller extends umgt_base_controller {
       // display a note, if there are no groups to add the user to
       if ($count == 0) {
          $this->getTemplate('NoMoreGroups')->transformOnPlace();
-         return true;
+         return;
       }
 
       // add the groups to the option field
       for ($i = 0; $i < $count; $i++) {
-         $group->addOption($groups[$i]->getProperty('DisplayName'), $groups[$i]->getProperty('GroupID'));
+         $group->addOption($groups[$i]->getDisplayName(), $groups[$i]->getObjectId());
       }
 
       // handle the click event

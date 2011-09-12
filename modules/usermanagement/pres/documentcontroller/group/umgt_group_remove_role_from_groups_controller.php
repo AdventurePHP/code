@@ -43,7 +43,7 @@ class umgt_group_remove_role_from_groups_controller extends umgt_base_controller
 
       if (count($groups) === 0) {
          $tmpl = &$this->getTemplate('NoMoreGroups');
-         $tmpl->setPlaceHolder('Role', $role->getProperty('DisplayName'));
+         $tmpl->setPlaceHolder('Role', $role->getDisplayName());
          $tmpl->setPlaceHolder('RoleViewLink', $this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
          $tmpl->transformOnPlace();
          return;
@@ -52,7 +52,7 @@ class umgt_group_remove_role_from_groups_controller extends umgt_base_controller
       $groupsControl = &$form->getFormElementByName('Groups');
       /* @var $groupsControl form_taglib_multiselect */
       foreach ($groups as $group) {
-         $groupsControl->addOption($group->getProperty('DisplayName'), $group->getObjectId());
+         $groupsControl->addOption($group->getDisplayName(), $group->getObjectId());
       }
 
       if ($form->isSent() && $form->isValid()) {

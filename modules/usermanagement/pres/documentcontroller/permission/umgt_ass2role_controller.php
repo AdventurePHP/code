@@ -57,11 +57,11 @@ class umgt_ass2role_controller extends umgt_base_controller {
       }
 
       // display permission name
-      $form->setPlaceHolder('permission-name', $permission->getProperty('DisplayName'));
+      $form->setPlaceHolder('permission-name', $permission->getDisplayName());
 
       // fill multi-select field
       for ($i = 0; $i < $count; $i++) {
-         $permissionControl->addOption($roles[$i]->getProperty('DisplayName'), $roles[$i]->getObjectId());
+         $permissionControl->addOption($roles[$i]->getDisplayName(), $roles[$i]->getObjectId());
       }
 
       // assign permission to the desired roles

@@ -39,7 +39,7 @@ class umgt_delete_controller extends umgt_base_controller {
       $userId = RequestHandler::getValue('userid');
       $uM = &$this->getManager();
       $user = $uM->loadUserById($userId);
-      $this->setPlaceHolder('DisplayName', $user->getProperty('DisplayName'));
+      $this->setPlaceHolder('DisplayName', $user->getDisplayName());
       $formNo = &$this->getForm('UserDelNo');
       $formYes = &$this->getForm('UserDelYes');
 

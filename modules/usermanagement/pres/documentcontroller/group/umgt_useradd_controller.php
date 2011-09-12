@@ -52,7 +52,7 @@ class umgt_useradd_controller extends umgt_base_controller {
       // display hint, if group has associated all users
       if ($count == 0) {
          $template = &$this->getTemplate('NoMoreUser');
-         $template->setPlaceHolder('Group', $group->getProperty('DisplayName'));
+         $template->setPlaceHolder('Group', $group->getDisplayName());
          $template->setPlaceHolder('GroupViewLink', $this->generateLink(array('mainview' => 'group', 'groupview' => null, 'groupid' => null)));
          $template->transformOnPlace();
          return;
@@ -60,7 +60,7 @@ class umgt_useradd_controller extends umgt_base_controller {
 
       // fill multi-select field
       for ($i = 0; $i < $count; $i++) {
-         $userControl->addOption($users[$i]->getProperty('DisplayName'), $users[$i]->getObjectId());
+         $userControl->addOption($users[$i]->getDisplayName(), $users[$i]->getObjectId());
       }
 
       if ($form->isSent() && $form->isValid()) {

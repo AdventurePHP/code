@@ -49,7 +49,7 @@ class umgt_userrem_controller extends umgt_base_controller {
       // display hint, if no user is assigned to this group
       if ($count == 0) {
          $template = &$this->getTemplate('NoMoreUser');
-         $template->setPlaceHolder('Group', $group->getProperty('DisplayName'));
+         $template->setPlaceHolder('Group', $group->getDisplayName());
          $template->setPlaceHolder('GroupViewLink', $this->generateLink(array('mainview' => 'group', 'groupview' => null, 'groupid' => null)));
          $template->transformOnPlace();
          return;
@@ -57,7 +57,7 @@ class umgt_userrem_controller extends umgt_base_controller {
 
       // fill the multiselect field
       for ($i = 0; $i < $count; $i++) {
-         $userControl->addOption($users[$i]->getProperty('LastName') . ', ' . $users[$i]->getProperty('FirstName'), $users[$i]->getProperty('UserID'));
+         $userControl->addOption($users[$i]->getLastName() . ', ' . $users[$i]->getFirstName(), $users[$i]->getObjectId());
       }
 
       // remove the desired users

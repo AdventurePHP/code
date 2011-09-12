@@ -52,7 +52,7 @@ class umgt_detachfromuser_controller extends umgt_base_controller {
       // display a hint, if no users are assigned to this role
       if ($count == 0) {
          $template = &$this->getTemplate('NoMoreUser');
-         $template->setPlaceHolder('Role', $role->getProperty('DisplayName'));
+         $template->setPlaceHolder('Role', $role->getDisplayName());
          $template->setPlaceHolder('RoleViewLink', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
          $template->transformOnPlace();
          return;
@@ -60,7 +60,7 @@ class umgt_detachfromuser_controller extends umgt_base_controller {
 
       // fill the multi-select field
       for ($i = 0; $i < $count; $i++) {
-         $user->addOption($users[$i]->getProperty('LastName') . ', ' . $users[$i]->getProperty('FirstName'), $users[$i]->getProperty('UserID'));
+         $user->addOption($users[$i]->getLastName() . ', ' . $users[$i]->getFirstName(), $users[$i]->getObjectId());
       }
 
       // detach users from the role

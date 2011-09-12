@@ -36,13 +36,13 @@ class umgt_proxy_add_groups_controller extends permission_base_controller {
       $proxy = $uM->loadVisibilityDefinitionById($proxyId);
       $proxyType = $uM->loadVisibilityDefinitionType($proxy);
 
-      $this->setPlaceHolder('AppObjectId', $proxy->getProperty('AppObjectId'));
-      $this->setPlaceHolder('ProxyType', $proxyType->getProperty('AppObjectName'));
+      $this->setPlaceHolder('AppObjectId', $proxy->getAppObjectId());
+      $this->setPlaceHolder('ProxyType', $proxyType->getAppObjectName());
 
       $users = $uM->loadGroupsNotWithVisibilityDefinition($proxy);
       $usersControl = &$form->getFormElementByName('groups');
       foreach ($users as $id => $DUMMY) {
-         $usersControl->addOption($users[$id]->getProperty('DisplayName'), $users[$id]->getObjectId());
+         $usersControl->addOption($users[$id]->getDisplayName(), $users[$id]->getObjectId());
       }
 
       if ($form->isSent() && $form->isValid()) {

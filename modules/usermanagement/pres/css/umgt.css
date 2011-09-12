@@ -73,7 +73,8 @@
 }
 
 .umgt-content table.vis-def {
-   border: 0 solid gray;
+   border: none;
+   width: 100%;
 }
 
 .umgt-content table.vis-def td {
@@ -81,11 +82,16 @@
    vertical-align: top;
 }
 
+.umgt-content table.vis-def td:first-child {
+   width: 40px;
+}
+
 .umgt-content table.vis-def tbody td {
    border-bottom: 1px solid gray;
 }
 
-.umgt-content table.vis-def tbody td.actions {
+.umgt-content table.vis-def tbody td.actions,
+.umgt-content table.vis-def tbody td li {
    white-space: nowrap;
 }
 
@@ -99,9 +105,8 @@
 }
 
 .umgt-content table.vis-def ul {
-   list-style-type: none;
    margin: 0;
-   padding: 0;
+   padding: 0 0 0 14px;
 }
 
 .umgt-content form.type-filter {

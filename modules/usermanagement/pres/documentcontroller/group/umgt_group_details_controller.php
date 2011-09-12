@@ -20,43 +20,36 @@
  */
 import('tools::request', 'RequestHandler');
 import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
-import('tools::http', 'HeaderManager');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_delete_controller
+ * @class umgt_group_details_controller
  *
- * Implements the controller to delete a role.
+ * Implements the controller to show a group's details.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_delete_controller extends umgt_base_controller {
+class umgt_group_details_controller extends umgt_base_controller {
 
    public function transformContent() {
 
-      $roleId = RequestHandler::getValue('roleid');
+      // load data
       $uM = &$this->getManager();
-      $role = $uM->loadRoleById($roleId);
-      $this->setPlaceHolder('DisplayName', $role->getDisplayName());
+      $groupId = RequestHandler::getValue('groupid');
+      $group = $uM->loadGroupByID($groupId);
 
-      $formNo = &$this->getForm('RoleDelNo');
-      $formYes = &$this->getForm('RoleDelYes');
+      // display user data
+      $userTemplate = &$this->getTemplate('Group');
+      $userTemplate->setPlaceHolder('DisplayName', $group->getDisplayName());
+      $userTemplate->transformOnPlace();
 
-      if ($formYes->isSent()) {
-
-         $role = new UmgtRole();
-         $role->setObjectId($roleId);
-         $uM->deleteRole($role);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
-
-      } elseif ($formNo->isSent()) {
-         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
-      } else {
-         $formNo->transformOnPlace();
-         $formYes->transformOnPlace();
-      }
+      // display users
+      $users = $uM->loadUsersWithGroup($group);
+      $usersIterator = &$this->getIterator('Users');
+      $usersIterator->fillDataContainer($users);
+      $usersIterator->transformOnPlace();
 
    }
 
