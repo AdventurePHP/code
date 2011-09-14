@@ -52,24 +52,11 @@ abstract class PackageNode extends HtmlNode {
       return md5($this->getAttribute($this->getLocationAttributeName()));
    }
 
-   protected function __buildPackageLink($url, $name, $rewriting) {
-
-      if ($rewriting === null) {
-         $rewriting = Registry::retrieve('apf::core', 'URLRewriting');
-      }
+   protected function __buildPackageLink($url, $name) {
 
       // Generate url if not given
-      if ($url === null) {
-         if ($rewriting) {
-            $url = Registry::retrieve('apf::core', 'URLBasePath');
-         } else {
-            $tmpPath = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
-            $slash = (substr($tmpPath, 0, 1) !== '/') ? '/' : '';
-            $url = 'http://' . $_SERVER['HTTP_HOST'] . $slash . $tmpPath;
-         }
-      }
-      
-      return LinkGenerator::generateActionUrl(Url::fromString($url), 'extensions::jscsspackager::biz', 'jcp', array(
+      $url = ($url === null) ? Url::fromCurrent(true) : Url::fromString($url);
+      return LinkGenerator::generateActionUrl($url, 'extensions::htmlheader', 'JsCss', array(
           'package' => $name . '.' . $this->getTypeIndicator()
       ));
    }
