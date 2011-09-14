@@ -281,7 +281,7 @@ class JsCssPackager extends APFObject {
                 $name = $FilterInformation->getValue('Name');
 
                 import($namespace, $name);
-                JsCssInclusionFilterChain::getInstance()->addFilter(new $name());
+                JsCssInclusionFilterChain::getInstance()->appendFilter(new $name());
             }
         }
     }
