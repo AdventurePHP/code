@@ -1,6 +1,5 @@
 <@controller
    namespace="modules::usermanagement::pres::documentcontroller::login"
-
    class="umgt_login_controller"
 @>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
@@ -10,22 +9,22 @@
       <label for="umgt-fe-login-user">
          <form:getstring
             namespace="modules::usermanagement::pres"
-            config="labels"
-            entry="form.username.label" />
+            config="labels.ini"
+            entry="login.form.username.label" />
       </label>
       <form:text id="umgt-fe-login-user" name="username" />
       <label for="umgt-fe-login-pass">
          <form:getstring
             namespace="modules::usermanagement::pres"
-            config="labels"
-            entry="form.password.label" />
+            config="labels.ini"
+            entry="login.form.password.label" />
       </label>
       <form:password id="umgt-fe-login-pass" name="password" />
       <form:button id="umgt-fe-login-send" name="send">
          <button:getstring
             namespace="modules::usermanagement::pres"
-            config="labels"
-            entry="form.button.label" />
+            config="labels.ini"
+            entry="login.form.button.label" />
       </form:button>
       <form:addvalidator
          class="TextLengthValidator"
@@ -40,8 +39,8 @@
    <div class="credentials-error">
       <template:getstring
          namespace="modules::usermanagement::pres"
-         config="labels"
-         entry="credentials.error" />
+         config="labels.ini"
+         entry="login.credentials.error" />
    </div>
 </html:template>
 
@@ -50,8 +49,8 @@
    <div class="system-error">
       <template:getstring
          namespace="modules::usermanagement::pres"
-         config="labels"
-         entry="system.error" />
+         config="labels.ini"
+         entry="login.system.error" />
    </div>
 </html:template>
 
@@ -60,7 +59,7 @@
    <div class="credentials-ok">
       <template:getstring
          namespace="modules::usermanagement::pres"
-         config="labels"
-         entry="already.logged.in" />
+         config="labels.ini"
+         entry="login.already.logged.in" />
    </div>
 </html:template>

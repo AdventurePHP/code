@@ -1,0 +1,143 @@
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::registration"
+   class="umgt_registration_controller"
+@>
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
+<html:form class="umgt-fe-reg" name="register" method="post">
+   <fieldset>
+      <p>
+         <form:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="register.form.hint"/>
+      </p>
+      <form:placeholder name="register-error"/>
+      <p>
+         <label for="umgt-fe-reg-firstname">
+            <form:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="register.firstname.label"/>
+         </label>
+         <form:text id="umgt-fe-reg-firstname" name="firstname" maxlength="100"/>
+      </p>
+      <p>
+         <label for="umgt-fe-reg-lastname">
+            <form:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="register.lastname.label"/>
+         </label>
+         <form:text id="umgt-fe-reg-lastname" name="lastname" maxlength="100"/>
+      </p>
+      <p>
+         <label for="umgt-fe-reg-street">
+            <form:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="register.streetandnumber.label"/>
+         </label>
+         <form:text id="umgt-fe-reg-street" name="street" maxlength="100"/>
+         <form:text id="umgt-fe-reg-number" name="number" maxlength="5"/>
+      </p>
+      <p>
+         <label for="umgt-fe-reg-pass">
+            <form:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="register.zipandcity.label"/>
+         </label>
+         <form:text id="umgt-fe-reg-zip" name="zip" maxlength="5"/>
+         <form:text id="umgt-fe-reg-city" name="city" maxlength="100"/>
+      </p>
+      <p>
+         <label for="umgt-fe-reg-email">
+            <form:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="register.email.label"/>
+         </label>
+         <form:text id="umgt-fe-reg-email" name="email" maxlength="100"/>
+         <form:addvalidator
+               class="EmailValidator"
+               button="send"
+               control="email"
+               />
+      </p>
+      <p>
+         <label for="umgt-fe-reg-user">
+            <form:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="register.username.label"/>
+         </label>
+         <form:text id="umgt-fe-reg-user" name="username" maxlength="100"/>
+         <form:addvalidator
+               class="TextLengthValidator"
+               button="send"
+               control="username|password|repeat"
+               />
+         <form:addvalidator
+               class="FieldCompareValidator"
+               button="send"
+               control="password"
+               />
+      </p>
+      <p>
+         <label for="umgt-fe-reg-pass">
+            <form:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="register.password.label"/>
+         </label>
+         <form:password id="umgt-fe-reg-pass" name="password" maxlength="100" ref="repeat" />
+      </p>
+      <p>
+         <label for="umgt-fe-reg-repeat">
+            <form:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="register.repeat.label"/>
+         </label>
+         <form:password id="umgt-fe-reg-repeat" maxlength="100" name="repeat"/>
+      </p>
+      <p>
+         <form:button id="umgt-fe-reg-send" name="send">
+            <button:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="register.button.label"/>
+         </form:button>
+      </p>
+   </fieldset>
+</html:form>
+
+<html:template name="register-error">
+   <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring"/>
+   <div class="registration-error">
+      <template:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="register.input.error"/>
+   </div>
+</html:template>
+
+<html:template name="system-error">
+   <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring"/>
+   <div class="system-error">
+      <template:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="register.system.error"/>
+   </div>
+</html:template>
+
+<html:template name="register-ok">
+   <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring"/>
+   <div class="credentials-ok">
+      <template:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="register.success"/>
+   </div>
+</html:template>
