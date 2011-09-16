@@ -1,6 +1,6 @@
 <@controller
    namespace="modules::usermanagement::pres::documentcontroller::role"
-   class="umgt_edit_controller"
+   class="umgt_role_edit_controller"
 @>
 <h3>Edit role</h3>
 <p>
@@ -17,16 +17,10 @@
             control="DisplayName"
             />
    </p>
-   <!--
    <p>
-      <strong>Comment</strong>:
-      <form:area name="Comment" optional="true"/>
-      <form:addvalidator
-         class="TextLengthValidator"
-         button="Edit"
-         control="Comment"
-      />
-   </p>-->
+      <label>Description:</label>
+      <form:area name="Description"/>
+   </p>
    <p>
       <form:button name="Edit" class="formfield" value="Save"/>
    </p>

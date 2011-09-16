@@ -24,7 +24,7 @@ import('tools::http', 'HeaderManager');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_edit_controller
+ * @class umgt_role_edit_controller
  *
  * Implements the controller to edit a role.
  *
@@ -32,7 +32,7 @@ import('tools::http', 'HeaderManager');
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_edit_controller extends umgt_base_controller {
+class umgt_role_edit_controller extends umgt_base_controller {
 
    public function transformContent() {
 
@@ -44,6 +44,9 @@ class umgt_edit_controller extends umgt_base_controller {
 
       $hidden = &$form->getFormElementByName('roleid');
       $hidden->setAttribute('value', $roleId);
+
+      $displayName = &$form->getFormElementByName('DisplayName');
+      $description = &$form->getFormElementByName('Description');
 
       $uM = &$this->getManager();
 
@@ -59,6 +62,7 @@ class umgt_edit_controller extends umgt_base_controller {
             $role = new UmgtRole();
             $role->setObjectId($roleId);
             $role->setDisplayName($displayName->getValue());
+            $role->setDescription($description->getValue());
 
             $uM->saveRole($role);
             HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
@@ -69,11 +73,10 @@ class umgt_edit_controller extends umgt_base_controller {
 
       } else {
 
-         // prefill form
-         $displayName = &$form->getFormElementByName('DisplayName');
-         $displayName->setAttribute('value', $role->getDisplayName());
+         // pre-fill form
+         $displayName->setValue($role->getDisplayName());
+         $description->setValue($role->getDescription());
 
-         // display form
          $form->transformOnPlace();
 
       }

@@ -23,7 +23,7 @@ import('tools::http', 'HeaderManager');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::role
- * @class umgt_add_controller
+ * @class umgt_role_add_controller
  *
  * Implements the controller to add a role.
  *
@@ -31,7 +31,7 @@ import('tools::http', 'HeaderManager');
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_add_controller extends umgt_base_controller {
+class umgt_role_add_controller extends umgt_base_controller {
 
    public function transformContent() {
 
@@ -55,7 +55,10 @@ class umgt_add_controller extends umgt_base_controller {
          $role = new UmgtRole();
 
          $displayName = &$form->getFormElementByName('DisplayName');
-         $role->setDisplayName($displayName->getAttribute('value'));
+         $role->setDisplayName($displayName->getValue());
+
+         $description = &$form->getFormElementByName('Description');
+         $role->setDescription($description->getValue());
 
          $options = &$permissionControl->getSelectedOptions();
 

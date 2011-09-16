@@ -90,7 +90,7 @@ abstract class ui_getstring extends Document {
          // get environment variable from registry to have nice exception message
          $env = Registry::retrieve('apf::core', 'Environment');
 
-         throw new InvalidArgumentException('[' . get_class($this) . '->transform()] Given entry "'
+         throw new InvalidArgumentException('[' . get_class($this) . '::transform()] Given entry "'
                  . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'
                  . $env . '_' . $configName . '" in namespace "' . $namespace . '" and context "'
                  . $this->getContext() . '"!', E_USER_ERROR);

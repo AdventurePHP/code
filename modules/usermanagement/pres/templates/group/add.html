@@ -1,23 +1,24 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::group" class="umgt_add_controller" @>
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::group"
+   class="umgt_group_add_controller"
+@>
 <p>
    Please fill in the following fields:
 </p>
-<html:placeholder name="GroupAdd" />
-
-<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
 <html:form name="GroupAdd" method="post">
-  <form:addvalidator
-    class="TextLengthValidator"
-    control="DisplayName"
-    button="Add"
-  />
-  <table cellpadding="0" cellspacing="0">
-    <tr>
-      <td><strong>Display name</strong>:</td>
-      <td><form:text name="DisplayName" style="width: 200px;" class="formfield" maxlength="100" /></td>
-    </tr>
-  </table>
-  <br />
-  <br />
-  <form:button name="Add" class="formfield" value="Add" />
+   <form:addvalidator
+         class="TextLengthValidator"
+         control="DisplayName"
+         button="Add"
+         />
+   <p>
+      <label>Display name:</label>
+      <form:text name="DisplayName" class="formfield" maxlength="100"/>
+   </p>
+   <p>
+      <label>Description:</label>
+      <form:area name="Description" />
+   </p>
+   <form:button name="Add" class="formfield" value="Add"/>
 </html:form>

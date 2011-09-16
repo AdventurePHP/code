@@ -44,6 +44,30 @@ abstract class UmgtGroupBase extends GenericDomainObject {
       return $this;
    }
 
+   /**
+    * @return string The value for property "Description".
+    */
+   public function getDescription() {
+      return $this->getProperty('Description');
+   }
+
+   /**
+    * @param string $value The value to set for property "Description".
+    * @return UmgtGroup The domain object for further usage.
+    */
+   public function setDescription($value) {
+      $this->setProperty('Description', $value);
+      return $this;
+   }
+
+   /**
+    * @return UmgtGroup The domain object for further usage.
+    */
+   public function deleteDescription() {
+      $this->deleteProperty('Description');
+      return $this;
+   }
+
 }
 
 // DO NOT CHANGE THIS COMMENT! <*UmgtGroupBase:end*>

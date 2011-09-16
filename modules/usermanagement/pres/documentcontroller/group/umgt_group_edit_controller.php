@@ -43,6 +43,7 @@ class umgt_group_edit_controller extends umgt_base_controller {
       $groupIdField->setAttribute('value', $groupId);
 
       $displayName = &$form->getFormElementByName('DisplayName');
+      $description = &$form->getFormElementByName('Description');
 
       $uM = &$this->getManager();
 
@@ -53,6 +54,7 @@ class umgt_group_edit_controller extends umgt_base_controller {
             $group = new UmgtGroup();
             $group->setObjectId($groupId);
             $group->setDisplayName($displayName->getValue());
+            $group->setDescription($description->getValue());
             $uM->saveGroup($group);
             HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
 
@@ -62,7 +64,8 @@ class umgt_group_edit_controller extends umgt_base_controller {
 
       } else {
          $group = $uM->loadGroupByID($groupId);
-         $displayName->setAttribute('value', $group->getDisplayName());
+         $displayName->setValue($group->getDisplayName());
+         $description->setValue($group->getDescription());
          $form->transformOnPlace();
       }
 

@@ -23,7 +23,7 @@ import('tools::http', 'HeaderManager');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_add_controller
+ * @class umgt_group_add_controller
  *
  * Implements the controller to add a group.
  *
@@ -31,27 +31,30 @@ import('tools::http', 'HeaderManager');
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_add_controller extends umgt_base_controller {
+class umgt_group_add_controller extends umgt_base_controller {
 
    public function transformContent() {
 
-      $formAdd = &$this->getForm('GroupAdd');
-      if ($formAdd->isSent() == true && $formAdd->isValid() == true) {
+      $form = &$this->getForm('GroupAdd');
+      if ($form->isSent() == true && $form->isValid() == true) {
 
-         // get the business object
          $uM = &$this->getManager();
 
-         // get the form element's value
-         $displayName = &$formAdd->getFormElementByName('DisplayName');
          $group = new UmgtGroup();
-         $group->setDisplayName($displayName->getAttribute('value'));
+
+         $displayName = &$form->getFormElementByName('DisplayName');
+         $group->setDisplayName($displayName->getValue());
+
+         $description = &$form->getFormElementByName('Description');
+         $group->setDescription($description->getValue());
+
          $uM->saveGroup($group);
 
          // redirect to the desired view
          HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '')));
 
       }
-      $this->setPlaceHolder('GroupAdd', $formAdd->transformForm());
+      $form->transformOnPlace();
 
    }
 
