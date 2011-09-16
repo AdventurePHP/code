@@ -253,6 +253,28 @@ abstract class AbstractFilterChain implements FilterChain {
    /**
     * @public
     *
+    * This method can be used to check, whether a filter is registered on the chain.
+    * The filter is addressed by it's implementation class' name.
+    *
+    * @param string $class The class name of the filter to check for it's status on the stack.
+    * @return boolean True in case the filter is registered, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 14.09.2011<br />
+    */
+   public function isFilterRegistered($class) {
+      for ($i = $this->offset; $i < $this->count; $i++) {
+         if ($this->filters[$i] instanceof $class) {
+            return true;
+         }
+      }
+      return false;
+   }
+
+   /**
+    * @public
+    *
     * Resets the filter chain to the first filter to be executed again.
     *
     * @return AbstractFilterChain The current filter chain for further configuration.
