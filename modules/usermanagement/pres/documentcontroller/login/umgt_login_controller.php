@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::logging', 'Logger');
 import('tools::link', 'LinkGenerator');
 import('tools::http', 'HeaderManager');
 
@@ -80,6 +79,7 @@ class umgt_login_controller extends base_controller {
                }
             } catch (Exception $e) {
                $this->getTemplate('system-error')->transformOnPlace();
+               import('core::logging', 'Logger');
                $l = &Singleton::getInstance('Logger');
                /* @var $l Logger */
                $l->logEntry('login', 'Login is not possible due to ' . $e, 'ERROR');
