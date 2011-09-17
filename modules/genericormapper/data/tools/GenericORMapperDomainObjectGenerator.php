@@ -91,6 +91,13 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
                  $this->generateObjectCode($name) . PHP_EOL . PHP_EOL .
                  '?>';
 
+      $path = dirname($filename);
+      if (!file_exists($path)) {
+         // this dependency (modules -> tools) is not nice, but better than writing the code twice :)
+         import('tools::filesystem', 'FilesystemManager');
+         FilesystemManager::createFolder($path);
+      }
+
       file_put_contents($filename, $content);
    }
 
