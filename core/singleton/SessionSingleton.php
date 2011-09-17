@@ -38,7 +38,7 @@ function saveSessionSingletonObjects() {
 
    if (count($cacheItems) > 0) {
 
-      $sessMgr = new SessionManager(SessionSingleton::getSessionNamespace());
+      $sessMgr = new SessionManager(SessionSingleton::SESSION_NAMESPACE);
 
       foreach ($cacheItems as $key => $DUMMY) {
          $sessMgr->saveSessionData($key, serialize($cacheItems[$key]));
@@ -66,6 +66,8 @@ function saveSessionSingletonObjects() {
  */
 class SessionSingleton extends Singleton {
 
+   const SESSION_NAMESPACE = 'core::singleton::session';
+
    /**
     * Stores the objects, that are requested as singletons.
     * @var string[] The singleton cache.
@@ -91,28 +93,26 @@ class SessionSingleton extends Singleton {
     */
    public static function &getInstance($className) {
 
-      $cacheKey = SessionSingleton::createCacheObjectName($className);
+      if (!isset(self::$CACHE[$className])) {
 
-      if (!isset(self::$CACHE[$cacheKey])) {
-
-         $sessMgr = new SessionManager(SessionSingleton::getSessionNamespace());
-         $cachedObject = $sessMgr->loadSessionData($cacheKey);
+         $sessMgr = new SessionManager(SessionSingleton::SESSION_NAMESPACE);
+         $cachedObject = $sessMgr->loadSessionData($className);
 
          if ($cachedObject !== null) {
-            self::$CACHE[$cacheKey] = unserialize($cachedObject);
+            self::$CACHE[$className] = unserialize($cachedObject);
          } else {
             if (!class_exists($className)) {
                throw new Exception('[SessionSingleton::getInstance()] Class "' . $className . '" '
-                       . 'cannot be found! Maybe the class name is misspelt!', E_USER_ERROR);
+                                   . 'cannot be found! Maybe the class name is misspelt!', E_USER_ERROR);
             }
 
-            self::$CACHE[$cacheKey] = new $className();
+            self::$CACHE[$className] = new $className();
 
          }
 
       }
 
-      return self::$CACHE[$cacheKey];
+      return self::$CACHE[$className];
 
    }
 
@@ -132,21 +132,6 @@ class SessionSingleton extends Singleton {
       return self::$CACHE;
    }
 
-   /**
-    * @public
-    *
-    * Returns the namespace of the session, that the session singelton
-    * objects are stored in (needed by the shutdown function; thus public).
-    *
-    * @return string The session namespace, where the session singleton objects are saved.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 11.03.2010<br />
-    */
-   public static function getSessionNamespace() {
-      return (string) 'core::singleton::session';
-   }
-
 }
+
 ?>

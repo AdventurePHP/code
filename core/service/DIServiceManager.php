@@ -103,7 +103,7 @@ final class DIServiceManager {
    public static function &getServiceObject($configNamespace, $sectionName, $context, $language) {
 
       // Check, whether service object was created before. If yes, deliver it from cache.
-      $cacheKey = $configNamespace . '__' . $sectionName;
+      $cacheKey = $configNamespace . '::' . $sectionName;
       if (isset(self::$SERVICE_OBJECT_CACHE[$cacheKey])) {
          return self::$SERVICE_OBJECT_CACHE[$cacheKey];
       }
