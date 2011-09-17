@@ -1981,7 +1981,7 @@ class UmgtManager extends APFObject {
    }
 
    /**
-    * @param $name The name of the visibility definition type.
+    * @param string $name The name of the visibility definition type.
     * @return UmgtVisibilityDefinitionType
     */
    public function loadVisibilityDefinitionTypeByName($name) {

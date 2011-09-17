@@ -116,7 +116,7 @@ class FilesystemManager {
       if (!is_dir($folder)) {
 
          // due to a potential PHP bug with directly passing the permissions
-         // we have to initiate a workaround containg explicit formatting as
+         // we have to initiate a workaround containing explicit formatting as
          // well as umask setting to create the folders with correct permissions
          // to provide a common API, octal numbers must be convert to the
          // internal string representation. otherwise we will get wrong
