@@ -559,11 +559,16 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.3, 15.06.2008 (Fixed bug that lead to wrong association saving)<br />
     * Version 0.4, 15.06.2008 (Fixed bug that relation was not found due to twisted columns)<br />
     * Version 0.5, 26.10.2008 (Added a check for the object/relation to exist in the object/relation table)<br />
-    * Version 0.6, 15.02.2011 (Moved eventhandler calls from parent function to this one, because afterSave() was called before whole tree was saved)<br />
+    * Version 0.6, 15.02.2011 (Moved event handler calls from parent function to this one, because afterSave() was called before whole tree was saved)<br />
     * Version 0.7, 24.03.2011 (Added support for relations between the same table)<br />
     */
    public function saveObject(GenericORMapperDataObject &$object, $saveEntireTree = true) {
-      //call event handler
+
+      // inject o/r mapper into the object to be able
+      // to execute custom operations (e.g. create/remove relations)!
+      $object->setDataComponent($this);
+
+      // call event handler
       $object->beforeSave();
 
       // save the current object (uses parent function with no resolving for relations)
