@@ -53,8 +53,15 @@ class Singleton {
     *
     * Returns a singleton instance of the given class. In case the object is found in the
     * singleton cache, the cached object is returned.
+    * <p>
+    * In case the instance id parameter is given, the singleton instance is created for
+    * this key instead of for the class name itself. This mechanism is needed by the
+    * DIServiceManager to create more than one (named) singleton instance of a given
+    * class (e.g. two different GenericORRelationMapper instances for your application and
+    * the UMGT).
     *
     * @param string $className The name of the class, that should be created a singleton instance from.
+    * @param string $instanceId The id of the instance to return.
     * @return APFObject The desired object's singleton instance.
     *
     * @author Christian Achatz
@@ -62,9 +69,15 @@ class Singleton {
     * Version 0.1, 12.04.2006<br />
     * Version 0.2, 21.08.2007 (Added check, if the class exists.)<br />
     */
-   public static function &getInstance($className) {
+   public static function &getInstance($className, $instanceId = null) {
 
-      if (!isset(self::$CACHE[$className])) {
+      // the cache key is set to the class name for "normal" singleton instances.
+      // in case an instance id is given, more than one singleton instance can
+      // be created specified by the instance id - but only one per instance id
+      // (->SPRING bean creation style).
+      $cacheKey = $instanceId === null ? $className : $instanceId;
+
+      if (!isset(self::$CACHE[$cacheKey])) {
 
          if (!class_exists($className)) {
             throw new Exception('[Singleton::getInstance()] Class "' . $className . '" cannot be '
@@ -72,11 +85,11 @@ class Singleton {
          }
 
          // create instance using the globals array.
-         self::$CACHE[$className] = new $className();
+         self::$CACHE[$cacheKey] = new $className();
 
       }
 
-      return self::$CACHE[$className];
+      return self::$CACHE[$cacheKey];
 
    }
 

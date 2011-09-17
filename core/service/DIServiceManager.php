@@ -140,7 +140,7 @@ final class DIServiceManager {
          // and the DIServiceManager caches the created service objects within a singleton cache,
          // this is no problem. Hence, the injected instance is then only one time constructed
          // initialized.
-         $serviceObject = &ServiceManager::getServiceObject($namespace, $class, $context, $language, $serviceType);
+         $serviceObject = &ServiceManager::getServiceObject($namespace, $class, $context, $language, $serviceType, $cacheKey);
 
          // do param injection (static configuration)
          $cfTasks = $section->getSection('conf');

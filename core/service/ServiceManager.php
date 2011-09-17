@@ -49,6 +49,7 @@ final class ServiceManager {
     * @param string $context The application context, the service object belongs to.
     * @param string $language The language, the service object has.
     * @param string $type The initializing type (see service manager for details).
+    * @param string $instanceId The id of the instance to return.
     * @return APFService The desired service object.
     *
     * @author Christian Schäfer
@@ -61,16 +62,16 @@ final class ServiceManager {
     * Version 0.6, 10.08.2009 (Added lazy import, so that the developer must not care about the inclusion of the component.)<br />
     * Version 0.7, 04.03.2011 (Refactored to static method; enhanced code)<br />
     */
-   public static function &getServiceObject($namespace, $serviceName, $context, $language, $type = APFService::SERVICE_TYPE_SINGLETON) {
+   public static function &getServiceObject($namespace, $serviceName, $context, $language, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
 
       // include service object for convenience
       import($namespace, $serviceName);
 
       $serviceObject = null;
       if ($type == APFService::SERVICE_TYPE_SINGLETON) {
-         $serviceObject = &Singleton::getInstance($serviceName);
+         $serviceObject = &Singleton::getInstance($serviceName, $instanceId);
       } elseif ($type == APFService::SERVICE_TYPE_SESSION_SINGLETON) {
-         $serviceObject = &SessionSingleton::getInstance($serviceName);
+         $serviceObject = &SessionSingleton::getInstance($serviceName, $instanceId);
       } elseif ($type == APFService::SERVICE_TYPE_NORMAL) {
          $serviceObject = new $serviceName();
       } else {
@@ -107,6 +108,7 @@ final class ServiceManager {
     * @param string $language The language, the service object has.
     * @param string $initParam The initialization param for the service object.
     * @param string $type The initializing type (see service manager for details).
+    * @param string $instanceId The id of the instance to return.
     * @return APFService The desired service object.
     *
     * @author Christian Schäfer
@@ -115,9 +117,8 @@ final class ServiceManager {
     * Version 0.2, 16.05.2009 (Added check for non existing service object returned by getServiceObject()))<br />
     * Version 0.3, 04.03.2011 (Refactored to static method)<br />
     */
-   public static function &getAndInitServiceObject($namespace, $serviceName, $context, $language, $initParam, $type = APFService::SERVICE_TYPE_SINGLETON) {
-
-      $serviceObject = &self::getServiceObject($namespace, $serviceName, $context, $language, $type);
+   public static function &getAndInitServiceObject($namespace, $serviceName, $context, $language, $initParam, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
+      $serviceObject = &self::getServiceObject($namespace, $serviceName, $context, $language, $type, $instanceId);
 
       if ($serviceObject !== null && $serviceObject instanceof APFService) {
          $serviceObject->init($initParam);
