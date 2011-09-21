@@ -76,5 +76,27 @@ interface HeaderNode {
     * Version 0.1, 09.05.2011<br />
     */
    public function getPriority();
+   
+   /**
+     * Defines if the tag should be placed in gethead- or getjsbody taglib.
+     *
+     * @param bool Set to true if it should be append to body.
+     *
+     * @author Ralf Schubert
+     * @version
+     * Version 0.1, 21.09.2011<br />
+     */
+    public function setAppendToBody($value);
+
+    /**
+     * Defines if the tag should be placed in gethead- or getjsbody taglib.
+     *
+     * @return Returns true if it should be append to body.
+     * 
+     * @author Ralf Schubert
+     * @version
+     * Version 0.1, 21.09.2011<br />
+     */
+    public function getAppendToBody();
 }
 ?>

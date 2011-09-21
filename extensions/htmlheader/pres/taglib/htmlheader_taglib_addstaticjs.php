@@ -52,6 +52,11 @@ class htmlheader_taglib_addstaticjs extends Document {
       }
 
       $node = new StaticJsNode($file);
+      
+      if(strtolower($this->getAttribute('appendtobody')) === 'true') {
+          $node->setAppendToBody(true);
+      }
+      
       $node->setPriority($this->getAttribute('priority'));
       $header->addNode($node);
 

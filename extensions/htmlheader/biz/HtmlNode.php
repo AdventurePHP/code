@@ -45,6 +45,11 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
      * @var int The priority of the header node.
      */
     private $priority = 0;
+    
+    /**
+     * @var bool Defines if the taglib should be set to gethead or getjsbody taglib.
+     */
+    private $appendToBody = false;
 
     public function getContent() {
         return $this->content;
@@ -52,6 +57,7 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
 
     public function setContent($content) {
         $this->content = $content;
+        return $this;
     }
 
     public function getPriority() {
@@ -60,6 +66,16 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
 
     public function setPriority($priority) {
         $this->priority = intval($priority); // normalize priority to 0 for all faulty inputs
+        return $this;
+    }
+    
+    public function setAppendToBody($value) {
+        $this->appendToBody = $value;
+        return $this;
+    }
+
+    public function getAppendToBody() {
+        return $this->appendToBody;
     }
 
     /**

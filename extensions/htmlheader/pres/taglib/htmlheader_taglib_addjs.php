@@ -49,6 +49,7 @@ import('extensions::htmlheader::biz', 'DynamicJsNode');
  *    <li>filename: Javascript filename without '.js'</li>
  *    <li>rewriting: Rewriting of target server enabled? (optional, option will be used from actual application otherwise)
  *    <li>fcaction: Use an fc-action on target server? (optional, will be set to true by default)
+ *    <li>appendtobody: If set to true, tag will not be included to htmlheader:gethead replacements, but to htmlheader:getbodyjs
  *  </ul>
  *
  *  @author Ralf Schubert
@@ -86,6 +87,10 @@ class htmlheader_taglib_addjs extends Document {
          $node = new DynamicJsNode($url, $folder, $filename, $rewriting, $fcaction);
       } else {
          $node = new DynamicJsNode(null, $namespace, $filename, $rewriting, $fcaction);
+      }
+      
+      if(strtolower($this->getAttribute('appendtobody')) === 'true') {
+          $node->setAppendToBody(true);
       }
 
       $node->setPriority($this->getAttribute('priority'));

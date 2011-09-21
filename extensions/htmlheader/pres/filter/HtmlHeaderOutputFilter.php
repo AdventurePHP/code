@@ -19,6 +19,9 @@
  * -->
  */
 
+import('extensions::htmlheader::pres::taglib', 'htmlheader_taglib_gethead');
+import('extensions::htmlheader::pres::taglib', 'htmlheader_taglib_getbodyjs');
+
 /**
  * @package extensions::htmlheader::pres::filter
  * @class HtmlHeaderOutputFilter
@@ -34,11 +37,24 @@
 class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
 
    public function filter(FilterChain &$chain, $input = null) {
-      return $chain->filter(
-              str_replace(htmlheader_taglib_gethead::HTML_HEADER_INDICATOR,
-                      $this->getHeaderContent(),
-                      $input)
+      
+       $replacements = $this->getHeaderContent();
+       
+      // replace gethead-taglib
+      $input = str_replace(
+              htmlheader_taglib_gethead::HTML_HEADER_INDICATOR,
+              $replacements[0],
+              $input
       );
+      
+      // replace getbodyjs-taglib
+      $input = str_replace(
+              htmlheader_taglib_getbodyjs::HTML_BODYJS_INDICATOR,
+              $replacements[1],
+              $input
+      );
+      
+      return $chain->filter($input);
    }
 
    private function getHeaderContent() {
@@ -46,39 +62,45 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
       $iM = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
       /* @var $iM HtmlHeaderManager */
 
-      $output = '';
+      $outputHead = '';
+      $outputBody = '';
 
       $title = $iM->getTitle();
       if ($title !== null) {
-         $output .= $title->transform() . PHP_EOL;
+         $outputHead .= $title->transform() . PHP_EOL;
       }
 
       $baseNodes = $this->sortNodes($iM->getBaseNodes());
       foreach ($baseNodes as $base) {
-         $output .= $base->transform() . PHP_EOL;
+         $outputHead .= $base->transform() . PHP_EOL;
       }
 
       $metaNodes = $this->sortNodes($iM->getMetaNodes());
       foreach ($metaNodes as $metaNode) {
-         $output .= $metaNode->transform() . PHP_EOL;
+         $outputHead .= $metaNode->transform() . PHP_EOL;
       }
       
       $canonical = $iM->getCanonical();
       if($canonical !== null){
-          $output .= $canonical->transform() . PHP_EOL;
+          $outputHead .= $canonical->transform() . PHP_EOL;
       }
 
       $stylesheets = $this->sortNodes($iM->getStylesheetNodes());
       foreach ($stylesheets as $stylesheet) {
-         $output .= $stylesheet->transform() . PHP_EOL;
+         $outputHead .= $stylesheet->transform() . PHP_EOL;
       }
 
       $javascripts = $this->sortNodes($iM->getJavascriptNodes());
       foreach ($javascripts as $script) {
-         $output .= $script->transform() . PHP_EOL;
+         if($script->getAppendToBody()) {
+             $outputBody .= $script->transform() . PHP_EOL;
+         }
+         else {
+             $outputHead .= $script->transform() . PHP_EOL;
+         }
       }
 
-      return $output;
+      return array($outputHead, $outputBody);
    }
 
    /**

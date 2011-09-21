@@ -23,36 +23,33 @@ import('extensions::htmlheader::pres::filter', 'HtmlHeaderOutputFilter');
 
 /**
  * @package extensions::htmlheader::pres::taglib
- * @class htmlheader_taglib_gethead
+ * @class htmlheader_taglib_getbodyjs
  *
- * Taglib for receiving the complete htmlheader.
+ * Taglib for receiving javascript definitions which should be placed at 
+ * the end of the body.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="gethead" />
- * <htmlheader:gethead />
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="getbodyjs" />
+ * <htmlheader:getbodyjs />
  *
- * @author Ralf Schubert
- * @version 0.1, 20.09.2009<br />
- * @version 0.2, 27.09.2009<br />
- * @version 0.3, 17.08.2010 (Added meta nodes)<br />
+ * @author Ralf Schubert <<a href="http://develovision.de/">Develovision</a>>
+ * @version 0.1, 21.09.2011<br />
  */
-class htmlheader_taglib_gethead extends Document {
-    
-    const HTML_HEADER_INDICATOR = '<!--HTMLHEADER_TAGLIB_GETHEAD-->';
+class htmlheader_taglib_getbodyjs extends Document {
+    const HTML_BODYJS_INDICATOR = '<!--HTMLHEADER_TAGLIB_GETBODYJS-->';
 
     public function transform() {
 
         $FilterChain = OutputFilterChain::getInstance();
         
         // register filter that replaces the token with real live data if filter isn't already registered
-        // (uses the same filter as htmlheader:getbodyjs-Taglib)
+        // (uses the same filter as htmlheader:gethead-Taglib)
         if (!$FilterChain->isFilterRegistered('HtmlHeaderOutputFilter')) {
             $FilterChain->prependFilter(new HtmlHeaderOutputFilter());
         }
 
         // place marker that will be replaced by the
-        return self::HTML_HEADER_INDICATOR;
-        
+        return self::HTML_BODYJS_INDICATOR;
     }
 
 }

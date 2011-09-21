@@ -42,6 +42,11 @@ class htmlheader_taglib_addpackage extends Document {
 
       if ($type == 'js') {
          $node = new JsPackageNode($url, $name, $rewriting);
+         
+         if(strtolower($this->getAttribute('appendtobody')) === 'true') {
+            $node->setAppendToBody(true);
+         }
+         
       } else {
          $node = new CssPackageNode($url, $name, $rewriting);
       }
