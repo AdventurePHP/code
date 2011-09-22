@@ -185,6 +185,10 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
          $code .= $this->generateDeleteCode($key, $this->domainObjectsTable[$name]['Class']);
       }
 
+      // generate getter for the generic elements, too.
+      $code .= $this->generateGetterCode('CreationTimestamp');
+      $code .= $this->generateGetterCode('ModificationTimestamp');
+
       $code .= '}' . PHP_EOL .
                PHP_EOL .
                '// DO NOT CHANGE THIS COMMENT! <*' . $this->domainObjectsTable[$name]['Class'] . 'Base:end*>';
