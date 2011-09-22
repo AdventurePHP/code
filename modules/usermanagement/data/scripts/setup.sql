@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `ent_user` (
 CREATE TABLE IF NOT EXISTS `ent_group` (
   `GroupID` INT(5) UNSIGNED NOT NULL auto_increment,
   `DisplayName` VARCHAR(100) character set utf8 NOT NULL default '',
+  `Description` TEXT character set utf8 NOT NULL,
   `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`GroupID`)
@@ -37,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `ent_group` (
 CREATE TABLE IF NOT EXISTS `ent_role` (
   `RoleID` INT(5) UNSIGNED NOT NULL auto_increment,
   `DisplayName` VARCHAR(100) character set utf8 NOT NULL default '',
+  `Description` TEXT character set utf8 NOT NULL,
   `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`RoleID`)
@@ -55,10 +57,10 @@ CREATE TABLE IF NOT EXISTS `ent_permission` (
 CREATE TABLE IF NOT EXISTS `ent_appproxy` (
   `AppProxyID` INT(5) UNSIGNED NOT NULL auto_increment,
   `AppObjectId` BIGINT(5) UNSIGNED,
-  `ReadPermission` BOOLEAN NOT NULL,
-  `WritePermission` BOOLEAN NOT NULL,
-  `LinkPermission` BOOLEAN NOT NULL,
-  `DeletePermission` BOOLEAN NOT NULL,
+  `ReadPermission` BOOLEAN NOT NULL DEFAULT 1,
+  `WritePermission` BOOLEAN NOT NULL DEFAULT 1,
+  `LinkPermission` BOOLEAN NOT NULL DEFAULT 1,
+  `DeletePermission` BOOLEAN NOT NULL DEFAULT 1,
   `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `ModificationTimestamp` timestamp NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY (`AppProxyID`),
