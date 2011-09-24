@@ -1,7 +1,11 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::group" class="umgt_delete_controller" @>
-Should the group <strong><html:placeholder name="DisplayName" /></strong> really be deleted?
-<br />
-<br />
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::group"
+   class="umgt_group_delete_controller"
+@>
+<h3>Delete group</h3>
+<p>
+   Should the group <strong><html:placeholder name="DisplayName" /></strong> really be deleted?
+</p>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
 <html:form name="GroupDelNo" method="post">
   <form:button name="No" value="No" class="formfield"/>

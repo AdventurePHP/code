@@ -24,7 +24,7 @@ import('tools::http', 'HeaderManager');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_delete_controller
+ * @class umgt_group_delete_controller
  *
  * Implements the controller to delete a group.
  *
@@ -32,7 +32,7 @@ import('tools::http', 'HeaderManager');
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_delete_controller extends umgt_base_controller {
+class umgt_group_delete_controller extends umgt_base_controller {
 
    public function transformContent() {
 
@@ -50,7 +50,7 @@ class umgt_delete_controller extends umgt_base_controller {
 
       if ($formYes->isSent()) {
          $group = new UmgtGroup();
-         $group->setObjectId('GroupID', $groupId);
+         $group->setObjectId($groupId);
          $uM->deleteGroup($group);
          HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
       } elseif ($formNo->isSent()) {
