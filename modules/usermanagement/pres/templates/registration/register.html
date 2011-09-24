@@ -77,11 +77,6 @@
                button="send"
                control="username|password|repeat"
                />
-         <form:addvalidator
-               class="FieldCompareValidator"
-               button="send"
-               control="password"
-               />
       </p>
       <p>
          <label for="umgt-fe-reg-pass">
@@ -91,6 +86,11 @@
                   entry="register.password.label"/>
          </label>
          <form:password id="umgt-fe-reg-pass" name="password" maxlength="100" ref="repeat" />
+         <form:addvalidator
+               class="FieldCompareValidator"
+               button="send"
+               control="password"
+               />
       </p>
       <p>
          <label for="umgt-fe-reg-repeat">

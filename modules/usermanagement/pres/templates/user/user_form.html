@@ -44,11 +44,16 @@
     </tr>
     <tr>
       <td><strong>Password</strong>:</td>
-      <td><form:password name="Password" style="width: 200px;" class="formfield" maxlength="100" /></td>
+      <td><form:password name="Password" optional="true" ref="Password2" style="width: 200px;" class="formfield" maxlength="100" /></td>
     </tr>
     <tr>
       <td><strong>Password again</strong>:</td>
-      <td><form:password name="Password2" style="width: 200px;" class="formfield" maxlength="100" /></td>
+      <td><form:password name="Password2" optional="true" style="width: 200px;" class="formfield" maxlength="100" /></td>
+         <form:addvalidator
+               class="FieldCompareValidator"
+               button="UserButton"
+               control="Password"
+               />
     </tr>
   </table>
   <br />

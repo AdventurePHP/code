@@ -48,6 +48,7 @@ class umgt_user_add_controller extends umgt_base_controller {
          $email = &$form->getFormElementByName('EMail');
          $mobile = &$form->getFormElementByName('Mobile');
          $username = &$form->getFormElementByName('Username');
+         $password = &$form->getFormElementByName('Password');
 
          $uM = &$this->getManager();
          $user = new UmgtUser();
@@ -61,6 +62,7 @@ class umgt_user_add_controller extends umgt_base_controller {
          $user->setEMail($email->getValue());
          $user->setMobile($mobile->getValue());
          $user->setUsername($username->getValue());
+         $user->setPassword($password->getValue());
 
          $uM->saveUser($user);
          HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'userview' => null)));
