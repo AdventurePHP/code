@@ -19,6 +19,7 @@
  * -->
  */
 import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
+import('tools::request', 'RequestHandler');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::group
