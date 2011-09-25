@@ -404,7 +404,8 @@ class UmgtManager extends APFObject {
     * Version 0.1, 15.06.2008<br />
     */
    public function saveGroup(UmgtGroup &$group) {
-      $group->addRelatedObject('Application2Group', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $group->addRelatedObject('Application2Group', $app);
       return $this->getORMapper()->saveObject($group);
    }
 
@@ -421,7 +422,8 @@ class UmgtManager extends APFObject {
     * Version 0.1, 15.06.2008<br />
     */
    public function saveRole(UmgtRole &$role) {
-      $role->addRelatedObject('Application2Role', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $role->addRelatedObject('Application2Role', $app);
       return $this->getORMapper()->saveObject($role);
    }
 
@@ -440,7 +442,8 @@ class UmgtManager extends APFObject {
     * Version 0.3, 28.12.2008 (Changed the API concerning the new UML diagram)<br />
     */
    public function savePermission(UmgtPermission &$permission) {
-      $permission->addRelatedObject('Application2Permission', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $permission->addRelatedObject('Application2Permission', $app);
       return $this->getORMapper()->saveObject($permission);
    }
 
@@ -479,7 +482,8 @@ class UmgtManager extends APFObject {
    public function getPagedGroupList() {
 
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Group', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Group', $app);
       $crit->addOrderIndicator('DisplayName', 'ASC');
 
       return $this->getORMapper()->loadObjectListByCriterion('Group', $crit);
@@ -529,7 +533,8 @@ class UmgtManager extends APFObject {
     * Version 0.1, 29.12.2008<br />
     */
    public function getPermissionList() {
-      return $this->getORMapper()->loadRelatedObjects($this->getCurrentApplication(), 'Application2Permission');
+      $app = $this->getCurrentApplication();
+      return $this->getORMapper()->loadRelatedObjects($app, 'Application2Permission');
    }
 
    /**
@@ -1060,7 +1065,8 @@ class UmgtManager extends APFObject {
     */
    public function loadGroupsWithRole(UmgtRole $role) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Group', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Group', $app);
       return $this->getORMapper()->loadRelatedObjects($role, 'Role2Group', $crit);
    }
 
@@ -1078,7 +1084,8 @@ class UmgtManager extends APFObject {
     */
    public function loadGroupsNotWithRole(UmgtRole $role) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Group', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Group', $app);
       return $this->getORMapper()->loadNotRelatedObjects($role, 'Role2Group', $crit);
    }
 
@@ -1118,7 +1125,8 @@ class UmgtManager extends APFObject {
     */
    public function loadGroupsNotWithUser(UmgtUser &$user) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Group', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Group', $app);
       return $this->getORMapper()->loadNotRelatedObjects($user, 'Group2User', $crit);
    }
 
@@ -1137,7 +1145,8 @@ class UmgtManager extends APFObject {
     */
    public function loadUsersWithGroup(UmgtGroup &$group) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2User', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2User', $app);
       return $this->getORMapper()->loadRelatedObjects($group, 'Group2User', $crit);
    }
 
@@ -1155,7 +1164,8 @@ class UmgtManager extends APFObject {
     */
    public function loadUsersNotWithGroup(UmgtGroup $group) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2User', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2User', $app);
       return $this->getORMapper()->loadNotRelatedObjects($group, 'Group2User', $crit);
    }
 
@@ -1173,7 +1183,8 @@ class UmgtManager extends APFObject {
     */
    public function loadRolesWithUser(UmgtUser $user) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Role', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Role', $app);
       return $this->getORMapper()->loadRelatedObjects($user, 'Role2User', $crit);
    }
 
@@ -1191,7 +1202,8 @@ class UmgtManager extends APFObject {
     */
    public function loadRolesNotWithUser(UmgtUser $user) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Role', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Role', $app);
       return $this->getORMapper()->loadNotRelatedObjects($user, 'Role2User', $crit);
    }
 
@@ -1209,7 +1221,8 @@ class UmgtManager extends APFObject {
     */
    public function loadUsersWithRole(UmgtRole $role) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2User', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2User', $app);
       return $this->getORMapper()->loadRelatedObjects($role, 'Role2User', $crit);
    }
 
@@ -1247,7 +1260,8 @@ class UmgtManager extends APFObject {
     */
    public function loadRolesNotWithGroup(UmgtGroup $group) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Role', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Role', $app);
       return $this->getORMapper()->loadNotRelatedObjects($group, 'Role2Group', $crit);
    }
 
@@ -1265,7 +1279,8 @@ class UmgtManager extends APFObject {
     */
    public function loadRolesWithGroup(UmgtGroup $group) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Role', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Role', $app);
       return $this->getORMapper()->loadRelatedObjects($group, 'Role2Group', $crit);
    }
 
@@ -1419,7 +1434,8 @@ class UmgtManager extends APFObject {
     */
    public function loadPermissionsNotWithRole(UmgtRole $role) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Permission', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Permission', $app);
       return $this->getORMapper()->loadNotRelatedObjects($role, 'Role2Permission', $crit);
    }
 
@@ -1453,7 +1469,8 @@ class UmgtManager extends APFObject {
     */
    public function loadRolesNotWithPermission(UmgtPermission $permission) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Role', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Role', $app);
       return $this->getORMapper()->loadNotRelatedObjects($permission, 'Role2Permission', $crit);
    }
 
@@ -1776,7 +1793,8 @@ class UmgtManager extends APFObject {
     */
    public function loadUsersNotWithVisibilityDefinition(UmgtVisibilityDefinition $definition) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2User', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2User', $app);
       return $this->getORMapper()->loadNotRelatedObjects($definition, 'AppProxy2User', $crit);
    }
 
@@ -1794,7 +1812,8 @@ class UmgtManager extends APFObject {
     */
    public function loadGroupsNotWithVisibilityDefinition(UmgtVisibilityDefinition $definition) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2Group', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Group', $app);
       return $this->getORMapper()->loadNotRelatedObjects($definition, 'AppProxy2Group', $crit);
    }
 
@@ -1856,7 +1875,8 @@ class UmgtManager extends APFObject {
     */
    public function loadVisibilityDefinitionsByUser(UmgtUser $user, UmgtVisibilityDefinitionType $type = null) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2AppProxy', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2AppProxy', $app);
 
       if ($type !== null) {
          $crit->addRelationIndicator('AppProxy2AppProxyType', $type);
@@ -1881,7 +1901,8 @@ class UmgtManager extends APFObject {
     */
    public function loadVisibilityDefinitionsByGroup(UmgtGroup $group, UmgtVisibilityDefinitionType $type = null) {
       $crit = new GenericCriterionObject();
-      $crit->addRelationIndicator('Application2AppProxy', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2AppProxy', $app);
 
       if ($type !== null) {
          $crit->addRelationIndicator('AppProxy2AppProxyType', $type);
@@ -1940,7 +1961,8 @@ class UmgtManager extends APFObject {
     * Version 0.1, 30.04.2010<br />
     */
    public function saveVisibilityDefinitionType(UmgtVisibilityDefinitionType &$proxyType) {
-      $proxyType->addRelatedObject('Application2AppProxyType', $this->getCurrentApplication());
+      $app = $this->getCurrentApplication();
+      $proxyType->addRelatedObject('Application2AppProxyType', $app);
       return $this->getORMapper()->saveObject($proxyType);
    }
 
