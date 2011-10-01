@@ -51,7 +51,7 @@ class html_taglib_iterator extends Document {
     * or a list of objects.
     */
    protected $dataContainer = array();
-   
+
    /**
     * @protected
     * Indicates, whether the iterator template should be displayed
@@ -137,26 +137,25 @@ class html_taglib_iterator extends Document {
    public function transformIterator() {
 
       $t = &Singleton::getInstance('BenchmarkTimer');
-      $t->start('(html_taglib_iterator) ' . $this->__ObjectID . '::transformIterator()');
+      /* @var $t BenchmarkTimer */
+      $t->start('(html_taglib_iterator) ' . $this->getObjectId() . '::transformIterator()');
 
-      $buffer = (string) '';
+      $buffer = (string)'';
 
       // the iterator item must not always be the first child
       // of the current node!
       $itemObjectId = $this->getIteratorItemObjectId();
       $iteratorItem = &$this->__Children[$itemObjectId];
+      /* @var $iteratorItem iterator_taglib_item */
 
       // define the dynamic getter.
       $getter = $iteratorItem->getAttribute('getter');
-      if ($getter === null) {
-         $getter = 'get';
-      }
 
       // get the place holders
       $placeHolders = &$iteratorItem->getPlaceHolders();
 
-      $itemcount = count($this->dataContainer);
-      for ($i = 0; $i < $itemcount; $i++) {
+      $itemCount = count($this->dataContainer);
+      for ($i = 0; $i < $itemCount; $i++) {
 
          if (is_array($this->dataContainer[$i])) {
 
@@ -169,16 +168,28 @@ class html_taglib_iterator extends Document {
          } elseif (is_object($this->dataContainer[$i])) {
 
             foreach ($placeHolders as $objectId => $DUMMY) {
-               $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{$getter}($placeHolders[$objectId]->getAttribute('name')));
+               // evaluate per-place-holder getter
+               $localGetter = $placeHolders[$objectId]->getGetterMethod();
+               if ($localGetter == null) {
+                  $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
+                                                       $getter
+                                                       }(
+                                                          $placeHolders[$objectId]->getAttribute('name'))
+                  );
+               } else {
+                  $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
+                                                       $localGetter
+                                                       }());
+               }
             }
 
             $buffer .= $iteratorItem->transform();
 
          } else {
             throw new InvalidArgumentException('[html_taglib_iterator::transformIterator()] '
-                    . 'Given list entry is not an array or object (' . $this->dataContainer[$i]
-                    . ')! The data container must contain a list of associative arrays or objects!',
-                    E_USER_WARNING);
+                                               . 'Given list entry is not an array or object (' . $this->dataContainer[$i]
+                                               . ')! The data container must contain a list of associative arrays or objects!',
+               E_USER_WARNING);
          }
 
       }
@@ -203,34 +214,32 @@ class html_taglib_iterator extends Document {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Implements the transform method for the iterator tag.
     *
-    *  @return string Content of the tag or an empty string.
+    * @return string Content of the tag or an empty string.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 01.06.2008<br />
     */
    public function transform() {
-
       if ($this->transformOnPlace === true) {
          return $this->transformIterator();
       }
 
-      return (string) '';
-
+      return '';
    }
 
    /**
     * @protected
     *
     * Returns the first iterator item, that is found in the children list.
-    * All other occurences are ignored, due to the fact, that it is not
+    * All other occurrences are ignored, due to the fact, that it is not
     * allowed to define more that one iterator item.
     *
-    * @return iterator_taglib_item The iterator item.
+    * @return string The iterator item's object id.
     *
     * @author Christian Achatz
     * @version
@@ -246,14 +255,14 @@ class html_taglib_iterator extends Document {
 
       // defining no iterator item is not allowed!
       throw new InvalidArgumentException('[html_taglib_iterator::getIteratorItemObjectId()] '
-              . 'The definition for iterator "' . $this->getAttribute('name') . '" does not contain '
-              . 'a iterator item, hence this is no legal iterator tag definition. Please refer '
-              . 'to the documentation.', E_USER_ERROR);
+                                         . 'The definition for iterator "' . $this->getAttribute('name')
+                                         . '" does not contain a iterator item, hence this is no legal iterator tag '
+                                         . 'definition. Please refer to the documentation.', E_USER_ERROR);
 
    }
 
    /**
-    * @public 
+    * @public
     *
     * Fills a place holder within the iterator.
     *
@@ -268,7 +277,8 @@ class html_taglib_iterator extends Document {
       $count = 0;
       foreach ($this->__Children as $objectId => $DUMMY) {
          if (get_class($this->__Children[$objectId]) == 'iterator_taglib_placeholder'
-                 && $this->__Children[$objectId]->getAttribute('name') === $name) {
+             && $this->__Children[$objectId]->getAttribute('name') === $name
+         ) {
             $this->__Children[$objectId]->setContent($value);
             $count++;
          }
@@ -276,9 +286,9 @@ class html_taglib_iterator extends Document {
 
       if ($count == 0 || count($this->__Children) == 0) {
          throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place '
-                 . 'holder object with name "' . $name . '" can be found within html:iterator tag '
-                 . 'with name "' . $this->getAttribute('name') . '" requested in document controller '
-                 . '"' . ($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR);
+                                            . 'holder object with name "' . $name . '" can be found within html:iterator tag '
+                                            . 'with name "' . $this->getAttribute('name') . '" requested in document controller '
+                                            . '"' . ($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR);
       }
    }
 
@@ -296,7 +306,7 @@ class html_taglib_iterator extends Document {
     *    'key-e' => 'value-e',
     * )
     * </code>
-    * Thereby, the <em>key-*</em> offsets define the name of the place holders, theire
+    * Thereby, the <em>key-*</em> offsets define the name of the place holders, their
     * values are used as the place holder's values.
     *
     * @param array $placeHolderValues Key-value-couples to fill place holders.
@@ -312,4 +322,5 @@ class html_taglib_iterator extends Document {
    }
 
 }
+
 ?>
