@@ -137,6 +137,7 @@ class html_taglib_iterator extends Document {
    public function transformIterator() {
 
       $t = &Singleton::getInstance('BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
       $t->start('(html_taglib_iterator) ' . $this->getObjectId() . '::transformIterator()');
 
       $buffer = (string)'';
@@ -167,9 +168,19 @@ class html_taglib_iterator extends Document {
          } elseif (is_object($this->dataContainer[$i])) {
 
             foreach ($placeHolders as $objectId => $DUMMY) {
-               $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
-                                                    $getter
-                                                    }($placeHolders[$objectId]->getAttribute('name')));
+               // evaluate per-place-holder getter
+               $localGetter = $placeHolders[$objectId]->getGetterMethod();
+               if ($localGetter == null) {
+                  $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
+                                                       $getter
+                                                       }(
+                                                          $placeHolders[$objectId]->getAttribute('name'))
+                  );
+               } else {
+                  $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
+                                                       $localGetter
+                                                       }());
+               }
             }
 
             $buffer .= $iteratorItem->transform();
@@ -214,13 +225,11 @@ class html_taglib_iterator extends Document {
     *  Version 0.1, 01.06.2008<br />
     */
    public function transform() {
-
       if ($this->transformOnPlace === true) {
          return $this->transformIterator();
       }
 
-      return (string)'';
-
+      return '';
    }
 
    /**
@@ -297,7 +306,7 @@ class html_taglib_iterator extends Document {
     *    'key-e' => 'value-e',
     * )
     * </code>
-    * Thereby, the <em>key-*</em> offsets define the name of the place holders, theire
+    * Thereby, the <em>key-*</em> offsets define the name of the place holders, their
     * values are used as the place holder's values.
     *
     * @param array $placeHolderValues Key-value-couples to fill place holders.
