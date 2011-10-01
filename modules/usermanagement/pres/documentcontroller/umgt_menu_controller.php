@@ -40,7 +40,6 @@ class umgt_menu_controller extends umgt_base_controller {
                                 'permissionview' => '', 'proxyview' => '');
 
       // display the links
-      $this->setPlaceHolder('home', $this->generateLink(array_merge($generalExclusion, array('mainview' => ''))));
       $this->setPlaceHolder('manage_user', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'user'))));
       $this->setPlaceHolder('manage_groups', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'group'))));
       $this->setPlaceHolder('manage_roles', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'role'))));

@@ -42,11 +42,18 @@ class umgt_details_controller extends umgt_base_controller {
 
       // display user data
       $this->setPlaceHolder('DisplayName', $role->getDisplayName());
+      $this->setPlaceHolder('Description', $role->getDescription());
 
       // display users
       $users = $uM->loadUsersWithRole($role);
       $iterator = &$this->getIterator('Users');
       $iterator->fillDataContainer($users);
+      $iterator->transformOnPlace();
+
+      // display groups
+      $groups = $uM->loadGroupsWithRole($role);
+      $iterator = &$this->getIterator('Groups');
+      $iterator->fillDataContainer($groups);
       $iterator->transformOnPlace();
 
       // display permissions

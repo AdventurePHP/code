@@ -33,7 +33,7 @@ class umgt_proxy_details_controller extends umgt_base_controller {
       $this->setPlaceHolder('appobjectid', $proxy->getAppObjectId());
       $this->setPlaceHolder('appproxytype', $type->getAppObjectName());
 
-      // load visbility permission list for the current permission
+      // load visibility permission list for the current permission
       $template = &$this->getTemplate('listitem');
       $buffer = (string)'';
       $list = $uM->loadUsersAndGroupsWithVisibilityDefinition($proxy);
@@ -52,7 +52,7 @@ class umgt_proxy_details_controller extends umgt_base_controller {
          $template->setPlaceHolder('item', $item->getDisplayName());
 
          $icon = &$this->getIcon($template);
-         if ($item->getObjectName() == 'User') {
+         if ($item instanceof UmgtUser) {
             $icon->setAttribute('filename', 'cc-personal-128x128.png');
             $icon->setAttribute('alt', 'User');
             $icon->setAttribute('title', 'User');
@@ -81,10 +81,8 @@ class umgt_proxy_details_controller extends umgt_base_controller {
 
       $this->setPlaceHolder('list', $buffer);
 
-      // end function
    }
 
-   // end class
 }
 
 ?>

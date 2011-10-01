@@ -4,30 +4,43 @@
 @>
 <h3>Details for user &quot;<html:placeholder name="Username" />&quot;</h3>
 <core:addtaglib namespace="tools::html::taglib" prefix="html" class="iterator" />
-<h4>User details:</h4>
+<h4>User details</h4>
 <html:template name="User">
-  <template:placeholder name="FirstName" />, <template:placeholder name="LastName" />
-  <br />
-  <template:placeholder name="EMail" />
+   <p>
+      <template:placeholder name="FirstName" />, <template:placeholder name="LastName" />
+   </p>
+   <p>
+      <template:placeholder name="EMail" />
+   </p>
 </html:template>
 
-<h4>Groups:</h4>
+<h4>Groups</h4>
 <html:iterator name="Groups">
-  <iterator:item getter="getProperty">
-    * <em><item:placeholder name="DisplayName" /></em>
-    <br />
-  </iterator:item>
+   <ul>
+      <iterator:item getter="getProperty">
+         <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+         <li>
+            <umgt:media filename="cc-yast_kuser-128x128.png" title="Group" />
+            <item:placeholder name="DisplayName" />
+         </li>
+      </iterator:item>
+   </ul>
 </html:iterator>
 
-<h4>Roles:</h4>
+<h4>Roles</h4>
 <html:iterator name="Roles">
-  <iterator:item getter="getProperty">
-    * <em><item:placeholder name="DisplayName" /></em>
-    <br />
-  </iterator:item>
+   <ul>
+   <iterator:item getter="getProperty">
+      <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+      <li>
+         <umgt:media filename="cc-yast_sysadmin-128x128.png" title="Role" />
+         <item:placeholder getter="getDisplayName"/>
+      </li>
+   </iterator:item>
+   </ul>
 </html:iterator>
       
-<h4>Objects:</h4>
+<h4>Objects</h4>
 <html:iterator name="Proxies">
    <ul>
    <iterator:item getter="getProperty">
