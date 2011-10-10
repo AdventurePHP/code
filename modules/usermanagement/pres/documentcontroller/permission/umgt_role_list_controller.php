@@ -22,7 +22,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::permission
- * @class umgt_list_controller
+ * @class umgt_role_list_controller
  *
  * Implements the controller to list the existing permissions.
  *
@@ -30,7 +30,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_list_controller extends umgt_base_controller {
+class umgt_role_list_controller extends umgt_base_controller {
 
    public function transformContent() {
 

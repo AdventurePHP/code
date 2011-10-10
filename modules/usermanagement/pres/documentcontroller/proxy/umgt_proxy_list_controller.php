@@ -89,16 +89,9 @@ class umgt_proxy_list_controller extends umgt_base_controller {
          $buffer .= $template->transformTemplate();
       }
 
-      // in case no proxy object is found for the present filter, place a custom text
-      // denoting this situation.
-      if (count($proxies) == 0) {
-         $buffer = $this->getTemplate('NoProxy')->transformTemplate();
-      }
-
       $this->setPlaceHolder('ProxyList', $buffer);
 
    }
-
 
    private function getUsers(UmgtVisibilityDefinition $proxy) {
       $users = $this->getManager()->loadUsersWithVisibilityDefinition($proxy);

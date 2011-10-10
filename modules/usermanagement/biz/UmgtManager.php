@@ -501,8 +501,13 @@ class UmgtManager extends APFObject {
     * Version 0.1, 29.12.2008<br />
     */
    public function getPagedRoleList() {
-      $select = 'SELECT * FROM ent_role ORDER BY DisplayName ASC';
-      return $this->getORMapper()->loadObjectListByTextStatement('Role', $select);
+
+      $crit = new GenericCriterionObject();
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Role', $app);
+      $crit->addOrderIndicator('DisplayName', 'ASC');
+
+      return $this->getORMapper()->loadObjectListByCriterion('Role', $crit);
    }
 
    /**
@@ -517,8 +522,13 @@ class UmgtManager extends APFObject {
     * Version 0.1, 29.12.2008<br />
     */
    public function getPagedPermissionList() {
-      $select = 'SELECT * FROM ent_permission ORDER BY DisplayName ASC';
-      return $this->getORMapper()->loadObjectListByTextStatement('Permission', $select);
+
+      $crit = new GenericCriterionObject();
+      $app = $this->getCurrentApplication();
+      $crit->addRelationIndicator('Application2Permission', $app);
+      $crit->addOrderIndicator('DisplayName', 'ASC');
+
+      return $this->getORMapper()->loadObjectListByCriterion('Permission', $crit);
    }
 
    /**
