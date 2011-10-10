@@ -1,48 +1,49 @@
 <?php
-   /**
-    * <!--
-    * This file is part of the adventure php framework (APF) published under
-    * http://adventure-php-framework.org.
-    *
-    * The APF is free software: you can redistribute it and/or modify
-    * it under the terms of the GNU Lesser General Public License as published
-    * by the Free Software Foundation, either version 3 of the License, or
-    * (at your option) any later version.
-    *
-    * The APF is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    * GNU Lesser General Public License for more details.
-    *
-    * You should have received a copy of the GNU Lesser General Public License
-    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-    * -->
-    */
+/**
+ * <!--
+ * This file is part of the adventure php framework (APF) published under
+ * http://adventure-php-framework.org.
+ *
+ * The APF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The APF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ * -->
+ */
+
+/**
+ * @package tools::cache
+ * @class CacheKey
+ *
+ * Describes the requirements of a cache key, a selection criterion for cache items..
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 06.08.2010<br />
+ */
+interface CacheKey {
 
    /**
-    * @package tools::cache
-    * @class CacheKey
+    * @public
     *
-    * Describes the requirements of a cache key, a selection criterion for cache items..
+    * Returns the cache key.
+    *
+    * @return string The cache key to identify the cache entry with.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 06.08.2010<br />
     */
-   interface CacheKey {
+   public function getKey();
 
-      /**
-       * @public
-       *
-       * Returns the cache key.
-       *
-       * @return string The cache key to identify the cache entry with.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 06.08.2010<br />
-       */
-      public function getKey();
+}
 
-   }
 ?>
