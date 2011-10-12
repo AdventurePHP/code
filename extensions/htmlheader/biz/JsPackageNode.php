@@ -37,6 +37,8 @@
       public function __construct($url, $name, $rewriting = null){
          parent::__construct($url, $name, $rewriting);
          $this->setAttribute('type','text/javascript');
+         // set the content, because otherwise ../> tag will destroy layout.
+         $this->setContent(''); 
       }
 
       protected function getTagName(){

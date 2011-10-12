@@ -40,8 +40,6 @@ abstract class PackageNode extends HtmlNode {
                       $name,
                       $rewriting
       ));
-      // set the content, because otherwise ../> tag will destroy layout.
-      $this->setContent(''); 
    }
 
    protected abstract function getLocationAttributeName();
