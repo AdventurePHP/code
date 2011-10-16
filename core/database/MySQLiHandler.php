@@ -61,16 +61,16 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // the mysqli extension triggers an error instead of throwing an exception. thus we have
       // to add an ugly "@" sign to convert this error into an exception. :(
       @$this->__dbConn->real_connect(
-                      $this->getServerHost(),
-                      $this->__dbUser,
-                      $this->__dbPass,
-                      $this->__dbName,
-                      $this->getServerPort());
+         $this->getServerHost(),
+         $this->__dbUser,
+         $this->__dbPass,
+         $this->__dbName,
+         $this->getServerPort());
 
       if ($this->__dbConn->connect_error || mysqli_connect_error()) {
          throw new DatabaseHandlerException('[MySQLiHandler->__connect()] Database connection '
-                 . 'could\'t be established (' . mysqli_connect_errno($this->__dbConn) . ': '
-                 . mysqli_connect_error($this->__dbConn) . ')!', E_USER_ERROR);
+                                            . 'could\'t be established (' . mysqli_connect_errno($this->__dbConn) . ': '
+                                            . mysqli_connect_error($this->__dbConn) . ')!', E_USER_ERROR);
       }
 
       // configure client connection
@@ -110,7 +110,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       if (!$this->__dbConn->close()) {
          $this->__dbConn = null;
          throw new DatabaseHandlerException('[MySQLiHandler->__close()] An error occured during closing of the '
-                 . 'database connection (' . mysqli_errno() . ': ' . mysqli_error() . ')!', E_USER_WARNING);
+                                            . 'database connection (' . mysqli_errno() . ': ' . mysqli_error() . ')!', E_USER_WARNING);
       }
       $this->__dbConn = null;
 
@@ -122,7 +122,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Executes a statement stored within a statement file.
     *
     * @param string $namespace Namespace of the statement file.
-    * @param string $statementName Name of the statement file (filebody!).
+    * @param string $statementFile Name of the statement file (filebody!).
     * @param string[] $params A list of statement parameters.
     * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
     * @return MySQLi_Result The result of the statement executed.
@@ -141,8 +141,8 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // log statements in debug mode or when requested explicitly
       if ($this->__dbDebug == true || $logStatement == true) {
          $this->__dbLog->logEntry($this->__dbLogFileName,
-                 '[MySQLiHandler::executeStatement()] Current statement: ' . $statement,
-                 'DEBUG');
+                                  '[MySQLiHandler::executeStatement()] Current statement: ' . $statement,
+                                  'DEBUG');
       }
 
       // execute the statement with use of the current connection!
@@ -173,7 +173,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * holders contained in the file are replaced by the given values.
     *
     * @param string $namespace Namespace of the statement file.
-    * @param string $statementName Name of the statement file (filebody!).
+    * @param string $statementFile Name of the statement file (filebody!).
     * @param string[] $params A list of statement parameters.
     * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
     * @return string[] The resulting rows of the database call within one single array.
@@ -220,7 +220,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // log statements in debug mode or when requested explicitly
       if ($this->__dbDebug == true || $logStatement == true) {
          $this->__dbLog->logEntry($this->__dbLogFileName,
-                 '[MySQLiHandler::executeBindStatement()] Current statement: ' . $statement, 'DEBUG');
+                                  '[MySQLiHandler::executeBindStatement()] Current statement: ' . $statement, 'DEBUG');
       }
       $t->stop($id);
 
@@ -270,8 +270,9 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Executes a statement provided using mysqli's bind feature.
     *
     * @param string $statement The statement to execute.
-    * @param string[] $params A list of statement parameters.
+    * @param array $params A list of statement parameters.
     * @param boolean $logStatement Indicates, if the statement is logged for debug purposes.
+    * @return resource The execution result.
     *
     * @author Christian Achatz
     * @version
@@ -297,9 +298,9 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       $paramCount = count($params);
       if ($paramStatementCount != $paramCount) {
          throw new DatabaseHandlerException('[MySQLiHandler->executeTextBindStatement()] Number '
-                 . 'of given params (' . $paramCount . ') does not match number of bind params '
-                 . 'within the statement (' . $paramStatementCount . ')! Current statement: '
-                 . $statement, E_USER_ERROR);
+                                            . 'of given params (' . $paramCount . ') does not match number of bind params '
+                                            . 'within the statement (' . $paramStatementCount . ')! Current statement: '
+                                            . $statement, E_USER_ERROR);
       }
 
       $this->bindParams($query, $params);
@@ -388,11 +389,11 @@ class MySQLiHandler extends AbstractDatabaseHandler {
          $binds[] = &$params[$key];
       }
       call_user_func_array(
-              array(&$query, 'bind_param'),
-              array_merge(
-                      array(str_repeat('s', count($params))),
-                      $binds
-              )
+         array(&$query, 'bind_param'),
+         array_merge(
+            array(str_repeat('s', count($params))),
+            $binds
+         )
       );
    }
 
@@ -413,7 +414,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
 
       // in case the meta data is not present (e.g. for INSERT statements),
       // we cannot fetch any data. thus we return null to indicate no result
-      if($metaData === false){
+      if ($metaData === false) {
          return null;
       }
 
@@ -487,6 +488,9 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     *
     * Sets the data pointer to the given offset using the result resource.
     *
+    * @param resource $result The statement execution result.
+    * @param int $offset The row number offset.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 09.03.2010<br />
@@ -549,8 +553,8 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // log statements in debug mode or when requested explicitly
       if ($this->__dbDebug == true || $logStatement == true) {
          $this->__dbLog->logEntry($this->__dbLogFileName,
-                 '[MySQLiHandler::executeTextStatement()] Current statement: ' . $statement,
-                 'DEBUG');
+                                  '[MySQLiHandler::executeTextStatement()] Current statement: ' . $statement,
+                                  'DEBUG');
       }
 
       // execute the statement with use of the current connection!
@@ -578,6 +582,8 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     *
     * Returns the version of the database server.
     *
+    * @return The mysql server information.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 09.03.2010<br />
@@ -591,6 +597,8 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     *
     * Returns the name of the current database.
     *
+    * @return string The database name.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 09.03.2010<br />
@@ -600,4 +608,5 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
 }
+
 ?>
