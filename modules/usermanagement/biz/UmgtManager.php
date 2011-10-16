@@ -587,7 +587,6 @@ class UmgtManager extends APFObject {
       }
 
       return $userObject;
-
    }
 
    /**
@@ -611,7 +610,7 @@ class UmgtManager extends APFObject {
       $firstName = $dbDriver->escapeValue($firstName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM ent_user WHERE FirstName = \'' . $firstName . '\';';
+      $select = 'SELECT * FROM `ent_user` WHERE `FirstName` = \'' . $firstName . '\';';
       return $orm->loadObjectByTextStatement('User', $select);
 
    }
@@ -637,7 +636,7 @@ class UmgtManager extends APFObject {
       $lastName = $dbDriver->escapeValue($lastName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM ent_user WHERE LastName = \'' . $lastName . '\';';
+      $select = 'SELECT * FROM `ent_user` WHERE `LastName` = \'' . $lastName . '\';';
       return $orm->loadObjectByTextStatement('User', $select);
 
    }
@@ -663,7 +662,7 @@ class UmgtManager extends APFObject {
       $email = $dbDriver->escapeValue($email);
 
       // create the statement and select user
-      $select = 'SELECT * FROM ent_user WHERE EMail = \'' . $email . '\';';
+      $select = 'SELECT * FROM `ent_user` WHERE `EMail` = \'' . $email . '\';';
       return $orm->loadObjectByTextStatement('User', $select);
 
    }
@@ -691,7 +690,7 @@ class UmgtManager extends APFObject {
       $lastName = $dbDriver->escapeValue($lastName);
 
       // create the statement and select user
-      $select = 'SELECT * FROM ent_user WHERE FirstName = \'' . $firstName . '\' AND LastName = \'' . $lastName . '\';';
+      $select = 'SELECT * FROM `ent_user` WHERE `FirstName` = \'' . $firstName . '\' AND `LastName` = \'' . $lastName . '\';';
       return $orm->loadObjectByTextStatement('User', $select);
 
    }
@@ -717,7 +716,7 @@ class UmgtManager extends APFObject {
       $username = $dbDriver->escapeValue($username);
 
       // create the statement and select user
-      $select = 'SELECT * FROM ent_user WHERE Username = \'' . $username . '\';';
+      $select = 'SELECT * FROM `ent_user` WHERE `Username` = \'' . $username . '\';';
       return $orm->loadObjectByTextStatement('User', $select);
 
    }
@@ -745,7 +744,6 @@ class UmgtManager extends APFObject {
       }
 
       return $userObject;
-
    }
 
    /**
