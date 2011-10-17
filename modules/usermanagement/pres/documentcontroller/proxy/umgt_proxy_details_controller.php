@@ -53,12 +53,12 @@ class umgt_proxy_details_controller extends umgt_base_controller {
 
          $icon = &$this->getIcon($template);
          if ($item instanceof UmgtUser) {
-            $icon->setAttribute('filename', 'cc-personal-128x128.png');
+            $icon->setAttribute('filename', 'user.png');
             $icon->setAttribute('alt', 'User');
             $icon->setAttribute('title', 'User');
          }
          else {
-            $icon->setAttribute('filename', 'cc-yast_kuser-128x128.png');
+            $icon->setAttribute('filename', 'group.png');
             $icon->setAttribute('alt', 'Group');
             $icon->setAttribute('title', 'Group');
          }
