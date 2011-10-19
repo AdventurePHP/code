@@ -40,6 +40,8 @@ class ContactManager extends APFObject {
     *
     * Sends the contact form and displays the thanks page.
     *
+    * @param ContactFormData $formData The form's content.
+    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 03.06.2006<br />
@@ -47,24 +49,30 @@ class ContactManager extends APFObject {
     * Version 0.3, 21.06.2006 (Now an additional mail is sent to the sender)<br />
     * Version 0.4, 09.03.2007<br />
     * Version 0.5, 31.03.2007<br />
-    * Version 0.6, 04.01.2008 (Corrected url generatin for non-rewrite urls)<br />
+    * Version 0.6, 04.01.2008 (Corrected url generating for non-rewrite urls)<br />
     */
    public function sendContactForm(ContactFormData $formData) {
 
-      $cM = &$this->getServiceObject('modules::kontakt4::data', 'ContactMapper');
-
       // set up the mail sender
       $MAIL = &$this->getAndInitServiceObject('tools::mail', 'mailSender', 'ContactForm');
+      /* @var $MAIL mailSender */
 
-      $recipient = $cM->loadRecipientPerId($formData->getRecipientId());
+      $recipient = $this->getMapper()->loadRecipientPerId($formData->getRecipientId());
+      /* @var $recipient ContactFormRecipient */
+
       $MAIL->setRecipient($recipient->getEmailAddress(), $recipient->getName());
-
-      $Text = 'Sehr geehrter Empfänger, sehr geehrte Empfängerin,';
-      $Text .= "\n\n";
-      $Text .= $formData->getSenderName() . ' (E-Mail: ' . $formData->getSenderEmail() . ') hat Ihnen folgende Nachricht über das Kontaktformular zukommen lassen:';
-      $Text .= "\n\n\n";
-      $Text .= $formData->getMessage();
-      $MAIL->setContent($Text);
+      $MAIL->setContent(
+         $this->getNotificationText(
+            array(
+                 'sender-name' => $formData->getSenderName(),
+                 'sender-email' => $formData->getSenderEmail(),
+                 'sender-subject' => $formData->getSubject(),
+                 'sender-message' => $formData->getMessage(),
+                 'recipient-name' => $recipient->getName(),
+                 'recipient-email' => $recipient->getEmailAddress()
+            )
+         )
+      );
 
       $MAIL->setSubject($formData->getSubject());
 
@@ -77,14 +85,18 @@ class ContactManager extends APFObject {
 
       $MAIL->setRecipient($formData->getSenderEmail(), $formData->getSenderName());
 
-      $Text = 'Sehr geehrter Empfänger, sehr geehrte Empfängerin,';
-      $Text .= "\n\n";
-      $Text .= 'Ihre Anfrage wurde an die Kontaktperson "' . $recipient->getName() . '" weitergeleitet. Wir setzen uns baldmöglich mit Ihnen in Verbindung!';
-      $Text .= "\n\n";
-      $Text .= 'Hier nochmals Ihr Anfragetext:';
-      $Text .= "\n";
-      $Text .= $formData->getMessage();
-      $MAIL->setContent($Text);
+      $MAIL->setContent(
+         $this->getConfirmationText(
+            array(
+                 'sender-name' => $formData->getSenderName(),
+                 'sender-email' => $formData->getSenderEmail(),
+                 'sender-subject' => $formData->getSubject(),
+                 'sender-message' => $formData->getMessage(),
+                 'recipient-name' => $recipient->getName(),
+                 'recipient-email' => $recipient->getEmailAddress()
+            )
+         )
+      );
 
       $MAIL->setSubject($formData->getSubject());
 
@@ -108,15 +120,144 @@ class ContactManager extends APFObject {
     *
     * Loads the configuration of the recipients.
     *
+    * @return ContactFormRecipient[] The contact reasons.
+    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 03.06.2006<br />
     * Version 0.2, 04.06.2006<br />
     */
    public function loadRecipients() {
-      $cM = & $this->getServiceObject('modules::kontakt4::data', 'ContactMapper');
-      return $cM->loadRecipients();
+      return $this->getMapper()->loadRecipients();
+   }
+
+   /**
+    * @return ContactMapper
+    */
+   private function &getMapper() {
+      return $this->getServiceObject('modules::kontakt4::data', 'ContactMapper');
+   }
+
+   /**
+    * @private
+    *
+    * Allows you to set these place holders (including the brackets!) within your text:
+    * <ul>
+    * <li>{sender-name}</li>
+    * <li>{sender-email}</li>
+    * <li>{sender-subject}</li>
+    * <li>{sender-message}</li>
+    * <li>{recipient-name}</li>
+    * <li>{recipient-email}</li>
+    * </ul>
+    *
+    * @param array $values An associative array of place holders and their value to be included within the text.
+    * @return string The notification text sent to the contact person to inform about the complaint.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 19.10.2011<br />
+    */
+   private function getNotificationText(array $values = array()) {
+
+      $config = $this->getConfiguration('modules::kontakt4', 'mail_templates.ini');
+      $section = $config->getSection($this->getLanguage());
+      if ($section === null) {
+         throw new ConfigurationException('Configuration section "' . $this->getLanguage() . '" is not present within '
+                                          . 'the contact form module configuration loading the email templates. Please '
+                                          . 'review your configuration!');
+      }
+
+      return $this->fillPlaceHolders(
+         $this->getEmailTemplateContent(
+            $section->getValue('notification.namespace'),
+            $section->getValue('notification.template')
+         ),
+         $values
+      );
+   }
+
+   /**
+    * @private
+    *
+    * Allows you to set these place holders (including the brackets!) within your text:
+    * <ul>
+    * <li>{sender-name}</li>
+    * <li>{sender-email}</li>
+    * <li>{sender-subject}</li>
+    * <li>{sender-message}</li>
+    * <li>{recipient-name}</li>
+    * <li>{recipient-email}</li>
+    * </ul>
+    *
+    * @param array $values An associative array of place holders and their value to be included within the text.
+    * @return string The notification text sent to the originator to confirm the submission.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 19.10.2011<br />
+    */
+   private function getConfirmationText(array $values = array()) {
+      $config = $this->getConfiguration('modules::kontakt4', 'mail_templates.ini');
+      $section = $config->getSection($this->getLanguage());
+      if ($section === null) {
+         throw new ConfigurationException('Configuration section "' . $this->getLanguage() . '" is not present within '
+                                          . 'the contact form module configuration loading the email templates. Please '
+                                          . 'review your configuration!');
+      }
+
+      return $this->fillPlaceHolders(
+         $this->getEmailTemplateContent(
+            $section->getValue('confirmation.namespace'),
+            $section->getValue('confirmation.template')
+         ),
+         $values
+      );
+   }
+
+   /**
+    * @private
+    *
+    * Fills the applied place holders within the given text.
+    *
+    * @param string $text The text to fill the place holders in.
+    * @param array $values An associative array of place holders and their value to be included within the text.
+    * @return string The text with filled place holders.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 19.10.2011<br />
+    */
+   private function fillPlaceHolders($text, array $values = array()) {
+      foreach ($values as $key => $value) {
+         $text = str_replace('{' . $key . '}', $value, $text);
+      }
+      return $text;
+   }
+
+   /**
+    * @private
+    *
+    * Loads the email template regarding the configuration.
+    *
+    * @param string $namespace The namespace of the template.
+    * @param string $template The name of the template.
+    * @return string The mail template content.
+    * @throws IncludeException In case the template file cannot be loaded.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 19.10.2011<br />
+    */
+   private function getEmailTemplateContent($namespace, $template) {
+      $file = APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $template . '.html';
+      if (file_exists($file)) {
+         return file_get_contents($file);
+      }
+      throw new IncludeException('Email template file "' . $file . '" cannot be loaded. '
+                                 . 'Please review your contact module configuration!');
    }
 
 }
+
 ?>
