@@ -139,7 +139,7 @@ class mailSender extends APFObject {
 
       // safely initialize the default config section
       if (empty($initParam)) {
-         echo $initParam = 'Standard';
+         $initParam = 'Standard';
       }
 
       // load config
@@ -194,12 +194,10 @@ class mailSender extends APFObject {
 
          for ($i = 0; $i < count($this->__CCRecipients); $i++) {
             $ccRecipients[] = '"' . ($this->__CCRecipients[$i]['Name']) . '" <' . ($this->__CCRecipients[$i]['EMail']) . '>';
-            // end for
          }
 
          $mailHeader .= 'CC: ' . implode(', ', $ccRecipients) . '' . $this->__EOL;
 
-         // end if
       }
 
       // add bcc recipients
@@ -244,11 +242,9 @@ class mailSender extends APFObject {
     * Version 0.1, 03.09.2007<br />
     */
    public function addHeader($header = '') {
-
       if (strpos($header, ':') !== false) {
          $this->__MailHeader .= $header . '' . $this->__EOL;
       }
-
    }
 
    /**
@@ -265,13 +261,11 @@ class mailSender extends APFObject {
     * Version 0.2, 14.01.2006<br />
     */
    public function setRecipient($recipientEMail, $recipientName) {
-
       if (Validator::validateEMail($recipientEMail)) {
          $this->__Recipients[count($this->__Recipients)] = array('Name' => $recipientName,
                                                                  'EMail' => $recipientEMail
          );
       }
-
    }
 
    /**
@@ -300,13 +294,11 @@ class mailSender extends APFObject {
     * Version 0.1, 21.06.2006<br />
     */
    public function setCCRecipient($recipientEMail, $recipientName) {
-
       if (Validator::validateEMail($recipientEMail)) {
          $this->__CCRecipients[count($this->__CCRecipients)] = array('Name' => $recipientName,
                                                                      'EMail' => $recipientEMail
          );
       }
-
    }
 
    /**
@@ -335,13 +327,11 @@ class mailSender extends APFObject {
     * Version 0.1, 03.09.2007<br />
     */
    public function setBCCRecipient($recipientEMail, $recipientName) {
-
       if (Validator::validateEMail($recipientEMail)) {
          $this->__BCCRecipients[count($this->__BCCRecipients)] = array('Name' => $recipientName,
                                                                        'EMail' => $recipientEMail
          );
       }
-
    }
 
    /**
@@ -370,12 +360,10 @@ class mailSender extends APFObject {
     * Version 0.1, 17.12.2006<br />
     */
    public function setSender($senderEMail, $senderName) {
-
       if (Validator::validateEMail($senderEMail)) {
          $this->__Sender['Name'] = $senderName;
          $this->__Sender['EMail'] = $senderEMail;
       }
-
    }
 
    /**

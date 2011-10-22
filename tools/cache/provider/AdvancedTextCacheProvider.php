@@ -103,7 +103,6 @@ class AdvancedTextCacheProvider extends TextCacheProvider {
          // including all sub cache entries
          $key = md5($key);
          $folder = $baseFolder . '/' . $namespace . '/' . substr($key, 0, 2) . '/' . $key;
-         echo '<br />clear folder: ' . $folder;
          FilesystemManager::deleteFolder($folder, true);
          return true;
 
@@ -116,7 +115,6 @@ class AdvancedTextCacheProvider extends TextCacheProvider {
          $file = $baseFolder . '/' . $namespace . '/'
                  . substr($key, 0, 2) . '/' . $key . '/'
                  . substr($subKey, 0, 2) . '/' . $subKey . '.apfc';
-         echo '<br />clear file: ' . $file;
          try {
             FilesystemManager::removeFile($file);
             return true;
