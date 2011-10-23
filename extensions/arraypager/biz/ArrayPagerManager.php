@@ -41,7 +41,7 @@ final class ArrayPagerManager extends APFObject {
       $section = $config->getSection($initParam);
       if ($section === null) {
          throw new ConfigurationException('[ArrayPagerManager::init()] Section with name "' . $initParam
-                 . '" cannot be found in configuration "' . $configNamen . '" unter namespace "'
+                 . '" cannot be found in configuration "' . $configName . '" unter namespace "'
                  . $namespace . '" and context "' . $this->getContext() . '". '
                  . 'Please double check you configuration!');
       } else {

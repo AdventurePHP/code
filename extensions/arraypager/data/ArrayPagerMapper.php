@@ -123,7 +123,7 @@
 
          $booleanExists = FALSE;
 
-         if ($mixedData !== FALSE) {
+         if ($mixedData !== NULL) {
             $booleanExists = TRUE;
          }
 
