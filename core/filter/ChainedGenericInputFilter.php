@@ -51,7 +51,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
     * @var string Defines the url parameter that is passed the
     *             current request url by an apache rewrite rule.
     */
-   protected static $REWRITE_QUERY_PARAM = 'apf-rewrited-query';
+   protected static $REWRITE_QUERY_PARAM = 'apf-rewritten-query';
 
    /**
     * @protected
