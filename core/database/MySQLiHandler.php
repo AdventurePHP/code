@@ -65,7 +65,8 @@ class MySQLiHandler extends AbstractDatabaseHandler {
          $this->__dbUser,
          $this->__dbPass,
          $this->__dbName,
-         $this->getServerPort());
+         $this->getServerPort(),
+         $this->__dbSocket);
 
       if ($this->__dbConn->connect_error || mysqli_connect_error()) {
          throw new DatabaseHandlerException('[MySQLiHandler->__connect()] Database connection '

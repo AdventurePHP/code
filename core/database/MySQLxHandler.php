@@ -59,8 +59,12 @@ class MySQLxHandler extends AbstractDatabaseHandler {
 
       // as discussed under http://forum.adventure-php-framework.org/de/viewtopic.php?f=6&t=614
       // the mysqli extension triggers an error instead of throwing an exception. thus we have
-      // to add an ugly "@" sign to convert this error into an exception. :(         
-      $this->__dbConn = @mysql_connect($this->__dbHost, $this->__dbUser, $this->__dbPass, true);
+      // to add an ugly "@" sign to convert this error into an exception. :(
+      $this->__dbConn = @mysql_connect(
+        $this->getServerHost(),
+        $this->__dbUser,
+        $this->__dbPass,
+        true);
 
       if (!is_resource($this->__dbConn)) {
          throw new DatabaseHandlerException('[MySQLxHandler->__connect()] Database connection '
@@ -77,6 +81,19 @@ class MySQLxHandler extends AbstractDatabaseHandler {
          throw new DatabaseHandlerException('[MySQLxHandler->__connect()] Database couldn\'t be selected (' . mysql_errno() . ': ' . mysql_error() . ')!', E_USER_ERROR);
       }
 
+   }
+
+   private function getServerHost() {
+      $colon = strpos($this->__dbHost, ':');
+      if ($colon === false) {
+         if ($this->__dbSocket !== null) {
+            return ':'.$this->__dbSocket;
+         }
+         if ($this->__dbPort !== null) {
+            return $this->__dbHost.':'.$this->__dbPort;
+         }
+      }
+      return $this->__dbHost;
    }
 
    /**

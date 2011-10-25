@@ -71,6 +71,18 @@ abstract class AbstractDatabaseHandler extends APFObject {
 
    /**
     * @protected
+    * @var string Port for connection.
+    */
+   protected $__dbPort = null;
+
+   /**
+    * @protected
+    * @var string Socket for connection.
+    */
+   protected $__dbSocket = null;
+
+   /**
+    * @protected
     * @var boolean Indicates, if the handler runs in debug mode. This means, that all
     * statements executed are written into a dedicated logfile.
     */
@@ -151,6 +163,16 @@ abstract class AbstractDatabaseHandler extends APFObject {
 
          // set name of the database
          $this->__dbName = $initParam['DB.Name'];
+
+         // set port
+         if (isset($initParam['DB.Port'])) {
+            $this->__dbPort = $initParam['DB.Port'];
+         }
+
+         // set socket
+         if (isset($initParam['DB.Socket'])) {
+            $this->__dbSocket = $initParam['DB.Socket'];
+         }
 
          // set debug mode
          if (isset($initParam['DB.DebugMode']) && ($initParam['DB.DebugMode'] == 'true' || $initParam['DB.DebugMode'] == '1')) {
