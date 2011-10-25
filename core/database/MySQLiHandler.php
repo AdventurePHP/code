@@ -88,6 +88,9 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    private function getServerPort() {
+      if ($this->__dbPort !== null) {
+         return $this->__dbPort;
+      }
       $colon = strpos($this->__dbHost, ':');
       if ($colon !== false) {
          return substr($this->__dbHost, $colon + 1);
@@ -591,6 +594,10 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     */
    public function getServerInfo() {
       return mysqli_get_server_info($this->__dbConn);
+   }
+
+   public function getHostInfo() {
+      return mysqli_get_host_info($this->__dbConn);
    }
 
    /**

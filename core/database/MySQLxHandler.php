@@ -327,6 +327,10 @@ class MySQLxHandler extends AbstractDatabaseHandler {
       return mysql_get_server_info($this->__dbConn);
    }
 
+   public function getHostInfo() {
+      return mysql_get_host_info($this->__dbConn);
+   }
+
    /**
     * @public
     *
