@@ -61,12 +61,12 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // the mysqli extension triggers an error instead of throwing an exception. thus we have
       // to add an ugly "@" sign to convert this error into an exception. :(
       @$this->__dbConn->real_connect(
-         $this->getServerHost(),
+         $this->__dbHost,
          $this->__dbUser,
          $this->__dbPass,
          $this->__dbName,
          $this->getServerPort(),
-         $this->getServerSocket());
+         $this->__dbSocket);
 
       if ($this->__dbConn->connect_error || mysqli_connect_error()) {
          throw new DatabaseHandlerException('[MySQLiHandler->__connect()] Database connection '
@@ -79,42 +79,11 @@ class MySQLiHandler extends AbstractDatabaseHandler {
 
    }
 
-   private function getServerHost() {
-      $colon = strpos($this->__dbHost, ':');
-      if ($colon !== false) {
-         return substr($this->__dbHost, 0, $colon);
-      }
-      return $this->__dbHost;
-   }
-
    private function getServerPort() {
       if ($this->__dbPort !== null) {
          return $this->__dbPort;
       }
-      $colon = strpos($this->__dbHost, ':');
-      if ($colon !== false) {
-         $port = substr($this->__dbHost, $colon + 1);
-
-         if (is_numeric ($port) === true) {
-            return $port;
-         }
-      }
       return '3306';
-   }
-
-   private function getServerSocket() {
-      if ($this->__dbSocket !== null) {
-         return $this->__dbSocket;
-      }
-      $colon = strpos($this->__dbHost, ':');
-      if ($colon !== false) {
-         $sock = substr($this->__dbHost, $colon + 1);
-
-         if (is_numeric ($sock) === false) {
-            return $sock;
-         }
-      }
-      return null;
    }
 
    /**

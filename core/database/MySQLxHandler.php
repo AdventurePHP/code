@@ -84,14 +84,11 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    }
 
    private function getServerHost() {
-      $colon = strpos($this->__dbHost, ':');
-      if ($colon === false) {
-         if ($this->__dbSocket !== null) {
-            return ':'.$this->__dbSocket;
-         }
-         if ($this->__dbPort !== null) {
-            return $this->__dbHost.':'.$this->__dbPort;
-         }
+      if ($this->__dbSocket !== null) {
+         return ':'.$this->__dbSocket;
+      }
+      if ($this->__dbPort !== null) {
+         return $this->__dbHost.':'.$this->__dbPort;
       }
       return $this->__dbHost;
    }
