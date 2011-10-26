@@ -66,7 +66,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
          $this->__dbPass,
          $this->__dbName,
          $this->getServerPort(),
-         $this->__dbSocket);
+         $this->getServerSocket());
 
       if ($this->__dbConn->connect_error || mysqli_connect_error()) {
          throw new DatabaseHandlerException('[MySQLiHandler->__connect()] Database connection '
@@ -93,9 +93,28 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       }
       $colon = strpos($this->__dbHost, ':');
       if ($colon !== false) {
-         return substr($this->__dbHost, $colon + 1);
+         $port = substr($this->__dbHost, $colon + 1);
+
+         if (is_numeric ($port) === true) {
+            return $port;
+         }
       }
       return '3306';
+   }
+
+   private function getServerSocket() {
+      if ($this->__dbSocket !== null) {
+         return $this->__dbSocket;
+      }
+      $colon = strpos($this->__dbHost, ':');
+      if ($colon !== false) {
+         $sock = substr($this->__dbHost, $colon + 1);
+
+         if (is_numeric ($sock) === false) {
+            return $sock;
+         }
+      }
+      return null;
    }
 
    /**
