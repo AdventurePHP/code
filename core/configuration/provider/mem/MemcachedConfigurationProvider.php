@@ -38,7 +38,7 @@
       /**
        * @var string The file extension, the provider is registered with.
        */
-      private $extension;
+      protected $extension;
 
       /**
        * @var ConfigurationProvider The configuration provider to read the persistent configuration from.
@@ -141,5 +141,34 @@
          $this->extension = $extension;
       }
 
+       /**
+        * Deletes the configuration specified by the given params.
+        *
+        * @param string $namespace The namespace of the configuration.
+        * @param string $context The current application's context.
+        * @param string $language The current application's language.
+        * @param string $environment The environment, the applications runs on.
+        * @param string $name The name of the configuration to delete including it's extension.
+        * @throws ConfigurationException In case the file cannot be deleted.
+        *
+        * @author Tobias Lückel
+        * @version
+        * Version 0.1, 27.10.2011<br />
+        */
+       function deleteConfiguration($namespace, $context, $language, $environment, $name)
+       {
+           $name = $this->remapConfigurationName($name);
+
+           $key = $this->getStoreIdentifier($namespace, $context, $language, $environment, $name);
+           $result = $this->memcachedService->delete($key);
+
+           if ($result === false) {
+               throw new ConfigurationException('[MemcachedConfigurationProvider::deleteConfiguration()] '
+                    . 'MemcachedConfiguration with key "' . $key . '" cannot be deleted! Please check your '
+                    . 'memcache configuration, the given parameters, or your environment configuration.');
+           }
+
+           ConfigurationManager::deleteConfiguration($namespace, $context, $language, $environment, $name);
+       }
    }
 ?>
