@@ -35,6 +35,12 @@ import('core::database', 'DatabaseHandlerException');
 class MySQLiHandler extends AbstractDatabaseHandler {
 
    /**
+    * @protected
+    * @var string Port for connection.
+    */
+   protected $__dbPort = '3306';
+
+   /**
     * @var int The number of rows, that are affected within a bind statement execution.
     */
    private $__bindNumRows = 0;
@@ -65,7 +71,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
          $this->__dbUser,
          $this->__dbPass,
          $this->__dbName,
-         $this->getServerPort(),
+         $this->__dbPort,
          $this->__dbSocket);
 
       if ($this->__dbConn->connect_error || mysqli_connect_error()) {
@@ -77,13 +83,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // configure client connection
       $this->initCharsetAndCollation();
 
-   }
-
-   private function getServerPort() {
-      if ($this->__dbPort !== null) {
-         return $this->__dbPort;
-      }
-      return '3306';
    }
 
    /**

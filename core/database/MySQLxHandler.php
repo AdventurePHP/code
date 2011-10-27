@@ -34,6 +34,12 @@ import('core::database', 'DatabaseHandlerException');
  */
 class MySQLxHandler extends AbstractDatabaseHandler {
 
+   /**
+    * @protected
+    * @var string Port for connection.
+    */
+   protected $__dbPort = '3306';
+
    public function __construct() {
       $this->__dbLogFileName = 'mysqlx';
    }
