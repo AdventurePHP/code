@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 import('core::configuration::provider::db', 'DbConfiguration');
 
 /**
@@ -67,9 +66,6 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
    protected $extension;
 
    /**
-    *
-    * @param string $context The context of the configuration provider.
-    * @param string $language The language of the configuration provider.
     * @param string $connectionName The name of the database connection to use.
     */
    public function __construct($connectionName) {
@@ -201,55 +197,54 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
       return $connMgr->getConnection($this->connectionName);
    }
 
-    /**
-     * Deletes the configuration specified by the given params.
-     *
-     * @param string $namespace The namespace of the configuration.
-     * @param string $context The current application's context.
-     * @param string $language The current application's language.
-     * @param string $environment The environment, the applications runs on.
-     * @param string $name The name of the configuration to delete including it's extension.
-     * @throws ConfigurationException In case the row(s) cannot be deleted.
-     *
-     * @author Tobias Lückel
-     * @version
-     * Version 0.1, 27.10.2011<br />
-     */
-    function deleteConfiguration($namespace, $context, $language, $environment, $name)
-    {
-        $table = 'config_' . $this->getTableNameSuffix($namespace);
+   /**
+    * Deletes the configuration specified by the given params.
+    *
+    * @param string $namespace The namespace of the configuration.
+    * @param string $context The current application's context.
+    * @param string $language The current application's language.
+    * @param string $environment The environment, the applications runs on.
+    * @param string $name The name of the configuration to delete including it's extension.
+    * @throws ConfigurationException In case the row(s) cannot be deleted.
+    *
+    * @author Tobias Lückel
+    * @version
+    * Version 0.1, 27.10.2011<br />
+    */
+   public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+      $table = 'config_' . $this->getTableNameSuffix($namespace);
 
-        $conn = &$this->getConnection($context, $language);
-        $textStatement = "DELETE FROM `".$table."`
+      $conn = &$this->getConnection($context, $language);
+      $textStatement = "DELETE FROM `" . $table . "`
                           WHERE
-                            `context` = '".$context."',
-                            `language` = '".$language."',
-                            `environment` = '".$environment."',
-                            `name` = '".$this->getConfigName($name)."'";
-        $result = $conn->executeTextStatement($textStatement);
+                            `context` = '" . $context . "',
+                            `language` = '" . $language . "',
+                            `environment` = '" . $environment . "',
+                            `name` = '" . $this->getConfigName($name) . "'";
+      $result = $conn->executeTextStatement($textStatement);
 
-        $affectedRows = $conn->getAffectedRows($result);
+      $affectedRows = $conn->getAffectedRows($result);
 
-        if ($affectedRows == 0 && $this->activateEnvironmentFallback === true && $environment !== 'DEFAULT') {
-            $environment = 'DEFAULT';
+      if ($affectedRows == 0 && $this->activateEnvironmentFallback === true && $environment !== 'DEFAULT') {
+         $environment = 'DEFAULT';
 
-            $textStatement = "DELETE FROM `".$table."`
+         $textStatement = "DELETE FROM `" . $table . "`
                           WHERE
-                            `context` = '".$context."',
-                            `language` = '".$language."',
-                            `environment` = '".$environment."',
-                            `name` = '".$this->getConfigName($name)."'";
-            $result = $conn->executeTextStatement($textStatement);
+                            `context` = '" . $context . "',
+                            `language` = '" . $language . "',
+                            `environment` = '" . $environment . "',
+                            `name` = '" . $this->getConfigName($name) . "'";
+         $result = $conn->executeTextStatement($textStatement);
 
-            $affectedRows = $conn->getAffectedRows($result);
-        }
+         $affectedRows = $conn->getAffectedRows($result);
+      }
 
-        if ($affectedRows == 0) {
-            throw new ConfigurationException('[DbConfigurationProvider::deleteConfiguration()] '
-                    . 'Configuration with name "' . $this->getConfigName($name) . '" cannot be deleted! Please check your '
-                    . 'database configuration, the given parameters, or your environment configuration.');
-        }
-    }
+      if ($affectedRows == 0) {
+         throw new ConfigurationException('[DbConfigurationProvider::deleteConfiguration()] '
+                                          . 'Configuration with name "' . $this->getConfigName($name) . '" cannot be deleted! Please check your '
+                                          . 'database configuration, the given parameters, or your environment configuration.');
+      }
+   }
 }
 
 ?>
