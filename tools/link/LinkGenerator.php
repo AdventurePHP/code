@@ -60,7 +60,7 @@ final class Url {
     *
     * @param string $scheme The url's scheme (e.g. http, ftp).
     * @param string $host The url's host (e.g. example.com).
-    * @param int $port The url's port (e.g. 80, 443).
+    * @param int|null $port The url's port (e.g. 80, 443).
     * @param string $path The url's path (e.g. /foo/bar).
     * @param array $query An associative array of query parameters.
     *
@@ -162,7 +162,7 @@ final class Url {
     *
     * Let's you inject the port of the url.
     *
-    * @param int $port The url's port (e.g. 80, 443).
+    * @param int|null $port The url's port (e.g. 80, 443).
     * @return Url This object for further usage.
     *
     * @author Christian Achatz
