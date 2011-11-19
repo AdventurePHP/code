@@ -84,6 +84,7 @@ final class GenericCriterionObject {
     *
     * Method to set the current link between properties.
     *
+    * @param string $operator The operator to use (e.g. AND).
     * @return GenericCriterionObject Returns itself.
     *
     * @author Lutz Mahlstedt
@@ -212,8 +213,9 @@ final class GenericCriterionObject {
     *
     * Method to add a property to the where list.
     *
-    * @param string $attributeName name of the attribute
-    * @param string $attributeValue value of the attribute
+    * @param string $attributeName name of the attribute.
+    * @param string $attributeValue value of the attribute.
+    * @param string $comparisonOperator The comparison operator (e.g. =, !=).
     *
     * @return GenericCriterionObject Returns itself.
     *
@@ -224,9 +226,9 @@ final class GenericCriterionObject {
     */
    public function addPropertyIndicator($attributeName, $attributeValue, $comparisonOperator = '=') {
       $this->properties[] = array('Name' => $attributeName,
-          'Value' => $attributeValue,
-          'ComparisonOperator' => $comparisonOperator,
-          'LogicalOperator' => $this->logicalOperator
+                                  'Value' => $attributeValue,
+                                  'ComparisonOperator' => $comparisonOperator,
+                                  'LogicalOperator' => $this->logicalOperator
       );
       return $this;
    }
@@ -316,4 +318,5 @@ final class GenericCriterionObject {
    }
 
 }
+
 ?>
