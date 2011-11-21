@@ -1269,6 +1269,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.3, 27.04.2011 (BUGFIX: Removed explicit type 'GenericCriterionObject' of the parameter list, because
     *                          'loadObjectsWithRelation' and 'loadObjectsWithoutRelation' should pass null value<br />
     *                          BUGFIX: Corrected the where statement because of relations between the same table)<br />
+    * Version 0.4, 21.11.2011 (BUGFIX: The CriterionObject now works with the sourceTable, not with the targetTable)<br />
     */
    private function loadObjects4RelationName($objectName, $relationName, $criterion, $relationCondition) {
 
@@ -1322,7 +1323,7 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       // add where statement
-      $where = array_merge($whereList, $this->buildWhere($targetObjectName, $criterion));
+      $where = array_merge($whereList, $this->buildWhere($objectName, $criterion));
 
       // - add relation joins
       $where[] = '`' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationTargetObjectId . '` ' . $relationCondition;
@@ -1330,7 +1331,7 @@ class GenericORRelationMapper extends GenericORMapper {
       $select .= ' WHERE ' . implode(' AND ', $where);
 
       // add order clause
-      $order = $this->buildOrder($targetObjectName, $criterion);
+      $order = $this->buildOrder($objectName, $criterion);
       if (count($order) > 0) {
          $select .= ' ORDER BY ' . implode(', ', $order);
       }
