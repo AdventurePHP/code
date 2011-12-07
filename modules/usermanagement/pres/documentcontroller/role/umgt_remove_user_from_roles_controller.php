@@ -34,49 +34,49 @@ import('tools::request', 'RequestHandler');
  */
 class umgt_remove_user_from_roles_controller extends umgt_base_controller {
 
-    public function transformContent() {
+   public function transformContent() {
 
-        $form = &$this->getForm('Roles');
+      $form = &$this->getForm('Roles');
 
-        $uM = &$this->getManager();
+      $uM = &$this->getManager();
 
-        $user = $uM->loadUserByID(RequestHandler::getValue('userid'));
-        $roles = $uM->loadRolesWithUser($user);
+      $user = $uM->loadUserByID(RequestHandler::getValue('userid'));
+      $roles = $uM->loadRolesWithUser($user);
 
-        if (count($roles) === 0) {
-            $tmpl = &$this->getTemplate('NoMoreRoles');
-            $tmpl->setPlaceHolder('User', $user->getDisplayName());
-            $tmpl->setPlaceHolder('UserViewLink', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
-            $tmpl->transformOnPlace();
-            return;
-        }
+      if (count($roles) === 0) {
+         $tmpl = &$this->getTemplate('NoMoreRoles');
+         $tmpl->setPlaceHolder('User', $user->getDisplayName());
+         $tmpl->setPlaceHolder('UserViewLink', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
+         $tmpl->transformOnPlace();
+         return;
+      }
 
-        $rolesControl = &$form->getFormElementByName('Roles');
-        /* @var $rolesControl form_taglib_multiselect */
-        foreach ($roles as $role) {
-            $rolesControl->addOption($role->getDisplayName(), $role->getObjectId());
-        }
+      $rolesControl = &$form->getFormElementByName('Roles');
+      /* @var $rolesControl form_taglib_multiselect */
+      foreach ($roles as $role) {
+         $rolesControl->addOption($role->getDisplayName(), $role->getObjectId());
+      }
 
-        if ($form->isSent() && $form->isValid()) {
+      if ($form->isSent() && $form->isValid()) {
 
-            $options = &$rolesControl->getSelectedOptions();
-            $rolesToRemove = array();
-            foreach ($options as $option) {
-                /* @var $option select_taglib_option */
-                $roleToRemove = new UmgtRole();
-                $roleToRemove->setObjectId($option->getValue());
-                $rolesToRemove[] = $roleToRemove;
-                unset($roleToRemove);
-            }
+         $options = &$rolesControl->getSelectedOptions();
+         $rolesToRemove = array();
+         foreach ($options as $option) {
+            /* @var $option select_taglib_option */
+            $roleToRemove = new UmgtRole();
+            $roleToRemove->setObjectId($option->getValue());
+            $rolesToRemove[] = $roleToRemove;
+            unset($roleToRemove);
+         }
 
-            $uM->detachUserFromRoles($user, $rolesToRemove);
+         $uM->detachUserFromRoles($user, $rolesToRemove);
 
-            // back to user main view
-            HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'roleview' => null, 'userid' => null)));
-        } else {
-            $form->transformOnPlace();
-        }
-    }
+         // back to user main view
+         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'roleview' => null, 'userid' => null)));
+      } else {
+         $form->transformOnPlace();
+      }
+   }
 
 }
 

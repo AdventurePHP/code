@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -34,49 +33,49 @@ import('tools::request', 'RequestHandler');
  */
 class umgt_group_add_role_to_groups_controller extends umgt_base_controller {
 
-    public function transformContent() {
+   public function transformContent() {
 
-        $form = &$this->getForm('Groups');
+      $form = &$this->getForm('Groups');
 
-        $uM = &$this->getManager();
+      $uM = &$this->getManager();
 
-        $role = $uM->loadRoleByID(RequestHandler::getValue('roleid'));
-        $groups = $uM->loadGroupsNotWithRole($role);
+      $role = $uM->loadRoleByID(RequestHandler::getValue('roleid'));
+      $groups = $uM->loadGroupsNotWithRole($role);
 
-        if (count($groups) === 0) {
-            $tmpl = &$this->getTemplate('NoMoreGroups');
-            $tmpl->setPlaceHolder('Role', $role->getDisplayName());
-            $tmpl->setPlaceHolder('RoleViewLink', $this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
-            $tmpl->transformOnPlace();
-            return;
-        }
+      if (count($groups) === 0) {
+         $tmpl = &$this->getTemplate('NoMoreGroups');
+         $tmpl->setPlaceHolder('Role', $role->getDisplayName());
+         $tmpl->setPlaceHolder('RoleViewLink', $this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
+         $tmpl->transformOnPlace();
+         return;
+      }
 
-        $groupsControl = &$form->getFormElementByName('Groups');
-        /* @var $groupsControl form_taglib_multiselect */
-        foreach ($groups as $group) {
-            $groupsControl->addOption($group->getDisplayName(), $group->getObjectId());
-        }
+      $groupsControl = &$form->getFormElementByName('Groups');
+      /* @var $groupsControl form_taglib_multiselect */
+      foreach ($groups as $group) {
+         $groupsControl->addOption($group->getDisplayName(), $group->getObjectId());
+      }
 
-        if ($form->isSent() && $form->isValid()) {
+      if ($form->isSent() && $form->isValid()) {
 
-            $options = &$groupsControl->getSelectedOptions();
-            $additionalGroups = array();
-            foreach ($options as $option) {
-                /* @var $option select_taglib_option */
-                $additionalGroup = new UmgtGroup();
-                $additionalGroup->setObjectId($option->getValue());
-                $additionalGroups[] = $additionalGroup;
-                unset($additionalGroup);
-            }
+         $options = &$groupsControl->getSelectedOptions();
+         $additionalGroups = array();
+         foreach ($options as $option) {
+            /* @var $option select_taglib_option */
+            $additionalGroup = new UmgtGroup();
+            $additionalGroup->setObjectId($option->getValue());
+            $additionalGroups[] = $additionalGroup;
+            unset($additionalGroup);
+         }
 
-            $uM->attachRoleToGroups($role, $additionalGroups);
+         $uM->attachRoleToGroups($role, $additionalGroups);
 
-            // back to user main view
-            HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
-        } else {
-            $form->transformOnPlace();
-        }
-    }
+         // back to user main view
+         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
+      } else {
+         $form->transformOnPlace();
+      }
+   }
 
 }
 
