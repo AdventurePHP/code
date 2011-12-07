@@ -1232,7 +1232,7 @@ class Document extends APFObject {
       // read the content of the template
       $this->__loadContentFromFile($namespace, $design);
 
-      // analyze document controller definitions
+      // analyze document controller definition
       $this->__extractDocumentController();
 
       // parse known taglibs
@@ -1456,13 +1456,7 @@ class Document extends APFObject {
          }
 
          // Lazily import document controller class.
-         // Thereby evaluate the file name using the class name (APF convention) with a fallback on
-         // pre 1.14 releases to be able to specify an alternative file.
-         $file = $controllerAttributes['class'];
-         if (isset($controllerAttributes['file'])) {
-            $file = $controllerAttributes['file'];
-         }
-         import($controllerAttributes['namespace'], $file);
+         import($controllerAttributes['namespace'], $controllerAttributes['class']);
 
          // remark controller class
          $this->__DocumentController = $controllerAttributes['class'];
@@ -1721,7 +1715,7 @@ class core_taglib_addtaglib extends Document {
     * Version 0.1, 21.04.2007<br />
     */
    public function transform() {
-      return (string)'';
+      return '';
    }
 
 }
@@ -1936,7 +1930,7 @@ class html_taglib_template extends Document {
       }
 
       // return empty string
-      return (string)'';
+      return '';
    }
 
 }
