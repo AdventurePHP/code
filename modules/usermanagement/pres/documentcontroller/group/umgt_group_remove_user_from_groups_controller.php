@@ -1,4 +1,5 @@
 <?php
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -19,6 +20,7 @@
  * -->
  */
 import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
+import('tools::request', 'RequestHandler');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::group
@@ -32,50 +34,49 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
  */
 class umgt_group_remove_user_from_groups_controller extends umgt_base_controller {
 
-   public function transformContent() {
+    public function transformContent() {
 
-      $form = &$this->getForm('Groups');
+        $form = &$this->getForm('Groups');
 
-      $uM = &$this->getManager();
+        $uM = &$this->getManager();
 
-      $user = $uM->loadUserByID(RequestHandler::getValue('userid'));
-      $groups = $uM->loadGroupsWithUser($user);
+        $user = $uM->loadUserByID(RequestHandler::getValue('userid'));
+        $groups = $uM->loadGroupsWithUser($user);
 
-      if (count($groups) === 0) {
-         $tmpl = &$this->getTemplate('NoGroups');
-         $tmpl->setPlaceHolder('User', $user->getDisplayName());
-         $tmpl->setPlaceHolder('UserViewLink', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
-         $tmpl->transformOnPlace();
-         return;
-      }
+        if (count($groups) === 0) {
+            $tmpl = &$this->getTemplate('NoGroups');
+            $tmpl->setPlaceHolder('User', $user->getDisplayName());
+            $tmpl->setPlaceHolder('UserViewLink', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
+            $tmpl->transformOnPlace();
+            return;
+        }
 
-      $groupsControl = &$form->getFormElementByName('Groups');
-      /* @var $groupsControl form_taglib_multiselect */
-      foreach ($groups as $group) {
-         $groupsControl->addOption($group->getDisplayName(), $group->getObjectId());
-      }
+        $groupsControl = &$form->getFormElementByName('Groups');
+        /* @var $groupsControl form_taglib_multiselect */
+        foreach ($groups as $group) {
+            $groupsControl->addOption($group->getDisplayName(), $group->getObjectId());
+        }
 
-      if ($form->isSent() && $form->isValid()) {
+        if ($form->isSent() && $form->isValid()) {
 
-         $options = &$groupsControl->getSelectedOptions();
-         $groupsToRemove = array();
-         foreach ($options as $option) {
-            /* @var $option select_taglib_option */
-            $groupToRemove = new UmgtGroup();
-            $groupToRemove->setObjectId($option->getValue());
-            $groupsToRemove[] = $groupToRemove;
-            unset($groupToRemove);
-         }
+            $options = &$groupsControl->getSelectedOptions();
+            $groupsToRemove = array();
+            foreach ($options as $option) {
+                /* @var $option select_taglib_option */
+                $groupToRemove = new UmgtGroup();
+                $groupToRemove->setObjectId($option->getValue());
+                $groupsToRemove[] = $groupToRemove;
+                unset($groupToRemove);
+            }
 
-         $uM->detachUserFromGroups($user, $groupsToRemove);
+            $uM->detachUserFromGroups($user, $groupsToRemove);
 
-         // back to user main view
-         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
-
-      } else {
-         $form->transformOnPlace();
-      }
-   }
+            // back to user main view
+            HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
+        } else {
+            $form->transformOnPlace();
+        }
+    }
 
 }
 
