@@ -874,7 +874,7 @@ class UmgtManager extends APFObject {
     *
     * Returns a role domain object identified by it's display name.
     *
-    * @param $name The name of the role to load.
+    * @param string $name The name of the role to load.
     * @return UmgtRole The desired role.
     *
     * @author Christian Achatz

@@ -43,10 +43,12 @@ class umgt_registration_controller extends umgt_base_controller {
          $user = new UmgtUser();
 
          $firstName = $form->getFormElementByName('firstname');
-         $user->setFirstName($firstName->getValue());
+         $firstNameValue = $firstName->getValue();
+         $user->setFirstName($firstNameValue);
 
          $lastName = $form->getFormElementByName('lastname');
-         $user->setLastName($lastName->getValue());
+         $lastNameValue = $lastName->getValue();
+         $user->setLastName($lastNameValue);
 
          $street = $form->getFormElementByName('street');
          $user->setStreetName($street->getValue());
@@ -64,10 +66,35 @@ class umgt_registration_controller extends umgt_base_controller {
          $user->setEMail($email->getValue());
 
          $userName = $form->getFormElementByName('username');
-         $user->setUsername($userName->getValue());
+         $userNameValue = $userName->getValue();
+         $user->setUsername($userNameValue);
 
          $password = $form->getFormElementByName('password');
          $user->setPassword($password->getValue());
+
+         // assemble display name to have a more readable user within the umgt mgmt UI
+         if (empty($firstNameValue) && empty($lastNameValue)) {
+            $user->setDisplayName($userNameValue);
+         } else {
+            $user->setDisplayName($lastNameValue . ', ' . $firstNameValue);
+         }
+
+         // add initial groups and roles if applicable
+         try {
+            foreach ($this->getInitialGroups() as $initialGroup) {
+               $user->addGroup($initialGroup);
+            }
+
+            foreach ($this->getInitialRoles() as $initialRole) {
+               $user->addRole($initialRole);
+            }
+         } catch (ConfigurationException $e) {
+            import('core::logging', 'Logger');
+            $l = &Singleton::getInstance('Logger');
+            /* @var $l Logger */
+            $l->logEntry('registration', 'Registration cannot add initial groups due to the following exception: ' . $e
+               . ' This may be ok, in case you have no initial groups and/or roles specified.', 'WARN');
+         }
 
          try {
             $uM->saveUser($user);
@@ -86,6 +113,78 @@ class umgt_registration_controller extends umgt_base_controller {
          $form->transformOnPlace();
       }
 
+   }
+
+   /**
+    * Evaluates the user's initial groups that are applied during registration.
+    *
+    * @return UmgtGroup[] The list of initial groups.
+    * @throws ConfigurationException In case of any misconfiguration.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1 12.12.2011
+    */
+   private function getInitialGroups() {
+
+      $config = $this->getConfiguration('modules::usermanagement::pres', 'registration.ini');
+      $section = $config->getSection('Default');
+
+      if ($section === null) {
+         throw new ConfigurationException('Section "default" is not defined within registration.ini');
+      }
+
+      $uM = $this->getManager();
+
+      $groups = array();
+
+      $initialGroups = $section->getSection('group');
+      if ($initialGroups !== null) {
+         foreach ($initialGroups->getValueNames() as $name) {
+            $group = $uM->loadGroupByName($initialGroups->getValue($name));
+            if ($group !== null) {
+               $groups[] = $group;
+            }
+         }
+      }
+
+      return $groups;
+   }
+
+   /**
+    * Evaluates the user's initial roles that are applied during registration.
+    *
+    * @return UmgtRole[] The list of initial roles.
+    * @throws ConfigurationException In case of any misconfiguration.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1 12.12.2011
+    */
+   private function getInitialRoles() {
+
+      $config = $this->getConfiguration('modules::usermanagement::pres', 'registration.ini');
+      $section = $config->getSection('Default');
+
+      if ($section === null) {
+         throw new ConfigurationException('Section "default" is not defined within registration.ini');
+      }
+
+      $uM = $this->getManager();
+
+      $roles = array();
+
+      $initialRoles = $section->getSection('role');
+      if ($initialRoles !== null) {
+         foreach ($initialRoles->getValueNames() as $name) {
+            $role = $uM->loadRoleByName($initialRoles->getValue($name));
+            if ($role !== null) {
+               $roles[] = $role;
+            }
+         }
+      }
+
+      return $roles;
    }
 
 }

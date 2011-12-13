@@ -11,12 +11,12 @@ import('modules::genericormapper::data', 'GenericDomainObject');
 /**
  * @package modules::usermanagement::biz::model
  * @class UmgtUserBase
- * 
+ *
  * This class provides the descriptive getter and setter methods for the "UmgtUser" domain object.
  */
 abstract class UmgtUserBase extends GenericDomainObject {
 
-   public function __construct($objectName = null){
+   public function __construct($objectName = null) {
       parent::__construct('User');
    }
 
@@ -339,7 +339,7 @@ abstract class UmgtUserBase extends GenericDomainObject {
 /**
  * @package modules::usermanagement::biz::model
  * @class UmgtUser
- * 
+ *
  * This class represents the "UmgtUser" domain object.
  * <p/>
  * Please use this class to add your own functionality.
@@ -356,8 +356,36 @@ class UmgtUser extends UmgtUserBase {
     *
     * @param string $objectName The internal object name of the domain object.
     */
-   public function __construct($objectName = null){
+   public function __construct($objectName = null) {
       parent::__construct();
+   }
+
+   /**
+    * Let's you add the current user to the applied group. This method does not include
+    * persistence handling but is for convenience!
+    *
+    * @param UmgtGroup $group The group to add the user to.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.12.2011
+    */
+   public function addGroup(UmgtGroup $group) {
+      $this->addRelatedObject('Group2User', $group);
+   }
+
+   /**
+    * Let's you assign the current user to the applied role. This method does not include
+    * persistence handling but is for convenience!
+    *
+    * @param UmgtRole $role The role to assign the user to.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.12.2011
+    */
+   public function addRole(UmgtRole $role) {
+      $this->addRelatedObject('Role2User', $role);
    }
 
 }

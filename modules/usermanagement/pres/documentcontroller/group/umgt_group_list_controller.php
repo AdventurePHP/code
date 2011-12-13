@@ -66,7 +66,7 @@ class umgt_group_list_controller extends umgt_base_controller {
       $users = $this->getManager()->loadUsersWithGroup($group);
       $userNames = '<ul>';
       foreach ($users as $user) {
-         $userNames = '<li>' . $user->getDisplayName() . '</li>';
+         $userNames .= '<li>' . $user->getDisplayName() . '</li>';
       }
       return $userNames . '</ul>';
    }
