@@ -92,8 +92,9 @@ class umgt_registration_controller extends umgt_base_controller {
             import('core::logging', 'Logger');
             $l = &Singleton::getInstance('Logger');
             /* @var $l Logger */
-            $l->logEntry('registration', 'Registration cannot add initial groups due to the following exception: ' . $e
-               . ' This may be ok, in case you have no initial groups and/or roles specified.', 'WARN');
+            $l->logEntry('registration', 'Registration cannot add initial groups or roles due to the following '
+               . 'exception: ' . $e . ' This may be ok, in case you have no initial groups and/or roles specified.',
+               'INFO');
          }
 
          try {
