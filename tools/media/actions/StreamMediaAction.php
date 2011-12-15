@@ -87,8 +87,8 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
     */
    private function getSanitizedNamespace() {
       $namespace = str_replace('_', '/', // resolve url notation for namespaces
-                               preg_replace('/[^A-Za-z0-9\-_\.]/', '',
-                                            $this->getInput()->getAttribute('namespace'))
+         preg_replace('/[^A-Za-z0-9\-_\.]/', '',
+            $this->getInput()->getAttribute('namespace'))
 
       );
 
@@ -198,8 +198,8 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
       }
 
       $extensions = array();
-      foreach ($config->getValueNames() as $name) {
-         $extensions[$name] = $config->getValue($name);
+      foreach ($section->getValueNames() as $name) {
+         $extensions[$name] = $section->getValue($name);
       }
 
       return $extensions;
