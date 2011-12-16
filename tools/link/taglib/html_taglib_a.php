@@ -75,9 +75,7 @@ class html_taglib_a extends html_taglib_link {
       if (!isset($this->attributeList['href'])) {
          return '';
       }
-      if (substr_count($_SERVER['REQUEST_URI'], $this->attributeList['href']) > 0
-          || substr_count($this->attributeList['href'], $_SERVER['REQUEST_URI']) > 0
-      ) {
+      if (substr_count(Registry::retrieve('apf::core', 'CurrentRequestURL'), $this->attributeList['href']) > 0) {
          $this->attributeList['class'] = $this->attributeList['class'] . ' active';
       }
       foreach ($this->attributeList as $key => $elem) {
