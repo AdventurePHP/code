@@ -1,0 +1,121 @@
+
+I. CONTENT
+    II. .....Introduction
+    III. ....Get PEAR
+    IV. .....Get PHPUnit via PEAR
+    V. ......Alternative: GIT
+    VI. ......Rename distributional files
+    VII. .....Explanation and first steps
+    VIII. ....Custom Unittests
+
+
+
+II. INTRODUCTION
+The content of this file explains the usage of unittests for the adventure-php-
+framework with PHPUnit. PHPUnit is a framework to build unittests and run them
+automatically from the commandline. Single tests up to whole test suites (a bunch 
+of tests, organized through a configuration file) are possible and will improve
+the stability and maintainability of every application. It is a fundamentally
+part of a continues development, to run existing tests more then once to check if
+changes had influence on parts of the system you did not thought of. There is a
+lot more you can to with PHPUnit, but that's the core function.
+
+The preparation steps are to get the pear library if you do not have it already
+and get phpunit (if you do not have it already either).
+When this is done, go to step 5.
+
+
+
+III. GET PEAR
+See also:
+http://pear.php.net/
+http://pear.php.net/manual/en/installation.php
+
+
+
+IV. GET PHPUNIT VIA PEAR
+
+See also:
+http://www.phpunit.de/manual/3.6/en/installation.html
+
+Commands:
+
+Required:
+pear config-set auto_discover 1
+pear install pear.phpunit.de/File_Iterator
+pear install pear.phpunit.de/Text_Template
+pear install pear.phpunit.de/PHP_CodeCoverage
+pear install pear.phpunit.de/PHP_Timer
+pear install pear.phpunit.de/PHPUnit_MockObject
+pear install pear.phpunit.de/PHPUnit
+
+Optional:
+pear install phpunit/DbUnit
+pear install phpunit/PHPUnit_Selenium
+pear install phpunit/PHPUnit_Story
+pear install phpunit/PHPUnit_TestListener_DBUS
+pear install phpunit/PHPUnit_TestListener_XHProf
+pear install phpunit/PHPUnit_TicketListener_Fogbugz
+pear install phpunit/PHPUnit_TicketListener_GitHub
+pear install phpunit/PHPUnit_TicketListener_GoogleCode
+pear install phpunit/PHPUnit_TicketListener_Trac
+pear install phpunit/PHP_Invoker
+
+
+
+V. ALTERNATIVE: GIT
+
+See also:
+https://github.com/sebastianbergmann/phpunit/blob/master/README.markdown
+
+Commands:
+
+mkdir phpunit && cd phpunit
+git clone git://github.com/sebastianbergmann/phpunit.git
+git clone git://github.com/sebastianbergmann/dbunit.git
+git clone git://github.com/sebastianbergmann/php-file-iterator.git
+git clone git://github.com/sebastianbergmann/php-text-template.git
+git clone git://github.com/sebastianbergmann/php-code-coverage.git
+git clone git://github.com/sebastianbergmann/php-token-stream.git
+git clone git://github.com/sebastianbergmann/php-timer.git
+git clone git://github.com/sebastianbergmann/phpunit-mock-objects.git
+git clone git://github.com/sebastianbergmann/phpunit-selenium.git
+git clone git://github.com/sebastianbergmann/phpunit-story.git
+git clone git://github.com/sebastianbergmann/php-invoker.git
+
+
+
+VI. RENAME DISTRIBUTIONAL FILES
+
+In the directory "tests"
+- Rename "phpunit.dist.xml" to "phpunit.xml"
+- Rename "phpunit.dist" to "phpunit"
+
+
+
+VII. EXPLANATION AND FIRST STEPS
+
+The file "phpunit" is the script to call on commandline to invoke the phpunit 
+test application. Before you can use it correctly, you need to open the file and
+change the fist constant called PHPUNIT_INCLUDE_PATH, which has the path to the
+shared pear library. On Windows based systems you may change the second constant
+PHP_BIN_FILENAME to "php.exe".
+
+After this change (and saving the file of course) you change in the directory 
+"{dirroot}/branches/php5/1.15/tests" may call the script from the commandline 
+with the following command:
+
+../branches/php5/1.15/tests$ php phpunit
+
+The script automatically checks for the default configuration file called
+"phpunit.xml" which we have already existing in the current directory.
+
+So if everything works correctly the script should call the described test 
+suites from the configuration file.
+
+
+
+VIII. CUSTOM UNITTESTS
+
+If you want to run you own tests or extend the existing, all you have to do is
+adding it to the configuration file, and of course write the test.

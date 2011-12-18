@@ -1,0 +1,51 @@
+#!/usr/bin/php
+<?php
+/**
+ * <!--
+ * This file is part of the adventure php framework (APF) published under
+ * http://adventure-php-framework.org.
+ *
+ * The APF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The APF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ * -->
+ */
+
+const PHPUNIT_INCLUDE_PATH = '{/path/to/shared/pear/library/}';
+const PHP_BIN_FILENAME = 'php';
+
+//
+// --- Prepare include path
+//
+$sDirName = dirname( __FILE__ );
+$sDir = substr(
+        $sDirName,
+        0, 
+        strrpos($sDirName,DIRECTORY_SEPARATOR) ) . DIRECTORY_SEPARATOR;
+$sPath = $sDir . PATH_SEPARATOR .
+         $sDir . DIRECTORY_SEPARATOR . 'tests' . PATH_SEPARATOR .
+         PHPUNIT_INCLUDE_PATH;
+set_include_path( $sPath . PATH_SEPARATOR . get_include_path());
+
+
+
+//
+// --- Start phpunit application
+//
+if (strpos(PHP_BINDIR . PHP_BIN_FILENAME, '@php_bin') === 0) {
+    set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
+}
+
+require 'PHPUnit/Autoload.php';
+
+PHPUnit_TextUI_Command::main();
+?>
