@@ -74,10 +74,22 @@ class html_taglib_a extends html_taglib_link {
       // if the current link is active, this taglib adds the css class active.
       if (!isset($this->attributeList['href'])) {
          return '';
+      }      
+      $qs = (isset($_SERVER['QUERY_STRING'])) ? $_SERVER['QUERY_STRING'] : '';
+      $href = strstr($this->attributeList['href'], '#', true);
+      if(!$href) {
+          $href = $this->attributeList['href'];
       }
-      if (substr_count($this->attributeList['href'], Registry::retrieve('apf::core', 'CurrentRequestURL')) > 0) {
-         $this->attributeList['class'] = $this->attributeList['class'] . ' active';
+      if($qs !== '') {
+         if (substr_count($href, $qs) > 0) {
+             $this->attributeList['class'] = $this->attributeList['class'] . ' active';
+         } 
       }
+      elseif(substr($href, -1) === '/') {
+           $this->attributeList['class'] = $this->attributeList['class'] . ' active';
+      }
+      
+      
       foreach ($this->attributeList as $key => $elem) {
          if ($elem === null) {
             unset($this->attributeList[$key]);
