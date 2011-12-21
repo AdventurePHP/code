@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -29,17 +29,16 @@
  * Version 0.1, 17.12.2011<br />
  */
 $_SERVER['SERVER_PORT'] = '80';
-$_SERVER['HTTP_HOST']   = 'localhost';
+$_SERVER['HTTP_HOST'] = 'localhost';
 $_SERVER['REQUEST_URI'] = '';
-define( 'UnittestDir' , dirname( __FILE__ ) );
+define('UnittestDir', dirname(__FILE__));
 date_default_timezone_set('Europe/Berlin');
-
 
 
 //
 // --- Loading first ressources
 //
-require_once( 'core/pagecontroller/pagecontroller.php');
-require_once 'PHPUnit/Framework/Assert/Functions.php';
+require_once('../core/pagecontroller/pagecontroller.php');
+require_once('PHPUnit/Framework/Assert/Functions.php');
 
 ?>

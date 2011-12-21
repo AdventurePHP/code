@@ -47,28 +47,32 @@
          verbose="true"
          strict="true">
 
-   <testsuites>
+    <testsuites>
 
-      <testsuite name="AdventurePHPFramework - Core">
-        <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">suites/core</directory>
-      </testsuite>
+        <testsuite name="AdventurePHPFramework - Core">
+            <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">suites/core</directory>
+        </testsuite>
 
-      <testsuite name="AdventurePHPFramework - Tools">
-      </testsuite>
+        <testsuite name="AdventurePHPFramework - Tools">
+            <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">suites/tools</directory>
+        </testsuite>
 
-   </testsuites>
+    </testsuites>
 
-<!--
-   <php>
-      <const name="MYSQL_BIN" value="{/path/to/mysql/bin}"/>
-      <const name="DATABASE_NAME" value="{database-name}"/>
-      <const name="DATABASE_USER" value="{database-user}"/>
-      <const name="DATABASE_PW" value="{database-password}"/>
-      <const name="DATABASE_HOST" value="{database-host}" />
-      <const name="DATABASE_FILE_SCHEME" value="{/path/to/database/scheme/file}" />
-      <const name="DATABASE_FILE_MIGRATION" value="{/path/to/database/migration/file}" />
-   </php>
--->
+    <!--
+       <php>
+          <const name="MYSQL_BIN" value="{/path/to/mysql/bin}"/>
+          <const name="DATABASE_NAME" value="{database-name}"/>
+          <const name="DATABASE_USER" value="{database-user}"/>
+          <const name="DATABASE_PW" value="{database-password}"/>
+          <const name="DATABASE_HOST" value="{database-host}" />
+          <const name="DATABASE_FILE_SCHEME" value="{/path/to/database/scheme/file}" />
+          <const name="DATABASE_FILE_MIGRATION" value="{/path/to/database/migration/file}" />
+       </php>
+    -->
 
 </phpunit>
+
+
+
 
