@@ -285,7 +285,7 @@ final class Url {
       $parts = @parse_url($url);
       if ($parts === false || !is_array($parts)) {
          throw new UrlFormatException('The given url "' . $url
-                                      . '" cannot be parsed due to semantical errors!');
+               . '" cannot be parsed due to semantic errors!');
       }
 
       // resolve missing parameters
@@ -600,6 +600,23 @@ abstract class BasicLinkScheme {
    /**
     * @protected
     *
+    * Retrieves the current action stack from the front controller.
+    *
+    * @return AbstractFrontcontrollerAction[] The list of registered actions.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.12.2011<br />
+    */
+   protected function &getFrontcontrollerActions() {
+      $fC = &Singleton::getInstance('Frontcontroller');
+      /* @var $fC Frontcontroller */
+      return $fC->getActions();
+   }
+
+   /**
+    * @protected
+    *
     * Creates a url sub-string that contains all action's encoded information that
     * have the <em>keepInUrl</em> flag set to true.
     *
@@ -612,9 +629,8 @@ abstract class BasicLinkScheme {
     */
    protected function getActionsUrlRepresentation($urlRewriting) {
 
-      $fC = &Singleton::getInstance('Frontcontroller');
-      /* @var $fC Frontcontroller */
-      $actions = &$fC->getActions();
+      // retrieve actions from internal method (to enable testing)
+      $actions = &$this->getFrontcontrollerActions();
 
       $actionUrlRepresentation = array();
       foreach ($actions as $action) {

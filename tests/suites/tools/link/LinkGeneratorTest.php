@@ -23,6 +23,81 @@ import('core::frontcontroller', 'Frontcontroller');
 
 /**
  * @package tests::suites::tools::link
+ * @class TestFrontControllerAction
+ *
+ * Implements a dummy front controller action to enable testing the link scheme.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 29.12.2011<br />
+ */
+class TestFrontControllerAction extends AbstractFrontcontrollerAction {
+   public function run() {
+   }
+}
+
+/**
+ * @package tests::suites::tools::link
+ * @class TestableDefaultLinkScheme
+ *
+ * Implements a testable link scheme regarding front controller link
+ * generation capabilities.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 29.12.2011<br />
+ */
+class TestableDefaultLinkScheme extends DefaultLinkScheme {
+   protected function &getFrontcontrollerActions() {
+
+      $actions = array();
+      $action = new TestFrontControllerAction();
+      $action->setActionNamespace('cms::core::biz::setmodel');
+      $action->setActionName('setModel');
+      $action->setKeepInUrl(true); // to test action inclusion
+
+      $input = new FrontcontrollerInput();
+      $input->setAttribute('page.config.section', 'external');
+      $action->setInput($input);
+
+      $actions[] = $action;
+
+      return $actions;
+   }
+}
+
+/**
+ * @package tests::suites::tools::link
+ * @class TestableRewriteLinkScheme
+ *
+ * Implements a testable link scheme regarding front controller link
+ * generation capabilities.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 29.12.2011<br />
+ */
+class TestableRewriteLinkScheme extends RewriteLinkScheme {
+   protected function &getFrontcontrollerActions() {
+
+      $actions = array();
+      $action = new TestFrontControllerAction();
+      $action->setActionNamespace('cms::core::biz::setmodel');
+      $action->setActionName('setModel');
+      $action->setKeepInUrl(true); // to test action inclusion
+
+      $input = new FrontcontrollerInput();
+      $input->setAttribute('page.config.section', 'external');
+      $action->setInput($input);
+
+      $actions[] = $action;
+
+      return $actions;
+   }
+}
+
+/**
+ * @package tests::suites::tools::link
  * @class LinkGeneratorTest
  *
  * Implements tests for the link generator and the url abstraction.
@@ -57,17 +132,19 @@ class LinkGeneratorTest extends PHPUnit_Framework_TestCase {
       assertEquals($paramValue, $url->getQueryParameter($paramName));
    }
 
-   /* TODO create mock for front controller action stack + configuration for testing ... */
-   public function __testFrontcontrollerUrlGeneration() {
-      $fC = &Singleton::getInstance('Frontcontroller');
-      /* @var $fC Frontcontroller */
-      $fC->setContext('test');
-      $fC->registerAction('cms::core::biz::setmodel', 'setModel', array('page.config.section' => 'external'));
+   public function testFrontcontrollerUrlGeneration() {
+      $url = Url::fromString('')->setHost('localhost')->setScheme('http');
+      $link = LinkGenerator::generateUrl(
+         $url->mergeQuery(array('foo' => 'bar', 'blubber' => null)),
+         new TestableDefaultLinkScheme()
+      );
+      assertEquals('http://localhost?foo=bar&amp;cms_core_biz_setmodel-action:setModel=page.config.section:external', $link);
 
-      $url = Url::fromString($_SERVER['REQUEST_URI']);
-      $url->setHost('localhost');
-      $url->setScheme('http');
-      echo LinkGenerator::generateUrl($url->mergeQuery(array('foo' => 'bar', 'baz' => '4', 'blubber' => null)));
+      $link = LinkGenerator::generateUrl(
+         $url->mergeQuery(array('foo' => 'bar', 'blubber' => null)),
+         new TestableRewriteLinkScheme()
+      );
+      assertEquals('http://localhost/foo/bar/~/cms_core_biz_setmodel-action/setModel/page.config.section/external', $link);
    }
 
    public function testConstructorPlusFluentConfiguration() {
