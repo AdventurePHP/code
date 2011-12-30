@@ -47,7 +47,7 @@ class html_taglib_a extends html_taglib_link {
          $attr = $this->getAttribute($key, null);
          if ($attr != null) {
             $this->attributeList[$key] = $attr;
-            $this->deleteAttribute($attr);
+            $this->deleteAttribute($key);
          }
       }
 
