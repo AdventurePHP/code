@@ -62,7 +62,7 @@ class FilesystemManager {
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.11.2008<br />
-    * Version 0.2, 24.11.2008 (Bugfix: recursion on windows systems broken due to directory seperator problems)<br />
+    * Version 0.2, 24.11.2008 (Bugfix: recursion on windows systems broken due to directory separator problems)<br />
     */
    public static function deleteFolder($folder, $recursive = false) {
 
@@ -76,15 +76,18 @@ class FilesystemManager {
       // grab content of current dir
       $dirContent = glob(realpath($folder) . '/*');
 
-      foreach ($dirContent as $file) {
-         $file = str_replace('\\', '/', $file);
-         if (is_dir($file)) {
-            FilesystemManager::deleteFolder($file, true);
-         } else {
-            FilesystemManager::removeFile($file);
-         }
+      // Bug 941: empty directories led to an error since glob() returns false in this case.
+      if (is_array($dirContent)) {
+         foreach ($dirContent as $file) {
+            $file = str_replace('\\', '/', $file);
+            if (is_dir($file) && $recursive) {
+               FilesystemManager::deleteFolder($file, true);
+            } else {
+               FilesystemManager::removeFile($file);
+            }
 
-         clearstatcache();
+            clearstatcache();
+         }
       }
 
       rmdir($folder);
@@ -168,7 +171,7 @@ class FilesystemManager {
       $target = str_replace('\\', '/', $targetFile);
       if (!file_exists($source)) {
          throw new FileException('[FilesystemManager::copyFile()] The source file "'
-                                 . $sourceFile . '" does not exist!', E_USER_NOTICE);
+               . $sourceFile . '" does not exist!', E_USER_NOTICE);
       }
 
       // copy source to target
@@ -207,7 +210,7 @@ class FilesystemManager {
       $realFile = str_replace('\\', '/', realpath($file));
       if (!file_exists($realFile)) {
          throw new FileException('[FilesystemManager::removeFile()] The file "' . $file
-                                 . '" does not exist!', E_USER_NOTICE);
+               . '" does not exist!', E_USER_NOTICE);
       }
 
       return unlink($realFile);
@@ -283,7 +286,7 @@ class FilesystemManager {
       $target = str_replace('\\', '/', $targetFile);
       if (!file_exists($source)) {
          throw new FileException('[FilesystemManager::renameFile()] The source file "'
-                                 . $sourceFile . '" does not exist!', E_USER_NOTICE);
+               . $sourceFile . '" does not exist!', E_USER_NOTICE);
       }
 
       // copy source to target
@@ -376,7 +379,7 @@ class FilesystemManager {
       $realFile = str_replace('\\', '/', realpath($file));
       if (!file_exists($realFile)) {
          throw new FileException('[FilesystemManager::getFileAttributes()] The given file ("'
-                                 . $file . '") does not exist!', E_USER_WARNING);
+               . $file . '") does not exist!', E_USER_WARNING);
       }
 
       // gather attributes
@@ -397,8 +400,8 @@ class FilesystemManager {
             return $attributes[$attributeName];
          } else {
             throw new FileException('[FilesytemManager::getFileAttributes()] The desired file '
-                                    . 'attribute ("' . $attributes . '") is not a valid attribute. Please consult the '
-                                    . ' API documentation!', E_USER_ERROR);
+                  . 'attribute ("' . $attributes . '") is not a valid attribute. Please consult the '
+                  . ' API documentation!', E_USER_ERROR);
          }
       }
 
@@ -427,7 +430,7 @@ class FilesystemManager {
       $realFolder = str_replace('\\', '/', realpath($folder));
       if (!file_exists($realFolder)) {
          throw new FileException('[FilesystemManager::getFolderSize()] The given folder ("'
-                                 . $folder . '") does not exist!', E_USER_ERROR);
+               . $folder . '") does not exist!', E_USER_ERROR);
       }
 
       // get content of the desired folder
