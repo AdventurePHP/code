@@ -19,6 +19,8 @@
  * -->
  */
 import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
+import('tools::request', 'RequestHandler');
+import('tools::http', 'HeaderManager');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::role

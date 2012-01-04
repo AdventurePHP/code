@@ -49,6 +49,12 @@ class umgt_group_details_controller extends umgt_base_controller {
       $usersIterator->fillDataContainer($users);
       $usersIterator->transformOnPlace();
 
+      // display roles
+      $roles = $uM->loadRolesWithGroup($group);
+      $iteratorRoles = &$this->getIterator('Roles');
+      $iteratorRoles->fillDataContainer($roles);
+      $iteratorRoles->transformOnPlace();
+
    }
 
 }

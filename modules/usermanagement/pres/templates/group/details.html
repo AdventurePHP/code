@@ -21,3 +21,16 @@
    </iterator:item>
    </ul>
 </html:iterator>
+
+<h4>Roles</h4>
+<html:iterator name="Roles">
+   <ul>
+   <iterator:item>
+      <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+      <li>
+         <umgt:media filename="role.png" title="Role" />
+         <item:placeholder getter="getDisplayName"/>
+      </li>
+   </iterator:item>
+   </ul>
+</html:iterator>
