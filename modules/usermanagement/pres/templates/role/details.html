@@ -10,9 +10,13 @@
 <h4>Assigned permissions</h4>
 <html:iterator name="Permissions">
    <ul>
-      <iterator:item getter="getProperty">
-         <li><item:placeholder name="DisplayName" />
-            (<em><item:placeholder name="Name" />=<item:placeholder name="Value" /></em>)</li>
+      <iterator:item>
+         <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+         <li>
+            <umgt:media filename="permission.png" title="Permission" />
+            <item:placeholder getter="getDisplayName" />
+            (<em><item:placeholder getter="getName" />=<item:placeholder getter="getValue" /></em>)
+         </li>
       </iterator:item>
    </ul>
 </html:iterator>
@@ -20,8 +24,12 @@
 <h4>Assigned users</h4>
 <html:iterator name="Users">
    <ul>
-      <iterator:item getter="getProperty">
-         <li><item:placeholder name="FirstName" />, <item:placeholder name="LastName" /></li>
+      <iterator:item>
+         <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+         <li>
+            <umgt:media filename="user.png" title="User" />
+            <item:placeholder getter="getFirstName" />, <item:placeholder getter="getLastName" />
+         </li>
       </iterator:item>
    </ul>
 </html:iterator>
@@ -30,7 +38,11 @@
 <html:iterator name="Groups">
    <ul>
       <iterator:item>
-         <li><item:placeholder getter="getDisplayName" /></li>
+         <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+         <li>
+            <umgt:media filename="group.png" title="Group" />
+            <item:placeholder getter="getDisplayName" />
+         </li>
       </iterator:item>
    </ul>
 </html:iterator>
