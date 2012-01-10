@@ -75,7 +75,7 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       }
 
       throw new ConfigurationException('[IniConfigurationProvider::loadConfiguration()] '
-                                       . 'Configuration with namepace "' . $namespace . '", context "' . $context . '", '
+                                       . 'Configuration with namespace "' . $namespace . '", context "' . $context . '", '
                                        . ' language "' . $language . '", environment "' . $environment . '", and name '
                                        . '"' . $name . '" cannot be loaded (file name: ' . $fileName . ')!', E_USER_ERROR);
 
@@ -241,7 +241,7 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
 
       return $buffer;
    }
-   
+
    public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);

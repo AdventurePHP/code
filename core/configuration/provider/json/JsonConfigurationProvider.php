@@ -65,7 +65,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
         }
 
         throw new ConfigurationException('[JsonConfigurationProvider::loadConfiguration()] '
-                . 'Configuration with namepace "' . $namespace . '", context "' . $context . '", '
+                . 'Configuration with namespace "' . $namespace . '", context "' . $context . '", '
                 . ' language "' . $language . '", environment "' . $environment . '", and name '
                 . '"' . $name . '" cannot be loaded (file name: ' . $fileName . ')!', E_USER_ERROR);
     }
@@ -101,7 +101,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
 
     /**
      * @private
-     * 
+     *
      * Mapps a section into the configuration representation.
      *
      * @param array $section The parsed JSON array representing a section.

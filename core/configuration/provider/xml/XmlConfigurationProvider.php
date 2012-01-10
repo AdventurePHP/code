@@ -74,7 +74,7 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
         }
 
         throw new ConfigurationException('[XmlConfigurationProvider::loadConfiguration()] '
-                . 'Configuration with namepace "' . $namespace . '", context "' . $context . '", '
+                . 'Configuration with namespace "' . $namespace . '", context "' . $context . '", '
                 . ' language "' . $language . '", environment "' . $environment . '", and name '
                 . '"' . $name . '" cannot be loaded (file name: ' . $fileName . ')!', E_USER_ERROR);
     }
