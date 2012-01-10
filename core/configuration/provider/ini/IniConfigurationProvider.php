@@ -189,7 +189,7 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       }
    }
 
-   private function processSection(IniConfiguration $section) {
+   private function processSection(Configuration $section) {
 
       $buffer = '';
 
@@ -217,7 +217,7 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       return $buffer;
    }
 
-   private function generateComplexConfigValue(IniConfiguration $config, $currentName) {
+   private function generateComplexConfigValue(Configuration $config, $currentName) {
 
       $buffer = '';
 
