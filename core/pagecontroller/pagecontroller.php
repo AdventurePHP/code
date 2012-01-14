@@ -91,14 +91,14 @@ Registry::register('apf::core', 'LogDir', str_replace('\\', '/', getcwd()) . '/l
 Registry::register('apf::core', 'LibPath', APPS__PATH, true);
 Registry::register('apf::core', 'Charset', 'UTF-8');
 
-// define current request url entry (check if the indices exist is importand for cli-usage, because there they are neither available nor helpful)
+// define current request url entry (check if the indices exist is important for cli-usage, because there they are neither available nor helpful)
 if (isset($_SERVER['SERVER_PORT']) && isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
    $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
    Registry::register('apf::core', 'URLBasePath', $protocol . $_SERVER['HTTP_HOST']);
    Registry::register('apf::core', 'CurrentRequestURL', $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], true);
 }
 
-// include necessary core libraries for the pagecontroller
+// include necessary core libraries for the page controller
 import('core::errorhandler', 'errorhandler');
 import('core::exceptionhandler', 'exceptionhandler');
 import('core::service', 'ServiceManager');
@@ -305,7 +305,7 @@ final class XmlParser {
          // check, if explicitly-closing tag exists
          if (strpos($tagString, '</' . $prefix . ':' . $class . '>') === false) {
             throw new ParserException('[XmlParser::getTagAttributes()] No closing tag found for '
-                                      . 'tag "<' . $prefix . ':' . $class . ' />"! Tag string: "' . $tagString . '".',
+                     . 'tag "<' . $prefix . ':' . $class . ' />"! Tag string: "' . $tagString . '".',
                E_USER_ERROR);
          } else {
 
@@ -385,7 +385,7 @@ final class XmlParser {
          // limit parse loop count to avoid enless while loops
          if ($parserLoops == $parserMaxLoops) {
             throw new ParserException('[XmlParser::getAttributesFromString()] Error while parsing: "'
-                                      . $attributesString . '". Maximum number of loops exceeded!', E_USER_ERROR);
+                  . $attributesString . '". Maximum number of loops exceeded!', E_USER_ERROR);
          }
 
          // find attribute
@@ -1042,10 +1042,14 @@ class Document extends APFObject {
       $this->setObjectId(XmlParser::generateUniqID());
 
       // add the known taglibs (core taglibs!)
-      $this->addTagLib(new TagLib('core::pagecontroller', 'core', 'addtaglib'));
-      $this->addTagLib(new TagLib('core::pagecontroller', 'core', 'importdesign'));
-      $this->addTagLib(new TagLib('core::pagecontroller', 'html', 'template'));
-      $this->addTagLib(new TagLib('core::pagecontroller', 'html', 'placeholder'));
+      // we are *not* using the addTaglib() method, because the following tags are
+      // already included in the pagecontroller.php and adding the tags directly
+      // is twice as fast compared to the addTagLib() method.
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core', 'importdesign');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core', 'appendnode');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'template');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'placeholder');
    }
 
    /**
@@ -1151,6 +1155,41 @@ class Document extends APFObject {
     */
    public function &getChildren() {
       return $this->__Children;
+   }
+
+   /**
+    * @protected
+    *
+    * Let's you retrieve a child node of the current document by specifying a selector
+    * (attribute name and attribute value) and the expected node type (name of the taglib
+    * class).
+    *
+    * @param string $attributeName The name of the attribute to match against the given value.
+    * @param string $value The value of the attribute to select the desired node.
+    * @param string $tagLibClass The expected class name of the node.
+    * @return Document The desired child node.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.12.2012<br />
+    */
+   protected function &getChildNode($attributeName, $value, $tagLibClass) {
+      $children = &$this->getChildren();
+      if (count($children) > 0) {
+         foreach ($children as $objectID => $DUMMY) {
+            if ($children[$objectID] instanceof $tagLibClass) {
+               if ($children[$objectID]->getAttribute($attributeName) == $value) {
+                  return $children[$objectID];
+               }
+            }
+         }
+      } else {
+         throw new InvalidArgumentException('[' . get_class($this) . '::getChildNode()] Current node has no children!',
+            E_USER_ERROR);
+      }
+      throw new InvalidArgumentException('[' . get_class($this) . '::getChildNode()] No child node with type "'
+            . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
+            . 'document!', E_USER_ERROR);
    }
 
    /**
@@ -1299,6 +1338,7 @@ class Document extends APFObject {
       $i = 0;
 
       $t = &Singleton::getInstance('BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
 
       // Parse the known taglibs. Here, we have to use a while loop, because one parser loop
       // can result in an increasing amount of known taglibs (core:addtaglib!).
@@ -1306,7 +1346,7 @@ class Document extends APFObject {
 
          if ($tagLibLoops > $this->maxLoops) {
             throw new ParserException('[Document::__extractTagLibTags()] Maximum numbers of '
-                                      . 'parsing loops reached!', E_USER_ERROR);
+                  . 'parsing loops reached!', E_USER_ERROR);
          }
 
          $prefix = $this->__TagLibs[$i]->getPrefix();
@@ -1335,7 +1375,7 @@ class Document extends APFObject {
 
                if ($tagEndPos === false) {
                   throw new ParserException('[' . get_class($this) . '::__extractTagLibTags()] No closing tag '
-                                            . 'found for tag "<' . $token . ' />"!', E_USER_ERROR);
+                        . 'found for tag "<' . $token . ' />"!', E_USER_ERROR);
                }
             }
 
@@ -1391,7 +1431,7 @@ class Document extends APFObject {
 
             // call onParseTime() to enable the taglib to initialize itself
             $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::__Children[('
-                       . get_class($object) . ') ' . $objectId . ']::onParseTime()';
+                  . get_class($object) . ') ' . $objectId . ']::onParseTime()';
             $t->start($benchId);
             $object->onParseTime();
             $t->stop($benchId);
@@ -1450,9 +1490,9 @@ class Document extends APFObject {
          // check for class definition
          if (!isset($controllerAttributes['class'])) {
             throw new ParserException('[Document::__extractDocumentController()] Document controller '
-                                      . 'specification does not contain a valid controller class definition. '
-                                      . 'Please double check the template code and consult the documentation. '
-                                      . 'Template code: ' . $this->getContent());
+                  . 'specification does not contain a valid controller class definition. '
+                  . 'Please double check the template code and consult the documentation. '
+                  . 'Template code: ' . $this->getContent());
          }
 
          // Lazily import document controller class.
@@ -1514,6 +1554,7 @@ class Document extends APFObject {
    public function transform() {
 
       $t = &Singleton::getInstance('BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
       $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
 
       // create copy, to preserve it!
@@ -1568,6 +1609,162 @@ class Document extends APFObject {
       $t->stop('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
 
       return $content;
+   }
+
+}
+
+/**
+ * @package core::pagecontroller
+ * @class core_taglib_appendnode
+ *
+ * Parses a template and appends the child nodes to the parent's child list. Hence, this taglib
+ * can be used to swap shared templates / forms / ... Please make sure, that the imported template
+ * includes the necessary "*:addtaglib" statements for the relevant tag definitions.
+ * <p/>
+ * Usage:
+ * <pre>&lt;core:addtaglib namespace="core::pagecontroller" prefix="core" class="appendnode" /&gt;
+ * &lt;core:appendnode namespace="..." template="..."[ includestatic="true"]/&gt;</pre>
+ * <p/>
+ * In case the <em>includestatic</em> is present and set to <em>true</em>, the static content
+ * (e.g. html markup) is included in the parent's content, too.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 16.11.2008<br />
+ */
+class core_taglib_appendnode extends Document {
+
+   /**
+    * @var string Indicates, whether the static content of an included templates
+    * should be appended to the target template (<em>true</em>) or not (<em>false</em>).
+    */
+   protected static $INCLUDE_STATIC_CONTENT_ATTRIBUTE_NAME = 'includestatic';
+
+   /**
+    * @public
+    *
+    *  Initializes the known taglib list.
+    *
+    * @author Christian Achatz
+    * @version
+    *  Version 0.1, 16.11.2008<br />
+    */
+   public function __construct() {
+      parent::__construct();
+   }
+
+   /**
+    * @public
+    *
+    * Load the content and parse the template.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 16.11.2008<br />
+    */
+   public function onParseTime() {
+
+      // check attributes
+      $namespace = $this->getAttribute('namespace');
+      if ($namespace === null) {
+         throw new InvalidArgumentException('[core_taglib_appendnode::onParseTime()] Attribute '
+               . '"namespace" is not present or empty! Please provide the namespace of the '
+               . 'desired template.', E_USER_ERROR);
+      }
+
+      $template = $this->getAttribute('template');
+      if ($template === null) {
+         throw new InvalidArgumentException('[core_taglib_appendnode::onParseTime()] Attribute '
+               . '"template" is not present or empty! Please provide the name of the desired '
+               . 'template.', E_USER_ERROR);
+      }
+
+      // load the content
+      $this->__loadContentFromFile($namespace, $template);
+
+      // parse known tags
+      $this->__extractTagLibTags();
+
+   }
+
+   /**
+    * @public
+    *
+    * Appends the node's children to the parent node.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 16.11.2008<br />
+    * Version 0.2, 16.11.2008 (Bugfix: added a parent object reference correction for the new nodes)<br />
+    * Version 0.3, 16.11.2008 (Enhancement: added a tag marker to the parent object to enable the transformOnPlace() feature)<br />
+    * Version 0.4, 22.02.2010 (Added possibility to include static content)<br />
+    */
+   public function onAfterAppend() {
+
+      // get parent children list
+      $parentChildren = &$this->__ParentObject->getChildren();
+      $parentContent = $this->__ParentObject->getContent();
+      $currentObjectId = $this->__ObjectID;
+
+      // include static content, if desired.
+      // code duplication is done to speed up the DOM node relocation!
+      $includeStatic = $this->getAttribute(self::$INCLUDE_STATIC_CONTENT_ATTRIBUTE_NAME);
+      if ($includeStatic === 'true') {
+
+         foreach ($this->__Children as $objectId => $DUMMY) {
+
+            // append node to parent object's children list
+            $parentChildren[$objectId] = &$this->__Children[$objectId];
+
+            // correct the parent object reference
+            $parentChildren[$objectId]->setParentObject($this->__ParentObject);
+
+         }
+
+         // include complete content of the current document and append it to
+         // the place holder of the present tag's marker
+         $this->__ParentObject->setContent(
+            str_replace('<' . $currentObjectId . ' />',
+                  '<' . $currentObjectId . ' />' . $this->__Content,
+               $parentContent)
+         );
+
+      } else {
+
+         foreach ($this->__Children as $objectId => $DUMMY) {
+
+            // append node to parent object's children list
+            $parentChildren[$objectId] = &$this->__Children[$objectId];
+
+            // correct the parent object reference
+            $parentChildren[$objectId]->setParentObject($this->__ParentObject);
+
+            // add a marker tag to the parent object after the tag's marker
+            $parentContent = str_replace('<' . $currentObjectId . ' />', '<' . $currentObjectId . ' /><' . $objectId . ' />', $parentContent);
+            $currentObjectId = $objectId;
+
+         }
+
+         // include content of the current document
+         $this->__ParentObject->setContent($parentContent);
+
+      }
+   }
+
+   /**
+    * @public
+    *
+    * Returns an empty string, due to the fact, that the core:appendnode tag does not have to
+    * create output.
+    *
+    * @return Nothing since the tag generates no output.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 16.11.2008<br />
+    */
+   public function transform() {
+      return '';
    }
 
 }
@@ -1680,6 +1877,10 @@ class core_taglib_importdesign extends Document {
  */
 class core_taglib_addtaglib extends Document {
 
+   public function __construct() {
+      // do nothing, especially not initialize tag libs
+   }
+
    /**
     * @public
     *
@@ -1733,6 +1934,10 @@ class core_taglib_addtaglib extends Document {
  */
 class html_taglib_placeholder extends Document {
 
+   public function __construct() {
+      // do nothing, especially not initialize tag libs
+   }
+
    /**
     * @public
     *
@@ -1775,7 +1980,7 @@ class html_taglib_template extends Document {
    /**
     * @public
     *
-    * Constructor of the class. Inituializes the known taglibs.
+    * Constructor of the class. Initializes the known taglibs.
     *
     * @author Christian Schäfer
     * @version
@@ -1947,6 +2152,10 @@ class html_taglib_template extends Document {
  */
 class template_taglib_placeholder extends Document {
 
+   public function __construct() {
+      // do nothing, especially not initialize tag libs
+   }
+
    /**
     * @public
     *
@@ -2081,14 +2290,14 @@ abstract class base_controller extends Document {
          }
       } else {
          throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No placeholder object with name "'
-                                            . $name . '" composed in current document for document controller "' . get_class($this)
-                                            . '"! Perhaps tag library html:placeholder is not loaded in current template!', E_USER_ERROR);
+               . $name . '" composed in current document for document controller "' . get_class($this)
+               . '"! Perhaps tag library html:placeholder is not loaded in current template!', E_USER_ERROR);
       }
 
       // warn, if no place holder is found
       if ($placeHolderCount < 1) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] There are no placeholders found for name "'
-                                            . $name . '" in document controller "' . get_class($this) . '"!', E_USER_WARNING);
+         throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] There are no place holders '
+               . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_WARNING);
       }
    }
 
@@ -2106,7 +2315,7 @@ abstract class base_controller extends Document {
     *    'key-e' => 'value-e',
     * )
     * </code>
-    * Thereby, the <em>key-*</em> offsets define the name of the place holders, theire
+    * Thereby, the <em>key-*</em> offsets define the name of the place holders, their
     * values are used as the place holder's values.
     *
     * @param array $placeHolderValues Key-value-couples to fill place holders.
@@ -2141,8 +2350,8 @@ abstract class base_controller extends Document {
          $log = &Singleton::getInstance('Logger');
          /* @var $log Logger */
          $log->logEntry('php', 'Place holder with name "' . $name . '" does not exist within the current document '
-                               . 'handled by document controller "' . get_class($this) . '". Please check your setup.',
-                        LogEntry::SEVERITY_WARNING);
+               . 'handled by document controller "' . get_class($this) . '". Please check your setup.',
+            LogEntry::SEVERITY_WARNING);
       }
    }
 
@@ -2179,35 +2388,13 @@ abstract class base_controller extends Document {
     * Version 0.2, 14.06.2008 (Improved error handling.)<br />
     */
    protected function &getForm($formName) {
-
-      $tagLibClass = 'html_taglib_form';
-      if (!class_exists($tagLibClass)) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::getForm()] TagLib "' . $tagLibClass
-                                            . '" is not loaded! Please add the form taglib using the <core:addtaglib /> tag',
-            E_USER_ERROR);
-      }
-
-      $children = &$this->getDocument()->getChildren();
-      if (count($children) > 0) {
-
-         foreach ($children as $objectID => $DUMMY) {
-
-            if (get_class($children[$objectID]) == $tagLibClass) {
-
-               if ($children[$objectID]->getAttribute('name') == $formName) {
-                  return $children[$objectID];
-               }
-            }
-         }
-      } else {
+      try {
+         return $this->getDocument()->getChildNode('name', $formName, 'html_taglib_form');
+      } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getForm()] No form object with name "'
-                                            . $formName . '" composed in current document for document controller "' . get_class($this)
-                                            . '"! Perhaps tag library html:form is not loaded in current document!', E_USER_ERROR);
+               . $formName . '" composed in current document for document controller "' . get_class($this)
+               . '"! Perhaps tag library html:form is not loaded in current document!', E_USER_ERROR, $e);
       }
-
-      throw new InvalidArgumentException('[' . get_class($this) . '::getForm()] Form with name "'
-                                         . $formName . '" cannot be found in document controller "' . get_class($this) . '"!',
-         E_USER_ERROR);
    }
 
    /**
@@ -2227,29 +2414,33 @@ abstract class base_controller extends Document {
     * Version 0.4, 23.04.2009 (Corrected PHP4 style object access)<br />
     */
    protected function &getTemplate($name) {
-
-      $tagLibClass = 'html_taglib_template';
-
-      $children = &$this->getDocument()->getChildren();
-      if (count($children) > 0) {
-
-         foreach ($children as $objectID => $DUMMY) {
-
-            if (get_class($children[$objectID]) == $tagLibClass) {
-
-               if ($children[$objectID]->getAttribute('name') == $name) {
-                  return $children[$objectID];
-               }
-            }
-         }
-      } else {
-         throw new InvalidArgumentException('[' . get_class($this) . '::getTemplate()] No template object with name "'
-                                            . $name . '" composed in current document for document controller "' . get_class($this)
-                                            . '"! Perhaps tag library html:template is not loaded in current template!', E_USER_ERROR);
+      try {
+         return $this->getDocument()->getChildNode('name', $name, 'html_taglib_template');
+      } catch (InvalidArgumentException $e) {
+         throw new InvalidArgumentException('[' . get_class($this) . '::getTemplate()] No template with name "'
+               . $name . '" composed in current document for document controller "' . get_class($this)
+               . '"!', E_USER_ERROR, $e);
       }
+   }
 
-      throw new InvalidArgumentException('[' . get_class($this) . '::getTemplate()] Template with name "'
-                                         . $name . '" cannot be found!', E_USER_ERROR);
+   /**
+    * @protected
+    *
+    * Let's you retrieve an instance of the html_taglib_getstring label instance to
+    * fill a place holder.
+    *
+    * @param string $name The content of the tag's "name" attribute to select the node.
+    * @return html_taglib_getstring The instance of the desired label node.
+    * @throws InvalidArgumentException In case no label node can be found.
+    */
+   protected function &getLabel($name) {
+      try {
+         return $this->getDocument()->getChildNode('name', $name, 'html_taglib_getstring');
+      } catch (InvalidArgumentException $e) {
+         throw new InvalidArgumentException('[' . get_class($this) . '::getLabel()] No template with name "'
+               . $name . '" composed in current document for document controller "' . get_class($this)
+               . '"! Perhaps tag library html:getstring is not loaded in current template!', E_USER_ERROR, $e);
+      }
    }
 
    /**

@@ -47,31 +47,15 @@ abstract class iteratorBaseController extends base_controller {
     * Version 0.1, 02.06.2008<br />
     */
    protected function &getIterator($name) {
-
-      $tagLibClass = 'html_taglib_iterator';
-
-      if (!class_exists($tagLibClass)) {
-         throw new IncludeException('[' . get_class($this) . '::getIterator()] TagLib module "' . $tagLibClass . '" is not loaded!', E_USER_ERROR);
+      try {
+         return $this->getDocument()->getChildNode('name', $name, 'html_taglib_iterator');
+      } catch (InvalidArgumentException $e) {
+         throw new InvalidArgumentException('[' . get_class($this) . '::' . __METHOD__ . '()] No iterator with name "'
+               . $name . '" composed in current document for document controller "' . get_class($this) . '"! '
+               . 'Perhaps tag library html:iterator is not loaded in current template!', E_USER_ERROR, $e);
       }
-
-      $children = &$this->__Document->getChildren();
-      if (count($children) > 0) {
-
-         foreach ($children as $objectId => $DUMMY) {
-
-            // check, whether the desired node is the iterator we want to have
-            if (get_class($children[$objectId]) == $tagLibClass) {
-               if ($children[$objectId]->getAttribute('name') == $name) {
-                  return $children[$objectId];
-               }
-            }
-         }
-      } else {
-         throw new Exception('[' . get_class($this) . '::getIterator()] No iterator object with name "' . $name . '" composed in current document for document controller "' . get_class($this) . '"! Perhaps tag library html:iterator is not loaded in current template!', E_USER_ERROR);
-      }
-
-      throw new Exception('[' . get_class($this) . '::getIterator()] Iterator with name "' . $name . '" cannot be found!', E_USER_ERROR);
    }
 
 }
+
 ?>
