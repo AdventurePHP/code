@@ -2,13 +2,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
    <head>
-      <title>Usermanagement backend</title>
+      <core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
+      <title><html:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.main.title"/></title>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
       <core:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="includecss" />
       <umgt:includecss/>
    </head>
    <body>
-      <h1 class="umgt-header">Usermanagement backend</h1>
+      <h1 class="umgt-header"><html:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.main.title"/></h1>
 
       <core:importdesign namespace="modules::usermanagement::pres::templates" template="menu"/>
 

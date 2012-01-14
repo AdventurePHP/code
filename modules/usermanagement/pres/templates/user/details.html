@@ -2,9 +2,20 @@
    namespace="modules::usermanagement::pres::documentcontroller::user"
    class="umgt_user_details_controller"
 @>
-<h3>Details for user &quot;<html:placeholder name="Username" />&quot;</h3>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
+<h3><html:getstring
+      name="headline"
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.user.details.headline"
+      /></h3>
+
 <core:addtaglib namespace="tools::html::taglib" prefix="html" class="iterator" />
-<h4>User details</h4>
+<h4><html:getstring
+      name="headline"
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.user.details.user-details.label"/></h4>
 <html:template name="User">
    <p>
       <template:placeholder name="FirstName" />, <template:placeholder name="LastName" />
@@ -14,42 +25,87 @@
    </p>
 </html:template>
 
-<h4>Groups</h4>
+<h4><html:getstring
+      name="headline"
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.user.details.groups.label"/></h4>
 <html:iterator name="Groups">
    <ul>
-      <iterator:item getter="getProperty">
+      <iterator:item>
          <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
          <li>
-            <umgt:media filename="group.png" title="Group" />
-            <item:placeholder name="DisplayName" />
+            <umgt:media filename="group.png">
+               <media:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.user.details.group-img.label"
+               />
+            </umgt:media>
+            <item:placeholder getter="getDisplayName" />
          </li>
       </iterator:item>
    </ul>
 </html:iterator>
 
-<h4>Roles</h4>
+<h4><html:getstring
+      name="headline"
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.user.details.roles.label"/></h4>
 <html:iterator name="Roles">
    <ul>
-   <iterator:item getter="getProperty">
+   <iterator:item>
       <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
       <li>
-         <umgt:media filename="role.png" title="Role" />
+         <umgt:media filename="role.png">
+            <media:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.user.details.role-img.label"
+            />
+         </umgt:media>
          <item:placeholder getter="getDisplayName"/>
       </li>
    </iterator:item>
    </ul>
 </html:iterator>
       
-<h4>Objects</h4>
+<h4><html:getstring
+      name="headline"
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.user.details.objects.label"/></h4>
 <html:iterator name="Proxies">
    <ul>
-   <iterator:item getter="getProperty">
+   <iterator:item>
       <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
       <li>
-         <umgt:media filename="visibility_def.png" title="Visibility definition" />
-         App object id: <strong><item:placeholder name="AppObjectId" /></strong>,
-         definition id: <strong><item:placeholder name="AppProxyID" /></strong>,
-         permissions (r/w/l/d): <strong><item:placeholder name="ReadPermission" /></strong>/<strong><item:placeholder name="WritePermission" /></strong>/<strong><item:placeholder name="LinkPermission" /></strong>/<strong><item:placeholder name="DeletePermission" /></strong>
+         <umgt:media filename="visibility_def.png">
+            <media:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.user.details.proxy-img.label"
+            />
+         </umgt:media>
+
+         <item:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.user.details.app-obj-id.label"/>
+         <strong><item:placeholder getter="getAppObjectId" /></strong>
+
+         <item:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.details.proxy-id.label" />
+         <strong><item:placeholder getter="getObjectId" /></strong>
+
+         <item:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.details.permissions.label" />
+         <strong><item:placeholder getter="getReadPermission" /></strong>/<strong><item:placeholder getter="getWritePermission" /></strong>/<strong><item:placeholder getter="getLinkPermission" /></strong>/<strong><item:placeholder getter="getDeletePermission" /></strong>
       </li>
    </iterator:item>
    </ul>

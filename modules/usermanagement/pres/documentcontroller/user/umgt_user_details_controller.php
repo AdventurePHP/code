@@ -41,7 +41,7 @@ class umgt_user_details_controller extends umgt_base_controller {
       $user = $uM->loadUserByID($userId);
 
       // display user data
-      $this->setPlaceHolder('Username', $user->getUsername());
+      $this->getLabel('headline')->setPlaceHolder('display-name', $user->getDisplayName());
 
       $template = &$this->getTemplate('User');
       $template->setPlaceHolder('FirstName', $user->getFirstName());

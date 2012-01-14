@@ -5,64 +5,90 @@
       control="FirstName|LastName|Username"
       button="UserButton"
    />
-  <table cellpadding="0" cellspacing="0">
-    <tr>
-      <td><strong>FirstName</strong>:</td>
-      <td><form:text name="FirstName" style="width: 200px;" class="formfield" maxlength="100" /></td>
-    </tr>
-    <tr>
-      <td><strong>LastName</strong>:</td>
-      <td><form:text name="LastName" style="width: 200px;" class="formfield" maxlength="100" /></td>
-    </tr>
-    <tr>
-      <td><strong>StreetName</strong>:</td>
-      <td><form:text name="StreetName" style="width: 200px;" class="formfield" maxlength="100" /></td>
-    </tr>
-    <tr>
-      <td><strong>StreetNumber</strong>:</td>
-      <td><form:text name="StreetNumber" style="width: 200px;" class="formfield" maxlength="100" /></td>
-    </tr>
-    <tr>
-      <td><strong>ZIPCode</strong>:</td>
-      <td><form:text name="ZIPCode" style="width: 200px;" class="formfield" maxlength="100" /></td>
-    </tr>
-    <tr>
-      <td><strong>City</strong>:</td>
-      <td><form:text name="City" style="width: 200px;" class="formfield" maxlength="100" /></td>
-    </tr>
-    <tr>
-      <td><strong>EMail</strong>:</td>
-      <td><form:text name="EMail" style="width: 200px;" class="formfield" maxlength="100" /></td>
-    </tr>
-    <tr>
-      <td><strong>Mobile</strong>:</td>
-      <td><form:text name="Mobile" style="width: 200px;" class="formfield" maxlength="100" /></td>
-    </tr>
-    <tr>
-      <td><strong>Username</strong>:</td>
-      <td><form:text name="Username" style="width: 200px;" class="formfield" maxlength="100" /></td>
-    </tr>
-    <tr>
-      <td><strong>Password</strong>:</td>
-      <td><form:password name="Password" optional="true" ref="Password2" style="width: 200px;" class="formfield" maxlength="100" /></td>
-    </tr>
-    <tr>
-      <td><strong>Password again</strong>:</td>
-      <td><form:password name="Password2" optional="true" style="width: 200px;" class="formfield" maxlength="100" /></td>
-         <form:addvalidator
-               class="FieldCompareValidator"
-               button="UserButton"
-               control="Password"
-               />
-         <form:addvalidator
-               class="TextLengthValidator"
-               button="UserButton"
-               control="Password|Password2"
-               />
-    </tr>
-  </table>
-  <br />
-  <br />
-  <form:button name="UserButton" class="formfield" value="Send" />
-  <form:hidden name="userid" />
+
+   <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.edit.form.first-name.label"/></label>
+   <form:text name="FirstName" maxlength="100"/>
+
+   <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.edit.form.last-name.label"/></label>
+   <form:text name="LastName" maxlength="100" />
+
+   <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.edit.form.street-name.label"/></label>
+   <form:text name="StreetName" maxlength="100" />
+
+   <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.edit.form.street-number.label"/></label>
+   <form:text name="StreetNumber" maxlength="100" />
+
+   <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.edit.form.zip.label"/></label>
+   <form:text name="ZIPCode" maxlength="100" />
+
+   <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.edit.form.city.label"/></label>
+   <form:text name="City" maxlength="100" />
+
+   <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.edit.form.email.label"/></label>
+   <form:text name="EMail" maxlength="100" />
+
+   <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.edit.form.mobile.label"/></label>
+   <form:text name="Mobile" maxlength="100" />
+
+   <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.edit.form.user-name.label"/></label>
+   <form:text name="Username" maxlength="100" />
+
+   <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.edit.form.password.label"/></label>
+   <form:password name="Password" optional="true" ref="Password2" maxlength="100" />
+
+   <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.edit.form.repeat.label"/></label>
+   <form:password name="Password2" optional="true" maxlength="100" />
+   <form:addvalidator
+         class="FieldCompareValidator"
+         button="UserButton"
+         control="Password"
+         />
+   <form:addvalidator
+         class="TextLengthValidator"
+         button="UserButton"
+         control="Password|Password2"
+         />
+   <p>
+      <form:button name="UserButton">
+         <button:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.edit.form.button.label"
+            />
+      </form:button>
+      <form:hidden name="userid" />
+   </p>
 </html:form>

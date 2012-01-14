@@ -24,7 +24,7 @@ import('tools::http', 'HeaderManager');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_delete_controller
+ * @class umgt_user_delete_controller
  *
  * Implements the controller to delete a user.
  *
@@ -32,14 +32,16 @@ import('tools::http', 'HeaderManager');
  * @version
  * Version 0.1, 26.12.2008<br />
  */
-class umgt_delete_controller extends umgt_base_controller {
+class umgt_user_delete_controller extends umgt_base_controller {
 
    public function transformContent() {
 
       $userId = RequestHandler::getValue('userid');
       $uM = &$this->getManager();
       $user = $uM->loadUserById($userId);
-      $this->setPlaceHolder('DisplayName', $user->getDisplayName());
+
+      $this->getLabel('DisplayName')->setPlaceHolder('display-name', $user->getDisplayName());
+
       $formNo = &$this->getForm('UserDelNo');
       $formYes = &$this->getForm('UserDelYes');
 

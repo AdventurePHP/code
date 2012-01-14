@@ -21,16 +21,20 @@
 import('tools::media::taglib', 'ui_mediastream');
 
 /**
- * @package modules::usermangement::pres::taglib
+ * @package modules::usermanagement::pres::taglib
  * @class umgt_taglib_media
  *
- * Implements the image displaying tablib. Based on the *:mediastream taglib.
+ * Implements the image displaying taglib. Based on the <*:mediastream/> taglib.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 26.12.2008<br />
  */
 class umgt_taglib_media extends ui_mediastream {
+
+   public function __construct() {
+      $this->addTagLib(new TagLib('modules::usermanagement::pres::taglib', 'media', 'getstring'));
+   }
 
    /**
     * @public
@@ -42,6 +46,7 @@ class umgt_taglib_media extends ui_mediastream {
     * Version 0.1, 26.12.2008<br />
     */
    public function onParseTime() {
+      $this->__extractTagLibTags();
    }
 
    /**

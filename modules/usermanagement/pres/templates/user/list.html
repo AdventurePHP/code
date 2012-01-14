@@ -2,15 +2,31 @@
    namespace="modules::usermanagement::pres::documentcontroller::user"
    class="umgt_user_list_controller"
 @>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
 <table class="vis-def">
    <thead>
       <tr>
          <td>&nbsp;</td>
-         <td>Display name</td>
-         <td>User name</td>
-         <td>Group(s)</td>
-         <td>Role(s)</td>
-         <td>Action(s)</td>
+         <td><html:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.user.list.display-name.label"/></td>
+         <td><html:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.user.list.user-name.label"/></td>
+         <td><html:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.user.list.groups.label"/></td>
+         <td><html:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.user.list.roles.label"/></td>
+         <td><html:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.user.list.actions.label"/></td>
       </tr>
    </thead>
    <tbody>
@@ -22,7 +38,12 @@
    <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media"/>
    <tr>
       <td>
-         <umgt:media filename="user.png" title="View user details" alt="View User Details"/>
+         <umgt:media filename="user.png">
+            <media:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.user.list.action.details.label"/>
+         </umgt:media>
       </td>
       <td>
          <template:placeholder name="DisplayName"/>
@@ -38,25 +59,60 @@
       </td>
       <td class="actions">
          <a href="<template:placeholder name=" LinkUserDetails" />">
-            <umgt:media filename="details.png" title="View user details" />
+            <umgt:media filename="details.png">
+               <media:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.user.list.action.details.label"/>
+            </umgt:media>
          </a>
          <a href="<template:placeholder name=" LinkUserEdit" />">
-            <umgt:media filename="edit.png" title="Edit User" />
+            <umgt:media filename="edit.png">
+               <media:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.user.list.action.edit.label"/>
+            </umgt:media>
          </a>
          <a href="<template:placeholder name=" LinkUserDelete" />">
-            <umgt:media filename="delete.png" title="Delete User" />
+            <umgt:media filename="delete.png">
+               <media:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.user.list.action.delete.label"/>
+            </umgt:media>
          </a>
          <a href="<template:placeholder name="AddUserToGroup" />">
-            <umgt:media filename="add_group.png" title="Add user to group"/>
+            <umgt:media filename="add_group.png">
+               <media:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.user.list.action.add-group.label"/>
+            </umgt:media>
          </a>
          <a href="<template:placeholder name="RemoveUserFromGroup" />">
-            <umgt:media filename="remove_group.png" title="Remove user from group"/>
+            <umgt:media filename="remove_group.png">
+               <media:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.user.list.action.remove-group.label"/>
+            </umgt:media>
          </a>
          <a href="<template:placeholder name="AssignRoleToUser" />">
-            <umgt:media filename="role_add.png" title="Assign role to user" />
+            <umgt:media filename="role_add.png">
+               <media:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.user.list.action.role-add.label"/>
+            </umgt:media>
          </a>
          <a href="<template:placeholder name="RemoveRoleFromUser" />">
-            <umgt:media filename="role_remove.png" title="Remove role from user" />
+            <umgt:media filename="role_remove.png">
+               <media:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.user.list.action.role-remove.label"/>
+            </umgt:media>
          </a>
       </td>
    </tr>
