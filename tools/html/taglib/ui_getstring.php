@@ -46,6 +46,15 @@
 abstract class ui_getstring extends Document {
 
    /**
+    * @var array A list of place holder names and values.
+    */
+   private $placeHolders = array();
+
+   public function __construct() {
+      // do nothing, especially not initialize tag libs
+   }
+
+   /**
     * @public
     *
     * Implements the functionality to retrieve a language dependent value form a
@@ -64,21 +73,21 @@ abstract class ui_getstring extends Document {
       $namespace = $this->getAttribute('namespace');
       if ($namespace === null) {
          throw new InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
-                                            . '"namespace" given in tag definition!', E_USER_ERROR);
+               . '"namespace" given in tag definition!', E_USER_ERROR);
       }
 
       // check for attribute "config"
       $configName = $this->getAttribute('config');
       if ($configName === null) {
          throw new InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
-                                            . '"config" given in tag definition!', E_USER_ERROR);
+               . '"config" given in tag definition!', E_USER_ERROR);
       }
 
       // check for attribute "entry"
       $entry = $this->getAttribute('entry');
       if ($entry === null) {
          throw new InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
-                                            . '"entry" given in tag definition!', E_USER_ERROR);
+               . '"entry" given in tag definition!', E_USER_ERROR);
       }
 
       // get configuration values
@@ -93,11 +102,50 @@ abstract class ui_getstring extends Document {
          $env = Registry::retrieve('apf::core', 'Environment');
 
          throw new InvalidArgumentException('[' . get_class($this) . '::transform()] Given entry "'
-                                            . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'
-                                            . $env . '_' . $configName . '" in namespace "' . $namespace . '" and context "'
-                                            . $this->getContext() . '"!', E_USER_ERROR);
+               . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'
+               . $env . '_' . $configName . '" in namespace "' . $namespace . '" and context "'
+               . $this->getContext() . '"!', E_USER_ERROR);
       }
-      return $value;
+      return $this->replace($value);
+   }
+
+   /**
+    * @public
+    *
+    * Let's you add a place holder that is replaced into the current label. Each place holder
+    * must be defined with square brackets ("{" and "}") with the key between the opening and
+    * the closing bracket (e.g. "{foo}" in case the name of the place holder is "foo").
+    *
+    * @param string $name The name of the place holder.
+    * @param string $value The value of the place holder.
+    * @return ui_getstring This instance for further usage (e.g. adding further place holders).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.01.2012<br />
+    */
+   public function &setPlaceHolder($name, $value) {
+      $this->placeHolders[$name] = $value;
+      return $this;
+   }
+
+   /**
+    * @private
+    *
+    * Replaces all place holders within the current label that are registered within this instance.
+    *
+    * @param string $label The raw label.
+    * @return string The label with replaced place holders.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.01.2012<br />
+    */
+   private function replace($label) {
+      foreach ($this->placeHolders as $key => $value) {
+         $label = str_replace('{' . $key . '}', $value, $label);
+      }
+      return $label;
    }
 
 }
