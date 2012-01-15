@@ -19,7 +19,6 @@
  * -->
  */
 import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
-import('tools::request', 'RequestHandler');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::group
@@ -44,8 +43,8 @@ class umgt_group_remove_user_from_groups_controller extends umgt_base_controller
 
       if (count($groups) === 0) {
          $tmpl = &$this->getTemplate('NoGroups');
-         $tmpl->setPlaceHolder('User', $user->getDisplayName());
-         $tmpl->setPlaceHolder('UserViewLink', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
+         $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $user->getDisplayName());
+         $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
          $tmpl->transformOnPlace();
          return;
       }

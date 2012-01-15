@@ -28,6 +28,8 @@ import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinitionType');
 
 import('tools::link', 'LinkGenerator');
 import('tools::html::taglib::documentcontroller', 'iteratorBaseController');
+import('tools::request', 'RequestHandler');
+import('tools::http', 'HeaderManager');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller

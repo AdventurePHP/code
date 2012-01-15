@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::http', 'HeaderManager');
+import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::proxy

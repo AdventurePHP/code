@@ -3,6 +3,11 @@
    class="umgt_remove_user_from_roles_controller"
 @>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
+<h3><html:getstring
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.user.remove-user-from-role.headline"/></h3>
 <html:form name="Roles" method="post">
    <form:addvalidator
          class="MultiSelectFieldValidator"
@@ -10,20 +15,37 @@
          control="Roles"
          />
    <p>
-      Please choose one or more of the following roles:
+      <form:getstring
+             namespace="modules::usermanagement::pres"
+             config="labels.ini"
+             entry="frontend.user.remove-user-from-role.intro.text"/>
    </p>
    <p>
       <form:multiselect name="Roles" size="4"/>
    </p>
    <p>
-      <form:button name="Remove" value="Remove" class="formfield"/>
+      <form:button name="Remove">
+         <button:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.user.remove-user-from-role.button.label"/>
+      </form:button>
    </p>
 </html:form>
 <html:template name="NoMoreRoles">
+   <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring"/>
    <p>
-      User <strong><template:placeholder name="User"/></strong> has no roles assigned at the moment!
+      <template:getstring
+            name="message-1"
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.remove-user-from-role.message.1"/>
    </p>
    <p>
-      To go back to the main view, please click <a href="<template:placeholder name="UserViewLink"/>">here</a>.
+      <template:getstring
+            name="message-2"
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.user.remove-user-from-role.message.2"/>
    </p>
 </html:template>

@@ -18,9 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
-import('tools::request', 'RequestHandler');
-import('tools::http', 'HeaderManager');
 import('modules::usermanagement::pres::documentcontroller::proxy', 'permission_base_controller');
 
 class umgt_proxy_remove_users_controller extends permission_base_controller {

@@ -2066,6 +2066,30 @@ class html_taglib_template extends Document {
    /**
     * @public
     *
+    * Let's you retrieve an &lt;template:getstring /&gt; tag instance with the specified name.
+    *
+    * @param string $name The name of the template label to return.
+    * @return template_taglib_getstring The instance of the desired label.
+    * @throws InvalidArgumentException In case no label can be found.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 15.01.2012<br />
+    */
+   public function &getLabel($name) {
+      try {
+         return $this->getChildNode('name', $name, 'template_taglib_getstring');
+      } catch (InvalidArgumentException $e) {
+         throw new InvalidArgumentException('[html_taglib_template::getLabel()] No label found with name "' . $name
+               . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
+               . $this->getParentObject()->getDocumentController() . '"! Perhaps, the tag library for template:getstring '
+               . 'is not loaded.', E_USER_ERROR, $e);
+      }
+   }
+
+   /**
+    * @public
+    *
     * Returns the content of the template. Can be used to generate the template output
     * within a document controller. Usage:
     * <pre>
@@ -2409,7 +2433,7 @@ abstract class base_controller extends Document {
     * @author Christian Schäfer
     * @version
     * Version 0.1, 28.12.2006<br />
-    * Version 0.2, 03.01.2007 (Bugfix: now not only the first template is returned)<br />
+    * Version 0.2, 03.01.2007 (Bug fix: now not only the first template is returned)<br />
     * Version 0.3, 12.01.2006 (Renamed from "__getContentTemplate" to "__getTemplate" due to the introduction of "__getForm")<br />
     * Version 0.4, 23.04.2009 (Corrected PHP4 style object access)<br />
     */
@@ -2458,18 +2482,12 @@ abstract class base_controller extends Document {
     * Version 0.3, 02.07.2011 (Renaming to fit the APF naming convention)<br />
     */
    protected function placeHolderExists($name) {
-
-      $children = &$this->getDocument()->getChildren();
-
-      foreach ($children as $objectID => $DUMMY) {
-         if (get_class($children[$objectID]) == 'html_taglib_placeholder') {
-            if ($children[$objectID]->getAttribute('name') == $name) {
-               return true;
-            }
-         }
+      try {
+         $this->getChildNode('name', $name, 'html_taglib_placeholder');
+         return true;
+      } catch (InvalidArgumentException $e) {
+         return false;
       }
-
-      return false;
    }
 
    /**
@@ -2488,18 +2506,12 @@ abstract class base_controller extends Document {
     * Version 0.3, 02.07.2011 (Renaming to fit the APF naming convention)<br />
     */
    protected function templatePlaceHolderExists(html_taglib_template &$template, $name) {
-
-      $children = &$template->getChildren();
-
-      foreach ($children as $objectID => $DUMMY) {
-         if (get_class($children[$objectID]) == 'template_taglib_placeholder') {
-            if ($children[$objectID]->getAttribute('name') == $name) {
-               return true;
-            }
-         }
+      try {
+         $template->getChildNode('name', $name, 'template_taglib_placeholder');
+         return true;
+      } catch (InvalidArgumentException $e) {
+         return false;
       }
-
-      return false;
    }
 
 }

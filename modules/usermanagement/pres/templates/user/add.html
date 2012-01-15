@@ -2,8 +2,15 @@
    namespace="modules::usermanagement::pres::documentcontroller::user"
    class="umgt_user_add_controller"
 @>
-<h3>Add user</h3>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
+<h3><html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.user.add.headline"/></h3>
 <p>
-   Please fill in the following fields:
+   <html:getstring
+         namespace="modules::usermanagement::pres"
+         config="labels.ini"
+         entry="frontend.user.add.intro.text"/>
 </p>
 <core:appendnode namespace="modules::usermanagement::pres::templates::user" template="user_form" />
