@@ -153,6 +153,10 @@ class BaseMapper extends APFObject {
    }
 
    public function setLogStatements($logStatements) {
+      if (is_string ($logStatements) === true) {
+         $logStatements = ((strtolower ($logStatements) == 'true') ? true : false);
+      }
+
       $this->logStatements = $logStatements;
    }
 
