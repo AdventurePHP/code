@@ -467,7 +467,7 @@ class html_taglib_form extends form_control {
     */
    protected function &getMarker($markerName) {
       try {
-         $this->getChildNode('name', $markerName, 'form_taglib_marker');
+         return $this->getChildNode('name', $markerName, 'form_taglib_marker');
       } catch (InvalidArgumentException $e) {
          throw new FormException('[html_taglib_form::addFormContentAfterMarker()] No marker object '
                . 'with name "' . $markerName . '" composed in current form for document controller "'
@@ -643,6 +643,29 @@ class html_taglib_form extends form_control {
       throw new FormException('[html_taglib_form::getFormElementsByType()] No form elements composed in ' .
             'current form "' . $this->getAttribute('name') . '" in document controller "'
             . $documentController . '"!', E_USER_ERROR);
+   }
+
+   /**
+    * @public
+    *
+    * Let's you retrieve an &lt;form:getstring /&gt; tag instance with the specified name.
+    *
+    * @param string $name The name of the form label to return.
+    * @return form_taglib_getstring The instance of the desired label.
+    * @throws InvalidArgumentException In case no label can be found.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 17.01.2012<br />
+    */
+   public function &getLabel($name) {
+      try {
+         return $this->getChildNode('name', $name, 'form_taglib_getstring');
+      } catch (InvalidArgumentException $e) {
+         throw new InvalidArgumentException('[html_taglib_form::getLabel()] No label found with name "' . $name
+               . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'
+               . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR, $e);
+      }
    }
 
    /**
