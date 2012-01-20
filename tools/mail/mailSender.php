@@ -130,7 +130,7 @@
 
          // safely initialize the default config section
          if (empty($initParam)) {
-            echo $initParam = 'Standard';
+            $initParam = 'Standard';
          }
 
          // load config
