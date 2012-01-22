@@ -2,15 +2,25 @@
    namespace="modules::usermanagement::pres::documentcontroller::role"
    class="umgt_role_edit_controller"
 @>
-<h3>Edit role</h3>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
+<h3><html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.role.edit.headline"/></h3>
 <p>
-   Please fill in the following fields:
+   <html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.role.edit.intro.text"/>
 </p>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
 <html:form name="RoleEdit" method="post">
    <p>
-      <strong>Display name</strong>:
-      <form:text name="DisplayName" style="width: 200px;" class="formfield" maxlength="100"/>
+      <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.role.edit.display-name.label"/></label>
+      <form:text name="DisplayName" maxlength="100"/>
       <form:addvalidator
             class="TextLengthValidator"
             button="Edit"
@@ -18,11 +28,19 @@
             />
    </p>
    <p>
-      <label>Description:</label>
+      <label><form:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.role.edit.description.label"/></label>
       <form:area name="Description"/>
    </p>
    <p>
-      <form:button name="Edit" class="formfield" value="Save"/>
+      <form:button name="Edit">
+         <button:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.role.edit.button.label"/>
+      </form:button>
    </p>
    <form:hidden name="roleid"/>
 </html:form>

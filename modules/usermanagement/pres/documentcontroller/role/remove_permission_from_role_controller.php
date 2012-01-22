@@ -38,14 +38,14 @@ class remove_permission_from_role_controller extends umgt_base_controller {
       $uM = &$this->getManager();
 
       $role = $uM->loadRoleByID(RequestHandler::getValue('roleid'));
-      $form->setPlaceHolder('RoleName', $role->getDisplayName());
+      $form->getLabel('display-name')->setPlaceHolder('display-name', $role->getDisplayName());
 
       $permissions = $uM->loadPermissionsWithRole($role);
 
       if (count($permissions) === 0) {
          $template = &$this->getTemplate('NoMorePermissions');
-         $template->setPlaceHolder('Role', $role->getDisplayName());
-         $template->setPlaceHolder('RoleViewLink', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
+         $template->getLabel('message-1')->setPlaceHolder('display-name', $role->getDisplayName());
+         $template->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
          $template->transformOnPlace();
          return;
       }

@@ -22,7 +22,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_delete_controller
+ * @class umgt_role_delete_controller
  *
  * Implements the controller to delete a role.
  *
@@ -30,14 +30,15 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_delete_controller extends umgt_base_controller {
+class umgt_role_delete_controller extends umgt_base_controller {
 
    public function transformContent() {
 
       $roleId = RequestHandler::getValue('roleid');
       $uM = &$this->getManager();
+
       $role = $uM->loadRoleById($roleId);
-      $this->setPlaceHolder('DisplayName', $role->getDisplayName());
+      $this->getLabel('display-name')->setPlaceHolder('display-name', $role->getDisplayName());
 
       $formNo = &$this->getForm('RoleDelNo');
       $formYes = &$this->getForm('RoleDelYes');
