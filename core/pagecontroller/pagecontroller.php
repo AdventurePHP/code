@@ -128,10 +128,10 @@ class IncludeException extends Exception {
  * @package core::pagecontroller
  * @function import
  *
- * Imports classes or modules from a given namespace.
+ * Imports classes from a given namespace.
  * <p/>
  * Usage:
- * <pre>import('core::frontcontroller','Frontcontroller');</pre>
+ * <pre>import('core::frontcontroller', 'Frontcontroller');</pre>
  *
  * @param string $namespace the namespace of the file (=relative path, starting at the root of your code base).
  * @param string $file the body of the desired file / class to include (without extension).
@@ -149,25 +149,24 @@ class IncludeException extends Exception {
  * Version 0.8, 13.11.2008 (Replaced the include_once() calls with include()s to gain performance)<br />
  * Version 0.9, 25.03.2009 (Cleared implementation for the PHP 5 branch)<br />
  * Version 1.0, 08.03.2010 (Introduced exception instead of trigger_error())<br />
+ * Version 1.1, 22.02.2012 (Optimized performance for importing multiple equal files)<br />
  */
 function import($namespace, $file) {
+
+   // check if the file is already included, if yes, return
+   if (isset($GLOBALS['IMPORT_CACHE'][$namespace . $file])) {
+      return;
+   } else {
+      $GLOBALS['IMPORT_CACHE'][$namespace . $file] = true;
+   }
 
    // create the complete and absolute file name
    $file = APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $file . '.php';
 
-   // check if the file is already included, if yes, return
-   if (isset($GLOBALS['IMPORT_CACHE'][$file])) {
-      return;
-   } else {
-      $GLOBALS['IMPORT_CACHE'][$file] = true;
+   $result = @include($file);
+   if ($result === false) {
+      throw new IncludeException('[import()] The given file (' . $file . ') cannot be loaded!', E_USER_ERROR);
    }
-
-   // handle non-existing files
-   if (!file_exists($file)) {
-      throw new IncludeException('[import()] The given module (' . $file . ') cannot be loaded!', E_USER_ERROR);
-   }
-
-   include($file);
 }
 
 /**
@@ -1171,7 +1170,7 @@ class Document extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 11.12.2012<br />
+    * Version 0.1, 11.12.2011<br />
     */
    protected function &getChildNode($attributeName, $value, $tagLibClass) {
       $children = &$this->getChildren();
@@ -1300,17 +1299,18 @@ class Document extends APFObject {
 
       $file = APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $design . '.html';
 
-      if (!file_exists($file)) {
-
+      if (file_exists($file)) {
+         $this->__Content = file_get_contents($file);
+      } else {
          // get template code from parent object, if the parent exists
-         $code = (string)'';
+         $code = '';
          if ($this->getParentObject() !== null) {
             $code = ' Please check your template code (' . $this->getParentObject()->getContent() . ').';
          }
 
-         throw new IncludeException('[Document::__loadContentFromFile()] Design "' . $design . '" not existent in namespace "' . $namespace . '"!' . $code, E_USER_ERROR);
-      } else {
-         $this->__Content = file_get_contents($file);
+         throw new IncludeException('[' . get_class($this) . '::__loadContentFromFile()] Design "' . $design
+               . '" not existent in namespace "' . $namespace . '"!' . $code, E_USER_ERROR);
+
       }
    }
 
@@ -1345,7 +1345,7 @@ class Document extends APFObject {
       while ($i < count($this->__TagLibs)) {
 
          if ($tagLibLoops > $this->maxLoops) {
-            throw new ParserException('[Document::__extractTagLibTags()] Maximum numbers of '
+            throw new ParserException('[' . get_class($this) . '::__extractTagLibTags()] Maximum numbers of '
                   . 'parsing loops reached!', E_USER_ERROR);
          }
 
@@ -2461,7 +2461,7 @@ abstract class base_controller extends Document {
       try {
          return $this->getDocument()->getChildNode('name', $name, 'html_taglib_getstring');
       } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::getLabel()] No template with name "'
+         throw new InvalidArgumentException('[' . get_class($this) . '::getLabel()] No label with name "'
                . $name . '" composed in current document for document controller "' . get_class($this)
                . '"! Perhaps tag library html:getstring is not loaded in current template!', E_USER_ERROR, $e);
       }
