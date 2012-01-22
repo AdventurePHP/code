@@ -2,14 +2,34 @@
    namespace="modules::usermanagement::pres::documentcontroller::group"
    class="umgt_group_delete_controller"
 @>
-<h3>Delete group</h3>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
+<h3><html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.group.delete.headline"
+      /></h3>
 <p>
-   Should the group <strong><html:placeholder name="DisplayName" /></strong> really be deleted?
+   <html:getstring
+      name="display-name"
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.group.delete.confirmation.text"/>
+
 </p>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
 <html:form name="GroupDelNo" method="post">
-  <form:button name="No" value="No" class="formfield"/>
+  <form:button name="No" value="No">
+     <button:getstring
+        namespace="modules::usermanagement::pres"
+        config="labels.ini"
+        entry="frontend.group.delete.button-no.label"/>
+  </form:button>
 </html:form>
 <html:form name="GroupDelYes" method="post">
-  <form:button name="Yes" value="Yes" class="formfield"/>
+  <form:button name="Yes" value="Yes">
+     <button:getstring
+        namespace="modules::usermanagement::pres"
+        config="labels.ini"
+        entry="frontend.group.delete.button-yes.label"/>
+  </form:button>
 </html:form>

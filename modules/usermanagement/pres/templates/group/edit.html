@@ -2,9 +2,19 @@
    namespace="modules::usermanagement::pres::documentcontroller::group"
    class="umgt_group_edit_controller"
 @>
-<h3>Edit group</h3>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
+<h3><html:getstring
+      name="headline"
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.group.edit.headline"
+      /></h3>
 <p>
-   Please fill in the following fields:
+   <html:getstring
+         namespace="modules::usermanagement::pres"
+         config="labels.ini"
+         entry="frontend.group.edit.intro.text"
+         />
 </p>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
 <html:form name="GroupEdit" method="post">
@@ -14,13 +24,27 @@
          control="DisplayName"
          />
    <p>
-      <label>Display name:</label>
-      <form:text name="DisplayName" style="width: 200px;" class="formfield" maxlength="100"/>
+      <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.group.edit.form.display-name.label"
+            /></label>
+      <form:text name="DisplayName" maxlength="100"/>
    </p>
    <p>
-      <label>Description:</label>
+      <label><form:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.group.edit.form.description.label"
+                  /></label>
       <form:area name="Description"/>
    </p>
-   <form:button name="Edit" class="formfield" value="Save"/>
+   <form:button name="Edit">
+      <button:getstring
+         namespace="modules::usermanagement::pres"
+         config="labels.ini"
+         entry="frontend.group.edit.form.button.label"
+         />
+   </form:button>
    <form:hidden name="groupid"/>
 </html:form>

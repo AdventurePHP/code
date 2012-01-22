@@ -1,7 +1,23 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller" class="umgt_group_controller" @>
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller"
+   class="umgt_group_controller"
+@>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
 <div class="umgt-menu">
-   <a href="<html:placeholder name="manage_groups" />" title="Group list">Group list</a>
+   <a href="<html:placeholder name="manage_groups" />" title="<html:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.group.navi.list.label"/>"><html:getstring
+                           namespace="modules::usermanagement::pres"
+                           config="labels.ini"
+                           entry="frontend.group.navi.list.label"/></a>
    &nbsp;|&nbsp;
-   <a href="<html:placeholder name="add_group" />" title="Add group">Add group</a>
+   <a href="<html:placeholder name="add_group" />" title="<html:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.group.navi.add.label"/>"><html:getstring
+                                 namespace="modules::usermanagement::pres"
+                                 config="labels.ini"
+                                 entry="frontend.group.navi.add.label"/></a>
 </div>
 <core:importdesign namespace="modules::usermanagement::pres::templates::group" template="[groupview = list]" incparam="groupview" />

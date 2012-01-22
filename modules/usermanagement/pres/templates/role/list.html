@@ -2,15 +2,31 @@
    namespace="modules::usermanagement::pres::documentcontroller::role"
    class="umgt_role_list_controller"
 @>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
 <table class="vis-def">
    <thead>
       <tr>
          <td>&nbsp;</td>
-         <td>Display name</td>
-         <td>Permission(s)</td>
-         <td>User(s)</td>
-         <td>Group(s)</td>
-         <td>Action(s)</td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.role.list.display-name.label"/></td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.role.list.permissions.label"/></td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.role.list.users.label"/></td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.role.list.groups.label"/></td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.role.list.actions.label"/></td>
       </tr>
    </thead>
    <tbody>
@@ -22,7 +38,12 @@
    <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media"/>
    <tr>
       <td>
-         <umgt:media filename="role.png" alt="Role" title="Role"/>
+         <umgt:media filename="role.png">
+            <media:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.role.list.role-icon.label"/>
+         </umgt:media>
       </td>
       <td>
          <template:placeholder name="DisplayName"/>
@@ -37,32 +58,77 @@
          <template:placeholder name="Groups"/>
       </td>
       <td class="actions">
-         <a href="<template:placeholder name="role_details" />" title="View role details">
-            <umgt:media filename="details.png" title="View role details"/>
+         <a href="<template:placeholder name="role_details" />">
+            <umgt:media filename="details.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.role.list.action.details.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name="role_edit" />" title="Edit role">
-            <umgt:media filename="edit.png" title="Edit Role"/>
+         <a href="<template:placeholder name="role_edit" />">
+            <umgt:media filename="edit.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.role.list.action.edit.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name="role_delete" />" title="Delete role">
-            <umgt:media filename="delete.png" title="Delete role"/>
+         <a href="<template:placeholder name="role_delete" />">
+            <umgt:media filename="delete.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.role.list.action.delete.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name="AddPermissionToRole" />" title="Add permission to role">
-            <umgt:media filename="permission_add.png" title="Add permission to role"/>
+         <a href="<template:placeholder name="AddPermissionToRole" />">
+            <umgt:media filename="permission_add.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.role.list.action.add-permission-to-role.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name="RemoveRoleFromPermission" />" title="Remove permission from role">
-            <umgt:media filename="permission_remove.png" title="Remove permission from role"/>
+         <a href="<template:placeholder name="RemoveRoleFromPermission" />">
+            <umgt:media filename="permission_remove.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.role.list.action.remove-permission-from-role.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name="AssignRoleToUser" />" title="Assign role to user">
-            <umgt:media filename="group_add_user.png" title="Assign role to user"/>
+         <a href="<template:placeholder name="AssignRoleToUser" />">
+            <umgt:media filename="group_add_user.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.role.list.action.assign-role-to-user.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name="DetachRoleFromUser" />" title="Detach role from user">
-            <umgt:media filename="group_remove_user.png" title="Detach role from user"/>
+         <a href="<template:placeholder name="DetachRoleFromUser" />">
+            <umgt:media filename="group_remove_user.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.role.list.action.remove-role-from-user.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name="AddGroupToRole" />" title="Add group to role">
-            <umgt:media filename="add_group.png" title="Add group to role"/>
+         <a href="<template:placeholder name="AddGroupToRole" />">
+            <umgt:media filename="add_group.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.role.list.action.add-group-to-role.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name="RemoveGroupFromRole" />" title="Remove group from role">
-            <umgt:media filename="remove_group.png" title="Remove group from role"/>
+         <a href="<template:placeholder name="RemoveGroupFromRole" />">
+            <umgt:media filename="remove_group.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.role.list.action.remove-group-from-role.label"/>
+            </umgt:media>
          </a>
       </td>
    </tr>

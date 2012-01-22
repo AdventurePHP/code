@@ -40,7 +40,7 @@ class umgt_group_details_controller extends umgt_base_controller {
       $group = $uM->loadGroupByID($groupId);
 
       // display user data
-      $this->setPlaceHolder('DisplayName', $group->getDisplayName());
+      $this->getLabel('headline')->setPlaceHolder('display-name', $group->getDisplayName());
 
       // display users
       $users = $uM->loadUsersWithGroup($group);

@@ -1,8 +1,14 @@
 <@controller
    namespace="modules::usermanagement::pres::documentcontroller::group"
-   class="umgt_useradd_controller"
+   class="umgt_group_add_user_controller"
 @>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
+<h3><html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.group.add-users-to-group.headline"/></h3>
+
 <html:form name="User" method="post">
    <form:addvalidator
          class="MultiSelectFieldValidator"
@@ -10,20 +16,37 @@
          control="User"
          />
    <p>
-      Please choose one or more of the following users:
+      <form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.group.add-users-to-group.intro.text"/>
    </p>
    <p>
       <form:multiselect name="User" size="4"/>
    </p>
    <p>
-      <form:button name="Add" value="Add" class="formfield"/>
+      <form:button name="Add">
+         <button:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.group.add-users-to-group.button.label"/>
+      </form:button>
    </p>
 </html:form>
 <html:template name="NoMoreUser">
+   <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
    <p>
-      All users are already assigned to group <strong><template:placeholder name="Group"/></strong>!
+      <template:getstring
+            name="message-1"
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.group.add-users-to-group.message.1"/>
    </p>
    <p>
-      To go back to the main view, please click <a href="<template:placeholder name="GroupViewLink"/>">here</a>.
+      <template:getstring
+            name="message-2"
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.group.add-users-to-group.message.2"/>
    </p>
 </html:template>

@@ -1,19 +1,32 @@
 <@controller
    namespace="modules::usermanagement::pres::documentcontroller::role"
-   class="umgt_details_controller"
+   class="umgt_role_details_controller"
 @>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
 <core:addtaglib namespace="tools::html::taglib" prefix="html" class="iterator" />
-<h3>Details for role &quot;<html:placeholder name="DisplayName" />&quot;</h3>
+<h3><html:getstring
+      name="display-name"
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.role.details.headline"/></h3>
 <p>
    <html:placeholder name="Description" />
 </p>
-<h4>Assigned permissions</h4>
+<h4><html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.role.details.permissions.label"/></h4>
 <html:iterator name="Permissions">
    <ul>
       <iterator:item>
          <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
          <li>
-            <umgt:media filename="permission.png" title="Permission" />
+            <umgt:media filename="permission.png">
+               <media:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.role.details.permission-img.label"/>
+            </umgt:media>
             <item:placeholder getter="getDisplayName" />
             (<em><item:placeholder getter="getName" />=<item:placeholder getter="getValue" /></em>)
          </li>
@@ -21,26 +34,42 @@
    </ul>
 </html:iterator>
 
-<h4>Assigned users</h4>
+<h4><html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.role.details.users.label"/></h4>
 <html:iterator name="Users">
    <ul>
       <iterator:item>
          <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
          <li>
-            <umgt:media filename="user.png" title="User" />
+            <umgt:media filename="user.png">
+               <media:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.role.details.user-img.label"/>
+            </umgt:media>
             <item:placeholder getter="getFirstName" />, <item:placeholder getter="getLastName" />
          </li>
       </iterator:item>
    </ul>
 </html:iterator>
 
-<h4>Assigned groups</h4>
+<h4><html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.role.details.groups.label"/></h4>
 <html:iterator name="Groups">
    <ul>
       <iterator:item>
          <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
          <li>
-            <umgt:media filename="group.png" title="Group" />
+            <umgt:media filename="group.png">
+               <media:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.role.details.group-img.label"/>
+            </umgt:media>
             <item:placeholder getter="getDisplayName" />
          </li>
       </iterator:item>

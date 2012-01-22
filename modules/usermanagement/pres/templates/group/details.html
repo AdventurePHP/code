@@ -2,33 +2,63 @@
    namespace="modules::usermanagement::pres::documentcontroller::group"
    class="umgt_group_details_controller"
 @>
-<h3>Details for group &quot;<html:placeholder name="DisplayName" />&quot;</h3>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
 <core:addtaglib namespace="tools::html::taglib" prefix="html" class="iterator" />
-<h4>Group details</h4>
+<h3><html:getstring
+      name="headline"
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.group.details.headline"
+      /></h3>
+<h4><html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.group.details.group-details.label"
+      /></h4>
 <p>
    <html:placeholder name="Description" />
 </p>
 
-<h4>Users</h4>
+<h4><html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.group.details.users.label"
+      /></h4>
 <html:iterator name="Users">
    <ul>
    <iterator:item getter="getProperty">
       <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
       <li>
-         <umgt:media filename="user.png" title="User" />
+         <umgt:media filename="user.png">
+            <media:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.group.details.user-img.label"
+            />
+         </umgt:media>
          <item:placeholder name="FirstName" />, <item:placeholder name="LastName" />
       </li>
    </iterator:item>
    </ul>
 </html:iterator>
 
-<h4>Roles</h4>
+<h4><html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.group.details.roles.label"
+      /></h4>
 <html:iterator name="Roles">
    <ul>
    <iterator:item>
       <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
       <li>
-         <umgt:media filename="role.png" title="Role" />
+         <umgt:media filename="role.png">
+            <media:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.group.details.role-img.label"
+            />
+         </umgt:media>
          <item:placeholder getter="getDisplayName"/>
       </li>
    </iterator:item>

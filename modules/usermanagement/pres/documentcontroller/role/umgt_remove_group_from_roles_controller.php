@@ -43,8 +43,8 @@ class umgt_remove_group_from_roles_controller extends umgt_base_controller {
 
       if (count($roles) === 0) {
          $tmpl = &$this->getTemplate('NoMoreRoles');
-         $tmpl->setPlaceHolder('User', $group->getDisplayName());
-         $tmpl->setPlaceHolder('UserViewLink', $this->generateLink(array('mainview' => 'group', 'roleview' => null, 'groupid' => null)));
+         $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $group->getDisplayName());
+         $tmpl->getLabel('message-2')->setPlaceHolder('group-view-link', $this->generateLink(array('mainview' => 'group', 'roleview' => null, 'groupid' => null)));
          $tmpl->transformOnPlace();
          return;
       }
@@ -55,7 +55,7 @@ class umgt_remove_group_from_roles_controller extends umgt_base_controller {
          $rolesControl->addOption($role->getDisplayName(), $role->getObjectId());
       }
 
-      $form->setPlaceHolder('GroupName', $group->getDisplayName());
+      $form->getLabel('display-name')->setPlaceHolder('display-name', $group->getDisplayName());
 
       if ($form->isSent() && $form->isValid()) {
 

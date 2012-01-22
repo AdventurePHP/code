@@ -1,7 +1,23 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller" class="umgt_role_controller" @>
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller"
+   class="umgt_role_controller"
+@>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
 <div class="umgt-menu">
-   <a href="<html:placeholder name="manage_roles" />" title="Role list">Role list</a>
+   <a href="<html:placeholder name="manage_roles" />" title="<html:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.role.navi.list.label"/>"><html:getstring
+                           namespace="modules::usermanagement::pres"
+                           config="labels.ini"
+                           entry="frontend.role.navi.list.label"/></a>
    &nbsp;|&nbsp;
-   <a href="<html:placeholder name="role_add" />" title="Add role">Add role</a>
+   <a href="<html:placeholder name="role_add" />" title="<html:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.role.navi.add.label"/>"><html:getstring
+                           namespace="modules::usermanagement::pres"
+                           config="labels.ini"
+                           entry="frontend.role.navi.add.label"/></a>
 </div>
 <core:importdesign namespace="modules::usermanagement::pres::templates::role" template="[roleview = list]" incparam="roleview" />

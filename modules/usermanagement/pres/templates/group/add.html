@@ -2,8 +2,18 @@
    namespace="modules::usermanagement::pres::documentcontroller::group"
    class="umgt_group_add_controller"
 @>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
+<h3><html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.group.add.headline"
+      /></h3>
 <p>
-   Please fill in the following fields:
+   <html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.group.add.intro.text"
+      />
 </p>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
 <html:form name="GroupAdd" method="post">
@@ -13,12 +23,26 @@
          button="Add"
          />
    <p>
-      <label>Display name:</label>
-      <form:text name="DisplayName" class="formfield" maxlength="100"/>
+      <label><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.group.add.display-name.label"
+            /></label>
+      <form:text name="DisplayName" maxlength="100"/>
    </p>
    <p>
-      <label>Description:</label>
+      <label><form:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.group.add.description.label"
+                  /></label>
       <form:area name="Description" />
    </p>
-   <form:button name="Add" class="formfield" value="Add"/>
+   <form:button name="Add">
+      <form:getstring
+         namespace="modules::usermanagement::pres"
+         config="labels.ini"
+         entry="frontend.group.add.button.label"
+         />
+   </form:button>
 </html:form>

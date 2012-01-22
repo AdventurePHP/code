@@ -40,7 +40,7 @@ class umgt_group_delete_controller extends umgt_base_controller {
       // load the current group and print the display name
       $uM = &$this->getManager();
       $group = $uM->loadGroupByID($groupId);
-      $this->setPlaceHolder('DisplayName', $group->getDisplayName());
+      $this->getLabel('display-name')->setPlaceHolder('display-name', $group->getDisplayName());
 
       // prepare the forms and execute action
       $formNo = &$this->getForm('GroupDelNo');

@@ -22,7 +22,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_useradd_controller
+ * @class umgt_group_add_user_controller
  *
  * Implements the controller to list the groups.
  *
@@ -30,7 +30,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_useradd_controller extends umgt_base_controller {
+class umgt_group_add_user_controller extends umgt_base_controller {
 
    public function transformContent() {
 
@@ -50,8 +50,8 @@ class umgt_useradd_controller extends umgt_base_controller {
       // display hint, if group has associated all users
       if ($count == 0) {
          $template = &$this->getTemplate('NoMoreUser');
-         $template->setPlaceHolder('Group', $group->getDisplayName());
-         $template->setPlaceHolder('GroupViewLink', $this->generateLink(array('mainview' => 'group', 'groupview' => null, 'groupid' => null)));
+         $template->getLabel('message-1')->setPlaceHolder('display-name', $group->getDisplayName());
+         $template->getLabel('message-2')->setPlaceHolder('group-view-link', $this->generateLink(array('mainview' => 'group', 'groupview' => null, 'groupid' => null)));
          $template->transformOnPlace();
          return;
       }
