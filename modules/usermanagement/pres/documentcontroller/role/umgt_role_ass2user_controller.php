@@ -21,59 +21,61 @@
 import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::role
- * @class umgt_detachfromuser_controller
+ * @package modules::usermanagement::pres::documentcontroller
+ * @class umgt_role_ass2user_controller
  *
- * Implements the controller to detach a role from a user.
+ * Implements the controller to assign a role to a user.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 27.12.2008<br />
+ * Version 0.2, 29.12.2008 (Applied API change of the usermanagement manager)<br />
  */
-class umgt_detachfromuser_controller extends umgt_base_controller {
+class umgt_role_ass2user_controller extends umgt_base_controller {
 
    public function transformContent() {
 
-      // get the current roleid
-      $roleid = RequestHandler::getValue('roleid');
+      // get role id
+      $roleId = RequestHandler::getValue('roleid');
 
       // initialize the form
       $form = &$this->getForm('User');
       $user = &$form->getFormElementByName('User');
       /* @var $user form_taglib_multiselect */
-
       $uM = &$this->getManager();
-      $role = $uM->loadRoleByID($roleid);
-      $users = $uM->loadUsersWithRole($role);
+      $role = $uM->loadRoleById($roleId);
+      $users = $uM->loadUsersNotWithRole($role);
       $count = count($users);
 
-      // display a hint, if no users are assigned to this role
+      // display a hint, if a role already assigned to all users
       if ($count == 0) {
          $template = &$this->getTemplate('NoMoreUser');
-         $template->setPlaceHolder('Role', $role->getDisplayName());
-         $template->setPlaceHolder('RoleViewLink', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
+         $template->getLabel('message-1')->setPlaceHolder('display-name', $role->getDisplayName());
+         $template->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
          $template->transformOnPlace();
          return;
       }
 
-      // fill the multi-select field
+      // fill multi-select field
       for ($i = 0; $i < $count; $i++) {
          $user->addOption($users[$i]->getLastName() . ', ' . $users[$i]->getFirstName(), $users[$i]->getObjectId());
       }
 
-      // detach users from the role
+      // assign role to the desired users
       if ($form->isSent() && $form->isValid()) {
 
          $options = &$user->getSelectedOptions();
          $newUsers = array();
+
          for ($i = 0; $i < count($options); $i++) {
             $newUser = new UmgtUser();
             $newUser->setObjectId($options[$i]->getAttribute('value'));
             $newUsers[] = $newUser;
             unset($newUser);
          }
-         $uM->detachUsersFromRole($newUsers, $role);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
+
+         $uM->attachUsersToRole($newUsers, $role);
+         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
 
       } else {
          $form->transformOnPlace();

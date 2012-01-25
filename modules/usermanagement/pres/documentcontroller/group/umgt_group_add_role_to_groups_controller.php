@@ -43,8 +43,8 @@ class umgt_group_add_role_to_groups_controller extends umgt_base_controller {
 
       if (count($groups) === 0) {
          $tmpl = &$this->getTemplate('NoMoreGroups');
-         $tmpl->setPlaceHolder('Role', $role->getDisplayName());
-         $tmpl->setPlaceHolder('RoleViewLink', $this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
+         $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $role->getDisplayName());
+         $tmpl->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
          $tmpl->transformOnPlace();
          return;
       }

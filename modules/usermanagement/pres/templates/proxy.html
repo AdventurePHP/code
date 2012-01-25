@@ -1,11 +1,39 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller" class="umgt_proxy_controller" @>
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller"
+   class="umgt_proxy_controller"
+@>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
 <div class="umgt-menu">
-   <a href="<html:placeholder name="display_proxy_types" />" title="View app objects">View app objects</a>
+   <a href="<html:placeholder name="display_proxy_types" />" title="<html:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.navi.list-proxy.label"/>"><html:getstring
+                        namespace="modules::usermanagement::pres"
+                        config="labels.ini"
+                        entry="frontend.proxy.navi.list-proxy.label"/></a>
    &nbsp;|&nbsp;
-   <a href="<html:placeholder name="proxy_add" />" title="Add visibility definition">Add visibility definition</a>
+   <a href="<html:placeholder name="proxy_add" />" title="<html:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.navi.add-proxy.label"/>"><html:getstring
+                           namespace="modules::usermanagement::pres"
+                           config="labels.ini"
+                           entry="frontend.proxy.navi.add-proxy.label"/></a>
    &nbsp;|&nbsp;
-   <a href="<html:placeholder name="proxy_type_list" />" title="View object types">View object types</a>
+   <a href="<html:placeholder name="proxy_type_list" />" title="<html:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.navi.list-proxy-types.label"/>"><html:getstring
+                              namespace="modules::usermanagement::pres"
+                              config="labels.ini"
+                              entry="frontend.proxy.navi.list-proxy-types.label"/></a>
    &nbsp;|&nbsp;
-   <a href="<html:placeholder name="proxy_type_add" />" title="Add visibility type">Add object type</a>
+   <a href="<html:placeholder name="proxy_type_add" />" title="<html:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.navi.app-proxy-type.label"/>"><html:getstring
+                                 namespace="modules::usermanagement::pres"
+                                 config="labels.ini"
+                                 entry="frontend.proxy.navi.app-proxy-type.label"/></a>
 </div>
 <core:importdesign namespace="modules::usermanagement::pres::templates::proxy" template="[proxyview = list]" incparam="proxyview" />

@@ -22,7 +22,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_delete_controller
+ * @class umgt_permission_delete_controller
  *
  * Implements the delete controller for a permission.
  *
@@ -30,14 +30,14 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_delete_controller extends umgt_base_controller {
+class umgt_permission_delete_controller extends umgt_base_controller {
 
    public function transformContent() {
 
       $permissionId = RequestHandler::getValue('permissionid');
       $uM = &$this->getManager();
       $permission = $uM->loadPermissionByID($permissionId);
-      $this->setPlaceHolder('DisplayName', $permission->getDisplayName());
+      $this->getLabel('display-name')->setPlaceHolder('display-name', $permission->getDisplayName());
 
       $formNo = &$this->getForm('PermissionDelNo');
       $formYes = &$this->getForm('PermissionDelYes');

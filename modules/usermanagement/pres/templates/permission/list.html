@@ -1,15 +1,28 @@
 <@controller
    namespace="modules::usermanagement::pres::documentcontroller::permission"
-   class="umgt_role_list_controller"
+   class="umgt_permission_list_controller"
 @>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
 <table class="vis-def">
    <thead>
       <tr>
          <td>&nbsp;</td>
-         <td>Display name</td>
-         <td>Name</td>
-         <td>Value</td>
-         <td>Action</td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.permission.list.display-name.label"/></td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.permission.list.name.label"/></td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.permission.list.value.label"/></td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.permission.list.actions.label"/></td>
       </tr>
    </thead>
    <tbody>
@@ -20,7 +33,12 @@
    <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media"/>
    <tr>
       <td>
-         <umgt:media filename="permission.png" alt="Edit permission" title="Edit permission"/>
+         <umgt:media filename="permission.png">
+            <media:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.permission.list.permission-icon.label"/>
+         </umgt:media>
       </td>
       <td>
          <template:placeholder name="DisplayName"/>
@@ -32,11 +50,21 @@
          <template:placeholder name="Value"/>
       </td>
       <td class="actions">
-         <a href="<template:placeholder name=" permission_edit" />" title="Edit permission">
-            <umgt:media filename="edit.png" alt="Edit permission" title="Edit permission"/>
+         <a href="<template:placeholder name=" permission_edit" />">
+            <umgt:media filename="edit.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.permission.list.action.edit.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name=" permission_delete" />" title="Delete Permission">
-            <umgt:media filename="delete.png" alt="Delete permission" title="Delete permission"/>
+         <a href="<template:placeholder name=" permission_delete" />">
+            <umgt:media filename="delete.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.permission.list.action.delete.label"/>
+            </umgt:media>
          </a>
       </td>
    </tr>
