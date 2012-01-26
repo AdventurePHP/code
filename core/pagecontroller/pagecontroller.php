@@ -163,8 +163,10 @@ function import($namespace, $file) {
    // create the complete and absolute file name
    $file = APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $file . '.php';
 
-   $result = @include($file);
-   if ($result === false) {
+   // do a file_exists() instead of @include() because fatal errors must not be caught here (e.g. class not found)!
+   if (file_exists($file)) {
+      include($file);
+   } else {
       throw new IncludeException('[import()] The given file (' . $file . ') cannot be loaded!', E_USER_ERROR);
    }
 }
