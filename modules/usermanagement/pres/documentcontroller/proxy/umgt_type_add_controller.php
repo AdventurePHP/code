@@ -44,7 +44,7 @@ class umgt_type_add_controller extends umgt_base_controller {
             // due to the fact, that we have a
             // form error, it is also displayed!
             $proxyName->markAsInvalid();
-            $proxyName->setAttribute('class', 'apf-form-error');
+            $proxyName->appendCssClass(AbstractFormValidator::$DEFAULT_MARKER_CLASS);
          }
 
       }

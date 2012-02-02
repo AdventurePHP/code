@@ -2,20 +2,36 @@
    namespace="modules::usermanagement::pres::documentcontroller::proxy"
    class="umgt_proxy_add_controller"
 @>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
+<h3><html:getstring
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.add-proxy.headline"/></h3>
 <p>
-   Let's you add a visibility definition. Please choose an appropriate object type along with a
-   given user or group.
+   <html:getstring
+          namespace="modules::usermanagement::pres"
+          config="labels.ini"
+          entry="frontend.proxy.add-proxy.intro.text"/>
 </p>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
 <html:form name="visibilitydef" method="post">
-   <h4>Basic settings</h4>
+   <h4><form:getstring
+          namespace="modules::usermanagement::pres"
+          config="labels.ini"
+          entry="frontend.proxy.add-proxy.basics.headline"/></h4>
    <div>
-      <label for="proxytypeid">Visibility type:</label>
-      <form:select id="proxytypeid" name="proxytypeid" class="formfield" />
+      <label for="proxytypeid"><form:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.add-proxy.proxy-type.label"/></label>
+      <form:select id="proxytypeid" name="proxytypeid" />
    </div>
    <div>
-      <label for="appobjectid">Application object id:</label>
-      <form:text id="appobjectid" name="appobjectid" class="formfield" maxlength="10" minlength="1"/>
+      <label for="appobjectid"><form:getstring
+                      namespace="modules::usermanagement::pres"
+                      config="labels.ini"
+                      entry="frontend.proxy.add-proxy.proxy-app-id.label"/></label>
+      <form:text id="appobjectid" name="appobjectid" maxlength="10" minlength="1"/>
       <form:addvalidator
          class="TextLengthValidator"
          button="add"
@@ -29,16 +45,25 @@
    </div>
    <form:listener control="users">
       <div class="error-cont">
-         Please mark at least one user or group to create the visibility definition!
+         <listener:getstring
+             namespace="modules::usermanagement::pres"
+             config="labels.ini"
+             entry="frontend.proxy.add-proxy.validator.message"/>
       </div>
    </form:listener>
    <div>
-      <label for="users">Users:</label>
-      <form:multiselect id="users" name="users" class="formfield" size="6" alt="groups"/>
+      <label for="users"><form:getstring
+                      namespace="modules::usermanagement::pres"
+                      config="labels.ini"
+                      entry="frontend.proxy.add-proxy.users.label"/></label>
+      <form:multiselect id="users" name="users" size="6" />
    </div>
    <div>
-      <label for="groups">Groups:</label>
-      <form:multiselect id="groups" name="groups" class="formfield" size="6"/>
+      <label for="groups"><form:getstring
+                      namespace="modules::usermanagement::pres"
+                      config="labels.ini"
+                      entry="frontend.proxy.add-proxy.groups.label"/></label>
+      <form:multiselect id="groups" name="groups" size="6"/>
    </div>
    <form:addvalidator
       namespace="modules::usermanagement::pres::validator"
@@ -46,24 +71,44 @@
       control="users"
       button="add"
    />
-   <h4>Access permissions</h4>
+   <h4><form:getstring
+             namespace="modules::usermanagement::pres"
+             config="labels.ini"
+             entry="frontend.proxy.add-proxy.access.headline"/></h4>
    <div class="umgt-access-perms">
       <p>
          <form:checkbox id="read-perm" name="ReadPermission"/>
-         <label for="read-perm">Read permission</label>
+         <label for="read-perm"><form:getstring
+                         namespace="modules::usermanagement::pres"
+                         config="labels.ini"
+                         entry="frontend.proxy.add-proxy.read-perm.label"/></label>
       </p>
       <p>
          <form:checkbox id="write-perm" name="WritePermission"/>
-         <label for="write-perm">Write permission</label>
+         <label for="write-perm"><form:getstring
+                         namespace="modules::usermanagement::pres"
+                         config="labels.ini"
+                         entry="frontend.proxy.add-proxy.write-perm.label"/></label>
       </p>
       <p>
          <form:checkbox id="link-perm" name="LinkPermission"/>
-         <label for="link-perm">Link permission</label>
+         <label for="link-perm"><form:getstring
+                         namespace="modules::usermanagement::pres"
+                         config="labels.ini"
+                         entry="frontend.proxy.add-proxy.link-perm.label"/></label>
       </p>
       <p>
          <form:checkbox id="delete-perm" name="DeletePermission"/>
-         <label for="delete-perm">Delete permission</label>
+         <label for="delete-perm"><form:getstring
+                         namespace="modules::usermanagement::pres"
+                         config="labels.ini"
+                         entry="frontend.proxy.add-proxy.delete-perm.label"/></label>
       </p>
    </div>
-   <form:button name="add" value="Add" class="formfield" />
+   <form:button name="add">
+      <button:getstring
+         namespace="modules::usermanagement::pres"
+         config="labels.ini"
+         entry="frontend.proxy.add-proxy.button.label"/>
+   </form:button>
 </html:form>

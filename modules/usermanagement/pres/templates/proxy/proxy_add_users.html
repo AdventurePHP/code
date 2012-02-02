@@ -3,26 +3,44 @@
    class="umgt_proxy_add_users_controller"
 @>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
+<h3><html:getstring
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.add-users-to-proxy.headline"/></h3>
 <p>
-   Please select the users that should have visibility permissions on the application
-   object with id <strong><html:placeholder name="AppObjectId" /></strong> (type:
-   <em><html:placeholder name="ProxyType" /></em>) as well.
+   <html:getstring
+          name="intro-text"
+          namespace="modules::usermanagement::pres"
+          config="labels.ini"
+          entry="frontend.proxy.add-users-to-proxy.intro.text"/>
 </p>
 <html:form name="add_perm" method="post">
    <form:listener control="users">
       <div class="error-cont">
-         Please mark at least one user to add to the visibility definition!
+         <listener:getstring
+             namespace="modules::usermanagement::pres"
+             config="labels.ini"
+             entry="frontend.proxy.add-users-to-proxy.validator.message"/>
       </div>
    </form:listener>
    <div>
-      <label for="users">Users:</label>
-      <form:multiselect id="users" name="users" class="formfield" size="6"/>
+      <label for="users"><form:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.add-users-to-proxy.users.label"/></label>
+      <form:multiselect id="users" name="users" size="6"/>
    </div>
    <form:addvalidator
       class="MultiSelectFieldValidator"
       control="users"
       button="add"
    />
-   <form:button name="add" value="Add" class="formfield" />
+   <form:button name="add">
+      <button:getstring
+          namespace="modules::usermanagement::pres"
+          config="labels.ini"
+          entry="frontend.proxy.add-users-to-proxy.button.label"/>
+   </form:button>
    <form:hidden name="proxyid" />
 </html:form>

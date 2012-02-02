@@ -34,11 +34,13 @@ class umgt_proxy_add_users_controller extends permission_base_controller {
       $proxy = $uM->loadVisibilityDefinitionById($proxyId);
       $proxyType = $uM->loadVisibilityDefinitionType($proxy);
 
-      $this->setPlaceHolder('AppObjectId', $proxy->getAppObjectId());
-      $this->setPlaceHolder('ProxyType', $proxyType->getAppObjectName());
+      $this->getLabel('intro-text')
+            ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
+            ->setPlaceHolder('proxy-type', $proxyType->getAppObjectName());
 
       $users = $uM->loadUsersNotWithVisibilityDefinition($proxy);
       $usersControl = &$form->getFormElementByName('users');
+      /* @var $usersControl form_taglib_multiselect */
       foreach ($users as $id => $DUMMY) {
          $usersControl->addOption($users[$id]->getDisplayName(), $users[$id]->getObjectId());
       }
@@ -51,16 +53,15 @@ class umgt_proxy_add_users_controller extends permission_base_controller {
          HeaderManager::forward(
             $this->generateLink(
                array(
-                    'mainview' => 'proxy',
-                    'proxyview' => null,
-                    'proxyid' => null)
+                  'mainview' => 'proxy',
+                  'proxyview' => null,
+                  'proxyid' => null)
             )
          );
 
       }
 
       $form->transformOnPlace();
-
    }
 
 }

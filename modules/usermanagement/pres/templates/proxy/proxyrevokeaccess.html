@@ -1,13 +1,33 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::proxy" class="umgt_revoke_access_controller" @>
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::proxy"
+   class="umgt_revoke_access_controller"
+@>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
+<h3><html:getstring
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.revoke-access.headline"/></h3>
 <p>
-   Should the <html:placeholder name="object_type" /> <strong><html:placeholder name="displayname" /></strong> 
-   not have any access to visibility definition with id <strong><html:placeholder name="proxyid" /></strong> 
-   (type: <em><html:placeholder name="proxytype" /></em>)?
+   <html:getstring
+       name="intro-text"
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.revoke-access.intro.text"/>
 </p>
 <html:form name="RevokeNo" method="post">
-  <form:button name="No" value="No" class="formfield"/>
+  <form:button name="No">
+     <button:getstring
+         namespace="modules::usermanagement::pres"
+         config="labels.ini"
+         entry="frontend.proxy.revoke-access.button-no.label"/>
+  </form:button>
 </html:form>
 <html:form name="RevokeYes" method="post">
-  <form:button name="Yes" value="Yes" class="formfield"/>
+  <form:button name="Yes">
+     <button:getstring
+         namespace="modules::usermanagement::pres"
+         config="labels.ini"
+         entry="frontend.proxy.revoke-access.button-yes.label"/>
+  </form:button>
 </html:form>

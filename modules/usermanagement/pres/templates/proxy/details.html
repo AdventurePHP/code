@@ -2,17 +2,30 @@
    namespace="modules::usermanagement::pres::documentcontroller::proxy"
    class="umgt_proxy_details_controller"
 @>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
+<h3><html:getstring
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.details.headline"/></h3>
 <p>
-   The following list presents the visibility objects stored for the visibility definition with
-   object id <strong><html:placeholder name="appobjectid" /></strong> (type: 
-   <em><html:placeholder name="appproxytype" /></em>).
+   <html:getstring
+       name="intro-text"
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.details.intro.text"/>
 </p>
 <table class="vis-def">
    <thead>
       <tr>
          <td>&nbsp;</td>
-         <td>User / group</td>
-         <td>Actions</td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.details.users-groups.label"/></td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.details.actions.label"/></td>
       </tr>
    </thead>
    <tbody>
@@ -29,7 +42,14 @@
          <template:placeholder name="item" />
       </td>
       <td>
-         <a href="<template:placeholder name="delete_link"/>" title="Revoke access to user/group"><umgt:media filename="delete.png" alt="Revoke access to user/group" /></a>
+         <a href="<template:placeholder name="delete_link"/>">
+            <umgt:media filename="delete.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.proxy.details.actions.revoke.label"/>
+            </umgt:media>
+         </a>
       </td>
    </tr>
 </html:template>

@@ -2,27 +2,49 @@
    namespace="modules::usermanagement::pres::documentcontroller::proxy"
    class="umgt_proxy_list_controller"
 @>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form"/>
 <p>
-   The following list presents the visibility definitions stored in the current application.
+   <html:getstring
+         namespace="modules::usermanagement::pres"
+         config="labels.ini"
+         entry="frontend.proxy.list.intro.text"/>
 </p>
 <p>
    <html:form class="type-filter" name="type-filter">
-      Filter by object type:
-      <form:select name="proxytypeid">
-         <select:option value="0">- no filter -</select:option>
-      </form:select>
-      <form:button name="go" value="GO"/>
+      <form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.list.filter.label"/>
+      <form:select name="proxytypeid" />
+      <form:button name="go">
+         <button:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.proxy.list.button.label"/>
+      </form:button>
    </html:form>
 </p>
 <table class="vis-def">
    <thead>
       <tr>
          <td>&nbsp;</td>
-         <td>Visibility definition</td>
-         <td>User(s)</td>
-         <td>Group(s)</td>
-         <td>Action(s)</td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.list.proxy-definition.label"/></td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.list.users.label"/></td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.list.groups.label"/></td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.list.actions.label"/></td>
       </tr>
    </thead>
    <tbody>
@@ -32,14 +54,17 @@
 
 <html:template name="Proxy">
    <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media"/>
+   <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
    <tr>
       <td>
          <umgt:media filename="visibility_def.png" alt="Delete visibility definition"/>
       </td>
       <td>
-         <strong><template:placeholder name="AppProxyType"/></strong>
-         with id
-         <strong><template:placeholder name="AppObjectId"/></strong>
+         <template:getstring
+               name="proxy-def"
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.proxy.list.proxy-def.label"/>
       </td>
       <td>
          <template:placeholder name="Users"/>
@@ -48,23 +73,53 @@
          <template:placeholder name="Groups"/>
       </td>
       <td class="actions">
-         <a href="<template:placeholder name="proxy_details" />" title="View visibility definition details">
-         <umgt:media filename="details.png" title="View visibility definition details"/>
+         <a href="<template:placeholder name="proxy_details" />">
+            <umgt:media filename="details.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.proxy.list.action.details.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name="proxy_delete" />" title="Delete visibility definition">
-         <umgt:media filename="delete.png" title="Delete visibility definition"/>
+         <a href="<template:placeholder name="proxy_delete" />">
+            <umgt:media filename="delete.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.proxy.list.action.delete.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name="proxy_add_user" />" title="Add users to visibility definition">
-            <umgt:media filename="group_add_user.png" title="Add users to visibility definition"/>
+         <a href="<template:placeholder name="proxy_add_user" />">
+            <umgt:media filename="group_add_user.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.proxy.list.action.add-users-to-proxy.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name="proxy_remove_user" />" title="Remove users from visibility definition">
-            <umgt:media filename="group_remove_user.png" title="Remove users from visibility definition"/>
+         <a href="<template:placeholder name="proxy_remove_user" />">
+            <umgt:media filename="group_remove_user.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.proxy.list.action.remove-users-from-proxy.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name="proxy_add_group" />" title="Add groups to visibility definition">
-            <umgt:media filename="add_group.png" title="Add groups to visibility definition"/>
+         <a href="<template:placeholder name="proxy_add_group" />">
+            <umgt:media filename="add_group.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.proxy.list.action.add-groups-to-proxy.label"/>
+            </umgt:media>
          </a>
-         <a href="<template:placeholder name="proxy_remove_group" />" title="Remove groups from visibility definition">
-            <umgt:media filename="remove_group.png" title="Remove groups from visibility definition"/>
+         <a href="<template:placeholder name="proxy_remove_group" />">
+            <umgt:media filename="remove_group.png">
+               <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.proxy.list.action.remove-groups-from-proxy.label"/>
+            </umgt:media>
          </a>
       </td>
    </tr>

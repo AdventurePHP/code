@@ -41,6 +41,13 @@ class umgt_proxy_list_controller extends umgt_base_controller {
       $types = $uM->loadVisibilityDefinitionTypes();
       $select = &$form->getFormElementByName('proxytypeid');
       /* @var $select form_taglib_select */
+
+      // add default option that deletes any filter
+      $select->addOption(
+         $this->getConfiguration('modules::usermanagement::pres', 'labels.ini')
+               ->getSection($this->getLanguage())
+               ->getValue('frontend.proxy.list.delete-filter.label'), 0);
+
       foreach ($types as $type) {
          /* @var $type UmgtVisibilityDefinition */
          $select->addOption($type->getAppObjectName(), $type->getObjectId());
@@ -53,7 +60,7 @@ class umgt_proxy_list_controller extends umgt_base_controller {
          $typeId = $form
                ->getFormElementByName('proxytypeid')
                ->getSelectedOption()
-               ->getAttribute('value');
+               ->getValue();
          $type = $uM->loadVisibilityDefinitionTypeById($typeId);
 
          // By convention: the filter can be removed by applying null.
@@ -70,10 +77,10 @@ class umgt_proxy_list_controller extends umgt_base_controller {
 
          $proxyId = $proxy->getObjectId();
 
-         $template->setPlaceHolder('AppObjectId', $proxy->getAppObjectId());
-
          $type = $uM->loadVisibilityDefinitionType($proxy);
-         $template->setPlaceHolder('AppProxyType', $type->getAppObjectName());
+         $template->getLabel('proxy-def')
+               ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
+               ->setPlaceHolder('app-proxy-type', $type->getAppObjectName());
 
          $template->setPlaceHolder('Users', $this->getUsers($proxy));
          $template->setPlaceHolder('Groups', $this->getGroups($proxy));

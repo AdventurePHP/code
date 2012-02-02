@@ -55,27 +55,26 @@ class umgt_revoke_access_controller extends umgt_base_controller {
 
          if ($objectType == 'User') {
             $uM->detachUsersFromVisibilityDefinition($proxy, array($object));
-         }
-         else {
+         } else {
             $uM->detachGroupsFromVisibilityDefinition($proxy, array($object));
          }
 
       } elseif ($formNo->isSent()) {
       } else {
 
-         $this->setPlaceHolder('object_type', strtolower($objectType));
+         $label = &$this->getLabel('intro-text');
+         $label->setPlaceHolder('object-type', strtolower($objectType));
 
          if ($objectType == 'User') {
             $object = $this->getManager()->loadUserByID($objectId);
-         }
-         else {
+         } else {
             $object = $this->getManager()->loadGroupByID($objectId);
          }
-         $this->setPlaceHolder('displayname', $object->getDisplayName());
-         $this->setPlaceHolder('proxyid', $proxyId);
+         $label->setPlaceHolder('display-name', $object->getDisplayName());
+         $label->setPlaceHolder('proxy-id', $proxyId);
 
          $proxyType = $uM->loadVisibilityDefinitionType($proxy);
-         $this->setPlaceHolder('proxytype', $proxyType->getAppObjectName());
+         $label->setPlaceHolder('proxy-type', $proxyType->getAppObjectName());
 
          $formYes->transformOnPlace();
          $formNo->transformOnPlace();
@@ -83,12 +82,12 @@ class umgt_revoke_access_controller extends umgt_base_controller {
       }
 
       HeaderManager::forward($this->generateLink(
-                                array(
-                                     'mainview' => 'proxy',
-                                     'proxyview' => 'details',
-                                     'proxyid' => $proxyId
-                                )
-                             )
+            array(
+               'mainview' => 'proxy',
+               'proxyview' => 'details',
+               'proxyid' => $proxyId
+            )
+         )
       );
 
    }

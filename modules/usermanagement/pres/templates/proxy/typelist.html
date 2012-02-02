@@ -2,16 +2,29 @@
    namespace="modules::usermanagement::pres::documentcontroller::proxy"
    class="umgt_type_list_controller"
 @>
-<h3>Visibility definition types</h3>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
+<h3><html:getstring
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.type-list.headline"/></h3>
 <p>
-   This lists shows all types of visibility definitions created for the current application.
+   <html:getstring
+          namespace="modules::usermanagement::pres"
+          config="labels.ini"
+          entry="frontend.proxy.type-list.intro.text"/>
 </p>
 <table class="vis-def">
    <thead>
       <tr>
          <td>&nbsp;</td>
-         <td>Visibility type</td>
-         <td>Action</td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.type-list.proxy-type.label"/></td>
+         <td><html:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.type-list.actions.label"/></td>
       </tr>
    </thead>
    <tbody>
@@ -22,15 +35,30 @@
    <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
    <tr>
       <td>
-         <umgt:media filename="visibility_def_type.png" title="Visibility definition type" />
+         <umgt:media filename="visibility_def_type.png">
+            <media:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.proxy.type-list.proxy-type-img.label"/>
+         </umgt:media>
       </td>
       <td><template:placeholder name="AppObjectName" /></td>
       <td class="actions">
-         <a href="<template:placeholder name="type_edit" />" title="Edit visibility definition type">
-           <umgt:media filename="edit.png" title="Edit visibility definition type" />
+         <a href="<template:placeholder name="type_edit" />">
+           <umgt:media filename="edit.png">
+              <media:getstring
+                     namespace="modules::usermanagement::pres"
+                     config="labels.ini"
+                     entry="frontend.proxy.type-list.action.edit.label"/>
+           </umgt:media>
          </a>
-         <a href="<template:placeholder name="type_delete" />" title="Delete visibility definition type">
-           <umgt:media filename="delete.png" title="Delete visibility definition type" />
+         <a href="<template:placeholder name="type_delete" />">
+           <umgt:media filename="delete.png">
+              <media:getstring
+                     namespace="modules::usermanagement::pres"
+                     config="labels.ini"
+                     entry="frontend.proxy.type-list.action.delete.label"/>
+           </umgt:media>
          </a>
       </td>
    </tr>

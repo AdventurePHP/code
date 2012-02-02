@@ -49,10 +49,11 @@ class umgt_proxy_delete_controller extends umgt_base_controller {
       } elseif ($formNo->isSent()) {
       } else {
 
-         $this->setPlaceHolder('proxyid', $proxyId);
 
          $proxyType = $uM->loadVisibilityDefinitionType($proxy);
-         $this->setPlaceHolder('proxytype', $proxyType->getAppObjectName());
+         $this->getLabel('intro-text')
+               ->setPlaceHolder('proxy-type', $proxyType->getAppObjectName())
+               ->setPlaceHolder('proxy-id', $proxyId);
 
          $formYes->transformOnPlace();
          $formNo->transformOnPlace();
@@ -60,11 +61,11 @@ class umgt_proxy_delete_controller extends umgt_base_controller {
       }
 
       HeaderManager::forward($this->generateLink(
-                                array(
-                                     'mainview' => 'proxy',
-                                     'proxyview' => null
-                                )
-                             )
+            array(
+               'mainview' => 'proxy',
+               'proxyview' => null
+            )
+         )
       );
 
    }

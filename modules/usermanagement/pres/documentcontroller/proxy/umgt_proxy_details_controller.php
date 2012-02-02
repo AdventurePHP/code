@@ -30,8 +30,9 @@ class umgt_proxy_details_controller extends umgt_base_controller {
       $type = $uM->loadVisibilityDefinitionType($proxy);
 
       // display the proxy type's name
-      $this->setPlaceHolder('appobjectid', $proxy->getAppObjectId());
-      $this->setPlaceHolder('appproxytype', $type->getAppObjectName());
+      $this->getLabel('intro-text')
+            ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
+            ->setPlaceHolder('app-proxy-type', $type->getAppObjectName());
 
       // load visibility permission list for the current permission
       $template = &$this->getTemplate('listitem');
@@ -46,6 +47,9 @@ class umgt_proxy_details_controller extends umgt_base_controller {
       }
       ksort($sortedList);
 
+      $config = $this->getConfiguration('modules::usermanagement::pres', 'labels.ini');
+      $section = $config->getSection($this->getLanguage());
+
       foreach ($sortedList as $item) {
 
          /* @var $item UmgtUser|UmgtGroup */
@@ -54,13 +58,10 @@ class umgt_proxy_details_controller extends umgt_base_controller {
          $icon = &$this->getIcon($template);
          if ($item instanceof UmgtUser) {
             $icon->setAttribute('filename', 'user.png');
-            $icon->setAttribute('alt', 'User');
-            $icon->setAttribute('title', 'User');
-         }
-         else {
+            $icon->setAttribute('title', $section->getValue('frontend.proxy.details.user-img.label'));
+         } else {
             $icon->setAttribute('filename', 'group.png');
-            $icon->setAttribute('alt', 'Group');
-            $icon->setAttribute('title', 'Group');
+            $icon->setAttribute('title', $section->getValue('frontend.proxy.details.group-img.label'));
          }
 
          // insert links
@@ -68,10 +69,10 @@ class umgt_proxy_details_controller extends umgt_base_controller {
             'delete_link',
             $this->generateLink(
                array(
-                    'proxyview' => 'proxyrevokeaccess',
-                    'proxyid' => $proxyId,
-                    'objectid' => $item->getObjectId(),
-                    'objecttype' => $item->getObjectName()
+                  'proxyview' => 'proxyrevokeaccess',
+                  'proxyid' => $proxyId,
+                  'objectid' => $item->getObjectId(),
+                  'objecttype' => $item->getObjectName()
                )
             )
          );
@@ -80,7 +81,6 @@ class umgt_proxy_details_controller extends umgt_base_controller {
       }
 
       $this->setPlaceHolder('list', $buffer);
-
    }
 
 }
