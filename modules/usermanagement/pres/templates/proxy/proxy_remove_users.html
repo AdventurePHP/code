@@ -3,26 +3,61 @@
    class="umgt_proxy_remove_users_controller"
 @>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
-<p>
-   Please select the users that should no longer have visibility permissions on the
-   application object with id <strong><html:placeholder name="AppObjectId" /></strong> (type:
-   <em><html:placeholder name="ProxyType" /></em>) as well.
-</p>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
+<h3><html:getstring
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.remove-users-from-proxy.headline"/></h3>
 <html:form name="add_perm" method="post">
+   <p>
+      <form:getstring
+            name="intro-text"
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.remove-users-from-proxy.intro.text"/>
+   </p>
    <form:listener control="users">
       <div class="error-cont">
-         Please mark at least one user to remove from the visibility definition!
+         <listener:getstring
+             namespace="modules::usermanagement::pres"
+             config="labels.ini"
+             entry="frontend.proxy.remove-users-from-proxy.validation.message"/>
       </div>
    </form:listener>
    <div>
-      <label for="users">Users:</label>
-      <form:multiselect id="users" name="users" class="formfield" size="6" />
+      <label for="users"><form:getstring
+             namespace="modules::usermanagement::pres"
+             config="labels.ini"
+             entry="frontend.proxy.remove-users-from-proxy.users.label"/></label>
+      <form:multiselect id="users" name="users" size="6" />
    </div>
    <form:addvalidator
       class="MultiSelectFieldValidator"
       control="users"
       button="rem"
    />
-   <form:button name="rem" value="Remove" class="formfield" />
+   <form:button name="rem">
+      <button:getstring
+          namespace="modules::usermanagement::pres"
+          config="labels.ini"
+          entry="frontend.proxy.remove-users-from-proxy.button.label"/>
+   </form:button>
    <form:hidden name="proxyid" />
 </html:form>
+<html:template name="NoMoreUsers">
+   <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring"/>
+   <p>
+      <template:getstring
+            name="message-1"
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.remove-users-from-proxy.message.1"/>
+   </p>
+   <p>
+      <template:getstring
+            name="message-2"
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.remove-usesr-from-proxy.message.2"/>
+   </p>
+</html:template>

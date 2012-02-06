@@ -1,20 +1,46 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::proxy" class="umgt_type_edit_controller" @>
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::proxy"
+   class="umgt_type_edit_controller"
+@>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
-<p>Please change the name of the visibility type as desired:</p>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
+<h3><html:getstring
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.edit-type.headline"/></h3>
+<p>
+   <html:getstring
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.edit-type.intro.text"/>
+</p>
 <html:form name="add" method="post">
    <form:error>
       <div class="error-cont">
-         Please choose a different visbility name.
+         <error:getstring
+             namespace="modules::usermanagement::pres"
+             config="labels.ini"
+             entry="frontend.proxy.edit-type.validation.message"/>
       </div>
    </form:error>
-   <label for="proxytypename">Visibility type name:</label>
-   <form:text id="proxytypename" name="proxytypename" class="formfield" maxlength="100" style="width: 200px;"/>
-   <form:addvalidator
-      control="proxytypename"
-      button="send"
-      class="TextLengthValidator"
-   />
-   <br />
-   <br />
-   <form:button name="send" value="Save" class="formfield"/>
+   <p>
+      <label for="proxytypename"><form:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.edit-type.type-name.label"/></label>
+      <form:text id="proxytypename" name="proxytypename" maxlength="100" />
+      <form:addvalidator
+            control="proxytypename"
+            button="send"
+            class="TextLengthValidator"
+            />
+   </p>
+   <p>
+      <form:button name="send">
+         <button:getstring
+             namespace="modules::usermanagement::pres"
+             config="labels.ini"
+             entry="frontend.proxy.edit-type.button.label"/>
+      </form:button>
+   </p>
 </html:form>

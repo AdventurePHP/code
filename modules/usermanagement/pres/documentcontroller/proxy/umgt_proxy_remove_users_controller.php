@@ -34,11 +34,25 @@ class umgt_proxy_remove_users_controller extends permission_base_controller {
       $proxy = $uM->loadVisibilityDefinitionById($proxyId);
       $proxyType = $uM->loadVisibilityDefinitionType($proxy);
 
-      $this->setPlaceHolder('AppObjectId', $proxy->getAppObjectId());
-      $this->setPlaceHolder('ProxyType', $proxyType->getAppObjectName());
+      $form->getLabel('intro-text')
+            ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
+            ->setPlaceHolder('proxy-type', $proxyType->getAppObjectName());
 
       $users = $uM->loadUsersWithVisibilityDefinition($proxy);
+
+      if (count($users) === 0) {
+         $tmpl = &$this->getTemplate('NoMoreUsers');
+         $tmpl->getLabel('message-1')
+               ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
+               ->setPlaceHolder('object-type', $proxyType->getObjectName());
+         $tmpl->getLabel('message-2')->setPlaceHolder('proxy-view-link',
+            $this->generateLink(array('mainview' => 'proxy', 'proxyview' => null, 'proxyid' => null)));
+         $tmpl->transformOnPlace();
+         return;
+      }
+
       $usersControl = &$form->getFormElementByName('users');
+      /* @var $usersControl form_taglib_select */
       foreach ($users as $id => $DUMMY) {
          $usersControl->addOption($users[$id]->getDisplayName(), $users[$id]->getObjectId());
       }
@@ -51,9 +65,9 @@ class umgt_proxy_remove_users_controller extends permission_base_controller {
          HeaderManager::forward(
             $this->generateLink(
                array(
-                    'mainview' => 'proxy',
-                    'proxyview' => null,
-                    'proxyid' => null)
+                  'mainview' => 'proxy',
+                  'proxyview' => null,
+                  'proxyid' => null)
             )
          );
 

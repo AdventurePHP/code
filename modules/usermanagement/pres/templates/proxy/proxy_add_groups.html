@@ -3,26 +3,62 @@
    class="umgt_proxy_add_groups_controller"
 @>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
-<p>
-   Please select the groups that should have visibility permissions on the application
-   object with id <strong><html:placeholder name="AppObjectId" /></strong> (type:
-   <em><html:placeholder name="ProxyType" /></em>) as well.
-</p>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
+<h3><html:getstring
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.add-groups-to-proxy.headline"/></h3>
+
 <html:form name="add_perm" method="post">
+   <p>
+      <form:getstring
+         name="intro-text"
+         namespace="modules::usermanagement::pres"
+         config="labels.ini"
+         entry="frontend.proxy.add-groups-to-proxy.intro.text"/>
+   </p>
    <form:listener control="groups">
       <div class="error-cont">
-         Please mark at least one user to add to the visibility definition!
+         <listener:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.add-groups-to-proxy.validator.message"/>
       </div>
    </form:listener>
    <div>
-      <label for="groups">Groups:</label>
-      <form:multiselect id="groups" name="groups" class="formfield" size="6"/>
+      <label for="groups"><form:getstring
+         namespace="modules::usermanagement::pres"
+         config="labels.ini"
+         entry="frontend.proxy.add-groups-to-proxy.groups.label"/></label>
+      <form:multiselect id="groups" name="groups" size="6"/>
    </div>
    <form:addvalidator
       class="MultiSelectFieldValidator"
       control="groups"
       button="add"
    />
-   <form:button name="add" value="Add" class="formfield" />
+   <form:button name="add">
+      <html:getstring
+          namespace="modules::usermanagement::pres"
+          config="labels.ini"
+          entry="frontend.proxy.add-groups-to-proxy.button.label"/>
+   </form:button>
    <form:hidden name="proxyid" />
 </html:form>
+<html:template name="NoMoreGroups">
+   <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring"/>
+   <p>
+      <template:getstring
+            name="message-1"
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.add-groups-to-proxy.message.1"/>
+   </p>
+   <p>
+      <template:getstring
+            name="message-2"
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.add-groups-to-proxy.message.2"/>
+   </p>
+</html:template>

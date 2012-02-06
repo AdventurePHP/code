@@ -63,12 +63,22 @@ class umgt_revoke_access_controller extends umgt_base_controller {
       } else {
 
          $label = &$this->getLabel('intro-text');
-         $label->setPlaceHolder('object-type', strtolower($objectType));
+
+         $labels = $this->getConfiguration('modules::usermanagement::pres', 'labels.ini')
+               ->getSection($this->getLanguage());
 
          if ($objectType == 'User') {
             $object = $this->getManager()->loadUserByID($objectId);
+            $label->setPlaceHolder(
+               'object-type',
+               $labels->getValue('frontend.proxy.revoke-access.object-type.user.label')
+            );
          } else {
             $object = $this->getManager()->loadGroupByID($objectId);
+            $label->setPlaceHolder(
+               'object-type',
+               $labels->getValue('frontend.proxy.revoke-access.object-type.group.label')
+            );
          }
          $label->setPlaceHolder('display-name', $object->getDisplayName());
          $label->setPlaceHolder('proxy-id', $proxyId);

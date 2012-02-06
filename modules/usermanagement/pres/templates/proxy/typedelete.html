@@ -1,16 +1,39 @@
-<@controller namespace="modules::usermanagement::pres::documentcontroller::proxy" class="umgt_type_delete_controller" @>
+<@controller
+   namespace="modules::usermanagement::pres::documentcontroller::proxy"
+   class="umgt_type_delete_controller"
+@>
+<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
+<h3><html:getstring
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.delete-type.headline"/></h3>
 <p>
-   Should the visibility type <strong><html:placeholder name="name" /></strong> really be deleted?
+   <html:getstring
+      name="intro-text"
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.proxy.delete-type.intro.text"/>
 </p>
 <div class="umgt-warn">
-   Deleting a visibility object type includes removing all visibility definitions that were
-   created using this type! Please note, that the visibility definitions cannot be restored
-   automatically.
+   <html:getstring
+      namespace="modules::usermanagement::pres"
+      config="labels.ini"
+      entry="frontend.proxy.delete-type.warning.text"/>
 </div>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
 <html:form name="ProxyTypeDelNo" method="post">
-  <form:button name="No" value="No" class="formfield"/>
+   <form:button name="No">
+      <button:getstring
+         namespace="modules::usermanagement::pres"
+         config="labels.ini"
+         entry="frontend.proxy.edit-type.button-no.label"/>
+   </form:button>
 </html:form>
 <html:form name="ProxyTypeDelYes" method="post">
-  <form:button name="Yes" value="Yes" class="formfield"/>
+   <form:button name="Yes">
+      <button:getstring
+         namespace="modules::usermanagement::pres"
+         config="labels.ini"
+         entry="frontend.proxy.edit-type.button-yes.label"/>
+   </form:button>
 </html:form>

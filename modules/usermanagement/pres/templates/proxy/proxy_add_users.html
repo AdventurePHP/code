@@ -8,14 +8,14 @@
        namespace="modules::usermanagement::pres"
        config="labels.ini"
        entry="frontend.proxy.add-users-to-proxy.headline"/></h3>
-<p>
-   <html:getstring
-          name="intro-text"
-          namespace="modules::usermanagement::pres"
-          config="labels.ini"
-          entry="frontend.proxy.add-users-to-proxy.intro.text"/>
-</p>
 <html:form name="add_perm" method="post">
+   <p>
+      <form:getstring
+             name="intro-text"
+             namespace="modules::usermanagement::pres"
+             config="labels.ini"
+             entry="frontend.proxy.add-users-to-proxy.intro.text"/>
+   </p>
    <form:listener control="users">
       <div class="error-cont">
          <listener:getstring
@@ -44,3 +44,20 @@
    </form:button>
    <form:hidden name="proxyid" />
 </html:form>
+<html:template name="NoMoreUsers">
+   <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring"/>
+   <p>
+      <template:getstring
+            name="message-1"
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.add-users-to-proxy.message.1"/>
+   </p>
+   <p>
+      <template:getstring
+            name="message-2"
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.proxy.add-users-to-proxy.message.2"/>
+   </p>
+</html:template>
