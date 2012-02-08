@@ -136,7 +136,7 @@ class ExtendedSoapClientService extends APFObject {
       // lazily construct the client to be able to configure it by nice setter methods.
       $client = $this->getClient();
 
-      if ($oneWay === null) {
+      if ($oneWay === true) {
          $client->__doRequest($request, $this->location, $action, $this->getSoapVersion());
          return null;
       } else {
