@@ -126,6 +126,10 @@ class ExtendedSoapClientService extends APFObject {
     * @param boolean $oneWay True in case no answer is expected.
     * @return SimpleXMLElement|null The answer of the request or null in case $oneWay is set to TRUE.
     * @throws SoapFault In case of any SOAP call error.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
     */
    public function executeRequest($request, $action, $oneWay = null) {
 
@@ -164,6 +168,10 @@ class ExtendedSoapClientService extends APFObject {
    /**
     * @param string $location The location of the SOAP service.
     * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
     */
    public function setLocation($location) {
       $this->location = $location;
@@ -178,14 +186,22 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
-    * @param string $wsdlUrl
+    * @param string $wsdlUrl The location of the WSDL of the web service to consume.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
     */
    public function setWsdlUrl($wsdlUrl) {
       $this->wsdlUrl = $wsdlUrl;
    }
 
    /**
-    * @return string
+    * @return string The location of the WSDL service that is currently configured.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
     */
    public function getWsdlUrl() {
       return $this->wsdlUrl;
@@ -195,6 +211,10 @@ class ExtendedSoapClientService extends APFObject {
     * @param string $login
     * @param string $password
     * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
     */
    public function setHttpAuthCredentials($login, $password) {
       $this->options['login'] = $login;
@@ -209,6 +229,10 @@ class ExtendedSoapClientService extends APFObject {
    /**
     * @param int $compression The compression to use/accept.
     * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
     */
    public function setCompressionLevel($compression) {
       $this->options['compression'] = $compression;
@@ -222,6 +246,10 @@ class ExtendedSoapClientService extends APFObject {
    /**
     * @var The connection_timeout option defines a timeout in seconds for the connection to the SOAP service. This option does not define a timeout for services with slow responses. To limit the time to wait for calls to finish the default_socket_timeout setting is available.
     * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
     */
    public function setConnectionTimeout($timeout) {
       $this->options['connection_timeout'] = $timeout;
@@ -235,6 +263,10 @@ class ExtendedSoapClientService extends APFObject {
    /**
     * @var int The cache_wsdl option is one of WSDL_CACHE_NONE, WSDL_CACHE_DISK, WSDL_CACHE_MEMORY or WSDL_CACHE_BOTH.
     * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
     */
    public function setCacheWsdl($cacheWsdl) {
       $this->options['cache_wsdl'] = $cacheWsdl;
@@ -248,6 +280,10 @@ class ExtendedSoapClientService extends APFObject {
    /**
     * @param string $encoding The encoding to use.
     * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
     */
    public function setEncoding($encoding) {
       $this->options['encoding'] = $encoding;
@@ -273,6 +309,10 @@ class ExtendedSoapClientService extends APFObject {
 
    /**
     * @return int The soap version.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
     */
    public function getSoapVersion() {
       return $this->options['soap_version'];
@@ -280,6 +320,10 @@ class ExtendedSoapClientService extends APFObject {
 
    /**
     * @param XPathNamespace $namespace The desired namespace to register.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
     */
    public function registerXPathNamespace(XPathNamespace $namespace) {
       $this->namespaces[] = $namespace;
@@ -288,6 +332,10 @@ class ExtendedSoapClientService extends APFObject {
    /**
     * @param string $faultXpathExpression The xpath expression to extract a fault from the payload.
     * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
     */
    public function setFaultXpathExpression($faultXpathExpression) {
       $this->faultXpathExpression = $faultXpathExpression;
@@ -297,6 +345,10 @@ class ExtendedSoapClientService extends APFObject {
    /**
     * @param WsdlObjectMapping $mapping The object mapping of WSDL types to PHP objects.
     * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
     */
    public function registerWsdlObjectMapping(WsdlObjectMapping $mapping) {
       $this->options['classmap'][$mapping->getWsdlType()] = $mapping->getPhpClassName();
@@ -305,6 +357,50 @@ class ExtendedSoapClientService extends APFObject {
       $this->client = null;
 
       return $this;
+   }
+
+   /**
+    * @return string The headers of the last request.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.02.2012<br />
+    */
+   public function getLastRequestHeaders() {
+      return $this->getClient()->__getLastRequestHeaders();
+   }
+
+   /**
+    * @return string The content of the last request.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.02.2012<br />
+    */
+   public function getLastRequest() {
+      return $this->getClient()->__getLastRequest();
+   }
+
+   /**
+    * @return string The headers of the last response.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.02.2012<br />
+    */
+   public function getLastResponseHeaders() {
+      return $this->getClient()->__getLastResponseHeaders();
+   }
+
+   /**
+    * @return string The content of the last response.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.02.2012<br />
+    */
+   public function getLastResponse() {
+      return $this->getClient()->__getLastResponse();
    }
 
 }
