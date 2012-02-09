@@ -121,8 +121,111 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
-    * @param string $request
-    * @param string $action
+    * @public
+    *
+    * This method provides a method call to a SOAP method. In order to execute the call you have
+    * to provide the name of the method (action) and an associative array including the input
+    * parameters. The parameters are directly mapped to the SOAP request structured defined within
+    * the WSDL. Thus, the names of the parameters MUST match the data types (normally defined within
+    * the XSD attached/linked to the WSDL.
+    * <p/>
+    * This method supports the object mapping feature of PHP's SOAP client implementation. This means
+    * that you are able to retrieve POPOs (a.k.a. plain old PHP objects) that represent the returned
+    * XML structure. Please note that the object mapping feature (see <em>classmap</em> option at the
+    * PHP.net manual) requires the mapping being defined correctly. This means, that the name of the
+    * type MUST be equal to the complex or simple type defined within the XSD. The name of the POPO
+    * can be defined freely. The ExtendedSoapClientService introduces automatic setup of the mapping
+    * using the <em>WsdlObjectMapping</em> class. This feature can be used with the DI container as
+    * well.
+    * <p/>
+    * Due to PHP bug https://bugs.php.net/bug.php?id=50997 the implementation relies on PHP's magic
+    * __call() method. This seams to be a workaround for us since providing a dedicated method such
+    * as executeSoapRequest() results in the described error.
+    *
+    * @example
+    * <code>
+    * class LoginResponse {
+    *
+    *    private $token;
+    *
+    *    public function setToken($token) {
+    *       $this->token = $token;
+    *    }
+    *
+    *    public function getToken() {
+    *       return $this->token;
+    *    }
+    *
+    * }
+    *
+    * $client = new ExtendedSoapClientService();
+    * $client->setWsdlUrl('https://example.com/services/v1?wsdl');
+    * $client->setLocation('https://example.com/services/v1');
+    *
+    * $client->registerWsdlObjectMapping(new WsdlObjectMapping(
+    *    'login-response',
+    *    'sample::namespace',
+    *    'LoginResponse'
+    * ));
+    *
+    * $params = array(
+    *    'alias' => 'my user name',
+    *    'secret' => 'my secret'
+    * );
+    *
+    * $response = $client->Authenticate($params);
+    *
+    * echo $response->getToken();
+    * </code>
+    *
+    * @param string $action The name of the SOAP method.
+    * @param array $arguments The SPA method's input parameters (usually an associative array).
+    * @return mixed The response of the call (string or a response object).
+    * @throws SoapFault In case of any SOAP call error.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.01.2012<br />
+    */
+   public function __call($action, $arguments) {
+      $client = $this->getClient();
+      $response = $client->__soapCall($action, $arguments);
+
+      // check for hidden soap faults
+      if (isset($client->__soap_fault) && $client->__soap_fault != null) {
+         throw new SoapFault('SOAP-ERROR', 'SOAP call "' . $action . '"" failed with request "' . $arguments . '" with message "'
+               . $client->__soap_fault . '"! ' . 'Cause: ' . $response);
+      }
+
+      return $response;
+   }
+
+   /**
+    * @public
+    *
+    * This method provides a low level method to call a SOAP method. In order to execute the call
+    * you have to provide the name of the method (action) and the SOAP request (input) as a string.
+    * <p/>
+    * Please note that the object mapping feature of PHP's SOAP client implementation is
+    * <strong>NOT</strong> working with this method. If you want to use it, please use the
+    * <em>executeRequest()</em> function.
+    *
+    * @example
+    * <code>
+    * $request = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    *                <soapenv:Header/>
+    *                <soapenv:Body>
+    *                   ...
+    *                </soapenv:Body>
+    *             </soapenv:Envelope>';';
+    * $client = new ExtendedSoapClientService();
+    * $client->setWsdlUrl('https://example.com/services/v1?wsdl');
+    * $client->setLocation('https://example.com/services/v1');
+    * $responseXml = $client->executeTextRequest('GetNews', $request);
+    * </code>
+    *
+    * @param string $action The WSDL method's name.
+    * @param string $request The SOAP request string.
     * @param boolean $oneWay True in case no answer is expected.
     * @return SimpleXMLElement|null The answer of the request or null in case $oneWay is set to TRUE.
     * @throws SoapFault In case of any SOAP call error.
@@ -131,7 +234,7 @@ class ExtendedSoapClientService extends APFObject {
     * @version
     * Version 0.1, 26.01.2012<br />
     */
-   public function executeRequest($request, $action, $oneWay = null) {
+   public function executeRequest($action, $request, $oneWay = null) {
 
       // lazily construct the client to be able to configure it by nice setter methods.
       $client = $this->getClient();
@@ -143,8 +246,8 @@ class ExtendedSoapClientService extends APFObject {
          $response = $client->__doRequest($request, $this->location, $action, $this->getSoapVersion(), $oneWay);
 
          // check for hidden soap faults
-         if ((isset($client->__soap_fault)) && ($client->__soap_fault != null)) {
-            throw new SoapFault('SOAP call "' . $action . '"" failed with request "' . $request . '" with message "'
+         if (isset($client->__soap_fault) && $client->__soap_fault != null) {
+            throw new SoapFault('SOAP-ERROR', 'SOAP call "' . $action . '"" failed with request "' . $request . '" with message "'
                   . $client->__soap_fault . '"! ' . 'Cause: ' . $response);
          }
 
@@ -156,8 +259,8 @@ class ExtendedSoapClientService extends APFObject {
 
          // check for soap faults within the response body
          $fault = $xml->xpath($this->faultXpathExpression);
-         if (count($fault) > 0) {
-            throw new SoapFault('SOAP call "' . $action . '"" failed with request "' . $request . '"! '
+         if (count($fault) > 0 && $fault != 0) {
+            throw new SoapFault('SOAP-CALL-FAILED', 'SOAP call "' . $action . '"" failed with request "' . $request . '"! '
                   . 'Cause: ' . $response);
          }
 
@@ -353,6 +456,8 @@ class ExtendedSoapClientService extends APFObject {
    public function registerWsdlObjectMapping(WsdlObjectMapping $mapping) {
       $this->options['classmap'][$mapping->getWsdlType()] = $mapping->getPhpClassName();
 
+      import($mapping->getPhpClassNamespace(), $mapping->getPhpClassName());
+
       // reconfiguration requires to create a new instance.
       $this->client = null;
 
@@ -401,6 +506,52 @@ class ExtendedSoapClientService extends APFObject {
     */
    public function getLastResponse() {
       return $this->getClient()->__getLastResponse();
+   }
+
+   /**
+    * @return array The list of methods that are defined within the WSDL applied to setWsdlUrl().
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.02.2012<br />
+    */
+   public function getFunctions() {
+      return $this->getClient()->__getFunctions();
+   }
+
+   /**
+    * @return array The list of types that are defined within WSDL applied to setWsdlUrl().
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.02.2012<br />
+    */
+   public function getTypes() {
+      return $this->getClient()->__getTypes();
+   }
+
+   /**
+    * @param string $name The name of the cookie.
+    * @param string $value The value of the cookie.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.02.2012<br />
+    */
+   public function setCookie($name, $value) {
+      $this->getClient()->__setCookie($name, $value);
+   }
+
+   /**
+    * @param mixed $headers The soap headers to set for the subsequent calls.
+    * @return boolean True in case of success, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.02.2012<br />
+    */
+   public function setSoapHeaders($headers) {
+      return $this->getClient()->__setSoapHeaders($headers);
    }
 
 }

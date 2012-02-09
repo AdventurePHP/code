@@ -38,17 +38,28 @@ class WsdlObjectMapping {
    private $wsdlType;
 
    /**
+    * @var string The namespace of the PHP class.
+    */
+   private $phpClassNamespace;
+
+   /**
     * @var string The name of the PHP class.
     */
    private $phpClassName;
 
    /**
     * @param string $wsdlType The name of the WSDL type.
+    * @param string $phpClassNamespace The namespace of the PHP class.
     * @param string $phpClassName The name of the PHP class.
     */
-   public function __construct($wsdlType, $phpClassName) {
+   public function __construct($wsdlType, $phpClassNamespace, $phpClassName) {
       $this->wsdlType = $wsdlType;
+      $this->phpClassNamespace = $phpClassNamespace;
       $this->phpClassName = $phpClassName;
+   }
+
+   public function getPhpClassNamespace() {
+      return $this->phpClassNamespace;
    }
 
    public function getPhpClassName() {
