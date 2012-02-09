@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::soap', 'XPathNamespace');
 import('tools::soap', 'WsdlObjectMapping');
 
 /**
@@ -38,16 +37,6 @@ class ExtendedSoapClientService extends APFObject {
     * @var string[] The options of the SoapClient instance.
     */
    private $options = array();
-
-   /**
-    * @var XPathNamespace[] Registered namespaces for the default response parsing.
-    */
-   private $namespaces = array();
-
-   /**
-    * @var string The xpath expressions to extract a fault from the payload. Correlates with the registered namespaces!
-    */
-   private $faultXpathExpression;
 
    /**
     * @var string The url of the WSDL.
@@ -247,24 +236,19 @@ class ExtendedSoapClientService extends APFObject {
 
          // check for hidden soap faults
          if (isset($client->__soap_fault) && $client->__soap_fault != null) {
-            throw new SoapFault('SOAP-ERROR', 'SOAP call "' . $action . '"" failed with request "' . $request . '" with message "'
-                  . $client->__soap_fault . '"! ' . 'Cause: ' . $response);
+            throw new SoapFault('SOAP-ERROR', 'SOAP call "' . $action . '"" failed with request "' . $request
+                  . '" with message "' . $client->__soap_fault . '"! ' . 'Cause: ' . $response);
          }
 
-         // return XML structure with correct namespaces already
+         // create XML structure to simply take-n-go the result of the call
          $xml = simplexml_load_string($response);
-         foreach ($this->namespaces as $namespace) {
-            $xml->registerXPathNamespace($namespace->getPrefix(), $namespace->getNamespace());
+
+         // automatically register included SOAP namespaces
+         foreach ($xml->getNamespaces(true) as $prefix => $namespace) {
+            $xml->registerXPathNamespace($prefix, $namespace);
          }
 
-         // check for soap faults within the response body
-         $fault = $xml->xpath($this->faultXpathExpression);
-         if (count($fault) > 0 && $fault != 0) {
-            throw new SoapFault('SOAP-CALL-FAILED', 'SOAP call "' . $action . '"" failed with request "' . $request . '"! '
-                  . 'Cause: ' . $response);
-         }
-
-         return $response;
+         return $xml;
       }
    }
 
@@ -422,30 +406,6 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
-    * @param XPathNamespace $namespace The desired namespace to register.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.01.2012<br />
-    */
-   public function registerXPathNamespace(XPathNamespace $namespace) {
-      $this->namespaces[] = $namespace;
-   }
-
-   /**
-    * @param string $faultXpathExpression The xpath expression to extract a fault from the payload.
-    * @return ExtendedSoapClientService This instance for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.01.2012<br />
-    */
-   public function setFaultXpathExpression($faultXpathExpression) {
-      $this->faultXpathExpression = $faultXpathExpression;
-      return $this;
-   }
-
-   /**
     * @param WsdlObjectMapping $mapping The object mapping of WSDL types to PHP objects.
     * @return ExtendedSoapClientService This instance for further usage.
     *
@@ -456,7 +416,9 @@ class ExtendedSoapClientService extends APFObject {
    public function registerWsdlObjectMapping(WsdlObjectMapping $mapping) {
       $this->options['classmap'][$mapping->getWsdlType()] = $mapping->getPhpClassName();
 
-      import($mapping->getPhpClassNamespace(), $mapping->getPhpClassName());
+      if (!class_exists($mapping->getPhpClassName())) {
+         import($mapping->getPhpClassNamespace(), $mapping->getPhpClassName());
+      }
 
       // reconfiguration requires to create a new instance.
       $this->client = null;

@@ -25,12 +25,25 @@
  *
  * Implements a wrapper class for an WSDL-to-PHP object mapping that can be registered with the APFSoapClient in
  * order to transform WSDL types to PHP objects.
+ * <p/>
+ * May be used within a code block to explicitly add an object mapping or as a DI service that is injected
+ * into the ExtendedSoapClientService.
+ *
+ * @example
+ * <code>
+ * $mapping = new WsdlObjectMapping();
+ * $client->registerWsdlObjectMapping(
+ *    $mapping->setWsdlType('login-response')
+ *       ->setPhpClassNamespace('sample::namespace')
+ *       ->setPhpClassName('LoginResponse')
+ *);
+ * </code>
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 08.02.2012<br />
  */
-class WsdlObjectMapping {
+class WsdlObjectMapping extends APFObject {
 
    /**
     * @var string The name of the WSDL type.
@@ -48,22 +61,38 @@ class WsdlObjectMapping {
    private $phpClassName;
 
    /**
-    * @param string $wsdlType The name of the WSDL type.
-    * @param string $phpClassNamespace The namespace of the PHP class.
     * @param string $phpClassName The name of the PHP class.
+    * @return WsdlObjectMapping This object for further usage.
     */
-   public function __construct($wsdlType, $phpClassNamespace, $phpClassName) {
-      $this->wsdlType = $wsdlType;
-      $this->phpClassNamespace = $phpClassNamespace;
+   public function setPhpClassName($phpClassName) {
       $this->phpClassName = $phpClassName;
+      return $this;
+   }
+
+   public function getPhpClassName() {
+      return $this->phpClassName;
+   }
+
+   /**
+    * @param string $phpClassNamespace The namespace of the PHP class.
+    * @return WsdlObjectMapping This object for further usage.
+    */
+   public function setPhpClassNamespace($phpClassNamespace) {
+      $this->phpClassNamespace = $phpClassNamespace;
+      return $this;
    }
 
    public function getPhpClassNamespace() {
       return $this->phpClassNamespace;
    }
 
-   public function getPhpClassName() {
-      return $this->phpClassName;
+   /**
+    * @param string $wsdlType The name of the WSDL type.
+    * @return WsdlObjectMapping This object for further usage.
+    */
+   public function setWsdlType($wsdlType) {
+      $this->wsdlType = $wsdlType;
+      return $this;
    }
 
    public function getWsdlType() {
