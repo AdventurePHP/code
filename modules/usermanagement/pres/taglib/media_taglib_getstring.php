@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::html::taglib', 'ui_getstring');
 
 /**
  * Injects a language dependent title to a <umgt:media /> tag.
@@ -34,5 +33,3 @@ class media_taglib_getstring extends ui_getstring {
    }
 
 }
-
-?>

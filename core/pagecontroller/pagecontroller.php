@@ -1036,6 +1036,7 @@ class Document extends APFObject {
     * @version
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
+    * Version 0.3, 11.02.2012 (Added html:getstring tag as known tag (refactoring!))<br />
     */
    public function __construct() {
 
@@ -1051,6 +1052,7 @@ class Document extends APFObject {
       $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core', 'appendnode');
       $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'template');
       $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'placeholder');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'getstring');
    }
 
    /**
@@ -1993,10 +1995,12 @@ class html_taglib_template extends Document {
     * Version 0.5, 03.03.2007 (Removed the "&" before the "new" operator)<br />
     * Version 0.6, 21.04.2007 (Added the template:addtaglib tag again)<br />
     * Version 0.7, 02.05.2007 (Removed the template:config tag)<br />
+    * Version 0.8, 11.02.2012 (Added template:getstring tag as known tag (refactoring!))
     */
    public function __construct() {
       $this->__TagLibs[] = new TagLib('core::pagecontroller', 'template', 'placeholder');
       $this->__TagLibs[] = new TagLib('core::pagecontroller', 'template', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'template', 'getstring');
    }
 
    /**
@@ -2198,6 +2202,165 @@ class template_taglib_placeholder extends Document {
       return $this->__Content;
    }
 
+}
+
+/**
+ * @package core::pagecontroller
+ * @class ui_getstring
+ * @abstract
+ *
+ * Implements a base class for the taglibs &lt;html:getstring /&gt; and
+ * &lt;template:getstring /&gt;. This lib fetches the desired configuration value and
+ * returns it on transformation time. The configuration files must be strcutured as follows:
+ * <p/>
+ * <pre>
+ * [de]
+ * key = "german value"
+ *
+ * [en]
+ * key = "englisch value"
+ *
+ * ...
+ * </pre>
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 21.04.2006<br />
+ * Version 0.2, 17.09.2009 (Refactored due to form taglib changes)<br />
+ * Version 0.3, 11.02.2012 (Added ui_getstring to core (refactoring!))
+ */
+abstract class ui_getstring extends Document {
+
+   /**
+    * @var array A list of place holder names and values.
+    */
+   private $placeHolders = array();
+
+   public function __construct() {
+      // do nothing, especially not initialize tag libs
+   }
+
+   /**
+    * @public
+    *
+    * Implements the functionality to retrieve a language dependent value form a
+    * configuration file. Checks the attributes needed for displaying data.
+    *
+    * @return The desired translation text.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 21.04.2006<br />
+    * Version 0.2, 17.10.2008 (Enhanced error messages)<br />
+    */
+   public function transform() {
+
+      // check for attribute "namespace"
+      $namespace = $this->getAttribute('namespace');
+      if ($namespace === null) {
+         throw new InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
+               . '"namespace" given in tag definition!', E_USER_ERROR);
+      }
+
+      // check for attribute "config"
+      $configName = $this->getAttribute('config');
+      if ($configName === null) {
+         throw new InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
+               . '"config" given in tag definition!', E_USER_ERROR);
+      }
+
+      // check for attribute "entry"
+      $entry = $this->getAttribute('entry');
+      if ($entry === null) {
+         throw new InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
+               . '"entry" given in tag definition!', E_USER_ERROR);
+      }
+
+      // get configuration values
+      $config = $this->getConfiguration($namespace, $configName);
+      $value = $config->getSection($this->getLanguage()) === null
+            ? null
+            : $config->getSection($this->getLanguage())->getValue($entry);
+
+      if ($value == null) {
+
+         // get environment variable from registry to have nice exception message
+         $env = Registry::retrieve('apf::core', 'Environment');
+
+         throw new InvalidArgumentException('[' . get_class($this) . '::transform()] Given entry "'
+               . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'
+               . $env . '_' . $configName . '" in namespace "' . $namespace . '" and context "'
+               . $this->getContext() . '"!', E_USER_ERROR);
+      }
+      return $this->replace($value);
+   }
+
+   /**
+    * @public
+    *
+    * Let's you add a place holder that is replaced into the current label. Each place holder
+    * must be defined with square brackets ("{" and "}") with the key between the opening and
+    * the closing bracket (e.g. "{foo}" in case the name of the place holder is "foo").
+    *
+    * @param string $name The name of the place holder.
+    * @param string $value The value of the place holder.
+    * @return ui_getstring This instance for further usage (e.g. adding further place holders).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.01.2012<br />
+    */
+   public function &setPlaceHolder($name, $value) {
+      $this->placeHolders[$name] = $value;
+      return $this;
+   }
+
+   /**
+    * @private
+    *
+    * Replaces all place holders within the current label that are registered within this instance.
+    *
+    * @param string $label The raw label.
+    * @return string The label with replaced place holders.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.01.2012<br />
+    */
+   private function replace($label) {
+      foreach ($this->placeHolders as $key => $value) {
+         $label = str_replace('{' . $key . '}', $value, $label);
+      }
+      return $label;
+   }
+
+}
+
+/**
+ * @package core::pagecontroller
+ * @class html_taglib_getstring
+ *
+ * Taglib class for the &lt;html:getstring /&gt; tag.
+ *
+ * @author Christian Schäfer
+ * @version
+ * Version 0.1, 21.04.2006<br />
+ */
+class html_taglib_getstring extends ui_getstring {
+}
+
+/**
+ * @package core::pagecontroller
+ * @class template_taglib_getstring
+ *
+ * Taglib class for the &lt;template:getstring /&gt; tag.
+ *
+ * @author Christian Schäfer
+ * @version
+ * Version 0.1, 21.04.2006<br />
+ * Version 0.2, 10.11.2008 (Removed the onParseTime() method, because the registerTagLibModule() function now is obsolete)<br />
+ */
+class template_taglib_getstring extends ui_getstring {
 }
 
 /**
@@ -2517,5 +2680,3 @@ abstract class base_controller extends Document {
    }
 
 }
-
-?>
