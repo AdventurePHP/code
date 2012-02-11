@@ -3,7 +3,6 @@
    class="umgt_proxy_add_groups_controller"
 @>
 <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
-<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring"/>
 <h3><html:getstring
        namespace="modules::usermanagement::pres"
        config="labels.ini"
@@ -46,7 +45,6 @@
    <form:hidden name="proxyid" />
 </html:form>
 <html:template name="NoMoreGroups">
-   <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring"/>
    <p>
       <template:getstring
             name="message-1"
