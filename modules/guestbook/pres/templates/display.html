@@ -64,7 +64,6 @@
 </html:template>
 
 <html:template name="Entry">
-  <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
   <div style="width: 100%;">
     <div style="background-color: white; border-bottom: 2px solid gray; padding-bottom: 3px;"><img src="/frontend/media/guestbook/elephant_small.png" alt="" border="0" />&nbsp;&nbsp;<strong><template:getstring namespace="modules::guestbook" config="guestbook_lang" entry="Text.EntryNo" /> <template:placeholder name="ID" /></strong></div>
     <div class="guestbook_padding_background">
@@ -98,7 +97,6 @@
 </html:template>
 
 <html:template name="Comment">
-  <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
   <br />
   <div style="width: 100%; margin: 10px; margin-bottom: 2px;">
     <strong><template:getstring namespace="modules::guestbook" config="guestbook_lang" entry="Text.Comment" />:</strong>

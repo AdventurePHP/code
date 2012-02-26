@@ -1,5 +1,4 @@
 <@controller namespace="modules::comments::pres::documentcontroller" class="comment_listing_v1_controller" @>
-<core:addtaglib namespace="tools::html::taglib" prefix="html" class="getstring" />
 <div class="cm--list">
    <div class="cm--list-head">
       <html:getstring namespace="modules::comments" config="language" entry="listing.text.1" /> <a rel="nofollow" href="<html:placeholder name="Link" />#comments" title="<html:getstring namespace="modules::comments" config="language" entry="listing.text.2.title" />"><strong><html:getstring namespace="modules::comments" config="language" entry="listing.text.2" /></strong></a> <html:getstring namespace="modules::comments" config="language" entry="listing.text.3" />
@@ -27,7 +26,6 @@
    </div>
 </html:template>
 <html:template name="NoEntries">
-   <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
    <div class="cm--list-noentries">
       <template:getstring namespace="modules::comments" config="language" entry="noentries.text" />
    </div>

@@ -29,7 +29,6 @@
 </html:iterator>
 
 <html:template name="author">
-    <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
     <span class="news-entry-author">
         <span class="label"><template:getstring namespace="extensions::news" config="labels.ini" entry="Author" />: </span>
         <template:placeholder name="authorname" />
@@ -37,14 +36,12 @@
 </html:template>
 
 <html:template name="pager">
-    <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
     <div id="news-pager">
         <template:getstring namespace="extensions::news" config="labels.ini" entry="Page" />: <template:placeholder name="pages" />
     </div>
 </html:template>
 
 <html:template name="noentry">
-    <template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
     <div id="news-noentry">
         <template:getstring namespace="extensions::news" config="labels.ini" entry="NoEntry" />
     </div>

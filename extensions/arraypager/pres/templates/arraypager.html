@@ -6,17 +6,14 @@
 <br />
 
 <html:template name="Page_Selected">
-<template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
   <a href="<template:placeholder name="URL" />" title="<template:getstring namespace="extensions::arraypager" config="language" entry="DisplayPage" /> <template:placeholder name="Page" />"><font style="font-size: 16px; font-weight: bold;"><template:placeholder name="Page" /></font></a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="Page">
-<template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
   <a href="<template:placeholder name="URL" />" title="<template:getstring namespace="extensions::arraypager" config="language" entry="DisplayPage" /> <template:placeholder name="Page" />"><template:placeholder name="Page" /></a>&nbsp;&nbsp;
 </html:template>
 
 <html:template name="PreviousPage_Active">
-<template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
   <a href="<template:placeholder name="URL" />" title="<template:getstring namespace="extensions::arraypager" config="language" entry="DisplayPreviousPage" />"><font style="font-size: 14px;">&laquo;</font></a>&nbsp;&nbsp;
 </html:template>
 
@@ -25,7 +22,6 @@
 </html:template>
 
 <html:template name="NextPage_Active">
-<template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
   <a href="<template:placeholder name="URL" />" title="<template:getstring namespace="extensions::arraypager" config="language" entry="DisplayNextPage" />"><font style="font-size: 14px;">&raquo;</font></a>
 </html:template>
 
@@ -34,17 +30,14 @@
 </html:template>
 
 <html:template name="Entries_Active">
-<template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
   <a href="<template:placeholder name="URL" />" title="<template:placeholder name="Entries" /> <template:getstring namespace="extensions::arraypager" config="language" entry="DisplayNEntriesPerPage" />"><strong><template:placeholder name="Entries" /></strong></a> |
 </html:template>
 
 <html:template name="Entries_Inactive">
-<template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
   <a href="<template:placeholder name="URL" />" title="<template:placeholder name="Entries" /> <template:getstring namespace="extensions::arraypager" config="language" entry="DisplayNEntriesPerPage" />"><template:placeholder name="Entries" /></a> |
 </html:template>
 
 <html:template name="Entries">
-<template:addtaglib namespace="tools::html::taglib" prefix="template" class="getstring" />
   <br />
   <font style="font-size: 9px;"><template:getstring namespace="extensions::arraypager" config="language" entry="Entries" /></font>&nbsp;|<template:placeholder name="Entries" />
 </html:template>
