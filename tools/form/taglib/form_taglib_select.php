@@ -256,8 +256,9 @@ class form_taglib_select extends form_control {
          if (get_class($this->__Children[$objectId]) == 'select_taglib_group') {
             $this->__Children[$objectId]->setOption2Selected($displayNameOrValue);
          } else {
-            if ($this->__Children[$objectId]->getAttribute('value') == $displayNameOrValue
-                || $this->__Children[$objectId]->getContent() == $displayNameOrValue
+            // bug 981: introduced type-safe comparison to avoid pre-select issues with "0".
+            if ($this->__Children[$objectId]->getAttribute('value') === $displayNameOrValue
+                  || $this->__Children[$objectId]->getContent() === $displayNameOrValue
             ) {
                $this->__Children[$objectId]->setAttribute('selected', 'selected');
                $selectedObjectId = $objectId;
@@ -306,8 +307,8 @@ class form_taglib_select extends form_control {
 
       foreach ($this->__Children as $objectId => $DUMMY) {
          $this->__Content = str_replace('<' . $objectId . ' />',
-                                        $this->__Children[$objectId]->transform(),
-                                        $this->__Content
+            $this->__Children[$objectId]->transform(),
+            $this->__Content
          );
       }
 
@@ -368,7 +369,7 @@ class form_taglib_select extends form_control {
          $endBracketPos = strpos($name, $subMarkerEnd);
          $mainName = substr($name, 0, $startBracketPos);
          $subName = substr($name, $startBracketPos + 1,
-                           $endBracketPos - $startBracketPos - strlen($subMarkerEnd)
+               $endBracketPos - $startBracketPos - strlen($subMarkerEnd)
          );
          if (isset($_REQUEST[$mainName][$subName])) {
             $value = $_REQUEST[$mainName][$subName];
@@ -420,4 +421,3 @@ class form_taglib_select extends form_control {
 
 }
 
-?>
