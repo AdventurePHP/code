@@ -23,29 +23,45 @@
  * @package extensions::forwardmessage::pres::taglib
  * @class html_taglib_getforwardmessages
  *
- * @param string $groups Sting of groups that should be displayed. Seperated by , (e.g message,error)
- * Returns the added flash messages.
+ * @param string $groups String of groups that should be displayed. Seperated by "," (e.g "message,error")
+ * @param string $delimiter
+ * @return string Returns the added flash messages.
+ *
+ * @example
+ * <code>
+ * <core:addtaglib
+ *    namespace="extensions::forwardmessage::pres::taglib"
+ *    prefix="html"
+ *    class="getforwardmessages"
+ * />
+ * <html:getforwardmessages
+ *    [groups="..."]
+ *    [delimiter="..."]
+ * />
+ * </code>
  *
  * @author Daniel Seemaier, Werner Liemberger
  * @version
- * Version 0.1, 10.09.2010
- * Version 0.2 25.2.2011, Group option added by Werner Liemberger
+ * Version 0.1, 10.09.2010<br />
+ * Version 0.2, 25.2.2011, Group option added by Werner Liemberger
  */
 class html_taglib_getforwardmessages extends Document {
 
-    public function transform() {
+   public function transform() {
 
-        $groups = $this->getAttribute('groups');
+      $groups = $this->getAttribute('groups');
+      if (empty($groups)) {
+         $groups = array();
+      } else {
+         $groups = explode(',', $groups);
+      }
 
-        if ($groups === null || $groups == '') {
-            $groups = array();
-        } else {
-            $groups = explode(',', $groups);
-        }
-
-        $forwardMessageMgr = &$this->getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', 'SESSIONSINGLETON');
-        return implode('', $forwardMessageMgr->getMessages($groups));
-    }
+      /* @var $manager ForwardMessageManager */
+      $manager = &$this->getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      return implode(
+         $this->getAttribute('delimiter', ''),
+         $manager->getMessages($groups)
+      );
+   }
 
 }
-?>
