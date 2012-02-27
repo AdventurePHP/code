@@ -256,9 +256,9 @@ class form_taglib_select extends form_control {
          if (get_class($this->__Children[$objectId]) == 'select_taglib_group') {
             $this->__Children[$objectId]->setOption2Selected($displayNameOrValue);
          } else {
-            // bug 981: introduced type-safe comparison to avoid pre-select issues with "0".
-            if ($this->__Children[$objectId]->getAttribute('value') === $displayNameOrValue
-                  || $this->__Children[$objectId]->getContent() === $displayNameOrValue
+            // bug 981: introduced string-based comparison to avoid pre-select issues with "0".
+            if ($this->__Children[$objectId]->getAttribute('value') == (string)$displayNameOrValue
+                  || $this->__Children[$objectId]->getContent() == (string)$displayNameOrValue
             ) {
                $this->__Children[$objectId]->setAttribute('selected', 'selected');
                $selectedObjectId = $objectId;
