@@ -51,7 +51,12 @@ import('core::configuration::provider::xml', 'XmlConfiguration');
  * Version 0.1, 27.09.2010<br />
  */
 class XmlConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
-
+    /**
+    * @public
+    * 
+    * @version
+    * Version 0.2, 27.02.2012 (Throw an exception if xml isn't wellformed - Tobias Lückel [Megger])
+    */
     public function loadConfiguration($namespace, $context, $language, $environment, $name) {
 
         $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
@@ -59,6 +64,13 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
         if (file_exists($fileName)) {
 
             $xml = simplexml_load_file($fileName);
+            
+            if ($xml === false) {
+                throw new ConfigurationException('[XmlConfigurationProvider::loadConfiguration()] '
+                    . 'Configuration with namespace "' . $namespace . '", context "' . $context . '", '
+                    . ' language "' . $language . '", environment "' . $environment . '", and name '
+                    . '"' . $name . '" isn\'t wellformed (file name: ' . $fileName . ')!', E_USER_ERROR);
+            }
 
             $config = new XmlConfiguration();
 
