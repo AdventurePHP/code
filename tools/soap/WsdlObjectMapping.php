@@ -27,16 +27,25 @@
  * order to transform WSDL types to PHP objects.
  * <p/>
  * May be used within a code block to explicitly add an object mapping or as a DI service that is injected
- * into the ExtendedSoapClientService.
+ * into the ExtendedSoapClientService. For an example, please have a look at the sample config EXAMPLE_serviceobjects.ini under
+ * namespace tools::soap.
  *
  * @example
  * <code>
+ * // explicit setter call
  * $mapping = new WsdlObjectMapping();
  * $client->registerWsdlObjectMapping(
  *    $mapping->setWsdlType('login-response')
  *       ->setPhpClassNamespace('sample::namespace')
  *       ->setPhpClassName('LoginResponse')
  *);
+ *
+ * // constructor usage
+ * $mapping = new WsdlObjectMapping(
+ *    'login-response',
+ *    'sample::namespace',
+ *    'LoginResponse'
+ * );
  * </code>
  *
  * @author Christian Achatz
@@ -59,6 +68,24 @@ class WsdlObjectMapping extends APFObject {
     * @var string The name of the PHP class.
     */
    private $phpClassName;
+
+   /**
+    * Let's you construct a WSDL object mapping to be injected into the
+    * ExtendedSoapClientService by the registerWsdlObjectMapping() method.
+    *
+    * @param string $wsdlType The name of the WSDL type.
+    * @param string $phpClassNamespace The namespace of the PHP class.
+    * @param string $phpClassName The name of the PHP class.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.02.2012<br />
+    */
+   public function __construct($wsdlType = null, $phpClassNamespace = null, $phpClassName = null) {
+      $this->wsdlType = $wsdlType;
+      $this->phpClassNamespace = $phpClassNamespace;
+      $this->phpClassName = $phpClassName;
+   }
 
    /**
     * @param string $phpClassName The name of the PHP class.
