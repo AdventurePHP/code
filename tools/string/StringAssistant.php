@@ -21,7 +21,7 @@
 
 /**
  * @package tools::string
- * @class stringAssistant
+ * @class StringAssistant
  * @static
  *
  * Provides methods for string manipulation and generation.
@@ -30,7 +30,7 @@
  * @version
  * Version 0.1, 12.02.2006<br />
  */
-class stringAssistant {
+class StringAssistant {
 
    private function __construct() {
    }
@@ -95,7 +95,7 @@ class stringAssistant {
    public static function generateCaptchaString($length) {
 
       // shuffles random numbers
-      srand(stringAssistant::generateSeed());
+      srand(StringAssistant::generateSeed());
 
       $characterBase = 'ABCDEFGHJKLMNPRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
 

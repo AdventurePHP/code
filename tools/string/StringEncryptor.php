@@ -21,7 +21,7 @@
 
 /**
  * @package tools::string
- * @class stringEncryptor
+ * @class StringEncryptor
  *
  * Providers password encryption services using a configured salt.
  *
@@ -30,16 +30,19 @@
  * Version 0.1, 24.06.2006<br />
  * Version 0.2, 02.06.2007 (Now inherits from APFObject to be able to use as service object)<br />
  */
-class stringEncryptor extends APFObject {
+class StringEncryptor extends APFObject {
 
    /**
     * @public
     *
-    * Erzeugt einen Passwort-Hash mit einem statischen Salt, da variable<br />
-    * Salts bei der Authentifizierung Probleme generieren. Dazu wird der Salt<br />
-    * aus der Konfigurationsdatei {ENVIRONMENT}_encryption.txt gelesen.<br />
-    * Diese muss im Namespace config::tools::string::{CONTEXT}::iniconfig<br />
-    * vorgehalten werden.<br />
+    * Creates a password hash with a static salt. The salt is read from a configuration
+    * names <em>{ENVIRONMENT}_encryption.ini</em> located under
+    * <em>config::tools::string::{CONTEXT}</em>.
+    *
+    * @param string $password The clear text password.
+    * @param string $section he name of the configuration section.
+    * @return string The password hash.
+    * @throws ConfigurationException In case the config is not present.
     *
     * @author Christian Schäfer
     * @version
@@ -52,4 +55,3 @@ class stringEncryptor extends APFObject {
    }
 
 }
-?>

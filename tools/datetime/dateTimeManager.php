@@ -30,7 +30,7 @@
     * @version
     * Version 0.1, 08.09.2004<br />
     * Version 0.2, 21.01.2006<br />
-    * Version 0.3, 27.03.2007 (Moved "showMonthLabel" from "stringAssistant" to this class)<br />
+    * Version 0.3, 27.03.2007 (Moved "showMonthLabel" from "StringAssistant" to this class)<br />
     */
    final class dateTimeManager {
 

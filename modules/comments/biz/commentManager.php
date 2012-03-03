@@ -20,7 +20,7 @@
  */
 import('modules::comments::data', 'commentMapper');
 import('tools::link', 'LinkGenerator');
-import('tools::string', 'stringAssistant');
+import('tools::string', 'StringAssistant');
 import('core::session', 'SessionManager');
 import('tools::http', 'HeaderManager');
 

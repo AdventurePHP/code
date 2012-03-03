@@ -21,7 +21,7 @@
 import('tools::form::taglib', 'form_control');
 import('tools::form::taglib', 'form_taglib_text');
 import('tools::request', 'RequestHandler');
-import('tools::string', 'stringAssistant');
+import('tools::string', 'StringAssistant');
 import('core::session', 'SessionManager');
 import('tools::link', 'LinkGenerator');
 
@@ -154,7 +154,7 @@ class form_taglib_captcha extends form_control {
       // get the captcha string from session
       $sessMgr = new SessionManager('modules::captcha');
       $this->captchaString = $sessMgr->loadSessionData($this->textFieldName);
-      $sessMgr->saveSessionData($this->textFieldName, stringAssistant::generateCaptchaString(5));
+      $sessMgr->saveSessionData($this->textFieldName, StringAssistant::generateCaptchaString(5));
 
    }
 
