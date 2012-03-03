@@ -99,7 +99,7 @@ if (isset($_SERVER['SERVER_PORT']) && isset($_SERVER['HTTP_HOST']) && isset($_SE
 }
 
 // include necessary core libraries for the page controller
-import('core::errorhandler', 'errorhandler');
+import('core::errorhandler', 'GlobalErrorHandler');
 import('core::exceptionhandler', 'exceptionhandler');
 import('core::service', 'ServiceManager');
 import('core::service', 'DIServiceManager');
