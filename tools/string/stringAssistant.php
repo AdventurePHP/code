@@ -49,11 +49,7 @@ class stringAssistant {
     * Version 0.1, 11.01.2005<br />
     */
    public static function escapeSpecialCharacters($string) {
-      if (ini_get('magic_quotes_gpc') == '1') {
-         return htmlspecialchars($string, ENT_QUOTES, Registry::retrieve('apf::core', 'Charset'), false);
-      } else {
-         return addslashes(htmlspecialchars($string, ENT_QUOTES, Registry::retrieve('apf::core', 'Charset'), false));
-      }
+      return addslashes(htmlspecialchars($string, ENT_QUOTES, Registry::retrieve('apf::core', 'Charset'), false));
    }
 
    /**
@@ -62,15 +58,18 @@ class stringAssistant {
     *
     * Encodes a given string to html entities.
     *
+    * @param string $string The string to encode.
+    * @return The html entity encoded string.
+    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 24.06.2007<br />
     */
-   public static function encodeCharactersToHTML($String) {
+   public static function encodeCharactersToHTML($string) {
 
-      $content = trim($String);
+      $content = trim($string);
 
-      $encodedContent = (string) '';
+      $encodedContent = (string)'';
 
       for ($i = 0; $i < strlen($content); $i++) {
          $encodedContent .= '&#' . ord($content[$i]) . ';';
@@ -95,12 +94,12 @@ class stringAssistant {
     */
    public static function generateCaptchaString($length) {
 
-      // shuffeln random numbers
+      // shuffles random numbers
       srand(stringAssistant::generateSeed());
 
       $characterBase = 'ABCDEFGHJKLMNPRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
 
-      $captchaString = (string) '';
+      $captchaString = (string)'';
 
       while (strlen($captchaString) < $length) {
          $captchaString .= substr($characterBase, (rand() % (strlen($characterBase))), 1);
@@ -124,8 +123,7 @@ class stringAssistant {
     */
    public static function generateSeed() {
       list($usec, $sec) = explode(' ', microtime());
-      return (float) $sec + ((float) $usec * 100000);
+      return (float)$sec + ((float)$usec * 100000);
    }
 
 }
-?>
