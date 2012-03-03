@@ -26,12 +26,41 @@
  * Implements a live error handler, that logs the occured error and redirects to
  * a statically configured page to hide the error from the customer (e.g. for
  * security reasons).
+ * <p/>
+ * In order to use the error handler, please add the following code to your
+ * bootstrap file:
+ * <code>
+ * import('core::errorhandler', 'ProductionErrorHandler');
+ * GlobalErrorHandler::registerErrorHandler(
+ *    new ProductionErrorHandler('/pages/global-error')
+ * );
+ * </code>
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 13.11.2010<br />
  */
 class ProductionErrorHandler extends DefaultErrorHandler {
+
+   /**
+    * @var string The url the user is redirected to in case of errors.
+    */
+   private $errorRedirectUrl;
+
+   /**
+    * @public
+    *
+    * Let's you define the page/url the user is redirected to in case of errors.
+    *
+    * @param string $errorRedirectUrl The error page url.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.03.2012<br />
+    */
+   public function __construct($errorRedirectUrl) {
+      $this->errorRedirectUrl = $errorRedirectUrl;
+   }
 
    public function handleError($errorNumber, $errorMessage, $errorFile, $errorLine, array $errorContext) {
 
@@ -46,8 +75,7 @@ class ProductionErrorHandler extends DefaultErrorHandler {
       $this->logError();
 
       // redirect to configured page
-      $url = Registry::retrieve('apf::core::errorhandler', 'ProductionErrorRedirectUrl', '/');
-      header('Location: ' . $url, null, 302);
+      header('Location: ' . $this->errorRedirectUrl, null, 302);
       exit(0);
 
    }

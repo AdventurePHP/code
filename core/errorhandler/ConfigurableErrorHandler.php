@@ -33,15 +33,34 @@
  */
 class ConfigurableErrorHandler extends DefaultErrorHandler {
 
+   /**
+    * @var int The error threshold level.
+    */
+   private $errorThresholdLevel;
+
+   /**
+    * @public
+    *
+    * Let's you define the error threshold level. Errors below this level are ignored and
+    * errors above are handled as known by the <em>DefaultErrorHandler</em>.
+    *
+    * @param int $errorThresholdLevel The error threshold level.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.03.2012<br />
+    */
+   public function __construct($errorThresholdLevel = null) {
+      if ($errorThresholdLevel === null) {
+         $errorThresholdLevel = error_reporting();
+      }
+      $this->errorThresholdLevel = $errorThresholdLevel;
+   }
+
    public function handleError($errorNumber, $errorMessage, $errorFile, $errorLine, array $errorContext) {
 
       // ignore errors, that have been excluded by configuration
-      $errorReporting = Registry::retrieve(
-         'apf::core::errorhandler',
-         'ConfigurableErrorReportingLevel',
-         error_reporting()); // retrieve the error level from the PHP config for convenience
-
-      if (($errorReporting & $errorNumber) == 0) {
+      if (($this->errorThresholdLevel & $errorNumber) == 0) {
          return;
       }
 
