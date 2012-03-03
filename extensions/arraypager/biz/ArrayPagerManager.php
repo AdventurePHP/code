@@ -3,7 +3,7 @@ import('extensions::arraypager::data', 'ArrayPagerMapper');
 import('tools::request', 'RequestHandler');
 
 /**
- * @namespace extensions::arraypager::biz
+ * @package extensions::arraypager::biz
  * @class ArrayPagerManager
  *
  * Represents a concrete pager.
@@ -41,9 +41,9 @@ final class ArrayPagerManager extends APFObject {
       $section = $config->getSection($initParam);
       if ($section === null) {
          throw new ConfigurationException('[ArrayPagerManager::init()] Section with name "' . $initParam
-                 . '" cannot be found in configuration "' . $configName . '" unter namespace "'
-                 . $namespace . '" and context "' . $this->getContext() . '". '
-                 . 'Please double check you configuration!');
+               . '" cannot be found in configuration "' . $configName . '" unter namespace "'
+               . $namespace . '" and context "' . $this->getContext() . '". '
+               . 'Please double check you configuration!');
       } else {
          foreach ($section->getValueNames() as $name) {
             $configParams[$name] = $section->getValue($name);
@@ -51,16 +51,17 @@ final class ArrayPagerManager extends APFObject {
       }
 
       $arrayParameter = array(
-          'Pager.ParameterPage' => 'page',
-          'Pager.ParameterEntries' => 'entries',
-          'Pager.Entries' => 10,
-          'Pager.EntriesPossible' => '5|10|15'
+         'Pager.ParameterPage' => 'page',
+         'Pager.ParameterEntries' => 'entries',
+         'Pager.Entries' => 10,
+         'Pager.EntriesPossible' => '5|10|15'
       );
 
       $this->pagerConfig = array_merge($arrayParameter, $configParams);
 
       if (isset($this->pagerConfig['Pager.EntriesChangeable']) === TRUE
-              && $this->pagerConfig['Pager.EntriesChangeable'] == 'true') {
+            && $this->pagerConfig['Pager.EntriesChangeable'] == 'true'
+      ) {
          $this->pagerConfig['Pager.EntriesChangeable'] = TRUE;
       } else {
          $this->pagerConfig['Pager.EntriesChangeable'] = FALSE;
@@ -70,14 +71,14 @@ final class ArrayPagerManager extends APFObject {
    }
 
    /**
-    *  @protected
+    * @protected
     *
     *  Returns the mapper.
     *
-    *  @return boolean True if pager exists, otherwise false
+    * @return boolean True if pager exists, otherwise false
     *
-    *  @author Lutz Mahlstedt
-    *  @version
+    * @author Lutz Mahlstedt
+    * @version
     *  Version 0.1, 21.12.2009<br />
     */
    protected function &getDataMapper() {
@@ -105,8 +106,8 @@ final class ArrayPagerManager extends APFObject {
       if (is_array($arrayData) === TRUE) {
          if ($integerPage === NULL) {
             $integerPage = intval(RequestHandler::getValue($this->pagerConfig['Pager.ParameterPage'],
-                                    1
-                            )
+                  1
+               )
             );
 
             if ($integerPage <= 0) {
@@ -117,8 +118,8 @@ final class ArrayPagerManager extends APFObject {
          if ($integerEntries === NULL) {
             if ($this->pagerConfig['Pager.EntriesChangeable'] === TRUE) {
                $integerEntries = intval(RequestHandler::getValue($this->pagerConfig['Pager.ParameterEntries'],
-                                       $this->pagerConfig['Pager.Entries']
-                               )
+                     $this->pagerConfig['Pager.Entries']
+                  )
                );
             } else {
                $integerEntries = 0;
@@ -130,13 +131,13 @@ final class ArrayPagerManager extends APFObject {
          }
 
          return array_slice($arrayData,
-                 (($integerPage - 1) * $integerEntries),
-                 $integerEntries,
-                 TRUE
+            (($integerPage - 1) * $integerEntries),
+            $integerEntries,
+            TRUE
          );
       } else {
          throw new Exception('[ArrayPagerManager->loadEntries()] There is no pager named "'
-                 . $stringPager . '" registered!', E_USER_WARNING);
+               . $stringPager . '" registered!', E_USER_WARNING);
       }
    }
 
@@ -159,7 +160,7 @@ final class ArrayPagerManager extends APFObject {
 
       if (is_array($arrayData) === TRUE) {
          if (is_array($arrayData) === TRUE
-                 AND count($arrayData) > 0
+               AND count($arrayData) > 0
          ) {
             // create pager page
             $pager = new Page();
@@ -170,31 +171,31 @@ final class ArrayPagerManager extends APFObject {
 
             // load the configured design
             $pager->loadDesign($this->pagerConfig['Pager.DesignNamespace'],
-                    $this->pagerConfig['Pager.DesignTemplate']
+               $this->pagerConfig['Pager.DesignTemplate']
             );
 
             // add the necessary config params and pages
             $rootDoc = $pager->getRootDocument();
 
             $rootDoc->setAttribute('Config',
-                    array('ParameterPage' => $this->pagerConfig['Pager.ParameterPage'],
-                        'ParameterEntries' => $this->pagerConfig['Pager.ParameterEntries'],
-                        'Entries' => intval(RequestHandler::getValue($this->pagerConfig['Pager.ParameterEntries'],
-                                        $this->pagerConfig['Pager.Entries']
-                        )),
-                        'EntriesPossible' => $this->pagerConfig['Pager.EntriesPossible'],
-                        'EntriesChangeable' => $this->pagerConfig['Pager.EntriesChangeable']
-                    )
+               array('ParameterPage' => $this->pagerConfig['Pager.ParameterPage'],
+                  'ParameterEntries' => $this->pagerConfig['Pager.ParameterEntries'],
+                  'Entries' => intval(RequestHandler::getValue($this->pagerConfig['Pager.ParameterEntries'],
+                     $this->pagerConfig['Pager.Entries']
+                  )),
+                  'EntriesPossible' => $this->pagerConfig['Pager.EntriesPossible'],
+                  'EntriesChangeable' => $this->pagerConfig['Pager.EntriesChangeable']
+               )
             );
 
             $rootDoc->setAttribute('DataCount',
-                    count($arrayData)
+               count($arrayData)
             );
 
             // add the anchor if desired
             if ($this->anchorName !== NULL) {
                $rootDoc->setAttribute('AnchorName',
-                       $this->anchorName
+                  $this->anchorName
                );
             }
 
@@ -202,21 +203,21 @@ final class ArrayPagerManager extends APFObject {
          }
       } else {
          throw new Exception('[ArrayPagerManager->getPager()] There is no pager named "'
-                 . $stringPager . '" registered!', E_USER_WARNING);
+               . $stringPager . '" registered!', E_USER_WARNING);
       }
 
       return $stringOutput;
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Sets the anchor name.
     *
-    *  @param string $stringAnchorName The name of the desired anchor.
+    * @param string $stringAnchorName The name of the desired anchor.
     *
-    *  @author Lutz Mahlstedt
-    *  @version
+    * @author Lutz Mahlstedt
+    * @version
     *  Version 0.1, 21.12.2009<br />
     */
    public function setAnchorName($stringAnchorName = NULL) {
@@ -224,14 +225,14 @@ final class ArrayPagerManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Returns the anchor name.
     *
-    *  @return string The name of the anchor
+    * @return string The name of the anchor
     *
-    *  @author Lutz Mahlstedt
-    *  @version
+    * @author Lutz Mahlstedt
+    * @version
     *  Version 0.1, 21.12.2009<br />
     */
    public function getAnchorName() {
@@ -256,11 +257,11 @@ final class ArrayPagerManager extends APFObject {
          $objectArrayPagerMapper = $this->getDataMapper();
 
          $objectArrayPagerMapper->registerEntries($stringPager,
-                 $arrayData
+            $arrayData
          );
       } else {
          throw new Exception('[ArrayPagerManager->registerPager()] Can not register pager named "'
-                 . $stringPager . '" because the given data is not an array!', E_USER_WARNING);
+               . $stringPager . '" because the given data is not an array!', E_USER_WARNING);
       }
    }
 
@@ -318,7 +319,7 @@ final class ArrayPagerManager extends APFObject {
       $booleanReturn = FALSE;
 
       $mixedData = RequestHandler::getValue($this->pagerConfig['Pager.ParameterPage'],
-                      FALSE
+         FALSE
       );
 
       if ($mixedData !== FALSE) {
@@ -329,4 +330,5 @@ final class ArrayPagerManager extends APFObject {
    }
 
 }
+
 ?>

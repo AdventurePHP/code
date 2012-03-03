@@ -24,7 +24,7 @@ import('extensions::htmlheader::biz', 'HeaderNode');
 
 /**
  * @abstract
- * @namespace extensions::htmlheader::biz
+ * @package extensions::htmlheader::biz
  * @class HtmlNode
  *
  * General node for HtmlHeaderManagers data.
@@ -36,111 +36,111 @@ import('extensions::htmlheader::biz', 'HeaderNode');
  */
 abstract class HtmlNode extends APFObject implements HeaderNode {
 
-    /**
-     * @var string The content of the node.
-     */
-    private $content = null;
+   /**
+    * @var string The content of the node.
+    */
+   private $content = null;
 
-    /**
-     * @var int The priority of the header node.
-     */
-    private $priority = 0;
-    
-    /**
-     * @var bool Defines if the taglib should be set to gethead or getjsbody taglib.
-     */
-    private $appendToBody = false;
+   /**
+    * @var int The priority of the header node.
+    */
+   private $priority = 0;
 
-    public function getContent() {
-        return $this->content;
-    }
+   /**
+    * @var bool Defines if the taglib should be set to gethead or getjsbody taglib.
+    */
+   private $appendToBody = false;
 
-    public function setContent($content) {
-        $this->content = $content;
-        return $this;
-    }
+   public function getContent() {
+      return $this->content;
+   }
 
-    public function getPriority() {
-        return $this->priority;
-    }
+   public function setContent($content) {
+      $this->content = $content;
+      return $this;
+   }
 
-    public function setPriority($priority) {
-        $this->priority = intval($priority); // normalize priority to 0 for all faulty inputs
-        return $this;
-    }
-    
-    public function setAppendToBody($value) {
-        $this->appendToBody = $value;
-        return $this;
-    }
+   public function getPriority() {
+      return $this->priority;
+   }
 
-    public function getAppendToBody() {
-        return $this->appendToBody;
-    }
+   public function setPriority($priority) {
+      $this->priority = intval($priority); // normalize priority to 0 for all faulty inputs
+      return $this;
+   }
 
-    /**
-     * @public
-     * 
-     * Transforms the node to html.
-     *
-     * @return string The ready html code.
-     */
-    public function transform() {
+   public function setAppendToBody($value) {
+      $this->appendToBody = $value;
+      return $this;
+   }
 
-        $attributes = $this->getAttributes();
+   public function getAppendToBody() {
+      return $this->appendToBody;
+   }
 
-        $html = '<' . $this->getTagName();
+   /**
+    * @public
+    *
+    * Transforms the node to html.
+    *
+    * @return string The ready html code.
+    */
+   public function transform() {
 
-        if (count($attributes) > 0) {
-            $html .= ' ' . $this->getAttributesAsString($attributes);
-        }
+      $attributes = $this->getAttributes();
 
-        $content = $this->getContent();
-        if ($content === null) {
-            $html .= ' />';
-        } else {
-            $html .= '>' . $content . '</' . $this->getTagName() . '>';
-        }
+      $html = '<' . $this->getTagName();
 
-        return $html;
-    }
+      if (count($attributes) > 0) {
+         $html .= ' ' . $this->getAttributesAsString($attributes);
+      }
 
-    /**
-     * @return The name of the current html tag.
-     */
-    protected abstract function getTagName();
+      $content = $this->getContent();
+      if ($content === null) {
+         $html .= ' />';
+      } else {
+         $html .= '>' . $content . '</' . $this->getTagName() . '>';
+      }
 
-    /**
-     * Builds a Link for the JsCssInclusion FC-action
-     *
-     * @param string $url Optional url.
-     * @param string $namespace Namespace of file
-     * @param string $filename Name of file
-     * @param bool $urlRewriting Optional. Create rewriting Url.
-     * @param bool $fcaction Optional. Create link for FC-Action.
-     * @param string $type Filetype
-     * @return string elements' link.
-     */
-    protected function buildFrontcontrollerLink($url, $namespace, $filename, $urlRewriting, $fcaction, $type) {
+      return $html;
+   }
 
-        if ($fcaction === null) {
-            $fcaction = true;
-        }
+   /**
+    * @return The name of the current html tag.
+    */
+   protected abstract function getTagName();
 
-        if ($fcaction) {
-            $UrlObj = ($url === null) ? Url::fromCurrent(true) : Url::fromString($url);
+   /**
+    * Builds a Link for the JsCssInclusion FC-action
+    *
+    * @param string $url Optional url.
+    * @param string $namespace Namespace of file
+    * @param string $filename Name of file
+    * @param bool $urlRewriting Optional. Create rewriting Url.
+    * @param bool $fcaction Optional. Create link for FC-Action.
+    * @param string $type Filetype
+    * @return string elements' link.
+    */
+   protected function buildFrontcontrollerLink($url, $namespace, $filename, $urlRewriting, $fcaction, $type) {
 
-            return LinkGenerator::generateActionUrl($UrlObj, 'extensions::htmlheader', 'JsCss', array(
-                        'path' => str_replace('::', '_', $namespace),
-                        'type' => $type,
-                        'file' => $filename
-                    ));
-        } else {
-            $namespace = str_replace('::', '/', $namespace);
-            $url .= ( substr($url, -1, 1) !== '/') ? '/' : '';
-            return $url . $namespace . '/' . $filename . '.' . $type;
-        }
-    }
+      if ($fcaction === null) {
+         $fcaction = true;
+      }
+
+      if ($fcaction) {
+         $UrlObj = ($url === null) ? Url::fromCurrent(true) : Url::fromString($url);
+
+         return LinkGenerator::generateActionUrl($UrlObj, 'extensions::htmlheader', 'JsCss', array(
+            'path' => str_replace('::', '_', $namespace),
+            'type' => $type,
+            'file' => $filename
+         ));
+      } else {
+         $namespace = str_replace('::', '/', $namespace);
+         $url .= (substr($url, -1, 1) !== '/') ? '/' : '';
+         return $url . $namespace . '/' . $filename . '.' . $type;
+      }
+   }
 
 }
 

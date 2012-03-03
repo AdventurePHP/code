@@ -2,7 +2,7 @@
 import('extensions::arraypager::biz', 'ArrayPagerManager');
 
 /**
- * @namespace extensions::arraypager::biz
+ * @package extensions::arraypager::biz
  * @class ArrayPagerManagerFabric
  *
  * Implements the factory of the array-pager manager. Initializes concrete ArrayPagerManager
@@ -36,16 +36,16 @@ final class ArrayPagerManagerFabric extends APFObject {
     * Version 0.1, 21.12.2009<br />
     */
    public function &getArrayPagerManager($stringConfig) {
-      
+
       // create cache key
       $stringPagerHash = md5($stringConfig);
 
       // initialize desired pager lazily
       if (isset($this->pagers[$stringPagerHash]) === FALSE) {
          $this->pagers[$stringPagerHash] = $this->getAndInitServiceObject('extensions::arraypager::biz',
-                         'ArrayPagerManager',
-                         $stringConfig,
-                         'NORMAL'
+            'ArrayPagerManager',
+            $stringConfig,
+            'NORMAL'
          );
       }
 
@@ -53,4 +53,5 @@ final class ArrayPagerManagerFabric extends APFObject {
    }
 
 }
+
 ?>

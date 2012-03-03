@@ -21,7 +21,7 @@
 import('extensions::htmlheader::biz', 'SimpleMetaNode');
 
 /**
- * @namespace extensions::htmlheader::pres::taglib
+ * @package extensions::htmlheader::pres::taglib
  * @class htmlheader_taglib_addtitle
  *
  * Taglib for adding meta nodes to htmlheader
@@ -40,10 +40,10 @@ class htmlheader_taglib_addmeta extends Document {
       /* @var $header HtmlHeaderManager */
 
       $header->addNode(
-              new SimpleMetaNode(
-                      $this->getAttribute('name'), 
-                      $this->getAttribute('content')
-              )
+         new SimpleMetaNode(
+            $this->getAttribute('name'),
+            $this->getAttribute('content')
+         )
       );
       return '';
    }

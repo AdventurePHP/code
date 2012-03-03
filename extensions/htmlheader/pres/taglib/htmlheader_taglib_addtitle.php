@@ -21,7 +21,7 @@
 import('extensions::htmlheader::biz', 'SimpleTitleNode');
 
 /**
- * @namespace extensions::htmlheader::pres::taglib
+ * @package extensions::htmlheader::pres::taglib
  * @class htmlheader_taglib_addtitle
  *
  * Taglib for adding a title to htmlheader.

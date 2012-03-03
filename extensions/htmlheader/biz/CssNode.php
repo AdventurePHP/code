@@ -22,7 +22,7 @@
 import('extensions::htmlheader::biz', 'HeaderNode');
 
 /**
- * @namespace extensions::htmlheader::biz
+ * @package extensions::htmlheader::biz
  * @Class CssNode
  *
  * This interface specifies a <em>&lt;link /&gt;</em> or <em>&lt;style /&gt;</em> tag.

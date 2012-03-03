@@ -23,7 +23,7 @@ import('extensions::htmlheader::biz', 'MetaNode');
 import('tools::link', 'LinkGenerator');
 
 /**
- * @namespace extensions::htmlheader::biz
+ * @package extensions::htmlheader::biz
  * @class RefreshNode
  *
  * Implements a meta node that introduces the browser to redirect
@@ -56,4 +56,5 @@ class RefreshNode extends HtmlNode implements MetaNode {
    }
 
 }
+
 ?>

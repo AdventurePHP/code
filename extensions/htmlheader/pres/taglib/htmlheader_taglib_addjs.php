@@ -21,12 +21,12 @@
 import('extensions::htmlheader::biz', 'DynamicJsNode');
 
 /**
- *  @namespace extensions::htmlheader::pres::taglib
- *  @class htmlheader_taglib_addjs
+ * @package extensions::htmlheader::pres::taglib
+ * @class htmlheader_taglib_addjs
  *
  *  Taglib for adding javascripts to htmlheader.
  *
- *  @example
+ * @example
  *  <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addjs" />
  *  Use FC-Action to deliver file:
  *  <htmlheader:addjs namespace="{CONTEXT}::pres::frontend::static::js::anything" filename="jsfile" />
@@ -52,8 +52,8 @@ import('extensions::htmlheader::biz', 'DynamicJsNode');
  *    <li>appendtobody: If set to true, tag will not be included to htmlheader:gethead replacements, but to htmlheader:getbodyjs
  *  </ul>
  *
- *  @author Ralf Schubert
- *  @version
+ * @author Ralf Schubert
+ * @version
  *  0.1, 20.09.2009<br />
  *  0.2, 27.09.2009<br />
  *  0.3, 27.02.2010 (Added attributes for external file support) <br />
@@ -88,9 +88,9 @@ class htmlheader_taglib_addjs extends Document {
       } else {
          $node = new DynamicJsNode(null, $namespace, $filename, $rewriting, $fcaction);
       }
-      
-      if(strtolower($this->getAttribute('appendtobody')) === 'true') {
-          $node->setAppendToBody(true);
+
+      if (strtolower($this->getAttribute('appendtobody')) === 'true') {
+         $node->setAppendToBody(true);
       }
 
       $node->setPriority($this->getAttribute('priority'));
@@ -100,4 +100,5 @@ class htmlheader_taglib_addjs extends Document {
    }
 
 }
+
 ?>

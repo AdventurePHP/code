@@ -22,8 +22,8 @@ import('tools::link', 'LinkGenerator');
 import('tools::request', 'RequestHandler');
 
 /**
- *  @namespace extensions::arraypager::pres::documentcontroller
- *  @class arraypager_controller
+ * @package extensions::arraypager::pres::documentcontroller
+ * @class arraypager_controller
  *
  *  Implements the document controller to display the paging bar. The bar includes:
  *  <ul>
@@ -32,8 +32,8 @@ import('tools::request', 'RequestHandler');
  *    <li>Dynamic amount of pages</li>
  *  </ul>
  *
- *  @author Lutz Mahlstedt
- *  @version
+ * @author Lutz Mahlstedt
+ * @version
  *  Version 0.1, 20.12.2009<br />
  */
 class arraypager_controller extends base_controller {
@@ -67,8 +67,8 @@ class arraypager_controller extends base_controller {
 
       // Aktuelle Seite generieren
       $integerCurrentPage = intval(RequestHandler::getValue($this->__Attributes['Config']['ParameterPage'],
-                              1
-                      )
+            1
+         )
       );
 
       // Puffer initialisieren
@@ -85,29 +85,29 @@ class arraypager_controller extends base_controller {
          }
 
          $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-                                 array($this->__Attributes['Config']['ParameterPage'] => $integerPage)
-                 ));
+            array($this->__Attributes['Config']['ParameterPage'] => $integerPage)
+         ));
 
          // Pager zusammenbauen
          if (isset($this->__Attributes['AnchorName']) === TRUE) {
             $objectTemplate->setPlaceHolder('URL',
-                    $stringURL . '#' . $this->__Attributes['AnchorName']
+                  $stringURL . '#' . $this->__Attributes['AnchorName']
             );
          } else {
             $objectTemplate->setPlaceHolder('URL',
-                    $stringURL
+               $stringURL
             );
          }
 
          $objectTemplate->setPlaceHolder('Page',
-                 $integerPage
+            $integerPage
          );
 
          // Template transformieren
          $stringBuffer .= $objectTemplate->transformTemplate();
 
          unset($objectTemplate,
-                 $stringURL
+         $stringURL
          );
       }
 
@@ -115,7 +115,7 @@ class arraypager_controller extends base_controller {
 
       // Puffer in Inhalt einsetzen
       $this->setPlaceHolder('Pager',
-              $stringBuffer
+         $stringBuffer
       );
 
       unset($stringBuffer);
@@ -127,16 +127,16 @@ class arraypager_controller extends base_controller {
 
          // Link generieren
          $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-                                 array($this->__Attributes['Config']['ParameterPage'] => ($integerCurrentPage - 1))
-                 ));
+            array($this->__Attributes['Config']['ParameterPage'] => ($integerCurrentPage - 1))
+         ));
 
          if (isset($this->__Attributes['AnchorName']) === TRUE) {
             $objectTemplatePreviousPage->setPlaceHolder('URL',
-                    $stringURL . '#' . $this->__Attributes['AnchorName']
+                  $stringURL . '#' . $this->__Attributes['AnchorName']
             );
          } else {
             $objectTemplatePreviousPage->setPlaceHolder('URL',
-                    $stringURL
+               $stringURL
             );
          }
 
@@ -147,7 +147,7 @@ class arraypager_controller extends base_controller {
       }
 
       $this->setPlaceHolder('PreviousPage',
-              $objectTemplatePreviousPage->transformTemplate()
+         $objectTemplatePreviousPage->transformTemplate()
       );
 
       unset($objectTemplatePreviousPage);
@@ -156,18 +156,18 @@ class arraypager_controller extends base_controller {
       if ($integerCurrentPage < $integerPageCount) {
          // Link generieren
          $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-                                 array($this->__Attributes['Config']['ParameterPage'] => ($integerCurrentPage + 1))
-                 ));
+            array($this->__Attributes['Config']['ParameterPage'] => ($integerCurrentPage + 1))
+         ));
 
          $objectTemplateNextPage = $this->getTemplate('NextPage_Active');
 
          if (isset($this->__Attributes['AnchorName']) === TRUE) {
             $objectTemplateNextPage->setPlaceHolder('URL',
-                    $stringURL . '#' . $this->__Attributes['AnchorName']
+                  $stringURL . '#' . $this->__Attributes['AnchorName']
             );
          } else {
             $objectTemplateNextPage->setPlaceHolder('URL',
-                    $stringURL
+               $stringURL
             );
          }
 
@@ -177,7 +177,7 @@ class arraypager_controller extends base_controller {
       }
 
       $this->setPlaceHolder('NextPage',
-              $objectTemplateNextPage->transformTemplate()
+         $objectTemplateNextPage->transformTemplate()
       );
 
       unset($objectTemplateNextPage);
@@ -185,7 +185,7 @@ class arraypager_controller extends base_controller {
       if ($this->__Attributes['Config']['EntriesChangeable'] === TRUE) {
          // Einträge / Seite
          $arrayEntries = explode('|',
-                         $this->__Attributes['Config']['EntriesPossible']
+            $this->__Attributes['Config']['EntriesPossible']
          );
          $stringBuffer = '';
 
@@ -198,18 +198,18 @@ class arraypager_controller extends base_controller {
 
             // Link generieren
             $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-                                    array($this->__Attributes['Config']['ParameterPage'] => 1,
-                                        $this->__Attributes['Config']['ParameterEntries'] => $integerEntries
-                                    )
-                    ));
+               array($this->__Attributes['Config']['ParameterPage'] => 1,
+                  $this->__Attributes['Config']['ParameterEntries'] => $integerEntries
+               )
+            ));
 
             if (isset($this->__Attributes['AnchorName']) === TRUE) {
                $objectTemplateEntries->setPlaceHolder('URL',
-                       $stringURL . '#' . $this->__Attributes['AnchorName']
+                     $stringURL . '#' . $this->__Attributes['AnchorName']
                );
             } else {
                $objectTemplateEntries->setPlaceHolder('URL',
-                       $stringURL
+                  $stringURL
                );
             }
 
@@ -217,7 +217,7 @@ class arraypager_controller extends base_controller {
 
             // Anzahl einsetzen
             $objectTemplateEntries->setPlaceHolder('Entries',
-                    $integerEntries
+               $integerEntries
             );
 
             // Template in Puffer einsetzen
@@ -229,13 +229,13 @@ class arraypager_controller extends base_controller {
          $objectTemplateEntries = $this->getTemplate('Entries');
 
          $objectTemplateEntries->setPlaceHolder('Entries',
-                 $stringBuffer
+            $stringBuffer
          );
 
          unset($stringBuffer);
 
          $this->setPlaceHolder('Entries',
-                 $objectTemplateEntries->transformTemplate()
+            $objectTemplateEntries->transformTemplate()
          );
 
          unset($objectTemplateEntries);
@@ -245,4 +245,5 @@ class arraypager_controller extends base_controller {
    }
 
 }
+
 ?>

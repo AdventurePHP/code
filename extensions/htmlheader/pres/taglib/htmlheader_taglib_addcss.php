@@ -21,12 +21,12 @@
 import('extensions::htmlheader::biz', 'DynamicCssNode');
 
 /**
- *  @namespace extensions::htmlheader::pres::taglib
- *  @class htmlheader_taglib_addcss
+ * @package extensions::htmlheader::pres::taglib
+ * @class htmlheader_taglib_addcss
  *
  *  Taglib for adding stylesheets to htmlheader.
  *
- *  @example
+ * @example
  *  <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addcss" />
  *  Use FC-action to deliver file:
  *  <htmlheader:addcss namespace="{CONTEXT}::pres::frontend::static::css:anything" filename="examplefile" />
@@ -51,8 +51,8 @@ import('extensions::htmlheader::biz', 'DynamicCssNode');
  *    <li>fcaction: Use an fc-action on target server? (optional, will be set to true by default)
  *  </ul>
  *
- *  @author Ralf Schubert
- *  @version
+ * @author Ralf Schubert
+ * @version
  *  0.1, 20.09.2009 <br />
  *  0.2, 27.02.2010 (Added attributes for external file support) <br />
  */
@@ -97,4 +97,5 @@ class htmlheader_taglib_addcss extends Document {
    }
 
 }
+
 ?>

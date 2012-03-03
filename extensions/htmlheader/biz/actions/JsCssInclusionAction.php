@@ -22,7 +22,7 @@
 import('tools::http', 'HeaderManager');
 
 /**
- * @namespace extensions::htmlheader::biz::actions
+ * @package extensions::htmlheader::biz::actions
  * @class JsCssInclusionAction
  *
  * Implements an FC-action which returns .css and .js files
@@ -41,143 +41,143 @@ import('tools::http', 'HeaderManager');
  */
 final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
 
-    /**
-     * 60 = 1 minute
-     * 60 * 60 (3600) = 1 hour
-     * 60 * 60 * 24 (86400) = 1 day
-     * 60 * 60 * 24 * 7 (604800) = 7 days
-     *
-     * @var int TimeToLive for cache headers in seconds
-     */
-    protected $ttl = 604800;
+   /**
+    * 60 = 1 minute
+    * 60 * 60 (3600) = 1 hour
+    * 60 * 60 * 24 (86400) = 1 day
+    * 60 * 60 * 24 * 7 (604800) = 7 days
+    *
+    * @var int TimeToLive for cache headers in seconds
+    */
+   protected $ttl = 604800;
 
-    public function run() {
+   public function run() {
 
-        if ($this->getRequestedType() === 'package') {
-            $this->sendPackage();
-        } else {
-            $this->sendFile();
-        }
-        
-        exit(0);
-    }
+      if ($this->getRequestedType() === 'package') {
+         $this->sendPackage();
+      } else {
+         $this->sendFile();
+      }
 
-    protected function getRequestedType() {
-        $PackageName = $this->getInput()->getAttribute('package');
-        if (!empty($PackageName)) {
-            return 'package';
-        }
-        return 'file';
-    }
+      exit(0);
+   }
 
-    protected function gzipIsSupported() {
-        return ( isset($_SERVER['HTTP_ACCEPT_ENCODING']) && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') );
-    }
+   protected function getRequestedType() {
+      $PackageName = $this->getInput()->getAttribute('package');
+      if (!empty($PackageName)) {
+         return 'package';
+      }
+      return 'file';
+   }
 
-    protected function getMimeType($type) {
-        // check if correct type is given. If not exit for security reasons.
-        switch ($type) {
-            case 'css':
-                return 'text/css';
-            case 'js':
-                return 'text/javascript';
-            default:
-                throw new InvalidArgumentException('[JsCssInclusionAction::getMimeType()] The attribute '
-                        . '"type" must be either "css" or "js".');
-        }
-    }
+   protected function gzipIsSupported() {
+      return (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip'));
+   }
 
-    protected function getSanitizedNamespace($namespace) {
-        $namespace = str_replace('_', '/', // resolve url notation for namespaces
-                preg_replace('/[^A-Za-z0-9\-_\.]/', '', $namespace)
-        );
+   protected function getMimeType($type) {
+      // check if correct type is given. If not exit for security reasons.
+      switch ($type) {
+         case 'css':
+            return 'text/css';
+         case 'js':
+            return 'text/javascript';
+         default:
+            throw new InvalidArgumentException('[JsCssInclusionAction::getMimeType()] The attribute '
+                  . '"type" must be either "css" or "js".');
+      }
+   }
 
-        // Changing to higher directories is not allowed, either!
-        while (preg_match('/\.\./', $namespace) > 0) {
-            $namespace = preg_replace('/\.\./', '', $namespace);
-        }
+   protected function getSanitizedNamespace($namespace) {
+      $namespace = str_replace('_', '/', // resolve url notation for namespaces
+         preg_replace('/[^A-Za-z0-9\-_\.]/', '', $namespace)
+      );
 
-        return $namespace;
-    }
+      // Changing to higher directories is not allowed, either!
+      while (preg_match('/\.\./', $namespace) > 0) {
+         $namespace = preg_replace('/\.\./', '', $namespace);
+      }
 
-    private function getSanitizedFileBody($filebody) {
-        return preg_replace('/[^A-Za-z0-9\-_\.]/', '', $filebody);
-    }
+      return $namespace;
+   }
 
-    protected function sendPackage() {
-        $package = $this->getInput()->getAttribute('package');
+   private function getSanitizedFileBody($filebody) {
+      return preg_replace('/[^A-Za-z0-9\-_\.]/', '', $filebody);
+   }
 
-        $packageExpl = explode('.', $package);
-        if (count($packageExpl) !== 2) {
-            throw new InvalidArgumentException('[JsCssInclusionAction::sendPackage()] The attribute
+   protected function sendPackage() {
+      $package = $this->getInput()->getAttribute('package');
+
+      $packageExpl = explode('.', $package);
+      if (count($packageExpl) !== 2) {
+         throw new InvalidArgumentException('[JsCssInclusionAction::sendPackage()] The attribute
                  "package" has to be like "packagename.type", with type
                  beeing "js" or "css".');
-        }
+      }
 
-        $packName = $packageExpl[0];
-        $packType = $packageExpl[1];
+      $packName = $packageExpl[0];
+      $packType = $packageExpl[1];
 
-        $mimeType = $this->getMimeType($packType);
+      $mimeType = $this->getMimeType($packType);
 
 
-        /* @var $packager JsCssPackager */
-        $packager = $this->getAndInitServiceObject('extensions::htmlheader::biz', 'JsCssPackager', null);
-        $output = $packager->getPackage($packName, $this->gzipIsSupported());
-        
-        // Get ClientCachePeriod (in days), and convert to seconds
-        $clientCachePeriod = $packager->getClientCachePeriod($packName) * 86400;
-        $this->sendHeaders($clientCachePeriod, $mimeType);
+      /* @var $packager JsCssPackager */
+      $packager = $this->getAndInitServiceObject('extensions::htmlheader::biz', 'JsCssPackager', null);
+      $output = $packager->getPackage($packName, $this->gzipIsSupported());
 
-        echo $output;
-    }
+      // Get ClientCachePeriod (in days), and convert to seconds
+      $clientCachePeriod = $packager->getClientCachePeriod($packName) * 86400;
+      $this->sendHeaders($clientCachePeriod, $mimeType);
 
-    protected function sendHeaders($clientCachePeriod, $mimeType) {
+      echo $output;
+   }
 
-        // send gzip header if supported
-        if ($this->gzipIsSupported()) {
-            HeaderManager::send("Content-Encoding: gzip");
-        }
+   protected function sendHeaders($clientCachePeriod, $mimeType) {
 
-        // send headers for caching
-        HeaderManager::send('Cache-Control: public; max-age=' . $clientCachePeriod, true);
-        $modifiedDate = date('D, d M Y H:i:s \G\M\T', time());
-        HeaderManager::send('Last-Modified: ' . $modifiedDate, true);
-        $expiresDate = date('D, d M Y H:i:s \G\M\T', time() + $clientCachePeriod);
-        HeaderManager::send('Expires: ' . $expiresDate, true);
+      // send gzip header if supported
+      if ($this->gzipIsSupported()) {
+         HeaderManager::send("Content-Encoding: gzip");
+      }
 
-        HeaderManager::send('Content-type: ' . $mimeType);
-    }
+      // send headers for caching
+      HeaderManager::send('Cache-Control: public; max-age=' . $clientCachePeriod, true);
+      $modifiedDate = date('D, d M Y H:i:s \G\M\T', time());
+      HeaderManager::send('Last-Modified: ' . $modifiedDate, true);
+      $expiresDate = date('D, d M Y H:i:s \G\M\T', time() + $clientCachePeriod);
+      HeaderManager::send('Expires: ' . $expiresDate, true);
 
-    protected function sendFile() {
-        $namespace = $this->getSanitizedNamespace($this->getInput()->getAttribute('path'));
-        $file = $this->getSanitizedFileBody($this->getInput()->getAttribute('file'));
-        $type = $this->getInput()->getAttribute('type');
+      HeaderManager::send('Content-type: ' . $mimeType);
+   }
 
-        // Check if all required attributes are given
-        if (empty($namespace)) {
-            throw new InvalidArgumentException('[JsCssInclusionAction::sendFile()] The attribute "path" '
-                    . 'is empty or not present.');
-        }
-        if (empty($file)) {
-            throw new InvalidArgumentException('[JsCssInclusionAction::sendFile()] The attribute "file" '
-                    . 'is empty or not present.');
-        }
-        if (empty($type)) {
-            throw new InvalidArgumentException('[JsCssInclusionAction::SendFile()] The attribute "type" '
-                    . 'is empty or not present.');
-        }
-        
-        // get mimetype and verify correct extension
-        $mimeType = $this->getMimeType($type);
+   protected function sendFile() {
+      $namespace = $this->getSanitizedNamespace($this->getInput()->getAttribute('path'));
+      $file = $this->getSanitizedFileBody($this->getInput()->getAttribute('file'));
+      $type = $this->getInput()->getAttribute('type');
 
-        
-        $this->sendHeaders($this->ttl, $mimeType);
+      // Check if all required attributes are given
+      if (empty($namespace)) {
+         throw new InvalidArgumentException('[JsCssInclusionAction::sendFile()] The attribute "path" '
+               . 'is empty or not present.');
+      }
+      if (empty($file)) {
+         throw new InvalidArgumentException('[JsCssInclusionAction::sendFile()] The attribute "file" '
+               . 'is empty or not present.');
+      }
+      if (empty($type)) {
+         throw new InvalidArgumentException('[JsCssInclusionAction::SendFile()] The attribute "type" '
+               . 'is empty or not present.');
+      }
 
-        /* @var $packager JsCssPackager */
-        $packager = $this->getAndInitServiceObject('extensions::htmlheader::biz', 'JsCssPackager', null);
-        echo $packager->getFile($namespace, $file, $type, $this->gzipIsSupported());
-        
-    }
+      // get mimetype and verify correct extension
+      $mimeType = $this->getMimeType($type);
+
+
+      $this->sendHeaders($this->ttl, $mimeType);
+
+      /* @var $packager JsCssPackager */
+      $packager = $this->getAndInitServiceObject('extensions::htmlheader::biz', 'JsCssPackager', null);
+      echo $packager->getFile($namespace, $file, $type, $this->gzipIsSupported());
+
+   }
 
 }
 

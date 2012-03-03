@@ -22,7 +22,7 @@ import('extensions::htmlheader::biz', 'HtmlNode');
 
 /**
  * @abstract
- * @namespace extensions::htmlheader::biz
+ * @package extensions::htmlheader::biz
  * @class PackageNode
  *
  * Provides basic functionality for css and js package nodes
@@ -36,9 +36,9 @@ abstract class PackageNode extends HtmlNode {
 
    public function __construct($url, $name, $rewriting = null) {
       $this->setAttribute($this->getLocationAttributeName(), $this->__buildPackageLink(
-                      $url,
-                      $name,
-                      $rewriting
+         $url,
+         $name,
+         $rewriting
       ));
    }
 
@@ -55,9 +55,10 @@ abstract class PackageNode extends HtmlNode {
       // Generate url if not given
       $url = ($url === null) ? Url::fromCurrent(true) : Url::fromString($url);
       return LinkGenerator::generateActionUrl($url, 'extensions::htmlheader', 'JsCss', array(
-          'package' => $name . '.' . $this->getTypeIndicator()
+         'package' => $name . '.' . $this->getTypeIndicator()
       ));
    }
 
 }
+
 ?>

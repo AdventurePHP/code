@@ -27,7 +27,7 @@ import('tools::link', 'LinkGenerator');
 
 /**
  * @package modules::captcha::pres::taglib
- * @module form_taglib_captcha
+ * @class form_taglib_captcha
  *
  * Implements a CAPTCHA-Taglib to extend a form's features. Inherits from form_control
  * in order to be a fully qualified form element.
@@ -211,8 +211,8 @@ class form_taglib_captcha extends form_control {
 
       // create desired media url
       $captchaUrl = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'modules::captcha::biz', 'showCaptcha', array(
-                                                                                                                      'name' => $this->textFieldName
-                                                                                                                 ));
+         'name' => $this->textFieldName
+      ));
 
       // initialize captcha source
       $captchaCode = '<div class="captcha"><img src="' . $captchaUrl . '" alt="CAPTCHA" ';
@@ -245,10 +245,10 @@ class form_taglib_captcha extends form_control {
       // concatenate the html code and return it
       if ($disableInlineStyle === true) {
          return $captchaCode . '/><div>'
-                . $this->textField->transform() . '</div></div>';
+               . $this->textField->transform() . '</div></div>';
       } else {
          return $captchaCode . '/><div style="line-height: 40px; float: left; margin-left: 20px;">'
-                . $this->textField->transform() . '</div><div style="clear: left;"></div></div>';
+               . $this->textField->transform() . '</div><div style="clear: left;"></div></div>';
       }
 
    }

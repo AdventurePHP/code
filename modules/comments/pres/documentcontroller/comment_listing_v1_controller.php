@@ -19,7 +19,6 @@
  *  -->
  */
 import('modules::comments::pres::documentcontroller', 'commentBaseController');
-import('tools::datetime', 'dateTimeManager');
 import('tools::string', 'AdvancedBBCodeParser');
 import('tools::link', 'LinkGenerator');
 
@@ -38,12 +37,12 @@ import('tools::link', 'LinkGenerator');
 class comment_listing_v1_controller extends commentBaseController {
 
    /**
-    *  @public
+    * @public
     *
     *  Displays the paged comment list.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 22.08.2007<br />
     *  Version 0.2, 02.09.2007<br />
     *  Version 0.3, 09.03.2008 (Changed deactivation due to indexation)<br />
@@ -57,7 +56,7 @@ class comment_listing_v1_controller extends commentBaseController {
       // load the entries using the business component
       $entries = $M->loadEntries();
 
-      $buffer = (string) '';
+      $buffer = (string)'';
       $template = &$this->getTemplate('ArticleComment');
 
       // init bb code parser (remove some provider, that we don't need configuration files)
@@ -71,7 +70,7 @@ class comment_listing_v1_controller extends commentBaseController {
          /* @var $entry ArticleComment */
          $template->setPlaceHolder('Number', $i++);
          $template->setPlaceHolder('Name', $entry->getName());
-         $template->setPlaceHolder('Date', date('d.m.Y', strtotime($entry->getDate())));
+         $template->setPlaceHolder('Date', DateTime::createFromFormat('Y-m-d', $entry->getDate())->format('d.m.Y'));
          $template->setPlaceHolder('Time', $entry->getTime());
          $template->setPlaceHolder('Comment', $bP->parseCode($entry->getComment()));
 
@@ -96,15 +95,16 @@ class comment_listing_v1_controller extends commentBaseController {
 
       // generate the add comment link
       $this->setPlaceHolder('Link',
-              LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
-                          $urlParams['PageName'] => '',
-                          $urlParams['CountName'] => '',
-                          'coview' => 'form'
-                              )
-                      )
-              )
+         LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+                  $urlParams['PageName'] => '',
+                  $urlParams['CountName'] => '',
+                  'coview' => 'form'
+               )
+            )
+         )
       );
    }
 
 }
+
 ?>

@@ -30,7 +30,7 @@ import('modules::genericormapper::data', 'GenericCriterionObject');
 
 /**
  * @package modules::usermanagement::biz
- * @module UmgtManager
+ * @class UmgtManager
  *
  * Business component of the user management module. In standard case the component uses a crypt
  * based provider to create password hashes. But you can add other providers to ensure compatibility

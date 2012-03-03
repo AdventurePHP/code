@@ -20,7 +20,7 @@
  */
 
 /**
- * @namespace extensions::htmlheader::biz
+ * @package extensions::htmlheader::biz
  * @class HeaderNode
  *
  * This interface specifies a tag, that is included in the <em>&lt;head /&gt;</em>

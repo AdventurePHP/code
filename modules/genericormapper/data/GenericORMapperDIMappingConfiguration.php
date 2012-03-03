@@ -20,7 +20,7 @@
  */
 
 /**
- * @namespace modules::genericormapper::data
+ * @package modules::genericormapper::data
  * @class GenericORMapperDIMappingConfiguration
  *
  * Represents a configuration service to be able to add a further mapping configuration to
