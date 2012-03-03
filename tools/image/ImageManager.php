@@ -85,7 +85,10 @@ class ImageManager {
       $imageAttributes = array();
 
       // analyze the image attributes
-      $attributes = getimagesize($image);
+      if (($attributes = getimagesize($image)) === false) {
+         throw new InvalidArgumentException('[ImageManager::showImageAttributes()] The attributes of the image ("'
+               . $image . '") cannot be analyzed since it is corrupt!');
+      }
 
       // image define the image dimensions
       $imageAttributes['width'] = $attributes[0];
