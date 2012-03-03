@@ -181,7 +181,7 @@ class DefaultErrorHandler implements ErrorHandler {
 
 /**
  * @package core::errorhandler
- * @class ErrorHandler
+ * @class GlobalErrorHandler
  *
  * This is the APF error handler automatically registered to handle errors.
  * <p/>
@@ -218,9 +218,13 @@ abstract class GlobalErrorHandler {
     * @public
     * @static
     *
-    * Let's you register a
+    * Let's you register an error handler.
     *
     * @param ErrorHandler $handler The error handler that is delegated the error processing.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.03.2012<br />
     */
    public static function registerErrorHandler(ErrorHandler $handler) {
       self::$HANDLER = $handler;
@@ -254,7 +258,6 @@ abstract class GlobalErrorHandler {
       if (self::$HANDLER === null) {
          // restore the PHP default error handler to avoid loops or other issues
          restore_error_handler();
-
          trigger_error($errorMessage, (int)$errorNumber);
       } else {
          self::$HANDLER->handleError($errorNumber, $errorMessage, $errorFile, $errorLine, $errorContext);
