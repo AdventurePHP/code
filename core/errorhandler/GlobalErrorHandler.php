@@ -313,5 +313,5 @@ ini_set('display_errors', '1');
 ini_set('html_errors', 'off');
 
 // register the APF error handler to be able to easily configure the error handling mechanism
-set_error_handler(array('GlobalErrorHandler', 'handleError'));
 GlobalErrorHandler::registerErrorHandler(new DefaultErrorHandler());
+GlobalErrorHandler::enable();

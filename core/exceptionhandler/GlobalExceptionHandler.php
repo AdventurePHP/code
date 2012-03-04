@@ -303,5 +303,5 @@ abstract class GlobalExceptionHandler {
 }
 
 // register the APF error handler to be able to easily configure the error handling mechanism
-set_exception_handler(array('GlobalExceptionHandler', 'handleException'));
 GlobalExceptionHandler::registerExceptionHandler(new DefaultExceptionHandler());
+GlobalExceptionHandler::enable();
