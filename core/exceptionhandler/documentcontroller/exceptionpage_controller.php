@@ -83,7 +83,8 @@ class exceptionpage_controller extends base_controller {
       $this->setPlaceHolder('ExceptionNumber', $this->getAttribute('number'));
       $this->setPlaceHolder('ExceptionFile', $this->getAttribute('file'));
       $this->setPlaceHolder('ExceptionLine', $this->getAttribute('line'));
+
+      $this->setPlaceHolder('GenerationDate', date('r'));
    }
 
 }
-?>

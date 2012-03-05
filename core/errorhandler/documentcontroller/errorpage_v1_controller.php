@@ -44,7 +44,7 @@ class errorpage_v1_controller extends base_controller {
    public function transformContent() {
 
       // build stacktrace
-      $errors = $this->buildStackTrace();
+      $errors = array_reverse(debug_backtrace());;
       $buffer = (string) '';
 
       $errorEntry = &$this->getTemplate('ErrorEntry');
@@ -81,25 +81,14 @@ class errorpage_v1_controller extends base_controller {
       }
 
       $this->setPlaceHolder('Stacktrace', $buffer);
+
       $this->setPlaceHolder('ErrorID', $this->getAttribute('id'));
       $this->setPlaceHolder('ErrorMessage', htmlspecialchars($this->getAttribute('message'), ENT_QUOTES, Registry::retrieve('apf::core', 'Charset'), false));
       $this->setPlaceHolder('ErrorNumber', $this->getAttribute('number'));
       $this->setPlaceHolder('ErrorFile', $this->getAttribute('file'));
       $this->setPlaceHolder('ErrorLine', $this->getAttribute('line'));
-   }
 
-   /**
-    * @private
-    *
-    * Creates the stacktrace.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 21.01.2007<br />
-    */
-   private function buildStackTrace() {
-      return array_reverse(debug_backtrace());
+      $this->setPlaceHolder('GenerationDate', date('r'));
    }
 
 }
-?>

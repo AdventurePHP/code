@@ -1,156 +1,184 @@
-<@controller namespace="core::exceptionhandler::documentcontroller" class="exceptionpage_controller" @>
+<@controller
+   namespace="core::exceptionhandler::documentcontroller"
+   class="exceptionpage_controller"
+@>
 <style type="text/css">
-   .apf-exception,
-   .apf-exception td {
-      font-size: 11px;
-      font-family: Arial, Helvetica, sans-serif;
-   }
-
-   .apf-exception {
-      background-color: white;
-      border: 2px solid red;
-      width: 100%;
-   }
-
-   .apf-head {
-      border-top: 1px solid black;
-      border-bottom: 1px solid black;
-      padding: 10px;
-      background-color: #dddddd;
-      margin: 5px;
-   }
-
-   .apf-head h2 {
-      font-weight: bold;
-      margin: 0 auto .5em auto;
-      color: red;
-   }
-
-   .apf-head table td {
-      font-weight: bold;
-   }
-
-   .apf-exception h3 {
-      margin: 2em auto 1em 5px;
-   }
-
-   .apf-exception table {
-      width: 100%;
-      border: 0;
-      padding: 0;
-      margin: 0;
-      text-align: left;
-      vertical-align: middle;
-   }
-
-   .apf-exception table td {
-      height: 20px;
-   }
-
-   .apf-exception td {
-      padding-left: .3em;
-   }
-
-   .apf-stracktrace {
-      margin: 5px;
-      height: 150px;
-      overflow: auto;
-      border: 1px solid gray;
-   }
-
-   .apf-stracktrace table td {
-      border-bottom: 1px solid #dddddd;
-   }
-
-   .apf-stracktrace table thead {
-      background-color: #dddddd;
-      font-weight: bold;
-   }
-
-   .apf-stracktrace table td {
-      height: 16px;
-   }
+    .apf-exception {
+        font: 1em/1.4em sans-serif;
+        border-top: .2em solid #b55;
+        border-bottom: .2em solid #b55;
+        padding: 1.5em;
+        margin: 1em 0 2em 0;
+        background: white;
+    }
+    .apf-exception a {
+        text-decoration: underline;
+    }
+    .apf-exception a:hover, .apf-exception a:focus {
+        text-decoration: none;
+    }
+    .apf-exception h1 {
+        font-size: 1.3em;
+        color: #b00;
+        margin: 0 0 1em 0;
+    }
+    .apf-exception h2 {
+        font-size: 1.15em;
+        margin-top: 1.5em;
+        text-transform: uppercase;
+        clear: left;
+    }
+    .apf-exceptiondesc {
+        background: #f5f5f5 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAABGdBTUEAALGPC/xhBQAAAwBQTFRFjQcMvBEW5Vxj7ICIwyAh2j5EjwADrBcang4VwhkeYgAEtRMe10FJ8pWZ74GE3FJXyyInlwMIwCwv2lNabwAG0DQ7iwIKrxAV52dsiwEH2U5XzjE6YgACZQIDaAACpBEWnwIJ21xh0zpDvx0obgACmQkPdAADZgACZAAD2z9C7Wpt4U5U95GU0jQ5YAACZwAEWwAATgEAYwACviIrgQADZAADvBUdpgIJ9Ht9ohAaYgACjwgMdQADbwAEcwMFqwgPXQEB84qNgQQHZgACYgADgAABbQAAfQAAug0SYQACbAAAewAAdgAAZwAAOgAAZAAAAAAA/qWn6EVMuCxCs4CDuqCi26+xw4qX26CuxpSX4b6+xkNGmkBH9XBzlhAZy5aZig8UkA0V8GJlpA8R/ikukzM4qWpurh0k2LW3uLa308HC8OXmphgj7D1C2hMXjwIE3pmayS43oDY8+Wtv9MrL6hMa5i80nycu509T+zg9xV9i0VBTmQsR2VBTnwQJqk1U4aOl+4mM3jE3/i8zt3N3xsXF3R0j3IyOwxAVzRMYwq6w/zQ4+QkOrRAU9VZbyw4U/nl96M/QTAAB1s7OsQsO+PLy/5ea/hMY/oWJpgYK1wQL2BkfySUq8UtPq0BGtggL/ra48+3t5MrM/kVJ4SMqwxccxAkQ8gEGthoe6wkPzBsh3wgP5yAn8TU60QAE46Ch7hUbrQMJzFZZqhMb1AwU/pyew4KFVwAB9gUK2gAE4RUb1gAE/15j7Skx/01SfQAD+T5E/x4i/4GFhAAE/A8UxAUL7AAFwAAFuwII5gAF6OfnjAAEyQAEhgAB7dracgABjgAC4uHhywUL/46R8R4l3QAEiAADXwABvQAEZwABsgAFggACuAAD9CgvrQAEzAAEkQADlAADbQABurm5srGx7ezs3d3dwwAE8fHxfQAB2djYowADvr29w8LCxgAE09LS/T5EnAADdgABpwAEycjInwAE+DQ6/klO/3J2z83N/1lemAAD/2dr9/b2+fn5+vr6DG+VYQAAAFF0Uk5TWPnL0P3hzuv8tT52reju9uu0/JrU0O7J216GZYz7eaVrmXhPw/iOyqb7++H+/tSTL+plnuNNXiT+/rX+Q+f6NPH9+2+bFycS/VofDgoGAQMAE9SyVAAABfJJREFUSMeFlnVcU1scwPe69NndiYV0SzeLywtfGc9u7C6kS0pCQJCQRsHR6XhvsHhjgHvkGIMBggMZsDEU59g7524g5fN7/9iJ3/ec3/3snsDYT4WA4LEAHB4hTO3ETG5AsDrrli1ds2bNvKVrtY2t8YT/FxDLdfM+mznT1HTbNlPT779fPOM7YxzhwwLWeO1i05yYizE/5KCEAm2WxjpLwvQCYrn2U12nbTkxMTGh/47hpLtVwxg3nYA3nrFF1ykszCk0JzTs7zHCwnS3LFhtPVXALdu6RTfgDSRA/jNKQMCeWRo6yCQBC+L3XHg3PW8u3NKwQiYIOO2tBy4Uvx1HMXjeFgNg+d2Bzat0xguI9hdXi5+9HuMZfCAgHjY/e+unvMr6vYDoLLjq96gU4uDsUFraP8prv6s/ou39r6PmrsaOCdYam6P6h55AsvbrPRkao1T5lJ4zWrpWunnRDkQh4LRnOww1l1wuKYk/lRv7+6n4ZgUlqY6VcVdSSyDN1+auslMIOt8oD9U8jo+Pdz/qKpVJc4+618hJeFgpkx07n/oY0nz5qyUIKhC0Z1+uKXwAyHI9OSKTxeZmXXoK8XwYB6rSY1e8CgsfFF6q+XwOFhWwi1Jr0rL9/f2zcqUgQDYi/TMrLSUlJdGxElZlI4FXErMBl9w3gLfA2BOMbR6kRJQDrktlcqS5WQV0KsxHzi+RLEBEYfBGHBDwq6MLI2hsNo16I2Q0IjbXl4bmIyfDS0BtoAnSytfbAcF6TnA2rUfcI+KyMysVMSArx9GyLORONIfN5Yq45SxNLQKGYPVlcKKotZUnGegJv145okB6crQUkpHMFfWIByQSNsvMHI9Bdmja0CRkch1UwjNDpJMYuZMMw3mtDIaYZbYRh0GWaNoQGSQSmQENcWblywnE3iGiw7cy6sg86plNlhhE3dCGWCckNdUxWiUSMcjqxXjOouNLeNV15KZWGk/fDoNfaRIsETYKSeS6ajhFeObJf8Z4CfIBggQkRG4iMYhnUEHNk1F/L6+xis8Ehlh82/HEcwWduXt7FC9AJgmryGISEBB1NU9e4717efVyhXf+ROd7XPcOoPk0Cdsa66vEVVCwVbMRt6FCm5DfVHfeu3scQa77q6uZfGFVY31eXpWoDb70DrWDRFIejK8S8sm7vfsmMPzzPmYTH46fV08mrliOw9hbbTdIZDQq4g97DyvoGy0c2QeEKmC08Ygm4I+zt9Y3ShQL0XzIh3cOKuh8Mawo9R7Zy2PCOfii22rg07DHm6+wYdcJhXwmY/fOXjlu3RmZgcOKyuCvPxGr+UJhK42sBD8+gqrJwfKBJj6T99D7lYLus8nRmYFu8spg92/nYL+I1qaCQxfQejN/No9ZLcntfNUOON7el5HA4UTfeN4Lq+1u3YHnxEymhBZejy4ge8TWxJfFlbRKejyC2js6Oo4HZdAaIDfiekG1YzBwrgj0cstJ+vIlam+lb3S6izsw0OPrEQQCgs4mUFHKM+PAAG5/7BL1DAxwBUQTW/kmYI9XN/HNpnLBEvrEo69jOCO1q0sA6Sq/9fz4q7hdbLAeuFRW2ya7sY1MxcgzoovDZnM4HpUZ5QJBRQukQiC4dfFiJAd2CFhntn+LjO2tVkpmXhEVDRxOQ6KyV0VLelFBQW1BQVF6C+tcJBU2V0SEr1DHjduMbQ0NCmvTBQ3ULkFFelEtnU6hUOj02iIwSxeVWpGeFm1kYT1+u8fbbjc4nVaQ3gKGr6VTkvLz7+bnJ1HotfIWGG838UDBgTm8UsCYYPik/Ltl9++Xld3NT6KDzGrpacFGFpMOFHQOs4SnKRQKGv4X5D5UKJSU0zeNVOyQKYciompheDP1aRmMPuTi4+Pjcgg6ZYU2Zkq22OmPXfP1Zr6pj5tdfPofAfqv+bg0uycYGFqo4j9wsONUzeeb3UyOdI7y84uKinJwjswC4VofOtjls2gtV9JcuEFPT+/rDQs1529St8ITPnI5wdntUF+5XEVl40pzLVXsxy4ncgfB43Hg9jPt9ec/Z1dYqLkXptwAAAAASUVORK5CYII=) no-repeat 1em 1em;
+        border: .1em solid #888;
+        margin-bottom: 1em;
+        padding-left: 67px;
+        min-height: 60px;
+    }
+    .apf-exceptiondesc dl {
+        margin: 0;
+        padding: 1em;
+    }
+    .apf-exceptiondesc dt {
+        float: left;
+        clear: left;
+        width: 10em;
+        font-weight: 600;
+    }
+    .apf-exceptiondesc dd {
+        margin-left: 11em;
+    }
+    .apf-help {
+        background: url(data:image/png;base64,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) no-repeat left top;
+        padding-left: 67px;
+        min-height: 48px;
+        margin-left: 1em;
+        margin-bottom: 1em;
+    }
+    .apf-help p {
+        margin: 0;
+        padding: 0;
+        font-style: italic;
+    }
+    .apf-help ul {
+        margin: 0 0 0 1em;
+        padding: 0;
+        list-style-type: circle;
+    }
+    .apf-help li {
+        float: left;
+        margin-left: 2em;
+    }
+    .apf-help li:first-child {
+        margin-left: 0;
+    }
+    .apf-stracktrace {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: .5em;
+    }
+    .apf-stracktrace tr {
+        border-top: .1em solid #888;
+        border-bottom: .1em solid #888;
+    }
+    .apf-stracktrace th, .apf-stracktrace td {
+        padding: .25em;
+        text-align: left;
+        vertical-align: top;
+    }
+    .apf-stracktrace tbody {
+        font-size: .9em;
+    }
+    .apf-stracktrace th:nth-child(3), .apf-stracktrace td:nth-child(3) {
+        text-align: right;
+    }
+    .apf-stracktrace th {
+        font-weight: bold;
+        background: #f5f5f5;
+    }
+    .apf-footnote {
+        margin: 2em 0 .3em 0;
+        font-size: .8em;
+        text-align: right;
+    }
+    .apf-footnote span {
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAQhQTFRFX2+HPmuXbZGrSrPuPGqUXLTpOFWNSrf0TabbW4+zarzsh4KCW6PTPZTNhYWFVandXrjsQ3elSYOyQ2qUcYeZQXGeTo28WrLnRrLuV6nYSLb0RnGbU4awabjkZmZmSbPwU5fHfoyXO57bYpS2Q67xZ7zsbJeza5q5Up3KX6PNiX+JTLLqapm3RXmnh4eOVWaIVX+kXbvwb5iyaL/wX3uXiISEVq7jWI63WKbSiH9/Y6HGh39/iYKCiYSEiHd3mWZmi4ODf39/f39/kX9/AAAAf39/VVVVAAAAWrvzTYq5QqvpUKTaQKfkSIGvUpPCRrPxWaDPR7XyV5zMPaPgSJ3URK/tVLr0R7XzQYmK6gAAAEh0Uk5TINGD6GWXCe/WomAxzvsX783+ck9zxqKC/H0xvdIdBa32Wfy6Exs2ciKLGthdgCIPrv1yaVs4n9UXHpAgJzQPBR8IAg4BBgMAsMoTCgAAAIxJREFUGNNjcEcDDHgE2Fj00VQIMzKgCriJStuhmqEraOKEIiDka+CMIiDmKeOALKCh4GduAxRQNeaSdQHyLXgCgpStGdyl2MM8DAVYxc34vUN4RYBmyFsZaWqH+4d6+QQrcXI7MaioWTo6akkyhwdKcDDZugLd4QrSb6+no65oyueG5FI3VzkXrL4FAJOjPYIWj+deAAAAAElFTkSuQmCC) no-repeat left center;
+        min-height: 16px;
+        padding-left: 20px;
+    }
 </style>
 <div class="apf-exception">
-   <div class="apf-head">
-      <h2>Uncaught exception!</h2>
-      <table>
-         <tr>
-            <td width="60">Exception-ID:</td>
-            <td>
+    <h1>Uncaught exception!</h1>
+    <div class="apf-exceptiondesc">
+        <dl>
+            <dt>Exception-ID:</dt>
+            <dd>
                <html:placeholder name="ExceptionID"/>
-            </td>
-         </tr>
-         <tr>
-            <td width="60">Type:</td>
-            <td>
+            </dd>
+            <dt>Type:</dt>
+            <dd>
                <html:placeholder name="ExceptionType"/>
-            </td>
-         </tr>
-         <tr>
-            <td width="60">Message:</td>
-            <td>
+            </dd>
+            <dt>Message:</dt>
+            <dd>
                <html:placeholder name="ExceptionMessage"/>
-            </td>
-         </tr>
-         <tr>
-            <td width="60">Number:</td>
-            <td>
+            </dd>
+            <dt>Number:</dt>
+            <dd>
                <html:placeholder name="ExceptionNumber"/>
-            </td>
-         </tr>
-         <tr>
-            <td width="60">File:</td>
-            <td>
+            </dd>
+            <dt>File:</dt>
+            <dd>
                <html:placeholder name="ExceptionFile"/>
-            </td>
-         </tr>
-         <tr>
-            <td width="60">Line:</td>
-            <td>
+            </dd>
+            <dt>Line:</dt>
+            <dd>
                <html:placeholder name="ExceptionLine"/>
-            </td>
-         </tr>
-      </table>
+            </dd>
+        </dl>
+    </div>
+
+   <h2>Need help?</h2>
+
+   <div class="apf-help">
+      <p>Check out the…
+      <ul>
+         <li><a href="http://adventure-php-framework.org/Page/072-Documentation">Documentation</a></li>
+         <li><a href="http://forum.adventure-php-framework.org/de/">Community Forum</a></li>
+         <li><a href="http://wiki.adventure-php-framework.org/">Wiki</a></li>
+      </ul>
    </div>
 
-   <h3>STACKTRACE:</h3>
+   <h2>Stacktrace:</h2>
 
-   <div class="apf-stracktrace">
-      <table>
-         <thead>
-         <tr>
-            <td>Call</td>
-            <td>File</td>
-            <td>Line</td>
-         </tr>
-         </thead>
-         <tbody>
+   <table class="apf-stracktrace">
+       <thead>
+           <tr>
+               <th>Call</th>
+               <th>File</th>
+               <th>Line</th>
+           </tr>
+       </thead>
+       <tbody>
          <html:placeholder name="Stacktrace"/>
-         </tbody>
-      </table>
+       </tbody>
+   </table>
+
+   <div class="apf-footnote">
+       <span>Generated by <a href="http://adventure-php-framework.org">Adventure PHP Framework</a> at <html:placeholder name="GenerationDate"/></span>
    </div>
 </div>
 
 <html:template name="ExceptionEntry">
    <tr>
-      <td>
-         <nobr>
-            <template:placeholder name="Class"/>
-            <template:placeholder name="Type"/>
-            <template:placeholder name="Function"/>
-            ()
-         </nobr>
-      </td>
-      <td>
-         <nobr>
-            <template:placeholder name="File"/>
-         </nobr>
-      </td>
-      <td>
-         <nobr>
-            <template:placeholder name="Line"/>
-         </nobr>
-      </td>
+       <td>
+          <template:placeholder name="Class"/><template:placeholder name="Type"/><template:placeholder name="Function"/>()
+       </td>
+       <td>
+          <template:placeholder name="File"/>
+       </td>
+       <td>
+          <template:placeholder name="Line"/>
+       </td>
    </tr>
 </html:template>
