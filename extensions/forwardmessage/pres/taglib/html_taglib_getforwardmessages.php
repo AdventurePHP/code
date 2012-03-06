@@ -48,7 +48,21 @@
 class html_taglib_getforwardmessages extends Document {
 
    public function transform() {
+      return implode($this->getAttribute('delimiter', ''), $this->getMessages());
+   }
 
+   /**
+    * @protected
+    *
+    * Retrieves the relevant messages from the central store.
+    *
+    * @return string[] The list of messages.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 06.03.2012<br />
+    */
+   protected function getMessages() {
       $groups = $this->getAttribute('groups');
       if (empty($groups)) {
          $groups = array();
@@ -58,10 +72,7 @@ class html_taglib_getforwardmessages extends Document {
 
       /* @var $manager ForwardMessageManager */
       $manager = &$this->getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', APFService::SERVICE_TYPE_SESSION_SINGLETON);
-      return implode(
-         $this->getAttribute('delimiter', ''),
-         $manager->getMessages($groups)
-      );
+      return $manager->getMessages($groups);
    }
 
 }
