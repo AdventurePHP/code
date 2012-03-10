@@ -178,7 +178,12 @@ class ExtendedSoapClientService extends APFObject {
     */
    public function __call($action, $arguments) {
       $client = $this->getClient();
-      $response = $client->__soapCall($action, $arguments);
+
+      // we are taking the first argument only since it contains the parameters to pass to the
+      // SOAP request (specialty of PHP's magic __call() method that passes the list of
+      // arguments as list)
+      $params = isset($arguments[0]) ? array($arguments[0]) : array();
+      $response = $client->__soapCall($action, $params);
 
       // check for hidden soap faults
       if (isset($client->__soap_fault) && $client->__soap_fault != null) {
