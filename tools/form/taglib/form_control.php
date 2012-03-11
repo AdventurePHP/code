@@ -40,14 +40,14 @@ abstract class form_control extends Document {
 
    protected static $CORE_ATTRIBUTES = array('id', 'class', 'style', 'title');
    protected static $EVENT_ATTRIBUTES = array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover',
-                                              'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup');
+      'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup');
    protected static $I18N_ATTRIBUTES = array('lang', 'xml:lang', 'dir');
 
    protected static $HTML5_ATTRIBUTES = array('placeholder', 'name', 'disabled', 'form', 'autocomplete', 'autofocus',
-                                              'list', 'maxlength', 'pattern', 'readonly', 'required', 'size', 'min',
-                                              'max', 'step', 'multiple', 'formaction', 'formenctype', 'formmethod',
-                                              'formtarget', 'formnovalidate', 'height', 'width', 'alt', 'src',
-                                              'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone');
+      'list', 'maxlength', 'pattern', 'readonly', 'required', 'size', 'min',
+      'max', 'step', 'multiple', 'formaction', 'formenctype', 'formmethod',
+      'formtarget', 'formnovalidate', 'height', 'width', 'alt', 'src',
+      'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone');
 
    protected static $METHOD_ATTRIBUTE_NAME = 'method';
    protected static $METHOD_POST_VALUE_NAME = 'post';
@@ -72,8 +72,8 @@ abstract class form_control extends Document {
     * @var array{string} The attributes, that are allowed to render into the XHTML/1.1 strict document.
     */
    protected $attributeWhiteList = array('id', 'style', 'class', 'accesskey', 'tabindex', 'onfocus', 'onblur',
-                                         'onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover',
-                                         'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup');
+      'onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover',
+      'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup');
 
    /**
     * @public
@@ -384,8 +384,8 @@ abstract class form_control extends Document {
       if ($controlName === null) {
          $formName = $this->getParentObject()->getAttribute('name');
          throw new FormException('[' . get_class($this) . '::__presetValue()] A form control is missing '
-                                 . ' the required tag attribute "name". Please check the taglib definition of the '
-                                 . 'form with name "' . $formName . '"!', E_USER_ERROR);
+               . ' the required tag attribute "name". Please check the taglib definition of the '
+               . 'form with name "' . $formName . '"!', E_USER_ERROR);
       }
 
       // try to preset the field with the url parameter if applicable (or contains 0)
@@ -404,6 +404,7 @@ abstract class form_control extends Document {
     *
     * @param string $name The name of the place holder.
     * @param string $value The value to fill the place holder with.
+    * @return form_taglib_error|form_taglib_listener|form_taglib_success|html_taglib_form This instance for further usage.
     * @throws FormException In case the place holder cannot be set.
     *
     * @author Christian Achatz
@@ -428,19 +429,20 @@ abstract class form_control extends Document {
       }
       else {
          throw new FormException('[' . get_class($this) . '::setPlaceHolder()] No place holder object with '
-                                 . 'name "' . $name . '" composed in current for document controller "'
-                                 . ($this->__ParentObject->getDocumentController()) . '"! Perhaps tag library '
-                                 . 'form:placeholder is not loaded in form "' . $this->getAttribute('name') . '"!',
+                  . 'name "' . $name . '" composed in current for document controller "'
+                  . ($this->__ParentObject->getDocumentController()) . '"! Perhaps tag library '
+                  . 'form:placeholder is not loaded in form "' . $this->getAttribute('name') . '"!',
             E_USER_ERROR);
       }
 
       if ($placeHolderCount < 1) {
          throw new FormException('[' . get_class($this) . '::setPlaceHolder()] There are no place holders '
-                                 . 'found for name "' . $name . '" in template "' . ($this->__Attributes['name'])
-                                 . '" in document controller "' . ($this->__ParentObject->getDocumentController())
-                                 . '"!', E_USER_WARNING);
+               . 'found for name "' . $name . '" in template "' . ($this->__Attributes['name'])
+               . '" in document controller "' . ($this->__ParentObject->getDocumentController())
+               . '"!', E_USER_WARNING);
       }
 
+      return $this;
    }
 
    /**

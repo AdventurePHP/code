@@ -268,12 +268,13 @@ class html_taglib_iterator extends Document {
     *
     * @param string $name The name of the place holder to set.
     * @param string $value The value of the place holder.
+    * @return html_taglib_iterator This instance for further usage.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 10.09.2010<br />
     */
-   public function setPlaceHolder($name, $value) {
+   public function &setPlaceHolder($name, $value) {
       $count = 0;
       foreach ($this->__Children as $objectId => $DUMMY) {
          if (get_class($this->__Children[$objectId]) == 'iterator_taglib_placeholder'
@@ -290,6 +291,8 @@ class html_taglib_iterator extends Document {
                                             . 'with name "' . $this->getAttribute('name') . '" requested in document controller '
                                             . '"' . ($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR);
       }
+
+      return $this;
    }
 
    /**

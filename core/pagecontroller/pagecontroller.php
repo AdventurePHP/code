@@ -2025,13 +2025,14 @@ class html_taglib_template extends Document {
     *
     * @param string $name name of the place holder.
     * @param string $value value of the place holder.
+    * @return html_taglib_template This instance for further usage.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2006<br />
     * Version 0.2, 10.11.2008 (Removed check, if taglib class exists)<br />
     */
-   public function setPlaceHolder($name, $value) {
+   public function &setPlaceHolder($name, $value) {
 
       // declare the name of the place holder taglib to be flexible to future changes
       $tagLibClass = 'template_taglib_placeholder';
@@ -2067,6 +2068,8 @@ class html_taglib_template extends Document {
       if ($placeHolderCount < 1) {
          throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] There are no placeholders found for name "' . $name . '" in template "' . ($this->__Attributes['name']) . '" in document controller "' . ($this->getParentObject()->getDocumentController()) . '"!', E_USER_WARNING);
       }
+
+      return $this;
    }
 
    /**
