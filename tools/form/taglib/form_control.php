@@ -411,7 +411,7 @@ abstract class form_control extends Document {
     * @version
     * Version 0.1, 12.09.2009<br />
     */
-   public function setPlaceHolder($name, $value) {
+   public function &setPlaceHolder($name, $value) {
 
       // dynamically gather taglib name of the place holder to set
       $tagLibClass = $this->getClassNameByTagLibClass('placeholder');
