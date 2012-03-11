@@ -60,8 +60,9 @@ abstract class list_control extends Document {
     *
     * @param string $name The name of the place holder.
     * @param string $value The value of the place holder.
+    * @return list_control This instance for further usage.
     */
-   public function setPlaceHolder($name, $value) {
+   public function &setPlaceHolder($name, $value) {
       // dynamically gather taglib name of the place holder to set
       $tagLibClass = $this->getClassNameByTagLibClass('placeholder');
 
@@ -90,6 +91,8 @@ abstract class list_control extends Document {
                . '" in document controller "' . ($this->__ParentObject->getDocumentController())
                . '"!', E_USER_WARNING);
       }
+
+      return $this;
    }
 
    /**
