@@ -44,6 +44,17 @@ abstract class list_control extends Document {
       }
    }
 
+   protected function getClassNameByTagLibClass($class) {
+
+      foreach ($this->__TagLibs as $tagLib) {
+         if ($tagLib->getClass() == $class) {
+            return $tagLib->getPrefix() . '_taglib_' . $class;
+         }
+      }
+
+      return null;
+   }
+
    /**
     * Set's a place holder within the html list container.
     *
@@ -52,7 +63,7 @@ abstract class list_control extends Document {
     */
    public function setPlaceHolder($name, $value) {
       // dynamically gather taglib name of the place holder to set
-      $tagLibClass = $this->__getClassNameByTagLibClass('placeholder');
+      $tagLibClass = $this->getClassNameByTagLibClass('placeholder');
 
       $placeHolderCount = 0;
       if (count($this->__Children) > 0) {
@@ -71,7 +82,6 @@ abstract class list_control extends Document {
                   . ($this->__ParentObject->getDocumentController()) . '"! Perhaps tag library '
                   . 'form:placeholder is not loaded in form "' . $this->getAttribute('name') . '"!',
             E_USER_ERROR);
-         exit();
       }
 
       if ($placeHolderCount < 1) {
@@ -188,5 +198,3 @@ abstract class AbstractTaglibList extends list_control {
    }
 
 }
-
-?>
