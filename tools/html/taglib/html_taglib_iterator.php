@@ -59,6 +59,13 @@ class html_taglib_iterator extends Document {
     */
    protected $transformOnPlace = false;
 
+
+   /**
+    * @protected
+    * The iteration number
+    */
+   protected $iterationNumber = 0;
+   
    /**
     * @public
     *
@@ -120,6 +127,21 @@ class html_taglib_iterator extends Document {
 
    /**
     * @public
+    * 
+    * Sets the value of the iterationNumber-Object-Attribute
+    *
+    * @param integer $number The number of iterationNumber
+    *
+    * @author Nicolas Pecher
+    * @version
+    * Version 0.1, 15.03.2012
+    */
+   public function setIterationNumber($number) {
+       $this->iterationNumber(intval($number));
+   }
+
+   /**
+    * @public
     *
     * Creates the output of the iterator. Can be called manually to use the output within
     * a document controller or surrounding taglib or automatically using the
@@ -142,6 +164,39 @@ class html_taglib_iterator extends Document {
 
       $buffer = (string)'';
 
+      // set iteration number if it's value is cero
+      if ($this->iterationNumber == 0) { 
+          
+         $this->iterationNumber = 1; // Default value 
+               
+         $pager = $this->getAttribute('pager', false);
+          
+         if ($pager != false) {
+          
+            // get pager-config
+            $pagerConfig = $this->getConfiguration('modules::pager', 'pager');
+            $pagerConfig = $pagerConfig->getSection($pager);
+              
+            // get the number of entries per page
+            $entriesPerPage = RequestHandler::getValue(
+               $pagerConfig->getValue('Pager.ParameterCountName'), 
+               $pagerConfig->getValue('Pager.EntriesPerPage')
+            ); 
+              
+            // get the number of the actual page
+            $actualPage = RequestHandler::getValue(
+               $pagerConfig->getValue('Pager.ParameterPageName'),
+               1
+            );
+              
+            $startNumber = $entriesPerPage * (--$actualPage);
+            $startNumber++;
+            $this->iterationNumber = $startNumber;  
+                       
+         }
+          
+      }
+
       // the iterator item must not always be the first child
       // of the current node!
       $itemObjectId = $this->getIteratorItemObjectId();
@@ -160,6 +215,14 @@ class html_taglib_iterator extends Document {
          if (is_array($this->dataContainer[$i])) {
 
             foreach ($placeHolders as $objectId => $DUMMY) {
+            
+               // if we find a placeholder with IterationNumber as name-Attribute-Value set Iteration number
+               if ($placeHolders[$objectId]->getAttribute('name') == 'IterationNumber') {
+                   $placeHolders[$objectId]->setContent($this->iterationNumber);
+                   $this->iterationNumber++;
+                   continue;
+               }            
+            
                $placeHolders[$objectId]->setContent($this->dataContainer[$i][$placeHolders[$objectId]->getAttribute('name')]);
             }
 
@@ -168,6 +231,14 @@ class html_taglib_iterator extends Document {
          } elseif (is_object($this->dataContainer[$i])) {
 
             foreach ($placeHolders as $objectId => $DUMMY) {
+            
+               // if we find a placeholder with IterationNumber as name-Attribute-Value set Iteration number
+               if ($placeHolders[$objectId]->getAttribute('name') == 'IterationNumber') {
+                   $placeHolders[$objectId]->setContent($this->iterationNumber);
+                   $this->iterationNumber++;
+                   continue;
+               }            
+            
                // evaluate per-place-holder getter
                $localGetter = $placeHolders[$objectId]->getGetterMethod();
                if ($localGetter == null) {
