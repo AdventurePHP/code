@@ -75,19 +75,9 @@ class html_taglib_a extends html_taglib_link {
       if (!isset($this->attributeList['href'])) {
          return '';
       }      
-      $qs = (isset($_SERVER['QUERY_STRING'])) ? $_SERVER['QUERY_STRING'] : '';
-      $href = strstr($this->attributeList['href'], '#', true);
-      if(!$href) {
-          $href = $this->attributeList['href'];
-      }
-      if($qs !== '') {
-         if (substr_count($href, $qs) > 0) {
-             $this->attributeList['class'] = $this->attributeList['class'] . ' active';
-         } 
-      }
-      elseif(substr($href, -1) === '/') {
-           $this->attributeList['class'] = $this->attributeList['class'] . ' active';
-      }
+      if (substr_count(str_replace('&', '&amp;', Registry::retrieve('apf::core', 'CurrentRequestURL')), $this->attributeList['href']) > 0) {
+         $this->attributeList['class'] = $this->attributeList['class'] . ' active';
+      }      
       
       
       foreach ($this->attributeList as $key => $elem) {
