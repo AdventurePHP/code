@@ -55,6 +55,25 @@ class GenericORMapper extends BaseMapper {
    /**
     * @public
     *
+    * Loads an object list.
+    *
+    * @param string $objectName The Name of the object in mapping table
+    * @return GenericORMapperDataObject[] The desired object list
+    *
+    * @author Nicolas Pecher
+    * @version
+    * Version 0.1, 18.03.2012
+    */
+   public function loadObjectList($objectName) {
+       $statement = 'SELECT * FROM `' . $this->mappingTable[$objectName]['Table'] . '`';
+       $result = $this->dbDriver->executeTextStatement($statement, $this->logStatements);
+       
+       return $this->loadObjectListByStatementResult($objectName, $result);
+   }
+
+   /**
+    * @public
+    *
     * Loads an object list by a special statement. The statement must return the desired
     * object properties.
     *
