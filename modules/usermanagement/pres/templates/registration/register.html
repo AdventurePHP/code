@@ -60,7 +60,7 @@
          <form:text id="umgt-fe-reg-email" name="email" maxlength="100"/>
          <form:addvalidator
                class="EMailValidator"
-               button="send"
+               button="sendFormRegistration"
                control="email"
                />
       </p>
@@ -74,7 +74,7 @@
          <form:text id="umgt-fe-reg-user" name="username" maxlength="100"/>
          <form:addvalidator
                class="TextLengthValidator"
-               button="send"
+               button="sendFormRegistration"
                control="username|password|repeat"
                />
       </p>
@@ -88,7 +88,7 @@
          <form:password id="umgt-fe-reg-pass" name="password" maxlength="100" ref="repeat" />
          <form:addvalidator
                class="FieldCompareValidator"
-               button="send"
+               button="sendFormRegistration"
                control="password"
                />
       </p>
@@ -102,7 +102,7 @@
          <form:password id="umgt-fe-reg-repeat" maxlength="100" name="repeat"/>
       </p>
       <p>
-         <form:button id="umgt-fe-reg-send" name="send">
+         <form:button id="umgt-fe-reg-send" name="sendFormRegistration">
             <button:getstring
                   namespace="modules::usermanagement::pres"
                   config="labels.ini"

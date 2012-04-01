@@ -20,7 +20,7 @@
             entry="login.form.password.label" />
       </label>
       <form:password id="umgt-fe-login-pass" name="password" />
-      <form:button id="umgt-fe-login-send" name="send">
+      <form:button id="umgt-fe-login-send" name="sendFormLogin">
          <button:getstring
             namespace="modules::usermanagement::pres"
             config="labels.ini"
@@ -28,7 +28,7 @@
       </form:button>
       <form:addvalidator
          class="TextLengthValidator"
-         button="send"
+         button="sendFormLogin"
          control="username|password"
       />
    </fieldset>
