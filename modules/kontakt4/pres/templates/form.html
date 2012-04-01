@@ -31,17 +31,17 @@
          </form:error>
          <form:addvalidator
             class="TextLengthValidator"
-            button="send"
+            button="sendFormContact"
             control="AbsenderName|Betreff|Text"
          />
          <form:addvalidator
             class="EMailValidator"
-            button="send"
+            button="sendFormContact"
             control="AbsenderAdresse"
          />
          <form:addfilter
             class="EMailFilter"
-            button="send"
+            button="sendFormContact"
             control="AbsenderAdresse"
          />
          <label for="contact-form-recipient">
@@ -83,7 +83,7 @@
             />
          </div>
          <div class="fullsizebox buttonbox">
-            <form:button name="send" class="button"/>
+            <form:button name="sendFormContact" class="button"/>
          </div>
       </div>
    </html:form>
