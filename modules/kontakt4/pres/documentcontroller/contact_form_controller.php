@@ -58,6 +58,7 @@ class contact_form_controller extends base_controller {
       $form->setAction($action);
 
       // fill recipient list
+      /* @var $recipients form_taglib_select */
       $recipients = & $form->getFormElementByName('Empfaenger');
 
       $cM = &$this->getServiceObject('modules::kontakt4::biz', 'ContactManager');
@@ -72,6 +73,7 @@ class contact_form_controller extends base_controller {
 
          $formData = new ContactFormData();
 
+         /* @var $recipient form_taglib_select */
          $recipient = &$form->getFormElementByName('Empfaenger');
          $option = &$recipient->getSelectedOption();
          $recipientId = $option->getAttribute('value');
@@ -89,16 +91,16 @@ class contact_form_controller extends base_controller {
          $text = &$form->getFormElementByName('Text');
          $formData->setMessage($text->getContent());
 
+         /* @var $cM ContactManager */
          $cM = &$this->getServiceObject('modules::kontakt4::biz', 'ContactManager');
          $cM->sendContactForm($formData);
 
-         // end if
       } else {
 
          // label the button
          $config = $this->getConfiguration('modules::kontakt4', 'language');
          $value = $config->getSection($this->__Language)->getValue('form.button');
-         $button = &$form->getFormElementByName('send');
+         $button = &$form->getFormElementByName('sendFormContact');
          $button->setAttribute('value', $value);
 
          // fill listeners with the language dependent values
@@ -124,4 +126,3 @@ class contact_form_controller extends base_controller {
    }
 
 }
-?>
