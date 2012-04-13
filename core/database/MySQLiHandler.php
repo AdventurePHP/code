@@ -19,7 +19,6 @@
  * -->
  */
 import('core::database', 'AbstractDatabaseHandler');
-import('core::database', 'DatabaseHandlerException');
 
 /**
  * @package core::database
@@ -35,18 +34,13 @@ import('core::database', 'DatabaseHandlerException');
 class MySQLiHandler extends AbstractDatabaseHandler {
 
    /**
-    * @protected
-    * @var string Port for connection.
-    */
-   protected $__dbPort = '3306';
-
-   /**
     * @var int The number of rows, that are affected within a bind statement execution.
     */
-   private $__bindNumRows = 0;
+   private $bindNumRows = 0;
 
    public function __construct() {
-      $this->__dbLogFileName = 'mysqli';
+      $this->dbLogFileName = 'mysqli';
+      $this->dbPort = '3306';
    }
 
    /**
@@ -58,26 +52,26 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 23.02.2010<br />
     */
-   protected function __connect() {
+   protected function connect() {
 
       // initiate connection
-      $this->__dbConn = mysqli_init();
+      $this->dbConn = mysqli_init();
 
       // as discussed under http://forum.adventure-php-framework.org/de/viewtopic.php?f=6&t=614
       // the mysqli extension triggers an error instead of throwing an exception. thus we have
       // to add an ugly "@" sign to convert this error into an exception. :(
-      @$this->__dbConn->real_connect(
-         $this->__dbHost,
-         $this->__dbUser,
-         $this->__dbPass,
-         $this->__dbName,
-         $this->__dbPort,
-         $this->__dbSocket);
+      @$this->dbConn->real_connect(
+         $this->dbHost,
+         $this->dbUser,
+         $this->dbPass,
+         $this->dbName,
+         $this->dbPort,
+         $this->dbSocket);
 
-      if ($this->__dbConn->connect_error || mysqli_connect_error()) {
-         throw new DatabaseHandlerException('[MySQLiHandler->__connect()] Database connection '
-                                            . 'could\'t be established (' . mysqli_connect_errno($this->__dbConn) . ': '
-                                            . mysqli_connect_error($this->__dbConn) . ')!', E_USER_ERROR);
+      if ($this->dbConn->connect_error || mysqli_connect_error()) {
+         throw new DatabaseHandlerException('[MySQLiHandler->connect()] Database connection '
+               . 'could\'t be established (' . mysqli_connect_errno($this->dbConn) . ': '
+               . mysqli_connect_error($this->dbConn) . ')!', E_USER_ERROR);
       }
 
       // configure client connection
@@ -96,14 +90,14 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 23.02.2010<br />
     */
-   protected function __close() {
+   protected function close() {
 
-      if (!$this->__dbConn->close()) {
-         $this->__dbConn = null;
-         throw new DatabaseHandlerException('[MySQLiHandler->__close()] An error occured during closing of the '
-                                            . 'database connection (' . mysqli_errno() . ': ' . mysqli_error() . ')!', E_USER_WARNING);
+      if (!$this->dbConn->close()) {
+         $this->dbConn = null;
+         throw new DatabaseHandlerException('[MySQLiHandler->close()] An error occured during closing of the '
+               . 'database connection (' . mysqli_errno() . ': ' . mysqli_error() . ')!', E_USER_WARNING);
       }
-      $this->__dbConn = null;
+      $this->dbConn = null;
 
    }
 
@@ -130,31 +124,29 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       $statement = $this->getPreparedStatement($namespace, $statementFile, $params);
 
       // log statements in debug mode or when requested explicitly
-      if ($this->__dbDebug == true || $logStatement == true) {
-         $this->__dbLog->logEntry($this->__dbLogFileName,
-                                  '[MySQLiHandler::executeStatement()] Current statement: ' . $statement,
-                                  'DEBUG');
+      if ($this->dbDebug == true || $logStatement == true) {
+         $this->dbLog->logEntry($this->dbLogFileName, '[MySQLiHandler::executeStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
       // execute the statement with use of the current connection!
-      $this->__dbConn->real_query($statement);
+      $this->dbConn->real_query($statement);
 
       // bug 547: map public connection properties to variables, to throw an exception for
       // illegal statements. otherwise, empty() will always return true.
-      $error = $this->__dbConn->error;
-      $errno = $this->__dbConn->errno;
+      $error = $this->dbConn->error;
+      $errno = $this->dbConn->errno;
 
       // get current error to be able to do error handling
       if (!empty($error) || !empty($errno)) {
          $message = '(' . $errno . ') ' . $error . ' (Statement: ' . $statement . ')';
-         $this->__dbLog->logEntry($this->__dbLogFileName, $message, 'ERROR');
+         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_ERROR);
          throw new DatabaseHandlerException('[MySQLiHandler->executeStatement()] ' . $message);
       }
 
-      // track $__lastInsertID for further usage
-      $this->__lastInsertID = $this->__dbConn->insert_id;
+      // track $lastInsertId for further usage
+      $this->lastInsertId = $this->dbConn->insert_id;
 
-      return $this->__dbConn->store_result();
+      return $this->dbConn->store_result();
    }
 
    /**
@@ -183,6 +175,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // place holder setting is a bit tricky here, because the bind params
       // must be present in the order defined in the statement. Thus we must
       // re-order the $params array.
+      /* @var $t BenchmarkTimer */
       $t = &Singleton::getInstance('BenchmarkTimer');
       $statementId = md5($statement);
       $id = $statementId . ' re-order bind params';
@@ -209,9 +202,8 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       }
 
       // log statements in debug mode or when requested explicitly
-      if ($this->__dbDebug == true || $logStatement == true) {
-         $this->__dbLog->logEntry($this->__dbLogFileName,
-                                  '[MySQLiHandler::executeBindStatement()] Current statement: ' . $statement, 'DEBUG');
+      if ($this->dbDebug == true || $logStatement == true) {
+         $this->dbLog->logEntry($this->dbLogFileName, '[MySQLiHandler::executeBindStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
       $t->stop($id);
 
@@ -235,8 +227,8 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       $t->start($id);
       $query->execute();
 
-      // track $__lastInsertID fur further usage
-      $this->__lastInsertID = $query->insert_id;
+      // track $lastInsertId fur further usage
+      $this->lastInsertId = $query->insert_id;
 
       $t->stop($id);
 
@@ -247,12 +239,11 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       $t->stop($id);
 
       // remember affected rows
-      $this->__bindNumRows = $query->num_rows;
+      $this->bindNumRows = $query->num_rows;
 
       $query->free_result();
       $query->close();
       return $statementResult;
-
    }
 
    /**
@@ -271,6 +262,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     */
    public function executeTextBindStatement($statement, array $params = array(), $logStatement = false) {
 
+      /* @var $t BenchmarkTimer */
       $t = &Singleton::getInstance('BenchmarkTimer');
       $statementId = md5($statement);
 
@@ -289,9 +281,9 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       $paramCount = count($params);
       if ($paramStatementCount != $paramCount) {
          throw new DatabaseHandlerException('[MySQLiHandler->executeTextBindStatement()] Number '
-                                            . 'of given params (' . $paramCount . ') does not match number of bind params '
-                                            . 'within the statement (' . $paramStatementCount . ')! Current statement: '
-                                            . $statement, E_USER_ERROR);
+               . 'of given params (' . $paramCount . ') does not match number of bind params '
+               . 'within the statement (' . $paramStatementCount . ')! Current statement: '
+               . $statement, E_USER_ERROR);
       }
 
       $this->bindParams($query, $params);
@@ -302,8 +294,8 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       $t->start($id);
       $query->execute();
 
-      // track $__lastInsertID fur further usage
-      $this->__lastInsertID = $query->insert_id;
+      // track $lastInsertId fur further usage
+      $this->lastInsertId = $query->insert_id;
 
       $t->stop($id);
 
@@ -314,7 +306,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       $t->stop($id);
 
       // remember affected rows
-      $this->__bindNumRows = $query->num_rows;
+      $this->bindNumRows = $query->num_rows;
 
       $query->free_result();
       $query->close();
@@ -325,7 +317,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @return int The number of rows affected by a statement execution.
     */
    public function getBindNumRows() {
-      return $this->__bindNumRows;
+      return $this->bindNumRows;
    }
 
    /**
@@ -342,12 +334,12 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Version 0.1, 08.03.2010<br />
     */
    private function createQuery($statement) {
-      $query = $this->__dbConn->prepare($statement);
+      $query = $this->dbConn->prepare($statement);
 
       // bug 547: map public connection properties to variables, to throw an exception for
       // illegal statements. otherwise, empty() will always return true.
-      $error = $this->__dbConn->error;
-      $errno = $this->__dbConn->errno;
+      $error = $this->dbConn->error;
+      $errno = $this->dbConn->errno;
 
       if ($query === false || !empty($error) || !empty($errno)) {
          throw new DatabaseHandlerException($error, $errno);
@@ -437,7 +429,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Version 0.1, 24.02.2010<br />
     */
    public function escapeValue($value) {
-      return $this->__dbConn->real_escape_string($value);
+      return $this->dbConn->real_escape_string($value);
    }
 
    /**
@@ -503,7 +495,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Version 0.1, 09.03.2010<br />
     */
    public function getAffectedRows($resultCursor) {
-      return mysqli_affected_rows($this->__dbConn);
+      return mysqli_affected_rows($this->dbConn);
    }
 
    /**
@@ -542,30 +534,28 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    public function executeTextStatement($statement, $logStatement = false) {
 
       // log statements in debug mode or when requested explicitly
-      if ($this->__dbDebug == true || $logStatement == true) {
-         $this->__dbLog->logEntry($this->__dbLogFileName,
-                                  '[MySQLiHandler::executeTextStatement()] Current statement: ' . $statement,
-                                  'DEBUG');
+      if ($this->dbDebug == true || $logStatement == true) {
+         $this->dbLog->logEntry($this->dbLogFileName, '[MySQLiHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
       // execute the statement with use of the current connection!
-      $this->__dbConn->real_query($statement);
+      $this->dbConn->real_query($statement);
 
       // bug 547: map public connection properties to variables, to throw an exception for
       // illegal statements. otherwise, empty() will always return true.
-      $error = $this->__dbConn->error;
-      $errno = $this->__dbConn->errno;
+      $error = $this->dbConn->error;
+      $errno = $this->dbConn->errno;
 
       if (!empty($error) || !empty($errno)) {
          $message = '(' . $errno . ') ' . $error . ' (Statement: ' . $statement . ')';
-         $this->__dbLog->logEntry($this->__dbLogFileName, $message, 'ERROR');
+         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_ERROR);
          throw new DatabaseHandlerException('[MySQLiHandler->executeTextStatement()] ' . $message);
       }
 
-      // track $__lastInsertID for further usage
-      $this->__lastInsertID = $this->__dbConn->insert_id;
+      // track $lastInsertId for further usage
+      $this->lastInsertId = $this->dbConn->insert_id;
 
-      return $this->__dbConn->store_result();
+      return $this->dbConn->store_result();
    }
 
    /**
@@ -580,11 +570,11 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Version 0.1, 09.03.2010<br />
     */
    public function getServerInfo() {
-      return mysqli_get_server_info($this->__dbConn);
+      return mysqli_get_server_info($this->dbConn);
    }
 
    public function getHostInfo() {
-      return mysqli_get_host_info($this->__dbConn);
+      return mysqli_get_host_info($this->dbConn);
    }
 
    /**
@@ -599,9 +589,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Version 0.1, 09.03.2010<br />
     */
    public function getDatabaseName() {
-      return $this->__dbName;
+      return $this->dbName;
    }
 
 }
-
-?>

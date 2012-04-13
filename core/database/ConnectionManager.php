@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -29,7 +28,7 @@
  * must be created as a service object.
  * <p/>
  * <pre>
- * $connMgr = &$this->getServiceObject('core::database','ConnectionManager');
+ * $connMgr = &$this->getServiceObject('core::database', 'ConnectionManager');
  * $dBConn = &$connMgr->getConnection('{ConnectionKey}');
  * </pre>
  * The appropriate configuration file must reside under the <em>core::database</em> namespace
@@ -46,7 +45,7 @@
  * [DB.Collation = ""]
  * </pre>
  * <p/>
- * Furter examples can be obtained in the <em>apf-configpack-*</em> release files.
+ * Further examples can be obtained in the <em>apf-configpack-*</em> release files.
  *
  * @author Christian Achatz
  * @version
@@ -64,7 +63,7 @@ final class ConnectionManager extends APFObject {
 
    /**
     * @public
-    * 
+    *
     * Initializes the configuration provider for file based statements.
     *
     * @author Christian Achatz
@@ -103,10 +102,8 @@ final class ConnectionManager extends APFObject {
    public function &getConnection($connectionKey) {
 
       // check, if connection was already created
-      $connectionHash = md5($connectionKey);
-
-      if (isset($this->connections[$connectionHash])) {
-         return $this->connections[$connectionHash];
+      if (isset($this->connections[$connectionKey])) {
+         return $this->connections[$connectionKey];
       }
 
       // read configuration
@@ -118,9 +115,9 @@ final class ConnectionManager extends APFObject {
       if ($section == null) {
          $env = Registry::retrieve('apf::core', 'Environment');
          throw new InvalidArgumentException('[ConnectionManager::getConnection()] The given '
-                 . 'configuration section ("' . $connectionKey . '") does not exist in configuration file "'
-                 . $env . '_connections.ini" in namespace "core::database" for context "'
-                 . $this->__Context . '"!', E_USER_ERROR);
+               . 'configuration section ("' . $connectionKey . '") does not exist in configuration file "'
+               . $env . '_connections.ini" in namespace "core::database" for context "'
+               . $this->__Context . '"!', E_USER_ERROR);
       }
 
       // include the handler
@@ -134,11 +131,9 @@ final class ConnectionManager extends APFObject {
          $options[$key] = $section->getValue($key);
       }
 
-      // create the handler
-      $this->connections[$connectionHash] = &$this->getAndInitServiceObject('core::database', $section->getValue('DB.Type') . 'Handler', $options, 'NORMAL');
-      return $this->connections[$connectionHash];
+      // create the connection lazily
+      $this->connections[$connectionKey] = &$this->getAndInitServiceObject('core::database', $section->getValue('DB.Type') . 'Handler', $options, APFService::SERVICE_TYPE_NORMAL);
+      return $this->connections[$connectionKey];
    }
 
 }
-
-?>

@@ -19,7 +19,6 @@
  * -->
  */
 import('core::database', 'AbstractDatabaseHandler');
-import('core::database', 'DatabaseHandlerException');
 
 /**
  * @package core::database
@@ -34,14 +33,9 @@ import('core::database', 'DatabaseHandlerException');
  */
 class MySQLxHandler extends AbstractDatabaseHandler {
 
-   /**
-    * @protected
-    * @var string Port for connection.
-    */
-   protected $__dbPort = '3306';
-
    public function __construct() {
-      $this->__dbLogFileName = 'mysqlx';
+      $this->dbLogFileName = 'mysqlx';
+      $this->dbPort = '3306';
    }
 
    /**
@@ -61,42 +55,41 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     * Version 0.8, 09.10.2008 (Removed the @ before mysql_connect to get a more detailed in case of connection errors)<br />
     * Version 0.9, 18.03.2009 (Bugfix: create a new connection, even if the connection data is the same. This otherwise may result in interference of connections, that use different databases.)<br />
     */
-   protected function __connect() {
+   protected function connect() {
 
       // as discussed under http://forum.adventure-php-framework.org/de/viewtopic.php?f=6&t=614
       // the mysqli extension triggers an error instead of throwing an exception. thus we have
       // to add an ugly "@" sign to convert this error into an exception. :(
-      $this->__dbConn = @mysql_connect(
-        $this->getServerHost(),
-        $this->__dbUser,
-        $this->__dbPass,
-        true);
+      $this->dbConn = mysql_connect(
+         $this->getServerHost(),
+         $this->dbUser,
+         $this->dbPass,
+         true);
 
-      if (!is_resource($this->__dbConn)) {
-         throw new DatabaseHandlerException('[MySQLxHandler->__connect()] Database connection '
-                 . 'could\'t be established (' . mysql_errno() . ': ' . mysql_error() . ')!', E_USER_ERROR);
+      if (!is_resource($this->dbConn)) {
+         throw new DatabaseHandlerException('[MySQLxHandler->connect()] Database connection '
+               . 'could\'t be established (' . mysql_errno() . ': ' . mysql_error() . ')!', E_USER_ERROR);
       }
 
       // configure client connection
       $this->initCharsetAndCollation();
 
       // Select the database. The ugly @ sign is needed to provide nice error messages.
-      $result = @mysql_select_db($this->__dbName, $this->__dbConn);
+      $result = @mysql_select_db($this->dbName, $this->dbConn);
 
       if (!$result) {
-         throw new DatabaseHandlerException('[MySQLxHandler->__connect()] Database couldn\'t be selected (' . mysql_errno() . ': ' . mysql_error() . ')!', E_USER_ERROR);
+         throw new DatabaseHandlerException('[MySQLxHandler->connect()] Database couldn\'t be selected (' . mysql_errno() . ': ' . mysql_error() . ')!', E_USER_ERROR);
       }
-
    }
 
    private function getServerHost() {
-      if ($this->__dbSocket !== null) {
-         return ':'.$this->__dbSocket;
+      if ($this->dbSocket !== null) {
+         return ':' . $this->dbSocket;
       }
-      if ($this->__dbPort !== null) {
-         return $this->__dbHost.':'.$this->__dbPort;
+      if ($this->dbPort !== null) {
+         return $this->dbHost . ':' . $this->dbPort;
       }
-      return $this->__dbHost;
+      return $this->dbHost;
    }
 
    /**
@@ -111,15 +104,15 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     * Version 0.3, 04.12.2005<br />
     * Version 0.4, 24.12.2005<br />
     */
-   protected function __close() {
+   protected function close() {
 
-      $result = @mysql_close($this->__dbConn);
-      $this->__dbConn = null;
+      $result = @mysql_close($this->dbConn);
+      $this->dbConn = null;
 
       if (!$result) {
-         throw new DatabaseHandlerException('[MySQLxHandler->__close()] An error occured during '
-                 . 'closing of the database connection (' . mysql_errno() . ': ' . mysql_error() . ')!',
-                 E_USER_WARNING);
+         throw new DatabaseHandlerException('[MySQLxHandler->close()] An error occured during '
+                  . 'closing of the database connection (' . mysql_errno() . ': ' . mysql_error() . ')!',
+            E_USER_WARNING);
       }
 
    }
@@ -156,28 +149,26 @@ class MySQLxHandler extends AbstractDatabaseHandler {
       $statement = $this->getPreparedStatement($namespace, $statementFile, $params);
 
       // log statements in debug mode or when requested explicitly
-      if ($this->__dbDebug == true || $logStatement == true) {
-         $this->__dbLog->logEntry($this->__dbLogFileName,
-                 '[MySQLxHandler::executeStatement()] Current statement: ' . $statement,
-                 'DEBUG');
+      if ($this->dbDebug == true || $logStatement == true) {
+         $this->dbLog->logEntry($this->dbLogFileName, '[MySQLxHandler::executeStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
       // execute the statement with use of the current connection!
-      $result = @mysql_query($statement, $this->__dbConn);
+      $result = @mysql_query($statement, $this->dbConn);
 
       // get current error to be able to do error handling
-      $mysql_error = mysql_error($this->__dbConn);
-      $mysql_errno = mysql_errno($this->__dbConn);
+      $mysql_error = mysql_error($this->dbConn);
+      $mysql_errno = mysql_errno($this->dbConn);
 
       if (!empty($mysql_error) || !empty($mysql_errno)) {
          $message = '[MySQLxHandler::executeStatement()] (' . $mysql_errno . ') ' . $mysql_error . ' (Statement: ' . $statement . ')';
-         $this->__dbLog->logEntry($this->__dbLogFileName, $message, 'ERROR');
+         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_ERROR);
          throw new DatabaseHandlerException('[MySQLxHandler::executeStatement()] ' . $message);
       }
 
-      // track $__lastInsertID fur further usage
-      $ID = @mysql_fetch_assoc(@mysql_query('SELECT Last_Insert_ID() AS Last_Insert_ID;', $this->__dbConn));
-      $this->__lastInsertID = $ID['Last_Insert_ID'];
+      // track $lastInsertId fur further usage
+      $ID = @mysql_fetch_assoc(@mysql_query('SELECT Last_Insert_ID() AS Last_Insert_ID;', $this->dbConn));
+      $this->lastInsertId = $ID['Last_Insert_ID'];
 
       return $result;
 
@@ -197,7 +188,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     * Version 0.2, 17.11.2008 (Bugfix: if the method is called before any other, the connection is null)<br />
     */
    public function escapeValue($value) {
-      return mysql_real_escape_string($value, $this->__dbConn);
+      return mysql_real_escape_string($value, $this->dbConn);
    }
 
    /**
@@ -225,12 +216,12 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Sets the data pointer to the given offset using the result resource.
     *
-    *  @author Christian Schäfer
-    *  @version
+    * @author Christian Schäfer
+    * @version
     *  Version 0.1, 15.01.2006<br />
     */
    public function setDataPointer($result, $offset) {
@@ -251,7 +242,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     * Version 0.2, 07.03.2008<br />
     */
    public function getAffectedRows($resultCursor) {
-      return mysql_affected_rows($this->__dbConn);
+      return mysql_affected_rows($this->dbConn);
    }
 
    /**
@@ -289,28 +280,26 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    public function executeTextStatement($statement, $logStatement = false) {
 
       // log statements in debug mode or when requested explicitly
-      if ($this->__dbDebug == true || $logStatement == true) {
-         $this->__dbLog->logEntry($this->__dbLogFileName,
-                 '[MySQLxHandler::executeTextStatement()] Current statement: ' . $statement,
-                 'DEBUG');
+      if ($this->dbDebug == true || $logStatement == true) {
+         $this->dbLog->logEntry($this->dbLogFileName, '[MySQLxHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
       // execute the statement with use of the current connection!
-      $result = @mysql_query($statement, $this->__dbConn);
+      $result = @mysql_query($statement, $this->dbConn);
 
       // get current error to be able to do error handling
-      $mysql_error = mysql_error($this->__dbConn);
-      $mysql_errno = mysql_errno($this->__dbConn);
+      $mysql_error = mysql_error($this->dbConn);
+      $mysql_errno = mysql_errno($this->dbConn);
 
       if (!empty($mysql_error) || !empty($mysql_errno)) {
          $message = '(' . $mysql_errno . ') ' . $mysql_error . ' (Statement: ' . $statement . ')';
-         $this->__dbLog->logEntry($this->__dbLogFileName, $message, 'ERROR');
+         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_DEBUG);
          throw new DatabaseHandlerException('[MySQLxHandler->executeTextStatement()] ' . $message);
       }
 
-      // track $__lastInsertID for further usage
-      $ID = @mysql_fetch_assoc(@mysql_query('SELECT Last_Insert_ID() AS Last_Insert_ID', $this->__dbConn));
-      $this->__lastInsertID = $ID['Last_Insert_ID'];
+      // track $lastInsertId for further usage
+      $ID = @mysql_fetch_assoc(@mysql_query('SELECT Last_Insert_ID() AS Last_Insert_ID', $this->dbConn));
+      $this->lastInsertId = $ID['Last_Insert_ID'];
 
       return $result;
 
@@ -321,17 +310,19 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     *
     * Returns the version of the database server.
     *
+    * @return string The server information.
+    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 05.03.2006<br />
     * Version 0.2, 07.03.2008 (Now the connection is applied to the call.)<br />
     */
    public function getServerInfo() {
-      return mysql_get_server_info($this->__dbConn);
+      return mysql_get_server_info($this->dbConn);
    }
 
    public function getHostInfo() {
-      return mysql_get_host_info($this->__dbConn);
+      return mysql_get_host_info($this->dbConn);
    }
 
    /**
@@ -339,13 +330,14 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     *
     * Returns the name of the current database.
     *
+    * @return string The name of the database.
+    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 05.03.2006<br />
     */
    public function getDatabaseName() {
-      return $this->__dbName;
+      return $this->dbName;
    }
 
 }
-?>

@@ -22,6 +22,19 @@ import('core::logging', 'Logger');
 
 /**
  * @package core::database
+ * @class DatabaseHandlerException
+ *
+ * Represents an exception, that is thrown during database operations.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 08.03.2010<br />
+ */
+class DatabaseHandlerException extends Exception {
+}
+
+/**
+ * @package core::database
  * @class AbstractDatabaseHandler
  * @abstract
  *
@@ -43,74 +56,74 @@ abstract class AbstractDatabaseHandler extends APFObject {
     * @protected
     * @var boolean Indicates, whether the handler is already initialized or not.
     */
-   protected $__isInitialized = false;
+   protected $isInitialized = false;
 
    /**
     * @protected
     * @var string Database server.
     */
-   protected $__dbHost = null;
+   protected $dbHost = null;
 
    /**
     * @protected
     * @var string Database user.
     */
-   protected $__dbUser = null;
+   protected $dbUser = null;
 
    /**
     * @protected
     * @var string Password for the database.
     */
-   protected $__dbPass = null;
+   protected $dbPass = null;
 
    /**
     * @protected
     * @var string Name of the database.
     */
-   protected $__dbName = null;
+   protected $dbName = null;
 
    /**
     * @protected
     * @var string Port for connection.
     */
-   protected $__dbPort = null;
+   protected $dbPort = null;
 
    /**
     * @protected
     * @var string Socket for connection.
     */
-   protected $__dbSocket = null;
+   protected $dbSocket = null;
 
    /**
     * @protected
     * @var boolean Indicates, if the handler runs in debug mode. This means, that all
     * statements executed are written into a dedicated logfile.
     */
-   protected $__dbDebug = false;
+   protected $dbDebug = false;
 
    /**
     * @protected
     * @var resource Database connection resource.
     */
-   protected $__dbConn = null;
+   protected $dbConn = null;
 
    /**
     * @protected
     * @var Logger Instance of the logger.
     */
-   protected $__dbLog = null;
+   protected $dbLog = null;
 
    /**
     * @protected
     * @var string Name of the log file. Must be defined within the implementation class!
     */
-   protected $__dbLogFileName;
+   protected $dbLogFileName;
 
    /**
     * @protected
     * @var int Auto increment id of the last insert.
     */
-   protected $__lastInsertID;
+   protected $lastInsertId;
 
    /**
     * @protected
@@ -119,7 +132,7 @@ abstract class AbstractDatabaseHandler extends APFObject {
     * For mysql databases, see http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
     * for more details.
     */
-   protected $__dbCollation = null;
+   protected $dbCollation = null;
 
    /**
     * @protected
@@ -128,7 +141,7 @@ abstract class AbstractDatabaseHandler extends APFObject {
     * For mysql databases, see http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
     * for more details.
     */
-   protected $__dbCharset = null;
+   protected $dbCharset = null;
 
    /**
     * @public
@@ -144,58 +157,58 @@ abstract class AbstractDatabaseHandler extends APFObject {
     */
    public function init($initParam) {
 
-      if ($this->__isInitialized == false) {
+      if ($this->isInitialized == false) {
 
          // set server host
          if (isset($initParam['DB.Host'])) {
-            $this->__dbHost = $initParam['DB.Host'];
+            $this->dbHost = $initParam['DB.Host'];
          }
 
          // set user name
          if (isset($initParam['DB.User'])) {
-            $this->__dbUser = $initParam['DB.User'];
+            $this->dbUser = $initParam['DB.User'];
          }
 
          // set password
          if (isset($initParam['DB.Pass'])) {
-            $this->__dbPass = $initParam['DB.Pass'];
+            $this->dbPass = $initParam['DB.Pass'];
          }
 
          // set name of the database
-         $this->__dbName = $initParam['DB.Name'];
+         $this->dbName = $initParam['DB.Name'];
 
          // set port
          if (isset($initParam['DB.Port'])) {
-            $this->__dbPort = $initParam['DB.Port'];
+            $this->dbPort = $initParam['DB.Port'];
          }
 
          // set socket
          if (isset($initParam['DB.Socket'])) {
-            $this->__dbSocket = $initParam['DB.Socket'];
+            $this->dbSocket = $initParam['DB.Socket'];
          }
 
          // set debug mode
          if (isset($initParam['DB.DebugMode']) && ($initParam['DB.DebugMode'] == 'true' || $initParam['DB.DebugMode'] == '1')) {
-            $this->__dbDebug = true;
+            $this->dbDebug = true;
          }
 
          // set connection charset and collation
          if (isset($initParam['DB.Charset'])) {
             $charset = trim($initParam['DB.Charset']);
             if (!empty($charset)) {
-               $this->__dbCharset = $charset;
+               $this->dbCharset = $charset;
             }
          }
          if (isset($initParam['DB.Collation'])) {
             $collation = trim($initParam['DB.Collation']);
             if (!empty($collation)) {
-               $this->__dbCollation = $collation;
+               $this->dbCollation = $collation;
             }
          }
 
-         $this->__dbLog = &Singleton::getInstance('Logger');
-         $this->__isInitialized = true;
-         $this->__connect();
+         $this->dbLog = &Singleton::getInstance('Logger');
+         $this->isInitialized = true;
+         $this->connect();
 
       }
 
@@ -211,7 +224,7 @@ abstract class AbstractDatabaseHandler extends APFObject {
     * @version
     * Version 0.1, 10.02.2008<br />
     */
-   abstract protected function __connect();
+   abstract protected function connect();
 
    /**
     * @protected
@@ -223,7 +236,7 @@ abstract class AbstractDatabaseHandler extends APFObject {
     * @version
     * Version 0.1, 10.02.2008<br />
     */
-   abstract protected function __close();
+   abstract protected function close();
 
    /**
     * @public
@@ -335,7 +348,7 @@ abstract class AbstractDatabaseHandler extends APFObject {
     * Version 0.1, 04.01.2006<br />
     */
    public function getLastID() {
-      return $this->__lastInsertID;
+      return $this->lastInsertId;
    }
 
    /**
@@ -351,13 +364,13 @@ abstract class AbstractDatabaseHandler extends APFObject {
     */
    protected function initCharsetAndCollation() {
 
-      if ($this->__dbCharset !== null) {
-         $this->executeTextStatement('SET NAMES \'' . $this->__dbCharset . '\'');
+      if ($this->dbCharset !== null) {
+         $this->executeTextStatement('SET NAMES \'' . $this->dbCharset . '\'');
       }
 
-      if ($this->__dbCollation !== null) {
-         $this->executeTextStatement('SET collation_connection = \'' . $this->__dbCollation . '\'');
-         $this->executeTextStatement('SET collation_database = \'' . $this->__dbCollation . '\'');
+      if ($this->dbCollation !== null) {
+         $this->executeTextStatement('SET collation_connection = \'' . $this->dbCollation . '\'');
+         $this->executeTextStatement('SET collation_database = \'' . $this->dbCollation . '\'');
       }
 
    }
@@ -383,10 +396,9 @@ abstract class AbstractDatabaseHandler extends APFObject {
       } catch (ConfigurationException $e) {
          $env = Registry::retrieve('apf::core', 'Environment');
          throw new DatabaseHandlerException('[' . get_class($this) . '->getStatementFromFile()] There\'s '
-                                            . 'no statement file with name "' . $env . '_' . $name . '" for given '
-                                            . 'namespace "config::' . $namespace . '" and current context "' . $this->getContext()
-                                            . '"! Root cause: ' . $e->getMessage(),
-            E_USER_ERROR);
+               . 'no statement file with name "' . $env . '_' . $name . '" for given '
+               . 'namespace "config::' . $namespace . '" and current context "' . $this->getContext()
+               . '"! Root cause: ' . $e->getMessage(), E_USER_ERROR);
       }
 
       /* @var $config StatementConfiguration */
@@ -403,5 +415,3 @@ abstract class AbstractDatabaseHandler extends APFObject {
    }
 
 }
-
-?>

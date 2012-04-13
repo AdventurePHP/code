@@ -19,13 +19,12 @@
  * -->
  */
 import('core::database', 'AbstractDatabaseHandler');
-import('core::database', 'DatabaseHandlerException');
 
 /**
  * @package core::database
  * @class SQLiteHandler
  *
- * Implementiert die Datenbankabstraktionsschicht f�r die SQLite-Schnittstelle.<br />
+ * This class provides APF-style access to sqlite databases.
  *
  * @author Christian Achatz
  * @version
@@ -37,16 +36,16 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     * @protected
     * @var int File system permission mode of the database.
     */
-   protected $__dbMode = 0666;
-   
+   protected $dbMode = 0666;
+
    /**
     * @protected
     * @var string Error tracking container for SQLite errors.
     */
-   protected $__dbError = null;
+   protected $dbError = null;
 
    public function __construct() {
-      $this->__dbLogFileName = 'sqlite';
+      $this->dbLogFileName = 'sqlite';
    }
 
    /**
@@ -60,13 +59,13 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 23.02.2008<br />
     */
-   protected function __connect() {
+   protected function connect() {
 
-      $this->__dbConn = @sqlite_open($this->__dbName, $this->__dbMode, $this->__dbError);
+      $this->dbConn = @sqlite_open($this->dbName, $this->dbMode, $this->dbError);
 
-      if (!is_resource($this->__dbConn)) {
-         throw new DatabaseHandlerException('[SQLiteHandler->__connect()] Database "'
-                 . $this->__dbName . '" cannot be opened! Message: ' . $this->__dbError, E_USER_ERROR);
+      if (!is_resource($this->dbConn)) {
+         throw new DatabaseHandlerException('[SQLiteHandler->connect()] Database "'
+               . $this->dbName . '" cannot be opened! Message: ' . $this->dbError, E_USER_ERROR);
       }
    }
 
@@ -79,9 +78,9 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 23.02.2008<br />
     */
-   protected function __close() {
-      @sqlite_close($this->__dbConn);
-      $this->__dbConn = null;
+   protected function close() {
+      @sqlite_close($this->dbConn);
+      $this->dbConn = null;
    }
 
    /**
@@ -102,21 +101,19 @@ class SQLiteHandler extends AbstractDatabaseHandler {
    public function executeTextStatement($statement, $logStatement = false) {
 
       if ($logStatement == true) {
-         $this->__dbLog->logEntry($this->__dbLogFileName,
-                 '[SQLiteHandler::executeTextStatement()] Current statement: ' . $statement,
-                 'DEBUG');
+         $this->dbLog->logEntry($this->dbLogFileName, '[SQLiteHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
-      $result = sqlite_query($this->__dbConn, $statement);
+      $result = sqlite_query($this->dbConn, $statement);
 
       if ($result === false) {
-         $message = sqlite_error_string(sqlite_last_error($this->__dbConn));
+         $message = sqlite_error_string(sqlite_last_error($this->dbConn));
          $message .= ' (Statement: ' . $statement . ')';
-         $this->__dbLog->logEntry($this->__dbLogFileName, $message, 'ERROR');
+         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_ERROR);
       }
 
       // remember last insert id for futher usage
-      $this->__lastInsertID = sqlite_last_insert_rowid($this->__dbConn);
+      $this->lastInsertId = sqlite_last_insert_rowid($this->dbConn);
 
       return $result;
    }
@@ -144,21 +141,19 @@ class SQLiteHandler extends AbstractDatabaseHandler {
       $statement = $this->getPreparedStatement($namespace, $statementName, $params);
 
       if ($logStatement == true) {
-         $this->__dbLog->logEntry($this->__dbLogFileName,
-                 '[SQLiteHandler::executeTextStatement()] Current statement: ' . $statement,
-                 'DEBUG');
+         $this->dbLog->logEntry($this->dbLogFileName, '[SQLiteHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
-      $result = sqlite_query($this->__dbConn, $statement);
+      $result = sqlite_query($this->dbConn, $statement);
 
       if ($result === false) {
-         $message = sqlite_error_string(sqlite_last_error($this->__dbConn));
+         $message = sqlite_error_string(sqlite_last_error($this->dbConn));
          $message .= ' (Statement: ' . $statement . ')';
-         $this->__dbLog->logEntry($this->__dbLogFileName, $message, 'ERROR');
+         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_DEBUG);
       }
 
       // remember last insert id for futher usage
-      $this->__lastInsertID = sqlite_last_insert_rowid($this->__dbConn);
+      $this->lastInsertId = sqlite_last_insert_rowid($this->dbConn);
 
       return $result;
    }
@@ -224,7 +219,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     *
     * Returns the number of selected rows by the given result resource.
     *
-    * @param $result The sqlite result resource.
+    * @param resource $result The sqlite result resource.
     * @return int The number of selected rows.
     *
     * @author Christian Achatz
@@ -236,4 +231,3 @@ class SQLiteHandler extends AbstractDatabaseHandler {
    }
 
 }
-?>
