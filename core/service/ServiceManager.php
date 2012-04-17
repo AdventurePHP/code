@@ -76,9 +76,9 @@ final class ServiceManager {
          $serviceObject = new $serviceName();
       } else {
          throw new InvalidArgumentException('[ServiceManager::getServiceObject()] The given type ('
-                                            . $type . ') is not supported. Please provide one out of "' . APFService::SERVICE_TYPE_SINGLETON
-                                            . '", "' . APFService::SERVICE_TYPE_SESSION_SINGLETON . '" or "' . APFService::SERVICE_TYPE_NORMAL
-                                            . '"', E_USER_WARNING);
+               . $type . ') is not supported. Please provide one out of "' . APFService::SERVICE_TYPE_SINGLETON
+               . '", "' . APFService::SERVICE_TYPE_SESSION_SINGLETON . '" or "' . APFService::SERVICE_TYPE_NORMAL
+               . '"', E_USER_WARNING);
       }
 
       // inject the basic set of information to the APF style service
@@ -88,8 +88,8 @@ final class ServiceManager {
          $serviceObject->setServiceType($type);
       } else {
          throw new InvalidArgumentException('[ServiceManager::getServiceObject()] The precisely '
-                                            . 'now created object (' . $serviceName . ') does not implement the APFService interface! '
-                                            . 'So the context, language and service type cannot be set correctly!', E_USER_WARNING);
+               . 'now created object (' . $serviceName . ') does not implement the APFService interface! '
+               . 'So the context, language and service type cannot be set correctly!', E_USER_WARNING);
       }
 
       return $serviceObject;
@@ -130,5 +130,3 @@ final class ServiceManager {
    }
 
 }
-
-?>

@@ -115,14 +115,12 @@ final class DIServiceManager {
       $benchId = 'DIServiceManager::getServiceObject(' . $configNamespace . ',' . $sectionName . ')';
       @$t->start($benchId);
 
-      // Get config to determine, which object to create. Parse subsections, to be able to
-      // easily separate the init/conf subsections.
+      // Get config to determine, which object to create.
       $section = self::getServiceConfiguration($configNamespace, $sectionName, $context, $language);
       if ($section === null) {
          throw new ConfigurationException('[DIServiceManager::getServiceObject()] Service object configuration with '
-                                          . 'name "' . $sectionName . '" cannot be found within namespace "'
-                                          . $configNamespace . '"! Please double-check your setup.',
-            E_USER_ERROR);
+               . 'name "' . $sectionName . '" cannot be found within namespace "'
+               . $configNamespace . '"! Please double-check your setup.', E_USER_ERROR);
       }
 
       // check, whether the section contains the basic directives
@@ -130,7 +128,7 @@ final class DIServiceManager {
       $namespace = $section->getValue('namespace');
       $class = $section->getValue('class');
 
-      // Check if configuration section was complete. If not throw an error.
+      // Check if configuration section was complete. If not throw an exception to fail fast.
       if ($serviceType !== null && $namespace !== null && $class !== null) {
 
          // Create the service object with use of the "normal" service manager. Perhaps, this
@@ -138,8 +136,7 @@ final class DIServiceManager {
          // only treated once by the injection mechanism!
          // But: if we constitute, that the injected service objects are often also singletons
          // and the DIServiceManager caches the created service objects within a singleton cache,
-         // this is no problem. Hence, the injected instance is then only one time constructed
-         // initialized.
+         // this is no problem. Hence, the injected instance is then only one time constructed.
          $serviceObject = &ServiceManager::getServiceObject($namespace, $class, $context, $language, $serviceType, $cacheKey);
 
          // do param injection (static configuration)
@@ -160,15 +157,15 @@ final class DIServiceManager {
                      $serviceObject->$method($value);
                   } else {
                      throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of'
-                                                        . ' configuration value "' . $directive->getValue('value') . '" cannot be accomplished'
-                                                        . ' to service object "' . $class . '" from namespace "' . $namespace . '"! Method '
-                                                        . $method . '() is not implemented!', E_USER_ERROR);
+                           . ' configuration value "' . $directive->getValue('value') . '" cannot be accomplished'
+                           . ' to service object "' . $class . '" from namespace "' . $namespace . '"! Method '
+                           . $method . '() is not implemented!', E_USER_ERROR);
                   }
                } else {
                   throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the'
-                                                     . ' service object "' . $sectionName . '" cannot be accomplished, due to'
-                                                     . ' incorrect configuration! Please revise the "' . $initKey . '" sub section and'
-                                                     . ' consult the manual!', E_USER_ERROR);
+                        . ' service object "' . $sectionName . '" cannot be accomplished, due to'
+                        . ' incorrect configuration! Please revise the "' . $initKey . '" sub section and'
+                        . ' consult the manual!', E_USER_ERROR);
                }
             }
          }
@@ -189,7 +186,7 @@ final class DIServiceManager {
 
                   // check for circular injection
                   $injectionKey = $namespace . '::' . $class . '[' . $serviceType . ']' . ' injected with ' .
-                                  $method . '(' . $namespace . '::' . $name . ')';
+                        $method . '(' . $namespace . '::' . $name . ')';
 
                   if (isset(self::$INJECTION_CALL_CACHE[$injectionKey])) {
 
@@ -204,9 +201,9 @@ final class DIServiceManager {
 
                      // print note with shortend information
                      throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Detected circular injection! ' .
-                                                        'Class "' . $class . '" from namespace "' . $namespace . '" with service type "' . $serviceType .
-                                                        '" was already configured with service object "' . $name . '" from namespace "' .
-                                                        $namespace . '"! Full stack trace can be taken from the logfile!', E_USER_ERROR);
+                           'Class "' . $class . '" from namespace "' . $namespace . '" with service type "' . $serviceType .
+                           '" was already configured with service object "' . $name . '" from namespace "' .
+                           $namespace . '"! Full stack trace can be taken from the logfile!', E_USER_ERROR);
                   } else {
 
                      // add the current run to the recursion detection array
@@ -220,22 +217,22 @@ final class DIServiceManager {
                         $serviceObject->$method($miObject);
                      } else {
                         throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of service object "' . $name .
-                                                           '" from namespace "' . $namespace . '" cannot be accomplished to service object "' .
-                                                           $class . '" from namespace "' . $namespace . '"! Method ' . $method . '() is not implemented!',
+                                 '" from namespace "' . $namespace . '" cannot be accomplished to service object "' .
+                                 $class . '" from namespace "' . $namespace . '"! Method ' . $method . '() is not implemented!',
                            E_USER_ERROR);
                      }
                   }
                } else {
                   throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "' .
-                                                     $sectionName . '" cannot be accomplished, due to incorrect configuration! Please revise the "' . $initKey .
-                                                     '" sub section and consult the manual!',
+                           $sectionName . '" cannot be accomplished, due to incorrect configuration! Please revise the "' . $initKey .
+                           '" sub section and consult the manual!',
                      E_USER_ERROR);
                }
             }
          }
       } else {
          throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "' .
-                                            $sectionName . '" from namespace "' . $configNamespace . '" cannot be accomplished, due to missing
+                  $sectionName . '" from namespace "' . $configNamespace . '" cannot be accomplished, due to missing
                or incorrect configuration! Please revise the configuration file and consult the manual!',
             E_USER_ERROR);
       }
@@ -257,9 +254,9 @@ final class DIServiceManager {
                $serviceObject->$setupMethod();
             } else {
                throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Custom service object setup '
-                                                  . 'method "' . $setupMethod . '()" is not implemented for given type "'
-                                                  . get_class($serviceObject) . '"! Please double-check your configuration '
-                                                  . 'for service "' . $sectionName . '" from namespace "' . $configNamespace . '."',
+                        . 'method "' . $setupMethod . '()" is not implemented for given type "'
+                        . get_class($serviceObject) . '"! Please double-check your configuration '
+                        . 'for service "' . $sectionName . '" from namespace "' . $configNamespace . '."',
                   E_USER_ERROR);
             }
          }
@@ -288,15 +285,13 @@ final class DIServiceManager {
     * Version 0.1, 04.10.2010<br />
     */
    private static function getServiceConfiguration($configNamespace, $sectionName, $context, $language) {
-      $config = ConfigurationManager::loadConfiguration(
+      return ConfigurationManager::loadConfiguration(
          $configNamespace,
          $context,
          $language,
          Registry::retrieve('apf::core', 'Environment'),
-         'serviceobjects.ini');
-      return $config->getSection($sectionName);
+         'serviceobjects.ini')
+            ->getSection($sectionName);
    }
 
 }
-
-?>
