@@ -195,6 +195,7 @@ class SimpleLogEntry implements LogEntry {
  * @author Christian Achatz
  * @version
  * Version 0.1, 29.03.2007<br />
+ * Version 0.2, 19.04.2012 (Introduced log thresholds)<br />
  */
 class Logger {
 
@@ -226,7 +227,7 @@ class Logger {
    );
 
    /**
-    * @var array Defines the severity types that are witten to the log file.
+    * @var array Defines the severity types that are written to the log file.
     */
    protected $logThreshold;
 
@@ -264,6 +265,10 @@ class Logger {
     * @public
     *
     * Initializes the logger.
+    * <p/>
+    * Please be aware, that starting with release 1.15 DEBUG and TRACE statements
+    * are not automatically written to the log file due to the default severity
+    * threshold configuration.
     *
     * @author Christian Achatz
     * @version
