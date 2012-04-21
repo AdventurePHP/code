@@ -44,11 +44,6 @@ class ExtendedSoapClientService extends APFObject {
    private $wsdlUrl;
 
    /**
-    * @var string The SOAP service location.
-    */
-   private $location;
-
-   /**
     * @var SoapClient The instance of the PHP soap client.
     */
    private $client = null;
@@ -234,10 +229,10 @@ class ExtendedSoapClientService extends APFObject {
       $client = $this->getClient();
 
       if ($oneWay === true) {
-         $client->__doRequest($request, $this->location, $action, $this->getSoapVersion());
+         $client->__doRequest($request, $this->options['location'], $action, $this->getSoapVersion());
          return null;
       } else {
-         $response = $client->__doRequest($request, $this->location, $action, $this->getSoapVersion(), $oneWay);
+         $response = $client->__doRequest($request, $this->options['location'], $action, $this->getSoapVersion(), $oneWay);
 
          // check for hidden soap faults
          if (isset($client->__soap_fault) && $client->__soap_fault != null) {
@@ -266,7 +261,11 @@ class ExtendedSoapClientService extends APFObject {
     * Version 0.1, 26.01.2012<br />
     */
    public function setLocation($location) {
-      $this->location = $location;
+      $this->options['location'] = $location;
+
+      // reconfiguration requires to create a new instance.
+      $this->client = null;
+
       return $this;
    }
 
@@ -274,7 +273,7 @@ class ExtendedSoapClientService extends APFObject {
     * @return string The location of the SOAP service.
     */
    public function getLocation() {
-      return $this->location;
+      return $this->options['location'];
    }
 
    /**
