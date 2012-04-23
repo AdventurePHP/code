@@ -201,7 +201,7 @@ final class BenchmarkTimer {
          $this->addRunningProcess($newProcess);
       } else {
          throw new InvalidArgumentException('[BenchmarkTimer::start()] Benchmark process with name "' . $name
-                 . '" is already running! Use a different one!');
+               . '" is already running! Use a different one!');
       }
 
    }
@@ -233,7 +233,7 @@ final class BenchmarkTimer {
          $this->removeRunningProcess($name);
       } else {
          throw new InvalidArgumentException('[BenchmarkTimer::stop()] Process with name "' . $name
-                 . '" is not running yet!');
+               . '" is not running yet!');
       }
 
    }
@@ -438,15 +438,15 @@ final class BenchmarkTimer {
       // return, if benchmarker is disabled
       if ($this->enabled === false) {
          return 'Benchmarker is currently disabled. To generate a detailed report, please '
-         . 'enable it calling <em>$t = &Singleton::getInstance(\'BenchmarkTimer\'); '
-         . '$t->enable();</em>!';
+               . 'enable it calling <em>$t = &Singleton::getInstance(\'BenchmarkTimer\'); '
+               . '$t->enable();</em>!';
       }
 
       // get process tree
       $processTree = $this->getRootProcess();
 
       // initialize buffer
-      $buffer = (string) '';
+      $buffer = (string)'';
 
       // generate header
       $buffer .= $this->generateHeader();
@@ -474,7 +474,7 @@ final class BenchmarkTimer {
     */
    private function getMarkedUpProcessTimeClass($time) {
 
-      $class = (string) '';
+      $class = (string)'';
       if ($time > $this->criticalTime) {
          $class .= 'warn';
       } else {
@@ -499,17 +499,17 @@ final class BenchmarkTimer {
     */
    private function createReport4Process(&$process) {
 
-      $buffer = (string) '';
+      $buffer = (string)'';
       $level = $process->getProcessLevel();
 
       // add closing dl only if level greater than 0 to have
       // correct definition list leveling!
       if ($level > 0) {
-         $buffer = (string) '<dl>';
+         $buffer = (string)'<dl>';
       }
 
       // assemble class for the current line
-      $class = (string) '';
+      $class = (string)'';
       if (($this->lineCounter % 2) == 0) {
          $class .= 'even';
       } else {
@@ -526,7 +526,7 @@ final class BenchmarkTimer {
       // add specific run time class to mark run times greater that the critical time
       $time = $process->getProcessRuntime();
       $buffer .= '    <dd class="' . $class . ' '
-              . $this->getMarkedUpProcessTimeClass($time) . '">' . $time . ' s';
+            . $this->getMarkedUpProcessTimeClass($time) . '">' . $time . ' s';
 
       // display children
       if ($process->hasChildProcesses()) {
@@ -569,7 +569,7 @@ final class BenchmarkTimer {
     */
    private function generateHeader() {
 
-      $buffer = (string) '';
+      $buffer = (string)'';
       $buffer .= self::$NEWLINE;
       $buffer .= '<style type="text/css">
 #APF-Benchmark-Report {
@@ -600,7 +600,6 @@ final class BenchmarkTimer {
     content: \'\';
 }
 #APF-Benchmark-Report dl {
-   margin: 0;
    border-left: 1px solid #ccc;
    color: #000;
    font-size: 1em;
@@ -662,14 +661,30 @@ final class BenchmarkTimer {
     */
    private function generateFooter() {
 
-      $buffer = (string) '';
+      $buffer = (string)'';
       $buffer .= '</dl>';
       $buffer .= self::$NEWLINE;
       $buffer .= '</div>';
       return $buffer;
-
    }
 
+   /**
+    * @public
+    *
+    * Returns the total process time recorded until the call to this method.
+    * <p/>
+    * You may use this method to add the total rendering time of an APF-based
+    * application to your source code or any proprietary HTTP header.
+    *
+    * @return string The total processing time.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.04.2012<br />
+    */
+   public function getTotalTime() {
+      return $this->getRootProcess()->getProcessRuntime();
+   }
 }
 
 /**
@@ -685,43 +700,36 @@ final class BenchmarkTimer {
 final class BenchmarkProcess {
 
    /**
-    * @private
     * @var int ID of the process.
     */
    private $processId;
 
    /**
-    * @private
     * @var string Name of the process.
     */
    private $processName;
 
    /**
-    * @private
     * @var int Level of the process.
     */
    private $processLevel;
 
    /**
-    * @private
     * @var int Start time of the process.
     */
    private $processStartTime = null;
 
    /**
-    * @private
     * @var int Stop time of the process.
     */
    private $processStopTime = null;
 
    /**
-    * @private
     * @var BenchmarkProcess Reference on the process' parent.
     */
    private $parentProcess = null;
 
    /**
-    * @private
     * @var BenchmarkProcess[] List of child processes.
     */
    private $processes = array();
@@ -766,7 +774,7 @@ final class BenchmarkProcess {
       return $this->processStopTime;
    }
 
-   public function setParentProcess(&$process) {
+   public function setParentProcess(BenchmarkProcess &$process) {
       $this->parentProcess = &$process;
    }
 
@@ -774,7 +782,7 @@ final class BenchmarkProcess {
       return $this->parentProcess;
    }
 
-   public function appendProcess(&$process) {
+   public function appendProcess(BenchmarkProcess &$process) {
       $processId = $process->getProcessID();
       $this->processes[$processId] = &$process;
    }
@@ -792,18 +800,17 @@ final class BenchmarkProcess {
     *
     * Returns the process' runtime.
     *
+    * @return The runtime of the process in seconds.
+    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 31.12.2006<br />
     */
    public function getProcessRuntime() {
-
       if ($this->processStopTime == null) {
          return '--------------------';
       }
       return number_format($this->processStopTime - $this->processStartTime, 10);
-
    }
 
 }
-?>
