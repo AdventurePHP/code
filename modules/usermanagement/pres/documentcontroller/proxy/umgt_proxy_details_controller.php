@@ -81,6 +81,32 @@ class umgt_proxy_details_controller extends umgt_base_controller {
       }
 
       $this->setPlaceHolder('list', $buffer);
+
+      // display special visibility definitions
+      $tmpl = &$this->getTemplate('access-perms');
+
+      $read = $tmpl->getChildNode('id', 'read', 'umgt_taglib_media');
+      $proxy->getReadPermission() == '1'
+            ? $read->setAttribute('filename', 'yes.png')
+            : $read->setAttribute('filename', 'no.png');
+
+
+      $write = $tmpl->getChildNode('id', 'write', 'umgt_taglib_media');
+      $proxy->getWritePermission() == '1'
+            ? $write->setAttribute('filename', 'yes.png')
+            : $write->setAttribute('filename', 'no.png');
+
+      $relation = $tmpl->getChildNode('id', 'relation', 'umgt_taglib_media');
+      $proxy->getLinkPermission() == '1'
+            ? $relation->setAttribute('filename', 'yes.png')
+            : $relation->setAttribute('filename', 'no.png');
+
+      $delete = $tmpl->getChildNode('id', 'delete', 'umgt_taglib_media');
+      $proxy->getDeletePermission() == '1'
+            ? $delete->setAttribute('filename', 'yes.png')
+            : $delete->setAttribute('filename', 'no.png');
+
+      $tmpl->transformOnPlace();
    }
 
 }

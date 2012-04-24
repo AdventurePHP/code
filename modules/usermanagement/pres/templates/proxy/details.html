@@ -6,12 +6,16 @@
        namespace="modules::usermanagement::pres"
        config="labels.ini"
        entry="frontend.proxy.details.headline"/></h3>
+<h4><html:getstring
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.details.subline.users-and-groups"/></h4>
 <p>
    <html:getstring
        name="intro-text"
        namespace="modules::usermanagement::pres"
        config="labels.ini"
-       entry="frontend.proxy.details.intro.text"/>
+       entry="frontend.proxy.details.intro.text.users-and-groups"/>
 </p>
 <table class="vis-def">
    <thead>
@@ -31,6 +35,52 @@
       <html:placeholder name="list" />
    </tbody>
 </table>
+
+<h4><html:getstring
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.details.subline.access"/></h4>
+<p>
+   <html:getstring
+       name="intro-text"
+       namespace="modules::usermanagement::pres"
+       config="labels.ini"
+       entry="frontend.proxy.details.intro.text.access"/>
+</p>
+<html:template name="access-perms">
+   <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+   <div class="umgt-access-perms">
+      <p>
+         <umgt:media id="read"/>
+         <template:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.details.read-perm.label"/>
+      </p>
+      <p>
+         <umgt:media id="write"/>
+         <template:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.details.write-perm.label"/>
+      </p>
+      <p>
+         <umgt:media id="relation"/>
+         <template:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.details.link-perm.label"/>
+      </p>
+      <p>
+         <umgt:media id="delete"/>
+         <template:getstring
+                namespace="modules::usermanagement::pres"
+                config="labels.ini"
+                entry="frontend.proxy.details.delete-perm.label"/>
+      </p>
+   </div>
+</html:template>
+
 <html:template name="listitem">
    <template:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
    <tr>
