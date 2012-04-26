@@ -88,6 +88,148 @@ class GenericORRelationMapper extends GenericORMapper {
       }
       return $this->loadObjectByTextStatement($objectName, $this->buildSelectStatementByCriterion($objectName, $criterion));
    }
+   
+   /**
+    * @public
+    *
+    * Loads an Hierarchical Object List
+    *
+    * @param string $objectName
+    * @param string $compositionName
+    * @param GenericCriterionObject $criterion
+    * @param int $rootObjectId
+    * @param int $maxDepth
+    * @return array || TreeObject
+    * 
+    * @author Nicolas Pecher
+    * @version 
+    * Version 0.1. 23.04.2012
+    */
+   public function loadObjectTree($objectName, $compositionName, GenericCriterionObject $criterion = null, $rootObjectId = 0, $maxDepth = 0) {
+       
+       // get the objects which sould be used for the tree
+       $treeObjects = $this->loadTreeObjectList($objectName, $criterion); 
+       
+       // get compositions
+       $compositionTable = $this->relationTable[$compositionName]['Table'];
+       $sql = 'SELECT * FROM `' . $compositionTable . '`';
+       $resultCursor = $this->dbDriver->executeTextStatement($sql, $this->logStatements);       
+       $compositions = array();
+       while ($row = $this->dbDriver->fetchData($resultCursor)) {
+           $compositions[] = $row;
+       }   
+       
+       // we have to find the root-object(s) of the tree
+       if ($rootObjectId <= 0) {
+           $objectTree = array();
+           foreach ($treeObjects as $treeObject) {
+               $isRootObject = true;
+               foreach ($compositions as $composition) {                   
+                   if ($treeObject->getObjectId() === $composition[$this->relationTable[$compositionName]['TargetID']]) {
+                       $isRootObject = false;
+                       break;
+                   }
+               }
+               if ($isRootObject === true) {
+                   // now we load all child objects
+                   $childObjects = $this->loadChildTreeObjects(
+                       $treeObjects, 
+                       $compositions, 
+                       $compositionName, 
+                       $treeObject->getObjectId(), 
+                       $maxDepth
+                   );
+                   $treeObject->addChildObjects($childObjects);
+                   $objectTree[] = $treeObject;
+               }               
+           }
+           return $objectTree;
+       } else {
+           foreach ($treeObjects as $treeObject) {
+               if ($treeObject->getObjectId() === $rootObjectId) {
+                   $childObjects = $this->loadChildTreeObjects(
+                       $treeObjects, 
+                       $compositions, 
+                       $compositionName, 
+                       $rootObjectId, 
+                       $maxDepth                   
+                   );
+                   $treeObject->addChildObjects($childObjects);
+                   return $treeObject;
+               }
+           }   
+       }
+   }
+   
+   /**
+    * @protected
+    *
+    * Loads a list of Tree-Objects
+    *
+    * @param string $objectName The name of the objects which shoud be used to build up the tree
+    * @param GenericCriterionObject $criterion 
+    * @return Array TreeObject A list of Tree-Objects
+    *
+    * @author Nicolas Pecher
+    * @version 
+    * Version 0.1. 23.04.2012
+    */
+   protected function loadTreeObjectList($objectName, GenericCriterionObject $criterion = null) {
+   
+       // check if the domain object is a subclass of TreeObject     
+       import($this->domainObjectsTable[$objectName]['Namespace'], $this->domainObjectsTable[$objectName]['Class']);
+       $object = new $this->domainObjectsTable[$objectName]['Class']($objectName); 
+       if (!is_subclass_of($object, 'TreeObject') && get_class($object) !== 'TreeObject') {
+           throw new GenericORMapperException(
+               '[GenericORRelationMapper::loadTreeObjectList()] The object named "'
+               . $objectName . '" must be a subclass of "TreeObject".', 
+               E_USER_ERROR
+           );    
+       }
+       
+       if ($criterion === null) {
+           return $this->loadObjectList($objectName);                             
+       } 
+           
+       return $this->loadObjectListByCriterion($objectName, $criterion);       
+   }
+
+   /**
+    * @protected
+    *
+    *
+    * @return array A list of Child objects for actual tree-node
+    *
+    * @author Nicolas Pecher
+    * @version 
+    * Version 0.1. 23.04.2012
+    */   
+   protected function loadChildTreeObjects($treeObjects, $compositions, $compositionName, $parentId, $maxDepth, $depth = 0) {
+       $layer = array();
+       if ($maxDepth === 0 || $depth <= $maxDepth) {
+           foreach ($treeObjects as $treeObject) {
+               foreach ($compositions as $composition) {
+                   if ($composition[$this->relationTable[$compositionName]['TargetID']] === $treeObject->getObjectId()  &&
+                       $composition[$this->relationTable[$compositionName]['SourceID']] === $parentId
+                       ) {
+                       $cDepth = $depth + 1;
+                       $childObjects = $this->loadChildTreeObjects(
+                           $treeObjects, 
+                           $compositions, 
+                           $compositionName, 
+                           $treeObject->getObjectId(),
+                           $maxDepth,
+                           $cDepth
+                       ); 
+                       $treeObject->addChildObjects($childObjects);
+                       $layer[] = $treeObject;
+                       break;  
+                   }
+               }
+           }    
+       }
+       return $layer;
+   } 
 
    /**
     * @protected
