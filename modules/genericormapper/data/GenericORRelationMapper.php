@@ -136,7 +136,7 @@ class GenericORRelationMapper extends GenericORMapper {
                        $treeObjects, 
                        $compositions, 
                        $compositionName, 
-                       $treeObject->getObjectId(), 
+                       $treeObject, 
                        $maxDepth
                    );
                    $treeObject->addChildObjects($childObjects);
@@ -151,7 +151,7 @@ class GenericORRelationMapper extends GenericORMapper {
                        $treeObjects, 
                        $compositions, 
                        $compositionName, 
-                       $rootObjectId, 
+                       $treeObject, 
                        $maxDepth                   
                    );
                    $treeObject->addChildObjects($childObjects);
@@ -204,23 +204,24 @@ class GenericORRelationMapper extends GenericORMapper {
     * @version 
     * Version 0.1. 23.04.2012
     */   
-   protected function loadChildTreeObjects($treeObjects, $compositions, $compositionName, $parentId, $maxDepth, $depth = 0) {
+   protected function loadChildTreeObjects($treeObjects, $compositions, $compositionName, TreeObject $parentObject, $maxDepth, $depth = 0) {
        $layer = array();
        if ($maxDepth === 0 || $depth <= $maxDepth) {
            foreach ($treeObjects as $treeObject) {
                foreach ($compositions as $composition) {
                    if ($composition[$this->relationTable[$compositionName]['TargetID']] === $treeObject->getObjectId()  &&
-                       $composition[$this->relationTable[$compositionName]['SourceID']] === $parentId
+                       $composition[$this->relationTable[$compositionName]['SourceID']] === $parentObject->getObjectId()
                        ) {
                        $cDepth = $depth + 1;
                        $childObjects = $this->loadChildTreeObjects(
                            $treeObjects, 
                            $compositions, 
                            $compositionName, 
-                           $treeObject->getObjectId(),
+                           $treeObject,
                            $maxDepth,
                            $cDepth
-                       ); 
+                       );
+                       $treeObject->setParentObject($parentObject); 
                        $treeObject->addChildObjects($childObjects);
                        $layer[] = $treeObject;
                        break;  
