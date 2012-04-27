@@ -85,6 +85,42 @@ final class DIServiceManager {
    private static $SERVICE_OBJECT_CACHE = array();
 
    /**
+    * @var bool If true, the internal service object cache is enable. In case of false caching is disabled.
+    */
+   private static $CACHE_ENABLED = true;
+
+   /**
+    * @static
+    * @public
+    *
+    * Enables the internal cache for performance reasons (default behaviour).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.04.2012<br />
+    */
+   public static function enableCache() {
+      self::$CACHE_ENABLED = true;
+   }
+
+   /**
+    * @static
+    * @public
+    *
+    * Disables the internal cache..
+    * <p/>
+    * Be careful with this option, because it significently influences performance
+    * of the service object retrieval (factor 10 slower!).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.04.2012<br />
+    */
+   public static function disableCache() {
+      self::$CACHE_ENABLED = false;
+   }
+
+   /**
     * @public
     *
     * Returns the initialized service object.
@@ -104,7 +140,7 @@ final class DIServiceManager {
 
       // Check, whether service object was created before. If yes, deliver it from cache.
       $cacheKey = $configNamespace . '::' . $sectionName;
-      if (isset(self::$SERVICE_OBJECT_CACHE[$cacheKey])) {
+      if (self::$CACHE_ENABLED && isset(self::$SERVICE_OBJECT_CACHE[$cacheKey])) {
          return self::$SERVICE_OBJECT_CACHE[$cacheKey];
       }
 
@@ -265,8 +301,12 @@ final class DIServiceManager {
       $t->stop($benchId);
 
       // add service object to cache and return it
-      self::$SERVICE_OBJECT_CACHE[$cacheKey] = $serviceObject;
-      return self::$SERVICE_OBJECT_CACHE[$cacheKey];
+      if (self::$CACHE_ENABLED) {
+         self::$SERVICE_OBJECT_CACHE[$cacheKey] = $serviceObject;
+         return self::$SERVICE_OBJECT_CACHE[$cacheKey];
+      } else {
+         return $serviceObject;
+      }
    }
 
    /**
