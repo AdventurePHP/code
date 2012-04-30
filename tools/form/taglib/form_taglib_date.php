@@ -245,12 +245,17 @@ class form_taglib_date extends form_control {
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.08.2009<br />
+    * Version 0.2, 30.04.2012 (Introduced a more fail-safe way of reading the date from the control)<br />
     */
    public function getDate() {
-      $day = $this->getDayControl()->getSelectedOption()->getAttribute('value');
-      $month = $this->getMonthControl()->getSelectedOption()->getAttribute('value');
-      $year = $this->getYearControl()->getSelectedOption()->getAttribute('value');
-      return $year . '-' . $month . '-' . $day;
+
+      $day = $this->getDayControl()->getSelectedOption()->getValue();
+      $month = $this->getMonthControl()->getSelectedOption()->getValue();
+      $year = $this->getYearControl()->getSelectedOption()->getValue();
+
+      // use date time API to ensure calender conforming dates (e.g. don't create implausible
+      // dates such as 1937-04-31).
+      return DateTime::createFromFormat('Y-m-d', $year . '-' . $month . '-' . $day)->format('Y-m-d');
    }
 
    /**
@@ -259,24 +264,18 @@ class form_taglib_date extends form_control {
     * Allows you to initialize the date control with a given date (e.g. "2010-06-16").
     *
     * @param string $date The date to initialize the control with.
-    * @throws FormException In case of date parsing errors.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 16.06.2010<br />
+    * Version 0.2, 30.04.2012 (Introduced a more fail-safe way of initializing the date)<br />
     */
    public function setDate($date) {
+      $formattedDate = DateTime::createFromFormat('Y-m-d', $date);
 
-      $time = date_parse($date);
-      if (count($time['errors']) == 0 && count($time['warnings']) == 0) {
-         $this->getDayControl()->setOption2Selected($this->appendZero($time['day']));
-         $this->getMonthControl()->setOption2Selected($this->appendZero($time['month']));
-         $this->getYearControl()->setOption2Selected($time['year']);
-      } else {
-         throw new FormException('[form_taglib_date::setDate()] Given date "' . $date
-                                 . '" cannot be parsed (Errors: ' . implode(', ', $time['errors']) . ', warnings: '
-                                 . implode(', ', $time['warnings']) . ')');
-      }
+      $this->getDayControl()->setOption2Selected($this->appendZero($formattedDate->format('d')));
+      $this->getMonthControl()->setOption2Selected($this->appendZero($formattedDate->format('m')));
+      $this->getYearControl()->setOption2Selected($formattedDate->format('Y'));
    }
 
    /**
@@ -391,40 +390,38 @@ class form_taglib_date extends form_control {
    }
 
    /**
-   * @public
-   * 
-   * Re-implements the retrieving of values for date controls
-   * 
-   * @return string The current value or content of the control.
-   * 
-   * @since 1.14
-   * 
-   * @author Ralf Schubert
-   * @version
-   * Version 0.1, 26.07.2011<br />
-   */
-  public function getValue() {
+    * @public
+    *
+    * Re-implements the retrieving of values for date controls
+    *
+    * @return string The current value or content of the control.
+    *
+    * @since 1.14
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 26.07.2011<br />
+    */
+   public function getValue() {
       return $this->getDate();
-  }
+   }
 
-  /**
-   * @public
-   * 
-   * Re-implements the setting of values for date controls
-   * 
-   * @param string $value
-   * @return form_control 
-   * 
-   * @since 1.14
-   * 
-   * @author Ralf Schubert
-   * @version
-   * Version 0.1, 26.07.2011<br />
-   */
-  public function setValue($value) {
+   /**
+    * @public
+    *
+    * Re-implements the setting of values for date controls.
+    *
+    * @param string $value The date to set (e.g. "2012-04-30").
+    * @return form_taglib_date This control for further usage.
+    *
+    * @since 1.14
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 26.07.2011<br />
+    */
+   public function setValue($value) {
       $this->setDate($value);
       return $this;
-  }
+   }
 }
-
-?>
