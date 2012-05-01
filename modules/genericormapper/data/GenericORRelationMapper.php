@@ -94,12 +94,12 @@ class GenericORRelationMapper extends GenericORMapper {
     *
     * Loads an Hierarchical Object List
     *
-    * @param string $objectName
-    * @param string $compositionName
-    * @param GenericCriterionObject $criterion
-    * @param int $rootObjectId
-    * @param int $maxDepth
-    * @return array || TreeObject
+    * @param string $objectName The name of the desired object
+    * @param string $compositionName The name of the relation
+    * @param GenericCriterionObject $criterion The selection criterion
+    * @param int $rootObjectId The ID of the root item of the tree
+    * @param int $maxDepth The maximum depth of the tree
+    * @return TreeItem|TreeItem[]
     * 
     * @author Nicolas Pecher
     * @version 
@@ -108,7 +108,7 @@ class GenericORRelationMapper extends GenericORMapper {
    public function loadObjectTree($objectName, $compositionName, GenericCriterionObject $criterion = null, $rootObjectId = 0, $maxDepth = 0) {
        
        // get the objects which sould be used for the tree
-       $treeObjects = $this->loadTreeObjectList($objectName, $criterion); 
+       $treeItems = $this->loadTreeItemList($objectName, $criterion); 
        
        // get compositions
        $compositionTable = $this->relationTable[$compositionName]['Table'];
@@ -119,70 +119,65 @@ class GenericORRelationMapper extends GenericORMapper {
            $compositions[] = $row;
        }   
        
-       // we have to find the root-object(s) of the tree
-       if ($rootObjectId <= 0) {
-           $objectTree = array();
-           foreach ($treeObjects as $treeObject) {
-               $isRootObject = true;
+       // we have to find the root-object(s) of the tree       
+       $objectTree = array();
+       foreach ($treeItems as $treeItem) {
+           $isRootObject = true;
+           if ($rootObjectId <= 0) {
                foreach ($compositions as $composition) {                   
-                   if ($treeObject->getObjectId() === $composition[$this->relationTable[$compositionName]['TargetID']]) {
+                   if ($treeItem->getObjectId() === $composition[$this->relationTable[$compositionName]['TargetID']]) {
                        $isRootObject = false;
                        break;
                    }
                }
-               if ($isRootObject === true) {
-                   // now we load all child objects
-                   $childObjects = $this->loadChildTreeObjects(
-                       $treeObjects, 
-                       $compositions, 
-                       $compositionName, 
-                       $treeObject, 
-                       $maxDepth
-                   );
-                   $treeObject->addChildObjects($childObjects);
-                   $objectTree[] = $treeObject;
-               }               
+           } elseif ($rootObjectId > 0 && $treeItem->getObjectId() !== $rootObjectId) {
+               $isRootObject = false;        
            }
-           return $objectTree;
-       } else {
-           foreach ($treeObjects as $treeObject) {
-               if ($treeObject->getObjectId() === $rootObjectId) {
-                   $childObjects = $this->loadChildTreeObjects(
-                       $treeObjects, 
-                       $compositions, 
-                       $compositionName, 
-                       $treeObject, 
-                       $maxDepth                   
-                   );
-                   $treeObject->addChildObjects($childObjects);
-                   return $treeObject;
+           
+           if ($isRootObject === true) {
+           
+               // now we load all children of the actual treeItem
+               $childObjects = $this->loadChildTreeItems(
+                   $treeItems, 
+                   $compositions, 
+                   $compositionName, 
+                   $treeItem, 
+                   $maxDepth
+               );
+               $treeItem->addChildren($childObjects);
+               
+               if ($rootObjectId > 0) {
+                   return $treeItem;
                }
-           }   
+               
+               $objectTree[] = $treeItem;
+           }                                    
        }
+       return $objectTree; 
    }
    
    /**
     * @protected
     *
-    * Loads a list of Tree-Objects
+    * Loads a list of TreeItems
     *
     * @param string $objectName The name of the objects which shoud be used to build up the tree
     * @param GenericCriterionObject $criterion 
-    * @return Array TreeObject A list of Tree-Objects
+    * @return TreeItem[] A list of TreeItems
     *
     * @author Nicolas Pecher
     * @version 
     * Version 0.1. 23.04.2012
     */
-   protected function loadTreeObjectList($objectName, GenericCriterionObject $criterion = null) {
+   protected function loadTreeItemList($objectName, GenericCriterionObject $criterion = null) {
    
        // check if the domain object is a subclass of TreeObject     
        import($this->domainObjectsTable[$objectName]['Namespace'], $this->domainObjectsTable[$objectName]['Class']);
        $object = new $this->domainObjectsTable[$objectName]['Class']($objectName); 
-       if (!is_subclass_of($object, 'TreeObject') && get_class($object) !== 'TreeObject') {
+       if (!is_subclass_of($object, 'TreeItem') && get_class($object) !== 'TreeItem') {
            throw new GenericORMapperException(
                '[GenericORRelationMapper::loadTreeObjectList()] The object named "'
-               . $objectName . '" must be a subclass of "TreeObject".', 
+               . $objectName . '" must be a subclass of "TreeItem".', 
                E_USER_ERROR
            );    
        }
@@ -197,33 +192,38 @@ class GenericORRelationMapper extends GenericORMapper {
    /**
     * @protected
     *
-    *
-    * @return array A list of Child objects for actual tree-node
+    * @param array $treeItems
+    * @param array $compositions  
+    * @param string $compositionName The name of the relation
+    * @param TreeItem $parentObject The parent TreeItem
+    * @param int $maxDepth The maximum depth of the tree
+    * @param int $depth The actual depth of the tree
+    * @return TreeItem[] A list of tree items of the actual node
     *
     * @author Nicolas Pecher
     * @version 
     * Version 0.1. 23.04.2012
     */   
-   protected function loadChildTreeObjects($treeObjects, $compositions, $compositionName, TreeObject $parentObject, $maxDepth, $depth = 0) {
+   protected function loadChildTreeItems($treeItems, $compositions, $compositionName, TreeItem $parentItem, $maxDepth, $depth = 0) {
        $layer = array();
        if ($maxDepth === 0 || $depth <= $maxDepth) {
-           foreach ($treeObjects as $treeObject) {
+           foreach ($treeItems as $treeItem) {
                foreach ($compositions as $composition) {
-                   if ($composition[$this->relationTable[$compositionName]['TargetID']] === $treeObject->getObjectId()  &&
-                       $composition[$this->relationTable[$compositionName]['SourceID']] === $parentObject->getObjectId()
+                   if ($composition[$this->relationTable[$compositionName]['TargetID']] === $treeItem->getObjectId()  &&
+                       $composition[$this->relationTable[$compositionName]['SourceID']] === $parentItem->getObjectId()
                        ) {
                        $cDepth = $depth + 1;
-                       $childObjects = $this->loadChildTreeObjects(
-                           $treeObjects, 
+                       $childItems = $this->loadChildTreeItems(
+                           $treeItems, 
                            $compositions, 
                            $compositionName, 
-                           $treeObject,
+                           $treeItem,
                            $maxDepth,
                            $cDepth
                        );
-                       $treeObject->setParentObject($parentObject); 
-                       $treeObject->addChildObjects($childObjects);
-                       $layer[] = $treeObject;
+                       $treeItem->setParentItem($parentItem); 
+                       $treeItem->addChildren($childItems);
+                       $layer[] = $treeItem;
                        break;  
                    }
                }
