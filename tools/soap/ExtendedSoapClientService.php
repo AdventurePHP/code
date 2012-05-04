@@ -299,20 +299,60 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
-    * @param string $login
-    * @param string $password
+    * Configures the The HTTP BASE AUTH user name for protected SOAP resources.
+    *
+    * @param string $username The HTTP BASE AUTH user name.
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 26.01.2012<br />
+    * Version 0.1, 04.05.2012<br />
     */
-   public function setHttpAuthCredentials($login, $password) {
-      $this->options['login'] = $login;
+   public function setHttpAuthUsername($username) {
+      $this->options['login'] = $username;
+
+      // reconfiguration requires to create a new instance.
+      $this->client = null;
+
+      return $this;
+   }
+
+   /**
+    * Configures the The HTTP BASE AUTH password for protected SOAP resources.
+    *
+    * @param string $password The HTTP BASE AUTH password.
+    * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.05.2012<br />
+    */
+   public function setHttpAuthPassword($password) {
       $this->options['password'] = $password;
 
       // reconfiguration requires to create a new instance.
       $this->client = null;
+
+      return $this;
+   }
+
+   /**
+    * Let's you inject the HTTP BASE AUTH credentials via dependency injection to ease configuration
+    * (service injection).
+    * <p/>
+    * Besides, the credentials may be injected using the setHttpAuthUsername() and setHttpAuthPassword()
+    * methods as well (configuration injection).
+    *
+    * @param SoapHttpBaseAuthCredentials $credentials The HTTP BASE AUTH credentials to apply to the connection.
+    * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.05.2012<br />
+    */
+   public function setHttpAuthCredentials(SoapHttpBaseAuthCredentials $credentials) {
+      $this->setHttpAuthUsername($credentials->getUsername());
+      $this->setHttpAuthPassword($credentials->getPassword());
 
       return $this;
    }
@@ -335,7 +375,7 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
-    * @var The connection_timeout option defines a timeout in seconds for the connection to the SOAP service. This option does not define a timeout for services with slow responses. To limit the time to wait for calls to finish the default_socket_timeout setting is available.
+    * @var int The connection_timeout option defines a timeout in seconds for the connection to the SOAP service. This option does not define a timeout for services with slow responses. To limit the time to wait for calls to finish the default_socket_timeout setting is available.
     * @return ExtendedSoapClientService This instance for further usage.
     *
     * @author Christian Achatz
