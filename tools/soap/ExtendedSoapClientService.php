@@ -450,6 +450,33 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
+    * Let's you enable special features of the PHP SOAP implementation. These are:
+    * <ul>
+    * <li>SOAP_SINGLE_ELEMENT_ARRAYS (map single element responses to array for elements of type sequence/minoccurs > 0;
+    * see http://de.php.net/manual/en/soapclient.soapclient.php#73082)</li>
+    * <li>SOAP_USE_XSI_ARRAY_TYPE (see http://de.php.net/manual/en/soapclient.soapclient.php#86908)</li>
+    * <li>SOAP_WAIT_ONE_WAY_CALLS (see http://de.php.net/manual/en/soapclient.soapclient.php#98613)</li>
+    * </ul>
+    * For further details, please see http://de.php.net/manual/en/soapclient.soapclient.php.
+    *
+    * @param int $mask The bit mask of the feature to enable.
+    * @return ExtendedSoapClientService This instance for further usage.
+    */
+   public function enableFeature($mask) {
+
+      if (!isset($this->options['features'])) {
+         $this->options['features'] = $mask;
+      } else {
+         $this->options['features'] = $this->options['features'] | $mask;
+      }
+
+      // reconfiguration requires to create a new instance.
+      $this->client = null;
+
+      return $this;
+   }
+
+   /**
     * @param WsdlObjectMapping $mapping The object mapping of WSDL types to PHP objects.
     * @return ExtendedSoapClientService This instance for further usage.
     *
