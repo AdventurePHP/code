@@ -19,19 +19,7 @@
  * -->
  */
 import('core::logging', 'Logger');
-
-/**
- * @package core::database
- * @class DatabaseHandlerException
- *
- * Represents an exception, that is thrown during database operations.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 08.03.2010<br />
- */
-class DatabaseHandlerException extends Exception {
-}
+import('core::database', 'DatabaseConnection');
 
 /**
  * @package core::database
@@ -40,17 +28,66 @@ class DatabaseHandlerException extends Exception {
  *
  * Defines the scheme of a database handler. Forms the base class for all database
  * abstraction layer classes.
+ * <p/>
+ * To initialize database connections using the DIServiceManager, you may use the
+ * following service definition section:
+ * <code>
+ * [news-store-db]
+ * servicetype = "SINGLETON"
+ * namespace = "core::database"
+ * class = "MySQLiHandler"
+ * setupmethod = "setup"
+ *
+ * conf.host.method = "setHost"
+ * conf.host.value = "..."
+ *
+ * conf.port.method = "setPort"
+ * conf.port.value = "..."
+ *
+ * conf.name.method = "setDatabaseName"
+ * conf.name.value = "..."
+ *
+ * conf.user.method = "setUser"
+ * conf.user.value = "..."
+ *
+ * conf.pass.method = "setPass"
+ * conf.pass.value = "..."
+ *
+ * [conf.socket.method = "setSocket"
+ * conf.socket.value = "..."]
+ *
+ * conf.charset.method = "setCharset"
+ * conf.charset.value = "..."
+ *
+ * conf.collation.method = "setCollation"
+ * conf.collation.value = "..."
+ *
+ * [conf.debug.method = "setDebug"
+ * conf.debug.value = "..."]
+ *
+ * [conf.log-file-name.method = "setLogFileName"
+ * conf.log-file-name.value = "..."]
+ * </code>
+ * This connection definition may be injected into another service using some kind of
+ * service definition like this:
+ * <code>
+ * [GORM]
+ * servicetype = "SINGLETON"
+ * namespace = "modules::genericormapper::data"
+ * class = "GenericORRelationMapper"
+ * setupmethod = "setup"
+ * ...
+ * init.db-conn.method = "setDatabaseConnection"
+ * init.db-conn.namespace = "sample::namespace"
+ * init.db-conn.name = "news-store-db"
+ * </code>
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 10.02.2008<br />
  * Version 0.2, 07.08.2010 (Added *_FETCH_MODE constants and optional second fetchData() parameter)<br />
  */
-abstract class AbstractDatabaseHandler extends APFObject {
-
-   const ASSOC_FETCH_MODE = 1;
-   const OBJECT_FETCH_MODE = 2;
-   const NUMERIC_FETCH_MODE = 3;
+abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConnection {
 
    /**
     * @protected
@@ -146,6 +183,191 @@ abstract class AbstractDatabaseHandler extends APFObject {
    /**
     * @public
     *
+    * Defines the database host to connect to.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $host The database host to connect to.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setHost($host) {
+      $this->dbHost = $host;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the database port to connect to.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param int $port The database port to connect to.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setPort($port) {
+      $this->dbPort = $port;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the database name to connect to.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $name Th name of the database to connect to.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setDatabaseName($name) {
+      $this->dbName = $name;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the user that is used to connect to the database.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $user The database user.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setUser($user) {
+      $this->dbUser = $user;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the password used to connect to the database.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $pass The database password.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setPass($pass) {
+      $this->dbPass = $pass;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the socket to connect to.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $socket The socket descriptor.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setSocket($socket) {
+      $this->dbSocket = $socket;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the character set of the database connection.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $charset The desired character set.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setCharset($charset) {
+      $this->dbCharset = $charset;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the collation of the database connection.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $collation The desired collation.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setCollation($collation) {
+      $this->dbCollation = $collation;
+   }
+
+   /**
+    * @public
+    *
+    * Enables (true) or disables (false) the internal debugging feature (=statement logging).
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param boolean $debug <em>True</em> in case the logging feature should be switched on, <em>false</em> otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setDebug($debug) {
+      $this->dbDebug = ($debug == 'true' || $debug == '1') ? true : false;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the name of the log file for the debugging feature.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $logFileName The name of debug log file.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setLogFileName($logFileName) {
+      $this->dbLogFileName = $logFileName;
+   }
+
+   /**
+    * @public
+    *
+    * Implements an initializer method to setup derived classes using the
+    * DIServiceManager.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setup() {
+      $this->dbLog = &Singleton::getInstance('Logger');
+      $this->connect();
+   }
+
+   /**
+    * @public
+    *
     * Implements the init() method, so that the derived classes can be initialized
     * by the service manager. Initializes the handler only one time.
     *
@@ -159,59 +381,42 @@ abstract class AbstractDatabaseHandler extends APFObject {
 
       if ($this->isInitialized == false) {
 
-         // set server host
          if (isset($initParam['DB.Host'])) {
-            $this->dbHost = $initParam['DB.Host'];
+            $this->setHost($initParam['DB.Host']);
          }
 
-         // set user name
          if (isset($initParam['DB.User'])) {
-            $this->dbUser = $initParam['DB.User'];
+            $this->setUser($initParam['DB.User']);
          }
 
-         // set password
          if (isset($initParam['DB.Pass'])) {
-            $this->dbPass = $initParam['DB.Pass'];
+            $this->setPass($initParam['DB.Pass']);
          }
 
-         // set name of the database
-         $this->dbName = $initParam['DB.Name'];
+         $this->setDatabaseName($initParam['DB.Name']);
 
-         // set port
          if (isset($initParam['DB.Port'])) {
-            $this->dbPort = $initParam['DB.Port'];
+            $this->setPort($initParam['DB.Port']);
          }
 
-         // set socket
          if (isset($initParam['DB.Socket'])) {
-            $this->dbSocket = $initParam['DB.Socket'];
+            $this->setSocket($initParam['DB.Socket']);
          }
 
-         // set debug mode
-         if (isset($initParam['DB.DebugMode']) && ($initParam['DB.DebugMode'] == 'true' || $initParam['DB.DebugMode'] == '1')) {
-            $this->dbDebug = true;
+         if (isset($initParam['DB.DebugMode'])) {
+            $this->setDebug($initParam['DB.DebugMode']);
          }
 
-         // set connection charset and collation
          if (isset($initParam['DB.Charset'])) {
-            $charset = trim($initParam['DB.Charset']);
-            if (!empty($charset)) {
-               $this->dbCharset = $charset;
-            }
+            $this->setCharset($initParam['DB.Charset']);
          }
          if (isset($initParam['DB.Collation'])) {
-            $collation = trim($initParam['DB.Collation']);
-            if (!empty($collation)) {
-               $this->dbCollation = $collation;
-            }
+            $this->setCollation($initParam['DB.Collation']);
          }
 
-         $this->dbLog = &Singleton::getInstance('Logger');
          $this->isInitialized = true;
-         $this->connect();
-
+         $this->setup();
       }
-
    }
 
    /**
@@ -219,6 +424,8 @@ abstract class AbstractDatabaseHandler extends APFObject {
     * @abstract
     *
     * Provides internal service to open a database connection.
+    *
+    * @throws DatabaseHandlerException In case of connection issues.
     *
     * @author Christian Achatz
     * @version
@@ -232,109 +439,13 @@ abstract class AbstractDatabaseHandler extends APFObject {
     *
     * Provides internal service to close a database connection.
     *
+    * @throws DatabaseHandlerException In case of connection issues.
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 10.02.2008<br />
     */
    abstract protected function close();
-
-   /**
-    * @public
-    * @abstract
-    *
-    * Executes a statement, located within a statement file. The place holders contained in the
-    * file are replaced by the given values.
-    *
-    * @param string $namespace Namespace of the statement file.
-    * @param string $statementName Name of the statement file (filebody!).
-    * @param string[] $params A list of statement parameters.
-    * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
-    * @return resource The database result resource.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 10.02.2008<br />
-    */
-   abstract public function executeStatement($namespace, $statementName, array $params = array(), $logStatement = false);
-
-   /**
-    * @public
-    * @abstract
-    *
-    * Executes a statement applied as a string to the method and returns the
-    * result pointer.
-    *
-    * @param string $statement The statement string.
-    * @param boolean $logStatement Inidcates, whether the given statement should be
-    *                              logged for debug purposes.
-    * @return resource The database result resource.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 10.02.2008<br />
-    */
-   abstract public function executeTextStatement($statement, $logStatement = false);
-
-   /**
-    * @public
-    *
-    * Fetches a record from the database using the given result resource.
-    *
-    * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
-    * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
-    * @return string[] The associative result array. Returns false if no row was found.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.09.2009<br />
-    * Version 0.2, 08.08.2010 (Added optional second parameter) <br />
-    */
-   abstract public function fetchData($resultCursor, $type = self::ASSOC_FETCH_MODE);
-
-   /**
-    * @public
-    * @abstract
-    *
-    * Escapes given values to be SQL injection save.
-    *
-    * @param string $value The unescaped value.
-    * @return string The escapted string.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 23.02.2008<br />
-    */
-   abstract public function escapeValue($value);
-
-   /**
-    * @public
-    * @abstract
-    *
-    * Returns the amount of rows, that are affected by a previous update or delete call.
-    *
-    * @param resource $resultCursor The result resource pointer.
-    * @return int The number of affected rows.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 24.02.2008<br />
-    */
-   abstract public function getAffectedRows($resultCursor);
-
-   /**
-    * @public
-    * @abstract
-    *
-    * Returns the number of selected rows by the given result resource.
-    *
-    * @param $result The result resource.
-    * @return int The number of selected rows.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 12.03.2011 (Added missing interface method.)<br />
-    */
-   abstract public function getNumRows($result);
 
    /**
     * @public
@@ -381,7 +492,7 @@ abstract class AbstractDatabaseHandler extends APFObject {
     * Loads a statement file and auto-replaces the params applied as arguments.
     *
     * @param string $namespace The namespace of the statement file.
-    * @param string $name The name of the statatement's file body (e.g. load_entries.sql).
+    * @param string $name The name of the statement's file body (e.g. load_entries.sql).
     * @param array $params An associative array with param names and their respective values.
     * @return string The prepared statement.
     * @throws DatabaseHandlerException In case the statement file cannot be loaded.
@@ -395,10 +506,10 @@ abstract class AbstractDatabaseHandler extends APFObject {
          $config = $this->getConfiguration($namespace, $name);
       } catch (ConfigurationException $e) {
          $env = Registry::retrieve('apf::core', 'Environment');
-         throw new DatabaseHandlerException('[' . get_class($this) . '->getStatementFromFile()] There\'s '
+         throw new DatabaseHandlerException('[' . get_class($this) . '->getPreparedStatement()] There\'s '
                . 'no statement file with name "' . $env . '_' . $name . '" for given '
                . 'namespace "config::' . $namespace . '" and current context "' . $this->getContext()
-               . '"! Root cause: ' . $e->getMessage(), E_USER_ERROR);
+               . '"! Root cause: ' . $e->getMessage(), E_USER_ERROR, $e);
       }
 
       /* @var $config StatementConfiguration */
