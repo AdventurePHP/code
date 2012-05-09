@@ -109,7 +109,7 @@ class GenericORRelationMapper extends GenericORMapper {
     */
    public function loadObjectTree($objectName, $compositionName, GenericCriterionObject $criterion = null, $rootObjectId = 0, $maxDepth = 0) {
 
-      // get the objects which sould be used for the tree
+      // get the objects which should be used for the tree
       $treeItems = $this->loadTreeItemList($objectName, $criterion);
 
       // get compositions
@@ -323,11 +323,12 @@ class GenericORRelationMapper extends GenericORMapper {
    /**
     * @protected
     *
-    * Creates a list of properties by a given object name and a criterion object.<br />
+    * Creates a list of properties by a given object name and a criterion object.
     *
     * @param string $objectName Name of the desired objects.
     * @param GenericCriterionObject $criterion Criterion object.
     * @return string List of properties.
+    * @throws GenericORMapperException In case the object definition is not complete.
     *
     * @author Christian Achatz
     * @version
@@ -517,7 +518,6 @@ class GenericORRelationMapper extends GenericORMapper {
       // - add relation joins
       $joinList = $this->buildJoinStatementsByCriterion($targetObjectName, $criterion);
       $whereList = $this->buildWhereStatementsByCriterion($targetObjectName, $criterion);
-      $relations = $criterion->getRelations();
 
       if (count($joinList) > 0) {
          $select .= implode(' ', $joinList);
@@ -552,7 +552,8 @@ class GenericORRelationMapper extends GenericORMapper {
     * @param GenericORMapperDataObject $object current object
     * @param string $relationName name of the desired relation
     * @param GenericCriterionObject $criterion criterion object
-    * @return GenericORMapperDataObject[] List of the *not* releated objects.
+    * @return GenericORMapperDataObject[] List of the *not* related objects.
+    * @throws GenericORMapperException In case of incorrect configuration or gone objects.
     *
     * @author Christian Achatz, Tobias Lückel
     * @version
@@ -655,6 +656,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @param GenericORMapperDataObject $object current object
     * @param string $relationName relation name
     * @return int The multiplicity of the relation.
+    * @throws GenericORMapperException In case of invalid relation name.
     *
     * @author Christian Achatz, Tobias Lückel
     * @version
@@ -700,6 +702,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @param boolean $saveEntireTree Indicates, whether the mapper saves the entire object
     *                                tree (true) or only the root node (false).
     * @return int Id of the saved object.
+    * @throws GenericORMapperException In case the object to save is not defined.
     *
     * @author Christian Achatz, Tobias Lückel
     * @version
@@ -769,10 +772,10 @@ class GenericORRelationMapper extends GenericORMapper {
                              AND `' . $relObjectIdPkName . '` = \'' . $relatedObjectID . '\';';
 
                $result = $this->dbDriver->executeTextStatement($select, $this->logStatements);
-               $relationcount = $this->dbDriver->getNumRows($result);
+               $relationCount = $this->dbDriver->getNumRows($result);
 
                // create relation if necessary
-               if ($relationcount == 0) {
+               if ($relationCount == 0) {
                   $insert = 'INSERT INTO `' . $this->relationTable[$relationKey]['Table'] . '`
                                 (`' . $relObjectIdPkName . '`,`' . $objectID . '`) VALUES (\'' . $relatedObjectID . '\',\'' . $id . '\');';
                   $this->dbDriver->executeTextStatement($insert, $this->logStatements);
@@ -795,6 +798,7 @@ class GenericORRelationMapper extends GenericORMapper {
     *
     * @param GenericORMapperDataObject $object the object to delete
     * @return int Database id of the object or null.
+    * @throws GenericORMapperException In case the object to delete has still children.
     *
     * @author Christian Achatz, Tobias Lückel
     * @version
@@ -873,7 +877,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @param string $relationName Name of the relation to create.
     * @param GenericORMapperDataObject $sourceObject Source object for the relation.
     * @param GenericORMapperDataObject $targetObject Target object for the relation.
-    * @return boolean true in case everything's fine.
+    * @return boolean true in case everything is fine.
     * @throws GenericORMapperException In case the relation is not an association or the relation does not exist.
     *
     * @author Christian Achatz, Tobias Lückel
@@ -932,6 +936,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @param GenericORMapperDataObject $sourceObject Source object for the relation
     * @param GenericORMapperDataObject $targetObject Target object for the relation
     * @return bool True (success) or false (error).
+    * @throws GenericORMapperException In case the object is not defined or cannot be deleted.
     *
     * @author Christian Achatz, Tobias Lückel
     * @version
@@ -983,6 +988,7 @@ class GenericORRelationMapper extends GenericORMapper {
     *
     * @param string $relationName The name of the relation that is uses as a selector.
     * @param GenericORMapperDataObject $sourceObject The source object that limits the deletion.
+    * @throws GenericORMapperException In case of unknown object definition or while trying to delete a composition.
     *
     * @author Christian Achatz, Ralf Schubert, Tobias Lückel
     * @version
@@ -1023,6 +1029,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @param GenericORMapperDataObject $sourceObject Source object for the relation
     * @param GenericORMapperDataObject $targetObject Target object for the relation
     * @return bool True (association exists) or false (objects are not associated).
+    * @throws GenericORMapperException In case of missing object definition or trying to query a composition.
     *
     * @author Christian Achatz, Tobias Lückel
     * @version
@@ -1073,7 +1080,8 @@ class GenericORRelationMapper extends GenericORMapper {
     * @param string $relationName The name of the relation between <em>$father</em> and <em>$child</em>.
     * @param GenericORMapperDataObject $child The object, that is composed under the <em>$father</em> object.
     * @param GenericORMapperDataObject $father The father object composing <em>$child</em>.
-    * @return true in case <em>$father</em> composes <em>$child</em> using the given relation name or false otherwise.
+    * @return boolean True Tn case <em>$father</em> composes <em>$child</em> using the given relation name or false otherwise.
+    * @throws GenericORMapperException In case of missing relation definition or trying to query for an association.
     *
     * @author Christian Achatz, Tobias Lückel
     * @version
@@ -1167,6 +1175,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @param string $objectName Name of the current object
     * @param string $direction Direction of the relation (legal values: source, target)
     * @return string[] List of relations of the given type.
+    * @throws GenericORMapperException In case of missing direction specification.
     *
     * @author Christian Achatz
     * @version
@@ -1241,6 +1250,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @param string $relationName Name of the desired relation.
     * @param string $startPoint The desired relation start point in case of self references.
     * @return string Name of the ID Column
+    * @throws GenericORMapperException In case of undefined relation.
     *
     * @author Tobias Lückel
     * @version
@@ -1300,7 +1310,7 @@ class GenericORRelationMapper extends GenericORMapper {
    /**
     * @public
     *
-    * Implements the wakeup function to re-initialize the database connection after
+    * Implements the wake-up function to re-initialize the database connection after
     * de-serialization.
     *
     * @author Christian Achatz
@@ -1323,7 +1333,8 @@ class GenericORRelationMapper extends GenericORMapper {
     *
     * @param string $objectName The name of object to load.
     * @param GenericCriterionObject $criterion
-    * @return int The amount of objects
+    * @return int The amount of objects.
+    * @throws GenericORMapperException In case of missing object definition.
     *
     * @author Christian Achatz
     * @version
@@ -1410,6 +1421,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @param GenericCriterionObject $criterion An additional criterion to specify custom limitations.
     * @param string $relationCondition The relation condition (has relation or has none).
     * @return GenericORMapperDataObject[] The desired list of domain objects.
+    * @throws GenericORMapperException In case of missing object definition for the given relation.
     *
     * @author Tobias Lückel
     * @version
@@ -1503,6 +1515,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @param string $objectName The given object name
     * @param GenericCriterionObject $criterion criterion object
     * @return string[] JOIN statements.
+    * @throws GenericORMapperException In case of issues with evaluation of the target object name.
     *
     * @author Tobias Lückel
     * @version
@@ -1576,5 +1589,3 @@ class GenericORRelationMapper extends GenericORMapper {
    }
 
 }
-
-?>
