@@ -229,7 +229,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     * result pointer.
     *
     * @param string $statement The statement string.
-    * @param boolean $logStatement Inidcates, whether the given statement should be
+    * @param boolean $logStatement Indicates, whether the given statement should be
     *                              logged for debug purposes.
     * @return PDOStatement A PDOStatement object to work with.
     *
@@ -297,8 +297,8 @@ class PDOHandler extends AbstractDatabaseHandler {
     *
     * Escapes given values to be SQL injection save.
     *
-    * @param string $value The unescaped value.
-    * @return string The escapted string.
+    * @param string $value The un-escaped value.
+    * @return string The escaped string.
     *
     * @author Tobias Lückel (megger)
     * @version

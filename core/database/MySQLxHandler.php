@@ -268,7 +268,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     * result pointer.
     *
     * @param string $statement The statement string.
-    * @param boolean $logStatement Inidcates, whether the given statement should be
+    * @param boolean $logStatement Indicates, whether the given statement should be
     *                              logged for debug purposes.
     * @return resource The database result resource.
     * @throws DatabaseHandlerException In case of any database error.

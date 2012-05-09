@@ -43,15 +43,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       $this->dbPort = '3306';
    }
 
-   /**
-    * @protected
-    *
-    * Initiates the database connection and preselects the desired database.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 23.02.2010<br />
-    */
    protected function connect() {
 
       // initiate connection
@@ -79,17 +70,6 @@ class MySQLiHandler extends AbstractDatabaseHandler {
 
    }
 
-   /**
-    * @protected
-    *
-    * Closes the database connection.
-    *
-    * @throws DatabaseHandlerException In case, the database connection could not be terminated.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 23.02.2010<br />
-    */
    protected function close() {
 
       if (!$this->dbConn->close()) {
@@ -522,7 +502,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * result pointer.
     *
     * @param string $statement The statement to execute.
-    * @param boolean $logStatement Inidcates, whether the given statement should be
+    * @param boolean $logStatement Indicates, whether the given statement should be
     *                              logged for debug purposes.
     * @return resource The database result resource.
     * @throws DatabaseHandlerException In case of any database error.
