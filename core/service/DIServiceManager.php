@@ -21,7 +21,7 @@
 
 /**
  * The DIServiceManager provides a dependency injection container for
- * creating preconfigured service objects similar to the {@link ServiceManager}.
+ * creating pre-configured service objects similar to the {@link ServiceManager}.
  * It provides only method injection, because the APF objects are already injected
  * the current language and context. Introducing constructor injection would
  * lead to the situation, that the service objects could not be created
@@ -85,42 +85,6 @@ final class DIServiceManager {
    private static $SERVICE_OBJECT_CACHE = array();
 
    /**
-    * @var bool If true, the internal service object cache is enable. In case of false caching is disabled.
-    */
-   private static $CACHE_ENABLED = true;
-
-   /**
-    * @static
-    * @public
-    *
-    * Enables the internal cache for performance reasons (default behaviour).
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 27.04.2012<br />
-    */
-   public static function enableCache() {
-      self::$CACHE_ENABLED = true;
-   }
-
-   /**
-    * @static
-    * @public
-    *
-    * Disables the internal cache..
-    * <p/>
-    * Be careful with this option, because it significently influences performance
-    * of the service object retrieval (factor 10 slower!).
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 27.04.2012<br />
-    */
-   public static function disableCache() {
-      self::$CACHE_ENABLED = false;
-   }
-
-   /**
     * @public
     *
     * Returns the initialized service object.
@@ -130,6 +94,8 @@ final class DIServiceManager {
     * @param string $context The context of the current application.
     * @param string $language The language of the current application.
     * @return APFDIService The pre-configured service object.
+    * @throws ConfigurationException In case the requested service is not existent.
+    * @throws InvalidArgumentException In case of injection issues.
     *
     * @author Christian Achatz
     * @version
@@ -140,7 +106,7 @@ final class DIServiceManager {
 
       // Check, whether service object was created before. If yes, deliver it from cache.
       $cacheKey = $configNamespace . '::' . $sectionName;
-      if (self::$CACHE_ENABLED && isset(self::$SERVICE_OBJECT_CACHE[$cacheKey])) {
+      if (isset(self::$SERVICE_OBJECT_CACHE[$cacheKey])) {
          return self::$SERVICE_OBJECT_CACHE[$cacheKey];
       }
 
@@ -301,12 +267,8 @@ final class DIServiceManager {
       $t->stop($benchId);
 
       // add service object to cache and return it
-      if (self::$CACHE_ENABLED) {
-         self::$SERVICE_OBJECT_CACHE[$cacheKey] = $serviceObject;
-         return self::$SERVICE_OBJECT_CACHE[$cacheKey];
-      } else {
-         return $serviceObject;
-      }
+      self::$SERVICE_OBJECT_CACHE[$cacheKey] = $serviceObject;
+      return self::$SERVICE_OBJECT_CACHE[$cacheKey];
    }
 
    /**
