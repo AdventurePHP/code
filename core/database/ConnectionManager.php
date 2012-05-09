@@ -37,10 +37,12 @@
  * <pre>
  * [{ConnectionKey}]
  * DB.Host = ""
+ * [DB.Port = ""]
  * DB.User = ""
  * DB.Pass = ""
  * DB.Name = ""
  * DB.Type = "MySQLx|SQLite|..."
+ * [DB.DebugMode = "true|false"]
  * [DB.Charset = ""]
  * [DB.Collation = ""]
  * </pre>
@@ -85,8 +87,9 @@ final class ConnectionManager extends APFObject {
     * Returns the initialized handler for the desired connection key. Caches connections, that
     * were created previously.
     *
-    * @param string $connectionKey desired configuration section
+    * @param string $connectionKey desired configuration section.
     * @return AbstractDatabaseHandler An instance of a connection layer implementation.
+    * @throws InvalidArgumentException In case of missing configuration.
     *
     * @author Christian Achatz
     * @version
@@ -94,7 +97,7 @@ final class ConnectionManager extends APFObject {
     * Version 0.2, 23.02.2008<br />
     * Version 0.3, 24.02.2008 (Introduced caching)<br />
     * Version 0.4, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
-    * Version 0.5, 05.10.2008 (Bugfix: usage of two or more identical connections (e.g. of type MySQLx) led to interferences. Thus, service object usage was changed)<br />
+    * Version 0.5, 05.10.2008 (Bug-fix: usage of two or more identical connections (e.g. of type MySQLx) led to interferences. Thus, service object usage was changed)<br />
     * Version 0.6, 30.01.2009 (Added a check, that the old MySQLHandler cannot be used with the ConnectionManager. Doing so leads to bad connection interference!)<br />
     * Version 0.7, 22.03.2009 (Added the context to the error message, to ease debugging)<br />
     * Version 0.8, 20.09.2009 (Removed check for MySQLHandler usage, due to removal of the MySQLHandler)<br />
@@ -120,12 +123,11 @@ final class ConnectionManager extends APFObject {
                . $this->__Context . '"!', E_USER_ERROR);
       }
 
-      // include the handler
       if (!class_exists($section->getValue('DB.Type') . 'Handler')) {
          import('core::database', $section->getValue('DB.Type') . 'Handler');
       }
 
-      // remap options to array to be able to initialize the cache manager using the service manager
+      // re-map options to array to be able to initialize the database connection using the service manager
       $options = array();
       foreach ($section->getValueNames() as $key) {
          $options[$key] = $section->getValue($key);
