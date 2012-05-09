@@ -65,10 +65,9 @@ class GenericORMapper extends BaseMapper {
     * Version 0.1, 18.03.2012
     */
    public function loadObjectList($objectName) {
-       $statement = 'SELECT * FROM `' . $this->mappingTable[$objectName]['Table'] . '`';
-       $result = $this->dbDriver->executeTextStatement($statement, $this->logStatements);
-       
-       return $this->loadObjectListByStatementResult($objectName, $result);
+      $statement = 'SELECT * FROM `' . $this->mappingTable[$objectName]['Table'] . '`';
+      $result = $this->dbDriver->executeTextStatement($statement, $this->logStatements);
+      return $this->loadObjectListByStatementResult($objectName, $result);
    }
 
    /**
@@ -238,8 +237,8 @@ class GenericORMapper extends BaseMapper {
 
       if (!isset($this->mappingTable[$objectName])) {
          throw new GenericORMapperException('[GenericORMapper::saveObject()] The object name "'
-                                            . $objectName . '" does not exist in the mapping table! Hence, your object cannot be saved! '
-                                            . 'Please check your object configuration.', E_USER_ERROR);
+               . $objectName . '" does not exist in the mapping table! Hence, your object cannot be saved! '
+               . 'Please check your object configuration.', E_USER_ERROR);
       }
       $pkName = $this->mappingTable[$objectName]['ID'];
       $attrExceptions = array(
@@ -383,8 +382,8 @@ class GenericORMapper extends BaseMapper {
       // check for invalid ids to avoid SQL injection
       if (!is_numeric($objectId)) {
          throw new InvalidArgumentException('[GenericORMapper::loadObjectByID()] Given object '
-                                            . 'id "' . $objectId . '" is not an integer. Thus object with name "' . $objectName . '" '
-                                            . 'cannot be loaded!', E_USER_ERROR);
+               . 'id "' . $objectId . '" is not an integer. Thus object with name "' . $objectName . '" '
+               . 'cannot be loaded!', E_USER_ERROR);
       }
 
       $query = 'SELECT * FROM `' . $this->mappingTable[$objectName]['Table'] . '`
@@ -441,8 +440,9 @@ class GenericORMapper extends BaseMapper {
 
          // create service object if needed
          if (isset($this->domainObjectsTable[$objectName])) {
-            import($this->domainObjectsTable[$objectName]['Namespace'], $this->domainObjectsTable[$objectName]['Class']);
-            $object = new $this->domainObjectsTable[$objectName]['Class']($objectName);
+            $class = $this->domainObjectsTable[$objectName]['Class'];
+            import($this->domainObjectsTable[$objectName]['Namespace'], $class);
+            $object = new $class($objectName);
          } else {
             $object = new GenericDomainObject($objectName);
          }
@@ -455,8 +455,8 @@ class GenericORMapper extends BaseMapper {
 
             // re-map empty values for null fields to PHP null values
             if (isset($this->mappingTable[$objectName][$propertyName])
-                && stripos($this->mappingTable[$objectName][$propertyName], self::$NULL_FIELD_IDENTIFIER) !== false
-                && empty($propertyValue)
+                  && stripos($this->mappingTable[$objectName][$propertyName], self::$NULL_FIELD_IDENTIFIER) !== false
+                  && empty($propertyValue)
             ) {
                $propertyValue = null;
             }
@@ -477,5 +477,3 @@ class GenericORMapper extends BaseMapper {
    }
 
 }
-
-?>
