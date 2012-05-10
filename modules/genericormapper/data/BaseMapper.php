@@ -153,8 +153,8 @@ class BaseMapper extends APFObject {
    }
 
    public function setLogStatements($logStatements) {
-      if (is_string ($logStatements) === true) {
-         $logStatements = ((strtolower ($logStatements) == 'true') ? true : false);
+      if (is_string($logStatements) === true) {
+         $logStatements = ((strtolower($logStatements) == 'true') ? true : false);
       }
 
       $this->logStatements = $logStatements;
@@ -245,6 +245,22 @@ class BaseMapper extends APFObject {
     */
    public function &getDbDriver() {
       return $this->dbDriver;
+   }
+
+   /**
+    * @public
+    *
+    * This method can be used to inject the database connection via the
+    * DIServiceManager.
+    *
+    * @param DatabaseConnection $dbDriver The database driver to use.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.05.2012<br />
+    */
+   public function setDbDriver(DatabaseConnection $dbDriver) {
+      $this->dbDriver = $dbDriver;
    }
 
    /**
