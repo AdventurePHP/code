@@ -86,12 +86,17 @@ final class ConnectionManager extends APFObject {
     *
     * Returns the initialized handler for the desired connection key. Caches connections, that
     * were created previously.
+    * <p/>
+    * Using the database driver instance id, you can force the ConnectionManager to create
+    * several connections with the same connection key. Please be careful with this feature,
+    * since it may significantly decrease performance!
     *
-    * @param string $connectionKey desired configuration section.
+    * @param string $connectionKey Desired configuration section.
+    * @param string $instanceId The id of the database driver instance.
     * @return AbstractDatabaseHandler An instance of a connection layer implementation.
     * @throws InvalidArgumentException In case of missing configuration.
     *
-    * @author Christian Achatz
+    * @author Christian Achatz, Tobias Lückel (megger)
     * @version
     * Version 0.1, 09.11.2007<br />
     * Version 0.2, 23.02.2008<br />
@@ -101,12 +106,14 @@ final class ConnectionManager extends APFObject {
     * Version 0.6, 30.01.2009 (Added a check, that the old MySQLHandler cannot be used with the ConnectionManager. Doing so leads to bad connection interference!)<br />
     * Version 0.7, 22.03.2009 (Added the context to the error message, to ease debugging)<br />
     * Version 0.8, 20.09.2009 (Removed check for MySQLHandler usage, due to removal of the MySQLHandler)<br />
+    * Version 0.9, 07.05.2012 (Introduced connection identifier to enable multiple connections for the same connection key)<br />
     */
-   public function &getConnection($connectionKey) {
+   public function &getConnection($connectionKey, $instanceId = 'default') {
 
       // check, if connection was already created
-      if (isset($this->connections[$connectionKey])) {
-         return $this->connections[$connectionKey];
+      $cacheKey = $connectionKey . $instanceId;
+      if (isset($this->connections[$cacheKey])) {
+         return $this->connections[$cacheKey];
       }
 
       // read configuration
@@ -134,8 +141,29 @@ final class ConnectionManager extends APFObject {
       }
 
       // create the connection lazily
-      $this->connections[$connectionKey] = &$this->getAndInitServiceObject('core::database', $section->getValue('DB.Type') . 'Handler', $options, APFService::SERVICE_TYPE_NORMAL);
-      return $this->connections[$connectionKey];
+      $this->connections[$cacheKey] = &$this->getAndInitServiceObject('core::database', $section->getValue('DB.Type') . 'Handler', $options, APFService::SERVICE_TYPE_NORMAL);
+      return $this->connections[$cacheKey];
+   }
+
+   /**
+    * @public
+    *
+    * Let's you clear/close a dedicated connection.
+    * <p/>
+    * Please be careful with this functionality since you may significantly decrease performance!
+    *
+    * @param string $connectionKey Desired configuration section.
+    * @param string $instanceId The id of the database driver instance.
+    *
+    * @author Tobias Lückel (megger)
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function closeConnection($connectionKey, $instanceId = 'default') {
+      $cacheKey = $connectionKey . $instanceId;
+      if (isset($this->connections[$cacheKey])) {
+         unset($this->connections[$cacheKey]);
+      }
    }
 
 }
