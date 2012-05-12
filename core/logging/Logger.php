@@ -257,9 +257,9 @@ class Logger {
    protected $logEntryCount = 0;
 
    /**
-    * @var string Newline sign. Uses the PHP's standard newline sign if not configured in different way.
+    * @var string The host prefix that is added to the log file name to distinguish between different hosts.
     */
-   protected static $CRLF = PHP_EOL;
+   protected $hostPrefix = null;
 
    /**
     * @public
@@ -317,6 +317,23 @@ class Logger {
    /**
     * @public
     *
+    * Let's you configure a host name prefix for all log files.
+    * <p/>
+    * This may be used in clustered hosting environments to reduce file lock overhead.
+    *
+    * @param string $hostPrefix The host name prefix to add to the log file name.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 18.03.2012<br />
+    */
+   public function setHostPrefix($hostPrefix) {
+      $this->hostPrefix = $hostPrefix;
+   }
+
+   /**
+    * @public
+    *
     * Create a log entry.
     *
     * @param string $logFileName Name of the log file to log to
@@ -367,6 +384,8 @@ class Logger {
     *
     * Flushes the log buffer to the desired files.
     *
+    * @throws LoggerException In case the log directory cannot be created (e.g. due to access restrictions).
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.03.2007<br />
@@ -406,7 +425,7 @@ class Logger {
                $lFH = fopen($logFile, 'a+');
 
                for ($i = 0; $i < count($logEntries); $i++) {
-                  fwrite($lFH, $logEntries[$i]->__toString() . self::$CRLF);
+                  fwrite($lFH, $logEntries[$i]->__toString() . PHP_EOL);
                }
 
                // close file to avoid deadlocks!
@@ -423,18 +442,28 @@ class Logger {
    /**
     * @protected
     *
-    *  Returns the name of the log file by the body of the name. Each log file will be named
-    * like jjjj_mm_dd__{filename}.log.
+    * Returns the name of the log file by the body of the name. Each log file will be named
+    * like jjjj_mm_dd__[host-prefix_]{filename}.log.
+    * <p/>
+    * In case the host prefix is defined, it is prepended to the file name. This enables you
+    * to write log files for different hosts on clustered hosting environments.
     *
     * @param string $fileName Name of the log file
     * @return string Complete file name, that contains a date prefix and an file extension
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 29.03.2007<br />
+    * Version 0.1, 29.03.2007<br />
+    * Version 0.2, 12.05.2012 (Added support for clustered hosting environments to write host-dependent log files)<br />
     */
    protected function getLogFileName($fileName) {
-      return date('Y_m_d') . '__' . str_replace('-', '_', strtolower($fileName)) . '.log';
+
+      // prepend host prefix to support multiple log files for clustered hosting environments
+      if ($this->hostPrefix !== null) {
+         $fileName = $this->hostPrefix . '_' . $fileName;
+      }
+
+      return date('Y_m_d') . '__' . strtolower(preg_replace('/[^A-Za-z0-9\-_]/', '', $fileName)) . '.log';
    }
 
 }
