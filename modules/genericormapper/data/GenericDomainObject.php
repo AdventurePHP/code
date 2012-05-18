@@ -142,6 +142,19 @@ class GenericDomainObject implements GenericORMapperDataObject {
    public function setDataComponent(GenericORRelationMapper &$orm) {
       $this->dataComponent = &$orm;
    }
+   
+   /**
+    * @public
+    *
+    * Deletes the current mapper instance (usefull for debugging).
+    *
+    * @author Tobias Lückel (megger)
+    * @version
+    * Version 0.1, 18.05.2012<br />
+    */
+   public function deleteDataComponent() {
+      $this->dataComponent = null;
+   }
 
    /**
     * @public

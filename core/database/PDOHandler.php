@@ -209,7 +209,7 @@ class PDOHandler extends AbstractDatabaseHandler {
       $pdoStatement = $this->dbConn->prepare($statement);
 
       // check if the statement was executed
-      if (!$pdoStatement) {
+      if (!$pdoStatement || !$pdoStatement->execute()) {
          $errorInfo = $this->dbConn->errorInfo();
          $message = '(' . $errorInfo[0] . '/' . $errorInfo[1] . ') ' . $errorInfo[2] . ' (Statement: ' . $statement . ')';
          $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_DEBUG);
@@ -247,7 +247,7 @@ class PDOHandler extends AbstractDatabaseHandler {
       $pdoStatement = $this->dbConn->prepare($statement);
 
       // check if statement was executed
-      if (!$pdoStatement) {
+      if (!$pdoStatement || !$pdoStatement->execute()) {
          $errorInfo = $this->dbConn->errorInfo();
          $message = '(' . $errorInfo[0] . '/' . $errorInfo[1] . ') ' . $errorInfo[2] . ' (Statement: ' . $statement . ')';
          $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_ERROR);
@@ -305,7 +305,8 @@ class PDOHandler extends AbstractDatabaseHandler {
     * Version 0.1, 11.04.2012<br />
     */
    public function escapeValue($value) {
-      return $this->dbConn->quote($value);
+      $quoted = $this->dbConn->quote($value);
+      return substr($quoted, 1, strlen($quoted) - 2);
    }
 
    /**
