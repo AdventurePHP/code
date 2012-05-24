@@ -23,7 +23,7 @@
  * @package tools::html::taglib
  * @class item_taglib_placeholder
  *
- *  Implementiert einen Item-Platzhalter-Tag.<br />
+ * Represents a place holder within an iterator item.
  *
  * @author Christian Achatz
  * @version
@@ -36,5 +36,3 @@ class item_taglib_placeholder extends html_taglib_placeholder {
    }
 
 }
-
-?>

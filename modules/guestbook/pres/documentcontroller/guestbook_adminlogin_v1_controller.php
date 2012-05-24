@@ -26,24 +26,24 @@ import('tools::request', 'RequestHandler');
 import('tools::http', 'HeaderManager');
 
 /**
- *  @package modules::guestbook::pres::documentcontroller
- *  @class guestbook_adminlogin_v1_controller
+ * @package modules::guestbook::pres::documentcontroller
+ * @class guestbook_adminlogin_v1_controller
  *
- *  Implementiert den DocumentController f�r das Stylesheet 'adminlogin.html'.<br />
+ *  Document controller for 'adminlogin'.<br />
  *
- *  @author Christian Achatz
- *  @version
+ * @author Christian Achatz
+ * @version
  *  Version 0.1, 05.05.2007<br />
  */
 class guestbook_adminlogin_v1_controller extends guestbookBaseController {
 
    /**
-    *  @public
+    * @public
     *
     *  Implementiert die abstrakte Methode aus APFObject.<br />
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 05.05.2007<br />
     */
    public function transformContent() {
@@ -83,15 +83,6 @@ class guestbook_adminlogin_v1_controller extends guestbookBaseController {
       }
    }
 
-   /**
-    *  @private
-    *
-    *  Implementiert einen Wrapper f�r die Formular-Darstellung.<br />
-    *
-    *  @author Christian Achatz
-    *  @version
-    *  Version 0.1, 05.05.2007<br />
-    */
    private function displayForm($ShowLogInError = false) {
 
       $adminLogin = &$this->getForm('AdminLogin');
@@ -104,4 +95,3 @@ class guestbook_adminlogin_v1_controller extends guestbookBaseController {
    }
 
 }
-?>

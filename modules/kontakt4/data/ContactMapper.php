@@ -24,7 +24,7 @@ import('modules::kontakt4::biz', 'ContactFormRecipient');
  * @package modules::kontakt4::data
  * @class ContactMapper
  *
- * Implementiert die Datenschicht des Kontaktformulars<br />
+ * Implements the data layer component of the contact form.
  *
  * @author Christian Schäfer
  * @version
@@ -103,5 +103,3 @@ class ContactMapper extends APFObject {
    }
 
 }
-
-?>

@@ -22,16 +22,16 @@ import('modules::guestbook::biz', 'GuestbookManager');
 import('core::session', 'SessionManager');
 import('modules::guestbook::pres::documentcontroller', 'guestbookBaseController');
 import('tools::http', 'HeaderManager');
-import('tools::link','LinkGenerator');
+import('tools::link', 'LinkGenerator');
 
 /**
- *  @package modules::guestbook::pres::documentcontroller
- *  @class guestbook_admindeletecomment_v1_controller
+ * @package modules::guestbook::pres::documentcontroller
+ * @class guestbook_admindeletecomment_v1_controller
  *
- *  Implementiert den DocumentController f�r das Stylesheet 'admindeletecomment.html'.<br />
+ *  Document controller for 'admindeletecomment'.<br />
  *
- *  @author Christian Achatz
- *  @version
+ * @author Christian Achatz
+ * @version
  *  Version 0.1, 19.05.2007<br />
  */
 class guestbook_admindeletecomment_v1_controller extends guestbookBaseController {
@@ -72,4 +72,3 @@ class guestbook_admindeletecomment_v1_controller extends guestbookBaseController
    }
 
 }
-?>

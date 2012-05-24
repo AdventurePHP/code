@@ -25,33 +25,33 @@ import('core::session', 'SessionManager');
 import('tools::http', 'HeaderManager');
 
 /**
- *  @package modules::comments::biz
- *  @class commentManager
+ * @package modules::comments::biz
+ * @class commentManager
  *
- *  Implementiert die Business-Schicht des Comments-Moduls.<br />
+ *  Implements the business component of the comment module.
  *
- *  @author Christian Achatz
- *  @version
+ * @author Christian Achatz
+ * @version
  *  Version 0.1, 22.08.2007<br />
- *  Version 0.2, 28.12.2007 (Captcha-Unterst�tzung eingef�hrt)<br />
+ *  Version 0.2, 28.12.2007 (Added CAPTCHA support)<br />
  */
 class commentManager extends APFObject {
 
    /**
-    *  @protected
+    * @protected
     *  Schl�ssel f�r die auszuliefernde Kategorie.
     */
    protected $categoryKey;
 
    /**
-    *  @public
+    * @public
     *
     *  Implementierung der abstrakte "init()"-Methode.<br />
     *
-    *  @param string $initParam Kategorie-Schl�ssel
+    * @param string $initParam Kategorie-Schl�ssel
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 13.04.2007<br />
     *  Version 0.2, 28.12.2007 (Captcha-Unterst�tzung hinzugef�gt)<br />
     */
@@ -60,14 +60,14 @@ class commentManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  L�d eine Liste von Kommentaren.<br />
     *
-    *  @return Array $Entries Liste von ArticleComment-Objekten
+    * @return Array $Entries Liste von ArticleComment-Objekten
     *
-    *  @author Christian Sch�fer
-    *  @version
+    * @author Christian Sch�fer
+    * @version
     *  Version 0.1, 21.08.2007<br />
     *  Version 0.2, 01.09.2007 (Verwendung des PagerManagers auf loadEntriesByAppDataComponent() umgestellt)<br />
     */
@@ -81,15 +81,15 @@ class commentManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Gibt die HTML-Ausgabe des Pagers zur�ck.<br />
     *
-    *  @param string $anchorName the desired anchor name (optional)
-    *  @return string $pagerOutput the HTML code of the pager
+    * @param string $anchorName the desired anchor name (optional)
+    * @return string $pagerOutput the HTML code of the pager
     *
-    *  @author Christian Sch�fer
-    *  @version
+    * @author Christian Sch�fer
+    * @version
     *  Version 0.1, 21.08.2007<br />
     *  Version 0.2, 29.08.2007 (Added the anchor name)<br />
     *  Version 0.3, 24.01.2009 (Introduced the $anchorName parameter)<br />
@@ -102,14 +102,14 @@ class commentManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Gibt die URL-Parameter des Pagers zur�ck.<br />
     *
-    *  @return array $URLParameter Pager-URL-Parameter
+    * @return array $URLParameter Pager-URL-Parameter
     *
-    *  @author Christian Sch�fer
-    *  @version
+    * @author Christian Sch�fer
+    * @version
     *  Version 0.1, 21.08.2007<br />
     */
    public function getURLParameter() {
@@ -119,14 +119,14 @@ class commentManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Speichert einen Kommentar-Eintrag.<br />
     *
-    *  @param ArticleComment $articleComment ArticleComment-Objekt
+    * @param ArticleComment $articleComment ArticleComment-Objekt
     *
-    *  @author Christian Schäfer
-    *  @version
+    * @author Christian Schäfer
+    * @version
     *  Version 0.1, 21.08.2007<br />
     *  Version 0.2, 28.12.2007<br />
     *  Version 0.3, 02.02.2008<br />
@@ -143,4 +143,3 @@ class commentManager extends APFObject {
    }
 
 }
-?>

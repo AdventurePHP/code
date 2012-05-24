@@ -20,57 +20,57 @@
  */
 
 /**
- *  @package modules::comments::biz
- *  @class ArticleComment
+ * @package modules::comments::biz
+ * @class ArticleComment
  *
- *  Implementiert das Business-Objekt f�r das Modul Artikel-Kommentare.<br />
+ * Represents the business object of the article commend module
  *
- *  @author Christian W. Sch�fer
- *  @version
+ * @author Christian W. Schäfer
+ * @version
  *  Version 0.1, 22.08.2007<br />
- *  Version 0.2, 03.09.2007 (Dokumentation erg�nzt)<br />
+ *  Version 0.2, 03.09.2007<br />
  */
 class ArticleComment {
 
    /**
-    *  @protected
-    *  ID des Eintrags.
+    * @protected
+    * Id of the entry
     */
    private $id = null;
 
    /**
-    *  @protected
-    *  Name des Autors.
+    * @protected
+    * Name of the author.
     */
    private $name;
 
    /**
-    *  @protected
-    *  E-Mail des Autors.
+    * @protected
+    * Email of the author.
     */
    private $email;
 
    /**
-    *  @protected
-    *  Kommentar.
+    * @protected
+    * Comment.
     */
    private $comment;
 
    /**
-    *  @protected
-    *  Datum.
+    * @protected
+    * Date
     */
    private $date;
-   
+
    /**
-    *  @protected
-    *  Uhrzeit.
+    * @protected
+    * Time
     */
    private $time;
 
    /**
-    *  @protected
-    *  Kategorie.
+    * @protected
+    * Category
     */
    private $categoryKey;
 
@@ -131,4 +131,3 @@ class ArticleComment {
    }
 
 }
-?>

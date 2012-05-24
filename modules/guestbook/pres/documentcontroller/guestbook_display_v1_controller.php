@@ -28,7 +28,7 @@ import('tools::string', 'StringAssistant');
  * @package modules::guestbook::pres::documentcontroller
  * @class guestbook_display_v1_controller
  *
- *  Implementiert den DocumentController f�r das Stylesheet 'display.html'.<br />
+ *  Document controller for 'display'.<br />
  *
  * @author Christian Achatz
  * @version
@@ -286,5 +286,3 @@ class guestbook_display_v1_controller extends guestbookBaseController {
    }
 
 }
-
-?>
