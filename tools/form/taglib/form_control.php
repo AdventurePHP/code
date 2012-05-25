@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 import('tools::form', 'FormException');
 
 /**
@@ -224,7 +223,7 @@ abstract class form_control extends Document {
     *
     * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
     *
-    * @return True in case the control is read only, false otherwise.
+    * @return bool True in case the control is read only, false otherwise.
     *
     * @author Christian Achatz
     * @version
@@ -271,7 +270,7 @@ abstract class form_control extends Document {
     *
     * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
     *
-    * @return True in case the control is read only, false otherwise.
+    * @return bool True in case the control is read only, false otherwise.
     *
     * @author Christian Achatz
     * @version
@@ -330,7 +329,7 @@ abstract class form_control extends Document {
     * optional validators that are only active in case a field is filled.
     *
     * @param mixed $value The current form control value.
-    * @return true in case the field is mandatory, false otherwise.
+    * @return bool True in case the field is mandatory, false otherwise.
     *
     * @author Christian Achatz, Ralf Schubert
     * @version
@@ -392,7 +391,6 @@ abstract class form_control extends Document {
       if (isset($_REQUEST[$controlName]) || (isset($_REQUEST[$controlName]) && $_REQUEST[$controlName] === '0')) {
          $this->setAttribute('value', $_REQUEST[$controlName]);
       }
-
    }
 
    /**
@@ -426,8 +424,7 @@ abstract class form_control extends Document {
                }
             }
          }
-      }
-      else {
+      } else {
          throw new FormException('[' . get_class($this) . '::setPlaceHolder()] No place holder object with '
                   . 'name "' . $name . '" composed in current for document controller "'
                   . ($this->__ParentObject->getDocumentController()) . '"! Perhaps tag library '
@@ -498,7 +495,6 @@ abstract class form_control extends Document {
       }
 
       return null;
-
    }
 
    /**
@@ -558,7 +554,6 @@ abstract class form_control extends Document {
          $attr .= ' ' . $class;
       }
       $this->setAttribute('class', $attr);
-
    }
 
    /**
@@ -601,6 +596,37 @@ abstract class form_control extends Document {
       return $this;
    }
 
-}
+   /**
+    * @public
+    *
+    * Let's check if the form:text or form:area was filled with content.
+    *
+    * @return bool True in case the control is filled, false otherwise.
+    *
+    * @since 1.15
+    *
+    * @author dave
+    * @version
+    * Version 0.1, 20.09.2011<br />
+    */
+   public function isFilled() {
+      return false;
+   }
 
-?>
+   /**
+    * @public
+    *
+    * Let's check if something was selected in form:select or form:multiselect.
+    *
+    * @return bool True in case the control is selected, false otherwise.
+    * @since 1.15
+    *
+    * @author dave
+    * @version
+    * Version 0.1, 22.09.2011<br />
+    */
+   public function isSelected() {
+      return false;
+   }
+
+}

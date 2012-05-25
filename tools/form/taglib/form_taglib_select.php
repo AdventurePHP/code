@@ -284,7 +284,7 @@ class form_taglib_select extends form_control {
     *
     * @return string The HTML code of the select field.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 07.01.2007<br />
     * Version 0.2, 12.01.2007 (Removed typos)<br />
@@ -419,5 +419,8 @@ class form_taglib_select extends form_control {
       return $this;
    }
 
-}
+   public function isSelected() {
+      return $this->getSelectedOption() == null ? false : true;
+   }
 
+}

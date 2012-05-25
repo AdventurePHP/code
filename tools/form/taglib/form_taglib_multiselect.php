@@ -1,231 +1,233 @@
 <?php
+/**
+ * <!--
+ * This file is part of the adventure php framework (APF) published under
+ * http://adventure-php-framework.org.
+ *
+ * The APF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The APF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ * -->
+ */
+import('tools::form::taglib', 'select_taglib_option');
+import('tools::form::taglib', 'form_taglib_select');
+
+/**
+ * @package tools::form::taglib
+ * @class form_taglib_multiselect
+ *
+ * Represents the APF multiselect field.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 15.01.2007<br />
+ * Version 0.2, 07.06.2008 (Reimplemented the transform() method)<br />
+ * Version 0.3, 08.06.2008 (Reimplemented the __validate() method)<br />
+ * Version 0.3, 12.02.2010 (Introduced attribute black and white listing)<br />
+ */
+class form_taglib_multiselect extends form_taglib_select {
+
    /**
-    * <!--
-    * This file is part of the adventure php framework (APF) published under
-    * http://adventure-php-framework.org.
+    * @public
     *
-    * The APF is free software: you can redistribute it and/or modify
-    * it under the terms of the GNU Lesser General Public License as published
-    * by the Free Software Foundation, either version 3 of the License, or
-    * (at your option) any later version.
+    * Initializes the known child taglibs, sets the validator style and addes the multiple attribute.
     *
-    * The APF is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    * GNU Lesser General Public License for more details.
-    *
-    * You should have received a copy of the GNU Lesser General Public License
-    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-    * -->
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 07.01.2007<br />
+    * Version 0.2, 03.03.2007 (Removed the "&" before the "new" operator)<br />
+    * Version 0.3, 26.08.2007 (Added the "multiple" attribut)<br />
+    * Version 0.4, 28.08.2010 (Added option groups)<br />
     */
-
-   import('tools::form::taglib','select_taglib_option');
-   import('tools::form::taglib','form_taglib_select');
+   public function __construct() {
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'select', 'option');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'select', 'group');
+      $this->setAttribute('multiple', 'multiple');
+      $this->attributeWhiteList[] = 'disabled';
+      $this->attributeWhiteList[] = 'name';
+      $this->attributeWhiteList[] = 'size';
+      $this->attributeWhiteList[] = 'tabindex';
+      $this->attributeWhiteList[] = 'multiple';
+   }
 
    /**
-    * @package tools::form::taglib
-    * @class form_taglib_multiselect
+    * @public
     *
-    * Represents the APF multiselect field.
+    * Parses the child tags and checks the name of the element to contain "[]".
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 15.01.2007<br />
-    * Version 0.2, 07.06.2008 (Reimplemented the transform() method)<br />
-    * Version 0.3, 08.06.2008 (Reimplemented the __validate() method)<br />
-    * Version 0.3, 12.02.2010 (Introduced attribute black and white listing)<br />
+    * Version 0.2, 07.06.2008 (Extended error message)<br />
+    * Version 0.3, 15.08.2008 (Extended error message with the name of the control)<br />
     */
-   class form_taglib_multiselect extends form_taglib_select {
+   public function onParseTime() {
 
-      /**
-       * @public
-       *
-       * Initializes the known child taglibs, sets the validator style and addes the multiple attribute.
-       *
-       * @author Christian Schäfer
-       * @version
-       * Version 0.1, 07.01.2007<br />
-       * Version 0.2, 03.03.2007 (Removed the "&" before the "new" operator)<br />
-       * Version 0.3, 26.08.2007 (Added the "multiple" attribut)<br />
-       * Version 0.4, 28.08.2010 (Added option groups)<br />
-       */
-      public function __construct(){
-         $this->__TagLibs[] = new TagLib('tools::form::taglib','select','option');
-         $this->__TagLibs[] = new TagLib('tools::form::taglib','select','group');
-         $this->setAttribute('multiple','multiple');
-         $this->attributeWhiteList[] = 'disabled';
-         $this->attributeWhiteList[] = 'name';
-         $this->attributeWhiteList[] = 'size';
-         $this->attributeWhiteList[] = 'tabindex';
-         $this->attributeWhiteList[] = 'multiple';
+      // parses the option tags
+      $this->__extractTagLibTags();
+
+      // check, whether the name of the control has no "[]" defined, to ensure
+      // that we can address the element with it's plain name in the template.
+      $name = $this->getAttribute('name');
+      if (substr_count($name, '[') > 0 || substr_count($name, ']') > 0) {
+         $doc = &$this->__ParentObject->getParentObject();
+         $docCon = $doc->getDocumentController();
+         throw new FormException('[form_taglib_multiselect::onParseTime()] The attribute "name" of the '
+               . '&lt;form:multiselect /&gt; tag with name "' . $this->__Attributes['name']
+               . '" in form "' . $this->__ParentObject->getAttribute('name') . '" and document '
+               . 'controller "' . $docCon . '" must not contain brackets! Please ensure, that the '
+               . 'appropriate form control has a suitable name. The brackets are automatically '
+               . 'generated by the taglib!', E_USER_ERROR);
       }
 
-      /**
-       * @public
-       *
-       * Parses the child tags and checks the name of the element to contain "[]".
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 15.01.2007<br />
-       * Version 0.2, 07.06.2008 (Extended error message)<br />
-       * Version 0.3, 15.08.2008 (Extended error message with the name of the control)<br />
-       */
-      public function onParseTime(){
-
-         // parses the option tags
-         $this->__extractTagLibTags();
-
-         // check, whether the name of the control has no "[]" defined, to ensure
-         // that we can address the element with it's plain name in the template.
-         $name = $this->getAttribute('name');
-         if(substr_count($name,'[') > 0 || substr_count($name,']') > 0){
-            $doc = &$this->__ParentObject->getParentObject();
-            $docCon = $doc->getDocumentController();
-            throw new FormException('[form_taglib_multiselect::onParseTime()] The attribute "name" of the '
-               .'&lt;form:multiselect /&gt; tag with name "'.$this->__Attributes['name']
-               .'" in form "'.$this->__ParentObject->getAttribute('name').'" and document '
-               .'controller "'.$docCon.'" must not contain brackets! Please ensure, that the '
-               .'appropriate form control has a suitable name. The brackets are automatically '
-               .'generated by the taglib!',E_USER_ERROR);
-         }
-
-         $this->__presetValue();
-
-      }
-
-      /**
-       * @public
-       *
-       * Creates the HTML output of the select field.
-       *
-       * @return string The HTML code of the select field.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 07.06.2008 (Reimplemented the transform() method because of a presetting error)<br />
-       */
-      public function transform(){
-
-         // do lazy presetting, in case we are having a field with dynamic options
-         if($this->isDynamicField === true){
-            $this->__presetValue();
-         }
-
-         // add brackets for the "name" attribute to ensure multi select capability!
-         $name = array('name' => $this->getAttribute('name').'[]');
-         $select = '<select '.$this->getSanitizedAttributesAsString(array_merge($this->__Attributes,$name)).'>';
-         $select .= $this->__Content.'</select>';
-
-         if(count($this->__Children) > 0){
-
-            $controlName = $this->getAttribute('name');
-
-            foreach($this->__Children as $objectId => $DUMMY){
-               $select = str_replace('<'.$objectId.' />',
-                  $this->__Children[$objectId]->transform(),
-                  $select
-               );
-            }
-
-         }
-
-         return $select;
-
-      }
-
-      /**
-       * @public
-       *
-       * Returns the selected options.
-       *
-       * @return select_taglib_option[] List of the options, that are selected.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 08.06.2008<br />
-       */
-      public function &getSelectedOptions(){
-
-         // call presetting lazy if we have dynamic field
-         if($this->isDynamicField === true){
-            $this->__presetValue();
-         }
-
-         $selectedOptions = array();
-         foreach ($this->__Children as $objectId => $DUMMY) {
-
-            if (get_class($this->__Children[$objectId]) == 'select_taglib_group') {
-               $options = &$this->__Children[$objectId]->getSelectedOptions();
-               foreach($options as $id => $DUMMY){
-                  $selectedOptions[] = &$options[$id];
-               }
-            } else {
-               if ($this->__Children[$objectId]->getAttribute('selected') === 'selected') {
-                  $selectedOptions[] = &$this->__Children[$objectId];
-               }
-            }
-            
-         }
-         return $selectedOptions;
-
-      }
-
-      /**
-       * @protected
-       *
-       * Reimplements the presetting method for the multiselect field.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 15.01.2007<br />
-       * Version 0.2, 16.01.2007 (Now checks, if the request param is set)<br />
-       */
-      protected function __presetValue(){
-         if(count($this->__Children) > 0){
-            foreach($this->getRequestValues() as $value){
-               $this->setOption2Selected($value);
-            }
-         }
-      }
-
-      /**
-       * @private
-       *
-       * retrieves the selected values from the current request. Returns an
-       * empty array, if no options are found.
-       *
-       * @return string[] The currently selected values contained in th request.
-       *
-       * @author Christian Achatz
-       * @version
-       * Version 0.1, 28.08.2010<br />
-       */
-      protected function getRequestValues(){
-         $values = array();
-         $controlName = $this->getAttribute('name');
-         if(isset($_REQUEST[$controlName])){
-            $values = $_REQUEST[$controlName];
-         }
-         return $values;
-      }
-      
-      /**
-       * @public
-       * 
-       * Re-implements the retrieving of values for multiselect controls
-       * 
-       * @return select_taglib_option[] List of the options, that are selected.
-       * 
-       * @since 1.14
-       * 
-       * @author Ralf Schubert
-       * @version
-       * Version 0.1, 26.07.2011<br />
-       */
-      public function getValue() {
-          return $this->getSelectedOptions();
-      }
+      $this->__presetValue();
 
    }
-?>
+
+   /**
+    * @public
+    *
+    * Creates the HTML output of the select field.
+    *
+    * @return string The HTML code of the select field.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.06.2008 (Reimplemented the transform() method because of a presetting error)<br />
+    */
+   public function transform() {
+
+      // do lazy presetting, in case we are having a field with dynamic options
+      if ($this->isDynamicField === true) {
+         $this->__presetValue();
+      }
+
+      // add brackets for the "name" attribute to ensure multi select capability!
+      $name = array('name' => $this->getAttribute('name') . '[]');
+      $select = '<select ' . $this->getSanitizedAttributesAsString(array_merge($this->__Attributes, $name)) . '>';
+      $select .= $this->__Content . '</select>';
+
+      if (count($this->__Children) > 0) {
+
+         $controlName = $this->getAttribute('name');
+
+         foreach ($this->__Children as $objectId => $DUMMY) {
+            $select = str_replace('<' . $objectId . ' />',
+               $this->__Children[$objectId]->transform(),
+               $select
+            );
+         }
+
+      }
+
+      return $select;
+
+   }
+
+   /**
+    * @public
+    *
+    * Returns the selected options.
+    *
+    * @return select_taglib_option[] List of the options, that are selected.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.06.2008<br />
+    */
+   public function &getSelectedOptions() {
+
+      // call presetting lazy if we have dynamic field
+      if ($this->isDynamicField === true) {
+         $this->__presetValue();
+      }
+
+      $selectedOptions = array();
+      foreach ($this->__Children as $objectId => $DUMMY) {
+
+         if (get_class($this->__Children[$objectId]) == 'select_taglib_group') {
+            $options = &$this->__Children[$objectId]->getSelectedOptions();
+            foreach ($options as $id => $DUMMY) {
+               $selectedOptions[] = &$options[$id];
+            }
+         } else {
+            if ($this->__Children[$objectId]->getAttribute('selected') === 'selected') {
+               $selectedOptions[] = &$this->__Children[$objectId];
+            }
+         }
+
+      }
+      return $selectedOptions;
+
+   }
+
+   /**
+    * @protected
+    *
+    * Reimplements the presetting method for the multiselect field.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 15.01.2007<br />
+    * Version 0.2, 16.01.2007 (Now checks, if the request param is set)<br />
+    */
+   protected function __presetValue() {
+      if (count($this->__Children) > 0) {
+         foreach ($this->getRequestValues() as $value) {
+            $this->setOption2Selected($value);
+         }
+      }
+   }
+
+   /**
+    * @private
+    *
+    * retrieves the selected values from the current request. Returns an
+    * empty array, if no options are found.
+    *
+    * @return string[] The currently selected values contained in th request.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 28.08.2010<br />
+    */
+   protected function getRequestValues() {
+      $values = array();
+      $controlName = $this->getAttribute('name');
+      if (isset($_REQUEST[$controlName])) {
+         $values = $_REQUEST[$controlName];
+      }
+      return $values;
+   }
+
+   /**
+    * @public
+    *
+    * Re-implements the retrieving of values for multi-select controls.
+    *
+    * @return select_taglib_option[] List of the options, that are selected.
+    *
+    * @since 1.14
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 26.07.2011<br />
+    */
+   public function getValue() {
+      return $this->getSelectedOptions();
+   }
+
+   public function isSelected() {
+      return count($this->getSelectedOptions()) > 0;
+   }
+
+}
