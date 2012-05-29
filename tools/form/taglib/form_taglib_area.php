@@ -112,7 +112,20 @@ class form_taglib_area extends form_control {
       $this->__Content = $value;
       return $this;
    }
-
+   
+   /**
+    * @public
+    *
+    * Let's check if the form:area was filled with content.
+    *
+    * @return bool True in case the control is filled, false otherwise.
+    *
+    * @since 1.15
+    *
+    * @author dave
+    * @version
+    * Version 0.1, 20.09.2011<br />
+    */
    public function isFilled() {
       return $this->getContent() == null ? false : true;
    }

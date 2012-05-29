@@ -419,8 +419,25 @@ class form_taglib_select extends form_control {
       return $this;
    }
 
+   /**
+    * @public
+    *
+    * Let's check if something was selected in form:select.
+    *
+    * @return bool True in case the control is selected, false otherwise.
+    * @since 1.15
+    *
+    * @author dave
+    * @version
+    * Version 0.1, 22.09.2011<br />
+    * Version 0.2, 29.05.2012 (Bugfix: isSelected was always true)<br />
+    */
    public function isSelected() {
-      return $this->getSelectedOption() == null ? false : true;
+      if($this->getSelectedOption()->getValue() == null) {
+         return false;
+      }else{
+         return true;
+      }
    }
 
 }

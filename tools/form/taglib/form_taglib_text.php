@@ -59,7 +59,20 @@ class form_taglib_text extends form_control {
    public function transform() {
       return '<input type="text" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
    }
-
+   
+   /**
+    * @public
+    *
+    * Let's check if the form:text was filled with content.
+    *
+    * @return bool True in case the control is filled, false otherwise.
+    *
+    * @since 1.15
+    *
+    * @author dave
+    * @version
+    * Version 0.1, 20.09.2011<br />
+    */
    public function isFilled() {
       return $this->getValue() == null ? false : true;
    }

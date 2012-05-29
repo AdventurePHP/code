@@ -225,7 +225,19 @@ class form_taglib_multiselect extends form_taglib_select {
    public function getValue() {
       return $this->getSelectedOptions();
    }
-
+   
+   /**
+    * @public
+    *
+    * Let's check if something was selected in form:multiselect.
+    *
+    * @return bool True in case the control is selected, false otherwise.
+    * @since 1.15
+    *
+    * @author dave
+    * @version
+    * Version 0.1, 22.09.2011<br />
+    */
    public function isSelected() {
       return count($this->getSelectedOptions()) > 0;
    }
