@@ -30,11 +30,17 @@ import('tools::form::filter', 'AbstractFormFilter');
  * @author Lutz Mahlstedt
  * @version
  * Version 0.1, 13.05.2009<br />
+ * Version 0.2, 06.06.2012 (Added check if something was typed in formfield)<br />
  */
 class FloatFilter extends AbstractFormFilter {
 
    public function filter($input) {
-      return floatval(str_replace(',', '.', str_replace(' ', '', $input)));
+      if($input == null) {
+         return null;
+      }else{
+         return floatval(str_replace(',', '.', str_replace(' ', '', $input)));
+      }
+      
    }
 
 }
