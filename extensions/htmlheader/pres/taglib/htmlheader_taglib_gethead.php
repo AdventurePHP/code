@@ -28,7 +28,7 @@ import('extensions::htmlheader::pres::filter', 'HtmlHeaderOutputFilter');
  * Taglib for receiving the complete htmlheader.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="gethead" />
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_gethead" prefix="htmlheader" name="gethead" />
  * <htmlheader:gethead />
  *
  * @author Ralf Schubert

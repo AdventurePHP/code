@@ -31,8 +31,9 @@
  * <code>
  * <core:addtaglib
  *    namespace="extensions::forwardmessage::pres::taglib"
+ *    class="html_taglib_getforwardmessages"
  *    prefix="html"
- *    class="getforwardmessages"
+ *    name="getforwardmessages"
  * />
  * <html:getforwardmessages
  *    [groups="..."]

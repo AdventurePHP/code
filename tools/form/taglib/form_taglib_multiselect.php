@@ -39,7 +39,7 @@ class form_taglib_multiselect extends form_taglib_select {
    /**
     * @public
     *
-    * Initializes the known child taglibs, sets the validator style and addes the multiple attribute.
+    * Initializes the known child taglibs, sets the validator style and adds the multiple attribute.
     *
     * @author Christian Schäfer
     * @version
@@ -49,8 +49,8 @@ class form_taglib_multiselect extends form_taglib_select {
     * Version 0.4, 28.08.2010 (Added option groups)<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'select', 'option');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'select', 'group');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'select_taglib_option', 'select', 'option');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'select_taglib_group', 'select', 'group');
       $this->setAttribute('multiple', 'multiple');
       $this->attributeWhiteList[] = 'disabled';
       $this->attributeWhiteList[] = 'name';

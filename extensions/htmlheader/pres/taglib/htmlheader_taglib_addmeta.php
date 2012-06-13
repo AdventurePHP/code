@@ -27,7 +27,7 @@ import('extensions::htmlheader::biz', 'SimpleMetaNode');
  * Taglib for adding meta nodes to htmlheader
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addmeta" />
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addmeta" prefix="htmlheader" name="addmeta" />
  * <htmlheader:addmeta name="" content="" />
  *
  * @author Ralf Schubert

@@ -41,7 +41,7 @@ class form_taglib_button extends form_control {
       $this->attributeWhiteList[] = 'tabindex';
       $this->attributeWhiteList[] = 'value';
 
-      $this->__TagLibs = array(new TagLib('tools::form::taglib', 'button', 'getstring'));
+      $this->__TagLibs = array(new TagLib('tools::form::taglib', 'button_taglib_getstring', 'button', 'getstring'));
    }
 
    /**
@@ -60,8 +60,8 @@ class form_taglib_button extends form_control {
       if ($buttonName === null) {
          $formName = $this->__ParentObject->getAttribute('name');
          throw new FormException('[form_taglib_button::onAfterAppend()] Missing required attribute '
-                 . '"name" in &lt;form:button /&gt; tag in form "' . $formName . '". '
-                 . 'Please check your form definition!', E_USER_ERROR);
+               . '"name" in &lt;form:button /&gt; tag in form "' . $formName . '". '
+               . 'Please check your form definition!', E_USER_ERROR);
       }
 
       // check name attribute in request to indicate, that the
@@ -98,4 +98,3 @@ class form_taglib_button extends form_control {
    }
 
 }
-?>

@@ -66,54 +66,54 @@ class html_taglib_form extends form_control {
     * Version 1.0, 03.09.2008 (Added the form:marker tag)<br />
     * Version 1.1, 22.06.2009 (Added the form:reset tag)<br />
     * Version 1.2, 03.09.2009 (Added several new tags concerning the refactoring)<br />
-    * Version 1.3, 15.06.2010 (Bugfix: white listing did not recognize enctype attribute)<br />
+    * Version 1.3, 15.06.2010 (Bugfix: white listing did not recognize encrypt attribute)<br />
     */
    public function __construct() {
 
       // Place the listener here, to ensure, that it is there, when the
       // notification is sent!
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'listener');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_listener', 'form', 'listener');
 
       // Please note, that the form:addfilter taglib is placed before the
       // form:addvalidator, because filtering must take place before the
       // validation. Otherwise, we might get unexpected results.
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'addfilter');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'addvalidator');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_addfilter', 'form', 'addfilter');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_addvalidator', 'form', 'addvalidator');
 
       // The time of adding the form errors is not relevant, because the action
       // takes place on transform time. But for clarity, we add it near the listeners.
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'error');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'success');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_error', 'form', 'error');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_success', 'form', 'success');
 
       // Buttons are analyzed right early to be able to initialize form controls
       // concerning the status of the form (e.g. sent!).
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'button');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'reset');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'imagebutton');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_button', 'form', 'button');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_reset', 'form', 'reset');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_imagebutton', 'form', 'imagebutton');
 
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'text');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'select');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'date');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'placeholder');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'password');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'hidden');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'checkbox');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'radio');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'file');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'area');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'multiselect');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'getstring');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'marker');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_text', 'form', 'text');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_select', 'form', 'select');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_date', 'form', 'date');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_placeholder', 'form', 'placeholder');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_password', 'form', 'password');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_hidden', 'form', 'hidden');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_checkbox', 'form', 'checkbox');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_radio', 'form', 'radio');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_file', 'form', 'file');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_area', 'form', 'area');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_multiselect', 'form', 'multiselect');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_getstring', 'form', 'getstring');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_marker', 'form', 'marker');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_addtaglib', 'form', 'addtaglib');
 
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'timecaptcha');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'csrfhash');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_timecaptcha', 'form', 'timecaptcha');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_csrfhash', 'form', 'csrfhash');
 
       // analyzing the form:time tag must be done after the form:timecaptcha, since
       // the tag parser analyzes the whole tag string and form:time is fully contained
       // in form:timecaptcha. this restriction of the APF parser is accepted due to
       // performance reasons!
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form', 'time');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'form_taglib_time', 'form', 'time');
 
       // setup attributes within white-list
       $this->attributeWhiteList = array_merge(self::$CORE_ATTRIBUTES, self::$EVENT_ATTRIBUTES, self::$I18N_ATTRIBUTES);
@@ -142,11 +142,10 @@ class html_taglib_form extends form_control {
       // import dependent tags a little bit different, to increase performance up to factor 10!
       foreach ($this->__TagLibs as $taglib) {
          /* @var $taglib TagLib */
-         if (strpos($this->__Content, '<' . $taglib->getPrefix() . ':' . $taglib->getClass()) !== false) {
-            import(
-               $taglib->getNamespace(),
-               $this->getTaglibClassName($taglib->getPrefix(), $taglib->getClass())
-            );
+         if (strpos($this->__Content, '<' . $taglib->getPrefix() . ':' . $taglib->getName()) !== false) {
+            if (!class_exists($taglib->getClass())) {
+               import($taglib->getNamespace(), $taglib->getClass());
+            }
          }
       }
 
@@ -207,6 +206,7 @@ class html_taglib_form extends form_control {
     * @param string $elementType Type of the element (e.g. "form:text")
     * @param string[] $elementAttributes Associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     * @return string Id of the new form object or null (e.g. for addressing the new element)
+    * @throws FormException In case the form element cannot be added.
     *
     * @author Christian Achatz
     * @version
@@ -387,58 +387,56 @@ class html_taglib_form extends form_control {
     * @param string $elementType type of the element (e.g. "form:text")
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     * @return string Id of the new form object (e.g. for addressing the new element)
+    * @throws FormException In case form element cannot be found.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 06.09.2008<br />
-    * Version 0.2, 10.09.2008 (Added the $ElementAttributes param)<br />
+    * Version 0.2, 10.09.2008 (Added the $elementAttributes param)<br />
     * Version 0.3, 12.11.2008 (Bugfix: language and context initialisation were wrong)<br />
     */
-   protected function createFormElement($elementType, $elementAttributes = array()) {
+   protected function createFormElement($elementType, array $elementAttributes = array()) {
 
       // define taglib class
       $colon = strpos($elementType, ':');
       $prefix = substr($elementType, 0, $colon);
-      $class = substr($elementType, $colon + 1);
-      $taglibClass = $this->getTaglibClassName($prefix, $class);
+      $name = substr($elementType, $colon + 1);
 
       // lazily import APF-internal taglib class. this is necessary, since taglibs are
       // not statically included as of 1.14 but loaded dynamically due to performance
       // reasons!
-      if (!class_exists($taglibClass)) {
-         foreach ($this->__TagLibs as $taglib) {
-            /* @var $taglib TagLib */
-            if ($taglib->getPrefix() === $prefix && $taglib->getClass() === $class) {
-               import($taglib->getNamespace(), $taglibClass);
-            }
+      $class = null;
+      foreach ($this->__TagLibs as $taglib) {
+         /* @var $taglib TagLib */
+         if ($taglib->getPrefix() === $prefix && $taglib->getName() === $name) {
+            $class = $taglib->getClass();
+            import($taglib->getNamespace(), $class);
+            break;
          }
       }
 
-      // check, if class exists
-      if (class_exists($taglibClass)) {
+      // check, if class exists to ensure instance can be created
+      if (class_exists($class)) {
 
          // generate object id
          $objectId = XmlParser::generateUniqID();
 
          // create new form element
-         $formObject = new $taglibClass();
-         /* @var $formObject form_control */
+         $formControl = new $class();
+         /* @var $formControl form_control */
 
          // add standard and user defined attributes
-         $formObject->setObjectId($objectId);
-         $formObject->setLanguage($this->__Language);
-         $formObject->setContext($this->__Context);
-
-         foreach ($elementAttributes as $key => $value) {
-            $formObject->setAttribute($key, $value);
-         }
+         $formControl->setObjectId($objectId);
+         $formControl->setLanguage($this->__Language);
+         $formControl->setContext($this->__Context);
+         $formControl->setAttributes($elementAttributes);
 
          // add form element to DOM tree and call the onParseTime() method
-         $formObject->setParentObject($this);
-         $formObject->onParseTime();
+         $formControl->setParentObject($this);
+         $formControl->onParseTime();
 
          // add new form element to children list
-         $this->__Children[$objectId] = $formObject;
+         $this->__Children[$objectId] = $formControl;
 
          // call the onAfterAppend() method
          $this->__Children[$objectId]->onAfterAppend();
@@ -498,6 +496,7 @@ class html_taglib_form extends form_control {
     *
     * @param string $name The name of the desired form element.
     * @return form_control A reference on the form element.
+    * @throws FormException In case the form element cannot be found.
     *
     * @author Christian Schäfer
     * @version
@@ -555,6 +554,7 @@ class html_taglib_form extends form_control {
     *
     * @param string $id The ID of the desired form element.
     * @return form_control A reference on the form element.
+    * @throws FormException In case the form element cannot be found.
     *
     * @author Christian Schäfer
     * @version
@@ -586,6 +586,7 @@ class html_taglib_form extends form_control {
     *
     * @param string $objectId The object id of of the desired form element.
     * @return form_control A reference on the form element.
+    * @throws FormException In case the form element cannot be found.
     *
     * @author Christian Achatz
     * @version
@@ -614,6 +615,7 @@ class html_taglib_form extends form_control {
     *
     * @param string $tagName The tag name of the desired form element (e.g. "form:text").
     * @return form_control[] A list of references on the form elements.
+    * @throws FormException In case the form element cannot be found.
     *
     * @author Christian Achatz
     * @version
@@ -679,7 +681,7 @@ class html_taglib_form extends form_control {
     * @version
     * Version 0.1, 12.01.2007<br />
     * Version 0.2, 20.01.2007 (Changed action attribute handling)<br />
-    * Version 0.3, 27.07.2009 (Attibute "name" is not rendered into HTML tag, because of XHTML 1.1 strict)<br />
+    * Version 0.3, 27.07.2009 (Attribute "name" is not rendered into HTML tag, because of XHTML 1.1 strict)<br />
     */
    public function transformForm() {
 
@@ -740,7 +742,7 @@ class html_taglib_form extends form_control {
     *
     * @return string The content of the form (in case of transformOnPlace) or an empty string.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 12.01.2007<br />
     * Version 0.2, 01.06.2008 (Added the transformOnPlace() feature)<br />
@@ -756,5 +758,3 @@ class html_taglib_form extends form_control {
    }
 
 }
-
-?>

@@ -51,8 +51,8 @@ class form_taglib_select extends form_control {
     * Version 0.2, 03.03.2007 (Removed "&" before "new")<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'select', 'option');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'select', 'group');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'select_taglib_option', 'select', 'option');
+      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'select_taglib_group', 'select', 'group');
       $this->attributeWhiteList[] = 'disabled';
       $this->attributeWhiteList[] = 'name';
       $this->attributeWhiteList[] = 'size';

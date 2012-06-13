@@ -27,7 +27,7 @@ import('extensions::htmlheader::biz', 'DynamicJsNode');
  *  Taglib for adding javascripts to htmlheader.
  *
  * @example
- *  <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addjs" />
+ *  <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addjs" prefix="htmlheader" name="addjs" />
  *  Use FC-Action to deliver file:
  *  <htmlheader:addjs namespace="{CONTEXT}::pres::frontend::static::js::anything" filename="jsfile" />
  *  <ul>

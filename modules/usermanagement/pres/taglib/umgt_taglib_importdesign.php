@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -46,7 +45,7 @@
 class umgt_taglib_importdesign extends core_taglib_importdesign {
 
    /**
-    * @var boolean Indicates, whether the refered template should be displayed or not.
+    * @var boolean Indicates, whether the referred template should be displayed or not.
     */
    protected $display = false;
 
@@ -73,5 +72,3 @@ class umgt_taglib_importdesign extends core_taglib_importdesign {
    }
 
 }
-
-?>

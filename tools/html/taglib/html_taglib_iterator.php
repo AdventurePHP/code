@@ -19,9 +19,6 @@
  * -->
  */
 import('tools::html::taglib', 'iterator_taglib_item');
-import('tools::html::taglib', 'iterator_taglib_addtaglib');
-import('tools::html::taglib', 'iterator_taglib_getstring');
-import('tools::html::taglib', 'iterator_taglib_placeholder');
 
 import('tools::request', 'RequestHandler');
 
@@ -79,10 +76,10 @@ class html_taglib_iterator extends Document {
     * Version 0.2, 09.08.2009 (Added the addtaglib tag to enable custom tags.)<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('tools::html::taglib', 'iterator', 'item');
-      $this->__TagLibs[] = new TagLib('tools::html::taglib', 'iterator', 'addtaglib');
-      $this->__TagLibs[] = new TagLib('tools::html::taglib', 'iterator', 'getstring');
-      $this->__TagLibs[] = new TagLib('tools::html::taglib', 'iterator', 'placeholder');
+      $this->__TagLibs[] = new TagLib('tools::html::taglib', 'iterator_taglib_item', 'iterator', 'item');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_addtaglib', 'iterator', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_getstring', 'iterator', 'getstring');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_placeholder', 'iterator', 'placeholder');
    }
 
    /**
@@ -353,7 +350,7 @@ class html_taglib_iterator extends Document {
    public function &setPlaceHolder($name, $value) {
       $count = 0;
       foreach ($this->__Children as $objectId => $DUMMY) {
-         if (get_class($this->__Children[$objectId]) == 'iterator_taglib_placeholder'
+         if (get_class($this->__Children[$objectId]) == 'html_taglib_placeholder'
                && $this->__Children[$objectId]->getAttribute('name') === $name
          ) {
             $this->__Children[$objectId]->setContent($value);

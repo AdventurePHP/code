@@ -27,7 +27,7 @@ import('extensions::htmlheader::biz', 'CssContentNode');
  * Taglib for adding stylesheets content to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addcsscontent" />
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addcsscontent" prefix="htmlheader" name="addcsscontent" />
  * <htmlheader:addcsscontent>
  *   ... css code ...
  * </htmlheader:addcsscontent>

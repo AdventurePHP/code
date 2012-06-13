@@ -33,7 +33,7 @@ import('tools::media::taglib', 'ui_mediastream');
 class umgt_taglib_media extends ui_mediastream {
 
    public function __construct() {
-      $this->addTagLib(new TagLib('modules::usermanagement::pres::taglib', 'media', 'getstring'));
+      $this->addTagLib(new TagLib('modules::usermanagement::pres::taglib', 'media_taglib_getstring', 'media', 'getstring'));
    }
 
    /**
@@ -94,5 +94,3 @@ class umgt_taglib_media extends ui_mediastream {
    }
 
 }
-
-?>

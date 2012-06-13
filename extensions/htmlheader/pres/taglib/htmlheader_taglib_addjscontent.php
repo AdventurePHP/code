@@ -27,7 +27,7 @@ import('extensions::htmlheader::biz', 'JsContentNode');
  * Taglib for adding static stylesheets to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addjscontent" />
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addjscontent" prefix="htmlheader" name="addjscontent" />
  * <htmlheader:addjscontent>
  *   ... js code ...
  * </htmlheader:addjscontent>

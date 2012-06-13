@@ -82,7 +82,7 @@ class umgt_login_controller extends base_controller {
                import('core::logging', 'Logger');
                $l = &Singleton::getInstance('Logger');
                /* @var $l Logger */
-               $l->logEntry('login', 'Login is not possible due to ' . $e, 'ERROR');
+               $l->logEntry('login', 'Login is not possible due to ' . $e, LogEntry::SEVERITY_ERROR);
             }
          } elseif ($form->isSent() && !$form->isValid()) {
             $form->setPlaceHolder('login-error', $this->getTemplate('login-error')->transformTemplate());

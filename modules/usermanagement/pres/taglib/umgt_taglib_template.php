@@ -64,5 +64,3 @@ class umgt_taglib_template extends html_taglib_template {
    }
 
 }
-
-?>

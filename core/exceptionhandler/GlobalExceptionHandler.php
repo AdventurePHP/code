@@ -118,7 +118,7 @@ class DefaultExceptionHandler implements ExceptionHandler {
       import('core::logging', 'Logger');
       $log = Singleton::getInstance('Logger');
       /* @var $log Logger */
-      $log->logEntry('php', $message, 'EXCEPTION');
+      $log->logEntry('php', $message, LogEntry::SEVERITY_ERROR);
    }
 
    /**

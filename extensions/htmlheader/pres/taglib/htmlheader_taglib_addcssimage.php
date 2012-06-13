@@ -27,7 +27,7 @@ import('extensions::htmlheader::biz', 'CssImageNode');
  * Taglib for adding an image to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addcssimage" />
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addcssimage" prefix="htmlheader" name="addcssimage" />
  * <htmlheader:addcssimage rel="icon" href="favicon.png" type="image/png" />
  *
  * @author Werner Liemberger

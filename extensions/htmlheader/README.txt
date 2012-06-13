@@ -4,7 +4,7 @@ At first you need to place the htmlheader:gethead Taglib in your <head></head>
 section:
 <source lang="html4strict">
 <head>
-  <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="gethead" />
+  <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_gethead" prefix="htmlheader" name="gethead" />
   <htmlheader:gethead />
 </head>
 </source>
@@ -18,10 +18,10 @@ Since 1.12 You can use it to deliver packages from the new JsCssPackager.
 '''Examples:'''
 <source lang="html4strict">
 <!-- // Adding taglibs to your template //-->
-<core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addcss" />
-<core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addjs" />
-<core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addtitle" />
-<core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addpackage" />
+<core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addcss" prefix="htmlheader" name="addcss" />
+<core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addjs" prefix="htmlheader" name="addjs" />
+<core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addtitle" prefix="htmlheader" name="addtitle" />
+<core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addpackage" prefix="htmlheader" name="addpackage" />
 
 <!-- // Using taglibs //-->
 <htmlheader:addjs namespace="sites::example::pres::frontend::static::js" filename="jquery.min" />

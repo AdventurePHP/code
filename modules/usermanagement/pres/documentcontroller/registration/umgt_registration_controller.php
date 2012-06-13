@@ -94,7 +94,7 @@ class umgt_registration_controller extends umgt_base_controller {
             /* @var $l Logger */
             $l->logEntry('registration', 'Registration cannot add initial groups or roles due to the following '
                . 'exception: ' . $e . ' This may be ok, in case you have no initial groups and/or roles specified.',
-               'INFO');
+               LogEntry::SEVERITY_INFO);
          }
 
          try {
@@ -105,7 +105,7 @@ class umgt_registration_controller extends umgt_base_controller {
             import('core::logging', 'Logger');
             $l = &Singleton::getInstance('Logger');
             /* @var $l Logger */
-            $l->logEntry('registration', 'Registration is not possible due to ' . $e, 'ERROR');
+            $l->logEntry('registration', 'Registration is not possible due to ' . $e, LogEntry::SEVERITY_ERROR);
          }
       } elseif ($form->isSent() && !$form->isValid()) {
          $form->setPlaceHolder('register-error', $this->getTemplate('register-error')->transformTemplate());

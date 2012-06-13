@@ -181,5 +181,3 @@ class lang_taglib_importdesign extends core_taglib_importdesign {
    }
 
 }
-
-?>

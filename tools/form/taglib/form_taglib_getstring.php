@@ -32,4 +32,3 @@ import('tools::form::taglib', 'form_getstring');
  */
 class form_taglib_getstring extends form_getstring {
 }
-?>

@@ -199,9 +199,9 @@ final class DIServiceManager {
                      foreach (self::$INJECTION_CALL_CACHE as $injectionInstruction => $DUMMY) {
                         $instructions .= PHP_EOL . $injectionInstruction;
                      }
-                     $log->logEntry('php', '[DIServiceManager::getServiceObject()] Injection stack trace: ' . $instructions, 'TRACE');
+                     $log->logEntry('php', '[DIServiceManager::getServiceObject()] Injection stack trace: ' . $instructions, LogEntry::SEVERITY_TRACE);
 
-                     // print note with shortend information
+                     // print note with shorted information
                      throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Detected circular injection! ' .
                            'Class "' . $class . '" from namespace "' . $namespace . '" with service type "' . $serviceType .
                            '" was already configured with service object "' . $name . '" from namespace "' .

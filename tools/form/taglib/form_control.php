@@ -412,7 +412,7 @@ abstract class form_control extends Document {
    public function &setPlaceHolder($name, $value) {
 
       // dynamically gather taglib name of the place holder to set
-      $tagLibClass = $this->getClassNameByTagLibClass('placeholder');
+      $tagLibClass = $this->getClassNameByTagLibName('placeholder');
 
       $placeHolderCount = 0;
       if (count($this->__Children) > 0) {
@@ -478,7 +478,7 @@ abstract class form_control extends Document {
     * with the given taglib class name. Passing the taglib class name "placeholder"
     * would return "form_taglib_placeholder" within the &lt;html:form /&gt; taglib.
     *
-    * @param string $class The taglib class name.
+    * @param string $name The taglib class name.
     * @return string The PHP class name, that represents the taglib with the
     *                given taglib class name.
     *
@@ -486,11 +486,11 @@ abstract class form_control extends Document {
     * @version
     * Version 0.1, 12.09.2009<br />
     */
-   protected function getClassNameByTagLibClass($class) {
+   protected function getClassNameByTagLibName($name) {
 
       foreach ($this->__TagLibs as $tagLib) {
-         if ($tagLib->getClass() == $class) {
-            return $tagLib->getPrefix() . '_taglib_' . $class;
+         if ($tagLib->getName() == $name) {
+            return $tagLib->getClass();
          }
       }
 

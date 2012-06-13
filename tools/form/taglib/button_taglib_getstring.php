@@ -42,4 +42,3 @@ class button_taglib_getstring extends form_getstring {
    }
 
 }
-?>

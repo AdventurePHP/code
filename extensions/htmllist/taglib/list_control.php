@@ -38,17 +38,16 @@ abstract class list_control extends Document {
    public function addAttribute($name, $value) {
       if (isset($this->__Attributes[$name])) {
          $this->__Attributes[$name] .= $value;
-      }
-      else {
+      } else {
          $this->__Attributes[$name] = $value;
       }
    }
 
-   protected function getClassNameByTagLibClass($class) {
+   protected function getClassNameByTagLibName($name) {
 
       foreach ($this->__TagLibs as $tagLib) {
-         if ($tagLib->getClass() == $class) {
-            return $tagLib->getPrefix() . '_taglib_' . $class;
+         if ($tagLib->getName() == $name) {
+            return $tagLib->getClass();
          }
       }
 
@@ -64,7 +63,7 @@ abstract class list_control extends Document {
     */
    public function &setPlaceHolder($name, $value) {
       // dynamically gather taglib name of the place holder to set
-      $tagLibClass = $this->getClassNameByTagLibClass('placeholder');
+      $tagLibClass = $this->getClassNameByTagLibName('placeholder');
 
       $placeHolderCount = 0;
       if (count($this->__Children) > 0) {
@@ -76,8 +75,7 @@ abstract class list_control extends Document {
                }
             }
          }
-      }
-      else {
+      } else {
          throw new Exception('[' . get_class($this) . '::setPlaceHolder()] No place holder object with '
                   . 'name "' . $name . '" composed in current for document controller "'
                   . ($this->__ParentObject->getDocumentController()) . '"! Perhaps tag library '
@@ -98,7 +96,7 @@ abstract class list_control extends Document {
    /**
     * @protected
     *
-    * This method is for concenient setting of multiple place holders. The applied
+    * This method is for convenient setting of multiple place holders. The applied
     * array must contain a structure like this:
     * <code>
     * array(

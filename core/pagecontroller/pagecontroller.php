@@ -27,10 +27,10 @@
  * <ul>
  * <li>Environment      : environment, the application is executed in. The value is 'DEFAULT' in common</li>
  * <li>URLRewriting     : indicates, is url rewriting should be used</li>
- * <li>LogDir           : path, where logfiles are stored. The value is './logs' by default.</li>
+ * <li>LogDir           : path, where log files are stored. The value is './logs' by default.</li>
  * <li>URLBasePath      : absolute url base path of the application (not really necessary)</li>
  * <li>LibPath          : path, where the framework and your own libraries reside. This path can be used
- *                        to adress files with in the lib path directly (e.g. images or other ressources)</li>
+ *                        to address files with in the lib path directly (e.g. images or other resources)</li>
  * <li>CurrentRequestURL: the fully qualified request url</li>
  * </ul>
  * Further, the built-in input and output filters are initialized. For this reason, the following
@@ -135,7 +135,7 @@ class IncludeException extends Exception {
  *
  * @param string $namespace the namespace of the file (=relative path, starting at the root of your code base).
  * @param string $file the body of the desired file / class to include (without extension).
- * @throws Exception In case the requested component does not exist.
+ * @throws IncludeException In case the requested component does not exist.
  *
  * @author Christian Achatz
  * @version
@@ -180,7 +180,7 @@ function import($namespace, $file) {
  *
  * @param object $o The object to display.
  * @param boolean $transformHtml In case the HTML characters should be escaped (true) or not (false).
- * @return The object's string representation.
+ * @return string The object's string representation.
  *
  * @author Christian Schäfer
  * @version
@@ -249,6 +249,7 @@ final class XmlParser {
     *
     * @param string $tagString The string, that contains the tag definition.
     * @return string[] The attributes of the tag.
+    * @throws ParserException In case of tag mismatch.
     *
     * @author Christian Achatz
     * @version
@@ -362,6 +363,7 @@ final class XmlParser {
     *
     * @param string $attributesString The attributes string of the tag to analyze.
     * @return string[] The attributes of the tag.
+    * @throws ParserException In case of tar attribute mismatch that may caus infinite loops.
     *
     * @author Christian Schäfer
     * @version
@@ -534,7 +536,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.1, 26.02.2011<br />
     */
    public function getVersion() {
-      return '1.15-stable';
+      return '1.16-SVN';
    }
 
    /**
@@ -593,7 +595,7 @@ abstract class APFObject implements APFDIService {
     *
     * @param string $name The name of the attribute to delete.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 28.12.2006<br />
     */
@@ -629,8 +631,8 @@ abstract class APFObject implements APFDIService {
     * For details see {@link DIServiceManager}.
     *
     * @param string $namespace The namespace of the service object definition.
-    * @param string $name The namne of the service object.
-    * @return APFObject The preconfigured service object.
+    * @param string $name The name of the service object.
+    * @return APFObject The pre-configured service object.
     *
     * @author Christian Achatz
     * @version
@@ -788,47 +790,51 @@ abstract class APFObject implements APFDIService {
  * you add a known taglib to a DOM node, an instance of the TagLib class is added to
  * the node.
  *
- * @author Christian Sch�fer
+ * @author Christian Schäfer
  * @version
  * Version 0.1, 28.12.2006<br />
  */
 final class TagLib {
 
    /**
-    * @protected
-    * @var string The namespace of the taglib.
+    * @var string The namespace of the tag implementation.
     */
    private $namespace;
 
    /**
-    * @protected
-    * @var string The prefix of the taglib.
+    * @var string The class name of the tag implementation .
+    */
+   private $class;
+
+   /**
+    * @var string The prefix of the tag (e.g. <em>core<em> for tag <em>&lt;core:importdesign /&gt;).
     */
    private $prefix;
 
    /**
-    * @protected
-    * @var string The class name of the taglib.
+    * @var string The name of the tag (e.g. <em>importdesign<em> for tag <em>&lt;core:importdesign /&gt;).
     */
-   private $class;
+   private $name;
 
    /**
     * @public
     *
     * Defines a taglib.
     *
-    * @param string $namespace The namespace of the taglib.
-    * @param string $prefix The prefix of the taglib.
-    * @param string $class The class name of the taglib.
+    * @param string $namespace The namespace of the tag implementation.
+    * @param string $class The class name of the tag implementation.
+    * @param string $prefix The prefix of the tag  (e.g. <em>core<em> for tag <em>&lt;core:importdesign /&gt;).
+    * @param string $name The name of the tag  (e.g. <em>importdesign<em> for tag <em>&lt;core:importdesign /&gt;).
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 28.12.2006<br />
     */
-   public function __construct($namespace, $prefix, $class) {
+   public function __construct($namespace, $class, $prefix, $name) {
       $this->namespace = $namespace;
       $this->class = $class;
       $this->prefix = $prefix;
+      $this->name = $name;
    }
 
    /**
@@ -876,6 +882,19 @@ final class TagLib {
       return $this->class;
    }
 
+   /**
+    * @public
+    *
+    * @return string The name of the tag.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.06.2012<br />
+    */
+   public function getName() {
+      return $this->name;
+   }
+
 }
 
 /**
@@ -890,7 +909,7 @@ final class TagLib {
  * @version
  * Version 0.1, 28.12.2006<br />
  * Version 0.2, 03.01.2007 (Introduced URL rewriting)<br />
- * Version 0.3, 08.06.2007 (URL rewriting was outsorced and "__rewriteRequestURI()" was removed)<br />
+ * Version 0.3, 08.06.2007 (URL rewriting was outsourced and "__rewriteRequestURI()" was removed)<br />
  */
 class Page extends APFObject {
 
@@ -929,7 +948,7 @@ class Page extends APFObject {
     * Version 0.2, 31.01.2007 (Now the context of the document is set)<br />
     * Version 0.3, 04.03.2007 (The namespace is taken as a context, if no other was set before)<br />
     * Version 0.4, 22.04.2007 (Now the language is applied to the document)<br />
-    * Version 0.5, 08.03.2009 (Bugfix: protected variable __ParentObject might not be used)<br />
+    * Version 0.5, 08.03.2009 (Bug-fix: protected variable __ParentObject might not be used)<br />
     */
    public function loadDesign($namespace, $design) {
 
@@ -1047,12 +1066,12 @@ class Document extends APFObject {
       // we are *not* using the addTaglib() method, because the following tags are
       // already included in the pagecontroller.php and adding the tags directly
       // is twice as fast compared to the addTagLib() method.
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core', 'addtaglib');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core', 'importdesign');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core', 'appendnode');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'template');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html', 'getstring');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_addtaglib', 'core', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_importdesign', 'core', 'importdesign');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_appendnode', 'core', 'appendnode');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_template', 'html', 'template');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_placeholder', 'html', 'placeholder');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_getstring', 'html', 'getstring');
    }
 
    /**
@@ -1171,6 +1190,7 @@ class Document extends APFObject {
     * @param string $value The value of the attribute to select the desired node.
     * @param string $tagLibClass The expected class name of the node.
     * @return Document The desired child node.
+    * @throws InvalidArgumentException In case the node has no children or no child nod can be found with the given selectors.
     *
     * @author Christian Achatz
     * @version
@@ -1231,28 +1251,10 @@ class Document extends APFObject {
       $this->__TagLibs[] = $tag;
 
       // import taglib class
-      $moduleName = $this->getTaglibClassName($tag->getPrefix(), $tag->getClass());
+      $moduleName = $tag->getClass();
       if (!class_exists($moduleName)) {
          import($tag->getNamespace(), $moduleName);
       }
-   }
-
-   /**
-    * @protected
-    *
-    * Returns the full name of the taglib class file. The name consists of the prefix followed by
-    * the string "_taglib_" ans the suffix (=class).
-    *
-    * @param string $prefix The prefix of the taglib
-    * @param string $class The class name of the taglib
-    * @return string The full file name of the taglib class
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    */
-   protected function getTaglibClassName($prefix, $class) {
-      return $prefix . '_taglib_' . $class;
    }
 
    /**
@@ -1285,10 +1287,11 @@ class Document extends APFObject {
     * @protected
     *
     * Loads a template from a given namespace. The convention says, that the name of the template
-    * is equal to the file body plus the ".html" extentions. The namespace is a APF namespace.
+    * is equal to the file body plus the ".html" extensions. The namespace is a APF namespace.
     *
     * @param string $namespace The namespace of the template.
     * @param string $design The name of the template (a.k.a. design).
+    * @throws IncludeException In case the template file is not found.
     *
     * @author Christian Schäfer
     * @version
@@ -1329,10 +1332,10 @@ class Document extends APFObject {
     * @author Christian Schäfer
     * @version
     * Version 0.1, 28.12.2006<br />
-    * Version 0.2, 21.01.2007 (Bugfix: a mixture of self- and exclusivly closing tags lead to wrong parsing)<br />
+    * Version 0.2, 21.01.2007 (Bug-fix: a mixture of self- and exclusively closing tags lead to wrong parsing)<br />
     * Version 0.3, 31.01.2007 (Added context injection)<br />
     * Version 0.4, 09.04.2007 (Removed double attributes setting, added language injection)<br />
-    * Version 0.5, 02.04.2008 (Bugfix: the token is now displayed in the HTML error page)<br />
+    * Version 0.5, 02.04.2008 (Bug-fix: the token is now displayed in the HTML error page)<br />
     * Version 0.6, 06.06.2009 (Improvement: content is not copied during parsing any more)<br />
     * Version 0.7, 30.12.2009 (Introduced benchmark marks for the onParseTime() event.)<br />
     */
@@ -1353,10 +1356,8 @@ class Document extends APFObject {
                   . 'parsing loops reached!', E_USER_ERROR);
          }
 
-         $prefix = $this->__TagLibs[$i]->getPrefix();
-         $class = $this->__TagLibs[$i]->getClass();
-         $module = $this->getTaglibClassName($prefix, $class);
-         $token = $prefix . ':' . $class;
+         $module = $this->__TagLibs[$i]->getClass();
+         $token = $this->__TagLibs[$i]->getPrefix() . ':' . $this->__TagLibs[$i]->getName();
          $tagLoops = 0;
 
          while (substr_count($this->__Content, '<' . $token) > 0) {
@@ -1545,7 +1546,8 @@ class Document extends APFObject {
     * you want to add custom logic in your taglib, overwrite this method. The page controller
     * expects the method to return the content of the transformed node.
     *
-    * @return string The transformed content of the currend DOM node.
+    * @return string The transformed content of the current DOM node.
+    * @throws InvalidArgumentException In case the document controller class is missing.
     *
     * @author Christian Schäfer
     * @version
@@ -1699,7 +1701,7 @@ class core_taglib_appendnode extends Document {
     * @author Christian Achatz
     * @version
     * Version 0.1, 16.11.2008<br />
-    * Version 0.2, 16.11.2008 (Bugfix: added a parent object reference correction for the new nodes)<br />
+    * Version 0.2, 16.11.2008 (Bug-fix: added a parent object reference correction for the new nodes)<br />
     * Version 0.3, 16.11.2008 (Enhancement: added a tag marker to the parent object to enable the transformOnPlace() feature)<br />
     * Version 0.4, 22.02.2010 (Added possibility to include static content)<br />
     */
@@ -1761,7 +1763,7 @@ class core_taglib_appendnode extends Document {
     * Returns an empty string, due to the fact, that the core:appendnode tag does not have to
     * create output.
     *
-    * @return Nothing since the tag generates no output.
+    * @return string Nothing since the tag generates no output.
     *
     * @author Christian Achatz
     * @version
@@ -1896,14 +1898,23 @@ class core_taglib_addtaglib extends Document {
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 10.11.2008 (Changed implementation. We now use getAttribute() instead of direct internal attribute addressing)<br />
     * Version 0.3, 14.02.2011 (Adapted to new Document::addTaglib() signature)<br />
+    * Version 0.4, 11.06.2012 (Introduced fallback mechanism for old tag definitions)<br />
     */
    public function onParseTime() {
+      $name = $this->getAttribute('name');
+      $namespace = $this->getAttribute('namespace');
+      $prefix = $this->getAttribute('prefix');
+      $class = $this->getAttribute('class');
+
+      // Mime old behaviour to allow soft migration of the
+      // tag lib implementation naming concept in 1.16.
+      if ($name === null && $class !== null) {
+         $name = $class;
+         $class = $prefix . '_taglib_' . $name;
+      }
+
       $this->getParentObject()->addTagLib(
-         new TagLib(
-            $this->getAttribute('namespace'),
-            $this->getAttribute('prefix'),
-            $this->getAttribute('class')
-         )
+         new TagLib($namespace, $class, $prefix, $name)
       );
    }
 
@@ -1929,7 +1940,7 @@ class core_taglib_addtaglib extends Document {
  * @package core::pagecontroller
  * @class html_taglib_placeholder
  *
- * Represents a place holder within a template file. Can be filled within a documen controller
+ * Represents a place holder within a template file. Can be filled within a document controller
  * using the setPlaceHolder() method.
  *
  * @author Christian Achatz
@@ -1948,7 +1959,7 @@ class html_taglib_placeholder extends Document {
     * Implements the transform() method. Returns the content of the tag, that is set by a
     * document controller using the base_controller's setPlaceHolder() method.
     *
-    * @return The content of the place holder.
+    * @return string The content of the place holder.
     *
     * @author Christian Schäfer
     * @version
@@ -1995,12 +2006,12 @@ class html_taglib_template extends Document {
     * Version 0.5, 03.03.2007 (Removed the "&" before the "new" operator)<br />
     * Version 0.6, 21.04.2007 (Added the template:addtaglib tag again)<br />
     * Version 0.7, 02.05.2007 (Removed the template:config tag)<br />
-    * Version 0.8, 11.02.2012 (Added template:getstring tag as known tag (refactoring!))
+    * Version 0.8, 11.02.2012 (Added template:getstring tag as known tag (refactoring!))<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'template', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'template', 'addtaglib');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'template', 'getstring');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_placeholder', 'template', 'placeholder');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_addtaglib', 'template', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_getstring', 'template', 'getstring');
    }
 
    /**
@@ -2026,6 +2037,7 @@ class html_taglib_template extends Document {
     * @param string $name name of the place holder.
     * @param string $value value of the place holder.
     * @return html_taglib_template This instance for further usage.
+    * @throws InvalidArgumentException In case the place holder cannot be found.
     *
     * @author Christian Achatz
     * @version
@@ -2033,9 +2045,6 @@ class html_taglib_template extends Document {
     * Version 0.2, 10.11.2008 (Removed check, if taglib class exists)<br />
     */
    public function &setPlaceHolder($name, $value) {
-
-      // declare the name of the place holder taglib to be flexible to future changes
-      $tagLibClass = 'template_taglib_placeholder';
 
       // initialize place holder count for further checks
       $placeHolderCount = 0;
@@ -2046,8 +2055,8 @@ class html_taglib_template extends Document {
          // check, if template place holder exists within the children list
          foreach ($this->__Children as $objectID => $DUMMY) {
 
-            // check, if current child is a plece holder
-            if (get_class($this->__Children[$objectID]) == $tagLibClass) {
+            // check, if current child is a place holder
+            if ($this->__Children[$objectID] instanceof html_taglib_placeholder) {
 
                // check, if current child is the desired place holder
                if ($this->__Children[$objectID]->getAttribute('name') == $name) {
@@ -2078,7 +2087,7 @@ class html_taglib_template extends Document {
     * Let's you retrieve an &lt;template:getstring /&gt; tag instance with the specified name.
     *
     * @param string $name The name of the template label to return.
-    * @return template_taglib_getstring The instance of the desired label.
+    * @return html_taglib_getstring The instance of the desired label.
     * @throws InvalidArgumentException In case no label can be found.
     *
     * @author Christian Achatz
@@ -2087,7 +2096,7 @@ class html_taglib_template extends Document {
     */
    public function &getLabel($name) {
       try {
-         return $this->getChildNode('name', $name, 'template_taglib_getstring');
+         return $this->getChildNode('name', $name, 'html_taglib_getstring');
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[html_taglib_template::getLabel()] No label found with name "' . $name
                . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
@@ -2175,40 +2184,6 @@ class html_taglib_template extends Document {
 
 /**
  * @package core::pagecontroller
- * @class template_taglib_placeholder
- *
- * Implements the place holder tag with in a html:template tag. The tag does not hav further children.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 29.12.2006<br />
- */
-class template_taglib_placeholder extends Document {
-
-   public function __construct() {
-      // do nothing, especially not initialize tag libs
-   }
-
-   /**
-    * @public
-    *
-    * Implements the transform() method. Returns the content of the tag, that is set by a
-    * document controller using the html_taglib_template's setPlaceHolder() method.
-    *
-    * @return string The content of the place holder.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2006<br />
-    */
-   public function transform() {
-      return $this->__Content;
-   }
-
-}
-
-/**
- * @package core::pagecontroller
  * @class ui_getstring
  * @abstract
  *
@@ -2232,7 +2207,7 @@ class template_taglib_placeholder extends Document {
  * Version 0.2, 17.09.2009 (Refactored due to form taglib changes)<br />
  * Version 0.3, 11.02.2012 (Added ui_getstring to core (refactoring!))
  */
-abstract class ui_getstring extends Document {
+class html_taglib_getstring extends Document {
 
    /**
     * @var array A list of place holder names and values.
@@ -2249,7 +2224,8 @@ abstract class ui_getstring extends Document {
     * Implements the functionality to retrieve a language dependent value form a
     * configuration file. Checks the attributes needed for displaying data.
     *
-    * @return The desired translation text.
+    * @return string The desired translation text.
+    * @throws InvalidArgumentException In case of parameter issues.
     *
     * @author Christian Achatz
     * @version
@@ -2307,7 +2283,7 @@ abstract class ui_getstring extends Document {
     *
     * @param string $name The name of the place holder.
     * @param string $value The value of the place holder.
-    * @return ui_getstring This instance for further usage (e.g. adding further place holders).
+    * @return html_taglib_getstring This instance for further usage (e.g. adding further place holders).
     *
     * @author Christian Achatz
     * @version
@@ -2337,48 +2313,6 @@ abstract class ui_getstring extends Document {
       return $label;
    }
 
-}
-
-/**
- * @package core::pagecontroller
- * @class html_taglib_getstring
- *
- * Taglib class for the &lt;html:getstring /&gt; tag.
- *
- * @author Christian Schäfer
- * @version
- * Version 0.1, 21.04.2006<br />
- */
-class html_taglib_getstring extends ui_getstring {
-}
-
-/**
- * @package core::pagecontroller
- * @class template_taglib_getstring
- *
- * Taglib class for the &lt;template:getstring /&gt; tag.
- *
- * @author Christian Schäfer
- * @version
- * Version 0.1, 21.04.2006<br />
- * Version 0.2, 10.11.2008 (Removed the onParseTime() method, because the registerTagLibModule() function now is obsolete)<br />
- */
-class template_taglib_getstring extends ui_getstring {
-}
-
-/**
- * @package core::pagecontroller
- * @class template_taglib_addtaglib
- *
- * Represents the core:addtaglib functionality for the html:template tag. Includes further
- * tag libs into the scope. Please see class core_taglib_addtaglib for more details.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 21.04.2007<br />
- * Version 0.2, 10.11.2008 (Removed the registerTagLibModule() logic of the templates. Now the functionality is the same as core_taglib_addtaglib)<br />
- */
-class template_taglib_addtaglib extends core_taglib_addtaglib {
 }
 
 /**
@@ -2453,8 +2387,9 @@ abstract class base_controller extends Document {
     *
     * Sets the given value as the content of the specified place holder.
     *
-    * @param string $name The name of the plae holder to fill.
+    * @param string $name The name of the place holder to fill.
     * @param string $value The value to insert into the place holder.
+    * @throws InvalidArgumentException In case the place holder cannot be found.
     *
     * @author Christian Schäfer
     * @version
@@ -2463,19 +2398,17 @@ abstract class base_controller extends Document {
     */
    protected function setPlaceHolder($name, $value) {
 
-      $tagLibClass = 'html_taglib_placeholder';
-
       $placeHolderCount = 0;
 
       $children = &$this->__Document->getChildren();
       if (count($children) > 0) {
 
-         foreach ($children as $objectID => $DUMMY) {
+         foreach ($children as $objectId => $DUMMY) {
 
-            if (get_class($children[$objectID]) == $tagLibClass) {
+            if ($children[$objectId] instanceof html_taglib_placeholder) {
 
-               if ($children[$objectID]->getAttribute('name') == $name) {
-                  $children[$objectID]->setContent($value);
+               if ($children[$objectId]->getAttribute('name') == $name) {
+                  $children[$objectId]->setContent($value);
                   $placeHolderCount++;
                }
             }
@@ -2573,6 +2506,7 @@ abstract class base_controller extends Document {
     *
     * @param string $formName The name of the form to return.
     * @return html_taglib_form The instance of the desired form.
+    * @throws InvalidArgumentException In case the form cannot be found.
     *
     * @author Christian Achatz
     * @version
@@ -2597,6 +2531,7 @@ abstract class base_controller extends Document {
     *
     * @param string $name The name of the template to return.
     * @return html_taglib_template The desired template instance.
+    * @throws InvalidArgumentException In case the template cannot be found.
     *
     * @author Christian Schäfer
     * @version
@@ -2675,7 +2610,7 @@ abstract class base_controller extends Document {
     */
    protected function templatePlaceHolderExists(html_taglib_template &$template, $name) {
       try {
-         $template->getChildNode('name', $name, 'template_taglib_placeholder');
+         $template->getChildNode('name', $name, 'html_taglib_placeholder');
          return true;
       } catch (InvalidArgumentException $e) {
          return false;

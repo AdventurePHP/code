@@ -33,7 +33,7 @@ import('extensions::htmllist::taglib', 'list_taglib_elem_list');
 class list_taglib_ordered extends AbstractTaglibList {
 
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('extensions::htmllist::taglib', 'list', 'elem_list');
+      $this->__TagLibs[] = new TagLib('extensions::htmllist::taglib', 'list_taglib_elem_list', 'list', 'elem_list');
    }
 
    /**
@@ -51,5 +51,3 @@ class list_taglib_ordered extends AbstractTaglibList {
    }
 
 }
-
-?>

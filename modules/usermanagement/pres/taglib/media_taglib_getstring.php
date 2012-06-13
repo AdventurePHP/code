@@ -22,7 +22,7 @@
 /**
  * Injects a language dependent title to a <umgt:media /> tag.
  */
-class media_taglib_getstring extends ui_getstring {
+class media_taglib_getstring extends html_taglib_getstring {
 
    public function onAfterAppend() {
       $this->getParentObject()->setAttribute('title', parent::transform());

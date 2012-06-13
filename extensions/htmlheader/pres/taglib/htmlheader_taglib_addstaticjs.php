@@ -27,7 +27,7 @@ import('extensions::htmlheader::biz', 'StaticJsNode');
  * Taglib for adding static stylesheets to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addstaticcss" />
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addstaticcss" prefix="htmlheader" name="addstaticcss" />
  * <htmlheader:addstaticcss file="..." />
  * <ul>
  *   <li>file: The source location of the stylesheet</li>

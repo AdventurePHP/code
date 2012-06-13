@@ -119,7 +119,7 @@ class DefaultErrorHandler implements ErrorHandler {
       import('core::logging', 'Logger');
       $log = &Singleton::getInstance('Logger');
       /* @var $log Logger */
-      $log->logEntry('php', $message, 'ERROR');
+      $log->logEntry('php', $message, LogEntry::SEVERITY_ERROR);
    }
 
    /**

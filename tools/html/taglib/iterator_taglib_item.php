@@ -18,10 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::html::taglib', 'item_taglib_placeholder');
-import('tools::html::taglib', 'item_taglib_getstring');
-import('tools::html::taglib', 'item_taglib_addtaglib');
-
 
 /**
  * @package tools::html::taglib
@@ -45,9 +41,9 @@ class iterator_taglib_item extends Document {
     * Version 0.1, 01.06.2008<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('tools::html::taglib', 'item', 'placeholder');
-      $this->__TagLibs[] = new TagLib('tools::html::taglib', 'item', 'getstring');
-      $this->__TagLibs[] = new TagLib('tools::html::taglib', 'item', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_placeholder', 'item', 'placeholder');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_getstring', 'item', 'getstring');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_addtaglib', 'item', 'addtaglib');
    }
 
    public function onParseTime() {
@@ -60,7 +56,7 @@ class iterator_taglib_item extends Document {
     * Returns the place holders defined within the item, to be filled
     * te desired values.
     *
-    * @return item_taglib_placeholder[] The list of place holders.
+    * @return html_taglib_placeholder[] The list of place holders.
     *
     * @author Christian Achatz
     * @version
@@ -70,7 +66,7 @@ class iterator_taglib_item extends Document {
       $placeHolders = array();
       if (count($this->__Children) > 0) {
          foreach ($this->__Children as $objectId => $DUMMY) {
-            if ($this->__Children[$objectId] instanceof item_taglib_placeholder) {
+            if ($this->__Children[$objectId] instanceof html_taglib_placeholder) {
                $placeHolders[] = &$this->__Children[$objectId];
             }
          }
@@ -79,5 +75,3 @@ class iterator_taglib_item extends Document {
    }
 
 }
-
-?>

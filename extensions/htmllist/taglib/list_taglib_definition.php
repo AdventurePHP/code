@@ -34,8 +34,8 @@ import('extensions::htmllist::taglib', 'list_taglib_elem_defdef');
 class list_taglib_definition extends AbstractTaglibList {
 
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('extensions::htmllist::taglib', 'list', 'elem_defterm');
-      $this->__TagLibs[] = new TagLib('extensions::htmllist::taglib', 'list', 'elem_defdef');
+      $this->__TagLibs[] = new TagLib('extensions::htmllist::taglib', 'list_taglib_elem_defterm', 'list', 'elem_defterm');
+      $this->__TagLibs[] = new TagLib('extensions::htmllist::taglib', 'list_taglib_elem_defdef', 'list', 'elem_defdef');
    }
 
    /**
@@ -64,5 +64,3 @@ class list_taglib_definition extends AbstractTaglibList {
    }
 
 }
-
-?>

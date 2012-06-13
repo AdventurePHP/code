@@ -30,7 +30,7 @@
  * @version
  * Version 0.1, 17.09.2009<br />
  */
-abstract class form_getstring extends ui_getstring {
+abstract class form_getstring extends html_taglib_getstring {
 
    /**
     * @public

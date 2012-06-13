@@ -29,7 +29,7 @@ import('extensions::htmlheader::pres::filter', 'HtmlHeaderOutputFilter');
  * the end of the body.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="getbodyjs" />
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_getbodyjs" prefix="htmlheader" name="getbodyjs" />
  * <htmlheader:getbodyjs />
  *
  * @author Ralf Schubert <<a href="http://develovision.de/">Develovision</a>>
