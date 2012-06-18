@@ -149,7 +149,7 @@ interface ConfigurationProvider {
     * @version
     * Version 0.1, 27.09.2010<br />
     */
-   function loadConfiguration($namespace, $context, $language, $environment, $name);
+   public function loadConfiguration($namespace, $context, $language, $environment, $name);
 
    /**
     * Saves the configuration applied as an argument to the file specified by the given params.
@@ -166,7 +166,7 @@ interface ConfigurationProvider {
     * @version
     * Version 0.1, 27.09.2010<br />
     */
-   function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config);
+   public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config);
 
    /**
     * Injects the file extension, the provider is registered with.
@@ -177,7 +177,7 @@ interface ConfigurationProvider {
     * @version
     * Version 0.1, 27.09.2010<br />
     */
-   function setExtension($extension);
+   public function setExtension($extension);
    
    /**
     * Deletes the configuration specified by the given params.
@@ -193,7 +193,7 @@ interface ConfigurationProvider {
     * @version
     * Version 0.1, 27.07.2011<br />
     */
-   function deleteConfiguration($namespace, $context, $language, $environment, $name);
+   public function deleteConfiguration($namespace, $context, $language, $environment, $name);
 
 }
 
@@ -450,5 +450,3 @@ final class ConfigurationManager {
    }
 
 }
-
-?>

@@ -155,9 +155,9 @@ interface ChainedContentFilter {
     *
     * @param FilterChain $chain The instance of the current filter chain.
     * @param string $input The current input to filter.
-    * @return The result of the filter execution.
+    * @return string The result of the filter execution.
     */
-   function filter(FilterChain &$chain, $input = null);
+   public function filter(FilterChain &$chain, $input = null);
 }
 
 /**
@@ -194,7 +194,7 @@ abstract class AbstractFilterChain implements FilterChain {
 
    /**
     * @param ChainedContentFilter $filter The filter implementation to add.
-    * @return AbstractFilterChain The current filter chain instance for further usage.
+    * @return FilterChain The current filter chain instance for further usage.
     */
    public function &appendFilter(ChainedContentFilter $filter) {
       $this->filters[] = $filter;
@@ -233,7 +233,7 @@ abstract class AbstractFilterChain implements FilterChain {
 
    /**
     * @param string $class The class name of the filter to remove from the chain.
-    * @return AbstractFilterChain The current filter chain instance for further usage.
+    * @return FilterChain The current filter chain instance for further usage.
     */
    public function &removeFilter($class) {
 
@@ -376,5 +376,3 @@ class OutputFilterChain extends AbstractFilterChain {
    }
 
 }
-
-?>
