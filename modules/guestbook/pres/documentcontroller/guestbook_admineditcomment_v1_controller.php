@@ -82,8 +82,7 @@ class guestbook_admineditcomment_v1_controller extends guestbookBaseController {
 
       }
 
-      $this->setPlaceHolder('Form', $form->transformForm());
-
+      $form->transformOnPlace();
    }
 
 }

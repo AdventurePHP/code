@@ -44,6 +44,7 @@ class login_controller extends base_controller {
          $user->setUsername($fieldUser->getAttribute('value'));
          $user->setPassword($fieldPass->getAttribute('value'));
 
+         /* @var $gS GuestbookService */
          $gS = &$this->getDIServiceObject('modules::guestbook2009::biz', 'GuestbookService');
          if (!$gS->validateCredentials($user)) {
             $error = &$this->getTemplate('error');
@@ -55,4 +56,3 @@ class login_controller extends base_controller {
    }
 
 }
-?>

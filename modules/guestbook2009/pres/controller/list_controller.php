@@ -35,7 +35,7 @@ class list_controller extends base_controller {
 
    public function transformContent() {
 
-      // get the guestbook service
+      /* @var $gS GuestbookService */
       $gS = &$this->getDIServiceObject('modules::guestbook2009::biz', 'GuestbookService');
       $entryList = $gS->loadPagedEntryList();
 
@@ -67,4 +67,3 @@ class list_controller extends base_controller {
    }
 
 }
-?>

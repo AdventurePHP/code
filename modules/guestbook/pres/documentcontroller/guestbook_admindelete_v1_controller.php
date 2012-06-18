@@ -63,8 +63,8 @@ class guestbook_admindelete_v1_controller extends guestbookBaseController {
             HeaderManager::forward($link);
          }
 
-         $this->setPlaceHolder('FormNo', $Form__FormNo->transformForm());
-         $this->setPlaceHolder('FormYes', $Form__FormYes->transformForm());
+         $Form__FormNo->transformOnPlace();
+         $Form__FormYes->transformOnPlace();
       } else {
          $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'display', 'entryid' => '')));
          HeaderManager::forward($link);

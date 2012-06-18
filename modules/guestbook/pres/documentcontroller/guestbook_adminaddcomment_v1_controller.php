@@ -62,7 +62,7 @@ class guestbook_adminaddcomment_v1_controller extends guestbookBaseController {
 
       $id = &$form->getFormElementByName('entryid');
       $id->setAttribute('value', $values['entryid']);
-      $this->setPlaceHolder('Form', $form->transformForm());
+      $form->transformOnPlace();
 
    }
 

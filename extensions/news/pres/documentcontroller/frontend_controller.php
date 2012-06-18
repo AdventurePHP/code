@@ -37,9 +37,9 @@ class frontend_controller extends news_base_controller {
       $appKey = $this->getAppKey();
 
       $newsManager = $this->getNewsManager();
-      $NewsList = $newsManager->getNewsByPage(null, 'DESC', $appKey);
+      $newsList = $newsManager->getNewsByPage(null, 'DESC', $appKey);
 
-      if (count($NewsList) === 0) {
+      if (count($newsList) === 0) {
          $this->getTemplate('noentry')->transformOnPlace();
          return;
       }
@@ -54,19 +54,19 @@ class frontend_controller extends news_base_controller {
       // retrieve the charset from the registry to guarantee interoperability!
       $charset = Registry::retrieve('apf::core', 'Charset');
 
-      foreach ($NewsList as &$News) {
-         $Date = new DateTime($News->getProperty('CreationTimestamp'));
+      foreach ($newsList as &$news) {
+         $Date = new DateTime($news->getProperty('CreationTimestamp'));
          $Author = '';
 
-         if ($News->getAuthor() !== '') {
-            $AuthorTpl = $this->getTemplate('author');
-            $AuthorTpl->setPlaceHolder('authorname', htmlentities($News->getAuthor(), ENT_QUOTES, $charset, false));
-            $Author = $AuthorTpl->transformTemplate();
+         if ($news->getAuthor() !== '') {
+            $authorTpl = $this->getTemplate('author');
+            $authorTpl->setPlaceHolder('authorname', $news->getAuthor());
+            $Author = $authorTpl->transformTemplate();
          }
 
-         $Text = $AllowHtml ? $News->getText() : htmlentities($News->getText(), ENT_QUOTES, $charset, false);
+         $Text = $AllowHtml ? $news->getText() : htmlentities($news->getText(), ENT_QUOTES, $charset, false);
          $Data[] = array(
-            'title' => htmlentities($News->getTitle(), ENT_QUOTES, $charset, false),
+            'title' => htmlentities($news->getTitle(), ENT_QUOTES, $charset, false),
             'text' => $Text,
             'date' => $Date->format('d.m.Y H:i:s'),
             'author' => $Author
@@ -104,7 +104,7 @@ class frontend_controller extends news_base_controller {
             URL::fromCurrent()
                   ->mergeQuery(
                array(
-                    $PageParameter => $x
+                  $PageParameter => $x
                )
             )
          );
@@ -122,5 +122,3 @@ class frontend_controller extends news_base_controller {
    }
 
 }
-
-?>
