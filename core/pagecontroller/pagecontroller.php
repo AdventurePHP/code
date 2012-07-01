@@ -1032,7 +1032,7 @@ class Document extends APFObject {
     * @protected
     * @var TagLib[] List of known taglibs.
     */
-   protected $__TagLibs;
+   protected $__TagLibs = array();
 
    /**
     * @protected
