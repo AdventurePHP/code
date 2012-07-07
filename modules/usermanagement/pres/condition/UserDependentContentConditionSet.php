@@ -44,17 +44,21 @@ import('modules::usermanagement::pres::condition', 'UmgtNotRoleCondition');
  * This component can be configured anywhere within the application:
  * as follows:
  * <pre>
- * // within classes derived from APFObject
+ * // add condition
  * $condSet = &$this->getServiceObject('modules::usermanagement::pres::condition',
  *                   'UserDependentContentConditionSet');
  * $condSet->addCondition(new FooCondition());
  *
- * // outside classes (this is possible, since the
- * // condition set needs no context and language)
- * $condSet = &ServiceManager::getServiceObject('modules::usermanagement::pres::condition',
- *                   'UserDependentContentConditionSet', null, null);
- * $condSet->addCondition(new BarCondition());
+ * // initialize with custom condition
+ * $condSet = &$this->getServiceObject('modules::usermanagement::pres::condition',
+ *                   'UserDependentContentConditionSet');
+ * $condSet
+ *         ->resetConditionList()
+ *         ->addCondition(new BarCondition());
  * </pre>
+ * Please note, that it is *NOT* possible to add conditions outside from APF classes or without
+ * providing context and language since 1.16!
+ * <p/>
  * By default, the set is used as request-singleton container through the service manager.
  *
  * @author Christian Achatz
@@ -69,11 +73,41 @@ class UserDependentContentConditionSet extends APFObject {
    private $conditions = array();
 
    /**
-    * @param UserDependentContentCondition $condition
-    * @return UserDependentContentConditionSet
+    * @public
+    *
+    * Initializes the condition set with the shipped conditions of the user management module.
+    * <p/>
+    * This is done within the constructor, since this method is called only once due to
+    * service manager usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.07.2012<br />
+    */
+   public function __construct() {
+      $this->addCondition(new UmgtLoggedOutCondition());
+      $this->addCondition(new UmgtLoggedInCondition());
+      $this->addCondition(new UmgtGroupCondition());
+      $this->addCondition(new UmgtRoleCondition());
+      $this->addCondition(new UmgtNotRoleCondition());
+   }
+
+   /**
+    * @param UserDependentContentCondition $condition The condition to add.
+    * @return UserDependentContentConditionSet This instance for further usage.
     */
    public function &addCondition(UserDependentContentCondition $condition) {
       $this->conditions[] = $condition;
+      return $this;
+   }
+
+   /**
+    * Resets the condition list to be able to setup a custom configuration.
+    *
+    * @return UserDependentContentConditionSet This instance for further usage.
+    */
+   public function resetConditionList() {
+      $this->conditions = array();
       return $this;
    }
 
@@ -138,8 +172,8 @@ class UserDependentContentConditionSet extends APFObject {
    }
 
    /**
-    * @param string $rawOptions
-    * @return array The options
+    * @param string $rawOptions The string that represents multiple condition options.
+    * @return array The options list.
     */
    private function getOptions($rawOptions) {
       $options = array();
@@ -157,16 +191,3 @@ class UserDependentContentConditionSet extends APFObject {
    }
 
 }
-
-// Initialize the condition set here, because the APF inclusion mechanism ensures
-// that the code is only executed only once. Further, this is possible, due to the
-// fact, that the UserDependentContentConditionSet is neither context nor language
-// dependent.
-$condSet = &ServiceManager::getServiceObject('modules::usermanagement::pres::condition', 'UserDependentContentConditionSet', null, null);
-/* @var $condSet UserDependentContentConditionSet */
-$condSet->addCondition(new UmgtLoggedOutCondition());
-$condSet->addCondition(new UmgtLoggedInCondition());
-$condSet->addCondition(new UmgtGroupCondition());
-$condSet->addCondition(new UmgtRoleCondition());
-$condSet->addCondition(new UmgtNotRoleCondition());
-?>
