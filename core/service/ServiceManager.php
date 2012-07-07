@@ -51,6 +51,7 @@ final class ServiceManager {
     * @param string $type The initializing type (see service manager for details).
     * @param string $instanceId The id of the instance to return.
     * @return APFService The desired service object.
+    * @throws InvalidArgumentException In case of invalid ServiceType or if requested service does not implement the APFService interface.
     *
     * @author Christian Schäfer
     * @version
@@ -66,6 +67,13 @@ final class ServiceManager {
 
       // include service object for convenience
       import($namespace, $serviceName);
+
+      // Introduce generated instance key to create services with respect to context and language.
+      // In 1.15, creating instances of the same service implementation within different contexts
+      // resulted in equal instances instead of different ones.
+      if ($instanceId === null) {
+         $instanceId = $namespace . '::' . $serviceName . '::' . $context . '::' . $language;
+      }
 
       $serviceObject = null;
       if ($type == APFService::SERVICE_TYPE_SINGLETON) {
@@ -110,6 +118,7 @@ final class ServiceManager {
     * @param string $type The initializing type (see service manager for details).
     * @param string $instanceId The id of the instance to return.
     * @return APFService The desired service object.
+    * @throws InvalidArgumentException In case the service object does not implement the APFService interface.
     *
     * @author Christian Schäfer
     * @version

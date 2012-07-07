@@ -104,17 +104,11 @@ final class DIServiceManager {
     */
    public static function &getServiceObject($configNamespace, $sectionName, $context, $language) {
 
-      // Check, whether service object was created before. If yes, deliver it from cache.
-      $cacheKey = $configNamespace . '::' . $sectionName;
-      if (isset(self::$SERVICE_OBJECT_CACHE[$cacheKey])) {
-         return self::$SERVICE_OBJECT_CACHE[$cacheKey];
-      }
-
       // Invoke benchmarker. Suppress warning for already started timers with circular calls!
       // Suppressing is here done by a dirty '@', because we will run into an error anyway.
       $t = &Singleton::getInstance('BenchmarkTimer');
       /* @var $t BenchmarkTimer */
-      $benchId = 'DIServiceManager::getServiceObject(' . $configNamespace . ',' . $sectionName . ')';
+      $benchId = 'DIServiceManager::getServiceObject(' . $configNamespace . ',' . $sectionName . ',' . $context . ',' . $language . ')';
       @$t->start($benchId);
 
       // Get config to determine, which object to create.
@@ -129,6 +123,20 @@ final class DIServiceManager {
       $serviceType = $section->getValue('servicetype');
       $namespace = $section->getValue('namespace');
       $class = $section->getValue('class');
+
+      // build cache key. because configuration-file path includes context, include context (and language) in cache key
+      $cacheKey = $configNamespace . '::' . $sectionName . '::' . $context . '::' . $language;
+
+      // Check, whether service object was created before. If yes, deliver it from cache.
+      if (isset(self::$SERVICE_OBJECT_CACHE[$cacheKey]) && $serviceType != APFService::SERVICE_TYPE_NORMAL) { // do not cache ServiceType 'NORMAL' because we want to have different instances
+         $t->stop($benchId);
+         return self::$SERVICE_OBJECT_CACHE[$cacheKey];
+      }
+
+      // From here the behaviour of service types 'NORMAL' and 'CACHED' is equal, thus remapping it!
+      if ($serviceType == APFService::SERVICE_TYPE_CACHED) {
+         $serviceType = APFService::SERVICE_TYPE_NORMAL;
+      }
 
       // Check if configuration section was complete. If not throw an exception to fail fast.
       if ($serviceType !== null && $namespace !== null && $class !== null) {

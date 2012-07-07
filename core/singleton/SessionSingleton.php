@@ -19,33 +19,7 @@
  * -->
  */
 import('core::session', 'SessionManager');
-register_shutdown_function('saveSessionSingletonObjects');
-
-/**
- * @package core::singleton
- *
- * Implements a shutdown function to save all session singleton objects in the session.
- *
- * @author Christian Schäfer
- * @version
- * Version 0.1, 24.02.2008<br />
- * Version 0.2, 26.02.2008 (Include of the SessionManager was noted wrong)<br />
- * Version 0.3, 11.03.2010 (Refactoring to PHP5 only code)<br />
- */
-function saveSessionSingletonObjects() {
-
-   $cacheItems = SessionSingleton::getCacheItems();
-
-   if (count($cacheItems) > 0) {
-
-      $sessMgr = new SessionManager(SessionSingleton::SESSION_NAMESPACE);
-
-      foreach ($cacheItems as $key => $DUMMY) {
-         $sessMgr->saveSessionData($key, serialize($cacheItems[$key]));
-      }
-   }
-
-}
+register_shutdown_function(array('SessionSingleton', 'saveObjects'));
 
 /**
  * @package core::singleton
@@ -93,6 +67,7 @@ class SessionSingleton extends Singleton {
     * @param string $className The name of the class, that should be created a session singleton instance from.
     * @param string $instanceId The id of the instance to return.
     * @return APFObject The desired object's singleton instance.
+    * @throws Exception In case the implementation class cannot be found.
     *
     * @author Christian Achatz
     * @version
@@ -116,35 +91,38 @@ class SessionSingleton extends Singleton {
          } else {
             if (!class_exists($className)) {
                throw new Exception('[SessionSingleton::getInstance()] Class "' . $className . '" '
-                                   . 'cannot be found! Maybe the class name is misspelt!', E_USER_ERROR);
+                     . 'cannot be found! Maybe the class name is misspelt!', E_USER_ERROR);
             }
 
             self::$CACHE[$cacheKey] = new $className();
-
          }
 
       }
 
       return self::$CACHE[$cacheKey];
-
    }
 
    /**
     * @public
+    * @static
     *
-    * Returns the content of the session singleton cache to
-    * be stored within the session.
+    * Implements a shutdown function to save all session singleton objects in the session.
     *
-    * @return string[] The session singleton cache items.
-    *
-    * @author Christian Achatz
+    * @author Christian Schäfer
     * @version
-    * Version 0.1, 11.03.2010<br />
+    * Version 0.1, 24.02.2008<br />
+    * Version 0.2, 26.02.2008 (Include of the SessionManager was noted wrong)<br />
+    * Version 0.3, 11.03.2010 (Refactoring to PHP5 only code)<br />
+    * Version 0.4, 07.07.2012 (Included into SessionSingleton class to hide cache from the outside)<br />
     */
-   public static function getCacheItems() {
-      return self::$CACHE;
+   public static function saveObjects() {
+      if (count(self::$CACHE) > 0) {
+         $sessMgr = new SessionManager(SessionSingleton::SESSION_NAMESPACE);
+
+         foreach (self::$CACHE as $key => $DUMMY) {
+            $sessMgr->saveSessionData($key, serialize(self::$CACHE[$key]));
+         }
+      }
    }
 
 }
-
-?>

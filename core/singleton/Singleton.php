@@ -63,6 +63,7 @@ class Singleton {
     * @param string $className The name of the class, that should be created a singleton instance from.
     * @param string $instanceId The id of the instance to return.
     * @return APFObject The desired object's singleton instance.
+    * @throws Exception In case the implementation class cannot be found.
     *
     * @author Christian Achatz
     * @version
@@ -81,7 +82,7 @@ class Singleton {
 
          if (!class_exists($className)) {
             throw new Exception('[Singleton::getInstance()] Class "' . $className . '" cannot be '
-                                . 'found! Maybe the class name is misspelt!', E_USER_ERROR);
+                  . 'found! Maybe the class name is mis-spelt!', E_USER_ERROR);
          }
 
          // create instance using the globals array.
@@ -94,5 +95,3 @@ class Singleton {
    }
 
 }
-
-?>

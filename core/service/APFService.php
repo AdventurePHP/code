@@ -33,6 +33,7 @@ interface APFService {
 
    // these constants define the service type of the APF objects
    const SERVICE_TYPE_NORMAL = 'NORMAL';
+   const SERVICE_TYPE_CACHED = 'CACHED';
    const SERVICE_TYPE_SINGLETON = 'SINGLETON';
    const SERVICE_TYPE_SESSION_SINGLETON = 'SESSIONSINGLETON';
 
