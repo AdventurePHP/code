@@ -38,7 +38,7 @@
  *   The content to display, in case the form is sent, but the control is invalid!
  *   [&lt;listener:getstring namespace="" config="" key="" /&gt;]
  *   [&lt;listener:placeholder name="" /&gt;]
- *   [&lt;listener:addtaglib namespace="" prefix="" class="" /&gt;]
+ *   [&lt;listener:addtaglib namespace="" class="" prefix="" name="" /&gt;]
  * &lt;/form:listener&gt;
  * </pre>
  *

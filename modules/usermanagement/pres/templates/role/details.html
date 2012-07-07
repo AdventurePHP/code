@@ -18,7 +18,7 @@
 <html:iterator name="Permissions">
    <ul>
       <iterator:item>
-         <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+         <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="umgt_taglib_media" prefix="umgt" name="media" />
          <li>
             <umgt:media filename="permission.png">
                <media:getstring
@@ -40,7 +40,7 @@
 <html:iterator name="Users">
    <ul>
       <iterator:item>
-         <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+         <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="umgt_taglib_media" prefix="umgt" name="media" />
          <li>
             <umgt:media filename="user.png">
                <media:getstring
@@ -61,7 +61,7 @@
 <html:iterator name="Groups">
    <ul>
       <iterator:item>
-         <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+         <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="umgt_taglib_media" prefix="umgt" name="media" />
          <li>
             <umgt:media filename="group.png">
                <media:getstring

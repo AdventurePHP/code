@@ -31,7 +31,7 @@
  *   The content to display, in case the form is sent, but invalid!
  *   [&lt;error:getstring namespace="" config="" key="" /&gt;]
  *   [&lt;error:placeholder name="" /&gt;]
- *   [&lt;error:addtaglib namespace="" prefix="" class="" /&gt;]
+ *   [&lt;error:addtaglib namespace="" class="" prefix="" name="" /&gt;]
  * &lt;/form:error&gt;
  * </pre>
  *

@@ -7,7 +7,7 @@
    </div>
    <div class="gb--create-form">
       <html:form name="create_entry" method="post">
-         <form:addtaglib namespace="modules::guestbook2009::pres::taglib" prefix="form" class="langlabel" />
+         <form:addtaglib namespace="modules::guestbook2009::pres::taglib" class="form_taglib_langlabel" prefix="form" name="langlabel" />
          <div class="gb--create-block-name">
             <div class="gb--create-label-name"><form:langlabel entry="form.label.name"/>:</div>
             <div class="gb--create-fieldset-name">
@@ -60,7 +60,7 @@
          <div class="gb--create-block-captcha">
             <div class="gb--create-label-captcha"><form:langlabel entry="form.label.captcha"/>:</div>
             <div class="gb--create-fieldset-captcha">
-               <form:addtaglib namespace="modules::captcha::pres::taglib" prefix="form" class="captcha" />
+               <form:addtaglib namespace="modules::captcha::pres::taglib" class="form_taglib_captcha" prefix="form" name="captcha" />
                <form:captcha
                   text_class="gb--create-field-captcha-text"
                   image_class="gb--create-field-captcha-image"

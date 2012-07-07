@@ -31,7 +31,7 @@
  *   The content to display, in case the form is sent *and* valid!
  *   [&lt;success:getstring namespace="" config="" key="" /&gt;]
  *   [&lt;success:placeholder name="" /&gt;]
- *   [&lt;success:addtaglib namespace="" prefix="" class="" /&gt;]
+ *   [&lt;success:addtaglib namespace="" class="" prefix="" name="" /&gt;]
  * &lt;/form:success&gt;
  * </pre>
  *

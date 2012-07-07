@@ -32,7 +32,7 @@
 <html:iterator name="Groups">
    <ul>
       <iterator:item>
-         <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+         <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="umgt_taglib_media" prefix="umgt" name="media" />
          <li>
             <umgt:media filename="group.png">
                <media:getstring
@@ -55,7 +55,7 @@
 <html:iterator name="Roles">
    <ul>
    <iterator:item>
-      <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+      <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="umgt_taglib_media" prefix="umgt" name="media" />
       <li>
          <umgt:media filename="role.png">
             <media:getstring
@@ -78,7 +78,7 @@
 <html:iterator name="Proxies">
    <ul>
    <iterator:item>
-      <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+      <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="umgt_taglib_media" prefix="umgt" name="media" />
       <li>
          <umgt:media filename="visibility_def.png">
             <media:getstring
