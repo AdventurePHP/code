@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -37,24 +36,25 @@ import('extensions::htmlheader::pres::filter', 'HtmlHeaderOutputFilter');
  * @version 0.3, 17.08.2010 (Added meta nodes)<br />
  */
 class htmlheader_taglib_gethead extends Document {
-    
-    const HTML_HEADER_INDICATOR = '<!--HTMLHEADER_TAGLIB_GETHEAD-->';
 
-    public function transform() {
+   const HTML_HEADER_INDICATOR = '<!--HTMLHEADER_TAGLIB_GETHEAD-->';
 
-        $FilterChain = OutputFilterChain::getInstance();
-        
-        // register filter that replaces the token with real live data if filter isn't already registered
-        // (uses the same filter as htmlheader:getbodyjs-Taglib)
-        if (!$FilterChain->isFilterRegistered('HtmlHeaderOutputFilter')) {
-            $FilterChain->prependFilter(new HtmlHeaderOutputFilter());
-        }
+   public function transform() {
 
-        // place marker that will be replaced by the
-        return self::HTML_HEADER_INDICATOR;
-        
-    }
+      $filterChain = OutputFilterChain::getInstance();
+
+      // register filter that replaces the token with real live data if filter isn't already registered
+      // (uses the same filter as htmlheader:getbodyjs-Taglib)
+      if (!$filterChain->isFilterRegistered('HtmlHeaderOutputFilter')) {
+         $filter = new HtmlHeaderOutputFilter();
+         $filter->setContext($this->getContext());
+         $filter->setLanguage($this->getLanguage());
+         $filterChain->prependFilter($filter);
+      }
+
+      // place marker that will be replaced by the
+      return self::HTML_HEADER_INDICATOR;
+
+   }
 
 }
-
-?>

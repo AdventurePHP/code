@@ -49,5 +49,3 @@ class htmlheader_taglib_addmeta extends Document {
    }
 
 }
-
-?>

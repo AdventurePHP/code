@@ -47,16 +47,16 @@ class htmlheader_taglib_addstaticjs extends Document {
       $file = $this->getAttribute('file');
       if ($file == null) {
          throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please '
-                 . 'provide the "file" attribute in order to add a static stylesheet.',
-                 E_USER_ERROR);
+                  . 'provide the "file" attribute in order to add a static stylesheet.',
+            E_USER_ERROR);
       }
 
       $node = new StaticJsNode($file);
-      
-      if(strtolower($this->getAttribute('appendtobody')) === 'true') {
-          $node->setAppendToBody(true);
+
+      if (strtolower($this->getAttribute('appendtobody')) === 'true') {
+         $node->setAppendToBody(true);
       }
-      
+
       $node->setPriority($this->getAttribute('priority'));
       $header->addNode($node);
 
@@ -64,4 +64,3 @@ class htmlheader_taglib_addstaticjs extends Document {
    }
 
 }
-?>

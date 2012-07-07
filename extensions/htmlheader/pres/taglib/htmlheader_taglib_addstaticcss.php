@@ -46,8 +46,8 @@ class htmlheader_taglib_addstaticcss extends Document {
       $file = $this->getAttribute('file');
       if ($file == null) {
          throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please '
-                 . 'provide the "file" attribute in order to add a static stylesheet.',
-                 E_USER_ERROR);
+                  . 'provide the "file" attribute in order to add a static stylesheet.',
+            E_USER_ERROR);
       }
       $node = new StaticCssNode($file);
 
@@ -63,4 +63,3 @@ class htmlheader_taglib_addstaticcss extends Document {
    }
 
 }
-?>

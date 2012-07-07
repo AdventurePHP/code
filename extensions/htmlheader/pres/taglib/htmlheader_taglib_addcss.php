@@ -97,5 +97,3 @@ class htmlheader_taglib_addcss extends Document {
    }
 
 }
-
-?>

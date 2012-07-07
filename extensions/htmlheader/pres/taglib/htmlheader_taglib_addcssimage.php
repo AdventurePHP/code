@@ -43,7 +43,7 @@ class htmlheader_taglib_addcssimage extends Document {
       $href = $this->getAttribute('href');
       if ($href == null) {
          throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please provide the "href" '
-                                            . 'attribute in order to add a Css image.', E_USER_ERROR);
+               . 'attribute in order to add a Css image.', E_USER_ERROR);
       }
       $rel = $this->getAttribute('rel', 'icon');
       $type = $this->getAttribute('type');
@@ -56,5 +56,3 @@ class htmlheader_taglib_addcssimage extends Document {
    }
 
 }
-
-?>

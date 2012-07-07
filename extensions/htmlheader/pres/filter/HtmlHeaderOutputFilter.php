@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 import('extensions::htmlheader::pres::taglib', 'htmlheader_taglib_gethead');
 import('extensions::htmlheader::pres::taglib', 'htmlheader_taglib_getbodyjs');
 
@@ -37,23 +36,23 @@ import('extensions::htmlheader::pres::taglib', 'htmlheader_taglib_getbodyjs');
 class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
 
    public function filter(FilterChain &$chain, $input = null) {
-      
-       $replacements = $this->getHeaderContent();
-       
+
+      $replacements = $this->getHeaderContent();
+
       // replace gethead-taglib
       $input = str_replace(
-              htmlheader_taglib_gethead::HTML_HEADER_INDICATOR,
-              $replacements[0],
-              $input
+         htmlheader_taglib_gethead::HTML_HEADER_INDICATOR,
+         $replacements[0],
+         $input
       );
-      
+
       // replace getbodyjs-taglib
       $input = str_replace(
-              htmlheader_taglib_getbodyjs::HTML_BODYJS_INDICATOR,
-              $replacements[1],
-              $input
+         htmlheader_taglib_getbodyjs::HTML_BODYJS_INDICATOR,
+         $replacements[1],
+         $input
       );
-      
+
       return $chain->filter($input);
    }
 
@@ -79,10 +78,10 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
       foreach ($metaNodes as $metaNode) {
          $outputHead .= $metaNode->transform() . PHP_EOL;
       }
-      
+
       $canonical = $iM->getCanonical();
-      if($canonical !== null){
-          $outputHead .= $canonical->transform() . PHP_EOL;
+      if ($canonical !== null) {
+         $outputHead .= $canonical->transform() . PHP_EOL;
       }
 
       $stylesheets = $this->sortNodes($iM->getStylesheetNodes());
@@ -92,11 +91,10 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
 
       $javascripts = $this->sortNodes($iM->getJavascriptNodes());
       foreach ($javascripts as $script) {
-         if($script->getAppendToBody()) {
-             $outputBody .= $script->transform() . PHP_EOL;
-         }
-         else {
-             $outputHead .= $script->transform() . PHP_EOL;
+         if ($script->getAppendToBody()) {
+            $outputBody .= $script->transform() . PHP_EOL;
+         } else {
+            $outputHead .= $script->transform() . PHP_EOL;
          }
       }
 
@@ -142,4 +140,3 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
    }
 
 }
-?>

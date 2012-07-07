@@ -100,5 +100,3 @@ class htmlheader_taglib_addjs extends Document {
    }
 
 }
-
-?>

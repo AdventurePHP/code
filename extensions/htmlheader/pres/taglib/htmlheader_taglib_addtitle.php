@@ -45,8 +45,6 @@ class htmlheader_taglib_addtitle extends Document {
       $content = $this->getContent();
       if (!empty($content)) {
 
-         $titleContent = '';
-
          if ($this->getAttribute('append') === 'true') {
 
             $title = $header->getTitle();
@@ -62,11 +60,8 @@ class htmlheader_taglib_addtitle extends Document {
          }
 
          $header->addNode(new SimpleTitleNode($titleContent));
-
-         return '';
       }
+      return '';
    }
 
 }
-
-?>

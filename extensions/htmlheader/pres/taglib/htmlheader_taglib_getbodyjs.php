@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -25,7 +24,7 @@ import('extensions::htmlheader::pres::filter', 'HtmlHeaderOutputFilter');
  * @package extensions::htmlheader::pres::taglib
  * @class htmlheader_taglib_getbodyjs
  *
- * Taglib for receiving javascript definitions which should be placed at 
+ * Taglib for receiving javascript definitions which should be placed at
  * the end of the body.
  *
  * @example
@@ -36,22 +35,20 @@ import('extensions::htmlheader::pres::filter', 'HtmlHeaderOutputFilter');
  * @version 0.1, 21.09.2011<br />
  */
 class htmlheader_taglib_getbodyjs extends Document {
-    const HTML_BODYJS_INDICATOR = '<!--HTMLHEADER_TAGLIB_GETBODYJS-->';
+   const HTML_BODYJS_INDICATOR = '<!--HTMLHEADER_TAGLIB_GETBODYJS-->';
 
-    public function transform() {
+   public function transform() {
 
-        $FilterChain = OutputFilterChain::getInstance();
-        
-        // register filter that replaces the token with real live data if filter isn't already registered
-        // (uses the same filter as htmlheader:gethead-Taglib)
-        if (!$FilterChain->isFilterRegistered('HtmlHeaderOutputFilter')) {
-            $FilterChain->prependFilter(new HtmlHeaderOutputFilter());
-        }
+      $FilterChain = OutputFilterChain::getInstance();
 
-        // place marker that will be replaced by the
-        return self::HTML_BODYJS_INDICATOR;
-    }
+      // register filter that replaces the token with real live data if filter isn't already registered
+      // (uses the same filter as htmlheader:gethead-Taglib)
+      if (!$FilterChain->isFilterRegistered('HtmlHeaderOutputFilter')) {
+         $FilterChain->prependFilter(new HtmlHeaderOutputFilter());
+      }
+
+      // place marker that will be replaced by the
+      return self::HTML_BODYJS_INDICATOR;
+   }
 
 }
-
-?>

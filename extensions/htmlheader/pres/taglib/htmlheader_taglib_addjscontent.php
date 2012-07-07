@@ -43,15 +43,14 @@ class htmlheader_taglib_addjscontent extends Document {
       /* @var $header HtmlHeaderManager */
 
       $node = new JsContentNode($this->getContent());
-      
-      if(strtolower($this->getAttribute('appendtobody')) === 'true') {
-          $node->setAppendToBody(true);
+
+      if (strtolower($this->getAttribute('appendtobody')) === 'true') {
+         $node->setAppendToBody(true);
       }
-      
+
       $node->setPriority($this->getAttribute('priority'));
       $header->addNode($node);
       return '';
    }
 
 }
-?>

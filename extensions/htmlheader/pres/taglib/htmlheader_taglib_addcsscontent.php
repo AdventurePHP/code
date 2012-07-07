@@ -50,4 +50,3 @@ class htmlheader_taglib_addcsscontent extends Document {
    }
 
 }
-?>
