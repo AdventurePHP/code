@@ -582,8 +582,8 @@ abstract class form_control extends Document {
     * Set's the value of the form control. Should not always set the 'value'
     * attribute. This set's the same attribute/content as the user would type it.
     *
-    * @param string $value
-    * @return form_control
+    * @param string $value The value to set.
+    * @return form_control This instance for further usage.
     *
     * @since 1.14
     *
