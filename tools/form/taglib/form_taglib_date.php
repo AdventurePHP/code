@@ -114,26 +114,51 @@ class form_taglib_date extends form_control {
       $month->setAttribute('id', $monthIdent);
       $year->setAttribute('id', $yearIdent);
 
+      // apply "tabindex" attribute to enhance usability
+      $tabIndices = $this->getTabIndices();
+      if ($tabIndices !== null) {
+         $day->setAttribute('tabindex', $tabIndices[0]);
+         $month->setAttribute('tabindex', $tabIndices[1]);
+         $year->setAttribute('tabindex', $tabIndices[2]);
+      }
+
+      $prependEmptyOption = $this->getAttribute('prepend-empty-option', 'false') === 'true';
+
       // set the values for the day select box
+      if ($prependEmptyOption === true) {
+         $day->addOption('', '');
+         $day->setOption2Selected('');
+      }
+
       for ($i = 1; $i <= 31; $i++) {
          $i = $this->appendZero($i);
          $day->addOption($i, $i);
       }
 
       // set the values for the month select box
+      if ($prependEmptyOption === true) {
+         $month->addOption('', '');
+         $month->setOption2Selected('');
+      }
+
       for ($i = 1; $i <= 12; $i++) {
          $i = $this->appendZero($i);
          $month->addOption($i, $i);
       }
 
       // set the values for the year select box
+      if ($prependEmptyOption === true) {
+         $year->addOption('', '');
+         $year->setOption2Selected('');
+      }
+
       for ($i = (int)$this->yearRange['Start']; $i <= (int)$this->yearRange['End']; $i++) {
          $yearNumber = sprintf('%04s', $i);
          $year->addOption($yearNumber, $yearNumber);
       }
 
-      // preset today's date on startup
-      if (!isset($_REQUEST[$name])) {
+      // preset today's date on startup if we have no empty options
+      if (!isset($_REQUEST[$name]) && $prependEmptyOption !== true) {
          $day->setOption2Selected($this->appendZero(date('d')));
          $month->setOption2Selected($this->appendZero(date('m')));
          $year->setOption2Selected(date('Y'));
@@ -143,6 +168,19 @@ class form_taglib_date extends form_control {
       $day->onParseTime();
       $month->onParseTime();
       $year->onParseTime();
+
+      // since the onParseTime() methods directly presets the value from the request, we have
+      // to correct implausible dates using the PHP DateTime API.
+      if (isset($_REQUEST[$name])) {
+         $date = DateTime::createFromFormat('Y-m-d', $_REQUEST[$name][$this->offsetNames['Year']]
+               . '-' . $_REQUEST[$name][$this->offsetNames['Month']]
+               . '-' . $_REQUEST[$name][$this->offsetNames['Day']]);
+         if ($date !== false) {
+            $day->setOption2Selected($date->format('d'));
+            $month->setOption2Selected($date->format('m'));
+            $year->setOption2Selected($date->format('Y'));
+         }
+      }
 
       // reference the father object and add to the children list
       $day->setParentObject($this);
@@ -196,7 +234,7 @@ class form_taglib_date extends form_control {
       // as of 1.12, the date control should be rendered using a
       // surrounding span do enable the client validator extension
       // to address the control more easily.
-      $buffer = (string)'<span id="' . $this->getId() . '"';
+      $buffer = '<span id="' . $this->getId() . '"';
 
       $style = $this->getAttribute('style');
       if ($style != null) {
@@ -255,7 +293,14 @@ class form_taglib_date extends form_control {
 
       // use date time API to ensure calender conforming dates (e.g. don't create implausible
       // dates such as 1937-04-31).
-      return DateTime::createFromFormat('Y-m-d', $year . '-' . $month . '-' . $day)->format('Y-m-d');
+      $date = DateTime::createFromFormat('Y-m-d', $year . '-' . $month . '-' . $day);
+
+      // In case an empty date has been submitted (e.g. because the "prepend-empty-option" attribute
+      // is set) return null.
+      if ($date === false) {
+         return null;
+      }
+      return $date->format('Y-m-d');
    }
 
    /**
@@ -412,7 +457,7 @@ class form_taglib_date extends form_control {
     * Re-implements the setting of values for date controls.
     *
     * @param string $value The date to set (e.g. "2012-04-30").
-    * @return form_taglib_date This control for further usage.
+    * @return form_control This control for further usage.
     *
     * @since 1.14
     *
@@ -424,4 +469,26 @@ class form_taglib_date extends form_control {
       $this->setDate($value);
       return $this;
    }
+
+   /**
+    * @return array|null The list of tab indices for the day, month, and year field or <em>null</em>.
+    */
+   private function getTabIndices() {
+      $indices = $this->getAttribute('tab-indexes');
+
+      if ($indices === null) {
+         return null;
+      }
+
+      $indexList = explode(',', $indices);
+      if (count($indexList) == 3) {
+         return array(
+            trim($indexList[0]),
+            trim($indexList[1]),
+            trim($indexList[2])
+         );
+      }
+      return null;
+   }
+
 }
