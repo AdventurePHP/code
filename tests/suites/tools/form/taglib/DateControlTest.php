@@ -38,7 +38,7 @@ class DateControlTest extends PHPUnit_Framework_TestCase {
       $tag = new form_taglib_date();
       $tag->setAttribute('name', 'date1');
       $tag->setAttribute('yearrange', '2002-2012');
-      $tag->setAttribute('prepend-empty-option', 'true');
+      $tag->setAttribute('prepend-empty-options', 'true');
 
       $tag->onParseTime();
       $tag->onAfterAppend();
@@ -61,7 +61,7 @@ class DateControlTest extends PHPUnit_Framework_TestCase {
    public function testPresettingWithPrependEmptyOptions() {
       $tag = new form_taglib_date();
       $tag->setAttribute('name', 'date1');
-      $tag->setAttribute('prepend-empty-option', 'true');
+      $tag->setAttribute('prepend-empty-options', 'true');
 
       $tag->onParseTime();
       $tag->onAfterAppend();
@@ -72,7 +72,7 @@ class DateControlTest extends PHPUnit_Framework_TestCase {
    public function testPresettingWithPrependEmptyOptionsAfterPost() {
       $tag = new form_taglib_date();
       $tag->setAttribute('name', 'date1');
-      $tag->setAttribute('prepend-empty-option', 'true');
+      $tag->setAttribute('prepend-empty-options', 'true');
 
       unset($_REQUEST['date1']);
       $_REQUEST['date1']['Day'] = '';
@@ -88,7 +88,7 @@ class DateControlTest extends PHPUnit_Framework_TestCase {
    public function testGetDateWithCorrectDate() {
       $tag = new form_taglib_date();
       $tag->setAttribute('name', 'date1');
-      $tag->setAttribute('prepend-empty-option', 'true');
+      $tag->setAttribute('prepend-empty-options', 'true');
 
       unset($_REQUEST['date1']);
       $day = '01';
@@ -108,7 +108,7 @@ class DateControlTest extends PHPUnit_Framework_TestCase {
    public function testGetDateWithImplausibleDate() {
       $tag = new form_taglib_date();
       $tag->setAttribute('name', 'date1');
-      $tag->setAttribute('prepend-empty-option', 'true');
+      $tag->setAttribute('prepend-empty-options', 'true');
 
       unset($_REQUEST['date1']);
       $_REQUEST['date1']['Day'] = '31';
@@ -125,7 +125,7 @@ class DateControlTest extends PHPUnit_Framework_TestCase {
    public function testPresettingWithImplausibleDate() {
       $tag = new form_taglib_date();
       $tag->setAttribute('name', 'date1');
-      $tag->setAttribute('prepend-empty-option', 'true');
+      $tag->setAttribute('prepend-empty-options', 'true');
 
       unset($_REQUEST['date1']);
       $_REQUEST['date1']['Day'] = '31';
@@ -145,7 +145,7 @@ class DateControlTest extends PHPUnit_Framework_TestCase {
    public function testPresettingWithImplausibleDateAndPrependEmptyOptions() {
       $tag = new form_taglib_date();
       $tag->setAttribute('name', 'date1');
-      $tag->setAttribute('prepend-empty-option', 'true');
+      $tag->setAttribute('prepend-empty-options', 'true');
 
       unset($_REQUEST['date1']);
 

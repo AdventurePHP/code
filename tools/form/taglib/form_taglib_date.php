@@ -122,7 +122,7 @@ class form_taglib_date extends form_control {
          $year->setAttribute('tabindex', $tabIndices[2]);
       }
 
-      $prependEmptyOption = $this->getAttribute('prepend-empty-option', 'false') === 'true';
+      $prependEmptyOption = $this->getAttribute('prepend-empty-options', 'false') === 'true';
 
       // set the values for the day select box
       if ($prependEmptyOption === true) {
@@ -295,7 +295,7 @@ class form_taglib_date extends form_control {
       // dates such as 1937-04-31).
       $date = DateTime::createFromFormat('Y-m-d', $year . '-' . $month . '-' . $day);
 
-      // In case an empty date has been submitted (e.g. because the "prepend-empty-option" attribute
+      // In case an empty date has been submitted (e.g. because the "prepend-empty-options" attribute
       // is set) return null.
       if ($date === false) {
          return null;
@@ -480,7 +480,7 @@ class form_taglib_date extends form_control {
          return null;
       }
 
-      $indexList = explode(',', $indices);
+      $indexList = explode(';', $indices);
       if (count($indexList) == 3) {
          return array(
             trim($indexList[0]),
