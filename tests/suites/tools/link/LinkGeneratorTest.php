@@ -226,5 +226,3 @@ class LinkGeneratorTest extends PHPUnit_Framework_TestCase {
    }
 
 }
-
-?>

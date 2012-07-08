@@ -36,9 +36,7 @@ date_default_timezone_set('Europe/Berlin');
 
 
 //
-// --- Loading first ressources
+// --- Loading first resources
 //
 require_once('../core/pagecontroller/pagecontroller.php');
 require_once('PHPUnit/Framework/Assert/Functions.php');
-
-?>

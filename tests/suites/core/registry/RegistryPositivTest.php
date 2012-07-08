@@ -31,6 +31,7 @@ import('core::registry', 'Registry');
  * Version 0.1, 17.12.2011<br />
  */
 class RegistryPositivTest extends PHPUnit_Framework_TestCase {
+
    /**
     * @protected static
     * @var string Registry namespace of the key
@@ -267,5 +268,3 @@ class RegistryPositivTest extends PHPUnit_Framework_TestCase {
       assertEquals(self::$REGISTRY_DEFAULT_VALUE, $sReturnValue);
    }
 }
-
-?>
