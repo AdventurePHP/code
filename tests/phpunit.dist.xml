@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
+/**
  * This file is part of the adventure php framework (APF) published under
  * http://adventure-php-framework.org.
  *
@@ -16,6 +17,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ */
 -->
 
 <!--
@@ -25,7 +27,6 @@
     Description:
         PHPUnit Testsuite Configuration
 -->
-
 
 <phpunit backupGlobals="false"
          backupStaticAttributes="true"
@@ -59,20 +60,4 @@
 
     </testsuites>
 
-    <!--
-       <php>
-          <const name="MYSQL_BIN" value="{/path/to/mysql/bin}"/>
-          <const name="DATABASE_NAME" value="{database-name}"/>
-          <const name="DATABASE_USER" value="{database-user}"/>
-          <const name="DATABASE_PW" value="{database-password}"/>
-          <const name="DATABASE_HOST" value="{database-host}" />
-          <const name="DATABASE_FILE_SCHEME" value="{/path/to/database/scheme/file}" />
-          <const name="DATABASE_FILE_MIGRATION" value="{/path/to/database/migration/file}" />
-       </php>
-    -->
-
 </phpunit>
-
-
-
-
