@@ -287,13 +287,18 @@ class form_taglib_date extends form_control {
     */
    public function getDate() {
 
-      $day = $this->getDayControl()->getSelectedOption()->getValue();
-      $month = $this->getMonthControl()->getSelectedOption()->getValue();
-      $year = $this->getYearControl()->getSelectedOption()->getValue();
+      $day = $this->getDayControl()->getSelectedOption();
+      $month = $this->getMonthControl()->getSelectedOption();
+      $year = $this->getYearControl()->getSelectedOption();
+
+      // in case any of the select boxes are missing a none-empty selection, the date is null
+      if ($day === null || $month === null || $year === null) {
+         return null;
+      }
 
       // use date time API to ensure calender conforming dates (e.g. don't create implausible
       // dates such as 1937-04-31).
-      $date = DateTime::createFromFormat('Y-m-d', $year . '-' . $month . '-' . $day);
+      $date = DateTime::createFromFormat('Y-m-d', $year->getValue() . '-' . $month->getValue() . '-' . $day->getValue());
 
       // In case an empty date has been submitted (e.g. because the "prepend-empty-options" attribute
       // is set) return null.
