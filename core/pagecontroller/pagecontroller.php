@@ -1190,7 +1190,7 @@ class Document extends APFObject {
     * @param string $value The value of the attribute to select the desired node.
     * @param string $tagLibClass The expected class name of the node.
     * @return Document The desired child node.
-    * @throws InvalidArgumentException In case the node has no children or no child nod can be found with the given selectors.
+    * @throws InvalidArgumentException In case the node has no children or no child node can be found with the given selectors.
     *
     * @author Christian Achatz
     * @version
@@ -1199,10 +1199,10 @@ class Document extends APFObject {
    protected function &getChildNode($attributeName, $value, $tagLibClass) {
       $children = &$this->getChildren();
       if (count($children) > 0) {
-         foreach ($children as $objectID => $DUMMY) {
-            if ($children[$objectID] instanceof $tagLibClass) {
-               if ($children[$objectID]->getAttribute($attributeName) == $value) {
-                  return $children[$objectID];
+         foreach ($children as $objectId => $DUMMY) {
+            if ($children[$objectId] instanceof $tagLibClass) {
+               if ($children[$objectId]->getAttribute($attributeName) == $value) {
+                  return $children[$objectId];
                }
             }
          }
@@ -1213,6 +1213,48 @@ class Document extends APFObject {
       throw new InvalidArgumentException('[' . get_class($this) . '::getChildNode()] No child node with type "'
             . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
             . 'document!', E_USER_ERROR);
+   }
+
+   /**
+    * @protected
+    *
+    * Let's you retrieve a list of child nodes of the current document by specifying a selector
+    * (attribute name and attribute value) and the expected node type (name of the taglib
+    * class).
+    *
+    * @param string $attributeName The name of the attribute to match against the given value.
+    * @param string $value The value of the attribute to select the desired node.
+    * @param string $tagLibClass The expected class name of the nodes.
+    * @return Document[] The desired list of child nodes.
+    * @throws InvalidArgumentException In case the node has no children or no child node can be found with the given selectors.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 14.07.2012<br />
+    */
+   protected function &getChildNodes($attributeName, $value, $tagLibClass) {
+      $children = &$this->getChildren();
+
+      if (count($children) > 0) {
+         $result = array();
+         foreach ($children as $objectId => $DUMMY) {
+            if ($children[$objectId] instanceof $tagLibClass) {
+               if ($children[$objectId]->getAttribute($attributeName) == $value) {
+                  $result[] = &$children[$objectId];
+               }
+            }
+         }
+         if (count($result) == 0) {
+            throw new InvalidArgumentException('[' . get_class($this) . '::getChildNodes()] No child nodes with type "'
+                  . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
+                  . 'document!', E_USER_ERROR);
+         } else {
+            return $result;
+         }
+      } else {
+         throw new InvalidArgumentException('[' . get_class($this) . '::getChildNodes()] Current node has no children!',
+            E_USER_ERROR);
+      }
    }
 
    /**
