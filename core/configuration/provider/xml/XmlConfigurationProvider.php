@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -55,7 +54,7 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
     * @public
     * 
     * @version
-    * Version 0.2, 27.02.2012 (Throw an exception if xml isn't wellformed - Tobias Lückel [Megger])
+    * Version 0.2, 27.02.2012 (Throw an exception if xml isn't wellformed - Tobias Lï¿½ckel [Megger])
     */
     public function loadConfiguration($namespace, $context, $language, $environment, $name) {
 
@@ -195,5 +194,3 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
     }
 
 }
-
-?>

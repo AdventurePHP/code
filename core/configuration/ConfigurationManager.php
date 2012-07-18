@@ -45,7 +45,7 @@ interface Configuration {
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   function getValue($name, $defaultValue = null);
+   public function getValue($name, $defaultValue = null);
 
    /**
     * @public
@@ -59,11 +59,11 @@ interface Configuration {
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   function getSection($name);
+   public function getSection($name);
 
-   function setValue($name, $value);
+   public function setValue($name, $value);
 
-   function setSection($name, Configuration $section);
+   public function setSection($name, Configuration $section);
 
    /**
     * @public
@@ -76,7 +76,7 @@ interface Configuration {
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   function getValueNames();
+   public function getValueNames();
 
    /**
     * @public
@@ -89,7 +89,7 @@ interface Configuration {
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   function getSectionNames();
+   public function getSectionNames();
 
    /**
     * @public
@@ -103,7 +103,7 @@ interface Configuration {
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   function removeSection($name);
+   public function removeSection($name);
 
    /**
     * @public
@@ -117,7 +117,7 @@ interface Configuration {
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   function removeValue($name);
+   public function removeValue($name);
 
 }
 
@@ -178,7 +178,7 @@ interface ConfigurationProvider {
     * Version 0.1, 27.09.2010<br />
     */
    public function setExtension($extension);
-   
+
    /**
     * Deletes the configuration specified by the given params.
     *
@@ -360,19 +360,19 @@ final class ConfigurationManager {
       unset(self::$CONFIG_CACHE[$key]); // clear cache to not have to refresh manually
       return self::getProvider($name)->saveConfiguration($namespace, $context, $language, $environment, $name, $config);
    }
-   
+
    /**
     * @public
     * @static
-    * 
+    *
     * Delegates the configuration deleting to the specified provider.
-    * 
+    *
     * @param string $namespace The namespace of the configuration.
     * @param string $context The current application's context.
     * @param string $language The current application's language.
     * @param string $environment The environment, the applications runs on.
     * @param string $name The name of the configuration to delete including it's extension.
-    * 
+    *
     * @author Ralf Schubert
     * @version
     * Version 0.1, 27.07.2011<br />

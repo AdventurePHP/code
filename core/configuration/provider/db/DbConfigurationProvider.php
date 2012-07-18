@@ -241,10 +241,8 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
 
       if ($affectedRows == 0) {
          throw new ConfigurationException('[DbConfigurationProvider::deleteConfiguration()] '
-                                          . 'Configuration with name "' . $this->getConfigName($name) . '" cannot be deleted! Please check your '
-                                          . 'database configuration, the given parameters, or your environment configuration.');
+               . 'Configuration with name "' . $this->getConfigName($name) . '" cannot be deleted! Please check your '
+               . 'database configuration, the given parameters, or your environment configuration.');
       }
    }
 }
-
-?>

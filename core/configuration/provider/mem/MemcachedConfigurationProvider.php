@@ -162,12 +162,10 @@ class MemcachedConfigurationProvider implements ConfigurationProvider {
 
       if ($result === false) {
          throw new ConfigurationException('[MemcachedConfigurationProvider::deleteConfiguration()] '
-                                          . 'MemcachedConfiguration with key "' . $key . '" cannot be deleted! Please check your '
-                                          . 'memcache configuration, the given parameters, or your environment configuration.');
+               . 'MemcachedConfiguration with key "' . $key . '" cannot be deleted! Please check your '
+               . 'memcache configuration, the given parameters, or your environment configuration.');
       }
 
       ConfigurationManager::deleteConfiguration($namespace, $context, $language, $environment, $name);
    }
 }
-
-?>

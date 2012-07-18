@@ -1,5 +1,5 @@
 <?php
-   /**
+/**
  * <!--
  * This file is part of the adventure php framework (APF) published under
  * http://adventure-php-framework.org.
@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 import('core::configuration::provider', 'BaseConfigurationProvider');
 import('core::configuration::provider::ini', 'IniConfiguration');
 
@@ -75,9 +74,9 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       }
 
       throw new ConfigurationException('[IniConfigurationProvider::loadConfiguration()] '
-                                       . 'Configuration with namespace "' . $namespace . '", context "' . $context . '", '
-                                       . ' language "' . $language . '", environment "' . $environment . '", and name '
-                                       . '"' . $name . '" cannot be loaded (file name: ' . $fileName . ')!', E_USER_ERROR);
+            . 'Configuration with namespace "' . $namespace . '", context "' . $context . '", '
+            . ' language "' . $language . '", environment "' . $environment . '", and name '
+            . '"' . $name . '" cannot be loaded (file name: ' . $fileName . ')!', E_USER_ERROR);
 
    }
 
@@ -184,8 +183,8 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
 
       if (file_put_contents($fileName, $buffer) === false) {
          throw new ConfigurationException('[IniConfigurationProvider::saveConfiguration()] '
-                                          . 'Configuration with name "' . $fileName . '" cannot be saved! Please check your '
-                                          . 'file system configuration, the file name, or your environment configuration.');
+               . 'Configuration with name "' . $fileName . '" cannot be saved! Please check your '
+               . 'file system configuration, the file name, or your environment configuration.');
       }
    }
 
@@ -247,11 +246,9 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
       if (unlink($fileName) === false) {
          throw new ConfigurationException('[IniConfigurationProvider::deleteConfiguration()] '
-                                          . 'Configuration with name "' . $fileName . '" cannot be deleted! Please check your '
-                                          . 'file system configuration, the file name, or your environment configuration.');
+               . 'Configuration with name "' . $fileName . '" cannot be deleted! Please check your '
+               . 'file system configuration, the file name, or your environment configuration.');
       }
    }
 
 }
-
-?>
