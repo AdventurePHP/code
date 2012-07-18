@@ -71,6 +71,7 @@
  * Version 0.1, 18.04.2009<br />
  * Version 0.2, 19.04.2009 (Finished implementation)<br />
  * Version 0.3, 07.03.2011 (Refactored to static component to increase performance and accessability)<br />
+ * Version 0.4, 10.07.2012 Jan Wiese (Added configuration and service type cache)<br />
  */
 final class DIServiceManager {
 
@@ -83,6 +84,16 @@ final class DIServiceManager {
     * @var array Contains the service objects, that were already configured.
     */
    private static $SERVICE_OBJECT_CACHE = array();
+
+   /**
+    * @var array Contains the configuration of already delivered services
+    */
+   private static $SERVICE_CONFIG_CACHE = array();
+
+   /**
+    * @var array Contains the cached service types
+    */
+   private static $SERVICE_TYPE_CACHE = array();
 
    /**
     * @public
@@ -101,8 +112,21 @@ final class DIServiceManager {
     * @version
     * Version 0.1, 19.04.2009<br />
     * Version 0.2, 24.08.2011 (Added "setupmethod" functionality)<br/>
+    * Version 0.3, 07.07.2012 Jan Wiese (Corrected service retrieval to respect context and language each time.<br />
+    *                         Introduced CACHED service type to retrieve a NORMAL instance from the cache and thus gain performance for none-singletons.)<br />
+    * Version 0.4, 10.07.2012 Jan Wiese (Introduced configuration cache to gain performance)<br />
+    * Version 0.5, 10.07.2012 Jan Wiese (Improvements in code quality and removed bugs from v0.3/v0.4)<br />
     */
    public static function &getServiceObject($configNamespace, $sectionName, $context, $language) {
+
+      // build cache key. because configuration-file path includes context, include context (and language) in cache key
+      $cacheKey = $configNamespace . '::' . $sectionName . '|' . $context . '_' . $language;
+
+      // Check, whether service object was created before. If yes, deliver it from cache for all services types except NORMAL.
+      // Do not cache ServiceType 'NORMAL' because we want to have different instances!
+      if (isset(self::$SERVICE_OBJECT_CACHE[$cacheKey]) && self::$SERVICE_TYPE_CACHE[$cacheKey] != APFService::SERVICE_TYPE_NORMAL) {
+         return self::$SERVICE_OBJECT_CACHE[$cacheKey];
+      }
 
       // Invoke benchmarker. Suppress warning for already started timers with circular calls!
       // Suppressing is here done by a dirty '@', because we will run into an error anyway.
@@ -112,139 +136,137 @@ final class DIServiceManager {
       @$t->start($benchId);
 
       // Get config to determine, which object to create.
-      $section = self::getServiceConfiguration($configNamespace, $sectionName, $context, $language);
+      $section = self::getServiceConfiguration($configNamespace, $sectionName, $context, $language, $cacheKey);
       if ($section === null) {
          throw new ConfigurationException('[DIServiceManager::getServiceObject()] Service object configuration with '
                . 'name "' . $sectionName . '" cannot be found within namespace "'
                . $configNamespace . '"! Please double-check your setup.', E_USER_ERROR);
       }
 
-      // check, whether the section contains the basic directives
-      $serviceType = $section->getValue('servicetype');
+      // check, whether the section contains the basic directives and read/write service type cache
+      if (isset(self::$SERVICE_TYPE_CACHE[$cacheKey])) {
+         $serviceType = self::$SERVICE_TYPE_CACHE[$cacheKey];
+      } else {
+         $serviceType = $section->getValue('servicetype');
+         self::$SERVICE_TYPE_CACHE[$cacheKey] = $serviceType;
+      }
+
       $namespace = $section->getValue('namespace');
       $class = $section->getValue('class');
 
-      // build cache key. because configuration-file path includes context, include context (and language) in cache key
-      $cacheKey = $configNamespace . '::' . $sectionName . '::' . $context . '::' . $language;
-
-      // Check, whether service object was created before. If yes, deliver it from cache.
-      if (isset(self::$SERVICE_OBJECT_CACHE[$cacheKey]) && $serviceType != APFService::SERVICE_TYPE_NORMAL) { // do not cache ServiceType 'NORMAL' because we want to have different instances
-         $t->stop($benchId);
-         return self::$SERVICE_OBJECT_CACHE[$cacheKey];
-      }
-
-      // From here the behaviour of service types 'NORMAL' and 'CACHED' is equal, thus remapping it!
+      // The behaviour of service types CACHED and NORMAL is equal in the following, thus remapping it.
       if ($serviceType == APFService::SERVICE_TYPE_CACHED) {
          $serviceType = APFService::SERVICE_TYPE_NORMAL;
       }
 
       // Check if configuration section was complete. If not throw an exception to fail fast.
-      if ($serviceType !== null && $namespace !== null && $class !== null) {
-
-         // Create the service object with use of the "normal" service manager. Perhaps, this
-         // may run into problems, because we have to ensure, that the singleton objects are
-         // only treated once by the injection mechanism!
-         // But: if we constitute, that the injected service objects are often also singletons
-         // and the DIServiceManager caches the created service objects within a singleton cache,
-         // this is no problem. Hence, the injected instance is then only one time constructed.
-         $serviceObject = &ServiceManager::getServiceObject($namespace, $class, $context, $language, $serviceType, $cacheKey);
-
-         // do param injection (static configuration)
-         $cfTasks = $section->getSection('conf');
-         if ($cfTasks !== null) {
-
-            foreach ($cfTasks->getSectionNames() as $initKey) {
-
-               $directive = $cfTasks->getSection($initKey);
-
-               // be aware of the params needed for injection
-               $method = $directive->getValue('method');
-               $value = $directive->getValue('value');
-               if ($method !== null && $value !== null) {
-
-                  // check, if method exists to avoid fatal errors
-                  if (method_exists($serviceObject, $method)) {
-                     $serviceObject->$method($value);
-                  } else {
-                     throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of'
-                           . ' configuration value "' . $directive->getValue('value') . '" cannot be accomplished'
-                           . ' to service object "' . $class . '" from namespace "' . $namespace . '"! Method '
-                           . $method . '() is not implemented!', E_USER_ERROR);
-                  }
-               } else {
-                  throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the'
-                        . ' service object "' . $sectionName . '" cannot be accomplished, due to'
-                        . ' incorrect configuration! Please revise the "' . $initKey . '" sub section and'
-                        . ' consult the manual!', E_USER_ERROR);
-               }
-            }
-         }
-
-         // do service object injection
-         $miTasks = $section->getSection('init');
-         if ($miTasks !== null) {
-
-            foreach ($miTasks->getSectionNames() as $initKey) {
-
-               $directive = $miTasks->getSection($initKey);
-
-               // be aware of the params needed for injection
-               $method = $directive->getValue('method');
-               $namespace = $directive->getValue('namespace');
-               $name = $directive->getValue('name');
-               if ($method !== null && $namespace !== null && $name !== null) {
-
-                  // check for circular injection
-                  $injectionKey = $namespace . '::' . $class . '[' . $serviceType . ']' . ' injected with ' .
-                        $method . '(' . $namespace . '::' . $name . ')';
-
-                  if (isset(self::$INJECTION_CALL_CACHE[$injectionKey])) {
-
-                     // append error to log to provide debugging information
-                     $log = &Singleton::getInstance('Logger');
-                     /* @var $log Logger */
-                     $instructions = (string)'';
-                     foreach (self::$INJECTION_CALL_CACHE as $injectionInstruction => $DUMMY) {
-                        $instructions .= PHP_EOL . $injectionInstruction;
-                     }
-                     $log->logEntry('php', '[DIServiceManager::getServiceObject()] Injection stack trace: ' . $instructions, LogEntry::SEVERITY_TRACE);
-
-                     // print note with shorted information
-                     throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Detected circular injection! ' .
-                           'Class "' . $class . '" from namespace "' . $namespace . '" with service type "' . $serviceType .
-                           '" was already configured with service object "' . $name . '" from namespace "' .
-                           $namespace . '"! Full stack trace can be taken from the logfile!', E_USER_ERROR);
-                  } else {
-
-                     // add the current run to the recursion detection array
-                     self::$INJECTION_CALL_CACHE[$injectionKey] = true;
-
-                     // get the dependent service object
-                     $miObject = &self::getServiceObject($namespace, $name, $context, $language);
-
-                     // inject the current service object with the created one
-                     if (method_exists($serviceObject, $method)) {
-                        $serviceObject->$method($miObject);
-                     } else {
-                        throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of service object "' . $name .
-                                 '" from namespace "' . $namespace . '" cannot be accomplished to service object "' .
-                                 $class . '" from namespace "' . $namespace . '"! Method ' . $method . '() is not implemented!',
-                           E_USER_ERROR);
-                     }
-                  }
-               } else {
-                  throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "' .
-                           $sectionName . '" cannot be accomplished, due to incorrect configuration! Please revise the "' . $initKey .
-                           '" sub section and consult the manual!',
-                     E_USER_ERROR);
-               }
-            }
-         }
-      } else {
+      if ($serviceType === null || $namespace === null || $class === null) {
          throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "' .
                   $sectionName . '" from namespace "' . $configNamespace . '" cannot be accomplished, due to missing
                or incorrect configuration! Please revise the configuration file and consult the manual!',
             E_USER_ERROR);
+      }
+
+      // Create the service object with use of the "normal" service manager. Perhaps, this
+      // may run into problems, because we have to ensure, that the singleton objects are
+      // only treated once by the injection mechanism!
+      // But: if we constitute, that the injected service objects are often also singletons
+      // and the DIServiceManager caches the created service objects within a singleton cache,
+      // this is no problem. Hence, the injected instance is then only one time constructed.
+
+      /* @var $serviceObject APFDIService */
+      $serviceObject = &ServiceManager::getServiceObject($namespace, $class, $context, $language, $serviceType, $cacheKey);
+
+      // do param injection (static configuration)
+      $cfTasks = $section->getSection('conf');
+      if ($cfTasks !== null) {
+
+         foreach ($cfTasks->getSectionNames() as $initKey) {
+
+            $directive = $cfTasks->getSection($initKey);
+
+            // be aware of the params needed for injection
+            $method = $directive->getValue('method');
+            $value = $directive->getValue('value');
+            if ($method === null || $value === null) {
+               throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the'
+                     . ' service object "' . $sectionName . '" cannot be accomplished, due to'
+                     . ' incorrect configuration! Please revise the "' . $initKey . '" sub section and'
+                     . ' consult the manual!', E_USER_ERROR);
+            }
+
+            // check, if method exists to avoid fatal errors
+            if (method_exists($serviceObject, $method)) {
+               $serviceObject->$method($value);
+            } else {
+               throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of'
+                     . ' configuration value "' . $directive->getValue('value') . '" cannot be accomplished'
+                     . ' to service object "' . $class . '" from namespace "' . $namespace . '"! Method '
+                     . $method . '() is not implemented!', E_USER_ERROR);
+            }
+         }
+      }
+
+      // do service object injection
+      $miTasks = $section->getSection('init');
+      if ($miTasks !== null) {
+
+         foreach ($miTasks->getSectionNames() as $initKey) {
+
+            $directive = $miTasks->getSection($initKey);
+
+            // be aware of the params needed for injection
+            $method = $directive->getValue('method');
+            $namespace = $directive->getValue('namespace');
+            $name = $directive->getValue('name');
+            if ($method === null || $namespace === null || $name === null) {
+               throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "' .
+                        $sectionName . '" cannot be accomplished, due to incorrect configuration! Please revise the "' . $initKey .
+                        '" sub section and consult the manual!',
+                  E_USER_ERROR);
+            }
+
+            // check for circular injection
+            $injectionKey = $namespace . '::' . $class . '[' . $serviceType . ']' . ' injected with ' .
+                  $method . '(' . $namespace . '::' . $name . ')';
+
+            // TODO why do we accept loops for normal services?
+            if (isset(self::$INJECTION_CALL_CACHE[$injectionKey]) && $serviceType != APFService::SERVICE_TYPE_NORMAL) {
+
+               // append error to log to provide debugging information
+               import('core::logging', 'Logger');
+               $log = &Singleton::getInstance('Logger');
+               /* @var $log Logger */
+               $instructions = '';
+               foreach (self::$INJECTION_CALL_CACHE as $injectionInstruction => $DUMMY) {
+                  $instructions .= PHP_EOL . $injectionInstruction;
+               }
+               $log->logEntry('php', '[DIServiceManager::getServiceObject()] Injection stack trace: ' . $instructions, LogEntry::SEVERITY_TRACE);
+
+               // print note with shorted information
+               throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Detected circular injection! ' .
+                     'Class "' . $class . '" from namespace "' . $namespace . '" with service type "' . $serviceType .
+                     '" was already configured with service object "' . $name . '" from namespace "' .
+                     $namespace . '"! Full stack trace can be taken from the logfile!', E_USER_ERROR);
+            } else {
+
+               // add the current run to the recursion detection array
+               self::$INJECTION_CALL_CACHE[$injectionKey] = true;
+
+               // get the dependent service object
+               $miObject = &self::getServiceObject($namespace, $name, $context, $language);
+
+               // inject the current service object with the created one
+               if (method_exists($serviceObject, $method)) {
+                  $serviceObject->$method($miObject);
+               } else {
+                  throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of service object "' . $name .
+                           '" from namespace "' . $namespace . '" cannot be accomplished to service object "' .
+                           $class . '" from namespace "' . $namespace . '"! Method ' . $method . '() is not implemented!',
+                     E_USER_ERROR);
+               }
+            }
+         }
       }
 
       // Often, there you have a services that depends on several other services (e.g. database connection). Thus,
@@ -256,7 +278,6 @@ final class DIServiceManager {
       // object before. this mechanism can be used for re-initialization on __wakeup() in case the property is
       // set to false (=reinitialization after session wake-up).
 
-      /* @var $serviceObject APFDIService */
       $setupMethod = $section->getValue('setupmethod');
       if (!empty($setupMethod)) {
          if (!$serviceObject->isInitialized()) {
@@ -288,20 +309,29 @@ final class DIServiceManager {
     * @param string $sectionName The name of the service (a.k.a. section name).
     * @param string $context The context of the current application.
     * @param string $language The language of the current application.
+    * @param string $cacheKey The cache key to check/find configuration in configuration cache
     * @return IniConfiguration The appropriate configuration.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 04.10.2010<br />
+    * Version 0.2, 15.07.2012 Jan Wiese (Introduced configuration cache and $cacheKey parameter)<br />
     */
-   private static function getServiceConfiguration($configNamespace, $sectionName, $context, $language) {
-      return ConfigurationManager::loadConfiguration(
+   private static function getServiceConfiguration($configNamespace, $sectionName, $context, $language, $cacheKey) {
+
+      // return cached version as much as possible to gain performance
+      if (isset(self::$SERVICE_CONFIG_CACHE[$cacheKey])) {
+         return self::$SERVICE_CONFIG_CACHE[$cacheKey];
+      }
+
+      self::$SERVICE_CONFIG_CACHE[$cacheKey] = ConfigurationManager::loadConfiguration(
          $configNamespace,
          $context,
          $language,
          Registry::retrieve('apf::core', 'Environment'),
          'serviceobjects.ini')
             ->getSection($sectionName);
-   }
 
+      return self::$SERVICE_CONFIG_CACHE[$cacheKey];
+   }
 }

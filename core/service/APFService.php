@@ -28,6 +28,7 @@
  * @author Christian Achatz
  * @version
  * Version 0.1, 27.08.2011<br />
+ * Version 0.2, 08.07.2012 (Added constant for service type "CACHED")
  */
 interface APFService {
 
@@ -181,4 +182,3 @@ interface APFDIService extends APFService {
 
 }
 
-?>

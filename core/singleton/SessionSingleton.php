@@ -43,10 +43,14 @@ class SessionSingleton extends Singleton {
    const SESSION_NAMESPACE = 'core::singleton::session';
 
    /**
-    * Stores the objects, that are requested as singletons.
-    * @var string[] The singleton cache.
+    * @var string[] Stores the objects, that are requested as singletons.
     */
    private static $CACHE = array();
+
+   /**
+    * @var SessionManager The session manager instance to retrieve the session objects from.
+    */
+   private static $SESSION_MANAGER;
 
    private function __construct() {
    }
@@ -83,23 +87,31 @@ class SessionSingleton extends Singleton {
 
       if (!isset(self::$CACHE[$cacheKey])) {
 
-         $sessMgr = new SessionManager(SessionSingleton::SESSION_NAMESPACE);
-         $cachedObject = $sessMgr->loadSessionData($cacheKey);
+         $cachedObject = self::getSessionManager()->loadSessionData($cacheKey);
 
-         if ($cachedObject !== null) {
-            self::$CACHE[$cacheKey] = unserialize($cachedObject);
-         } else {
+         if ($cachedObject === null) {
             if (!class_exists($className)) {
                throw new Exception('[SessionSingleton::getInstance()] Class "' . $className . '" '
                      . 'cannot be found! Maybe the class name is misspelt!', E_USER_ERROR);
             }
 
             self::$CACHE[$cacheKey] = new $className();
+         } else {
+            self::$CACHE[$cacheKey] = unserialize($cachedObject);
          }
-
       }
 
       return self::$CACHE[$cacheKey];
+   }
+
+   /**
+    * @return SessionManager
+    */
+   private static function getSessionManager() {
+      if (self::$SESSION_MANAGER === null) {
+         self::$SESSION_MANAGER = new SessionManager(SessionSingleton::SESSION_NAMESPACE);
+      }
+      return self::$SESSION_MANAGER;
    }
 
    /**
@@ -117,10 +129,9 @@ class SessionSingleton extends Singleton {
     */
    public static function saveObjects() {
       if (count(self::$CACHE) > 0) {
-         $sessMgr = new SessionManager(SessionSingleton::SESSION_NAMESPACE);
-
+         $session = self::getSessionManager();
          foreach (self::$CACHE as $key => $DUMMY) {
-            $sessMgr->saveSessionData($key, serialize(self::$CACHE[$key]));
+            $session->saveSessionData($key, serialize(self::$CACHE[$key]));
          }
       }
    }

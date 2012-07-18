@@ -62,6 +62,7 @@ final class ServiceManager {
     * Version 0.5, 25.02.2008 (Added performance optimization for the SessionSingleton objects)<br />
     * Version 0.6, 10.08.2009 (Added lazy import, so that the developer must not care about the inclusion of the component.)<br />
     * Version 0.7, 04.03.2011 (Refactored to static method; enhanced code)<br />
+    * Version 0.8, 07.07.2012 Jan Wiese <jw-lighting@ewetel.net> (Corrected service retrieval to respect context and language each time.)<br />
     */
    public static function &getServiceObject($namespace, $serviceName, $context, $language, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
 
@@ -72,7 +73,7 @@ final class ServiceManager {
       // In 1.15, creating instances of the same service implementation within different contexts
       // resulted in equal instances instead of different ones.
       if ($instanceId === null) {
-         $instanceId = $namespace . '::' . $serviceName . '::' . $context . '::' . $language;
+         $instanceId = $namespace . '::' . $serviceName . '|' . $context . '_' . $language;
       }
 
       $serviceObject = null;
@@ -128,13 +129,7 @@ final class ServiceManager {
     */
    public static function &getAndInitServiceObject($namespace, $serviceName, $context, $language, $initParam, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
       $serviceObject = &self::getServiceObject($namespace, $serviceName, $context, $language, $type, $instanceId);
-
-      if ($serviceObject !== null && $serviceObject instanceof APFService) {
-         $serviceObject->init($initParam);
-      } else {
-         throw new InvalidArgumentException('[ServiceManager::getAndInitServiceObject()] The service object (' . $serviceName . ') doesn\'t support initialization!', E_USER_WARNING);
-      }
-
+      $serviceObject->init($initParam);
       return $serviceObject;
    }
 

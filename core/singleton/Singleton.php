@@ -85,13 +85,10 @@ class Singleton {
                   . 'found! Maybe the class name is mis-spelt!', E_USER_ERROR);
          }
 
-         // create instance using the globals array.
          self::$CACHE[$cacheKey] = new $className();
-
       }
 
       return self::$CACHE[$cacheKey];
-
    }
 
 }
