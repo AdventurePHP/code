@@ -46,7 +46,7 @@ OutputFilterChain::getInstance()->appendFilter(new ChainedGenericOutputFilter())
  * Version 0.5, 12.04.2011 (Introduced constants for action types to be more type safe)<br />
  */
 abstract class AbstractFrontcontrollerAction extends APFObject {
-   
+
    const TYPE_PRE_PAGE_CREATE = 'prepagecreate';
    const TYPE_POST_PAGE_CREATE = 'postpagecreate';
    const TYPE_PRE_TRANSFORM = 'pretransform';
@@ -441,7 +441,7 @@ class Frontcontroller extends APFObject {
     *
     * @param string $namespace Namespace of the templates.
     * @param string $template Name of the templates.
-    * @return The content of the transformed page.
+    * @return string The content of the transformed page.
     *
     * @author Christian Achatz
     * @version
@@ -550,9 +550,9 @@ class Frontcontroller extends APFObject {
     * Creates the url representation of a given namespace.
     *
     * @param string $namespaceUrlRepresenation The url string.
-    * @return The namespace of the action.
+    * @return string The namespace of the action.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 03.06.2007<br />
     */
@@ -647,9 +647,9 @@ class Frontcontroller extends APFObject {
       if ($actionConfig == null) {
          $env = Registry::retrieve('apf::core', 'Environment');
          throw new InvalidArgumentException('[Frontcontroller::addAction()] No config '
-                 . 'section for action key "' . $name . '" available in configuration file "' . $env
-                 . '_actionconfig.ini" in namespace "' . $namespace . '" and context "'
-                 . $this->getContext() . '"!', E_USER_ERROR);
+               . 'section for action key "' . $name . '" available in configuration file "' . $env
+               . '_actionconfig.ini" in namespace "' . $namespace . '" and context "'
+               . $this->getContext() . '"!', E_USER_ERROR);
       }
 
       // include action implementation
@@ -670,8 +670,8 @@ class Frontcontroller extends APFObject {
       // check for class being present
       if (!class_exists($actionClass) || !class_exists($inputClass)) {
          throw new InvalidArgumentException('[Frontcontroller::addAction()] Action class with name "'
-                 . $actionClass . '" or input class with name "' . $inputClass
-                 . '" could not be found. Please check your action configuration file!', E_USER_ERROR);
+               . $actionClass . '" or input class with name "' . $inputClass
+               . '" could not be found. Please check your action configuration file!', E_USER_ERROR);
       }
 
       // init action
@@ -689,8 +689,8 @@ class Frontcontroller extends APFObject {
 
       // merge input params with the configured params (params included in the URL are kept!)
       $input->setAttributes(array_merge(
-                      $this->generateParamsFromInputConfig($actionConfig->getValue('FC.InputParams')),
-                      $params));
+         $this->generateParamsFromInputConfig($actionConfig->getValue('FC.InputParams')),
+         $params));
 
       $input->setAction($action);
       $action->setInput($input);
@@ -764,13 +764,15 @@ class Frontcontroller extends APFObject {
     */
    protected function runActions($type = 'prepagecreate') {
 
+      /* @var $t BenchmarkTimer */
       $t = &Singleton::getInstance('BenchmarkTimer');
 
       foreach ($this->actionStack as $actionHash => $DUMMY) {
 
          // only execute, when the current action has a suitable type
          if ($this->actionStack[$actionHash]->getType() == $type
-                 && $this->actionStack[$actionHash]->isActive()) {
+               && $this->actionStack[$actionHash]->isActive()
+         ) {
 
             $id = get_class($this->actionStack[$actionHash]) . '::run()';
             $t->start($id);
@@ -783,4 +785,3 @@ class Frontcontroller extends APFObject {
    }
 
 }
-?>

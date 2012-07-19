@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -24,7 +23,7 @@ import('core::configuration::provider', 'BaseConfiguration');
 /**
  * @package core::database::configuration
  * @class StatementConfiguration
- * 
+ *
  * Implements a configuration abstraction for database statements stored within files.
  * Stored statements are used within the <em>executeStatement()</em> methods of the
  * <em>AbstractDatabaseHandler</em> implementations.
@@ -61,5 +60,3 @@ class StatementConfiguration extends BaseConfiguration implements Configuration 
    }
 
 }
-
-?>

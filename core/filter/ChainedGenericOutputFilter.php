@@ -125,4 +125,3 @@ class ChainedGenericOutputFilter implements ChainedContentFilter {
    }
 
 }
-?>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -50,9 +49,9 @@ class StatementConfigurationProvider extends BaseConfigurationProvider implement
       }
 
       throw new ConfigurationException('[StatementConfigurationProvider::loadConfiguration()] '
-              . 'Statement with namepace "' . $namespace . '", context "' . $context . '", '
-              . ' language "' . $language . '", environment "' . $environment . '", and name '
-              . '"' . $name . '" cannot be loaded!', E_USER_ERROR);
+            . 'Statement with namepace "' . $namespace . '", context "' . $context . '", '
+            . ' language "' . $language . '", environment "' . $environment . '", and name '
+            . '"' . $name . '" cannot be loaded!', E_USER_ERROR);
    }
 
    public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
@@ -62,23 +61,22 @@ class StatementConfigurationProvider extends BaseConfigurationProvider implement
       // create file path if necessary to avoid "No such file or directory" errors
       $this->createFilePath($fileName);
 
+      /* @var $config StatementConfiguration */
       if (file_put_contents($fileName, $config->getStatement()) === false) {
          throw new ConfigurationException('[StatementConfigurationProvider::saveConfiguration()] '
-                 . 'Configuration with name "' . $fileName . '" cannot be saved! Please check your '
-                 . 'file system configuration, the file name, or your environment configuration.');
+               . 'Configuration with name "' . $fileName . '" cannot be saved! Please check your '
+               . 'file system configuration, the file name, or your environment configuration.');
       }
    }
-   
+
    public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
       if (unlink($fileName) === false) {
          throw new ConfigurationException('[StatementConfigurationProvider::deleteConfiguration()] '
-                                          . 'Configuration with name "' . $fileName . '" cannot be deleted! Please check your '
-                                          . 'file system configuration, the file name, or your environment configuration.');
+               . 'Configuration with name "' . $fileName . '" cannot be deleted! Please check your '
+               . 'file system configuration, the file name, or your environment configuration.');
       }
    }
 
 }
-
-?>

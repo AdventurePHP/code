@@ -36,7 +36,7 @@ class errorpage_v1_controller extends base_controller {
     *
     * Displays the error page.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 21.01.2007<br />
     * Version 0.2, 26.12.2008 (Messages after the trigger_error() are not displayed any more)<br />

@@ -43,7 +43,7 @@
  * @version
  * Version 0.1, 31.12.2006<br />
  * Version 0.2, 01.01.2007<br />
- * Version 0.3, 29.12.2009 (Refeactoring due to new HTML markup for the process report.)<br />
+ * Version 0.3, 29.12.2009 (Refactoring due to new HTML markup for the process report.)<br />
  */
 final class BenchmarkTimer {
 
@@ -173,6 +173,7 @@ final class BenchmarkTimer {
     * This method is used to starts a new benchmark timer.
     *
     * @param string $name The (unique!) name of the benchmark tag.
+    * @throws InvalidArgumentException In case the given name is null.
     *
     * @author Christian Schäfer
     * @version
@@ -212,6 +213,7 @@ final class BenchmarkTimer {
     * Stops the benchmark timer, started with start().
     *
     * @param string $name The (unique!) name of the benchmark tag.
+    * @throws InvalidArgumentException In case the named process is not running.
     *
     * @author Christian Schäfer
     * @version
@@ -800,7 +802,7 @@ final class BenchmarkProcess {
     *
     * Returns the process' runtime.
     *
-    * @return The runtime of the process in seconds.
+    * @return string The runtime of the process in seconds.
     *
     * @author Christian Schäfer
     * @version

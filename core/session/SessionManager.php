@@ -196,5 +196,3 @@ final class SessionManager {
    }
 
 }
-
-?>
