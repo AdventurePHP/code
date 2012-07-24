@@ -128,7 +128,7 @@ class ForwardMessageManager extends APFObject {
 
       // in case no groups are applied, all groups will be displayed
       if (count($groups) === 0) {
-         $groups = $this->messages;
+         $groups = array_keys($this->messages);
       }
 
       $messages = array();
