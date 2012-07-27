@@ -6,7 +6,7 @@ import('extensions::arraypager::biz', 'ArrayPagerManager');
  * @class ArrayPagerManagerFabric
  *
  * Implements the factory of the array-pager manager. Initializes concrete ArrayPagerManager
- * instances and caches them for futher usage.
+ * instances and caches them for further usage.
  * Application sample:
  * <pre>$aPMF = $this->getServiceObject ('extensions::arraypager::biz','ArrayPagerManagerFabric');
  * $aPM = $aPMF->getArrayPagerManager ('{ConfigSection}');</pre>
@@ -28,7 +28,7 @@ final class ArrayPagerManagerFabric extends APFObject {
     *
     * Returns a reference on the desired pager manager. Initializes newly created ones.
     *
-    * @param string $configString The configuration/initialization string (configuration section name).
+    * @param string $stringConfig The configuration/initialization string (configuration section name).
     * @return ArrayPagerManager Reference on the desired PagerManager instance.
     *
     * @author Lutz Mahlstedt
@@ -45,7 +45,7 @@ final class ArrayPagerManagerFabric extends APFObject {
          $this->pagers[$stringPagerHash] = $this->getAndInitServiceObject('extensions::arraypager::biz',
             'ArrayPagerManager',
             $stringConfig,
-            'NORMAL'
+            APFService::SERVICE_TYPE_NORMAL
          );
       }
 
@@ -53,5 +53,3 @@ final class ArrayPagerManagerFabric extends APFObject {
    }
 
 }
-
-?>

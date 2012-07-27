@@ -202,7 +202,7 @@ class AdvancedBBCodeParser extends APFObject {
             import($namespace, $class);
 
             // convert definition and initialize provider
-            $this->provider[$providerName] = &$this->getServiceObject($namespace, $class, 'NORMAL');
+            $this->provider[$providerName] = &$this->getServiceObject($namespace, $class, APFService::SERVICE_TYPE_NORMAL);
 
          }
 
@@ -245,5 +245,3 @@ class AdvancedBBCodeParser extends APFObject {
    }
 
 }
-
-?>

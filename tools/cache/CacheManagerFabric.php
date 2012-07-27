@@ -76,7 +76,7 @@ final class CacheManagerFabric extends APFObject {
 
          // create cache manager
          $this->cacheManagerCache[$configSection] =
-               $this->getAndInitServiceObject('tools::cache', 'CacheManager', $options, 'NORMAL');
+               $this->getAndInitServiceObject('tools::cache', 'CacheManager', $options, APFService::SERVICE_TYPE_NORMAL);
 
       }
 

@@ -35,8 +35,8 @@ import('modules::genericormapper::data', 'GenericORRelationMapper');
  * <p/>
  * Further, the factory must be created using the service manager. Sample:
  * <pre>$gormFact = &$this->getServiceObject('modules::genericormapper::data','GenericORMapperFactory');
- * $gormFact = &$this->getServiceObject('modules::genericormapper::data','GenericORMapperFactory','NORMAL');
- * $gormFact = &$this->getServiceObject('modules::genericormapper::data','GenericORMapperFactory','SESSIONSINGLETON');</pre>
+ * $gormFact = &$this->getServiceObject('modules::genericormapper::data', 'GenericORMapperFactory', APFService::SERVICE_TYPE_NORMAL);
+ * $gormFact = &$this->getServiceObject('modules::genericormapper::data', 'GenericORMapperFactory', APFService::SERVICE_TYPE_SESSION_SINGLETON);</pre>
  *
  * @author Christian Achatz
  * @version
@@ -110,10 +110,10 @@ final class GenericORMapperFactory extends APFObject {
       // create and initialize a GORM mapper instance
       if (!isset($this->orMapperCache[$cacheKey])) {
          $this->orMapperCache[$cacheKey] =
-                 &$this->getServiceObject(
-                         'modules::genericormapper::data',
-                         'GenericORRelationMapper',
-                         'NORMAL');
+               $this->getServiceObject(
+                  'modules::genericormapper::data',
+                  'GenericORRelationMapper',
+                  APFService::SERVICE_TYPE_NORMAL);
 
          // as of 1.14 the mapper is explicitly initialized by the provided setter
          // methods to be able to directly create the service via the DI container
@@ -129,4 +129,3 @@ final class GenericORMapperFactory extends APFObject {
    }
 
 }
-?>

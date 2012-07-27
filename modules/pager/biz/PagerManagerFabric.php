@@ -62,8 +62,8 @@ final class PagerManagerFabric extends APFObject {
 
       // initialize desired pager lazily
       if (!isset($this->__Pager[$pagerHash])) {
-             $this->__Pager[$pagerHash] = $this->getAndInitServiceObject('modules::pager::biz', 'PagerManager', $configString, 'NORMAL');
-         }
+         $this->__Pager[$pagerHash] = $this->getAndInitServiceObject('modules::pager::biz', 'PagerManager', $configString, APFService::SERVICE_TYPE_NORMAL);
+      }
 
       return $this->__Pager[$pagerHash];
 
