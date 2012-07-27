@@ -274,10 +274,8 @@ final class dateTimeManager {
       // Schaltjahr ber�cksichtigen
       if ((date('Y') % 4) == 0) {
          $TageImMonat[2] = 29;
-         // end if
       } else {
          $TageImMonat[2] = 28;
-         // end else
       }
 
       $TageImMonat[3] = 31;
@@ -387,5 +385,3 @@ final class dateTimeManager {
    }
 
 }
-
-?>

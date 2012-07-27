@@ -22,13 +22,13 @@ import('core::session', 'SessionManager');
 import('tools::http', 'HeaderManager');
 
 /**
- *  @package modules::captcha::biz::actions
- *  @class ShowCaptchaImageAction
+ * @package modules::captcha::biz::actions
+ * @class ShowCaptchaImageAction
  *
  *  Front controller action that displays a captcha image.
  *
- *  @author Christian Achatz
- *  @version
+ * @author Christian Achatz
+ * @version
  *  Version 0.1, 20.07.2008<br />
  */
 class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
@@ -40,12 +40,12 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
    private $__Fonts = array('XFILES.TTF');
 
    /**
-    *  @public
+    * @public
     *
     *  Implements the front controller's run method.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 20.07.2008<br />
     */
    public function run() {
@@ -98,4 +98,3 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
    }
 
 }
-?>
