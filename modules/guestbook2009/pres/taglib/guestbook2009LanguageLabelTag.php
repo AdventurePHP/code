@@ -18,22 +18,33 @@
  *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  *  -->
  */
-import('modules::guestbook2009::pres::taglib', 'langlabel_base');
 
 /**
  * @package modules::guestbook2009::pres
- * @class template_taglib_langlabel
+ * @class lang_base
  *
- * Displays language labels within templates.
+ * Implements the wrapper taglib for displaying the lang dependent labels, that can be
+ * configuted in configuration files.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 02.06.2009<br />
+ * Version 0.1, 21.05.2009<br />
  */
-class template_taglib_langlabel extends langlabel_base {
+class Guestbook2009LanguageLabelTag extends html_taglib_getstring {
 
+   /**
+    * @public
+    *
+    * Presets the attributes needed by the html_taglib_getstring class to be able to only
+    * have to provide the label key in the templates (saves your fingers!).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 21.05.2009<br />
+    */
    public function __construct() {
-      parent::__construct();
+      $this->setAttribute('namespace', 'modules::guestbook2009::pres');
+      $this->setAttribute('config', 'language');
    }
 
 }

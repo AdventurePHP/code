@@ -1,5 +1,10 @@
 <@controller namespace="modules::guestbook2009::pres::controller" class="list_controller" @>
-<core:addtaglib namespace="modules::guestbook2009::pres::taglib" class="html_taglib_langlabel" prefix="html" name="langlabel" />
+<core:addtaglib
+      namespace="modules::guestbook2009::pres::taglib"
+      class="Guestbook2009LanguageLabelTag"
+      prefix="html"
+      name="langlabel"
+/>
 <div class="gb--list-entries">
    <div class="gb--list-text">
       <html:langlabel entry="list.headline.start" /><a href="<html:placeholder name="createlink" />" title="<html:langlabel entry="list.headline.link.title" />"><html:langlabel entry="list.headline.link.text" /></a><html:langlabel entry="list.headline.end" />
@@ -12,7 +17,12 @@
    </div>
 </div>
 <html:template name="entry">
-      <template:addtaglib namespace="modules::guestbook2009::pres::taglib" class="template_taglib_langlabel" prefix="template" name="langlabel" />
+      <template:addtaglib
+            namespace="modules::guestbook2009::pres::taglib"
+            class="Guestbook2009LanguageLabelTag"
+            prefix="template"
+            name="langlabel"
+      />
       <div class="gb--list-entry">
          <div class="gb--list-entry-header">
             <h4><template:placeholder name="title" /></h4>

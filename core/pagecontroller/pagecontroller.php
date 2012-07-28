@@ -2226,7 +2226,7 @@ class html_taglib_template extends Document {
 
 /**
  * @package core::pagecontroller
- * @class ui_getstring
+ * @class html_taglib_getstring
  * @abstract
  *
  * Implements a base class for the taglibs &lt;html:getstring /&gt; and
@@ -2247,7 +2247,7 @@ class html_taglib_template extends Document {
  * @version
  * Version 0.1, 21.04.2006<br />
  * Version 0.2, 17.09.2009 (Refactored due to form taglib changes)<br />
- * Version 0.3, 11.02.2012 (Added ui_getstring to core (refactoring!))
+ * Version 0.3, 11.02.2012 (Added html_taglib_getstring to core (refactoring!))
  */
 class html_taglib_getstring extends Document {
 

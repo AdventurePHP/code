@@ -1,6 +1,11 @@
 <@controller namespace="modules::guestbook2009::pres::controller" class="create_controller" @>
 <core:addtaglib namespace="tools::form::taglib" class="html_taglib_form" prefix="html" name="form" />
-<core:addtaglib namespace="modules::guestbook2009::pres::taglib" class="html_taglib_langlabel" prefix="html" name="langlabel" />
+<core:addtaglib
+      namespace="modules::guestbook2009::pres::taglib"
+      class="Guestbook2009LanguageLabelTag"
+      prefix="html"
+      name="langlabel"
+/>
 <div class="gb--create-entry">
    <div class="gb--create-text">
       <html:langlabel entry="form.headline.start" /><a href="<html:placeholder name="overviewlink" />" title="<html:langlabel entry="form.headline.link.title" />"><html:langlabel entry="form.headline.link.text" /></a><html:langlabel entry="form.headline.end" />

@@ -23,7 +23,7 @@
  * @package tools::form::taglib
  * @class form_getstring
  *
- * Extends the ui_getstring class with the methods, that need to be implemented
+ * Extends the html_taglib_getstring class with the methods, that need to be implemented
  * for the new form taglibs. Directly uses the functionality of the base class.
  *
  * @author Christian Achatz
