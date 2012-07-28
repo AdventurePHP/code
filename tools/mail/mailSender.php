@@ -195,12 +195,10 @@ class mailSender extends APFObject {
 
          for ($i = 0; $i < count($this->__CCRecipients); $i++) {
             $ccRecipients[] = '"' . ($this->__CCRecipients[$i]['Name']) . '" <' . ($this->__CCRecipients[$i]['EMail']) . '>';
-            // end for
          }
 
          $mailHeader .= 'CC: ' . implode(', ', $ccRecipients) . '' . $this->__EOL;
 
-         // end if
       }
 
       // add bcc recipients

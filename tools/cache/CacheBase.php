@@ -62,5 +62,4 @@ abstract class CacheBase extends APFObject {
 
    }
 
-   // end class
 }

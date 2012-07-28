@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -45,7 +44,5 @@ interface UmgtRedirectUrlProvider {
     * @version
     * Version 0.1, 01.06.2011<br />
     */
-   function getRedirectUrl();
+   public function getRedirectUrl();
 }
-
-?>

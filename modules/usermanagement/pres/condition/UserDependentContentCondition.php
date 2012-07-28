@@ -37,17 +37,17 @@ interface UserDependentContentCondition {
     * @param UmgtUser $user The current user.
     * @return boolean true in case the condition matches, false otherwise.
     */
-   function matches($conditionKey, UmgtUser $user = null);
+   public function matches($conditionKey, UmgtUser $user = null);
 
    /**
     * @return string The condition key.
     */
-   function getConditionIdentifier();
+   public function getConditionIdentifier();
 
    /**
     * @param array $options A set of options that are defined for the dicision (e.g. groups).
     */
-   function setOptions(array $options);
+   public function setOptions(array $options);
 }
 
 /**
@@ -76,5 +76,3 @@ abstract class UserDependentContentConditionBase extends APFObject {
    }
 
 }
-
-?>

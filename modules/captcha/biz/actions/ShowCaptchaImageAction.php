@@ -93,7 +93,6 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
       // free memory
       imagedestroy($img);
 
-      // end program
       exit();
    }
 

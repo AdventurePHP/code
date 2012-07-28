@@ -416,7 +416,7 @@ interface LinkScheme {
     * @param Url $url The url to generate.
     * @return string The result url.
     */
-   function formatLink(Url $url);
+   public function formatLink(Url $url);
 
    /**
     * @param Url $url The url representation.
@@ -425,11 +425,11 @@ interface LinkScheme {
     * @param array $params The action's parameters.
     * @return string The result url.
     */
-   function formatActionLink(Url $url, $namespace, $name, array $params = array());
+   public function formatActionLink(Url $url, $namespace, $name, array $params = array());
 
-   function setEncodeAmpersands($encode);
+   public function setEncodeAmpersands($encode);
 
-   function getEncodeAmpersands();
+   public function getEncodeAmpersands();
 }
 
 /**
@@ -902,4 +902,3 @@ if (Registry::retrieve('apf::core', 'URLRewriting', false)) {
 } else {
    LinkGenerator::setLinkScheme(new DefaultLinkScheme());
 }
-?>

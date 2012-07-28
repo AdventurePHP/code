@@ -176,7 +176,7 @@ final class SessionManager {
     * @version
     * Version 0.1, 08.03.2006<br />
     */
-   function deleteSessionData($attribute) {
+   public function deleteSessionData($attribute) {
       unset($_SESSION[$this->namespace][$attribute]);
    }
 

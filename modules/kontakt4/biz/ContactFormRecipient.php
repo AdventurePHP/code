@@ -35,9 +35,6 @@ class ContactFormRecipient extends APFObject {
    private $name = '';
    private $email = '';
 
-   function ContactFormRecipient() {
-   }
-
    public function setId($id) {
       $this->id = $id;
    }
