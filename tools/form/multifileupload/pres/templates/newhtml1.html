@@ -1,0 +1,94 @@
+<script>
+   $(".uploadlabel").css("display", "block");
+
+   function deletefile(link, elem) {
+
+      $(".confirm_delete").dialog( "destroy" );
+      $(".confirm_delete").dialog({
+         modal: true,height:240,width:400,
+         buttons: {
+            "Löschen": function() {
+               $( this ).dialog( "close" );
+               var jqxhr = $.ajax({ url: link })
+               .success(function() { $(elem).parent().parent().remove(); })
+            },
+            "Nicht löschen" : function() {
+               $( this ).dialog( "close" );
+               return false;
+            }
+         }
+      });
+      return false;
+   }
+
+   $(function () {
+      $('#file_upload').fileUploadUI({
+         url: "/business/?view=datei&datei=produkte&tools_form_multifileupload-action:multifileupload=formname:file_upload|name:testfield",
+         fieldName: "testfield",
+         uploadTable: $('#file_upload_files_upload_table'),
+         downloadTable: $('#file_upload_files_download_table'),
+         buildUploadRow: 
+            function (files, index) {
+            return $('<tr><td class="file_upload_preview"></td><td>' + files[index].name +
+               '</td><td class="file_upload_progress"><div></div></td>'+
+               '<td class="value">0 %</td>'+
+               '</tr>');},
+         buildDownloadRow: 
+            function (file) {
+            var bild="";
+            var regexp=new RegExp(/^image\/(gif|jpeg|png|jpg)$/);
+            if (regexp.test(file.type)) {
+               bild='<img src=\"'+file.filelink+'\" alt=\"'+file.name+'\" \/>';
+            }
+            return $('<tr><td class="file_upload_preview">'+bild+' <\/td><td><a href=\"'+file.filelink+'\" target="_blank" >' + file.name + '<\/a><\/td>'+
+               '<td>'+file.filesize+'<\/td>'+
+               '<td><a href=\"'+file.deletelink+'\" target="_blank" onclick="return deletefile(\''+file.deletelink+'\',this)" ><div class="ui-state-default ui-corner-all" title="Löschen"><span class="ui-icon ui-icon-trash">Löschen<\/span><\/div><\/a ><\/td>'+
+               '<\/tr>');},
+                   
+         dropZone: $("#testfield_file_upload_container"),
+         parseResponse: function (xhr) {
+            if (typeof xhr.responseText !== "undefined") {
+               return $.parseJSON(xhr.responseText);
+            } else {
+               return $.parseJSON(xhr.contents().text());
+            }
+         },
+         onProgress: function (event, files, index, xhr, handler) {
+            if (handler.progressbar) {
+               var value=parseInt(event.loaded / event.total * 100, 10);
+               handler.uploadRow.find(".value").text(value+"%");
+               handler.progressbar.progressbar('value',value);
+            }
+         },
+         beforeSend : function (event, files, index, xhr, handler, callBack) {
+                      
+            if (files[index].size > 10485760) {
+               $( ".filesize_dialog" ).dialog({
+                  modal: true,height:220,width:300,
+                  buttons: {
+                     "Ok": function() {
+                        $( this ).dialog( "close" );
+                     }
+                  }
+               });
+               handler.uploadRow.remove();
+               return;
+            }
+            var regexp = /\.(pdf)|(x-download)|(gif)|(jpeg)|(jpg)|(png)$/i;
+            if (!regexp.test(files[index].name)) {
+               $( ".filetype_dialog" ).dialog({
+                  modal: true,height:220,width:300,
+                  buttons: {
+                     "Ok": function() {
+                        $( this ).dialog( "close" );
+                     }
+                  }
+               });
+               handler.uploadRow.remove();
+               return;
+            }
+            callBack();
+         }
+      });
+   });
+</script>

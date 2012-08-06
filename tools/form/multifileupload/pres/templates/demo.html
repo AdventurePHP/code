@@ -1,0 +1,34 @@
+<@controller namespace="tools::form::multifileupload::pres::documentcontroller" class="DemoController" @>
+
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>Multi file upload demo</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addcss" />
+      <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="addjs" />
+
+      <htmlheader:addjs namespace="tools::form::multifileupload::pres::js" filename="jquery-1.6.3.min" priority="100" />
+      <htmlheader:addjs namespace="tools::form::multifileupload::pres::js" filename="jquery-ui-1.8.21.custom.min"  priority="99" />
+
+      <htmlheader:addjs namespace="tools::form::multifileupload::pres::js" filename="jquery.fileupload" priority="90" />
+      <htmlheader:addjs namespace="tools::form::multifileupload::pres::js" filename="jquery.fileupload-ui" priority="89" />
+      <htmlheader:addcss namespace="tools::form::multifileupload::pres::css" filename="jquery.fileupload-ui" />
+
+      <htmlheader:addcss namespace="tools::form::multifileupload::pres::css::ui-lightness" filename="jquery-ui-1.8.21.custom" />
+
+      <core:addtaglib namespace="extensions::htmlheader::pres::taglib" prefix="htmlheader" class="gethead" />
+      <htmlheader:gethead />
+
+   </head>
+   <body>
+      <core:addtaglib namespace="tools::form::taglib" prefix="html" class="form" />
+      <html:form name="file_upload" >
+         <form:addtaglib namespace="tools::form::multifileupload::pres::taglib" prefix="form" class="multifileupload" />
+         <form:multifileupload name="testfield"/>
+         
+         <form:button name="send" value="Send"/>
+      </html:form>
+   </body>
+</html>
