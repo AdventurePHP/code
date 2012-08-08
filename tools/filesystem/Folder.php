@@ -78,7 +78,7 @@ final class Folder extends FilesystemItem {
      * @param   Folder $folder The Folder where the copy should be stored
      * @param   string $copyName The new name of the copy (optional)
      * @param   boolean $getCopy If true, this method returns the copy (optional)
-     * @return  Folder|true
+     * @return  Folder The domain object for further usage 
      *
      * @author  Nicolas Pecher
      * @version Version 0.1, 01.05.2012
@@ -87,27 +87,29 @@ final class Folder extends FilesystemItem {
         $copyPath = ($folder->getPath()) . '/';
         $copyPath .= ($copyName !== null) ? $copyName : $this->getName();
         
-        $copy = new Folder($copyPath);
+        $copy = new Folder();
+        $copy->create($copyPath);
         
         $children = $this->getContent();
         foreach ($children as $child) {
-            $child->copyTo($copy);
+            $child->createCopy($copy);
         }
         
-        return ($getCopy === true) ? $copy : true;
+        return ($getCopy === true) ? $copy : $this;
     }
 
     /**
      * @public
      *
      * @param   Folder $folder The Folder into which it should be moved 
-     * @return  boolean
+     * @return  Folder The domain object for further usage     
      *
      * @author  Nicolas Pecher
      * @version Version 0.1, 01.05.2012
      */    
     public function moveTo(Folder $folder) {
-        $newFolder = new Folder($folder->getPath() . '/' . $this->getName());
+        $newFolder = new Folder();
+        $newFolder->create($folder->getPath() . '/' . $this->getName());
         
         $children = $this->getContent();
         foreach ($children as $child) {
@@ -116,7 +118,7 @@ final class Folder extends FilesystemItem {
         
         $this->delete();
         $this->basePath = $folder->getPath();
-        return true;
+        return $this;
     }
 
     /**
@@ -152,20 +154,23 @@ final class Folder extends FilesystemItem {
      *
      * Deletes child-files, -directories and itself
      *
-     * @return  boolean
+     * @return  Folder The domain object for further usage 
      *
      * @author  Nicolas Pecher
      * @version Version 0.1, 01.05.2012
      */    
     public function delete() {
         $this->deleteContent();
-        return rmdir($this->getPath());
+        rmdir($this->getPath());
+        return $this;
     } 
 
     /**
      * @public
      *
      * Deletes only the child-files and -directories
+     *
+     * @return  Folder The domain object for further usage 
      *
      * @author  Nicolas Pecher
      * @version Version 0.1, 01.05.2012
@@ -175,6 +180,7 @@ final class Folder extends FilesystemItem {
         foreach ($children as $child) {
             $child->delete();
         }
+        return $this;
     }   
 
     /**
