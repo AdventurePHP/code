@@ -18,6 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+ 
 import('tools::filesystem', 'FilesystemItem');
 import('tools::http', 'HeaderManager');
 
@@ -27,267 +28,270 @@ import('tools::http', 'HeaderManager');
  *
  * @author  Nicolas Pecher
  * @version Version 0.1, 30.04.2012
- */
+ */ 
 class File extends FilesystemItem {
 
-   /**
-    * @private
-    * @var resource A file pointer resource
-    */
-   protected $fileHandle = null;
+    /**
+     * @private
+     * @var resource A file pointer resource
+     */
+    protected $fileHandle = null;
 
-   /**
-    * @private
-    * @var string The content of the file
-    */
-   protected $content = null;
+    /**
+     * @private
+     * @var string The content of the file
+     */    
+    protected $content = null;
 
-   /**
-    * @private
-    * @var string The mime content type of the file
-    */
-   protected $contentType = null;
+    /**
+     * @private
+     * @var string The mime type of the file
+     */    
+    protected $mimeType = null;
+    
+    /**
+     * @public
+     *
+     * @param   string $path A path that will be used as filepath for the new file
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 06.08.2012
+     */     
+    public function create($path) {
+        if (!is_file($path)) {
+            $this->fileHandle = fopen($path, "w+");
+        }
+        $this->open($path);
+        return $this;
+    }
+    
+    /**
+     * @public
+     *
+     * @param   string $path The path to the file that should be opened
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 06.08.2012
+     */     
+    public function open($path) {
+    
+        if (!is_file($path)) {
+            throw new FilesystemException('[File::open()] A file with the passed '
+                . 'path does not exists.', E_USER_ERROR);
+        }
+        
+        if (!is_resource($this->fileHandle)) {
+            $this->fileHandle = fopen($path, "r+");
+        }
+        
+        $stat = stat($path);
+        $this->content = file_get_contents($path);
+        $this->owner = $stat['uid'];
+        $this->permissions = $stat['mode'];
+        
+        $pathParts = pathinfo($path);
+        $this->name = $pathParts['basename'];
+        $this->basePath = $pathParts['dirname']; 
+        
+        // check if fileinfo extension is available
+        if (extension_loaded('fileinfo')) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $this->mimeType = finfo_file($finfo, $this->getPath()); 
+        } 
+        
+        return $this;
+             
+    }
+    
+    /**
+     * @public
+     *
+     * Closes the opened file handle
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 01.05.2012
+     */        
+    public function __destruct() {
+        if (is_resource($this->fileHandle)) {
+            fclose($this->fileHandle);
+        }
+    }
 
-   /**
-    * @public
-    *
-    * @param   string $path A path that will be used as filepath for the new file
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 06.08.2012
-    */
-   public function create($path) {
-      if (!is_file($path)) {
-         $this->fileHandle = fopen($path, "w+");
-      }
-      $this->open($path);
-      return $this;
-   }
+    /**
+     * @public
+     *
+     * @param   Folder $folder The Folder where the copy should be stored
+     * @param   string $copyName The new name of the copy (optional)
+     * @param   boolean $getCopyObject If true, this method returns the copy (optional)
+     * @return  boolean|File
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 01.05.2012
+     */        
+    public function createCopy(Folder $folder, $copyName = null, $getCopy = true) {  
+                  
+        $copyPath = $folder->getPath() . '/';
+        $copyPath .= ($copyName !== null) ? $copyName : $this->getName();
+        
+        $result = copy($this->getPath(), $copyPath);
 
-   /**
-    * @public
-    *
-    * @param   string $path The path to the file that should be opened
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 06.08.2012
-    */
-   public function open($path) {
+        if ($getCopy === false || $result === false) {
+            return $result;
+        }
+            
+        return new File($copyPath);
+        
+    }
 
-      if (!is_file($path)) {
-         throw new FilesystemException('[File::open()] A file with the passed '
-               . 'path does not exists.', E_USER_ERROR);
-      }
+    /**
+     * @public
+     *
+     * @param   Folder $folder The Folder into which it should be moved 
+     * @return  boolean
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 01.05.2012
+     */        
+    public function moveTo(Folder $folder) {
+        if (copy($this->getPath(), $folder->getPath() . '/' . $this->getName()) === false) {
+            return false;
+        }
+        $this->delete();
+        $this->basePath = $folder->getPath();
+        return $this;        
+    }
 
-      if (!is_resource($this->fileHandle)) {
-         $this->fileHandle = fopen($path, "r+");
-      }
+    /**
+     * @public
+     *
+     * @return  boolean
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 01.05.2012
+     */        
+    public function delete() {
+        $this->__destruct();
+        return unlink($this->getPath());
+    }
 
-      $stat = stat($path);
-      $this->content = file_get_contents($path);
-      $this->owner = $stat['uid'];
-      $this->permissions = $stat['mode'];
+    /**
+     * @public
+     *
+     * @return  string The content of the file
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 01.05.2012
+     */        
+    public function getContent() {
+        return $this->content;
+    }
 
-      $pathParts = pathinfo($path);
-      $this->name = $pathParts['basename'];
-      $this->basePath = $pathParts['dirname'];
+    /**
+     * @public
+     *
+     * @return  int The size in Bytes
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 01.05.2012
+     */        
+    public function getSize() {
+        return filesize($this->getPath());
+    }
+ 
+    /**
+     * @public
+     *
+     * @return  string The content type (mime-format)
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 01.05.2012
+     */        
+    public function getMimeType() {
+        return $this->mimeType;
+    }
 
-      // check if fileinfo extension is available
-      if (extension_loaded('fileinfo')) {
-         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-         $this->contentType = finfo_file($finfo, $this->getPath());
-      }
+    /**
+     * @public
+     *
+     * @return  string The file-extension
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 01.05.2012
+     */        
+    public function getExtension() {
+        $name = $this->getName();
+        return substr(strrchr($name, '.'), 1);
+    }
 
-      return $this;
+    /**
+     * @public
+     *
+     * @param   string $content The content that should be inserted into the file
+     * @return  boolean 
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 01.05.2012
+     */        
+    public function writeContent($content) {  
+        
+        if (!is_resource($this->fileHandle)) {
+            throw new FilesystemException('[File::writeContent()] You have to set up this '
+                . 'domain object by using File::open() or File::create() before calling '
+                . 'this function.', E_USER_ERROR);
+        }
+          
+        if (fwrite($this->fileHandle, $content) === false) {
+            return false;
+        }
+        
+        $this->content = $content;
+        return $this;
+        
+    }
+ 
+    /**
+     * @public
+     *
+     * @param   string $content The content that should be appended to the actual content
+     * @return  boolean 
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 01.05.2012
+     */        
+    public function appendContent($content) {
+        $newContent = $content . $this->content;
+        $this->writeContent($newContent);
+        return $this;
+    }
 
-   }
+    /**
+     * @public
+     *
+     * @param   string $content The content that should be prepended to the actual content
+     * @return  boolean 
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 01.05.2012
+     */        
+    public function prependContent($content) {
+        $newContent = $this->content . $content;
+        $this->writeContent($newContent); 
+        return $this;
+    }
 
-   /**
-    * @public
-    *
-    * Closes the opened file handle
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
-    */
-   public function __destruct() {
-      if (is_resource($this->fileHandle)) {
-         fclose($this->fileHandle);
-      }
-   }
-
-   /**
-    * @public
-    *
-    * @param   Folder $folder The Folder where the copy should be stored
-    * @param   string $copyName The new name of the copy (optional)
-    * @param   boolean $getCopyObject If true, this method returns the copy (optional)
-    * @return  boolean|File
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
-    */
-   public function createCopy(Folder $folder, $copyName = null, $getCopy = true) {
-
-      $copyPath = $folder->getPath() . '/';
-      $copyPath .= ($copyName !== null) ? $copyName : $this->getName();
-
-      $result = copy($this->getPath(), $copyPath);
-
-      if ($getCopy === false || $result === false) {
-         return $result;
-      }
-
-      return new File($copyPath);
-
-   }
-
-   /**
-    * @public
-    *
-    * @param   Folder $folder The Folder into which it should be moved
-    * @return  boolean
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
-    */
-   public function moveTo(Folder $folder) {
-      if (copy($this->getPath(), $folder->getPath() . '/' . $this->getName()) === false) {
-         return false;
-      }
-      $this->delete();
-      $this->basePath = $folder->getPath();
-      return $this;
-   }
-
-   /**
-    * @public
-    *
-    * @return  boolean
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
-    */
-   public function delete() {
-      $this->__destruct();
-      return unlink($this->getPath());
-   }
-
-   /**
-    * @public
-    *
-    * @return  string The content of the file
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
-    */
-   public function getContent() {
-      return $this->content;
-   }
-
-   /**
-    * @public
-    *
-    * @return  int The size in Bytes
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
-    */
-   public function getSize() {
-      return filesize($this->getPath());
-   }
-
-   /**
-    * @public
-    *
-    * @return  string The content type (mime-format)
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
-    */
-   public function getContentType() {
-      return $this->contentType;
-   }
-
-   /**
-    * @public
-    *
-    * @return  string The file-extension
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
-    */
-   public function getExtension() {
-      $name = $this->getName();
-      return substr(strrchr($name, '.'), 1);
-   }
-
-   /**
-    * @public
-    *
-    * @param   string $content The content that should be inserted into the file
-    * @return  boolean
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
-    */
-   public function writeContent($content) {
-
-      if (!is_resource($this->fileHandle)) {
-         throw new FilesystemException('[File::writeContent()] You have to set up this '
-               . 'domain object by using File::open() or File::create() before calling '
-               . 'this function.', E_USER_ERROR);
-      }
-
-      if (fwrite($this->fileHandle, $content) === false) {
-         return false;
-      }
-
-      $this->content = $content;
-      return $this;
-
-   }
-
-   /**
-    * @public
-    *
-    * @param   string $content The content that should be appended to the actual content
-    * @return  boolean
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
-    */
-   public function appendContent($content) {
-      $newContent = $content . $this->content;
-      $this->writeContent($newContent);
-      return $this;
-   }
-
-   /**
-    * @public
-    *
-    * @param   string $content The content that should be prepended to the actual content
-    * @return  boolean
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
-    */
-   public function prependContent($content) {
-      $newContent = $this->content . $content;
-      $this->writeContent($newContent);
-      return $this;
-   }
-
-   /**
-    * @public
-    *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
-    */
-   public function makeDownload() {
-      $file = $this->getPath();
-      HeaderManager::send('Content-type: ' . $this->getContentType(), true);
-      HeaderManager::send('Content-Disposition: attachment; filename="' . $file . '"', true);
-      readfile($file);
-   }
+    /**
+     * @public
+     *
+     * @author  Nicolas Pecher
+     * @version Version 0.1, 01.05.2012
+     */        
+    public function makeDownload($filename = '') {
+        if (empty($filename)) {
+            $filename = $file->getName();
+        }
+        $file = $this->getPath();
+        HeaderManager::send('Content-type: ' . $this->getMimeType(), true);   
+        HeaderManager::send('Content-Disposition: attachment; filename="' . $filename . '"', true);
+        readfile($file);
+    }
 }
