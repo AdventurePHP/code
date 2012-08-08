@@ -129,16 +129,18 @@ final class Folder extends FilesystemItem {
      */    
     public function getContent() {
         $children = scandir($this->getPath());
-
         $return = array();
+        $i = 0;
         foreach ($children as $child) {
             if ($child !== '.' && $child !== '..') {
                 $childPath = $this->getPath() . '/' . $child;
                 if (is_dir($childPath)) {
-                    $return[] = new Folder($childPath);
+                    $return[$i] = new Folder();                    
                 } elseif (is_file($childPath)) {
-                    $return[] = new File($childPath);
+                    $return[$i] = new File();
                 }
+                $return[$i]->open($childPath);
+                $i++;
             }
         }
         
