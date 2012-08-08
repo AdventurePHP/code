@@ -287,7 +287,7 @@ class File extends FilesystemItem {
      */        
     public function makeDownload($filename = '') {
         if (empty($filename)) {
-            $filename = $file->getName();
+            $filename = $this->getName();
         }
         $file = $this->getPath();
         HeaderManager::send('Content-type: ' . $this->getMimeType(), true);   
