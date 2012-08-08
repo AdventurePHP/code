@@ -123,24 +123,18 @@ class File extends FilesystemItem {
      * @param   Folder $folder The Folder where the copy should be stored
      * @param   string $copyName The new name of the copy (optional)
      * @param   boolean $getCopyObject If true, this method returns the copy (optional)
-     * @return  boolean|File
+     * @return  File The domain object for further usage
      *
      * @author  Nicolas Pecher
      * @version Version 0.1, 01.05.2012
      */        
-    public function createCopy(Folder $folder, $copyName = null, $getCopy = true) {  
-                  
+    public function createCopy(Folder $folder, $copyName = null, $getCopy = true) {                    
         $copyPath = $folder->getPath() . '/';
-        $copyPath .= ($copyName !== null) ? $copyName : $this->getName();
-        
-        $result = copy($this->getPath(), $copyPath);
-
-        if ($getCopy === false || $result === false) {
-            return $result;
-        }
-            
-        return new File($copyPath);
-        
+        $copyPath .= ($copyName !== null) ? $copyName : $this->getName();      
+        copy($this->getPath(), $copyPath); 
+        $copy = new File();
+        $copy->open($copyPath); 
+        return ($getCopy === true) ? $copy : $this;       
     }
 
     /**
@@ -153,9 +147,7 @@ class File extends FilesystemItem {
      * @version Version 0.1, 01.05.2012
      */        
     public function moveTo(Folder $folder) {
-        if (copy($this->getPath(), $folder->getPath() . '/' . $this->getName()) === false) {
-            return false;
-        }
+        copy($this->getPath(), $folder->getPath() . '/' . $this->getName());
         $this->delete();
         $this->basePath = $folder->getPath();
         return $this;        
@@ -164,14 +156,14 @@ class File extends FilesystemItem {
     /**
      * @public
      *
-     * @return  boolean
+     * @return  Folder The domain object for further usage 
      *
      * @author  Nicolas Pecher
      * @version Version 0.1, 01.05.2012
      */        
     public function delete() {
-        $this->__destruct();
-        return unlink($this->getPath());
+        unlink($this->getPath());
+        return $this;
     }
 
     /**
@@ -289,9 +281,8 @@ class File extends FilesystemItem {
         if (empty($filename)) {
             $filename = $this->getName();
         }
-        $file = $this->getPath();
-        HeaderManager::send('Content-type: ' . $this->getMimeType(), true);   
-        HeaderManager::send('Content-Disposition: attachment; filename="' . $filename . '"', true);
-        readfile($file);
+        HeaderManager::send('Content-type: ' . $this->getMimeType());   
+        HeaderManager::send('Content-Disposition: attachment; filename="' . $filename . '"');
+        readfile($this->getPath());
     }
 }
