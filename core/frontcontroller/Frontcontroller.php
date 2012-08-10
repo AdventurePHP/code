@@ -237,7 +237,7 @@ abstract class AbstractFrontcontrollerAction extends APFObject {
    /**
     * @public
     *
-    * Returns the indicator, whether the action should be keept in the url
+    * Returns the indicator, whether the action should be kept in the url
     * generating a fully qualified front controller link.
     *
     * @return string The url generation indicator.
@@ -762,7 +762,7 @@ class Frontcontroller extends APFObject {
     * Version 0.6, 28.03.2008 (Optimized benchmarker call)<br />
     * Version 0.7, 07.08.2010 (Added action activation indicator to disable actions on demand)<br />
     */
-   protected function runActions($type = 'prepagecreate') {
+   protected function runActions($type = AbstractFrontcontrollerAction::TYPE_PRE_PAGE_CREATE) {
 
       /* @var $t BenchmarkTimer */
       $t = &Singleton::getInstance('BenchmarkTimer');

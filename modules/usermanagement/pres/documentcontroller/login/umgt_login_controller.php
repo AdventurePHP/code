@@ -39,8 +39,9 @@ class umgt_login_controller extends base_controller {
 
    public function transformContent() {
 
-      $sessionStore = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
       /* @var $sessionStore UmgtUserSessionStore */
+      $sessionStore = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+
       $appIdent = $this->getApplicationIdentifier();
       $user = $sessionStore->getUser($appIdent);
 
@@ -98,7 +99,7 @@ class umgt_login_controller extends base_controller {
    /**
     * @private
     *
-    * Allows you to athenticate with email and password as well as with username and password.
+    * Allows you to authenticate with email and password as well as with username and password.
     * The decision is done by an optional configuration that defines the login type.
     *
     * @param string $username The given user name.
@@ -110,8 +111,8 @@ class umgt_login_controller extends base_controller {
     * Version 0.1, 21.05.2011<br />
     */
    private function loadUser($username, $password) {
-      $umgt = &$this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
       /* @var $umgt UmgtManager */
+      $umgt = &$this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
 
       try {
          $config = $this->getConfiguration('modules::usermanagement::pres', 'login');
@@ -136,5 +137,3 @@ class umgt_login_controller extends base_controller {
    }
 
 }
-
-?>
