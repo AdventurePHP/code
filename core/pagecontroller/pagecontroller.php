@@ -254,7 +254,7 @@ final class XmlParser {
     * @author Christian Achatz
     * @version
     * Version 0.1, 22.12.2006<br />
-    * Version 0.2, 30.12.2006 (Bugfix: tag-to-attribute delimiter is now a constant value)<br />
+    * Version 0.2, 30.12.2006 (Bug-fix: tag-to-attribute delimiter is now a constant value)<br />
     * Version 0.3, 03.01.2007<br />
     * Version 0.4, 13.01.2007 (Improved error messages)<br />
     * Version 0.5, 16.11.2007 (Improved error message. Now affected tag string is displayed, too)<br />
@@ -296,14 +296,9 @@ final class XmlParser {
       $tagAttributes = XmlParser::getAttributesFromString($attributesString);
 
       // Check, whether the tag is self-closing. If not, read the content.
-      $content = null;
       if (substr($tagString, $posEndAttrib - 1, 1) == '/') {
-         $content = (string)'';
+         $content = '';
       } else {
-
-         // initialize the content as empty string
-         $content = (string)'';
-
          // check, if explicitly-closing tag exists
          if (strpos($tagString, '</' . $prefix . ':' . $class . '>') === false) {
             throw new ParserException('[XmlParser::getTagAttributes()] No closing tag found for '
@@ -363,7 +358,7 @@ final class XmlParser {
     *
     * @param string $attributesString The attributes string of the tag to analyze.
     * @return string[] The attributes of the tag.
-    * @throws ParserException In case of tar attribute mismatch that may caus infinite loops.
+    * @throws ParserException In case of tar attribute mismatch that may cause infinite loops.
     *
     * @author Christian Schäfer
     * @version
@@ -375,7 +370,6 @@ final class XmlParser {
    public static function getAttributesFromString($attributesString) {
 
       $attributes = array();
-      $foundAtr = true;
       $offset = 0;
 
       $parserLoops = 0;
@@ -385,7 +379,7 @@ final class XmlParser {
 
          $parserLoops++;
 
-         // limit parse loop count to avoid enless while loops
+         // limit parse loop count to avoid endless while loops
          if ($parserLoops == $parserMaxLoops) {
             throw new ParserException('[XmlParser::getAttributesFromString()] Error while parsing: "'
                   . $attributesString . '". Maximum number of loops exceeded!', E_USER_ERROR);
@@ -418,7 +412,7 @@ final class XmlParser {
     * @public
     * @static
     *
-    * Generates a uniqe id, that is used as the object id for the APF DOM tree.
+    * Generates a unique id, that is used as the object id for the APF DOM tree.
     *
     * @param boolean $md5 Indicates whether to use an md5 hash (true) or not (false).
     * @return string The unique id used as GUID for the APF DOM tree.
