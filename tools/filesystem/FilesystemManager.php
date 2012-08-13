@@ -104,7 +104,7 @@ class FilesystemManager {
     * Creates a folder recursively  with the given permission mask.
     *
     * @param string $folder the desired folder to create.
-    * @param int|strong $permissions the desired folder permissions. See "man umask" for details.
+    * @param int|string $permissions the desired folder permissions. See "man umask" for details.
     *
     * @author Christian Achatz
     * @version
@@ -463,7 +463,7 @@ class FilesystemManager {
     * format and unit. In case nothing is provided, the method detects the target or source system
     * to calculate the size in binary mode.
     *
-    * @param byte $size The byte value to format.
+    * @param int $size The byte value to format.
     * @param int $round The number of digits after the colon.
     * @param boolean $server <em>true</em> in case the server OS should be detected to calculate the size,
     *                        <em>false</em> in case the client OS should be used.
