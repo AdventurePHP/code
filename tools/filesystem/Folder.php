@@ -38,11 +38,38 @@ final class Folder extends FilesystemItem {
     *
     * @author  Nicolas Pecher
     * @version Version 0.1, 01.05.2012
+    * Version 0.2, 14.08.2012 (Bugfix: default permissions are now set to ug+rwx; using php's built in recursive path creation)
     */
-   public function create($path) {
+   public function create($path, $permission = 0770) {
       if (!is_dir($path)) {
+         
+         // due to a potential PHP bug with directly passing the permissions
+         // we have to initiate a workaround containing explicit formatting as
+         // well as umask setting to create the folders with correct permissions
+         // to provide a common API, octal numbers must be convert to the
+         // internal string representation. otherwise we will get wrong
+         // permissions with octal numbers!
+         if (is_int($permission)) {
+            $permission = decoct($permission);
+         }
+
+         // now the correct string representation must be created to ensure
+         // correct permissions (leading zero is important!)
+         $oct = sprintf('%04u', $permission);
+
+         // to be able to pass the argument as an octal number, the string must
+         // be correctly formatted
+         $permission = octdec($oct);
+
+         // on some boxes, the current umask prevents correct permission appliance.
+         // thus, the umask is set to 0000 to avoid permission shifts. this maybe
+         // a PHP bug but umasks unlike 0000 lead to wrong permissions, however.
+         $oldUmask = umask(0);
+         
          // the last parameter allows the creation of nested directories
-         mkdir($path, 0770, true);
+         mkdir($folder, $permission, true);
+         
+         umask($oldUmask);
       }
       $this->open($path);
       return $this;
