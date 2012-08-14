@@ -67,7 +67,7 @@ final class Folder extends FilesystemItem {
          $oldUmask = umask(0);
          
          // the last parameter allows the creation of nested directories
-         mkdir($folder, $permission, true);
+         mkdir($path, $permission, true);
          
          umask($oldUmask);
       }
