@@ -252,7 +252,7 @@ class File extends FilesystemItem {
     * @version Version 0.1, 01.05.2012
     */
    public function appendContent($content) {
-      $newContent = $content . $this->content;
+      $newContent = $this->content . $content;
       $this->writeContent($newContent);
       return $this;
    }
@@ -267,7 +267,7 @@ class File extends FilesystemItem {
     * @version Version 0.1, 01.05.2012
     */
    public function prependContent($content) {
-      $newContent = $this->content . $content;
+      $newContent = $content . $this->content;
       $this->writeContent($newContent);
       return $this;
    }
