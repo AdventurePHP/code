@@ -21,16 +21,16 @@
 
 /**
  * @package modules::guestbook2009::pres
- * @class lang_base
+ * @class LanguageLabelTag
  *
  * Implements the wrapper taglib for displaying the lang dependent labels, that can be
- * configuted in configuration files.
+ * configured in configuration files.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 21.05.2009<br />
  */
-class Guestbook2009LanguageLabelTag extends html_taglib_getstring {
+class LanguageLabelTag extends html_taglib_getstring {
 
    /**
     * @public

@@ -18,7 +18,7 @@
  *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  *  -->
  */
-import('modules::guestbook2009::pres::taglib', 'Guestbook2009LanguageLabelTag');
+import('modules::guestbook2009::pres::taglib', 'LanguageLabelTag');
 
 /**
  * @package modules::guestbook2009::pres
@@ -30,7 +30,7 @@ import('modules::guestbook2009::pres::taglib', 'Guestbook2009LanguageLabelTag');
  * @version
  * Version 0.1, 03.06.2009<br />
  */
-class form_taglib_langlabel extends Guestbook2009LanguageLabelTag {
+class form_taglib_langlabel extends LanguageLabelTag {
 
    public function __construct() {
       parent::__construct();
