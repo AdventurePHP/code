@@ -19,6 +19,8 @@
  * -->
  */
 import('modules::genericormapper::data', 'BaseMapper');
+import('tools::filesystem', 'Folder');
+import('tools::filesystem', 'File');
 
 /**
  * @package modules::genericormapper::data::tools
@@ -93,12 +95,12 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
 
       $path = dirname($filename);
       if (!file_exists($path)) {
-         // this dependency (modules -> tools) is not nice, but better than writing the code twice :)
-         import('tools::filesystem', 'FilesystemManager');
-         FilesystemManager::createFolder($path);
+         $folder = new Folder();
+         $folder->create($path);
       }
 
-      file_put_contents($filename, $content);
+      $file = new File;
+      $file->create($filename)->writeContent($content);
    }
 
    /**
@@ -134,7 +136,8 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
       // If anyone has further information or a solution for this, please
       // write a post in the APF-forum. PHP-version: found at 5.3.5  >>>
 
-      file_put_contents($filename, $content);
+      $file = new File;
+      $file->open($filename)->writeContent($content);
    }
 
    /**
