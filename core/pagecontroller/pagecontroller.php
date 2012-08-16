@@ -402,7 +402,7 @@ final class XmlParser {
          $offset = $attrValueEnd + 1;
 
          // add to key => value array
-         $attributes[trim($key)] = trim($attrValue);
+         $attributes[trim($key)] = $attrValue;
       }
 
       return $attributes;
@@ -609,8 +609,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.1, 28.12.2006<br />
     */
    public function setAttributes(array $attributes = array()) {
-
-      if (is_array($attributes) && count($attributes) > 0) {
+      if (count($attributes) > 0) {
          if (!is_array($this->__Attributes)) {
             $this->__Attributes = array();
          }
