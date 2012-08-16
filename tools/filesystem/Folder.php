@@ -38,7 +38,7 @@ final class Folder extends FilesystemItem {
     *
     * @author  Nicolas Pecher
     * @version Version 0.1, 01.05.2012
-    * Version 0.2, 14.08.2012 (Bugfix: default permissions are now set to ug+rwx; using php's built in recursive path creation)
+    * @version Version 0.2, 14.08.2012 (Bugfix: default permissions are now set to ug+rwx; using php's built in recursive path creation)
     */
    public function create($path, $permission = 0770) {
       if (!is_dir($path)) {

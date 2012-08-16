@@ -1,4 +1,5 @@
 <?php
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -19,7 +20,6 @@
  * -->
  */
 import('tools::filesystem', 'FilesystemException');
-
 /**
  * @abstract
  * @class   FilesystemItem
@@ -63,7 +63,6 @@ abstract class FilesystemItem extends APFObject {
     * @version Version 0.1, 06.08.2012
     */
    public abstract function open($path);
-
    /**
     * @public
     *
@@ -71,7 +70,6 @@ abstract class FilesystemItem extends APFObject {
     * @version Version 0.1, 06.08.2012
     */
    public abstract function create($path);
-
    /**
     * @public
     *
@@ -83,7 +81,6 @@ abstract class FilesystemItem extends APFObject {
     * @version Version 0.1, 01.05.2012
     */
    public abstract function createCopy(Folder $folder, $copyName = null, $getCopy = true);
-
    /**
     * @public
     *
@@ -93,7 +90,6 @@ abstract class FilesystemItem extends APFObject {
     * @version Version 0.1, 01.05.2012
     */
    public abstract function moveTo(Folder $folder);
-
    /**
     * @public
     *
@@ -101,7 +97,6 @@ abstract class FilesystemItem extends APFObject {
     * @version Version 0.1, 01.05.2012
     */
    public abstract function delete();
-
    /**
     * @public
     *
@@ -109,7 +104,6 @@ abstract class FilesystemItem extends APFObject {
     * @version Version 0.1, 01.05.2012
     */
    public abstract function getContent();
-
    /**
     * @public
     *
@@ -117,7 +111,6 @@ abstract class FilesystemItem extends APFObject {
     * @version Version 0.1, 01.05.2012
     */
    public abstract function getSize();
-
    /**
     * @public
     *
@@ -130,7 +123,7 @@ abstract class FilesystemItem extends APFObject {
    public function getName() {
       if (empty($this->name)) {
          throw new FilesystemException('[Filesystem::getName()] The name is not '
-               . 'defined', E_USER_ERROR);
+                 . 'defined', E_USER_ERROR);
       }
       return $this->name;
    }
@@ -147,7 +140,7 @@ abstract class FilesystemItem extends APFObject {
    public function getBasePath() {
       if (empty($this->basePath)) {
          throw new FilesystemException('[Filesystem::getName()] The base path is not '
-               . 'defined', E_USER_ERROR);
+                 . 'defined', E_USER_ERROR);
       }
       return $this->basePath;
    }
@@ -281,6 +274,67 @@ abstract class FilesystemItem extends APFObject {
    public function changeModeTo($permissions) {
       chmod($this->getPath(), $permissions);
       return true;
+   }
+
+   /**
+    *
+    * @public
+    * 
+    * DateTime::setTimestamp is only available since PHP Version 5.3.0
+    * First, we check if the method is available, otherwise we use an alternative for PHP 5.2.0
+    * Check also documentation: http://de.php.net/manual/en/datetime.settimestamp.php 
+    * 
+    * Please keep in mind that there is no way for a creation time of a file in most Unix filesystems.
+    * filectime returns also a new timestamop when owner or rights of the file has been changed!
+    * Check also documentation: http://de.php.net/manual/en/function.filectime.php
+    * 
+    * @return  DateTime The creation time as a DateTime-Instance of the file
+    * 
+    * @author  dave
+    * @version Version 0.1, 16.08.2012
+    */
+   public function getCreationTime() {
+
+      clearstatcache();
+
+      $DateTime = new DateTime();
+
+      if (!method_exists($DateTime, 'setTimestamp')) {
+         $Timestamp = filectime($this->getPath());
+         return new DateTime("@$Timestamp");
+      } else {
+         return $DateTime->setTimestamp(filectime($this->getPath()));
+      }
+   }
+
+   /**
+    *
+    * @public
+    * 
+    * DateTime::setTimestamp is only available since PHP Version 5.3.0
+    * First, we check if the method is available, otherwise we use an alternative for PHP 5.2.0
+    * Check also documentation: http://de.php.net/manual/en/datetime.settimestamp.php 
+    * 
+    * Please keep in mind that time resolution may differ from one file system to another.
+    * Check also documentation: http://de.php.net/manual/en/function.filemtime.php
+    * 
+    * @return  DateTime The modification time as a DateTime-Instance of the file
+    * 
+    * @author  dave
+    * @version Version 0.1, 16.08.2012
+    */
+   public function getModificationTime() {
+
+      clearstatcache();
+
+      $DateTime = new DateTime();
+
+      if (!method_exists($DateTime, 'setTimestamp')) {
+         $Timestamp = filemtime($this->getPath());
+         return new DateTime("@$Timestamp");
+      } else {
+         return $DateTime->setTimestamp(filemtime($this->getPath()));
+      }
    }
 
 }
