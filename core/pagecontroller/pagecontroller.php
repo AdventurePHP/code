@@ -382,7 +382,8 @@ final class XmlParser {
          // limit parse loop count to avoid endless while loops
          if ($parserLoops == $parserMaxLoops) {
             throw new ParserException('[XmlParser::getAttributesFromString()] Error while parsing: "'
-                  . $attributesString . '". Maximum number of loops exceeded!', E_USER_ERROR);
+                  . $attributesString . '". Maximum number of loops ("' . $parserMaxLoops
+                  . '") exceeded!', E_USER_ERROR);
          }
 
          // find attribute
