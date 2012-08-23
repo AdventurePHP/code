@@ -19,7 +19,8 @@
  *  -->
  */
 import('modules::newspager::biz', 'newspagerContent');
-import('tools::filesystem', 'FilesystemManager');
+import('tools::filesystem', 'File');
+import('tools::filesystem', 'Folder');
 
 /**
  *  @package modules::newspager::data
@@ -65,19 +66,19 @@ class newspagerMapper extends APFObject {
     *  @version
     *  Version 0.1, 02.02.2007<br />
     *  Version 0.2, 18.09.2008 (Introduced variable data dir)<br />
+    *  Version 0.3, 23.08.2012 (Change to new File-/Folder-class)<br />
     */
    public function getNewsByPage($page) {
 
       // read all files located there
-      $rawFiles = FilesystemManager::getFolderContent($this->dataDir);
+      $folder = new Folder();
+      $rawFiles = $folder->open($this->dataDir)->getContent();
 
       // get files, that match the current language
       $files = array();
-      $count = count($rawFiles);
-
-      for ($i = 0; $i < $count; $i++) {
-         if (substr_count($rawFiles[$i], 'news_' . $this->getLanguage() . '_') > 0) {
-            $files[] = $rawFiles[$i];
+      foreach($rawFiles as $data) {
+         if (substr_count($data->getName(), 'news_' . $this->getLanguage() . '_') > 0) {
+            $files[] = $data;
          }
       }
 
@@ -100,7 +101,7 @@ class newspagerMapper extends APFObject {
       }
 
       // read content of file
-      $newsArray = file($this->dataDir . '/' . $files[$page - 1]);
+      $newsArray = file($this->dataDir . '/' . $files[$page - 1]->getName());
 
       // initialize a new news content object
       $newsItem = new newspagerContent();
