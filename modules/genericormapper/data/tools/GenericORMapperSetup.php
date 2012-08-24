@@ -335,6 +335,7 @@ class GenericORMapperSetup extends BaseMapper {
     * @author Christian Achatz
     * @version
     * Version 0.1, 11.10.2009<br />
+    * Version 0.2, 24.08.2012 (Added support for creation-timestamp)<br />
     */
    protected function generateRelationTableLayout($tableAttributes) {
 
@@ -346,6 +347,12 @@ class GenericORMapperSetup extends BaseMapper {
 
       // target id
       $create .= '  `' . $tableAttributes['TargetID'] . '` ' . $this->getIndexColumnDataType() . ' NOT NULL default \'0\',' . PHP_EOL;
+
+      // creation information
+      if (isset ($tableAttributes['Timestamps']) === true && strcasecmp ($tableAttributes['Timestamps'], 'TRUE') == 0)
+      {
+        $create .= '  `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,' . PHP_EOL;
+      }
 
       // key for all forward JOINs
       $create .= '  KEY `JOIN` (`' . $tableAttributes['SourceID'] . '`, `' . $tableAttributes['TargetID'] . '`),' . PHP_EOL;

@@ -29,7 +29,7 @@
    // configure the registry if desired
    Registry::register('apf::core','Environment','{ENVIRONMENT}');
 
-   // include SetupMapper
+   // include UpdateMapper
    import('modules::genericormapper::data::tools','GenericORMapperUpdate');
 
    // create update tool

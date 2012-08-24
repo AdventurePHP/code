@@ -62,6 +62,18 @@ class GenericDomainObject implements GenericORMapperDataObject {
    protected $relatedObjects = array();
 
    /**
+    * @private
+    * @var string Timestamp value of relation-creation.
+    */
+   private $relationCreationTimestamp = null;
+
+   /**
+    * @private
+    * @var string Timestamp value of relation-modification.
+    */
+   private $relationModificationTimestamp = null;
+
+   /**
     * @public
     *
     * Constructor of the generic domain object. Sets the object name if desired.
@@ -142,7 +154,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
    public function setDataComponent(GenericORRelationMapper &$orm) {
       $this->dataComponent = &$orm;
    }
-   
+
    /**
     * @public
     *
@@ -568,6 +580,37 @@ class GenericDomainObject implements GenericORMapperDataObject {
     */
    public function afterLoad() {
 
+   }
+
+   /**
+    * @public
+    *
+    * Extract relation-timestamps
+    *
+    * @author Lutz Mahlstedt
+    * @version
+    * Version 0.1, 27.07.2012<br />
+    */
+   public function extractRelationTimestamps($prefix) {
+      $creationTimestamp = $prefix.'_CreationTimestamp';
+
+      $this->relationCreationTimestamp = $this->properties[$creationTimestamp];
+      $this->deleteProperty ($creationTimestamp);
+   }
+
+   /**
+    * @public
+    *
+    * Abstract method to get object's relation creation-timestamp.
+    *
+    * @return string Creation-timestamp of the relation.
+    *
+    * @author Lutz Mahlstedt
+    * @version
+    * Version 0.1, 27.07.2012<br />
+    */
+   public function getRelationCreationTimestamp() {
+      return $this->relationCreationTimestamp;
    }
 
 }

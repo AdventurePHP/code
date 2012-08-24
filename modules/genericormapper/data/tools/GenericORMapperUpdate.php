@@ -353,7 +353,8 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
             'SourceID' => $sourceId,
             'TargetID' => $targetId,
             'SourceObject' => str_replace('Source_', '', $sourceObject),
-            'TargetObject' => str_replace('Target_', '', $targetObject)
+            'TargetObject' => str_replace('Target_', '', $targetObject),
+            'Timestamps' => ((isset ($fields[2]) === true && $fields[2]['Field'] == 'CreationTimestamp') ? 'TRUE' : 'FALSE')
          );
       }
    }
@@ -713,6 +714,27 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
                      $this->updateStatements[] = $update;
                   }
                }
+            }
+
+            // ensure to have the configuration for relation-timestamps
+            $this->relationTable[$relationKey]['Timestamps'] = ((isset ($this->relationTable[$relationKey]['Timestamps']) === true && strcasecmp ($this->relationTable[$relationKey]['Timestamps'], 'TRUE') == 0) ? 'TRUE' : 'FALSE');
+
+            // check for changed relation-timestamps
+            if ($this->relationTable[$relationKey]['Timestamps'] != $this->reEngineeredRelationTable[$reEngRelationKey]['Timestamps'])
+            {
+               // header
+               $update = 'ALTER TABLE `' . $this->reEngineeredRelationTable[$reEngRelationKey]['Table'] . '` ' . PHP_EOL;
+
+               // add relation-timestamps
+               if ($this->relationTable[$relationKey]['Timestamps'] == 'TRUE') {
+                  $update .= 'ADD `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP;';
+               }
+               // remove relation-timestamps
+               else {
+                  $update .= 'DROP `CreationTimestamp`;';
+               }
+
+               $this->updateStatements[] = $update;
             }
          }
       }

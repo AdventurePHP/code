@@ -506,13 +506,20 @@ class GenericORRelationMapper extends GenericORMapper {
       $uniqueRelationSourceId = $criterion->getUniqueRelationId($relationName, true);
       $uniqueRelationTargetId = $criterion->getUniqueRelationId($relationName, false);
 
-      // build statement
-      $select = 'SELECT ' . ($this->buildProperties($targetObjectName, $criterion)) . ' FROM `' . $targetObject['Table'] . '`';
-
       // JOIN
       $relationTable = $this->relationTable[$relationName]['Table'];
 
-      $select .= 'INNER JOIN `' . $relationTable . '` AS `' . $uniqueRelationSourceId . '_' . $relationTable . '` ON `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` = `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationTargetObjectId . '`';
+      // Preparation for relation-timestamp
+      $uniqueRelationPrefix = md5(uniqid(mt_rand(), true));
+      $relationTimestamps   = null;
+
+      // check if relation-datefields are activated
+      $relationTimestamps = ', ' . ((strcasecmp ($this->relationTable[$relationName]['Timestamps'], 'TRUE') == 0) ? '`' . $uniqueRelationSourceId . '_' . $relationTable . '`.`CreationTimestamp`' : 'NULL' ) . ' AS `' . $uniqueRelationPrefix . '_CreationTimestamp`';
+
+      // build statement
+      $select = 'SELECT ' . ($this->buildProperties($targetObjectName, $criterion)) . $relationTimestamps . ' FROM `' . $targetObject['Table'] . '`';
+
+      $select .= ' INNER JOIN `' . $relationTable . '` AS `' . $uniqueRelationSourceId . '_' . $relationTable . '` ON `' . $targetObject['Table'] . '`.`' . $targetObject['ID'] . '` = `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationTargetObjectId . '`';
       $select .= ' INNER JOIN `' . $sourceObject['Table'] . '` AS `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '` ON `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`' . $relationSourceObjectId . '` = `' . $uniqueRelationTargetId . '_' . $sourceObject['Table'] . '`.`' . $sourceObject['ID'] . '`';
 
       // - add relation joins
@@ -541,7 +548,7 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       // load target object list
-      return $this->loadObjectListByTextStatement($targetObjectName, $select);
+      return $this->extractRelationTimestamps ($this->loadObjectListByTextStatement($targetObjectName, $select), $uniqueRelationPrefix);
    }
 
    /**
@@ -1586,6 +1593,29 @@ class GenericORRelationMapper extends GenericORMapper {
          $whereList[] = '`' . $uniqueRelationTargetId . '_' . $toTable . '`.`' . $targetObjectId . '` = ' . $relatedObject->getObjectId();
       }
       return $whereList;
+   }
+
+   /**
+    * @protected
+    *
+    * Extracts the timestamps for the relation from the given GDO<br />
+    *
+    * @param array $objects The given list of objects.
+    * @param string $prefix The unique prefix.
+    * @return GenericORMapperDataObject[] List of the objects.
+    *
+    * @author Lutz Mahlstedt
+    * @version
+    * Version 0.1, 27.07.2012<br />
+    */
+   protected function extractRelationTimestamps($objects, $prefix)
+   {
+     foreach ($objects AS &$object)
+     {
+       $object->extractRelationTimestamps ($prefix);
+     }
+
+     return $objects;
    }
 
 }
