@@ -68,12 +68,6 @@ class GenericDomainObject implements GenericORMapperDataObject {
    private $relationCreationTimestamp = null;
 
    /**
-    * @private
-    * @var string Timestamp value of relation-modification.
-    */
-   private $relationModificationTimestamp = null;
-
-   /**
     * @public
     *
     * Constructor of the generic domain object. Sets the object name if desired.

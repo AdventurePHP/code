@@ -510,11 +510,14 @@ class GenericORRelationMapper extends GenericORMapper {
       $relationTable = $this->relationTable[$relationName]['Table'];
 
       // Preparation for relation-timestamp
-      $uniqueRelationPrefix = md5(uniqid(mt_rand(), true));
+      $uniqueRelationPrefix = null;
       $relationTimestamps   = null;
 
       // check if relation-datefields are activated
-      $relationTimestamps = ', ' . ((strcasecmp ($this->relationTable[$relationName]['Timestamps'], 'TRUE') == 0) ? '`' . $uniqueRelationSourceId . '_' . $relationTable . '`.`CreationTimestamp`' : 'NULL' ) . ' AS `' . $uniqueRelationPrefix . '_CreationTimestamp`';
+      if (strcasecmp ($this->relationTable[$relationName]['Timestamps'], 'TRUE') == 0) {
+         $uniqueRelationPrefix = md5(uniqid(mt_rand(), true));
+         $relationTimestamps   = ', `' . $uniqueRelationSourceId . '_' . $relationTable . '`.`CreationTimestamp` AS `' . $uniqueRelationPrefix . '_CreationTimestamp`';
+      }
 
       // build statement
       $select = 'SELECT ' . ($this->buildProperties($targetObjectName, $criterion)) . $relationTimestamps . ' FROM `' . $targetObject['Table'] . '`';
@@ -1610,12 +1613,13 @@ class GenericORRelationMapper extends GenericORMapper {
     */
    protected function extractRelationTimestamps($objects, $prefix)
    {
-     foreach ($objects AS &$object)
-     {
-       $object->extractRelationTimestamps ($prefix);
-     }
+      if ($prefix !== null) {
+         foreach ($objects AS &$object) {
+            $object->extractRelationTimestamps ($prefix);
+         }
+      }
 
-     return $objects;
+      return $objects;
    }
 
 }
