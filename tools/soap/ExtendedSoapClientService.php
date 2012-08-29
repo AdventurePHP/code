@@ -587,4 +587,89 @@ class ExtendedSoapClientService extends APFObject {
       return $this->getClient()->__setSoapHeaders($headers);
    }
 
+   /**
+    * @param string $host The proxy host.
+    * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2012<br />
+    */
+   public function setProxyHost($host) {
+      $this->options['proxy_host'] = $host;
+
+      // reconfiguration requires to create a new instance.
+      $this->client = null;
+
+      return $this;
+   }
+
+   /**
+    * @param string $port The proxy port.
+    * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2012<br />
+    */
+   public function setProxyPort($port) {
+      $this->options['proxy_port'] = $port;
+
+      // reconfiguration requires to create a new instance.
+      $this->client = null;
+
+      return $this;
+   }
+
+   /**
+    * @param string $username The proxy user name.
+    * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2012<br />
+    */
+   public function setProxyUsername($username) {
+      $this->options['proxy_login'] = $username;
+
+      // reconfiguration requires to create a new instance.
+      $this->client = null;
+
+      return $this;
+   }
+
+   /**
+    * @param string $password The proxy password.
+    * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2012<br />
+    */
+   public function setProxyPassword($password) {
+      $this->options['proxy_password'] = $password;
+
+      // reconfiguration requires to create a new instance.
+      $this->client = null;
+
+      return $this;
+   }
+
+   /**
+    * @param string $userAgent The user agent to send along with the SOAP request.
+    * @return ExtendedSoapClientService This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.08.2012<br />
+    */
+   public function setUserAgent($userAgent) {
+      $this->options['user_agent'] = $userAgent;
+
+      // reconfiguration requires to create a new instance.
+      $this->client = null;
+
+      return $this;
+   }
+
 }
