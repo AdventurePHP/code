@@ -206,11 +206,11 @@ class ExtendedSoapClientService extends APFObject {
     *                <soapenv:Body>
     *                   ...
     *                </soapenv:Body>
-    *             </soapenv:Envelope>';';
+    *             </soapenv:Envelope>';
     * $client = new ExtendedSoapClientService();
     * $client->setWsdlUrl('https://example.com/services/v1?wsdl');
     * $client->setLocation('https://example.com/services/v1');
-    * $responseXml = $client->executeTextRequest('GetNews', $request);
+    * $responseXml = $client->executeRequest('GetNews', $request);
     * </code>
     *
     * @param string $action The WSDL method's name.
