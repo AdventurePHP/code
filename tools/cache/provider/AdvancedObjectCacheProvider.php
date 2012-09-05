@@ -63,5 +63,3 @@ class AdvancedObjectCacheProvider extends AdvancedTextCacheProvider {
    }
 
 }
-
-?>
