@@ -45,5 +45,3 @@ interface CacheKey {
    public function getKey();
 
 }
-
-?>

@@ -84,5 +84,3 @@ interface CacheProvider {
    public function clear(CacheKey $cacheKey = null);
 
 }
-
-?>

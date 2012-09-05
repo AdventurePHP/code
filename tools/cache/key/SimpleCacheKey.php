@@ -47,5 +47,3 @@ class SimpleCacheKey implements CacheKey {
    }
 
 }
-
-?>
