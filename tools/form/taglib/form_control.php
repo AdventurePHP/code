@@ -70,9 +70,22 @@ abstract class form_control extends Document {
     * @since 1.12
     * @var array{string} The attributes, that are allowed to render into the XHTML/1.1 strict document.
     */
-   protected $attributeWhiteList = array('id', 'style', 'class', 'accesskey', 'tabindex', 'onfocus', 'onblur',
-      'onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover',
-      'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup');
+   protected $attributeWhiteList = array(
+      // core attributes
+      'id', 'style', 'class',
+
+      // event attributes
+      'accesskey', 'tabindex', 'onfocus', 'onblur', 'onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover',
+      'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup',
+
+      // i18n attributes
+      'lang', 'xml:lang', 'dir',
+
+      // HTML5 attributes
+      'placeholder', 'name', 'disabled', 'form', 'autocomplete', 'autofocus', 'list', 'maxlength', 'pattern', 'readonly',
+      'required', 'size', 'min', 'max', 'step', 'multiple', 'formaction', 'formenctype', 'formmethod', 'formtarget',
+      'formnovalidate', 'height', 'width', 'alt', 'src', 'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone'
+   );
 
    /**
     * @public
