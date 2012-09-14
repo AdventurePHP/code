@@ -206,5 +206,3 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
    }
 
 }
-
-?>

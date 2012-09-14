@@ -58,5 +58,3 @@ class html_taglib_link extends Document {
       return LinkGenerator::generateUrl($url);
    }
 }
-
-?>

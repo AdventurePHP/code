@@ -33,12 +33,12 @@ import('tools::link::taglib', 'html_taglib_link');
 class html_taglib_a extends html_taglib_link {
 
    protected $attributeList = array('id' => null, 'style' => null, 'class' => null, 'onabort' => null,
-                                    'onclick' => null, 'ondblclick' => null, 'onmousedown' => null, 'onmouseup' => null,
-                                    'onmouseover' => null, 'onmousemove' => null, 'onmouseout' => null,
-                                    'onkeypress' => null, 'onkeydown' => null, 'onkeyup' => null, 'tabindex' => null,
-                                    'dir' => null, 'accesskey' => null, 'title' => null, 'charset' => null,
-                                    'coords' => null, 'href' => null, 'hreflang' => null, 'name' => null, 'rel' => null,
-                                    'rev' => null, 'shape' => null, 'target' => null, 'xml:lang' => null, 'onblur' => null);
+      'onclick' => null, 'ondblclick' => null, 'onmousedown' => null, 'onmouseup' => null,
+      'onmouseover' => null, 'onmousemove' => null, 'onmouseout' => null,
+      'onkeypress' => null, 'onkeydown' => null, 'onkeyup' => null, 'tabindex' => null,
+      'dir' => null, 'accesskey' => null, 'title' => null, 'charset' => null,
+      'coords' => null, 'href' => null, 'hreflang' => null, 'name' => null, 'rel' => null,
+      'rev' => null, 'shape' => null, 'target' => null, 'xml:lang' => null, 'onblur' => null);
 
    public function onParseTime() {
       // Move all vales from parameters which are in the white list into this array
@@ -54,7 +54,7 @@ class html_taglib_a extends html_taglib_link {
       $this->attributeList['href'] = parent::transform();
       if ($this->attributeList['href'] === null) {
          throw new InvalidArgumentException('[html_taglib_a::onParseTime()] The Attribute "href" is missing. '
-                                            . 'Please provide the destination!', E_USER_ERROR);
+            . 'Please provide the destination!', E_USER_ERROR);
       }
    }
 
@@ -74,12 +74,11 @@ class html_taglib_a extends html_taglib_link {
       // if the current link is active, this taglib adds the css class active.
       if (!isset($this->attributeList['href'])) {
          return '';
-      }      
+      }
       if (substr_count(str_replace('&', '&amp;', Registry::retrieve('apf::core', 'CurrentRequestURL')), $this->attributeList['href']) > 0) {
          $this->attributeList['class'] = $this->attributeList['class'] . ' active';
-      }      
-      
-      
+      }
+
       foreach ($this->attributeList as $key => $elem) {
          if ($elem === null) {
             unset($this->attributeList[$key]);
@@ -89,5 +88,3 @@ class html_taglib_a extends html_taglib_link {
       return '<a ' . $this->getAttributesAsString($this->attributeList) . '>' . $content . '</a>';
    }
 }
-
-?>

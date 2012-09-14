@@ -146,5 +146,3 @@ class RandomStringManager extends APFObject {
    }
 
 }
-
-?>

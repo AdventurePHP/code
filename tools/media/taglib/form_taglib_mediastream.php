@@ -42,5 +42,3 @@ class form_taglib_mediastream extends ui_mediastream {
    }
 
 }
-
-?>

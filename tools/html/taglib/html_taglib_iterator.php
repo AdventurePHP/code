@@ -19,7 +19,6 @@
  * -->
  */
 import('tools::html::taglib', 'iterator_taglib_item');
-
 import('tools::request', 'RequestHandler');
 
 /**

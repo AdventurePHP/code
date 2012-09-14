@@ -58,7 +58,7 @@ class lngtmpl_taglib_importdesign extends Document {
     */
    public function onParseTime() {
 
-      // invoke timer
+      /* @var $T BenchmarkTimer */
       $T = &Singleton::getInstance('BenchmarkTimer');
       $id = '(lngtmpl_taglib_importdesign) ' . $this->__ObjectID . '::onParseTime()';
       $T->start($id);

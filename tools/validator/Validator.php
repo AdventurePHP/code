@@ -75,16 +75,16 @@ class Validator {
    }
 
    /**
-    *  @public
-    *  @static
+    * @public
+    * @static
     *
     *  Validates a phone number.
     *
-    *  @param string $input Data to check against the validation rule.
-    *  @return boolean true|false
+    * @param string $input Data to check against the validation rule.
+    * @return boolean true|false
     *
-    *  @author Christian Sch�fer
-    *  @version
+    * @author Christian Sch�fer
+    * @version
     *  Version 0.1, 12.01.2007<br />
     */
    static function validateTelefon($input) {
@@ -187,8 +187,7 @@ class Validator {
       }
 
       // change order and check date
-      return checkdate((int) $birthday['1'], (int) $birthday['0'], (int) $birthday['2']);
+      return checkdate((int)$birthday['1'], (int)$birthday['0'], (int)$birthday['2']);
    }
 
 }
-?>

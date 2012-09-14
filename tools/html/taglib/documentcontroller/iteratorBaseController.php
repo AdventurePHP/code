@@ -40,7 +40,7 @@ abstract class iteratorBaseController extends base_controller {
     * @param string $name Name of the iterator.
     * @return html_taglib_iterator The desired iterator.
     * @throws IncludeException In case the iterator taglib is not loaded.
-    * @throws Exception In case the desired iterator cannot be returned.
+    * @throws InvalidArgumentException In case the desired iterator cannot be returned.
     *
     * @author Christian Achatz
     * @version
@@ -51,11 +51,9 @@ abstract class iteratorBaseController extends base_controller {
          return $this->getDocument()->getChildNode('name', $name, 'html_taglib_iterator');
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::' . __METHOD__ . '()] No iterator with name "'
-               . $name . '" composed in current document for document controller "' . get_class($this) . '"! '
-               . 'Perhaps tag library html:iterator is not loaded in current template!', E_USER_ERROR, $e);
+            . $name . '" composed in current document for document controller "' . get_class($this) . '"! '
+            . 'Perhaps tag library html:iterator is not loaded in current template!', E_USER_ERROR, $e);
       }
    }
 
 }
-
-?>

@@ -58,7 +58,7 @@ class doc_taglib_createobject extends Document {
     * exist, a file with name "404" is taken instead.
     *
     * @param string $pageName The name of the page content file to load.
-    * @return The content of the file.
+    * @return string The content of the file.
     *
     * @author Christian Schäfer
     * @version
@@ -79,5 +79,3 @@ class doc_taglib_createobject extends Document {
    }
 
 }
-
-?>

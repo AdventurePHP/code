@@ -47,13 +47,13 @@ class ui_mediastream extends Document {
 
       if ($this->getAttribute('namespace') === null) {
          throw new InvalidArgumentException('[' . get_class($this)
-                 . '::onParseTime()] The tag definition does not contain a "namespace" definition!');
+            . '::onParseTime()] The tag definition does not contain a "namespace" definition!');
       }
 
       $filename = $this->getAttribute('filename');
       if ($filename === null) {
          throw new InvalidArgumentException('[' . get_class($this)
-                 . '::onParseTime()] The tag definition does not contain a "filename" definition!');
+            . '::onParseTime()] The tag definition does not contain a "filename" definition!');
       }
 
       // split filename into extension and body, since they are transfered in separate parts
@@ -81,11 +81,10 @@ class ui_mediastream extends Document {
    public function transform() {
       // generate action url using the APF's new link generation mechanism since 1.14
       return LinkGenerator::generateActionUrl(Url::fromCurrent(), 'tools::media', 'streamMedia', array(
-          'namespace' => str_replace('::', '_', $this->getAttribute('namespace')),
-          'extension' => $this->getAttribute('extension'),
-          'filebody' => $this->getAttribute('filebody')
+         'namespace' => str_replace('::', '_', $this->getAttribute('namespace')),
+         'extension' => $this->getAttribute('extension'),
+         'filebody' => $this->getAttribute('filebody')
       ));
    }
 
 }
-?>
