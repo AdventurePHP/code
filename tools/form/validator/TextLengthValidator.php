@@ -69,8 +69,7 @@ class TextLengthValidator extends TextFieldValidator {
          if (!empty($input) && strlen($input) >= $minlength) {
             return true;
          }
-      }
-      else {
+      } else {
          if (!empty($input) && strlen($input) >= $minlength && strlen($input) <= $maxlength) {
             return true;
          }
@@ -136,5 +135,3 @@ class TextLengthValidator extends TextFieldValidator {
    }
 
 }
-
-?>

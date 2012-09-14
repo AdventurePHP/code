@@ -41,5 +41,3 @@ class IntegerValidator extends TextFieldValidator {
    }
 
 }
-
-?>

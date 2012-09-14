@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 import('tools::form::validator', 'SelectFieldValidator');
 
 /**
@@ -57,5 +56,3 @@ class MultiSelectFieldValidator extends SelectFieldValidator {
    }
 
 }
-
-?>

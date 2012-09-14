@@ -81,7 +81,7 @@ abstract class TextFieldValidator extends AbstractFormValidator {
          // indicate, that we want a "normal" listener (=no special listener) to be
          // notified!
          if ($listeners[$i]->getAttribute('control') === $controlName
-             && $listeners[$i]->getAttribute('validator') === $validatorName
+            && $listeners[$i]->getAttribute('validator') === $validatorName
          ) {
             $listeners[$i]->notify();
          }
@@ -151,5 +151,3 @@ abstract class TextFieldValidator extends AbstractFormValidator {
    }
 
 }
-
-?>

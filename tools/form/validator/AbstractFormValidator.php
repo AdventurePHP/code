@@ -135,5 +135,3 @@ abstract class AbstractFormValidator extends APFObject {
    }
 
 }
-
-?>
