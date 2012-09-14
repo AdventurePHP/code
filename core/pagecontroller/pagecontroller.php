@@ -1352,7 +1352,7 @@ class Document extends APFObject {
          }
 
          throw new IncludeException('[' . get_class($this) . '::__loadContentFromFile()] Design "' . $design
-               . '" not existent in namespace "' . $namespace . '"!' . $code, E_USER_ERROR);
+               . '" not existent in namespace "' . $namespace . '" (file: "' . $file . '")!' . $code, E_USER_ERROR);
 
       }
    }
