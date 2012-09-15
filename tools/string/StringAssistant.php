@@ -33,6 +33,7 @@
 class StringAssistant {
 
    private function __construct() {
+      // utility class
    }
 
    /**
@@ -59,7 +60,7 @@ class StringAssistant {
     * Encodes a given string to html entities.
     *
     * @param string $string The string to encode.
-    * @return The html entity encoded string.
+    * @return string The html entity encoded string.
     *
     * @author Christian Schäfer
     * @version
