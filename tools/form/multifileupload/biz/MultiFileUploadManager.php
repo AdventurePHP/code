@@ -20,10 +20,12 @@
  * -->
  */
 import('core::session', 'SessionManager');
-import('tools::filesystem', 'FilesystemManager');
+//import('tools::filesystem', 'FilesystemManager');
 import('tools::link', 'LinkGenerator');
-import('tools::filesystem', 'FilesystemManager');
 import('tools::form', 'FormException');
+
+import('tools::filesystem', 'File');
+import('tools::filesystem', 'Folder');
 /**
  * @class multifileupload
  *
@@ -42,23 +44,17 @@ class MultiFileUploadManager extends APFObject {
    private $formname;
    private $name;
    private $tmpuploadpath = 'tools::form::multifileupload::uploaddir';
-
-   /**
-    * @var SessionManager
-    */
    private $sessionmanager;
 
    /**
     * Initiert das Service. Es werden die nötigen Parameter name und formname erwartet.
-    * <p/>
-    * The init param is as follows: <em>$param('formname' => 'Formularname', 'name' => 'Name_mit_dem_der_Taglib_eingebaut_wurde')</em>.
-    *
-    * @param array $param
-    * @throws FormException In case the form name cannot be evaluated.
-    *
+    * 
+    * @param array $param('formname'=>'Formularname', 'name'=>'Name_mit_dem_der_Taglib_eingebaut_wurde')
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     * @version 1.1, 11.07.2012 (Change Exception to FormException)<br>
+    * @version 1.2, 14.08.2012 (Change to new File-/Folder-class)<br>
     */
    public function init($param) {
       if (!isset($param['formname']) || !isset($param['name'])) {
@@ -69,17 +65,22 @@ class MultiFileUploadManager extends APFObject {
       $this->sessionnamespace = $this->sessionnamespace_default . ':' . $param['formname'] . ':' . $param['name'];
       $this->sessionmanager = new SessionManager($this->sessionnamespace);
 
-      //Check: Existiert das Verzeichnis bereits?
-      if (!is_dir($this->getUploadPath())) {
-         FilesystemManager::createFolder($this->getUploadPath());
+      //Temporäres Upload-Verzeichnis erstellen, falls es vorhanden ist, wird der Pfad zurück gegeben.
+      $createFolder = new Folder();
+      $createFolder->create($this->getUploadPath());
+
+      if (!$createFolder) {
+         throw new FormException('[' . get_class($this) . '::init()] The desired folder "'
+                 . $this->getContext() . '" could not be created under "'
+                 . str_replace('::', '/', APPS__PATH . '::' . $this->tmpuploadpath) . '"! Please create the folder manually.', E_USER_ERROR);
       }
    }
 
    /**
     * Funktion liefert das temporäre Uplaodverzeichnis zurück
-    *
+    * 
     * @return string Uplaodpath
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -89,9 +90,9 @@ class MultiFileUploadManager extends APFObject {
 
    /**
     * Funktion liefert alle Dateien die mit dem Formular übertragen wurden.
-    *
+    * 
     * @return array Files
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -101,23 +102,29 @@ class MultiFileUploadManager extends APFObject {
    }
 
    /**
-    * Entfernt Dateien die älter als einen Tag sind. Damit soll verhindert werden dass kurz nach mitternacht neue dateien gelöscht werden.
-    *
-    * @params int $seconds - Dateien die älter sind als dieser Wert werden gelöscht. (Default: 3600 Sekunden => 1 Stunde)
-    *
+    * Entfernt Dateien die älter als die angegebene Zeit sind (ausgegangen wird vom CreationTimestamp - Dieser kann je nach
+    * Betriebsystem variieren!)
+    * 
+    * @params int $seconds - Dateien die älter sind als dieser Wert werden gelöscht. (Default: 86400 Sekunden => 1 Tag)
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
+    * @version 1.1, 14.08.2012 (Change to new File-/Folder-class)<br>
+    * @version 1.2, 17.08.2012 (Completly refactored method for full functionality)
     */
-   public function deleteOldFiles($seconds = 3600) {
+   public function deleteOldFiles($seconds = 86400) {
 
-      $files = FilesystemManager::getFolderContent($this->getUploadPath());
+      $Folder = new Folder();
+      $files = $Folder->open($this->getUploadPath())->getContent();
 
       foreach ($files as $file) {
-         $attributes = FilesystemManager::getFileAttributes($file);
-         $dateArr = explode('-', $attributes['modificationdate']);
-         $dateInt = mktime(0, 0, 0, $dateArr[1], $dateArr[2], $dateArr[0]);
-         if (($dateInt - time()) > $seconds) {
-            unlink($file);
+         //Erstellungsdatum ermittlen
+         $CreationTime = $file->getCreationTime()->format('Y-m-d H:i:s');
+         $Zeitstempel = strtotime($CreationTime);
+
+         //Ist die Datei bereits älter als gewünscht? -> Delete!
+         if (($Zeitstempel + $seconds) < time()) {
+            $file->delete();
          }
       }
       $this->checkSessionFiles();
@@ -125,7 +132,7 @@ class MultiFileUploadManager extends APFObject {
 
    /**
     * Alle alten Dateien aus der Session löschen, sofern nicht mehr vorhanden.
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -148,15 +155,13 @@ class MultiFileUploadManager extends APFObject {
    /**
     * Speichert eine neue Datei in Ordner der Temporären Dateien.
     * Es wird die neue Datei in die Session geschrieben, damit sie nachher leicht wieder ausgelesen werden kann.
-    *
+    * 
     * @param array $file
-    * @param bool $js
-    * @return bool
-    * @throws FormException
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
+    * @version 1.0, 14.03.2011<br>
     * @version 1.1, 11.07.2012 (Change Exception to FormException)<br>
+    * @version 1.2, 14.08.2012 (Change to new File-/Folder-class)<br>
     */
    public function addFile($file, $js = true) {
       // Einstellungen laden.
@@ -172,10 +177,22 @@ class MultiFileUploadManager extends APFObject {
 
       if (!file_exists($uploadPath)) {
          throw new FormException('[' . get_class($this) . '::addFile()] The Upload Path "'
-               . $uploadPath . '" does not exist!', E_USER_ERROR);
+                 . $uploadPath . '" does not exist!', E_USER_ERROR);
       }
 
-      $moved = FilesystemManager::uploadFile($uploadPath, $file['tmp_name'], $file['uploadname'], $file['size'], $this->maxFileSize, $file['type'], $this->MimeTypes);
+      //$moved = FilesystemManager::uploadFile($uploadPath, $file['tmp_name'], $file['uploadname'], $file['size'], $this->maxFileSize, $file['type'], $this->MimeTypes);
+
+      $moved = false;
+
+      //File uploaden
+      if (is_uploaded_file($file['tmp_name'])) {
+         // check if target already exists. if not, upload it
+         $target_file = $uploadPath . '/' . $file['uploadname'];
+         if (!file_exists($target_file)) {
+            move_uploaded_file($file['tmp_name'], $uploadPath . '/' . $file['uploadname']);
+            $moved = true;
+         }
+      }
 
       if ($moved == true) {
          $files = $this->sessionmanager->loadSessionData('files');
@@ -191,34 +208,44 @@ class MultiFileUploadManager extends APFObject {
          }
       } else {
          throw new FormException('[' . get_class($this) . '::addFile()] This file "'
-               . $file['name'] . '" has not been uploaded!', E_USER_ERROR);
+                 . $file['name'] . '" has not been uploaded!', E_USER_ERROR);
       }
    }
 
    /**
     * Verschiebt die angegebene Datei in das neue Verzeichnis und nennt sie entsprechend um.
-    *
+    * 
     * @param string $uploadFileName - Name der Datei die verschoben werden soll.
     * @param string $dir - Zielverzeichnis
     * @param string $name - Zieldateiname
-    * @return bool True in case of success, false otherwise.
-    *
+    * 
+    * @return File::moveTo
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
+    * @version 1.0, 14.03.2011<br>
+    * @version 1.1, 14.08.2012 (Change to new File-/Folder-class)<br>
+    * @veriosn 1.2, 14.09.2012 (Removed bug for moving file with File-Folder-Class)<br>
     */
    public function moveFile($uploadFileName, $dir, $name) {
-      $sourceFile = $this->getUploadPath() . '/' . $uploadFileName;
-      $targetFile = $dir . '/' . $name;
+      $File = new File();
+      //open File
+      $File->open($this->getUploadPath() . '/' . $uploadFileName);
+      //rename File
+      $File->renameTo($name);
+      //delete File from session
       $this->deleteFileFromSession($uploadFileName);
-      return FilesystemManager::renameFile($sourceFile, $targetFile);
+      //move File and return it
+      $targetDir = new Folder();
+      $targetDir->open($dir);
+      return $File->moveTo($targetDir);
    }
 
    /**
     * Liefert das Array der angeforderten Datei
-    *
+    * 
     * @param string $uploadname - Dateiname
     * @return array
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -237,24 +264,27 @@ class MultiFileUploadManager extends APFObject {
 
    /**
     * Löscht die Übergebene Datei. Wird nichts übergeben, werden alle Datein gelöscht.
-    *
+    * 
     * @param string $uploadname
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
-    * @version 1.0, 14.3.2011<br>
+    * @version 1.0, 14.03.2011<br>
+    * @version 1.1, 14.08.2012 (Change to new File-/Folder-class)<br>
     */
    public function deleteFile($uploadname = null) {
       $uploadpath = $this->getUploadPath();
       if ($uploadname === null) {
-         $files = FilesystemManager::getFolderContent($uploadpath);
+         $folder = new Folder();
+         $files = $folder->open($uploadpath)->getContent();
          foreach ($files as $file) {
             if (file_exists($file)) {
-               unlink($file);
+               $file->delete();
             }
          }
       } else {
          if (file_exists($uploadpath . '/' . $uploadname)) {
-            unlink($uploadpath . '/' . $uploadname);
+            $file = new File();
+            $file->open($uploadpath . '/' . $uploadname)->delete();
          }
       }
       $this->deleteFileFromSession($uploadname);
@@ -263,9 +293,9 @@ class MultiFileUploadManager extends APFObject {
    /**
     * Löscht die mittels uploadname übergebene Datei aus der Session.
     * Wenn nichts übergeben wird, werden alle gelöscht.
-    *
+    * 
     * @param string $uploadname
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -291,15 +321,15 @@ class MultiFileUploadManager extends APFObject {
 
    /**
     * Speichert alle über den Taglib erstellten Einstellungen.
-    *
+    * 
     * @param string $filesize - Byte Wert der Maximalen Dateigröße (default: 10 MB)
-    * @param array $mimeTypes - Array mit allen MimeTypes die erlaubt sind. (default: pdf,gif,jpeg,png)
+    * @param string $MimeTypes - Array mit allen MimeTypes die erlaubt sind. (default: pdf,gif,jpeg,png)
     * @return integer
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
-   public function setSettings($filesize = null, array $mimeTypes = array()) {
+   public function setSettings($filesize = null, $mimeTypes = array()) {
 
       $settings = array();
       $settings['max'] = 10485760; // 10485760 entspricht 10 MB
@@ -326,7 +356,7 @@ class MultiFileUploadManager extends APFObject {
 
    /**
     * Läd alle Einstellungen aus der Session
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -339,9 +369,9 @@ class MultiFileUploadManager extends APFObject {
 
    /**
     * Erstellt den uploadLink
-    *
+    * 
     * @return string
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -349,17 +379,17 @@ class MultiFileUploadManager extends APFObject {
       $scheme = LinkGenerator::cloneLinkScheme();
       $scheme->setEncodeAmpersands(false);
       $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'tools::form::multifileupload', 'multifileupload', array(
-         'formname' => $this->formname,
-         'name' => $this->name), $scheme);
+                  'formname' => $this->formname,
+                  'name' => $this->name), $scheme);
       return $link;
    }
 
    /**
     * Erstellt den Link um anhand des übergebenen Dateinamen diese zu löschen
-    *
+    * 
     * @param string $uploadname
     * @return string
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -367,18 +397,18 @@ class MultiFileUploadManager extends APFObject {
       $scheme = LinkGenerator::cloneLinkScheme();
       $scheme->setEncodeAmpersands(false);
       $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'tools::form::multifileupload', 'multifiledelete', array(
-         'formname' => $this->formname,
-         'name' => $this->name,
-         'uploadname' => $uploadname), $scheme);
+                  'formname' => $this->formname,
+                  'name' => $this->name,
+                  'uploadname' => $uploadname), $scheme);
       return $link;
    }
 
    /**
     * Funktion die die übermittelte Größe in Byte auf eine komfortable einheit umrechnet.
-    *
+    * 
     * @param integer $size
     * @return string
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -391,9 +421,9 @@ class MultiFileUploadManager extends APFObject {
 
    /**
     * Liefert alle erlaubten MimeTypen als Array zurück
-    *
+    * 
     * @return array $mimeTypes
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -403,9 +433,9 @@ class MultiFileUploadManager extends APFObject {
 
    /**
     * Liefert die maximale Dateigröße zurück
-    *
+    * 
     * @return integer $maxFileSize
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -415,9 +445,9 @@ class MultiFileUploadManager extends APFObject {
 
    /**
     * Liefert die maximale Dateigröße mit Einheit zurück
-    *
+    * 
     * @return string $maxFileSize
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -427,10 +457,10 @@ class MultiFileUploadManager extends APFObject {
 
    /**
     * Erzeugt den Link mit dem Dateien angezeigt werden können.
-    *
+    * 
     * @param string $uploadname
     * @return string
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -439,18 +469,18 @@ class MultiFileUploadManager extends APFObject {
       $scheme->setEncodeAmpersands(true);
 
       return LinkGenerator::generateActionUrl(
-         Url::fromCurrent(), 'tools::form::multifileupload', 'multifilegetfile', array(
-         'formname' => $this->formname,
-         'name' => $this->name,
-         'uploadname' => $uploadname), $scheme);
+                      Url::fromCurrent(), 'tools::form::multifileupload', 'multifilegetfile', array(
+                  'formname' => $this->formname,
+                  'name' => $this->name,
+                  'uploadname' => $uploadname), $scheme);
    }
 
    /**
     * Liest die Datei ein und gibt sie zurück.
-    *
-    * @param string $uploadFileName
-    * @return string
-    *
+    * 
+    * @param string $uploadname
+    * @return stream (?)
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -459,3 +489,5 @@ class MultiFileUploadManager extends APFObject {
    }
 
 }
+
+?>

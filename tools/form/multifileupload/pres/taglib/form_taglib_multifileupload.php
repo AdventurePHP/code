@@ -26,13 +26,12 @@ import('extensions::htmlheader::biz', 'StaticJsNode');
 
 import('extensions::htmlheader::biz', 'JsContentNode');
 import('extensions::htmlheader::biz', 'CssContentNode');
-
 /**
  * @class form_taglib_multifileupload
  *
  * Taglib der ein Multifileupload Feld zur Verfügung stellt. Damit es mit allen Funktionen genutzt werden kann,
  * müssen die Notwendigen JS und CSS Dateien eingebunden werden.
- *
+ * 
  * @param string $name - Name des Uploadfeldes
  * @param string $maxFileSize - Maximale Dateigröße (in Byte) (default: 10 MB)
  * @param string $MimeTypes - "application/pdf,image/gif" - hier können, kommagetrennt, alle erlaubten mimetypen angegeben werden.
@@ -43,21 +42,13 @@ import('extensions::htmlheader::biz', 'CssContentNode');
 class form_taglib_multifileupload extends form_control {
 
    /**
-    * @var MultiFileUploadManager
+    * @var multifileupload
     */
-   private $MultifileuploadManager = null; //Multifileupload biz referenz
-
-   /**
-    * @var Configuration
-    */
-   private $LanguageConfig; //Sprachkonfiguration referenz
-
-   /**
-    * @var Configuration
-    */
-   private $MFUConfig; //MultiFileUploadConfig referenz
-   private $formname; //Formularname
-   private $name; //Oploadfeld-Name
+   private $MultifileuploadManager = null;   //Multifileupload biz referenz
+   private $LanguageConfig;                  //Sprachkonfiguration referenz
+   private $MFUConfig;                       //MultiFileUploadConfig referenz
+   private $formname;                        //Formularname
+   private $name;                            //Oploadfeld-Name
 
    public function onParseTime() {
 
@@ -86,14 +77,17 @@ class form_taglib_multifileupload extends form_control {
 
    /**
     * Hier wird der nötige HTML und JS Code für das Formular erzeugt.
-    *
+    * 
     * @return string
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     * @version 1.1, 18.07.2012 (Changed transform-method for final release)<br>
     */
    public function transform() {
+
+      //Test alte Files löschen TODO
+      $this->MultifileuploadManager->deleteOldFiles();
 
       // Zugriff auf Sprachconfig:
       $this->LanguageConfig = $this->getConfiguration('tools::form::multifileupload', 'language.ini')->getSection($this->__Language);
@@ -101,7 +95,7 @@ class form_taglib_multifileupload extends form_control {
       // Zugriff auf MultiFileUploadConfig
       $this->MFUConfig = $this->getConfiguration('tools::form::multifileupload', 'multifileupload.ini')->getSection($this->name);
 
-      /* @var $HHM HtmlHeaderManager */
+      // Zugriff auf HTML-Header-Manager
       $HHM = $this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
 
 
@@ -130,7 +124,7 @@ class form_taglib_multifileupload extends form_control {
 
       /*       * ********* CSS-Code Ladbild Angfang *********** */
       $HHM->addNode(new CssContentNode(
-         '.file_upload_progress .ui-progressbar-value {
+                      '.file_upload_progress .ui-progressbar-value {
                   background: url(' . $this->MFUConfig->getValue('loadingimage.dir') . '/' . $this->MFUConfig->getValue('loadingimage.name') . ');
                }'));
       /*       * ********* CSS-Code Ladbild Ende *********** */
@@ -145,7 +139,7 @@ class form_taglib_multifileupload extends form_control {
     *
     * @param array $files - Array mit allen Dateien kommend aus der biz.
     * @return string
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -159,12 +153,12 @@ class form_taglib_multifileupload extends form_control {
                $image = '<img src="' . $file['filelink'] . '" alt="' . $file['name'] . '" /> ';
             }
 
-            $buffer .= '<tr>'
-                  . '<td class="file_upload_preview">' . $image . '</td>'
-                  . '<td><a href="' . $file['filelink'] . '" target="_blank">' . $file['name'] . '</a></td>'
-                  . '<td>' . $file['filesize'] . '</td>'
-                  . '<td class="delete"><a href="' . $file['deletelink'] . '" target="_blank" onclick="return deletefile(\'' . $file['deletelink'] . '\',this)"><div class="ui-state-default ui-corner-all" title="' . $this->LanguageConfig->getValue('delete.label') . '"><span class="ui-icon ui-icon-trash">' . $this->LanguageConfig->getValue('delete.label') . '</span></div></a></td>'
-                  . '</tr>';
+            $buffer.='<tr>'
+                    . '<td class="file_upload_preview">' . $image . '</td>'
+                    . '<td><a href="' . $file['filelink'] . '" target="_blank">' . $file['name'] . '</a></td>'
+                    . '<td>' . $file['filesize'] . '</td>'
+                    . '<td class="delete"><a href="' . $file['deletelink'] . '" target="_blank" onclick="return deletefile(\'' . $file['deletelink'] . '\',this)"><div class="ui-state-default ui-corner-all" title="' . $this->LanguageConfig->getValue('delete.label') . '"><span class="ui-icon ui-icon-trash">' . $this->LanguageConfig->getValue('delete.label') . '</span></div></a></td>'
+                    . '</tr>';
          }
       }
       return $buffer;
@@ -174,7 +168,7 @@ class form_taglib_multifileupload extends form_control {
     * Lädt die Dateien hinauf, wenn das Formular ohne JS ausgeführt wurde.
     *
     * @return boolean erfolg - Falls es möglich war dateien hinzuzufügen liefert die funktion true, sonst false
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -193,7 +187,7 @@ class form_taglib_multifileupload extends form_control {
     * Liefert das Datei Array des aktuellen Formularnutzers zurück.
     *
     * @return array
-    *
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
@@ -203,25 +197,38 @@ class form_taglib_multifileupload extends form_control {
 
    /**
     * Verschiebt die angegebene Datei an den angegeben Ort.
-    *
+    * 
     * @param string $uploadname - md5 Wert der raufgeladenen Datei
     * @param string $dir - Zielverzeichnis
     * @param string $name - Name unter dem die Datei gespeichert wird.
-    * @return bool True in case of success, false otherwise.
-    *
+    * @return FilesystemManager::renameFile
+    * 
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
+    * @version 1.1, 14.09.2012 (removed bug for method moveFile)<br>
     */
    public function moveFile($uploadname, $dir, $name) {
       return $this->MultifileuploadManager->moveFile($uploadname, $dir, $name);
    }
 
    /**
+    * Funktion liefert das temporäre Uplaodverzeichnis zurück
+    * 
+    * @return string Uplaodpath
+    * 
+    * @author Werner Liemberger <wpublicmail@gmail.com>
+    * @version 1.0, 14.3.2011<br>
+    */
+   public function getUploadPath() {
+      return $this->MultifileuploadManager->getUploadPath();
+   }
+
+   /**
     * Erstellt anhand eines übergebenen Array MimeTypes einen String mit erlaubten Dateiendungen
-    *
+    * 
     * @param array $MimeTypes
-    * @return string
-    *
+    * @return string 
+    * 
     * @author dave
     * @version 1.0, 13.07.2012<br>
     */
@@ -243,7 +250,7 @@ class form_taglib_multifileupload extends form_control {
     *
     * @param array $MimeTypes
     * @return string
-    *
+    * 
     * @author dave
     * @version 1.0, 14.07.2012
     */
@@ -270,69 +277,69 @@ class form_taglib_multifileupload extends form_control {
 
    /**
     * Erstellt den Dialog zum Löschen von Dateien
-    *
+    * 
     * @return string
-    *
+    * 
     * @author dave
     * @version 1.0, 13.07.2012<br>
     */
    private function createDialogFileDelete() {
 
       return '<div class="confirm_delete ui-dialog-content ui-widget-content dialog_confirm_delete" title="'
-            . $this->LanguageConfig->getValue('delete.title') . '">'
-            . $this->LanguageConfig->getValue('delete.message') . '</div>';
+              . $this->LanguageConfig->getValue('delete.title') . '">'
+              . $this->LanguageConfig->getValue('delete.message') . '</div>';
    }
 
    /**
     * Erstellt den Dialog für die Dateigrösse
-    *
+    * 
     * @return string
-    *
+    * 
     * @author dave
     * @version 1.0, 13.07.2012<br>
     */
    private function createDialogFileSize() {
 
       return '<div class="filesize_dialog ui-dialog-content ui-widget-content" title="'
-            . $this->LanguageConfig->getValue('filesize.title') . '">'
-            . $this->LanguageConfig->getValue('filesize.message') . ' ' . $this->MultifileuploadManager->getMaxFileSizeWithUnit() . '</div>';
+              . $this->LanguageConfig->getValue('filesize.title') . '">'
+              . $this->LanguageConfig->getValue('filesize.message') . ' ' . $this->MultifileuploadManager->getMaxFileSizeWithUnit() . '</div>';
    }
 
    /**
     * Erstellt den Dialog für die erlaubten Dateitypen
-    *
+    * 
     * @return string
-    *
+    * 
     * @author dave
-    * @version 1.0, 13.07.2012<br>
+    * @version 1.0, 13.07.2012<br> 
     */
    private function createDialogFileType() {
 
       return '<div class="filetype_dialog ui-dialog-content ui-widget-content" title="'
-            . $this->LanguageConfig->getValue('filetype.title') . '">'
-            . $this->LanguageConfig->getValue('filetype.message') . ' ' . $this->createFileExtensionFromMimeType($this->MultifileuploadManager->getMimeTypes()) . '</div>';
+              . $this->LanguageConfig->getValue('filetype.title') . '">'
+              . $this->LanguageConfig->getValue('filetype.message') . ' ' . $this->createFileExtensionFromMimeType($this->MultifileuploadManager->getMimeTypes()) . '</div>';
    }
 
    /**
     * Erstellt den HTML Code für den Upload-Button
-    *
+    * 
     * @return string
-    *
+    * 
     * @author dave
     * @version 1.0, 13.07.2012<br>
     */
    private function createUploadButton() {
 
       return '<div id="' . $this->name . '_file_upload_container"><input type="file" name="' . $this->name . '" id="' . $this->name . '" multiple><button>'
-            . $this->LanguageConfig->getValue('upload.button.label') . '</button><div class="uploadlabel">'
-            . $this->LanguageConfig->getValue('upload.label') . '</div></div>';
+              . $this->LanguageConfig->getValue('upload.button.label') . '</button><div class="uploadlabel">'
+              . $this->LanguageConfig->getValue('upload.label') . '</div></div>';
    }
 
    /**
     * Erzeugt den Tag für die Upload-Tabelle
-    *
+    * 
     * @return string
-    *
+    * 
     * @author dave
     * @version 1.0, 14.07.2012<br>
     */
@@ -343,11 +350,11 @@ class form_taglib_multifileupload extends form_control {
 
    /**
     * Erzeugt den Tag für die Downloadtabelle
-    *
+    * 
     * @return string
-    *
+    * 
     * @author dave
-    * @version 1.0, 14.07.2012<br>
+    * @version 1.0, 14.07.2012<br> 
     */
    private function createDownloadTable() {
 
@@ -356,9 +363,9 @@ class form_taglib_multifileupload extends form_control {
 
    /**
     * Füllt die Uploadtabelle mit Inhalt
-    *
-    * @return string
-    *
+    * 
+    * @return string 
+    * 
     * @author dave
     * @version 1.0, 14.07.2012<br>
     */
@@ -378,9 +385,9 @@ class form_taglib_multifileupload extends form_control {
 
    /**
     * Füllt die Downloadtabelle mit Inhalt
-    *
-    * @return string
-    *
+    * 
+    * @return string 
+    * 
     * @author dave
     * @version 1.0, 14.07.2012<br>
     */
@@ -404,9 +411,9 @@ class form_taglib_multifileupload extends form_control {
 
    /**
     * Erzeugt den JS Code zum Prüfen der Dateigrösse
-    *
+    * 
     * @return string
-    *
+    * 
     * @author dave
     * @version 1.0, 14.07.2012
     */
@@ -431,9 +438,9 @@ class form_taglib_multifileupload extends form_control {
 
    /**
     * Erzeugt den JS Code zum Prüfen des MimeType
-    *
+    * 
     * @return string
-    *
+    * 
     * @author dave
     * @version 1.0, 14.07.2012
     */
@@ -457,9 +464,9 @@ class form_taglib_multifileupload extends form_control {
 
    /**
     * Erstellt den fertigen JSCode, damit dieser über den Hrml-Header-Manager ausgegeben werden kann
-    *
+    * 
     * @return string
-    *
+    * 
     * @author dave
     * @version 1.0, 14.07.2012
     */
@@ -530,3 +537,5 @@ class form_taglib_multifileupload extends form_control {
    }
 
 }
+
+?>

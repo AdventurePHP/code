@@ -20,25 +20,21 @@
  * -->
  */
 class DemoController extends base_controller {
+   public function transformContent() {
 
-    public function transformContent() {
+      $form = &$this->getForm('file_upload');
 
-        $form = &$this->getForm('file_upload');
+      $uploadtest = $form->getFormElementByName('testfield');
 
-        $uploadtest = $form->getFormElementByName('testfield');
-        $uploadtest->uploadFiles();
+      if ($form->isSent()) {
+         $files = $uploadtest->getFiles();
 
-
-        if ($form->isSent()) {
-            $files=$uploadtest->getFiles();
-            
-            // Für die weitere Verarbeitung steht nun das Array files mit allen Dateien zur Verfügung.
-            echo printObject($files);
-            
-        } else {
-            $form->transformOnPlace();
-        }
-    }
+         // Für die weitere Verarbeitung steht nun das Array files mit allen Dateien zur Verfügung.
+         echo printObject($files);
+      } else {
+         $form->transformOnPlace();
+      }
+   }
 
 }
 
