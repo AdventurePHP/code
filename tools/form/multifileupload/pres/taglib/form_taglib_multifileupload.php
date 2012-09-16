@@ -83,10 +83,11 @@ class form_taglib_multifileupload extends form_control {
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     * @version 1.1, 18.07.2012 (Changed transform-method for final release)<br>
+    * @version 1.2, 16.09.2012 (added full functionality to delete fildes, which are older than 1 day)<br>
     */
    public function transform() {
 
-      //Test alte Files löschen TODO
+      // Dateien im temporären Verzischnis löschen, die älter als 86400 Sekunden (1 Tag) sind
       $this->MultifileuploadManager->deleteOldFiles();
 
       // Zugriff auf Sprachconfig:
@@ -330,7 +331,7 @@ class form_taglib_multifileupload extends form_control {
     */
    private function createUploadButton() {
 
-      return '<div id="' . $this->name . '_file_upload_container"><input type="file" name="' . $this->name . '" id="' . $this->name . '" multiple><button>'
+      return '<div id="' . $this->name . '_file_upload_container"><input type="file" name="' . $this->name . '" id="' . $this->name . '" multiple="multiple" /><button>'
               . $this->LanguageConfig->getValue('upload.button.label') . '</button><div class="uploadlabel">'
               . $this->LanguageConfig->getValue('upload.label') . '</div></div>';
    }
@@ -368,18 +369,19 @@ class form_taglib_multifileupload extends form_control {
     * 
     * @author dave
     * @version 1.0, 14.07.2012<br>
+    * @verison 1.1, 16.09.2012 (Fixed some smaller problems with escaping of tags)<br>
     */
    private function buildUploadRow() {
 
       return '
          function (files, index) {
             return $(\'<tr>\' +
-                  \'<td class="file_upload_preview"></td>\' +
-                  \'<td>\' + files[index].name + \'</td>\' +
-                  \'<td class="file_upload_progress"><div></div></td>\' +
-                  \'<td class="value">0 %</td>\'+
-                  \'<td class="delete"><button class="ui-state-default ui-corner-all" title="' . $this->LanguageConfig->getValue('cancel.label') . '"><span class="ui-icon ui-icon-cancel">' . $this->LanguageConfig->getValue('cancel.label') . '</span></button></td>\'+
-               \'</tr>\');
+                  \'<td class="file_upload_preview"><\/td>\' +
+                  \'<td>\' + files[index].name + \'<\/td>\' +
+                  \'<td class="file_upload_progress"><div><\/div><\/td>\' +
+                  \'<td class="value">0 %<\/td>\' +
+                  \'<td class="delete"><button class="ui-state-default ui-corner-all" title="' . $this->LanguageConfig->getValue('cancel.label') . '"><span class="ui-icon ui-icon-cancel">' . $this->LanguageConfig->getValue('cancel.label') . '<\/span><\/button><\/td>\' +
+               \'<\/tr>\');
          },';
    }
 
@@ -390,6 +392,7 @@ class form_taglib_multifileupload extends form_control {
     * 
     * @author dave
     * @version 1.0, 14.07.2012<br>
+    * @verison 1.1, 16.09.2012 (Fixed some smaller problems with escaping of tags)<br>
     */
    private function buildDownloadRow() {
 
@@ -398,14 +401,14 @@ class form_taglib_multifileupload extends form_control {
             var bild = "";
             var regexp = new RegExp(/^image\/(gif|jpeg|png|jpg)$/);
             if (regexp.test(file.type)) {
-               bild = \'<img src="\' + file.filelink + \'" alt="\' + file.name + \'" \/>\';
+               bild = \'<img src="\' + file.filelink + \'" alt="\' + file.name + \'" />\';
             }
             return $(\'<tr>\' +
                   \'<td class="file_upload_preview">\' + bild + \' <\/td>\' +
                   \'<td><a href="\' + file.filelink + \'" target="_blank" >\' + file.name + \'<\/a><\/td>\' +
                   \'<td>\'+file.filesize+\'<\/td>\'+
-                  \'<td><a href="\' + file.deletelink + \'" target="_blank" onclick="return deletefile(\\\'\' + file.deletelink + \'\\\',this)" ><div class="ui-state-default ui-corner-all" title="' . $this->LanguageConfig->getValue('delete.label') . '"><span class="ui-icon ui-icon-trash">' . $this->LanguageConfig->getValue('delete.label') . '</span></div></a ></td>\'+
-               \'</tr>\');
+                  \'<td><a href="\' + file.deletelink + \'" target="_blank" onclick="return deletefile(\\\'\' + file.deletelink + \'\\\',this)" ><div class="ui-state-default ui-corner-all" title="' . $this->LanguageConfig->getValue('delete.label') . '"><span class="ui-icon ui-icon-trash">' . $this->LanguageConfig->getValue('delete.label') . '<\/span><\/div><\/a><\/td>\'+
+               \'<\/tr>\');
          },';
    }
 
