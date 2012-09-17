@@ -39,7 +39,7 @@
  * <li>PageControllerInputFilter : the definition of the input filter</li>
  * <li>OutputFilter              : the definition of the output filter</li>
  * </ul>
- * The file also contains the pagecontroller core implementation with the classes Page,
+ * The file also contains the page controller core implementation with the classes Page,
  * Document, TagLib, APFObject, XmlParser and base_controller (the basic MVC document controller).
  *
  * @author Christian Achatz
@@ -1609,7 +1609,8 @@ class Document extends APFObject {
          $t->start($id);
 
          if (!class_exists($this->__DocumentController)) {
-            throw new InvalidArgumentException('[' . get_class($this) . '::transform()] DocumentController "' . $this->__DocumentController . '" cannot be found! Maybe the class name is misspelt!', E_USER_ERROR);
+            throw new InvalidArgumentException('[' . get_class($this) . '::transform()] DocumentController "'
+                  . $this->__DocumentController . '" cannot be found! Maybe the class name is mis-spelt!', E_USER_ERROR);
          }
 
          $docCon = new $this->__DocumentController;
@@ -2158,7 +2159,7 @@ class html_taglib_template extends Document {
     * @version
     * Version 0.1, 29.12.2006<br />
     * Version 0.2, 31.12.2006 (Removed parameter $this->__isVisible, because the parent object automatically removes the XML positioning tag on ransformation now)<br />
-    * Version 0.3, 02.02.2007 (Renamed method to transformTemplate() umbenannt. Removed visible marking finally from the class)<br />
+    * Version 0.3, 02.02.2007 (Renamed method to transformTemplate(). Removed visible marking finally from the class.)<br />
     * Version 0.4, 05.01.2007 (Added the template:addtaglib tag)<br />
     */
    public function transformTemplate() {
@@ -2168,7 +2169,6 @@ class html_taglib_template extends Document {
 
       // transform children
       if (count($this->__Children) > 0) {
-
          foreach ($this->__Children as $objectId => $DUMMY) {
             $content = str_replace('<' . $objectId . ' />', $this->__Children[$objectId]->transform(), $content);
          }
