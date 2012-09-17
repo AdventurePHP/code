@@ -135,7 +135,7 @@ class html_taglib_iterator extends Document {
     * Version 0.1, 15.03.2012
     */
    public function setIterationNumber($number) {
-      $this->iterationNumber(intval($number));
+      $this->iterationNumber = intval($number);
    }
 
    /**
@@ -257,8 +257,8 @@ class html_taglib_iterator extends Document {
 
          } else {
             throw new InvalidArgumentException('[html_taglib_iterator::transformIterator()] '
-                     . 'Given list entry is not an array or object (' . $this->dataContainer[$i]
-                     . ')! The data container must contain a list of associative arrays or objects!',
+                  . 'Given list entry is not an array or object (' . $this->dataContainer[$i]
+                  . ')! The data container must contain a list of associative arrays or objects!',
                E_USER_WARNING);
          }
 
@@ -286,13 +286,13 @@ class html_taglib_iterator extends Document {
    /**
     * @public
     *
-    *  Implements the transform method for the iterator tag.
+    * Implements the transform method for the iterator tag.
     *
     * @return string Content of the tag or an empty string.
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 01.06.2008<br />
+    * Version 0.1, 01.06.2008<br />
     */
    public function transform() {
       if ($this->transformOnPlace === true) {
@@ -326,9 +326,9 @@ class html_taglib_iterator extends Document {
 
       // defining no iterator item is not allowed!
       throw new InvalidArgumentException('[html_taglib_iterator::getIteratorItemObjectId()] '
-            . 'The definition for iterator "' . $this->getAttribute('name')
-            . '" does not contain a iterator item, hence this is no legal iterator tag '
-            . 'definition. Please refer to the documentation.', E_USER_ERROR);
+         . 'The definition for iterator "' . $this->getAttribute('name')
+         . '" does not contain a iterator item, hence this is no legal iterator tag '
+         . 'definition. Please refer to the documentation.', E_USER_ERROR);
 
    }
 
@@ -350,7 +350,7 @@ class html_taglib_iterator extends Document {
       $count = 0;
       foreach ($this->__Children as $objectId => $DUMMY) {
          if (get_class($this->__Children[$objectId]) == 'html_taglib_placeholder'
-               && $this->__Children[$objectId]->getAttribute('name') === $name
+            && $this->__Children[$objectId]->getAttribute('name') === $name
          ) {
             $this->__Children[$objectId]->setContent($value);
             $count++;
@@ -359,9 +359,9 @@ class html_taglib_iterator extends Document {
 
       if ($count == 0 || count($this->__Children) == 0) {
          throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place '
-               . 'holder object with name "' . $name . '" can be found within html:iterator tag '
-               . 'with name "' . $this->getAttribute('name') . '" requested in document controller '
-               . '"' . ($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR);
+            . 'holder object with name "' . $name . '" can be found within html:iterator tag '
+            . 'with name "' . $this->getAttribute('name') . '" requested in document controller '
+            . '"' . ($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR);
       }
 
       return $this;

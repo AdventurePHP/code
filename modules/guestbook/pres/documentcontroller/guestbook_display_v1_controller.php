@@ -213,8 +213,7 @@ class guestbook_display_v1_controller extends guestbookBaseController {
 
       }
 
-      return (string)'';
-
+      return '';
    }
 
    private function showAdminEdit($entryId) {
@@ -230,8 +229,7 @@ class guestbook_display_v1_controller extends guestbookBaseController {
 
       }
 
-      return (string)'';
-
+      return '';
    }
 
    private function showAdminAddComment($entryId) {
@@ -247,8 +245,7 @@ class guestbook_display_v1_controller extends guestbookBaseController {
 
       }
 
-      return (string)'';
-
+      return '';
    }
 
    private function showAdminDeleteComment($dommentId, $entryId) {
@@ -264,8 +261,7 @@ class guestbook_display_v1_controller extends guestbookBaseController {
 
       }
 
-      return (string)'';
-
+      return '';
    }
 
    private function showAdminEditComment($commentId, $entryId) {
@@ -281,8 +277,7 @@ class guestbook_display_v1_controller extends guestbookBaseController {
 
       }
 
-      return (string)'';
-
+      return '';
    }
 
 }

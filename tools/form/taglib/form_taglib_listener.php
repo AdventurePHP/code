@@ -118,7 +118,7 @@ class form_taglib_listener extends form_control {
          }
          return $this->__Content;
       }
-      return (string)'';
+      return '';
    }
 
 }

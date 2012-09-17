@@ -94,7 +94,7 @@ class form_taglib_success extends form_control {
          }
          return $this->__Content;
       }
-      return (string)'';
+      return '';
    }
 
 }

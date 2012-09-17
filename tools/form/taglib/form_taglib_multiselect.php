@@ -117,20 +117,15 @@ class form_taglib_multiselect extends form_taglib_select {
       $select .= $this->__Content . '</select>';
 
       if (count($this->__Children) > 0) {
-
-         $controlName = $this->getAttribute('name');
-
          foreach ($this->__Children as $objectId => $DUMMY) {
             $select = str_replace('<' . $objectId . ' />',
                $this->__Children[$objectId]->transform(),
                $select
             );
          }
-
       }
 
       return $select;
-
    }
 
    /**
@@ -173,7 +168,7 @@ class form_taglib_multiselect extends form_taglib_select {
    /**
     * @protected
     *
-    * Reimplements the presetting method for the multiselect field.
+    * Re-implements the presetting method for the multi-select field.
     *
     * @author Christian Achatz
     * @version

@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 import('extensions::htmllist::taglib', 'list_control');
 import('extensions::htmllist::taglib', 'list_taglib_definition');
 import('extensions::htmllist::taglib', 'list_taglib_ordered');
@@ -36,62 +35,59 @@ import('extensions::htmllist::taglib', 'list_taglib_unordered');
 class html_taglib_list extends list_control {
 
    /**
-    * Adds a list
-    * @param string $elementType
-    * @param array $elementAttributes
-    * @return string
+    * Adds a list.
+    *
+    * @param string $elementType The type of list.
+    * @param array $elementAttributes The attributes of the list.
+    * @return string The object id of the list.
     */
    public function addList($elementType, $elementAttributes = array()) {
-      // create form element
-      $objectId = $this->__createList($elementType, $elementAttributes);
 
-      // add form element if id is null
-      if ($objectId === null) {
-         // notify user and return null
-         throw new Exception('[html_taglib_list::addList()] List element "' . $elementType
-               . '" cannot be added due to previous errors!');
-         return null;
-      }
+      // create list element
+      $objectId = $this->__createList($elementType, $elementAttributes);
 
       // add position placeholder to the content
       $this->__Content .= '<' . $objectId . ' />';
 
-      // return object id of the new form element
+      // return object id of the new list element
       return $objectId;
    }
 
    /**
-    * Get a list by its identifier
-    * @param string $sId
-    * @return AbstractTaglibList
+    * Get a list by its identifier.
+    *
+    * @param string $id The id of the list.
+    * @return AbstractTaglibList The desired instance.
+    * @throws InvalidArgumentException In case no list can be found.
     */
-   public function getListById($sId) {
+   public function getListById($id) {
       if (count($this->__Children) > 0) {
          foreach ($this->__Children as $objectID => $DUMMY) {
-            if ($this->__Children[$objectID]->getAttribute('id') == $sId) {
+            if ($this->__Children[$objectID]->getAttribute('id') == $id) {
                return $this->__Children[$objectID];
             }
          }
       }
 
-      // display extended debug message in case no form element was found
+      // display extended debug message in case no list element was found
       $parent = $this->getParentObject();
       $grandParent = $parent->getParentObject();
       $docCon = ($grandParent !== null) ? $grandParent->getDocumentController() : $docCon = 'n/a';
 
-      throw new Exception('[html_taglib_list::getListById()] No list with id "' . $id
-            . '" in document controller "' . $docCon . '"!', E_USER_ERROR);
-      exit();
+      throw new InvalidArgumentException('[html_taglib_list::getListById()] No list with id "' . $id
+         . '" in document controller "' . $docCon . '"!', E_USER_ERROR);
    }
 
    /**
-    * Creates a list
-    * @param string $elementType
-    * @param array $elementAttributes
-    * @return string
+    * Creates a list.
+    *
+    * @param string $elementType The type of list to create (ul, ol).
+    * @param array $elementAttributes The attributes of the list.
+    * @return string The object id of the created list.
+    * @throws InvalidArgumentException In case the desired list cannot be created.
     */
-   protected function __createList($elementType, $elementAttributes = array()) {
-      // define taglib class
+   protected function __createList($elementType, array $elementAttributes = array()) {
+
       $tagLibClass = str_replace(':', '_taglib_', $elementType);
 
       // check, if class exists
@@ -99,7 +95,7 @@ class html_taglib_list extends list_control {
          // generate object id
          $objectId = XmlParser::generateUniqID();
 
-         // create new form element
+         /* @var $listObject Document */
          $listObject = new $tagLibClass();
 
          // add standard and user defined attributes
@@ -111,11 +107,11 @@ class html_taglib_list extends list_control {
             $listObject->setAttribute($Key, $Value);
          }
 
-         // add form element to DOM tree and call the onParseTime() method
+         // add list element to DOM tree and call the onParseTime() method
          $listObject->setParentObject($this);
          $listObject->onParseTime();
 
-         // add new form element to children list
+         // add new list element to children list
          $this->__Children[$objectId] = $listObject;
 
          // call the onAfterAppend() method
@@ -123,16 +119,12 @@ class html_taglib_list extends list_control {
 
          // return object id for further addressing
          return $objectId;
-      }
-      else {
+      } else {
          // throw error and return null as object id
-         throw new Exception('[html_taglib_list::__createList()] No list element with name "'
-               . $elementType . '" found! Maybe the tag name is misspellt or the class is not '
-               . 'imported yet. Please use import() or &lt;list:addtaglib /&gt;!');
-         return null;
+         throw new InvalidArgumentException('[html_taglib_list::__createList()] No list element with name "'
+            . $elementType . '" found! Maybe the tag name is mis-spelt or the class is not '
+            . 'imported yet. Please use import() or &lt;list:addtaglib /&gt;!');
       }
    }
 
 }
-
-?>

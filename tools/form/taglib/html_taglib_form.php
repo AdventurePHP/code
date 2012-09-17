@@ -231,7 +231,7 @@ class html_taglib_form extends form_control {
       }
 
       throw new FormException('[html_taglib_form::addFormElement()] Form element "' . $elementType
-            . '" cannot be added due to previous errors!');
+         . '" cannot be added due to previous errors!');
    }
 
    /**
@@ -334,7 +334,7 @@ class html_taglib_form extends form_control {
 
       // notify developer that object creation failed
       throw new FormException('[html_taglib_form::addFormElementBeforeMarker()] Form element "'
-            . $elementType . '" cannot be added due to previous errors!');
+         . $elementType . '" cannot be added due to previous errors!');
    }
 
    /**
@@ -446,8 +446,8 @@ class html_taglib_form extends form_control {
       }
 
       throw new FormException('[html_taglib_form::createFormElement()] No form element with name "'
-            . $elementType . '" found! Maybe the tag name is misspellt or the class is not '
-            . 'imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
+         . $elementType . '" found! Maybe the tag name is misspellt or the class is not '
+         . 'imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
    }
 
    /**
@@ -468,9 +468,9 @@ class html_taglib_form extends form_control {
          return $this->getChildNode('name', $markerName, 'form_taglib_marker');
       } catch (InvalidArgumentException $e) {
          throw new FormException('[html_taglib_form::addFormContentAfterMarker()] No marker object '
-               . 'with name "' . $markerName . '" composed in current form for document controller "'
-               . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
-               . 'the form with name "' . $this->getAttribute('name') . '"!', E_USER_ERROR, $e);
+            . 'with name "' . $markerName . '" composed in current form for document controller "'
+            . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
+            . 'the form with name "' . $this->getAttribute('name') . '"!', E_USER_ERROR, $e);
       }
    }
 
@@ -517,10 +517,10 @@ class html_taglib_form extends form_control {
       $parent = &$this->getParentObject();
       $docCon = $parent->getDocumentController();
       throw new FormException('[html_taglib_form::getFormElementByName()] No form element with name "'
-            . $name . '" composed in current form "' . $this->getAttribute('name')
-            . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
-            . 'within this form (especially attributes, that are used for referencing other form '
-            . 'controls)!', E_USER_ERROR);
+         . $name . '" composed in current form "' . $this->getAttribute('name')
+         . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
+         . 'within this form (especially attributes, that are used for referencing other form '
+         . 'controls)!', E_USER_ERROR);
    }
 
    /**
@@ -575,8 +575,8 @@ class html_taglib_form extends form_control {
       $parent = &$this->getParentObject();
       $documentController = $parent->getDocumentController();
       throw new FormException('[html_taglib_form::getFormElementByID()] No form element with id "'
-            . $id . '" composed in current form "' . $this->getAttribute('name')
-            . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
+         . $id . '" composed in current form "' . $this->getAttribute('name')
+         . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
    }
 
    /**
@@ -604,8 +604,8 @@ class html_taglib_form extends form_control {
       $parent = &$this->getParentObject();
       $documentController = $parent->getDocumentController();
       throw new FormException('[html_taglib_form::getFormElementByObjectID()] No form element with id "'
-            . $objectId . '" composed in current form "' . $this->getAttribute('name')
-            . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
+         . $objectId . '" composed in current form "' . $this->getAttribute('name')
+         . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
    }
 
    /**
@@ -643,8 +643,8 @@ class html_taglib_form extends form_control {
       $parent = &$this->getParentObject();
       $documentController = $parent->getDocumentController();
       throw new FormException('[html_taglib_form::getFormElementsByType()] No form elements composed in ' .
-            'current form "' . $this->getAttribute('name') . '" in document controller "'
-            . $documentController . '"!', E_USER_ERROR);
+         'current form "' . $this->getAttribute('name') . '" in document controller "'
+         . $documentController . '"!', E_USER_ERROR);
    }
 
    /**
@@ -665,8 +665,8 @@ class html_taglib_form extends form_control {
          return $this->getChildNode('name', $name, 'form_taglib_getstring');
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[html_taglib_form::getLabel()] No label found with name "' . $name
-               . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'
-               . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR, $e);
+            . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'
+            . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR, $e);
       }
    }
 
@@ -754,7 +754,7 @@ class html_taglib_form extends form_control {
          return $this->transformForm();
       }
 
-      return (string)'';
+      return '';
    }
 
 }
