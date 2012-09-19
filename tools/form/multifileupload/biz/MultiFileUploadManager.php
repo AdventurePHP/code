@@ -225,6 +225,7 @@ class MultiFileUploadManager extends APFObject {
     * @version 1.0, 14.03.2011<br>
     * @version 1.1, 14.08.2012 (Change to new File-/Folder-class)<br>
     * @veriosn 1.2, 14.09.2012 (Removed bug for moving file with File-Folder-Class)<br>
+    * @version 1.3, 19.09.2012 (Create the disered directory and open it instead of just open it)<br>
     */
    public function moveFile($uploadFileName, $dir, $name) {
       $File = new File();
@@ -236,7 +237,7 @@ class MultiFileUploadManager extends APFObject {
       $this->deleteFileFromSession($uploadFileName);
       //move File and return it
       $targetDir = new Folder();
-      $targetDir->open($dir);
+      $targetDir->create($dir);     //Create directory if not already done
       return $File->moveTo($targetDir);
    }
 
