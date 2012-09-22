@@ -19,6 +19,7 @@
  * -->
  */
 import('tools::form::taglib', 'form_control');
+import('modules::recaptcha::pres::tags', 'ReCaptchaTranslationTag');
 require_once(__DIR__ . '/../../external/google/recaptchalib.php');
 
 /**
@@ -54,6 +55,12 @@ class ReCaptchaTag extends form_control {
     */
    private $errorMessageKey;
 
+   public function __construct() {
+      $this->__TagLibs = array(
+         new TagLib('modules::recaptcha::pres::tags', 'ReCaptchaTranslationTag', 'recaptcha', 'getstring')
+      );
+   }
+
    /**
     * @public
     *
@@ -79,6 +86,9 @@ class ReCaptchaTag extends form_control {
          throw new FormException('ReCaptcha control within form "' . $form->getAttribute('name')
                . '" has no "name" attribute specified! Please r-check your form definition.');
       }
+
+      // parse <recaptcha:getstring /> tag.
+      $this->__extractTagLibTags();
    }
 
    /**

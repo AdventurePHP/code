@@ -2342,7 +2342,7 @@ class html_taglib_getstring extends Document {
     * @version
     * Version 0.1, 11.01.2012<br />
     */
-   private function replace($label) {
+   protected function replace($label) {
       foreach ($this->placeHolders as $key => $value) {
          $label = str_replace('{' . $key . '}', $value, $label);
       }
