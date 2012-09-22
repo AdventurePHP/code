@@ -254,5 +254,3 @@ class form_taglib_captcha extends form_control {
    }
 
 }
-
-?>
