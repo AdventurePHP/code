@@ -37,4 +37,3 @@ class OnlyNumbersFilter extends AbstractFormFilter {
    }
 
 }
-?>

@@ -38,4 +38,3 @@ class EMailFilter extends AbstractFormFilter {
    }
 
 }
-?>

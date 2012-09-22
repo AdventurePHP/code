@@ -35,13 +35,12 @@ import('tools::form::filter', 'AbstractFormFilter');
 class FloatFilter extends AbstractFormFilter {
 
    public function filter($input) {
-      if($input == null) {
+      if ($input == null) {
          return null;
-      }else{
+      } else {
          return floatval(str_replace(',', '.', str_replace(' ', '', $input)));
       }
-      
+
    }
 
 }
-?>

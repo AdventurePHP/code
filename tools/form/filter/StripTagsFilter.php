@@ -37,4 +37,3 @@ class StripTagsFilter extends AbstractFormFilter {
    }
 
 }
-?>

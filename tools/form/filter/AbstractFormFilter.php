@@ -22,7 +22,7 @@
 /**
  * @package tools::form::filter
  * @class AbstractFormFilter
- * 
+ *
  * Defines the base class for all form filters. In case you want to implement your
  * own form filter, derive from this class.
  *
@@ -38,7 +38,7 @@ abstract class AbstractFormFilter extends AbstractFilter {
     * @var form_control The control to filter.
     */
    protected $__Control;
-   
+
    /**
     * Includes a reference on the button of the form,
     * that initiates the validation event.
@@ -81,22 +81,21 @@ abstract class AbstractFormFilter extends AbstractFilter {
    /**
     * @protected
     * @since 1.14
-    * 
+    *
     * Evaluates the regular expression that is used for filtering the
     * control's input. In case the developer has defined a custom
     * regexp it is returned instead of the default value.
-    * 
+    *
     * @param String $default The default filter expression.
     * @return string The effective filter expression.
-    * 
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 21.04.2011<br />
     */
-   protected function getFilterExpression($default){
+   protected function getFilterExpression($default) {
       $expr = $this->__Control->getAttribute('filter-expr');
       return $expr === null ? $default : $expr;
    }
 
 }
-?>

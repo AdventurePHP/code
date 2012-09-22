@@ -36,7 +36,7 @@ abstract class AbstractFilter extends APFObject {
     * @public
     * @abstract
     *
-    * Abstract filter methode. Must be implemented by concrete filter implementations.
+    * Abstract filter method. Must be implemented by concrete filter implementations.
     *
     * @param string $input the input of the filter.
     * @return string The output of the filter.
@@ -47,7 +47,7 @@ abstract class AbstractFilter extends APFObject {
     * Version 0.2, 08.12.2008 (Added the $filterInstruction argument)<br />
     * Version 0.3, 18.07.2009 (Removed the $filterInstruction argument and refactored the filters)<br />
     */
-   abstract function filter($input);
+   abstract public function filter($input);
 }
 
 /**

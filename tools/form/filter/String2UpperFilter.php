@@ -37,4 +37,3 @@ class String2UpperFilter extends AbstractFormFilter {
    }
 
 }
-?>

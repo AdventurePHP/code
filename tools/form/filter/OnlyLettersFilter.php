@@ -37,4 +37,3 @@ class OnlyLettersFilter extends AbstractFormFilter {
    }
 
 }
-?>

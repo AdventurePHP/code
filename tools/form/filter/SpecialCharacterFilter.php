@@ -38,4 +38,3 @@ class SpecialCharacterFilter extends AbstractFormFilter {
    }
 
 }
-?>

@@ -38,4 +38,3 @@ class OnlyHTMLEntitiesFilter extends AbstractFormFilter {
    }
 
 }
-?>
