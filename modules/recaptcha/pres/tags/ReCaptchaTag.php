@@ -72,7 +72,13 @@ class ReCaptchaTag extends form_control {
    }
 
    public function onParseTime() {
-      // do nothing, since presetting on reCaptcha fields is not needed.
+      // do nothing except an attribute check, since presetting on reCaptcha fields is not needed.
+      $name = $this->getAttribute('name');
+      if (empty($name)) {
+         $form = $this->getParentObject();
+         throw new FormException('ReCaptcha control within form "' . $form->getAttribute('name')
+               . '" has no "name" attribute specified! Please r-check your form definition.');
+      }
    }
 
    /**
@@ -135,9 +141,92 @@ class ReCaptchaTag extends form_control {
          $html .= ', custom_theme_widget: \'' . $customThemeId . '\'';
       }
 
+      // add custom translation options if requested
+      $customTranslation = $this->getCustomTranslations();
+      if (!empty($customTranslation)) {
+         $html .= ', custom_translations : { ' . $customTranslation . ' }';
+      }
+
       return $html . ' };</script>'
             . PHP_EOL
-            . recaptcha_get_html($this->getPublicKey(), $this->errorMessageKey);
+            . recaptcha_get_html($this->getPublicKey(), $this->errorMessageKey, $this->useSSL());
+   }
+
+   /**
+    * @private
+    *
+    * Evaluates custom translation options and returns the JavaScript option string.
+    *
+    * @return string The custom translation option string.
+    * @
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 22.09.2012<br />
+    */
+   private function getCustomTranslations() {
+
+      $l10nOptions = array();
+
+      $instructionsVisual = $this->getAttribute('l10n-instructions-visual');
+      if (!empty($instructionsVisual)) {
+         $l10nOptions['instructions_visual'] = $instructionsVisual;
+      }
+
+      $instructionsAudio = $this->getAttribute('l10n-instructions-audio');
+      if (!empty($instructionsAudio)) {
+         $l10nOptions['instructions_audio'] = $instructionsAudio;
+      }
+
+      $playAgain = $this->getAttribute('l10n-play-again');
+      if (!empty($playAgain)) {
+         $l10nOptions['play_again'] = $playAgain;
+      }
+
+      $cantHearThis = $this->getAttribute('l10n-cant-hear-this');
+      if (!empty($cantHearThis)) {
+         $l10nOptions['cant_hear_this'] = $cantHearThis;
+      }
+
+      $visualChallenge = $this->getAttribute('l10n-visual-challenge');
+      if (!empty($visualChallenge)) {
+         $l10nOptions['visual_challenge'] = $visualChallenge;
+      }
+
+
+      $audioChallenge = $this->getAttribute('l10n-audio-challenge');
+      if (!empty($audioChallenge)) {
+         $l10nOptions['audio_challenge'] = $audioChallenge;
+      }
+
+      $refreshButton = $this->getAttribute('l10n-refresh-btn');
+      if (!empty($refreshButton)) {
+         $l10nOptions['refresh_btn'] = $refreshButton;
+      }
+
+      $helpButton = $this->getAttribute('l10n-help-btn');
+      if (!empty($helpButton)) {
+         $l10nOptions['help_btn'] = $helpButton;
+      }
+
+      $incorrectTryAgain = $this->getAttribute('l10n-incorrect-try-again');
+      if (!empty($incorrectTryAgain)) {
+         $l10nOptions['incorrect_try_again'] = $incorrectTryAgain;
+      }
+
+      $combinedL10NOptions = array();
+
+      foreach ($l10nOptions as $key => $value) {
+         $combinedL10NOptions[] = $key . ': "' . $value . '"';
+      }
+
+      return implode(',', $combinedL10NOptions);
+   }
+
+   /**
+    * @return bool True, in case SSL should be used, false otherwise.
+    */
+   private function useSSL() {
+      return $this->getAttribute('use-ssl', 'false') === 'true';
    }
 
 }
