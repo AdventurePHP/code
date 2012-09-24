@@ -64,18 +64,29 @@ class ReCaptchaTranslationTag extends html_taglib_getstring {
          // get environment variable from registry to have nice exception message
          $env = Registry::retrieve('apf::core', 'Environment');
 
-         throw new InvalidArgumentException('[' . get_class($this) . '::onAfterAppend()] Given entry "'
-               . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'
-               . $env . '_' . $configName . '" in namespace "' . $namespace . '" and context "'
-               . $this->getContext() . '"!', E_USER_ERROR);
+         throw new InvalidArgumentException('[' . get_class($this) . '::onAfterAppend()] Given section "'
+               . $this->getLanguage() . '" is not defined in configuration "' . $env . '_' . $configName
+               . '" in namespace "' . $namespace . '" and context "' . $this->getContext() . '"!', E_USER_ERROR);
       }
 
       /* @var $control ReCaptchaTag */
       $control = $this->getParentObject();
 
       // inject custom translation attributes into the ReCaptchaTag
-      foreach ($langSection->getValueNames() as $name) {
-         $control->setAttribute($name, $langSection->getValue($name));
+      $customTranslations = $langSection->getSection($entry);
+      if ($customTranslations === null) {
+
+         // get environment variable from registry to have nice exception message
+         $env = Registry::retrieve('apf::core', 'Environment');
+
+         throw new InvalidArgumentException('[' . get_class($this) . '::onAfterAppend()] Given entry "'
+               . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'
+               . $env . '_' . $configName . '" in namespace "' . $namespace . '" and context "'
+               . $this->getContext() . '"!', E_USER_ERROR);
+      }
+
+      foreach ($customTranslations->getValueNames() as $name) {
+         $control->setAttribute($name, $customTranslations->getValue($name));
       }
    }
 

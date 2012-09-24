@@ -168,7 +168,7 @@ class ReCaptchaTag extends form_control {
     * Evaluates custom translation options and returns the JavaScript option string.
     *
     * @return string The custom translation option string.
-    * @
+    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 22.09.2012<br />
@@ -177,48 +177,47 @@ class ReCaptchaTag extends form_control {
 
       $l10nOptions = array();
 
-      $instructionsVisual = $this->getAttribute('l10n-instructions-visual');
+      $instructionsVisual = $this->getAttribute('label-instructions-visual');
       if (!empty($instructionsVisual)) {
          $l10nOptions['instructions_visual'] = $instructionsVisual;
       }
 
-      $instructionsAudio = $this->getAttribute('l10n-instructions-audio');
+      $instructionsAudio = $this->getAttribute('label-instructions-audio');
       if (!empty($instructionsAudio)) {
          $l10nOptions['instructions_audio'] = $instructionsAudio;
       }
 
-      $playAgain = $this->getAttribute('l10n-play-again');
+      $playAgain = $this->getAttribute('label-play-again');
       if (!empty($playAgain)) {
          $l10nOptions['play_again'] = $playAgain;
       }
 
-      $cantHearThis = $this->getAttribute('l10n-cant-hear-this');
+      $cantHearThis = $this->getAttribute('label-cant-hear-this');
       if (!empty($cantHearThis)) {
          $l10nOptions['cant_hear_this'] = $cantHearThis;
       }
 
-      $visualChallenge = $this->getAttribute('l10n-visual-challenge');
+      $visualChallenge = $this->getAttribute('label-visual-challenge');
       if (!empty($visualChallenge)) {
          $l10nOptions['visual_challenge'] = $visualChallenge;
       }
 
-
-      $audioChallenge = $this->getAttribute('l10n-audio-challenge');
+      $audioChallenge = $this->getAttribute('label-audio-challenge');
       if (!empty($audioChallenge)) {
          $l10nOptions['audio_challenge'] = $audioChallenge;
       }
 
-      $refreshButton = $this->getAttribute('l10n-refresh-btn');
+      $refreshButton = $this->getAttribute('label-refresh-btn');
       if (!empty($refreshButton)) {
          $l10nOptions['refresh_btn'] = $refreshButton;
       }
 
-      $helpButton = $this->getAttribute('l10n-help-btn');
+      $helpButton = $this->getAttribute('label-help-btn');
       if (!empty($helpButton)) {
          $l10nOptions['help_btn'] = $helpButton;
       }
 
-      $incorrectTryAgain = $this->getAttribute('l10n-incorrect-try-again');
+      $incorrectTryAgain = $this->getAttribute('label-incorrect-try-again');
       if (!empty($incorrectTryAgain)) {
          $l10nOptions['incorrect_try_again'] = $incorrectTryAgain;
       }
@@ -226,7 +225,7 @@ class ReCaptchaTag extends form_control {
       $combinedL10NOptions = array();
 
       foreach ($l10nOptions as $key => $value) {
-         $combinedL10NOptions[] = $key . ': "' . $value . '"';
+         $combinedL10NOptions[] = $key . ': \'' . $value . '\'';
       }
 
       return implode(',', $combinedL10NOptions);
