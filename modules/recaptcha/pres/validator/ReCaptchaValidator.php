@@ -19,6 +19,7 @@
  * -->
  */
 import('tools::form::validator', 'TextFieldValidator');
+import('tools::request', 'RequestHandler');
 require_once(__DIR__ . '/../../external/google/recaptchalib.php');
 
 /**
@@ -33,30 +34,21 @@ require_once(__DIR__ . '/../../external/google/recaptchalib.php');
  */
 class ReCaptchaValidator extends TextFieldValidator {
 
-   /**
-    * @public
-    *
-    * Method, that is called to validate the element.
-    *
-    * @param string $input The input to validate.
-    * @return boolean True, in case the control is valid, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 28.08.2009<br />
-    */
    public function validate($input) {
 
       /* @var $control ReCaptchaTag */
       $control = $this->__Control;
       $control->getPrivateKey();
 
+      $challengeContent = RequestHandler::getValue(ReCaptchaTag::RE_CAPTCHA_CHALLENGE_FIELD_IDENTIFIER);
+      $answerIdentifier = RequestHandler::getValue(ReCaptchaTag::RE_CAPTCHA_CHALLENGE_ANSWER_IDENTIFIER);
+
       /* @var $resp ReCaptchaResponse */
       $resp = recaptcha_check_answer(
          $control->getPrivateKey(),
          $_SERVER['REMOTE_ADDR'],
-         $_REQUEST[ReCaptchaTag::RE_CAPTCHA_CHALLENGE_FIELD_IDENTIFIER],
-         $_REQUEST[ReCaptchaTag::RE_CAPTCHA_CHALLENGE_ANSWER_IDENTIFIER]
+         $challengeContent,
+         $answerIdentifier
       );
 
       if ($resp->is_valid) {
