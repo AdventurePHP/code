@@ -245,8 +245,10 @@ final class XmlParser {
     * @public
     * @static
     *
-    * Extracts the attributes from an XML attributes string.
+    * Extracts attributes and content from an XML tag string.
     *
+    * @param string $prefix The prefix of the tag definition.
+    * @param string $name The name of the tag definition.
     * @param string $tagString The string, that contains the tag definition.
     * @return string[] The attributes of the tag.
     * @throws ParserException In case of tag mismatch.
@@ -261,8 +263,9 @@ final class XmlParser {
     * Version 0.6, 03.11.2008 (Fixed the issue, that a TAB character is no valid token to attributes delimiter)<br />
     * Version 0.7, 04.11.2008 (Fixed issue, that a combination of TAB and SPACE characters leads to wrong attributes parsing)<br />
     * Version 0.8, 05.11.2008 (Removed the TAB support due to performance and fault tolerance problems)<br />
+    * Version 0.9, 26.09.2012 (Introduced additional arguments for prefix and name to gain performance)<br />
     */
-   public static function getTagAttributes($tagString) {
+   public static function getTagAttributes($prefix, $name, $tagString) {
 
       // search for taglib to attributes string delimiter
       $tagAttributeDel = strpos($tagString, ' ');
@@ -276,15 +279,6 @@ final class XmlParser {
       if ($tagAttributeDel === false || $tagAttributeDel > $posTagClosingSign) {
          $tagAttributeDel = strpos($tagString, '>');
       }
-
-      // search for separator between prefix and class
-      $prefixDel = strpos($tagString, ':');
-
-      // gather class
-      $class = substr($tagString, $prefixDel + 1, $tagAttributeDel - ($prefixDel + 1));
-
-      // gather prefix
-      $prefix = substr($tagString, 1, $prefixDel - 1);
 
       // search for the first appearance of the closing sign after the attribute string
       $posEndAttrib = strpos($tagString, '>');
@@ -300,9 +294,9 @@ final class XmlParser {
          $content = '';
       } else {
          // check, if explicitly-closing tag exists
-         if (strpos($tagString, '</' . $prefix . ':' . $class . '>') === false) {
+         if (strpos($tagString, '</' . $prefix . ':' . $name . '>') === false) {
             throw new ParserException('[XmlParser::getTagAttributes()] No closing tag found for '
-                     . 'tag "<' . $prefix . ':' . $class . ' />"! Tag string: "' . $tagString . '".',
+                     . 'tag "<' . $prefix . ':' . $name . ' />"! Tag string: "' . $tagString . '".',
                E_USER_ERROR);
          } else {
 
@@ -311,7 +305,7 @@ final class XmlParser {
             $posEndContent = 0;
             $count = 0;
             $maxCount = 10;
-            $endTag = '</' . $prefix . ':' . $class . '>';
+            $endTag = '</' . $prefix . ':' . $name . '>';
 
             while ($found == true) {
 
@@ -341,8 +335,6 @@ final class XmlParser {
 
       $attributes = array();
       $attributes['attributes'] = $tagAttributes;
-      $attributes['class'] = $class;
-      $attributes['prefix'] = $prefix;
       $attributes['content'] = $content;
       return $attributes;
    }
@@ -1392,8 +1384,11 @@ class Document extends APFObject {
                   . 'parsing loops reached!', E_USER_ERROR);
          }
 
-         $module = $this->__TagLibs[$i]->getClass();
-         $token = $this->__TagLibs[$i]->getPrefix() . ':' . $this->__TagLibs[$i]->getName();
+         $class = $this->__TagLibs[$i]->getClass();
+         $prefix = $this->__TagLibs[$i]->getPrefix();
+         $name = $this->__TagLibs[$i]->getName();
+         $token = $prefix . ':' . $name;
+
          $tagLoops = 0;
 
          while (substr_count($this->__Content, '<' . $token) > 0) {
@@ -1439,8 +1434,8 @@ class Document extends APFObject {
             }
 
             // get the tag attributes of the current tag
-            $attributes = XmlParser::getTagAttributes($tagString);
-            $object = new $module();
+            $attributes = XmlParser::getTagAttributes($prefix, $name, $tagString);
+            $object = new $class();
             /* @var $object Document */
 
             // inject context of the parent object
@@ -1761,7 +1756,6 @@ class core_taglib_appendnode extends Document {
 
             // correct the parent object reference
             $parentChildren[$objectId]->setParentObject($this->__ParentObject);
-
          }
 
          // include complete content of the current document and append it to
