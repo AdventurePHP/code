@@ -70,7 +70,7 @@
             </label>
             <form:addtaglib namespace="modules::captcha::pres::taglib" class="form_taglib_captcha" prefix="form" name="captcha" />
             <form:captcha
-               name="captcha"
+               name="captcha-control"
                clearonerror="true"
                text_id="contact-form-captcha"
                disable_inline="true"
@@ -78,7 +78,7 @@
             <form:addvalidator
                namespace="modules::captcha::pres::validator"
                class="CaptchaValidator"
-               control="captcha"
+               control="captcha-control"
                button="sendFormContact"
             />
          </div>
