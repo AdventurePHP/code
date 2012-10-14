@@ -25,6 +25,7 @@ import('modules::usermanagement::biz::model', 'UmgtRole');
 import('modules::usermanagement::biz::model', 'UmgtUser');
 import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinition');
 import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinitionType');
+import('modules::usermanagement::biz::model', 'UmgtAuthToken');
 
 import('modules::genericormapper::data', 'GenericCriterionObject');
 
@@ -50,6 +51,11 @@ class UmgtManager extends APFObject {
     * @const string The name of the umgt manager's main config section.
     */
    const CONFIG_SECTION_NAME = 'Default';
+
+   /**
+    * @const int Cookie life-time in seconds.
+    */
+   const AUTO_LOGIN_COOKIE_LIFETIME = 2592000;
 
    /**
     * @var int Indicates the id of the current application/project.
@@ -2059,6 +2065,71 @@ class UmgtManager extends APFObject {
       return $this->getORMapper()->loadObjectListByCriterion('AppProxyType', $crit);
    }
 
-}
+   /**
+    * @public
+    *
+    * Fetches the token representation by a given token string.
+    * <p/>
+    * This method is used to resolve the user by the current cookie.
+    *
+    * @param string $token The token string from the auto login cookie.
+    * @return UmgtAuthToken|null Returns the desired token or null, if no token has been found.
+    */
+   public function loadAuthTokenByTokenString($token) {
+      $crit = new GenericCriterionObject();
+      $crit->addPropertyIndicator('Token', $token);
+      return $this->getORMapper()->loadObjectByCriterion('AuthToken', $crit);
+   }
 
-?>
+   /**
+    * @public
+    *
+    * Resolves the appropriate user from the given auth token.
+    *
+    * @param UmgtAuthToken $token The current auth token.
+    * @return UmgtUser|null The corresponding user or null if the user cannot be found.
+    */
+   public function loadUserByAuthToken(UmgtAuthToken $token) {
+      $crit = new GenericCriterionObject();
+      $crit->addRelationIndicator('User2AuthToken', $token);
+      return $this->getORMapper()->loadObjectByCriterion('User', $crit);
+   }
+
+   /**
+    * @public
+    *
+    * Creates/saves an auto-login token for the given user.
+    *
+    * @param UmgtUser $user The user to create the token for.
+    * @param UmgtAuthToken $token The user's auto-login token.
+    */
+   public function saveAuthToken(UmgtUser $user, UmgtAuthToken $token) {
+      $token->addRelatedObject('User2AuthToken', $user);
+      $this->getORMapper()->saveObject($token);
+   }
+
+   /**
+    * @public
+    *
+    * Returns the life time of the auto login cookie.
+    *
+    * @return int The life time of the auto login cookie.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.10.2012<br />
+    */
+   public function getAutoLoginCookieLifeTime() {
+      try {
+         $config = $this->getConfiguration('modules::usermanagement::pres', 'login');
+         $section = $config->getSection(UmgtManager::CONFIG_SECTION_NAME);
+         $cookieLifeTime = $section == null
+               ? self::AUTO_LOGIN_COOKIE_LIFETIME
+               : $section->getValue('cookie.lifetime', self::AUTO_LOGIN_COOKIE_LIFETIME);
+      } catch (ConfigurationException $e) {
+         $cookieLifeTime = self::AUTO_LOGIN_COOKIE_LIFETIME;
+      }
+      return $cookieLifeTime;
+   }
+
+}

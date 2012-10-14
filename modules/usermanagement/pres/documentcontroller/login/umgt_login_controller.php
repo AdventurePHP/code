@@ -20,6 +20,7 @@
  */
 import('tools::link', 'LinkGenerator');
 import('tools::http', 'HeaderManager');
+import('modules::usermanagement::biz::login', 'UmgtAutoLoginAction');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::login
@@ -42,7 +43,7 @@ class umgt_login_controller extends base_controller {
       /* @var $sessionStore UmgtUserSessionStore */
       $sessionStore = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
-      $appIdent = $this->getApplicationIdentifier();
+      $appIdent = $this->getContext();
       $user = $sessionStore->getUser($appIdent);
 
       if ($user === null) {
@@ -71,6 +72,12 @@ class umgt_login_controller extends base_controller {
                } else {
                   // store user
                   $sessionStore->setUser($appIdent, $user);
+
+                  // create auto-login cookie
+                  $rememberMe = $form->getFormElementByName('remember-me');
+                  if ($rememberMe->isChecked()) {
+                     $this->createAutoLogin($user);
+                  }
 
                   // redirect to target page
                   $urlProvider = &$this->getDIServiceObject('modules::usermanagement::biz', 'LoginRedirectUrlProvider');
@@ -132,8 +139,20 @@ class umgt_login_controller extends base_controller {
       }
    }
 
-   private function getApplicationIdentifier() {
-      return $this->getAttribute('app-ident', $this->getContext());
+   public function createAutoLogin($user) {
+      /* @var $umgt UmgtManager */
+      $umgt = &$this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
+
+      $cM = new CookieManager(UmgtAutoLoginAction::AUTO_LOGIN_COOKIE_NAMESPACE);
+
+      $token = md5(rand(100000, 999999));
+
+      $cookieLifeTime = $umgt->getAutoLoginCookieLifeTime();
+      $cM->createCookie(UmgtAutoLoginAction::AUTO_LOGIN_COOKIE_NAME, $token, time() + $cookieLifeTime);
+
+      $authToken = new UmgtAuthToken();
+      $authToken->setToken($token);
+      $umgt->saveAuthToken($user, $authToken);
    }
 
 }

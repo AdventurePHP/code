@@ -20,6 +20,13 @@
             entry="login.form.password.label" />
       </label>
       <form:password id="umgt-fe-login-pass" name="password" />
+      <label for="umgt-fe-login-remember-me">
+         <form:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="login.form.remember-me.label" />
+      </label>
+      <form:checkbox name="remember-me" id="umgt-fe-login-remember-me" value="1" />
       <form:button id="umgt-fe-login-send" name="sendFormLogin">
          <button:getstring
             namespace="modules::usermanagement::pres"

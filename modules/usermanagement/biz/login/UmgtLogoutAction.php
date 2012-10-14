@@ -20,6 +20,8 @@
  */
 import('tools::http', 'HeaderManager');
 import('tools::link', 'LinkGenerator');
+import('tools::cookie', 'CookieManager');
+import('modules::usermanagement::biz::login', 'UmgtAutoLoginAction');
 
 /**
  * @package modules::usermanagement::biz::login
@@ -39,7 +41,11 @@ class UmgtLogoutAction extends AbstractFrontcontrollerAction {
       if ($logout === 'true') {
          $sessionStore = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
          /* @var $sessionStore UmgtUserSessionStore */
-         $sessionStore->logout($this->getApplicationIdentifier());
+         $sessionStore->logout($this->getContext());
+
+         // delete cookie to avoid re-log-in effects after clicking on log-out
+         $cM = new CookieManager(UmgtAutoLoginAction::AUTO_LOGIN_COOKIE_NAMESPACE);
+         $cM->deleteCookie(UmgtAutoLoginAction::AUTO_LOGIN_COOKIE_NAME);
 
          // redirect to target page
          $urlProvider = &$this->getDIServiceObject('modules::usermanagement::biz', 'LogoutRedirectUrlProvider');
@@ -48,10 +54,6 @@ class UmgtLogoutAction extends AbstractFrontcontrollerAction {
          exit(0);
 
       }
-   }
-
-   private function getApplicationIdentifier() {
-      return $this->getInput()->getAttribute('app-ident', $this->getContext());
    }
 
 }

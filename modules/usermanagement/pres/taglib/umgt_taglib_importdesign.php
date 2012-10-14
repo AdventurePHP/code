@@ -54,7 +54,7 @@ class umgt_taglib_importdesign extends core_taglib_importdesign {
       $condSet = &$this->getServiceObject('modules::usermanagement::pres::condition', 'UserDependentContentConditionSet');
       /* @var $condSet UserDependentContentConditionSet */
 
-      if ($condSet->conditionMatches($this->getApplicationIdentifier(), $this->getAttribute('condition'), $this->getAttribute('options'))) {
+      if ($condSet->conditionMatches($this->getContext(), $this->getAttribute('condition'), $this->getAttribute('options'))) {
          parent::onParseTime();
          $this->display = true;
       }
@@ -65,10 +65,6 @@ class umgt_taglib_importdesign extends core_taglib_importdesign {
          return parent::transform();
       }
       return '';
-   }
-
-   private function getApplicationIdentifier() {
-      return $this->getAttribute('app-ident', $this->getContext());
    }
 
 }

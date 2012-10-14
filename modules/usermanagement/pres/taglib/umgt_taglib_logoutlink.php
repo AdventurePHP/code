@@ -34,24 +34,8 @@ import('tools::link', 'LinkGenerator');
 class umgt_taglib_logoutlink extends Document {
 
    public function transform() {
-
       $params = array('logout' => 'true');
-
-      // add app identifier only in case we have one
-      $appIdent = $this->getApplicationIdentifier();
-      if (!empty($appIdent)) {
-         $params['app-ident'] = $appIdent;
-      }
-
       return LinkGenerator::generateActionUrl(Url::fromCurrent(), 'modules::usermanagement::biz', 'logout', $params);
    }
 
-   private function getApplicationIdentifier() {
-      // Context is not included since this would give internal information to the outside world!
-      // Further, the logout action resolved missing application identifiers itself!
-      return $this->getAttribute('app-ident');
-   }
-
 }
-
-?>
