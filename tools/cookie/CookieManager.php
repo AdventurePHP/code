@@ -20,43 +20,41 @@
  */
 
 /**
- *  @package tools::cookie
- *  @class CookieManager
+ * @package tools::cookie
+ * @class CookieManager
  *
- *  The CookieManager is a tool, that provides sophisticated cookie handling. It features
- *  namespaces for usage in multi-application environments. The methods included allow you to
- *  create, update and delete cookies within different namespaces. Usage:
- *  <pre>$cM = new CookieManager('my::namespace');
- *  $cM->createCookie('my_param','my_value');
- *  $cM->updateCookie('my_param','my_value_2');
- *  $cM->deleteCookie('my_param');</pre>
+ * The CookieManager is a tool, that provides sophisticated cookie handling. It features
+ * namespaces for usage in multi-application environments. The methods included allow you to
+ * create, update and delete cookies within different namespaces. Usage:
+ * <pre>$cM = new CookieManager('my::namespace');
+ * $cM->createCookie('my_param','my_value');
+ * $cM->updateCookie('my_param','my_value_2');
+ * $cM->deleteCookie('my_param');</pre>
  *
- *  @author Christian Achatz
- *  @version
- *  Version 0.1, 08.11.2008<br />
- *  Version 0.2, 10.01.2009 (Finished implementation and testing)<br />
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 08.11.2008<br />
+ * Version 0.2, 10.01.2009 (Finished implementation and testing)<br />
  */
 class CookieManager {
 
    /**
-    * @protected
     * @var string Namespace of the current instance.
     */
    protected $namespace = 'apf_cookies_default';
 
    /**
-    * @protected
     * @var int Defines the default expiration time in seconds (1 day).
     */
    protected $expireTime = 86400;
 
    /**
-    *  @public
+    * @public
     *
-    *  Constructor of the CookieManager. Allows to set the namespace.
+    * Constructor of the CookieManager. Allows to set the namespace.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 08.11.2008<br />
     */
    public function __construct($namespace = null) {
@@ -66,46 +64,46 @@ class CookieManager {
    }
 
    /**
-    *  @public
+    * @public
     *
-    *  Sets the namespace of the current CookieManager instance.
+    * Sets the namespace of the current CookieManager instance.
     *
-    *  @author Christian Achatz
-    *  @version
-    *  Version 0.1, 08.11.2008<br />
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.11.2008<br />
     */
    public function setNamespace($namespace) {
       $this->namespace = str_replace('::', '_', $namespace);
    }
 
    /**
-    *  @public
+    * @public
     *
-    *  Returns the namespace of the current CookieManager instance.
+    * Returns the namespace of the current CookieManager instance.
     *
-    *  @author Christian Achatz
-    *  @version
-    *  Version 0.1, 10.01.2009<br />
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 10.01.2009<br />
     */
    public function getNamespace() {
       return str_replace('_', '::', $this->namespace);
    }
 
    /**
-    *  @public
+    * @public
     *
-    *  Creates a cookie within the current namespace.
+    * Creates a cookie within the current namespace.
     *
-    *  @param string $key desired cookie key
-    *  @param string $value the value of the cookie
-    *  @param int $expire the expiration time delta (=from now) in seconds
-    *  @param string $domain the domain, the cookie is valid for
-    *  @param string $path the path, the cookie is valid for
-    *  @return bool $success true, if cookie was set correctly, false, if something was wrong
+    * @param string $key desired cookie key
+    * @param string $value the value of the cookie
+    * @param int $expire the expiration time delta (=from now) in seconds
+    * @param string $domain the domain, the cookie is valid for
+    * @param string $path the path, the cookie is valid for
+    * @return bool True, if cookie was set correctly, false, if something was wrong
     *
-    *  @author Christian Achatz
-    *  @version
-    *  Version 0.1, 08.11.2008<br />
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.11.2008<br />
     */
    public function createCookie($key, $value, $expire = null, $domain = null, $path = null) {
 
@@ -124,25 +122,23 @@ class CookieManager {
          $path = $this->getDefaultPath();
       }
 
-      // call setcookie and return the result
       return setcookie($this->namespace . '__' . $key, $value, $expire, $path, $domain);
-
    }
 
    /**
-    *  @public
+    * @public
     *
-    *  Updates an existing cookie within the current namespace.
+    * Updates an existing cookie within the current namespace.
     *
-    *  @param string $key desired cookie key
-    *  @param string $value the value of the cookie
-    *  @param int $expire the expiration time delta (=from now) in seconds
-    *  @param string $domain the domain, the cookie is valid for
-    *  @param string $path the path, the cookie is valid for
-    *  @return bool $success true, if cookie was set correctly, false, if something was wrong
+    * @param string $key desired cookie key
+    * @param string $value the value of the cookie
+    * @param int $expire the expiration time delta (=from now) in seconds
+    * @param string $domain the domain, the cookie is valid for
+    * @param string $path the path, the cookie is valid for
+    * @return bool $success true, if cookie was set correctly, false, if something was wrong
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 10.01.2009<br />
     */
    public function updateCookie($key, $value, $expire = null, $domain = null, $path = null) {
@@ -150,15 +146,15 @@ class CookieManager {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Returns the value of the desired key within the current namespace.
     *
-    *  @param string $key desired cookie key
-    *  @return string $value cookie value or null
+    * @param string $key desired cookie key
+    * @return string $value cookie value or null
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 08.11.2008<br />
     *  Version 0.2, 10.01.2009 (Added namespace support)<br />
     */
@@ -169,21 +165,22 @@ class CookieManager {
       } else {
          return null;
       }
-
    }
 
    /**
-    *  @public
+    * @public
     *
-    *  Returns the value of the desired key within the current namespace
+    * Returns the value of the desired key within the current namespace
     *
-    *  @param string $key desired cookie key
-    *  @return string $value cookie value or null
+    * @param string $key Desired cookie key.
+    * @param string $domain The domain of the cookie to delete.
+    * @param string $path The path of the cookie to delete.
+    * @return bool True in case the operation has been successful, false otherwise.
     *
-    *  @author Christian Achatz
-    *  @version
-    *  Version 0.1, 08.11.2008<br />
-    *  Version 0.2, 10.01.2009 (Added namespace support)<br />
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.11.2008<br />
+    * Version 0.2, 10.01.2009 (Added namespace support)<br />
     */
    public function deleteCookie($key, $domain = null, $path = null) {
 
@@ -197,55 +194,52 @@ class CookieManager {
          $path = $this->getDefaultPath();
       }
 
-      // delete the cookie
       return setcookie($this->namespace . '__' . $key, false, time() - 3600, $path, $domain);
-
    }
 
    /**
-    *  @protected
+    * @protected
     *
-    *  Returns the default domain
+    * Returns the default domain
     *
-    *  @return string $defaultDomain the default domain
+    * @return string $defaultDomain the default domain
     *
-    *  @author Christian Achatz
-    *  @version
-    *  Version 0.1, 10.01.2009<br />
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 10.01.2009<br />
     */
    protected function getDefaultDomain() {
       return $_SERVER['HTTP_HOST'];
    }
 
    /**
-    *  @protected
+    * @protected
     *
-    *  Returns the default path
+    * Returns the default path.
     *
-    *  @return string $defaultPath the default path
+    * @return string $defaultPath the default path
     *
-    *  @author Christian Achatz
-    *  @version
-    *  Version 0.1, 10.01.2009<br />
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 10.01.2009<br />
     */
    protected function getDefaultPath() {
       return str_replace(basename($_SERVER['SCRIPT_FILENAME']), '', $_SERVER['PHP_SELF']);
    }
 
    /**
-    *  @protected
+    * @protected
     *
-    *  Returns the default expire timestamp
+    * Returns the default expire timestamp
     *
-    *  @return string $defaultExpireTime the default expire time
+    * @return string $defaultExpireTime the default expire time
     *
-    *  @author Christian Achatz
-    *  @version
-    *  Version 0.1, 10.01.2009<br />
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 10.01.2009<br />
     */
    protected function getDefaultExpireTime() {
       return time() + $this->expireTime;
    }
 
 }
-?>
