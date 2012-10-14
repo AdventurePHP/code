@@ -11,12 +11,12 @@ import('modules::genericormapper::data', 'GenericDomainObject');
 /**
  * @package modules::usermanagement::biz::model
  * @class UmgtGroupBase
- * 
+ *
  * This class provides the descriptive getter and setter methods for the "UmgtGroup" domain object.
  */
 abstract class UmgtGroupBase extends GenericDomainObject {
 
-   public function __construct($objectName = null){
+   public function __construct($objectName = null) {
       parent::__construct('Group');
    }
 
@@ -68,6 +68,20 @@ abstract class UmgtGroupBase extends GenericDomainObject {
       return $this;
    }
 
+   /**
+    * @return string The value for property "CreationTimestamp".
+    */
+   public function getCreationTimestamp() {
+      return $this->getProperty('CreationTimestamp');
+   }
+
+   /**
+    * @return string The value for property "ModificationTimestamp".
+    */
+   public function getModificationTimestamp() {
+      return $this->getProperty('ModificationTimestamp');
+   }
+
 }
 
 // DO NOT CHANGE THIS COMMENT! <*UmgtGroupBase:end*>
@@ -75,7 +89,7 @@ abstract class UmgtGroupBase extends GenericDomainObject {
 /**
  * @package modules::usermanagement::biz::model
  * @class UmgtGroup
- * 
+ *
  * This class represents the "UmgtGroup" domain object.
  * <p/>
  * Please use this class to add your own functionality.
@@ -92,10 +106,8 @@ class UmgtGroup extends UmgtGroupBase {
     *
     * @param string $objectName The internal object name of the domain object.
     */
-   public function __construct($objectName = null){
+   public function __construct($objectName = null) {
       parent::__construct();
    }
 
 }
-
-?>

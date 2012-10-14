@@ -56,6 +56,7 @@ class UmgtUserSessionStore extends APFObject {
     *
     * @param string $applicationIdentifier Identifies the application.
     * @return UmgtUser The currently logged-in user.
+    * @throws InvalidArgumentException In case the application identifier is not given.
     *
     * @author Christian Achatz
     * @version
@@ -76,6 +77,7 @@ class UmgtUserSessionStore extends APFObject {
     *
     * @param string $applicationIdentifier Identifies the application.
     * @param UmgtUser $user The user to store within the session.
+    * @throws InvalidArgumentException In case the application identifier is not given.
     *
     * @author Christian Achatz
     * @version
@@ -126,6 +128,7 @@ class UmgtUserSessionStore extends APFObject {
     * Logs out the user for the current application.
     *
     * @param string $applicationIdentifier Identifies the application.
+    * @throws InvalidArgumentException In case the application identifier is not given.
     *
     * @author Christian Achatz
     * @version
@@ -143,5 +146,3 @@ class UmgtUserSessionStore extends APFObject {
    }
 
 }
-
-?>
