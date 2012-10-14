@@ -1947,13 +1947,20 @@ class core_taglib_addtaglib extends Document {
       $this->getParentObject()->addTagLib(
          new TagLib($namespace, $class, $prefix, $name)
       );
+
+      // Resets the attributes list to avoid selection issues with the
+      // getChildNode() and getChildNodes() methods that may select this
+      // node when requesting a node by the "name" attribute. See bug
+      // http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=1192
+      // for more details.
+      $this->__Attributes = array();
    }
 
    /**
     * @public
     *
     * Implements the Document's transform() method. Returns an empty string, because the addtaglib
-    * tag should not generate output.
+    * tag generates no output.
     *
     * @return string Nothing, since this tag produces no output.
     *
