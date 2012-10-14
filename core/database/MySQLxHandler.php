@@ -198,7 +198,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     *
     * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
     * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
-    * @return string[] The associative result array.
+    * @return string[] The associative result array. Returns false if no row was found.
     *
     * @author Christian Achatz
     * @version

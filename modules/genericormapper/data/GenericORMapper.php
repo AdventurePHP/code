@@ -170,7 +170,7 @@ class GenericORMapper extends BaseMapper {
     *
     * @param string $objectName name of the object in mapping table
     * @param string $statement sql statement
-    * @return GenericORMapperDataObject The desired object.
+    * @return GenericORMapperDataObject The desired object or null if the object has not been found.
     *
     * @author Christian Achatz
     * @version
@@ -180,6 +180,9 @@ class GenericORMapper extends BaseMapper {
    public function loadObjectByTextStatement($objectName, $statement) {
       $result = $this->dbDriver->executeTextStatement($statement, $this->logStatements);
       $data = $this->dbDriver->fetchData($result);
+      if ($data === false) {
+         return null;
+      }
       return $this->mapResult2DomainObject($objectName, $data);
    }
 
@@ -219,6 +222,7 @@ class GenericORMapper extends BaseMapper {
     *
     * @param GenericORMapperDataObject $object the object to save.
     * @return int Database id of the object.
+    * @throws GenericORMapperException In case the object name cannot be found within the mapping table.
     *
     * @author Christian Achatz
     * @version
@@ -276,12 +280,10 @@ class GenericORMapper extends BaseMapper {
                   // MySQL NULL value
                   if (stripos($this->mappingTable[$objectName][$propertyName], self::$NULL_FIELD_IDENTIFIER) === false) {
                      $values[] = '\'' . $propertyValue . '\'';
-                  }
-                  else {
+                  } else {
                      if (empty($propertyValue)) {
                         $values[] = 'NULL';
-                     }
-                     else {
+                     } else {
                         $values[] = '\'' . $propertyValue . '\'';
                      }
                   }
@@ -320,7 +322,6 @@ class GenericORMapper extends BaseMapper {
 
                   // check, whether the field is a null value and translate PHP null values into
                   // MySQL NULL value
-                  $value = '';
                   if (stripos($this->mappingTable[$objectName][$propertyName], self::$NULL_FIELD_IDENTIFIER) === false) {
                      $value = '\'' . $propertyValue . '\'';
                   } else {
@@ -371,6 +372,7 @@ class GenericORMapper extends BaseMapper {
     * @param string $objectName The name of the object in mapping table.
     * @param int $objectId The database id of the desired object.
     * @return GenericORMapperDataObject The desired object.
+    * @throws InvalidArgumentException In case the applied object id is not numeric.
     *
     * @author Christian Achatz
     * @version

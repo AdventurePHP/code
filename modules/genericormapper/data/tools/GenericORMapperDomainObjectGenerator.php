@@ -90,8 +90,7 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
 
       $content = '<?php' . PHP_EOL . PHP_EOL .
             $this->generateBaseObjectCode($name) . PHP_EOL . PHP_EOL .
-            $this->generateObjectCode($name) . PHP_EOL . PHP_EOL .
-            '?>';
+            $this->generateObjectCode($name) . PHP_EOL;
 
       $path = dirname($filename);
       if (!file_exists($path)) {
