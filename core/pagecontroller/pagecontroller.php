@@ -1028,7 +1028,7 @@ class Document extends APFObject {
 
    /**
     * @protected
-    * @var int The maximum number of parser loops to protect against infinit loops.
+    * @var int The maximum number of parser loops to protect against infinite loops.
     */
    protected $maxLoops = 300;
 
@@ -2226,7 +2226,7 @@ class html_taglib_template extends Document {
  *
  * Implements a base class for the taglibs &lt;html:getstring /&gt; and
  * &lt;template:getstring /&gt;. This lib fetches the desired configuration value and
- * returns it on transformation time. The configuration files must be strcutured as follows:
+ * returns it on transformation time. The configuration files must be structured as follows:
  * <p/>
  * <pre>
  * [de]

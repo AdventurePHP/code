@@ -70,7 +70,7 @@
  * @version
  * Version 0.1, 18.04.2009<br />
  * Version 0.2, 19.04.2009 (Finished implementation)<br />
- * Version 0.3, 07.03.2011 (Refactored to static component to increase performance and accessability)<br />
+ * Version 0.3, 07.03.2011 (Refactored to static component to increase performance and accessibility)<br />
  * Version 0.4, 10.07.2012 Jan Wiese (Added configuration and service type cache)<br />
  */
 final class DIServiceManager {

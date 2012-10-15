@@ -50,147 +50,148 @@ import('core::configuration::provider::xml', 'XmlConfiguration');
  * Version 0.1, 27.09.2010<br />
  */
 class XmlConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
-    /**
+
+   /**
     * @public
-    * 
+    *
     * @version
-    * Version 0.2, 27.02.2012 (Throw an exception if xml isn't wellformed - Tobias L�ckel [Megger])
+    * Version 0.2, 27.02.2012 (Throw an exception if xml isn't well-formed - Tobias Lückel [Megger])
     */
-    public function loadConfiguration($namespace, $context, $language, $environment, $name) {
+   public function loadConfiguration($namespace, $context, $language, $environment, $name) {
 
-        $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
+      $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
 
-        if (file_exists($fileName)) {
+      if (file_exists($fileName)) {
 
-            $xml = simplexml_load_file($fileName);
-            
-            if ($xml === false) {
-                throw new ConfigurationException('[XmlConfigurationProvider::loadConfiguration()] '
-                    . 'Configuration with namespace "' . $namespace . '", context "' . $context . '", '
-                    . ' language "' . $language . '", environment "' . $environment . '", and name '
-                    . '"' . $name . '" isn\'t wellformed (file name: ' . $fileName . ')!', E_USER_ERROR);
-            }
+         $xml = simplexml_load_file($fileName);
 
-            $config = new XmlConfiguration();
+         if ($xml === false) {
+            throw new ConfigurationException('[XmlConfigurationProvider::loadConfiguration()] '
+                  . 'Configuration with namespace "' . $namespace . '", context "' . $context . '", '
+                  . ' language "' . $language . '", environment "' . $environment . '", and name '
+                  . '"' . $name . '" isn\'t well-formed (file name: ' . $fileName . ')!', E_USER_ERROR);
+         }
 
-            foreach ($xml->xpath('section') as $section) {
-                $this->parseSection($config, $section);
-            }
+         $config = new XmlConfiguration();
 
-            return $config;
-        }
-
-        if ($this->activateEnvironmentFallback && $environment !== 'DEFAULT') {
-            return $this->loadConfiguration($namespace, $context, $language, 'DEFAULT', $name);
-        }
-
-        throw new ConfigurationException('[XmlConfigurationProvider::loadConfiguration()] '
-                . 'Configuration with namespace "' . $namespace . '", context "' . $context . '", '
-                . ' language "' . $language . '", environment "' . $environment . '", and name '
-                . '"' . $name . '" cannot be loaded (file name: ' . $fileName . ')!', E_USER_ERROR);
-    }
-
-    public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
-
-        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><configuration></configuration>');
-
-        foreach ($config->getSectionNames() as $sectionName) {
-            $this->processSection($xml, $config->getSection($sectionName), $sectionName);
-        }
-
-        // directly save file to gain performance and decreas memory usage
-        $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
-
-        // create file path if necessary to avoid "No such file or directory" errors
-        $this->createFilePath($fileName);
-
-        if ($xml->asXML($fileName) === false) {
-            throw new ConfigurationException('[XmlConfigurationProvider::saveConfiguration()] '
-                    . 'Configuration with name "' . $fileName . '" cannot be saved! Please check your '
-                    . 'file system configuration, the file name, or your environment configuration.');
-        }
-    }
-
-    /**
-     * @private
-     *
-     * Transforms a given config section into the applied xml structure.
-     *
-     * @param SimpleXMLElement $xml The parent XML node.
-     * @param Configuration $config The current section to translate.
-     * @param string $name The name of the section to add.
-     *
-     * @author Christian Achatz
-     * @version
-     * Version 0.1, 28.10.2010<br />
-     */
-    private function processSection(SimpleXMLElement &$xml, Configuration $config, $name) {
-
-        // create current section and append it to the parent node structure.
-        $section = $xml->addChild('section');
-        $section->addAttribute('name', $name);
-
-        // add values
-        foreach ($config->getValueNames() as $valueName) {
-            $property = $section->addChild('property', $config->getValue($valueName));
-            $property->addAttribute('name', $valueName);
-        }
-
-        // add sections recursively
-        foreach ($config->getSectionNames() as $sectionName) {
-            $this->processSection($section, $config->getSection($sectionName), $sectionName);
-        }
-    }
-
-    /**
-     * @private
-     *
-     * @param Configuration $config
-     * @param SimpleXMLElement $section
-     *
-     * @author Christian Achatz
-     * @version
-     * Version 0.1, 09.10.2010<br />
-     */
-    private function parseSection(Configuration $config, SimpleXMLElement $section) {
-        $config->setSection((string) $section->attributes()->name, $this->parseXmlElement($section));
-    }
-
-    /**
-     * @private
-     *
-     * @param SimpleXMLElement $element The current XML node.
-     * @return XmlConfiguration The configuration representing the current XML node.
-     *
-     * @author Christian Achatz
-     * @version
-     * Version 0.1, 09.10.2010<br />
-     */
-    private function parseXmlElement(SimpleXMLElement $element) {
-
-        $config = new XmlConfiguration();
-
-        // parse properties
-        foreach ($element->xpath('property') as $property) {
-            $config->setValue((string) $property->attributes()->name, (string) $property);
-        }
-
-        // parse sections
-        foreach ($element->xpath('section') as $section) {
+         foreach ($xml->xpath('section') as $section) {
             $this->parseSection($config, $section);
-        }
+         }
 
-        return $config;
-    }
+         return $config;
+      }
 
-    public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+      if ($this->activateEnvironmentFallback && $environment !== 'DEFAULT') {
+         return $this->loadConfiguration($namespace, $context, $language, 'DEFAULT', $name);
+      }
 
-        $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
-        if (unlink($fileName) === false) {
-            throw new ConfigurationException('[XmlConfigurationProvider::deleteConfiguration()] '
-                    . 'Configuration with name "' . $fileName . '" cannot be deleted! Please check your '
-                    . 'file system configuration, the file name, or your environment configuration.');
-        }
-    }
+      throw new ConfigurationException('[XmlConfigurationProvider::loadConfiguration()] '
+            . 'Configuration with namespace "' . $namespace . '", context "' . $context . '", '
+            . ' language "' . $language . '", environment "' . $environment . '", and name '
+            . '"' . $name . '" cannot be loaded (file name: ' . $fileName . ')!', E_USER_ERROR);
+   }
+
+   public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
+
+      $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><configuration></configuration>');
+
+      foreach ($config->getSectionNames() as $sectionName) {
+         $this->processSection($xml, $config->getSection($sectionName), $sectionName);
+      }
+
+      // directly save file to gain performance and decrease memory usage
+      $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
+
+      // create file path if necessary to avoid "No such file or directory" errors
+      $this->createFilePath($fileName);
+
+      if ($xml->asXML($fileName) === false) {
+         throw new ConfigurationException('[XmlConfigurationProvider::saveConfiguration()] '
+               . 'Configuration with name "' . $fileName . '" cannot be saved! Please check your '
+               . 'file system configuration, the file name, or your environment configuration.');
+      }
+   }
+
+   /**
+    * @private
+    *
+    * Transforms a given config section into the applied xml structure.
+    *
+    * @param SimpleXMLElement $xml The parent XML node.
+    * @param Configuration $config The current section to translate.
+    * @param string $name The name of the section to add.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 28.10.2010<br />
+    */
+   private function processSection(SimpleXMLElement &$xml, Configuration $config, $name) {
+
+      // create current section and append it to the parent node structure.
+      $section = $xml->addChild('section');
+      $section->addAttribute('name', $name);
+
+      // add values
+      foreach ($config->getValueNames() as $valueName) {
+         $property = $section->addChild('property', $config->getValue($valueName));
+         $property->addAttribute('name', $valueName);
+      }
+
+      // add sections recursively
+      foreach ($config->getSectionNames() as $sectionName) {
+         $this->processSection($section, $config->getSection($sectionName), $sectionName);
+      }
+   }
+
+   /**
+    * @private
+    *
+    * @param Configuration $config
+    * @param SimpleXMLElement $section
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.10.2010<br />
+    */
+   private function parseSection(Configuration $config, SimpleXMLElement $section) {
+      $config->setSection((string)$section->attributes()->name, $this->parseXmlElement($section));
+   }
+
+   /**
+    * @private
+    *
+    * @param SimpleXMLElement $element The current XML node.
+    * @return XmlConfiguration The configuration representing the current XML node.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.10.2010<br />
+    */
+   private function parseXmlElement(SimpleXMLElement $element) {
+
+      $config = new XmlConfiguration();
+
+      // parse properties
+      foreach ($element->xpath('property') as $property) {
+         $config->setValue((string)$property->attributes()->name, (string)$property);
+      }
+
+      // parse sections
+      foreach ($element->xpath('section') as $section) {
+         $this->parseSection($config, $section);
+      }
+
+      return $config;
+   }
+
+   public function deleteConfiguration($namespace, $context, $language, $environment, $name) {
+
+      $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
+      if (unlink($fileName) === false) {
+         throw new ConfigurationException('[XmlConfigurationProvider::deleteConfiguration()] '
+               . 'Configuration with name "' . $fileName . '" cannot be deleted! Please check your '
+               . 'file system configuration, the file name, or your environment configuration.');
+      }
+   }
 
 }

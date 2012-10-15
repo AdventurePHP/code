@@ -306,7 +306,7 @@ class AdvancedLogger extends APFObject {
             break;
          default:
             throw new LoggerException('[AdvancedLogger::flushLogBuffer()] The chosen log target ("'
-                  . $this->logConfig->getValue('LogTarget') . '") is not implementend. Please take '
+                  . $this->logConfig->getValue('LogTarget') . '") is not implemented. Please take '
                   . 'one out of "file", "database" and "stdout"!', E_USER_ERROR);
             break;
       }

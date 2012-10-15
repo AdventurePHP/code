@@ -68,12 +68,12 @@ class DefaultExceptionHandler implements ExceptionHandler {
    protected $exceptionMessage = null;
 
    /**
-    * @var string The file, the exception occures in.
+    * @var string The file, the exception occurs in.
     */
    protected $exceptionFile = null;
 
    /**
-    * @var int The line, the exception occures in
+    * @var int The line, the exception occurs in.
     */
    protected $exceptionLine = null;
 
@@ -107,7 +107,7 @@ class DefaultExceptionHandler implements ExceptionHandler {
    /**
     * @private
     *
-    * Creates a log entry containing the exception occured.
+    * Creates a log entry containing the exception occurred.
     *
     * @author Christian Achatz
     * @version

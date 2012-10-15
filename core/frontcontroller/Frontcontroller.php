@@ -221,7 +221,7 @@ abstract class AbstractFrontcontrollerAction extends APFObject {
    /**
     * @public
     *
-    * Set the indicator, whether the action should be keept in the url
+    * Set the indicator, whether the action should be kept in the url
     * generating a fully qualified front controller link.
     *
     * @param string $keepInUrl The url generation indicator.
@@ -346,7 +346,7 @@ class Frontcontroller extends APFObject {
 
    /**
     * @protected
-    * @var string The keyword used in the url to inidicate an action.
+    * @var string The keyword used in the url to indicate an action.
     */
    private $actionKeyword = 'action';
 

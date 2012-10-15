@@ -38,8 +38,8 @@ interface ErrorHandler {
     *
     * @param int $errorNumber The error number.
     * @param string $errorMessage The error message.
-    * @param string $errorFile The file the error occured in.
-    * @param int $errorLine The line the error occured at.
+    * @param string $errorFile The file the error occurred in.
+    * @param int $errorLine The line the error occurred at.
     * @param array $errorContext The error context (symbol table at the error).
     *
     * @author Christian Achatz
@@ -107,7 +107,7 @@ class DefaultErrorHandler implements ErrorHandler {
    /**
     * @protected
     *
-    * Creates a log entry containing the error occured.
+    * Creates a log entry containing the error occurred.
     *
     * @author Christian Schäfer
     * @version
@@ -240,8 +240,8 @@ abstract class GlobalErrorHandler {
     *
     * @param int $errorNumber The error number.
     * @param string $errorMessage The error message.
-    * @param string $errorFile The file the error occured in.
-    * @param int $errorLine The line the error occured at.
+    * @param string $errorFile The file the error occurred in.
+    * @param int $errorLine The line the error occurred at.
     * @param array $errorContext The error context (symbol table at the error).
     *
     * @author Christian Achatz
@@ -307,7 +307,7 @@ abstract class GlobalErrorHandler {
 
 }
 
-// let PHP rais and display all errors to be able to handle them suitable by the APF error handler.
+// let PHP raise and display all errors to be able to handle them suitable by the APF error handler.
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 ini_set('html_errors', 'off');

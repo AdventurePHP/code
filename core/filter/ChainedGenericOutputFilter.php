@@ -52,6 +52,7 @@ class ChainedGenericOutputFilter implements ChainedContentFilter {
 
    public function filter(FilterChain &$chain, $input = null) {
 
+      /* @var $t BenchmarkTimer */
       $t = &Singleton::getInstance('BenchmarkTimer');
       $t->start('ChainedGenericOutputFilter');
 

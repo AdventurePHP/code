@@ -124,7 +124,7 @@ final class BenchmarkTimer {
     *
     * Disables the benchmarker for measurement of the predefined points. This is often
     * important for performance reasons, because release 1.11 introduced onParseTime()
-    * measurement, that could propably decrease the APF's performance!
+    * measurement, that could probably decrease the APF's performance!
     * <p />
     * Experiential tests proofed, that disabling the benchmarker can increase performance
     * from ~0.185s to ~0.138s, what is ~25%!
@@ -453,7 +453,7 @@ final class BenchmarkTimer {
       // generate header
       $buffer .= $this->generateHeader();
 
-      // generate report recursivly
+      // generate report recursively
       $buffer .= $this->createReport4Process($processTree);
 
       // generate footer

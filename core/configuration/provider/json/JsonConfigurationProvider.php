@@ -72,7 +72,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
    /**
     * @private
     *
-    * Mapps the content of a JSON confiuration file into the APF configuration representation.
+    * Maps the content of a JSON configuration file into the APF configuration representation.
     *
     * @param string $fileContent The content of the configuration file.
     * @return JsonConfiguration The configuration representation.
@@ -101,7 +101,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
    /**
     * @private
     *
-    * Mapps a section into the configuration representation.
+    * Maps a section into the configuration representation.
     *
     * @param array $section The parsed JSON array representing a section.
     * @return JsonConfiguration The configuration representation.
@@ -141,7 +141,7 @@ class JsonConfigurationProvider extends BaseConfigurationProvider implements Con
    /**
     * @private
     *
-    * Creates a meta structure from the given cofiguration representation and returns the
+    * Creates a meta structure from the given configuration representation and returns the
     * json-formatted string to save.
     *
     * @param JsonConfiguration $config The config to resolve.

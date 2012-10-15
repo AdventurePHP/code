@@ -74,7 +74,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
 
       if (!$this->dbConn->close()) {
          $this->dbConn = null;
-         throw new DatabaseHandlerException('[MySQLiHandler->close()] An error occured during closing of the '
+         throw new DatabaseHandlerException('[MySQLiHandler->close()] An error occurred during closing of the '
                . 'database connection (' . mysqli_errno() . ': ' . mysqli_error() . ')!', E_USER_WARNING);
       }
       $this->dbConn = null;

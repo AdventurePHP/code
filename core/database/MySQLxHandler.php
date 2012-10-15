@@ -41,7 +41,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
    /**
     * @protected
     *
-    * Initiates the database connectio and preselects the desired database.
+    * Initiates the database connection and preselects the desired database.
     *
     * @author Christian Achatz
     * @version
@@ -110,7 +110,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
       $this->dbConn = null;
 
       if (!$result) {
-         throw new DatabaseHandlerException('[MySQLxHandler->close()] An error occured during '
+         throw new DatabaseHandlerException('[MySQLxHandler->close()] An error occurred during '
                   . 'closing of the database connection (' . mysql_errno() . ': ' . mysql_error() . ')!',
             E_USER_WARNING);
       }
@@ -124,12 +124,13 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     * file are replaced by the given values.
     *
     * @param string $namespace Namespace of the statement file.
-    * @param string $statementName Name of the statement file (filebody!).
+    * @param string $statementFile Name of the statement file (filebody!).
     * @param string[] $params A list of statement parameters.
     * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
     * @return resource The database result resource.
+    * @throws DatabaseHandlerException In case the statement cannot be executed.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 24.12.2005<br />
     * Version 0.2, 16.01.2006<br />
@@ -179,8 +180,8 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     *
     * Quotes data for use in mysql statements.
     *
-    * @param string $Value string to quote
-    * @return string $escapedValue quoted string
+    * @param string $value string to quote.
+    * @return string Quoted string.
     *
     * @author Christian Achatz
     * @version
@@ -250,8 +251,8 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     *
     * Returns the number of selected rows by the given result resource.
     *
-    * @param $result the mysql result resource
-    * @return int The number of selected rows
+    * @param resource $result The mysql result resource.
+    * @return int The number of selected rows.
     *
     * @author Christian Schäfer
     * @version

@@ -92,7 +92,7 @@ class SessionSingleton extends Singleton {
          if ($cachedObject === null) {
             if (!class_exists($className)) {
                throw new Exception('[SessionSingleton::getInstance()] Class "' . $className . '" '
-                     . 'cannot be found! Maybe the class name is misspelt!', E_USER_ERROR);
+                     . 'cannot be found! Maybe the class name is mis-spelt!', E_USER_ERROR);
             }
 
             self::$CACHE[$cacheKey] = new $className();

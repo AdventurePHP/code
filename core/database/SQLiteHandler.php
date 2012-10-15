@@ -112,7 +112,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
          $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_ERROR);
       }
 
-      // remember last insert id for futher usage
+      // remember last insert id for further usage
       $this->lastInsertId = sqlite_last_insert_rowid($this->dbConn);
 
       return $result;
@@ -152,7 +152,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
          $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_DEBUG);
       }
 
-      // remember last insert id for futher usage
+      // remember last insert id for further usage
       $this->lastInsertId = sqlite_last_insert_rowid($this->dbConn);
 
       return $result;

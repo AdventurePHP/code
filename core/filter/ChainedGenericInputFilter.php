@@ -30,11 +30,11 @@
  * The APF url layout includes generic parameter mapping and any number of front
  * controller actions encoded into the url. Rewritten urls can define any number
  * of slash-separated params (e.g. foo/bar) that is translated to the $_REQUEST
- * and $_GET superglobal. Further, front controller actions separated from normal
+ * and $_GET super-global. Further, front controller actions separated from normal
  * parameters are analyzed and applied to the front controller as action to execute.
  * <p/>
  * Since the front controller url layout resolving mechanism includes the page
- * controller behaviour, release 1.14 shipps only one filter.
+ * controller behaviour, release 1.14 ships only one filter.
  * <p/>
  * In order to create your own url layout resolver, implement the
  * <em>ChainedContentFilter</em> interface and add it to the resetted filter
@@ -125,8 +125,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
       // delimiter is present in url.
       if (substr_count($query, self::$ACTION_TO_PARAM_DELIMITER) > 0 || substr_count($query, self::$FC_ACTION_KEYWORD . '/') > 0) {
 
-         $fC = &Singleton::getInstance('Frontcontroller');
-         /* @var $fC Frontcontroller */
+         $fC = $this->getFrontcontroller();
 
          // split url by delimiter
          $requestURLParts = explode(self::$ACTION_TO_PARAM_DELIMITER, $query);
@@ -175,7 +174,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
          $_REQUEST = array_merge($_REQUEST, $paramArray);
       }
 
-      // re-initialize GET params to support e.g. form submition
+      // re-initialize GET params to support e.g. form submission
       $_GET = $_REQUEST;
 
       // re-add POST params
@@ -185,6 +184,13 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
       if (!empty($PHPSESSID)) {
          $_REQUEST[$sessionName] = $PHPSESSID;
       }
+   }
+
+   /**
+    * @return Frontcontroller The current front controller instance.
+    */
+   protected function &getFrontcontroller() {
+      return Singleton::getInstance('Frontcontroller');
    }
 
    /**
@@ -204,8 +210,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
       $inputDelimiter = '|';
       $keyValueDelimiter = ':';
 
-      $fC = &Singleton::getInstance('Frontcontroller');
-      /* @var $fC Frontcontroller */
+      $fC = $this->getFrontcontroller();
 
       foreach ($_REQUEST as $key => $value) {
 
