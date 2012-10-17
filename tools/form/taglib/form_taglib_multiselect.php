@@ -151,7 +151,7 @@ class form_taglib_multiselect extends form_taglib_select {
 
          if (get_class($this->__Children[$objectId]) == 'select_taglib_group') {
             $options = &$this->__Children[$objectId]->getSelectedOptions();
-            foreach ($options as $id => $DUMMY) {
+            foreach ($options as $id => $INNER_DUMMY) {
                $selectedOptions[] = &$options[$id];
             }
          } else {

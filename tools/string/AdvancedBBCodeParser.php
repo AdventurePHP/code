@@ -150,7 +150,7 @@ class AdvancedBBCodeParser extends APFObject {
     * the desired name it will be overwritten.
     *
     * @param string $name short name of the provider, that is intended to address it
-    * @param BBCodeParser $provider a provider representation object
+    * @param BBCodeParserProvider $provider a provider representation object
     *
     * @author Christian Achatz
     * @version

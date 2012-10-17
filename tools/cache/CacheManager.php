@@ -117,7 +117,7 @@ final class CacheManager extends CacheBase {
     *
     * @param CacheKey $cacheKey the application's cache key.
     * @param mixed $content The content to cache.
-    * @return true in case of success, false otherwise.
+    * @return bool True in case of success, false otherwise.
     *
     * @author Christian Achatz
     * @version

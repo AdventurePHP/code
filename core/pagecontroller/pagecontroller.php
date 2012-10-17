@@ -178,7 +178,7 @@ function import($namespace, $file) {
  *
  * Creates a print_r() output of the given object, array, string or integer.
  *
- * @param object $o The object to display.
+ * @param object|array $o The object/array to display.
  * @param boolean $transformHtml In case the HTML characters should be escaped (true) or not (false).
  * @return string The object's string representation.
  *
