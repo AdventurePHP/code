@@ -24,6 +24,7 @@ class DemoController extends base_controller {
 
       $form = &$this->getForm('file_upload');
 
+      /* @var $uploadtest form_taglib_multifileupload */
       $uploadtest = $form->getFormElementByName('testfield');
 
       if ($form->isSent()) {
@@ -37,5 +38,3 @@ class DemoController extends base_controller {
    }
 
 }
-
-?>

@@ -72,7 +72,7 @@ class form_taglib_time extends form_control {
       $this->__initOffsetNames();
 
       if (!empty($this->__Attributes['minutesinterval'])) {
-         $this->minutesInterval = (int) $this->__Attributes['minutesinterval'];
+         $this->minutesInterval = (int)$this->__Attributes['minutesinterval'];
       }
       if (!empty($this->__Attributes['showseconds']) && $this->__Attributes['showseconds'] == "false") {
          $this->showSeconds = false;
@@ -113,7 +113,7 @@ class form_taglib_time extends form_control {
 
 
       // set the values for the hours select box
-      for ($i = (int) $this->hoursRange['Start']; $i <= (int) $this->hoursRange['End']; $i++) {
+      for ($i = (int)$this->hoursRange['Start']; $i <= (int)$this->hoursRange['End']; $i++) {
          $i = $this->appendZero($i);
          $hours->addOption($i, $i);
       }
@@ -208,7 +208,7 @@ class form_taglib_time extends form_control {
       // as of 1.12, the time control should be rendered using a
       // surrounding span do enable the client validator extension
       // to address the control more easily.
-      $buffer = (string) '<span id="' . $this->getId() . '"';
+      $buffer = (string)'<span id="' . $this->getId() . '"';
 
       $style = $this->getAttribute('style');
       if ($style != null) {
@@ -291,8 +291,8 @@ class form_taglib_time extends form_control {
          }
       } else {
          throw new FormException('[form_taglib_time::setTime()] Given time "' . $time
-                 . '" cannot be parsed (Errors: ' . implode(', ', $time['errors']) . ', warnings: '
-                 . implode(', ', $time['warnings']) . ')');
+               . '" cannot be parsed (Errors: ' . implode(', ', $time['errors']) . ', warnings: '
+               . implode(', ', $time['warnings']) . ')');
       }
    }
 
@@ -381,15 +381,15 @@ class form_taglib_time extends form_control {
 
          if (count($offsetNames) == 3) {
             $this->offsetNames = array(
-                'Hours' => $offsetNames[0],
-                'Minutes' => $offsetNames[1],
-                'Seconds' => $offsetNames[2]
+               'Hours' => $offsetNames[0],
+               'Minutes' => $offsetNames[1],
+               'Seconds' => $offsetNames[2]
             );
          }
          if (count($offsetNames) == 2) {
             $this->offsetNames = array(
-                'Hours' => $offsetNames[0],
-                'Minutes' => $offsetNames[1]
+               'Hours' => $offsetNames[0],
+               'Minutes' => $offsetNames[1]
             );
          }
       }
@@ -410,42 +410,41 @@ class form_taglib_time extends form_control {
    protected function appendZero($input) {
       return sprintf('%02s', $input);
    }
-   
-   /**
-   * @public
-   * 
-   * Re-implements the retrieving of values for time controls
-   * 
-   * @return string The current value or content of the control.
-   * 
-   * @since 1.14
-   * 
-   * @author Ralf Schubert
-   * @version
-   * Version 0.1, 26.07.2011<br />
-   */
-  public function getValue() {
-      return $this->getTime();
-  }
 
-  /**
-   * @public
-   * 
-   * Re-implements the setting of values for time controls
-   * 
-   * @param string $value
-   * @return form_control 
-   * 
-   * @since 1.14
-   * 
-   * @author Ralf Schubert
-   * @version
-   * Version 0.1, 26.07.2011<br />
-   */
-  public function setValue($value) {
+   /**
+    * @public
+    *
+    * Re-implements the retrieving of values for time controls
+    *
+    * @return string The current value or content of the control.
+    *
+    * @since 1.14
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 26.07.2011<br />
+    */
+   public function getValue() {
+      return $this->getTime();
+   }
+
+   /**
+    * @public
+    *
+    * Re-implements the setting of values for time controls
+    *
+    * @param string $value
+    * @return form_control
+    *
+    * @since 1.14
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 26.07.2011<br />
+    */
+   public function setValue($value) {
       $this->setTime($value);
       return $this;
-  }
+   }
 
 }
-?>

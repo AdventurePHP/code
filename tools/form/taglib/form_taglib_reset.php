@@ -55,4 +55,3 @@ class form_taglib_reset extends form_control {
    }
 
 }
-?>

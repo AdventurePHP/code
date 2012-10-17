@@ -55,4 +55,3 @@ class form_taglib_password extends form_taglib_text {
    }
 
 }
-?>

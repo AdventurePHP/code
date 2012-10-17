@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -23,13 +22,13 @@ import('tools::http', 'HeaderManager');
 import('tools::form', 'FormException');
 
 /**
- * @class GetFileAction
+ * @package tools::form::multifileupload::actions
+ * @class MultiFileGetFileAction
  *
- * Diese Action liefert die angeforderte Datei zurück
+ * This action delivers a file that has been uploaded using the multi-upload feature.
  *
  * @param string $name - Name des Formularfeldes
  * @param string $formname - Name des Formulares
- * @return boolean erfolgreich - true|false
  * @author Werner Liemberger <wpublicmail@gmail.com>
  * @version 1.0, 14.3.2011<br>
  * @version 1.1, 11.07.2012 (Change Exception to FormException)<br>
@@ -41,12 +40,11 @@ class MultiFileGetFileAction extends AbstractFrontcontrollerAction {
       $name = $this->getInput()->getAttribute('name');
       $formname = $this->getInput()->getAttribute('formname');
       $uploadname = $this->getInput()->getAttribute('uploadname');
-      
-      //print_r($uploadname);
 
       // Wenn alle Variablen vorhanden sind, dann Datei laden.
       if ($name !== null && $formname !== null && $uploadname !== null) {
 
+         /* @var $M MultiFileUploadManager */
          $M = &$this->getAndInitServiceObject('tools::form::multifileupload::biz', 'MultiFileUploadManager', array('formname' => $formname, 'name' => $name));
          $file = $M->getFile($uploadname);
          if (is_array($file)) {
@@ -58,7 +56,7 @@ class MultiFileGetFileAction extends AbstractFrontcontrollerAction {
             HeaderManager::send('Content-type: ' . $file['type']);
             HeaderManager::send('Content-Disposition: inline; filename="' . $file['name'] . '"');
             HeaderManager::send('Content-Length: ' . $file['size']);
-            $M->readfile($uploadname);
+            $M->deliverFile($uploadname);
          } else {
             throw new FormException('[' . get_class($this) . '::run()] The file was not found on the server!', E_USER_ERROR);
          }
@@ -69,5 +67,3 @@ class MultiFileGetFileAction extends AbstractFrontcontrollerAction {
    }
 
 }
-
-?>

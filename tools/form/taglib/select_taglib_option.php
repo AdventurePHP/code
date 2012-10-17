@@ -65,9 +65,7 @@ class select_taglib_option extends form_control {
     */
    public function transform() {
       return '<option ' . $this->getSanitizedAttributesAsString($this->__Attributes) . '>'
-             . $this->__Content . '</option>';
+            . $this->__Content . '</option>';
    }
 
 }
-
-?>

@@ -108,5 +108,3 @@ class TextCacheProvider extends CacheBase implements CacheProvider {
    }
 
 }
-
-?>

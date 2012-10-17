@@ -339,6 +339,8 @@ final class dateTimeManager {
          return $Jahr . '-' . $Monat . '-' . $Tag;
       }
 
+      // in case no date mapping can be done, return null to indicate failure.
+      return null;
    }
 
    /**

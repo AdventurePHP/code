@@ -549,15 +549,15 @@ class Frontcontroller extends APFObject {
     *
     * Creates the url representation of a given namespace.
     *
-    * @param string $namespaceUrlRepresenation The url string.
+    * @param string $namespaceUrlRepresentation The url string.
     * @return string The namespace of the action.
     *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 03.06.2007<br />
     */
-   protected function getActionNamespaceByURLString($namespaceUrlRepresenation) {
-      return str_replace($this->namespaceURLDelimiter, '::', $namespaceUrlRepresenation);
+   protected function getActionNamespaceByURLString($namespaceUrlRepresentation) {
+      return str_replace($this->namespaceURLDelimiter, '::', $namespaceUrlRepresentation);
    }
 
    /**
@@ -565,7 +565,7 @@ class Frontcontroller extends APFObject {
     *
     * Registers an action to the front controller. This includes action configuration using
     * the action params defined within the action mapping. Each action definition is expected
-    * to be stored in the <em>{ENVIRONMENT}_actionsconfig.ini</em> file under the namespace
+    * to be stored in the <em>{ENVIRONMENT}_actionconfig.ini</em> file under the namespace
     * <em>{$namespace}::{$this->__Context}.</em>
     *
     * @param string $namespace Namespace of the action to register.
@@ -615,7 +615,7 @@ class Frontcontroller extends APFObject {
     * Adds an action to the front controller action stack. Please note, that the namespace of
     * the namespace of the action config is added the current context. The name of the
     * config file is concatenated by the current environment and the string
-    * <em>*_actionsconfig.ini</em>.
+    * <em>*_actionconfig.ini</em>.
     *
     * @param string $namespace Namespace of the action.
     * @param string $name Name of the action (section key of the config file).
@@ -628,7 +628,7 @@ class Frontcontroller extends APFObject {
     * Version 0.1, 05.06.2007<br />
     * Version 0.2, 01.07.2007<br />
     * Version 0.3, 02.09.2007<br />
-    * Version 0.4, 08.09.2007 (Bugfix: input params from config are now evaluated)<br />
+    * Version 0.4, 08.09.2007 (Bug-fix: input params from config are now evaluated)<br />
     * Version 0.5, 08.11.2007 (Changed action stack construction to hash offsets)<br />
     * Version 0.6, 21.06.2008 (Replaced APPS__ENVIRONMENT constant with a value from the Registry)<br />
     * Version 0.7, 27.09.2010 (Removed synthetic "actions" sub-namespace)<br />

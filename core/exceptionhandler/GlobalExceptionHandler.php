@@ -236,6 +236,7 @@ abstract class GlobalExceptionHandler {
     * disables, nothing will happen.
     *
     * @param Exception $exception The current exception.
+    * @throws Exception In case the APF exception handler is disabled, the original exception is thrown.
     *
     * @author Christian Achatz
     * @version

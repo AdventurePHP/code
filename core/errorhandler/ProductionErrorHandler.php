@@ -23,7 +23,7 @@
  * @package core::errorhandler
  * @class ProductionErrorHandler
  *
- * Implements a live error handler, that logs the occured error and redirects to
+ * Implements a live error handler, that logs the occurred error and redirects to
  * a statically configured page to hide the error from the customer (e.g. for
  * security reasons).
  * <p/>

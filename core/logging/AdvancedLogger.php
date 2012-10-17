@@ -211,7 +211,7 @@ class AdvancedLoggerFactory extends APFObject {
  *
  * Implements an advanced logger for the adventure php framework. In contrast to the default
  * logger, this component must be configured for each usage. The advantage of the component is
- * that multiple targets, log formats and output targets can be choosen.
+ * that multiple targets, log formats and output targets can be chosen.
  * Usage:
  * <code>
  * $logFactory = &$this->getServiceObject('core::logging','AdvancedLoggerFactory');

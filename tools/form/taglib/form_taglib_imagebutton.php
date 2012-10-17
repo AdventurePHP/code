@@ -53,9 +53,8 @@ class form_taglib_imagebutton extends form_taglib_button {
     */
    public function transform() {
       return '<input type="image" '
-      . $this->getSanitizedAttributesAsString($this->__Attributes)
-      . ' />';
+            . $this->getSanitizedAttributesAsString($this->__Attributes)
+            . ' />';
    }
 
 }
-?>

@@ -598,6 +598,54 @@ class UmgtManager extends APFObject {
    /**
     * @public
     *
+    * Loads a user by it's display name.
+    *
+    * @param string $displayName The desired user's display name.
+    * @return UmgtUser|null The desired user or null in case the user has not been found.
+    *
+    * @author Coach83
+    * @version
+    * Version 0.1,10.2012<br />
+    */
+   public function loadUserByDisplayName($displayName) {
+
+      $orm = &$this->getORMapper();
+
+      // escape the input values
+      $dbDriver = &$orm->getDbDriver();
+      $displayName = $dbDriver->escapeValue($displayName);
+
+      // create the statement and select user
+      $select = 'SELECT * FROM `ent_user` WHERE `DisplayName` = \'' . $displayName . '\';';
+      return $orm->loadObjectByTextStatement('User', $select);
+   }
+
+   /**
+    * @public
+    *
+    * Loads a user by it's display name and password.
+    *
+    * @param string $displayName The desired user's display name.
+    * @param string $password The user's password.
+    * @return UmgtUser|null The desired user or null in case the user has not been found or the password didn't match.
+    *
+    * @author Coach83
+    * @version
+    * Version 0.1,10.2012<br />
+    */
+   public function loadUserByDisplayNameAndPassword($displayName, $password) {
+
+      $userObject = $this->loadUserByDisplayName($displayName);
+      if ($userObject === null || !$this->comparePasswordHash($password, $userObject)) {
+         return null;
+      }
+
+      return $userObject;
+   }
+
+   /**
+    * @public
+    *
     * Loads a user object by a given first name.
     *
     * @param string $firstName The first name of the user to load.
@@ -756,7 +804,7 @@ class UmgtManager extends APFObject {
     * @protected
     *
     * Implements the central method to create the display name of a user object. If you desire
-    * to use another algo, extend the UmgtManager and reimplement this method! Be sure, to keep
+    * to use another algorithm, extend the UmgtManager and re-implement this method! Be sure, to keep
     * all other methods untouched.
     *
     * @param UmgtUser $user The user object to save.
@@ -796,6 +844,7 @@ class UmgtManager extends APFObject {
                  INNER JOIN `ass_role2user` ON `ent_role`.`RoleID` = `ass_role2user`.`Source_RoleID`
                  INNER JOIN `ent_user` ON `ass_role2user`.`Target_UserID` = `ent_user`.`UserID`
                  WHERE `ent_user`.`UserID` = \'' . $user->getObjectId() . '\';';
+      /* @var $roles UmgtRole[] */
       $roles = $orm->loadObjectListByTextStatement('Role', $select);
 
       $groups = $this->loadGroupsWithUser($user);

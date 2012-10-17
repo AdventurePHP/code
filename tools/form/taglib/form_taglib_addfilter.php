@@ -63,4 +63,3 @@ class form_taglib_addfilter extends form_control_observer {
    }
 
 }
-?>

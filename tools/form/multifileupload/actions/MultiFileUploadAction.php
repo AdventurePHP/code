@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -23,13 +22,14 @@ import('tools::http', 'HeaderManager');
 import('tools::form', 'FormException');
 
 /**
- * @class multifileuploadAction
+ * @package tools::form::multifileupload::actions
+ * @class MultiFileUploadAction
  *
- * Diese Action ist dazu da, die mittels multifileupload Formular raufgeladenen Dateien entgegen zu nehmen zu speichern
+ * This action tales the files uploaded via form and saves them.
  *
  * @param string $name - Name des Formularfeldes
  * @param string $formname -Name des Formulares
- * @return json $fileinfo
+ * @return string JSON response.
  * @author Werner Liemberger <wpublicmail@gmail.com>
  * @version 1.0, 14.3.2011<br>
  * @version 1.1, 11.07.2012 (Change Exception to FormException)<br>
@@ -47,7 +47,9 @@ class MultiFileUploadAction extends AbstractFrontcontrollerAction {
          //Formular und Feldnamen erhalten.
          $Fieldname = $this->getInput()->getAttribute('name');
          $formname = $this->getInput()->getAttribute('formname');
+
          // Anhand des Feldnamen auf die Datei zugreifen und sie in die Session eintragen.
+         /* @var $MultifileuploadManager MultiFileUploadManager */
          $MultifileuploadManager = &$this->getAndInitServiceObject('tools::form::multifileupload::biz', 'MultiFileUploadManager', array('formname' => $formname, 'name' => $Fieldname));
          if (!empty($_FILES[$Fieldname])) {
             $fileinfo = $MultifileuploadManager->addFile($_FILES[$Fieldname]);
@@ -62,5 +64,3 @@ class MultiFileUploadAction extends AbstractFrontcontrollerAction {
    }
 
 }
-
-?>

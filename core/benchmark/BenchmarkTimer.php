@@ -353,7 +353,7 @@ final class BenchmarkTimer {
     */
    private function addRunningProcess(&$process) {
       $name = $process->getProcessName();
-      $this->runningProcesses[$name] = &$process;
+      $this->runningProcesses[$name] = $process;
    }
 
    /**
@@ -786,7 +786,7 @@ final class BenchmarkProcess {
 
    public function appendProcess(BenchmarkProcess &$process) {
       $processId = $process->getProcessID();
-      $this->processes[$processId] = &$process;
+      $this->processes[$processId] = $process;
    }
 
    public function getProcesses() {

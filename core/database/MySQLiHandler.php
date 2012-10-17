@@ -71,14 +71,12 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    }
 
    protected function close() {
-
       if (!$this->dbConn->close()) {
-         $this->dbConn = null;
          throw new DatabaseHandlerException('[MySQLiHandler->close()] An error occurred during closing of the '
-               . 'database connection (' . mysqli_errno() . ': ' . mysqli_error() . ')!', E_USER_WARNING);
+                  . 'database connection (' . mysqli_errno($this->dbConn) . ': ' . mysqli_error($this->dbConn) . ')!',
+            E_USER_WARNING);
       }
       $this->dbConn = null;
-
    }
 
    /**
@@ -87,7 +85,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Executes a statement stored within a statement file.
     *
     * @param string $namespace Namespace of the statement file.
-    * @param string $statementFile Name of the statement file (filebody!).
+    * @param string $statementFile Name of the statement file (file body!).
     * @param string[] $params A list of statement parameters.
     * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
     * @return MySQLi_Result The result of the statement executed.
@@ -235,6 +233,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @param array $params A list of statement parameters.
     * @param boolean $logStatement Indicates, if the statement is logged for debug purposes.
     * @return resource The execution result.
+    * @throws DatabaseHandlerException In case the bind param mapping is wrong.
     *
     * @author Christian Achatz
     * @version
@@ -483,7 +482,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     *
     * Returns the number of selected rows by the given result resource.
     *
-    * @param $result the mysql result resource.
+    * @param resource $result the mysql result resource.
     * @return int The number of selected rows.
     *
     * @author Christian Achatz
@@ -543,7 +542,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     *
     * Returns the version of the database server.
     *
-    * @return The mysql server information.
+    * @return string The mysql server information.
     *
     * @author Christian Achatz
     * @version

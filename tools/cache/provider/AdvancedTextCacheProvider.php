@@ -71,8 +71,8 @@ class AdvancedTextCacheProvider extends TextCacheProvider {
       $subFolder = substr($subKey, 0, 2);
 
       return $baseFolder . '/' . $namespace
-             . '/' . $folder . '/' . $key . '/'
-             . $subFolder . '/' . $subKey . '.apfc';
+            . '/' . $folder . '/' . $key . '/'
+            . $subFolder . '/' . $subKey . '.apfc';
 
    }
 
@@ -113,8 +113,8 @@ class AdvancedTextCacheProvider extends TextCacheProvider {
          $key = md5($key);
          $subKey = md5($subKey);
          $file = $baseFolder . '/' . $namespace . '/'
-                 . substr($key, 0, 2) . '/' . $key . '/'
-                 . substr($subKey, 0, 2) . '/' . $subKey . '.apfc';
+               . substr($key, 0, 2) . '/' . $key . '/'
+               . substr($subKey, 0, 2) . '/' . $subKey . '.apfc';
          try {
             FilesystemManager::removeFile($file);
             return true;
@@ -128,5 +128,3 @@ class AdvancedTextCacheProvider extends TextCacheProvider {
    }
 
 }
-
-?>

@@ -87,4 +87,3 @@ class form_taglib_checkbox extends form_control {
    }
 
 }
-?>

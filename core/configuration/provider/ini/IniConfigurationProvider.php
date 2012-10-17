@@ -100,11 +100,10 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       }
 
       $config = new IniConfiguration();
-      foreach ($entries as $section => $entries) {
-         $config->setSection($section, $this->parseSection($entries));
+      foreach ($entries as $section => $subEntries) {
+         $config->setSection($section, $this->parseSection($subEntries));
       }
       return $config;
-
    }
 
    /**

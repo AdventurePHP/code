@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -23,9 +22,10 @@ import('tools::http', 'HeaderManager');
 import('tools::form', 'FormException');
 
 /**
- * @class DeleteAction
+ * @package tools::form::multifileupload::actions
+ * @class MultiFileDeleteAction
  *
- * Durch aufruf dieser Action wird die übergeben Datei gelöscht und auch aus der Session entfernt.
+ * This action deletes the given file physically and from session.
  *
  * @param string $name - Name des Formularfeldes
  * @param string $formname - Name des Formulars
@@ -50,7 +50,7 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
          $formname = $this->getInput()->getAttribute('formname');
          $uploadname = $this->getInput()->getAttribute('uploadname');
 
-
+         /* @var $MultifileuploadManager MultiFileUploadManager */
          $MultifileuploadManager = &$this->getAndInitServiceObject('tools::form::multifileupload::biz', 'MultiFileUploadManager', array('formname' => $formname, 'name' => $Fieldname));
          if ($uploadname !== null) {
             $MultifileuploadManager->deleteFile($uploadname);
@@ -65,5 +65,3 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
    }
 
 }
-
-?>

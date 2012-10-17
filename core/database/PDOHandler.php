@@ -169,7 +169,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     *
     * Prepares a statement for execution and returns a PDOStatement object
     *
-    * @param $statement The statement string
+    * @param string $statement The statement string
     * @return PDOStatement A PDOStatement object to work with
     *
     * @author Tobias Lückel (megger)
@@ -187,10 +187,11 @@ class PDOHandler extends AbstractDatabaseHandler {
     * file are replaced by the given values.
     *
     * @param string $namespace Namespace of the statement file.
-    * @param string $statementFile Name of the statement file (filebody!).
+    * @param string $statementFile Name of the statement file (file body!).
     * @param string[] $params A list of statement parameters.
     * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
     * @return PDOStatement A PDOStatement object to work with.
+    * @throws DatabaseHandlerException In case the statement execution failed.
     *
     * @author Tobias Lückel (megger)
     * @version
@@ -232,6 +233,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     * @param boolean $logStatement Indicates, whether the given statement should be
     *                              logged for debug purposes.
     * @return PDOStatement A PDOStatement object to work with.
+    * @throws DatabaseHandlerException In case the statement execution failed.
     *
     * @author Tobias Lückel (megger)
     * @version
