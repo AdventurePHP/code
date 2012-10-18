@@ -1,4 +1,5 @@
 <?php
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +19,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 /**
  * @package tools::string
  * @class RandomStringManager
@@ -28,34 +28,59 @@
  * @author dave
  * @version
  * Version 0.1, 07.09.2011<br />
+ * Version 0.2, 17.10.2012 (Added support to create serial numbers)<br />
  */
 class RandomStringManager extends APFObject {
 
-   private $chars = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-   private $lenght = 16;
+   private $chars;
+   private $lenght;
    private $randomString;
+   private $sheme;
+   private $delimiter;
+
+   /**
+    * @pubic
+    * 
+    * @param type $chars Chars set by user via config in *_serviceobjects.ini
+    */
+   public function setChars($chars) {
+      $this->chars = $chars;
+   }
 
    /**
     * @public
-    *
-    * Converting characters into UTF-8 conform format (for example: §%#).
-    *
-    * @param string $string The characters to convert.
-    * @return array The converted characters as array.
-    *
-    * @author dave
-    * @version
-    * Version 0.1, 07.09.2011<br />
+    * 
+    * @param type $lenght Lenght set by user via config in *_serviceobjects.ini
     */
-   private function mbStringToArray($string) {
-      $strLen = mb_strlen($string);
-      $array = array();
-      while ($strLen) {
-         $array[] = mb_substr($string, 0, 1, "UTF-8");
-         $string = mb_substr($string, 1, $strLen, "UTF-8");
-         $strLen = mb_strlen($string);
-      }
-      return $array;
+   public function setLength($lenght) {
+      $this->lenght = (int) $lenght;
+   }
+
+   /**
+    * @public
+    * 
+    * @param type $connectionKey Connection key set by user via config in *_serviceobjects.ini
+    */
+   public function setConnectionKey($connectionKey) {
+      $this->connectionKey = $connectionKey;
+   }
+
+   /**
+    * @public
+    * 
+    * @param type $sheme Sheme set by user via config in *_serviceobjects.ini
+    */
+   public function setSheme($sheme) {
+      $this->sheme = $sheme;
+   }
+
+   /**
+    * @public
+    * 
+    * @param type $delimiter Delimiter set by user via config in *_serviceobjects.ini
+    */
+   public function setDelimiter($delimiter) {
+      $this->delimiter = $delimiter;
    }
 
    /**
@@ -68,20 +93,29 @@ class RandomStringManager extends APFObject {
     * @author dave
     * @version
     * Version 0.1, 07.09.2011<br />
+    * Version 0.2, 15.10.2012 (Added sheme for creating a serial number)<br />
     */
    public function init($initParam) {
-      if ($initParam['chars'] === '') {
+      if (empty($initParam['chars'])) {
          $this->chars = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
       } else {
          $this->chars = $initParam['chars'];
       }
       if (empty($initParam['lenght'])) {
-         $this->lenght = (int)16;
+         $this->lenght = (int) 16;
       } else {
-         $this->lenght = (int)$initParam['lenght'];
+         $this->lenght = (int) $initParam['lenght'];
       }
-
-      $this->chars = $this->mbStringToArray($this->chars);
+      if (empty($initParam['sheme'])) {
+         $this->sheme = 'XXX9-XX99-X99X-99XX';
+      } else {
+         $this->sheme = $initParam['sheme'];
+      }
+      if (empty($initParam['delimiter'])) {
+         $this->delimiter = '-';
+      } else {
+         $this->delimiter = $initParam['delimiter'];
+      }
    }
 
    /**
@@ -94,10 +128,14 @@ class RandomStringManager extends APFObject {
     * @author dave
     * @version
     * Version 0.1, 07.09.2011<br />
+    * Version 0.2, 15.10.2012 (Optimized performance of the method)<br />
     */
    public function createHash() {
+      $chars = $this->mbStringToArray($this->chars);
+      $MengeChars = count($chars);
+
       for ($i = 0; $i < $this->lenght; $i++) {
-         $this->randomString .= $this->chars[mt_rand(0, count($this->chars) - 1)];
+         $this->randomString .= $chars[mt_rand(0, $MengeChars - 1)];
       }
       return $this->randomString;
    }
@@ -145,4 +183,93 @@ class RandomStringManager extends APFObject {
       return $this->randomString;
    }
 
+   /**
+    * @public
+    * 
+    * Creates a serial number by using the given sheme via configuration
+    * 
+    * @return string The created serial number
+    * 
+    * @author dave
+    * @version
+    * Version 0.1, 15.10.2012<br />
+    */
+   public function createSerial() {
+      $k = strlen($this->sheme);
+      $sernum = '';
+      for ($i = 0; $i < $k; $i++) {
+         switch ($this->sheme[$i]) {
+            case 'X': $sernum .= $this->oneChar(false, true);
+               break;
+            case 'x': $sernum .= $this->oneChar();
+               break;
+            case '9': $sernum .= $this->oneChar(true);
+               break;
+            case $this->delimiter: $sernum .= $this->delimiter;
+               break;
+         }
+      }
+
+      return $sernum;
+   }
+
+   /**
+    * @private
+    *
+    * Converting characters into UTF-8 conform format (for example: §%#).
+    *
+    * @param string $string The characters to convert.
+    * @return array The converted characters as array.
+    *
+    * @author dave
+    * @version
+    * Version 0.1, 07.09.2011<br />
+    */
+   private function mbStringToArray($string) {
+      $strLen = mb_strlen($string);
+      $array = array();
+      while ($strLen) {
+         $array[] = mb_substr($string, 0, 1, "UTF-8");
+         $string = mb_substr($string, 1, $strLen, "UTF-8");
+         $strLen = mb_strlen($string);
+      }
+      return $array;
+   }
+
+   /**
+    * @private
+    * 
+    * Method returns one random char of all available chars.
+    * 
+    * @param boolean $OnlyNumeric Option to return only numeric character
+    * @param boolean $OnlyBigLetter Option to return only a big letter, otherwise small letters will be returned
+    * @return char One random char from all available chars set by user
+    * 
+    * @author dave
+    * @version
+    * Version 0.1, 15.10.2012<br />
+    */
+   private function oneChar($OnlyNumeric = false, $OnlyBigLetter = false) {
+
+      if ($OnlyNumeric == true) {
+         $chars = preg_replace('/[^0-9]/i', '', $this->chars);
+         $chars = $this->mbStringToArray($chars);
+
+         return $chars[mt_rand(0, count($chars) - 1)];
+      } else {
+
+         if ($OnlyBigLetter == true) {
+            $chars = preg_replace('/[^A-Z]/', '', $this->chars);
+            $chars = $this->mbStringToArray($chars);
+         } else {
+            $chars = preg_replace('/[^a-z]/', '', $this->chars);
+            $chars = $this->mbStringToArray($chars);
+         }
+
+         return $chars[mt_rand(0, count($chars) - 1)];
+      }
+   }
+
 }
+
+?>
