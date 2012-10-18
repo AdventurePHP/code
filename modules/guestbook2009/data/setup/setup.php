@@ -17,4 +17,3 @@ import('modules::genericormapper::data::tools', 'GenericORMapperSetup');
 $setupMapper = new GenericORMapperSetup();
 $setupMapper->setContext($context);
 $setupMapper->setupDatabase('modules::guestbook2009::data', 'guestbook2009', $connectionKey);
-?>

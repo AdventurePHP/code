@@ -1,22 +1,22 @@
 <?php
 /**
- *  <!--
- *  This file is part of the adventure php framework (APF) published under
- *  http://adventure-php-framework.org.
+ * <!--
+ * This file is part of the adventure php framework (APF) published under
+ * http://adventure-php-framework.org.
  *
- *  The APF is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Lesser General Public License as published
- *  by the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * The APF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  The APF is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Lesser General Public License for more details.
+ * The APF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public License
- *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- *  -->
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ * -->
  */
 import('modules::guestbook2009::biz', 'Entry');
 import('modules::guestbook2009::biz', 'Guestbook');
@@ -29,7 +29,7 @@ import('modules::pager::biz', 'PagerManagerFabric');
 /**
  * @package modules::guestbook2009::biz
  * @class GuestbookService
- * 
+ *
  * Implements the central business component of the guestbook. Must be initialized with
  * the DIServiceManager to get the necessary information injected (pager config).
  *
@@ -222,9 +222,9 @@ final class GuestbookService extends APFObject {
 
       // display the admin start page
       $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
-                          'gbview' => 'admin',
-                          'adminview' => null
-                      )));
+         'gbview' => 'admin',
+         'adminview' => null
+      )));
       HeaderManager::forward($link);
    }
 
@@ -247,9 +247,9 @@ final class GuestbookService extends APFObject {
 
       // display the list view
       $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
-                          'gbview' => 'list',
-                          'adminview' => null
-                      )));
+         'gbview' => 'list',
+         'adminview' => null
+      )));
       HeaderManager::forward($link);
    }
 
@@ -273,9 +273,9 @@ final class GuestbookService extends APFObject {
       // redirect to admin page
       if ($loggedId !== 'true') {
          $startLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
-                             'gbview' => 'list',
-                             'adminview' => null
-                         )));
+            'gbview' => 'list',
+            'adminview' => null
+         )));
          HeaderManager::forward($startLink);
       }
    }
@@ -306,9 +306,9 @@ final class GuestbookService extends APFObject {
 
          // redirect to admin page
          $adminLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
-                             'gbview' => 'admin',
-                             'adminview' => null
-                         )));
+            'gbview' => 'admin',
+            'adminview' => null
+         )));
          HeaderManager::forward($adminLink);
       }
       return false;
@@ -334,12 +334,12 @@ final class GuestbookService extends APFObject {
       $entryId = $entry->getId();
       if (!empty($entryId)) {
          $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
-                             'gbview' => 'admin'
-                         )));
+            'gbview' => 'admin'
+         )));
       } else {
          $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
-                             'gbview' => 'list'
-                         )));
+            'gbview' => 'list'
+         )));
       }
       HeaderManager::forward($link);
    }
@@ -360,4 +360,5 @@ final class GuestbookService extends APFObject {
    }
 
 }
+
 ?>

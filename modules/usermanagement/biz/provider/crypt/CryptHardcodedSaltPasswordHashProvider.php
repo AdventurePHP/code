@@ -35,5 +35,3 @@ class CryptHardcodedSaltPasswordHashProvider extends DefaultPasswordHashProvider
    }
 
 }
-
-?>

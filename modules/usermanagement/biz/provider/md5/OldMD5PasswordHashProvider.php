@@ -34,5 +34,3 @@ class OldMD5PasswordHashProvider extends DefaultPasswordHashProvider {
    }
 
 }
-
-?>

@@ -1,35 +1,35 @@
 <?php
 /**
- *  <!--
- *  This file is part of the adventure php framework (APF) published under
- *  http://adventure-php-framework.org.
+ * <!--
+ * This file is part of the adventure php framework (APF) published under
+ * http://adventure-php-framework.org.
  *
- *  The APF is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Lesser General Public License as published
- *  by the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * The APF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  The APF is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Lesser General Public License for more details.
+ * The APF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public License
- *  along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- *  -->
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ * -->
  */
 import('modules::newspager::biz', 'newspagerContent');
 import('tools::filesystem', 'File');
 import('tools::filesystem', 'Folder');
 
 /**
- *  @package modules::newspager::data
- *  @class newspagerMapper
+ * @package modules::newspager::data
+ * @class newspagerMapper
  *
  *  Data layer component for loading the news page objects.<br />
  *
- *  @author Christian Achatz
- *  @version
+ * @author Christian Achatz
+ * @version
  *  Version 0.1, 02.20.2008<br />
  */
 class newspagerMapper extends APFObject {
@@ -40,14 +40,14 @@ class newspagerMapper extends APFObject {
    private $dataDir = null;
 
    /**
-    *  @public
+    * @public
     *
     *  Initializes the manager.
     *
-    *  @param string $initParam the news content data dir
+    * @param string $initParam the news content data dir
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 18.09.2008<br />
     */
    public function init($initParam) {
@@ -55,15 +55,15 @@ class newspagerMapper extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Loads a news page object.<br />
     *
-    *  @param int $PageNumber; desire page number
-    *  @return newspagerContent $newspagerContent; newspagerContent domain object
+    * @param int $PageNumber; desire page number
+    * @return newspagerContent $newspagerContent; newspagerContent domain object
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 02.02.2007<br />
     *  Version 0.2, 18.09.2008 (Introduced variable data dir)<br />
     *  Version 0.3, 23.08.2012 (Change to new File-/Folder-class)<br />
@@ -76,7 +76,7 @@ class newspagerMapper extends APFObject {
 
       // get files, that match the current language
       $files = array();
-      foreach($rawFiles as $data) {
+      foreach ($rawFiles as $data) {
          if (substr_count($data->getName(), 'news_' . $this->getLanguage() . '_') > 0) {
             $files[] = $data;
          }
@@ -87,7 +87,7 @@ class newspagerMapper extends APFObject {
 
       if ($newsCount == 0) {
          throw new IncludeException('[newspagerMapper::getNewsByPage()] No news files are '
-                 . 'given for language ' . $this->getLanguage(), E_USER_ERROR);
+               . 'given for language ' . $this->getLanguage(), E_USER_ERROR);
       }
 
       // if page number is lower then zero, correct it!
@@ -119,7 +119,7 @@ class newspagerMapper extends APFObject {
       // fill content
       $count = count($newsArray);
       if ($count >= 3) {
-         $content = (string) '';
+         $content = (string)'';
          for ($i = 2; $i < $count; $i++) {
             $content .= $newsArray[$i];
          }
@@ -134,4 +134,5 @@ class newspagerMapper extends APFObject {
    }
 
 }
+
 ?>
