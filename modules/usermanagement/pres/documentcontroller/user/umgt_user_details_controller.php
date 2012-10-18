@@ -68,5 +68,3 @@ class umgt_user_details_controller extends umgt_base_controller {
    }
 
 }
-
-?>

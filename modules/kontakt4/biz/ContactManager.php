@@ -64,12 +64,12 @@ class ContactManager extends APFObject {
       $MAIL->setContent(
          $this->getNotificationText(
             array(
-                 'sender-name' => $formData->getSenderName(),
-                 'sender-email' => $formData->getSenderEmail(),
-                 'sender-subject' => $formData->getSubject(),
-                 'sender-message' => $formData->getMessage(),
-                 'recipient-name' => $recipient->getName(),
-                 'recipient-email' => $recipient->getEmailAddress()
+               'sender-name' => $formData->getSenderName(),
+               'sender-email' => $formData->getSenderEmail(),
+               'sender-subject' => $formData->getSubject(),
+               'sender-message' => $formData->getMessage(),
+               'recipient-name' => $recipient->getName(),
+               'recipient-email' => $recipient->getEmailAddress()
             )
          )
       );
@@ -88,12 +88,12 @@ class ContactManager extends APFObject {
       $MAIL->setContent(
          $this->getConfirmationText(
             array(
-                 'sender-name' => $formData->getSenderName(),
-                 'sender-email' => $formData->getSenderEmail(),
-                 'sender-subject' => $formData->getSubject(),
-                 'sender-message' => $formData->getMessage(),
-                 'recipient-name' => $recipient->getName(),
-                 'recipient-email' => $recipient->getEmailAddress()
+               'sender-name' => $formData->getSenderName(),
+               'sender-email' => $formData->getSenderEmail(),
+               'sender-subject' => $formData->getSubject(),
+               'sender-message' => $formData->getMessage(),
+               'recipient-name' => $recipient->getName(),
+               'recipient-email' => $recipient->getEmailAddress()
             )
          )
       );
@@ -153,6 +153,7 @@ class ContactManager extends APFObject {
     *
     * @param array $values An associative array of place holders and their value to be included within the text.
     * @return string The notification text sent to the contact person to inform about the complaint.
+    * @throws ConfigurationException In case the language configuration section is missing.
     *
     * @author Christian Achatz
     * @version
@@ -164,8 +165,8 @@ class ContactManager extends APFObject {
       $section = $config->getSection($this->getLanguage());
       if ($section === null) {
          throw new ConfigurationException('Configuration section "' . $this->getLanguage() . '" is not present within '
-                                          . 'the contact form module configuration loading the email templates. Please '
-                                          . 'review your configuration!');
+               . 'the contact form module configuration loading the email templates. Please '
+               . 'review your configuration!');
       }
 
       return $this->fillPlaceHolders(
@@ -192,6 +193,7 @@ class ContactManager extends APFObject {
     *
     * @param array $values An associative array of place holders and their value to be included within the text.
     * @return string The notification text sent to the originator to confirm the submission.
+    * @throws ConfigurationException In case the language configuration section is missing.
     *
     * @author Christian Achatz
     * @version
@@ -202,8 +204,8 @@ class ContactManager extends APFObject {
       $section = $config->getSection($this->getLanguage());
       if ($section === null) {
          throw new ConfigurationException('Configuration section "' . $this->getLanguage() . '" is not present within '
-                                          . 'the contact form module configuration loading the email templates. Please '
-                                          . 'review your configuration!');
+               . 'the contact form module configuration loading the email templates. Please '
+               . 'review your configuration!');
       }
 
       return $this->fillPlaceHolders(
@@ -255,9 +257,7 @@ class ContactManager extends APFObject {
          return file_get_contents($file);
       }
       throw new IncludeException('Email template file "' . $file . '" cannot be loaded. '
-                                 . 'Please review your contact module configuration!');
+            . 'Please review your contact module configuration!');
    }
 
 }
-
-?>

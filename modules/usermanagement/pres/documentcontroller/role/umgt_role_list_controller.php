@@ -103,5 +103,3 @@ class umgt_role_list_controller extends umgt_base_controller {
    }
 
 }
-
-?>

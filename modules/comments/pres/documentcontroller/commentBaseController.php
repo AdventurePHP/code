@@ -51,5 +51,3 @@ abstract class commentBaseController extends base_controller {
    }
 
 }
-
-?>

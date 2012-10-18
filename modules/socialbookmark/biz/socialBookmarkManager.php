@@ -149,17 +149,17 @@ class socialBookmarkManager extends APFObject {
 
          $service = $services->getSection($serviceName);
          $this->bookmarkServices[] =
-                 new bookmarkEntry(
-                         $service->getValue('BookmarkService.BaseURL'),
-                         $service->getValue('BookmarkService.Param.URL'),
-                         $service->getValue('BookmarkService.Param.Title'),
-                         $service->getValue('BookmarkService.Display.Title'),
-                         $service->getValue('BookmarkService.Display.Image'),
-                         $service->getValue('BookmarkService.Display.ImageExt')
-         );
+               new bookmarkEntry(
+                  $service->getValue('BookmarkService.BaseURL'),
+                  $service->getValue('BookmarkService.Param.URL'),
+                  $service->getValue('BookmarkService.Param.Title'),
+                  $service->getValue('BookmarkService.Display.Title'),
+                  $service->getValue('BookmarkService.Display.Image'),
+                  $service->getValue('BookmarkService.Display.ImageExt')
+               );
       }
 
-      $output = (string) '';
+      $output = (string)'';
 
       for ($i = 0; $i < count($this->bookmarkServices); $i++) {
          $output .= $this->generateBookmarkEntry($this->bookmarkServices[$i]);
@@ -191,10 +191,10 @@ class socialBookmarkManager extends APFObject {
 
       $code = '<a rel="nofollow" href="';
       $code .= LinkGenerator::generateUrl(
-                      Url::fromString($bookmarkEntry->getServiceBaseUrl())->mergeQuery(array(
-                          $bookmarkEntry->getUrlParamName() => $this->url,
-                          $bookmarkEntry->getTitleParamName() => $this->title
-                      )), new DefaultLinkScheme(true));
+         Url::fromString($bookmarkEntry->getServiceBaseUrl())->mergeQuery(array(
+            $bookmarkEntry->getUrlParamName() => $this->url,
+            $bookmarkEntry->getTitleParamName() => $this->title
+         )), new DefaultLinkScheme(true));
       $code .= '" title="';
       $code .= $bookmarkEntry->getTitle();
       $code .= '" linkrewrite="false"><img src="';
@@ -219,4 +219,3 @@ class socialBookmarkManager extends APFObject {
    }
 
 }
-?>

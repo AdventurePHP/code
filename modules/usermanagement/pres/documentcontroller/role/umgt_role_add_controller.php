@@ -77,5 +77,3 @@ class umgt_role_add_controller extends umgt_base_controller {
    }
 
 }
-
-?>

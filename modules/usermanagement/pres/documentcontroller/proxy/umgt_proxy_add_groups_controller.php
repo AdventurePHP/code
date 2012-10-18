@@ -78,5 +78,3 @@ class umgt_proxy_add_groups_controller extends permission_base_controller {
    }
 
 }
-
-?>

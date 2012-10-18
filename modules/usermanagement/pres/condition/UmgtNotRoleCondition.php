@@ -59,5 +59,3 @@ class UmgtNotRoleCondition extends UserDependentContentConditionBase implements 
    }
 
 }
-
-?>

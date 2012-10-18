@@ -70,5 +70,3 @@ class umgt_group_edit_controller extends umgt_base_controller {
    }
 
 }
-
-?>

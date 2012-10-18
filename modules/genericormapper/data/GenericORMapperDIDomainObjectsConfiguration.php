@@ -81,5 +81,3 @@ final class GenericORMapperDIDomainObjectsConfiguration extends APFObject {
    }
 
 }
-
-?>

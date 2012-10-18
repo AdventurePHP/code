@@ -53,5 +53,3 @@ class umgt_type_add_controller extends umgt_base_controller {
    }
 
 }
-
-?>

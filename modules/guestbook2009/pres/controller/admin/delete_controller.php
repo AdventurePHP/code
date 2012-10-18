@@ -45,6 +45,7 @@ class delete_controller extends backend_base_controller {
 
          if ($form_no->isSent() || $form_yes->isSent()) {
 
+            /* @var $gS GuestbookService */
             $gS = &$this->getDIServiceObject('modules::guestbook2009::biz', 'GuestbookService');
 
             $entry = null;
@@ -71,5 +72,3 @@ class delete_controller extends backend_base_controller {
    }
 
 }
-
-?>

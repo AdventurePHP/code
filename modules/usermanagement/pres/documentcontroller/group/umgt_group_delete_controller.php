@@ -61,5 +61,3 @@ class umgt_group_delete_controller extends umgt_base_controller {
    }
 
 }
-
-?>

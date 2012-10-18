@@ -18,8 +18,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::genericormapper::data', 'GenericDomainObject'); 
- 
+import('modules::genericormapper::data', 'GenericDomainObject');
+
 /**
  * @package modules::genericormapper::data
  * @class TreeItem
@@ -30,90 +30,90 @@ import('modules::genericormapper::data', 'GenericDomainObject');
  */
 class TreeItem extends GenericDomainObject {
 
-    /**
-     * @var GenericDomainObject The parent object of this navigation node
-     */
-    protected $parentItem = null;
-    
-    /**
-     * @var GenericDomainObject The children of this navigation node
-     */
-    protected $children = array();
-    
-    /**
-     * @public
-     * 
-     * Sets the parent object
-     *
-     * @param TreeItem $parentItem The parent object
-     *
-     * @author Nicolas Pecher
-     * @version
-     * Version 0.1, 23.03.2012
-     */
-    public function setParentItem(TreeItem $parentItem) {
-        $this->parentObject = $parentItem;     
-    }
-    
-    /**
-     * @public
-     *
-     * Returns the parent object
-     *
-     * @return TreeItem The parent object
-     *
-     * @author Nicolas Pecher
-     * @version
-     * Version 0.1, 23.03.2012
-     */
-    public function getParentItem() {
-        return $this->parentItem;
-    }
-    
-    /**
-     * @public
-     *
-     * Adds a child object
-     *
-     * @param TreeItem $child An child object
-     *
-     * @author Nicolas Pecher
-     * @version
-     * Version 0.1, 23.03.2012
-     */
-    public function addChild(TreeItem $child) {
-        $this->children[] = $child;
-    } 
-    
-    /**
-     * @public
-     *
-     * Adds an array of child objects
-     *
-     * @param array $children An array of child items
-     *
-     * @author Nicolas Pecher
-     * @version
-     * Version 0.1, 23.03.2012
-     */
-    public function addChildren(array $children) {
-        foreach ($children as $child) {
-            $this->addChild($child);
-        }
-    }
-    
-    /**
-     * @public
-     *
-     * Returns all child objects
-     *
-     * @return TreeItem[] A list of the child objects
-     *
-     * @author Nicolas Pecher
-     * @version
-     * Version 0.1, 23.03.2012
-     */
-    public function getChildren() {
-        return $this->children;
-    } 
+   /**
+    * @var GenericDomainObject The parent object of this navigation node
+    */
+   protected $parentItem = null;
+
+   /**
+    * @var GenericDomainObject The children of this navigation node
+    */
+   protected $children = array();
+
+   /**
+    * @public
+    *
+    * Sets the parent object
+    *
+    * @param TreeItem $parentItem The parent object
+    *
+    * @author Nicolas Pecher
+    * @version
+    * Version 0.1, 23.03.2012
+    */
+   public function setParentItem(TreeItem $parentItem) {
+      $this->parentObject = $parentItem;
+   }
+
+   /**
+    * @public
+    *
+    * Returns the parent object
+    *
+    * @return TreeItem The parent object
+    *
+    * @author Nicolas Pecher
+    * @version
+    * Version 0.1, 23.03.2012
+    */
+   public function getParentItem() {
+      return $this->parentItem;
+   }
+
+   /**
+    * @public
+    *
+    * Adds a child object
+    *
+    * @param TreeItem $child An child object
+    *
+    * @author Nicolas Pecher
+    * @version
+    * Version 0.1, 23.03.2012
+    */
+   public function addChild(TreeItem $child) {
+      $this->children[] = $child;
+   }
+
+   /**
+    * @public
+    *
+    * Adds an array of child objects
+    *
+    * @param array $children An array of child items
+    *
+    * @author Nicolas Pecher
+    * @version
+    * Version 0.1, 23.03.2012
+    */
+   public function addChildren(array $children) {
+      foreach ($children as $child) {
+         $this->addChild($child);
+      }
+   }
+
+   /**
+    * @public
+    *
+    * Returns all child objects
+    *
+    * @return TreeItem[] A list of the child objects
+    *
+    * @author Nicolas Pecher
+    * @version
+    * Version 0.1, 23.03.2012
+    */
+   public function getChildren() {
+      return $this->children;
+   }
 }

@@ -120,6 +120,7 @@ class GuestbookMapper extends APFObject {
     *
     * @param GenericDomainObject $guestbook The generic domain object.
     * @return Entry The guestbook's domain object.
+    * @throws InvalidArgumentException In case the guestbook entry cannot be loaded.
     *
     * @author Christian Achatz
     * @version
@@ -128,6 +129,7 @@ class GuestbookMapper extends APFObject {
    private function mapGenericGuestbook2DomainObject($guestbook) {
 
       if ($guestbook == null) {
+         /* @var $model GuestbookModel */
          $model = &$this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
          $gbId = $model->getGuestbookId();
          throw new InvalidArgumentException('[GuestbookManager::mapGenericGuestbook2DomainObject()] '
@@ -477,7 +479,7 @@ class GuestbookMapper extends APFObject {
     * Initializer method for usage with the DIServiceManager. Sets the database
     * connection name.
     *
-    * @param string $connectionName The database connection to use.
+    * @param string $initType The database connection to use.
     *
     * @author Christian Achatz
     * @version
@@ -518,10 +520,9 @@ class GuestbookMapper extends APFObject {
     */
    private function getCurrentGuestbook() {
       $orm = &$this->getGenericORMapper();
+      /* @var $model GuestbookModel */
       $model = &$this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
       return $orm->loadObjectByID('Guestbook', $model->getGuestbookId());
    }
 
 }
-
-?>

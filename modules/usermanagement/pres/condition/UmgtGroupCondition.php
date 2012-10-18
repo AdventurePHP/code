@@ -61,5 +61,3 @@ class UmgtGroupCondition extends UserDependentContentConditionBase implements Us
    }
 
 }
-
-?>

@@ -85,6 +85,7 @@ class commentMapper extends APFObject {
     * current application instance.
     *
     * @return AbstractDatabaseHandler The database connection.
+    * @throws InvalidArgumentException In case the connection key does not refer to a valid connection definition.
     *
     * @author Christian Achatz
     * @version
@@ -92,14 +93,15 @@ class commentMapper extends APFObject {
     */
    private function &getConnection() {
 
+      /* @var $cM ConnectionManager */
       $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
       $config = $this->getConfiguration('modules::comments', 'comments.ini');
       $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey');
       if ($connectionKey == null) {
          throw new InvalidArgumentException('[commentMapper::getConnection()] The module\'s '
-                 . 'configuration file does not contain a valid database connection key. Please '
-                 . 'specify the database configuration according to the example configuration files!',
-                 E_USER_ERROR);
+                  . 'configuration file does not contain a valid database connection key. Please '
+                  . 'specify the database configuration according to the example configuration files!',
+            E_USER_ERROR);
       }
       return $cM->getConnection($connectionKey);
    }
@@ -107,7 +109,7 @@ class commentMapper extends APFObject {
    /**
     * @private
     *
-    * Mapps a database result set into s domain object.
+    * Maps a database result set into s domain object.
     *
     * @param string[] $resultSet MySQL (database) result array.
     * @return ArticleComment A initialized domain object.
@@ -128,4 +130,3 @@ class commentMapper extends APFObject {
    }
 
 }
-?>

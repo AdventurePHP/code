@@ -102,5 +102,3 @@ abstract class umgt_base_controller extends iteratorBaseController {
    }
 
 }
-
-?>

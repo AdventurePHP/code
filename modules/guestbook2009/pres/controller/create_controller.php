@@ -81,5 +81,3 @@ class create_controller extends base_controller {
    }
 
 }
-
-?>

@@ -64,5 +64,3 @@ class umgt_role_details_controller extends umgt_base_controller {
    }
 
 }
-
-?>

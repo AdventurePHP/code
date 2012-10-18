@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-ort('modules::newspager::biz', 'newspagerManager');
+import('modules::newspager::biz', 'newspagerManager');
 
 /**
  * @package modules::newspager::pres
@@ -86,5 +86,3 @@ class newspager_v1_controller extends base_controller {
    }
 
 }
-
-?>

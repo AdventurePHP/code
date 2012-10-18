@@ -15,12 +15,13 @@
  */
 import('modules::genericormapper::data', 'GenericORMapperFactory');
 
+/* @var $ormFact GenericORMapperFactory */
 $ormFact = &Singleton::getInstance('GenericORMapperFactory');
 $ormFact->setContext($context);
 $orm = &$ormFact->getGenericORMapper(
-                'modules::guestbook2009::data',
-                'guestbook2009',
-                $connectionKey
+   'modules::guestbook2009::data',
+   'guestbook2009',
+   $connectionKey
 );
 
 // --- setup available languages ----------------------------------------------------------------
@@ -77,4 +78,3 @@ $guestbook->addRelatedObject('Guestbook2LangDepValues', $titleDe);
 $guestbook->addRelatedObject('Guestbook2LangDepValues', $descriptionDe);
 
 $orm->saveObject($guestbook);
-?>

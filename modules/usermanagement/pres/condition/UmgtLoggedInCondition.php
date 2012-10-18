@@ -41,5 +41,3 @@ class UmgtLoggedInCondition extends UserDependentContentConditionBase implements
    }
 
 }
-
-?>

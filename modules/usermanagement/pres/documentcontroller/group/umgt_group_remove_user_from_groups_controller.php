@@ -77,5 +77,3 @@ class umgt_group_remove_user_from_groups_controller extends umgt_base_controller
    }
 
 }
-
-?>

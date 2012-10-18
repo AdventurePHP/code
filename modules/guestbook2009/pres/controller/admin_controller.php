@@ -61,5 +61,3 @@ class admin_controller extends base_controller {
    }
 
 }
-
-?>

@@ -59,5 +59,3 @@ class umgt_permission_delete_controller extends umgt_base_controller {
    }
 
 }
-
-?>

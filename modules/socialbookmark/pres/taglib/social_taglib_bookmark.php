@@ -86,5 +86,3 @@ class social_taglib_bookmark extends Document {
    }
 
 }
-
-?>

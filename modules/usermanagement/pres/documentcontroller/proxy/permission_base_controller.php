@@ -27,6 +27,8 @@ abstract class permission_base_controller extends umgt_base_controller {
    protected function mapSelectedOptions2DomainObjects($elementName, $objectName) {
 
       $form = &$this->getForm(self::$FORM_NAME);
+
+      /* @var $control form_taglib_multiselect */
       $control = $form->getFormElementByName($elementName);
       $selectedOptions = $control->getSelectedOptions();
 
@@ -42,5 +44,3 @@ abstract class permission_base_controller extends umgt_base_controller {
    }
 
 }
-
-?>

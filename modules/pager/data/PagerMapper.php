@@ -195,5 +195,3 @@ final class PagerMapper extends APFObject {
    }
 
 }
-
-?>

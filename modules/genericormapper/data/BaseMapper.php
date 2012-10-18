@@ -651,5 +651,3 @@ class BaseMapper extends APFObject {
    }
 
 }
-
-?>

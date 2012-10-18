@@ -46,7 +46,7 @@ final class PagerManager extends APFObject {
     * @var string[]
     */
    private $section = null;
-   
+
    /**
     * @private
     * Contains the desired anchor name.
@@ -55,21 +55,22 @@ final class PagerManager extends APFObject {
    private $anchorName = null;
 
    /**
-    *  @public
+    * @public
     *
-    *  Initializes the pager. Loads the desired config section.
+    * Initializes the pager. Loads the desired config section.
     *
-    *  @param string $initParam the name of the config section.
+    * @param string $initParam the name of the config section.
+    * @throws InvalidArgumentException In case the referred configuration section is missing.
     *
-    *  @author Christian Achatz
-    *  @version
-    *  Version 0.1, 06.08.2006<br />
-    *  Version 0.2, 16.08.2006 (Added more params to be applied to the count statement)<br />
-    *  Version 0.3, 29.03.2007 (Renamed to "init()" to support the ServiceManager)<br />
-    *  Version 0.4, 30.03.2007 (Removed the old iniHandler component)<br />
-    *  Version 0.5, 13.04.2007 (Enhanced the method, that the pager can be created using the fabric)<br />
-    *  Version 0.6, 26.04.2008 (The statement params are now casted to int by default)<br />
-    *  Version 0.7, 25.01.2009 (Complete redesign / refactoring due to pager design changes. Now the pager can be used together with the GenericORMapper)<br />
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 06.08.2006<br />
+    * Version 0.2, 16.08.2006 (Added more params to be applied to the count statement)<br />
+    * Version 0.3, 29.03.2007 (Renamed to "init()" to support the ServiceManager)<br />
+    * Version 0.4, 30.03.2007 (Removed the old iniHandler component)<br />
+    * Version 0.5, 13.04.2007 (Enhanced the method, that the pager can be created using the fabric)<br />
+    * Version 0.6, 26.04.2008 (The statement params are now casted to int by default)<br />
+    * Version 0.7, 25.01.2009 (Complete redesign / refactoring due to pager design changes. Now the pager can be used together with the GenericORMapper)<br />
     */
    public function init($initParam) {
 
@@ -80,8 +81,8 @@ final class PagerManager extends APFObject {
       // empty sections are not allowed since they produced NPE's
       if ($this->section === null) {
          throw new InvalidArgumentException('[PagerManager::init()] The given configuration section '
-                 . '"' . $initParam . '" cannot be found within the pager configuration file. Please '
-                 . 'review your setup!');
+               . '"' . $initParam . '" cannot be found within the pager configuration file. Please '
+               . 'review your setup!');
       }
 
       // translate the cache directive
@@ -93,41 +94,41 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    *  @private
+    * @private
     *
     *  Returns the statement params needed by the pager's data layer.
     *
-    *  @param string[] $addStmtParams Additional statement parameters.
-    *  @return string[] A list of default statement params.
+    * @param string[] $addStmtParams Additional statement parameters.
+    * @return string[] A list of default statement params.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 24.01.2009<br />
     */
    private function getStatementParams($addStmtParams = array()) {
       if ($this->isDynamicPageSizeActivated()) {
-         $entriesCount = (int) RequestHandler::getValue($this->section->getValue('Pager.ParameterCountName'), $this->section->getValue('Pager.EntriesPerPage'));
+         $entriesCount = (int)RequestHandler::getValue($this->section->getValue('Pager.ParameterCountName'), $this->section->getValue('Pager.EntriesPerPage'));
       } else {
-         $entriesCount = (int) $this->section->getValue('Pager.EntriesPerPage');
+         $entriesCount = (int)$this->section->getValue('Pager.EntriesPerPage');
       }
 
       $defaultParams = array(
-          'Start' => (int) RequestHandler::getValue($this->section->getValue('Pager.ParameterPageName'), 1) * $entriesCount - $entriesCount,
-          'EntriesCount' => $entriesCount
+         'Start' => (int)RequestHandler::getValue($this->section->getValue('Pager.ParameterPageName'), 1) * $entriesCount - $entriesCount,
+         'EntriesCount' => $entriesCount
       );
       return array_merge($defaultParams, $this->generateStatementParams($this->section->getValue('Pager.EntriesStatement.Params')), $addStmtParams);
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Loads the ids of the entries of the current page.
     *
-    *  @param string[] $addStmtParams additional statement parameters.
-    *  @return int[] List of entry ids for the current page.
+    * @param string[] $addStmtParams additional statement parameters.
+    * @return int[] List of entry ids for the current page.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 05.08.2006<br />
     *  Version 0.2, 06.08.2006<br />
     *  Version 0.3, 16.08.2006 (Added the enhanced param configuration opportunity)<br />
@@ -147,6 +148,7 @@ final class PagerManager extends APFObject {
     * @param string $loadMethod name of the load method for the domain object
     * @param string[] $addStmtParams additional statement parameters
     * @return APFObject[] List of domain objects for the current page.
+    * @throws InvalidArgumentException In case the data component does not have the desired get method.
     *
     * @author Christian Achatz
     * @version
@@ -177,19 +179,19 @@ final class PagerManager extends APFObject {
       }
 
       throw new InvalidArgumentException('[PagerManager->loadEntriesByAppDataComponent()] '
-              . 'Given data component (' . get_class($dataComponent) . ') has no method "'
-              . $loadMethod . '"! Thus, no entries can be loaded!', E_USER_ERROR);
+            . 'Given data component (' . get_class($dataComponent) . ') has no method "'
+            . $loadMethod . '"! Thus, no entries can be loaded!', E_USER_ERROR);
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Sets the anchor name.
     *
-    *  @param string $anchorName The name of the desired anchor.
+    * @param string $anchorName The name of the desired anchor.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 25.01.2009<br />
     */
    public function setAnchorName($anchorName = null) {
@@ -197,14 +199,14 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Returns the anchor name.
     *
-    *  @return string The name of the anchor
+    * @return string The name of the anchor
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 25.01.2009<br />
     */
    public function getAnchorName() {
@@ -212,15 +214,15 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Creates the graphical output of the pagerc concerning the configured presentation layer template.
     *
-    *  @param array $addStmtParams list of additional statement params
-    *  @return string The HTML representation of the pager
+    * @param array $addStmtParams list of additional statement params
+    * @return string The HTML representation of the pager
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 05.08.2006<br />
     *  Version 0.2, 11.03.2007 (Ported to new document controller, removed MessageQueue)<br />
     *  Version 0.3, 29.08.2007 (Anchor name is not set as the document's attribute)<br />
@@ -241,11 +243,11 @@ final class PagerManager extends APFObject {
       $document = &$pager->getRootDocument();
       $document->setAttribute('Pages', $this->createPages4PagerDisplay($addStmtParams));
       $document->setAttribute('Config', array(
-          'ParameterPageName' => $this->section->getValue('Pager.ParameterPageName'),
-          'ParameterCountName' => $this->section->getValue('Pager.ParameterCountName'),
-          'EntriesPerPage' => $this->section->getValue('Pager.EntriesPerPage'),
-          'DynamicPageSizeActivated' => $this->isDynamicPageSizeActivated()
-              )
+            'ParameterPageName' => $this->section->getValue('Pager.ParameterPageName'),
+            'ParameterCountName' => $this->section->getValue('Pager.ParameterCountName'),
+            'EntriesPerPage' => $this->section->getValue('Pager.EntriesPerPage'),
+            'DynamicPageSizeActivated' => $this->isDynamicPageSizeActivated()
+         )
       );
 
       // add the anchor if desired
@@ -276,8 +278,8 @@ final class PagerManager extends APFObject {
     */
    public function getPagerURLParameters() {
       return array(
-          'PageName' => $this->section->getValue('Pager.ParameterPageName'),
-          'CountName' => $this->section->getValue('Pager.ParameterCountName')
+         'PageName' => $this->section->getValue('Pager.ParameterPageName'),
+         'CountName' => $this->section->getValue('Pager.ParameterCountName')
       );
    }
 
@@ -305,10 +307,10 @@ final class PagerManager extends APFObject {
       $t->start('PagerManager::createPages4PagerDisplay()');
 
       // initialize start params
-      $start = (int) 1;
+      $start = (int)1;
 
       $countPerPage = $this->getCountPerPage();
-      $currentStart = (int) RequestHandler::getValue($this->section->getValue('Pager.ParameterPageName'), 1) * $countPerPage;
+      $currentStart = (int)RequestHandler::getValue($this->section->getValue('Pager.ParameterPageName'), 1) * $countPerPage;
 
       // initialize page delimiter params
       $M = &$this->getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
@@ -351,18 +353,18 @@ final class PagerManager extends APFObject {
    }
 
    /**
-    *  @private
+    * @private
     *
     *  Returns a param array, that contains the initialized params from the page configuration
     *  file. The initialization is done by the url params. Default values are taken from the
     *  configuration offset *.Params. If no value is contained in the URL, the default ones are
     *  taken.
     *
-    *  @param string $configString the param-value-string from the configuration (e.g.: param1:value1|param2:value2)
-    *  @return string[] A list of statement parameters
+    * @param string $configString the param-value-string from the configuration (e.g.: param1:value1|param2:value2)
+    * @return string[] A list of statement parameters
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 16.08.2006<br />
     *  Version 0.2, 24.01.2009 (Refactoring due to configuration param changes)<br />
     */
@@ -411,7 +413,7 @@ final class PagerManager extends APFObject {
    public function getPageCount($addStmtParams = array()) {
       $countPerPage = $this->getCountPerPage();
 
-      $currentStart = (int) RequestHandler::getValue($this->section->getValue('Pager.ParameterPageName'), 1) * $countPerPage;
+      $currentStart = (int)RequestHandler::getValue($this->section->getValue('Pager.ParameterPageName'), 1) * $countPerPage;
 
       // initialize page delimiter params
       $M = &$this->getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
@@ -433,11 +435,11 @@ final class PagerManager extends APFObject {
     */
    public function getCountPerPage() {
       if ($this->isDynamicPageSizeActivated()) {
-         $countPerPage = (int) RequestHandler::getValue($this->section->getValue('Pager.ParameterCountName'), 0);
+         $countPerPage = (int)RequestHandler::getValue($this->section->getValue('Pager.ParameterCountName'), 0);
       }
 
       if (!$this->isDynamicPageSizeActivated() || $countPerPage === 0) { // avoid devision by zero!
-         $countPerPage = (int) $this->section->getValue('Pager.EntriesPerPage');
+         $countPerPage = (int)$this->section->getValue('Pager.EntriesPerPage');
       }
 
       return $countPerPage;
@@ -490,4 +492,3 @@ final class PagerManager extends APFObject {
    }
 
 }
-?>

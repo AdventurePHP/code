@@ -80,5 +80,3 @@ class remove_permission_from_role_controller extends umgt_base_controller {
    }
 
 }
-
-?>

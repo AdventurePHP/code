@@ -111,5 +111,3 @@ class edit_controller extends backend_base_controller {
    }
 
 }
-
-?>

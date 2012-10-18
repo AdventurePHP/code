@@ -33,12 +33,10 @@ class umgt_taglib_includecss extends Document {
 
    public function transform() {
       return '<style type="text/css">'
-             . PHP_EOL
-             . file_get_contents(APPS__PATH . '/modules/usermanagement/pres/css/umgt.css')
-             . PHP_EOL
-             . '</style>';
+            . PHP_EOL
+            . file_get_contents(APPS__PATH . '/modules/usermanagement/pres/css/umgt.css')
+            . PHP_EOL
+            . '</style>';
    }
 
 }
-
-?>

@@ -60,5 +60,3 @@ class UmgtRoleCondition extends UserDependentContentConditionBase implements Use
    }
 
 }
-
-?>

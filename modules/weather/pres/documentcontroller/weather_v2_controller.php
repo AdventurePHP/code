@@ -49,7 +49,7 @@ class weather_v2_controller extends base_controller {
 
       // Check weather XML string is present
       if ($XML != null) {
-         $this->transform($XML);
+         $this->transformXml($XML);
       } else {
 
          // Display error message
@@ -65,12 +65,13 @@ class weather_v2_controller extends base_controller {
     * Transforms the content<br />
     *
     * @param string $XML XML string
+    * @return string The information section HTML code.
     *
     * @author Tobias Lückel
     * @version
     * Version 0.1, 17.08.2010<br />
     */
-   protected function transform($XML) {
+   protected function transformXml($XML) {
 
       // Get references on the templates used
       $Template__Information = &$this->getTemplate('Information');
@@ -97,7 +98,8 @@ class weather_v2_controller extends base_controller {
     *
     * Helper method to get the XML string.<br />
     *
-    * @return string Content of the XML stream of the source or null
+    * @return string Content of the XML stream of the source or null.
+    * @throws InvalidArgumentException In case of XSLT errors.
     *
     * @author Tobias Lückel
     * @version
@@ -132,7 +134,6 @@ class weather_v2_controller extends base_controller {
                   return $result;
                } else {
                   throw new InvalidArgumentException('[weather_v2_controller::__getXML()] XSLT Error!');
-                  return null;
                }
             } else {
                return $plainXml;
@@ -142,7 +143,6 @@ class weather_v2_controller extends base_controller {
          }
       } else {
          throw new InvalidArgumentException('[weather_v2_controller::__getXML()] Attribute "xml_source" not present in "core:importdesign" tag for weather module!');
-         return null;
       }
    }
 
@@ -163,4 +163,3 @@ class weather_v2_controller extends base_controller {
    }
 
 }
-?>

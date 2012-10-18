@@ -84,5 +84,3 @@ class umgt_group_add_user_controller extends umgt_base_controller {
    }
 
 }
-
-?>

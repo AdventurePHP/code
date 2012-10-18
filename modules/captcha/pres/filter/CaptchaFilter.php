@@ -34,7 +34,7 @@ class CaptchaFilter extends AbstractFormFilter {
 
    /**
     * @public
-    * 
+    *
     * Filters the content of the captcha field through an aggressive
     * filter to ensure security.
     *
@@ -50,4 +50,3 @@ class CaptchaFilter extends AbstractFormFilter {
    }
 
 }
-?>

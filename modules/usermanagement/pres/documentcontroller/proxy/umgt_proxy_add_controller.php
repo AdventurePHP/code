@@ -129,13 +129,10 @@ class umgt_proxy_add_controller extends umgt_base_controller {
          $uM->createVisibilityDefinition($type, $definition, $users, $groups);
          HeaderManager::forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => null, 'proxytypeid' => null)));
 
-      }
-      else {
+      } else {
          $form->transformOnPlace();
       }
 
    }
 
 }
-
-?>

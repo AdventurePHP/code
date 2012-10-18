@@ -101,5 +101,3 @@ class comment_form_v1_controller extends commentBaseController {
    }
 
 }
-
-?>

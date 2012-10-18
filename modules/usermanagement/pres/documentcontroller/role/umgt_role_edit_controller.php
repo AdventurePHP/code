@@ -81,5 +81,3 @@ class umgt_role_edit_controller extends umgt_base_controller {
 
    }
 }
-
-?>

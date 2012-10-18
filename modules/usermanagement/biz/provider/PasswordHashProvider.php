@@ -45,5 +45,3 @@ interface PasswordHashProvider {
    public function createPasswordHash($password, $dynamicSalt);
 
 }
-
-?>

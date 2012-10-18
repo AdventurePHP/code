@@ -80,5 +80,3 @@ class umgt_group_list_controller extends umgt_base_controller {
       return $roleNames . '</ul>';
    }
 }
-
-?>

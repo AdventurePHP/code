@@ -45,5 +45,3 @@ final class GuestbookModel extends APFObject {
    }
 
 }
-
-?>

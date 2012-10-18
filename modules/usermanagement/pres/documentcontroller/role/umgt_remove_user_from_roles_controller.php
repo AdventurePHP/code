@@ -78,5 +78,3 @@ class umgt_remove_user_from_roles_controller extends umgt_base_controller {
    }
 
 }
-
-?>

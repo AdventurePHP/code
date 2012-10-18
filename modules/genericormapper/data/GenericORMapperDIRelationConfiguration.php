@@ -81,5 +81,3 @@ final class GenericORMapperDIRelationConfiguration extends APFObject {
    }
 
 }
-
-?>

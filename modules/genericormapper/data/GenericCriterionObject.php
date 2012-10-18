@@ -226,9 +226,9 @@ final class GenericCriterionObject {
     */
    public function addPropertyIndicator($attributeName, $attributeValue, $comparisonOperator = '=') {
       $this->properties[] = array('Name' => $attributeName,
-                                  'Value' => $attributeValue,
-                                  'ComparisonOperator' => $comparisonOperator,
-                                  'LogicalOperator' => $this->logicalOperator
+         'Value' => $attributeValue,
+         'ComparisonOperator' => $comparisonOperator,
+         'LogicalOperator' => $this->logicalOperator
       );
       return $this;
    }
@@ -318,5 +318,3 @@ final class GenericCriterionObject {
    }
 
 }
-
-?>

@@ -51,11 +51,11 @@ class pager_2_v1_controller extends base_controller {
          return;
       }
 
-      $pageCount = (int) 0;
-      $currentPage = (int) 0;
-      $entriesCount = (int) 0;
+      $pageCount = (int)0;
+      $currentPage = (int)0;
+      $entriesCount = (int)0;
 
-      $buffer = (string) '';
+      $buffer = (string)'';
 
       for ($i = 0; $i < count($this->__Attributes['Pages']); $i++) {
 
@@ -121,7 +121,7 @@ class pager_2_v1_controller extends base_controller {
 
          $entriesPerPageConfig = array(5, 10, 15, 20);
          $entriesPerPage = RequestHandler::getValue($this->__Attributes['Config']['ParameterCountName'], $this->__Attributes['Config']['EntriesPerPage']);
-         $buffer = (string) '';
+         $buffer = (string)'';
 
          foreach ($entriesPerPageConfig as $count) {
 
@@ -156,4 +156,3 @@ class pager_2_v1_controller extends base_controller {
    }
 
 }
-?>

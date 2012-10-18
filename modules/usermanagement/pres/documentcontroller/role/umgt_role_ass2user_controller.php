@@ -84,5 +84,3 @@ class umgt_role_ass2user_controller extends umgt_base_controller {
    }
 
 }
-
-?>

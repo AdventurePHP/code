@@ -84,5 +84,3 @@ class umgt_user_list_controller extends umgt_base_controller {
    }
 
 }
-
-?>

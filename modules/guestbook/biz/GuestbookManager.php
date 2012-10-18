@@ -49,14 +49,14 @@ class GuestbookManager extends APFObject {
    private $guestbook = null;
 
    /**
-    *  @public
+    * @public
     *
     *  Implements the init() method used with the service manager.
     *
-    *  @param string $initParam The guestbook id
+    * @param string $initParam The guestbook id
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 13.04.2007<br />
     */
    public function init($initParam) {
@@ -72,14 +72,14 @@ class GuestbookManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Loads a guestbook.
     *
-    *  @return Guestbook The guestbook domain object structure
+    * @return Guestbook The guestbook domain object structure
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 13.04.2007<br />
     */
    public function loadGuestbook() {
@@ -104,14 +104,14 @@ class GuestbookManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Returns the URL params of the pager configuration.
     *
-    *  @return array The pager url params.
+    * @return array The pager url params.
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 13.04.2007<br />
     */
    public function getURLParameters() {
@@ -119,14 +119,14 @@ class GuestbookManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Returns the HTML representation of the pager.
     *
-    *  @return string The pager representation
+    * @return string The pager representation
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 13.04.2007<br />
     */
    public function getPagerPresentation() {
@@ -134,14 +134,14 @@ class GuestbookManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Saves an entry object
     *
-    *  @param Entry $entry The entry object
+    * @param Entry $entry The entry object
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 14.04.2007<br />
     */
    public function saveEntry(Entry $entry) {
@@ -159,15 +159,15 @@ class GuestbookManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Saves a comment object.
     *
-    *  @param string $entryID The id of an entry
-    *  @param Comment $comment The comment object
+    * @param string $entryID The id of an entry
+    * @param Comment $comment The comment object
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 05.05.2007<br />
     *  Version 0.2, 19.05.2007 (Added the redirect url generation)<br />
     */
@@ -220,16 +220,16 @@ class GuestbookManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Validates the login credentials.
     *
-    *  @param string $username Username
-    *  @param string $password Password
-    *  @return bool true | false
+    * @param string $username Username
+    * @param string $password Password
+    * @return bool true | false
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 05.05.2007<br />
     */
    public function validateCrendentials($username, $password) {
@@ -243,14 +243,14 @@ class GuestbookManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Deletes an guestbook entry.
     *
-    *  @param Entry $entry The guestbook entry
+    * @param Entry $entry The guestbook entry
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 05.05.2007<br />
     */
    public function deleteEntry(Entry $entry) {
@@ -258,14 +258,14 @@ class GuestbookManager extends APFObject {
    }
 
    /**
-    *  @public
+    * @public
     *
     *  Deletes a comment.
     *
-    *  @param Comment $comment The comment object
+    * @param Comment $comment The comment object
     *
-    *  @author Christian Achatz
-    *  @version
+    * @author Christian Achatz
+    * @version
     *  Version 0.1, 19.05.2007<br />
     */
    public function deleteComment(Comment $comment) {
@@ -280,4 +280,3 @@ class GuestbookManager extends APFObject {
    }
 
 }
-?>

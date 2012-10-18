@@ -119,5 +119,3 @@ class umgt_proxy_list_controller extends umgt_base_controller {
    }
 
 }
-
-?>

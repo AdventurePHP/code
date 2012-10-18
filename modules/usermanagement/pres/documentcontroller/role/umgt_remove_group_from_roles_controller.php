@@ -80,5 +80,3 @@ class umgt_remove_group_from_roles_controller extends umgt_base_controller {
    }
 
 }
-
-?>

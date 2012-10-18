@@ -80,5 +80,3 @@ class umgt_add_group_to_roles_controller extends umgt_base_controller {
    }
 
 }
-
-?>

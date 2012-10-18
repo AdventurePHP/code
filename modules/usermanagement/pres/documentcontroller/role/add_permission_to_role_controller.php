@@ -80,5 +80,3 @@ class add_permission_to_role_controller extends umgt_base_controller {
    }
 
 }
-
-?>

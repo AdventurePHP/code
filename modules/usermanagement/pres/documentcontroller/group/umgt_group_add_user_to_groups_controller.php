@@ -78,5 +78,3 @@ class umgt_group_add_user_to_groups_controller extends umgt_base_controller {
    }
 
 }
-
-?>

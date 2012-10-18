@@ -57,16 +57,17 @@ class newspagerMapper extends APFObject {
    /**
     * @public
     *
-    *  Loads a news page object.<br />
+    * Loads a news page object.
     *
-    * @param int $PageNumber; desire page number
-    * @return newspagerContent $newspagerContent; newspagerContent domain object
+    * @param int $page Desired page number.
+    * @return newspagerContent The newspagerContent domain object.
+    * @throws IncludeException
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 02.02.2007<br />
-    *  Version 0.2, 18.09.2008 (Introduced variable data dir)<br />
-    *  Version 0.3, 23.08.2012 (Change to new File-/Folder-class)<br />
+    * Version 0.1, 02.02.2007<br />
+    * Version 0.2, 18.09.2008 (Introduced variable data dir)<br />
+    * Version 0.3, 23.08.2012 (Change to new File-/Folder-class)<br />
     */
    public function getNewsByPage($page) {
 
@@ -134,5 +135,3 @@ class newspagerMapper extends APFObject {
    }
 
 }
-
-?>

@@ -51,6 +51,7 @@ class newspagerAction extends AbstractFrontcontrollerAction {
       // inject the language here to ease service creation
       $this->setLanguage($this->getInput()->getAttribute('lang'));
 
+      /* @var $nM newspagerManager */
       $nM = &$this->getAndInitServiceObject('modules::newspager::biz', 'newspagerManager', $dataDir);
 
       // load news object
@@ -76,5 +77,3 @@ class newspagerAction extends AbstractFrontcontrollerAction {
    }
 
 }
-
-?>

@@ -152,13 +152,15 @@ class weather_v1_controller extends base_controller {
    /**
     * @protected
     *
-    *  Helper method to get the RSS string.<br />
+    * Helper method to get the RSS string.<br />
     *
     * @return string Content of the RSS stream of wetter.com or null
+    * @throws Exception In case the socket connection fails.
+    * @throws InvalidArgumentException In case the rss_source attribute is missing.
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 20.04.2008<br />
+    * Version 0.1, 20.04.2008<br />
     */
    protected function getRSSFeed() {
 
@@ -200,7 +202,6 @@ class weather_v1_controller extends base_controller {
             fclose($Socket);
          } else {
             throw new Exception('Socket cannot be created');
-            $response = (string)'';
          }
 
          // Remove header and return string
@@ -214,7 +215,6 @@ class weather_v1_controller extends base_controller {
          }
       } else {
          throw new InvalidArgumentException('[weather_v1_controller::getRSSFeed()] Attribute "rss_source" not present in "core:importdesign" tag for weather module!');
-         return null;
       }
    }
 
@@ -235,5 +235,3 @@ class weather_v1_controller extends base_controller {
    }
 
 }
-
-?>

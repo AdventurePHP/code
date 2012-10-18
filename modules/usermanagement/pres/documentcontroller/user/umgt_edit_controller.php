@@ -121,7 +121,7 @@ class umgt_edit_controller extends umgt_base_controller {
 
          $user = $uM->loadUserByID($userId);
 
-         // prefill form
+         // pre-fill form
          $firstName->setAttribute('value', $user->getFirstName());
          $lastName->setAttribute('value', $user->getLastName());
          $streetName->setAttribute('value', $user->getStreetName());
@@ -139,5 +139,3 @@ class umgt_edit_controller extends umgt_base_controller {
    }
 
 }
-
-?>

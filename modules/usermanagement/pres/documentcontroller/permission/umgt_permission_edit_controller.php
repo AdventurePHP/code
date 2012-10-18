@@ -79,5 +79,3 @@ class umgt_permission_edit_controller extends umgt_base_controller {
    }
 
 }
-
-?>

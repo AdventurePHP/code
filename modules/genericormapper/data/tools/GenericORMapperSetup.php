@@ -185,6 +185,7 @@ class GenericORMapperSetup extends BaseMapper {
       } else {
 
          // get connection manager
+         /* @var $cM ConnectionManager */
          $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
 
          // initialize connection
@@ -207,9 +208,9 @@ class GenericORMapperSetup extends BaseMapper {
    /**
     * @protected
     *
-    * Creates the setup statements for the object persistance.
+    * Creates the setup statements for the object persistence.
     *
-    * @return string Sql setup script
+    * @return array Sql setup script lines.
     *
     * @author Christian Achatz
     * @version
@@ -229,11 +230,10 @@ class GenericORMapperSetup extends BaseMapper {
       foreach ($this->mappingTable as $name => $attributes) {
          $setup[] =
                $this->generateMappingTableLayout($name, $this->mappingTable[$name])
-               . PHP_EOL . PHP_EOL;
+                     . PHP_EOL . PHP_EOL;
       }
 
       return $setup;
-
    }
 
    /**
@@ -297,7 +297,7 @@ class GenericORMapperSetup extends BaseMapper {
     *
     * Creates the setup statements for the relation persistence.
     *
-    * @return string Sql setup script.
+    * @return array Sql setup script lines.
     *
     * @author Christian Achatz
     * @version
@@ -349,9 +349,8 @@ class GenericORMapperSetup extends BaseMapper {
       $create .= '  `' . $tableAttributes['TargetID'] . '` ' . $this->getIndexColumnDataType() . ' NOT NULL default \'0\',' . PHP_EOL;
 
       // creation information
-      if (isset ($tableAttributes['Timestamps']) === true && strcasecmp ($tableAttributes['Timestamps'], 'TRUE') == 0)
-      {
-        $create .= '  `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,' . PHP_EOL;
+      if (isset ($tableAttributes['Timestamps']) === true && strcasecmp($tableAttributes['Timestamps'], 'TRUE') == 0) {
+         $create .= '  `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,' . PHP_EOL;
       }
 
       // key for all forward JOINs
@@ -377,7 +376,7 @@ class GenericORMapperSetup extends BaseMapper {
       foreach (explode('|', $this->mappingIndexTable[$objectName]) as $index) {
 
          $current = $index;
-         $type = (string)'';
+         $type = '';
 
          // gather type
          $startPos = strpos($current, '(');
@@ -407,5 +406,3 @@ class GenericORMapperSetup extends BaseMapper {
    }
 
 }
-
-?>

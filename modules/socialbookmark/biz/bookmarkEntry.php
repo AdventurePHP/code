@@ -36,7 +36,7 @@ class bookmarkEntry {
     * @var string Basis-URL des Bookmark-Services.
     */
    private $serviceBaseUrl;
-   
+
    /**
     * @protected
     * @var string Name des URL-Parameters f�r die zu bookmarkende URL.
@@ -115,4 +115,3 @@ class bookmarkEntry {
    }
 
 }
-?>

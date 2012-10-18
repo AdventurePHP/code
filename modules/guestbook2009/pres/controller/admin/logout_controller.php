@@ -35,10 +35,9 @@ import('modules::guestbook2009::pres::controller::admin', 'backend_base_controll
 class logout_controller extends backend_base_controller {
 
    public function transformContent() {
+      /* @var $gS GuestbookService */
       $gS = &$this->getDIServiceObject('modules::guestbook2009::biz', 'GuestbookService');
       $gS->logout();
    }
 
 }
-
-?>

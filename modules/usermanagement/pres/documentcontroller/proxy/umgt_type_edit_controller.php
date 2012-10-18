@@ -48,8 +48,7 @@ class umgt_type_edit_controller extends umgt_base_controller {
             $proxyName->setAttribute('class', 'apf-form-error');
          }
 
-      }
-      else {
+      } else {
          $proxyType = $uM->loadVisibilityDefinitionTypeById($proxyTypeId);
          $name = &$form->getFormElementByName('proxytypename');
          $name->setAttribute('value', $proxyType->getAppObjectName());
@@ -59,5 +58,3 @@ class umgt_type_edit_controller extends umgt_base_controller {
    }
 
 }
-
-?>

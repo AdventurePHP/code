@@ -78,5 +78,3 @@ class umgt_proxy_remove_users_controller extends permission_base_controller {
    }
 
 }
-
-?>

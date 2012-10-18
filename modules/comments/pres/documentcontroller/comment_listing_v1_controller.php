@@ -106,5 +106,3 @@ class comment_listing_v1_controller extends commentBaseController {
    }
 
 }
-
-?>

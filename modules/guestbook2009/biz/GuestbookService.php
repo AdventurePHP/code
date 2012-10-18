@@ -175,6 +175,7 @@ final class GuestbookService extends APFObject {
     *
     * Loads a dedicated entry.
     *
+    * @param int $id The id of the desired entr<.
     * @return Entry An entry.
     *
     * @author Christian Achatz
@@ -360,5 +361,3 @@ final class GuestbookService extends APFObject {
    }
 
 }
-
-?>

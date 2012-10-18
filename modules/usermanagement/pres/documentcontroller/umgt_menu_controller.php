@@ -36,8 +36,8 @@ class umgt_menu_controller extends umgt_base_controller {
 
       // define the general param exclusion array
       $generalExclusion = array('userid' => '', 'groupid' => '', 'roleid' => '', 'permissionid' => '', 'proxyid' => '',
-                                'userview' => '', 'groupview' => '', 'roleview' => '', 'permissionsetview' => '',
-                                'permissionview' => '', 'proxyview' => '');
+         'userview' => '', 'groupview' => '', 'roleview' => '', 'permissionsetview' => '',
+         'permissionview' => '', 'proxyview' => '');
 
       // display the links
       $this->setPlaceHolder('manage_user', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'user'))));
@@ -49,5 +49,3 @@ class umgt_menu_controller extends umgt_base_controller {
    }
 
 }
-
-?>

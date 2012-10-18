@@ -103,5 +103,3 @@ class umgt_revoke_access_controller extends umgt_base_controller {
    }
 
 }
-
-?>

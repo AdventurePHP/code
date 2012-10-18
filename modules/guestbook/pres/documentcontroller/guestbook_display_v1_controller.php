@@ -248,13 +248,13 @@ class guestbook_display_v1_controller extends guestbookBaseController {
       return '';
    }
 
-   private function showAdminDeleteComment($dommentId, $entryId) {
+   private function showAdminDeleteComment($commentId, $entryId) {
 
       if ($this->session->loadSessionData('AdminView') == true) {
 
          $Template__AdminDeleteComment = &$this->getTemplate('AdminDeleteComment');
 
-         $Link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'admindeletecomment', 'commentid' => $dommentId)));
+         $Link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'admindeletecomment', 'commentid' => $commentId)));
          $Template__AdminDeleteComment->setPlaceHolder('Link', $Link);
 
          return $Template__AdminDeleteComment->transformTemplate();
