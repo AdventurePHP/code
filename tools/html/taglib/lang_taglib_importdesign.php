@@ -55,7 +55,7 @@
  *   <li>prefix: prefix which is used to build up the template file name.
  * </ul>
  * <p/>
- * Template filename sheme:
+ * Template filename scheme:
  * If prefix!=''
  * {prefix}_{lang}_{Identification}_{Name}.html
  * otherwise:

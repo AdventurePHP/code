@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -19,6 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+
 /**
  * @package tools::string
  * @class RandomStringManager
@@ -33,15 +33,20 @@
 class RandomStringManager extends APFObject {
 
    private $chars;
-   private $lenght;
+   private $length;
    private $randomString;
-   private $sheme;
+   private $scheme;
    private $delimiter;
 
    /**
+    * @var string The database connection key.
+    */
+   private $connectionKey;
+
+   /**
     * @pubic
-    * 
-    * @param type $chars Chars set by user via config in *_serviceobjects.ini
+    *
+    * @param string $chars Chars set by user via config in *_serviceobjects.ini
     */
    public function setChars($chars) {
       $this->chars = $chars;
@@ -49,17 +54,17 @@ class RandomStringManager extends APFObject {
 
    /**
     * @public
-    * 
-    * @param type $lenght Lenght set by user via config in *_serviceobjects.ini
+    *
+    * @param string $length Length set by user via config in *_serviceobjects.ini
     */
-   public function setLength($lenght) {
-      $this->lenght = (int) $lenght;
+   public function setLength($length) {
+      $this->length = (int)$length;
    }
 
    /**
     * @public
-    * 
-    * @param type $connectionKey Connection key set by user via config in *_serviceobjects.ini
+    *
+    * @param string $connectionKey Connection key set by user via config in *_serviceobjects.ini
     */
    public function setConnectionKey($connectionKey) {
       $this->connectionKey = $connectionKey;
@@ -67,17 +72,17 @@ class RandomStringManager extends APFObject {
 
    /**
     * @public
-    * 
-    * @param type $sheme Sheme set by user via config in *_serviceobjects.ini
+    *
+    * @param string $scheme Scheme set by user via config in *_serviceobjects.ini
     */
-   public function setSheme($sheme) {
-      $this->sheme = $sheme;
+   public function setScheme($scheme) {
+      $this->scheme = $scheme;
    }
 
    /**
     * @public
-    * 
-    * @param type $delimiter Delimiter set by user via config in *_serviceobjects.ini
+    *
+    * @param string $delimiter Delimiter set by user via config in *_serviceobjects.ini
     */
    public function setDelimiter($delimiter) {
       $this->delimiter = $delimiter;
@@ -93,7 +98,7 @@ class RandomStringManager extends APFObject {
     * @author dave
     * @version
     * Version 0.1, 07.09.2011<br />
-    * Version 0.2, 15.10.2012 (Added sheme for creating a serial number)<br />
+    * Version 0.2, 15.10.2012 (Added scheme for creating a serial number)<br />
     */
    public function init($initParam) {
       if (empty($initParam['chars'])) {
@@ -101,15 +106,15 @@ class RandomStringManager extends APFObject {
       } else {
          $this->chars = $initParam['chars'];
       }
-      if (empty($initParam['lenght'])) {
-         $this->lenght = (int) 16;
+      if (empty($initParam['length'])) {
+         $this->length = (int)16;
       } else {
-         $this->lenght = (int) $initParam['lenght'];
+         $this->length = (int)$initParam['length'];
       }
-      if (empty($initParam['sheme'])) {
-         $this->sheme = 'XXX9-XX99-X99X-99XX';
+      if (empty($initParam['scheme'])) {
+         $this->scheme = 'XXX9-XX99-X99X-99XX';
       } else {
-         $this->sheme = $initParam['sheme'];
+         $this->scheme = $initParam['scheme'];
       }
       if (empty($initParam['delimiter'])) {
          $this->delimiter = '-';
@@ -132,10 +137,10 @@ class RandomStringManager extends APFObject {
     */
    public function createHash() {
       $chars = $this->mbStringToArray($this->chars);
-      $MengeChars = count($chars);
+      $charactersCount = count($chars);
 
-      for ($i = 0; $i < $this->lenght; $i++) {
-         $this->randomString .= $chars[mt_rand(0, $MengeChars - 1)];
+      for ($i = 0; $i < $this->length; $i++) {
+         $this->randomString .= $chars[mt_rand(0, $charactersCount - 1)];
       }
       return $this->randomString;
    }
@@ -149,6 +154,7 @@ class RandomStringManager extends APFObject {
     * @param string $select The SQL query to check, if the string is already in use.
     * @param string $connectionKey The database connection key.
     * @return string The created RandomString
+    * @throws InvalidArgumentException In case of mis-configuration.
     *
     * @author dave
     * @version
@@ -185,32 +191,36 @@ class RandomStringManager extends APFObject {
 
    /**
     * @public
-    * 
-    * Creates a serial number by using the given sheme via configuration
-    * 
+    *
+    * Creates a serial number by using the given scheme via configuration
+    *
     * @return string The created serial number
-    * 
+    *
     * @author dave
     * @version
     * Version 0.1, 15.10.2012<br />
     */
    public function createSerial() {
-      $k = strlen($this->sheme);
-      $sernum = '';
+      $k = strlen($this->scheme);
+      $serialNumber = '';
       for ($i = 0; $i < $k; $i++) {
-         switch ($this->sheme[$i]) {
-            case 'X': $sernum .= $this->oneChar(false, true);
+         switch ($this->scheme[$i]) {
+            case 'X':
+               $serialNumber .= $this->oneChar(false, true);
                break;
-            case 'x': $sernum .= $this->oneChar();
+            case 'x':
+               $serialNumber .= $this->oneChar();
                break;
-            case '9': $sernum .= $this->oneChar(true);
+            case '9':
+               $serialNumber .= $this->oneChar(true);
                break;
-            case $this->delimiter: $sernum .= $this->delimiter;
+            case $this->delimiter:
+               $serialNumber .= $this->delimiter;
                break;
          }
       }
 
-      return $sernum;
+      return $serialNumber;
    }
 
    /**
@@ -238,13 +248,13 @@ class RandomStringManager extends APFObject {
 
    /**
     * @private
-    * 
+    *
     * Method returns one random char of all available chars.
-    * 
+    *
     * @param boolean $OnlyNumeric Option to return only numeric character
     * @param boolean $OnlyBigLetter Option to return only a big letter, otherwise small letters will be returned
     * @return char One random char from all available chars set by user
-    * 
+    *
     * @author dave
     * @version
     * Version 0.1, 15.10.2012<br />
@@ -271,5 +281,3 @@ class RandomStringManager extends APFObject {
    }
 
 }
-
-?>

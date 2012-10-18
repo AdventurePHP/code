@@ -30,7 +30,7 @@
  *   <li>The namespace of the dictionary files can be configured using the "dict_namespace" attribute.</li>
  *   <li>
  *     To be able to make those templates reusable in multiple environments the dictionary is
- *     located in the context subpath.
+ *     located in the context sub-path.
  *   <li>
  *   <li>The translation files contain only one language.</li>
  *   <li>The local translation file must be located in te same directory as the template itself.</li>
@@ -46,15 +46,15 @@ class lngtmpl_taglib_importdesign extends Document {
    /**
     * @public
     *
-    *  Reimplements the onParseTime() method. Loads the desired template and parses the language
-    *  marker. By default the tag searches for a file with name "<template>.<language>.xml". If
-    *  this file is not found, the "dictionary.xml" is loaded, that must be located in parallel to
-    *  the template file.
+    * Re-implements the onParseTime() method. Loads the desired template and parses the language
+    * marker. By default the tag searches for a file with name "<template>.<language>.xml". If
+    * this file is not found, the "dictionary.xml" is loaded, that must be located in parallel to
+    * the template file.
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 08.11.2008<br />
-    *  Version 0.2, 19.11.2008 (Added some enhancement)<br />
+    * Version 0.1, 08.11.2008<br />
+    * Version 0.2, 19.11.2008 (Added some enhancement)<br />
     */
    public function onParseTime() {
 
@@ -64,11 +64,6 @@ class lngtmpl_taglib_importdesign extends Document {
       $T->start($id);
 
       // check attributes
-      $lang = $this->getAttribute('lang');
-      if ($lang === null) {
-         $lang = $this->__Language;
-      }
-
       $namespace = $this->getAttribute('namespace');
       if ($namespace === null) {
          throw new InvalidArgumentException('[lngtmpl_taglib_importdesign::onParseTime()] No attribute "namespace" given!', E_USER_ERROR);
@@ -98,16 +93,15 @@ class lngtmpl_taglib_importdesign extends Document {
    /**
     * @protected
     *
-    *  Replaces the language keys surrounded by "{{{" and "}}}" by a given XML string containing
-    *  the translations.
+    * Replaces the language keys surrounded by "{{{" and "}}}" by a given XML string containing
+    * the translations.
     *
-    * @param string $content the content to be translated
-    * @param string $xml the xml containing the translations
-    * @return string $content the translated content
+    * @param string $namespace The namespace of the language file.
+    * @param string $template The name of the language template.
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 18.11.2008<br />
+    * Version 0.1, 18.11.2008<br />
     */
    protected function parseTranslations($namespace, $template) {
 
@@ -119,20 +113,20 @@ class lngtmpl_taglib_importdesign extends Document {
 
       // use local language file
       $this->parseLanguageFile($namespace, $template);
-
    }
 
    /**
     * @protected
     *
-    *  Parses a dedicated language file defined by it's namespace and language file name.
+    * Parses a dedicated language file defined by it's namespace and language file name.
     *
     * @param string $namespace the namespace of the language file
     * @param string $filename the name of the language file
+    * @throws InvalidArgumentException In case the translation file cannot be found.
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 19.11.2008<br />
+    * Version 0.1, 19.11.2008<br />
     */
    protected function parseLanguageFile($namespace, $filename) {
 
