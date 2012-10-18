@@ -126,7 +126,7 @@
                     case 'textarea':
                     case 'input':
                         /*delete [] from Name, if control is select, so we find the valmarkerclass*/
-                        var controlName = $(this).attr('name')
+                        var controlName = $(this).attr('name');
                         controlName = (controlName.substr(-2, 2) === "[]") ? controlName.substring(0, controlName.length - 2) : controlName;
                         /*add valmarkerclass*/
                         var valmarker = (typeof(jQuery.APFFormValidator.Valmarkerclasses[controlName]) === 'undefined') ? 'apf-form-error' : jQuery.APFFormValidator.Valmarkerclasses[controlName];
@@ -153,7 +153,7 @@
                     case 'textarea':
                     case 'input':
                         /*delete [] from Name, if control is select, so we find the valmarkerclass*/
-                        var controlName = $(this).attr('name')
+                        var controlName = $(this).attr('name');
                         controlName = (controlName.substr(-2, 2) === "[]") ? controlName.substring(0, controlName.length - 2) : controlName;
                         /*add valmarkerclass*/
                         var valmarker = (typeof(jQuery.APFFormValidator.Valmarkerclasses[controlName]) === 'undefined') ? 'apf-form-error' : jQuery.APFFormValidator.Valmarkerclasses[controlName];
