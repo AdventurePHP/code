@@ -46,17 +46,14 @@ final class PostHandler {
     * @author Ralf Schubert
     * @version
     * Version 0.1, 04.03.2011<br />
+    * Version 0.2, 19.10.2012 (Bug-fix: "0" values are now considered as an existing value)<br />
     */
-   static function getValue($name, $defaultValue = null) {
-
-      if (isset($_POST[$name]) && !empty($_POST[$name])) {
-         $value = $_POST[$name];
-      } else {
-         $value = $defaultValue;
-      }
-
-      return $value;
-
+   public static function getValue($name, $defaultValue = null) {
+      return isset($_POST[$name])
+            // avoid issues with "0" values being skipped due to empty() check
+            && (!empty($_POST[$name]) || (string)$_POST[$name] === '0')
+            ? $_POST[$name]
+            : $defaultValue;
    }
 
    /**
@@ -74,7 +71,7 @@ final class PostHandler {
     * @version
     * Version 0.1, 04.03.2011<br />
     */
-   static function getValues($namesWithDefaults) {
+   public static function getValues($namesWithDefaults) {
 
       // initialize values
       $values = array();

@@ -50,15 +50,14 @@ final class RequestHandler {
     * @version
     * Version 0.1, 13.12.2008<br />
     * Version 0.2, 10.08.2009 (Empty values are now treated as non existing values as well)<br />
+    * Version 0.3, 19.10.2012 (Bug-fix: "0" values are now considered as an existing value)<br />
     */
-   static function getValue($name, $defaultValue = null) {
-
-      if (isset($_REQUEST[$name]) && !empty($_REQUEST[$name])) {
-         $value = $_REQUEST[$name];
-      } else {
-         $value = $defaultValue;
-      }
-      return $value;
+   public static function getValue($name, $defaultValue = null) {
+      return isset($_REQUEST[$name])
+            // avoid issues with "0" values being skipped due to empty() check
+            && (!empty($_REQUEST[$name]) || (string)$_REQUEST[$name] === '0')
+            ? $_REQUEST[$name]
+            : $defaultValue;
    }
 
    /**
@@ -76,7 +75,7 @@ final class RequestHandler {
     * @version
     * Version 0.1, 13.12.2008<br />
     */
-   static function getValues($namesWithDefaults) {
+   public static function getValues($namesWithDefaults) {
 
       $values = array();
 
