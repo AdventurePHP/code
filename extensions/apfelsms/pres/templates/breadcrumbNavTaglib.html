@@ -1,0 +1,9 @@
+<@controller namespace="extensions::apfelsms::pres::documentcontroller" class="SMSBreadcrumbNavTaglibController" @>
+<html:template name="breadcrumbNavigationContainer">
+   <div class="breadcrumbNav">
+      <template:placeholder name="breadcrumbs" />
+   </div>
+</html:template>
+<html:template name="breadcrumb">
+   <a href="<template:placeholder name="linkURL" />" title="<template:placeholder name="linkTitle" />" class="breadcrumb<template:placeholder name="linkClasses" />" ><template:placeholder name="linkText" /></a>
+</html:template>

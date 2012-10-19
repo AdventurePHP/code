@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE apfelsms SYSTEM "apfelsms.dtd">
+<apfelsms>
+   
+   
+   <!-- Main navigation and page tree -->
+   <page id="index">
+      <title>Herzlich Willkommen!</title>
+      <navTitle>Home</navTitle>
+   </page>
+   <page id="news">
+      <title>Aktuelles</title>
+      <page id="news-archive">
+         <title>News-Archiv</title>
+         <pageDec type="alias"><referencedPageId>news</referencedPageId></pageDec>
+         <pageDec type="request"><requestParam key="archive">show</requestParam></pageDec>
+      </page>
+   </page>
+   <page id="about">
+      <title>Über uns</title>
+   </page>
+   <page id="contact">
+      <title>Kontakt</title>
+   </page>
+   <page id="impress">
+      <title>Impressum &amp; Disclaimer</title>
+      <navTitle>Impressum</navTitle>
+   </page>
+   
+   
+   <!-- Pages which does not occur in the navigation -->
+   <page id="error404">
+      <title>404 - Nicht gefunden!</title>
+      <pageDec type="hidden" />
+   </page>
+   <page id="error403">
+      <title>403 - Kein Zugriff!</title>
+      <pageDec type="hidden" />
+   </page>
+   
+   
+   <!-- Additional navigation tree -->
+   <page id="footer-nav">
+      <pageDec type="hidden" />
+      
+      <page id="footer-index">
+         <pageDec type="redirect">
+            <referencedPageId>index</referencedPageId>
+         </pageDec>
+      </page>
+      <page id="footer-contact">
+         <pageDec type="redirect">
+            <referencedPageId>contact</referencedPageId>
+         </pageDec>
+      </page>
+      <page id="footer-impress">
+         <pageDec type="redirect">
+            <referencedPageId>impress</referencedPageId>
+         </pageDec>
+      </page>
+   </page>
+   
+   <page id="mb">
+      <pageDec type="hidden" />
+      <pageDec type="externalURL"><externalURL>http://www.musiker-board.de</externalURL></pageDec>
+   </page>
+   
+</apfelsms>
