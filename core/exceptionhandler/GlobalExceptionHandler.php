@@ -295,7 +295,7 @@ abstract class GlobalExceptionHandler {
 
       // ensure that an error handler is set
       if (self::$HANDLER === null) {
-         self::$HANDLER = new DefaultErrorHandler();
+         self::$HANDLER = new DefaultExceptionHandler();
       }
 
       // (re-)register the APF exception handler
