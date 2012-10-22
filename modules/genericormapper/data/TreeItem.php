@@ -52,7 +52,7 @@ class TreeItem extends GenericDomainObject {
     * Version 0.1, 23.03.2012
     */
    public function setParentItem(TreeItem $parentItem) {
-      $this->parentObject = $parentItem;
+      $this->parentItem = $parentItem;
    }
 
    /**
