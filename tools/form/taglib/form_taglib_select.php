@@ -266,7 +266,7 @@ class form_taglib_select extends form_control {
          }
       }
 
-      // unselect all other option to do not have interference with the currently selected option!
+      // un-select all other option to do not have interference with the currently selected option!
       // this is only necessary within the simple select field - not multi select.
       if (get_class($this) == 'form_taglib_select' && $selectedObjectId !== null) {
          foreach ($this->__Children as $objectId => $DUMMY) {
@@ -305,12 +305,7 @@ class form_taglib_select extends form_control {
       $select = (string)'';
       $select .= '<select ' . $this->getSanitizedAttributesAsString($this->__Attributes) . '>';
 
-      foreach ($this->__Children as $objectId => $DUMMY) {
-         $this->__Content = str_replace('<' . $objectId . ' />',
-            $this->__Children[$objectId]->transform(),
-            $this->__Content
-         );
-      }
+      $this->transformChildren();
 
       return $select . $this->__Content . '</select>';
    }
@@ -433,9 +428,9 @@ class form_taglib_select extends form_control {
     * Version 0.2, 29.05.2012 (Bugfix: isSelected was always true)<br />
     */
    public function isSelected() {
-      if($this->getSelectedOption()->getValue() == null) {
+      if ($this->getSelectedOption()->getValue() == null) {
          return false;
-      }else{
+      } else {
          return true;
       }
    }

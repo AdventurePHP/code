@@ -1649,6 +1649,91 @@ class Document extends APFObject {
       return $content;
    }
 
+   /**
+    * @protected
+    *
+    * Convenience method to transform the current node's children within the current node's content
+    * buffer (<em>$this->__Content</em>).
+    * <p/>
+    * In case you intend to preserve the current node's content you may want to use the
+    * <em>transformChildrenAndPreserveContent()</em> method.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.10.2012<br />
+    */
+   protected function transformChildren() {
+      foreach ($this->__Children as $objectId => $DUMMY) {
+         $this->__Content = str_replace(
+            '<' . $objectId . ' />', $this->__Children[$objectId]->transform(), $this->__Content
+         );
+      }
+   }
+
+   /**
+    * @protected
+    *
+    * Convenience method to transform the current node's children and return the result of the
+    * transformation. Preserves the current node's internal content buffer (<em>$this->__Content</em>)
+    * to allow further transformations.
+    *
+    * @return string The current node's transformed content.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.10.2012<br />
+    */
+   protected function transformChildrenAndPreserveContent() {
+      $content = $this->getContent();
+      foreach ($this->__Children as $objectId => $DUMMY) {
+         $content = str_replace(
+            '<' . $objectId . ' />', $this->__Children[$objectId]->transform(), $content
+         );
+      }
+      return $content;
+   }
+
+   /**
+    * @protected
+    *
+    * Convenience method to remove the child tag marker within the current node's content
+    * buffer (<em>$this->__Content</em>). Can be used in case the child nodes should be
+    * removed from the output.
+    * <p/>
+    * In case you intend to preserve the current node's content you may want to use the
+    * <em>transformChildrenAsEmptyAndPreserveContent()</em> method.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.10.2012<br />
+    */
+   protected function transformChildrenAsEmpty() {
+      foreach ($this->__Children as $objectId => $DUMMY) {
+         $this->__Content = str_replace('<' . $objectId . ' />', '', $this->__Content);
+      }
+   }
+
+   /**
+    * @protected
+    *
+    * Convenience method to transform the remove the child tag marker and return the result of the
+    * transformation. Preserves the current node's internal content buffer (<em>$this->__Content</em>)
+    * to allow further transformations.
+    *
+    * @return string
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.10.2012<br />
+    */
+   protected function transformChildrenAsEmptyAndPreserveContent() {
+      $content = $this->getContent();
+      foreach ($this->__Children as $objectId => $DUMMY) {
+         $content = str_replace('<' . $objectId . ' />', '', $content);
+      }
+      return $content;
+   }
+
 }
 
 /**
@@ -2164,18 +2249,7 @@ class html_taglib_template extends Document {
     * Version 0.4, 05.01.2007 (Added the template:addtaglib tag)<br />
     */
    public function transformTemplate() {
-
-      // create copy of the tag's content
-      $content = $this->__Content;
-
-      // transform children
-      if (count($this->__Children) > 0) {
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            $content = str_replace('<' . $objectId . ' />', $this->__Children[$objectId]->transform(), $content);
-         }
-      }
-
-      return $content;
+      return $this->transformChildrenAndPreserveContent();
    }
 
    /**

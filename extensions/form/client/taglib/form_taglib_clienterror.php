@@ -75,11 +75,7 @@ class form_taglib_clienterror extends form_control {
     *  Version 1.0, 18.03.2010<br />
     */
    public function transform() {
-      foreach ($this->__Children as $objectId => $DUMMY) {
-         $this->__Content = str_replace(
-            '<' . $objectId . ' />', $this->__Children[$objectId]->transform(), $this->__Content
-         );
-      }
+      $this->transformChildren();
 
       $formID = $this->__ParentObject->getAttribute('id');
       $output = '<div id="apf-error-' . $formID . '" class="apf-form-clienterror">' . $this->__Content . '</div>';

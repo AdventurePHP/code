@@ -66,27 +66,26 @@ class form_taglib_clientlistener extends form_control {
    }
 
    /**
-    * Transforms the tags and javascripts for clientlisteners.
+    * Transforms the tags and java scripts for client-listeners.
     *
     * @return string The generated html and js.
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    public function transform() {
       $controlName = $this->__Attributes['control'];
-      $control = $this->__ParentObject->getFormElementByName($controlName);
-      foreach ($this->__Children as $objectId => $DUMMY) {
-         $this->__Content = str_replace(
-            '<' . $objectId . ' />', $this->__Children[$objectId]->transform(), $this->__Content
-         );
-      }
+
+      /* @var $parent html_taglib_form */
+      $parent = $this->__ParentObject;
+      $control = $parent->getFormElementByName($controlName);
+
+      $this->transformChildren();
 
       $output = '<div id="apf-listener-' . $controlName . '" class="apf-form-clientlistener">' . $this->__Content . '</div>';
 
       // Check type of control, and generate jQuery selector
-      $jQSelector = '';
       switch (get_class($control)) {
          case 'form_taglib_select':
             $jQSelector = ':input[name=\'' . $controlName . '\[\]\']';
@@ -109,7 +108,7 @@ class form_taglib_clientlistener extends form_control {
          unset($anOpt);
       }
 
-      $formID = $this->__ParentObject->getAttribute('id');
+      $formID = $parent->getAttribute('id');
       $output .= '<script type="text/javascript">' .
             '$(document).ready(function(){' .
             '$("#' . $formID . ' ' . $jQSelector . '").bind(' .

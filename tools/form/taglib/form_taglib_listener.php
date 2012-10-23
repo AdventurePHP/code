@@ -111,11 +111,7 @@ class form_taglib_listener extends form_control {
     */
    public function transform() {
       if ($this->__IsNotified === true) {
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            $this->__Content = str_replace(
-               '<' . $objectId . ' />', $this->__Children[$objectId]->transform(), $this->__Content
-            );
-         }
+         $this->transformChildren();
          return $this->__Content;
       }
       return '';

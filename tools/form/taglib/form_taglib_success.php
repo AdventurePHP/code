@@ -87,11 +87,7 @@ class form_taglib_success extends form_control {
     */
    public function transform() {
       if ($this->getParentObject()->isSent() && $this->getParentObject()->isValid()) {
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            $this->__Content = str_replace(
-               '<' . $objectId . ' />', $this->__Children[$objectId]->transform(), $this->__Content
-            );
-         }
+         $this->transformChildren();
          return $this->__Content;
       }
       return '';
