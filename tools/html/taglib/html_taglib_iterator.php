@@ -239,7 +239,7 @@ class html_taglib_iterator extends Document {
                }
 
                // evaluate per-place-holder getter
-               $localGetter = $placeHolders[$objectId]->getGetterMethod();
+               $localGetter = $placeHolders[$objectId]->getAttribute('getter');
                if ($localGetter == null) {
                   $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
                      $getter
