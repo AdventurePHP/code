@@ -407,15 +407,15 @@ final class XmlParser {
     *
     * Generates a unique id, that is used as the object id for the APF DOM tree.
     *
-    * @param boolean $md5 Indicates whether to use an md5 hash (true) or not (false).
     * @return string The unique id used as GUID for the APF DOM tree.
     *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 22.12.2006<br />
+    * Version 0.2, 25.10.2012 (Removed md5 choosing parameter to gain performance)<br />
     */
-   public static function generateUniqID($md5 = true) {
-      return $md5 == true ? md5(uniqid(rand(), true)) : uniqid(rand(), true);
+   public static function generateUniqID() {
+      return md5(uniqid(rand(), true));
    }
 
 }
@@ -1022,7 +1022,7 @@ class Document extends APFObject {
 
    /**
     * @protected
-    * @var APFObject[] List of the children of the current object.
+    * @var Document[] List of the children of the current object.
     */
    protected $__Children = array();
 
@@ -1827,7 +1827,7 @@ class core_taglib_appendnode extends Document {
       // get parent children list
       $parentChildren = &$this->__ParentObject->getChildren();
       $parentContent = $this->__ParentObject->getContent();
-      $currentObjectId = $this->__ObjectID;
+      $currentObjectId = $this->getObjectId();
 
       // include static content, if desired.
       // code duplication is done to speed up the DOM node relocation!
