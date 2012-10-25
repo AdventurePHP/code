@@ -65,10 +65,10 @@ class umgt_userrem_controller extends umgt_base_controller {
 
          $users = array();
          for ($i = 0; $i < count($options); $i++) {
-            $userControl = new UmgtUser();
-            $userControl->setObjectId($options[$i]->getAttribute('value'));
-            $users[] = $userControl;
-            unset($userControl);
+            $user = new UmgtUser();
+            $user->setObjectId($options[$i]->getAttribute('value'));
+            $users[] = $user;
+            unset($user);
          }
 
          $group = new UmgtGroup();
