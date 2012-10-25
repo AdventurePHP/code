@@ -24,12 +24,12 @@ import('extensions::htmlheader::biz::filter', 'JsCssInclusionFilterChain');
  * @package extensions::htmlheader::biz
  * @class JsCssPackager
  *
- *  A packager which can deliver multiple css and js files to client.
- *  Caching and shrinking is supported, but must be configured.
+ * A packager which can deliver multiple css and js files to client.
+ * Caching and shrinking is supported, but must be configured.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
  * @version
- *  Version 1.0, 18.03.2010<br />
+ * Version 1.0, 18.03.2010<br />
  */
 class JsCssPackager extends APFObject {
 
@@ -43,8 +43,9 @@ class JsCssPackager extends APFObject {
    /**
     * Loads the content of all files, included in the package with the given name.
     *
-    * @param String $name The package name.
-    * @param Bool $gzip Return package compressed with gzip
+    * @param string $name The package name.
+    * @param bool $gzip Return package compressed with gzip.
+    * @throws InvalidArgumentException In case the package configuration section does not exist.
     *
     * @return String The complete package.
     *
@@ -64,10 +65,11 @@ class JsCssPackager extends APFObject {
          $ServerCacheMinutes = 0;
       }
 
-      /* If ServerCacheMinutes is not 0, we use a filecache */
+      /* If ServerCacheMinutes is not 0, we use a file cache */
       if ((int)$ServerCacheMinutes !== 0) {
-         $cMF = &$this->getServiceObject('tools::cache', 'CacheManagerFabric');
-         $cM = &$cMF->getCacheManager('jscsspackager_cache');
+         /* @var $cMF CacheManagerFabric */
+         $cMF = & $this->getServiceObject('tools::cache', 'CacheManagerFabric');
+         $cM = & $cMF->getCacheManager('jscsspackager_cache');
 
          $cacheKey = $name;
          if ($gzip === true) {
@@ -103,10 +105,12 @@ class JsCssPackager extends APFObject {
    }
 
    /**
+    * @protected
+    *
     * Generates a package from it's single files.
     * Will Shrink output, if enabled.
     *
-    * @param array $cfgPack The package configuration
+    * @param Configuration $cfgPack The package configuration
     * @param string $name The package name
     * @return string All files put together to one string.
     *
@@ -156,20 +160,24 @@ class JsCssPackager extends APFObject {
       $this->initFilterChain($type);
       $filteredContent = JsCssInclusionFilterChain::getInstance()->filter(file_get_contents($filePath));
 
-      $config = $this->getConfiguration('extensions::htmlheader::biz', 'JsCssInclusion.ini');
+      try {
+         $config = $this->getConfiguration('extensions::htmlheader::biz', 'JsCssInclusion.ini');
 
-      $sectionGeneral = $config->getSection('General');
-      if ($sectionGeneral !== null) {
-         if ($sectionGeneral->getValue('EnableShrinking') === 'true') {
-            switch ($type) {
-               case 'js':
-                  $filteredContent = $this->shrinkJs($filteredContent);
-                  break;
-               case 'css':
-                  $filteredContent = $this->shrinkCSS($filteredContent);
-                  break;
+         $sectionGeneral = $config->getSection('General');
+         if ($sectionGeneral !== null) {
+            if ($sectionGeneral->getValue('EnableShrinking') === 'true') {
+               switch ($type) {
+                  case 'js':
+                     $filteredContent = $this->shrinkJs($filteredContent);
+                     break;
+                  case 'css':
+                     $filteredContent = $this->shrinkCSS($filteredContent);
+                     break;
+               }
             }
          }
+      } catch (ConfigurationException $e) {
+         // do nothing but go on without shrinking
       }
 
       return $gzip ? gzencode($filteredContent, 9) : $filteredContent;
@@ -239,6 +247,7 @@ class JsCssPackager extends APFObject {
     * @param string $ext The extension of the file.
     * @param string $packageName The name of the package, which contains the file.
     * @return string The content of the file.
+    * @throws IncludeException In case the file identified by the applied params cannot be found.
     *
     * @author Ralf Schubert
     * @version
@@ -258,7 +267,7 @@ class JsCssPackager extends APFObject {
    }
 
    /**
-    * @param $fileType The current file extension (js or css).
+    * @param string $fileType The current file extension (js or css).
     */
    protected function initFilterChain($fileType) {
 
@@ -285,5 +294,3 @@ class JsCssPackager extends APFObject {
    }
 
 }
-
-?>

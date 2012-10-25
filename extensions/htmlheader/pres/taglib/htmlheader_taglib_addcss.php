@@ -62,6 +62,8 @@ class htmlheader_taglib_addcss extends Document {
    }
 
    public function transform() {
+
+      /* @var $header HtmlHeaderManager */
       $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
 
       $url = $this->getAttribute('url');

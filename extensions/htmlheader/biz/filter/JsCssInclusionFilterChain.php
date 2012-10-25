@@ -22,7 +22,7 @@
 
 /**
  * This FilterChain allows it to use special output filters for js and css
- * files. The files will be parsed from every applied filter before delivering 
+ * files. The files will be parsed from every applied filter before delivering
  * to the user.
  *
  * @author Ralf Schubert <<a href="http://develovision.de">Develovision Webentwicklung</a>>
@@ -30,25 +30,23 @@
  */
 class JsCssInclusionFilterChain extends AbstractFilterChain {
 
-    /**
-     * @var JsCssInclusionFilterChain
-     */
-    private static $CHAIN;
+   /**
+    * @var JsCssInclusionFilterChain
+    */
+   private static $CHAIN;
 
-    private function __construct() {
-        
-    }
+   private function __construct() {
 
-    /**
-     * @return JsCssInclusionFilterChain The instance of the current jscssinclusion filter chain.
-     */
-    public static function &getInstance() {
-        if (self::$CHAIN === null) {
-            self::$CHAIN = new JsCssInclusionFilterChain();
-        }
-        return self::$CHAIN;
-    }
+   }
+
+   /**
+    * @return JsCssInclusionFilterChain The instance of the current jscssinclusion filter chain.
+    */
+   public static function &getInstance() {
+      if (self::$CHAIN === null) {
+         self::$CHAIN = new JsCssInclusionFilterChain();
+      }
+      return self::$CHAIN;
+   }
 
 }
-
-?>

@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 import('extensions::htmlheader::biz', 'HtmlNode');
 import('extensions::htmlheader::biz', 'JsNode');
 
@@ -40,7 +39,7 @@ class DynamicJsNode extends HtmlNode implements JsNode {
     * @param string $url Optional url.
     * @param string $namespace Namespace of file
     * @param string $filename Name of file (without .js)
-    * @param bool $urlRewriting Optional. Create rewriting Url.
+    * @param bool $rewriting Optional. Create rewriting Url.
     * @param bool $fcaction Optional. Create link for FC-Action.
     */
    public function __construct($url, $namespace, $filename, $rewriting = null, $fcaction = null) {
@@ -65,5 +64,3 @@ class DynamicJsNode extends HtmlNode implements JsNode {
    }
 
 }
-
-?>

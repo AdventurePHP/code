@@ -106,7 +106,7 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
    }
 
    /**
-    * @return The name of the current html tag.
+    * @return string The name of the current html tag.
     */
    protected abstract function getTagName();
 
@@ -143,5 +143,3 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
    }
 
 }
-
-?>

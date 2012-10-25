@@ -31,7 +31,7 @@
  * <ul>
  * <li>BaseNode: BaseUrlNode</li>
  * <li>MetaNode: SimpleMetaNode, HttpMetaNode, RefreshNode</li>
- * <li>CssNode: StaticCsdsNode, CssContentNode, CssPackageNode, ConditionalDynamicCssNode, ConditionalStaticCssNode</li>
+ * <li>CssNode: StaticCssNode, CssContentNode, CssPackageNode, ConditionalDynamicCssNode, ConditionalStaticCssNode</li>
  * <li>JsNode: DynamicJsNode, JsContentNode, JsPackageNode, StaticJsNode</li>
  * <li>TitleNode: SimpleTitleNode</li>
  * </ul>
@@ -91,7 +91,7 @@ interface HeaderNode {
    /**
     * Defines if the tag should be placed in gethead- or getjsbody taglib.
     *
-    * @return Returns true if it should be append to body.
+    * @return bool Returns true if it should be append to body.
     *
     * @author Ralf Schubert
     * @version
@@ -99,5 +99,3 @@ interface HeaderNode {
     */
    public function getAppendToBody();
 }
-
-?>

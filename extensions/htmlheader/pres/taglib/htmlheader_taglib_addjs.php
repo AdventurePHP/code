@@ -61,6 +61,8 @@ import('extensions::htmlheader::biz', 'DynamicJsNode');
 class htmlheader_taglib_addjs extends Document {
 
    public function transform() {
+
+      /* @var $header HtmlHeaderManager */
       $header = $this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
 
       $url = $this->getAttribute('url');

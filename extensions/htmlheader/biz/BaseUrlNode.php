@@ -47,5 +47,3 @@ class BaseUrlNode extends HtmlNode implements BaseNode {
    }
 
 }
-
-?>

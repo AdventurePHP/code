@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -180,5 +179,3 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
    }
 
 }
-
-?>

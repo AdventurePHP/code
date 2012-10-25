@@ -37,8 +37,8 @@ class RefreshNode extends HtmlNode implements MetaNode {
 
    /**
     * Receives information and configures node.
-    * @param string $namespace Namespace of stylesheet
-    * @param string $filename Name of stylesheet (without .css)
+    * @param string $target The refresh target.
+    * @param string $time The time to wait until to reload the page.
     * @param array $additionalParameters Optional. Array of url parameters.
     */
    public function __construct($target, $time, array $additionalParameters = array()) {
@@ -56,5 +56,3 @@ class RefreshNode extends HtmlNode implements MetaNode {
    }
 
 }
-
-?>

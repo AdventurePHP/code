@@ -48,5 +48,3 @@ class CssImageNode extends HtmlNode implements CssNode {
    }
 
 }
-
-?>

@@ -31,5 +31,3 @@
  */
 interface JsNode extends HeaderNode {
 }
-
-?>

@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 import('extensions::htmlheader::biz', 'HeaderNode');
 
 /**
@@ -33,5 +32,3 @@ import('extensions::htmlheader::biz', 'HeaderNode');
  */
 interface BaseNode extends HeaderNode {
 }
-
-?>

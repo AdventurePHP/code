@@ -54,8 +54,7 @@ class HtmlHeaderManager extends APFObject {
     * Compares already saved nodes with new node, in order to find duplicates.
     * Returns true if duplicate was found.
     *
-    * @param object $node New node
-    * @param array $objects Array with saved nodes
+    * @param HeaderNode $node New node
     * @return bool Returns true if duplicate was found.
     */
    protected function isUnique(HeaderNode $node) {
@@ -86,7 +85,7 @@ class HtmlHeaderManager extends APFObject {
    }
 
    /**
-    * @return TitleNode The title or null.
+    * @return HtmlNode The title or null.
     */
    public function getTitle() {
       $titles = $this->getNodesByType('TitleNode');
@@ -145,5 +144,3 @@ class HtmlHeaderManager extends APFObject {
    }
 
 }
-
-?>

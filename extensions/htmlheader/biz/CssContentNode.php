@@ -47,5 +47,3 @@ class CssContentNode extends HtmlNode implements CssNode {
    }
 
 }
-
-?>

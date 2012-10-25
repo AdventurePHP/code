@@ -89,8 +89,8 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
          $outputHead .= $stylesheet->transform() . PHP_EOL;
       }
 
-      $javascripts = $this->sortNodes($iM->getJavascriptNodes());
-      foreach ($javascripts as $script) {
+      $javaScripts = $this->sortNodes($iM->getJavascriptNodes());
+      foreach ($javaScripts as $script) {
          if ($script->getAppendToBody()) {
             $outputBody .= $script->transform() . PHP_EOL;
          } else {
@@ -107,7 +107,7 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
     * Sorts the list of header nodes concerning their priority.
     *
     * @param HeaderNode[] $nodes The header nodes to sort.
-    * @return HeaderNode[] The sorted header nodes.
+    * @return HtmlNode[] The sorted header nodes.
     *
     * @author Christian Achatz
     * @version
