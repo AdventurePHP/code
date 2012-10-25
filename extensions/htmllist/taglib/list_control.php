@@ -168,21 +168,24 @@ abstract class AbstractTaglibList extends list_control {
 
    /**
     * Adds a list element.
-    * @param string $sContent
-    * @param string $sClass
+    * @param string $content The content of the element.
+    * @param string $cssClass The name of the implementation class.
+    * @param string $elementName The name of the tag (e.g. "elem_list" for list_taglib_elem_list class).
     */
-   protected function __addElement($sContent, $sClass, $sElement) {
-      $objectId = XmlParser::generateUniqID();
-      $sClassname = 'list_taglib_' . $sElement;
-      $this->__Children[$objectId] = new $sClassname;
+   protected function __addElement($content, $cssClass, $elementName) {
 
+      $objectId = XmlParser::generateUniqID();
+
+      $fullClassName = 'list_taglib_' . $elementName;
+
+      $this->__Children[$objectId] = new $fullClassName();
       $this->__Children[$objectId]->setObjectId($objectId);
-      $this->__Children[$objectId]->setContent($sContent);
+      $this->__Children[$objectId]->setContent($content);
       $this->__Children[$objectId]->setLanguage($this->__Language);
       $this->__Children[$objectId]->setContext($this->__Context);
 
-      if (!empty($sClass)) {
-         $this->__Children[$objectId]->setAttribute('class', $sClass);
+      if (!empty($cssClass)) {
+         $this->__Children[$objectId]->setAttribute('class', $cssClass);
       }
 
       $this->__Children[$objectId]->onParseTime();
