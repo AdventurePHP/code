@@ -23,7 +23,7 @@
  * @package extensions::forwardmessage::pres::taglib
  * @class html_taglib_getforwardmessages
  *
- * @param string $groups String of groups that should be displayed. Seperated by "," (e.g "message,error")
+ * @param string $groups String of groups that should be displayed. Separated by "," (e.g "message,error")
  * @param string $delimiter
  * @return string Returns the added flash messages.
  *
