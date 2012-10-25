@@ -73,13 +73,13 @@ final class ArrayPagerManager extends APFObject {
    /**
     * @protected
     *
-    *  Returns the mapper.
+    * Returns the mapper.
     *
-    * @return boolean True if pager exists, otherwise false
+    * @return ArrayPagerMapper The pager mapper.
     *
     * @author Lutz Mahlstedt
     * @version
-    *  Version 0.1, 21.12.2009<br />
+    * Version 0.1, 21.12.2009<br />
     */
    protected function &getDataMapper() {
       return $this->getServiceObject('extensions::arraypager::data', 'ArrayPagerMapper');
@@ -91,7 +91,8 @@ final class ArrayPagerManager extends APFObject {
     * @param string $stringPager name of the pager
     * @param integer $integerPage optional parameter for current page
     * @param integer $integerEntries optional parameter for entries per page
-    * @return mixed[] List of entrys for the current page
+    * @return mixed[] List of entries for the current page
+    * @throws Exception In case no pager configuration can be found.
     *
     * @author Lutz Mahlstedt
     * @version
@@ -146,6 +147,7 @@ final class ArrayPagerManager extends APFObject {
     *
     * @param string $stringPager name of the pager
     * @return string The HTML representation of the pager
+    * @throws Exception In case no pager configuration can be found.
     *
     * @author Lutz Mahlstedt
     * @version
@@ -244,7 +246,7 @@ final class ArrayPagerManager extends APFObject {
     *
     * @param string $stringPager name of the pager
     * @param array $arrayData the data-list
-    * @return string[] Url params of the pager.
+    * @throws Exception In case the pager cannot be registered.
     *
     * @author Lutz Mahlstedt
     * @version
@@ -269,8 +271,6 @@ final class ArrayPagerManager extends APFObject {
     * @public
     *
     * @param string $stringPager name of the pager
-    * @param array $arrayData the data-list
-    * @return string[] Url params of the pager.
     *
     * @author Lutz Mahlstedt
     * @version
@@ -330,5 +330,3 @@ final class ArrayPagerManager extends APFObject {
    }
 
 }
-
-?>

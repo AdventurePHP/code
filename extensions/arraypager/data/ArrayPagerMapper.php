@@ -1,21 +1,17 @@
 <?php
-import('core::session',
-   'SessionManager'
-);
+import('core::session', 'SessionManager');
 
 /**
  * @package extensions::arraypager::data
  * @class ArrayPagerMapper
  *
- *  Represents the data layer of the array-pager.
+ * Represents the data layer of the array-pager.
  *
  * @author Lutz Mahlstedt
  * @version
- *  Version 0.1, 21.12.2009<br />
+ * Version 0.1, 21.12.2009<br />
  */
 final class ArrayPagerMapper extends APFObject {
-   public function ArrayPagerMapper() {
-   }
 
    /**
     * @protected
@@ -75,7 +71,7 @@ final class ArrayPagerMapper extends APFObject {
     * @public
     *
     * @param string $stringPager name of the pager
-    * @return array $arrayEntries a list of entries
+    * @param array $arrayData a list of entries
     *
     * @author Lutz Mahlstedt
     * @version
@@ -84,7 +80,7 @@ final class ArrayPagerMapper extends APFObject {
    public function registerEntries($stringPager,
                                    $arrayData
    ) {
-      $objectSession = new SessionManager ('extensions::arraypager::biz');
+      $objectSession = new SessionManager('extensions::arraypager::biz');
       $stringSessionKey = $this->getSessionKey($stringPager);
       $objectSession->saveSessionData($stringSessionKey,
          $arrayData
@@ -130,5 +126,3 @@ final class ArrayPagerMapper extends APFObject {
       return $booleanExists;
    }
 }
-
-?>

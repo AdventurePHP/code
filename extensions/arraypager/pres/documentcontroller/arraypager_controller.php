@@ -52,10 +52,10 @@ class arraypager_controller extends base_controller {
       if ($this->__Attributes['DataCount'] == 0) {
          // Content des aktuellen Designs leeren
          $this->__Content = '';
-
-         return '';
+         return;
       }
 
+      /* @var $objectBenchmark BenchmarkTimer */
       $objectBenchmark = Singleton::getInstance('BenchmarkTimer');
       $objectBenchmark->start('ArrayPager');
 
@@ -245,5 +245,3 @@ class arraypager_controller extends base_controller {
    }
 
 }
-
-?>
