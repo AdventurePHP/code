@@ -45,7 +45,7 @@ class fcon_taglib_importdesign extends core_taglib_importdesign {
 
       /* @var $t BenchmarkTimer */
       $t = &Singleton::getInstance('BenchmarkTimer');
-      $t->start('(fcon_taglib_importdesign) ' . $this->__ObjectID . '::onParseTime()');
+      $t->start('(fcon_taglib_importdesign) ' . $this->getObjectId() . '::onParseTime()');
 
       if (!isset($this->__Attributes['templatenamespace'])) {
          throw new InvalidArgumentException('[fcon_taglib_importdesign::onParseTime()] Attribute "templatenamespace" is not given!');
@@ -96,7 +96,7 @@ class fcon_taglib_importdesign extends core_taglib_importdesign {
 
       $this->__extractTagLibTags();
 
-      $t->stop('(fcon_taglib_importdesign) ' . $this->__ObjectID . '::onParseTime()');
+      $t->stop('(fcon_taglib_importdesign) ' . $this->getObjectId() . '::onParseTime()');
 
    }
 

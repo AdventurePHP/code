@@ -264,7 +264,7 @@ class html_taglib_iterator extends Document {
 
       }
 
-      $t->stop('(html_taglib_iterator) ' . $this->__ObjectID . '::transformIterator()');
+      $t->stop('(html_taglib_iterator) ' . $this->getObjectId() . '::transformIterator()');
 
       // add the surrounding content of the iterator to enable the
       // user to define some html code as well.

@@ -60,7 +60,7 @@ class lngtmpl_taglib_importdesign extends Document {
 
       /* @var $T BenchmarkTimer */
       $T = &Singleton::getInstance('BenchmarkTimer');
-      $id = '(lngtmpl_taglib_importdesign) ' . $this->__ObjectID . '::onParseTime()';
+      $id = '(lngtmpl_taglib_importdesign) ' . $this->getObjectId() . '::onParseTime()';
       $T->start($id);
 
       // check attributes

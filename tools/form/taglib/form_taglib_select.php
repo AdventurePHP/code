@@ -344,7 +344,7 @@ class form_taglib_select extends form_control {
     * Returns the value of the present form control from the request.
     * Enables sub-elements of form controls (date control!).
     *
-    * @return string The form control's value in request or null in case the form is not sent.
+    * @return string The form control value in request or null in case the form is not sent.
     *
     * @author Christian Achatz
     * @version
@@ -425,7 +425,7 @@ class form_taglib_select extends form_control {
     * @author dave
     * @version
     * Version 0.1, 22.09.2011<br />
-    * Version 0.2, 29.05.2012 (Bugfix: isSelected was always true)<br />
+    * Version 0.2, 29.05.2012 (Bug-fix: isSelected was always true)<br />
     */
    public function isSelected() {
       if ($this->getSelectedOption()->getValue() == null) {

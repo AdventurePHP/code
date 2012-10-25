@@ -687,7 +687,7 @@ class html_taglib_form extends form_control {
 
       $t = &Singleton::getInstance('BenchmarkTimer');
       /* @var $t BenchmarkTimer */
-      $id = '(html_taglib_form) ' . $this->__ObjectID . '::transformForm()';
+      $id = '(html_taglib_form) ' . $this->getObjectId() . '::transformForm()';
       $t->start($id);
 
       // add action attribute if not set
