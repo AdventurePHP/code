@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 import('extensions::htmllist::taglib', 'list_control');
 
 /**
@@ -37,5 +36,3 @@ class list_taglib_elem_list extends list_control {
    }
 
 }
-
-?>

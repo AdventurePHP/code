@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 import('extensions::htmllist::taglib', 'list_taglib_elem_defterm');
 import('extensions::htmllist::taglib', 'list_taglib_elem_defdef');
 
@@ -39,13 +38,13 @@ class list_taglib_definition extends AbstractTaglibList {
    }
 
    /**
-    * Adds a defintion term element
+    * Adds a definition term element.
     * @param string $sContent
     * @param string $sClass
     * @return string
     */
    public function addDefinitionTerm($sContent, $sClass = '') {
-      return $this->__addElement($sContent, $sClass, 'elem_defterm');
+      $this->__addElement($sContent, $sClass, 'elem_defterm');
    }
 
    /**
@@ -56,7 +55,7 @@ class list_taglib_definition extends AbstractTaglibList {
     * @return string
     */
    public function addDefinition($sContent, $sClass = '') {
-      return $this->__addElement($sContent, $sClass, 'elem_defdef');
+      $this->__addElement($sContent, $sClass, 'elem_defdef');
    }
 
    protected function __getListIdentifier() {

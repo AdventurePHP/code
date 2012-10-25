@@ -60,6 +60,7 @@ abstract class list_control extends Document {
     * @param string $name The name of the place holder.
     * @param string $value The value of the place holder.
     * @return list_control This instance for further usage.
+    * @throws Exception In case no place holder can be found.
     */
    public function &setPlaceHolder($name, $value) {
       // dynamically gather taglib name of the place holder to set
@@ -107,7 +108,7 @@ abstract class list_control extends Document {
     *    'key-e' => 'value-e',
     * )
     * </code>
-    * Thereby, the <em>key-*</em> offsets define the name of the place holders, theire
+    * Thereby, the <em>key-*</em> offsets define the name of the place holders, their
     * values are used as the place holder's values.
     *
     * @param array $placeHolderValues Key-value-couples to fill place holders.
@@ -128,7 +129,7 @@ abstract class list_control extends Document {
  * @package extensions::htmllist::taglib
  * @class AbstractTaglibList
  *
- * Abstractive class for the concrete list-classes.
+ * Abstract class for list classes.
  *
  * @author Florian Horn
  * @version 1.0, 03.04.2010<br />
