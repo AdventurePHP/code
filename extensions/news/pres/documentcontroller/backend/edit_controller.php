@@ -84,8 +84,7 @@ class edit_controller extends news_base_controller {
          $formTitle->setAttribute('value', htmlspecialchars($news->getTitle(), ENT_QUOTES, $charset, false));
          $formUser->setAttribute('value', htmlspecialchars($news->getAuthor(), ENT_QUOTES, $charset, false));
          $formText->setContent(htmlspecialchars($news->getText(), ENT_QUOTES, $charset, false));
-      }
-      else {
+      } else {
          $buttonValue = $lang->getValue('Form.Button.New');
 
          // Clear form inputs
@@ -99,10 +98,10 @@ class edit_controller extends news_base_controller {
 
       $form->transformOnPlace();
    }
-   
+
    /**
     * Overwriting parent's function
-    * 
+    *
     * @return string The application identifier (for login purposes).
     */
    protected function getAppKey() {
@@ -110,5 +109,3 @@ class edit_controller extends news_base_controller {
    }
 
 }
-
-?>

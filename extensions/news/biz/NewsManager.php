@@ -42,7 +42,7 @@ class NewsManager extends APFObject {
     * Set's the data component.
     *
     * @param GenericORRelationMapper $ORM
-    * @return Postbox Return's itself.
+    * @return Postbox Returns itself.
     */
    public function setORM(GenericORRelationMapper &$ORM) {
       $this->ORM = $ORM;
@@ -199,5 +199,3 @@ class NewsManager extends APFObject {
    }
 
 }
-
-?>

@@ -34,28 +34,26 @@ class menu_controller extends base_controller {
 
       $this->setPlaceHolder(
          'list', LinkGenerator::generateUrl(
-                  URL::fromCurrent()
-                        ->mergeQuery($generalExclusion)
-                        ->mergeQuery(
-                     array(
-                          'backendview' => 'list'
-                     )
-                  )
+            URL::fromCurrent()
+                  ->mergeQuery($generalExclusion)
+                  ->mergeQuery(
+               array(
+                  'backendview' => 'list'
                )
+            )
+         )
       );
       $this->setPlaceHolder(
          'new', LinkGenerator::generateUrl(
-                 URL::fromCurrent()
-                       ->mergeQuery($generalExclusion)
-                       ->mergeQuery(
-                    array(
-                         'backendview' => 'edit'
-                    )
-                 )
-              )
+            URL::fromCurrent()
+                  ->mergeQuery($generalExclusion)
+                  ->mergeQuery(
+               array(
+                  'backendview' => 'edit'
+               )
+            )
+         )
       );
    }
 
 }
-
-?>

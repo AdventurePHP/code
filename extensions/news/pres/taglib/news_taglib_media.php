@@ -83,5 +83,3 @@ class news_taglib_media extends ui_mediastream {
    }
 
 }
-
-?>

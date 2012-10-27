@@ -69,6 +69,7 @@ class NewsBase extends GenericDomainObject {
    }
 
 }
+
 // DO NOT CHANGE THIS COMMENT! <*NewsBase:end*>
 
 /**
@@ -84,5 +85,3 @@ class News extends NewsBase {
    }
 
 }
-
-?>

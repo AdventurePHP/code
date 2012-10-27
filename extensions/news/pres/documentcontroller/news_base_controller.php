@@ -47,5 +47,3 @@ abstract class news_base_controller extends iteratorBaseController {
    }
 
 }
-
-?>

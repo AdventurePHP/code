@@ -58,18 +58,18 @@ class list_controller extends news_base_controller {
             'Title' => htmlentities($News->getTitle(), ENT_QUOTES, $charset, false),
             'Date' => $News->getProperty('CreationTimestamp'),
             'LinkEdit' => LinkGenerator::generateUrl(URL::fromCurrent()->mergeQuery(
-                                                        array(
-                                                             'backendview' => 'edit',
-                                                             'editnewsid' => (int)$News->getObjectId()
-                                                        )
-                                                     )
+                  array(
+                     'backendview' => 'edit',
+                     'editnewsid' => (int)$News->getObjectId()
+                  )
+               )
             ),
             'LinkDelete' => LinkGenerator::generateUrl(URL::fromCurrent()->mergeQuery(
-                                                          array(
-                                                               'backendview' => 'delete',
-                                                               'deletenewsid' => (int)$News->getObjectId()
-                                                          )
-                                                       )
+                  array(
+                     'backendview' => 'delete',
+                     'deletenewsid' => (int)$News->getObjectId()
+                  )
+               )
             )
          );
       }
@@ -78,15 +78,13 @@ class list_controller extends news_base_controller {
       $I->fillDataContainer($DataArray);
       $I->transformOnPlace();
    }
-   
-    /**
+
+   /**
     * Overwriting parent's function
-    * 
+    *
     * @return string The application identifier (for login purposes).
     */
    protected function getAppKey() {
       return $this->__Document->getParentObject()->getAttribute('app-ident', $this->getContext());
    }
 }
-
-?>
