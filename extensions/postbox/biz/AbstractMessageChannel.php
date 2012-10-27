@@ -130,6 +130,7 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
     *
     * @param GenericORMapperDataObject $Reader
     * @return AbstractMessageChannel Returns itself (fluent-interface)
+    * @throws BadFunctionCallException
     */
    public function addReader(GenericORMapperDataObject &$Reader) {
       if ($this->getDataComponent() === null) {
@@ -203,6 +204,7 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
     *
     * @param bool $saveTree Optional. Default: true. If set to false only the channel will be saved, and not the relation-tree
     * @return AbstractMessageChannel Returns itself (fluent-interface)
+    * @throws BadFunctionCallException
     */
    public function save($saveTree = true) {
       if ($this->getDataComponent() === null) {
@@ -219,6 +221,7 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
     *
     * @param GenericORMapperDataObject $User The user which should be removed from the list of readers.
     * @return AbstractMessageChannel Returns itself (fluent-interface)
+    * @throws BadFunctionCallException
     */
    public function removeReader(GenericORMapperDataObject &$User) {
       if ($this->getDataComponent() === null) {
@@ -235,12 +238,13 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
             // remove unread-relations
             $this->setReadForUser($User);
 
-            // check if channel is in a folder from the given user and remove it from there if necessery
+            // check if channel is in a folder from the given user and remove it from there if necessary
             $crit = new GenericCriterionObject();
             $crit->addRelationIndicator('User2PostboxFolder', $User);
-            $Folder = $this->loadRelatedObject('PostboxFolder2MessageChannel', $crit);
-            if ($Folder !== null) {
-               $Folder->removeChannel($this);
+            /* @var $folder AbstractPostboxFolder */
+            $folder = $this->loadRelatedObject('PostboxFolder2MessageChannel', $crit);
+            if ($folder !== null) {
+               $folder->removeChannel($this);
             }
 
             // finally remove the relation between user and channel
@@ -280,5 +284,3 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
    }
 
 }
-
-?>

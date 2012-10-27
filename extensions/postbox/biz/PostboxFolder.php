@@ -61,5 +61,3 @@ class PostboxFolder extends PostboxFolderBase {
    }
 
 }
-
-?>

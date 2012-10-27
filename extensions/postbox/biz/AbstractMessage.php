@@ -30,11 +30,16 @@
  * @version 0.1,  22.02.2011<br />
  */
 abstract class AbstractMessage extends GenericDomainObject {
+
    /**
     * Cache for the channel's author.
     * @var mixed Can be a string or GenericORMapperDataObject
     */
    protected $Author = null;
+
+   abstract function getAuthorNameFallback();
+
+   abstract function setAuthorNameFallback($value);
 
    /**
     * Marks the message as unread for the given user.
@@ -80,6 +85,7 @@ abstract class AbstractMessage extends GenericDomainObject {
     *
     * @param bool $saveTree Optional. Default: true. If set to false only the message will be saved, and not the relation-tree
     * @return AbstractMessage Returns itself (fluent-interface)
+    * @throws BadFunctionCallException
     */
    public function save($saveTree = true) {
       if ($this->getDataComponent() === null) {
@@ -98,5 +104,3 @@ abstract class AbstractMessage extends GenericDomainObject {
       $this->getDataComponent()->deleteObject($this);
    }
 }
-
-?>

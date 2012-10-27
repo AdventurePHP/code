@@ -68,7 +68,7 @@ class AbstractPostboxFolder extends GenericDomainObject {
     * Loads a list of MessageChannels
     *
     * @param int $start The number of the first channel which should be returned (SQL LIMIT)
-    * @param int $count The numer of channels which should be returned (SQL LIMIT)
+    * @param int $count The number of channels which should be returned (SQL LIMIT)
     *
     * @return MessageChannel[] A list of MessageChannels.
     */
@@ -82,16 +82,17 @@ class AbstractPostboxFolder extends GenericDomainObject {
     * Adds an existing channel to the folder. If the given channel is already
     * part of another folder, it will be automatically removed from the old folder.
     *
-    * @param MessageChannel $Channel The channel which should be added to the folder.
+    * @param MessageChannel $channel The channel which should be added to the folder.
     * @return AbstractPostboxFolder Returns itself (fluent-interface)
     */
-   public function addChannel(MessageChannel $Channel) {
+   public function addChannel(MessageChannel $channel) {
       // first remove the channel
-      $OldFolder = $Channel->loadRelatedObject('PostboxFolder2MessageChannel');
-      if ($OldFolder !== null) {
-         $OldFolder->removeChannel($Channel);
+      /* @var $oldFolder AbstractPostboxFolder */
+      $oldFolder = $channel->loadRelatedObject('PostboxFolder2MessageChannel');
+      if ($oldFolder !== null) {
+         $oldFolder->removeChannel($channel);
       }
-      $this->createAssociation('PostboxFolder2MessageChannel', $Channel);
+      $this->createAssociation('PostboxFolder2MessageChannel', $channel);
 
       return $this;
    }
@@ -113,6 +114,7 @@ class AbstractPostboxFolder extends GenericDomainObject {
     *
     * @param bool $saveTree Optional. Default: true. If set to false only the folder will be saved, and not the relation-tree
     * @return AbstractPostboxFolder Returns itself (fluent-interface)
+    * @throws BadFunctionCallException
     */
    public function save($saveTree = true) {
       if ($this->getDataComponent() === null) {
@@ -127,13 +129,15 @@ class AbstractPostboxFolder extends GenericDomainObject {
     * Deletes a Folder.
     *
     * @param bool $moveChannelsToPostbox Optional. If set to true, all channels within the folder will be moved to the postbox instead of throwing an exception.
+    * @throws Exception
     */
    public function delete($moveChannelsToPostbox = false) {
-      $Channels = $this->loadRelatedObjects('PostboxFolder2MessageChannel');
-      if (count($Channels) !== 0) {
+      /* @var $channels MessageChannel[] */
+      $channels = $this->loadRelatedObjects('PostboxFolder2MessageChannel');
+      if (count($channels) !== 0) {
          if ($moveChannelsToPostbox === true) {
-            foreach ($Channels as &$Channel) {
-               $this->removeChannel($Channel);
+            foreach ($channels as &$channel) {
+               $this->removeChannel($channel);
             }
          } else {
             throw new Exception('[AbstractPostboxFolder::delete()] This folder can\'t be deletes as long as it still contains channels!');
@@ -143,5 +147,3 @@ class AbstractPostboxFolder extends GenericDomainObject {
       $this->getDataComponent()->deleteObject($this);
    }
 }
-
-?>

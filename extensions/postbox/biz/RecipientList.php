@@ -61,5 +61,3 @@ class RecipientList extends RecipientListBase {
    }
 
 }
-
-?>

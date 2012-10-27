@@ -82,6 +82,7 @@ abstract class AbstractRecipientList extends GenericDomainObject {
     *
     * @param bool $saveTree Optional. Default: true. If set to false only the message will be saved, and not the relation-tree
     * @return AbstractRecipientList Returns itself (fluent-interface)
+    * @throws BadFunctionCallException
     */
    public function save($saveTree = true) {
       if ($this->getDataComponent() === null) {
@@ -100,5 +101,3 @@ abstract class AbstractRecipientList extends GenericDomainObject {
       $this->getDataComponent()->deleteObject($this);
    }
 }
-
-?>

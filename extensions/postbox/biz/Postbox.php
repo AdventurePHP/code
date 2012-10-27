@@ -35,10 +35,12 @@ import('extensions::postbox::biz', 'Message');
  * @version 0.1,  22.02.2011<br />
  */
 class Postbox extends APFObject {
-   /*
+
+   /**
     * @var GenericORRelationMapper
     */
    protected $ORM = null;
+
    /**
     * @var GenericORMapperDataObject
     */
@@ -47,7 +49,7 @@ class Postbox extends APFObject {
    /**
     * Set's the data component.
     * @param GenericORRelationMapper $ORM
-    * @return Postbox Return's itself.
+    * @return Postbox Returns itself.
     */
    public function setORM(GenericORRelationMapper &$ORM) {
       $this->ORM = $ORM;
@@ -57,7 +59,7 @@ class Postbox extends APFObject {
    /**
     * Set's the user who's postbox this will be.
     * @param GenericORMapperDataObject $User
-    * @return Postbox Return's itself.
+    * @return Postbox Returns itself.
     */
    public function setUser(GenericORMapperDataObject &$User) {
       if ($User->getDataComponent() === null) {
@@ -111,6 +113,7 @@ class Postbox extends APFObject {
     *
     * @param string $Name The name of the Folder
     * @return PostboxFolder The new created folder
+    * @throws InvalidArgumentException
     */
    public function createPostboxFolder($Name) {
       if ($this->getPostboxFolderByName($Name) !== null) {
@@ -143,6 +146,7 @@ class Postbox extends APFObject {
     * @param GenericORMapperDataObject[] $Readers An array of users which will be recipients.
     *
     * @return MessageChannel The new created channel
+    * @throws InvalidArgumentException
     */
    public function createChannel($Title, $MessageText, array $Readers) {
       $Message = new Message();
@@ -206,7 +210,7 @@ class Postbox extends APFObject {
    /**
     * Loads a list of MessageChannels
     * @param int $start The number of the first channel which should be returned (SQL LIMIT)
-    * @param int $count The numer of channels which should be returned (SQL LIMIT)
+    * @param int $count The number of channels which should be returned (SQL LIMIT)
     *
     * @return MessageChannel[] A list of message channels.
     */
@@ -269,7 +273,7 @@ class Postbox extends APFObject {
     * Adds the given RecipientList to the postbox and saves everything.
     *
     * @param RecipientList $RecipientList
-    * @return Postbox Return's itself.
+    * @return Postbox Returns itself.
     */
    public function addRecipientList(RecipientList $RecipientList) {
       $this->User->addRelatedObject('User2RecipientList', $RecipientList);
@@ -282,7 +286,7 @@ class Postbox extends APFObject {
     * add the current user to any channel anymore.
     *
     * @param GenericORMapperDataObject $User The user which should be blocked.
-    * @return Postbox Return's itself.
+    * @return Postbox Returns itself.
     */
    public function addUserToBlacklist(GenericORMapperDataObject &$User) {
       if (!$this->hasUserOnBlacklist($User)) {
@@ -302,7 +306,7 @@ class Postbox extends APFObject {
    }
 
    /**
-    * Checks if the current user is beeing blocked by the given user.
+    * Checks if the current user is being blocked by the given user.
     *
     * @param GenericORMapperDataObject $User
     * @return bool
@@ -311,5 +315,3 @@ class Postbox extends APFObject {
       return $this->ORM->isAssociated('User2BlockedUser', $User, $this->User);
    }
 }
-
-?>

@@ -54,12 +54,10 @@ class MessageChannelBase extends AbstractMessageChannel {
  */
 class MessageChannel extends MessageChannelBase {
    /**
-    * Call parent\'s function because the objectName needs to be set.
+    * Call parent's function because the objectName needs to be set.
     */
    public function __construct($objectName = null) {
       parent::__construct();
    }
 
 }
-
-?>
