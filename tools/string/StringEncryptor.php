@@ -51,7 +51,7 @@ class StringEncryptor extends APFObject {
     */
    public function getPasswordHash($password, $section = 'Standard') {
       $config = $this->getConfiguration('tools::string', 'encryption.ini');
-      return crypt($password, $config->getSection($section)->getValue('PasswortSalt'));
+      return crypt($password, $config->getSection($section)->getValue('PasswordSalt'));
    }
 
 }
