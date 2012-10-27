@@ -29,7 +29,7 @@ import('tools::http', 'HeaderManager');
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 20.07.2008<br />
+ * Version 0.1, 20.07.2008<br />
  */
 class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
 
@@ -46,7 +46,7 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 20.07.2008<br />
+    * Version 0.1, 20.07.2008<br />
     */
    public function run() {
 

@@ -163,8 +163,8 @@ class lngtmpl_taglib_importdesign extends Document {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 18.11.2008<br />
-    *  Version 0.2, 19.11.2008 (Simplifyed the XML structure and thus the implementation)<br />
+    * Version 0.1, 18.11.2008<br />
+    * Version 0.2, 19.11.2008 (Simplifyed the XML structure and thus the implementation)<br />
     */
    protected function parseLanguageTokens($content, $domDoc) {
 
@@ -189,7 +189,7 @@ class lngtmpl_taglib_importdesign extends Document {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 18.11.2008<br />
+    * Version 0.1, 18.11.2008<br />
     */
    protected function getAttributeByName($element, $name) {
 

@@ -58,7 +58,7 @@ class generic_taglib_importdesign extends core_taglib_importdesign {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 30.10.2008<br />
+    * Version 0.1, 30.10.2008<br />
     */
    public function __construct() {
       parent::__construct();
@@ -71,9 +71,9 @@ class generic_taglib_importdesign extends core_taglib_importdesign {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 30.10.2008<br />
-    *  Version 0.2, 01.11.2008 (Added the modelmode and getmethode params)<br />
-    *  Version 0.3, 29.12.2208 (Added the dependent action options)<br />
+    * Version 0.1, 30.10.2008<br />
+    * Version 0.2, 01.11.2008 (Added the modelmode and getmethode params)<br />
+    * Version 0.3, 29.12.2208 (Added the dependent action options)<br />
     */
    public function onParseTime() {
 

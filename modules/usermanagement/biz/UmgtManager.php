@@ -997,7 +997,7 @@ class UmgtManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 29.12.2008<br />
+    * Version 0.1, 29.12.2008<br />
     */
    public function deleteRole(UmgtRole $role) {
       $this->getORMapper()->deleteObject($role);
@@ -1012,7 +1012,7 @@ class UmgtManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 28.12.2008<br />
+    * Version 0.1, 28.12.2008<br />
     */
    public function deletePermission(UmgtPermission $permission) {
       $this->getORMapper()->deleteObject($permission);
@@ -1028,7 +1028,7 @@ class UmgtManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 28.12.2008<br />
+    * Version 0.1, 28.12.2008<br />
     */
    public function attachUser2Groups(UmgtUser $user, array $groups) {
 
@@ -1051,8 +1051,8 @@ class UmgtManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 28.12.2008<br />
-    *  Version 0.2, 18.02.2009 (Bugfix: addUser2Groups() does not exist)<br />
+    * Version 0.1, 28.12.2008<br />
+    * Version 0.2, 18.02.2009 (Bugfix: addUser2Groups() does not exist)<br />
     */
    public function attachUsers2Group(array $users, UmgtGroup $group) {
       for ($i = 0; $i < count($users); $i++) {
@@ -1203,8 +1203,8 @@ class UmgtManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 29.12.2008<br />
-    *  Version 0.2, 30.12.2008 (Removed null pointer typo)<br />
+    * Version 0.1, 29.12.2008<br />
+    * Version 0.2, 30.12.2008 (Removed null pointer typo)<br />
     */
    public function loadUsersWithGroup(UmgtGroup &$group) {
       $crit = new GenericCriterionObject();
@@ -1223,7 +1223,7 @@ class UmgtManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 27.12.2008<br />
+    * Version 0.1, 27.12.2008<br />
     */
    public function loadUsersNotWithGroup(UmgtGroup $group) {
       $crit = new GenericCriterionObject();
@@ -1242,7 +1242,7 @@ class UmgtManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 27.12.2008<br />
+    * Version 0.1, 27.12.2008<br />
     */
    public function loadRolesWithUser(UmgtUser $user) {
       $crit = new GenericCriterionObject();
@@ -1261,7 +1261,7 @@ class UmgtManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 27.12.2008<br />
+    * Version 0.1, 27.12.2008<br />
     */
    public function loadRolesNotWithUser(UmgtUser $user) {
       $crit = new GenericCriterionObject();
@@ -1280,7 +1280,7 @@ class UmgtManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 28.12.2008<br />
+    * Version 0.1, 28.12.2008<br />
     */
    public function loadUsersWithRole(UmgtRole $role) {
       $crit = new GenericCriterionObject();
@@ -1357,7 +1357,7 @@ class UmgtManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 28.12.2008<br />
+    * Version 0.1, 28.12.2008<br />
     */
    public function detachUserFromRole(UmgtUser $user, UmgtRole $role) {
       $this->getORMapper()->deleteAssociation('Role2User', $role, $user);
@@ -1391,7 +1391,7 @@ class UmgtManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 28.12.2008<br />
+    * Version 0.1, 28.12.2008<br />
     */
    public function detachUsersFromRole(array $users, UmgtRole $role) {
       for ($i = 0; $i < count($users); $i++) {
@@ -1409,7 +1409,7 @@ class UmgtManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 26.12.2008<br />
+    * Version 0.1, 26.12.2008<br />
     */
    public function detachUserFromGroup(UmgtUser $user, UmgtGroup $group) {
       $this->getORMapper()->deleteAssociation('Group2User', $user, $group);
@@ -1425,7 +1425,7 @@ class UmgtManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 26.12.2008<br />
+    * Version 0.1, 26.12.2008<br />
     */
    public function detachUserFromGroups(UmgtUser $user, array $groups) {
       for ($i = 0; $i < count($groups); $i++) {

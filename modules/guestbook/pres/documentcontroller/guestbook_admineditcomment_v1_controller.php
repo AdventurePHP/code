@@ -29,7 +29,7 @@ import('modules::guestbook::pres::documentcontroller', 'guestbookBaseController'
  *
  * @author Christian Sch�fer
  * @version
- *  Version 0.1, 19.05.2007<br />
+ * Version 0.1, 19.05.2007<br />
  */
 class guestbook_admineditcomment_v1_controller extends guestbookBaseController {
 
@@ -40,7 +40,7 @@ class guestbook_admineditcomment_v1_controller extends guestbookBaseController {
     *
     * @author Christian Sch�fer
     * @version
-    *  Version 0.1, 19.05.2007<br />
+    * Version 0.1, 19.05.2007<br />
     */
    public function transformContent() {
 

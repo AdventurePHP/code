@@ -43,11 +43,11 @@ class comment_listing_v1_controller extends commentBaseController {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 22.08.2007<br />
-    *  Version 0.2, 02.09.2007<br />
-    *  Version 0.3, 09.03.2008 (Changed deactivation due to indexation)<br />
-    *  Version 0.4, 12.06.2008 (Removed display limitation quick hack)<br />
-    *  Version 0.5, 30.01.2009 (Replaced the bbCodeParser with the AdvancedBBCodeParser)<br />
+    * Version 0.1, 22.08.2007<br />
+    * Version 0.2, 02.09.2007<br />
+    * Version 0.3, 09.03.2008 (Changed deactivation due to indexation)<br />
+    * Version 0.4, 12.06.2008 (Removed display limitation quick hack)<br />
+    * Version 0.5, 30.01.2009 (Replaced the bbCodeParser with the AdvancedBBCodeParser)<br />
     */
    public function transformContent() {
 

@@ -28,7 +28,7 @@ import('modules::guestbook::biz', 'GuestbookManager');
  *
  * @author Christian Sch�fer
  * @version
- *  Version 0.1, 12.04.2007<br />
+ * Version 0.1, 12.04.2007<br />
  */
 class guestbook_v1_controller extends base_controller {
 

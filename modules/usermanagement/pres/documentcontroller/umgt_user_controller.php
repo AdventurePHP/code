@@ -28,7 +28,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 28.12.2008<br />
+ * Version 0.1, 28.12.2008<br />
  */
 class umgt_user_controller extends umgt_base_controller {
 

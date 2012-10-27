@@ -23,7 +23,7 @@ final class ArrayPagerMapper extends APFObject {
     *
     * @author Lutz Mahlstedt
     * @version
-    *  Version 0.1, 21.12.2009<br />
+    * Version 0.1, 21.12.2009<br />
     */
    protected function getSessionKey($stringPager) {
       return 'ArrayPagerMapper_' . md5($stringPager);
@@ -39,7 +39,7 @@ final class ArrayPagerMapper extends APFObject {
     *
     * @author Lutz Mahlstedt
     * @version
-    *  Version 0.1, 21.12.2009<br />
+    * Version 0.1, 21.12.2009<br />
     */
    public function getEntriesCount($stringPager) {
       $integerEntriesCount = count($this->loadEntries($stringPager));
@@ -57,7 +57,7 @@ final class ArrayPagerMapper extends APFObject {
     *
     * @author Lutz Mahlstedt
     * @version
-    *  Version 0.1, 21.12.2009<br />
+    * Version 0.1, 21.12.2009<br />
     */
    public function loadEntries($stringPager) {
       $objectSession = new SessionManager ('extensions::arraypager::biz');
@@ -75,7 +75,7 @@ final class ArrayPagerMapper extends APFObject {
     *
     * @author Lutz Mahlstedt
     * @version
-    *  Version 0.1, 21.12.2009<br />
+    * Version 0.1, 21.12.2009<br />
     */
    public function registerEntries($stringPager,
                                    $arrayData
@@ -94,7 +94,7 @@ final class ArrayPagerMapper extends APFObject {
     *
     * @author Lutz Mahlstedt
     * @version
-    *  Version 0.1, 21.12.2009<br />
+    * Version 0.1, 21.12.2009<br />
     */
    public function unregisterEntries($stringPager) {
       $objectSession = new SessionManager ('extensions::arraypager::biz');
@@ -110,7 +110,7 @@ final class ArrayPagerMapper extends APFObject {
     *
     * @author Lutz Mahlstedt
     * @version
-    *  Version 0.1, 21.12.2009<br />
+    * Version 0.1, 21.12.2009<br />
     */
    public function checkPager($stringPager) {
       $objectSession = new SessionManager ('extensions::arraypager::biz');

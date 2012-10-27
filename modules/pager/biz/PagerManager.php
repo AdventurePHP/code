@@ -103,7 +103,7 @@ final class PagerManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 24.01.2009<br />
+    * Version 0.1, 24.01.2009<br />
     */
    private function getStatementParams($addStmtParams = array()) {
       if ($this->isDynamicPageSizeActivated()) {
@@ -129,10 +129,10 @@ final class PagerManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 05.08.2006<br />
-    *  Version 0.2, 06.08.2006<br />
-    *  Version 0.3, 16.08.2006 (Added the enhanced param configuration opportunity)<br />
-    *  Version 0.4, 24.01.2009 (Changed the API of the method. Moved the additional param handling to this method)<br />
+    * Version 0.1, 05.08.2006<br />
+    * Version 0.2, 06.08.2006<br />
+    * Version 0.3, 16.08.2006 (Added the enhanced param configuration opportunity)<br />
+    * Version 0.4, 24.01.2009 (Changed the API of the method. Moved the additional param handling to this method)<br />
     */
    public function loadEntries($addStmtParams = array()) {
       $m = &$this->getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
@@ -192,7 +192,7 @@ final class PagerManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 25.01.2009<br />
+    * Version 0.1, 25.01.2009<br />
     */
    public function setAnchorName($anchorName = null) {
       $this->anchorName = $anchorName;
@@ -207,7 +207,7 @@ final class PagerManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 25.01.2009<br />
+    * Version 0.1, 25.01.2009<br />
     */
    public function getAnchorName() {
       return $this->anchorName;
@@ -223,10 +223,10 @@ final class PagerManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 05.08.2006<br />
-    *  Version 0.2, 11.03.2007 (Ported to new document controller, removed MessageQueue)<br />
-    *  Version 0.3, 29.08.2007 (Anchor name is not set as the document's attribute)<br />
-    *  Version 0.4, 02.03.2008 (The page is now applied the context and language)<br />
+    * Version 0.1, 05.08.2006<br />
+    * Version 0.2, 11.03.2007 (Ported to new document controller, removed MessageQueue)<br />
+    * Version 0.3, 29.08.2007 (Anchor name is not set as the document's attribute)<br />
+    * Version 0.4, 02.03.2008 (The page is now applied the context and language)<br />
     */
    public function getPager($addStmtParams = array()) {
 
@@ -365,8 +365,8 @@ final class PagerManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 16.08.2006<br />
-    *  Version 0.2, 24.01.2009 (Refactoring due to configuration param changes)<br />
+    * Version 0.1, 16.08.2006<br />
+    * Version 0.2, 24.01.2009 (Refactoring due to configuration param changes)<br />
     */
    private function generateStatementParams($configString) {
 

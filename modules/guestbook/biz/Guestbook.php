@@ -27,7 +27,7 @@
  *
  * @author Christian Schäfer
  * @version
- *  Version 0.1, 12.04.2007<br />
+ * Version 0.1, 12.04.2007<br />
  */
 final class Guestbook {
 
@@ -91,7 +91,7 @@ final class Guestbook {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 12.04.2007<br />
+    * Version 0.1, 12.04.2007<br />
     */
    public function setEntries(array $entries) {
       $this->entries = $entries;

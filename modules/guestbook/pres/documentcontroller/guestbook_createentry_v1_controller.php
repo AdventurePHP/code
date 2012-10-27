@@ -29,7 +29,7 @@ import('modules::guestbook::pres::documentcontroller', 'guestbookBaseController'
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 12.04.2007<br />
+ * Version 0.1, 12.04.2007<br />
  */
 class guestbook_createentry_v1_controller extends guestbookBaseController {
 

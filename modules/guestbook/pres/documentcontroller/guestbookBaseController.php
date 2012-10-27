@@ -41,7 +41,7 @@ abstract class guestbookBaseController extends base_controller {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 05.05.2007<br />
+    * Version 0.1, 05.05.2007<br />
     */
    protected function &getGuestbookManager() {
       return $this->getAndInitServiceObject('modules::guestbook::biz', 'GuestbookManager', $this->getGuestbookId());

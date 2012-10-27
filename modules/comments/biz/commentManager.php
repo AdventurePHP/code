@@ -32,8 +32,8 @@ import('tools::http', 'HeaderManager');
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 22.08.2007<br />
- *  Version 0.2, 28.12.2007 (Added CAPTCHA support)<br />
+ * Version 0.1, 22.08.2007<br />
+ * Version 0.2, 28.12.2007 (Added CAPTCHA support)<br />
  */
 class commentManager extends APFObject {
 
@@ -52,8 +52,8 @@ class commentManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 13.04.2007<br />
-    *  Version 0.2, 28.12.2007 (Captcha-Unterst�tzung hinzugef�gt)<br />
+    * Version 0.1, 13.04.2007<br />
+    * Version 0.2, 28.12.2007 (Captcha-Unterst�tzung hinzugef�gt)<br />
     */
    public function init($initParam) {
       $this->categoryKey = $initParam;
@@ -68,8 +68,8 @@ class commentManager extends APFObject {
     *
     * @author Christian Sch�fer
     * @version
-    *  Version 0.1, 21.08.2007<br />
-    *  Version 0.2, 01.09.2007 (Verwendung des PagerManagers auf loadEntriesByAppDataComponent() umgestellt)<br />
+    * Version 0.1, 21.08.2007<br />
+    * Version 0.2, 01.09.2007 (Verwendung des PagerManagers auf loadEntriesByAppDataComponent() umgestellt)<br />
     */
    public function loadEntries() {
 
@@ -90,9 +90,9 @@ class commentManager extends APFObject {
     *
     * @author Christian Sch�fer
     * @version
-    *  Version 0.1, 21.08.2007<br />
-    *  Version 0.2, 29.08.2007 (Added the anchor name)<br />
-    *  Version 0.3, 24.01.2009 (Introduced the $anchorName parameter)<br />
+    * Version 0.1, 21.08.2007<br />
+    * Version 0.2, 29.08.2007 (Added the anchor name)<br />
+    * Version 0.3, 24.01.2009 (Introduced the $anchorName parameter)<br />
     */
    public function getPager($anchorName = null) {
       $pMF = &$this->getServiceObject('modules::pager::biz', 'PagerManagerFabric');
@@ -110,7 +110,7 @@ class commentManager extends APFObject {
     *
     * @author Christian Sch�fer
     * @version
-    *  Version 0.1, 21.08.2007<br />
+    * Version 0.1, 21.08.2007<br />
     */
    public function getURLParameter() {
       $pMF = &$this->getServiceObject('modules::pager::biz', 'PagerManagerFabric');
@@ -127,9 +127,9 @@ class commentManager extends APFObject {
     *
     * @author Christian Schäfer
     * @version
-    *  Version 0.1, 21.08.2007<br />
-    *  Version 0.2, 28.12.2007<br />
-    *  Version 0.3, 02.02.2008<br />
+    * Version 0.1, 21.08.2007<br />
+    * Version 0.2, 28.12.2007<br />
+    * Version 0.3, 02.02.2008<br />
     */
    public function saveEntry($articleComment) {
 

@@ -29,13 +29,13 @@ import('core::logging', 'Logger');
  *
  * @author Christian Schäfer
  * @version
- *  Version 0.1, 09.06.2004<br />
- *  Version 0.2, 04.01.2005<br />
- *  Version 0.3, 27.04.2005<br />
- *  Version 0.4, 14.01.2006 (Redesign / introduced new technology)<br />
- *  Version 0.5, 21.06.2006 (Added CC recipients capability)<br />
- *  Version 0.5, 30.03.2007 (Switched to the ConfigurationManager)<br />
- *  Version 0.5, 03.09.2007 (Added BCC recipients capability and futher header)<br />
+ * Version 0.1, 09.06.2004<br />
+ * Version 0.2, 04.01.2005<br />
+ * Version 0.3, 27.04.2005<br />
+ * Version 0.4, 14.01.2006 (Redesign / introduced new technology)<br />
+ * Version 0.5, 21.06.2006 (Added CC recipients capability)<br />
+ * Version 0.5, 30.03.2007 (Switched to the ConfigurationManager)<br />
+ * Version 0.5, 03.09.2007 (Added BCC recipients capability and futher header)<br />
  */
 class mailSender extends APFObject {
 

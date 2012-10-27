@@ -33,7 +33,7 @@ import('tools::http', 'HeaderManager');
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 05.05.2007<br />
+ * Version 0.1, 05.05.2007<br />
  */
 class guestbook_adminlogin_v1_controller extends guestbookBaseController {
 
@@ -44,7 +44,7 @@ class guestbook_adminlogin_v1_controller extends guestbookBaseController {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 05.05.2007<br />
+    * Version 0.1, 05.05.2007<br />
     */
    public function transformContent() {
 

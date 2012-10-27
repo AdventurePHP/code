@@ -29,7 +29,7 @@
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 09.10.2008<br />
+ * Version 0.1, 09.10.2008<br />
  */
 class HeaderManager {
 
@@ -46,7 +46,7 @@ class HeaderManager {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 09.10.2008<br />
+    * Version 0.1, 09.10.2008<br />
     */
    public static function forward($targetURL) {
       header('Location: ' . str_replace('&amp;', '&', $targetURL));
@@ -64,7 +64,7 @@ class HeaderManager {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 09.10.2008<br />
+    * Version 0.1, 09.10.2008<br />
     */
    public static function redirect($targetURL, $permanent = false) {
       $statusCode = $permanent === true ? 301 : 302;
@@ -84,7 +84,7 @@ class HeaderManager {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 09.10.2008<br />
+    * Version 0.1, 09.10.2008<br />
     */
    public static function send($content, $replacePrevHeaders = false, $httpStatus = false) {
 

@@ -34,7 +34,7 @@ import('tools::request', 'RequestHandler');
  *
  * @author Lutz Mahlstedt
  * @version
- *  Version 0.1, 20.12.2009<br />
+ * Version 0.1, 20.12.2009<br />
  */
 class arraypager_controller extends base_controller {
 

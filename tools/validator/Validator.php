@@ -85,7 +85,7 @@ class Validator {
     *
     * @author Christian Sch�fer
     * @version
-    *  Version 0.1, 12.01.2007<br />
+    * Version 0.1, 12.01.2007<br />
     */
    static function validateTelefon($input) {
       return preg_match('/^[0-9\-\+\(\)\/ ]{6,}+$/', trim($input));

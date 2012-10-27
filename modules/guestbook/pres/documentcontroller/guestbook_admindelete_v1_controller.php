@@ -32,7 +32,7 @@ import('tools::link', 'LinkGenerator');
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 05.05.2007<br />
+ * Version 0.1, 05.05.2007<br />
  */
 class guestbook_admindelete_v1_controller extends guestbookBaseController {
 

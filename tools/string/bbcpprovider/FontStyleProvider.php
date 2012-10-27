@@ -26,7 +26,7 @@
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 28.10.2008
+ * Version 0.1, 28.10.2008
  */
 class FontStyleProvider extends BBCodeParserProvider {
 
@@ -41,7 +41,7 @@ class FontStyleProvider extends BBCodeParserProvider {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 28.10.2008
+    * Version 0.1, 28.10.2008
     */
    public function getOutput($string) {
       return strtr(

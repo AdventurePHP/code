@@ -55,7 +55,7 @@ class CookieManager {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 08.11.2008<br />
+    * Version 0.1, 08.11.2008<br />
     */
    public function __construct($namespace = null) {
       if ($namespace !== null) {
@@ -139,7 +139,7 @@ class CookieManager {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 10.01.2009<br />
+    * Version 0.1, 10.01.2009<br />
     */
    public function updateCookie($key, $value, $expire = null, $domain = null, $path = null) {
       return $this->createCookie($key, $value, $expire, $domain, $path);
@@ -155,8 +155,8 @@ class CookieManager {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 08.11.2008<br />
-    *  Version 0.2, 10.01.2009 (Added namespace support)<br />
+    * Version 0.1, 08.11.2008<br />
+    * Version 0.2, 10.01.2009 (Added namespace support)<br />
     */
    public function readCookie($key) {
 

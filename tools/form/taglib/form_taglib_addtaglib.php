@@ -27,7 +27,7 @@
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 11.07.2008<br />
+ * Version 0.1, 11.07.2008<br />
  */
 class form_taglib_addtaglib extends core_taglib_addtaglib {
 

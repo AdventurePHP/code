@@ -43,8 +43,8 @@ class FontColorProvider extends BBCodeParserProvider {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 28.10.2008<br />
-    *  Version 0.2, 29.10.2008 (Changed font tags to span tags)<br />
+    * Version 0.1, 28.10.2008<br />
+    * Version 0.2, 29.10.2008 (Changed font tags to span tags)<br />
     */
    public function getOutput($string) {
 

@@ -112,7 +112,7 @@ class AdvancedLogEntry extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 09.11.2008<br />
+    * Version 0.1, 09.11.2008<br />
     */
    public function toString($timestamp = true, $type = true) {
 
@@ -173,7 +173,7 @@ class AdvancedLoggerFactory extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 09.11.2008<br />
+    * Version 0.1, 09.11.2008<br />
     */
    public function &getAdvancedLogger($section) {
 
@@ -276,7 +276,7 @@ class AdvancedLogger extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 09.11.2008<br />
+    * Version 0.1, 09.11.2008<br />
     */
    public function logEntry($message, $type = 'INFO') {
       $this->logBuffer[] = new AdvancedLogEntry($message, $type);
@@ -289,7 +289,7 @@ class AdvancedLogger extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 09.11.2008<br />
+    * Version 0.1, 09.11.2008<br />
     */
    public function flushLogBuffer() {
 
@@ -319,7 +319,7 @@ class AdvancedLogger extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 09.11.2008<br />
+    * Version 0.1, 09.11.2008<br />
     */
    private function flush2Database() {
 
@@ -358,7 +358,7 @@ class AdvancedLogger extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 09.11.2008<br />
+    * Version 0.1, 09.11.2008<br />
     */
    private function flush2File() {
 
@@ -397,7 +397,7 @@ class AdvancedLogger extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 09.11.2008<br />
+    * Version 0.1, 09.11.2008<br />
     */
    private function flush2Stdout() {
       foreach ($this->logBuffer as $entry) {
@@ -415,7 +415,7 @@ class AdvancedLogger extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 09.11.2008<br />
+    * Version 0.1, 09.11.2008<br />
     */
    private function getLogEntryString(AdvancedLogEntry $entry) {
 

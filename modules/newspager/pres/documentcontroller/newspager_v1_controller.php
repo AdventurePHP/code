@@ -28,7 +28,7 @@ import('modules::newspager::biz', 'newspagerManager');
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 02.20.2008<br />
+ * Version 0.1, 02.20.2008<br />
  */
 class newspager_v1_controller extends base_controller {
 
@@ -39,9 +39,9 @@ class newspager_v1_controller extends base_controller {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 02.20.2008<br />
-    *  Version 0.2, 05.01.2008 (language is now published to the java script code)<br />
-    *  Version 0.3, 18.09.2008 (Introduced datadir attribute to be able to operate the module in more than one application)<br />
+    * Version 0.1, 02.20.2008<br />
+    * Version 0.2, 05.01.2008 (language is now published to the java script code)<br />
+    * Version 0.3, 18.09.2008 (Introduced datadir attribute to be able to operate the module in more than one application)<br />
     */
    public function transformContent() {
 

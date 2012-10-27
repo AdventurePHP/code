@@ -220,7 +220,7 @@ final class ArrayPagerManager extends APFObject {
     *
     * @author Lutz Mahlstedt
     * @version
-    *  Version 0.1, 21.12.2009<br />
+    * Version 0.1, 21.12.2009<br />
     */
    public function setAnchorName($stringAnchorName = NULL) {
       $this->anchorName = $stringAnchorName;
@@ -235,7 +235,7 @@ final class ArrayPagerManager extends APFObject {
     *
     * @author Lutz Mahlstedt
     * @version
-    *  Version 0.1, 21.12.2009<br />
+    * Version 0.1, 21.12.2009<br />
     */
    public function getAnchorName() {
       return $this->anchorName;

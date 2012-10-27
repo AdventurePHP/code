@@ -134,7 +134,7 @@ class AdvancedBBCodeParser extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 28.10.2008
+    * Version 0.1, 28.10.2008
     */
    public function __construct() {
       $this->provider['standard.font.style'] = new BBCodeParserDefinition('tools::string::bbcpprovider', 'FontStyleProvider');

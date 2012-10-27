@@ -52,8 +52,8 @@ final class PagerManagerFabric extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 13.04.2007<br />
-    *  Version 0.2, 24.01.2009 (Moved the additional params to the loadEntries() method. Refactored the method.)<br />
+    * Version 0.1, 13.04.2007<br />
+    * Version 0.2, 24.01.2009 (Moved the additional params to the loadEntries() method. Refactored the method.)<br />
     */
    public function &getPagerManager($configString) {
 

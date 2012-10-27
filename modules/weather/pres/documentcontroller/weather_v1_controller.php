@@ -29,7 +29,7 @@
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 20.04.2008<br />
+ * Version 0.1, 20.04.2008<br />
  */
 class weather_v1_controller extends base_controller {
 
@@ -40,8 +40,8 @@ class weather_v1_controller extends base_controller {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 20.04.2008<br />
-    *  Version 0.2, 26.04.2008 (Transformation for PHP4 and PHP5 implemented separately)<br />
+    * Version 0.1, 20.04.2008<br />
+    * Version 0.2, 26.04.2008 (Transformation for PHP4 and PHP5 implemented separately)<br />
     */
    public function transformContent() {
 
@@ -111,7 +111,7 @@ class weather_v1_controller extends base_controller {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 20.04.2008<br />
+    * Version 0.1, 20.04.2008<br />
     */
    protected function getFirstChildContent($Node) {
       $FirstChild = $Node->first_child();
@@ -129,7 +129,7 @@ class weather_v1_controller extends base_controller {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 20.04.2008<br />
+    * Version 0.1, 20.04.2008<br />
     */
    protected function &getChildNodesByNodeName(&$Node, $Name) {
 
@@ -228,7 +228,7 @@ class weather_v1_controller extends base_controller {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 20.04.2008<br />
+    * Version 0.1, 20.04.2008<br />
     */
    protected function getRSSSource() {
       return $this->__Document->getAttribute('rss_source');

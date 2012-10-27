@@ -1770,7 +1770,7 @@ class core_taglib_appendnode extends Document {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 16.11.2008<br />
+    * Version 0.1, 16.11.2008<br />
     */
    public function __construct() {
       parent::__construct();

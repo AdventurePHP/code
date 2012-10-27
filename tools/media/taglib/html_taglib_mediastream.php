@@ -27,7 +27,7 @@ import('tools::media::taglib', 'ui_mediastream');
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 01.11.2008<br />
+ * Version 0.1, 01.11.2008<br />
  */
 class html_taglib_mediastream extends ui_mediastream {
 }

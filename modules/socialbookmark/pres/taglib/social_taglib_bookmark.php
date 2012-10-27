@@ -69,8 +69,8 @@ class social_taglib_bookmark extends Document {
     *
     * @author Christian W. Sch�fer
     * @version
-    *  Version 0.1, 08.09.2007<br />
-    *  Version 0.2, 16.09.2007 (Attribute url, title und target hinzugef�gt)<br />
+    * Version 0.1, 08.09.2007<br />
+    * Version 0.2, 16.09.2007 (Attribute url, title und target hinzugef�gt)<br />
     */
    public function transform() {
 

@@ -30,7 +30,7 @@ import('tools::filesystem', 'Folder');
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 02.20.2008<br />
+ * Version 0.1, 02.20.2008<br />
  */
 class newspagerMapper extends APFObject {
 
@@ -48,7 +48,7 @@ class newspagerMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 18.09.2008<br />
+    * Version 0.1, 18.09.2008<br />
     */
    public function init($initParam) {
       $this->dataDir = $initParam;

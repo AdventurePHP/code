@@ -45,7 +45,7 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 26.03.2009<br />
+    * Version 0.1, 26.03.2009<br />
     */
    private function &getConnection() {
 
@@ -70,8 +70,8 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 12.04.2007<br />
-    *  Version 0.2, 26.03.2009 (Refactoring)<br />
+    * Version 0.1, 12.04.2007<br />
+    * Version 0.2, 26.03.2009 (Refactoring)<br />
     */
    public function loadEntryByID($entryId) {
 
@@ -92,8 +92,8 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 12.04.2007<br />
-    *  Version 0.2, 26.03.2009 (Refactoring)<br />
+    * Version 0.1, 12.04.2007<br />
+    * Version 0.2, 26.03.2009 (Refactoring)<br />
     */
    public function loadCommentById($commentId) {
 
@@ -114,8 +114,8 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 12.04.2007<br />
-    *  Version 0.2, 26.03.2009 (Refactoring)<br />
+    * Version 0.1, 12.04.2007<br />
+    * Version 0.2, 26.03.2009 (Refactoring)<br />
     */
    public function loadGuestbookByID($guestbookId) {
 
@@ -136,8 +136,8 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 12.04.2007<br />
-    *  Version 0.2, 26.03.2009 (Refactoring)<br />
+    * Version 0.1, 12.04.2007<br />
+    * Version 0.2, 26.03.2009 (Refactoring)<br />
     */
    public function loadEntryWithComments($entryId) {
 
@@ -167,8 +167,8 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 12.04.2007<br />
-    *  Version 0.2, 26.03.2009 (Refactoring)<br />
+    * Version 0.1, 12.04.2007<br />
+    * Version 0.2, 26.03.2009 (Refactoring)<br />
     */
    public function loadGuestbookWithEntries($guestbookId) {
 
@@ -199,9 +199,9 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 12.04.2007<br />
-    *  Version 0.2, 14.04.2007 (Fixed bug during saving)<br />
-    *  Version 0.3, 26.03.2009 (Refactoring)<br />
+    * Version 0.1, 12.04.2007<br />
+    * Version 0.2, 14.04.2007 (Fixed bug during saving)<br />
+    * Version 0.3, 26.03.2009 (Refactoring)<br />
     */
    public function saveGuestbook(Guestbook $guestbook) {
 
@@ -279,8 +279,8 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 12.04.2007<br />
-    *  Version 0.2, 26.03.2009 (Refactoring)<br />
+    * Version 0.1, 12.04.2007<br />
+    * Version 0.2, 26.03.2009 (Refactoring)<br />
     */
    public function saveEntry(Entry $entry) {
 
@@ -378,8 +378,8 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 12.04.2007<br />
-    *  Version 0.2, 26.03.2009 (Refactoring)<br />
+    * Version 0.1, 12.04.2007<br />
+    * Version 0.2, 26.03.2009 (Refactoring)<br />
     */
    public function saveComment(Comment $comment) {
 
@@ -428,8 +428,8 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 05.05.2007<br />
-    *  Version 0.2, 26.03.2009 (Refactoring)<br />
+    * Version 0.1, 05.05.2007<br />
+    * Version 0.2, 26.03.2009 (Refactoring)<br />
     */
    public function deleteEntry(Entry $entry) {
 
@@ -475,8 +475,8 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 19.05.2007<br />
-    *  Version 0.2, 26.03.2009 (Refactoring)<br />
+    * Version 0.1, 19.05.2007<br />
+    * Version 0.2, 26.03.2009 (Refactoring)<br />
     */
    public function deleteComment(Comment $comment) {
 
@@ -500,8 +500,8 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 12.04.2007<br />
-    *  Version 0.2, 26.03.2009 (Refactoring)<br />
+    * Version 0.1, 12.04.2007<br />
+    * Version 0.2, 26.03.2009 (Refactoring)<br />
     */
    private function mapEntry2DomainObject($entryResultSet) {
       $entry = new Entry();
@@ -531,8 +531,8 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 12.04.2007<br />
-    *  Version 0.2, 26.03.2009 (Refactoring)<br />
+    * Version 0.1, 12.04.2007<br />
+    * Version 0.2, 26.03.2009 (Refactoring)<br />
     */
    private function mapGuestbook2DomainObject(array $guestbookResultSet) {
       $guestbook = new Guestbook();
@@ -554,8 +554,8 @@ class GuestbookMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 12.04.2007<br />
-    *  Version 0.2, 26.03.2009 (Refactoring)<br />
+    * Version 0.1, 12.04.2007<br />
+    * Version 0.2, 26.03.2009 (Refactoring)<br />
     */
    private function mapComment2DomainObject(array $commentResultSet) {
       $comment = new Comment();

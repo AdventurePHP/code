@@ -57,7 +57,7 @@ class GuestbookManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 13.04.2007<br />
+    * Version 0.1, 13.04.2007<br />
     */
    public function init($initParam) {
       $this->guestbookId = $initParam;
@@ -80,7 +80,7 @@ class GuestbookManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 13.04.2007<br />
+    * Version 0.1, 13.04.2007<br />
     */
    public function loadGuestbook() {
 
@@ -112,7 +112,7 @@ class GuestbookManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 13.04.2007<br />
+    * Version 0.1, 13.04.2007<br />
     */
    public function getURLParameters() {
       return $this->getPager()->getPagerURLParameters();
@@ -127,7 +127,7 @@ class GuestbookManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 13.04.2007<br />
+    * Version 0.1, 13.04.2007<br />
     */
    public function getPagerPresentation() {
       return $this->getPager()->getPager(array('GuestbookID' => $this->guestbookId));
@@ -142,7 +142,7 @@ class GuestbookManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 14.04.2007<br />
+    * Version 0.1, 14.04.2007<br />
     */
    public function saveEntry(Entry $entry) {
 
@@ -168,8 +168,8 @@ class GuestbookManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 05.05.2007<br />
-    *  Version 0.2, 19.05.2007 (Added the redirect url generation)<br />
+    * Version 0.1, 05.05.2007<br />
+    * Version 0.2, 19.05.2007 (Added the redirect url generation)<br />
     */
    public function saveComment($entryID, Comment $comment) {
 
@@ -230,7 +230,7 @@ class GuestbookManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 05.05.2007<br />
+    * Version 0.1, 05.05.2007<br />
     */
    public function validateCrendentials($username, $password) {
 
@@ -251,7 +251,7 @@ class GuestbookManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 05.05.2007<br />
+    * Version 0.1, 05.05.2007<br />
     */
    public function deleteEntry(Entry $entry) {
       $this->getMapper()->deleteEntry($entry);
@@ -266,7 +266,7 @@ class GuestbookManager extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 19.05.2007<br />
+    * Version 0.1, 19.05.2007<br />
     */
    public function deleteComment(Comment $comment) {
       $this->getMapper()->deleteComment($comment);

@@ -49,7 +49,7 @@ final class PagerMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 19.01.2009<br />
+    * Version 0.1, 19.01.2009<br />
     */
    public function init($initParam) {
       $this->connectionKey = $initParam;
@@ -76,7 +76,7 @@ final class PagerMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 24.01.2009<br />
+    * Version 0.1, 24.01.2009<br />
     */
    protected function getSessionKey($namespace, $statement, $params) {
       return 'PagerMapper_' . md5($namespace . $statement . implode('', $params));
@@ -95,11 +95,11 @@ final class PagerMapper extends APFObject {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 06.08.2006<br />
-    *  Version 0.2, 16.08.2006 (Added an argument for further statement params)<br />
-    *  Version 0.3, 19.01.2009 (Added the connection key handling)<br />
-    *  Version 0.4, 24.01.2009 (Added session caching)<br />
-    *  Version 0.5, 25.01.2009 (Removed nullpointer bug due to session object definition)<br />
+    * Version 0.1, 06.08.2006<br />
+    * Version 0.2, 16.08.2006 (Added an argument for further statement params)<br />
+    * Version 0.3, 19.01.2009 (Added the connection key handling)<br />
+    * Version 0.4, 24.01.2009 (Added session caching)<br />
+    * Version 0.5, 25.01.2009 (Removed nullpointer bug due to session object definition)<br />
     */
    public function getEntriesCount($namespace, $statement, $params = array(), $cache = true) {
 

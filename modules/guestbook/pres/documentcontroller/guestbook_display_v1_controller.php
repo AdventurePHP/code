@@ -32,8 +32,8 @@ import('tools::string', 'StringAssistant');
  *
  * @author Christian Achatz
  * @version
- *  Version 0.1, 12.04.2007<br />
- *  Version 0.2, 07.01.2008 (�nderungen zur Mehrsprachigkeit, Spamschutz f�r E-Mails)<br />
+ * Version 0.1, 12.04.2007<br />
+ * Version 0.2, 07.01.2008 (�nderungen zur Mehrsprachigkeit, Spamschutz f�r E-Mails)<br />
  */
 class guestbook_display_v1_controller extends guestbookBaseController {
 
@@ -49,8 +49,8 @@ class guestbook_display_v1_controller extends guestbookBaseController {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 13.04.2007<br />
-    *  Version 0.2, 05.05.2007 (Admin-Link hinzugef�gt)<br />
+    * Version 0.1, 13.04.2007<br />
+    * Version 0.2, 05.05.2007 (Admin-Link hinzugef�gt)<br />
     */
    public function transformContent() {
       $this->session = new SessionManager($this->getGuestbookNamespace());
@@ -70,8 +70,8 @@ class guestbook_display_v1_controller extends guestbookBaseController {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 13.04.2007<br />
-    *  Version 0.2, 07.01.2008 (Mehrsprachigkeit eingef�hrt)<br />
+    * Version 0.1, 13.04.2007<br />
+    * Version 0.2, 07.01.2008 (Mehrsprachigkeit eingef�hrt)<br />
     */
    private function generateCreateEntryLink() {
 
@@ -94,8 +94,8 @@ class guestbook_display_v1_controller extends guestbookBaseController {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 05.05.2007<br />
-    *  Version 0.2, 07.01.2008 (Mehrsprachigkeit eingef�hrt)<br />
+    * Version 0.1, 05.05.2007<br />
+    * Version 0.2, 07.01.2008 (Mehrsprachigkeit eingef�hrt)<br />
     */
    private function generateControlGuestbookLink() {
 
@@ -130,7 +130,7 @@ class guestbook_display_v1_controller extends guestbookBaseController {
     *
     * @author Christian Achatz
     * @version
-    *  Version 0.1, 13.04.2007<br />
+    * Version 0.1, 13.04.2007<br />
     */
    private function generateEntryList() {
 
