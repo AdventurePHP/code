@@ -27,22 +27,22 @@
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
  * @version
- *  Version 1.0, 18.03.2010<br />
+ * Version 1.0, 18.03.2010<br />
  */
 class form_taglib_getclientvalidator extends form_control {
 
-   // Cache all buttonnames/controlnames which already have an onClick/onBlur event
+   // Cache all button names/control names which already have an onClick/onBlur event
    private $__buttonEventCache = array();
    private $__controlEventCache = array();
 
    private $__optionsStore = null;
 
    /**
-    * Overwrite the parent's method and inject the form id, if necessery.
+    * Overwrite the parent's method and inject the form id, if necessary.
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    public function onParseTime() {
       // inject form id to append validators
@@ -56,7 +56,7 @@ class form_taglib_getclientvalidator extends form_control {
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    protected function getFormId() {
       $formId = $this->__ParentObject->getAttribute('id');
@@ -74,7 +74,7 @@ class form_taglib_getclientvalidator extends form_control {
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    public function transform() {
 
@@ -87,7 +87,7 @@ class form_taglib_getclientvalidator extends form_control {
 
 
       /* @var $CVSS ClientValidationScriptStore */
-      $CVSS = &$this->getServiceObject('extensions::form::client', 'ClientValidationScriptStore', APFService::SERVICE_TYPE_SINGLETON);
+      $CVSS = & $this->getServiceObject('extensions::form::client', 'ClientValidationScriptStore', APFService::SERVICE_TYPE_SINGLETON);
 
       $scriptStore = $CVSS->getScriptStore();
       $valmarkerclassStore = $CVSS->getValmarkerclassStore();
@@ -108,7 +108,7 @@ class form_taglib_getclientvalidator extends form_control {
       // Create js which fills valmarkerclassstore
       $javascript['form'] .=
             '.addValmarkerclasses(' .
-                  $this->__jsonEncodeAsObject($valmarkerclassStore) .
+                  $this->jsonEncodeAsObject($valmarkerclassStore) .
                   ')';
 
       return '<script type="text/javascript">' . $javascript['general'] . $javascript['form'] . ';</script>';
@@ -123,7 +123,7 @@ class form_taglib_getclientvalidator extends form_control {
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    protected function __generateJsDefinition($definition) {
 
@@ -148,8 +148,9 @@ class form_taglib_getclientvalidator extends form_control {
       }
 
       // Check type of control, and generate jQuery selector
-      $jQSelector = '';
-      switch (get_class($this->__ParentObject->getFormElementByName($definition['control']))) {
+      /* @var $parent html_taglib_form */
+      $parent = $this->__ParentObject;
+      switch (get_class($parent->getFormElementByName($definition['control']))) {
          case 'form_taglib_select':
             $jQSelector = ':input[name=\'' . $definition['control'] . '\[\]\']';
             break;
@@ -176,7 +177,7 @@ class form_taglib_getclientvalidator extends form_control {
       // Create js which adds the validator
       $opt = '{}';
       if (isset($this->__optionsStore[$definition['control']])) {
-         $opt = $this->__jsonEncodeAsObject($this->__optionsStore[$definition['control']]);
+         $opt = $this->jsonEncodeAsObject($this->__optionsStore[$definition['control']]);
       }
       $output['form'] .= '.addValidator(\'' . $definition['button'] . '\', \'' . $definition['control'] . '\', \'' . $definition['class'] . '\', ' . $opt . ')';
 
@@ -189,7 +190,7 @@ class form_taglib_getclientvalidator extends form_control {
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    public function onAfterAppend() {
    }

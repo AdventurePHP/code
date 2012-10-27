@@ -27,7 +27,7 @@
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
  * @version
- *  Version 1.0, 18.03.2010<br />
+ * Version 1.0, 18.03.2010<br />
  */
 class form_taglib_addclientvalidator extends form_control {
 
@@ -59,11 +59,13 @@ class form_taglib_addclientvalidator extends form_control {
       }
 
       // Configure referenced controls
+      /* @var $parent html_taglib_form */
+      $parent = $this->__ParentObject;
       foreach ($controlsTmp as $control) {
-         if (($ref = $this->__ParentObject->getFormElementByName($control)->getAttribute('ref')) !== NULL) {
+         if (($ref = $parent->getFormElementByName($control)->getAttribute('ref')) !== NULL) {
             $controlsTmp[] = $ref;
             try {
-               $refField = $this->__ParentObject->getFormElementByName($ref);
+               $refField = $parent->getFormElementByName($ref);
             } catch (FormException $e) {
                throw new FormException('[form_taglib_addclientvalidator::transform()]
                         No form element with name "' . $ref . '" found!
@@ -79,7 +81,7 @@ class form_taglib_addclientvalidator extends form_control {
          //Get valmarkerclass of each control
          $valmarkerclass = 'apf-form-error';
 
-         if (($val = $this->__ParentObject->getFormElementByName($control)->getAttribute('valmarkerclass')) !== NULL) {
+         if (($val = $parent->getFormElementByName($control)->getAttribute('valmarkerclass')) !== NULL) {
             $valmarkerclass = $val;
             unset($val);
          }
@@ -87,13 +89,14 @@ class form_taglib_addclientvalidator extends form_control {
          unset($valmarkerclass);
 
          //Get parameters of each control
-         $rawOptions = $this->__ParentObject->getFormElementByName($control)->getAttributes();
+         $rawOptions = $parent->getFormElementByName($control)->getAttributes();
          unset($rawOptions['name']);
          unset($rawOptions['valmarkerclass']);
          $options[$control] = $rawOptions;
       }
 
-      $CVSS = &$this->getServiceObject('extensions::form::client', 'ClientValidationScriptStore');
+      /* @var $CVSS ClientValidationScriptStore */
+      $CVSS = & $this->getServiceObject('extensions::form::client', 'ClientValidationScriptStore');
       $CVSS->addClientValidator($class, $button, $controls, $options, $onblur, $namespace);
    }
 

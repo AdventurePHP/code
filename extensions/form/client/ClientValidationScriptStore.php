@@ -23,11 +23,11 @@
  * @package extensions::form::client
  * @class ClientValidationScriptStore
  *
- *  A store which contains all necessery information for clientvalidators
+ * A store which contains all necessary information for client validators.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
  * @version
- *  Version 1.0, 18.03.2010<br />
+ * Version 1.0, 18.03.2010<br />
  */
 class ClientValidationScriptStore extends APFObject {
 
@@ -48,18 +48,18 @@ class ClientValidationScriptStore extends APFObject {
    protected $__OptionsStore = array();
 
    /**
-    * Adds a validator snipped to the script store, and adds validator file to file store if necessery.
+    * Adds a validator snipped to the script store, and adds validator file to file store if necessary.
     *
     * @param string $class The validator class.
     * @param string $button The button's name.
     * @param array $controls An array with all controls the validator has to validate.
     * @param array $options The options for the validator.
     * @param bool $onblur If set to true, the validator will be also added as blur event. Default: false
-    * @param string $namespace The clientvalidator's namespace. Default: The namespace which is used from the default-validators.
+    * @param string $namespace The client validator's namespace. Default: the namespace which is used from the default validators.
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    public function addClientValidator($class, $button, $controls, $options = null, $onblur = false, $namespace = null) {
       if ($namespace === null) {
@@ -93,7 +93,7 @@ class ClientValidationScriptStore extends APFObject {
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    public function getScriptStore() {
       return $this->__ScriptStore;
@@ -106,7 +106,7 @@ class ClientValidationScriptStore extends APFObject {
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    public function getValmarkerclassStore() {
       return $this->__ValmarkerclassStore;
@@ -119,7 +119,7 @@ class ClientValidationScriptStore extends APFObject {
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    public function getOptionsStore() {
       return $this->__OptionsStore;
@@ -130,7 +130,7 @@ class ClientValidationScriptStore extends APFObject {
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    public function clean() {
       $this->__ScriptStore = array();
@@ -138,5 +138,3 @@ class ClientValidationScriptStore extends APFObject {
       $this->__OptionsStore = array();
    }
 }
-
-?>

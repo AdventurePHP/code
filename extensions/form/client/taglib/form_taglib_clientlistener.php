@@ -27,7 +27,7 @@
  *
  * @author Ralf Schubert  <ralf.schubert@the-screeze.de>
  * @version
- *  Version 1.0, 18.03.2010<br />
+ * Version 1.0, 18.03.2010<br />
  */
 class form_taglib_clientlistener extends form_control {
 
@@ -36,7 +36,7 @@ class form_taglib_clientlistener extends form_control {
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    public function __construct() {
       $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_placeholder', 'listener', 'placeholder');
@@ -49,7 +49,7 @@ class form_taglib_clientlistener extends form_control {
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    public function onParseTime() {
       $this->__extractTagLibTags();
@@ -60,7 +60,7 @@ class form_taglib_clientlistener extends form_control {
     *
     * @author Ralf Schubert
     * @version
-    *  Version 1.0, 18.03.2010<br />
+    * Version 1.0, 18.03.2010<br />
     */
    public function onAfterAppend() {
    }
