@@ -2184,21 +2184,23 @@ class html_taglib_template extends Document {
                // check, if current child is the desired place holder
                if ($this->__Children[$objectID]->getAttribute('name') == $name) {
 
-                  // set content of the placeholder
+                  // set content of the place holder
                   $this->__Children[$objectID]->setContent($value);
                   $placeHolderCount++;
                }
             }
          }
       } else {
-
-         // trow error, if no place holder with the desired name was found
-         throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] No placeholder object with name "' . $name . '" composed in current template for document controller "' . ($this->getParentObject()->getDocumentController()) . '"! Perhaps tag library template:placeHolder is not loaded in template "' . $this->__Attributes['name'] . '"!', E_USER_ERROR);
+         throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] No place holder object with name "'
+               . $name . '" composed in current template for document controller "'
+               . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR);
       }
 
       // throw error, if no children are composed under the current tag
       if ($placeHolderCount < 1) {
-         throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] There are no placeholders found for name "' . $name . '" in template "' . ($this->__Attributes['name']) . '" in document controller "' . ($this->getParentObject()->getDocumentController()) . '"!', E_USER_WARNING);
+         throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] There are no place holders found for name "'
+               . $name . '" in template "' . $this->getAttributes('name') . '" in document controller "'
+               . $this->getParentObject()->getDocumentController() . '"!', E_USER_WARNING);
       }
 
       return $this;
