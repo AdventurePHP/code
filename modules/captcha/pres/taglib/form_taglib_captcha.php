@@ -20,6 +20,7 @@
  */
 import('tools::form::taglib', 'form_control');
 import('tools::form::taglib', 'form_taglib_text');
+import('tools::form::validator', 'AbstractFormValidator');
 import('tools::request', 'RequestHandler');
 import('tools::string', 'StringAssistant');
 import('core::session', 'SessionManager');
@@ -112,11 +113,12 @@ class form_taglib_captcha extends form_control {
     *
     * Implements the onAfterAppend method from the ui_element class.
     *
-    * @author Christian Achatz
+    * @author Christian Achatz, Stephan Spiess
     * @version
     * Version 0.1, 20.06.2008<br />
     * Version 0.2, 10.11.2008 (Added the "clearonerror" attribute. If set to "true", the field is cleared on error.)<br />
     * Version 0.3, 04.01.2010 (Added the text_id attribute)<br />
+    * Version 0.4, 29.10.2012 (Bug-fix: attribute valmarkerclass is now applied to the inner form field to allow css field validation on error)<br />
     */
    public function onParseTime() {
 
@@ -136,6 +138,12 @@ class form_taglib_captcha extends form_control {
       $textId = $this->getAttribute('text_id');
       if ($textId !== null) {
          $this->textField->setAttribute('id', $textId);
+      }
+
+      // apply validation marker css class to provide validation markup capabilities
+      $errorClass = $this->getAttribute(AbstractFormValidator::$CUSTOM_MARKER_CLASS_ATTRIBUTE);
+      if ($errorClass !== null) {
+         $this->textField->setAttribute(AbstractFormValidator::$CUSTOM_MARKER_CLASS_ATTRIBUTE, $errorClass);
       }
 
       $this->textFieldName = md5($this->__ParentObject->getAttribute('name') . '_captcha');
