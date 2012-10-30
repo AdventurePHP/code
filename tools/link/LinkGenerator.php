@@ -609,7 +609,7 @@ abstract class BasicLinkScheme {
     * Version 0.1, 29.12.2011<br />
     */
    protected function &getFrontcontrollerActions() {
-      $fC = &Singleton::getInstance('Frontcontroller');
+      $fC = & Singleton::getInstance('Frontcontroller');
       /* @var $fC Frontcontroller */
       return $fC->getActions();
    }
@@ -630,7 +630,7 @@ abstract class BasicLinkScheme {
    protected function getActionsUrlRepresentation($urlRewriting) {
 
       // retrieve actions from internal method (to enable testing)
-      $actions = &$this->getFrontcontrollerActions();
+      $actions = & $this->getFrontcontrollerActions();
 
       $actionUrlRepresentation = array();
       foreach ($actions as $action) {
@@ -720,6 +720,22 @@ abstract class BasicLinkScheme {
       return implode($groupDelimiter, $groups);
    }
 
+   /**
+    * @protected
+    *
+    * Safely tests whether the applied value is considered empty or not.
+    *
+    * @param string $value The value to check.
+    * @return bool True in case the value is empty, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 30.10.2012 (Bug-fix: special empty check now respects "0" values)<br />
+    */
+   protected function isValueEmpty($value) {
+      return empty($value) && strval($value) !== '0';
+   }
+
 }
 
 /**
@@ -750,7 +766,7 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
       $query = $url->getQuery();
       $queryString = '';
       foreach ($query as $name => $value) {
-         if (empty($value)) {
+         if ($this->isValueEmpty($value)) {
             // include actions that may have empty values
             if (strpos($name, '-action') !== false) {
                if (!empty($queryString)) {
@@ -806,7 +822,7 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
  * url by action configuration.
  * <p/>
  * Please note, that this link scheme ignores the ampersand encoding option,
- * since it makes no sence here.
+ * since it makes no sense here.
  *
  * @author Christian Achatz
  * @version
@@ -863,7 +879,7 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
          foreach ($query as $name => $value) {
             // allow empty params that are action definitions to not
             // exclude actions with no params!
-            if (!empty($value) || (empty($value) && strpos($name, '-action') !== false)) {
+            if (!$this->isValueEmpty($value) || ($this->isValueEmpty($value) && strpos($name, '-action') !== false)) {
                if (strpos($name, '-action') === false) {
                   $resultUrl .= '/' . $name . '/' . $value;
                } else {
