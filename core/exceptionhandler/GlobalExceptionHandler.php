@@ -190,7 +190,7 @@ class DefaultExceptionHandler implements ExceptionHandler {
  * <code>
  * GlobalExceptionHandler::disable()
  * </code>
- * In order to programmatically (re-)enable the exception handler, type
+ * In order to (re-)enable the exception handler by code, type
  * <code>
  * GlobalExceptionHandler::enable()
  * </code>
@@ -205,11 +205,6 @@ abstract class GlobalExceptionHandler {
     * @var ExceptionHandler|null The instance of the exception handler to use.
     */
    private static $HANDLER;
-
-   /**
-    * @var bool Stores the status (enabled=true, disabled=false).
-    */
-   private static $ENABLED = true;
 
    /**
     * @public
@@ -273,8 +268,6 @@ abstract class GlobalExceptionHandler {
     * Version 0.1, 03.03.2012<br />
     */
    public static function disable() {
-      self::$ENABLED = false;
-
       // restore PHP's default handler
       restore_exception_handler();
    }
@@ -291,7 +284,6 @@ abstract class GlobalExceptionHandler {
     * Version 0.1, 03.03.2012<br />
     */
    public static function enable() {
-      self::$ENABLED = true;
 
       // ensure that an error handler is set
       if (self::$HANDLER === null) {

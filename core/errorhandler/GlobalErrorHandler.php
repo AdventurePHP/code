@@ -193,7 +193,7 @@ class DefaultErrorHandler implements ErrorHandler {
  * <code>
  * GlobalErrorHandler::disable()
  * </code>
- * In order to programmatically (re-)enable the error handler, type
+ * In order to (re-)enable the error handler by code, type
  * <code>
  * GlobalErrorHandler::enable()
  * </code>
@@ -208,11 +208,6 @@ abstract class GlobalErrorHandler {
     * @var ErrorHandler|null The instance of the error handler to use.
     */
    private static $HANDLER;
-
-   /**
-    * @var bool Stores the status (enabled=true, disabled=false).
-    */
-   private static $ENABLED = true;
 
    /**
     * @public
@@ -276,8 +271,6 @@ abstract class GlobalErrorHandler {
     * Version 0.1, 03.03.2012<br />
     */
    public static function disable() {
-      self::$ENABLED = false;
-
       // restore PHP's default handler
       restore_error_handler();
    }
@@ -294,7 +287,6 @@ abstract class GlobalErrorHandler {
     * Version 0.1, 03.03.2012<br />
     */
    public static function enable() {
-      self::$ENABLED = true;
 
       // ensure that an error handler is set
       if (self::$HANDLER === null) {
