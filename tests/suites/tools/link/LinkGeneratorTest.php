@@ -225,4 +225,18 @@ class LinkGeneratorTest extends PHPUnit_Framework_TestCase {
       assertEquals($path . '?tools_media-action:streamMedia=' . $foo . ':1|' . $bar . ':2', $link);
    }
 
+   public function testExclusionOfNullValueAndInclusionOfZeroValueParameters() {
+      $url = Url::fromString('/');
+      $url->mergeQuery(array(
+         'foo' => 'bar',
+         'exclude' => null,
+         // see bug with ignoring zero values in 1.15 (fixed in 1.16)
+         'include-one' => '0',
+         'include-two' => 0
+      ));
+
+      $link = LinkGenerator::generateUrl($url, new DefaultLinkScheme(false));
+      assertEquals('/?foo=bar&include-one=0&include-two=0', $link);
+   }
+
 }
