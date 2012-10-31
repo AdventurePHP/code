@@ -20,7 +20,7 @@
  */
 
 /**
- * @package modules::recaptcha::pres::tags
+ * @package modules::recaptcha::pres::taglib
  * @class ReCaptchaTranslationTag
  *
  * Implements a custom <em>&lt;*:getstring /&gt;</em> tag for the <em>&lt;form:recaptcha /&gt;</em>

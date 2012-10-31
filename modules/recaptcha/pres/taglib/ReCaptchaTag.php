@@ -19,11 +19,11 @@
  * -->
  */
 import('tools::form::taglib', 'form_control');
-import('modules::recaptcha::pres::tags', 'ReCaptchaTranslationTag');
+import('modules::recaptcha::pres::taglib', 'ReCaptchaTranslationTag');
 require_once(__DIR__ . '/../../external/google/recaptchalib.php');
 
 /**
- * @package modules::recaptcha::pres::tags
+ * @package modules::recaptcha::pres::taglib
  * @class ReCaptchaTag
  *
  * Implements a re-captcha wrapper for Google's ReCaptcha.
@@ -57,7 +57,7 @@ class ReCaptchaTag extends form_control {
 
    public function __construct() {
       $this->__TagLibs = array(
-         new TagLib('modules::recaptcha::pres::tags', 'ReCaptchaTranslationTag', 'recaptcha', 'getstring')
+         new TagLib('modules::recaptcha::pres::taglib', 'ReCaptchaTranslationTag', 'recaptcha', 'getstring')
       );
    }
 
