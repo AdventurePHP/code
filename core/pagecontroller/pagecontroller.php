@@ -1318,7 +1318,7 @@ class Document extends APFObject {
     * is equal to the file body plus the ".html" extensions. The namespace is a APF namespace.
     *
     * @param string $namespace The namespace of the template.
-    * @param string $design The name of the template (a.k.a. design).
+    * @param string $name The name of the template (a.k.a. design).
     * @throws IncludeException In case the template file is not found.
     *
     * @author Christian Schäfer
@@ -1326,16 +1326,20 @@ class Document extends APFObject {
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 01.01.2007<br />
     * Version 0.3, 03.11.2008 (Added code of the responsible template to the error message to ease debugging)<br />
+    * Version 0.4, 31.10.2012 (Introduced the append feature to be able to preserve tag content created/added prior calling this method)<br />
     */
-   protected function __loadContentFromFile($namespace, $design) {
+   protected function __loadContentFromFile($namespace, $name) {
 
       // sanitize the design name to avoid xss or code injection
-      $design = preg_replace('/[^A-Za-z0-9\-_]/', '', $design);
+      $name = preg_replace('/[^A-Za-z0-9\-_]/', '', $name);
 
-      $file = APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $design . '.html';
+      $file = $this->getTemplateFilePath($namespace, $name);
 
       if (file_exists($file)) {
-         $this->__Content = file_get_contents($file);
+         // Append the content to the current content buffer. In case the existing content should be
+         // overwritten by this method call, please clear it using $this->__Content = '' prior calling
+         // this method (normally not necessary).
+         $this->__Content .= file_get_contents($file);
       } else {
          // get template code from parent object, if the parent exists
          $code = '';
@@ -1343,10 +1347,30 @@ class Document extends APFObject {
             $code = ' Please check your template code (' . $this->getParentObject()->getContent() . ').';
          }
 
-         throw new IncludeException('[' . get_class($this) . '::__loadContentFromFile()] Design "' . $design
+         throw new IncludeException('[' . get_class($this) . '::__loadContentFromFile()] Design "' . $name
                . '" not existent in namespace "' . $namespace . '" (file: "' . $file . '")!' . $code, E_USER_ERROR);
 
       }
+   }
+
+   /**
+    * @protected
+    *
+    * Generates the file path of the desired template.
+    * <p/>
+    * Overwriting this method allows you to use a different algorithm of creating the
+    * path within your custom tag implementations.
+    *
+    * @param string $namespace The namespace of the template.
+    * @param string $name The (file) name of the template.
+    * @return string The template file path of the referred APF template.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 31.10.2012<br />
+    */
+   protected function getTemplateFilePath($namespace, $name) {
+      return APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $name . '.html';
    }
 
    /**
