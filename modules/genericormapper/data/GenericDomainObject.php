@@ -531,7 +531,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @author Christian Achatz
     * @version
     * Version 0.1, 04.09.2009<br />
-    * Version 0.2, 10.06.2010 (Bugix: corrected serialization)<br />
+    * Version 0.2, 10.06.2010 (Bug-fix: corrected serialization)<br />
     */
    public function __sleep() {
       return array('objectName', 'properties', 'relatedObjects');
