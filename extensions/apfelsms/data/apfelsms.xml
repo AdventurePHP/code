@@ -12,6 +12,7 @@
       <title>Aktuelles</title>
       <page id="news-archive">
          <title>News-Archiv</title>
+         <css>/styles/news.css</css>
          <pageDec type="alias"><referencedPageId>news</referencedPageId></pageDec>
          <pageDec type="request"><requestParam key="archive">show</requestParam></pageDec>
       </page>
@@ -21,6 +22,8 @@
    </page>
    <page id="contact">
       <title>Kontakt</title>
+      <js>/scripts/jQuery.js</js>
+      <js>/scripts/checkContactForm.js</js>
    </page>
    <page id="impress">
       <title>Impressum &amp; Disclaimer</title>
@@ -48,6 +51,9 @@
             <referencedPageId>index</referencedPageId>
          </pageDec>
       </page>
+      <page id="sitemap">
+         <title>Sitemap</title>
+      </page>
       <page id="footer-contact">
          <pageDec type="redirect">
             <referencedPageId>contact</referencedPageId>
@@ -60,9 +66,9 @@
       </page>
    </page>
    
-   <page id="mb">
+   <page id="apf-community">
       <pageDec type="hidden" />
-      <pageDec type="externalURL"><externalURL>http://www.musiker-board.de</externalURL></pageDec>
+      <pageDec type="externalURL"><externalURL>http://forum.adventure-php-framework.org</externalURL></pageDec>
    </page>
    
 </apfelsms>

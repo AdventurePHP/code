@@ -1,6 +1,7 @@
 <?php
 
 import('tools::request', 'RequestHandler');
+import('tools::link', 'LinkGenerator');
 import('extensions::apfelsms::biz::pages::stores', "SMSPageStoreInterface");
 
 /**
@@ -116,7 +117,7 @@ class SMSManager extends APFObject {
     * @return string
     */
    public function getSMSVersion() {
-      return 'v0.3-RC3';
+      return 'v0.3-RC4';
    }
 
 
@@ -268,6 +269,5 @@ class SMSManager extends APFObject {
 
       return $this->pageStore->getPage($id);
    }
-
 
 }

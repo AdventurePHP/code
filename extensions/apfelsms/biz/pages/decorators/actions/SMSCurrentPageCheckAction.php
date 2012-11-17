@@ -1,6 +1,7 @@
 <?php
 
 import('core::session', 'SessionManager');
+import('tools::link', 'LinkGenerator');
 
 /**
  *

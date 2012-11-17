@@ -178,16 +178,13 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
 
          if (property_exists($this, $prop)) { // check if property is applicable
             $this->$prop = $val;
-            // end if
          } elseif (is_array($val) && property_exists($this, $prop . 's')) { // try plural form, e.g. an XMl element name may be "requestParam" and belong to property "requestParams"
             $pluralProp = $prop . 's';
             $this->$pluralProp = $val;
          } else {
             throw new SMSException('[' . get_class($this) . '::mapData()] Mapper delivers data that is not applicable to ' . get_class($this) . ' object');
-            // end else
          }
 
-         // end foreach
       }
    }
 

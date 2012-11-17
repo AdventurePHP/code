@@ -126,6 +126,8 @@ class SMSNavTaglibController extends base_controller {
     */
    protected function buildMenu(array $navPages, $depth) {
 
+      // cull entries which should not be displayed
+      $navPages = $this->cullEntries($navPages);
       $entries = $this->buildMenuEntries($navPages, $depth);
 
       $menuRootTemplate = $this->getTemplate('navRoot');
@@ -141,19 +143,6 @@ class SMSNavTaglibController extends base_controller {
     * @return string
     */
    protected function buildMenuEntries(array $navPages, $depth) {
-
-      $tmp = $navPages;
-      $navPages = array();
-
-      // predetect hidden and protected files
-      foreach ($tmp AS $navPage) {
-
-         if ($navPage->isHidden() || $navPage->isAccessProtected()) {
-            continue;
-         }
-
-         $navPages[] = $navPage;
-      }
 
       $lastCount = count($navPages);
       $count = 0;
@@ -188,26 +177,33 @@ class SMSNavTaglibController extends base_controller {
          $children = $navPage->getChildren();
          if (($depth > 1 || ($this->autoDepth && $navPage->isActive())) && count($children) > 0) {
 
-            $template = $this->getTemplate('navEntryWithSubs');
+            // cull entries which not should be displayed
+            $subEntries = $this->cullEntries($children);
 
-            $subEntries = $navPage->getChildren();
+            if (count($subEntries) > 0) {
 
-            if ($this->autoDepth) {
-               $newDepth = 1;
+               $template = $this->getTemplate('navEntryWithSubs');
+
+               if ($this->autoDepth) {
+                  $newDepth = 1;
+               } else {
+                  $newDepth = $depth - 1;
+               }
+
+               // recursive for subEntries
+               $template->setPlaceHolder('subEntries', $this->buildMenuEntries($subEntries, $newDepth));
+
             } else {
-               $newDepth = $depth - 1;
+               $template = $this->getTemplate('navEntry');
             }
-
-            // recursive for subEntries
-            $template->setPlaceHolder('subEntries', $this->buildMenuEntries($subEntries, $newDepth));
 
          } else {
             $template = $this->getTemplate('navEntry');
          }
 
-         $template->setPlaceHolder('linkURL', $linkURL);
+         $template->setPlaceHolder('linkURL', StringAssistant::escapeSpecialCharacters($linkURL));
          $template->setPlaceHolder('linkTitle', StringAssistant::escapeSpecialCharacters($linkTitle));
-         $template->setPlaceHolder('linkClasses', rtrim($linkClasses));
+         $template->setPlaceHolder('linkClasses', $linkClasses);
          $template->setPlaceHolder('linkText', StringAssistant::escapeSpecialCharacters($linkText));
 
          $buffer .= $template->transformTemplate();
@@ -216,6 +212,28 @@ class SMSNavTaglibController extends base_controller {
 
       return $buffer;
 
+   }
+
+
+   /**
+    * @param SMSPage[] $navPages
+    * @return SMSPage[]|array
+    */
+   protected function cullEntries(array $navPages) {
+
+      $buffer = array();
+
+      // detect hidden and protected files
+      foreach ($navPages AS $navPage) {
+
+         if ($navPage->isHidden() || $navPage->isAccessProtected()) {
+            continue;
+         }
+
+         $buffer[] = $navPage;
+      }
+
+      return $buffer;
    }
 
 }

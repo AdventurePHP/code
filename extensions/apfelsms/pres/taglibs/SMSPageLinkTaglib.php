@@ -140,7 +140,6 @@ class SMSPageLinkTaglib extends Document {
                break;
          }
 
-         // end of evaluation of magic page ids
       }
 
 
@@ -161,7 +160,7 @@ class SMSPageLinkTaglib extends Document {
 
       $title = StringAssistant::escapeSpecialCharacters($this->getAttribute('title', $page->getTitle()));
 
-      $link = $page->getLink(Url::fromCurrent()->resetQuery());
+      $link = StringAssistant::escapeSpecialCharacters($page->getLink(Url::fromCurrent()->resetQuery()));
 
       return str_replace(
          array('{LINK}', '{TITLE}', '{TEXT}'),
@@ -169,6 +168,5 @@ class SMSPageLinkTaglib extends Document {
          self::$template
       );
    }
-
 
 }

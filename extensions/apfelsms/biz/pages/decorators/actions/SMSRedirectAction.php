@@ -1,4 +1,7 @@
 <?php
+
+import('tools::link', 'LinkGenerator');
+
 /**
  *
  * @package APFelSMS

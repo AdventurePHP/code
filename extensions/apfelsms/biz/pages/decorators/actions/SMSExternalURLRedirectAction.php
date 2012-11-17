@@ -1,4 +1,7 @@
 <?php
+
+import('tools::link', 'LinkGenerator');
+
 /**
  *
  * @package APFelSMS
@@ -60,6 +63,5 @@ class SMSExternalURLRedirectAction extends AbstractFrontcontrollerAction {
          }
       }
    }
-
 
 }

@@ -24,7 +24,6 @@ class SMSBreadcrumbNavTaglibController extends base_controller {
       ////
       // fetch base page
 
-      /* @var $basePage SMSPage */
       if (!empty($basePageId)) {
          $basePage = $this->SMSM->getPage($basePageId);
       } else {
@@ -37,19 +36,27 @@ class SMSBreadcrumbNavTaglibController extends base_controller {
 
 
       ////
-      // collect als breadcrumbs
+      // collect all breadcrumbs
 
       $reverseCrumbArray = array();
       $crumb = $currentPage;
 
       do {
-         $reverseCrumbArray[] = $crumb;
+
+         // Ignore origanisation-/system-nodes (hidden nodes without title)
+         $crumbNavTitle = $crumb->getNavTitle();
+         if (!($crumb->isHidden() && empty($crumbNavTitle))) {
+            $reverseCrumbArray[] = $crumb;
+         }
+
+         /** @var $oldCrumb SMSPage */
          $oldCrumb = $crumb;
          $crumb = $oldCrumb->getParent();
+
       } while (
          ($crumb !== null) // parent found?
          &&
-         ($basePageLevel <= $oldCrumb->getLevel()) // deeper than basePage?
+         ($basePageLevel <= $oldCrumb->getLevel()) // are we still deeper than basePage?
          &&
          ($crumb->getId() != $basePageId) // not basePage?
       );
@@ -73,11 +80,16 @@ class SMSBreadcrumbNavTaglibController extends base_controller {
          $template = $this->getTemplate('breadcrumb');
 
          $linkURL = $crumb->getLink(Url::fromCurrent()->resetQuery());
+
          $linkText = $crumb->getNavTitle();
          if ($crumb->getId() == $basePageId) {
             // allow custom title for basePage
             $linkText = $doc->getAttribute('SMSBreadcrumbNavBasePageIdTitle', $crumb->getNavTitle());
          }
+         if (empty($linkText)) {
+            $linkText = $crumb->getId();
+         }
+
          $linkTitle = $linkText;
          $linkClasses = ' level_' . $crumb->getLevel();
 
@@ -89,9 +101,9 @@ class SMSBreadcrumbNavTaglibController extends base_controller {
             $linkClasses .= ' first';
          }
 
-         $template->setPlaceHolder('linkURL', $linkURL);
-         $template->setPlaceHolder('linkTitle', $linkTitle);
-         $template->setPlaceHolder('linkText', $linkText);
+         $template->setPlaceHolder('linkURL', StringAssistant::escapeSpecialCharacters($linkURL));
+         $template->setPlaceHolder('linkTitle', StringAssistant::escapeSpecialCharacters($linkTitle));
+         $template->setPlaceHolder('linkText', StringAssistant::escapeSpecialCharacters($linkText));
          $template->setPlaceHolder('linkClasses', $linkClasses);
 
          $buffer .= $template->transformTemplate();

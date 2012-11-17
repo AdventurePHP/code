@@ -17,7 +17,18 @@ class SMSPageTitleTaglib extends Document {
       /** @var $SMSM SMSManager */
       $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
 
-      return StringAssistant::escapeSpecialCharacters($SMSM->getSite()->getCurrentPage()->getTitle());
+      $page = $SMSM->getSite()->getCurrentPage();
+
+      $pageId = $this->getAttribute('pageId');
+      if (!empty($pageId)) {
+         try {
+            $page = $SMSM->getPage($pageId);
+         } catch (SMSException $e) {
+            return 'Untitled'; // no title could be found (no valid ID)
+         }
+      }
+
+      return StringAssistant::escapeSpecialCharacters($page->getTitle());
 
    }
 }

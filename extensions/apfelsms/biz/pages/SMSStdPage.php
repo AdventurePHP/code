@@ -8,7 +8,7 @@ import('extensions::apfelsms::biz::pages', 'SMSPageInterface');
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version :  v0.1 (06.06.12)
  *             v0.2 (20.06.12) Added method isReference() (implementing the SMSPage interface)
- *             v0.3 (23.09.12) Removed bug in function laodParent(): No parent leads to an uncaught exception
+ *             v0.3 (23.09.12) Removed bug in function loadParent(): No parent leads to an uncaught exception
  *
  */
 class SMSStdPage extends APFObject implements SMSPage {
@@ -427,18 +427,14 @@ class SMSStdPage extends APFObject implements SMSPage {
 
          if (property_exists($this, $prop)) { // check if property is applicable
             $this->$prop = $val;
-            // end if
          } elseif (is_array($val) && property_exists($this, $prop . 's')) { // try plural form, e.g. an XMl element name may be "requestParam" and belong to property "requestParams"
             $pluralProp = $prop . 's';
             $this->$pluralProp = $val;
          } else {
             throw new SMSException('[' . get_class($this) . '::mapData()] Mapper delivers data that is not applicable to ' . get_class($this) . ' object');
-            // end else
          }
 
-         // end foreach
       }
    }
-
 
 }
