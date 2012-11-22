@@ -42,7 +42,7 @@
  * @version
  * Version 0.1, 24.05.2011<br />
  */
-class umgt_taglib_importdesign extends core_taglib_importdesign {
+class umgt_taglib_importdesign extends ImportTemplateTag {
 
    /**
     * @var boolean Indicates, whether the referred template should be displayed or not.

@@ -4,7 +4,7 @@
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (11.08.12)
  */
-class SMSImportDesignTaglib extends core_taglib_importdesign {
+class SMSImportDesignTaglib extends ImportTemplateTag {
 
 
    public function onParseTime() {

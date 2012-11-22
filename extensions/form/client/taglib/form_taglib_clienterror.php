@@ -39,9 +39,9 @@ class form_taglib_clienterror extends form_control {
     * Version 1.0, 18.03.2010<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_placeholder', 'error', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_getstring', 'error', 'getstring');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_addtaglib', 'error', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'error', 'placeholder');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'error', 'getstring');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'error', 'addtaglib');
    }
 
    /**

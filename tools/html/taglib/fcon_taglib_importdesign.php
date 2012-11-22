@@ -39,7 +39,7 @@
  * @version
  * Version 0.1, 13.11.2007<br />
  */
-class fcon_taglib_importdesign extends core_taglib_importdesign {
+class fcon_taglib_importdesign extends ImportTemplateTag {
 
    public function onParseTime() {
 

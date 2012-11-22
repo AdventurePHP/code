@@ -41,9 +41,9 @@ class iterator_taglib_item extends Document {
     * Version 0.1, 01.06.2008<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_placeholder', 'item', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_getstring', 'item', 'getstring');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_addtaglib', 'item', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'item', 'placeholder');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'item', 'getstring');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'item', 'addtaglib');
    }
 
    public function onParseTime() {
@@ -56,7 +56,7 @@ class iterator_taglib_item extends Document {
     * Returns the place holders defined within the item, to be filled
     * te desired values.
     *
-    * @return html_taglib_placeholder[] The list of place holders.
+    * @return PlaceHolderTag[] The list of place holders.
     *
     * @author Christian Achatz
     * @version
@@ -66,7 +66,7 @@ class iterator_taglib_item extends Document {
       $placeHolders = array();
       if (count($this->__Children) > 0) {
          foreach ($this->__Children as $objectId => $DUMMY) {
-            if ($this->__Children[$objectId] instanceof html_taglib_placeholder) {
+            if ($this->__Children[$objectId] instanceof PlaceHolderTag) {
                $placeHolders[] = &$this->__Children[$objectId];
             }
          }

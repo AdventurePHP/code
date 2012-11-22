@@ -65,7 +65,7 @@
  * @version
  * Version 0.1, 28.7.2011<br />
  */
-class lang_taglib_importdesign extends core_taglib_importdesign {
+class lang_taglib_importdesign extends ImportTemplateTag {
 
    /**
     * Function builds up full name of the template. If some information are missing

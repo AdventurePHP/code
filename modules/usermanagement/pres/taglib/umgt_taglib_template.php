@@ -41,7 +41,7 @@
  * @version
  * Version 0.1, 01.06.2011
  */
-class umgt_taglib_template extends html_taglib_template {
+class umgt_taglib_template extends TemplateTag {
 
    public function onParseTime() {
       $this->transformOnPlace = $this->getAttribute('transform-on-place', 'false') === 'true' ? true : false;

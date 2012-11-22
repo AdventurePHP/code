@@ -30,7 +30,7 @@
  * @version
  * Version 0.1, 22.09.2012<br />
  */
-class ReCaptchaTranslationTag extends html_taglib_getstring {
+class ReCaptchaTranslationTag extends LanguageLabelTag {
 
    public function onAfterAppend() {
 

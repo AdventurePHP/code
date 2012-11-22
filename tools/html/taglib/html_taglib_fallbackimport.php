@@ -32,7 +32,7 @@
  * @version
  * Version 0.1, 28.08.2010<br />
  */
-class html_taglib_fallbackimport extends core_taglib_importdesign {
+class html_taglib_fallbackimport extends ImportTemplateTag {
 
    /**
     * @public

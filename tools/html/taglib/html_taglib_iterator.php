@@ -76,9 +76,9 @@ class html_taglib_iterator extends Document {
     */
    public function __construct() {
       $this->__TagLibs[] = new TagLib('tools::html::taglib', 'iterator_taglib_item', 'iterator', 'item');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_addtaglib', 'iterator', 'addtaglib');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_getstring', 'iterator', 'getstring');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_placeholder', 'iterator', 'placeholder');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'iterator', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'iterator', 'getstring');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'iterator', 'placeholder');
    }
 
    /**
@@ -349,7 +349,7 @@ class html_taglib_iterator extends Document {
    public function &setPlaceHolder($name, $value) {
       $count = 0;
       foreach ($this->__Children as $objectId => $DUMMY) {
-         if (get_class($this->__Children[$objectId]) == 'html_taglib_placeholder'
+         if (get_class($this->__Children[$objectId]) == 'PlaceHolderTag'
             && $this->__Children[$objectId]->getAttribute('name') === $name
          ) {
             $this->__Children[$objectId]->setContent($value);

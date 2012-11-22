@@ -39,9 +39,9 @@ class form_taglib_clientlistener extends form_control {
     * Version 1.0, 18.03.2010<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_placeholder', 'listener', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_getstring', 'listener', 'getstring');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_addtaglib', 'listener', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'listener', 'placeholder');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'listener', 'getstring');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'listener', 'addtaglib');
    }
 
    /**

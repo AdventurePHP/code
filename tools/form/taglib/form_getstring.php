@@ -23,14 +23,14 @@
  * @package tools::form::taglib
  * @class form_getstring
  *
- * Extends the html_taglib_getstring class with the methods, that need to be implemented
+ * Extends the LanguageLabelTag class with the methods, that need to be implemented
  * for the new form taglibs. Directly uses the functionality of the base class.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 17.09.2009<br />
  */
-abstract class form_getstring extends html_taglib_getstring {
+abstract class form_getstring extends LanguageLabelTag {
 
    /**
     * @public

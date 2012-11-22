@@ -31,7 +31,7 @@ import('modules::guestbook2009::biz', 'GuestbookModel');
  * @version
  * Version 0.1, 16.05.2009<br />
  */
-class gb_taglib_import extends core_taglib_importdesign {
+class gb_taglib_import extends ImportTemplateTag {
 
    public function __construct() {
       parent::__construct();

@@ -49,7 +49,7 @@
  * Version 0.1, 30.10.2008<br />
  * Version 0.2, 01.11.2008 (Added documentation and introduced the modelmode and getmethode params)<br />
  */
-class generic_taglib_importdesign extends core_taglib_importdesign {
+class generic_taglib_importdesign extends ImportTemplateTag {
 
    /**
     * @public

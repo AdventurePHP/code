@@ -30,12 +30,12 @@
  * @version
  * Version 0.1, 21.05.2009<br />
  */
-class LanguageLabelTag extends html_taglib_getstring {
+class LanguageLabelTag extends LanguageLabelTag {
 
    /**
     * @public
     *
-    * Presets the attributes needed by the html_taglib_getstring class to be able to only
+    * Presets the attributes needed by the LanguageLabelTag class to be able to only
     * have to provide the label key in the templates (saves your fingers!).
     *
     * @author Christian Achatz

@@ -523,7 +523,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.1, 26.02.2011<br />
     */
    public function getVersion() {
-      return '1.16-SVN';
+      return '1.17-SVN';
    }
 
    /**
@@ -1056,12 +1056,12 @@ class Document extends APFObject {
       // we are *not* using the addTaglib() method, because the following tags are
       // already included in the pagecontroller.php and adding the tags directly
       // is twice as fast compared to the addTagLib() method.
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_addtaglib', 'core', 'addtaglib');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_importdesign', 'core', 'importdesign');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_appendnode', 'core', 'appendnode');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_template', 'html', 'template');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_placeholder', 'html', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_getstring', 'html', 'getstring');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'core', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'ImportTemplateTag', 'core', 'importdesign');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AppendNodeTag', 'core', 'appendnode');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'TemplateTag', 'html', 'template');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'html', 'placeholder');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'html', 'getstring');
    }
 
    /**
@@ -1766,7 +1766,7 @@ class Document extends APFObject {
 
 /**
  * @package core::pagecontroller
- * @class core_taglib_appendnode
+ * @class AppendNodeTag
  *
  * Parses a template and appends the child nodes to the parent's child list. Hence, this taglib
  * can be used to swap shared templates / forms / ... Please make sure, that the imported template
@@ -1783,7 +1783,7 @@ class Document extends APFObject {
  * @version
  * Version 0.1, 16.11.2008<br />
  */
-class core_taglib_appendnode extends Document {
+class AppendNodeTag extends Document {
 
    /**
     * @var string Indicates, whether the static content of an included templates
@@ -1818,14 +1818,14 @@ class core_taglib_appendnode extends Document {
       // check attributes
       $namespace = $this->getAttribute('namespace');
       if ($namespace === null) {
-         throw new InvalidArgumentException('[core_taglib_appendnode::onParseTime()] Attribute '
+         throw new InvalidArgumentException('[AppendNodeTag::onParseTime()] Attribute '
                . '"namespace" is not present or empty! Please provide the namespace of the '
                . 'desired template.', E_USER_ERROR);
       }
 
       $template = $this->getAttribute('template');
       if ($template === null) {
-         throw new InvalidArgumentException('[core_taglib_appendnode::onParseTime()] Attribute '
+         throw new InvalidArgumentException('[AppendNodeTag::onParseTime()] Attribute '
                . '"template" is not present or empty! Please provide the name of the desired '
                . 'template.', E_USER_ERROR);
       }
@@ -1921,7 +1921,7 @@ class core_taglib_appendnode extends Document {
 
 /**
  * @package core::pagecontroller
- * @class core_taglib_importdesign
+ * @class ImportTemplateTag
  *
  * This class implements the functionality of the core::importdesign tag. It generates a sub node
  * from the template specified by the tag's attributes within the current APF DOM tree. Each
@@ -1931,7 +1931,7 @@ class core_taglib_appendnode extends Document {
  * @version
  * Version 0.1, 28.12.2006<br />
  */
-class core_taglib_importdesign extends Document {
+class ImportTemplateTag extends Document {
 
    /**
     * @public
@@ -2015,7 +2015,7 @@ class core_taglib_importdesign extends Document {
 
 /**
  * @package core::pagecontroller
- * @class core_taglib_addtaglib
+ * @class AddTaglibTag
  *
  * Represents the functionality of the core:addtaglib tag. Adds a further taglib to the known
  * taglibs of the tag's parent object. This can be used to enhance the known tag list if a
@@ -2025,7 +2025,7 @@ class core_taglib_importdesign extends Document {
  * @version
  * Version 0.1, 28.12.2006<br />
  */
-class core_taglib_addtaglib extends Document {
+class AddTaglibTag extends Document {
 
    public function __construct() {
       // do nothing, especially not initialize tag libs
@@ -2089,7 +2089,7 @@ class core_taglib_addtaglib extends Document {
 
 /**
  * @package core::pagecontroller
- * @class html_taglib_placeholder
+ * @class PlaceHolderTag
  *
  * Represents a place holder within a template file. Can be filled within a document controller
  * using the setPlaceHolder() method.
@@ -2098,7 +2098,7 @@ class core_taglib_addtaglib extends Document {
  * @version
  * Version 0.1, 28.12.2006<br />
  */
-class html_taglib_placeholder extends Document {
+class PlaceHolderTag extends Document {
 
    public function __construct() {
       // do nothing, especially not initialize tag libs
@@ -2124,7 +2124,7 @@ class html_taglib_placeholder extends Document {
 
 /**
  * @package core::pagecontroller
- * @class html_taglib_template
+ * @class TemplateTag
  *
  * Represents a reusable html fragment (template) within a template file. The tag's functionality
  * can be extended by the &lt;template:addtaglib /&gt; tag. Use setPlaceHolder() to set a place
@@ -2135,7 +2135,7 @@ class html_taglib_placeholder extends Document {
  * Version 0.1, 28.12.2006<br />
  * Version 0.2, 10.11.2008 (Removed the IncludedTagLib behavior, because this lead to errors when including new taglibs with template:addtaglib.)<br />
  */
-class html_taglib_template extends Document {
+class TemplateTag extends Document {
 
    /**
     * @protected
@@ -2160,9 +2160,9 @@ class html_taglib_template extends Document {
     * Version 0.8, 11.02.2012 (Added template:getstring tag as known tag (refactoring!))<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_placeholder', 'template', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_addtaglib', 'template', 'addtaglib');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_getstring', 'template', 'getstring');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'template', 'placeholder');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'template', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'template', 'getstring');
    }
 
    /**
@@ -2187,7 +2187,7 @@ class html_taglib_template extends Document {
     *
     * @param string $name name of the place holder.
     * @param string $value value of the place holder.
-    * @return html_taglib_template This instance for further usage.
+    * @return TemplateTag This instance for further usage.
     * @throws InvalidArgumentException In case the place holder cannot be found.
     *
     * @author Christian Achatz
@@ -2207,7 +2207,7 @@ class html_taglib_template extends Document {
          foreach ($this->__Children as $objectID => $DUMMY) {
 
             // check, if current child is a place holder
-            if ($this->__Children[$objectID] instanceof html_taglib_placeholder) {
+            if ($this->__Children[$objectID] instanceof PlaceHolderTag) {
 
                // check, if current child is the desired place holder
                if ($this->__Children[$objectID]->getAttribute('name') == $name) {
@@ -2219,14 +2219,14 @@ class html_taglib_template extends Document {
             }
          }
       } else {
-         throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] No place holder object with name "'
+         throw new InvalidArgumentException('[TemplateTag::setPlaceHolder()] No place holder object with name "'
                . $name . '" composed in current template for document controller "'
                . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR);
       }
 
       // throw error, if no children are composed under the current tag
       if ($placeHolderCount < 1) {
-         throw new InvalidArgumentException('[html_taglib_template::setPlaceHolder()] There are no place holders found for name "'
+         throw new InvalidArgumentException('[TemplateTag::setPlaceHolder()] There are no place holders found for name "'
                . $name . '" in template "' . $this->getAttributes('name') . '" in document controller "'
                . $this->getParentObject()->getDocumentController() . '"!', E_USER_WARNING);
       }
@@ -2240,7 +2240,7 @@ class html_taglib_template extends Document {
     * Let's you retrieve an &lt;template:getstring /&gt; tag instance with the specified name.
     *
     * @param string $name The name of the template label to return.
-    * @return html_taglib_getstring The instance of the desired label.
+    * @return LanguageLabelTag The instance of the desired label.
     * @throws InvalidArgumentException In case no label can be found.
     *
     * @author Christian Achatz
@@ -2249,9 +2249,9 @@ class html_taglib_template extends Document {
     */
    public function &getLabel($name) {
       try {
-         return $this->getChildNode('name', $name, 'html_taglib_getstring');
+         return $this->getChildNode('name', $name, 'LanguageLabelTag');
       } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[html_taglib_template::getLabel()] No label found with name "' . $name
+         throw new InvalidArgumentException('[TemplateTag::getLabel()] No label found with name "' . $name
                . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
                . $this->getParentObject()->getDocumentController() . '"! Perhaps, the tag library for template:getstring '
                . 'is not loaded.', E_USER_ERROR, $e);
@@ -2325,7 +2325,7 @@ class html_taglib_template extends Document {
 
 /**
  * @package core::pagecontroller
- * @class html_taglib_getstring
+ * @class LanguageLabelTag
  * @abstract
  *
  * Implements a base class for the taglibs &lt;html:getstring /&gt; and
@@ -2346,9 +2346,9 @@ class html_taglib_template extends Document {
  * @version
  * Version 0.1, 21.04.2006<br />
  * Version 0.2, 17.09.2009 (Refactored due to form taglib changes)<br />
- * Version 0.3, 11.02.2012 (Added html_taglib_getstring to core (refactoring!))
+ * Version 0.3, 11.02.2012 (Added LanguageLabelTag to core (refactoring!))
  */
-class html_taglib_getstring extends Document {
+class LanguageLabelTag extends Document {
 
    /**
     * @var array A list of place holder names and values.
@@ -2424,7 +2424,7 @@ class html_taglib_getstring extends Document {
     *
     * @param string $name The name of the place holder.
     * @param string $value The value of the place holder.
-    * @return html_taglib_getstring This instance for further usage (e.g. adding further place holders).
+    * @return LanguageLabelTag This instance for further usage (e.g. adding further place holders).
     *
     * @author Christian Achatz
     * @version
@@ -2546,7 +2546,7 @@ abstract class base_controller extends Document {
 
          foreach ($children as $objectId => $DUMMY) {
 
-            if ($children[$objectId] instanceof html_taglib_placeholder) {
+            if ($children[$objectId] instanceof PlaceHolderTag) {
 
                if ($children[$objectId]->getAttribute('name') == $name) {
                   $children[$objectId]->setContent($value);
@@ -2671,7 +2671,7 @@ abstract class base_controller extends Document {
     * to access a html template object within a document controller.
     *
     * @param string $name The name of the template to return.
-    * @return html_taglib_template The desired template instance.
+    * @return TemplateTag The desired template instance.
     * @throws InvalidArgumentException In case the template cannot be found.
     *
     * @author Christian Schäfer
@@ -2683,7 +2683,7 @@ abstract class base_controller extends Document {
     */
    protected function &getTemplate($name) {
       try {
-         return $this->getDocument()->getChildNode('name', $name, 'html_taglib_template');
+         return $this->getDocument()->getChildNode('name', $name, 'TemplateTag');
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getTemplate()] No template with name "'
                . $name . '" composed in current document for document controller "' . get_class($this)
@@ -2694,16 +2694,16 @@ abstract class base_controller extends Document {
    /**
     * @protected
     *
-    * Let's you retrieve an instance of the html_taglib_getstring label instance to
+    * Let's you retrieve an instance of the LanguageLabelTag label instance to
     * fill a place holder.
     *
     * @param string $name The content of the tag's "name" attribute to select the node.
-    * @return html_taglib_getstring The instance of the desired label node.
+    * @return LanguageLabelTag The instance of the desired label node.
     * @throws InvalidArgumentException In case no label node can be found.
     */
    protected function &getLabel($name) {
       try {
-         return $this->getDocument()->getChildNode('name', $name, 'html_taglib_getstring');
+         return $this->getDocument()->getChildNode('name', $name, 'LanguageLabelTag');
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getLabel()] No label with name "'
                . $name . '" composed in current document for document controller "' . get_class($this)
@@ -2727,7 +2727,7 @@ abstract class base_controller extends Document {
     */
    protected function placeHolderExists($name) {
       try {
-         $this->getChildNode('name', $name, 'html_taglib_placeholder');
+         $this->getChildNode('name', $name, 'PlaceHolderTag');
          return true;
       } catch (InvalidArgumentException $e) {
          return false;
@@ -2739,7 +2739,7 @@ abstract class base_controller extends Document {
     *
     * Checks, if a place holder exists within the given template.
     *
-    * @param html_taglib_template $template The instance of the template to check.
+    * @param TemplateTag $template The instance of the template to check.
     * @param string $name The name of the place holder.
     * @return bool True if yes, false otherwise.
     *
@@ -2749,9 +2749,9 @@ abstract class base_controller extends Document {
     * Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
     * Version 0.3, 02.07.2011 (Renaming to fit the APF naming convention)<br />
     */
-   protected function templatePlaceHolderExists(html_taglib_template &$template, $name) {
+   protected function templatePlaceHolderExists(TemplateTag &$template, $name) {
       try {
-         $template->getChildNode('name', $name, 'html_taglib_placeholder');
+         $template->getChildNode('name', $name, 'PlaceHolderTag');
          return true;
       } catch (InvalidArgumentException $e) {
          return false;

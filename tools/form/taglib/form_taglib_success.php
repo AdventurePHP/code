@@ -42,9 +42,9 @@
 class form_taglib_success extends form_control {
 
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_placeholder', 'success', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'html_taglib_getstring', 'success', 'getstring');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'core_taglib_addtaglib', 'success', 'addtaglib');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'success', 'placeholder');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'success', 'getstring');
+      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'success', 'addtaglib');
    }
 
    /**

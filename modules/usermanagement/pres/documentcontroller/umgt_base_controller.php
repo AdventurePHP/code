@@ -84,14 +84,14 @@ abstract class umgt_base_controller extends iteratorBaseController {
     *
     * Returns the media inclusion tag contained i nthe given template.
     *
-    * @param html_taglib_template $template The template to search the media file tag in.
+    * @param TemplateTag $template The template to search the media file tag in.
     * @return umgt_taglib_media The media file inclusion tag.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 05.06.2010<br />
     */
-   protected function &getIcon(html_taglib_template $template) {
+   protected function &getIcon(TemplateTag $template) {
       $children = &$template->getChildren();
       foreach ($children as $objectId => $DUMMY) {
          if ($children[$objectId] instanceof umgt_taglib_media) {
