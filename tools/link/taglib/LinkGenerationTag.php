@@ -22,16 +22,17 @@ import('tools::link', 'LinkGenerator');
 
 /**
  * @package tools::link::taglib
- * @class html_taglib_link
+ * @class LinkGenerationTag
  *
  * This taglib generates a url with the given parameters taking care of the
  * current LinkScheme.
  *
- * @author Ralf Schubert <<a href="http://develovision.de">Develovision Webentwicklung</a>>
+ * @author Ralf Schubert <a href="http://develovision.de">Develovision Webentwicklung</a>
  * @version
  * Version 0.1, 28.07.2011<br />
+ * Version 0.2, 22.11.2012 Werner Liemberger: removed a:getstring and ignored href bug<br />
  */
-class html_taglib_link extends Document {
+class LinkGenerationTag extends Document {
 
    public function transform() {
       $parameters = $this->getAttributes();
@@ -57,4 +58,5 @@ class html_taglib_link extends Document {
 
       return LinkGenerator::generateUrl($url);
    }
+
 }

@@ -18,19 +18,21 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::link::taglib', 'html_taglib_link');
+import('tools::link::taglib', 'LinkLanguageLabelTag');
+import('tools::link::taglib', 'LinkGenerationTag');
 
 /**
  * @package tools::link::taglib
- * @class html_taglib_a
+ * @class HtmlLinkTag
  *
- * This taglib generates a html link tag based on the html_taglib_link taglib.
+ * This taglib generates a html link tag based on the LinkGenerationTag taglib.
  *
- * @author: Werner Liemberger wpublicmail [at] gmail DOT com
+ * @author Werner Liemberger wpublicmail [at] gmail DOT com
  * @version
  * Version 0.1, 06.08.2011<br />
+ * Version 0.2, 22.11.2012 Werner Liemberger: removed a:getstring and ignored href bug<br />
  */
-class html_taglib_a extends html_taglib_link {
+class HtmlLinkTag extends LinkGenerationTag {
 
    protected $attributeList = array('id' => null, 'style' => null, 'class' => null, 'onabort' => null,
       'onclick' => null, 'ondblclick' => null, 'onmousedown' => null, 'onmouseup' => null,
@@ -40,6 +42,10 @@ class html_taglib_a extends html_taglib_link {
       'coords' => null, 'href' => null, 'hreflang' => null, 'name' => null, 'rel' => null,
       'rev' => null, 'shape' => null, 'target' => null, 'xml:lang' => null, 'onblur' => null);
 
+   public function __construct() {
+      $this->__TagLibs[] = new TagLib('tools::link::taglib', 'LinkLanguageLabelTag', 'a', 'getstring');
+   }
+
    public function onParseTime() {
       // Move all vales from parameters which are in the white list into this array
       // and remove them from the attribute array, because they should not be part oft the url.
@@ -47,15 +53,18 @@ class html_taglib_a extends html_taglib_link {
          $attr = $this->getAttribute($key, null);
          if ($attr != null) {
             $this->attributeList[$key] = $attr;
-            $this->deleteAttribute($key);
+            if ($key != 'href') {
+               $this->deleteAttribute($key);
+            }
          }
       }
 
       $this->attributeList['href'] = parent::transform();
       if ($this->attributeList['href'] === null) {
-         throw new InvalidArgumentException('[html_taglib_a::onParseTime()] The Attribute "href" is missing. '
-            . 'Please provide the destination!', E_USER_ERROR);
+         throw new InvalidArgumentException('[HtmlLinkTag::onParseTime()] The Attribute "href" is missing. '
+               . 'Please provide the destination!', E_USER_ERROR);
       }
+      $this->__extractTagLibTags();
    }
 
    public function transform() {
@@ -87,4 +96,5 @@ class html_taglib_a extends html_taglib_link {
 
       return '<a ' . $this->getAttributesAsString($this->attributeList) . '>' . $content . '</a>';
    }
+
 }
