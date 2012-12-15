@@ -2227,7 +2227,7 @@ class TemplateTag extends Document {
       // throw error, if no children are composed under the current tag
       if ($placeHolderCount < 1) {
          throw new InvalidArgumentException('[TemplateTag::setPlaceHolder()] There are no place holders found for name "'
-               . $name . '" in template "' . $this->getAttributes('name') . '" in document controller "'
+               . $name . '" in template "' . $this->getAttribute('name') . '" in document controller "'
                . $this->getParentObject()->getDocumentController() . '"!', E_USER_WARNING);
       }
 
