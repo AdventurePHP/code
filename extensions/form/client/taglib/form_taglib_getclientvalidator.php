@@ -29,7 +29,7 @@
  * @version
  * Version 1.0, 18.03.2010<br />
  */
-class form_taglib_getclientvalidator extends form_control {
+class form_taglib_getclientvalidator extends AbstractFormControl {
 
    // Cache all button names/control names which already have an onClick/onBlur event
    private $__buttonEventCache = array();
@@ -148,13 +148,13 @@ class form_taglib_getclientvalidator extends form_control {
       }
 
       // Check type of control, and generate jQuery selector
-      /* @var $parent html_taglib_form */
+      /* @var $parent HtmlFormTag */
       $parent = $this->__ParentObject;
       switch (get_class($parent->getFormElementByName($definition['control']))) {
-         case 'form_taglib_select':
+         case 'SelectBoxTag':
             $jQSelector = ':input[name=\'' . $definition['control'] . '\[\]\']';
             break;
-         case 'form_taglib_date':
+         case 'DateSelectorTag':
             $jQSelector = 'span[id=\'' . $definition['control'] . '\']';
             break;
          default:

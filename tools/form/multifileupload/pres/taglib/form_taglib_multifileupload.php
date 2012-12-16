@@ -39,7 +39,7 @@ import('extensions::htmlheader::biz', 'CssContentNode');
  * @author Werner Liemberger <wpublicmail@gmail.com>
  * @version 1.0, 14.3.2011<br>
  */
-class form_taglib_multifileupload extends form_control {
+class form_taglib_multifileupload extends AbstractFormControl {
 
    /**
     * @var MultiFileUploadManager
@@ -53,7 +53,7 @@ class form_taglib_multifileupload extends form_control {
    public function onParseTime() {
 
       $this->formname = $this->getParentObject()->getAttribute('name');
-      $this->__presetValue();
+      $this->presetValue();
 
       // get Settings
       $this->name = $this->getAttribute('name');

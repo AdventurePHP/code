@@ -61,7 +61,7 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     * specified. This lets you define dedicated listener, that are only
     * displayed when triggered by a special validator.
     *
-    * @param form_control $control The control who's listeners should be notified.
+    * @param AbstractFormControl $control The control who's listeners should be notified.
     *
     * @author Christian Achatz
     * @version
@@ -70,14 +70,16 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     */
    protected function notifyValidationListeners(&$control) {
 
-      $listeners = &$control->getParentObject()->getFormElementsByTagName('form:listener');
+      /* @var $form HtmlFormTag */
+      $form = $control->getParentObject();
+      $listeners = & $form->getFormElementsByTagName('form:listener');
       $count = count($listeners);
       $controlName = $control->getAttribute('name');
       $validatorName = $this->getValidatorName();
 
       for ($i = 0; $i < $count; $i++) {
          // Here, we're using a little trick: empty attributes are considered "null"
-         // by the XmlParser. Thus, we can set the validator's name to null to
+         // by the XmlParser. Thus, we can set the validator name to null to
          // indicate, that we want a "normal" listener (=no special listener) to be
          // notified!
          if ($listeners[$i]->getAttribute('control') === $controlName
@@ -114,7 +116,7 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     * http://wiki.adventure-php-framework.org/de/Weiterentwicklung_Formular-Validierung
     * for details.
     *
-    * @param form_control $control The control to mark as invalid.
+    * @param AbstractFormControl $control The control to mark as invalid.
     *
     * @since 1.12
     *
@@ -123,7 +125,7 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     * Version 0.1, 03.02.2010<br />
     * Version 0.2, 07.03.2011 (use control's appendCssClass() now)<br />
     */
-   protected function markControl(form_control &$control) {
+   protected function markControl(AbstractFormControl &$control) {
       $marker = $this->getCssMarkerClass($control);
       $control->appendCssClass($marker);
    }
@@ -133,7 +135,7 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     *
     * Evaluates the css class used to mark an invalid form control.
     *
-    * @param form_control $control The control to validate.
+    * @param AbstractFormControl $control The control to validate.
     * @return string The css marker class for validation notification.
     *
     * @since 1.12
@@ -142,7 +144,7 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     * @version
     * Version 0.1, 06.02.2010<br />
     */
-   protected function getCssMarkerClass(form_control &$control) {
+   protected function getCssMarkerClass(AbstractFormControl &$control) {
       $marker = $control->getAttribute(self::$CUSTOM_MARKER_CLASS_ATTRIBUTE);
       if (empty($marker)) {
          $marker = self::$DEFAULT_MARKER_CLASS;

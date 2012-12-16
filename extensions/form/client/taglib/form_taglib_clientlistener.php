@@ -29,7 +29,7 @@
  * @version
  * Version 1.0, 18.03.2010<br />
  */
-class form_taglib_clientlistener extends form_control {
+class form_taglib_clientlistener extends AbstractFormControl {
 
    /**
     * Add child taglibs.
@@ -77,7 +77,7 @@ class form_taglib_clientlistener extends form_control {
    public function transform() {
       $controlName = $this->__Attributes['control'];
 
-      /* @var $parent html_taglib_form */
+      /* @var $parent HtmlFormTag */
       $parent = $this->__ParentObject;
       $control = $parent->getFormElementByName($controlName);
 
@@ -87,10 +87,10 @@ class form_taglib_clientlistener extends form_control {
 
       // Check type of control, and generate jQuery selector
       switch (get_class($control)) {
-         case 'form_taglib_select':
+         case 'SelectBoxTag':
             $jQSelector = ':input[name=\'' . $controlName . '\[\]\']';
             break;
-         case 'form_taglib_date':
+         case 'DateSelectorTag':
             $jQSelector = 'span[id=\'' . $controlName . '\']';
             break;
          default:

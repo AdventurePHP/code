@@ -37,7 +37,7 @@ class umgt_userrem_controller extends umgt_base_controller {
       // initialize the form
       $form = &$this->getForm('User');
       $userControl = &$form->getFormElementByName('User');
-      /* @var $userControl form_taglib_multiselect */
+      /* @var $userControl MultiSelectBoxTag */
       $groupId = RequestHandler::getValue('groupid');
       $uM = &$this->getManager();
       $group = $uM->loadGroupById($groupId);

@@ -48,7 +48,7 @@ abstract class backend_base_controller extends base_controller {
       // fill the select list
       $form = &$this->getForm('selectentry');
 
-      /* @var $select form_taglib_select */
+      /* @var $select SelectBoxTag */
       $select = &$form->getFormElementByName('entryid');
 
       /* @var $gS GuestbookService */

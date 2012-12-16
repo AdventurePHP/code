@@ -38,7 +38,7 @@ class umgt_group_add_user_controller extends umgt_base_controller {
       $form = &$this->getForm('User');
       $userControl = &$form->getFormElementByName('User');
 
-      /* @var $userControl form_taglib_multiselect */
+      /* @var $userControl MultiSelectBoxTag */
       $groupId = RequestHandler::getValue('groupid');
 
       $uM = &$this->getManager();

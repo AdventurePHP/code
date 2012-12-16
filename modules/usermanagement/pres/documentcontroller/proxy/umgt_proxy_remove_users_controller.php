@@ -52,7 +52,7 @@ class umgt_proxy_remove_users_controller extends permission_base_controller {
       }
 
       $usersControl = &$form->getFormElementByName('users');
-      /* @var $usersControl form_taglib_select */
+      /* @var $usersControl SelectBoxTag */
       foreach ($users as $id => $DUMMY) {
          $usersControl->addOption($users[$id]->getDisplayName(), $users[$id]->getObjectId());
       }

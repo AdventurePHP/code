@@ -2646,7 +2646,7 @@ abstract class base_controller extends Document {
     * access a form object within a document controller.
     *
     * @param string $formName The name of the form to return.
-    * @return html_taglib_form The instance of the desired form.
+    * @return HtmlFormTag The instance of the desired form.
     * @throws InvalidArgumentException In case the form cannot be found.
     *
     * @author Christian Achatz
@@ -2656,7 +2656,7 @@ abstract class base_controller extends Document {
     */
    protected function &getForm($formName) {
       try {
-         return $this->getDocument()->getChildNode('name', $formName, 'html_taglib_form');
+         return $this->getDocument()->getChildNode('name', $formName, 'HtmlFormTag');
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::getForm()] No form object with name "'
                . $formName . '" composed in current document for document controller "' . get_class($this)

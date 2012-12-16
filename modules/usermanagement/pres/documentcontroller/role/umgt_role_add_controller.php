@@ -36,7 +36,7 @@ class umgt_role_add_controller extends umgt_base_controller {
 
       $form = &$this->getForm('RoleAdd');
       $permissionControl = &$form->getFormElementByName('Permission');
-      /* @var $permissionControl form_taglib_multiselect */
+      /* @var $permissionControl MultiSelectBoxTag */
 
       $uM = $this->getManager();
       $roles = $uM->getRoleList();

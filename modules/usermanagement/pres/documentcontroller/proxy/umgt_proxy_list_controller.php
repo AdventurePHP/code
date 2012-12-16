@@ -40,7 +40,7 @@ class umgt_proxy_list_controller extends umgt_base_controller {
 
       $types = $uM->loadVisibilityDefinitionTypes();
       $select = &$form->getFormElementByName('proxytypeid');
-      /* @var $select form_taglib_select */
+      /* @var $select SelectBoxTag */
 
       // add default option that deletes any filter
       $select->addOption(

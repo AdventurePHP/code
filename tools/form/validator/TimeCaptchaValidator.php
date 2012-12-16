@@ -25,7 +25,7 @@ import('tools::form::validator', 'TextFieldValidator');
  * @package tools::form::validator
  * @class TimeCaptchaValidator
  *
- * Implements, in combination with form_taglib_timecaptcha, a non-visual captcha
+ * Implements, in combination with TimeCaptchaTag, a non-visual captcha
  * which tries to identify bots by the time they need to fill in the data in a
  * form.
  * The time (in seconds) before the tag becomes valid can be specified in the
@@ -60,7 +60,7 @@ class TimeCaptchaValidator extends TextFieldValidator {
          $seconds = $this->__DefaultSeconds;
       }
 
-      $sessMgr = new SessionManager('tools::form::taglib::form_taglib_timecaptcha');
+      $sessMgr = new SessionManager('tools::form::taglib::TimeCaptchaTag');
       $sessTime = $sessMgr->loadSessionData('form_' . $this->__Control->getParentObject()->getAttribute('name'));
       $sessMgr->deleteSessionData('form__' . $this->__Control->getParentObject()->getAttribute('name'));
       unset($sessMgr);

@@ -40,7 +40,7 @@ class umgt_role_detachfromuser_controller extends umgt_base_controller {
       // initialize the form
       $form = &$this->getForm('User');
       $user = &$form->getFormElementByName('User');
-      /* @var $user form_taglib_multiselect */
+      /* @var $user MultiSelectBoxTag */
 
       $uM = &$this->getManager();
       $role = $uM->loadRoleByID($roleid);

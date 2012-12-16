@@ -52,7 +52,7 @@ class umgt_proxy_add_users_controller extends permission_base_controller {
       }
 
       $usersControl = &$form->getFormElementByName('users');
-      /* @var $usersControl form_taglib_multiselect */
+      /* @var $usersControl MultiSelectBoxTag */
       foreach ($users as $id => $DUMMY) {
          $usersControl->addOption($users[$id]->getDisplayName(), $users[$id]->getObjectId());
       }

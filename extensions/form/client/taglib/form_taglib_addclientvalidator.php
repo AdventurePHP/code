@@ -29,7 +29,7 @@
  * @version
  * Version 1.0, 18.03.2010<br />
  */
-class form_taglib_addclientvalidator extends form_control {
+class form_taglib_addclientvalidator extends AbstractFormControl {
 
    // prevent missing name error
    public function onParseTime() {
@@ -59,7 +59,7 @@ class form_taglib_addclientvalidator extends form_control {
       }
 
       // Configure referenced controls
-      /* @var $parent html_taglib_form */
+      /* @var $parent HtmlFormTag */
       $parent = $this->__ParentObject;
       foreach ($controlsTmp as $control) {
          if (($ref = $parent->getFormElementByName($control)->getAttribute('ref')) !== NULL) {

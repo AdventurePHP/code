@@ -35,14 +35,14 @@ abstract class AbstractFormFilter extends AbstractFilter {
 
    /**
     * Includes a reference on the control to filter.
-    * @var form_control The control to filter.
+    * @var AbstractFormControl The control to filter.
     */
    protected $__Control;
 
    /**
     * Includes a reference on the button of the form,
     * that initiates the validation event.
-    * @var form_control The button that triggers the event.
+    * @var AbstractFormControl The button that triggers the event.
     */
    protected $__Button;
 
@@ -51,14 +51,14 @@ abstract class AbstractFormFilter extends AbstractFilter {
     *
     * Injects the control to validate and the trigger button into the filter.
     *
-    * @param form_control $control The control, that should be validated.
-    * @param form_control $button The button, that triggers the validate event.
+    * @param AbstractFormControl $control The control, that should be validated.
+    * @param AbstractFormControl $button The button, that triggers the validate event.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 28.08.2009<br />
     */
-   public function __construct(form_control &$control, form_control &$button) {
+   public function __construct(AbstractFormControl &$control, AbstractFormControl &$button) {
       $this->__Control = &$control;
       $this->__Button = &$button;
    }

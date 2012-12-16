@@ -50,7 +50,7 @@ class umgt_add_group_to_roles_controller extends umgt_base_controller {
       }
 
       $rolesControl = &$form->getFormElementByName('Roles');
-      /* @var $rolesControl form_taglib_multiselect */
+      /* @var $rolesControl MultiSelectBoxTag */
       foreach ($roles as $role) {
          $rolesControl->addOption($role->getDisplayName(), $role->getObjectId());
       }
@@ -62,7 +62,7 @@ class umgt_add_group_to_roles_controller extends umgt_base_controller {
          $options = &$rolesControl->getSelectedOptions();
          $additionalRoles = array();
          foreach ($options as $option) {
-            /* @var $option select_taglib_option */
+            /* @var $option SelectBoxOptionTag */
             $additionalRole = new UmgtRole();
             $additionalRole->setObjectId($option->getValue());
             $additionalRoles[] = $additionalRole;

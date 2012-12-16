@@ -18,7 +18,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 import('tools::form::validator', 'TextFieldValidator');
 
 /**
@@ -51,7 +50,8 @@ class CSRFHashValidator extends TextFieldValidator {
       $class = $this->__Control->getAttribute('class');
       $salt = $this->__Control->getAttribute('salt');
 
-      $provider = &$this->getServiceObject($namespace, $class);
+      /* @var $provider CSRFHashProvider */
+      $provider = & $this->getServiceObject($namespace, $class);
       $hash = $provider->generateHash($salt);
 
       return $hash === $input;
@@ -63,13 +63,13 @@ class CSRFHashValidator extends TextFieldValidator {
     * Overwrites the maker method to have no interference with the "class"
     * attribute when loading the hash provider.
     *
-    * @param form_control $control The control to mark.
+    * @param AbstractFormControl $control The control to mark.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.11.2010<br />
     */
-   protected function markControl(form_control &$control) {
+   protected function markControl(AbstractFormControl &$control) {
    }
 
 }

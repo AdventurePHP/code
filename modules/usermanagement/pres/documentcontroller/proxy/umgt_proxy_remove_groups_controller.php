@@ -53,7 +53,7 @@ class umgt_proxy_remove_groups_controller extends permission_base_controller {
 
       $groupsControl = &$form->getFormElementByName('groups');
 
-      /* @var $groupsControl form_taglib_multiselect */
+      /* @var $groupsControl MultiSelectBoxTag */
       foreach ($groups as $id => $DUMMY) {
          $groupsControl->addOption($groups[$id]->getDisplayName(), $groups[$id]->getObjectId());
       }

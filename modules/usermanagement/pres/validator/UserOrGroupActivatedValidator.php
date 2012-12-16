@@ -33,7 +33,7 @@ import('tools::form::validator', 'TextFieldValidator');
 class UserOrGroupActivatedValidator extends TextFieldValidator {
 
    /**
-    * @var form_taglib_multiselect The alternative control to validate.
+    * @var MultiSelectBoxTag The alternative control to validate.
     */
    private $alternativeControl;
 
@@ -46,7 +46,7 @@ class UserOrGroupActivatedValidator extends TextFieldValidator {
 
       // initialize alternative control for marking
       $form = &$this->__Control->getParentObject();
-      /* @var $form html_taglib_form */
+      /* @var $form HtmlFormTag */
       $this->alternativeControl = &$form->getFormElementByName($altControlName);
 
       if (!isset($_REQUEST[$controlName]) && !isset($_REQUEST[$altControlName])) {

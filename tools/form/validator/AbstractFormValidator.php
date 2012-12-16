@@ -25,7 +25,7 @@ import('tools::form', 'FormException');
  * @class AbstractFormValidator
  *
  * This class defines the scheme of form validators. Implements some basic
- * parts of the validator's implementation.
+ * parts of the validator implementation.
  *
  * @author Christian Achatz
  * @version
@@ -47,14 +47,14 @@ abstract class AbstractFormValidator extends APFObject {
 
    /**
     * Includes a reference on the control to validate.
-    * @var form_control The control to validate.
+    * @var AbstractFormControl The control to validate.
     */
    protected $__Control;
 
    /**
     * Includes a reference on the button of the form,
     * that initiates the validation event.
-    * @var form_control The button that triggers the event.
+    * @var AbstractFormControl The button that triggers the event.
     */
    protected $__Button;
 
@@ -78,15 +78,15 @@ abstract class AbstractFormValidator extends APFObject {
     *
     * Injects the control to validate and the button, that triggers the validation.
     *
-    * @param form_control $control The control, that should be validated.
-    * @param form_control $button The button, that triggers the validate event.
-    * @param string $type The validator's type regarding the listener notification.
+    * @param AbstractFormControl $control The control, that should be validated.
+    * @param AbstractFormControl $button The button, that triggers the validate event.
+    * @param string $type The validator type regarding the listener notification.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 24.08.2009<br />
     */
-   public function __construct(form_control &$control, form_control &$button, $type = null) {
+   public function __construct(AbstractFormControl &$control, AbstractFormControl &$button, $type = null) {
       $this->__Control = &$control;
       $this->__Button = &$button;
       $this->__Type = $type;

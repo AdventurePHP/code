@@ -51,7 +51,7 @@ class add_permission_to_role_controller extends umgt_base_controller {
       }
 
       $permissionControl = &$form->getFormElementByName('Permissions');
-      /* @var $permissionControl form_taglib_multiselect */
+      /* @var $permissionControl MultiSelectBoxTag */
 
       foreach ($permissions as $permission) {
          $permissionControl->addOption($permission->getDisplayName(), $permission->getObjectId());
@@ -62,7 +62,7 @@ class add_permission_to_role_controller extends umgt_base_controller {
          $options = $permissionControl->getSelectedOptions();
          $permissionsToAdd = array();
          foreach ($options as $option) {
-            /* @var $option select_taglib_option */
+            /* @var $option SelectBoxOptionTag */
             $permissionToAdd = new UmgtPermission();
             $permissionToAdd->setObjectId($option->getValue());
             $permissionsToAdd[] = $permissionToAdd;

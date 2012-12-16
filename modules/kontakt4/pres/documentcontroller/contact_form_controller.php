@@ -58,7 +58,7 @@ class contact_form_controller extends base_controller {
       $form->setAction($action);
 
       // fill recipient list
-      /* @var $recipients form_taglib_select */
+      /* @var $recipients SelectBoxTag */
       $recipients = & $form->getFormElementByName('Empfaenger');
 
       $cM = &$this->getServiceObject('modules::kontakt4::biz', 'ContactManager');
@@ -73,7 +73,7 @@ class contact_form_controller extends base_controller {
 
          $formData = new ContactFormData();
 
-         /* @var $recipient form_taglib_select */
+         /* @var $recipient SelectBoxTag */
          $recipient = &$form->getFormElementByName('Empfaenger');
          $option = &$recipient->getSelectedOption();
          $recipientId = $option->getAttribute('value');

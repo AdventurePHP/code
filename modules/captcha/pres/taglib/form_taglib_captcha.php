@@ -18,8 +18,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::form::taglib', 'form_control');
-import('tools::form::taglib', 'form_taglib_text');
+import('tools::form::taglib', 'AbstractFormControl');
+import('tools::form::taglib', 'TextFieldTag');
 import('tools::form::validator', 'AbstractFormValidator');
 import('tools::request', 'RequestHandler');
 import('tools::string', 'StringAssistant');
@@ -30,7 +30,7 @@ import('tools::link', 'LinkGenerator');
  * @package modules::captcha::pres::taglib
  * @class form_taglib_captcha
  *
- * Implements a CAPTCHA-Taglib to extend a form's features. Inherits from form_control
+ * Implements a CAPTCHA-Taglib to extend a form's features. Inherits from AbstractFormControl
  * in order to be a fully qualified form element.
  *
  * @author Christian Achatz
@@ -38,11 +38,11 @@ import('tools::link', 'LinkGenerator');
  * Version 0.1, 16.07.2008<br />
  * Version 0.2, 20.07.2008 (Moved in a separate module folder to deliver it with the framework release)<br />
  */
-class form_taglib_captcha extends form_control {
+class form_taglib_captcha extends AbstractFormControl {
 
    /**
     * @protected
-    * @var form_control Contains the instance of the captcha text field.
+    * @var AbstractFormControl Contains the instance of the captcha text field.
     */
    protected $textField = null;
 
@@ -123,7 +123,7 @@ class form_taglib_captcha extends form_control {
    public function onParseTime() {
 
       // create text field
-      $this->textField = new form_taglib_text();
+      $this->textField = new TextFieldTag();
       $this->textField->setObjectId(XmlParser::generateUniqID());
 
       // prepare the text field
@@ -187,7 +187,7 @@ class form_taglib_captcha extends form_control {
     *
     * Returns a reference on the captcha control's text field.
     *
-    * @return form_taglib_text The captcha's text field.
+    * @return TextFieldTag The captcha's text field.
     *
     * @author Christian Achatz
     * @version

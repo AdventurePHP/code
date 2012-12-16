@@ -29,7 +29,7 @@
  * @version
  * Version 1.0, 18.03.2010<br />
  */
-class form_taglib_clienterror extends form_control {
+class form_taglib_clienterror extends AbstractFormControl {
 
    /**
     * Add child taglibs.

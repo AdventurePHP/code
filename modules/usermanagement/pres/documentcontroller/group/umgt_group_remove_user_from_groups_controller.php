@@ -50,7 +50,7 @@ class umgt_group_remove_user_from_groups_controller extends umgt_base_controller
       }
 
       $groupsControl = &$form->getFormElementByName('Groups');
-      /* @var $groupsControl form_taglib_multiselect */
+      /* @var $groupsControl MultiSelectBoxTag */
       foreach ($groups as $group) {
          $groupsControl->addOption($group->getDisplayName(), $group->getObjectId());
       }
@@ -60,7 +60,7 @@ class umgt_group_remove_user_from_groups_controller extends umgt_base_controller
          $options = &$groupsControl->getSelectedOptions();
          $groupsToRemove = array();
          foreach ($options as $option) {
-            /* @var $option select_taglib_option */
+            /* @var $option SelectBoxOptionTag */
             $groupToRemove = new UmgtGroup();
             $groupToRemove->setObjectId($option->getValue());
             $groupsToRemove[] = $groupToRemove;

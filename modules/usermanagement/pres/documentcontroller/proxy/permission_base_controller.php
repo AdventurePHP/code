@@ -28,7 +28,7 @@ abstract class permission_base_controller extends umgt_base_controller {
 
       $form = &$this->getForm(self::$FORM_NAME);
 
-      /* @var $control form_taglib_multiselect */
+      /* @var $control MultiSelectBoxTag */
       $control = $form->getFormElementByName($elementName);
       $selectedOptions = $control->getSelectedOptions();
 

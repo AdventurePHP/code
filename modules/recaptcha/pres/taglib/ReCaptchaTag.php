@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::form::taglib', 'form_control');
+import('tools::form::taglib', 'AbstractFormControl');
 import('modules::recaptcha::pres::taglib', 'ReCaptchaTranslationTag');
 require_once(__DIR__ . '/../../external/google/recaptchalib.php');
 
@@ -38,7 +38,7 @@ require_once(__DIR__ . '/../../external/google/recaptchalib.php');
  * @version
  * Version 0.1, 22.09.2012<br />
  */
-class ReCaptchaTag extends form_control {
+class ReCaptchaTag extends AbstractFormControl {
 
    /**
     * @const The name of the challenge identifier url parameter.
