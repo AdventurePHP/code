@@ -21,7 +21,7 @@
 
 /**
  * @package extensions::forwardmessage::pres::taglib
- * @class html_taglib_getforwardmessages
+ * @class DisplayForwardMessagesTag
  *
  * @param string $groups String of groups that should be displayed. Separated by "," (e.g "message,error")
  * @param string $delimiter
@@ -31,7 +31,7 @@
  * <code>
  * <core:addtaglib
  *    namespace="extensions::forwardmessage::pres::taglib"
- *    class="html_taglib_getforwardmessages"
+ *    class="DisplayForwardMessagesTag"
  *    prefix="html"
  *    name="getforwardmessages"
  * />
@@ -46,7 +46,7 @@
  * Version 0.1, 10.09.2010<br />
  * Version 0.2, 25.2.2011, Group option added by Werner Liemberger
  */
-class html_taglib_getforwardmessages extends Document {
+class DisplayForwardMessagesTag extends Document {
 
    public function transform() {
       return implode($this->getAttribute('delimiter', ''), $this->getMessages());

@@ -21,7 +21,7 @@
 
 /**
  * @package extensions::forwardmessage::pres::taglib
- * @class html_taglib_addforwardmessage
+ * @class AddForwardMessageTag
  *
  * Adds a status message for the next page.
  *
@@ -30,7 +30,7 @@
  * Version 0.1, 10.09.2010
  * Version 0.2 25.2.2011, Group option added by Werner Liemberger
  */
-class html_taglib_addforwardmessage extends Document {
+class AddForwardMessageTag extends Document {
 
    public function __construct() {
       $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'message', 'getstring');
@@ -39,7 +39,7 @@ class html_taglib_addforwardmessage extends Document {
    public function onParseTime() {
 
       if (!$name = $this->getAttribute('name')) {
-         throw new InvalidArgumentException('[html_taglib_addforwardmessage::onParseTime()] '
+         throw new InvalidArgumentException('[AddForwardMessageTag::onParseTime()] '
                . 'The attribute "name" is empty or not present. Thus message cannot be added!');
       }
 
