@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::news::pres::documentcontroller', 'news_base_controller');
+import('extensions::news::pres::documentcontroller', 'NewsBaseController');
 import('tools::link', 'LinkGenerator');
 
 /**
@@ -32,7 +32,7 @@ import('tools::link', 'LinkGenerator');
  * @version
  * Version 1.0,  16.06.2011<br />
  */
-class list_controller extends news_base_controller {
+class list_controller extends NewsBaseController {
 
    public function transformContent() {
 

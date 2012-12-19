@@ -6,7 +6,7 @@
  * @version: v0.1 (23.09.12)
  *
  */
-class SMSBreadcrumbNavTaglibController extends base_controller {
+class SMSBreadcrumbNavTaglibController extends BaseDocumentController {
 
    /**
     * @var SMSManager

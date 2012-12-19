@@ -22,7 +22,7 @@ import('tools::link', 'LinkGenerator');
 
 /**
  * @package modules::guestbook2009::pres
- * @class backend_base_controller
+ * @class GuestbookBackendBaseController
  *
  * Provides basic functionality to display the selection menu for
  * editing or deleting guestbook entries.
@@ -31,7 +31,7 @@ import('tools::link', 'LinkGenerator');
  * @version
  * Version 0.1, 18.05.2009<br />
  */
-abstract class backend_base_controller extends base_controller {
+abstract class GuestbookBackendBaseController extends BaseDocumentController {
 
    /**
     * Displays the select field using the choose.html template imported into

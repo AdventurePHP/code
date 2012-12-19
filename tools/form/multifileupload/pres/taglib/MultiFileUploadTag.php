@@ -27,7 +27,7 @@ import('extensions::htmlheader::biz', 'StaticJsNode');
 import('extensions::htmlheader::biz', 'JsContentNode');
 import('extensions::htmlheader::biz', 'CssContentNode');
 /**
- * @class form_taglib_multifileupload
+ * @class MultiFileUploadTag
  *
  * Taglib der ein Multifileupload Feld zur Verfügung stellt. Damit es mit allen Funktionen genutzt werden kann,
  * müssen die Notwendigen JS und CSS Dateien eingebunden werden.
@@ -39,7 +39,7 @@ import('extensions::htmlheader::biz', 'CssContentNode');
  * @author Werner Liemberger <wpublicmail@gmail.com>
  * @version 1.0, 14.3.2011<br>
  */
-class form_taglib_multifileupload extends AbstractFormControl {
+class MultiFileUploadTag extends AbstractFormControl {
 
    /**
     * @var MultiFileUploadManager

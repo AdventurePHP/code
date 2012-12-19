@@ -40,7 +40,7 @@
  * <li>OutputFilter              : the definition of the output filter</li>
  * </ul>
  * The file also contains the page controller core implementation with the classes Page,
- * Document, TagLib, APFObject, XmlParser and base_controller (the basic MVC document controller).
+ * Document, TagLib, APFObject, XmlParser and BaseDocumentController (the basic MVC document controller).
  *
  * @author Christian Achatz
  * @version
@@ -629,54 +629,54 @@ abstract class APFObject implements APFDIService {
          $namespace, $name, $this->getContext(), $this->getLanguage());
    }
 
-    /**
-     * @protected
-     *
-     * Returns a service object according to the current application context.
-     *
-     * @param string $namespace Namespace of the service object (currently ignored).
-     * @param string $serviceName Name of the service object (=class name).
-     * @param string $type The initializing type (see service manager for details).
-     * @param string $instanceId The id of the instance to return.
-     * @return APFObject The desired service object.
-     *
-     * @author Christian Schäfer
-     * @version
-     * Version 0.1, 07.03.2007<br />
-     * Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
-     * Version 0.3, 10.03.2007 (Method now is considered protected)<br />
-     * Version 0.4, 22.04.2007 (Added language initialization of the service manager)<br />
-     * Version 0.5, 24.02.2008 (Added the service type param)<br />
-     * Version 0.6  21.11.2012 Jens Prangenberg <jprangenberg@mywebhd.com> (Added the instanceid param)<br />
-     */
-    protected function &getServiceObject($namespace, $serviceName, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
-        return ServiceManager::getServiceObject(
-            $namespace, $serviceName, $this->getContext(), $this->getLanguage(), $type, $instanceId);
-    }
+   /**
+    * @protected
+    *
+    * Returns a service object according to the current application context.
+    *
+    * @param string $namespace Namespace of the service object (currently ignored).
+    * @param string $serviceName Name of the service object (=class name).
+    * @param string $type The initializing type (see service manager for details).
+    * @param string $instanceId The id of the instance to return.
+    * @return APFObject The desired service object.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 07.03.2007<br />
+    * Version 0.2, 08.03.2007 (Context is now taken from the current object)<br />
+    * Version 0.3, 10.03.2007 (Method now is considered protected)<br />
+    * Version 0.4, 22.04.2007 (Added language initialization of the service manager)<br />
+    * Version 0.5, 24.02.2008 (Added the service type param)<br />
+    * Version 0.6  21.11.2012 Jens Prangenberg <jprangenberg@mywebhd.com> (Added the instanceid param)<br />
+    */
+   protected function &getServiceObject($namespace, $serviceName, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
+      return ServiceManager::getServiceObject(
+         $namespace, $serviceName, $this->getContext(), $this->getLanguage(), $type, $instanceId);
+   }
 
-    /**
-     * @protected
-     *
-     * Returns a initialized service object according to the current application context.
-     *
-     * @param string $namespace Namespace of the service object (currently ignored).
-     * @param string $serviceName Name of the service object (=class name).
-     * @param string $initParam The initialization parameter.
-     * @param string $type The initializing type (see service manager for details).
-     * @param string $instanceId The id of the instance to return.
-     * @return APFObject The desired service object.
-     *
-     * @author Christian Schäfer
-     * @version
-     * Version 0.1, 29.03.2007<br />
-     * Version 0.2, 22.04.2007 (Added language initialization of the service manager)<br />
-     * Version 0.3, 24.02.2008 (Added the service type param)<br />
-     * Version 0.4  21.11.2012 Jens Prangenberg <jprangenberg@mywebhd.com> (Added the instanceid param)<br />
-     */
-    protected function &getAndInitServiceObject($namespace, $serviceName, $initParam, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
-        return ServiceManager::getAndInitServiceObject(
-            $namespace, $serviceName, $this->getContext(), $this->getLanguage(), $initParam, $type, $instanceId);
-    }
+   /**
+    * @protected
+    *
+    * Returns a initialized service object according to the current application context.
+    *
+    * @param string $namespace Namespace of the service object (currently ignored).
+    * @param string $serviceName Name of the service object (=class name).
+    * @param string $initParam The initialization parameter.
+    * @param string $type The initializing type (see service manager for details).
+    * @param string $instanceId The id of the instance to return.
+    * @return APFObject The desired service object.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 29.03.2007<br />
+    * Version 0.2, 22.04.2007 (Added language initialization of the service manager)<br />
+    * Version 0.3, 24.02.2008 (Added the service type param)<br />
+    * Version 0.4  21.11.2012 Jens Prangenberg <jprangenberg@mywebhd.com> (Added the instanceid param)<br />
+    */
+   protected function &getAndInitServiceObject($namespace, $serviceName, $initParam, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
+      return ServiceManager::getAndInitServiceObject(
+         $namespace, $serviceName, $this->getContext(), $this->getLanguage(), $initParam, $type, $instanceId);
+   }
 
    /**
     * @protected
@@ -1076,7 +1076,7 @@ class Document extends APFObject {
     * Version 0.1, 20.02.2010<br />
     */
    public function setParentObject(Document &$parentObject) {
-      $this->__ParentObject = &$parentObject;
+      $this->__ParentObject = & $parentObject;
    }
 
    /**
@@ -1187,7 +1187,7 @@ class Document extends APFObject {
     * Version 0.1, 11.12.2011<br />
     */
    protected function &getChildNode($attributeName, $value, $tagLibClass) {
-      $children = &$this->getChildren();
+      $children = & $this->getChildren();
       if (count($children) > 0) {
          foreach ($children as $objectId => $DUMMY) {
             if ($children[$objectId] instanceof $tagLibClass) {
@@ -1223,14 +1223,14 @@ class Document extends APFObject {
     * Version 0.1, 14.07.2012<br />
     */
    protected function &getChildNodes($attributeName, $value, $tagLibClass) {
-      $children = &$this->getChildren();
+      $children = & $this->getChildren();
 
       if (count($children) > 0) {
          $result = array();
          foreach ($children as $objectId => $DUMMY) {
             if ($children[$objectId] instanceof $tagLibClass) {
                if ($children[$objectId]->getAttribute($attributeName) == $value) {
-                  $result[] = &$children[$objectId];
+                  $result[] = & $children[$objectId];
                }
             }
          }
@@ -1400,7 +1400,7 @@ class Document extends APFObject {
       $tagLibLoops = 0;
       $i = 0;
 
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('BenchmarkTimer');
       /* @var $t BenchmarkTimer */
 
       // Parse the known taglibs. Here, we have to use a while loop, because one parser loop
@@ -1618,7 +1618,7 @@ class Document extends APFObject {
     */
    public function transform() {
 
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
 
@@ -1637,7 +1637,7 @@ class Document extends APFObject {
          }
 
          $docCon = new $this->__DocumentController;
-         /* @var $docCon base_controller */
+         /* @var $docCon BaseDocumentController */
 
          // inject context
          $docCon->setContext($this->getContext());
@@ -1853,7 +1853,7 @@ class AppendNodeTag extends Document {
    public function onAfterAppend() {
 
       // get parent children list
-      $parentChildren = &$this->__ParentObject->getChildren();
+      $parentChildren = & $this->__ParentObject->getChildren();
       $parentContent = $this->__ParentObject->getContent();
       $currentObjectId = $this->getObjectId();
 
@@ -1865,7 +1865,7 @@ class AppendNodeTag extends Document {
          foreach ($this->__Children as $objectId => $DUMMY) {
 
             // append node to parent object's children list
-            $parentChildren[$objectId] = &$this->__Children[$objectId];
+            $parentChildren[$objectId] = & $this->__Children[$objectId];
 
             // correct the parent object reference
             $parentChildren[$objectId]->setParentObject($this->__ParentObject);
@@ -1884,7 +1884,7 @@ class AppendNodeTag extends Document {
          foreach ($this->__Children as $objectId => $DUMMY) {
 
             // append node to parent object's children list
-            $parentChildren[$objectId] = &$this->__Children[$objectId];
+            $parentChildren[$objectId] = & $this->__Children[$objectId];
 
             // correct the parent object reference
             $parentChildren[$objectId]->setParentObject($this->__ParentObject);
@@ -2043,19 +2043,13 @@ class AddTaglibTag extends Document {
     * Version 0.2, 10.11.2008 (Changed implementation. We now use getAttribute() instead of direct internal attribute addressing)<br />
     * Version 0.3, 14.02.2011 (Adapted to new Document::addTaglib() signature)<br />
     * Version 0.4, 11.06.2012 (Introduced fallback mechanism for old tag definitions)<br />
+    * Version 0.5, 20.12.2012 (Removed fallback mechanism for 1.17)<br />
     */
    public function onParseTime() {
       $name = $this->getAttribute('name');
       $namespace = $this->getAttribute('namespace');
       $prefix = $this->getAttribute('prefix');
       $class = $this->getAttribute('class');
-
-      // Mime old behaviour to allow soft migration of the
-      // tag lib implementation naming concept in 1.16.
-      if ($name === null && $class !== null) {
-         $name = $class;
-         $class = $prefix . '_taglib_' . $name;
-      }
 
       $this->getParentObject()->addTagLib(
          new TagLib($namespace, $class, $prefix, $name)
@@ -2108,7 +2102,7 @@ class PlaceHolderTag extends Document {
     * @public
     *
     * Implements the transform() method. Returns the content of the tag, that is set by a
-    * document controller using the base_controller's setPlaceHolder() method.
+    * document controller using the BaseDocumentController's setPlaceHolder() method.
     *
     * @return string The content of the place holder.
     *
@@ -2458,18 +2452,18 @@ class LanguageLabelTag extends Document {
 
 /**
  * @package core::pagecontroller
- * @class base_controller
+ * @class BaseDocumentController
  * @abstract
  *
  * Defines the base class for all document controller classes. To add custom logic, implement
- * the {@link transformContent} method, that is declared abstract, too.
+ * the {@link transformContent} method.
  *
  * @author Christian Schäfer
  * @version
  * Version 0.1, 28.12.2006<br />
  * Version 0.2, 04.11.2007 (Removed the isButtonPushed() method)<br />
  */
-abstract class base_controller extends Document {
+abstract class BaseDocumentController extends Document {
 
    /**
     * @protected
@@ -2506,7 +2500,7 @@ abstract class base_controller extends Document {
     * Version 0.1, 20.02.2010<br />
     */
    public function setDocument(Document &$document) {
-      $this->__Document = &$document;
+      $this->__Document = & $document;
    }
 
    /**
@@ -2541,7 +2535,7 @@ abstract class base_controller extends Document {
 
       $placeHolderCount = 0;
 
-      $children = &$this->__Document->getChildren();
+      $children = & $this->__Document->getChildren();
       if (count($children) > 0) {
 
          foreach ($children as $objectId => $DUMMY) {
@@ -2613,7 +2607,7 @@ abstract class base_controller extends Document {
          $this->setPlaceHolder($name, $value);
       } catch (Exception $e) {
          import('core::logging', 'Logger');
-         $log = &Singleton::getInstance('Logger');
+         $log = & Singleton::getInstance('Logger');
          /* @var $log Logger */
          $log->logEntry('php', 'Place holder with name "' . $name . '" does not exist within the current document '
                . 'handled by document controller "' . get_class($this) . '". Please check your setup.',
@@ -2625,7 +2619,7 @@ abstract class base_controller extends Document {
     * @protected
     *
     * This method is for convenient setting of multiple place holders in case they exist within
-    * the current document. See <em>base_controller::setPlaceHolderIfExist()</em> for details.
+    * the current document. See <em>BaseDocumentController::setPlaceHolderIfExist()</em> for details.
     *
     * @param array $placeHolderValues Key-value-couples to fill place holders.
     *
@@ -2755,6 +2749,30 @@ abstract class base_controller extends Document {
          return true;
       } catch (InvalidArgumentException $e) {
          return false;
+      }
+   }
+
+   /**
+    * @protected
+    *
+    * Returns a reference on the desired iterator.
+    *
+    * @param string $name Name of the iterator.
+    * @return HtmlIteratorTag The desired iterator.
+    * @throws IncludeException In case the iterator taglib is not loaded.
+    * @throws InvalidArgumentException In case the desired iterator cannot be returned.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 02.06.2008<br />
+    */
+   protected function &getIterator($name) {
+      try {
+         return $this->getDocument()->getChildNode('name', $name, 'HtmlIteratorTag');
+      } catch (InvalidArgumentException $e) {
+         throw new InvalidArgumentException('[' . get_class($this) . '::' . __METHOD__ . '()] No iterator with name "'
+               . $name . '" composed in current document for document controller "' . get_class($this) . '"! '
+               . 'Perhaps tag library html:iterator is not loaded in current template!', E_USER_ERROR, $e);
       }
    }
 

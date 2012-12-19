@@ -21,7 +21,7 @@
 
 /**
  * @package tools::html::taglib
- * @class fcon_taglib_importdesign
+ * @class FrontControllerImportTemplateTag
  *
  * Implements the functionality of the &lt;core:importdesign /&gt; tag that loads the view to display from an application
  * model. This tag can be configured for any application case using the following attributes:
@@ -39,34 +39,30 @@
  * @version
  * Version 0.1, 13.11.2007<br />
  */
-class fcon_taglib_importdesign extends ImportTemplateTag {
+class FrontControllerImportTemplateTag extends ImportTemplateTag {
 
    public function onParseTime() {
 
-      /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('BenchmarkTimer');
-      $t->start('(fcon_taglib_importdesign) ' . $this->getObjectId() . '::onParseTime()');
-
       if (!isset($this->__Attributes['templatenamespace'])) {
-         throw new InvalidArgumentException('[fcon_taglib_importdesign::onParseTime()] Attribute "templatenamespace" is not given!');
+         throw new InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "templatenamespace" is not given!');
       } else {
          $templateNamespace = $this->__Attributes['templatenamespace'];
       }
 
       if (!isset($this->__Attributes['modelnamespace'])) {
-         throw new InvalidArgumentException('[fcon_taglib_importdesign::onParseTime()] Attribute "modelnamespace" is not given!');
+         throw new InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelnamespace" is not given!');
       } else {
          $modelNamespace = $this->__Attributes['modelnamespace'];
       }
 
       if (!isset($this->__Attributes['modelclass'])) {
-         throw new InvalidArgumentException('[fcon_taglib_importdesign::onParseTime()] Attribute "modelclass" is not given!');
+         throw new InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelclass" is not given!');
       } else {
          $modelClass = $this->__Attributes['modelclass'];
       }
 
       if (!isset($this->__Attributes['modelparam'])) {
-         throw new InvalidArgumentException('[fcon_taglib_importdesign::onParseTime()] Attribute "modelparam" is not given!');
+         throw new InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelparam" is not given!');
       } else {
          $modelParam = $this->__Attributes['modelparam'];
       }
@@ -95,8 +91,6 @@ class fcon_taglib_importdesign extends ImportTemplateTag {
       $this->__extractDocumentController();
 
       $this->__extractTagLibTags();
-
-      $t->stop('(fcon_taglib_importdesign) ' . $this->getObjectId() . '::onParseTime()');
 
    }
 

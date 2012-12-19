@@ -30,7 +30,7 @@ import('modules::guestbook2009::biz', 'User');
  * @version
  * Version 0.1, 18.05.2009<br />
  */
-class login_controller extends base_controller {
+class login_controller extends BaseDocumentController {
 
    public function transformContent() {
 

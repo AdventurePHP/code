@@ -18,17 +18,17 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::media::taglib', 'ui_mediastream');
+import('tools::media::taglib', 'MediaInclusionTag');
 
 /**
  * @package extensions::news::pres::taglib
- * @class news_taglib_media
+ * @class NewsMediaInclusionTag
  *
  * Implements the image displaying tablib. Based on the *:mediastream taglib.
  *
  * @author Ralf Schubert
  */
-class news_taglib_media extends ui_mediastream {
+class NewsMediaInclusionTag extends MediaInclusionTag {
 
    /**
     * @public
@@ -41,15 +41,6 @@ class news_taglib_media extends ui_mediastream {
       // setup the desired attribute to have more convenience
       $this->setAttribute('namespace', 'modules::usermanagement::pres::icons');
       parent::onParseTime();
-   }
-
-   /**
-    * @public
-    *
-    * Overwrites the parent's onAfterAppend().
-    * Ralf Schubert
-    */
-   public function onAfterAppend() {
    }
 
    /**

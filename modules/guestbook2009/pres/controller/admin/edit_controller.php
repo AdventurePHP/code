@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::guestbook2009::pres::controller::admin', 'backend_base_controller');
+import('modules::guestbook2009::pres::controller::admin', 'GuestbookBackendBaseController');
 import('tools::request', 'RequestHandler');
 
 /**
@@ -31,7 +31,7 @@ import('tools::request', 'RequestHandler');
  * @version
  * Version 0.1, 18.05.2009<br />
  */
-class edit_controller extends backend_base_controller {
+class edit_controller extends GuestbookBackendBaseController {
 
    public function transformContent() {
 

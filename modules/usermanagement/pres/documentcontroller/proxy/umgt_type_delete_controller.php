@@ -23,7 +23,7 @@
  * @package modules::usermanagement::pres::documentcontroller::proxy
  * @class umgt_type_edit_controller
  */
-class umgt_type_delete_controller extends umgt_base_controller {
+class umgt_type_delete_controller extends UmgtBaseController {
 
    public function transformContent() {
 

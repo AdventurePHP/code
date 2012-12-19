@@ -27,13 +27,12 @@ import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinition');
 import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinitionType');
 
 import('tools::link', 'LinkGenerator');
-import('tools::html::taglib::documentcontroller', 'iteratorBaseController');
 import('tools::request', 'RequestHandler');
 import('tools::http', 'HeaderManager');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_base_controller
+ * @class UmgtBaseController
  *
  * Implements a base controller for the concrete document controllers of
  * the usermanagement module. Includes helper functions.
@@ -42,7 +41,7 @@ import('tools::http', 'HeaderManager');
  * @version
  * Version 0.1, 26.12.2008<br />
  */
-abstract class umgt_base_controller extends iteratorBaseController {
+abstract class UmgtBaseController extends BaseDocumentController {
 
    /**
     * @protected
@@ -85,7 +84,7 @@ abstract class umgt_base_controller extends iteratorBaseController {
     * Returns the media inclusion tag contained i nthe given template.
     *
     * @param TemplateTag $template The template to search the media file tag in.
-    * @return umgt_taglib_media The media file inclusion tag.
+    * @return UmgtMediaInclusionTag The media file inclusion tag.
     *
     * @author Christian Achatz
     * @version
@@ -94,7 +93,7 @@ abstract class umgt_base_controller extends iteratorBaseController {
    protected function &getIcon(TemplateTag $template) {
       $children = &$template->getChildren();
       foreach ($children as $objectId => $DUMMY) {
-         if ($children[$objectId] instanceof umgt_taglib_media) {
+         if ($children[$objectId] instanceof UmgtMediaInclusionTag) {
             return $children[$objectId];
          }
       }

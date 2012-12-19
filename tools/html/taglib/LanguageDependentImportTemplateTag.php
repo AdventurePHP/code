@@ -21,7 +21,7 @@
 
 /**
  * @package tools::html::taglib
- * @class langdep_taglib_importdesign
+ * @class LanguageDependentImportTemplateTag
  *
  * Implements a special importdesign tag, that can handle language files like eZComponents. The
  * APF implementation includes the following principles:
@@ -41,7 +41,7 @@
  * @version
  * Version 0.1, 08.11.2008<br />
  */
-class lngtmpl_taglib_importdesign extends Document {
+class LanguageDependentImportTemplateTag extends Document {
 
    /**
     * @public
@@ -60,18 +60,18 @@ class lngtmpl_taglib_importdesign extends Document {
 
       /* @var $T BenchmarkTimer */
       $T = &Singleton::getInstance('BenchmarkTimer');
-      $id = '(lngtmpl_taglib_importdesign) ' . $this->getObjectId() . '::onParseTime()';
+      $id = '(LanguageDependentImportTemplateTag) ' . $this->getObjectId() . '::onParseTime()';
       $T->start($id);
 
       // check attributes
       $namespace = $this->getAttribute('namespace');
       if ($namespace === null) {
-         throw new InvalidArgumentException('[lngtmpl_taglib_importdesign::onParseTime()] No attribute "namespace" given!', E_USER_ERROR);
+         throw new InvalidArgumentException('[LanguageDependentImportTemplateTag::onParseTime()] No attribute "namespace" given!', E_USER_ERROR);
       }
 
       $template = $this->getAttribute('template');
       if ($template === null) {
-         throw new InvalidArgumentException('[lngtmpl_taglib_importdesign::onParseTime()] No attribute "template" given!', E_USER_ERROR);
+         throw new InvalidArgumentException('[LanguageDependentImportTemplateTag::onParseTime()] No attribute "template" given!', E_USER_ERROR);
       }
 
       // load content
@@ -142,11 +142,11 @@ class lngtmpl_taglib_importdesign extends Document {
          if ($domDoc instanceof SimpleXMLElement) {
             $this->__Content = $this->parseLanguageTokens($this->__Content, $domDoc);
          } else {
-            throw new InvalidArgumentException('[lngtmpl_taglib_importdesign::__parseLanguageFile()] The translation file ("' . $filename . '.xml") in namespace "' . $namespace . '" does not contain a valid XML document! The content is returned without translation.');
+            throw new InvalidArgumentException('[LanguageDependentImportTemplateTag::__parseLanguageFile()] The translation file ("' . $filename . '.xml") in namespace "' . $namespace . '" does not contain a valid XML document! The content is returned without translation.');
          }
 
       } else {
-         throw new InvalidArgumentException('[lngtmpl_taglib_importdesign::__parseLanguageFile()] The desired translation file ("' . $filename . '.xml") does not exist in namespace "' . $namespace . '". Please check your tag definition or your configurarion! The content is returned without translation.');
+         throw new InvalidArgumentException('[LanguageDependentImportTemplateTag::__parseLanguageFile()] The desired translation file ("' . $filename . '.xml") does not exist in namespace "' . $namespace . '". Please check your tag definition or your configurarion! The content is returned without translation.');
       }
 
    }
@@ -164,7 +164,7 @@ class lngtmpl_taglib_importdesign extends Document {
     * @author Christian Achatz
     * @version
     * Version 0.1, 18.11.2008<br />
-    * Version 0.2, 19.11.2008 (Simplifyed the XML structure and thus the implementation)<br />
+    * Version 0.2, 19.11.2008 (Simplified the XML structure and thus the implementation)<br />
     */
    protected function parseLanguageTokens($content, $domDoc) {
 

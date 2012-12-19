@@ -18,12 +18,12 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::html::taglib', 'iterator_taglib_item');
+import('tools::html::taglib', 'HtmlIteratorItemTag');
 import('tools::request', 'RequestHandler');
 
 /**
  * @package tools::html::taglib
- * @class html_taglib_iterator
+ * @class HtmlIteratorTag
  *
  * Implements a taglib, that can display a list of objects (arrays with numeric offsets)
  * or associative arrays by defining a iterator with items and place holders within the
@@ -41,7 +41,7 @@ import('tools::request', 'RequestHandler');
  * Version 0.1, 01.06.2008<br />
  * Version 0.2, 04.06.2008 (Replaced __getIteratorItem() with key())<br />
  */
-class html_taglib_iterator extends Document {
+class HtmlIteratorTag extends Document {
 
    /**
     * @protected
@@ -75,7 +75,7 @@ class html_taglib_iterator extends Document {
     * Version 0.2, 09.08.2009 (Added the addtaglib tag to enable custom tags.)<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('tools::html::taglib', 'iterator_taglib_item', 'iterator', 'item');
+      $this->__TagLibs[] = new TagLib('tools::html::taglib', 'HtmlIteratorItemTag', 'iterator', 'item');
       $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'iterator', 'addtaglib');
       $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'iterator', 'getstring');
       $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'iterator', 'placeholder');
@@ -159,7 +159,7 @@ class html_taglib_iterator extends Document {
 
       $t = &Singleton::getInstance('BenchmarkTimer');
       /* @var $t BenchmarkTimer */
-      $t->start('(html_taglib_iterator) ' . $this->getObjectId() . '::transformIterator()');
+      $t->start('(HtmlIteratorTag) ' . $this->getObjectId() . '::transformIterator()');
 
       $buffer = (string)'';
 
@@ -200,7 +200,7 @@ class html_taglib_iterator extends Document {
       // of the current node!
       $itemObjectId = $this->getIteratorItemObjectId();
       $iteratorItem = &$this->__Children[$itemObjectId];
-      /* @var $iteratorItem iterator_taglib_item */
+      /* @var $iteratorItem HtmlIteratorItemTag */
 
       // define the dynamic getter.
       $getter = $iteratorItem->getAttribute('getter');
@@ -256,7 +256,7 @@ class html_taglib_iterator extends Document {
             $buffer .= $iteratorItem->transform();
 
          } else {
-            throw new InvalidArgumentException('[html_taglib_iterator::transformIterator()] '
+            throw new InvalidArgumentException('[HtmlIteratorTag::transformIterator()] '
                   . 'Given list entry is not an array or object (' . $this->dataContainer[$i]
                   . ')! The data container must contain a list of associative arrays or objects!',
                E_USER_WARNING);
@@ -264,7 +264,7 @@ class html_taglib_iterator extends Document {
 
       }
 
-      $t->stop('(html_taglib_iterator) ' . $this->getObjectId() . '::transformIterator()');
+      $t->stop('(HtmlIteratorTag) ' . $this->getObjectId() . '::transformIterator()');
 
       // add the surrounding content of the iterator to enable the
       // user to define some html code as well.
@@ -273,7 +273,7 @@ class html_taglib_iterator extends Document {
       // transform all other child tags except the iterator item(s)
       foreach ($this->__Children as $objectId => $DUMMY) {
 
-         if (get_class($this->__Children[$objectId]) !== 'iterator_taglib_item') {
+         if (get_class($this->__Children[$objectId]) !== 'HtmlIteratorItemTag') {
             $iterator = str_replace('<' . $objectId . ' />', $this->__Children[$objectId]->transform(), $iterator);
          }
 
@@ -319,13 +319,13 @@ class html_taglib_iterator extends Document {
    protected function getIteratorItemObjectId() {
 
       foreach ($this->__Children as $objectId => $DUMMY) {
-         if (get_class($this->__Children[$objectId]) === 'iterator_taglib_item') {
+         if (get_class($this->__Children[$objectId]) === 'HtmlIteratorItemTag') {
             return $objectId;
          }
       }
 
       // defining no iterator item is not allowed!
-      throw new InvalidArgumentException('[html_taglib_iterator::getIteratorItemObjectId()] '
+      throw new InvalidArgumentException('[HtmlIteratorTag::getIteratorItemObjectId()] '
          . 'The definition for iterator "' . $this->getAttribute('name')
          . '" does not contain a iterator item, hence this is no legal iterator tag '
          . 'definition. Please refer to the documentation.', E_USER_ERROR);
@@ -339,7 +339,7 @@ class html_taglib_iterator extends Document {
     *
     * @param string $name The name of the place holder to set.
     * @param string $value The value of the place holder.
-    * @return html_taglib_iterator This instance for further usage.
+    * @return HtmlIteratorTag This instance for further usage.
     * @throws InvalidArgumentException In case the requested place holder cannot be found.
     *
     * @author Christian Achatz

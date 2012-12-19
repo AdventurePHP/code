@@ -33,7 +33,7 @@ import('modules::usermanagement::biz::login', 'UmgtAutoLoginAction');
  * @version
  * Version 0.1, 01.06.2011
  */
-class umgt_login_controller extends base_controller {
+class umgt_login_controller extends BaseDocumentController {
 
    private static $EMAIL_AND_PASSWORD_LOGIN = 'email';
    private static $USERNAME_AND_PASSWORD_LOGIN = 'username';

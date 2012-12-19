@@ -36,7 +36,7 @@ import('tools::request', 'RequestHandler');
  * @version
  * Version 0.1, 20.12.2009<br />
  */
-class arraypager_controller extends base_controller {
+class arraypager_controller extends BaseDocumentController {
 
    private $_LOCALS;
 

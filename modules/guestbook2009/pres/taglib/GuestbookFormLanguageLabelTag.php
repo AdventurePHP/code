@@ -18,29 +18,26 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
+import('modules::guestbook2009::pres::taglib', 'GuestbookLanguageLabelTag');
 
-abstract class permission_base_controller extends umgt_base_controller {
+/**
+ * @package modules::guestbook2009::pres
+ * @class GuestbookFormLanguageLabelTag
+ *
+ * Displays language labels within forms.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 03.06.2009<br />
+ */
+class GuestbookFormLanguageLabelTag extends GuestbookLanguageLabelTag implements FormControl {
 
-   protected static $FORM_NAME = 'add_perm';
+   public function isSent() {
+      return false;
+   }
 
-   protected function mapSelectedOptions2DomainObjects($elementName, $objectName) {
-
-      $form = &$this->getForm(self::$FORM_NAME);
-
-      /* @var $control MultiSelectBoxTag */
-      $control = $form->getFormElementByName($elementName);
-      $selectedOptions = $control->getSelectedOptions();
-
-      $objects = array();
-      foreach ($selectedOptions as $selectedUser) {
-         $object = new $objectName;
-         /* @var $object UmgtUser|UmgtGroup */
-         $object->setObjectId($selectedUser->getAttribute('value'));
-         $objects[] = $object;
-      }
-      return $objects;
-
+   public function isValid() {
+      return true;
    }
 
 }

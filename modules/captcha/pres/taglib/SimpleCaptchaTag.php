@@ -28,7 +28,7 @@ import('tools::link', 'LinkGenerator');
 
 /**
  * @package modules::captcha::pres::taglib
- * @class form_taglib_captcha
+ * @class SimpleCaptchaTag
  *
  * Implements a CAPTCHA-Taglib to extend a form's features. Inherits from AbstractFormControl
  * in order to be a fully qualified form element.
@@ -38,7 +38,7 @@ import('tools::link', 'LinkGenerator');
  * Version 0.1, 16.07.2008<br />
  * Version 0.2, 20.07.2008 (Moved in a separate module folder to deliver it with the framework release)<br />
  */
-class form_taglib_captcha extends AbstractFormControl {
+class SimpleCaptchaTag extends AbstractFormControl {
 
    /**
     * @protected
@@ -206,7 +206,7 @@ class form_taglib_captcha extends AbstractFormControl {
     * @version
     * Version 0.1, 20.06.2008<br />
     * Version 0.2, 05.11.2008 (Changed action base url generation)<br />
-    * Version 0.3, 07.11.2008 (Fixed the action URL generation. See class ui_mediastream for more details.)<br />
+    * Version 0.3, 07.11.2008 (Fixed the action URL generation. See class MediaInclusionTag for more details.)<br />
     * Version 0.4, 19.12.2009 (Added attribute to be able to disable the inline styles to have clean markup)<br />
     * Version 0.5, 04.01.2010 (Added clearonformerror attribute)<br />
     * Version 0.6, 04.01.2010 (Added the image_id attribute)<br />

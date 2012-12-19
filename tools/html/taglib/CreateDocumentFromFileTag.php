@@ -22,16 +22,16 @@ import('tools::request', 'RequestHandler');
 
 /**
  * @package tools::html::taglib::doc
- * @class doc_taglib_createobject
+ * @class CreateDocumentFromFileTag
  *
  * Implements a taglib that creates a child node by the content of a file.
  *
  * @author Christian Schäfer
  * @version
  * Version 0.1, 04.01.2006<br />
- * Version 0.2, 29.09.2007 (Renamed to doc_taglib_createobject)<br />
+ * Version 0.2, 29.09.2007 (Renamed to CreateDocumentFromFileTag)<br />
  */
-class doc_taglib_createobject extends Document {
+class CreateDocumentFromFileTag extends Document {
 
    public function onParseTime() {
 

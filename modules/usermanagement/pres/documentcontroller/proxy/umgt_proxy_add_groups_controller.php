@@ -18,9 +18,9 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::pres::documentcontroller::proxy', 'permission_base_controller');
+import('modules::usermanagement::pres::documentcontroller::proxy', 'UmgtPermissionBaseController');
 
-class umgt_proxy_add_groups_controller extends permission_base_controller {
+class umgt_proxy_add_groups_controller extends UmgtPermissionBaseController {
 
    public function transformContent() {
 

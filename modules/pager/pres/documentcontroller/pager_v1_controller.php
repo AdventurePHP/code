@@ -30,7 +30,7 @@ import('tools::request', 'RequestHandler');
  * @version
  * Version 0.1, 06.08.2006<br />
  */
-class pager_v1_controller extends base_controller {
+class pager_v1_controller extends BaseDocumentController {
 
    public function transformContent() {
 

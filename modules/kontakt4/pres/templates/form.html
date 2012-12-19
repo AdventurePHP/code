@@ -68,7 +68,7 @@
             <label for="contact-form-captcha">
                <form:getstring namespace="modules::kontakt4" config="language" entry="form.captcha" />
             </label>
-            <form:addtaglib namespace="modules::captcha::pres::taglib" class="form_taglib_captcha" prefix="form" name="captcha" />
+            <form:addtaglib namespace="modules::captcha::pres::taglib" class="SimpleCaptchaTag" prefix="form" name="captcha" />
             <form:captcha
                name="captcha-control"
                clearonerror="true"

@@ -9,7 +9,7 @@
       entry="frontend.user.details.headline"
       /></h3>
 
-<core:addtaglib namespace="tools::html::taglib" class="html_taglib_iterator" prefix="html" name="iterator" />
+<core:addtaglib namespace="tools::html::taglib" class="HtmlIteratorTag" prefix="html" name="iterator" />
 <h4><html:getstring
       name="headline"
       namespace="modules::usermanagement::pres"
@@ -32,7 +32,7 @@
 <html:iterator name="Groups">
    <ul>
       <iterator:item>
-         <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="umgt_taglib_media" prefix="umgt" name="media" />
+         <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="UmgtMediaInclusionTag" prefix="umgt" name="media" />
          <li>
             <umgt:media filename="group.png">
                <media:getstring
@@ -55,7 +55,7 @@
 <html:iterator name="Roles">
    <ul>
    <iterator:item>
-      <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="umgt_taglib_media" prefix="umgt" name="media" />
+      <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="UmgtMediaInclusionTag" prefix="umgt" name="media" />
       <li>
          <umgt:media filename="role.png">
             <media:getstring
@@ -78,7 +78,7 @@
 <html:iterator name="Proxies">
    <ul>
    <iterator:item>
-      <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="umgt_taglib_media" prefix="umgt" name="media" />
+      <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="UmgtMediaInclusionTag" prefix="umgt" name="media" />
       <li>
          <umgt:media filename="visibility_def.png">
             <media:getstring

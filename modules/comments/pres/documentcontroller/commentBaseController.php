@@ -30,7 +30,7 @@ import('modules::comments::biz', 'ArticleComment');
  * @version
  * Version 0.1, 21.08.2007<br />
  */
-abstract class commentBaseController extends base_controller {
+abstract class commentBaseController extends BaseDocumentController {
 
    /**
     * @protected

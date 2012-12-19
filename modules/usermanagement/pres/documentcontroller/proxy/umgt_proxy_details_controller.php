@@ -18,9 +18,9 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
+import('modules::usermanagement::pres::documentcontroller', 'UmgtBaseController');
 
-class umgt_proxy_details_controller extends umgt_base_controller {
+class umgt_proxy_details_controller extends UmgtBaseController {
 
    public function transformContent() {
 
@@ -85,23 +85,23 @@ class umgt_proxy_details_controller extends umgt_base_controller {
       // display special visibility definitions
       $tmpl = &$this->getTemplate('access-perms');
 
-      $read = $tmpl->getChildNode('id', 'read', 'umgt_taglib_media');
+      $read = $tmpl->getChildNode('id', 'read', 'UmgtMediaInclusionTag');
       $proxy->getReadPermission() == '1'
             ? $read->setAttribute('filename', 'yes.png')
             : $read->setAttribute('filename', 'no.png');
 
 
-      $write = $tmpl->getChildNode('id', 'write', 'umgt_taglib_media');
+      $write = $tmpl->getChildNode('id', 'write', 'UmgtMediaInclusionTag');
       $proxy->getWritePermission() == '1'
             ? $write->setAttribute('filename', 'yes.png')
             : $write->setAttribute('filename', 'no.png');
 
-      $relation = $tmpl->getChildNode('id', 'relation', 'umgt_taglib_media');
+      $relation = $tmpl->getChildNode('id', 'relation', 'UmgtMediaInclusionTag');
       $proxy->getLinkPermission() == '1'
             ? $relation->setAttribute('filename', 'yes.png')
             : $relation->setAttribute('filename', 'no.png');
 
-      $delete = $tmpl->getChildNode('id', 'delete', 'umgt_taglib_media');
+      $delete = $tmpl->getChildNode('id', 'delete', 'UmgtMediaInclusionTag');
       $proxy->getDeletePermission() == '1'
             ? $delete->setAttribute('filename', 'yes.png')
             : $delete->setAttribute('filename', 'no.png');

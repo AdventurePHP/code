@@ -124,7 +124,7 @@
         <strong><form:getstring namespace="modules::guestbook" config="guestbook_lang" entry="CreateEntry.Form.Captcha" /></strong>
         <br />
         <br />
-        <form:addtaglib namespace="modules::captcha::pres::taglib" class="form_taglib_captcha" prefix="form" name="captcha" />
+        <form:addtaglib namespace="modules::captcha::pres::taglib" class="SimpleCaptchaTag" prefix="form" name="captcha" />
         <form:captcha text_class="eingabe_feld" clearonerror="true" name="Captcha"/>
          <form:addvalidator
             namespace="modules::captcha::pres::validator"

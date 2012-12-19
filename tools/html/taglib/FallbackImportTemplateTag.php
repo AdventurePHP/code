@@ -21,7 +21,7 @@
 
 /**
  * @package tools:html:taglib
- * @class html_taglib_fallbackimport
+ * @class FallbackImportTemplateTag
  *
  * This class mainly implements the functionality of the core::importdesign tag. It generates a sub node
  * from the template specified by the tag's attributes within the current APF DOM tree. Each
@@ -32,7 +32,7 @@
  * @version
  * Version 0.1, 28.08.2010<br />
  */
-class html_taglib_fallbackimport extends ImportTemplateTag {
+class FallbackImportTemplateTag extends ImportTemplateTag {
 
    /**
     * @public

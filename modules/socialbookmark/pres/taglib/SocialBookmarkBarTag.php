@@ -22,7 +22,7 @@ import('modules::socialbookmark::biz', 'socialBookmarkManager');
 
 /**
  * @package modules::socialbookmark::pres::taglib
- * @class social_taglib_bookmark
+ * @class SocialBookmarkBarTag
  *
  * Implements a taglib to display social bookmark images. To configure this tag the
  * following attributes are available:
@@ -44,17 +44,8 @@ import('modules::socialbookmark::biz', 'socialBookmarkManager');
  * @version
  * Version 0.1, 08.09.2007<br />
  */
-class social_taglib_bookmark extends Document {
+class SocialBookmarkBarTag extends Document {
 
-   /**
-    * @public
-    *
-    * Initialisiert die ben�tigten Attribute.
-    *
-    * @author Christian W. Sch�fer
-    * @version
-    * Version 0.1, 08.09.2007<br />
-    */
    public function __construct() {
       $this->setAttribute('width', '20');
       $this->setAttribute('height', '20');
@@ -62,19 +53,9 @@ class social_taglib_bookmark extends Document {
       $this->setAttribute('url', null);
    }
 
-   /**
-    * @public
-    *
-    *  Erzeugt die Ausgabe mit Hilfe des BookmarkManager.<br />
-    *
-    * @author Christian W. Sch�fer
-    * @version
-    * Version 0.1, 08.09.2007<br />
-    * Version 0.2, 16.09.2007 (Attribute url, title und target hinzugef�gt)<br />
-    */
    public function transform() {
 
-      $bm = &$this->getServiceObject('modules::socialbookmark::biz', 'socialBookmarkManager');
+      $bm = & $this->getServiceObject('modules::socialbookmark::biz', 'socialBookmarkManager');
       /* @var $bm socialBookmarkManager */
 
       $bm->setImageWidth($this->getAttributes('width'));

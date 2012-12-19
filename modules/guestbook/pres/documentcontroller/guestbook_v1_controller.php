@@ -30,7 +30,7 @@ import('modules::guestbook::biz', 'GuestbookManager');
  * @version
  * Version 0.1, 12.04.2007<br />
  */
-class guestbook_v1_controller extends base_controller {
+class guestbook_v1_controller extends BaseDocumentController {
 
    public function transformContent() {
       $gM = &$this->getAndInitServiceObject('modules::guestbook::biz', 'GuestbookManager', $this->getAttribute('guestbookid'));

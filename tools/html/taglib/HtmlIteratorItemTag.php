@@ -21,7 +21,7 @@
 
 /**
  * @package tools::html::taglib
- * @class iterator_taglib_item
+ * @class HtmlIteratorItemTag
  *
  * Represents an item within the iterator.
  *
@@ -29,7 +29,7 @@
  * @version
  * Version 0.1, 01.06.2008<br />
  */
-class iterator_taglib_item extends Document {
+class HtmlIteratorItemTag extends Document {
 
    /**
     * @public

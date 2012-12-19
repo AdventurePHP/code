@@ -29,7 +29,7 @@
  * @version
  * Version 0.1, 21.02.2009<br />
  */
-class exceptionpage_controller extends base_controller {
+class exceptionpage_controller extends BaseDocumentController {
 
    /**
     * @public

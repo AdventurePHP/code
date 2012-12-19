@@ -30,12 +30,12 @@ import('modules::newspager::biz', 'newspagerManager');
  * @version
  * Version 0.1, 02.20.2008<br />
  */
-class newspager_v1_controller extends base_controller {
+class newspager_v1_controller extends BaseDocumentController {
 
    /**
     * @public
     *
-    *  Implements the abstract transformation function of the base_controller class.<br />
+    *  Implements the abstract transformation function of the BaseDocumentController class.<br />
     *
     * @author Christian Achatz
     * @version

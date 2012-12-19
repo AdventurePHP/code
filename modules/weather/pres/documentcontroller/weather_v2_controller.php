@@ -31,12 +31,12 @@
  * @version
  * Version 0.1, 17.08.2010<br />
  */
-class weather_v2_controller extends base_controller {
+class weather_v2_controller extends BaseDocumentController {
 
    /**
     * @public
     *
-    * Implements the abstract method transformContent() of the base_controller class.<br />
+    * Implements the abstract method transformContent() of the BaseDocumentController class.<br />
     *
     * @author Tobias Lückel
     * @version

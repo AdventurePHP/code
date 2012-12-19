@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
+import('modules::usermanagement::pres::documentcontroller', 'UmgtBaseController');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::role
@@ -30,7 +30,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
  * @version
  * Version 0.1, 04.09.2011<br />
  */
-class umgt_add_user_to_roles_controller extends umgt_base_controller {
+class umgt_add_user_to_roles_controller extends UmgtBaseController {
 
    public function transformContent() {
 

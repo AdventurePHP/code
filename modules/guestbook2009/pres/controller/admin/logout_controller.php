@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::guestbook2009::pres::controller::admin', 'backend_base_controller');
+import('modules::guestbook2009::pres::controller::admin', 'GuestbookBackendBaseController');
 
 /**
  * @package modules::guestbook2009::pres
@@ -32,7 +32,7 @@ import('modules::guestbook2009::pres::controller::admin', 'backend_base_controll
  * @version
  * Version 0.1, 21.05.2009<br />
  */
-class logout_controller extends backend_base_controller {
+class logout_controller extends GuestbookBackendBaseController {
 
    public function transformContent() {
       /* @var $gS GuestbookService */

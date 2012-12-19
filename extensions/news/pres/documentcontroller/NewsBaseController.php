@@ -20,23 +20,29 @@
  */
 
 /**
- * @package modules::usermanagement::pres::taglib
- * @class umgt_taglib_includecss
+ * @package extensions::news::pres::documentcontroller
+ * @class NewsBaseController
  *
- * Includes the css required to display the user management backend.
+ * Implements basic functionality for the news extension's document controllers.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 30.08.2011<br />
+ * Version 0.1, 28.06.2011<br />
  */
-class umgt_taglib_includecss extends Document {
+abstract class NewsBaseController extends BaseDocumentController {
 
-   public function transform() {
-      return '<style type="text/css">'
-            . PHP_EOL
-            . file_get_contents(APPS__PATH . '/modules/usermanagement/pres/css/umgt.css')
-            . PHP_EOL
-            . '</style>';
+   /**
+    * @return string The application identifier (for login purposes).
+    */
+   protected function getAppKey() {
+      return $this->getAttribute('app-ident', $this->getContext());
+   }
+
+   /**
+    * @return NewsManager The instance of the business component.
+    */
+   protected function getNewsManager() {
+      return $this->getDIServiceObject('extensions::news', 'NewsManager');
    }
 
 }

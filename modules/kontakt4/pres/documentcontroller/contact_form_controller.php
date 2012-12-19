@@ -34,7 +34,7 @@ import('modules::kontakt4::biz', 'ContactFormData');
  * Version 0.3, 23.02.2007<br />
  * Version 0.4, 12.09.2009 (Refactoring due to changes of the form taglibs)<br />
  */
-class contact_form_controller extends base_controller {
+class contact_form_controller extends BaseDocumentController {
 
    /**
     * @public

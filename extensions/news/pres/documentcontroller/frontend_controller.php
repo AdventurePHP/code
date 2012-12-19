@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::news::pres::documentcontroller', 'news_base_controller');
+import('extensions::news::pres::documentcontroller', 'NewsBaseController');
 import('tools::link', 'LinkGenerator');
 
 /**
@@ -31,7 +31,7 @@ import('tools::link', 'LinkGenerator');
  * @version
  * Version 1.0, 18.06.2011<br />
  */
-class frontend_controller extends news_base_controller {
+class frontend_controller extends NewsBaseController {
 
    public function transformContent() {
       $appKey = $this->getAppKey();

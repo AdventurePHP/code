@@ -18,27 +18,18 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::media::taglib', 'ui_mediastream');
 
 /**
- * @package tools::media::taglib
- * @class form_taglib_mediastream
- *
- * Implements the form:mediastream tag. See class ui_mediastream for more details.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 01.11.2008<br />
- * Version 0.2, 10.08.2010 (Bug 384: added interface methods for form taglibs)<br />
+ * Injects a language dependent title to a <umgt:media /> tag.
  */
-class form_taglib_mediastream extends ui_mediastream {
+class UmgtMediaInclusionLanguageLabelTag extends LanguageLabelTag {
 
-   public function isValid() {
-      return true;
+   public function onAfterAppend() {
+      $this->getParentObject()->setAttribute('title', parent::transform());
    }
 
-   public function isSent() {
-      return false;
+   public function transform() {
+      return '';
    }
 
 }

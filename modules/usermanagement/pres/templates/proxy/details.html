@@ -48,7 +48,7 @@
        entry="frontend.proxy.details.intro.text.access"/>
 </p>
 <html:template name="access-perms">
-   <template:addtaglib namespace="modules::usermanagement::pres::taglib" class="umgt_taglib_media" prefix="umgt" name="media" />
+   <template:addtaglib namespace="modules::usermanagement::pres::taglib" class="UmgtMediaInclusionTag" prefix="umgt" name="media" />
    <div class="umgt-access-perms">
       <p>
          <umgt:media id="read"/>
@@ -82,7 +82,7 @@
 </html:template>
 
 <html:template name="listitem">
-   <template:addtaglib namespace="modules::usermanagement::pres::taglib" class="umgt_taglib_media" prefix="umgt" name="media" />
+   <template:addtaglib namespace="modules::usermanagement::pres::taglib" class="UmgtMediaInclusionTag" prefix="umgt" name="media" />
    <tr>
       <td>
          <umgt:media />

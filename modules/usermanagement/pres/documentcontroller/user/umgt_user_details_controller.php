@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controller');
+import('modules::usermanagement::pres::documentcontroller', 'UmgtBaseController');
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::user
@@ -30,7 +30,7 @@ import('modules::usermanagement::pres::documentcontroller', 'umgt_base_controlle
  * @version
  * Version 0.1, 26.12.2008<br />
  */
-class umgt_user_details_controller extends umgt_base_controller {
+class umgt_user_details_controller extends UmgtBaseController {
 
    public function transformContent() {
 

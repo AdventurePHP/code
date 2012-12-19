@@ -31,7 +31,7 @@ import('tools::link', 'LinkGenerator');
  * @version
  * Version 0.1, 18.05.2009<br />
  */
-class admin_controller extends base_controller {
+class admin_controller extends BaseDocumentController {
 
    public function transformContent() {
 

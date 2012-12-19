@@ -21,7 +21,7 @@
 
 /**
  * @package modules::usermanagement::pres::taglib
- * @class umgt_taglib_template
+ * @class UmgtTemplateTag
  *
  * Enables you to display template content based on various conditions registered within
  * the <em>UserDependentContentConditionSet</em>.
@@ -41,7 +41,7 @@
  * @version
  * Version 0.1, 01.06.2011
  */
-class umgt_taglib_template extends TemplateTag {
+class UmgtTemplateTag extends TemplateTag {
 
    public function onParseTime() {
       $this->transformOnPlace = $this->getAttribute('transform-on-place', 'false') === 'true' ? true : false;

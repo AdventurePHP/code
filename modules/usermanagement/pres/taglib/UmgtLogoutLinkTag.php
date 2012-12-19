@@ -22,7 +22,7 @@ import('tools::link', 'LinkGenerator');
 
 /**
  * @package modules::usermanagement::pres::taglib
- * @class umgt_taglib_logoutlink
+ * @class UmgtLogoutLinkTag
  *
  * Creates a logout link that points to the current page but defines the parameters
  * of the logout action for you (especially the application identifier).
@@ -31,7 +31,7 @@ import('tools::link', 'LinkGenerator');
  * @version
  * Version 0.1, 09.06.2011<br />
  */
-class umgt_taglib_logoutlink extends Document {
+class UmgtLogoutLinkTag extends Document {
 
    public function transform() {
       $params = array('logout' => 'true');

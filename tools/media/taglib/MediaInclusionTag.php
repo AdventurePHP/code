@@ -22,7 +22,7 @@ import('tools::link', 'LinkGenerator');
 
 /**
  * @package tools::media::taglib
- * @class ui_mediastream
+ * @class MediaInclusionTag
  *
  * Implements the base class for the <*:mediastream /> tag implementations. Generates a
  * generic front controller image source out of a namespace and file name.
@@ -31,18 +31,8 @@ import('tools::link', 'LinkGenerator');
  * @version
  * Version 0.1, 29.10.2008<br />
  */
-class ui_mediastream extends Document {
+class MediaInclusionTag extends Document {
 
-   /**
-    * @public
-    *
-    * Sets up and checks the tag attributes.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.10.2008<br />
-    * Version 0.2, 01.11.2008<br />
-    */
    public function onParseTime() {
 
       if ($this->getAttribute('namespace') === null) {

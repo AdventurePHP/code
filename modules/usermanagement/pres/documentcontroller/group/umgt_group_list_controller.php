@@ -29,7 +29,7 @@
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_group_list_controller extends umgt_base_controller {
+class umgt_group_list_controller extends UmgtBaseController {
 
    public function transformContent() {
 

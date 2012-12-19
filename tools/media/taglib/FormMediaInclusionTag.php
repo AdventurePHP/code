@@ -18,16 +18,27 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::media::taglib', 'ui_mediastream');
+import('tools::media::taglib', 'MediaInclusionTag');
 
 /**
- * @class html_taglib_mediastream
+ * @package tools::media::taglib
+ * @class FormMediaInclusionTag
  *
- *  Implements the html:mediastream tag. See class ui_mediastream for more details.
+ * Implements the form:mediastream tag. See class MediaInclusionTag for more details.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 01.11.2008<br />
+ * Version 0.2, 10.08.2010 (Bug 384: added interface methods for form taglibs)<br />
  */
-class html_taglib_mediastream extends ui_mediastream {
+class FormMediaInclusionTag extends MediaInclusionTag implements FormControl {
+
+   public function isValid() {
+      return true;
+   }
+
+   public function isSent() {
+      return false;
+   }
+
 }

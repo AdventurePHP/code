@@ -21,7 +21,7 @@
 
 /**
  * @package tools::html::taglib
- * @class generic_taglib_importdesign
+ * @class GenericImportTemplateTag
  *
  * Implements a fully generic including tag. The tag retrieves both namespace and the template
  * name from the desired model object. Further, the developer is free to choose, which mode is
@@ -49,20 +49,7 @@
  * Version 0.1, 30.10.2008<br />
  * Version 0.2, 01.11.2008 (Added documentation and introduced the modelmode and getmethode params)<br />
  */
-class generic_taglib_importdesign extends ImportTemplateTag {
-
-   /**
-    * @public
-    *
-    *  Constructor of the class. Calls the parent's constructor to build the known taglib list.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 30.10.2008<br />
-    */
-   public function __construct() {
-      parent::__construct();
-   }
+class GenericImportTemplateTag extends ImportTemplateTag {
 
    /**
     * @public
@@ -80,7 +67,7 @@ class generic_taglib_importdesign extends ImportTemplateTag {
       // modelnamespace=""
       $modelNamespace = $this->getAttribute('modelnamespace');
       if ($modelNamespace === null) {
-         throw new InvalidArgumentException('[generic_taglib_importdesign::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The attribute "modelnamespace" is empty or not present. Please provide '
                . 'the namespace of the model within this attribute!');
       }
@@ -88,7 +75,7 @@ class generic_taglib_importdesign extends ImportTemplateTag {
       // modelfile=""
       $modelFile = $this->getAttribute('modelfile');
       if ($modelFile === null) {
-         throw new InvalidArgumentException('[generic_taglib_importdesign::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The attribute "modelfile" is empty or not present. Please provide the name '
                . 'of the model file within this attribute!');
       }
@@ -96,7 +83,7 @@ class generic_taglib_importdesign extends ImportTemplateTag {
       // modelclass=""
       $modelClass = $this->getAttribute('modelclass');
       if ($modelClass === null) {
-         throw new InvalidArgumentException('[generic_taglib_importdesign::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The attribute "modelclass" is empty or not present. Please provide the name '
                . 'of the model class within this attribute!');
       }
@@ -104,7 +91,7 @@ class generic_taglib_importdesign extends ImportTemplateTag {
       // modelmode="NORMAL|SINGLETON|SESSIONSINGLETON"
       $modelMode = $this->getAttribute('modelmode');
       if ($modelMode === null) {
-         throw new InvalidArgumentException('[generic_taglib_importdesign::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The attribute "modelmode" is empty or not present. Please provide the '
                . 'service type of the model within this attribute! Allowed values are '
                . 'NORMAL, SINGLETON or SESSIONSINGLETON.');
@@ -113,7 +100,7 @@ class generic_taglib_importdesign extends ImportTemplateTag {
       // namespaceparam=""
       $namespaceParam = $this->getAttribute('namespaceparam');
       if ($namespaceParam === null) {
-         throw new InvalidArgumentException('[generic_taglib_importdesign::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The attribute "namespaceparam" is empty or not present. Please provide the '
                . 'name of the model param for the namespace of the template file within this '
                . 'attribute!');
@@ -122,7 +109,7 @@ class generic_taglib_importdesign extends ImportTemplateTag {
       // templateparam=""
       $templateParam = $this->getAttribute('templateparam');
       if ($templateParam === null) {
-         throw new InvalidArgumentException('[generic_taglib_importdesign::onParseTime()] The '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] The '
                . 'attribute "templateparam" is empty or not present. Please provide the name '
                . 'of the model param for the name of the template file within this attribute!');
       }
@@ -173,7 +160,7 @@ class generic_taglib_importdesign extends ImportTemplateTag {
 
       // check for the get method
       if (!method_exists($model, $getMethod)) {
-         throw new InvalidArgumentException('[generic_taglib_importdesign::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The model class ("' . $modelClass . '") does not support the method "' . $getMethod
                . '" provided within the "getmethod" attribute. Please provide the correct '
                . 'function name!');
@@ -182,7 +169,7 @@ class generic_taglib_importdesign extends ImportTemplateTag {
       // read the params from the model
       $templateNamespace = $model->$getMethod($namespaceParam);
       if (empty($templateNamespace)) {
-         throw new InvalidArgumentException('[generic_taglib_importdesign::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The model ("' . $modelClass . '") returned an empty value when trying to get '
                . 'the template namespace using the "' . $getMethod . '" method! Please specify '
                . 'another getter or check the model class implementation!');
@@ -190,7 +177,7 @@ class generic_taglib_importdesign extends ImportTemplateTag {
 
       $templateName = $model->$getMethod($templateParam);
       if (empty($templateName)) {
-         throw new InvalidArgumentException('[generic_taglib_importdesign::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The model ("' . $modelClass . '") returned an empty value when trying to get '
                . 'the template name using the "' . $getMethod . '" method! Please specify another '
                . 'getter or check the model class implementation!');

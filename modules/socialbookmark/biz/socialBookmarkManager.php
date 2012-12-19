@@ -20,7 +20,7 @@
  */
 import('tools::link', 'LinkGenerator');
 import('modules::socialbookmark::biz', 'bookmarkEntry');
-import('tools::media::taglib', 'ui_mediastream');
+import('tools::media::taglib', 'MediaInclusionTag');
 
 /**
  * @package modules::socialbookmark::biz
@@ -209,7 +209,7 @@ class socialBookmarkManager extends APFObject {
    }
 
    private function getMediaUrl($image) {
-      $media = new ui_mediastream();
+      $media = new MediaInclusionTag();
       $media->setAttribute('namespace', 'modules::socialbookmark::pres::image');
       $media->setAttribute('filename', $image);
       $media->setContent($this->getContext());

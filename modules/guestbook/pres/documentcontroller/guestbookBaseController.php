@@ -30,7 +30,7 @@
  * @version
  * Version 0.1, 12.04.2007<br />
  */
-abstract class guestbookBaseController extends base_controller {
+abstract class guestbookBaseController extends BaseDocumentController {
 
    /**
     * @private

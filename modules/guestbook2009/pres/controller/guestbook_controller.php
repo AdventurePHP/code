@@ -30,7 +30,7 @@ import('modules::guestbook2009::biz', 'Guestbook');
  * @version
  * Version 0.1, 21.05.2009<br />
  */
-class guestbook_controller extends base_controller {
+class guestbook_controller extends BaseDocumentController {
 
    public function transformContent() {
 

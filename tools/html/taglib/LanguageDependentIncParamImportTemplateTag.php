@@ -21,7 +21,7 @@
 
 /**
  * @package tools::html::taglib
- * @class lang_taglib_importdesign
+ * @class LanguageDependentIncParamImportTemplateTag
  *
  * This is an extension of the core:importdesign taglib. With this taglib you are
  * able to use language-dependent incparams. The names of these language-dependent
@@ -65,7 +65,7 @@
  * @version
  * Version 0.1, 28.7.2011<br />
  */
-class lang_taglib_importdesign extends ImportTemplateTag {
+class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
 
    /**
     * Function builds up full name of the template. If some information are missing
@@ -86,9 +86,9 @@ class lang_taglib_importdesign extends ImportTemplateTag {
     * @param string $identification Language-independent template ID (needed to find related templates in different languages.)
     * @param string $name Language-dependent name
     * @param string $lang Language which should be used.
-    * @return string Templatefilename
+    * @return string Template file name.
     */
-   private function filename($prefix = '', $identification = '', $name = '', $lang = null) {
+   private function getFileName($prefix = '', $identification = '', $name = '', $lang = null) {
       if ($lang === null) {
          $lang = $this->getLanguage();
       }
@@ -109,12 +109,12 @@ class lang_taglib_importdesign extends ImportTemplateTag {
 
       $templateID = $this->getAttribute('template');
       if ($templateID === null) {
-         throw new InvalidArgumentException('[lang_taglib_importdesign::onParseTime()] Attribute "template" is not given!');
+         throw new InvalidArgumentException('[LanguageDependentIncParamImportTemplateTag::onParseTime()] Attribute "template" is not given!');
       }
 
       $namespace = $this->getAttribute('namespace');
       if ($namespace === null) {
-         throw new InvalidArgumentException('[lang_taglib_importdesign::onParseTime()] Attribute "namespace" is not given!');
+         throw new InvalidArgumentException('[LanguageDependentIncParamImportTemplateTag::onParseTime()] Attribute "namespace" is not given!');
       }
 
       $incparam = $this->getAttribute('incparam', 'incparam');
@@ -152,14 +152,12 @@ class lang_taglib_importdesign extends ImportTemplateTag {
       }
 
 
-      /*
-      * Check if parameter name is in Url and load template afterwards.
-      * If requested template does not exist, load default.
-      */
+      // Check if parameter name is in Url and load template afterwards.
+      // If requested template does not exist, load default.
       $template = '';
 
       if (isset($_REQUEST[$incParamName]) && $_REQUEST[$incParamName] !== null && $_REQUEST[$incParamName] != '') {
-         $templateToTest = $this->filename($prefix, '', $_REQUEST[$incParamName]);
+         $templateToTest = $this->getFileName($prefix, '', $_REQUEST[$incParamName]);
          $files = glob(str_replace('::', '/', APPS__PATH . '::' . $namespace) . '/' . $templateToTest);
          if (count($files) >= 1) {
             $template = substr(str_replace(str_replace('::', '/', APPS__PATH . '::' . $namespace . '::'), '', $files[0]), 0, -5);
@@ -168,7 +166,7 @@ class lang_taglib_importdesign extends ImportTemplateTag {
 
       if ($template == '') {
          // load default
-         $templateToTest = $this->filename($prefix, $templateID);
+         $templateToTest = $this->getFileName($prefix, $templateID);
          $files = glob(str_replace('::', '/', APPS__PATH . '::' . $namespace) . '/' . $templateToTest);
          if (count($files) >= 1) {
             $template = substr(str_replace(str_replace('::', '/', APPS__PATH . '::' . $namespace . '::'), '', $files[0]), 0, -5);

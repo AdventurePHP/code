@@ -18,18 +18,25 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::media::taglib', 'ui_mediastream');
 
 /**
- * @class template_taglib_mediastream
+ * @package modules::usermanagement::pres::taglib
+ * @class UmgtIncludeCssTag
  *
- *  Implements the template:mediastream tag. See class ui_mediastream for more details.
+ * Includes the css required to display the user management backend.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 01.11.2008<br />
- * Version 0.2, 10.11.2008 (Bugfix: tag was not transformed within a template)<br />
- * Version 0.3, 10.11.2008 (Removed the onParseTime() method, because the registerTagLibModule() function now is obsolete)<br />
+ * Version 0.1, 30.08.2011<br />
  */
-class template_taglib_mediastream extends ui_mediastream {
+class UmgtIncludeCssTag extends Document {
+
+   public function transform() {
+      return '<style type="text/css">'
+            . PHP_EOL
+            . file_get_contents(APPS__PATH . '/modules/usermanagement/pres/css/umgt.css')
+            . PHP_EOL
+            . '</style>';
+   }
+
 }

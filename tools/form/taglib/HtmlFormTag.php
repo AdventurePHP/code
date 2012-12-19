@@ -686,7 +686,7 @@ class HtmlFormTag extends Document {
     * Let's you retrieve an &lt;form:getstring /&gt; tag instance with the specified name.
     *
     * @param string $name The name of the form label to return.
-    * @return form_taglib_getstring The instance of the desired label.
+    * @return FormLanguageLabelTag The instance of the desired label.
     * @throws InvalidArgumentException In case no label can be found.
     *
     * @author Christian Achatz
@@ -695,7 +695,7 @@ class HtmlFormTag extends Document {
     */
    public function &getLabel($name) {
       try {
-         return $this->getChildNode('name', $name, 'form_taglib_getstring');
+         return $this->getChildNode('name', $name, 'FormLanguageLabelTag');
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[HtmlFormTag::getLabel()] No label found with name "' . $name
                . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'

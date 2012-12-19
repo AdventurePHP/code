@@ -27,7 +27,7 @@ import('tools::link', 'LinkGenerator');
  * @version
  * Version 1.0,  18.06.2011<br />
  */
-class menu_controller extends base_controller {
+class menu_controller extends BaseDocumentController {
 
    public function transformContent() {
       $generalExclusion = array('deleteyes' => null, 'deletenewsid' => null, 'editnewsid' => null);

@@ -41,7 +41,7 @@ import('tools::request', 'RequestHandler');
  * Version 0.5, 16.11.2007 (Migrated to FrontcontrollerLinkHandler)<br />
  * Version 0.6, 21.09.2010 (Migrated to page addressing instead of the start parameter)<br />
  */
-class pager_2_v1_controller extends base_controller {
+class pager_2_v1_controller extends BaseDocumentController {
 
    public function transformContent() {
 

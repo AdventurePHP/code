@@ -18,11 +18,11 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::media::taglib', 'ui_mediastream');
+import('tools::media::taglib', 'MediaInclusionTag');
 
 /**
  * @package modules::usermanagement::pres::taglib
- * @class umgt_taglib_media
+ * @class UmgtMediaInclusionTag
  *
  * Implements the image displaying taglib. Based on the <*:mediastream/> taglib.
  *
@@ -30,10 +30,10 @@ import('tools::media::taglib', 'ui_mediastream');
  * @version
  * Version 0.1, 26.12.2008<br />
  */
-class umgt_taglib_media extends ui_mediastream {
+class UmgtMediaInclusionTag extends MediaInclusionTag {
 
    public function __construct() {
-      $this->addTagLib(new TagLib('modules::usermanagement::pres::taglib', 'media_taglib_getstring', 'media', 'getstring'));
+      $this->addTagLib(new TagLib('modules::usermanagement::pres::taglib', 'UmgtMediaInclusionLanguageLabelTag', 'media', 'getstring'));
    }
 
    /**

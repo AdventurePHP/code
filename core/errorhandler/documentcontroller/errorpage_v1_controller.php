@@ -29,7 +29,7 @@
  * @version
  * Version 0.1, 21.01.2007<br />
  */
-class errorpage_v1_controller extends base_controller {
+class errorpage_v1_controller extends BaseDocumentController {
 
    /**
     * @public
