@@ -21,7 +21,7 @@
 
 /**
  * @package extensions::form::client
- * @class form_taglib_clientlistener
+ * @class ClientValidationListenerTag
  *
  *  This taglib adds an clientlistener, which can be displayed by clientside form validation.
  *
@@ -29,7 +29,7 @@
  * @version
  * Version 1.0, 18.03.2010<br />
  */
-class form_taglib_clientlistener extends AbstractFormControl {
+class ClientValidationListenerTag extends AbstractFormControl {
 
    /**
     * Add child taglibs.

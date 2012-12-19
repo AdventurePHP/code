@@ -21,7 +21,7 @@
 
 /**
  * @package extensions::form::client
- * @class form_taglib_addclientvalidator
+ * @class AddFormControlClientValidatorTag
  *
  *  This taglib adds validators to one or more controls.
  *
@@ -29,7 +29,7 @@
  * @version
  * Version 1.0, 18.03.2010<br />
  */
-class form_taglib_addclientvalidator extends AbstractFormControl {
+class AddFormControlClientValidatorTag extends AbstractFormControl {
 
    // prevent missing name error
    public function onParseTime() {
@@ -67,7 +67,7 @@ class form_taglib_addclientvalidator extends AbstractFormControl {
             try {
                $refField = $parent->getFormElementByName($ref);
             } catch (FormException $e) {
-               throw new FormException('[form_taglib_addclientvalidator::transform()]
+               throw new FormException('[AddFormControlClientValidatorTag::transform()]
                         No form element with name "' . $ref . '" found!
                         Check attribute "ref" of element "' . $control . '"!');
             }

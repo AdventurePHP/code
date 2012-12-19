@@ -35,17 +35,17 @@ class ClientValidationScriptStore extends APFObject {
     * Contains all validators which need to be added.
     * @var array
     */
-   protected $__ScriptStore = array();
+   protected $scriptStore = array();
    /**
     * Contains all valmarkerclasses
     * @var array
     */
-   protected $__ValmarkerclassStore = array();
+   protected $valmarkerclassStore = array();
    /**
     * Contains all options for the controls
     * @var array
     */
-   protected $__OptionsStore = array();
+   protected $optionsStore = array();
 
    /**
     * Adds a validator snipped to the script store, and adds validator file to file store if necessary.
@@ -55,7 +55,7 @@ class ClientValidationScriptStore extends APFObject {
     * @param array $controls An array with all controls the validator has to validate.
     * @param array $options The options for the validator.
     * @param bool $onblur If set to true, the validator will be also added as blur event. Default: false
-    * @param string $namespace The client validator's namespace. Default: the namespace which is used from the default validators.
+    * @param string $namespace The client validator namespace. Default: the namespace which is used from the default validators.
     *
     * @author Ralf Schubert
     * @version
@@ -68,7 +68,7 @@ class ClientValidationScriptStore extends APFObject {
 
       // add each control which needs this validator to scriptStore
       foreach ($controls as $control => $DUMMY) {
-         $this->__ScriptStore[] = array(
+         $this->scriptStore[] = array(
             'namespace' => $namespace,
             'class' => $class,
             'button' => $button,
@@ -76,11 +76,11 @@ class ClientValidationScriptStore extends APFObject {
             'onblur' => $onblur
          );
 
-         if (!isset($this->__OptionsStore[$control])) {
-            $this->__OptionsStore[$control] = $options[$control];
+         if (!isset($this->optionsStore[$control])) {
+            $this->optionsStore[$control] = $options[$control];
          }
-         if (!isset($this->__ValmarkerclassStore[$control]) && ($DUMMY['valmarkerclass'] !== 'apf-form-error')) {
-            $this->__ValmarkerclassStore[$control] = $DUMMY['valmarkerclass'];
+         if (!isset($this->valmarkerclassStore[$control]) && ($DUMMY['valmarkerclass'] !== 'apf-form-error')) {
+            $this->valmarkerclassStore[$control] = $DUMMY['valmarkerclass'];
          }
       }
 
@@ -96,7 +96,7 @@ class ClientValidationScriptStore extends APFObject {
     * Version 1.0, 18.03.2010<br />
     */
    public function getScriptStore() {
-      return $this->__ScriptStore;
+      return $this->scriptStore;
    }
 
    /**
@@ -109,7 +109,7 @@ class ClientValidationScriptStore extends APFObject {
     * Version 1.0, 18.03.2010<br />
     */
    public function getValmarkerclassStore() {
-      return $this->__ValmarkerclassStore;
+      return $this->valmarkerclassStore;
    }
 
    /**
@@ -122,7 +122,7 @@ class ClientValidationScriptStore extends APFObject {
     * Version 1.0, 18.03.2010<br />
     */
    public function getOptionsStore() {
-      return $this->__OptionsStore;
+      return $this->optionsStore;
    }
 
    /**
@@ -133,8 +133,8 @@ class ClientValidationScriptStore extends APFObject {
     * Version 1.0, 18.03.2010<br />
     */
    public function clean() {
-      $this->__ScriptStore = array();
-      $this->__ValmarkerclassStore = array();
-      $this->__OptionsStore = array();
+      $this->scriptStore = array();
+      $this->valmarkerclassStore = array();
+      $this->optionsStore = array();
    }
 }

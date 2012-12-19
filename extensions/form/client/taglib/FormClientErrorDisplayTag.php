@@ -21,7 +21,7 @@
 
 /**
  * @package extensions::form::client
- * @class form_taglib_clienterror
+ * @class FormClientErrorDisplayTag
  *
  *  This taglib adds an clienterror, which can be displayed by the client form validation.
  *
@@ -29,7 +29,7 @@
  * @version
  * Version 1.0, 18.03.2010<br />
  */
-class form_taglib_clienterror extends AbstractFormControl {
+class FormClientErrorDisplayTag extends AbstractFormControl {
 
    /**
     * Add child taglibs.

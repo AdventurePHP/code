@@ -21,7 +21,7 @@
 
 /**
  * @package extensions::form::client
- * @class form_taglib_getclientvalidator
+ * @class GetClientFormValidationTag
  *
  *  This taglib generates and renders all information for client validation in the html.
  *
@@ -29,13 +29,13 @@
  * @version
  * Version 1.0, 18.03.2010<br />
  */
-class form_taglib_getclientvalidator extends AbstractFormControl {
+class GetClientFormValidationTag extends AbstractFormControl {
 
    // Cache all button names/control names which already have an onClick/onBlur event
-   private $__buttonEventCache = array();
-   private $__controlEventCache = array();
+   private $buttonEventCache = array();
+   private $controlEventCache = array();
 
-   private $__optionsStore = null;
+   private $optionsStore = null;
 
    /**
     * Overwrite the parent's method and inject the form id, if necessary.
@@ -91,7 +91,7 @@ class form_taglib_getclientvalidator extends AbstractFormControl {
 
       $scriptStore = $CVSS->getScriptStore();
       $valmarkerclassStore = $CVSS->getValmarkerclassStore();
-      $this->__optionsStore = $CVSS->getOptionsStore();
+      $this->optionsStore = $CVSS->getOptionsStore();
 
       $CVSS->clean();
       unset($CVSS);
@@ -135,7 +135,7 @@ class form_taglib_getclientvalidator extends AbstractFormControl {
       );
 
       // Check if we already set an event on this button
-      if (!isset($this->__buttonEventCache[$definition['button']])) {
+      if (!isset($this->buttonEventCache[$definition['button']])) {
          $output['general'] .= ' $(\'form[id=' . $this->getFormId() . ']\').find(\'input[name=' . $definition['button'] . ']\').click(' .
                'function(event) {' .
                'if(!$(\'form[id=' . $this->getFormId() . ']\').validate($(this).attr(\'name\'))){' .
@@ -144,7 +144,7 @@ class form_taglib_getclientvalidator extends AbstractFormControl {
                '}' .
                '}' .
                ');';
-         $this->__buttonEventCache[$definition['button']] = true;
+         $this->buttonEventCache[$definition['button']] = true;
       }
 
       // Check type of control, and generate jQuery selector
@@ -164,20 +164,20 @@ class form_taglib_getclientvalidator extends AbstractFormControl {
 
       // check if we need to set an onBlur event, and if we set it already on this control.
       if ($definition['onblur'] === true) {
-         if (!isset($this->__controlEventCache[$definition['control']])) {
+         if (!isset($this->controlEventCache[$definition['control']])) {
             $output['general'] .= ' $("form[id=\'' . $this->getFormId() . '\'] ' . $jQSelector . '").live("blur",' .
                   'function() {' .
                   '$(\'form[id=' . $this->getFormId() . ']\').validateControl(\'' . $definition['button'] . '\', $(this));' .
                   '}' .
                   ');';
-            $this->__controlEventCache[$definition['control']] = true;
+            $this->controlEventCache[$definition['control']] = true;
          }
       }
 
       // Create js which adds the validator
       $opt = '{}';
-      if (isset($this->__optionsStore[$definition['control']])) {
-         $opt = $this->jsonEncodeAsObject($this->__optionsStore[$definition['control']]);
+      if (isset($this->optionsStore[$definition['control']])) {
+         $opt = $this->jsonEncodeAsObject($this->optionsStore[$definition['control']]);
       }
       $output['form'] .= '.addValidator(\'' . $definition['button'] . '\', \'' . $definition['control'] . '\', \'' . $definition['class'] . '\', ' . $opt . ')';
 
