@@ -18,31 +18,44 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::biz', 'CssContentNode');
+import('extensions::htmlheader::biz', 'StaticCssNode');
 
 /**
  * @package extensions::htmlheader::pres::taglib
- * @class htmlheader_taglib_addcsscontent
+ * @class HtmlHeaderAddStaticCssTag
  *
- * Taglib for adding stylesheets content to the html header.
+ * Taglib for adding static stylesheets to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addcsscontent" prefix="htmlheader" name="addcsscontent" />
- * <htmlheader:addcsscontent>
- *   ... css code ...
- * </htmlheader:addcsscontent>
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddStaticCssTag" prefix="htmlheader" name="addstaticcss" />
+ * <htmlheader:addstaticcss file="..." />
+ * <ul>
+ *   <li>file: The source location of the stylesheet</li>
+ * </ul>
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 28.08.2010<br />
  */
-class htmlheader_taglib_addcsscontent extends Document {
+class HtmlHeaderAddStaticCssTag extends Document {
 
    public function transform() {
       $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
       /* @var $header HtmlHeaderManager */
 
-      $node = new CssContentNode($this->getContent());
+      $file = $this->getAttribute('file');
+      if ($file == null) {
+         throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please '
+                  . 'provide the "file" attribute in order to add a static stylesheet.',
+            E_USER_ERROR);
+      }
+      $node = new StaticCssNode($file);
+
+      $media = $this->getAttribute('media');
+      if ($media !== null) {
+         $node->setAttribute('media', $media);
+      }
+
       $node->setPriority($this->getAttribute('priority'));
       $header->addNode($node);
 

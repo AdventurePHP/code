@@ -22,19 +22,19 @@ import('extensions::htmlheader::pres::filter', 'HtmlHeaderOutputFilter');
 
 /**
  * @package extensions::htmlheader::pres::taglib
- * @class htmlheader_taglib_getbodyjs
+ * @class HtmlHeaderGetBodyJsTag
  *
  * Taglib for receiving javascript definitions which should be placed at
  * the end of the body.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_getbodyjs" prefix="htmlheader" name="getbodyjs" />
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderGetBodyJsTag" prefix="htmlheader" name="getbodyjs" />
  * <htmlheader:getbodyjs />
  *
  * @author Ralf Schubert <<a href="http://develovision.de/">Develovision</a>>
  * @version 0.1, 21.09.2011<br />
  */
-class htmlheader_taglib_getbodyjs extends Document {
+class HtmlHeaderGetBodyJsTag extends Document {
    const HTML_BODYJS_INDICATOR = '<!--HTMLHEADER_TAGLIB_GETBODYJS-->';
 
    public function transform() {

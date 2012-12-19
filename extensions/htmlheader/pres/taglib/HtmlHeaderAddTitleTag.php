@@ -22,13 +22,13 @@ import('extensions::htmlheader::biz', 'SimpleTitleNode');
 
 /**
  * @package extensions::htmlheader::pres::taglib
- * @class htmlheader_taglib_addtitle
+ * @class HtmlHeaderAddTitleTag
  *
  * Taglib for adding a title to htmlheader.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addtitle" prefix="htmlheader" name="addtitle" />
- * <htmlheader:addtitle[ append="false"]>Testwebpage title</htmlheader:addtitle>
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddTitleTag" prefix="htmlheader" name="addtitle" />
+ * <htmlheader:addtitle [append="false"]>Testwebpage title</htmlheader:addtitle>
  * Set append to true, if you want to add the given tag-content at the end of
  * the existing title instead of overwriting it.
  *
@@ -36,7 +36,7 @@ import('extensions::htmlheader::biz', 'SimpleTitleNode');
  * @version 0.1, 20.09.2009<br>
  * @version 0.2, 27.09.2009<br>
  */
-class htmlheader_taglib_addtitle extends Document {
+class HtmlHeaderAddTitleTag extends Document {
 
    public function transform() {
       $header = $this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');

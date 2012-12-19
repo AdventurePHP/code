@@ -22,12 +22,12 @@ import('extensions::htmlheader::pres::filter', 'HtmlHeaderOutputFilter');
 
 /**
  * @package extensions::htmlheader::pres::taglib
- * @class htmlheader_taglib_gethead
+ * @class HtmlHeaderGetHeadTag
  *
  * Taglib for receiving the complete htmlheader.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_gethead" prefix="htmlheader" name="gethead" />
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderGetHeadTag" prefix="htmlheader" name="gethead" />
  * <htmlheader:gethead />
  *
  * @author Ralf Schubert
@@ -35,7 +35,7 @@ import('extensions::htmlheader::pres::filter', 'HtmlHeaderOutputFilter');
  * @version 0.2, 27.09.2009<br />
  * @version 0.3, 17.08.2010 (Added meta nodes)<br />
  */
-class htmlheader_taglib_gethead extends Document {
+class HtmlHeaderGetHeadTag extends Document {
 
    const HTML_HEADER_INDICATOR = '<!--HTMLHEADER_TAGLIB_GETHEAD-->';
 

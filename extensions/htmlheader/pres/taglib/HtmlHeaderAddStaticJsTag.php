@@ -18,26 +18,27 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::biz', 'StaticCssNode');
+import('extensions::htmlheader::biz', 'StaticJsNode');
 
 /**
  * @package extensions::htmlheader::pres::taglib
- * @class htmlheader_taglib_addcss
+ * @class HtmlHeaderAddStaticJsTag
  *
- * Taglib for adding static stylesheets to the html header.
+ * Taglib for adding static java script to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addstaticcss" prefix="htmlheader" name="addstaticcss" />
- * <htmlheader:addstaticcss file="..." />
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddStaticJsTag" prefix="htmlheader" name="addstaticcss" />
+ * <htmlheader:addstaticjs file="..." />
  * <ul>
  *   <li>file: The source location of the stylesheet</li>
  * </ul>
  *
- * @author Christian Achatz
+ * @author Ralf Schubert
  * @version
- * Version 0.1, 28.08.2010<br />
+ * 0.1, 20.09.2009 <br />
+ * 0.2, 27.02.2010 (Added attributes for external file support) <br />
  */
-class htmlheader_taglib_addstaticcss extends Document {
+class HtmlHeaderAddStaticJsTag extends Document {
 
    public function transform() {
       $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
@@ -49,11 +50,11 @@ class htmlheader_taglib_addstaticcss extends Document {
                   . 'provide the "file" attribute in order to add a static stylesheet.',
             E_USER_ERROR);
       }
-      $node = new StaticCssNode($file);
 
-      $media = $this->getAttribute('media');
-      if ($media !== null) {
-         $node->setAttribute('media', $media);
+      $node = new StaticJsNode($file);
+
+      if (strtolower($this->getAttribute('appendtobody')) === 'true') {
+         $node->setAppendToBody(true);
       }
 
       $node->setPriority($this->getAttribute('priority'));

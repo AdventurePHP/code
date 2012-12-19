@@ -18,8 +18,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::pres::taglib', 'htmlheader_taglib_gethead');
-import('extensions::htmlheader::pres::taglib', 'htmlheader_taglib_getbodyjs');
+import('extensions::htmlheader::pres::taglib', 'HtmlHeaderGetHeadTag');
+import('extensions::htmlheader::pres::taglib', 'HtmlHeaderGetBodyJsTag');
 
 /**
  * @package extensions::htmlheader::pres::filter
@@ -41,14 +41,14 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
 
       // replace gethead-taglib
       $input = str_replace(
-         htmlheader_taglib_gethead::HTML_HEADER_INDICATOR,
+         HtmlHeaderGetHeadTag::HTML_HEADER_INDICATOR,
          $replacements[0],
          $input
       );
 
       // replace getbodyjs-taglib
       $input = str_replace(
-         htmlheader_taglib_getbodyjs::HTML_BODYJS_INDICATOR,
+         HtmlHeaderGetBodyJsTag::HTML_BODYJS_INDICATOR,
          $replacements[1],
          $input
       );

@@ -18,40 +18,31 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::biz', 'StaticJsNode');
+import('extensions::htmlheader::biz', 'JsContentNode');
 
 /**
  * @package extensions::htmlheader::pres::taglib
- * @class htmlheader_taglib_addcss
+ * @class HtmlHeaderAddJsContentTag
  *
  * Taglib for adding static stylesheets to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addstaticcss" prefix="htmlheader" name="addstaticcss" />
- * <htmlheader:addstaticcss file="..." />
- * <ul>
- *   <li>file: The source location of the stylesheet</li>
- * </ul>
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddJsContentTag" prefix="htmlheader" name="addjscontent" />
+ * <htmlheader:addjscontent>
+ *   ... js code ...
+ * </htmlheader:addjscontent>
  *
- * @author Ralf Schubert
+ * @author Christian Achatz
  * @version
- * 0.1, 20.09.2009 <br />
- * 0.2, 27.02.2010 (Added attributes for external file support) <br />
+ * Version 0.1, 28.08.2010<br />
  */
-class htmlheader_taglib_addstaticjs extends Document {
+class HtmlHeaderAddJsContentTag extends Document {
 
    public function transform() {
       $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
       /* @var $header HtmlHeaderManager */
 
-      $file = $this->getAttribute('file');
-      if ($file == null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please '
-                  . 'provide the "file" attribute in order to add a static stylesheet.',
-            E_USER_ERROR);
-      }
-
-      $node = new StaticJsNode($file);
+      $node = new JsContentNode($this->getContent());
 
       if (strtolower($this->getAttribute('appendtobody')) === 'true') {
          $node->setAppendToBody(true);
@@ -59,7 +50,6 @@ class htmlheader_taglib_addstaticjs extends Document {
 
       $node->setPriority($this->getAttribute('priority'));
       $header->addNode($node);
-
       return '';
    }
 

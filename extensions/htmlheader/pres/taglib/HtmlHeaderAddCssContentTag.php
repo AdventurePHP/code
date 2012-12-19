@@ -18,37 +18,31 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::biz', 'CssImageNode');
+import('extensions::htmlheader::biz', 'CssContentNode');
 
 /**
  * @package extensions::htmlheader::pres::taglib
- * @class htmlheader_taglib_addcssimage
+ * @class HtmlHeaderAddCssContentTag
  *
- * Taglib for adding an image to the html header.
+ * Taglib for adding stylesheets content to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addcssimage" prefix="htmlheader" name="addcssimage" />
- * <htmlheader:addcssimage rel="icon" href="favicon.png" type="image/png" />
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddCssContentTag" prefix="htmlheader" name="addcsscontent" />
+ * <htmlheader:addcsscontent>
+ *   ... css code ...
+ * </htmlheader:addcsscontent>
  *
- * @author Werner Liemberger
+ * @author Christian Achatz
  * @version
- * Version 0.1, 25.8.2011<br />
+ * Version 0.1, 28.08.2010<br />
  */
-class htmlheader_taglib_addcssimage extends Document {
+class HtmlHeaderAddCssContentTag extends Document {
 
    public function transform() {
       $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
       /* @var $header HtmlHeaderManager */
 
-      $href = $this->getAttribute('href');
-      if ($href == null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please provide the "href" '
-               . 'attribute in order to add a Css image.', E_USER_ERROR);
-      }
-      $rel = $this->getAttribute('rel', 'icon');
-      $type = $this->getAttribute('type');
-      $node = new CssImageNode($href, $rel, $type);
-
+      $node = new CssContentNode($this->getContent());
       $node->setPriority($this->getAttribute('priority'));
       $header->addNode($node);
 

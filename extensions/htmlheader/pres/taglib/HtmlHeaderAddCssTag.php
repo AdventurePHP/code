@@ -18,52 +18,53 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::biz', 'DynamicJsNode');
+import('extensions::htmlheader::biz', 'DynamicCssNode');
 
 /**
  * @package extensions::htmlheader::pres::taglib
- * @class htmlheader_taglib_addjs
+ * @class HtmlHeaderAddCssTag
  *
- *  Taglib for adding javascripts to htmlheader.
+ *  Taglib for adding stylesheets to htmlheader.
  *
  * @example
- *  <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addjs" prefix="htmlheader" name="addjs" />
- *  Use FC-Action to deliver file:
- *  <htmlheader:addjs namespace="{CONTEXT}::pres::frontend::static::js::anything" filename="jsfile" />
+ *  <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddCssTag" prefix="htmlheader" name="addcss" />
+ *  Use FC-action to deliver file:
+ *  <htmlheader:addcss namespace="{CONTEXT}::pres::frontend::static::css:anything" filename="examplefile" />
  *  <ul>
- *    <li>namespace: Namespace of javascript file</li>
- *    <li>filename: Javascript filename without '.js'</li>
+ *    <li>namespace: Namespace of stylesheet file</li>
+ *    <li>filename: Stylesheet filename without '.css'</li>
  *  </ul>
  *
- * Use External file:
- * <htmlheader:addjs
+ *  Use External file:
+ *  <htmlheader:addcss
  *    url="http://static/"
- *    folder="js::anything"
- *    filename="jsfile"
+ *    folder="css::anything"
+ *    filename="examplefile"
  *    rewriting="false"
  *    fcaction="false"
- * />
+ *  />
  *  <ul>
  *    <li>url: URL of file server</li>
- *    <li>folder: Folder of javascript file</li>
- *    <li>filename: Javascript filename without '.js'</li>
+ *    <li>folder: Folder of css file</li>
+ *    <li>filename: Css filename without '.css'</li>
  *    <li>rewriting: Rewriting of target server enabled? (optional, option will be used from actual application otherwise)
  *    <li>fcaction: Use an fc-action on target server? (optional, will be set to true by default)
- *    <li>appendtobody: If set to true, tag will not be included to htmlheader:gethead replacements, but to htmlheader:getbodyjs
  *  </ul>
  *
  * @author Ralf Schubert
  * @version
- *  0.1, 20.09.2009<br />
- *  0.2, 27.09.2009<br />
- *  0.3, 27.02.2010 (Added attributes for external file support) <br />
+ *  0.1, 20.09.2009 <br />
+ *  0.2, 27.02.2010 (Added attributes for external file support) <br />
  */
-class htmlheader_taglib_addjs extends Document {
+class HtmlHeaderAddCssTag extends Document {
+
+   public function onParseTime() {
+   }
 
    public function transform() {
 
       /* @var $header HtmlHeaderManager */
-      $header = $this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+      $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
 
       $url = $this->getAttribute('url');
       $folder = $this->getAttribute('folder');
@@ -86,13 +87,9 @@ class htmlheader_taglib_addjs extends Document {
       }
 
       if ($url !== null) {
-         $node = new DynamicJsNode($url, $folder, $filename, $rewriting, $fcaction);
+         $node = new DynamicCssNode($url, $folder, $filename, $rewriting, $fcaction);
       } else {
-         $node = new DynamicJsNode(null, $namespace, $filename, $rewriting, $fcaction);
-      }
-
-      if (strtolower($this->getAttribute('appendtobody')) === 'true') {
-         $node->setAppendToBody(true);
+         $node = new DynamicCssNode(null, $namespace, $filename, $rewriting, $fcaction);
       }
 
       $node->setPriority($this->getAttribute('priority'));

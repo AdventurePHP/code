@@ -18,38 +18,33 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::biz', 'JsContentNode');
+import('extensions::htmlheader::biz', 'SimpleMetaNode');
 
 /**
  * @package extensions::htmlheader::pres::taglib
- * @class htmlheader_taglib_addcss
+ * @class HtmlHeaderAddMetaTag
  *
- * Taglib for adding static stylesheets to the html header.
+ * Taglib for adding meta nodes to htmlheader.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addjscontent" prefix="htmlheader" name="addjscontent" />
- * <htmlheader:addjscontent>
- *   ... js code ...
- * </htmlheader:addjscontent>
+ * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddMetaTag" prefix="htmlheader" name="addmeta" />
+ * <htmlheader:addmeta name="" content="" />
  *
- * @author Christian Achatz
- * @version
- * Version 0.1, 28.08.2010<br />
+ * @author Ralf Schubert
+ * @version 0.1, 11.10.2011<br>
  */
-class htmlheader_taglib_addjscontent extends Document {
+class HtmlHeaderAddMetaTag extends Document {
 
    public function transform() {
-      $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+      $header = $this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
       /* @var $header HtmlHeaderManager */
 
-      $node = new JsContentNode($this->getContent());
-
-      if (strtolower($this->getAttribute('appendtobody')) === 'true') {
-         $node->setAppendToBody(true);
-      }
-
-      $node->setPriority($this->getAttribute('priority'));
-      $header->addNode($node);
+      $header->addNode(
+         new SimpleMetaNode(
+            $this->getAttribute('name'),
+            $this->getAttribute('content')
+         )
+      );
       return '';
    }
 

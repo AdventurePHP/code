@@ -23,14 +23,14 @@ import('extensions::htmlheader::biz', 'CssPackageNode');
 
 /**
  * @package extensions::htmlheader::pres::taglib
- * @class htmlheader_taglib_addpackage
+ * @class HtmlHeaderAddPackageTag
  *
  * Enables you to add a package of combined CSS or JS files.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
  * @version 0.1, 20.03.2010<br />
  */
-class htmlheader_taglib_addpackage extends Document {
+class HtmlHeaderAddPackageTag extends Document {
 
    public function transform() {
 
