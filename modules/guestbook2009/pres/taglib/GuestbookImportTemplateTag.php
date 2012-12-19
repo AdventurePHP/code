@@ -22,7 +22,7 @@ import('modules::guestbook2009::biz', 'GuestbookModel');
 
 /**
  * @package modules::guestbook2009::pres::taglib
- * @class gb_taglib_import
+ * @class GuestbookImportTemplateTag
  *
  * Implements the taglib class to include the guestbook and to fill the model
  * with the appropriate information.
@@ -31,11 +31,7 @@ import('modules::guestbook2009::biz', 'GuestbookModel');
  * @version
  * Version 0.1, 16.05.2009<br />
  */
-class gb_taglib_import extends ImportTemplateTag {
-
-   public function __construct() {
-      parent::__construct();
-   }
+class GuestbookImportTemplateTag extends ImportTemplateTag {
 
    /**
     * @public
@@ -54,7 +50,7 @@ class gb_taglib_import extends ImportTemplateTag {
 
       // do not include the guestbook, if gbid is not set/existent
       if ($guestbookId == null || ((int)$guestbookId) == 0) {
-         throw new InvalidArgumentException('[gb_taglib_import::onParseTime()] The attribute '
+         throw new InvalidArgumentException('[GuestbookImportTemplateTag::onParseTime()] The attribute '
                . '"gbid" is empty or not present or the value is not an id. Please specify the '
                . 'attribute correctly in order to include the guestbook module!');
       }
