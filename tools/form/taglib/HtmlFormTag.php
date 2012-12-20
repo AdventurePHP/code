@@ -706,6 +706,49 @@ class HtmlFormTag extends Document {
    /**
     * @public
     *
+    * Convenience method to fill a place holder within a form.
+    *
+    * @param string $name The name of the place holder.
+    * @param string $value The value to fill the place holder with.
+    * @return HtmlFormTag This instance for further usage.
+    * @throws FormException In case the place holder cannot be set.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.09.2009<br />
+    */
+   public function &setPlaceHolder($name, $value) {
+
+      $placeHolderCount = 0;
+      if (count($this->__Children) > 0) {
+         foreach ($this->__Children as $objectId => $DUMMY) {
+            if ($this->__Children[$objectId] instanceof FormPlaceHolderTag) {
+               if ($this->__Children[$objectId]->getAttribute('name') == $name) {
+                  $this->__Children[$objectId]->setContent($value);
+                  $placeHolderCount++;
+               }
+            }
+         }
+      } else {
+         throw new FormException('[HtmlFormTag::setPlaceHolder()] No place holder object with '
+                  . 'name "' . $name . '" composed in current for document controller "'
+                  . $this->getParentObject()->getDocumentController() . '"!',
+            E_USER_ERROR);
+      }
+
+      if ($placeHolderCount < 1) {
+         throw new FormException('[HtmlFormTag::setPlaceHolder()] There are no place holders '
+               . 'found for name "' . $name . '" in template "' . $this->getAttribute('name')
+               . '" in document controller "' . $this->getParentObject()->getDocumentController()
+               . '"!', E_USER_WARNING);
+      }
+
+      return $this;
+   }
+
+   /**
+    * @public
+    *
     * Returns the content of the transformed form.
     *
     * @return string The content of the transformed form.

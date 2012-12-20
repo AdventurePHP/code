@@ -37,7 +37,7 @@ import('extensions::htmlheader::pres::filter', 'HtmlHeaderOutputFilter');
  */
 class HtmlHeaderGetHeadTag extends Document {
 
-   const HTML_HEADER_INDICATOR = '<!--HTMLHEADER_TAGLIB_GETHEAD-->';
+   const HTML_HEADER_INDICATOR = '<!--HTMLHEADER_GETHEAD_TAG-->';
 
    public function transform() {
 

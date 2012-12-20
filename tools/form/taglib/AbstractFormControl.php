@@ -416,7 +416,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     *
     * @param string $name The name of the place holder.
     * @param string $value The value to fill the place holder with.
-    * @return FormErrorDisplayTag|ValidationListenerTag|FormSuccessDisplayTag|HtmlFormTag This instance for further usage.
+    * @return FormErrorDisplayTag|ValidationListenerTag|FormSuccessDisplayTag This instance for further usage.
     * @throws FormException In case the place holder cannot be set.
     *
     * @author Christian Achatz
@@ -431,7 +431,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       $placeHolderCount = 0;
       if (count($this->__Children) > 0) {
          foreach ($this->__Children as $objectId => $DUMMY) {
-            if (get_class($this->__Children[$objectId]) == $tagLibClass) {
+            if ($this->__Children[$objectId] instanceof $tagLibClass) {
                if ($this->__Children[$objectId]->getAttribute('name') == $name) {
                   $this->__Children[$objectId]->setContent($value);
                   $placeHolderCount++;
@@ -440,17 +440,14 @@ abstract class AbstractFormControl extends Document implements FormControl {
          }
       } else {
          throw new FormException('[' . get_class($this) . '::setPlaceHolder()] No place holder object with '
-                  . 'name "' . $name . '" composed in current for document controller "'
-                  . ($this->__ParentObject->getDocumentController()) . '"! Perhaps tag library '
-                  . 'form:placeholder is not loaded in form "' . $this->getAttribute('name') . '"!',
-            E_USER_ERROR);
+               . 'name "' . $name . '" composed in "' . get_class($this) . '" node within form with name "'
+               . $this->getParentObject()->getAttribute('name') . '"!', E_USER_ERROR);
       }
 
       if ($placeHolderCount < 1) {
          throw new FormException('[' . get_class($this) . '::setPlaceHolder()] There are no place holders '
-               . 'found for name "' . $name . '" in template "' . ($this->__Attributes['name'])
-               . '" in document controller "' . ($this->__ParentObject->getDocumentController())
-               . '"!', E_USER_WARNING);
+               . 'found for name "' . $name . '" composed in "' . get_class($this) . '" node within form with name "'
+               . $this->getParentObject()->getAttribute('name') . '"!', E_USER_ERROR);
       }
 
       return $this;
