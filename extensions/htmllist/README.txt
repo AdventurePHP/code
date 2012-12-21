@@ -40,9 +40,9 @@ EXAMPLE:
 import('extensions::htmllist::taglib','html_taglib_list');
 
 ...
-$this->__list = new html_taglib_list();
-$this->__list->addList( 'list:unordered' , array( 'id' => 'rsslist' ) );
-$list = $this->__list->getListById( 'rsslist' );
+$this->list = new html_taglib_list();
+$this->list->addList( 'list:unordered' , array( 'id' => 'rsslist' ) );
+$list = $this->list->getListById( 'rsslist' );
 
 // --- $lstFeeds is an array with a certain size
 foreach( $lstFeeds as $f)
@@ -50,7 +50,7 @@ foreach( $lstFeeds as $f)
    $list->addElement( $f , "list_css_class" );
 }
 
-return $this->__list->transform();
+return $this->list->transform();
 
 ================================================================================
 ================================================================================

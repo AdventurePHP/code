@@ -48,7 +48,7 @@ class SelectBoxGroupTag extends AbstractFormControl {
     * Version 0.1, 13.02.2010<br />
     */
    public function onParseTime() {
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    /**

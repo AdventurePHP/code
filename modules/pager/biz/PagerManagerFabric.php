@@ -38,9 +38,9 @@ final class PagerManagerFabric extends APFObject {
 
    /**
     * @private
-    *  Cache list if concrete pager manager instances.
+    * Cache list if concrete pager manager instances.
     */
-   private $__Pager = array();
+   private $pager = array();
 
    /**
     * @public
@@ -61,11 +61,11 @@ final class PagerManagerFabric extends APFObject {
       $pagerHash = md5($configString);
 
       // initialize desired pager lazily
-      if (!isset($this->__Pager[$pagerHash])) {
-         $this->__Pager[$pagerHash] = $this->getAndInitServiceObject('modules::pager::biz', 'PagerManager', $configString, APFService::SERVICE_TYPE_NORMAL);
+      if (!isset($this->pager[$pagerHash])) {
+         $this->pager[$pagerHash] = $this->getAndInitServiceObject('modules::pager::biz', 'PagerManager', $configString, APFService::SERVICE_TYPE_NORMAL);
       }
 
-      return $this->__Pager[$pagerHash];
+      return $this->pager[$pagerHash];
 
    }
 

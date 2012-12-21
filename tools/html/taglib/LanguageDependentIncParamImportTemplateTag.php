@@ -173,9 +173,9 @@ class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
          }
       }
 
-      $this->__loadContentFromFile($namespace, $template);
-      $this->__extractDocumentController();
-      $this->__extractTagLibTags();
+      $this->loadContentFromFile($namespace, $template);
+      $this->extractDocumentController();
+      $this->extractTagLibTags();
    }
 
 }

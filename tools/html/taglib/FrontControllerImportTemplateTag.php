@@ -86,11 +86,11 @@ class FrontControllerImportTemplateTag extends ImportTemplateTag {
          $this->__Context = trim($this->__Attributes['context']);
       }
 
-      $this->__loadContentFromFile($templateNamespace, $templateName);
+      $this->loadContentFromFile($templateNamespace, $templateName);
 
-      $this->__extractDocumentController();
+      $this->extractDocumentController();
 
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
 
    }
 

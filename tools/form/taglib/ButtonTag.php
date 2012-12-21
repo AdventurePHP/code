@@ -79,7 +79,7 @@ class ButtonTag extends AbstractFormControl {
       }
 
       // parse button:getstring tags
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    /**

@@ -37,7 +37,7 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
     * @private
     * @var array Defines the installed fonts.
     */
-   private $__Fonts = array('XFILES.TTF');
+   private $fonts = array('XFILES.TTF');
 
    /**
     * @public
@@ -66,7 +66,7 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
       $color = ImageColorAllocate($img, 0, 0, 0);
 
       // define font type
-      $ttf = APPS__PATH . '/modules/captcha/pres/fonts/' . $this->__Fonts[rand(0, count($this->__Fonts) - 1)];
+      $ttf = APPS__PATH . '/modules/captcha/pres/fonts/' . $this->fonts[rand(0, count($this->fonts) - 1)];
 
       // define font size
       $ttfsize = 25;

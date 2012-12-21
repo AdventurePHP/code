@@ -46,7 +46,7 @@ class UmgtMediaInclusionTag extends MediaInclusionTag {
     * Version 0.1, 26.12.2008<br />
     */
    public function onParseTime() {
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    /**

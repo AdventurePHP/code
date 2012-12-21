@@ -70,7 +70,7 @@ class SelectBoxTag extends AbstractFormControl {
     * Version 0.1, 07.01.2007<br />
     */
    public function onParseTime() {
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
       $value = $this->getRequestValue();
       if ($value !== null) {
          $this->setOption2Selected($value);

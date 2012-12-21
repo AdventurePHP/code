@@ -88,7 +88,7 @@ class ReCaptchaTag extends AbstractFormControl {
       }
 
       // parse <recaptcha:getstring /> tag.
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    /**

@@ -137,7 +137,7 @@ abstract class list_control extends Document {
 abstract class AbstractTaglibList extends list_control {
 
    public function onParseTime() {
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    /**
@@ -152,9 +152,9 @@ abstract class AbstractTaglibList extends list_control {
          $this->transformChildren();
 
          // --- Create list
-         $this->__Content = '<' . $this->__getListIdentifier() . ' '
+         $this->__Content = '<' . $this->getListIdentifier() . ' '
                . $this->getAttributesAsString($this->__Attributes) . '>'
-               . $this->__Content . '</' . $this->__getListIdentifier() . '>';
+               . $this->__Content . '</' . $this->getListIdentifier() . '>';
       }
 
       return $this->__Content;
@@ -165,7 +165,7 @@ abstract class AbstractTaglibList extends list_control {
     *
     * @return string The tag name of the list identifier.
     */
-   abstract protected function __getListIdentifier();
+   abstract protected function getListIdentifier();
 
    /**
     * Adds a list element.
@@ -173,7 +173,7 @@ abstract class AbstractTaglibList extends list_control {
     * @param string $cssClass The name of the implementation class.
     * @param string $elementName The name of the tag (e.g. "elem_list" for list_taglib_elem_list class).
     */
-   protected function __addElement($content, $cssClass, $elementName) {
+   protected function addElement($content, $cssClass, $elementName) {
 
       $objectId = XmlParser::generateUniqID();
 

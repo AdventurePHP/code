@@ -95,9 +95,9 @@ class weather_v1_controller extends BaseDocumentController {
       } else {
 
          // Display error message
-         $Template__NoEntries = &$this->getTemplate('NoEntries_' . $this->__Language);
-         $Template__NoEntries->setPlaceHolder('Source', $this->getRSSSource());
-         $this->setPlaceHolder('Content', $Template__NoEntries->transformTemplate());
+         $templateNoEntries = &$this->getTemplate('NoEntries_' . $this->__Language);
+         $templateNoEntries->setPlaceHolder('Source', $this->getRSSSource());
+         $this->setPlaceHolder('Content', $templateNoEntries->transformTemplate());
       }
    }
 

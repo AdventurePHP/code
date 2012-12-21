@@ -75,16 +75,16 @@ class LanguageDependentImportTemplateTag extends Document {
       }
 
       // load content
-      $this->__loadContentFromFile($namespace, $template);
+      $this->loadContentFromFile($namespace, $template);
 
       // parse for translations
       $this->parseTranslations($namespace, $template);
 
       // parse document controller directives
-      $this->__extractDocumentController();
+      $this->extractDocumentController();
 
       // parse known tags
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
 
       $T->stop($id);
 

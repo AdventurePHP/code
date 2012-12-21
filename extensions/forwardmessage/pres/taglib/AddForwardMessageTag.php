@@ -55,7 +55,7 @@ class AddForwardMessageTag extends Document {
       }
 
       // analyze the message sub tag and make them feel to be in a "normal" environment
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
 
       // add message that is the essence of the tag's transformed content
 

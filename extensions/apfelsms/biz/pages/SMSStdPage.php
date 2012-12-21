@@ -53,13 +53,13 @@ class SMSStdPage extends APFObject implements SMSPage {
    /**
     * @var SMSPage|null
     */
-   protected $__Parent = null;
+   protected $parent = null;
 
 
    /**
     * @var SMSPage[]
     */
-   protected $__Children = array();
+   protected $children = array();
 
 
    /**
@@ -234,11 +234,11 @@ class SMSStdPage extends APFObject implements SMSPage {
     */
    public function getChildren() {
 
-      if (empty($this->__Children)) {
+      if (empty($this->children)) {
          $this->loadChildren();
       }
 
-      return $this->__Children;
+      return $this->children;
 
    }
 
@@ -258,7 +258,7 @@ class SMSStdPage extends APFObject implements SMSPage {
       }
 
       foreach ($ids AS $id) {
-         $this->__Children[] = $SMSM->getPage($id);
+         $this->children[] = $SMSM->getPage($id);
       }
 
    }
@@ -301,11 +301,11 @@ class SMSStdPage extends APFObject implements SMSPage {
     */
    public function getParent() {
 
-      if (empty($this->__Parent)) {
+      if (empty($this->parent)) {
          $this->loadParent();
       }
 
-      return $this->__Parent;
+      return $this->parent;
 
    }
 
@@ -324,7 +324,7 @@ class SMSStdPage extends APFObject implements SMSPage {
          return;
       }
 
-      $this->__Parent = $SMSM->getPage($id);
+      $this->parent = $SMSM->getPage($id);
 
    }
 

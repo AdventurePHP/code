@@ -1016,7 +1016,7 @@ class Document extends APFObject {
     * @protected
     * @var string The name of the document controller to use at transformation time.
     */
-   protected $__DocumentController = null;
+   protected $documentController = null;
 
    /**
     * @protected
@@ -1261,7 +1261,7 @@ class Document extends APFObject {
     * Version 0.1, 20.02.2010<br />
     */
    public function getDocumentController() {
-      return $this->__DocumentController;
+      return $this->documentController;
    }
 
    /**
@@ -1306,13 +1306,13 @@ class Document extends APFObject {
    public function loadDesign($namespace, $design) {
 
       // read the content of the template
-      $this->__loadContentFromFile($namespace, $design);
+      $this->loadContentFromFile($namespace, $design);
 
       // analyze document controller definition
-      $this->__extractDocumentController();
+      $this->extractDocumentController();
 
       // parse known taglibs
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    /**
@@ -1332,7 +1332,7 @@ class Document extends APFObject {
     * Version 0.3, 03.11.2008 (Added code of the responsible template to the error message to ease debugging)<br />
     * Version 0.4, 31.10.2012 (Introduced the append feature to be able to preserve tag content created/added prior calling this method)<br />
     */
-   protected function __loadContentFromFile($namespace, $name) {
+   protected function loadContentFromFile($namespace, $name) {
 
       // sanitize the design name to avoid xss or code injection
       $name = preg_replace('/[^A-Za-z0-9\-_]/', '', $name);
@@ -1351,7 +1351,7 @@ class Document extends APFObject {
             $code = ' Please check your template code (' . $this->getParentObject()->getContent() . ').';
          }
 
-         throw new IncludeException('[' . get_class($this) . '::__loadContentFromFile()] Design "' . $name
+         throw new IncludeException('[' . get_class($this) . '::loadContentFromFile()] Design "' . $name
                . '" not existent in namespace "' . $namespace . '" (file: "' . $file . '")!' . $code, E_USER_ERROR);
 
       }
@@ -1395,7 +1395,7 @@ class Document extends APFObject {
     * Version 0.6, 06.06.2009 (Improvement: content is not copied during parsing any more)<br />
     * Version 0.7, 30.12.2009 (Introduced benchmark marks for the onParseTime() event.)<br />
     */
-   protected function __extractTagLibTags() {
+   protected function extractTagLibTags() {
 
       $tagLibLoops = 0;
       $i = 0;
@@ -1408,7 +1408,7 @@ class Document extends APFObject {
       while ($i < count($this->__TagLibs)) {
 
          if ($tagLibLoops > $this->maxLoops) {
-            throw new ParserException('[' . get_class($this) . '::__extractTagLibTags()] Maximum numbers of '
+            throw new ParserException('[' . get_class($this) . '::extractTagLibTags()] Maximum numbers of '
                   . 'parsing loops reached!', E_USER_ERROR);
          }
 
@@ -1422,7 +1422,7 @@ class Document extends APFObject {
          while (substr_count($this->__Content, '<' . $token) > 0) {
 
             if ($tagLoops > $this->maxLoops) {
-               throw new ParserException('[' . get_class($this) . '::__extractTagLibTags()] Maximum numbers of parsing loops reached!', E_USER_ERROR);
+               throw new ParserException('[' . get_class($this) . '::extractTagLibTags()] Maximum numbers of parsing loops reached!', E_USER_ERROR);
             }
 
             // Find start and end position of the tag. "Normally" a
@@ -1438,7 +1438,7 @@ class Document extends APFObject {
                $closingTagLength = 2;
 
                if ($tagEndPos === false) {
-                  throw new ParserException('[' . get_class($this) . '::__extractTagLibTags()] No closing tag '
+                  throw new ParserException('[' . get_class($this) . '::extractTagLibTags()] No closing tag '
                         . 'found for tag "<' . $token . ' />"!', E_USER_ERROR);
                }
             }
@@ -1538,7 +1538,7 @@ class Document extends APFObject {
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 15.12.2009 (Added check for non existing class attribute)<br />
     */
-   protected function __extractDocumentController() {
+   protected function extractDocumentController() {
 
       // define start and end tag
       $controllerStartTag = '<@controller';
@@ -1553,7 +1553,7 @@ class Document extends APFObject {
 
          // check for class definition
          if (!isset($controllerAttributes['class'])) {
-            throw new ParserException('[Document::__extractDocumentController()] Document controller '
+            throw new ParserException('[Document::extractDocumentController()] Document controller '
                   . 'specification does not contain a valid controller class definition. '
                   . 'Please double check the template code and consult the documentation. '
                   . 'Template code: ' . $this->getContent());
@@ -1563,7 +1563,7 @@ class Document extends APFObject {
          import($controllerAttributes['namespace'], $controllerAttributes['class']);
 
          // remark controller class
-         $this->__DocumentController = $controllerAttributes['class'];
+         $this->documentController = $controllerAttributes['class'];
 
          // remove definition from content to be not displayed
          $this->__Content = substr_replace($this->__Content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
@@ -1626,17 +1626,17 @@ class Document extends APFObject {
       $content = $this->__Content;
 
       // execute the document controller if applicable
-      if (!empty($this->__DocumentController)) {
+      if (!empty($this->documentController)) {
 
-         $id = '(' . $this->__DocumentController . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
+         $id = '(' . $this->documentController . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
          $t->start($id);
 
-         if (!class_exists($this->__DocumentController)) {
+         if (!class_exists($this->documentController)) {
             throw new InvalidArgumentException('[' . get_class($this) . '::transform()] DocumentController "'
-                  . $this->__DocumentController . '" cannot be found! Maybe the class name is mis-spelt!', E_USER_ERROR);
+                  . $this->documentController . '" cannot be found! Maybe the class name is mis-spelt!', E_USER_ERROR);
          }
 
-         $docCon = new $this->__DocumentController;
+         $docCon = new $this->documentController;
          /* @var $docCon BaseDocumentController */
 
          // inject context
@@ -1831,10 +1831,10 @@ class AppendNodeTag extends Document {
       }
 
       // load the content
-      $this->__loadContentFromFile($namespace, $template);
+      $this->loadContentFromFile($namespace, $template);
 
       // parse known tags
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
 
    }
 
@@ -2002,13 +2002,13 @@ class ImportTemplateTag extends Document {
       }
 
       // get content
-      $this->__loadContentFromFile($namespace, $template);
+      $this->loadContentFromFile($namespace, $template);
 
       // parse document controller statements
-      $this->__extractDocumentController();
+      $this->extractDocumentController();
 
       // extract further xml tags
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
 }
@@ -2162,7 +2162,7 @@ class TemplateTag extends Document {
    /**
     * @public
     *
-    * Implements the onParseTime() method from the APFObject class. Uses the __extractTagLibTags()
+    * Implements the onParseTime() method from the APFObject class. Uses the extractTagLibTags()
     * function to parse the known taglibs.
     *
     * @author Christian Achatz
@@ -2171,7 +2171,7 @@ class TemplateTag extends Document {
     * Version 0.2, 31.12.2006<br />
     */
    public function onParseTime() {
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    /**

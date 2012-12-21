@@ -91,7 +91,7 @@ class HtmlIteratorTag extends Document {
     * Version 0.1, 01.06.2008<br />
     */
    public function onParseTime() {
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    /**

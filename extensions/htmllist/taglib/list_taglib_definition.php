@@ -44,7 +44,7 @@ class list_taglib_definition extends AbstractTaglibList {
     * @return string
     */
    public function addDefinitionTerm($sContent, $sClass = '') {
-      $this->__addElement($sContent, $sClass, 'elem_defterm');
+      $this->addElement($sContent, $sClass, 'elem_defterm');
    }
 
    /**
@@ -55,10 +55,10 @@ class list_taglib_definition extends AbstractTaglibList {
     * @return string
     */
    public function addDefinition($sContent, $sClass = '') {
-      $this->__addElement($sContent, $sClass, 'elem_defdef');
+      $this->addElement($sContent, $sClass, 'elem_defdef');
    }
 
-   protected function __getListIdentifier() {
+   protected function getListIdentifier() {
       return 'dl';
    }
 

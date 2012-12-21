@@ -58,7 +58,7 @@ class FormSuccessDisplayTag extends AbstractFormControl {
     * Version 0.1, 30.12.2009<br />
     */
    public function onParseTime() {
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    /**

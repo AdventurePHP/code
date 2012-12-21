@@ -103,7 +103,7 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     * Version 0.1, 12.02.2010<br />
     */
    protected function getValidatorName() {
-      if ($this->__Type === self::$SPECIAL_VALIDATOR_INDICATOR) {
+      if ($this->type === self::$SPECIAL_VALIDATOR_INDICATOR) {
          return get_class($this);
       }
       return null;

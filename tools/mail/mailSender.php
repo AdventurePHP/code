@@ -42,82 +42,82 @@ class mailSender extends APFObject {
    /**
     * @protected
     * Indicates the sender.
-    * <pre>$this->__Sender['Name']  = '...';
-    * $this->__Sender['EMail'] = '...';</pre>
+    * <pre>$this->sender['Name']  = '...';
+    * $this->sender['EMail'] = '...';</pre>
     */
-   protected $__Sender = array();
+   protected $sender = array();
 
    /**
     * @protected
     * Indicates the recipients.
-    * <pre>$this->__Recipients[0]['Name']  = '...';
-    * $this->__Recipients[0]['EMail'] = '...';
-    * $this->__Recipients[1]['Name']  = '...';
-    * $this->__Recipients[1]['EMail'] = '...';</pre>
+    * <pre>$this->recipients[0]['Name']  = '...';
+    * $this->recipients[0]['EMail'] = '...';
+    * $this->recipients[1]['Name']  = '...';
+    * $this->recipients[1]['EMail'] = '...';</pre>
     */
-   protected $__Recipients = array();
+   protected $recipients = array();
 
    /**
     * @protected
     * Indicates the CC recipients.
-    * <pre>$this->__CCRecipients[0]['Name']  = '...';
-    * $this->__CCRecipients[0]['EMail'] = '...';
-    * $this->__CCRecipients[1]['Name']  = '...';
-    * $this->__CCRecipients[1]['EMail'] = '...';</pre>
+    * <pre>$this->ccRecipients[0]['Name']  = '...';
+    * $this->ccRecipients[0]['EMail'] = '...';
+    * $this->ccRecipients[1]['Name']  = '...';
+    * $this->ccRecipients[1]['EMail'] = '...';</pre>
     */
-   protected $__CCRecipients = array();
+   protected $ccRecipients = array();
 
    /**
     * @protected
     * Indicates the BCC recipients.
-    * <pre>$this->__BCCRecipients[0]['Name']  = '...';
-    * $this->__BCCRecipients[0]['EMail'] = '...';
-    * $this->__BCCRecipients[1]['Name']  = '...';
-    * $this->__BCCRecipients[1]['EMail'] = '...';</pre>
+    * <pre>$this->bccRecipients[0]['Name']  = '...';
+    * $this->bccRecipients[0]['EMail'] = '...';
+    * $this->bccRecipients[1]['Name']  = '...';
+    * $this->bccRecipients[1]['EMail'] = '...';</pre>
     */
-   protected $__BCCRecipients = array();
+   protected $bccRecipients = array();
 
    /**
     * @protected
     * Header of the mail.
     */
-   protected $__MailHeader = null;
+   protected $mailHeader = null;
 
    /**
     * @protected
     * The mail's subject.
     */
-   protected $__Subject;
+   protected $subject;
 
    /**
     * @protected
     * Content of the mail.
     */
-   protected $__Content = '';
+   protected $content = '';
 
    /**
     * @protected
     * Content type of the mail.
     */
-   protected $__ContentType;
+   protected $contentType;
 
    /**
     * @protected
     * Return path.
     */
-   protected $__ReturnPath;
+   protected $returnPath;
 
    /**
     * @protected
     * EOL sign.
     */
-   protected $__EOL = "\n";
+   protected static $EOL = "\n";
 
    /**
     * @protected
     * CRLF sign.
     */
-   protected $__CRLF = "\r\n";
+   protected static $CRLF = "\r\n";
 
    /**
     * @public
@@ -153,12 +153,12 @@ class mailSender extends APFObject {
       }
 
       // set sender
-      $this->__Sender['Name'] = $section->getValue('Mail.SenderName');
-      $this->__Sender['EMail'] = $section->getValue('Mail.SenderEMail');
+      $this->sender['Name'] = $section->getValue('Mail.SenderName');
+      $this->sender['EMail'] = $section->getValue('Mail.SenderEMail');
 
-      $this->__ContentType = $section->getValue('Mail.ContentType');
+      $this->contentType = $section->getValue('Mail.ContentType');
 
-      $this->__ReturnPath = $section->getValue('Mail.ReturnPath');
+      $this->returnPath = $section->getValue('Mail.ReturnPath');
 
       // reset text and recipients to avoid interference during multiple usage
       $this->clearRecipients();
@@ -186,45 +186,45 @@ class mailSender extends APFObject {
    protected function generateHeader() {
 
       $mailHeader = (string)'';
-      $mailHeader .= 'From: "' . ($this->__Sender['Name']) . '" <' . ($this->__Sender['EMail']) . '>' . $this->__EOL;
+      $mailHeader .= 'From: "' . ($this->sender['Name']) . '" <' . ($this->sender['EMail']) . '>' . self::$EOL;
 
       // add cc recipients
-      if (count($this->__CCRecipients) > 0) {
+      if (count($this->ccRecipients) > 0) {
 
          $ccRecipients = array();
 
-         for ($i = 0; $i < count($this->__CCRecipients); $i++) {
-            $ccRecipients[] = '"' . ($this->__CCRecipients[$i]['Name']) . '" <' . ($this->__CCRecipients[$i]['EMail']) . '>';
+         for ($i = 0; $i < count($this->ccRecipients); $i++) {
+            $ccRecipients[] = '"' . ($this->ccRecipients[$i]['Name']) . '" <' . ($this->ccRecipients[$i]['EMail']) . '>';
          }
 
-         $mailHeader .= 'CC: ' . implode(', ', $ccRecipients) . '' . $this->__EOL;
+         $mailHeader .= 'CC: ' . implode(', ', $ccRecipients) . '' . self::$EOL;
 
       }
 
       // add bcc recipients
-      if (count($this->__BCCRecipients) > 0) {
+      if (count($this->bccRecipients) > 0) {
 
          $bccRecipients = array();
 
-         for ($i = 0; $i < count($this->__BCCRecipients); $i++) {
-            $bccRecipients[] = '"' . ($this->__BCCRecipients[$i]['Name']) . '" <' . ($this->__BCCRecipients[$i]['EMail']) . '>';
+         for ($i = 0; $i < count($this->bccRecipients); $i++) {
+            $bccRecipients[] = '"' . ($this->bccRecipients[$i]['Name']) . '" <' . ($this->bccRecipients[$i]['EMail']) . '>';
          }
 
-         $mailHeader .= 'BCC: ' . implode(', ', $bccRecipients) . '' . $this->__EOL;
+         $mailHeader .= 'BCC: ' . implode(', ', $bccRecipients) . '' . self::$EOL;
 
       }
 
       // add default header
-      $mailHeader .= 'X-Sender: APF-E-Mail-Client' . $this->__EOL;
-      $mailHeader .= 'X-Mailer: PHP/' . phpversion() . '' . $this->__EOL;
-      $mailHeader .= 'X-Priority: 3' . $this->__EOL; // 1: urgent, 3: normal
-      $mailHeader .= 'MIME-Version: 1.0' . $this->__EOL;
-      $mailHeader .= 'Return-Path: ' . ($this->__ReturnPath) . '' . $this->__EOL;
-      $mailHeader .= 'Content-Type: ' . ($this->__ContentType) . '' . $this->__EOL;
+      $mailHeader .= 'X-Sender: APF-E-Mail-Client' . self::$EOL;
+      $mailHeader .= 'X-Mailer: PHP/' . phpversion() . '' . self::$EOL;
+      $mailHeader .= 'X-Priority: 3' . self::$EOL; // 1: urgent, 3: normal
+      $mailHeader .= 'MIME-Version: 1.0' . self::$EOL;
+      $mailHeader .= 'Return-Path: ' . ($this->returnPath) . '' . self::$EOL;
+      $mailHeader .= 'Content-Type: ' . ($this->contentType) . '' . self::$EOL;
 
       // add additional header if applicable
-      if ($this->__MailHeader != null) {
-         $mailHeader .= $this->__MailHeader;
+      if ($this->mailHeader != null) {
+         $mailHeader .= $this->mailHeader;
       }
 
       return $mailHeader;
@@ -245,7 +245,7 @@ class mailSender extends APFObject {
    public function addHeader($header = '') {
 
       if (strpos($header, ':') !== false) {
-         $this->__MailHeader .= $header . '' . $this->__EOL;
+         $this->mailHeader .= $header . '' . self::$EOL;
       }
 
    }
@@ -266,7 +266,7 @@ class mailSender extends APFObject {
    public function setRecipient($recipientEMail, $recipientName) {
 
       if (Validator::validateEMail($recipientEMail)) {
-         $this->__Recipients[count($this->__Recipients)] = array('Name' => $recipientName,
+         $this->recipients[count($this->recipients)] = array('Name' => $recipientName,
             'EMail' => $recipientEMail
          );
       }
@@ -283,7 +283,7 @@ class mailSender extends APFObject {
     * Version 0.1, 31.03.2007<br />
     */
    public function clearRecipients() {
-      $this->__Recipients = array();
+      $this->recipients = array();
    }
 
    /**
@@ -301,7 +301,7 @@ class mailSender extends APFObject {
    public function setCCRecipient($recipientEMail, $recipientName) {
 
       if (Validator::validateEMail($recipientEMail)) {
-         $this->__CCRecipients[count($this->__CCRecipients)] = array('Name' => $recipientName,
+         $this->ccRecipients[count($this->ccRecipients)] = array('Name' => $recipientName,
             'EMail' => $recipientEMail
          );
       }
@@ -318,7 +318,7 @@ class mailSender extends APFObject {
     * Version 0.1, 31.03.2007<br />
     */
    public function clearCCRecipients() {
-      $this->__CCRecipients = array();
+      $this->ccRecipients = array();
    }
 
    /**
@@ -336,7 +336,7 @@ class mailSender extends APFObject {
    public function setBCCRecipient($recipientEMail, $recipientName) {
 
       if (Validator::validateEMail($recipientEMail)) {
-         $this->__BCCRecipients[count($this->__BCCRecipients)] = array('Name' => $recipientName,
+         $this->bccRecipients[count($this->bccRecipients)] = array('Name' => $recipientName,
             'EMail' => $recipientEMail
          );
       }
@@ -353,7 +353,7 @@ class mailSender extends APFObject {
     * Version 0.1, 31.03.2007<br />
     */
    public function clearBCCRecipients() {
-      $this->__BCCRecipients = array();
+      $this->bccRecipients = array();
    }
 
    /**
@@ -371,8 +371,8 @@ class mailSender extends APFObject {
    public function setSender($senderEMail, $senderName) {
 
       if (Validator::validateEMail($senderEMail)) {
-         $this->__Sender['Name'] = $senderName;
-         $this->__Sender['EMail'] = $senderEMail;
+         $this->sender['Name'] = $senderName;
+         $this->sender['EMail'] = $senderEMail;
       }
 
    }
@@ -387,7 +387,7 @@ class mailSender extends APFObject {
     * @author Ralf Schubert
     */
    public function setReturnPath($returnPath) {
-      $this->__ReturnPath = $returnPath;
+      $this->returnPath = $returnPath;
    }
 
    /**
@@ -403,7 +403,7 @@ class mailSender extends APFObject {
     * Version 0.2, 14.01.2006<br />
     */
    public function setContent($content) {
-      $this->__Content .= $content . '' . $this->__EOL;
+      $this->content .= $content . '' . self::$EOL;
    }
 
    /**
@@ -416,7 +416,7 @@ class mailSender extends APFObject {
     * Version 0.1, 31.03.2007<br />
     */
    public function clearContent() {
-      $this->__Content = (string)'';
+      $this->content = (string)'';
    }
 
    /**
@@ -432,7 +432,7 @@ class mailSender extends APFObject {
     * Version 0.2, 14.01.2006<br />
     */
    public function setSubject($subject) {
-      $this->__Subject = $subject;
+      $this->subject = $subject;
    }
 
    /**
@@ -463,20 +463,20 @@ class mailSender extends APFObject {
       $log = &Singleton::getInstance('Logger');
       $sentEmails = array();
 
-      for ($i = 0; $i < count($this->__Recipients); $i++) {
+      for ($i = 0; $i < count($this->recipients); $i++) {
 
-         $result = @mail($this->__Recipients[$i]['EMail'], $this->__Subject, $this->__Content, $header);
+         $result = @mail($this->recipients[$i]['EMail'], $this->subject, $this->content, $header);
 
          if ($result == 1 || $result == true) {
-            $log->logEntry('mail', 'Sending mail to ' . $this->__Recipients[$i]['EMail'] . '.', LogEntry::SEVERITY_INFO);
+            $log->logEntry('mail', 'Sending mail to ' . $this->recipients[$i]['EMail'] . '.', LogEntry::SEVERITY_INFO);
             $sentEmails[] = '1';
          } else {
-            $log->logEntry('mail', 'Sending mail to ' . $this->__Recipients[$i]['EMail'] . '.', LogEntry::SEVERITY_ERROR);
+            $log->logEntry('mail', 'Sending mail to ' . $this->recipients[$i]['EMail'] . '.', LogEntry::SEVERITY_ERROR);
          }
 
       }
 
-      $status['recipientcount'] = count($this->__Recipients);
+      $status['recipientcount'] = count($this->recipients);
       $status['AnzEMail'] = $status['recipientcount']; // for back compatibility!
       $status['successcount'] = count($sentEmails);
       $status['Versandt'] = $status['successcount']; // for back compatibility!

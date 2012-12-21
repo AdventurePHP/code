@@ -37,10 +37,11 @@ import('tools::form::validator', 'TextFieldValidator');
  * Version 0.1, 14.03.2010<br />
  */
 class TimeCaptchaValidator extends TextFieldValidator {
+
    /**
     * @var int The default time in seconds before form gets valid.
     */
-   protected $__DefaultSeconds = 2;
+   protected $defaultSeconds = 2;
 
    /**
     * @public
@@ -57,7 +58,7 @@ class TimeCaptchaValidator extends TextFieldValidator {
    public function validate($input) {
       $seconds = $this->__Control->getAttribute('seconds');
       if ($seconds === null) {
-         $seconds = $this->__DefaultSeconds;
+         $seconds = $this->defaultSeconds;
       }
 
       $sessMgr = new SessionManager('tools::form::taglib::TimeCaptchaTag');

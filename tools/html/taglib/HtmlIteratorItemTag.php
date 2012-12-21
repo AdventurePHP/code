@@ -47,7 +47,7 @@ class HtmlIteratorItemTag extends Document {
    }
 
    public function onParseTime() {
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    /**

@@ -43,10 +43,10 @@ class list_taglib_ordered extends AbstractTaglibList {
     * @return string
     */
    public function addElement($sContent, $sClass = '') {
-      return $this->__addElement($sContent, $sClass, 'elem_list');
+      return $this->addElement($sContent, $sClass, 'elem_list');
    }
 
-   protected function __getListIdentifier() {
+   protected function getListIdentifier() {
       return 'ol';
    }
 

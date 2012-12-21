@@ -46,8 +46,8 @@ class CreateDocumentFromFileTag extends Document {
       $this->__Content = $this->loadContent($currentRequestParameter);
 
       // extract tags and document controller
-      $this->__extractTagLibTags();
-      $this->__extractDocumentController();
+      $this->extractTagLibTags();
+      $this->extractDocumentController();
 
    }
 

@@ -64,7 +64,7 @@ class HtmlLinkTag extends LinkGenerationTag {
          throw new InvalidArgumentException('[HtmlLinkTag::onParseTime()] The Attribute "href" is missing. '
                . 'Please provide the destination!', E_USER_ERROR);
       }
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    public function transform() {

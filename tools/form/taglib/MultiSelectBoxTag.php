@@ -73,7 +73,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
    public function onParseTime() {
 
       // parses the option tags
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
 
       // check, whether the name of the control has no "[]" defined, to ensure
       // that we can address the element with it's plain name in the template.

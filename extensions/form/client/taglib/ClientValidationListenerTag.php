@@ -52,7 +52,7 @@ class ClientValidationListenerTag extends AbstractFormControl {
     * Version 1.0, 18.03.2010<br />
     */
    public function onParseTime() {
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    /**

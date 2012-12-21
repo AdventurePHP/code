@@ -155,7 +155,7 @@ class HtmlFormTag extends Document {
          }
       }
 
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    /**

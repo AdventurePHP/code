@@ -106,7 +106,7 @@ class FileUploadTag extends TextFieldTag {
     */
    public function getFile() {
       if ($this->hasUploadedFile()) {
-         return $this->__mapFileArray2DomainObject($_FILES[$this->getAttribute('name')]);
+         return $this->mapFileArray2DomainObject($_FILES[$this->getAttribute('name')]);
       }
       return null;
    }
@@ -123,7 +123,7 @@ class FileUploadTag extends TextFieldTag {
     * @version
     * Version 0.1, 12.01.2010<br />
     */
-   private function __mapFileArray2DomainObject($file) {
+   private function mapFileArray2DomainObject($file) {
 
       // use PHP5.3's finfo extension, if possible
       if (class_exists('finfo', false)) {

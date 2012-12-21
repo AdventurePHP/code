@@ -184,9 +184,9 @@ class GenericImportTemplateTag extends ImportTemplateTag {
       }
 
       // import desired template
-      $this->__loadContentFromFile($templateNamespace, $templateName);
-      $this->__extractDocumentController();
-      $this->__extractTagLibTags();
+      $this->loadContentFromFile($templateNamespace, $templateName);
+      $this->extractDocumentController();
+      $this->extractTagLibTags();
    }
 
 }

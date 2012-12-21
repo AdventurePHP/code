@@ -53,9 +53,9 @@ class weather_v2_controller extends BaseDocumentController {
       } else {
 
          // Display error message
-         $Template__NoEntries = &$this->getTemplate('NoEntries_' . $this->__Language);
-         $Template__NoEntries->setPlaceHolder('Source', $this->getXMLSource());
-         $Template__NoEntries->transformOnPlace();
+         $templateNoEntries = &$this->getTemplate('NoEntries_' . $this->__Language);
+         $templateNoEntries->setPlaceHolder('Source', $this->getXMLSource());
+         $templateNoEntries->transformOnPlace();
       }
    }
 
@@ -114,16 +114,16 @@ class weather_v2_controller extends BaseDocumentController {
          $plainXml = file_get_contents($xmlSource);
 
          if ($plainXml !== false) {
-            $XSLT_Namespace = $this->__Document->getAttribute('xslt_namespace');
-            $XSLT_File = $this->__Document->getAttribute('xslt_file');
-            if ($XSLT_Namespace != null && $XSLT_File != null) {
+            $xsltNamespace = $this->__Document->getAttribute('xslt_namespace');
+            $xsltFile = $this->__Document->getAttribute('xslt_file');
+            if ($xsltNamespace != null && $xsltFile != null) {
 
                // create XML source
                $xml = new DOMDocument();
                $xml->loadXML($plainXml);
 
                $xsl = new DOMDocument();
-               $xsl->load(APPS__PATH . '/' . str_replace('::', '/', $XSLT_Namespace) . '/' . $XSLT_File . '.xsl');
+               $xsl->load(APPS__PATH . '/' . str_replace('::', '/', $xsltNamespace) . '/' . $xsltFile . '.xsl');
 
                // configure transformer
                $proc = new XSLTProcessor();

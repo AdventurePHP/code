@@ -58,7 +58,7 @@ class FormErrorDisplayTag extends AbstractFormControl {
     * Version 0.1, 03.09.2009<br />
     */
    public function onParseTime() {
-      $this->__extractTagLibTags();
+      $this->extractTagLibTags();
    }
 
    /**
