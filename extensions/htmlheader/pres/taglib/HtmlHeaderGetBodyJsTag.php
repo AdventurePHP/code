@@ -32,22 +32,27 @@ import('extensions::htmlheader::pres::filter', 'HtmlHeaderOutputFilter');
  * <htmlheader:getbodyjs />
  *
  * @author Ralf Schubert <<a href="http://develovision.de/">Develovision</a>>
- * @version 0.1, 21.09.2011<br />
+ * @version
+ * Version 0.1, 21.09.2011<br />
+ * Version 0.2, 21.12.2012 (Added context and language to output filter just as in HtmlHeaderGetHeadTag)<br />
  */
 class HtmlHeaderGetBodyJsTag extends Document {
-   const HTML_BODYJS_INDICATOR = '<!--HTMLHEADER_TAGLIB_GETBODYJS-->';
+   const HTML_BODYJS_INDICATOR = '<!--HTMLHEADER_GETBODYJS_TAG-->';
 
    public function transform() {
 
-      $FilterChain = OutputFilterChain::getInstance();
+      $filterChain = OutputFilterChain::getInstance();
 
       // register filter that replaces the token with real live data if filter isn't already registered
       // (uses the same filter as htmlheader:gethead-Taglib)
-      if (!$FilterChain->isFilterRegistered('HtmlHeaderOutputFilter')) {
-         $FilterChain->prependFilter(new HtmlHeaderOutputFilter());
+      if (!$filterChain->isFilterRegistered('HtmlHeaderOutputFilter')) {
+         $filter = new HtmlHeaderOutputFilter();
+         $filter->setContext($this->getContext());
+         $filter->setLanguage($this->getLanguage());
+         $filterChain->prependFilter($filter);
       }
 
-      // place marker that will be replaced by the
+      // place marker that will be replaced by the output filter
       return self::HTML_BODYJS_INDICATOR;
    }
 

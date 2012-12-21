@@ -26,7 +26,7 @@
 <html:iterator name="Users">
    <ul>
    <iterator:item getter="getProperty">
-      <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+      <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="UmgtMediaInclusionTag" prefix="umgt" name="media" />
       <li>
          <umgt:media filename="user.png">
             <media:getstring
@@ -49,7 +49,7 @@
 <html:iterator name="Roles">
    <ul>
    <iterator:item>
-      <item:addtaglib namespace="modules::usermanagement::pres::taglib" prefix="umgt" class="media" />
+      <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="UmgtMediaInclusionTag" prefix="umgt" name="media" />
       <li>
          <umgt:media filename="role.png">
             <media:getstring

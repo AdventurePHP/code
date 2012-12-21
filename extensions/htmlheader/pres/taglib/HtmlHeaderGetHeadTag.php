@@ -44,7 +44,7 @@ class HtmlHeaderGetHeadTag extends Document {
       $filterChain = OutputFilterChain::getInstance();
 
       // register filter that replaces the token with real live data if filter isn't already registered
-      // (uses the same filter as htmlheader:getbodyjs-Taglib)
+      // (uses the same filter as htmlheader:getbodyjs taglib)
       if (!$filterChain->isFilterRegistered('HtmlHeaderOutputFilter')) {
          $filter = new HtmlHeaderOutputFilter();
          $filter->setContext($this->getContext());
@@ -52,7 +52,7 @@ class HtmlHeaderGetHeadTag extends Document {
          $filterChain->prependFilter($filter);
       }
 
-      // place marker that will be replaced by the
+      // place marker that will be replaced by the output filter.
       return self::HTML_HEADER_INDICATOR;
 
    }

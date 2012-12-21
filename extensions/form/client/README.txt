@@ -46,10 +46,10 @@ Wir gehen ab sofort davon aus, dass wir uns im Template innerhalb eines <html:fo
 === Einbindung der Taglibs ===
 Vor der Verwendung müssen die einzelnen Taglibs noch dem Formular bekannt gemacht werden:
 <source lang="xml">
-<form:addtaglib namespace="extensions::form::client::taglib" prefix="form" class="addclientvalidator" />
-<form:addtaglib namespace="extensions::form::client::taglib" prefix="form" class="getclientvalidator" />
-<form:addtaglib namespace="extensions::form::client::taglib" prefix="form" class="clientlistener" />
-<form:addtaglib namespace="extensions::form::client::taglib" prefix="form" class="clienterror" />
+<form:addtaglib namespace="extensions::form::client::taglib" class="AddFormControlClientValidatorTag" prefix="form" name="addclientvalidator" />
+<form:addtaglib namespace="extensions::form::client::taglib" class="GetClientFormValidationTag" prefix="form" name="getclientvalidator" />
+<form:addtaglib namespace="extensions::form::client::taglib" class="ClientValidationListenerTag" prefix="form" name="clientlistener" />
+<form:addtaglib namespace="extensions::form::client::taglib" class="FormClientErrorDisplayTag" prefix="form" name="clienterror" />
 </source>
 
 
