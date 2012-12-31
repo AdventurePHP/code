@@ -28,7 +28,7 @@
  * implementations to inject special style or class information into the
  * form's markup on validation errors. For this reason, you can use
  * <pre>
- * $this->__Control->notifyValidatorListeners();
+ * $this->control->notifyValidatorListeners();
  * </pre>
  * within the <code>notify()</code> method of the
  * <code>AbstractFormValidator</code> implementation. The definition of

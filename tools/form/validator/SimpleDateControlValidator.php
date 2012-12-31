@@ -69,14 +69,14 @@ class SimpleDateControlValidator extends TextFieldValidator {
     */
    public function notify() {
 
-      $this->__Control->markAsInvalid();
+      $this->control->markAsInvalid();
 
       // due to the fact, that we introduced a surrounding span
       // validation marking can be done as usual with "normal"
       // text fields
-      $this->markControl($this->__Control);
+      $this->markControl($this->control);
 
-      $this->notifyValidationListeners($this->__Control);
+      $this->notifyValidationListeners($this->control);
    }
 
 }

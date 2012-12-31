@@ -46,9 +46,9 @@ class CSRFHashValidator extends TextFieldValidator {
     * Version 0.2, 06.11.2010 (Removed the csrf manager)
     */
    public function validate($input) {
-      $namespace = $this->__Control->getAttribute('namespace');
-      $class = $this->__Control->getAttribute('class');
-      $salt = $this->__Control->getAttribute('salt');
+      $namespace = $this->control->getAttribute('namespace');
+      $class = $this->control->getAttribute('class');
+      $salt = $this->control->getAttribute('salt');
 
       /* @var $provider CSRFHashProvider */
       $provider = & $this->getServiceObject($namespace, $class);

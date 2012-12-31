@@ -45,7 +45,7 @@ class CheckboxValidator extends TextFieldValidator {
     * Version 0.1, 13.03.2010<br />
     */
    public function validate($input) {
-      $name = $this->__Control->getAttribute('name');
+      $name = $this->control->getAttribute('name');
       if (!isset($_REQUEST[$name])) {
          return false;
       }

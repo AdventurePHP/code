@@ -52,10 +52,10 @@ class FileSizeValidator extends TextFieldValidator {
    public function validate($input) {
 
       // check, whether file was specified
-      if ($this->__Control->hasUploadedFile()) {
+      if ($this->control->hasUploadedFile()) {
 
          // retrieve file model to check the file size against the max size
-         $fileModel = $this->__Control->getFile();
+         $fileModel = $this->control->getFile();
 
          $size = (int)$fileModel->getSize();
          $allowed = (int)$this->getMaxSize();
@@ -81,7 +81,7 @@ class FileSizeValidator extends TextFieldValidator {
     * Version 0.1, 03.02.2010<br />
     */
    private function getMaxSize() {
-      $maxSize = $this->__Control->getAttribute(self::$MAX_ALLOWED_SIZE_ATTRIBUTE_NAME);
+      $maxSize = $this->control->getAttribute(self::$MAX_ALLOWED_SIZE_ATTRIBUTE_NAME);
       if (empty($maxSize)) {
          return (int)1024000; // 1MB in bytes
       }
@@ -100,7 +100,7 @@ class FileSizeValidator extends TextFieldValidator {
     * Version 0.1, 21.02.2010<br />
     */
    private function getMinSize() {
-      $minSize = $this->__Control->getAttribute(self::$MIN_REQUIRED_SIZE_ATTRIBUTE_NAME);
+      $minSize = $this->control->getAttribute(self::$MIN_REQUIRED_SIZE_ATTRIBUTE_NAME);
       if (empty($minSize)) {
          return (int)0; // 0 bytes allowed!
       }

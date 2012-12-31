@@ -41,11 +41,11 @@ class UserOrGroupActivatedValidator extends TextFieldValidator {
 
       // validation has to be done using the request, because we have
       // dynamically filled form elements!
-      $controlName = $this->__Control->getAttribute('name');
-      $altControlName = $this->__Control->getAttribute('alt');
+      $controlName = $this->control->getAttribute('name');
+      $altControlName = $this->control->getAttribute('alt');
 
       // initialize alternative control for marking
-      $form = &$this->__Control->getParentObject();
+      $form = &$this->control->getParentObject();
       /* @var $form HtmlFormTag */
       $this->alternativeControl = &$form->getFormElementByName($altControlName);
 
@@ -67,13 +67,13 @@ class UserOrGroupActivatedValidator extends TextFieldValidator {
     */
    public function notify() {
 
-      $this->__Control->markAsInvalid();
+      $this->control->markAsInvalid();
       $this->alternativeControl->markAsInvalid();
-      $this->markControl($this->__Control);
+      $this->markControl($this->control);
       $this->markControl($this->alternativeControl);
 
       // only mark one listener, because we need to display one error message
-      $this->notifyValidationListeners($this->__Control);
+      $this->notifyValidationListeners($this->control);
 
    }
 

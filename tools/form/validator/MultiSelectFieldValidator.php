@@ -47,7 +47,7 @@ class MultiSelectFieldValidator extends SelectFieldValidator {
     */
    public function validate($input) {
 
-      $controlName = $this->__Control->getAttribute('name');
+      $controlName = $this->control->getAttribute('name');
       if (!isset($_REQUEST[$controlName])) {
          return false;
       }

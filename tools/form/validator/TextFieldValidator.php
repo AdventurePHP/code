@@ -43,9 +43,9 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     * Version 0.1, 29.08.2009<br />
     */
    public function notify() {
-      $this->__Control->markAsInvalid();
-      $this->markControl($this->__Control);
-      $this->notifyValidationListeners($this->__Control);
+      $this->control->markAsInvalid();
+      $this->markControl($this->control);
+      $this->notifyValidationListeners($this->control);
    }
 
    /**

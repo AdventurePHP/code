@@ -48,7 +48,7 @@ class CaptchaValidator extends TextFieldValidator {
    public function validate($input) {
 
       // get the captcha content of the current request
-      $captcha = $this->__Control->getCurrentCaptcha();
+      $captcha = $this->control->getCurrentCaptcha();
 
       // validate field
       if (strlen($input) == 5
@@ -75,17 +75,17 @@ class CaptchaValidator extends TextFieldValidator {
 
       // add validation style to the text field
       /* @var $textField TextFieldTag */
-      $textField = &$this->__Control->getCaptchaTextField();
+      $textField = &$this->control->getCaptchaTextField();
       $textField->markAsInvalid();
       $this->markControl($textField);
 
       // clear captcha field, if desired
-      if ($this->__Control->getAttribute('clearonerror') === 'true') {
+      if ($this->control->getAttribute('clearonerror') === 'true') {
          $textField->setAttribute('value', '');
       }
 
       // notify listeners to be able to handle the validation event
-      $this->notifyValidationListeners($this->__Control);
+      $this->notifyValidationListeners($this->control);
 
    }
 

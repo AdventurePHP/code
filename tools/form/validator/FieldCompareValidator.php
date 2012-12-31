@@ -55,8 +55,8 @@ class FieldCompareValidator extends TextFieldValidator {
    private $refControl = null;
 
    public function __construct(AbstractFormControl &$control, AbstractFormControl &$button, $type = null) {
-      $this->__Control = & $control;
-      $this->__Button = & $button;
+      $this->control = & $control;
+      $this->button = & $button;
       $this->type = $type;
       $this->initializeReferenceControl();
    }
@@ -92,11 +92,11 @@ class FieldCompareValidator extends TextFieldValidator {
     * Version 0.1, 12.09.2009<br />
     */
    public function notify() {
-      $this->__Control->markAsInvalid();
+      $this->control->markAsInvalid();
       $this->refControl->markAsInvalid();
-      $this->markControl($this->__Control);
+      $this->markControl($this->control);
       $this->markControl($this->refControl);
-      $this->notifyValidationListeners($this->__Control);
+      $this->notifyValidationListeners($this->control);
       $this->notifyValidationListeners($this->refControl);
    }
 
@@ -112,20 +112,20 @@ class FieldCompareValidator extends TextFieldValidator {
     */
    private function initializeReferenceControl() {
 
-      $refControlName = $this->__Control->getAttribute('ref');
+      $refControlName = $this->control->getAttribute('ref');
       if ($refControlName === null) {
          /* @var $form HtmlFormTag */
-         $form = & $this->__Control->getParentObject();
+         $form = & $this->control->getParentObject();
          $formName = $form->getAttribute('name');
          throw new FormException('[FieldCompareValidator::__initializeReferenceControl()] The main field '
                   . 'definition does not include the "ref" attribute. This attribute must be specified '
                   . 'to tell the validator, which form control can be used as reference. Please '
-                  . 'check taglib definition of control "' . $this->__Control->getAttribute('name') . '" '
+                  . 'check taglib definition of control "' . $this->control->getAttribute('name') . '" '
                   . 'within form "' . $formName . '"!',
             E_USER_ERROR);
       }
 
-      $form = & $this->__Control->getParentObject();
+      $form = & $this->control->getParentObject();
       /* @var $form HtmlFormTag */
       $this->refControl = & $form->getFormElementByName($refControlName);
    }

@@ -49,14 +49,14 @@ abstract class AbstractFormValidator extends APFObject {
     * Includes a reference on the control to validate.
     * @var AbstractFormControl The control to validate.
     */
-   protected $__Control;
+   protected $control;
 
    /**
     * Includes a reference on the button of the form,
     * that initiates the validation event.
     * @var AbstractFormControl The button that triggers the event.
     */
-   protected $__Button;
+   protected $button;
 
    /**
     * Indicates the type of validator listeners, that should be notified.
@@ -87,8 +87,8 @@ abstract class AbstractFormValidator extends APFObject {
     * Version 0.1, 24.08.2009<br />
     */
    public function __construct(AbstractFormControl &$control, AbstractFormControl &$button, $type = null) {
-      $this->__Control = &$control;
-      $this->__Button = &$button;
+      $this->control = &$control;
+      $this->button = &$button;
       $this->type = $type;
    }
 
@@ -131,7 +131,7 @@ abstract class AbstractFormValidator extends APFObject {
     * Version 0.1, 28.08.2009<br />
     */
    public function isActive() {
-      return $this->__Button->isSent();
+      return $this->button->isSent();
    }
 
 }

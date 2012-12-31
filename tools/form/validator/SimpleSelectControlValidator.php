@@ -49,7 +49,7 @@ class SimpleSelectControlValidator extends SelectFieldValidator {
       // here, we have to validate the request values instead of the
       // input we are given from the form taglib to get valid results.
       // this has to be done because of dynamic filling of select fields!
-      $name = $this->__Control->getAttribute('name');
+      $name = $this->control->getAttribute('name');
       if (!isset($_REQUEST[$name]) || empty($_REQUEST[$name])) {
          return false;
       }

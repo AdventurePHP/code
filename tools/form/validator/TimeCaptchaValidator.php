@@ -56,14 +56,14 @@ class TimeCaptchaValidator extends TextFieldValidator {
     * Version 0.1, 14.03.2010<br />
     */
    public function validate($input) {
-      $seconds = $this->__Control->getAttribute('seconds');
+      $seconds = $this->control->getAttribute('seconds');
       if ($seconds === null) {
          $seconds = $this->defaultSeconds;
       }
 
       $sessMgr = new SessionManager('tools::form::taglib::TimeCaptchaTag');
-      $sessTime = $sessMgr->loadSessionData('form_' . $this->__Control->getParentObject()->getAttribute('name'));
-      $sessMgr->deleteSessionData('form__' . $this->__Control->getParentObject()->getAttribute('name'));
+      $sessTime = $sessMgr->loadSessionData('form_' . $this->control->getParentObject()->getAttribute('name'));
+      $sessMgr->deleteSessionData('form__' . $this->control->getParentObject()->getAttribute('name'));
       unset($sessMgr);
 
       // If there is no stored time in session control is not valid.

@@ -37,7 +37,7 @@ class ReCaptchaValidator extends TextFieldValidator {
    public function validate($input) {
 
       /* @var $control ReCaptchaTag */
-      $control = $this->__Control;
+      $control = $this->control;
       $control->getPrivateKey();
 
       $challengeContent = RequestHandler::getValue(ReCaptchaTag::RE_CAPTCHA_CHALLENGE_FIELD_IDENTIFIER);
@@ -71,10 +71,10 @@ class ReCaptchaValidator extends TextFieldValidator {
     */
    public function notify() {
       // used to invalidate the form in common APF style
-      $this->__Control->markAsInvalid();
+      $this->control->markAsInvalid();
 
       // necessary to display the registered listeners
-      $this->notifyValidationListeners($this->__Control);
+      $this->notifyValidationListeners($this->control);
    }
 
 }

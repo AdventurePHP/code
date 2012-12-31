@@ -91,7 +91,7 @@ class TextLengthValidator extends TextFieldValidator {
     * Version 0.1, 29.08.2009<br />
     */
    private function getMinLength() {
-      $minLength = $this->__Control->getAttribute(self::$MIN_LENGTH_ATTRIBUTE_NAME);
+      $minLength = $this->control->getAttribute(self::$MIN_LENGTH_ATTRIBUTE_NAME);
       if ($minLength === null) {
          $minLength = 3;
       }
@@ -113,7 +113,7 @@ class TextLengthValidator extends TextFieldValidator {
     */
    private function getMaxLength() {
       // max length being null is ok, because we consider it to indicate infinite length!
-      $maxLength = $this->__Control->getAttribute(self::$MAX_LENGTH_ATTRIBUTE_NAME);
+      $maxLength = $this->control->getAttribute(self::$MAX_LENGTH_ATTRIBUTE_NAME);
       return (int)$maxLength;
    }
 
@@ -130,7 +130,7 @@ class TextLengthValidator extends TextFieldValidator {
     * Version 0.1, 04.07.2010<br />
     */
    private function getMode() {
-      $mode = $this->__Control->getAttribute(self::$MODE_ATTRIBUTE_NAME);
+      $mode = $this->control->getAttribute(self::$MODE_ATTRIBUTE_NAME);
       return $mode;
    }
 
