@@ -49,9 +49,13 @@ class PasswordFieldTag extends TextFieldTag {
     * @version
     * Version 0.1, 12.01.2007<br />
     * Version 0.2, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
+    * Version 0.3, 02.01.2013 (Introduced form control visibility feature)<br />
     */
    public function transform() {
-      return '<input type="password" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
+      if ($this->isVisible) {
+         return '<input type="password" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
+      }
+      return '';
    }
 
 }

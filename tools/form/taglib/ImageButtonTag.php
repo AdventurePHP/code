@@ -50,11 +50,15 @@ class ImageButtonTag extends ButtonTag {
     * @author Christian Achatz
     * @version
     * Version 0.1, 27.09.2009<br />
+    * Version 0.2, 02.01.2013 (Introduced form control visibility feature)<br />
     */
    public function transform() {
-      return '<input type="image" '
-            . $this->getSanitizedAttributesAsString($this->__Attributes)
-            . ' />';
+      if ($this->isVisible) {
+         return '<input type="image" '
+               . $this->getSanitizedAttributesAsString($this->__Attributes)
+               . ' />';
+      }
+      return '';
    }
 
 }

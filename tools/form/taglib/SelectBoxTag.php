@@ -138,7 +138,7 @@ class SelectBoxTag extends AbstractFormControl {
       $this->isDynamicField = true;
 
       // retrieve or lazily create group
-      $group = &$this->getGroup($groupLabel);
+      $group = & $this->getGroup($groupLabel);
       if ($group === null) {
 
          $objectId = XmlParser::generateUniqID();
@@ -158,7 +158,7 @@ class SelectBoxTag extends AbstractFormControl {
          $this->__Content .= '<' . $objectId . ' />';
 
          // make group available for the subsequent call
-         $group = &$this->__Children[$objectId];
+         $group = & $this->__Children[$objectId];
       }
 
       // add option to group
@@ -183,7 +183,7 @@ class SelectBoxTag extends AbstractFormControl {
 
       foreach ($this->__Children as $objectId => $DUMMY) {
          if ($this->__Children[$objectId]->getAttribute('label') == $label) {
-            $group = &$this->__Children[$objectId];
+            $group = & $this->__Children[$objectId];
             break;
          }
       }
@@ -216,7 +216,7 @@ class SelectBoxTag extends AbstractFormControl {
       foreach ($this->__Children as $objectId => $DUMMY) {
 
          if (get_class($this->__Children[$objectId]) == 'SelectBoxGroupTag') {
-            $selectedOption = &$this->__Children[$objectId]->getSelectedOption();
+            $selectedOption = & $this->__Children[$objectId]->getSelectedOption();
 
             // Bug-436: exit at the first hit to not overwrite this hit with another miss!
             if ($selectedOption !== null) {
@@ -224,7 +224,7 @@ class SelectBoxTag extends AbstractFormControl {
             }
          } else {
             if ($this->__Children[$objectId]->getAttribute('selected') === 'selected') {
-               $selectedOption = &$this->__Children[$objectId];
+               $selectedOption = & $this->__Children[$objectId];
                break;
             }
          }
@@ -290,6 +290,7 @@ class SelectBoxTag extends AbstractFormControl {
     * Version 0.2, 12.01.2007 (Removed typos)<br />
     * Version 0.3, 11.02.2007 (Moved presetting and validation to onAfterAppend())<br />
     * Version 0.4, 13.08.2010 (Bug-fix: lazy dynamic presetting failed, when no value was sent)<br />
+    * Version 0.5, 02.01.2013 (Introduced form control visibility feature)<br />
     */
    public function transform() {
 
@@ -302,12 +303,15 @@ class SelectBoxTag extends AbstractFormControl {
       }
 
       // create html code
-      $select = (string)'';
-      $select .= '<select ' . $this->getSanitizedAttributesAsString($this->__Attributes) . '>';
+      if ($this->isVisible) {
+         $select = (string)'';
+         $select .= '<select ' . $this->getSanitizedAttributesAsString($this->__Attributes) . '>';
 
-      $this->transformChildren();
+         $this->transformChildren();
 
-      return $select . $this->__Content . '</select>';
+         return $select . $this->__Content . '</select>';
+      }
+      return '';
    }
 
    /**
@@ -325,7 +329,7 @@ class SelectBoxTag extends AbstractFormControl {
    public function addValidator(AbstractFormValidator &$validator) {
 
       if ($validator->isActive()) {
-         $option = &$this->getSelectedOption();
+         $option = & $this->getSelectedOption();
          if ($option === null) {
             $value = null;
          } else {

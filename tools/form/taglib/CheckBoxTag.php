@@ -54,7 +54,7 @@ class CheckBoxTag extends AbstractFormControl {
    public function onParseTime() {
 
       $name = $this->getAttribute('name');
-      $form = &$this->getParentObject();
+      $form = & $this->getParentObject();
       /* @var $form HtmlFormTag */
       if ($form->isSent()) {
          if (isset($_REQUEST[$name])) {
@@ -81,9 +81,13 @@ class CheckBoxTag extends AbstractFormControl {
     * @version
     * Version 0.1, 13.01.2007<br />
     * Version 0.2, 11.02.2007 (Moved presetting and validation to the onAfterAppend() method)<br />
+    * Version 0.3, 02.01.2013 (Introduced form control visibility feature)<br />
     */
    public function transform() {
-      return '<input type="checkbox" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
+      if ($this->isVisible) {
+         return '<input type="checkbox" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
+      }
+      return '';
    }
 
 }

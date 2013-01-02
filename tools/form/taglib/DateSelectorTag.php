@@ -228,29 +228,35 @@ class DateSelectorTag extends AbstractFormControl {
     * @version
     * Version 0.1, 10.01.2007<br />
     * Version 0.2, 18.03.2010 (Introduced surrounding span to support client validation)<br />
+    * Version 0.3, 02.01.2013 (Introduced form control visibility feature)<br />
     */
    public function transform() {
 
-      // as of 1.12, the date control should be rendered using a
-      // surrounding span do enable the client validator extension
-      // to address the control more easily.
-      $buffer = '<span id="' . $this->getId() . '"';
+      if ($this->isVisible) {
 
-      $style = $this->getAttribute('style');
-      if ($style != null) {
-         $buffer .= ' style="' . $style . '"';
+         // as of 1.12, the date control should be rendered using a
+         // surrounding span do enable the client validator extension
+         // to address the control more easily.
+         $buffer = '<span id="' . $this->getId() . '"';
+
+         $style = $this->getAttribute('style');
+         if ($style != null) {
+            $buffer .= ' style="' . $style . '"';
+         }
+
+         $class = $this->getAttribute('class');
+         if ($class != null) {
+            $buffer .= ' class="' . $class . '"';
+         }
+         $buffer .= '>';
+         foreach ($this->__Children as $section => $DUMMY) {
+            $buffer .= $this->__Children[$section]->transform();
+         }
+
+         return $buffer . '</span>';
       }
 
-      $class = $this->getAttribute('class');
-      if ($class != null) {
-         $buffer .= ' class="' . $class . '"';
-      }
-      $buffer .= '>';
-      foreach ($this->__Children as $section => $DUMMY) {
-         $buffer .= $this->__Children[$section]->transform();
-      }
-
-      return $buffer . '</span>';
+      return '';
    }
 
    /**

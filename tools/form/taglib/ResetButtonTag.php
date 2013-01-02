@@ -44,14 +44,18 @@ class ResetButtonTag extends AbstractFormControl {
    /**
     * Generates the HTML code of the reset button.
     *
-    * @return string The HMTL representation of the reset button.
+    * @return string The HTML representation of the reset button.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 22.06.2009<br />
+    * Version 0.2, 02.01.2013 (Introduced form control visibility feature)<br />
     */
    public function transform() {
-      return '<input type="reset" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
+      if ($this->isVisible) {
+         return '<input type="reset" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
+      }
+      return '';
    }
 
 }

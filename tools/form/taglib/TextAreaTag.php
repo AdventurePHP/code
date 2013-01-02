@@ -51,10 +51,14 @@ class TextAreaTag extends AbstractFormControl {
     * @version
     * Version 0.1, 05.01.2007<br />
     * Version 0.2, 11.02.2007 (Presetting and validation moved to onAfterAppend())<br />
+    * Version 0.3, 02.01.2013 (Introduced form control visibility feature)<br />
     */
    public function transform() {
-      return '<textarea ' . $this->getSanitizedAttributesAsString($this->__Attributes) . '>'
-            . $this->__Content . '</textarea>';
+      if ($this->isVisible) {
+         return '<textarea ' . $this->getSanitizedAttributesAsString($this->__Attributes) . '>'
+               . $this->__Content . '</textarea>';
+      }
+      return '';
    }
 
    /**
@@ -112,7 +116,7 @@ class TextAreaTag extends AbstractFormControl {
       $this->__Content = $value;
       return $this;
    }
-   
+
    /**
     * @public
     *

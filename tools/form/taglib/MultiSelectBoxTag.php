@@ -79,7 +79,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
       // that we can address the element with it's plain name in the template.
       $name = $this->getAttribute('name');
       if (substr_count($name, '[') > 0 || substr_count($name, ']') > 0) {
-         $doc = &$this->__ParentObject->getParentObject();
+         $doc = & $this->__ParentObject->getParentObject();
          $docCon = $doc->getDocumentController();
          throw new FormException('[MultiSelectBoxTag::onParseTime()] The attribute "name" of the '
                . '&lt;form:multiselect /&gt; tag with name "' . $this->__Attributes['name']
@@ -103,6 +103,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.06.2008 (Reimplemented the transform() method because of a presetting error)<br />
+    * Version 0.2, 02.01.2013 (Introduced form control visibility feature)<br />
     */
    public function transform() {
 
@@ -111,21 +112,24 @@ class MultiSelectBoxTag extends SelectBoxTag {
          $this->presetValue();
       }
 
-      // add brackets for the "name" attribute to ensure multi select capability!
-      $name = array('name' => $this->getAttribute('name') . '[]');
-      $select = '<select ' . $this->getSanitizedAttributesAsString(array_merge($this->__Attributes, $name)) . '>';
-      $select .= $this->__Content . '</select>';
+      if ($this->isVisible) {
+         // add brackets for the "name" attribute to ensure multi select capability!
+         $name = array('name' => $this->getAttribute('name') . '[]');
+         $select = '<select ' . $this->getSanitizedAttributesAsString(array_merge($this->__Attributes, $name)) . '>';
+         $select .= $this->__Content . '</select>';
 
-      if (count($this->__Children) > 0) {
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            $select = str_replace('<' . $objectId . ' />',
-               $this->__Children[$objectId]->transform(),
-               $select
-            );
+         if (count($this->__Children) > 0) {
+            foreach ($this->__Children as $objectId => $DUMMY) {
+               $select = str_replace('<' . $objectId . ' />',
+                  $this->__Children[$objectId]->transform(),
+                  $select
+               );
+            }
          }
-      }
 
-      return $select;
+         return $select;
+      }
+      return '';
    }
 
    /**
@@ -150,13 +154,13 @@ class MultiSelectBoxTag extends SelectBoxTag {
       foreach ($this->__Children as $objectId => $DUMMY) {
 
          if (get_class($this->__Children[$objectId]) == 'SelectBoxGroupTag') {
-            $options = &$this->__Children[$objectId]->getSelectedOptions();
+            $options = & $this->__Children[$objectId]->getSelectedOptions();
             foreach ($options as $id => $INNER_DUMMY) {
-               $selectedOptions[] = &$options[$id];
+               $selectedOptions[] = & $options[$id];
             }
          } else {
             if ($this->__Children[$objectId]->getAttribute('selected') === 'selected') {
-               $selectedOptions[] = &$this->__Children[$objectId];
+               $selectedOptions[] = & $this->__Children[$objectId];
             }
          }
 
@@ -220,7 +224,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
    public function getValue() {
       return $this->getSelectedOptions();
    }
-   
+
    /**
     * @public
     *
