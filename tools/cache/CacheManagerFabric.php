@@ -65,7 +65,7 @@ final class CacheManagerFabric extends APFObject {
             throw new InvalidArgumentException('[CacheManagerFabric::getCacheManager()] The desired config section "'
                   . $configSection . '" does not exist within the cache configuration. Please check '
                   . 'your cache configuration ("' . $env . '_cacheconfig.ini") for namespace '
-                  . '"tools::cache" and context "' . $this->__Context . '"!', E_USER_ERROR);
+                  . '"tools::cache" and context "' . $this->context . '"!', E_USER_ERROR);
          }
 
          // remap options to array to be able to initialize the cache manager using the service manager

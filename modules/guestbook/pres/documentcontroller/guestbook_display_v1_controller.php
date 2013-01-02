@@ -75,7 +75,7 @@ class guestbook_display_v1_controller extends guestbookBaseController {
     */
    private function generateCreateEntryLink() {
 
-      $Template__CreateEntry = &$this->getTemplate('CreateEntry_' . $this->__Language);
+      $Template__CreateEntry = &$this->getTemplate('CreateEntry_' . $this->language);
 
       $Link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'createentry', 'entryid' => '')));
       $Template__CreateEntry->setPlaceHolder('Link', $Link);
@@ -101,7 +101,7 @@ class guestbook_display_v1_controller extends guestbookBaseController {
 
       if ($this->session->loadSessionData('AdminView') == 'true') {
 
-         $Template__ControlGuestbook_Logout = &$this->getTemplate('ControlGuestbook_Logout_' . $this->__Language);
+         $Template__ControlGuestbook_Logout = &$this->getTemplate('ControlGuestbook_Logout_' . $this->language);
 
          $Link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'adminlogin', 'logout' => 'true', 'entryid' => '')));
          $Template__ControlGuestbook_Logout->setPlaceHolder('Link', $Link);
@@ -110,7 +110,7 @@ class guestbook_display_v1_controller extends guestbookBaseController {
 
       } else {
 
-         $Template__ControlGuestbook_Login = &$this->getTemplate('ControlGuestbook_Login_' . $this->__Language);
+         $Template__ControlGuestbook_Login = &$this->getTemplate('ControlGuestbook_Login_' . $this->language);
 
          $Link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'adminlogin', 'entryid' => '')));
          $Template__ControlGuestbook_Login->setPlaceHolder('Link', $Link);

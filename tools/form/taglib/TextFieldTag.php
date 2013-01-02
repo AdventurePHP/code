@@ -58,7 +58,7 @@ class TextFieldTag extends AbstractFormControl {
     */
    public function transform() {
       if ($this->isVisible) {
-         return '<input type="text" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
+         return '<input type="text" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
       }
       return '';
    }

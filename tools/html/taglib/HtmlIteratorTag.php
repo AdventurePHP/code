@@ -75,10 +75,10 @@ class HtmlIteratorTag extends Document {
     * Version 0.2, 09.08.2009 (Added the addtaglib tag to enable custom tags.)<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('tools::html::taglib', 'HtmlIteratorItemTag', 'iterator', 'item');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'iterator', 'addtaglib');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'iterator', 'getstring');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'iterator', 'placeholder');
+      $this->tagLibs[] = new TagLib('tools::html::taglib', 'HtmlIteratorItemTag', 'iterator', 'item');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'iterator', 'addtaglib');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'iterator', 'getstring');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'iterator', 'placeholder');
    }
 
    /**
@@ -199,7 +199,7 @@ class HtmlIteratorTag extends Document {
       // the iterator item must not always be the first child
       // of the current node!
       $itemObjectId = $this->getIteratorItemObjectId();
-      $iteratorItem = &$this->__Children[$itemObjectId];
+      $iteratorItem = &$this->children[$itemObjectId];
       /* @var $iteratorItem HtmlIteratorItemTag */
 
       // define the dynamic getter.
@@ -268,13 +268,13 @@ class HtmlIteratorTag extends Document {
 
       // add the surrounding content of the iterator to enable the
       // user to define some html code as well.
-      $iterator = str_replace('<' . $itemObjectId . ' />', $buffer, $this->__Content);
+      $iterator = str_replace('<' . $itemObjectId . ' />', $buffer, $this->content);
 
       // transform all other child tags except the iterator item(s)
-      foreach ($this->__Children as $objectId => $DUMMY) {
+      foreach ($this->children as $objectId => $DUMMY) {
 
-         if (get_class($this->__Children[$objectId]) !== 'HtmlIteratorItemTag') {
-            $iterator = str_replace('<' . $objectId . ' />', $this->__Children[$objectId]->transform(), $iterator);
+         if (get_class($this->children[$objectId]) !== 'HtmlIteratorItemTag') {
+            $iterator = str_replace('<' . $objectId . ' />', $this->children[$objectId]->transform(), $iterator);
          }
 
       }
@@ -318,8 +318,8 @@ class HtmlIteratorTag extends Document {
     */
    protected function getIteratorItemObjectId() {
 
-      foreach ($this->__Children as $objectId => $DUMMY) {
-         if (get_class($this->__Children[$objectId]) === 'HtmlIteratorItemTag') {
+      foreach ($this->children as $objectId => $DUMMY) {
+         if (get_class($this->children[$objectId]) === 'HtmlIteratorItemTag') {
             return $objectId;
          }
       }
@@ -348,16 +348,16 @@ class HtmlIteratorTag extends Document {
     */
    public function &setPlaceHolder($name, $value) {
       $count = 0;
-      foreach ($this->__Children as $objectId => $DUMMY) {
-         if (get_class($this->__Children[$objectId]) == 'PlaceHolderTag'
-            && $this->__Children[$objectId]->getAttribute('name') === $name
+      foreach ($this->children as $objectId => $DUMMY) {
+         if (get_class($this->children[$objectId]) == 'PlaceHolderTag'
+            && $this->children[$objectId]->getAttribute('name') === $name
          ) {
-            $this->__Children[$objectId]->setContent($value);
+            $this->children[$objectId]->setContent($value);
             $count++;
          }
       }
 
-      if ($count == 0 || count($this->__Children) == 0) {
+      if ($count == 0 || count($this->children) == 0) {
          throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place '
             . 'holder object with name "' . $name . '" can be found within html:iterator tag '
             . 'with name "' . $this->getAttribute('name') . '" requested in document controller '

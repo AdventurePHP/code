@@ -53,7 +53,7 @@ class PasswordFieldTag extends TextFieldTag {
     */
    public function transform() {
       if ($this->isVisible) {
-         return '<input type="password" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
+         return '<input type="password" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
       }
       return '';
    }

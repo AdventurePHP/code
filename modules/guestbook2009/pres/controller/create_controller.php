@@ -68,7 +68,7 @@ class create_controller extends BaseDocumentController {
       // language and context information of the current
       // DOM node.
       $config = $this->getConfiguration('modules::guestbook2009::pres', 'language.ini');
-      $buttonLabel = $config->getSection($this->__Language)->getValue('form.label.button');
+      $buttonLabel = $config->getSection($this->language)->getValue('form.label.button');
       $button = &$form->getFormElementByName('send');
       $button->setAttribute('value', $buttonLabel);
 

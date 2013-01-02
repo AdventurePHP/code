@@ -60,7 +60,7 @@ class AddFormControlClientValidatorTag extends AbstractFormControl {
 
       // Configure referenced controls
       /* @var $parent HtmlFormTag */
-      $parent = $this->__ParentObject;
+      $parent = $this->parentObject;
       foreach ($controlsTmp as $control) {
          if (($ref = $parent->getFormElementByName($control)->getAttribute('ref')) !== NULL) {
             $controlsTmp[] = $ref;

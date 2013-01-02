@@ -42,9 +42,9 @@
 class FormErrorDisplayTag extends AbstractFormControl {
 
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'error', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'error', 'getstring');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'error', 'addtaglib');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'error', 'placeholder');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'error', 'getstring');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'error', 'addtaglib');
    }
 
    /**
@@ -88,7 +88,7 @@ class FormErrorDisplayTag extends AbstractFormControl {
    public function transform() {
       if ($this->getParentObject()->isSent() && !$this->getParentObject()->isValid()) {
          $this->transformChildren();
-         return $this->__Content;
+         return $this->content;
       }
       return '';
    }

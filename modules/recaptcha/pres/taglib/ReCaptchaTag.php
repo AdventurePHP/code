@@ -56,7 +56,7 @@ class ReCaptchaTag extends AbstractFormControl {
    private $errorMessageKey;
 
    public function __construct() {
-      $this->__TagLibs = array(
+      $this->tagLibs = array(
          new TagLib('modules::recaptcha::pres::taglib', 'ReCaptchaTranslationTag', 'recaptcha', 'getstring')
       );
    }

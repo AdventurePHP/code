@@ -33,13 +33,13 @@ class SMSStdSite extends APFObject implements SMSSite {
    /**
     * @var string|integer
     */
-   protected $_403PageId = null;
+   protected $forbiddenPageId = null;
 
 
    /**
     * @var string|integer
     */
-   protected $_404PageId = null;
+   protected $notFoundPageId = null;
 
 
    /**
@@ -159,7 +159,7 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @param string|integer $pageId
     */
    public function set403PageId($pageId) {
-      $this->_403PageId = $pageId;
+      $this->forbiddenPageId = $pageId;
    }
 
 
@@ -167,7 +167,7 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @return string|integer
     */
    public function get403PageId() {
-      return $this->_403PageId;
+      return $this->forbiddenPageId;
    }
 
 
@@ -207,7 +207,7 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @param string|integer $pageId
     */
    public function set404PageId($pageId) {
-      $this->_404PageId = $pageId;
+      $this->notFoundPageId = $pageId;
    }
 
 
@@ -215,7 +215,7 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @return string|integer
     */
    public function get404PageId() {
-      return $this->_404PageId;
+      return $this->notFoundPageId;
    }
 
 

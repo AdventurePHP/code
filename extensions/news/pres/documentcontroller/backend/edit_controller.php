@@ -105,7 +105,7 @@ class edit_controller extends NewsBaseController {
     * @return string The application identifier (for login purposes).
     */
    protected function getAppKey() {
-      return $this->__Document->getParentObject()->getAttribute('app-ident', $this->getContext());
+      return $this->getDocument()->getParentObject()->getAttribute('app-ident', $this->getContext());
    }
 
 }

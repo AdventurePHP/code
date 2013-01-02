@@ -37,14 +37,14 @@ abstract class AbstractFormFilter extends AbstractFilter {
     * Includes a reference on the control to filter.
     * @var AbstractFormControl The control to filter.
     */
-   protected $__Control;
+   protected $control;
 
    /**
     * Includes a reference on the button of the form,
     * that initiates the validation event.
     * @var AbstractFormControl The button that triggers the event.
     */
-   protected $__Button;
+   protected $button;
 
    /**
     * @public
@@ -59,8 +59,8 @@ abstract class AbstractFormFilter extends AbstractFilter {
     * Version 0.1, 28.08.2009<br />
     */
    public function __construct(AbstractFormControl &$control, AbstractFormControl &$button) {
-      $this->__Control = &$control;
-      $this->__Button = &$button;
+      $this->control = &$control;
+      $this->button = &$button;
    }
 
    /**
@@ -75,7 +75,7 @@ abstract class AbstractFormFilter extends AbstractFilter {
     * Version 0.1, 28.08.2009<br />
     */
    public function isActive() {
-      return $this->__Button->isSent();
+      return $this->button->isSent();
    }
 
    /**
@@ -94,7 +94,7 @@ abstract class AbstractFormFilter extends AbstractFilter {
     * Version 0.1, 21.04.2011<br />
     */
    protected function getFilterExpression($default) {
-      $expr = $this->__Control->getAttribute('filter-expr');
+      $expr = $this->control->getAttribute('filter-expr');
       return $expr === null ? $default : $expr;
    }
 

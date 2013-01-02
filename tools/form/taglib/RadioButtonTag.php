@@ -57,7 +57,7 @@ class RadioButtonTag extends AbstractFormControl {
     */
    public function transform() {
       if ($this->isVisible) {
-         return '<input type="radio" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
+         return '<input type="radio" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
       }
       return '';
    }
@@ -81,7 +81,7 @@ class RadioButtonTag extends AbstractFormControl {
       // Check for name and value beeing present. Otherwise
       // presetting will fail!
       if ($name === null || $value === null) {
-         $formName = $this->__ParentObject->getAttribute('name');
+         $formName = $this->parentObject->getAttribute('name');
          throw new FormException('[RadioButtonTag::presetValue()] Attribute "name" and or "value" is '
                . 'missing for &lt;form:radio /&gt; definition within form "' . $formName . '". '
                . 'Please check your tag definition!', E_USER_ERROR);

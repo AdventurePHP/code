@@ -68,29 +68,29 @@ class TimeSelectorTag extends AbstractFormControl {
     */
    public function onParseTime() {
 
-      $this->__initHoursRange();
-      $this->__initOffsetNames();
+      $this->initHoursRange();
+      $this->initOffsetNames();
 
-      if (!empty($this->__Attributes['minutesinterval'])) {
-         $this->minutesInterval = (int)$this->__Attributes['minutesinterval'];
+      if (!empty($this->attributes['minutesinterval'])) {
+         $this->minutesInterval = (int)$this->attributes['minutesinterval'];
       }
-      if (!empty($this->__Attributes['showseconds']) && $this->__Attributes['showseconds'] == "false") {
+      if (!empty($this->attributes['showseconds']) && $this->attributes['showseconds'] == "false") {
          $this->showSeconds = false;
       }
 
       // create select boxes then apply context and language
       $hours = new SelectBoxTag();
-      $hours->setLanguage($this->__Language);
-      $hours->setContext($this->__Context);
+      $hours->setLanguage($this->language);
+      $hours->setContext($this->context);
 
       $minutes = new SelectBoxTag();
-      $minutes->setLanguage($this->__Language);
-      $minutes->setContext($this->__Context);
+      $minutes->setLanguage($this->language);
+      $minutes->setContext($this->context);
 
       if ($this->showSeconds != false) {
          $seconds = new SelectBoxTag();
-         $seconds->setLanguage($this->__Language);
-         $seconds->setContext($this->__Context);
+         $seconds->setLanguage($this->language);
+         $seconds->setContext($this->context);
       }
 
       $name = $this->getAttribute('name');
@@ -157,17 +157,17 @@ class TimeSelectorTag extends AbstractFormControl {
       if ($this->showSeconds != false) {
          $seconds->setParentObject($this);
       }
-      $this->__Children['h'] = $hours;
-      $this->__Children['m'] = $minutes;
+      $this->children['h'] = $hours;
+      $this->children['m'] = $minutes;
       if ($this->showSeconds != false) {
-         $this->__Children['s'] = $seconds;
+         $this->children['s'] = $seconds;
       }
 
       // execute onAfterAppend() to ensure native APF environment
-      $this->__Children['h']->onAfterAppend();
-      $this->__Children['m']->onAfterAppend();
+      $this->children['h']->onAfterAppend();
+      $this->children['m']->onAfterAppend();
       if ($this->showSeconds != false) {
-         $this->__Children['s']->onAfterAppend();
+         $this->children['s']->onAfterAppend();
       }
    }
 
@@ -205,26 +205,31 @@ class TimeSelectorTag extends AbstractFormControl {
     */
    public function transform() {
 
-      // as of 1.12, the time control should be rendered using a
-      // surrounding span do enable the client validator extension
-      // to address the control more easily.
-      $buffer = (string)'<span id="' . $this->getId() . '"';
+      if ($this->isVisible) {
 
-      $style = $this->getAttribute('style');
-      if ($style != null) {
-         $buffer .= ' style="' . $style . '"';
+         // as of 1.12, the time control should be rendered using a
+         // surrounding span do enable the client validator extension
+         // to address the control more easily.
+         $buffer = (string)'<span id="' . $this->getId() . '"';
+
+         $style = $this->getAttribute('style');
+         if ($style != null) {
+            $buffer .= ' style="' . $style . '"';
+         }
+
+         $class = $this->getAttribute('class');
+         if ($class != null) {
+            $buffer .= ' class="' . $class . '"';
+         }
+         $buffer .= '>';
+         foreach ($this->children as $section => $DUMMY) {
+            $buffer .= $this->children[$section]->transform();
+         }
+
+         return $buffer . '</span>';
       }
 
-      $class = $this->getAttribute('class');
-      if ($class != null) {
-         $buffer .= ' class="' . $class . '"';
-      }
-      $buffer .= '>';
-      foreach ($this->__Children as $section => $DUMMY) {
-         $buffer .= $this->__Children[$section]->transform();
-      }
-
-      return $buffer . '</span>';
+      return '';
    }
 
    /**
@@ -308,7 +313,7 @@ class TimeSelectorTag extends AbstractFormControl {
     * Version 0.1, 21.2.2011<br />
     */
    public function &getHoursControl() {
-      return $this->__Children['h'];
+      return $this->children['h'];
    }
 
    /**
@@ -323,7 +328,7 @@ class TimeSelectorTag extends AbstractFormControl {
     * Version 0.1, 21.2.2011<br />
     */
    public function &getMinutesControl() {
-      return $this->__Children['m'];
+      return $this->children['m'];
    }
 
    /**
@@ -338,7 +343,7 @@ class TimeSelectorTag extends AbstractFormControl {
     * Version 0.1, 21.2.2011<br />
     */
    public function &getSecondsControl() {
-      return $this->__Children['s'];
+      return $this->children['s'];
    }
 
    /**
@@ -350,12 +355,12 @@ class TimeSelectorTag extends AbstractFormControl {
     * @version
     * Version 0.1, 21.2.2011<br />
     */
-   protected function __initHoursRange() {
+   protected function initHoursRange() {
 
       // read the range for the hours select box
-      if (isset($this->__Attributes['hoursrange'])) {
+      if (isset($this->attributes['hoursrange'])) {
 
-         $hoursrange = explode('-', $this->__Attributes['hoursrange']);
+         $hoursrange = explode('-', $this->attributes['hoursrange']);
 
          if (count($hoursrange) == 2) {
             $this->hoursRange['Start'] = trim($this->appendZero($hoursrange[0]));
@@ -373,11 +378,11 @@ class TimeSelectorTag extends AbstractFormControl {
     * @version
     * Version 0.1, 21.2.2011<br />
     */
-   protected function __initOffsetNames() {
+   protected function initOffsetNames() {
 
-      if (isset($this->__Attributes['offsetnames'])) {
+      if (isset($this->attributes['offsetnames'])) {
 
-         $offsetNames = explode(';', $this->__Attributes['offsetnames']);
+         $offsetNames = explode(';', $this->attributes['offsetnames']);
 
          if (count($offsetNames) == 3) {
             $this->offsetNames = array(

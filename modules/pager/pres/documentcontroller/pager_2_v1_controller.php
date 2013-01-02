@@ -46,8 +46,8 @@ class pager_2_v1_controller extends BaseDocumentController {
    public function transformContent() {
 
       // do not display the pager in case we have no pages
-      if (count($this->__Attributes['Pages']) == 0) {
-         $this->__Content = '';
+      if (count($this->attributes['Pages']) == 0) {
+         $this->content = '';
          return;
       }
 
@@ -57,26 +57,26 @@ class pager_2_v1_controller extends BaseDocumentController {
 
       $buffer = (string)'';
 
-      for ($i = 0; $i < count($this->__Attributes['Pages']); $i++) {
+      for ($i = 0; $i < count($this->attributes['Pages']); $i++) {
 
-         if ($this->__Attributes['Pages'][$i]->isSelected() == true) {
+         if ($this->attributes['Pages'][$i]->isSelected() == true) {
             $template = &$this->getTemplate('Page_Selected');
-            $currentPage = $this->__Attributes['Pages'][$i]->getPage();
+            $currentPage = $this->attributes['Pages'][$i]->getPage();
          } else {
             $template = &$this->getTemplate('Page');
          }
 
-         if (isset($this->__Attributes['AnchorName'])) {
-            $template->setPlaceHolder('Link', $this->__Attributes['Pages'][$i]->getLink() . '#' . $this->__Attributes['AnchorName']);
+         if (isset($this->attributes['AnchorName'])) {
+            $template->setPlaceHolder('Link', $this->attributes['Pages'][$i]->getLink() . '#' . $this->attributes['AnchorName']);
          } else {
-            $template->setPlaceHolder('Link', $this->__Attributes['Pages'][$i]->getLink());
+            $template->setPlaceHolder('Link', $this->attributes['Pages'][$i]->getLink());
          }
-         $template->setPlaceHolder('Seite', $this->__Attributes['Pages'][$i]->getPage());
+         $template->setPlaceHolder('Seite', $this->attributes['Pages'][$i]->getPage());
 
          $buffer .= $template->transformTemplate();
 
-         $pageCount = $this->__Attributes['Pages'][$i]->getPageCount();
-         $entriesCount = $this->__Attributes['Pages'][$i]->getEntriesCount();
+         $pageCount = $this->attributes['Pages'][$i]->getPageCount();
+         $entriesCount = $this->attributes['Pages'][$i]->getEntriesCount();
       }
       $this->setPlaceHolder('Inhalt', $buffer);
 
@@ -84,10 +84,10 @@ class pager_2_v1_controller extends BaseDocumentController {
       if ($currentPage > 1) {
 
          $page = $currentPage - 1;
-         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($this->__Attributes['Config']['ParameterPageName'] => $page)));
+         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($this->attributes['Config']['ParameterPageName'] => $page)));
          $prevActive = & $this->getTemplate('VorherigeSeite_Aktiv');
-         if (isset($this->__Attributes['AnchorName'])) {
-            $prevActive->setPlaceHolder('Link', $link . '#' . $this->__Attributes['AnchorName']);
+         if (isset($this->attributes['AnchorName'])) {
+            $prevActive->setPlaceHolder('Link', $link . '#' . $this->attributes['AnchorName']);
          } else {
             $prevActive->setPlaceHolder('Link', $link);
          }
@@ -101,11 +101,11 @@ class pager_2_v1_controller extends BaseDocumentController {
       if ($currentPage < $pageCount) {
 
          $page = $currentPage + 1;
-         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($this->__Attributes['Config']['ParameterPageName'] => $page)));
+         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($this->attributes['Config']['ParameterPageName'] => $page)));
          $nextActive = & $this->getTemplate('NaechsteSeite_Aktiv');
 
-         if (isset($this->__Attributes['AnchorName'])) {
-            $nextActive->setPlaceHolder('Link', $link . '#' . $this->__Attributes['AnchorName']);
+         if (isset($this->attributes['AnchorName'])) {
+            $nextActive->setPlaceHolder('Link', $link . '#' . $this->attributes['AnchorName']);
          } else {
             $nextActive->setPlaceHolder('Link', $link);
          }
@@ -117,10 +117,10 @@ class pager_2_v1_controller extends BaseDocumentController {
       }
 
       // display the dynamic page size bar
-      if ($this->__Attributes['Config']['DynamicPageSizeActivated'] == true) {
+      if ($this->attributes['Config']['DynamicPageSizeActivated'] == true) {
 
          $entriesPerPageConfig = array(5, 10, 15, 20);
-         $entriesPerPage = RequestHandler::getValue($this->__Attributes['Config']['ParameterCountName'], $this->__Attributes['Config']['EntriesPerPage']);
+         $entriesPerPage = RequestHandler::getValue($this->attributes['Config']['ParameterCountName'], $this->attributes['Config']['EntriesPerPage']);
          $buffer = (string)'';
 
          foreach ($entriesPerPageConfig as $count) {
@@ -131,10 +131,10 @@ class pager_2_v1_controller extends BaseDocumentController {
                $template = &$this->getTemplate('EntriesPerPage_Inaktiv');
             }
 
-            $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($this->__Attributes['Config']['ParameterPageName'] => '1', $this->__Attributes['Config']['ParameterCountName'] => $count)));
+            $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($this->attributes['Config']['ParameterPageName'] => '1', $this->attributes['Config']['ParameterCountName'] => $count)));
 
-            if (isset($this->__Attributes['AnchorName'])) {
-               $template->setPlaceHolder('Link', $link . '#' . $this->__Attributes['AnchorName']);
+            if (isset($this->attributes['AnchorName'])) {
+               $template->setPlaceHolder('Link', $link . '#' . $this->attributes['AnchorName']);
             } else {
                $template->setPlaceHolder('Link', $link);
             }
@@ -147,7 +147,7 @@ class pager_2_v1_controller extends BaseDocumentController {
          $dynPageSize->setPlaceHolder('EntriesPerPage', $buffer);
 
          // display language dependent labels
-         $entriesPerPageTmpl = &$this->getTemplate('EntriesPerPage_' . $this->__Language);
+         $entriesPerPageTmpl = &$this->getTemplate('EntriesPerPage_' . $this->language);
          $dynPageSize->setPlaceHolder('EntriesPerPage_Display', $entriesPerPageTmpl->transformTemplate());
 
          $dynPageSize->transformOnPlace();

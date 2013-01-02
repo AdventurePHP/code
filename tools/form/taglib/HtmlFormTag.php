@@ -76,50 +76,50 @@ class HtmlFormTag extends Document {
 
       // Place the listener here, to ensure, that it is there, when the
       // notification is sent!
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'ValidationListenerTag', 'form', 'listener');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'ValidationListenerTag', 'form', 'listener');
 
       // Please note, that the form:addfilter taglib is placed before the
       // form:addvalidator, because filtering must take place before the
       // validation. Otherwise, we might get unexpected results.
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'AddFormControlFilterTag', 'form', 'addfilter');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'AddFormControlValidatorTag', 'form', 'addvalidator');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'AddFormControlFilterTag', 'form', 'addfilter');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'AddFormControlValidatorTag', 'form', 'addvalidator');
 
       // The time of adding the form errors is not relevant, because the action
       // takes place on transform time. But for clarity, we add it near the listeners.
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'FormErrorDisplayTag', 'form', 'error');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'FormSuccessDisplayTag', 'form', 'success');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FormErrorDisplayTag', 'form', 'error');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FormSuccessDisplayTag', 'form', 'success');
 
       // Buttons are analyzed right early to be able to initialize form controls
       // concerning the status of the form (e.g. sent!).
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'ButtonTag', 'form', 'button');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'ResetButtonTag', 'form', 'reset');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'ImageButtonTag', 'form', 'imagebutton');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'ButtonTag', 'form', 'button');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'ResetButtonTag', 'form', 'reset');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'ImageButtonTag', 'form', 'imagebutton');
 
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'FormLabelTag', 'form', 'label');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FormLabelTag', 'form', 'label');
 
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'TextFieldTag', 'form', 'text');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'SelectBoxTag', 'form', 'select');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'DateSelectorTag', 'form', 'date');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'FormPlaceHolderTag', 'form', 'placeholder');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'PasswordFieldTag', 'form', 'password');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'HiddenFieldTag', 'form', 'hidden');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'CheckBoxTag', 'form', 'checkbox');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'RadioButtonTag', 'form', 'radio');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'FileUploadTag', 'form', 'file');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'TextAreaTag', 'form', 'area');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'MultiSelectBoxTag', 'form', 'multiselect');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'FormLanguageLabelTag', 'form', 'getstring');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'DynamicFormElementMarkerTag', 'form', 'marker');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'FormAddTaglibTag', 'form', 'addtaglib');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'TextFieldTag', 'form', 'text');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'SelectBoxTag', 'form', 'select');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'DateSelectorTag', 'form', 'date');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FormPlaceHolderTag', 'form', 'placeholder');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'PasswordFieldTag', 'form', 'password');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'HiddenFieldTag', 'form', 'hidden');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'CheckBoxTag', 'form', 'checkbox');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'RadioButtonTag', 'form', 'radio');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FileUploadTag', 'form', 'file');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'TextAreaTag', 'form', 'area');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'MultiSelectBoxTag', 'form', 'multiselect');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FormLanguageLabelTag', 'form', 'getstring');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'DynamicFormElementMarkerTag', 'form', 'marker');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FormAddTaglibTag', 'form', 'addtaglib');
 
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'TimeCaptchaTag', 'form', 'timecaptcha');
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'CsrfProtectionHashTag', 'form', 'csrfhash');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'TimeCaptchaTag', 'form', 'timecaptcha');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'CsrfProtectionHashTag', 'form', 'csrfhash');
 
       // analyzing the form:time tag must be done after the form:timecaptcha, since
       // the tag parser analyzes the whole tag string and form:time is fully contained
       // in form:timecaptcha. this restriction of the APF parser is accepted due to
       // performance reasons!
-      $this->__TagLibs[] = new TagLib('tools::form::taglib', 'TimeSelectorTag', 'form', 'time');
+      $this->tagLibs[] = new TagLib('tools::form::taglib', 'TimeSelectorTag', 'form', 'time');
 
       // setup attributes within white-list
       $this->attributeWhiteList = array_merge(AbstractFormControl::$CORE_ATTRIBUTES, AbstractFormControl::$EVENT_ATTRIBUTES, AbstractFormControl::$I18N_ATTRIBUTES);
@@ -146,9 +146,9 @@ class HtmlFormTag extends Document {
       }
 
       // import dependent tags a little bit different, to increase performance up to factor 10!
-      foreach ($this->__TagLibs as $taglib) {
+      foreach ($this->tagLibs as $taglib) {
          /* @var $taglib TagLib */
-         if (strpos($this->__Content, '<' . $taglib->getPrefix() . ':' . $taglib->getName()) !== false) {
+         if (strpos($this->content, '<' . $taglib->getPrefix() . ':' . $taglib->getName()) !== false) {
             if (!class_exists($taglib->getClass())) {
                import($taglib->getNamespace(), $taglib->getClass());
             }
@@ -172,8 +172,8 @@ class HtmlFormTag extends Document {
     */
    public function isSent() {
 
-      foreach ($this->__Children as $objectId => $DUMMY) {
-         if ($this->__Children[$objectId]->isSent() === true) {
+      foreach ($this->children as $objectId => $DUMMY) {
+         if ($this->children[$objectId]->isSent() === true) {
             return true;
          }
       }
@@ -195,8 +195,8 @@ class HtmlFormTag extends Document {
     */
    public function isValid() {
 
-      foreach ($this->__Children as $objectId => $DUMMY) {
-         if ($this->__Children[$objectId]->isValid() === false) {
+      foreach ($this->children as $objectId => $DUMMY) {
+         if ($this->children[$objectId]->isValid() === false) {
             return false;
          }
       }
@@ -230,7 +230,7 @@ class HtmlFormTag extends Document {
       if ($objectId !== null) {
 
          // add position placeholder to the content
-         $this->__Content .= '<' . $objectId . ' />';
+         $this->content .= '<' . $objectId . ' />';
 
          // return object id of the new form element
          return $objectId;
@@ -252,7 +252,7 @@ class HtmlFormTag extends Document {
     * Version 0.1, 05.01.2007<br />
     */
    public function addFormContent($content) {
-      $this->__Content .= $content;
+      $this->content .= $content;
    }
 
    /**
@@ -276,7 +276,7 @@ class HtmlFormTag extends Document {
       $objectId = $marker->getObjectId();
 
       // add the desired content before the marker
-      $this->__Content = str_replace('<' . $objectId . ' />', $content . '<' . $objectId . ' />', $this->__Content);
+      $this->content = str_replace('<' . $objectId . ' />', $content . '<' . $objectId . ' />', $this->content);
    }
 
    /**
@@ -300,7 +300,7 @@ class HtmlFormTag extends Document {
       $objectId = $marker->getObjectId();
 
       // add the desired content before the marker
-      $this->__Content = str_replace('<' . $objectId . ' />', '<' . $objectId . ' />' . $content, $this->__Content);
+      $this->content = str_replace('<' . $objectId . ' />', '<' . $objectId . ' />' . $content, $this->content);
    }
 
    /**
@@ -332,7 +332,7 @@ class HtmlFormTag extends Document {
 
          // add the position placeholder to the content
          $markerId = $marker->getObjectId();
-         $this->__Content = str_replace('<' . $markerId . ' />', '<' . $objectId . ' /><' . $markerId . ' />', $this->__Content);
+         $this->content = str_replace('<' . $markerId . ' />', '<' . $objectId . ' /><' . $markerId . ' />', $this->content);
 
          // return object id of the new form element
          return $objectId;
@@ -372,9 +372,9 @@ class HtmlFormTag extends Document {
 
          // add the position placeholder to the content
          $markerId = $marker->getObjectId();
-         $this->__Content = str_replace(
+         $this->content = str_replace(
             '<' . $markerId . ' />', '<' . $markerId . ' /><' . $objectId . ' />',
-            $this->__Content
+            $this->content
          );
 
          // return object id of the new form element
@@ -412,7 +412,7 @@ class HtmlFormTag extends Document {
       // not statically included as of 1.14 but loaded dynamically due to performance
       // reasons!
       $class = null;
-      foreach ($this->__TagLibs as $taglib) {
+      foreach ($this->tagLibs as $taglib) {
          /* @var $taglib TagLib */
          if ($taglib->getPrefix() === $prefix && $taglib->getName() === $name) {
             $class = $taglib->getClass();
@@ -433,8 +433,8 @@ class HtmlFormTag extends Document {
 
          // add standard and user defined attributes
          $formControl->setObjectId($objectId);
-         $formControl->setLanguage($this->__Language);
-         $formControl->setContext($this->__Context);
+         $formControl->setLanguage($this->language);
+         $formControl->setContext($this->context);
          $formControl->setAttributes($elementAttributes);
 
          // add form element to DOM tree and call the onParseTime() method
@@ -442,10 +442,10 @@ class HtmlFormTag extends Document {
          $formControl->onParseTime();
 
          // add new form element to children list
-         $this->__Children[$objectId] = $formControl;
+         $this->children[$objectId] = $formControl;
 
          // call the onAfterAppend() method
-         $this->__Children[$objectId]->onAfterAppend();
+         $this->children[$objectId]->onAfterAppend();
 
          // return object id for further addressing
          return $objectId;
@@ -511,10 +511,10 @@ class HtmlFormTag extends Document {
     */
    public function &getFormElementByName($name) {
 
-      if (count($this->__Children) > 0) {
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            if ($this->__Children[$objectId]->getAttribute('name') == $name) {
-               return $this->__Children[$objectId];
+      if (count($this->children) > 0) {
+         foreach ($this->children as $objectId => $DUMMY) {
+            if ($this->children[$objectId]->getAttribute('name') == $name) {
+               return $this->children[$objectId];
             }
          }
       }
@@ -543,10 +543,10 @@ class HtmlFormTag extends Document {
     */
    public function &getFormElementsByName($name) {
       $elements = array();
-      if (count($this->__Children) > 0) {
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            if ($this->__Children[$objectId]->getAttribute('name') == $name) {
-               $elements[] = & $this->__Children[$objectId];
+      if (count($this->children) > 0) {
+         foreach ($this->children as $objectId => $DUMMY) {
+            if ($this->children[$objectId]->getAttribute('name') == $name) {
+               $elements[] = & $this->children[$objectId];
             }
          }
       }
@@ -568,10 +568,10 @@ class HtmlFormTag extends Document {
     */
    public function &getFormElementByID($id) {
 
-      if (count($this->__Children) > 0) {
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            if ($this->__Children[$objectId]->getAttribute('id') == $id) {
-               return $this->__Children[$objectId];
+      if (count($this->children) > 0) {
+         foreach ($this->children as $objectId => $DUMMY) {
+            if ($this->children[$objectId]->getAttribute('id') == $id) {
+               return $this->children[$objectId];
             }
          }
       }
@@ -601,8 +601,8 @@ class HtmlFormTag extends Document {
     */
    public function &getFormElementByObjectID($objectId) {
 
-      if (isset($this->__Children[$objectId])) {
-         return $this->__Children[$objectId];
+      if (isset($this->children[$objectId])) {
+         return $this->children[$objectId];
       }
 
       // note, that no suitable child has been found
@@ -631,13 +631,13 @@ class HtmlFormTag extends Document {
 
       $tagClassName = $this->getTagClass($tagName);
 
-      if (count($this->__Children) > 0) {
+      if (count($this->children) > 0) {
 
          $formElements = array();
-         foreach ($this->__Children as $objectId => $DUMMY) {
+         foreach ($this->children as $objectId => $DUMMY) {
 
-            if ($this->__Children[$objectId] instanceof $tagClassName) {
-               $formElements[] = & $this->__Children[$objectId];
+            if ($this->children[$objectId] instanceof $tagClassName) {
+               $formElements[] = & $this->children[$objectId];
             }
          }
 
@@ -666,7 +666,7 @@ class HtmlFormTag extends Document {
     * Version 0.1, 12.12.2012<br />
     */
    private function getTagClass($tagName) {
-      foreach ($this->__TagLibs as $tagLib) {
+      foreach ($this->tagLibs as $tagLib) {
          /* @var $tagLib TagLib */
          if ($tagLib->getPrefix() . ':' . $tagLib->getName() == $tagName) {
             return $tagLib->getClass();
@@ -720,11 +720,11 @@ class HtmlFormTag extends Document {
    public function &setPlaceHolder($name, $value) {
 
       $placeHolderCount = 0;
-      if (count($this->__Children) > 0) {
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            if ($this->__Children[$objectId] instanceof FormPlaceHolderTag) {
-               if ($this->__Children[$objectId]->getAttribute('name') == $name) {
-                  $this->__Children[$objectId]->setContent($value);
+      if (count($this->children) > 0) {
+         foreach ($this->children as $objectId => $DUMMY) {
+            if ($this->children[$objectId] instanceof FormPlaceHolderTag) {
+               if ($this->children[$objectId]->getAttribute('name') == $name) {
+                  $this->children[$objectId]->setContent($value);
                   $placeHolderCount++;
                }
             }
@@ -775,23 +775,23 @@ class HtmlFormTag extends Document {
 
       // transform the form including all child tags
       $htmlCode = (string)'<form ';
-      $htmlCode .= $this->getAttributesAsString($this->__Attributes, $this->attributeWhiteList);
+      $htmlCode .= $this->getAttributesAsString($this->attributes, $this->attributeWhiteList);
       $htmlCode .= '>';
 
-      if (count($this->__Children) > 0) {
+      if (count($this->children) > 0) {
 
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            $childId = '(' . get_class($this->__Children[$objectId]) . ') ' . $objectId . '::transform()';
+         foreach ($this->children as $objectId => $DUMMY) {
+            $childId = '(' . get_class($this->children[$objectId]) . ') ' . $objectId . '::transform()';
             $t->start($childId);
 
-            $this->__Content = str_replace('<' . $objectId . ' />',
-               $this->__Children[$objectId]->transform(), $this->__Content);
+            $this->content = str_replace('<' . $objectId . ' />',
+               $this->children[$objectId]->transform(), $this->content);
 
             $t->stop($childId);
          }
       }
 
-      $htmlCode .= $this->__Content;
+      $htmlCode .= $this->content;
       $htmlCode .= '</form>';
 
       $t->stop($id);

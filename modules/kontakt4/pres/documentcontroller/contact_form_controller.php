@@ -99,25 +99,25 @@ class contact_form_controller extends BaseDocumentController {
 
          // label the button
          $config = $this->getConfiguration('modules::kontakt4', 'language');
-         $value = $config->getSection($this->__Language)->getValue('form.button');
+         $value = $config->getSection($this->language)->getValue('form.button');
          $button = &$form->getFormElementByName('sendFormContact');
          $button->setAttribute('value', $value);
 
          // fill listeners with the language dependent values
          $senderError = &$form->getFormElementByID('sender-error');
-         $senderError->setPlaceHolder('content', $config->getSection($this->__Language)->getValue('form.name.error'));
+         $senderError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.name.error'));
 
          $addrError = &$form->getFormElementByID('addr-error');
-         $addrError->setPlaceHolder('content', $config->getSection($this->__Language)->getValue('form.email.error'));
+         $addrError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.email.error'));
 
          $subjectError = &$form->getFormElementByID('subject-error');
-         $subjectError->setPlaceHolder('content', $config->getSection($this->__Language)->getValue('form.subject.error'));
+         $subjectError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.subject.error'));
 
          $textError = &$form->getFormElementByID('text-error');
-         $textError->setPlaceHolder('content', $config->getSection($this->__Language)->getValue('form.text.error'));
+         $textError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.text.error'));
 
          $captchaError = &$form->getFormElementByID('captcha-error');
-         $captchaError->setPlaceHolder('content', $config->getSection($this->__Language)->getValue('form.captcha.error'));
+         $captchaError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.captcha.error'));
 
          $form->transformOnPlace();
 

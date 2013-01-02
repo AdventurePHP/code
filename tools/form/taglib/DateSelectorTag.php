@@ -91,12 +91,12 @@ class DateSelectorTag extends AbstractFormControl {
       $year = new SelectBoxTag();
 
       // apply context and language
-      $day->setLanguage($this->__Language);
-      $month->setLanguage($this->__Language);
-      $year->setLanguage($this->__Language);
-      $day->setContext($this->__Context);
-      $month->setContext($this->__Context);
-      $year->setContext($this->__Context);
+      $day->setLanguage($this->language);
+      $month->setLanguage($this->language);
+      $year->setLanguage($this->language);
+      $day->setContext($this->context);
+      $month->setContext($this->context);
+      $year->setContext($this->context);
 
       // apply field names and calculate id to be able access
       // the child elements using JS
@@ -186,14 +186,14 @@ class DateSelectorTag extends AbstractFormControl {
       $day->setParentObject($this);
       $month->setParentObject($this);
       $year->setParentObject($this);
-      $this->__Children['d'] = $day;
-      $this->__Children['m'] = $month;
-      $this->__Children['y'] = $year;
+      $this->children['d'] = $day;
+      $this->children['m'] = $month;
+      $this->children['y'] = $year;
 
       // execute onAfterAppend() to ensure native APF environment
-      $this->__Children['d']->onAfterAppend();
-      $this->__Children['m']->onAfterAppend();
-      $this->__Children['y']->onAfterAppend();
+      $this->children['d']->onAfterAppend();
+      $this->children['m']->onAfterAppend();
+      $this->children['y']->onAfterAppend();
    }
 
    /**
@@ -249,8 +249,8 @@ class DateSelectorTag extends AbstractFormControl {
             $buffer .= ' class="' . $class . '"';
          }
          $buffer .= '>';
-         foreach ($this->__Children as $section => $DUMMY) {
-            $buffer .= $this->__Children[$section]->transform();
+         foreach ($this->children as $section => $DUMMY) {
+            $buffer .= $this->children[$section]->transform();
          }
 
          return $buffer . '</span>';
@@ -346,7 +346,7 @@ class DateSelectorTag extends AbstractFormControl {
     * Version 0.1, 29.08.2009<br />
     */
    public function &getDayControl() {
-      return $this->__Children['d'];
+      return $this->children['d'];
    }
 
    /**
@@ -361,7 +361,7 @@ class DateSelectorTag extends AbstractFormControl {
     * Version 0.1, 29.08.2009<br />
     */
    public function &getMonthControl() {
-      return $this->__Children['m'];
+      return $this->children['m'];
    }
 
    /**
@@ -376,7 +376,7 @@ class DateSelectorTag extends AbstractFormControl {
     * Version 0.1, 29.08.2009<br />
     */
    public function &getYearControl() {
-      return $this->__Children['y'];
+      return $this->children['y'];
    }
 
    /**
@@ -392,9 +392,9 @@ class DateSelectorTag extends AbstractFormControl {
    protected function initYearRange() {
 
       // read the range for the year select box
-      if (isset($this->__Attributes['yearrange'])) {
+      if (isset($this->attributes['yearrange'])) {
 
-         $yearRange = explode('-', $this->__Attributes['yearrange']);
+         $yearRange = explode('-', $this->attributes['yearrange']);
 
          if (count($yearRange) == 2) {
             $this->yearRange['Start'] = trim($yearRange[0]);
@@ -415,9 +415,9 @@ class DateSelectorTag extends AbstractFormControl {
     */
    protected function initOffsetNames() {
 
-      if (isset($this->__Attributes['offsetnames'])) {
+      if (isset($this->attributes['offsetnames'])) {
 
-         $offsetNames = explode(';', $this->__Attributes['offsetnames']);
+         $offsetNames = explode(';', $this->attributes['offsetnames']);
 
          if (count($offsetNames) == 3) {
             $this->offsetNames = array(

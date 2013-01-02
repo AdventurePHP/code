@@ -35,7 +35,7 @@ import('extensions::htmlheader::biz', 'HtmlNode');
 abstract class PackageNode extends HtmlNode {
 
    public function __construct($url, $name, $rewriting = null) {
-      $this->setAttribute($this->getLocationAttributeName(), $this->__buildPackageLink(
+      $this->setAttribute($this->getLocationAttributeName(), $this->buildPackageLink(
          $url,
          $name,
          $rewriting
@@ -50,7 +50,7 @@ abstract class PackageNode extends HtmlNode {
       return md5($this->getAttribute($this->getLocationAttributeName()));
    }
 
-   protected function __buildPackageLink($url, $name) {
+   protected function buildPackageLink($url, $name) {
 
       // Generate url if not given
       $url = ($url === null) ? Url::fromCurrent(true) : Url::fromString($url);

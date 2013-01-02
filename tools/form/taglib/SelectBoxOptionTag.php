@@ -64,8 +64,8 @@ class SelectBoxOptionTag extends AbstractFormControl {
     * Version 0.1, 07.01.2007<br />
     */
    public function transform() {
-      return '<option ' . $this->getSanitizedAttributesAsString($this->__Attributes) . '>'
-            . $this->__Content . '</option>';
+      return '<option ' . $this->getSanitizedAttributesAsString($this->attributes) . '>'
+            . $this->content . '</option>';
    }
 
 }

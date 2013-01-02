@@ -55,9 +55,9 @@ class TextAreaTag extends AbstractFormControl {
     */
    public function transform() {
       if ($this->isVisible) {
-         return '<textarea ' . $this->getSanitizedAttributesAsString($this->__Attributes) . '>'
-               . $this->__Content . '</textarea>';
-      }
+         return '<textarea ' . $this->getSanitizedAttributesAsString($this->attributes) . '>'
+               . $this->content . '</textarea>';
+   }
       return '';
    }
 
@@ -73,7 +73,7 @@ class TextAreaTag extends AbstractFormControl {
    protected function presetValue() {
       $name = $this->getAttribute('name');
       if (isset($_REQUEST[$name])) {
-         $this->__Content = $_REQUEST[$name];
+         $this->content = $_REQUEST[$name];
       }
    }
 
@@ -93,7 +93,7 @@ class TextAreaTag extends AbstractFormControl {
     * Version 0.1, 26.07.2011<br />
     */
    public function getValue() {
-      return $this->__Content;
+      return $this->content;
    }
 
    /**
@@ -113,7 +113,7 @@ class TextAreaTag extends AbstractFormControl {
     * Version 0.1, 26.07.2011<br />
     */
    public function setValue($value) {
-      $this->__Content = $value;
+      $this->content = $value;
       return $this;
    }
 

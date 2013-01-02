@@ -41,7 +41,7 @@ class ButtonTag extends AbstractFormControl {
       $this->attributeWhiteList[] = 'tabindex';
       $this->attributeWhiteList[] = 'value';
 
-      $this->__TagLibs = array(new TagLib('tools::form::taglib', 'ButtonLanguageLabelTag', 'button', 'getstring'));
+      $this->tagLibs = array(new TagLib('tools::form::taglib', 'ButtonLanguageLabelTag', 'button', 'getstring'));
    }
 
    /**
@@ -70,11 +70,11 @@ class ButtonTag extends AbstractFormControl {
       $method = strtolower($this->getParentObject()->getAttribute(HtmlFormTag::$METHOD_ATTRIBUTE_NAME));
       if ($method == HtmlFormTag::$METHOD_POST_VALUE_NAME) {
          if (isset($_POST[$buttonName])) {
-            $this->__ControlIsSent = true;
+            $this->controlIsSent = true;
          }
       } else {
          if (isset($_GET[$buttonName])) {
-            $this->__ControlIsSent = true;
+            $this->controlIsSent = true;
          }
       }
 

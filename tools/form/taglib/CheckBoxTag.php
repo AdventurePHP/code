@@ -85,7 +85,7 @@ class CheckBoxTag extends AbstractFormControl {
     */
    public function transform() {
       if ($this->isVisible) {
-         return '<input type="checkbox" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
+         return '<input type="checkbox" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
       }
       return '';
    }

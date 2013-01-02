@@ -193,8 +193,8 @@ class AdvancedLoggerFactory extends APFObject {
             $logger = array();
          }
          $logger[] = array(
-            'context' => $this->__Context,
-            'language' => $this->__Language,
+            'context' => $this->context,
+            'language' => $this->language,
             'section' => $section
          );
          Registry::register('apf::core', 'AdvancedLogger', $logger);

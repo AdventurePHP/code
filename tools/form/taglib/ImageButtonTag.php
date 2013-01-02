@@ -55,7 +55,7 @@ class ImageButtonTag extends ButtonTag {
    public function transform() {
       if ($this->isVisible) {
          return '<input type="image" '
-               . $this->getSanitizedAttributesAsString($this->__Attributes)
+               . $this->getSanitizedAttributesAsString($this->attributes)
                . ' />';
       }
       return '';

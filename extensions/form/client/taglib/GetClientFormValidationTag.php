@@ -46,7 +46,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
     */
    public function onParseTime() {
       // inject form id to append validators
-      $this->__ParentObject->setAttribute('id', $this->getFormId());
+      $this->parentObject->setAttribute('id', $this->getFormId());
    }
 
    /**
@@ -59,10 +59,10 @@ class GetClientFormValidationTag extends AbstractFormControl {
     * Version 1.0, 18.03.2010<br />
     */
    protected function getFormId() {
-      $formId = $this->__ParentObject->getAttribute('id');
+      $formId = $this->parentObject->getAttribute('id');
       if ($formId === null) {
-         $formId = 'apf-form-' . $this->__ParentObject->getObjectId();
-         $this->__ParentObject->setAttribute('id', $formId);
+         $formId = 'apf-form-' . $this->parentObject->getObjectId();
+         $this->parentObject->setAttribute('id', $formId);
       }
       return $formId;
    }
@@ -96,10 +96,10 @@ class GetClientFormValidationTag extends AbstractFormControl {
       $CVSS->clean();
       unset($CVSS);
 
-      // Check if we need any clientside validator
+      // Check if we need any client side validator
       if (count($scriptStore) > 0) {
          foreach ($scriptStore as $validatorDefinition) {
-            $def = $this->__generateJsDefinition($validatorDefinition);
+            $def = $this->generateJsDefinition($validatorDefinition);
             $javascript['general'] .= $def['general'];
             $javascript['form'] .= $def['form'];
          }
@@ -125,10 +125,10 @@ class GetClientFormValidationTag extends AbstractFormControl {
     * @version
     * Version 1.0, 18.03.2010<br />
     */
-   protected function __generateJsDefinition($definition) {
+   protected function generateJsDefinition($definition) {
 
       // We handle all js-functions which need to be called on the form element in a
-      // seperate index, in order to avoid multiple selecing of the form.
+      // separate index, in order to avoid multiple selecting of the form.
       $output = array(
          'general' => '',
          'form' => ''
@@ -149,7 +149,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
 
       // Check type of control, and generate jQuery selector
       /* @var $parent HtmlFormTag */
-      $parent = $this->__ParentObject;
+      $parent = $this->parentObject;
       switch (get_class($parent->getFormElementByName($definition['control']))) {
          case 'SelectBoxTag':
             $jQSelector = ':input[name=\'' . $definition['control'] . '\[\]\']';

@@ -39,9 +39,9 @@ class ClientValidationListenerTag extends AbstractFormControl {
     * Version 1.0, 18.03.2010<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'listener', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'listener', 'getstring');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'listener', 'addtaglib');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'listener', 'placeholder');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'listener', 'getstring');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'listener', 'addtaglib');
    }
 
    /**
@@ -75,15 +75,15 @@ class ClientValidationListenerTag extends AbstractFormControl {
     * Version 1.0, 18.03.2010<br />
     */
    public function transform() {
-      $controlName = $this->__Attributes['control'];
+      $controlName = $this->attributes['control'];
 
       /* @var $parent HtmlFormTag */
-      $parent = $this->__ParentObject;
+      $parent = $this->parentObject;
       $control = $parent->getFormElementByName($controlName);
 
       $this->transformChildren();
 
-      $output = '<div id="apf-listener-' . $controlName . '" class="apf-form-clientlistener">' . $this->__Content . '</div>';
+      $output = '<div id="apf-listener-' . $controlName . '" class="apf-form-clientlistener">' . $this->content . '</div>';
 
       // Check type of control, and generate jQuery selector
       switch (get_class($control)) {

@@ -43,7 +43,7 @@ class HtmlLinkTag extends LinkGenerationTag {
       'rev' => null, 'shape' => null, 'target' => null, 'xml:lang' => null, 'onblur' => null);
 
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('tools::link::taglib', 'LinkLanguageLabelTag', 'a', 'getstring');
+      $this->tagLibs[] = new TagLib('tools::link::taglib', 'LinkLanguageLabelTag', 'a', 'getstring');
    }
 
    public function onParseTime() {

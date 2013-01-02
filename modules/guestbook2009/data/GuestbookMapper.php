@@ -501,7 +501,7 @@ class GuestbookMapper extends APFObject {
    private function getCurrentLanguage() {
 
       $crit = new GenericCriterionObject();
-      $crit->addPropertyIndicator('ISOCode', $this->__Language);
+      $crit->addPropertyIndicator('ISOCode', $this->language);
       $orm = &$this->getGenericORMapper();
       return $orm->loadObjectByCriterion('Language', $crit);
 

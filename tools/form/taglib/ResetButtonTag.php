@@ -53,7 +53,7 @@ class ResetButtonTag extends AbstractFormControl {
     */
    public function transform() {
       if ($this->isVisible) {
-         return '<input type="reset" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
+         return '<input type="reset" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
       }
       return '';
    }

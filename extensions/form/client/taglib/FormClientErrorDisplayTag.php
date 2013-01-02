@@ -39,9 +39,9 @@ class FormClientErrorDisplayTag extends AbstractFormControl {
     * Version 1.0, 18.03.2010<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'error', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'error', 'getstring');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'error', 'addtaglib');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'error', 'placeholder');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'error', 'getstring');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'error', 'addtaglib');
    }
 
    /**
@@ -77,8 +77,8 @@ class FormClientErrorDisplayTag extends AbstractFormControl {
    public function transform() {
       $this->transformChildren();
 
-      $formID = $this->__ParentObject->getAttribute('id');
-      $output = '<div id="apf-error-' . $formID . '" class="apf-form-clienterror">' . $this->__Content . '</div>';
+      $formID = $this->parentObject->getAttribute('id');
+      $output = '<div id="apf-error-' . $formID . '" class="apf-form-clienterror">' . $this->content . '</div>';
       /*
        * Generate javascript for binding on the ValidationNotify event.
        * !Important: Check for (event.target === this), because ValidationNotify

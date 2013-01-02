@@ -43,7 +43,7 @@ class CreateDocumentFromFileTag extends Document {
       $currentRequestParameter = RequestHandler::getValue($requestParameter, $defaultValue);
 
       // fill content
-      $this->__Content = $this->loadContent($currentRequestParameter);
+      $this->content = $this->loadContent($currentRequestParameter);
 
       // extract tags and document controller
       $this->extractTagLibTags();
@@ -68,10 +68,10 @@ class CreateDocumentFromFileTag extends Document {
     */
    protected function loadContent($pageName) {
 
-      $file = './frontend/content/c_' . $this->__Language . '_' . strtolower($pageName) . '.html';
+      $file = './frontend/content/c_' . $this->language . '_' . strtolower($pageName) . '.html';
 
       if (!file_exists($file)) {
-         $file = './frontend/content/c_' . $this->__Language . '_404.html';
+         $file = './frontend/content/c_' . $this->language . '_404.html';
       }
 
       return file_get_contents($file);

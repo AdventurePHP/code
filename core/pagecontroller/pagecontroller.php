@@ -441,19 +441,19 @@ abstract class APFObject implements APFDIService {
     * @protected
     * @var string[] The attributes of an object (merely the XML tag attributes).
     */
-   protected $__Attributes = array();
+   protected $attributes = array();
 
    /**
     * @protected
     * @var string The context of the current object within the application.
     */
-   protected $__Context = null;
+   protected $context = null;
 
    /**
     * @protected
     * @var string The language of the current object within the application.
     */
-   protected $__Language = 'de';
+   protected $language = 'de';
 
    /**
     * @since 0.3
@@ -485,19 +485,19 @@ abstract class APFObject implements APFDIService {
    }
 
    public function setContext($context) {
-      $this->__Context = $context;
+      $this->context = $context;
    }
 
    public function getContext() {
-      return $this->__Context;
+      return $this->context;
    }
 
    public function setLanguage($lang) {
-      $this->__Language = $lang;
+      $this->language = $lang;
    }
 
    public function getLanguage() {
-      return $this->__Language;
+      return $this->language;
    }
 
    public function setServiceType($serviceType) {
@@ -541,7 +541,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.2, 02.02.2007 (Added default value handling)<br />
     */
    public function getAttribute($name, $default = null) {
-      return isset($this->__Attributes[$name]) ? $this->__Attributes[$name] : $default;
+      return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
    }
 
    /**
@@ -557,7 +557,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.1, 28.12.2006<br />
     */
    public function setAttribute($name, $value) {
-      $this->__Attributes[$name] = $value;
+      $this->attributes[$name] = $value;
    }
 
    /**
@@ -572,7 +572,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.1, 28.12.2006<br />
     */
    public function getAttributes() {
-      return $this->__Attributes;
+      return $this->attributes;
    }
 
    /**
@@ -587,7 +587,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.1, 28.12.2006<br />
     */
    public function deleteAttribute($name) {
-      unset($this->__Attributes[$name]);
+      unset($this->attributes[$name]);
    }
 
    /**
@@ -603,10 +603,10 @@ abstract class APFObject implements APFDIService {
     */
    public function setAttributes(array $attributes = array()) {
       if (count($attributes) > 0) {
-         if (!is_array($this->__Attributes)) {
-            $this->__Attributes = array();
+         if (!is_array($this->attributes)) {
+            $this->attributes = array();
          }
-         $this->__Attributes = array_merge($this->__Attributes, $attributes);
+         $this->attributes = array_merge($this->attributes, $attributes);
       }
    }
 
@@ -938,7 +938,7 @@ class Page extends APFObject {
     * Version 0.2, 31.01.2007 (Now the context of the document is set)<br />
     * Version 0.3, 04.03.2007 (The namespace is taken as a context, if no other was set before)<br />
     * Version 0.4, 22.04.2007 (Now the language is applied to the document)<br />
-    * Version 0.5, 08.03.2009 (Bug-fix: protected variable __ParentObject might not be used)<br />
+    * Version 0.5, 08.03.2009 (Bug-fix: protected variable parentObject might not be used)<br />
     */
    public function loadDesign($namespace, $design) {
 
@@ -985,7 +985,7 @@ class Page extends APFObject {
  * @class Document
  *
  * Represents a node within the APF DOM tree. Each document can compose several other documents
- * by use of the $__Children property (composite tree).
+ * by use of the $children property (composite tree).
  *
  * @author Christian Schäfer
  * @version
@@ -997,20 +997,20 @@ class Document extends APFObject {
     * @protected
     * @var string Unique object identifier.
     */
-   protected $__ObjectID = null;
+   protected $objectId = null;
 
    /**
     * @protected
     * @var Document Reference to the parent object.
     */
-   protected $__ParentObject = null;
+   protected $parentObject = null;
 
    /**
     * @protected
     * @var string The content of the tag. Example:
     * <pre>&lt;foo:bar&gt;This is the content of the tag.&lt;/foo:bar&gt;</pre>
     */
-   protected $__Content;
+   protected $content;
 
    /**
     * @protected
@@ -1022,13 +1022,13 @@ class Document extends APFObject {
     * @protected
     * @var TagLib[] List of known taglibs.
     */
-   protected $__TagLibs = array();
+   protected $tagLibs = array();
 
    /**
     * @protected
     * @var Document[] List of the children of the current object.
     */
-   protected $__Children = array();
+   protected $children = array();
 
    /**
     * @protected
@@ -1056,12 +1056,12 @@ class Document extends APFObject {
       // we are *not* using the addTaglib() method, because the following tags are
       // already included in the pagecontroller.php and adding the tags directly
       // is twice as fast compared to the addTagLib() method.
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'core', 'addtaglib');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'ImportTemplateTag', 'core', 'importdesign');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AppendNodeTag', 'core', 'appendnode');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'TemplateTag', 'html', 'template');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'html', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'html', 'getstring');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'core', 'addtaglib');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'ImportTemplateTag', 'core', 'importdesign');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AppendNodeTag', 'core', 'appendnode');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'TemplateTag', 'html', 'template');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'html', 'placeholder');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'html', 'getstring');
    }
 
    /**
@@ -1076,7 +1076,7 @@ class Document extends APFObject {
     * Version 0.1, 20.02.2010<br />
     */
    public function setParentObject(Document &$parentObject) {
-      $this->__ParentObject = & $parentObject;
+      $this->parentObject = & $parentObject;
    }
 
    /**
@@ -1091,7 +1091,7 @@ class Document extends APFObject {
     * Version 0.1, 20.02.2010<br />
     */
    public function &getParentObject() {
-      return $this->__ParentObject;
+      return $this->parentObject;
    }
 
    /**
@@ -1106,7 +1106,7 @@ class Document extends APFObject {
     * Version 0.1, 20.02.2010<br />
     */
    public function setObjectId($objectId) {
-      $this->__ObjectID = $objectId;
+      $this->objectId = $objectId;
    }
 
    /**
@@ -1121,7 +1121,7 @@ class Document extends APFObject {
     * Version 0.1, 20.02.2010<br />
     */
    public function getObjectId() {
-      return $this->__ObjectID;
+      return $this->objectId;
    }
 
    /**
@@ -1136,7 +1136,7 @@ class Document extends APFObject {
     * Version 0.1, 20.02.2010<br />
     */
    public function getContent() {
-      return $this->__Content;
+      return $this->content;
    }
 
    /**
@@ -1151,7 +1151,7 @@ class Document extends APFObject {
     * Version 0.1, 20.02.2010<br />
     */
    public function setContent($content) {
-      $this->__Content = $content;
+      $this->content = $content;
    }
 
    /**
@@ -1166,7 +1166,7 @@ class Document extends APFObject {
     * Version 0.1, 20.02.2010<br />
     */
    public function &getChildren() {
-      return $this->__Children;
+      return $this->children;
    }
 
    /**
@@ -1280,7 +1280,7 @@ class Document extends APFObject {
    public function addTagLib(TagLib $tag) {
 
       // add the taglib to the current node
-      $this->__TagLibs[] = $tag;
+      $this->tagLibs[] = $tag;
 
       // import taglib class
       $moduleName = $tag->getClass();
@@ -1341,9 +1341,9 @@ class Document extends APFObject {
 
       if (file_exists($file)) {
          // Append the content to the current content buffer. In case the existing content should be
-         // overwritten by this method call, please clear it using $this->__Content = '' prior calling
+         // overwritten by this method call, please clear it using $this->content = '' prior calling
          // this method (normally not necessary).
-         $this->__Content .= file_get_contents($file);
+         $this->content .= file_get_contents($file);
       } else {
          // get template code from parent object, if the parent exists
          $code = '';
@@ -1381,7 +1381,7 @@ class Document extends APFObject {
     * @protected
     *
     * Parses the content of the current APF DOM node. Extracts all known taglibs listed in
-    * the <em>$this->__TagLibs</em> property. Each taglib is converted into a child document
+    * the <em>$this->tagLibs</em> property. Each taglib is converted into a child document
     * of the current tree element. The tag definition place is reminded by a marker tag using
     * the internal id of the DOM node.
     *
@@ -1405,21 +1405,21 @@ class Document extends APFObject {
 
       // Parse the known taglibs. Here, we have to use a while loop, because one parser loop
       // can result in an increasing amount of known taglibs (core:addtaglib!).
-      while ($i < count($this->__TagLibs)) {
+      while ($i < count($this->tagLibs)) {
 
          if ($tagLibLoops > $this->maxLoops) {
             throw new ParserException('[' . get_class($this) . '::extractTagLibTags()] Maximum numbers of '
                   . 'parsing loops reached!', E_USER_ERROR);
          }
 
-         $class = $this->__TagLibs[$i]->getClass();
-         $prefix = $this->__TagLibs[$i]->getPrefix();
-         $name = $this->__TagLibs[$i]->getName();
+         $class = $this->tagLibs[$i]->getClass();
+         $prefix = $this->tagLibs[$i]->getPrefix();
+         $name = $this->tagLibs[$i]->getName();
          $token = $prefix . ':' . $name;
 
          $tagLoops = 0;
 
-         while (substr_count($this->__Content, '<' . $token) > 0) {
+         while (substr_count($this->content, '<' . $token) > 0) {
 
             if ($tagLoops > $this->maxLoops) {
                throw new ParserException('[' . get_class($this) . '::extractTagLibTags()] Maximum numbers of parsing loops reached!', E_USER_ERROR);
@@ -1427,14 +1427,14 @@ class Document extends APFObject {
 
             // Find start and end position of the tag. "Normally" a
             // explicitly closing tag is expected.
-            $tagStartPos = strpos($this->__Content, '<' . $token);
-            $tagEndPos = strpos($this->__Content, '</' . $token . '>', $tagStartPos);
+            $tagStartPos = strpos($this->content, '<' . $token);
+            $tagEndPos = strpos($this->content, '</' . $token . '>', $tagStartPos);
             $closingTagLength = strlen('</' . $token . '>');
 
             // in case a explicitly-closing tag could not be found, search for self-closing tag
             if ($tagEndPos === false) {
 
-               $tagEndPos = strpos($this->__Content, '/>', $tagStartPos);
+               $tagEndPos = strpos($this->content, '/>', $tagStartPos);
                $closingTagLength = 2;
 
                if ($tagEndPos === false) {
@@ -1445,7 +1445,7 @@ class Document extends APFObject {
 
             // extract the complete tag string from the current content
             $tagStringLength = ($tagEndPos - $tagStartPos) + $closingTagLength;
-            $tagString = substr($this->__Content, $tagStartPos, $tagStringLength);
+            $tagString = substr($this->content, $tagStartPos, $tagStringLength);
 
             // NEW (bug fix for errors while mixing self- and exclusively closing tags):
             // First, check if a opening tag was found within the previously taken tag string.
@@ -1453,12 +1453,12 @@ class Document extends APFObject {
             if (substr_count($tagString, '<' . $token) > 1) {
 
                // find position of the self-closing tag
-               $tagEndPos = strpos($this->__Content, '/>', $tagStartPos);
+               $tagEndPos = strpos($this->content, '/>', $tagStartPos);
                $closingTagLength = 2;
 
                // extract the complete tag string from the current content
                $tagStringLength = ($tagEndPos - $tagStartPos) + $closingTagLength;
-               $tagString = substr($this->__Content, $tagStartPos, $tagStringLength);
+               $tagString = substr($this->content, $tagStartPos, $tagStringLength);
             }
 
             // get the tag attributes of the current tag
@@ -1485,7 +1485,7 @@ class Document extends APFObject {
             // token string: <$objectId />.
             // this needs to be done, to be able to place the content of the
             // transformed taglib at transformation time correctly
-            $this->__Content = substr_replace($this->__Content, '<' . $objectId . ' />', $tagStartPos, $tagStringLength);
+            $this->content = substr_replace($this->content, '<' . $objectId . ' />', $tagStartPos, $tagStringLength);
 
             // advertise the parent object
             $object->setParentObject($this);
@@ -1494,14 +1494,14 @@ class Document extends APFObject {
             $object->setContent($attributes['content']);
 
             // call onParseTime() to enable the taglib to initialize itself
-            $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::__Children[('
+            $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::children[('
                   . get_class($object) . ') ' . $objectId . ']::onParseTime()';
             $t->start($benchId);
             $object->onParseTime();
             $t->stop($benchId);
 
             // add current object to the APF DOM tree (no reference, because this leads to NPEs!)
-            $this->__Children[$objectId] = $object;
+            $this->children[$objectId] = $object;
 
             $tagLoops++;
 
@@ -1514,13 +1514,13 @@ class Document extends APFObject {
 
       // call onAfterAppend() on each child to enable the taglib to interact with
       // other APF DOM nodes to do extended initialization.
-      if (count($this->__Children) > 0) {
+      if (count($this->children) > 0) {
 
-         $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::__Children[]::onAfterAppend()';
+         $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::children[]::onAfterAppend()';
          $t->start($benchId);
 
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            $this->__Children[$objectId]->onAfterAppend();
+         foreach ($this->children as $objectId => $DUMMY) {
+            $this->children[$objectId]->onAfterAppend();
          }
 
          $t->stop($benchId);
@@ -1544,11 +1544,11 @@ class Document extends APFObject {
       $controllerStartTag = '<@controller';
       $controllerEndTag = '@>';
 
-      if (substr_count($this->__Content, $controllerStartTag) > 0) {
+      if (substr_count($this->content, $controllerStartTag) > 0) {
 
-         $tagStartPos = strpos($this->__Content, $controllerStartTag);
-         $tagEndPos = strpos($this->__Content, $controllerEndTag, $tagStartPos);
-         $controllerTag = substr($this->__Content, $tagStartPos + strlen($controllerStartTag), ($tagEndPos - $tagStartPos) - 1 - strlen($controllerStartTag));
+         $tagStartPos = strpos($this->content, $controllerStartTag);
+         $tagEndPos = strpos($this->content, $controllerEndTag, $tagStartPos);
+         $controllerTag = substr($this->content, $tagStartPos + strlen($controllerStartTag), ($tagEndPos - $tagStartPos) - 1 - strlen($controllerStartTag));
          $controllerAttributes = XmlParser::getAttributesFromString($controllerTag);
 
          // check for class definition
@@ -1566,7 +1566,7 @@ class Document extends APFObject {
          $this->documentController = $controllerAttributes['class'];
 
          // remove definition from content to be not displayed
-         $this->__Content = substr_replace($this->__Content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
+         $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
       }
    }
 
@@ -1623,7 +1623,7 @@ class Document extends APFObject {
       $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
 
       // create copy, to preserve it!
-      $content = $this->__Content;
+      $content = $this->content;
 
       // execute the document controller if applicable
       if (!empty($this->documentController)) {
@@ -1652,8 +1652,8 @@ class Document extends APFObject {
          $docCon->setContent($content);
 
          // inject the current DOM node's attributes to easily access them
-         if (is_array($this->__Attributes) && count($this->__Attributes) > 0) {
-            $docCon->setAttributes($this->__Attributes);
+         if (is_array($this->attributes) && count($this->attributes) > 0) {
+            $docCon->setAttributes($this->attributes);
          }
 
          // execute the document controller by using a standard method
@@ -1666,9 +1666,9 @@ class Document extends APFObject {
       }
 
       // transform child nodes and replace XML marker to place the output at the right position
-      if (count($this->__Children) > 0) {
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            $content = str_replace('<' . $objectId . ' />', $this->__Children[$objectId]->transform(), $content);
+      if (count($this->children) > 0) {
+         foreach ($this->children as $objectId => $DUMMY) {
+            $content = str_replace('<' . $objectId . ' />', $this->children[$objectId]->transform(), $content);
          }
       }
 
@@ -1681,7 +1681,7 @@ class Document extends APFObject {
     * @protected
     *
     * Convenience method to transform the current node's children within the current node's content
-    * buffer (<em>$this->__Content</em>).
+    * buffer (<em>$this->content</em>).
     * <p/>
     * In case you intend to preserve the current node's content you may want to use the
     * <em>transformChildrenAndPreserveContent()</em> method.
@@ -1691,9 +1691,9 @@ class Document extends APFObject {
     * Version 0.1, 23.10.2012<br />
     */
    protected function transformChildren() {
-      foreach ($this->__Children as $objectId => $DUMMY) {
-         $this->__Content = str_replace(
-            '<' . $objectId . ' />', $this->__Children[$objectId]->transform(), $this->__Content
+      foreach ($this->children as $objectId => $DUMMY) {
+         $this->content = str_replace(
+            '<' . $objectId . ' />', $this->children[$objectId]->transform(), $this->content
          );
       }
    }
@@ -1702,7 +1702,7 @@ class Document extends APFObject {
     * @protected
     *
     * Convenience method to transform the current node's children and return the result of the
-    * transformation. Preserves the current node's internal content buffer (<em>$this->__Content</em>)
+    * transformation. Preserves the current node's internal content buffer (<em>$this->content</em>)
     * to allow further transformations.
     *
     * @return string The current node's transformed content.
@@ -1713,9 +1713,9 @@ class Document extends APFObject {
     */
    protected function transformChildrenAndPreserveContent() {
       $content = $this->getContent();
-      foreach ($this->__Children as $objectId => $DUMMY) {
+      foreach ($this->children as $objectId => $DUMMY) {
          $content = str_replace(
-            '<' . $objectId . ' />', $this->__Children[$objectId]->transform(), $content
+            '<' . $objectId . ' />', $this->children[$objectId]->transform(), $content
          );
       }
       return $content;
@@ -1725,7 +1725,7 @@ class Document extends APFObject {
     * @protected
     *
     * Convenience method to remove the child tag marker within the current node's content
-    * buffer (<em>$this->__Content</em>). Can be used in case the child nodes should be
+    * buffer (<em>$this->content</em>). Can be used in case the child nodes should be
     * removed from the output.
     * <p/>
     * In case you intend to preserve the current node's content you may want to use the
@@ -1736,8 +1736,8 @@ class Document extends APFObject {
     * Version 0.1, 23.10.2012<br />
     */
    protected function transformChildrenAsEmpty() {
-      foreach ($this->__Children as $objectId => $DUMMY) {
-         $this->__Content = str_replace('<' . $objectId . ' />', '', $this->__Content);
+      foreach ($this->children as $objectId => $DUMMY) {
+         $this->content = str_replace('<' . $objectId . ' />', '', $this->content);
       }
    }
 
@@ -1745,7 +1745,7 @@ class Document extends APFObject {
     * @protected
     *
     * Convenience method to transform the remove the child tag marker and return the result of the
-    * transformation. Preserves the current node's internal content buffer (<em>$this->__Content</em>)
+    * transformation. Preserves the current node's internal content buffer (<em>$this->content</em>)
     * to allow further transformations.
     *
     * @return string
@@ -1756,7 +1756,7 @@ class Document extends APFObject {
     */
    protected function transformChildrenAsEmptyAndPreserveContent() {
       $content = $this->getContent();
-      foreach ($this->__Children as $objectId => $DUMMY) {
+      foreach ($this->children as $objectId => $DUMMY) {
          $content = str_replace('<' . $objectId . ' />', '', $content);
       }
       return $content;
@@ -1853,8 +1853,8 @@ class AppendNodeTag extends Document {
    public function onAfterAppend() {
 
       // get parent children list
-      $parentChildren = & $this->__ParentObject->getChildren();
-      $parentContent = $this->__ParentObject->getContent();
+      $parentChildren = & $this->parentObject->getChildren();
+      $parentContent = $this->parentObject->getContent();
       $currentObjectId = $this->getObjectId();
 
       // include static content, if desired.
@@ -1862,32 +1862,32 @@ class AppendNodeTag extends Document {
       $includeStatic = $this->getAttribute(self::$INCLUDE_STATIC_CONTENT_ATTRIBUTE_NAME);
       if ($includeStatic === 'true') {
 
-         foreach ($this->__Children as $objectId => $DUMMY) {
+         foreach ($this->children as $objectId => $DUMMY) {
 
             // append node to parent object's children list
-            $parentChildren[$objectId] = & $this->__Children[$objectId];
+            $parentChildren[$objectId] = & $this->children[$objectId];
 
             // correct the parent object reference
-            $parentChildren[$objectId]->setParentObject($this->__ParentObject);
+            $parentChildren[$objectId]->setParentObject($this->parentObject);
          }
 
          // include complete content of the current document and append it to
          // the place holder of the present tag's marker
-         $this->__ParentObject->setContent(
+         $this->parentObject->setContent(
             str_replace('<' . $currentObjectId . ' />',
-                  '<' . $currentObjectId . ' />' . $this->__Content,
+                  '<' . $currentObjectId . ' />' . $this->content,
                $parentContent)
          );
 
       } else {
 
-         foreach ($this->__Children as $objectId => $DUMMY) {
+         foreach ($this->children as $objectId => $DUMMY) {
 
             // append node to parent object's children list
-            $parentChildren[$objectId] = & $this->__Children[$objectId];
+            $parentChildren[$objectId] = & $this->children[$objectId];
 
             // correct the parent object reference
-            $parentChildren[$objectId]->setParentObject($this->__ParentObject);
+            $parentChildren[$objectId]->setParentObject($this->parentObject);
 
             // add a marker tag to the parent object after the tag's marker
             $parentContent = str_replace('<' . $currentObjectId . ' />', '<' . $currentObjectId . ' /><' . $objectId . ' />', $parentContent);
@@ -1896,7 +1896,7 @@ class AppendNodeTag extends Document {
          }
 
          // include content of the current document
-         $this->__ParentObject->setContent($parentContent);
+         $this->parentObject->setContent($parentContent);
 
       }
    }
@@ -1981,8 +1981,8 @@ class ImportTemplateTag extends Document {
 
       // manager inc param
       $incParam = null;
-      if (isset($this->__Attributes['incparam'])) {
-         $incParam = $this->__Attributes['incparam'];
+      if (isset($this->attributes['incparam'])) {
+         $incParam = $this->attributes['incparam'];
       } else {
          $incParam = 'pagepart';
       }
@@ -2060,7 +2060,7 @@ class AddTaglibTag extends Document {
       // node when requesting a node by the "name" attribute. See bug
       // http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=1192
       // for more details.
-      $this->__Attributes = array();
+      $this->attributes = array();
    }
 
    /**
@@ -2111,7 +2111,7 @@ class PlaceHolderTag extends Document {
     * Version 0.1, 28.12.2006<br />
     */
    public function transform() {
-      return $this->__Content;
+      return $this->content;
    }
 
 }
@@ -2154,9 +2154,9 @@ class TemplateTag extends Document {
     * Version 0.8, 11.02.2012 (Added template:getstring tag as known tag (refactoring!))<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'template', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'template', 'addtaglib');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'template', 'getstring');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'template', 'placeholder');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'template', 'addtaglib');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'template', 'getstring');
    }
 
    /**
@@ -2195,19 +2195,19 @@ class TemplateTag extends Document {
       $placeHolderCount = 0;
 
       // check, if tag has children
-      if (count($this->__Children) > 0) {
+      if (count($this->children) > 0) {
 
          // check, if template place holder exists within the children list
-         foreach ($this->__Children as $objectID => $DUMMY) {
+         foreach ($this->children as $objectID => $DUMMY) {
 
             // check, if current child is a place holder
-            if ($this->__Children[$objectID] instanceof PlaceHolderTag) {
+            if ($this->children[$objectID] instanceof PlaceHolderTag) {
 
                // check, if current child is the desired place holder
-               if ($this->__Children[$objectID]->getAttribute('name') == $name) {
+               if ($this->children[$objectID]->getAttribute('name') == $name) {
 
                   // set content of the place holder
-                  $this->__Children[$objectID]->setContent($value);
+                  $this->children[$objectID]->setContent($value);
                   $placeHolderCount++;
                }
             }
@@ -2268,7 +2268,7 @@ class TemplateTag extends Document {
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.12.2006<br />
-    * Version 0.2, 31.12.2006 (Removed parameter $this->__isVisible, because the parent object automatically removes the XML positioning tag on ransformation now)<br />
+    * Version 0.2, 31.12.2006 (Removed parameter $this->isVisible, because the parent object automatically removes the XML positioning tag on transformation now)<br />
     * Version 0.3, 02.02.2007 (Renamed method to transformTemplate(). Removed visible marking finally from the class.)<br />
     * Version 0.4, 05.01.2007 (Added the template:addtaglib tag)<br />
     */
@@ -2469,7 +2469,7 @@ abstract class BaseDocumentController extends Document {
     * @protected
     * @var Document References the document, the document controller is responsible for transformation.
     */
-   protected $__Document;
+   protected $document;
 
    /**
     * @public
@@ -2500,7 +2500,7 @@ abstract class BaseDocumentController extends Document {
     * Version 0.1, 20.02.2010<br />
     */
    public function setDocument(Document &$document) {
-      $this->__Document = & $document;
+      $this->document = & $document;
    }
 
    /**
@@ -2514,7 +2514,7 @@ abstract class BaseDocumentController extends Document {
     * Version 0.1, 20.10.2010<br />
     */
    public function &getDocument() {
-      return $this->__Document;
+      return $this->document;
    }
 
    /**
@@ -2535,7 +2535,7 @@ abstract class BaseDocumentController extends Document {
 
       $placeHolderCount = 0;
 
-      $children = & $this->__Document->getChildren();
+      $children = & $this->document->getChildren();
       if (count($children) > 0) {
 
          foreach ($children as $objectId => $DUMMY) {

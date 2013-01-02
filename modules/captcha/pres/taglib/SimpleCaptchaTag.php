@@ -146,17 +146,17 @@ class SimpleCaptchaTag extends AbstractFormControl {
          $this->textField->setAttribute(AbstractFormValidator::$CUSTOM_MARKER_CLASS_ATTRIBUTE, $errorClass);
       }
 
-      $this->textFieldName = md5($this->__ParentObject->getAttribute('name') . '_captcha');
+      $this->textFieldName = md5($this->parentObject->getAttribute('name') . '_captcha');
       $this->textField->setAttribute('name', $this->textFieldName);
       $this->textField->setAttribute('maxlength', '5');
 
       // apply the onParseTime method to guarantee native APF environment
-      $this->textField->setLanguage($this->__Language);
-      $this->textField->setContext($this->__Context);
+      $this->textField->setLanguage($this->language);
+      $this->textField->setContext($this->context);
       $this->textField->onParseTime();
 
       // apply the onAfterAppend method to guarantee native APF environment
-      $this->textField->setParentObject($this->__ParentObject);
+      $this->textField->setParentObject($this->parentObject);
       $this->textField->onAfterAppend();
 
       // get the captcha string from session
@@ -245,7 +245,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
       // clear field on form errors
       $cleanOnError = $this->getAttribute('clearonformerror');
       if ($cleanOnError === 'true') {
-         if (!$this->__ParentObject->isValid()) {
+         if (!$this->parentObject->isValid()) {
             $this->textField->setAttribute('value', '');
          }
       }

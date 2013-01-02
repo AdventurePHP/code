@@ -233,8 +233,8 @@ final class PagerManager extends APFObject {
       $pager = new Page();
 
       // apply context and language (form configuration purposes!)
-      $pager->setLanguage($this->__Language);
-      $pager->setContext($this->__Context);
+      $pager->setLanguage($this->language);
+      $pager->setContext($this->context);
 
       // load the configured design
       $pager->loadDesign($this->section->getValue('Pager.DesignNamespace'), $this->section->getValue('Pager.DesignTemplate'));

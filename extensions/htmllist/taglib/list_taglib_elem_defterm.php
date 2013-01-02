@@ -32,7 +32,7 @@ import('extensions::htmllist::taglib', 'list_control');
 class list_taglib_elem_defterm extends list_control {
 
    public function transform() {
-      return '<dt ' . $this->getAttributesAsString($this->__Attributes) . '>' . $this->__Content . '</dt>';
+      return '<dt ' . $this->getAttributesAsString($this->attributes) . '>' . $this->content . '</dt>';
    }
 
 }

@@ -36,16 +36,16 @@ abstract class list_control extends Document {
     * @param $value
     */
    public function addAttribute($name, $value) {
-      if (isset($this->__Attributes[$name])) {
-         $this->__Attributes[$name] .= $value;
+      if (isset($this->attributes[$name])) {
+         $this->attributes[$name] .= $value;
       } else {
-         $this->__Attributes[$name] = $value;
+         $this->attributes[$name] = $value;
       }
    }
 
    protected function getClassNameByTagLibName($name) {
 
-      foreach ($this->__TagLibs as $tagLib) {
+      foreach ($this->tagLibs as $tagLib) {
          if ($tagLib->getName() == $name) {
             return $tagLib->getClass();
          }
@@ -67,11 +67,11 @@ abstract class list_control extends Document {
       $tagLibClass = $this->getClassNameByTagLibName('placeholder');
 
       $placeHolderCount = 0;
-      if (count($this->__Children) > 0) {
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            if (get_class($this->__Children[$objectId]) == $tagLibClass) {
-               if ($this->__Children[$objectId]->getAttribute('name') == $name) {
-                  $this->__Children[$objectId]->setContent($value);
+      if (count($this->children) > 0) {
+         foreach ($this->children as $objectId => $DUMMY) {
+            if (get_class($this->children[$objectId]) == $tagLibClass) {
+               if ($this->children[$objectId]->getAttribute('name') == $name) {
+                  $this->children[$objectId]->setContent($value);
                   $placeHolderCount++;
                }
             }
@@ -79,15 +79,15 @@ abstract class list_control extends Document {
       } else {
          throw new Exception('[' . get_class($this) . '::setPlaceHolder()] No place holder object with '
                   . 'name "' . $name . '" composed in current for document controller "'
-                  . ($this->__ParentObject->getDocumentController()) . '"! Perhaps tag library '
+                  . ($this->parentObject->getDocumentController()) . '"! Perhaps tag library '
                   . 'form:placeholder is not loaded in form "' . $this->getAttribute('name') . '"!',
             E_USER_ERROR);
       }
 
       if ($placeHolderCount < 1) {
          throw new Exception('[' . get_class($this) . '::setPlaceHolder()] There are no place holders '
-               . 'found for name "' . $name . '" in template "' . ($this->__Attributes['name'])
-               . '" in document controller "' . ($this->__ParentObject->getDocumentController())
+               . 'found for name "' . $name . '" in template "' . ($this->attributes['name'])
+               . '" in document controller "' . ($this->parentObject->getDocumentController())
                . '"!', E_USER_WARNING);
       }
 
@@ -147,17 +147,17 @@ abstract class AbstractTaglibList extends list_control {
     */
    public function transform() {
       // --- Checks if list elements exist
-      if (count($this->__Children) > 0) {
+      if (count($this->children) > 0) {
          // --- Run through list elements
          $this->transformChildren();
 
          // --- Create list
-         $this->__Content = '<' . $this->getListIdentifier() . ' '
-               . $this->getAttributesAsString($this->__Attributes) . '>'
-               . $this->__Content . '</' . $this->getListIdentifier() . '>';
+         $this->content = '<' . $this->getListIdentifier() . ' '
+               . $this->getAttributesAsString($this->attributes) . '>'
+               . $this->content . '</' . $this->getListIdentifier() . '>';
       }
 
-      return $this->__Content;
+      return $this->content;
    }
 
    /**
@@ -179,24 +179,24 @@ abstract class AbstractTaglibList extends list_control {
 
       $fullClassName = 'list_taglib_' . $elementName;
 
-      $this->__Children[$objectId] = new $fullClassName();
-      $this->__Children[$objectId]->setObjectId($objectId);
-      $this->__Children[$objectId]->setContent($content);
-      $this->__Children[$objectId]->setLanguage($this->__Language);
-      $this->__Children[$objectId]->setContext($this->__Context);
+      $this->children[$objectId] = new $fullClassName();
+      $this->children[$objectId]->setObjectId($objectId);
+      $this->children[$objectId]->setContent($content);
+      $this->children[$objectId]->setLanguage($this->language);
+      $this->children[$objectId]->setContext($this->context);
 
       if (!empty($cssClass)) {
-         $this->__Children[$objectId]->setAttribute('class', $cssClass);
+         $this->children[$objectId]->setAttribute('class', $cssClass);
       }
 
-      $this->__Children[$objectId]->onParseTime();
+      $this->children[$objectId]->onParseTime();
 
       // inject parent object (=this) to guarantee native DOM tree environment
-      $this->__Children[$objectId]->setParentObject($this);
-      $this->__Children[$objectId]->onAfterAppend();
+      $this->children[$objectId]->setParentObject($this);
+      $this->children[$objectId]->onAfterAppend();
 
       // add xml marker, necessary for transformation
-      $this->__Content .= '<' . $objectId . ' />';
+      $this->content .= '<' . $objectId . ' />';
    }
 
 }

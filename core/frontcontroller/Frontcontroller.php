@@ -566,7 +566,7 @@ class Frontcontroller extends APFObject {
     * Registers an action to the front controller. This includes action configuration using
     * the action params defined within the action mapping. Each action definition is expected
     * to be stored in the <em>{ENVIRONMENT}_actionconfig.ini</em> file under the namespace
-    * <em>{$namespace}::{$this->__Context}.</em>
+    * <em>{$namespace}::{$this->context}.</em>
     *
     * @param string $namespace Namespace of the action to register.
     * @param string $name Name of the action to register.

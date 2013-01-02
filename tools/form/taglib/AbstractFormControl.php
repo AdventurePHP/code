@@ -53,13 +53,13 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * @since 1.11
     * @var boolean Indicates, whether the form control is valid or not.
     */
-   protected $__ControlIsValid = true;
+   protected $controlIsValid = true;
 
    /**
     * @since 1.11
     * @var boolean Indicates, whether the form is sent or not.
     */
-   protected $__ControlIsSent = false;
+   protected $controlIsSent = false;
 
    /**
     * @since 1.17
@@ -115,7 +115,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * Version 0.1, 25.08.2009<br />
     */
    public function isValid() {
-      return $this->__ControlIsValid;
+      return $this->controlIsValid;
    }
 
    /**
@@ -128,7 +128,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * Version 0.1, 25.08.2009<br />
     */
    public function markAsInvalid() {
-      $this->__ControlIsValid = false;
+      $this->controlIsValid = false;
    }
 
    /**
@@ -141,7 +141,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * Version 0.1, 27.09.2009<br />
     */
    public function markAsSent() {
-      $this->__ControlIsSent = true;
+      $this->controlIsSent = true;
    }
 
    /**
@@ -156,7 +156,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * Version 0.1, 27.09.2009<br />
     */
    public function isSent() {
-      return $this->__ControlIsSent;
+      return $this->controlIsSent;
    }
 
    /**
@@ -369,10 +369,10 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * Version 0.1, 09.01.2007<br />
     */
    public function addAttribute($name, $value) {
-      if (isset($this->__Attributes[$name])) {
-         $this->__Attributes[$name] .= $value;
+      if (isset($this->attributes[$name])) {
+         $this->attributes[$name] .= $value;
       } else {
-         $this->__Attributes[$name] = $value;
+         $this->attributes[$name] = $value;
       }
    }
 
@@ -429,11 +429,11 @@ abstract class AbstractFormControl extends Document implements FormControl {
       $tagLibClass = $this->getClassNameByTagLibName('placeholder');
 
       $placeHolderCount = 0;
-      if (count($this->__Children) > 0) {
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            if ($this->__Children[$objectId] instanceof $tagLibClass) {
-               if ($this->__Children[$objectId]->getAttribute('name') == $name) {
-                  $this->__Children[$objectId]->setContent($value);
+      if (count($this->children) > 0) {
+         foreach ($this->children as $objectId => $DUMMY) {
+            if ($this->children[$objectId] instanceof $tagLibClass) {
+               if ($this->children[$objectId]->getAttribute('name') == $name) {
+                  $this->children[$objectId]->setContent($value);
                   $placeHolderCount++;
                }
             }
@@ -499,7 +499,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     */
    protected function getClassNameByTagLibName($name) {
 
-      foreach ($this->__TagLibs as $tagLib) {
+      foreach ($this->tagLibs as $tagLib) {
          if ($tagLib->getName() == $name) {
             return $tagLib->getClass();
          }

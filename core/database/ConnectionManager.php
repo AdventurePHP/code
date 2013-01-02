@@ -127,7 +127,7 @@ final class ConnectionManager extends APFObject {
          throw new InvalidArgumentException('[ConnectionManager::getConnection()] The given '
                . 'configuration section ("' . $connectionKey . '") does not exist in configuration file "'
                . $env . '_connections.ini" in namespace "core::database" for context "'
-               . $this->__Context . '"!', E_USER_ERROR);
+               . $this->context . '"!', E_USER_ERROR);
       }
 
       if (!class_exists($section->getValue('DB.Type') . 'Handler')) {

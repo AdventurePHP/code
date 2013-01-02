@@ -51,7 +51,7 @@ class FormPlaceHolderTag extends AbstractFormControl {
     * Version 0.1, 13.04.2010<br />
     */
    public function transform() {
-      return $this->__Content;
+      return $this->content;
    }
 
 }

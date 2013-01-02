@@ -83,7 +83,7 @@ abstract class FormControlObserverBase extends AbstractFormControl {
       $class = $this->getAttribute('class');
 
       if (empty($controlDef) || empty($buttonName) || empty($class) || empty($namespace)) {
-         $formName = $this->__ParentObject->getAttribute('name');
+         $formName = $this->parentObject->getAttribute('name');
          throw new FormException('[' . get_class($this) . '::onAfterAppend()] Required attribute '
                . '"control", "button", "class" or "namespace" missing. Please review your '
                . '&lt;form:addvalidator /&gt; or &lt;form:addfilter /&gt; taglib definition in form "'
@@ -106,7 +106,7 @@ abstract class FormControlObserverBase extends AbstractFormControl {
          $type = $this->getAttribute(self::$TYPE_ATTRIBUTE_NAME);
 
          if ($control === null || $button === null) {
-            $formName = $this->__ParentObject->getAttribute('name');
+            $formName = $this->parentObject->getAttribute('name');
             throw new FormException('[' . get_class($this) . '::onAfterAppend()] The form with name '
                   . '"' . $formName . '" does not contain a control with name "' . $controlName . '" or '
                   . 'a button with name "' . $buttonName . '". Please check your taglib definition!');
@@ -120,8 +120,8 @@ abstract class FormControlObserverBase extends AbstractFormControl {
          // validator to enable special listener notification.
          /* @var $observer AbstractFormValidator */
          $observer = new $class($control, $button, $type);
-         $observer->setContext($this->__Context);
-         $observer->setLanguage($this->__Language);
+         $observer->setContext($this->context);
+         $observer->setLanguage($this->language);
 
          // inject the observer into the form control
          $control->{$injectionMethod}($observer);

@@ -95,7 +95,7 @@ class weather_v1_controller extends BaseDocumentController {
       } else {
 
          // Display error message
-         $templateNoEntries = &$this->getTemplate('NoEntries_' . $this->__Language);
+         $templateNoEntries = &$this->getTemplate('NoEntries_' . $this->language);
          $templateNoEntries->setPlaceHolder('Source', $this->getRSSSource());
          $this->setPlaceHolder('Content', $templateNoEntries->transformTemplate());
       }
@@ -231,7 +231,7 @@ class weather_v1_controller extends BaseDocumentController {
     * Version 0.1, 20.04.2008<br />
     */
    protected function getRSSSource() {
-      return $this->__Document->getAttribute('rss_source');
+      return $this->getDocument()->getAttribute('rss_source');
    }
 
 }

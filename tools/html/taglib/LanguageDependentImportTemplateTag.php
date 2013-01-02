@@ -108,7 +108,7 @@ class LanguageDependentImportTemplateTag extends Document {
       // use dictionary from the config namespace if applicable
       $dict_namespace = $this->getAttribute('dict_namespace');
       if ($dict_namespace !== null) {
-         $this->parseLanguageFile('config::' . $dict_namespace . '::' . $this->__Context, 'dictionary');
+         $this->parseLanguageFile('config::' . $dict_namespace . '::' . $this->context, 'dictionary');
       }
 
       // use local language file
@@ -131,7 +131,7 @@ class LanguageDependentImportTemplateTag extends Document {
    protected function parseLanguageFile($namespace, $filename) {
 
       // create file name
-      $fileName = APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $filename . '.' . $this->__Language . '.xml';
+      $fileName = APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $filename . '.' . $this->language . '.xml';
 
       if (file_exists($fileName)) {
 
@@ -140,7 +140,7 @@ class LanguageDependentImportTemplateTag extends Document {
 
          // translate tokens or throw error
          if ($domDoc instanceof SimpleXMLElement) {
-            $this->__Content = $this->parseLanguageTokens($this->__Content, $domDoc);
+            $this->content = $this->parseLanguageTokens($this->content, $domDoc);
          } else {
             throw new InvalidArgumentException('[LanguageDependentImportTemplateTag::__parseLanguageFile()] The translation file ("' . $filename . '.xml") in namespace "' . $namespace . '" does not contain a valid XML document! The content is returned without translation.');
          }

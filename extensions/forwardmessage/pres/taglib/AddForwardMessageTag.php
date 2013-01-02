@@ -33,7 +33,7 @@
 class AddForwardMessageTag extends Document {
 
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'message', 'getstring');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'message', 'getstring');
    }
 
    public function onParseTime() {

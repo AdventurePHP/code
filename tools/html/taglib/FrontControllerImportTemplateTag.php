@@ -43,28 +43,28 @@ class FrontControllerImportTemplateTag extends ImportTemplateTag {
 
    public function onParseTime() {
 
-      if (!isset($this->__Attributes['templatenamespace'])) {
+      if (!isset($this->attributes['templatenamespace'])) {
          throw new InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "templatenamespace" is not given!');
       } else {
-         $templateNamespace = $this->__Attributes['templatenamespace'];
+         $templateNamespace = $this->attributes['templatenamespace'];
       }
 
-      if (!isset($this->__Attributes['modelnamespace'])) {
+      if (!isset($this->attributes['modelnamespace'])) {
          throw new InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelnamespace" is not given!');
       } else {
-         $modelNamespace = $this->__Attributes['modelnamespace'];
+         $modelNamespace = $this->attributes['modelnamespace'];
       }
 
-      if (!isset($this->__Attributes['modelclass'])) {
+      if (!isset($this->attributes['modelclass'])) {
          throw new InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelclass" is not given!');
       } else {
-         $modelClass = $this->__Attributes['modelclass'];
+         $modelClass = $this->attributes['modelclass'];
       }
 
-      if (!isset($this->__Attributes['modelparam'])) {
+      if (!isset($this->attributes['modelparam'])) {
          throw new InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelparam" is not given!');
       } else {
-         $modelParam = $this->__Attributes['modelparam'];
+         $modelParam = $this->attributes['modelparam'];
       }
 
       if (!class_exists($modelClass)) {
@@ -72,7 +72,7 @@ class FrontControllerImportTemplateTag extends ImportTemplateTag {
       }
 
       // get initialization mode
-      if (!isset($this->__Attributes['sessionsingleton']) || $this->__Attributes['sessionsingleton'] == 'false') {
+      if (!isset($this->attributes['sessionsingleton']) || $this->attributes['sessionsingleton'] == 'false') {
          $initMode = APFService::SERVICE_TYPE_SINGLETON;
       } else {
          $initMode = APFService::SERVICE_TYPE_SESSION_SINGLETON;
@@ -82,8 +82,8 @@ class FrontControllerImportTemplateTag extends ImportTemplateTag {
       $model = &$this->getServiceObject($modelNamespace, $modelClass, $initMode);
       $templateName = $model->getAttribute($modelParam);
 
-      if (isset($this->__Attributes['context'])) {
-         $this->__Context = trim($this->__Attributes['context']);
+      if (isset($this->attributes['context'])) {
+         $this->context = trim($this->attributes['context']);
       }
 
       $this->loadContentFromFile($templateNamespace, $templateName);

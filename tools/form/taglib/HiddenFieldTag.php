@@ -49,7 +49,7 @@ class HiddenFieldTag extends AbstractFormControl {
     * Version 0.1, 05.01.2007<br />
     */
    public function transform() {
-      return '<input type="hidden" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
+      return '<input type="hidden" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
    }
 
 }

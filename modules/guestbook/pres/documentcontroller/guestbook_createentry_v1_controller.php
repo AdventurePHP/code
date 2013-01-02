@@ -61,7 +61,7 @@ class guestbook_createentry_v1_controller extends guestbookBaseController {
          // label button
          $config = $this->getConfiguration('modules::guestbook', 'guestbook_lang.ini');
          $button = &$form->getFormElementByName('CreateGuestbookEntryButton');
-         $button->setAttribute('value', $config->getSection($this->__Language)->getValue('CreateEntry.Form.Button'));
+         $button->setAttribute('value', $config->getSection($this->language)->getValue('CreateEntry.Form.Button'));
 
          $form->transformOnPlace();
 

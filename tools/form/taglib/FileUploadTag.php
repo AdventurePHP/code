@@ -74,7 +74,7 @@ class FileUploadTag extends TextFieldTag {
     */
    public function transform() {
       if ($this->isVisible) {
-         return '<input type="file" ' . $this->getSanitizedAttributesAsString($this->__Attributes) . ' />';
+         return '<input type="file" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
       }
       return '';
    }

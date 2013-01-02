@@ -172,8 +172,8 @@ class UmgtManager extends APFObject {
     */
    public function __sleep() {
       return array(
-         '__Language',
-         '__Context',
+         'language',
+         'context',
          'serviceType',
          'applicationId',
          'passwordHashProviderList'

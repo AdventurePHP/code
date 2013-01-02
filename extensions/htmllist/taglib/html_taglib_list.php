@@ -44,10 +44,10 @@ class html_taglib_list extends list_control {
    public function addList($elementType, $elementAttributes = array()) {
 
       // create list element
-      $objectId = $this->__createList($elementType, $elementAttributes);
+      $objectId = $this->createList($elementType, $elementAttributes);
 
       // add position placeholder to the content
-      $this->__Content .= '<' . $objectId . ' />';
+      $this->content .= '<' . $objectId . ' />';
 
       // return object id of the new list element
       return $objectId;
@@ -61,10 +61,10 @@ class html_taglib_list extends list_control {
     * @throws InvalidArgumentException In case no list can be found.
     */
    public function getListById($id) {
-      if (count($this->__Children) > 0) {
-         foreach ($this->__Children as $objectID => $DUMMY) {
-            if ($this->__Children[$objectID]->getAttribute('id') == $id) {
-               return $this->__Children[$objectID];
+      if (count($this->children) > 0) {
+         foreach ($this->children as $objectID => $DUMMY) {
+            if ($this->children[$objectID]->getAttribute('id') == $id) {
+               return $this->children[$objectID];
             }
          }
       }
@@ -86,7 +86,7 @@ class html_taglib_list extends list_control {
     * @return string The object id of the created list.
     * @throws InvalidArgumentException In case the desired list cannot be created.
     */
-   protected function __createList($elementType, array $elementAttributes = array()) {
+   protected function createList($elementType, array $elementAttributes = array()) {
 
       $tagLibClass = str_replace(':', '_taglib_', $elementType);
 
@@ -100,8 +100,8 @@ class html_taglib_list extends list_control {
 
          // add standard and user defined attributes
          $listObject->setObjectId($objectId);
-         $listObject->setLanguage($this->__Language);
-         $listObject->setContext($this->__Context);
+         $listObject->setLanguage($this->language);
+         $listObject->setContext($this->context);
 
          foreach ($elementAttributes as $Key => $Value) {
             $listObject->setAttribute($Key, $Value);
@@ -112,16 +112,16 @@ class html_taglib_list extends list_control {
          $listObject->onParseTime();
 
          // add new list element to children list
-         $this->__Children[$objectId] = $listObject;
+         $this->children[$objectId] = $listObject;
 
          // call the onAfterAppend() method
-         $this->__Children[$objectId]->onAfterAppend();
+         $this->children[$objectId]->onAfterAppend();
 
          // return object id for further addressing
          return $objectId;
       } else {
          // throw error and return null as object id
-         throw new InvalidArgumentException('[html_taglib_list::__createList()] No list element with name "'
+         throw new InvalidArgumentException('[html_taglib_list::createList()] No list element with name "'
             . $elementType . '" found! Maybe the tag name is mis-spelt or the class is not '
             . 'imported yet. Please use import() or &lt;list:addtaglib /&gt;!');
       }

@@ -42,9 +42,9 @@
 class FormSuccessDisplayTag extends AbstractFormControl {
 
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'success', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'success', 'getstring');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'success', 'addtaglib');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'success', 'placeholder');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'success', 'getstring');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'success', 'addtaglib');
    }
 
    /**
@@ -88,7 +88,7 @@ class FormSuccessDisplayTag extends AbstractFormControl {
    public function transform() {
       if ($this->getParentObject()->isSent() && $this->getParentObject()->isValid()) {
          $this->transformChildren();
-         return $this->__Content;
+         return $this->content;
       }
       return '';
    }

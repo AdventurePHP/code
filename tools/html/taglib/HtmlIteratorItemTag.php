@@ -41,9 +41,9 @@ class HtmlIteratorItemTag extends Document {
     * Version 0.1, 01.06.2008<br />
     */
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'item', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'item', 'getstring');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'item', 'addtaglib');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'item', 'placeholder');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'item', 'getstring');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'item', 'addtaglib');
    }
 
    public function onParseTime() {
@@ -64,10 +64,10 @@ class HtmlIteratorItemTag extends Document {
     */
    public function &getPlaceHolders() {
       $placeHolders = array();
-      if (count($this->__Children) > 0) {
-         foreach ($this->__Children as $objectId => $DUMMY) {
-            if ($this->__Children[$objectId] instanceof PlaceHolderTag) {
-               $placeHolders[] = &$this->__Children[$objectId];
+      if (count($this->children) > 0) {
+         foreach ($this->children as $objectId => $DUMMY) {
+            if ($this->children[$objectId] instanceof PlaceHolderTag) {
+               $placeHolders[] = &$this->children[$objectId];
             }
          }
       }

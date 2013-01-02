@@ -57,7 +57,7 @@ abstract class guestbookBaseController extends BaseDocumentController {
     * @return int The id of the current guestbook.
     */
    protected function getGuestbookId() {
-      $parentDocument = &$this->__Document->getParentObject();
+      $parentDocument = &$this->getDocument()->getParentObject();
       return $parentDocument->getAttribute('guestbookid');
    }
 

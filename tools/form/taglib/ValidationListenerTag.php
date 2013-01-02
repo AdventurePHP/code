@@ -55,9 +55,9 @@ class ValidationListenerTag extends AbstractFormControl {
    protected $isNotified = false;
 
    public function __construct() {
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'listener', 'placeholder');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'listener', 'getstring');
-      $this->__TagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'listener', 'addtaglib');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'listener', 'placeholder');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'listener', 'getstring');
+      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'listener', 'addtaglib');
    }
 
    /**
@@ -112,7 +112,7 @@ class ValidationListenerTag extends AbstractFormControl {
    public function transform() {
       if ($this->isNotified === true) {
          $this->transformChildren();
-         return $this->__Content;
+         return $this->content;
       }
       return '';
    }
