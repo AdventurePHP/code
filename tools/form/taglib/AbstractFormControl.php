@@ -641,7 +641,20 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @return AbstractFormControl
+    * @public
+    *
+    * Hides a form control from the HTML output of the form it is contained in. Together with
+    * it's <em>dependent controls</em> you can hide entire parts of a form from being displayed
+    * on transformation.
+    * <p/>
+    * This feature can be used to build up forms that display fields that are only displayed
+    * at certain conditions evaluated within custom form controls or document controllers.
+    *
+    * @return AbstractFormControl This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 16.12.2012<br />
     */
    public function &hide() {
       $this->isVisible = false;
@@ -656,7 +669,20 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @return AbstractFormControl
+    * @public
+    *
+    * Shows a previously hidden form control from the HTML output of the form it is contained in.
+    * Together with it's <em>dependent controls</em> you can show entire parts of a form from being
+    * displayed on transformation.
+    * <p/>
+    * This feature can be used to build up forms that display fields that are only displayed
+    * at certain conditions evaluated within custom form controls or document controllers.
+    *
+    * @return AbstractFormControl This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 16.12.2012<br />
     */
    public function &show() {
       $this->isVisible = true;
@@ -671,14 +697,33 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @return bool
+    * @public
+    *
+    * Returns the current control's visibility status.
+    *
+    * @return bool True in case the control is visible, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 16.12.2012<br />
     */
    public function isVisible() {
       return $this->isVisible;
    }
 
    /**
-    * @return AbstractFormControl[]
+    * @protected
+    *
+    * Evaluates the list of controls that should be hidden/displayed in case this control is
+    * hidden/displayed again.
+    * <p/>
+    * The dependent control feature can be used to hide/show controls together with their labels etc.
+    *
+    * @return AbstractFormControl[] The list of controls referred to by the <em>dependent-controls</em> tag attribute.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 16.12.2012<br />
     */
    protected function &getDependentFields() {
       $dependentFields = $this->getAttribute('dependent-controls');
