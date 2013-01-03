@@ -60,7 +60,7 @@ class MemcachedConfigurationProvider implements ConfigurationProvider {
     * Initializes the memcached configuration provider.
     *
     * @param string $persistenceProviderExtension The name of the extension of the provider to use to load the persistent config with.
-    * @param Memcached $memcachedService The memcached connection.
+    * @param Memcache $memcachedService The memcached connection.
     *
     * @author Christian Achatz
     * @version
@@ -106,7 +106,7 @@ class MemcachedConfigurationProvider implements ConfigurationProvider {
    /**
     * @private
     *
-    * Remapps the configuration file name to the extension of the persistent configuration
+    * Remaps the configuration file name to the extension of the persistent configuration
     * file to be able to load and store the physical file.
     *
     * @param string $name The given in-memory configuration file name.
@@ -168,4 +168,5 @@ class MemcachedConfigurationProvider implements ConfigurationProvider {
 
       ConfigurationManager::deleteConfiguration($namespace, $context, $language, $environment, $name);
    }
+
 }
