@@ -13,7 +13,7 @@ import('tools::string', 'StringAssistant');
  *             v0.4 (30.09.12) Added URL XSS protection for magic id "__referer" (host check)
  *
  */
-class SMSPageLinkTaglib extends Document {
+class SMSPageLinkTag extends Document {
 
 
    public static $template = '<a href="{LINK}" title="{TITLE}">{TEXT}</a>';

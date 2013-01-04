@@ -10,7 +10,7 @@ import('tools::string', 'StringAssistant');
  * @version: v0.1 (08.08.12)
  *
  */
-class SMSNavTaglibController extends BaseDocumentController {
+class SMSNavTagController extends BaseDocumentController {
 
 
    /**

@@ -4,15 +4,15 @@
  * @package APFelSMS
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version:   v0.1 (08.08.12)
- *             v0.2 (30.09.12) Removed extension appending
+ *             v0.2 (30.10.12) Removed extension appending
  */
-class SMSJSIncludesTaglib extends Document {
+class SMSCSSIncludesTag extends Document {
 
 
    /**
-    * @var string HTML-Template for JS includes
+    * @var string HTML-Template for CSS includes
     */
-   protected static $JSIncludeTemplate = '<script type="text/javascript" src="{URL}"></script>';
+   protected static $CSSIncludeTemplate = '<link rel="stylesheet" type="text/css" media="{MEDIA}" href="{URL}" />';
 
 
    /**
@@ -36,22 +36,27 @@ class SMSJSIncludesTaglib extends Document {
          return ''; // be quiet
       }
 
-      $jsArray = $currentPage->getJS();
+      $cssArray = $currentPage->getCSS();
 
-      if (count($jsArray) < 1) {
-         return ''; // no scripts to include
+      if (count($cssArray) < 1) {
+         return ''; // no styles to include
       }
 
 
       $stringBuffer = '';
 
-      foreach ($jsArray AS $urlReplacer) {
+      foreach ($cssArray AS $media => $urlReplacer) {
+
+         $mediaReplacer = 'all';
+         if (is_string($media)) {
+            $mediaReplacer = $media;
+         }
 
 
          $stringBuffer .= str_replace(
-            '{URL}',
-            $urlReplacer,
-            self::$JSIncludeTemplate
+            array('{MEDIA}', '{URL}'),
+            array($mediaReplacer, $urlReplacer),
+            self::$CSSIncludeTemplate
          );
 
          $stringBuffer .= self::$newLine;

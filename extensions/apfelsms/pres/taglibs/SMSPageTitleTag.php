@@ -9,7 +9,7 @@ import('tools::string', 'StringAssistant');
  * @version: v0.1 (10.08.12)
  *
  */
-class SMSPageTitleTaglib extends Document {
+class SMSPageTitleTag extends Document {
 
 
    public function transform() {

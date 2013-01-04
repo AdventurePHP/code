@@ -6,7 +6,7 @@
  * @version: v0.1 (08.08.12)
  *
  */
-class SMSNavTaglib extends Document {
+class SMSNavTag extends Document {
 
 
    public function transform() {

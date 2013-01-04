@@ -6,7 +6,7 @@
  * @version: v0.1 (23.09.12)
  *
  */
-class SMSBreadcrumbNavTaglib extends Document {
+class SMSBreadcrumbNavTag extends Document {
 
    public function transform() {
 
