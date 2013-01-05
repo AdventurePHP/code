@@ -51,7 +51,7 @@ class contact_form_controller extends BaseDocumentController {
     */
    public function transformContent() {
 
-      $form = &$this->getForm('contact');
+      $form = & $this->getForm('contact');
 
       // generate a generic action url, to be included in various pages
       $action = LinkGenerator::generateUrl(Url::fromCurrent());
@@ -61,7 +61,8 @@ class contact_form_controller extends BaseDocumentController {
       /* @var $recipients SelectBoxTag */
       $recipients = & $form->getFormElementByName('Empfaenger');
 
-      $cM = &$this->getServiceObject('modules::kontakt4::biz', 'ContactManager');
+      /* @var $cM ContactManager */
+      $cM = & $this->getServiceObject('modules::kontakt4::biz', 'ContactManager');
       /* @var $recipientList ContactFormRecipient[] */
       $recipientList = $cM->loadRecipients();
 
@@ -74,25 +75,25 @@ class contact_form_controller extends BaseDocumentController {
          $formData = new ContactFormData();
 
          /* @var $recipient SelectBoxTag */
-         $recipient = &$form->getFormElementByName('Empfaenger');
-         $option = &$recipient->getSelectedOption();
+         $recipient = & $form->getFormElementByName('Empfaenger');
+         $option = & $recipient->getSelectedOption();
          $recipientId = $option->getAttribute('value');
          $formData->setRecipientId($recipientId);
 
-         $name = &$form->getFormElementByName('AbsenderName');
+         $name = & $form->getFormElementByName('AbsenderName');
          $formData->setSenderName($name->getAttribute('value'));
 
-         $email = &$form->getFormElementByName('AbsenderAdresse');
+         $email = & $form->getFormElementByName('AbsenderAdresse');
          $formData->setSenderEmail($email->getAttribute('value'));
 
-         $subject = &$form->getFormElementByName('Betreff');
+         $subject = & $form->getFormElementByName('Betreff');
          $formData->setSubject($subject->getAttribute('value'));
 
-         $text = &$form->getFormElementByName('Text');
+         $text = & $form->getFormElementByName('Text');
          $formData->setMessage($text->getContent());
 
          /* @var $cM ContactManager */
-         $cM = &$this->getServiceObject('modules::kontakt4::biz', 'ContactManager');
+         $cM = & $this->getServiceObject('modules::kontakt4::biz', 'ContactManager');
          $cM->sendContactForm($formData);
 
       } else {
@@ -100,23 +101,23 @@ class contact_form_controller extends BaseDocumentController {
          // label the button
          $config = $this->getConfiguration('modules::kontakt4', 'language');
          $value = $config->getSection($this->language)->getValue('form.button');
-         $button = &$form->getFormElementByName('sendFormContact');
+         $button = & $form->getFormElementByName('sendFormContact');
          $button->setAttribute('value', $value);
 
          // fill listeners with the language dependent values
-         $senderError = &$form->getFormElementByID('sender-error');
+         $senderError = & $form->getFormElementByID('sender-error');
          $senderError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.name.error'));
 
-         $addrError = &$form->getFormElementByID('addr-error');
+         $addrError = & $form->getFormElementByID('addr-error');
          $addrError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.email.error'));
 
-         $subjectError = &$form->getFormElementByID('subject-error');
+         $subjectError = & $form->getFormElementByID('subject-error');
          $subjectError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.subject.error'));
 
-         $textError = &$form->getFormElementByID('text-error');
+         $textError = & $form->getFormElementByID('text-error');
          $textError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.text.error'));
 
-         $captchaError = &$form->getFormElementByID('captcha-error');
+         $captchaError = & $form->getFormElementByID('captcha-error');
          $captchaError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.captcha.error'));
 
          $form->transformOnPlace();
