@@ -377,7 +377,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * Extends the APFObject's attributes methods.
     *
     * @param string $name the name of the attribute
-    * @param string $value the value to add to the attribute's value.
+    * @param string $value the value to add to the attribute value.
     *
     * @author Christian Schäfer
     * @version
