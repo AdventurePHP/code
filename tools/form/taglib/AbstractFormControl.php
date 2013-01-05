@@ -134,6 +134,21 @@ abstract class AbstractFormControl extends Document implements FormControl {
    /**
     * @public
     *
+    * Allows you to mark this form control as valid (again).
+    *
+    * @since 1.17
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 05.01.2013<br />
+    */
+   public function markAsValid() {
+      $this->controlIsValid = true;
+   }
+
+   /**
+    * @public
+    *
     * Marks a form as sent.
     *
     * @author Christian Achatz
