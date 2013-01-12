@@ -38,6 +38,45 @@ class ImageButtonTag extends ButtonTag {
       parent::__construct();
       $this->attributeWhiteList[] = 'src';
       $this->attributeWhiteList[] = 'alt';
+
+      // avoid child tags
+      $this->tagLibs = array();
+   }
+
+   /**
+    * @public
+    * @since 1.17
+    *
+    * Re-implements the onParseTime() method of the ButtonTag to respect the difference
+    * between buttons and normal buttons (name + _x/_y in request).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.01.2013 (Bug 1261: re-implementation due to different browser behaviour for image buttons)<br />
+    */
+   public function onParseTime() {
+
+      $buttonName = $this->getAttribute('name');
+      if ($buttonName === null) {
+         $formName = $this->getParentObject()->getAttribute('name');
+         throw new FormException('[ImageButtonTag::onAfterAppend()] Missing required attribute '
+               . '"name" in &lt;form:imagebutton /&gt; tag in form "' . $formName . '". '
+               . 'Please check your form definition!', E_USER_ERROR);
+      }
+
+      // check name attribute in request to indicate, that the
+      // form was sent. Mark button as sent, too. Due to potential
+      // XSS issues, we distinguish between GET and POST requests
+      $method = strtolower($this->getParentObject()->getAttribute(HtmlFormTag::$METHOD_ATTRIBUTE_NAME));
+      if ($method == HtmlFormTag::$METHOD_POST_VALUE_NAME) {
+         if (isset($_POST[$buttonName . '_x']) && isset($_POST[$buttonName . '_y'])) {
+            $this->controlIsSent = true;
+         }
+      } else {
+         if (isset($_GET[$buttonName . '_x']) && isset($_GET[$buttonName . '_y'])) {
+            $this->controlIsSent = true;
+         }
+      }
    }
 
    /**
