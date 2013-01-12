@@ -48,6 +48,45 @@ class LoggerException extends Exception {
 
 /**
  * @package core::logging
+ * @class LogWriter
+ *
+ * Defines the interface for a log writer.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 12.01.2013<br />
+ */
+interface LogWriter {
+
+   /**
+    * @public
+    *
+    * Writes log entries applied by the Logger.
+    *
+    * @param LogEntry[] The list of log entries to write.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.01.2013<br />
+    */
+   public function writeLogEntries(array $entries);
+
+   /**
+    * @public
+    *
+    * Method to inject the log target identifier by the Logger.
+    *
+    * @param string $target The log target identifier for LogWriter-internal usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.01.2013<br />
+    */
+   public function setTarget($target);
+}
+
+/**
+ * @package core::logging
  * @class LogEntry
  *
  * Defines the scheme of a log entry.
@@ -182,6 +221,27 @@ class SimpleLogEntry implements LogEntry {
       return $this->severity;
    }
 
+   /**
+    * @return string The log entry's recording date.
+    */
+   public function getDate() {
+      return $this->date;
+   }
+
+   /**
+    * @return string The log entry's recording time.
+    */
+   public function getTime() {
+      return $this->time;
+   }
+
+   /**
+    * @return string The log entry's message.
+    */
+   public function getMessage() {
+      return $this->message;
+   }
+
 }
 
 /**
@@ -237,16 +297,6 @@ class Logger {
    protected $logEntries = array();
 
    /**
-    * @var string Directory, where log files are stored.
-    */
-   protected $logDir;
-
-   /**
-    * @var string Permission that is applied to a newly created log folder.
-    */
-   protected $logFolderPermissions = 0777;
-
-   /**
     * @var int The maximum number of log entries before the log buffer is flushed automatically.
     */
    protected $maxBufferLength = 300;
@@ -257,9 +307,9 @@ class Logger {
    protected $logEntryCount = 0;
 
    /**
-    * @var string The host prefix that is added to the log file name to distinguish between different hosts.
+    * @var LogWriter[] The list of registered log writers.
     */
-   protected $hostPrefix = null;
+   protected $writers = array();
 
    /**
     * @public
@@ -276,9 +326,9 @@ class Logger {
     * Version 0.2, 02.04.2007<br />
     * Version 0.3, 21.06.2008<br />
     * Version 0.4, 14.08.2008 (LogDir initialization was moved do the flushLogBuffer() method)<br />
+    * Version 0.5, 12.01.2013 (Moved log dir initialization to log writer)<br />
     */
    public function __construct() {
-      $this->logDir = str_replace('\\', '/', getcwd()) . '/logs';
       $this->logThreshold = self::$LOGGER_THRESHOLD_WARN;
    }
 
@@ -317,57 +367,99 @@ class Logger {
    /**
     * @public
     *
-    * Let's you configure a host name prefix for all log files.
+    * Using this method you can add a LogWriter implementation to the current logger.
     * <p/>
-    * This may be used in clustered hosting environments to reduce file lock overhead.
+    * Each log writer is identified by a dedicated target name that is injected to the
+    * writer.
+    * <p/>
+    * This method can be used to reconfigure a writer as follows:
+    * <code>
+    * $writer = $logger->getLogWriter('foo');
+    * $writer->setBar('123');
+    * $logger->addLogWriter('foo', $writer);
+    * </code>
+    * In case you intend to add a new writer based on an existing one, consider this:
+    * <code>
+    * $writer = clone $logger->getLogWriter('foo');
+    * $logger->addLogWriter('bar', $writer);
+    * </code>
     *
-    * @param string $hostPrefix The host name prefix to add to the log file name.
+    * @param string $target The log target name.
+    * @param LogWriter $writer The respective writer.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 18.03.2012<br />
+    * Version 0.1, 12.01.2013<br />
     */
-   public function setHostPrefix($hostPrefix) {
-      $this->hostPrefix = $hostPrefix;
+   public function addLogWriter($target, LogWriter $writer) {
+      // let the writer know the identifier it is registered with (e.g. to open log files efficiently).
+      $writer->setTarget($target);
+
+      $this->writers[$target] = $writer;
    }
 
    /**
     * @public
     *
-    * Let's you change the log directory.
+    * Removes a registered writer identified by the applied target name.
     *
-    * @param string $logDir The directory to write the logs to.
+    * @param string $target The log target name.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 18.03.2012<br />
+    * Version 0.1, 12.01.2013<br />
     */
-   public function setLogDir($logDir) {
-      $this->logDir = $logDir;
+   public function removeLogWriter($target) {
+      unset($this->writers[$target]);
    }
 
    /**
     * @public
     *
-    * Create a log entry.
+    * Let's you retrieve a log writer identified by the applied target name.
     *
-    * @param string $logFileName Name of the log file to log to
-    * @param string $message Log message
-    * @param string $type Desired type of the message
+    * @param string $target The log target name.
+    * @return LogWriter $writer The respective writer.
+    * @throws LoggerException In case the desired log writer is not registered.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.01.2013<br />
+    */
+   public function getLogWriter($target) {
+      if (isset($this->writers[$target])) {
+         return $this->writers[$target];
+      }
+      throw new LoggerException('Log writer with name "' . $target . '" is not registered!');
+   }
+
+   /**
+    * @public
+    *
+    * Creates a log entry with the SimpleLogEntry type.
+    * <p/>
+    * In case you want to add custom log entry elements, please use the <em>addEntry()</em> method
+    * in combination with your custom <em>LogEntry</em> implementation.
+    *
+    * @param string $logFileName Name of the log file to log to.
+    * @param string $message Log message.
+    * @param string $severity The severity of the log message.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.03.2007<br />
     * Version 0.2, 02.05.2011 (Flushes the log buffer implicitly after a configured number of entries)<br />
     */
-   public function logEntry($logFileName, $message, $type = LogEntry::SEVERITY_INFO) {
-      $this->addEntry(new SimpleLogEntry($logFileName, $message, $type));
+   public function logEntry($logFileName, $message, $severity = LogEntry::SEVERITY_INFO) {
+      $this->addEntry(new SimpleLogEntry($logFileName, $message, $severity));
    }
 
    /**
     * @public
     *
     * Method to create a log entry the OO-way.
+    * <p/>
+    * Use this method, in case you intend to add custom log entry implementations.
     *
     * @param LogEntry $entry The log entry to add.
     *
@@ -395,7 +487,7 @@ class Logger {
     *
     * Flushes the log buffer to the desired files.
     *
-    * @throws LoggerException In case the log directory cannot be created (e.g. due to access restrictions).
+    * @throws LoggerException In case a writer cannot be retrieved.
     *
     * @author Christian Achatz
     * @version
@@ -404,80 +496,40 @@ class Logger {
     * Version 0.3, 18.03.2009 (After writing entries to file, the log container is now reset)<br />
     * Version 0.4, 19.04.2009 (Suppressed mkdir() warning to make the error message nice)<br />
     * Version 0.5, 12.01.2013 (Optimized count() calls to increase performance)<br />
+    * Version 0.6, 12.01.2013 (Switched to log writer concept)<br />
     */
    public function flushLogBuffer() {
 
-      // check, if buffer contains log entries
-      if (count($this->logEntries) > 0) {
+      // Flush entries to the respective writers.
+      // To increase performance, the writers get a whole bunch of log entries instead of
+      // single items. For even better performance, the log entries are grouped by writer
+      // to avoid sorting when flushing the buffer.
+      foreach ($this->logEntries as $target => $logEntries) {
 
-         // check if lock dir exists
-         if (!is_dir($this->logDir)) {
+         $writer = $this->getLogWriter($target);
 
-            // try to create non existing log dir
-            if (!@mkdir($this->logDir, $this->logFolderPermissions)) {
-               throw new LoggerException('[Logger->flushLogBuffer()] The log directory "'
-                     . $this->logDir . '" cannot be created du to permission restrictions! '
-                     . 'Please check config and specify the "LogDir" (namespace: "apf::core") '
-                     . 'parameter in the registry!');
-            }
-
-         }
-
-         // flush entries to the files
-         foreach ($this->logEntries as $logFileName => $logEntries) {
-            /* @var $logEntries LogEntry[] */
-
-            // generate complete log file name
-            $logFileName = $this->getLogFileName($logFileName);
-
-            // generate complete log file path
-            $logFile = $this->logDir . '/' . $logFileName;
-
-            $count = count($logEntries);
-            if ($count > 0) {
-
-               $lFH = fopen($logFile, 'a+');
-
-               for ($i = 0; $i < $count; $i++) {
-                  fwrite($lFH, $logEntries[$i]->__toString() . PHP_EOL);
-               }
-
-               // close file to avoid deadlocks!
-               fclose($lFH);
-            }
-         }
-
-         // reset the buffer and the counter
-         $this->logEntries = array();
-         $this->logEntryCount = 0;
-      }
-   }
-
-   /**
-    * @protected
-    *
-    * Returns the name of the log file by the body of the name. Each log file will be named
-    * like jjjj_mm_dd__[host-prefix_]{filename}.log.
-    * <p/>
-    * In case the host prefix is defined, it is prepended to the file name. This enables you
-    * to write log files for different hosts on clustered hosting environments.
-    *
-    * @param string $fileName Name of the log file
-    * @return string Complete file name, that contains a date prefix and an file extension
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.03.2007<br />
-    * Version 0.2, 12.05.2012 (Added support for clustered hosting environments to write host-dependent log files)<br />
-    */
-   protected function getLogFileName($fileName) {
-
-      // prepend host prefix to support multiple log files for clustered hosting environments
-      if ($this->hostPrefix !== null) {
-         $fileName = $this->hostPrefix . '_' . $fileName;
+         /* @var $logEntries LogEntry[] */
+         $writer->writeLogEntries($logEntries);
       }
 
-      return date('Y_m_d') . '__' . strtolower(preg_replace('/[^A-Za-z0-9\-_]/', '', $fileName)) . '.log';
+      // reset the buffer and the counter
+      $this->logEntries = array();
+      $this->logEntryCount = 0;
    }
 
 }
+
+// initialize the logger with it's framework-initial state /////////////////////////////////////////////////////////////
+/* @var $logger Logger */
+$logger = & Singleton::getInstance('Logger');
+
+// By default, a file-based log writer is initialized.
+// Please note, that the writer's target name can be configured
+// within the Registry for all framework-related log statements.
+import('core::logging::writer', 'FileLogWriter');
+$logger->addLogWriter(
+   Registry::retrieve('apf::core', 'InternalLogTarget'),
+   new FileLogWriter(
+      str_replace('\\', '/', getcwd()) . '/logs'
+   )
+);
