@@ -30,7 +30,7 @@ register_shutdown_function('flushAdvancedLogger');
 function flushAdvancedLogger() {
 
    /* @var $aLF AdvancedLoggerFactory */
-   $aLF = &Singleton::getInstance('AdvancedLoggerFactory');
+   $aLF = & Singleton::getInstance('AdvancedLoggerFactory');
 
    // get registered logger
    $logger = Registry::retrieve('apf::core', 'AdvancedLogger');
@@ -39,7 +39,7 @@ function flushAdvancedLogger() {
 
       for ($i = 0; $i < $count; $i++) {
 
-         $log = &$aLF->getAdvancedLogger($logger[$i]['section']);
+         $log = & $aLF->getAdvancedLogger($logger[$i]['section']);
          $log->flushLogBuffer();
          unset($log);
       }
@@ -51,6 +51,8 @@ function flushAdvancedLogger() {
  * @class AdvancedLogEntry
  *
  * Implements a  logEntry object.
+ *
+ * @deprecated Use the Logger with an appropriate LogEntry implementation as of 1.17.
  *
  * @author Christian Achatz
  * @version
@@ -151,6 +153,8 @@ class AdvancedLogEntry extends APFObject {
  * Implements the factory for the AdvancedLogger. Must be created singleton using the
  * service manager!
  *
+ * @deprecated Use the Logger with an appropriate LogWriter to flush messages to the database (e.g. DatabaseLogWriter) as of 1.17.
+ *
  * @author Christian Achatz
  * @version
  * Version 0.1, 09.11.2008<br />
@@ -222,6 +226,8 @@ class AdvancedLoggerFactory extends APFObject {
  * <pre>flushLogBuffer_file      0.0026059151 s
  * flushLogBuffer_stdout    0.0001997948 s
  * flushLogBuffer_database  0.0228970051 s</pre>
+ *
+ * @deprecated Use the Logger with an appropriate LogWriter to flush messages to the database (e.g. DatabaseLogWriter) as of 1.17.
  *
  * @author Christian Achatz
  * @version
@@ -336,8 +342,8 @@ class AdvancedLogger extends APFObject {
       $logTable = $this->logConfig->getValue('LogTable');
 
       /* @var $cM ConnectionManager */
-      $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
-      $db = &$cM->getConnection($logDatabase);
+      $cM = & $this->getServiceObject('core::database', 'ConnectionManager');
+      $db = & $cM->getConnection($logDatabase);
 
       // flush log entries to the table
       foreach ($this->logBuffer as $entry) {
