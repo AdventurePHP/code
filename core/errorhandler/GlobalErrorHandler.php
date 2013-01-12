@@ -117,9 +117,17 @@ class DefaultErrorHandler implements ErrorHandler {
    protected function logError() {
       $message = '[' . ($this->generateErrorID()) . '] ' . $this->errorMessage . ' (Number: ' . $this->errorNumber . ', File: ' . $this->errorFile . ', Line: ' . $this->errorLine . ')';
       import('core::logging', 'Logger');
-      $log = &Singleton::getInstance('Logger');
+      $log = & Singleton::getInstance('Logger');
       /* @var $log Logger */
-      $log->logEntry('php', $message, LogEntry::SEVERITY_ERROR);
+      $log->addEntry(
+         new SimpleLogEntry(
+            // use the configured log target to allow custom configuration of APF-internal log statements
+            // to be written to a custom file/location
+            Registry::retrieve('apf::core', 'InternalLogTarget'),
+            $message,
+            LogEntry::SEVERITY_ERROR
+         )
+      );
    }
 
    /**
@@ -151,7 +159,7 @@ class DefaultErrorHandler implements ErrorHandler {
       $stacktrace->loadDesign('core::errorhandler::templates', 'errorpage');
 
       // inject error information into the document attributes array
-      $doc = &$stacktrace->getRootDocument();
+      $doc = & $stacktrace->getRootDocument();
       $doc->setAttribute('id', $this->generateErrorID());
       $doc->setAttribute('message', $this->errorMessage);
       $doc->setAttribute('number', $this->errorNumber);

@@ -118,7 +118,15 @@ class DefaultExceptionHandler implements ExceptionHandler {
       import('core::logging', 'Logger');
       $log = Singleton::getInstance('Logger');
       /* @var $log Logger */
-      $log->logEntry('php', $message, LogEntry::SEVERITY_ERROR);
+      $log->addEntry(
+         new SimpleLogEntry(
+         // use the configured log target to allow custom configuration of APF-internal log statements
+         // to be written to a custom file/location
+            Registry::retrieve('apf::core', 'InternalLogTarget'),
+            $message,
+            LogEntry::SEVERITY_ERROR
+         )
+      );
    }
 
    /**

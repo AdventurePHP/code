@@ -232,7 +232,7 @@ class Logger {
    protected $logThreshold;
 
    /**
-    * @var LogEntry[] Log entry store.
+    * @var LogEntry[][] Log entry store.
     */
    protected $logEntries = array();
 
@@ -278,7 +278,7 @@ class Logger {
     * Version 0.4, 14.08.2008 (LogDir initialization was moved do the flushLogBuffer() method)<br />
     */
    public function __construct() {
-      $this->logDir = Registry::retrieve('apf::core', 'LogDir');
+      $this->logDir = str_replace('\\', '/', getcwd()) . '/logs';
       $this->logThreshold = self::$LOGGER_THRESHOLD_WARN;
    }
 
@@ -301,8 +301,8 @@ class Logger {
    /**
     * @public
     *
-    * Let's you set the logging threshold. This is a list of severities that are
-    * written to the log. All other severities are ignored.
+    * Let's you set the logging threshold. This is a list of severity that are
+    * written to the log. All other severity are ignored.
     *
     * @param array $threshold The threshold configuration to apply to the log statements.
     *
@@ -334,6 +334,21 @@ class Logger {
    /**
     * @public
     *
+    * Let's you change the log directory.
+    *
+    * @param string $logDir The directory to write the logs to.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 18.03.2012<br />
+    */
+   public function setLogDir($logDir) {
+      $this->logDir = $logDir;
+   }
+
+   /**
+    * @public
+    *
     * Create a log entry.
     *
     * @param string $logFileName Name of the log file to log to
@@ -350,30 +365,26 @@ class Logger {
    }
 
    /**
-    * @protected
+    * @public
     *
-    * Internal method to create a log entry.
-    * <p/>
-    * Will be opened to the outside world in future versions in conjunction
-    * with the refactoring of the Logger and the combination with the
-    * AdvancedLogger.
+    * Method to create a log entry the OO-way.
     *
-    * @param LogEntry $entry The log entry to add
+    * @param LogEntry $entry The log entry to add.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 17.04.2012<br />
+    * Version 0.2, 09.01.2013 (Now public to add log entries OO-style)<br />
     */
-   protected function addEntry(LogEntry $entry) {
+   public function addEntry(LogEntry $entry) {
 
       // check for severity to match the threshold definition
       if (in_array($entry->getSeverity(), $this->logThreshold)) {
          $this->logEntries[$entry->getLogTarget()][] = $entry;
-
-         // flush the log buffer in case the maximum number of entries is reached.
          $this->logEntryCount++;
       }
 
+      // flush the log buffer in case the maximum number of entries is reached.
       if ($this->logEntryCount > $this->maxBufferLength) {
          $this->flushLogBuffer();
       }
@@ -390,8 +401,9 @@ class Logger {
     * @version
     * Version 0.1, 29.03.2007<br />
     * Version 0.2, 14.08.2008 (LogDir now is created during flush instead of during initialization)<br />
-    * Version 0.3, 18.03.2009 (After writing entries to file, the log container is now resetted)<br />
+    * Version 0.3, 18.03.2009 (After writing entries to file, the log container is now reset)<br />
     * Version 0.4, 19.04.2009 (Suppressed mkdir() warning to make the error message nice)<br />
+    * Version 0.5, 12.01.2013 (Optimized count() calls to increase performance)<br />
     */
    public function flushLogBuffer() {
 
@@ -413,6 +425,7 @@ class Logger {
 
          // flush entries to the files
          foreach ($this->logEntries as $logFileName => $logEntries) {
+            /* @var $logEntries LogEntry[] */
 
             // generate complete log file name
             $logFileName = $this->getLogFileName($logFileName);
@@ -420,11 +433,12 @@ class Logger {
             // generate complete log file path
             $logFile = $this->logDir . '/' . $logFileName;
 
-            if (count($logEntries) > 0) {
+            $count = count($logEntries);
+            if ($count > 0) {
 
                $lFH = fopen($logFile, 'a+');
 
-               for ($i = 0; $i < count($logEntries); $i++) {
+               for ($i = 0; $i < $count; $i++) {
                   fwrite($lFH, $logEntries[$i]->__toString() . PHP_EOL);
                }
 

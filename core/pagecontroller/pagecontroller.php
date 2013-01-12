@@ -87,7 +87,7 @@ import('core::registry', 'Registry');
 // define base parameters of the framework's core and tools layer
 Registry::register('apf::core', 'Environment', 'DEFAULT');
 Registry::register('apf::core', 'URLRewriting', false);
-Registry::register('apf::core', 'LogDir', str_replace('\\', '/', getcwd()) . '/logs');
+Registry::register('apf::core', 'InternalLogTarget', 'apf');
 Registry::register('apf::core', 'LibPath', APPS__PATH, true);
 Registry::register('apf::core', 'Charset', 'UTF-8');
 
@@ -2609,9 +2609,16 @@ abstract class BaseDocumentController extends Document {
          import('core::logging', 'Logger');
          $log = & Singleton::getInstance('Logger');
          /* @var $log Logger */
-         $log->logEntry('php', 'Place holder with name "' . $name . '" does not exist within the current document '
-               . 'handled by document controller "' . get_class($this) . '". Please check your setup.',
-            LogEntry::SEVERITY_WARNING);
+         $log->addEntry(
+            new SimpleLogEntry(
+               // use the configured log target to allow custom configuration of APF-internal log statements
+               // to be written to a custom file/location
+               Registry::retrieve('apf::core', 'InternalLogTarget'),
+               'Place holder with name "' . $name . '" does not exist within the current document ' .
+               'handled by document controller "' . get_class($this) . '". Please check your setup.',
+               LogEntry::SEVERITY_WARNING
+            )
+         );
       }
    }
 

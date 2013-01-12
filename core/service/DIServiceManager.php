@@ -130,7 +130,7 @@ final class DIServiceManager {
 
       // Invoke benchmarker. Suppress warning for already started timers with circular calls!
       // Suppressing is here done by a dirty '@', because we will run into an error anyway.
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $benchId = 'DIServiceManager::getServiceObject(' . $configNamespace . ',' . $sectionName . ',' . $context . ',' . $language . ')';
       @$t->start($benchId);
@@ -175,7 +175,7 @@ final class DIServiceManager {
       // this is no problem. Hence, the injected instance is then only one time constructed.
 
       /* @var $serviceObject APFDIService */
-      $serviceObject = &ServiceManager::getServiceObject($namespace, $class, $context, $language, $serviceType, $cacheKey);
+      $serviceObject = & ServiceManager::getServiceObject($namespace, $class, $context, $language, $serviceType, $cacheKey);
 
       // do param injection (static configuration)
       $cfTasks = $section->getSection('conf');
@@ -235,13 +235,22 @@ final class DIServiceManager {
 
                // append error to log to provide debugging information
                import('core::logging', 'Logger');
-               $log = &Singleton::getInstance('Logger');
+               $log = & Singleton::getInstance('Logger');
                /* @var $log Logger */
                $instructions = '';
                foreach (self::$INJECTION_CALL_CACHE as $injectionInstruction => $DUMMY) {
                   $instructions .= PHP_EOL . $injectionInstruction;
                }
-               $log->logEntry('php', '[DIServiceManager::getServiceObject()] Injection stack trace: ' . $instructions, LogEntry::SEVERITY_TRACE);
+
+               $log->addEntry(
+                  new SimpleLogEntry(
+                     // use the configured log target to allow custom configuration of APF-internal log statements
+                     // to be written to a custom file/location
+                     Registry::retrieve('apf::core', 'InternalLogTarget'),
+                     '[DIServiceManager::getServiceObject()] Injection stack trace: ' . $instructions,
+                     LogEntry::SEVERITY_TRACE
+                  )
+               );
 
                // print note with shorted information
                throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Detected circular injection! ' .
@@ -254,7 +263,7 @@ final class DIServiceManager {
                self::$INJECTION_CALL_CACHE[$injectionKey] = true;
 
                // get the dependent service object
-               $miObject = &self::getServiceObject($namespace, $name, $context, $language);
+               $miObject = & self::getServiceObject($namespace, $name, $context, $language);
 
                // inject the current service object with the created one
                if (method_exists($serviceObject, $method)) {
