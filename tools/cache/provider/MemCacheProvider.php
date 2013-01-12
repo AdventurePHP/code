@@ -80,19 +80,20 @@ class MemCacheProvider extends CacheBase implements CacheProvider {
 
          // write to cache (try to replace all the time)
          $namespace = $this->getConfigAttribute('Cache.Namespace');
-         $namespace = $namespace . '_' . $cacheKey->getKey();
+
+         $identifier = $namespace . '_' . $cacheKey->getKey();
          $serialized = @serialize($object);
 
          if ($serialized !== false) {
 
             // remember current namespace and key
-            $this->cacheKeyStore[$namespace][] = $cacheKey->getKey();
+            $this->cacheKeyStore[$namespace][] = $identifier;
 
             // try to replace
-            $replace_result = $mem->replace($namespace, $serialized);
+            $replace_result = $mem->replace($identifier, $serialized);
 
             if ($replace_result !== true) {
-               $store_result = $mem->set($namespace, $serialized);
+               $store_result = $mem->set($identifier, $serialized);
                $mem->close();
                return $store_result;
             } else {

@@ -105,13 +105,6 @@ class ContactManager extends APFObject {
 
       // redirect to the thanks page to avoid F5 bugs!
       $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('contactview' => 'thanks')));
-
-      $urlRewriting = Registry::retrieve('apf::core', 'URLRewriting');
-
-      if ($urlRewriting != true) {
-         $link = str_replace('&amp;', '&', $link);
-      }
-
       HeaderManager::forward($link);
    }
 

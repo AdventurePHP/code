@@ -20,11 +20,11 @@
  */
 
 /**
- * @abstract
  * @package tools::cache
- * @class CacheCoreObject
+ * @class CacheBase
+ * @abstract
  *
- * Implements an abstact base class for the cache provider and the cache manager. Includes
+ * Implements an abstract base class for the cache provider and the cache manager. Includes
  * a generic access method to the cache configuration attributes.
  *
  * @author Christian Achatz
