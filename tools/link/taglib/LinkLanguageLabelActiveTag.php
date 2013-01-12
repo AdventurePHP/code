@@ -21,7 +21,7 @@
 
 /**
  * @package tools::link::taglib
- * @class LinkLanguageLabelTag
+ * @class LinkLanguageLabelActiveTag
  *
  * Re-implements the language label tag for the link tags.
  *
@@ -29,17 +29,24 @@
  * @version
  * Version 0.1, 25.11.2012<br />
  */
-class LinkLanguageLabelTag extends LanguageLabelTag {
+class LinkLanguageLabelActiveTag extends LanguageLabelTag {
 
    public function onAfterAppend() {
+      // if link is active, Taglib will be transformed to set the data from the defined config file
       /* @var $parent HtmlLinkTag */
       $parent = $this->getParentObject();
-      foreach ($parent->getChildren() as $child) {
-         if ($child instanceof LinkLanguageLabelActiveTag && $parent->isActive()) {
-            return;
-         }
+      if ($parent->isActive()) {
+         $parent->setContent(parent::transform());
+         return;
       }
-      $parent->setContent(parent::transform());
+
+      // removes remaining if link is not active
+      $count = substr_count($parent->getContent(), '<' . $this->getObjectId() . " />\r\n");
+      if ($count > 0) {
+         $parent->setContent(str_replace('<' . $this->getObjectId() . ' />' . "\r\n", '', $parent->getContent()));
+      } else {
+         $parent->setContent(str_replace('<' . $this->getObjectId() . ' />', '', $parent->getContent()));
+      }
    }
 
    public function transform() {

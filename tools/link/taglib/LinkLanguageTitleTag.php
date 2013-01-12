@@ -21,25 +21,25 @@
 
 /**
  * @package tools::link::taglib
- * @class LinkLanguageLabelTag
+ * @class LinkLanguageTitleTag
  *
  * Re-implements the language label tag for the link tags.
  *
  * @author Werner Liemberger wpublicmail [at] gmail DOT com
  * @version
- * Version 0.1, 25.11.2012<br />
+ * Version 0.1, 28.11.2012<br />
  */
-class LinkLanguageLabelTag extends LanguageLabelTag {
+class LinkLanguageTitleTag extends LanguageLabelTag {
 
-   public function onAfterAppend() {
+   public function onParseTime() {
       /* @var $parent HtmlLinkTag */
       $parent = $this->getParentObject();
       foreach ($parent->getChildren() as $child) {
-         if ($child instanceof LinkLanguageLabelActiveTag && $parent->isActive()) {
+         if ($child instanceof LinkLanguageTitleActiveTag && $parent->isActive()) {
             return;
          }
       }
-      $parent->setContent(parent::transform());
+      $parent->addAttributeToAttributeList('title', parent::transform());
    }
 
    public function transform() {

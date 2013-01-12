@@ -21,25 +21,33 @@
 
 /**
  * @package tools::link::taglib
- * @class LinkLanguageLabelTag
+ * @class LinkLanguageTitleActiveTag
  *
- * Re-implements the language label tag for the link tags.
+ * Re-implements the language label tag for the link tags. This title attribute
+ * will only be set, of the link is active.
  *
  * @author Werner Liemberger wpublicmail [at] gmail DOT com
  * @version
- * Version 0.1, 25.11.2012<br />
+ * Version 0.1, 30.11.2012<br />
  */
-class LinkLanguageLabelTag extends LanguageLabelTag {
+class LinkLanguageTitleActiveTag extends LanguageLabelTag {
 
-   public function onAfterAppend() {
+   public function onParseTime() {
+      // if link is active, content will be set.
       /* @var $parent HtmlLinkTag */
       $parent = $this->getParentObject();
-      foreach ($parent->getChildren() as $child) {
-         if ($child instanceof LinkLanguageLabelActiveTag && $parent->isActive()) {
-            return;
-         }
+      if ($parent->isActive()) {
+         $parent->addAttributeToAttributeList('title', parent::transform());
       }
-      $parent->setContent(parent::transform());
+
+      // removes remaining if link is not active
+      $count = substr_count($parent->getContent(), '<' . $this->getObjectId() . " />\r\n");
+      if ($count > 0) {
+         $parent->setContent(str_replace('<' . $this->getObjectId() . ' />' . "\r\n", '', $parent->getContent()));
+      } else {
+         $parent->setContent(str_replace('<' . $this->getObjectId() . ' />', '', $parent->getContent()));
+      }
+
    }
 
    public function transform() {

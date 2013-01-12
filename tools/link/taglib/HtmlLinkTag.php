@@ -19,6 +19,9 @@
  * -->
  */
 import('tools::link::taglib', 'LinkLanguageLabelTag');
+import('tools::link::taglib', 'LinkLanguageTitleTag');
+import('tools::link::taglib', 'LinkLanguageLabelActiveTag');
+import('tools::link::taglib', 'LinkLanguageTitleActiveTag');
 import('tools::link::taglib', 'LinkGenerationTag');
 
 /**
@@ -30,7 +33,8 @@ import('tools::link::taglib', 'LinkGenerationTag');
  * @author Werner Liemberger wpublicmail [at] gmail DOT com
  * @version
  * Version 0.1, 06.08.2011<br />
- * Version 0.2, 22.11.2012 Werner Liemberger: removed a:getstring and ignored href bug<br />
+ * Version 0.2, 22.11.2012 Werner Liemberger: add removed a:getstring and ignored href bug<br />
+ * Version 0.3, 30.11.2012 Werner Liemberger: add title:getstring and move $this->__extractTagLibTags(); in onPareTime() to the beginning<br />
  */
 class HtmlLinkTag extends LinkGenerationTag {
 
@@ -44,9 +48,13 @@ class HtmlLinkTag extends LinkGenerationTag {
 
    public function __construct() {
       $this->tagLibs[] = new TagLib('tools::link::taglib', 'LinkLanguageLabelTag', 'a', 'getstring');
+      $this->tagLibs[] = new TagLib('tools::link::taglib', 'LinkLanguageLabelActiveTag', 'aActive', 'getstring');
+      $this->tagLibs[] = new TagLib('tools::link::taglib', 'LinkLanguageTitleTag', 'title', 'getstring');
+      $this->tagLibs[] = new TagLib('tools::link::taglib', 'LinkLanguageTitleActiveTag', 'titleActive', 'getstring');
    }
 
    public function onParseTime() {
+
       // Move all vales from parameters which are in the white list into this array
       // and remove them from the attribute array, because they should not be part oft the url.
       foreach ($this->attributeList as $key => $elem) {
@@ -64,6 +72,7 @@ class HtmlLinkTag extends LinkGenerationTag {
          throw new InvalidArgumentException('[HtmlLinkTag::onParseTime()] The Attribute "href" is missing. '
                . 'Please provide the destination!', E_USER_ERROR);
       }
+      // load Taglibs which might add some Attributes to this one.
       $this->extractTagLibTags();
    }
 
@@ -80,11 +89,12 @@ class HtmlLinkTag extends LinkGenerationTag {
          throw new InvalidArgumentException('No anchor text available!');
       }
 
-      // if the current link is active, this taglib adds the css class active.
       if (!isset($this->attributeList['href'])) {
          return '';
       }
-      if (substr_count(str_replace('&', '&amp;', Registry::retrieve('apf::core', 'CurrentRequestURL')), $this->attributeList['href']) > 0) {
+
+      // if the current link is active, this taglib adds the css class active.
+      if ($this->isActive()) {
          $this->attributeList['class'] = $this->attributeList['class'] . ' active';
       }
 
@@ -95,6 +105,37 @@ class HtmlLinkTag extends LinkGenerationTag {
       }
 
       return '<a ' . $this->getAttributesAsString($this->attributeList) . '>' . $content . '</a>';
+   }
+
+   /**
+    * checks if link is active and returns the result
+    * @return boolean
+    *
+    * @author Werner Liemberger wpublicmail [at] gmail DOT com
+    * @version
+    * Version 0.1, 30.11.2012<br />
+    */
+   public function isActive() {
+      if (substr_count(str_replace('&', '&amp;', Registry::retrieve('apf::core', 'CurrentRequestURL')), $this->attributeList['href']) > 0) {
+         return true;
+      }
+      return false;
+   }
+
+   /**
+    * Through this function a parameter in the attributeList can be changed.
+    *
+    * @param string $name
+    * @param string $value
+    *
+    * @author Werner Liemberger wpublicmail [at] gmail DOT com
+    * @version
+    * Version 0.1, 30.11.2012<br />
+    */
+   public function addAttributeToAttributeList($name, $value) {
+      if (array_key_exists($name, $this->attributeList)) {
+         $this->attributeList[$name] = $value;
+      }
    }
 
 }
