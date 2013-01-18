@@ -96,7 +96,8 @@ class GraphiteLogWriter implements LogWriter {
 
    public function writeLogEntries(array $entries) {
 
-      $socket = fsockopen('udp://' . $this->host, $this->port, $errorNumber, $errorMessage);
+      // suppress errors for fsockopen() to have one nice exception message instead of several error messages
+      $socket = @fsockopen('udp://' . $this->host, $this->port, $errorNumber, $errorMessage);
       if ($socket === false || !empty($errorNumber) || !empty($errorMessage)) { // really a good check for not-empty?
          throw new LoggerException('Socket connection to host "' . $this->host . '" and port "' . $this->port
                . '" cannot be established (code: ' . $errorNumber . '; message: ' . $errorMessage);
