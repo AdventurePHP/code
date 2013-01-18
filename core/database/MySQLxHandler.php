@@ -34,7 +34,7 @@ import('core::database', 'AbstractDatabaseHandler');
 class MySQLxHandler extends AbstractDatabaseHandler {
 
    public function __construct() {
-      $this->dbLogFileName = 'mysqlx';
+      $this->dbLogTarget = 'mysqlx';
       $this->dbPort = '3306';
    }
 
@@ -151,7 +151,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
 
       // log statements in debug mode or when requested explicitly
       if ($this->dbDebug == true || $logStatement == true) {
-         $this->dbLog->logEntry($this->dbLogFileName, '[MySQLxHandler::executeStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
+         $this->dbLog->logEntry($this->dbLogTarget, '[MySQLxHandler::executeStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
       // execute the statement with use of the current connection!
@@ -163,7 +163,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
 
       if (!empty($mysql_error) || !empty($mysql_errno)) {
          $message = '[MySQLxHandler::executeStatement()] (' . $mysql_errno . ') ' . $mysql_error . ' (Statement: ' . $statement . ')';
-         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_ERROR);
+         $this->dbLog->logEntry($this->dbLogTarget, $message, LogEntry::SEVERITY_ERROR);
          throw new DatabaseHandlerException('[MySQLxHandler::executeStatement()] ' . $message);
       }
 
@@ -282,7 +282,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
 
       // log statements in debug mode or when requested explicitly
       if ($this->dbDebug == true || $logStatement == true) {
-         $this->dbLog->logEntry($this->dbLogFileName, '[MySQLxHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
+         $this->dbLog->logEntry($this->dbLogTarget, '[MySQLxHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
       // execute the statement with use of the current connection!
@@ -294,7 +294,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
 
       if (!empty($mysql_error) || !empty($mysql_errno)) {
          $message = '(' . $mysql_errno . ') ' . $mysql_error . ' (Statement: ' . $statement . ')';
-         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_DEBUG);
+         $this->dbLog->logEntry($this->dbLogTarget, $message, LogEntry::SEVERITY_DEBUG);
          throw new DatabaseHandlerException('[MySQLxHandler->executeTextStatement()] ' . $message);
       }
 

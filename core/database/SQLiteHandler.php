@@ -45,7 +45,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
    protected $dbError = null;
 
    public function __construct() {
-      $this->dbLogFileName = 'sqlite';
+      $this->dbLogTarget = 'sqlite';
    }
 
    /**
@@ -101,7 +101,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
    public function executeTextStatement($statement, $logStatement = false) {
 
       if ($logStatement == true) {
-         $this->dbLog->logEntry($this->dbLogFileName, '[SQLiteHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
+         $this->dbLog->logEntry($this->dbLogTarget, '[SQLiteHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
       $result = sqlite_query($this->dbConn, $statement);
@@ -109,7 +109,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
       if ($result === false) {
          $message = sqlite_error_string(sqlite_last_error($this->dbConn));
          $message .= ' (Statement: ' . $statement . ')';
-         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_ERROR);
+         $this->dbLog->logEntry($this->dbLogTarget, $message, LogEntry::SEVERITY_ERROR);
       }
 
       // remember last insert id for further usage
@@ -141,7 +141,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
       $statement = $this->getPreparedStatement($namespace, $statementName, $params);
 
       if ($logStatement == true) {
-         $this->dbLog->logEntry($this->dbLogFileName, '[SQLiteHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
+         $this->dbLog->logEntry($this->dbLogTarget, '[SQLiteHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
       $result = sqlite_query($this->dbConn, $statement);
@@ -149,7 +149,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
       if ($result === false) {
          $message = sqlite_error_string(sqlite_last_error($this->dbConn));
          $message .= ' (Statement: ' . $statement . ')';
-         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_DEBUG);
+         $this->dbLog->logEntry($this->dbLogTarget, $message, LogEntry::SEVERITY_DEBUG);
       }
 
       // remember last insert id for further usage

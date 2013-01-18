@@ -50,7 +50,8 @@ class LoggerException extends Exception {
  * @package core::logging
  * @class LogWriter
  *
- * Defines the interface for a log writer.
+ * Defines the interface for a log writer that can be registered
+ * with the Logger using the addLogWriter() method.
  *
  * @author Christian Achatz
  * @version
@@ -94,6 +95,7 @@ interface LogWriter {
  * @author Christian Achatz
  * @version
  * Version 0.1, 17.04.2012<br />
+ * Version 0.2, 17.01.2013 (Removed the constructor definition to easily allow custom log entry implementations)<br />
  */
 interface LogEntry {
 
@@ -106,21 +108,6 @@ interface LogEntry {
    const SEVERITY_WARNING = 'WARN';
    const SEVERITY_ERROR = 'ERROR';
    const SEVERITY_FATAL = 'FATAL';
-
-   /**
-    * @public
-    *
-    * Creates a new log entry.
-    *
-    * @param string $target The log target of this entry.
-    * @param string $message Desired error message.
-    * @param string $severity Error message severity.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.03.2007<br />
-    */
-   public function __construct($target, $message, $severity);
 
    /**
     * @public
@@ -431,6 +418,23 @@ class Logger {
          return $this->writers[$target];
       }
       throw new LoggerException('Log writer with name "' . $target . '" is not registered!');
+   }
+
+   /**
+    * @public
+    *
+    * Returns a list of registered log targets.
+    * <p/>
+    * May be used for re-configuration (e.g. register a debugging log writer) or information purposes.
+    *
+    * @return string[] The list of registered log targets.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 16.01.2013<br />
+    */
+   public function getRegisteredTargets() {
+      return array_keys($this->writers);
    }
 
    /**

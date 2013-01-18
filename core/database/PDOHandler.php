@@ -47,7 +47,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     * Version 0.1, 11.04.2012<br />
     */
    public function __construct() {
-      $this->dbLogFileName = 'pdo';
+      $this->dbLogTarget = 'pdo';
    }
 
    public function init($initParam) {
@@ -76,7 +76,7 @@ class PDOHandler extends AbstractDatabaseHandler {
 
       // log dsn if debugging is active
       if ($this->dbDebug === true) {
-         $this->dbLog->logEntry($this->dbLogFileName, '[PDOHandler::connect()] Current DSN: ' . $dsn, LogEntry::SEVERITY_DEBUG);
+         $this->dbLog->logEntry($this->dbLogTarget, '[PDOHandler::connect()] Current DSN: ' . $dsn, LogEntry::SEVERITY_DEBUG);
       }
 
       // connect to database
@@ -203,7 +203,7 @@ class PDOHandler extends AbstractDatabaseHandler {
 
       // log statements in debug mode or when requested explicitly
       if ($this->dbDebug == true || $logStatement == true) {
-         $this->dbLog->logEntry($this->dbLogFileName, '[PDOHandler::executeStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
+         $this->dbLog->logEntry($this->dbLogTarget, '[PDOHandler::executeStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
       // prepare statement for execution
@@ -213,7 +213,7 @@ class PDOHandler extends AbstractDatabaseHandler {
       if (!$pdoStatement || !$pdoStatement->execute()) {
          $errorInfo = $this->dbConn->errorInfo();
          $message = '(' . $errorInfo[0] . '/' . $errorInfo[1] . ') ' . $errorInfo[2] . ' (Statement: ' . $statement . ')';
-         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_DEBUG);
+         $this->dbLog->logEntry($this->dbLogTarget, $message, LogEntry::SEVERITY_DEBUG);
          throw new DatabaseHandlerException('[PDOHandler::executeStatement()] ' . $message);
       }
 
@@ -242,7 +242,7 @@ class PDOHandler extends AbstractDatabaseHandler {
    public function executeTextStatement($statement, $logStatement = false) {
       // log statements in debug mode or when requested explicitly
       if ($this->dbDebug == true || $logStatement == true) {
-         $this->dbLog->logEntry($this->dbLogFileName, '[PDOHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
+         $this->dbLog->logEntry($this->dbLogTarget, '[PDOHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
       // prepare statement for execution
@@ -252,7 +252,7 @@ class PDOHandler extends AbstractDatabaseHandler {
       if (!$pdoStatement || !$pdoStatement->execute()) {
          $errorInfo = $this->dbConn->errorInfo();
          $message = '(' . $errorInfo[0] . '/' . $errorInfo[1] . ') ' . $errorInfo[2] . ' (Statement: ' . $statement . ')';
-         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_ERROR);
+         $this->dbLog->logEntry($this->dbLogTarget, $message, LogEntry::SEVERITY_ERROR);
          throw new DatabaseHandlerException('[PDOHandler::executeStatement()] ' . $message);
       }
 

@@ -39,7 +39,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    private $bindNumRows = 0;
 
    public function __construct() {
-      $this->dbLogFileName = 'mysqli';
+      $this->dbLogTarget = 'mysqli';
       $this->dbPort = '3306';
    }
 
@@ -103,7 +103,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
 
       // log statements in debug mode or when requested explicitly
       if ($this->dbDebug == true || $logStatement == true) {
-         $this->dbLog->logEntry($this->dbLogFileName, '[MySQLiHandler::executeStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
+         $this->dbLog->logEntry($this->dbLogTarget, '[MySQLiHandler::executeStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
       // execute the statement with use of the current connection!
@@ -117,7 +117,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // get current error to be able to do error handling
       if (!empty($error) || !empty($errno)) {
          $message = '(' . $errno . ') ' . $error . ' (Statement: ' . $statement . ')';
-         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_ERROR);
+         $this->dbLog->logEntry($this->dbLogTarget, $message, LogEntry::SEVERITY_ERROR);
          throw new DatabaseHandlerException('[MySQLiHandler->executeStatement()] ' . $message);
       }
 
@@ -181,7 +181,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
 
       // log statements in debug mode or when requested explicitly
       if ($this->dbDebug == true || $logStatement == true) {
-         $this->dbLog->logEntry($this->dbLogFileName, '[MySQLiHandler::executeBindStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
+         $this->dbLog->logEntry($this->dbLogTarget, '[MySQLiHandler::executeBindStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
       $t->stop($id);
 
@@ -514,7 +514,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
 
       // log statements in debug mode or when requested explicitly
       if ($this->dbDebug == true || $logStatement == true) {
-         $this->dbLog->logEntry($this->dbLogFileName, '[MySQLiHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
+         $this->dbLog->logEntry($this->dbLogTarget, '[MySQLiHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
 
       // execute the statement with use of the current connection!
@@ -527,7 +527,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
 
       if (!empty($error) || !empty($errno)) {
          $message = '(' . $errno . ') ' . $error . ' (Statement: ' . $statement . ')';
-         $this->dbLog->logEntry($this->dbLogFileName, $message, LogEntry::SEVERITY_ERROR);
+         $this->dbLog->logEntry($this->dbLogTarget, $message, LogEntry::SEVERITY_ERROR);
          throw new DatabaseHandlerException('[MySQLiHandler->executeTextStatement()] ' . $message);
       }
 

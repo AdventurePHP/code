@@ -65,7 +65,7 @@ import('core::database', 'DatabaseConnection');
  * [conf.debug.method = "setDebug"
  * conf.debug.value = "..."]
  *
- * [conf.log-file-name.method = "setLogFileName"
+ * [conf.log-file-name.method = "setLogTarget"
  * conf.log-file-name.value = "..."]
  * </code>
  * This connection definition may be injected into another service using some kind of
@@ -152,9 +152,9 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
 
    /**
     * @protected
-    * @var string Name of the log file. Must be defined within the implementation class!
+    * @var string Name of the log target. Must be defined within the implementation class!
     */
-   protected $dbLogFileName;
+   protected $dbLogTarget;
 
    /**
     * @protected
@@ -336,18 +336,18 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    /**
     * @public
     *
-    * Defines the name of the log file for the debugging feature.
+    * Defines the name of the log target for the debugging feature.
     * <p/>
     * Can be used for manual or DI configuration.
     *
-    * @param string $logFileName The name of debug log file.
+    * @param string $logTarget The name of debug log file.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.05.2012<br />
     */
-   public function setLogFileName($logFileName) {
-      $this->dbLogFileName = $logFileName;
+   public function setLogTarget($logTarget) {
+      $this->dbLogTarget = $logTarget;
    }
 
    /**
@@ -361,7 +361,7 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     * Version 0.1, 07.05.2012<br />
     */
    public function setup() {
-      $this->dbLog = &Singleton::getInstance('Logger');
+      $this->dbLog = & Singleton::getInstance('Logger');
       $this->connect();
    }
 
