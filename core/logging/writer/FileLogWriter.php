@@ -134,7 +134,7 @@ class FileLogWriter implements LogWriter {
 
       // prepend host prefix to support multiple log files for clustered hosting environments
       if ($this->hostPrefix !== null) {
-         $fileName = $this->hostPrefix . '_' . $fileName;
+         $fileName = $this->hostPrefix . '__' . $fileName;
       }
 
       return $this->logDir . '/' . date('Y_m_d') . '__' . strtolower(preg_replace('/[^A-Za-z0-9\-_]/', '', $fileName)) . '.log';
