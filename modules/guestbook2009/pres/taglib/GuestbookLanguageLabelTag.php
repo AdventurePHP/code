@@ -30,7 +30,7 @@
  * @version
  * Version 0.1, 21.05.2009<br />
  */
-class GuestbookLanguageLabelTag extends GuestbookLanguageLabelTag {
+class GuestbookLanguageLabelTag extends LanguageLabelTag {
 
    /**
     * @public
