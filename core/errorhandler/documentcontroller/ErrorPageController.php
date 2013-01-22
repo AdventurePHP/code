@@ -21,7 +21,7 @@
 
 /**
  * @package core::errorhandler::documentcontroller
- * @class errorpage_v1_controller
+ * @class ErrorPageController
  *
  * Implements the error page's document controller.
  *
@@ -29,7 +29,7 @@
  * @version
  * Version 0.1, 21.01.2007<br />
  */
-class errorpage_v1_controller extends BaseDocumentController {
+class ErrorPageController extends BaseDocumentController {
 
    /**
     * @public
