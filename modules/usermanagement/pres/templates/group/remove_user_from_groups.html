@@ -8,30 +8,32 @@
        config="labels.ini"
        entry="frontend.user.remove-user-from-group.headline"/></h3>
 <html:form name="Groups" method="post">
-   <form:addvalidator
-         class="MultiSelectFieldValidator"
-         button="Remove"
-         control="Groups"
-         />
-   <p>
-      <form:getstring
-             namespace="modules::usermanagement::pres"
-             config="labels.ini"
-             entry="frontend.user.remove-user-from-group.intro.text"/>
-   </p>
-   <p>
-      <form:multiselect name="Groups" size="4"/>
-   </p>
-   <p>
-      <form:button name="Remove">
-         <button:getstring
+   <div>
+      <form:addvalidator
+            class="MultiSelectFieldValidator"
+            button="Remove"
+            control="Groups"
+            />
+      <p>
+         <form:getstring
                 namespace="modules::usermanagement::pres"
                 config="labels.ini"
-                entry="frontend.user.remove-user-from-group.button.label"/>
-      </form:button>
-   </p>
+                entry="frontend.user.remove-user-from-group.intro.text"/>
+      </p>
+      <p>
+         <form:multiselect name="Groups" size="4"/>
+      </p>
+      <p>
+         <form:button name="Remove">
+            <button:getstring
+                   namespace="modules::usermanagement::pres"
+                   config="labels.ini"
+                   entry="frontend.user.remove-user-from-group.button.label"/>
+         </form:button>
+      </p>
+   </div>
 </html:form>
-      
+
 <html:template name="NoGroups">
    <p>
       <template:getstring

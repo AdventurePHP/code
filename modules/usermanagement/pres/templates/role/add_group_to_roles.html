@@ -9,31 +9,33 @@
       /></h3>
 <core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
 <html:form name="Roles" method="post">
-   <form:addvalidator
-         class="MultiSelectFieldValidator"
-         button="Assign"
-         control="Roles"
-         />
-   <p>
-      <form:getstring
-         name="display-name"
-         namespace="modules::usermanagement::pres"
-         config="labels.ini"
-         entry="frontend.group.add-roles-to-group.intro.text"
-         />
-   </p>
-   <p>
-      <form:multiselect name="Roles" size="4"/>
-   </p>
-   <p>
-      <form:button name="Assign">
-         <button:getstring
-            namespace="modules::usermanagement::pres"
-            config="labels.ini"
-            entry="frontend.group.add-roles-to-group.button.label"
+   <div>
+      <form:addvalidator
+            class="MultiSelectFieldValidator"
+            button="Assign"
+            control="Roles"
             />
-      </form:button>
-   </p>
+      <p>
+         <form:getstring
+               name="display-name"
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.group.add-roles-to-group.intro.text"
+               />
+      </p>
+      <p>
+         <form:multiselect name="Roles" size="4"/>
+      </p>
+      <p>
+         <form:button name="Assign">
+            <button:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.group.add-roles-to-group.button.label"
+                  />
+         </form:button>
+      </p>
+   </div>
 </html:form>
 <html:template name="NoMoreRoles">
    <p>

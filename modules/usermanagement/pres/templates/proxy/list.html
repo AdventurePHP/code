@@ -11,17 +11,19 @@
 </p>
 <p>
    <html:form class="type-filter" name="type-filter">
-      <form:getstring
-            namespace="modules::usermanagement::pres"
-            config="labels.ini"
-            entry="frontend.proxy.list.filter.label"/>
-      <form:select name="proxytypeid" />
-      <form:button name="go">
-         <button:getstring
+      <div>
+         <form:getstring
                namespace="modules::usermanagement::pres"
                config="labels.ini"
-               entry="frontend.proxy.list.button.label"/>
-      </form:button>
+               entry="frontend.proxy.list.filter.label"/>
+         <form:select name="proxytypeid" />
+         <form:button name="go">
+            <button:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.list.button.label"/>
+         </form:button>
+      </div>
    </html:form>
 </p>
 <table class="vis-def">

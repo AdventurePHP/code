@@ -4,7 +4,7 @@
 @>
 <core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
 <html:form class="umgt-fe-login" name="login" method="post">
-   <fieldset>
+   <div>
       <form:placeholder name="login-error" />
       <label for="umgt-fe-login-user">
          <form:getstring
@@ -38,7 +38,7 @@
          button="sendFormLogin"
          control="username|password"
       />
-   </fieldset>
+   </div>
 </html:form>
 
 <html:template name="login-error">

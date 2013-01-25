@@ -8,45 +8,47 @@
          config="labels.ini"
          entry="frontend.permission.add.headline"/></h3>
 <html:form name="PermissionAdd" method="post">
-   <form:addvalidator
-         class="TextLengthValidator"
-         button="Add"
-         control="DisplayName|Name|Value"
-         />
-   <p>
-      <form:getstring
-         namespace="modules::usermanagement::pres"
-         config="labels.ini"
-         entry="frontend.permission.add.intro.text"/>
-   </p>
-   <p>
-      <label><form:getstring
+   <div>
+      <form:addvalidator
+            class="TextLengthValidator"
+            button="Add"
+            control="DisplayName|Name|Value"
+            />
+      <p>
+         <form:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.permission.add.intro.text"/>
+      </p>
+      <p>
+         <label><form:getstring
                namespace="modules::usermanagement::pres"
                config="labels.ini"
                entry="frontend.permission.add.display-name.label"/></label>
-      <form:text name="DisplayName" maxlength="100"/>
-   </p>
-   <p>
-      <label><form:getstring
+         <form:text name="DisplayName" maxlength="100"/>
+      </p>
+      <p>
+         <label><form:getstring
                namespace="modules::usermanagement::pres"
                config="labels.ini"
                entry="frontend.permission.add.name.label"/></label>
-      <form:text name="Name" maxlength="100"/>
-   </p>
-   <p>
-      <label><form:getstring
+         <form:text name="Name" maxlength="100"/>
+      </p>
+      <p>
+         <label><form:getstring
                namespace="modules::usermanagement::pres"
                config="labels.ini"
                entry="frontend.permission.add.value.label"/></label>
-      <form:text name="Value" maxlength="100"/>
-   </p>
-   <p>
-      <form:button name="Add">
-         <button:getstring
-               namespace="modules::usermanagement::pres"
-               config="labels.ini"
-               entry="frontend.permission.add.button.label"/>
-      </form:button>
-      <form:hidden name="permissionsetid"/>
-   </p>
+         <form:text name="Value" maxlength="100"/>
+      </p>
+      <p>
+         <form:button name="Add">
+            <button:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.permission.add.button.label"/>
+         </form:button>
+         <form:hidden name="permissionsetid"/>
+      </p>
+   </div>
 </html:form>

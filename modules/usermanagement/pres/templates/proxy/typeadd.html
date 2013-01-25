@@ -12,32 +12,34 @@
        config="labels.ini"
        entry="frontend.proxy.add-type.intro.text"/></p>
 <html:form name="add" method="post">
-   <form:error>
-      <div class="error-cont">
-         <error:getstring
-                namespace="modules::usermanagement::pres"
-                config="labels.ini"
-                entry="frontend.proxy.add-type.validator.message"/>
-      </div>
-   </form:error>
-   <p>
-      <label for="proxytypename"><form:getstring
-             namespace="modules::usermanagement::pres"
-             config="labels.ini"
-             entry="frontend.proxy.add-type.proxy-type-name.label"/></label>
-      <form:text id="proxytypename" name="proxytypename" maxlength="100" />
-      <form:addvalidator
-            control="proxytypename"
-            button="send"
-            class="TextLengthValidator"
-            />
-   </p>
-   <p>
-      <form:button name="send">
-         <button:getstring
-             namespace="modules::usermanagement::pres"
-             config="labels.ini"
-             entry="frontend.proxy.add-type.button.label"/>
-      </form:button>
-   </p>
+   <div>
+      <form:error>
+         <div class="error-cont">
+            <error:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.add-type.validator.message"/>
+         </div>
+      </form:error>
+      <p>
+         <label for="proxytypename"><form:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.proxy.add-type.proxy-type-name.label"/></label>
+         <form:text id="proxytypename" name="proxytypename" maxlength="100" />
+         <form:addvalidator
+               control="proxytypename"
+               button="send"
+               class="TextLengthValidator"
+               />
+      </p>
+      <p>
+         <form:button name="send">
+            <button:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.add-type.button.label"/>
+         </form:button>
+      </p>
+   </div>
 </html:form>

@@ -17,18 +17,22 @@
 </p>
 <core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
 <html:form name="GroupDelNo" method="post">
-  <form:button name="No" value="No">
-     <button:getstring
-        namespace="modules::usermanagement::pres"
-        config="labels.ini"
-        entry="frontend.group.delete.button-no.label"/>
-  </form:button>
+   <div>
+   <form:button name="No" value="No">
+      <button:getstring
+         namespace="modules::usermanagement::pres"
+         config="labels.ini"
+         entry="frontend.group.delete.button-no.label"/>
+   </form:button>
+   </div>
 </html:form>
 <html:form name="GroupDelYes" method="post">
-  <form:button name="Yes" value="Yes">
-     <button:getstring
-        namespace="modules::usermanagement::pres"
-        config="labels.ini"
-        entry="frontend.group.delete.button-yes.label"/>
-  </form:button>
+   <div>
+      <form:button name="Yes" value="Yes">
+         <button:getstring
+            namespace="modules::usermanagement::pres"
+            config="labels.ini"
+            entry="frontend.group.delete.button-yes.label"/>
+      </form:button>
+   </div>
 </html:form>

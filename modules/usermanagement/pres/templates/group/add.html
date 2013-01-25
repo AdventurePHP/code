@@ -16,32 +16,34 @@
 </p>
 <core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
 <html:form name="GroupAdd" method="post">
-   <form:addvalidator
-         class="TextLengthValidator"
-         control="DisplayName"
-         button="Add"
-         />
-   <p>
-      <label><form:getstring
+   <div>
+      <form:addvalidator
+            class="TextLengthValidator"
+            control="DisplayName"
+            button="Add"
+            />
+      <p>
+         <label><form:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.group.add.display-name.label"
+               /></label>
+         <form:text name="DisplayName" maxlength="100"/>
+      </p>
+      <p>
+         <label><form:getstring
+                     namespace="modules::usermanagement::pres"
+                     config="labels.ini"
+                     entry="frontend.group.add.description.label"
+                     /></label>
+         <form:area name="Description" />
+      </p>
+      <form:button name="Add">
+         <form:getstring
             namespace="modules::usermanagement::pres"
             config="labels.ini"
-            entry="frontend.group.add.display-name.label"
-            /></label>
-      <form:text name="DisplayName" maxlength="100"/>
-   </p>
-   <p>
-      <label><form:getstring
-                  namespace="modules::usermanagement::pres"
-                  config="labels.ini"
-                  entry="frontend.group.add.description.label"
-                  /></label>
-      <form:area name="Description" />
-   </p>
-   <form:button name="Add">
-      <form:getstring
-         namespace="modules::usermanagement::pres"
-         config="labels.ini"
-         entry="frontend.group.add.button.label"
-         />
-   </form:button>
+            entry="frontend.group.add.button.label"
+            />
+      </form:button>
+   </div>
 </html:form>

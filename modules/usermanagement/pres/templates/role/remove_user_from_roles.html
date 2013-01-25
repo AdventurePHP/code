@@ -8,28 +8,30 @@
        config="labels.ini"
        entry="frontend.user.remove-user-from-role.headline"/></h3>
 <html:form name="Roles" method="post">
-   <form:addvalidator
-         class="MultiSelectFieldValidator"
-         button="Remove"
-         control="Roles"
-         />
-   <p>
-      <form:getstring
-             namespace="modules::usermanagement::pres"
-             config="labels.ini"
-             entry="frontend.user.remove-user-from-role.intro.text"/>
-   </p>
-   <p>
-      <form:multiselect name="Roles" size="4"/>
-   </p>
-   <p>
-      <form:button name="Remove">
-         <button:getstring
-                namespace="modules::usermanagement::pres"
-                config="labels.ini"
-                entry="frontend.user.remove-user-from-role.button.label"/>
-      </form:button>
-   </p>
+   <div>
+      <form:addvalidator
+            class="MultiSelectFieldValidator"
+            button="Remove"
+            control="Roles"
+            />
+      <p>
+         <form:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.user.remove-user-from-role.intro.text"/>
+      </p>
+      <p>
+         <form:multiselect name="Roles" size="4"/>
+      </p>
+      <p>
+         <form:button name="Remove">
+            <button:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.user.remove-user-from-role.button.label"/>
+         </form:button>
+      </p>
+   </div>
 </html:form>
 <html:template name="NoMoreRoles">
    <p>

@@ -15,18 +15,22 @@
           entry="frontend.proxy.delete-proxy.intro.text"/>
 </p>
 <html:form name="DelNo" method="post">
-  <form:button name="No">
-     <button:getstring
-         namespace="modules::usermanagement::pres"
-         config="labels.ini"
-         entry="frontend.proxy.delete-proxy.button-no.label"/>
-  </form:button>
+   <div>
+      <form:button name="No">
+         <button:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.proxy.delete-proxy.button-no.label"/>
+      </form:button>
+   </div>
 </html:form>
 <html:form name="DelYes" method="post">
-  <form:button name="Yes">
-     <button:getstring
-         namespace="modules::usermanagement::pres"
-         config="labels.ini"
-         entry="frontend.proxy.delete-proxy.button-yes.label"/>
-  </form:button>
+   <div>
+      <form:button name="Yes">
+         <button:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.proxy.delete-proxy.button-yes.label"/>
+      </form:button>
+   </div>
 </html:form>

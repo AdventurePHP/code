@@ -9,40 +9,42 @@
        entry="frontend.proxy.add-groups-to-proxy.headline"/></h3>
 
 <html:form name="add_perm" method="post">
-   <p>
-      <form:getstring
-         name="intro-text"
-         namespace="modules::usermanagement::pres"
-         config="labels.ini"
-         entry="frontend.proxy.add-groups-to-proxy.intro.text"/>
-   </p>
-   <form:listener control="groups">
-      <div class="error-cont">
-         <listener:getstring
-            namespace="modules::usermanagement::pres"
-            config="labels.ini"
-            entry="frontend.proxy.add-groups-to-proxy.validator.message"/>
-      </div>
-   </form:listener>
    <div>
-      <label for="groups"><form:getstring
-         namespace="modules::usermanagement::pres"
-         config="labels.ini"
-         entry="frontend.proxy.add-groups-to-proxy.groups.label"/></label>
-      <form:multiselect id="groups" name="groups" size="6"/>
+      <p>
+         <form:getstring
+               name="intro-text"
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.proxy.add-groups-to-proxy.intro.text"/>
+      </p>
+      <form:listener control="groups">
+         <div class="error-cont">
+            <listener:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.add-groups-to-proxy.validator.message"/>
+         </div>
+      </form:listener>
+      <div>
+         <label for="groups"><form:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.proxy.add-groups-to-proxy.groups.label"/></label>
+         <form:multiselect id="groups" name="groups" size="6"/>
+      </div>
+      <form:addvalidator
+            class="MultiSelectFieldValidator"
+            control="groups"
+            button="add"
+            />
+      <form:button name="add">
+         <html:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.proxy.add-groups-to-proxy.button.label"/>
+      </form:button>
+      <form:hidden name="proxyid" />
    </div>
-   <form:addvalidator
-      class="MultiSelectFieldValidator"
-      control="groups"
-      button="add"
-   />
-   <form:button name="add">
-      <html:getstring
-          namespace="modules::usermanagement::pres"
-          config="labels.ini"
-          entry="frontend.proxy.add-groups-to-proxy.button.label"/>
-   </form:button>
-   <form:hidden name="proxyid" />
 </html:form>
 <html:template name="NoMoreGroups">
    <p>

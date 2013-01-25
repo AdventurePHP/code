@@ -15,18 +15,22 @@
 </p>
 <core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
 <html:form name="RoleDelNo" method="post">
-  <form:button name="No">
-     <button:getstring
-        namespace="modules::usermanagement::pres"
-        config="labels.ini"
-        entry="frontend.role.delete.button-no.label"/>
-  </form:button>
+   <div>
+      <form:button name="No">
+         <button:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.role.delete.button-no.label"/>
+      </form:button>
+   </div>
 </html:form>
 <html:form name="RoleDelYes" method="post">
-  <form:button name="Yes">
-     <button:getstring
-        namespace="modules::usermanagement::pres"
-        config="labels.ini"
-        entry="frontend.role.delete.button-yes.label"/>
-  </form:button>
+   <div>
+      <form:button name="Yes">
+         <button:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.role.delete.button-yes.label"/>
+      </form:button>
+   </div>
 </html:form>

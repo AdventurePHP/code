@@ -9,28 +9,30 @@
       entry="frontend.group.add-users-to-group.headline"/></h3>
 
 <html:form name="User" method="post">
-   <form:addvalidator
-         class="MultiSelectFieldValidator"
-         button="Add"
-         control="User"
-         />
-   <p>
-      <form:getstring
-            namespace="modules::usermanagement::pres"
-            config="labels.ini"
-            entry="frontend.group.add-users-to-group.intro.text"/>
-   </p>
-   <p>
-      <form:multiselect name="User" size="4"/>
-   </p>
-   <p>
-      <form:button name="Add">
-         <button:getstring
-            namespace="modules::usermanagement::pres"
-            config="labels.ini"
-            entry="frontend.group.add-users-to-group.button.label"/>
-      </form:button>
-   </p>
+   <div>
+      <form:addvalidator
+            class="MultiSelectFieldValidator"
+            button="Add"
+            control="User"
+            />
+      <p>
+         <form:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.group.add-users-to-group.intro.text"/>
+      </p>
+      <p>
+         <form:multiselect name="User" size="4"/>
+      </p>
+      <p>
+         <form:button name="Add">
+            <button:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.group.add-users-to-group.button.label"/>
+         </form:button>
+      </p>
+   </div>
 </html:form>
 <html:template name="NoMoreUser">
    <p>

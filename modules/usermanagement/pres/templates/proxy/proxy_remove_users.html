@@ -8,40 +8,42 @@
        config="labels.ini"
        entry="frontend.proxy.remove-users-from-proxy.headline"/></h3>
 <html:form name="add_perm" method="post">
-   <p>
-      <form:getstring
-            name="intro-text"
-            namespace="modules::usermanagement::pres"
-            config="labels.ini"
-            entry="frontend.proxy.remove-users-from-proxy.intro.text"/>
-   </p>
-   <form:listener control="users">
-      <div class="error-cont">
-         <listener:getstring
-             namespace="modules::usermanagement::pres"
-             config="labels.ini"
-             entry="frontend.proxy.remove-users-from-proxy.validation.message"/>
-      </div>
-   </form:listener>
    <div>
-      <label for="users"><form:getstring
-             namespace="modules::usermanagement::pres"
-             config="labels.ini"
-             entry="frontend.proxy.remove-users-from-proxy.users.label"/></label>
-      <form:multiselect id="users" name="users" size="6" />
+      <p>
+         <form:getstring
+               name="intro-text"
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.proxy.remove-users-from-proxy.intro.text"/>
+      </p>
+      <form:listener control="users">
+         <div class="error-cont">
+            <listener:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.remove-users-from-proxy.validation.message"/>
+         </div>
+      </form:listener>
+      <div>
+         <label for="users"><form:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.proxy.remove-users-from-proxy.users.label"/></label>
+         <form:multiselect id="users" name="users" size="6" />
+      </div>
+      <form:addvalidator
+            class="MultiSelectFieldValidator"
+            control="users"
+            button="rem"
+            />
+      <form:button name="rem">
+         <button:getstring
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.proxy.remove-users-from-proxy.button.label"/>
+      </form:button>
+      <form:hidden name="proxyid" />
    </div>
-   <form:addvalidator
-      class="MultiSelectFieldValidator"
-      control="users"
-      button="rem"
-   />
-   <form:button name="rem">
-      <button:getstring
-          namespace="modules::usermanagement::pres"
-          config="labels.ini"
-          entry="frontend.proxy.remove-users-from-proxy.button.label"/>
-   </form:button>
-   <form:hidden name="proxyid" />
 </html:form>
 <html:template name="NoMoreUsers">
    <p>

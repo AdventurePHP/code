@@ -8,29 +8,31 @@
      entry="frontend.role.add-permission-to-role.headline"/></h3>
 <core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
 <html:form name="Permissions" method="post">
-   <form:addvalidator
-         class="MultiSelectFieldValidator"
-         button="Assign"
-         control="Permissions"
-         />
-   <p>
-      <form:getstring
-         name="display-name"
-         namespace="modules::usermanagement::pres"
-         config="labels.ini"
-         entry="frontend.role.add-permission-to-role.intro.text"/>
-   </p>
-   <p>
-      <form:multiselect name="Permissions" size="4"/>
-   </p>
-   <p>
-      <form:button name="Assign">
-         <button:getstring
-            namespace="modules::usermanagement::pres"
-            config="labels.ini"
-            entry="frontend.role.add-permission-to-role.button.label"/>
-      </form:button>
-   </p>
+   <div>
+      <form:addvalidator
+            class="MultiSelectFieldValidator"
+            button="Assign"
+            control="Permissions"
+            />
+      <p>
+         <form:getstring
+               name="display-name"
+               namespace="modules::usermanagement::pres"
+               config="labels.ini"
+               entry="frontend.role.add-permission-to-role.intro.text"/>
+      </p>
+      <p>
+         <form:multiselect name="Permissions" size="4"/>
+      </p>
+      <p>
+         <form:button name="Assign">
+            <button:getstring
+                  namespace="modules::usermanagement::pres"
+                  config="labels.ini"
+                  entry="frontend.role.add-permission-to-role.button.label"/>
+         </form:button>
+      </p>
+   </div>
 </html:form>
 <html:template name="NoMorePermissions">
    <p>
