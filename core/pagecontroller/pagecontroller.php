@@ -1384,8 +1384,29 @@ class Document extends APFObject {
     * the <em>$this->tagLibs</em> property. Each taglib is converted into a child document
     * of the current tree element. The tag definition place is reminded by a marker tag using
     * the internal id of the DOM node.
+    * <p/>
+    * Since release 1.17 nested tag structures are supported. This means, that the APF parser
+    * is able to handle symmetric structures like this:
+    * <code>
+    * <foo:bar>
+    *    <foo:bar>
+    *    </foo:bar>
+    * </foo:bar>
+    * </code>
+    * Besides, the APF parser is able to handle asymmetric structures like
+    * <code>
+    * <foo:bar />
+    * <foo:bar>
+    *    <foo:bar>
+    *       <foo:bar />
+    *    </foo:bar>
+    * </foo:bar>
+    * </code>
+    * Please note that using nested structures must be supported by the tag implementations
+    * by registering itself within the tag implementation class to create the nested sub-tree
+    * on parse time.
     *
-    * @author Christian Schäfer
+    * @author Christian Schäfer, Christian Achatz
     * @version
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 21.01.2007 (Bug-fix: a mixture of self- and exclusively closing tags lead to wrong parsing)<br />
@@ -1394,6 +1415,7 @@ class Document extends APFObject {
     * Version 0.5, 02.04.2008 (Bug-fix: the token is now displayed in the HTML error page)<br />
     * Version 0.6, 06.06.2009 (Improvement: content is not copied during parsing any more)<br />
     * Version 0.7, 30.12.2009 (Introduced benchmark marks for the onParseTime() event.)<br />
+    * Version 0.8, 25.01.2013 (Re-writing of the tag parser to support nested tags with the same tag prefix and name)<br />
     */
    protected function extractTagLibTags() {
 
@@ -1425,41 +1447,63 @@ class Document extends APFObject {
                throw new ParserException('[' . get_class($this) . '::extractTagLibTags()] Maximum numbers of parsing loops reached!', E_USER_ERROR);
             }
 
-            // Find start and end position of the tag. "Normally" a
-            // explicitly closing tag is expected.
+            // Find the first occurrence of the current tag to distinguish between
+            // self- and explicitly-closing tags.
             $tagStartPos = strpos($this->content, '<' . $token);
-            $tagEndPos = strpos($this->content, '</' . $token . '>', $tagStartPos);
-            $closingTagLength = strlen('</' . $token . '>');
 
-            // in case a explicitly-closing tag could not be found, search for self-closing tag
-            if ($tagEndPos === false) {
+            $bracket = strpos($this->content, '>', $tagStartPos);
+            if (substr($this->content, $bracket - 1, 1) == '/') {
+               $tagEndPos = $bracket + 1;
+               $endTagLength = 0;
+            } else {
+               $startTagLength = strlen('<' . $token);
+               $endTagLength = strlen('</' . $token . '>');
 
-               $tagEndPos = strpos($this->content, '/>', $tagStartPos);
-               $closingTagLength = 2;
+               // initialize the token position cursor
+               $tokenPos = $tagStartPos;
+               $tagEndPos = $tagStartPos;
 
-               if ($tagEndPos === false) {
-                  throw new ParserException('[' . get_class($this) . '::extractTagLibTags()] No closing tag '
-                        . 'found for tag "<' . $token . ' />"!', E_USER_ERROR);
+               $openingTagCount = 0;
+               $closingTagCount = 0;
+
+               while (true) {
+                  $tokenPos = strpos($this->content, $token, $tokenPos);
+                  if ($tokenPos === false) {
+                     break;
+                  }
+
+                  if (substr($this->content, $tokenPos - 1, 1) == '<') {
+
+                     // Check for explicitly closing tag, because self-closing tags
+                     // do not count searching for a symmetric tag hierarchy included
+                     // in another tag structure.
+                     $bracket = strpos($this->content, '>', $tokenPos + strlen($token));
+                     if (substr($this->content, $bracket - 1, 1) !== '/') {
+                        $openingTagCount++;
+                     }
+
+                  } else {
+                     $closingTagCount++;
+                  }
+
+                  // In case we have passed the first tag occurrence let's look for a symmetric
+                  // tag structure. This check enables nesting tag structures with the same
+                  // tag prefix and name.
+                  if ($openingTagCount > 0 && $openingTagCount == $closingTagCount) {
+                     $tagEndPos = $tokenPos - 2;
+                     break;
+                  }
+
+                  // Shift cursor to start search after current token position to recursively
+                  // search for the last symmetric end tag.
+                  $tokenPos = $tokenPos + $startTagLength;
                }
+
             }
 
-            // extract the complete tag string from the current content
-            $tagStringLength = ($tagEndPos - $tagStartPos) + $closingTagLength;
+            // extract the resulting tag string
+            $tagStringLength = ($tagEndPos - $tagStartPos) + $endTagLength;
             $tagString = substr($this->content, $tagStartPos, $tagStringLength);
-
-            // NEW (bug fix for errors while mixing self- and exclusively closing tags):
-            // First, check if a opening tag was found within the previously taken tag string.
-            // If yes, the tag string must be redefined.
-            if (substr_count($tagString, '<' . $token) > 1) {
-
-               // find position of the self-closing tag
-               $tagEndPos = strpos($this->content, '/>', $tagStartPos);
-               $closingTagLength = 2;
-
-               // extract the complete tag string from the current content
-               $tagStringLength = ($tagEndPos - $tagStartPos) + $closingTagLength;
-               $tagString = substr($this->content, $tagStartPos, $tagStringLength);
-            }
 
             // get the tag attributes of the current tag
             $attributes = XmlParser::getTagAttributes($prefix, $name, $tagString);
