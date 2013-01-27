@@ -42,7 +42,7 @@ class ApcConfigurationProvider implements ConfigurationProvider {
    /**
     * @var ConfigurationProvider The configuration provider to read the persistent configuration from.
     */
-   private $persistenceProviderExtension; // perhaps we do not need it!
+   private $persistenceProviderExtension;
 
    /**
     * @var int Expires time in seconds. This is the time, the config is refreshed from the persistent file.
