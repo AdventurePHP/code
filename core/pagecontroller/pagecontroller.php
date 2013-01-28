@@ -1441,7 +1441,7 @@ class Document extends APFObject {
 
          $tagLoops = 0;
 
-         while (substr_count($this->content, '<' . $token) > 0) {
+         while (strpos($this->content, '<' . $token) !== false) {
 
             if ($tagLoops > $this->maxLoops) {
                throw new ParserException('[' . get_class($this) . '::extractTagLibTags()] Maximum numbers of parsing loops reached!', E_USER_ERROR);
@@ -1588,7 +1588,7 @@ class Document extends APFObject {
       $controllerStartTag = '<@controller';
       $controllerEndTag = '@>';
 
-      if (substr_count($this->content, $controllerStartTag) > 0) {
+      if (strpos($this->content, $controllerStartTag) !== false) {
 
          $tagStartPos = strpos($this->content, $controllerStartTag);
          $tagEndPos = strpos($this->content, $controllerEndTag, $tagStartPos);
@@ -2032,7 +2032,7 @@ class ImportTemplateTag extends Document {
       }
 
       // check, if the inc param is present in the current request
-      if (substr_count($template, '[') > 0) {
+      if (strpos($template, '[') !== false) {
 
          if (isset($_REQUEST[$incParam]) && !empty($_REQUEST[$incParam])) {
             $template = $_REQUEST[$incParam];
