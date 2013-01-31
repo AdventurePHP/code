@@ -26,7 +26,7 @@
  * Represents a &lt;label /&gt; form tag that is APF parser sensitive in terms of visibility management.
  * The definition of the tag is as follows:
  * <pre>
- * &lt;form:label for="..."&gt;
+ * &lt;form:label for="..."[ id=""][ class=""]&gt;
  *    [...]
  *    [&lt;label:getstring [name=""] namespace="" config="" entry="" /&gt;]
  * &lt;/form:label&gt;
@@ -39,7 +39,7 @@
 class FormLabelTag extends AbstractFormControl {
 
    public function __construct() {
-      $this->attributeWhiteList = array('for');
+      $this->attributeWhiteList = array('for', 'id', 'class');
       $this->tagLibs = array(new TagLib('tools::form::taglib', 'LabelLanguageLabelTag', 'label', 'getstring'));
    }
 
