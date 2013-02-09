@@ -35,7 +35,7 @@ abstract class NewsBaseController extends BaseDocumentController {
     * @return string The application identifier (for login purposes).
     */
    protected function getAppKey() {
-      return $this->getAttribute('app-ident', $this->getContext());
+      return $this->getDocument()->getAttribute('app-ident', $this->getContext());
    }
 
    /**

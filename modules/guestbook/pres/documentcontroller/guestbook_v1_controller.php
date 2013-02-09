@@ -24,16 +24,17 @@ import('modules::guestbook::biz', 'GuestbookManager');
  * @package modules::guestbook::pres::documentcontroller
  * @class guestbook_v1_controller
  *
- *  Document controller for 'guestbook'.
+ * Document controller for 'guestbook'.
  *
- * @author Christian Sch�fer
+ * @author Christian Schäfer
  * @version
  * Version 0.1, 12.04.2007<br />
  */
 class guestbook_v1_controller extends BaseDocumentController {
 
    public function transformContent() {
-      $gM = &$this->getAndInitServiceObject('modules::guestbook::biz', 'GuestbookManager', $this->getAttribute('guestbookid'));
+      /* @var $gM GuestbookManager */
+      $gM = & $this->getAndInitServiceObject('modules::guestbook::biz', 'GuestbookManager', $this->getDocument()->getAttribute('guestbookid'));
       $guestbook = $gM->loadGuestbook();
 
       $this->setPlaceHolder('Name', $guestbook->getName());

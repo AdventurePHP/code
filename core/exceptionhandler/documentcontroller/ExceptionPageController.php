@@ -43,7 +43,8 @@ class ExceptionPageController extends BaseDocumentController {
    public function transformContent() {
 
       // get the exception trace, init output buffer
-      $exceptions = $this->getAttribute('trace');
+      $document = $this->getDocument();
+      $exceptions = $document->getAttribute('trace');
       $buffer = (string) '';
 
       // get template
@@ -77,12 +78,12 @@ class ExceptionPageController extends BaseDocumentController {
 
       $this->setPlaceHolder('Stacktrace', $buffer);
 
-      $this->setPlaceHolder('ExceptionID', $this->getAttribute('id'));
-      $this->setPlaceHolder('ExceptionType', $this->getAttribute('type'));
-      $this->setPlaceHolder('ExceptionMessage', htmlspecialchars($this->getAttribute('message'), ENT_QUOTES, Registry::retrieve('apf::core', 'Charset'), false));
-      $this->setPlaceHolder('ExceptionNumber', $this->getAttribute('number'));
-      $this->setPlaceHolder('ExceptionFile', $this->getAttribute('file'));
-      $this->setPlaceHolder('ExceptionLine', $this->getAttribute('line'));
+      $this->setPlaceHolder('ExceptionID', $document->getAttribute('id'));
+      $this->setPlaceHolder('ExceptionType', $document->getAttribute('type'));
+      $this->setPlaceHolder('ExceptionMessage', htmlspecialchars($document->getAttribute('message'), ENT_QUOTES, Registry::retrieve('apf::core', 'Charset'), false));
+      $this->setPlaceHolder('ExceptionNumber', $document->getAttribute('number'));
+      $this->setPlaceHolder('ExceptionFile', $document->getAttribute('file'));
+      $this->setPlaceHolder('ExceptionLine', $document->getAttribute('line'));
 
       $this->setPlaceHolder('GenerationDate', date('r'));
    }

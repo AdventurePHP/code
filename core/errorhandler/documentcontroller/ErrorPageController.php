@@ -82,11 +82,12 @@ class ErrorPageController extends BaseDocumentController {
 
       $this->setPlaceHolder('Stacktrace', $buffer);
 
-      $this->setPlaceHolder('ErrorID', $this->getAttribute('id'));
-      $this->setPlaceHolder('ErrorMessage', htmlspecialchars($this->getAttribute('message'), ENT_QUOTES, Registry::retrieve('apf::core', 'Charset'), false));
-      $this->setPlaceHolder('ErrorNumber', $this->getAttribute('number'));
-      $this->setPlaceHolder('ErrorFile', $this->getAttribute('file'));
-      $this->setPlaceHolder('ErrorLine', $this->getAttribute('line'));
+      $document = $this->getDocument();
+      $this->setPlaceHolder('ErrorID', $document->getAttribute('id'));
+      $this->setPlaceHolder('ErrorMessage', htmlspecialchars($document->getAttribute('message'), ENT_QUOTES, Registry::retrieve('apf::core', 'Charset'), false));
+      $this->setPlaceHolder('ErrorNumber', $document->getAttribute('number'));
+      $this->setPlaceHolder('ErrorFile', $document->getAttribute('file'));
+      $this->setPlaceHolder('ErrorLine', $document->getAttribute('line'));
 
       $this->setPlaceHolder('GenerationDate', date('r'));
    }
