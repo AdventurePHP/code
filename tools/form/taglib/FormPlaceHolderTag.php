@@ -30,9 +30,17 @@
  * Version 0.1, 05.01.2007<br />
  * Version 0.2, 12.01.2006 (Renamed to "FormPlaceHolderTag")<br />
  */
-class FormPlaceHolderTag extends AbstractFormControl {
+class FormPlaceHolderTag extends PlaceHolderTag implements FormControl {
 
    public function __construct() {
+   }
+
+   public function isSent() {
+      return false;
+   }
+
+   public function isValid() {
+      return true;
    }
 
    /**
