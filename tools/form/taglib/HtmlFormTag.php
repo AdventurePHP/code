@@ -230,7 +230,7 @@ class HtmlFormTag extends Document {
       // add form element if id is not null
       if ($objectId !== null) {
 
-         // add position placeholder to the content
+         // add position place holder to the content
          $this->content .= '<' . $objectId . ' />';
 
          // return object id of the new form element
@@ -331,7 +331,7 @@ class HtmlFormTag extends Document {
          // get desired marker
          $marker = & $this->getMarker($markerName);
 
-         // add the position placeholder to the content
+         // add the position place holder to the content
          $markerId = $marker->getObjectId();
          $this->content = str_replace('<' . $markerId . ' />', '<' . $objectId . ' /><' . $markerId . ' />', $this->content);
 
@@ -371,7 +371,7 @@ class HtmlFormTag extends Document {
          // get desired marker
          $marker = & $this->getMarker($markerName);
 
-         // add the position placeholder to the content
+         // add the position place holder to the content
          $markerId = $marker->getObjectId();
          $this->content = str_replace(
             '<' . $markerId . ' />', '<' . $markerId . ' /><' . $objectId . ' />',
@@ -702,49 +702,6 @@ class HtmlFormTag extends Document {
                . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'
                . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR, $e);
       }
-   }
-
-   /**
-    * @public
-    *
-    * Convenience method to fill a place holder within a form.
-    *
-    * @param string $name The name of the place holder.
-    * @param string $value The value to fill the place holder with.
-    * @return HtmlFormTag This instance for further usage.
-    * @throws FormException In case the place holder cannot be set.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 12.09.2009<br />
-    */
-   public function &setPlaceHolder($name, $value) {
-
-      $placeHolderCount = 0;
-      if (count($this->children) > 0) {
-         foreach ($this->children as $objectId => $DUMMY) {
-            if ($this->children[$objectId] instanceof FormPlaceHolderTag) {
-               if ($this->children[$objectId]->getAttribute('name') == $name) {
-                  $this->children[$objectId]->setContent($value);
-                  $placeHolderCount++;
-               }
-            }
-         }
-      } else {
-         throw new FormException('[HtmlFormTag::setPlaceHolder()] No place holder object with '
-                  . 'name "' . $name . '" composed in current for document controller "'
-                  . $this->getParentObject()->getDocumentController() . '"!',
-            E_USER_ERROR);
-      }
-
-      if ($placeHolderCount < 1) {
-         throw new FormException('[HtmlFormTag::setPlaceHolder()] There are no place holders '
-               . 'found for name "' . $name . '" in template "' . $this->getAttribute('name')
-               . '" in document controller "' . $this->getParentObject()->getDocumentController()
-               . '"!', E_USER_WARNING);
-      }
-
-      return $this;
    }
 
    /**

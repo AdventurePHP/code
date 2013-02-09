@@ -611,6 +611,29 @@ abstract class APFObject implements APFDIService {
    }
 
    /**
+    * @public
+    *
+    * Let's you add the applied value to the given attribute.
+    * <p/>
+    * Implicitly creates the attribute in case it doesn't exist.
+    *
+    * @param string $name The name of the attribute to add a value to.
+    * @param string $value The value to add to the current attribute value.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 09.01.2007<br />
+    * Version 0.2, 09.02.2013 (Moved to APFObject to avoid multiple implementations)<br />
+    */
+   public function addAttribute($name, $value) {
+      if (isset($this->attributes[$name])) {
+         $this->attributes[$name] .= $value;
+      } else {
+         $this->attributes[$name] = $value;
+      }
+   }
+
+   /**
     * @protected
     *
     * Returns a service object, that is initialized by dependency injection.
@@ -1185,8 +1208,9 @@ class Document extends APFObject {
     * @author Christian Achatz
     * @version
     * Version 0.1, 11.12.2011<br />
+    * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
     */
-   protected function &getChildNode($attributeName, $value, $tagLibClass) {
+   public function &getChildNode($attributeName, $value, $tagLibClass) {
       $children = & $this->getChildren();
       if (count($children) > 0) {
          foreach ($children as $objectId => $DUMMY) {
@@ -1221,8 +1245,9 @@ class Document extends APFObject {
     * @author Christian Achatz
     * @version
     * Version 0.1, 14.07.2012<br />
+    * Version 0.2, 09.02.2013 (Now public access since DocumentController is now derived from APFObject instead of Document)<br />
     */
-   protected function &getChildNodes($attributeName, $value, $tagLibClass) {
+   public function &getChildNodes($attributeName, $value, $tagLibClass) {
       $children = & $this->getChildren();
 
       if (count($children) > 0) {
@@ -1241,9 +1266,86 @@ class Document extends APFObject {
          } else {
             return $result;
          }
-      } else {
-         throw new InvalidArgumentException('[' . get_class($this) . '::getChildNodes()] Current node has no children!',
-            E_USER_ERROR);
+      }
+
+      throw new InvalidArgumentException('[' . get_class($this) . '::getChildNodes()] Current node has no children!', E_USER_ERROR);
+   }
+
+   /**
+    * @public
+    *
+    * API method to set a place holder's content within a document.
+    *
+    * @param string $name name of the place holder.
+    * @param string $value value of the place holder.
+    * @return Document This instance for further usage.
+    * @throws InvalidArgumentException In case the place holder cannot be found.
+    *
+    * @author Christian Achatz, Jan Wiese
+    * @version
+    * Version 0.1, 29.12.2006<br />
+    * Version 0.2, 10.11.2008 (Removed check, if taglib class exists)<br />
+    * Version 0.3, 07.02.2013 (Moved to Document to avoid multiple implementations)<br />
+    */
+   public function &setPlaceHolder($name, $value) {
+      $count = 0;
+      foreach ($this->children as $objectId => $DUMMY) {
+         if ($this->children[$objectId] instanceof PlaceHolderTag
+               && $this->children[$objectId]->getAttribute('name') === $name
+         ) {
+            $this->children[$objectId]->setContent($value);
+            $count++;
+         }
+      }
+
+      if ($count == 0) {
+
+         // Since this method is used within all derived classes the exception message is
+         // rather generic unfortunately. In order to be more precise, the convenience methods
+         // within BaseDocumentController catch and rethrow the exception enriched with further
+         // information.
+         $message = '[' . get_class($this) . '::setPlaceHolder()] No place holder with name "' . $name
+               . '" found within document with ';
+
+         $nodeName = $this->getAttribute('name');
+         if (!empty($nodeName)) {
+            $message .= 'name "' . $nodeName . '" and ';
+         }
+         $message .= 'node type "' . get_class($this) . '"! Please check your template code: ' . $this->getContent() . '.';
+
+         throw new InvalidArgumentException($message, E_USER_ERROR);
+      }
+
+      return $this;
+   }
+
+   /**
+    * @public
+    *
+    * This method is for conveniently setting of multiple place holders. The applied
+    * array must contain a structure like this:
+    * <code>
+    * array(
+    *    'key-a' => 'value-a',
+    *    'key-b' => 'value-b',
+    *    'key-c' => 'value-c',
+    *    'key-d' => 'value-d',
+    *    'key-e' => 'value-e',
+    * )
+    * </code>
+    * Thereby, the <em>key-*</em> offsets define the name of the place holders, their
+    * values are used as the place holder's values.
+    *
+    * @param string[] $placeHolderValues Key-value-couples to fill place holders.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.11.2010<br />
+    * Version 0.2, 09.02.2013 (Moved to Document to avoid multiple implementations)<br />
+    */
+   public function setPlaceHolders(array $placeHolderValues) {
+      foreach ($placeHolderValues as $key => $value) {
+         $this->setPlaceHolder($key, $value);
       }
    }
 
@@ -1659,6 +1761,7 @@ class Document extends APFObject {
     * Version 0.3, 31.01.2007 (Added context injection)<br />
     * Version 0.4, 24.02.2007 (Switched timer inclusion to common benchmarker usage)<br />
     * Version 0.5, 09.04.2007 (Added language injection)<br />
+    * Version 0.6, 09.02.2013 (Introduced the DocumentController interface)<br />
     */
    public function transform() {
 
@@ -1681,7 +1784,7 @@ class Document extends APFObject {
          }
 
          $docCon = new $this->documentController;
-         /* @var $docCon BaseDocumentController */
+         /* @var $docCon DocumentController */
 
          // inject context
          $docCon->setContext($this->getContext());
@@ -1694,11 +1797,6 @@ class Document extends APFObject {
 
          // inject the content to be able to access it
          $docCon->setContent($content);
-
-         // inject the current DOM node's attributes to easily access them
-         if (is_array($this->attributes) && count($this->attributes) > 0) {
-            $docCon->setAttributes($this->attributes);
-         }
 
          // execute the document controller by using a standard method
          $docCon->transformContent();
@@ -1897,6 +1995,7 @@ class AppendNodeTag extends Document {
    public function onAfterAppend() {
 
       // get parent children list
+      /* @var $parentChildren Document[] */
       $parentChildren = & $this->parentObject->getChildren();
       $parentContent = $this->parentObject->getContent();
       $currentObjectId = $this->getObjectId();
@@ -2132,14 +2231,40 @@ class AddTaglibTag extends Document {
  * Represents a place holder within a template file. Can be filled within a document controller
  * using the setPlaceHolder() method.
  *
- * @author Christian Achatz
+ * @author Christian Achatz, Jan Wiese
  * @version
  * Version 0.1, 28.12.2006<br />
+ * Version 0.2, 02.01.2013 (Introduced string place holder mechanism)<br />
  */
 class PlaceHolderTag extends Document {
 
+   /**
+    * @since 1.17
+    * @var string[] Replacement strings for string place holders.
+    */
+   protected $stringPlaceHolders = array();
+
    public function __construct() {
       // do nothing, especially not initialize tag libs
+   }
+
+   /**
+    * @public
+    *
+    * Let's you set a string replacement to the current place holder instance.
+    * <p/>
+    * Please note, that the keys must be specified in uppercase letters.
+    *
+    * @param string $key Name of the string place holder.
+    * @param string $value Replacement value.
+    *
+    * @since 1.17
+    * @author Jan Wiese
+    * @version
+    * Version 0.1, 02.01.2013<br />
+    */
+   public function setStringPlaceHolder($key, $value) {
+      $this->stringPlaceHolders[strtoupper($key)] = $value;
    }
 
    /**
@@ -2150,11 +2275,15 @@ class PlaceHolderTag extends Document {
     *
     * @return string The content of the place holder.
     *
-    * @author Christian Schäfer
+    * @author Christian Schäfer, Jan Wiese
     * @version
     * Version 0.1, 28.12.2006<br />
+    * Version 0.2, 06.02.2013 (Added string place holder support)<br />
     */
    public function transform() {
+      foreach ($this->stringPlaceHolders as $key => $value) {
+         $this->content = str_replace('{' . $key . '}', $value, $this->content);
+      }
       return $this->content;
    }
 
@@ -2216,60 +2345,6 @@ class TemplateTag extends Document {
     */
    public function onParseTime() {
       $this->extractTagLibTags();
-   }
-
-   /**
-    * @public
-    *
-    * API method to set a place holder's content within a document controller.
-    *
-    * @param string $name name of the place holder.
-    * @param string $value value of the place holder.
-    * @return TemplateTag This instance for further usage.
-    * @throws InvalidArgumentException In case the place holder cannot be found.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.12.2006<br />
-    * Version 0.2, 10.11.2008 (Removed check, if taglib class exists)<br />
-    */
-   public function &setPlaceHolder($name, $value) {
-
-      // initialize place holder count for further checks
-      $placeHolderCount = 0;
-
-      // check, if tag has children
-      if (count($this->children) > 0) {
-
-         // check, if template place holder exists within the children list
-         foreach ($this->children as $objectID => $DUMMY) {
-
-            // check, if current child is a place holder
-            if ($this->children[$objectID] instanceof PlaceHolderTag) {
-
-               // check, if current child is the desired place holder
-               if ($this->children[$objectID]->getAttribute('name') == $name) {
-
-                  // set content of the place holder
-                  $this->children[$objectID]->setContent($value);
-                  $placeHolderCount++;
-               }
-            }
-         }
-      } else {
-         throw new InvalidArgumentException('[TemplateTag::setPlaceHolder()] No place holder object with name "'
-               . $name . '" composed in current template for document controller "'
-               . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR);
-      }
-
-      // throw error, if no children are composed under the current tag
-      if ($placeHolderCount < 1) {
-         throw new InvalidArgumentException('[TemplateTag::setPlaceHolder()] There are no place holders found for name "'
-               . $name . '" in template "' . $this->getAttribute('name') . '" in document controller "'
-               . $this->getParentObject()->getDocumentController() . '"!', E_USER_WARNING);
-      }
-
-      return $this;
    }
 
    /**
@@ -2375,7 +2450,7 @@ class TemplateTag extends Document {
  * key = "german value"
  *
  * [en]
- * key = "englisch value"
+ * key = "english value"
  *
  * ...
  * </pre>
@@ -2496,39 +2571,43 @@ class LanguageLabelTag extends Document {
 
 /**
  * @package core::pagecontroller
- * @class BaseDocumentController
- * @abstract
+ * @class DocumentController
  *
- * Defines the base class for all document controller classes. To add custom logic, implement
- * the {@link transformContent} method.
+ * Defines the interface for APF document controller implementations.
  *
- * @author Christian Schäfer
+ * @author Christian Achatz
  * @version
- * Version 0.1, 28.12.2006<br />
- * Version 0.2, 04.11.2007 (Removed the isButtonPushed() method)<br />
+ * Version 0.1, 09.02.2013<br />
  */
-abstract class BaseDocumentController extends Document {
-
-   /**
-    * @protected
-    * @var Document References the document, the document controller is responsible for transformation.
-    */
-   protected $document;
+interface DocumentController extends APFService {
 
    /**
     * @public
     *
-    * Interface definition of the transformContent() method. This function is applied to a
-    * document controller during the transformation of a DOM node. It must be implemented by
-    * each document controller to influence content generation.
+    * Injects the content of the current Document the controller is responsible for. Since the
+    * content is retrieved by the current Document after executing {@link transformContent}
+    * the developer is able to modify the content if the current node within a document controller.
     *
-    * @return void
+    * @param string $content The content of the current Document node.
     *
-    * @author Christian Schäfer
+    * @author Christian Achatz
     * @version
-    * Version 0.1, 28.12.2006<br />
+    * Version 0.1, 09.02.2013<br />
     */
-   public abstract function transformContent();
+   public function setContent($content);
+
+   /**
+    * @public
+    *
+    * Let's the current Document retrieve the (potentially) modified content after transformation.
+    *
+    * @return  string The content of the current Document node.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 09.02.2013<br />
+    */
+   public function getContent();
 
    /**
     * @public
@@ -2543,9 +2622,7 @@ abstract class BaseDocumentController extends Document {
     * @version
     * Version 0.1, 20.02.2010<br />
     */
-   public function setDocument(Document &$document) {
-      $this->document = & $document;
-   }
+   public function setDocument(Document &$document);
 
    /**
     * Returns the document that represents the present DOM node the
@@ -2557,12 +2634,68 @@ abstract class BaseDocumentController extends Document {
     * @version
     * Version 0.1, 20.10.2010<br />
     */
+   public function getDocument();
+
+   /**
+    * @public
+    *
+    * Interface definition of the transformContent() method. This function is applied to a
+    * document controller during the transformation of a DOM node. It must be implemented by
+    * each document controller to influence content generation.
+    *
+    * @return void
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
+   public function transformContent();
+}
+
+/**
+ * @package core::pagecontroller
+ * @class BaseDocumentController
+ * @abstract
+ *
+ * Defines the base class for all document controller classes. To add custom logic, implement
+ * the {@link transformContent} method.
+ *
+ * @author Christian Schäfer
+ * @version
+ * Version 0.1, 28.12.2006<br />
+ * Version 0.2, 04.11.2007 (Removed the isButtonPushed() method)<br />
+ * Version 0.3, 09.02.2013 (Introduced the DocumentController interface)<br />
+ */
+abstract class BaseDocumentController extends APFObject implements DocumentController {
+
+   /**
+    * @var Document References the document, the document controller is responsible for transformation.
+    */
+   protected $document;
+
+   /**
+    * @var string The content of the Document the controller is responsible for.
+    */
+   protected $content;
+
+   public function setDocument(Document &$document) {
+      $this->document = & $document;
+   }
+
    public function &getDocument() {
       return $this->document;
    }
 
+   public function setContent($content) {
+      $this->content = $content;
+   }
+
+   public function getContent() {
+      return $this->content;
+   }
+
    /**
-    * @protected
+    * @public
     *
     * Sets the given value as the content of the specified place holder.
     *
@@ -2570,38 +2703,58 @@ abstract class BaseDocumentController extends Document {
     * @param string $value The value to insert into the place holder.
     * @throws InvalidArgumentException In case the place holder cannot be found.
     *
-    * @author Christian Schäfer
+    * @author Christian Schäfer, Jan Wiese
     * @version
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
+    * Version 0.3, 09.02.2013 (Switched to Document::setPlaceHolder() implementation)<br />
     */
    protected function setPlaceHolder($name, $value) {
-
-      $placeHolderCount = 0;
-
-      $children = & $this->document->getChildren();
-      if (count($children) > 0) {
-
-         foreach ($children as $objectId => $DUMMY) {
-
-            if ($children[$objectId] instanceof PlaceHolderTag) {
-
-               if ($children[$objectId]->getAttribute('name') == $name) {
-                  $children[$objectId]->setContent($value);
-                  $placeHolderCount++;
-               }
-            }
-         }
-      } else {
-         throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No placeholder object with name "'
-               . $name . '" composed in current document for document controller "' . get_class($this)
-               . '"! Perhaps tag library html:placeholder is not loaded in current template!', E_USER_ERROR);
+      try {
+         $this->getDocument()->setPlaceHolder($name, $value);
+      } catch (InvalidArgumentException $e) {
+         throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place holders '
+               . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
       }
+   }
 
-      // warn, if no place holder is found
-      if ($placeHolderCount < 1) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] There are no place holders '
-               . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_WARNING);
+   /**
+    * @protected
+    *
+    * Replaces string place holders in content of &lt;html:placeholder /&gt; tag.
+    * An example of a string placeholder with key "url" is "{URL}"
+    * String place holders are always written in capital letters!
+    * <p/>
+    * Template:
+    * <code>
+    * <html:placeholder name="foo"/>
+    * <html:placeholder name="foo">I am an {FAN-TYPE}</html:placeholder>
+    * </code>
+    * Controller:
+    * <code>
+    * $this->setPlaceholder('foo', 'Ich bin {FAN-TYPE}');
+    * $this->setStringPlaceholder('foo', 'FAN-TYPE', 'APF-Fan!');
+    * </code>
+    *
+    * @param string $name Place holder name.
+    * @param string $key Key name of string place holder.
+    * @param string $value Value, the string place holder is replaced with.
+    * @throws InvalidArgumentException In case no place holder has been found.
+    *
+    * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
+    * @version
+    * Version 0.1, 03.10.2012<br />
+    */
+   protected function setStringPlaceHolder($name, $key, $value) {
+      try {
+         /* @var $nodes PlaceHolderTag[] */
+         $nodes = & $this->document->getChildNodes('name', $name, 'PlaceHolderTag');
+         foreach ($nodes as $node) {
+            $node->setStringPlaceHolder($key, $value);
+         }
+      } catch (Exception $e) {
+         throw new InvalidArgumentException('[' . get_class($this) . '::setStringPlaceHolder()] No place holders '
+               . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
       }
    }
 
@@ -2622,16 +2775,15 @@ abstract class BaseDocumentController extends Document {
     * Thereby, the <em>key-*</em> offsets define the name of the place holders, their
     * values are used as the place holder's values.
     *
-    * @param array $placeHolderValues Key-value-couples to fill place holders.
+    * @param string[] $placeHolderValues Key-value-couples to fill place holders.
+    * @throws InvalidArgumentException In case one of the place holders cannot be found.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.11.2010<br />
     */
    protected function setPlaceHolders(array $placeHolderValues) {
-      foreach ($placeHolderValues as $key => $value) {
-         $this->setPlaceHolder($key, $value);
-      }
+      $this->getDocument()->setPlaceHolders($placeHolderValues);
    }
 
    /**
@@ -2655,11 +2807,12 @@ abstract class BaseDocumentController extends Document {
          /* @var $log Logger */
          $log->addEntry(
             new SimpleLogEntry(
-               // use the configured log target to allow custom configuration of APF-internal log statements
-               // to be written to a custom file/location
+            // use the configured log target to allow custom configuration of APF-internal log statements
+            // to be written to a custom file/location
                Registry::retrieve('apf::core', 'InternalLogTarget'),
-               'Place holder with name "' . $name . '" does not exist within the current document ' .
-               'handled by document controller "' . get_class($this) . '". Please check your setup.',
+                  'Place holder with name "' . $name . '" does not exist within the current document '
+                        . 'handled by document controller "' . get_class($this) . '". '
+                        . 'Please check your setup. Details: ' . $e,
                LogEntry::SEVERITY_WARNING
             )
          );
@@ -2772,7 +2925,7 @@ abstract class BaseDocumentController extends Document {
     */
    protected function placeHolderExists($name) {
       try {
-         $this->getChildNode('name', $name, 'PlaceHolderTag');
+         $this->getDocument()->getChildNode('name', $name, 'PlaceHolderTag');
          return true;
       } catch (InvalidArgumentException $e) {
          return false;
@@ -2821,7 +2974,7 @@ abstract class BaseDocumentController extends Document {
       try {
          return $this->getDocument()->getChildNode('name', $name, 'HtmlIteratorTag');
       } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::' . __METHOD__ . '()] No iterator with name "'
+         throw new InvalidArgumentException('[' . get_class($this) . '::getIterator()] No iterator with name "'
                . $name . '" composed in current document for document controller "' . get_class($this) . '"! '
                . 'Perhaps tag library html:iterator is not loaded in current template!', E_USER_ERROR, $e);
       }

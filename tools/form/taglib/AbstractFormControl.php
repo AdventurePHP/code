@@ -372,26 +372,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
-    * Extends the APFObject's attributes methods.
-    *
-    * @param string $name the name of the attribute
-    * @param string $value the value to add to the attribute value.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 09.01.2007<br />
-    */
-   public function addAttribute($name, $value) {
-      if (isset($this->attributes[$name])) {
-         $this->attributes[$name] .= $value;
-      } else {
-         $this->attributes[$name] = $value;
-      }
-   }
-
-   /**
     * @protected
     *
     * Pre-fills the value of the current control.
@@ -420,107 +400,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
       if (isset($_REQUEST[$controlName]) || (isset($_REQUEST[$controlName]) && $_REQUEST[$controlName] === '0')) {
          $this->setAttribute('value', $_REQUEST[$controlName]);
       }
-   }
-
-   /**
-    * @public
-    *
-    * Convenience method to fill a place holder within a form control. Currently
-    * only works with &lt;form:error /&gt;, &lt;form:listener /&gt; and
-    * &lt;html:form /&gt; tags.
-    *
-    * @param string $name The name of the place holder.
-    * @param string $value The value to fill the place holder with.
-    * @return FormErrorDisplayTag|ValidationListenerTag|FormSuccessDisplayTag This instance for further usage.
-    * @throws FormException In case the place holder cannot be set.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 12.09.2009<br />
-    */
-   public function &setPlaceHolder($name, $value) {
-
-      // dynamically gather taglib name of the place holder to set
-      $tagLibClass = $this->getClassNameByTagLibName('placeholder');
-
-      $placeHolderCount = 0;
-      if (count($this->children) > 0) {
-         foreach ($this->children as $objectId => $DUMMY) {
-            if ($this->children[$objectId] instanceof $tagLibClass) {
-               if ($this->children[$objectId]->getAttribute('name') == $name) {
-                  $this->children[$objectId]->setContent($value);
-                  $placeHolderCount++;
-               }
-            }
-         }
-      } else {
-         throw new FormException('[' . get_class($this) . '::setPlaceHolder()] No place holder object with '
-               . 'name "' . $name . '" composed in "' . get_class($this) . '" node within form with name "'
-               . $this->getParentObject()->getAttribute('name') . '"!', E_USER_ERROR);
-      }
-
-      if ($placeHolderCount < 1) {
-         throw new FormException('[' . get_class($this) . '::setPlaceHolder()] There are no place holders '
-               . 'found for name "' . $name . '" composed in "' . get_class($this) . '" node within form with name "'
-               . $this->getParentObject()->getAttribute('name') . '"!', E_USER_ERROR);
-      }
-
-      return $this;
-   }
-
-   /**
-    * @public
-    *
-    * This method is for conveniently setting of multiple place holders. The applied
-    * array must contain a structure like this:
-    * <code>
-    * array(
-    *    'key-a' => 'value-a',
-    *    'key-b' => 'value-b',
-    *    'key-c' => 'value-c',
-    *    'key-d' => 'value-d',
-    *    'key-e' => 'value-e',
-    * )
-    * </code>
-    * Thereby, the <em>key-*</em> offsets define the name of the place holders, theire
-    * values are used as the place holder's values.
-    *
-    * @param array $placeHolderValues Key-value-couples to fill place holders.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.11.2010<br />
-    */
-   public function setPlaceHolders(array $placeHolderValues) {
-      foreach ($placeHolderValues as $key => $value) {
-         $this->setPlaceHolder($key, $value);
-      }
-   }
-
-   /**
-    * @protected
-    *
-    * Returns the name of the taglib class (PHP class name), that is defined
-    * with the given taglib class name. Passing the taglib class name "placeholder"
-    * would return "FormPlaceHolderTag" within the &lt;html:form /&gt; taglib.
-    *
-    * @param string $name The taglib class name.
-    * @return string The PHP class name, that represents the taglib with the
-    *                given taglib class name.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 12.09.2009<br />
-    */
-   protected function getClassNameByTagLibName($name) {
-
-      foreach ($this->tagLibs as $tagLib) {
-         if ($tagLib->getName() == $name) {
-            return $tagLib->getClass();
-         }
-      }
-
-      return null;
    }
 
    /**

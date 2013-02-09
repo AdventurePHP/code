@@ -157,7 +157,7 @@ class HtmlIteratorTag extends Document {
     */
    public function transformIterator() {
 
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('(HtmlIteratorTag) ' . $this->getObjectId() . '::transformIterator()');
 
@@ -199,14 +199,14 @@ class HtmlIteratorTag extends Document {
       // the iterator item must not always be the first child
       // of the current node!
       $itemObjectId = $this->getIteratorItemObjectId();
-      $iteratorItem = &$this->children[$itemObjectId];
+      $iteratorItem = & $this->children[$itemObjectId];
       /* @var $iteratorItem HtmlIteratorItemTag */
 
       // define the dynamic getter.
       $getter = $iteratorItem->getAttribute('getter');
 
       // get the place holders
-      $placeHolders = &$iteratorItem->getPlaceHolders();
+      $placeHolders = & $iteratorItem->getPlaceHolders();
 
       $itemCount = count($this->dataContainer);
       for ($i = 0; $i < $itemCount; $i++) {
@@ -215,7 +215,7 @@ class HtmlIteratorTag extends Document {
 
             foreach ($placeHolders as $objectId => $DUMMY) {
 
-               // if we find a placeholder with IterationNumber as name-Attribute-Value set Iteration number
+               // if we find a place holder with IterationNumber as name-Attribute-Value set Iteration number
                if ($placeHolders[$objectId]->getAttribute('name') == 'IterationNumber') {
                   $placeHolders[$objectId]->setContent($this->iterationNumber);
                   $this->iterationNumber++;
@@ -231,7 +231,7 @@ class HtmlIteratorTag extends Document {
 
             foreach ($placeHolders as $objectId => $DUMMY) {
 
-               // if we find a placeholder with IterationNumber as name-Attribute-Value set Iteration number
+               // if we find a place holder with IterationNumber as name-Attribute-Value set Iteration number
                if ($placeHolders[$objectId]->getAttribute('name') == 'IterationNumber') {
                   $placeHolders[$objectId]->setContent($this->iterationNumber);
                   $this->iterationNumber++;
@@ -257,8 +257,8 @@ class HtmlIteratorTag extends Document {
 
          } else {
             throw new InvalidArgumentException('[HtmlIteratorTag::transformIterator()] '
-                  . 'Given list entry is not an array or object (' . $this->dataContainer[$i]
-                  . ')! The data container must contain a list of associative arrays or objects!',
+                     . 'Given list entry is not an array or object (' . $this->dataContainer[$i]
+                     . ')! The data container must contain a list of associative arrays or objects!',
                E_USER_WARNING);
          }
 
@@ -326,74 +326,10 @@ class HtmlIteratorTag extends Document {
 
       // defining no iterator item is not allowed!
       throw new InvalidArgumentException('[HtmlIteratorTag::getIteratorItemObjectId()] '
-         . 'The definition for iterator "' . $this->getAttribute('name')
-         . '" does not contain a iterator item, hence this is no legal iterator tag '
-         . 'definition. Please refer to the documentation.', E_USER_ERROR);
+            . 'The definition for iterator "' . $this->getAttribute('name')
+            . '" does not contain a iterator item, hence this is no legal iterator tag '
+            . 'definition. Please refer to the documentation.', E_USER_ERROR);
 
-   }
-
-   /**
-    * @public
-    *
-    * Fills a place holder within the iterator.
-    *
-    * @param string $name The name of the place holder to set.
-    * @param string $value The value of the place holder.
-    * @return HtmlIteratorTag This instance for further usage.
-    * @throws InvalidArgumentException In case the requested place holder cannot be found.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 10.09.2010<br />
-    */
-   public function &setPlaceHolder($name, $value) {
-      $count = 0;
-      foreach ($this->children as $objectId => $DUMMY) {
-         if (get_class($this->children[$objectId]) == 'PlaceHolderTag'
-            && $this->children[$objectId]->getAttribute('name') === $name
-         ) {
-            $this->children[$objectId]->setContent($value);
-            $count++;
-         }
-      }
-
-      if ($count == 0 || count($this->children) == 0) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place '
-            . 'holder object with name "' . $name . '" can be found within html:iterator tag '
-            . 'with name "' . $this->getAttribute('name') . '" requested in document controller '
-            . '"' . ($this->getParentObject()->getDocumentController()) . '"!', E_USER_ERROR);
-      }
-
-      return $this;
-   }
-
-   /**
-    * @public
-    *
-    * This method is for convenient setting of multiple place holders. The applied
-    * array must contain a structure like this:
-    * <code>
-    * array(
-    *    'key-a' => 'value-a',
-    *    'key-b' => 'value-b',
-    *    'key-c' => 'value-c',
-    *    'key-d' => 'value-d',
-    *    'key-e' => 'value-e',
-    * )
-    * </code>
-    * Thereby, the <em>key-*</em> offsets define the name of the place holders, their
-    * values are used as the place holder's values.
-    *
-    * @param array $placeHolderValues Key-value-couples to fill place holders.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.11.2010<br />
-    */
-   public function setPlaceHolders(array $placeHolderValues) {
-      foreach ($placeHolderValues as $key => $value) {
-         $this->setPlaceHolder($key, $value);
-      }
    }
 
 }
