@@ -21,7 +21,7 @@
 import('modules::usermanagement::pres::documentcontroller', 'UmgtBaseController');
 
 /**
- * @package modules::usermanagement::pres::documentcontroller
+ * @package modules::usermanagement::pres::documentcontroller::user
  * @class umgt_edit_controller
  *
  * Implements the edit controller for a user.
@@ -93,7 +93,8 @@ class umgt_edit_controller extends UmgtBaseController {
             if (!empty($pass1)) {
 
                if ($pass1 !== $pass2) {
-                  $form->markAsInvalid();
+                  $passField1->markAsInvalid();
+                  $passField2->markAsInvalid();
                   $passField1->addAttribute('style', 'border: 2px solid red;');
                   $passField2->addAttribute('style', 'border: 2px solid red;');
                   $this->setPlaceHolder('UserEdit', $form->transformForm());

@@ -21,7 +21,7 @@
 import('modules::usermanagement::pres::documentcontroller', 'UmgtBaseController');
 
 /**
- * @package modules::usermanagement::pres::documentcontroller
+ * @package modules::usermanagement::pres::documentcontroller::user
  * @class umgt_user_delete_controller
  *
  * Implements the controller to delete a user.
