@@ -1350,6 +1350,32 @@ class Document extends APFObject {
    }
 
    /**
+    * @protected
+    *
+    * Replaces string place holders in content of &lt;*:placeholder /&gt; tag.
+    * An example of a string place holder with key "url" is "{URL}"
+    * String place holders are always written in capital letters!
+    *
+    * @param string $name Place holder name.
+    * @param string $key Key name of string place holder.
+    * @param string $value Value, the string place holder is replaced with.
+    * @return Document This instance for further usage.
+    * @throws InvalidArgumentException In case no place holder has been found.
+    *
+    * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
+    * @version
+    * Version 0.1, 03.10.2012<br />
+    */
+   public function &setStringPlaceHolder($name, $key, $value) {
+      $nodes = & $this->getChildNodes('name', $name, 'PlaceHolderTag');
+      /* @var $nodes PlaceHolderTag[] */
+      foreach ($nodes as $node) {
+         $node->setStringReplacement($key, $value);
+      }
+      return $this;
+   }
+
+   /**
     * @public
     *
     * Returns the name of the document controller in case the document should
@@ -2242,7 +2268,7 @@ class PlaceHolderTag extends Document {
     * @since 1.17
     * @var string[] Replacement strings for string place holders.
     */
-   protected $stringPlaceHolders = array();
+   protected $stringReplacement = array();
 
    public function __construct() {
       // do nothing, especially not initialize tag libs
@@ -2263,8 +2289,8 @@ class PlaceHolderTag extends Document {
     * @version
     * Version 0.1, 02.01.2013<br />
     */
-   public function setStringPlaceHolder($key, $value) {
-      $this->stringPlaceHolders[strtoupper($key)] = $value;
+   public function setStringReplacement($key, $value) {
+      $this->stringReplacement[strtoupper($key)] = $value;
    }
 
    /**
@@ -2281,7 +2307,7 @@ class PlaceHolderTag extends Document {
     * Version 0.2, 06.02.2013 (Added string place holder support)<br />
     */
    public function transform() {
-      foreach ($this->stringPlaceHolders as $key => $value) {
+      foreach ($this->stringReplacement as $key => $value) {
          $this->content = str_replace('{' . $key . '}', $value, $this->content);
       }
       return $this->content;
@@ -2711,7 +2737,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function setPlaceHolder($name, $value) {
       try {
-         $this->getDocument()->setPlaceHolder($name, $value);
+         $this->document->setPlaceHolder($name, $value);
       } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place holders '
                . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
@@ -2721,9 +2747,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    /**
     * @protected
     *
-    * Replaces string place holders in content of &lt;html:placeholder /&gt; tag.
-    * An example of a string placeholder with key "url" is "{URL}"
-    * String place holders are always written in capital letters!
+    * Convenience method to replace string place holders.
     * <p/>
     * Template:
     * <code>
@@ -2747,12 +2771,8 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function setStringPlaceHolder($name, $key, $value) {
       try {
-         /* @var $nodes PlaceHolderTag[] */
-         $nodes = & $this->document->getChildNodes('name', $name, 'PlaceHolderTag');
-         foreach ($nodes as $node) {
-            $node->setStringPlaceHolder($key, $value);
-         }
-      } catch (Exception $e) {
+         $this->document->setStringPlaceHolder($name, $key, $value);
+      } catch (InvalidArgumentException $e) {
          throw new InvalidArgumentException('[' . get_class($this) . '::setStringPlaceHolder()] No place holders '
                . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
       }
