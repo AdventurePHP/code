@@ -20,6 +20,7 @@
  */
 import('tools::filesystem', 'FilesystemManager');
 import('tools::cache::key', 'SimpleCacheKey');
+import('tools::cache::key', 'AdvancedCacheKey');
 
 /**
  * @package tools::cache::provider
@@ -64,9 +65,17 @@ class TextCacheProvider extends CacheBase implements CacheProvider {
    /**
     * @protected
     *
-    * Returns the complete cache file name. Due to performance reasons,
-    * the folder structure is added a sub folder to not have all cache
-    * files within one folder.
+    * Returns the complete cache file name. Due to filesystem performance reasons,
+    * the cache key folder is separated into several parts:
+    * <ul>
+    * <li>base folder</li>
+    * <li>namespace</li>
+    * <li>2 letters of the cache key</li>
+    * <li>cache key</li>
+    * <li>2 letters of cache sub key (in case of an AdvancedCacheKey)</li>
+    * <li>cache sub key as file name (in case of an AdvancedCacheKey)</li>
+    * <li>apfc as file extension</li>
+    * </ul>
     *
     * @param CacheKey $cacheKey the application's cache key.
     * @return string The cache file name.
@@ -82,10 +91,18 @@ class TextCacheProvider extends CacheBase implements CacheProvider {
       $namespace = str_replace('::', '/', $this->getConfigAttribute('Cache.Namespace'));
 
       $key = md5($cacheKey->getKey());
-      $subFolder = substr($key, 0, 2);
+      $folder = substr($key, 0, 2);
 
-      return $baseFolder . '/' . $namespace . '/' . $subFolder . '/' . $key . '.apfc';
-
+      if ($cacheKey instanceof AdvancedCacheKey) {
+         $subKey = md5($cacheKey->getSubKey());
+         $subFolder = substr($subKey, 0, 2);
+         return $baseFolder . '/' . $namespace
+               . '/' . $folder . '/' . $key . '/'
+               . $subFolder . '/' . $subKey . '.apfc';
+      } else {
+         return $baseFolder . '/' . $namespace
+               . '/' . $folder . '/' . $key . '.apfc';
+      }
    }
 
    public function clear(CacheKey $cacheKey = null) {

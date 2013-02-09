@@ -20,7 +20,6 @@
  */
 import('tools::filesystem', 'FilesystemManager');
 import('tools::cache::provider', 'TextCacheProvider');
-import('tools::cache::key', 'AdvancedCacheKey');
 
 /**
  * @package tools::cache::provider
@@ -34,47 +33,6 @@ import('tools::cache::key', 'AdvancedCacheKey');
  * Version 0.1, 31.10.2008<br />
  */
 class AdvancedTextCacheProvider extends TextCacheProvider {
-
-   /**
-    * @protected
-    *
-    * Returns the complete cache file name. Due to filesystem performance reasons,
-    * the cache key folder is separated into several parts:
-    * <ul>
-    * <li>base folder</li>
-    * <li>namespace</li>
-    * <li>2 letters of the cache key</li>
-    * <li>cache key</li>
-    * <li>2 letters of cache sub key</li>
-    * <li>cache sub key as file name</li>
-    * <li>apfc as file extension</li>
-    * </ul>
-    *
-    * @param CacheKey $cacheKey the application's cache key.
-    * @return string The cache file name.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 21.11.2008<br />
-    * Version 0.2, 05.08.2010 (Enhanced cache file structure)<br />
-    */
-   protected function getCacheFile(CacheKey $cacheKey) {
-
-      $baseFolder = $this->getConfigAttribute('Cache.BaseFolder');
-      $namespace = str_replace('::', '/', $this->getConfigAttribute('Cache.Namespace'));
-
-      /* @var AdvancedCacheKey $cacheKey */
-      $key = md5($cacheKey->getKey());
-      $folder = substr($key, 0, 2);
-
-      $subKey = md5($cacheKey->getSubKey());
-      $subFolder = substr($subKey, 0, 2);
-
-      return $baseFolder . '/' . $namespace
-            . '/' . $folder . '/' . $key . '/'
-            . $subFolder . '/' . $subKey . '.apfc';
-
-   }
 
    public function clear(CacheKey $cacheKey = null) {
 
@@ -91,7 +49,7 @@ class AdvancedTextCacheProvider extends TextCacheProvider {
          }
       }
 
-      /* @var $cacheKey AdvancedCacheKey*/
+      /* @var $cacheKey AdvancedCacheKey */
       $key = $cacheKey->getKey();
       $subKey = $cacheKey->getSubKey();
 
@@ -110,11 +68,7 @@ class AdvancedTextCacheProvider extends TextCacheProvider {
 
          // in case we have both cache key and cache sub key, delete the local
          // cache entry structure
-         $key = md5($key);
-         $subKey = md5($subKey);
-         $file = $baseFolder . '/' . $namespace . '/'
-               . substr($key, 0, 2) . '/' . $key . '/'
-               . substr($subKey, 0, 2) . '/' . $subKey . '.apfc';
+         $file = $this->getCacheFile($cacheKey);
          try {
             FilesystemManager::removeFile($file);
             return true;
