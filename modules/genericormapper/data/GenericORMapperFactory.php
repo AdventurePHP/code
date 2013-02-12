@@ -27,9 +27,9 @@ import('modules::genericormapper::data', 'GenericORRelationMapper');
  * Implements a factory for creating GenericORRelationMapper instances. Automatically
  * configures the desired instance using the given params.
  * <p/>
- * Please note, that the instanciation method of the factory decides the service mode of the
+ * Please note, that the instantiation method of the factory decides the service mode of the
  * mapper. This means, that you have to create the factory in NORMAL mode, if you have decided
- * to use per-use-instanciation, take SINGLETON (default) if you like to have one instance per
+ * to use per-use-instantiation, take SINGLETON (default) if you like to have one instance per
  * request and choose SESSIONSINGLETON in case the mapper should initialize it's mapping and
  * relation table only once per session.
  * <p/>
@@ -89,17 +89,17 @@ final class GenericORMapperFactory extends APFObject {
     *
     * @param string $configNamespace namespace, where the desired mapper configuration is located
     * @param string $configNameAffix name affix of the object and relation definition files
-    * @param string $connectionName name of the connection, that the mapper should use to acces the database
-    * @param boolean $debugMode Inicates, if the generated statements should be logged to a file. Do not use this option set to true in production environment!
+    * @param string $connectionName name of the connection, that the mapper should use to access the database
+    * @param boolean $debugMode Indicates, if the generated statements should be logged to a file. Do not use this option set to true in production environment!
     * @return GenericORRelationMapper The desired instance of the generic OR mapper.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 23.06.2008<br />
-    * Version 0.2, 25.10.2008 (Bugfix: added the $Type parameter to the service manager call)<br />
-    * Version 0.3, 26.10.2008 (Bugfix: cache key now recognizes the creation type)<br />
+    * Version 0.2, 25.10.2008 (Bug-fix: added the $Type parameter to the service manager call)<br />
+    * Version 0.3, 26.10.2008 (Bug-fix: cache key now recognizes the creation type)<br />
     * Version 0.4, 03.05.2009 (Added the $debugMode param)<br />
-    * Version 0.5, 16.03.2010 (Bugfix 299: removed the type to prevent identical mapper objects)<br />
+    * Version 0.5, 16.03.2010 (Bug-fix 299: removed the type to prevent identical mapper objects)<br />
     * Version 0.6, 19.03.2011 (Added the $debugMode parameter to the cache key to allow different application cases for the same GORM config)<br />
     */
    public function &getGenericORMapper($configNamespace, $configNameAffix, $connectionName, $debugMode = false) {

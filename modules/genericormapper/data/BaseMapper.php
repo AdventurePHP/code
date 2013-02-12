@@ -193,9 +193,9 @@ class BaseMapper extends APFObject {
     * Version 0.1, 16.03.2010 (Introduced due to bug 299)<br />
     */
    protected function createDatabaseConnection() {
-      $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
+      $cM = & $this->getServiceObject('core::database', 'ConnectionManager');
       /* @var $cM ConnectionManager */
-      $this->dbDriver = &$cM->getConnection($this->connectionName);
+      $this->dbDriver = & $cM->getConnection($this->connectionName);
    }
 
    /**
@@ -211,24 +211,28 @@ class BaseMapper extends APFObject {
 
       $this->createDatabaseConnection();
 
-      // create mapping table if necessary to gain performance
-      if (count($this->mappingTable) === 0) {
-         $this->createMappingTable();
+      // Only create mapping/relation/objects table when mapping has been
+      // configured directly via
+      //
+      // conf.namespace.method = "setConfigNamespace"
+      // conf.namespace.value = "..."
+      // conf.affix.method = "setConfigNameAffix"
+      // conf.affix.value = "..."
+      //
+      // or mixed setup (DI service + basic config). Otherwise - this is
+      // when configuring mappings with DI services -, there is no need
+      // to do so. Regarding caching/performance, the import cache already
+      // ensures, that the mapping/relation/objects table is only created
+      // once per config!
+      if (!empty($this->configNamespace) && !empty($this->configNameAffix)) {
+         $this->addMappingConfiguration($this->configNamespace, $this->configNameAffix);
+         $this->addRelationConfiguration($this->configNamespace, $this->configNameAffix);
+         $this->addDomainObjectsConfiguration($this->configNamespace, $this->configNameAffix);
       }
 
-      // create relation table if necessary to gain performance
-      if (count($this->relationTable) === 0) {
-         $this->createRelationTable();
-      }
-
-      // create service object table if necessary to gain performance
-      if (count($this->domainObjectsTable) === 0) {
-         $this->createDomainObjectsTable();
-      }
-
-      // do not initialize the lookup tables more than once per session.
+      // Do not initialize the lookup tables more than once per session (if created SESSIONSINGLETON).
+      // Otherwise, once per request (SINGLETON).
       $this->markAsInitialized();
-
    }
 
    /**
@@ -264,130 +268,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @protected
-    *
-    * Parse the object configuration definition file.<br />
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 26.04.2008<br />
-    * Version 0.2, 31.05.2008 (Refactoring of the object definition)<br />
-    * Version 0.3, 22.06.2008 (Refactored object configuration adressing)<br />
-    * Version 0.4, 26.10.2008 (Resolving functionality was outsourced to the __generateMappingItem() method)<br />
-    */
-   protected function createMappingTable() {
-
-      // invoke benchmark timer
-      $t = &Singleton::getInstance('BenchmarkTimer');
-      /* @var $t BenchmarkTimer */
-      $t->start('BaseMapper::createMappingTable()');
-
-      // get object configuration
-      $objectsConfig = $this->getConfiguration($this->configNamespace, $this->configNameAffix . '_objects.' . $this->getConfigFileExtension());
-
-      // extract configuration to support pre 1.13 GORM config
-      foreach ($objectsConfig->getSectionNames() as $sectionName) {
-         $section = $objectsConfig->getSection($sectionName);
-         $this->mappingTable[$sectionName] = array();
-         foreach ($section->getValueNames() as $valueName) {
-            $this->mappingTable[$sectionName][$valueName] = $section->getValue($valueName);
-         }
-      }
-
-      // resolve definitions
-      foreach ($this->mappingTable as $objectName => $DUMMY) {
-
-         // add additional index definition to separate table
-         if (isset($this->mappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR])) {
-            $this->mappingIndexTable[$objectName] = $this->mappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR];
-            //unset($this->mappingTable[$objectName][self::$ADDITIONAL_INDICES_INDICATOR]);
-         }
-
-         $this->mappingTable[$objectName] = $this->generateMappingItem($objectName, $this->mappingTable[$objectName]);
-      }
-
-      $t->stop('BaseMapper::createMappingTable()');
-   }
-
-   /**
-    * @protected
-    *
-    * Create the object relation table.<br />
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 11.05.2008<br />
-    * Version 0.2, 30.05.2008 (properties are now generated instead of configured explicitly)<br />
-    * Version 0.3, 22.06.2008 (refactored relation configuration adressing)<br />
-    * Version 0.4, 26.10.2008 (Resolving functionality was outsourced to the __generateRelationItem() method)<br />
-    */
-   protected function createRelationTable() {
-
-      // invoke benchmark timer
-      $t = &Singleton::getInstance('BenchmarkTimer');
-      /* @var $t BenchmarkTimer */
-      $t->start('BaseMapper::createRelationTable()');
-
-      // Get relation configuration
-      $relationsConfig = $this->getConfiguration($this->configNamespace, $this->configNameAffix . '_relations.' . $this->getConfigFileExtension());
-
-      // extract configuration to support pre 1.13 GORM config
-      foreach ($relationsConfig->getSectionNames() as $sectionName) {
-         $section = $relationsConfig->getSection($sectionName);
-         $this->relationTable[$sectionName] = array();
-         foreach ($section->getValueNames() as $valueName) {
-            $this->relationTable[$sectionName][$valueName] = $section->getValue($valueName);
-         }
-      }
-
-      // resolve definitions
-      foreach ($this->relationTable as $relationName => $DUMMY) {
-         $this->relationTable[$relationName] = $this->generateRelationItem($relationName, $this->relationTable[$relationName]);
-      }
-
-      $t->stop('BaseMapper::createRelationTable()');
-   }
-
-   /**
-    * @protected
-    *
-    * Create the service object table.<br />
-    *
-    * @author Ralf Schubert
-    * @version
-    * Version 0.1, 15.01.2011<br />
-    */
-   protected function createDomainObjectsTable() {
-
-      // invoke benchmark timer
-      $t = &Singleton::getInstance('BenchmarkTimer');
-      /* @var $t BenchmarkTimer */
-      $t->start('BaseMapper::createServiceObjectsTable()');
-
-      // get object configuration if there is one
-      try {
-         $serviceObjectsConfig = $this->getConfiguration($this->configNamespace, $this->configNameAffix . '_domainobjects.' . $this->getConfigFileExtension());
-         foreach ($serviceObjectsConfig->getSectionNames() as $sectionName) {
-            $section = $serviceObjectsConfig->getSection($sectionName);
-            $this->domainObjectsTable[$sectionName] = array();
-            foreach ($section->getValueNames() as $valueName) {
-               $this->domainObjectsTable[$sectionName][$valueName] = $section->getValue($valueName);
-            }
-            if ($section->getSection('Base') !== null) {
-               $this->domainObjectsTable[$sectionName]['Base'] = array(
-                  'Namespace' => $section->getSection('Base')->getValue('Namespace'),
-                  'Class' => $section->getSection('Base')->getValue('Class'),
-               );
-            }
-         }
-      } catch (ConfigurationException $e) {
-         // do nothing, since not all applications are using domain objects!
-      }
-
-      $t->stop('BaseMapper::createServiceObjectsTable()');
-   }
-
-   /**
     * @public
     *
     * Imports additional mapping information.
@@ -401,7 +281,7 @@ class BaseMapper extends APFObject {
     */
    public function addMappingConfiguration($configNamespace, $configNameAffix) {
 
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addMappingConfiguration()');
 
@@ -424,9 +304,19 @@ class BaseMapper extends APFObject {
 
          foreach ($addObjects as $objectName => $DUMMY) {
 
+            // Add additional index definition to separate table. We do this before generating the mapping definition,
+            // because generateMappingItem() removes the additional index definition to keep the internal mapping table
+            // clean.
+            if (isset($addObjects[$objectName][self::$ADDITIONAL_INDICES_INDICATOR])) {
+               $this->mappingIndexTable[$objectName] = $addObjects[$objectName][self::$ADDITIONAL_INDICES_INDICATOR];
+            }
+
+            // Only create new items to avoid overwriting items with same name from different configuration files
+            // (since we do not have namespaces for domain objects).
             if (!isset($this->mappingTable[$objectName])) {
                $this->mappingTable[$objectName] = $this->generateMappingItem($objectName, $addObjects[$objectName]);
             }
+
          }
 
          // mark object config as cached
@@ -458,8 +348,8 @@ class BaseMapper extends APFObject {
     *
     * Imports additional relation information.
     *
-    * @param string $configNamespace the desired configuration namespace
-    * @param string $configNameAffix the configuration affix of the desired configuration
+    * @param string $configNamespace The desired configuration namespace.
+    * @param string $configNameAffix The configuration affix of the desired configuration.
     *
     * @author Christian Achatz
     * @version
@@ -467,7 +357,7 @@ class BaseMapper extends APFObject {
     */
    public function addRelationConfiguration($configNamespace, $configNameAffix) {
 
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addRelationConfiguration()');
 
@@ -489,7 +379,8 @@ class BaseMapper extends APFObject {
          }
 
          foreach ($addRelations as $relationName => $DUMMY) {
-
+            // Only create new items to avoid overwriting items with same name from different configuration files
+            // (since we do not have namespaces for relations).
             if (!isset($this->relationTable[$relationName])) {
                $this->relationTable[$relationName] = $this->generateRelationItem($relationName, $addRelations[$relationName]);
             }
@@ -533,44 +424,41 @@ class BaseMapper extends APFObject {
     */
    public function addDomainObjectsConfiguration($configNamespace, $configNameAffix) {
 
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('BenchmarkTimer');
       /* @var $t BenchmarkTimer */
-      $t->start('BaseMapper::addServiceObjectsConfiguration()');
+      $t->start('BaseMapper::addDomainObjectsConfiguration()');
 
       // add config, if not already included
       $cacheKey = md5($configNamespace . $configNameAffix . '_domainobjects');
       if (!isset($this->importedConfigCache[$cacheKey])) {
+         try {
+            // import and merge config
+            $addConfig = $this->getConfiguration($configNamespace, $configNameAffix . '_domainobjects.' . $this->getConfigFileExtension());
 
-         // import and merge config
-         $addConfig = $this->getConfiguration($configNamespace, $configNameAffix . '_domainobjects.' . $this->getConfigFileExtension());
-
-         // extract configuration to support pre 1.13 GORM config
-         $addObjects = array();
-         foreach ($addConfig->getSectionNames() as $sectionName) {
-            $section = $addConfig->getSection($sectionName);
-            $addObjects[$sectionName] = array();
-            foreach ($section->getValueNames() as $valueName) {
-               $addObjects[$sectionName][$valueName] = $section->getValue($valueName);
+            // extract configuration to support pre 1.13 GORM config
+            $addObjects = array();
+            foreach ($addConfig->getSectionNames() as $sectionName) {
+               $section = $addConfig->getSection($sectionName);
+               $this->domainObjectsTable[$sectionName] = array();
+               foreach ($section->getValueNames() as $valueName) {
+                  $this->domainObjectsTable[$sectionName][$valueName] = $section->getValue($valueName);
+               }
+               if ($section->getSection('Base') !== null) {
+                  $this->domainObjectsTable[$sectionName]['Base'] = array(
+                     'Namespace' => $section->getSection('Base')->getValue('Namespace'),
+                     'Class' => $section->getSection('Base')->getValue('Class'),
+                  );
+               }
             }
-            if ($section->getSection('Base') !== null) {
-               $addObjects[$sectionName]['Base'] = array(
-                  'Namespace' => $section->getSection('Base')->getValue('Namespace'),
-                  'Class' => $section->getSection('Base')->getValue('Class'),
-               );
-            }
-         }
-
-         foreach ($addObjects as $objectName => $DUMMY) {
-            if (!isset($this->domainObjectsTable[$objectName])) {
-               $this->domainObjectsTable[$objectName] = $DUMMY;
-            }
+         } catch (ConfigurationException $e) {
+            // do nothing, because we accept that (domain objects are optional)!
          }
 
          // mark object config as cached
          $this->importedConfigCache[$cacheKey] = true;
       }
 
-      $t->stop('BaseMapper::addServiceObjectsConfiguration()');
+      $t->stop('BaseMapper::addDomainObjectsConfiguration()');
    }
 
    /**

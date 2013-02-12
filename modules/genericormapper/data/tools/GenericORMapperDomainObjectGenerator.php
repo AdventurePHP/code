@@ -50,8 +50,8 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
       $this->configNamespace = $configNamespace;
       $this->configNameAffix = $configNameAffix;
 
-      $this->createMappingTable();
-      $this->createDomainObjectsTable();
+      $this->addMappingConfiguration($this->configNamespace, $this->configNameAffix);
+      $this->addDomainObjectsConfiguration($this->configNamespace, $this->configNameAffix);
       foreach ($this->domainObjectsTable as $name => $DUMMY) {
          $this->generateServiceObject($name);
       }
@@ -126,7 +126,7 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
         $newcode,
         $content
         ); */
-      // *WORKAROUND* with preg_* functions not found, used some string funtions instead:
+      // *WORKAROUND* with preg_* functions not found, used some string functions instead:
       $startTag = '//<*' . $this->domainObjectsTable[$name]['Class'] . 'Base:start*>';
       $endTag = '<*' . $this->domainObjectsTable[$name]['Class'] . 'Base:end*>';
       $start = strpos($content, $startTag);

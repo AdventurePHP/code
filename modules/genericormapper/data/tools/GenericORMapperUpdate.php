@@ -135,10 +135,10 @@ class GenericORMapperUpdate extends GenericORMapperSetup {
       $this->configNameAffix = $configNameAffix;
 
       // setup object layout (new)
-      $this->createMappingTable();
+      $this->addMappingConfiguration($this->configNamespace, $this->configNameAffix);
 
       // setup relation layout (new)
-      $this->createRelationTable();
+      $this->addRelationConfiguration($this->configNamespace, $this->configNameAffix);
 
       // generate layout from the database (reverse engineering of the database)
       $cM = &$this->getServiceObject('core::database', 'ConnectionManager');

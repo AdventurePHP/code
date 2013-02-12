@@ -218,12 +218,12 @@ class GenericORMapperSetup extends BaseMapper {
     * Version 0.2, 31.05.2008 (Code completed and refactored due to changes on the mapping table)<br />
     * Version 0.3, 09.12.2008 (Replaced TINYINT by INT)<br />
     * Version 0.4, 18.05.2009 (Changed primary key columns to UNSIGNED)<br />
-    * Version 0.5, 11.10.2009 (Outsorced table statement creation due to introduction of the update feature)<br />
+    * Version 0.5, 11.10.2009 (Outsourced table statement creation due to introduction of the update feature)<br />
     */
    protected function generateObjectLayout() {
 
       // create mapping table
-      $this->createMappingTable();
+      $this->addMappingConfiguration($this->configNamespace, $this->configNameAffix);
 
       // generate tables for objects
       $setup = array();
@@ -309,7 +309,7 @@ class GenericORMapperSetup extends BaseMapper {
    protected function generateRelationLayout() {
 
       // create relation table
-      $this->createRelationTable();
+      $this->addRelationConfiguration($this->configNamespace, $this->configNameAffix);
 
       // generate tables for objects
       $setup = array();
