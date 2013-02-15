@@ -36,9 +36,10 @@ import('core::logging::entry', 'GraphiteLogEntry');
  * $logger->addLogWriter('graphite', new GraphiteLogWriter('localhost', '8125'));
  * </code>
  *
- * @author Christian Achatz
+ * @author Christian Achatz, Daniel Basedow
  * @version
  * Version 0.1, 16.01.2013<br />
+ * Version 0.2, 14.02.2013 (Introduced batch write mode configuration due to issues with the pystatsd implementation)<br />
  */
 class GraphiteLogWriter implements LogWriter {
 
@@ -63,20 +64,27 @@ class GraphiteLogWriter implements LogWriter {
    protected $target;
 
    /**
+    * @var bool Specifies if multiple LogEntries will be written in one datagram (true) or not (false) (pystatsd doesn't support multiple metrics in one datagram).
+    */
+   protected $batchWrites;
+
+   /**
     * @public
     *
     * Configures the Graphite log writer.
     *
     * @param string $host The Graphite server address (IP or DNS name).
     * @param string $port The Graphite server port.
+    * @param bool $batchWrites Specifies if multiple LogEntries will be written in one datagram (true) or not (false).
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 17.01.2013<br />
     */
-   public function __construct($host, $port) {
+   public function __construct($host, $port, $batchWrites = true) {
       $this->host = $host;
       $this->port = $port;
+      $this->batchWrites = $batchWrites;
    }
 
    /**
@@ -94,8 +102,44 @@ class GraphiteLogWriter implements LogWriter {
       $this->entrySeparator = $entrySeparator;
    }
 
-   public function writeLogEntries(array $entries) {
+   /**
+    * @public
+    *
+    * Let's you define if batch writes should be considered.
+    *
+    * @param bool $batchWrites True enables batch writes, false disables multiple datagrams per connection.
+    *
+    * @author Daniel Basedow
+    * @version
+    * Version 0.1, 14.02.2013<br />
+    */
+   public function setBatchWrites($batchWrites) {
+      $this->batchWrites = $batchWrites;
+   }
 
+   public function writeLogEntries(array $entries) {
+      if ($this->batchWrites) {
+         $this->sendDatagram(implode($this->entrySeparator, $entries));
+      } else {
+         foreach ($entries as $entry) {
+            $this->sendDatagram($entry);
+         }
+      }
+   }
+
+   /**
+    * @public
+    *
+    * Send the actual UDP datagram to statsd.
+    *
+    * @param string $data The data that should be send to statsd.
+    * @throws LoggerException In case the UDP connection cannot be established.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 17.01.2013<br />
+    */
+   private function sendDatagram($data) {
       // suppress errors for fsockopen() to have one nice exception message instead of several error messages
       $socket = @fsockopen('udp://' . $this->host, $this->port, $errorNumber, $errorMessage);
       if ($socket === false || !empty($errorNumber) || !empty($errorMessage)) { // really a good check for not-empty?
@@ -108,7 +152,7 @@ class GraphiteLogWriter implements LogWriter {
 
       // bulk-send data to avoid too much network I/O overhead
       // we can use implode() here, because LogEntry forces __toString() to be implemented
-      fwrite($socket, implode($this->entrySeparator, $entries));
+      fwrite($socket, $data);
 
       fclose($socket);
    }
