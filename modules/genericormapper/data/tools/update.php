@@ -33,7 +33,7 @@ Registry::register('apf::core', 'Environment', '{ENVIRONMENT}');
 import('modules::genericormapper::data::tools', 'GenericORMapperUpdate');
 
 // create update tool
-$update = new GenericORMapperUpdate();
+$update = new GenericORMapperManagementTool();
 
 // set Context (important for the configuration files!)
 $update->setContext('{CONTEXT}');
@@ -44,8 +44,17 @@ $update->setContext('{CONTEXT}');
 // adapt data type of the indexed columns, that are used for object and relation ids
 //$update->setIndexColumnDataType('INT(5) UNSIGNED');
 
-// update database layout
-$update->updateDatabase('{CONFIG_NAMESPACE}', '{CONFIG_NAME_AFFIX}', '{CONNECTION_NAME}');
+// initialize mapping configuration
+$update->addMappingConfiguration('{CONFIG_NAMESPACE}', '{CONFIG_NAME_AFFIX}');
+
+// initialize relation configuration
+$update->addRelationConfiguration('{CONFIG_NAMESPACE}', '{CONFIG_NAME_AFFIX}');
+
+// initialize database connection (optional; if not set, statements will be printed instead if direct update)
+$update->setConnectionName('{CONNECTION_NAME}');
+
+// update database layout directly
+$update->run(true);
 
 // display statements only
-$update->updateDatabase('{CONFIG_NAMESPACE}', '{CONFIG_NAME_AFFIX}', '{CONNECTION_NAME}', false);
+$update->run(false);

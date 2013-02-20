@@ -30,10 +30,10 @@ require('../../apps/core/pagecontroller/pagecontroller.php');
 Registry::register('apf::core', 'Environment', '{ENVIRONMENT}');
 
 // include SetupMapper
-import('modules::genericormapper::data::tools', 'GenericORMapperSetup');
+import('modules::genericormapper::data::tools', 'GenericORMapperManagementTool');
 
 // create setup tool
-$setup = new GenericORMapperSetup();
+$setup = new GenericORMapperManagementTool();
 
 // set Context (important for the configuration files!)
 $setup->setContext('{CONTEXT}');
@@ -44,8 +44,17 @@ $setup->setContext('{CONTEXT}');
 // adapt data type of the indexed columns, that are used for object and relation ids
 //$setup->setIndexColumnDataType('INT(5) UNSIGNED');
 
-// create database layout
-$setup->setupDatabase('{CONFIG_NAMESPACE}', '{CONFIG_NAME_AFFIX}', '{CONNECTION_NAME}');
+// initialize mapping configuration
+$setup->addMappingConfiguration('{CONFIG_NAMESPACE}', '{CONFIG_NAME_AFFIX}');
+
+// initialize relation configuration
+$setup->addRelationConfiguration('{CONFIG_NAMESPACE}', '{CONFIG_NAME_AFFIX}');
+
+// initialize database connection (optional; if not set, statements will be printed instead if direct update)
+$setup->setConnectionName('{CONNECTION_NAME}');
+
+// create database layout directly
+$setup->run(true);
 
 // display statements only
-$setup->setupDatabase('{CONFIG_NAMESPACE}', '{CONFIG_NAME_AFFIX}');
+$setup->run(false);

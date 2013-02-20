@@ -13,7 +13,10 @@
  *
  * Please note, that you may have to adapt the include path for the <em>pagecontroller.php</em>.
  */
-import('modules::genericormapper::data::tools', 'GenericORMapperSetup');
-$setupMapper = new GenericORMapperSetup();
-$setupMapper->setContext($context);
-$setupMapper->setupDatabase('modules::guestbook2009::data', 'guestbook2009', $connectionKey);
+import('modules::genericormapper::data::tools', 'GenericORMapperManagementTool');
+$setup = new GenericORMapperManagementTool();
+$setup->setContext($context);
+$setup->addMappingConfiguration('modules::guestbook2009::data', 'guestbook2009');
+$setup->addRelationConfiguration('modules::guestbook2009::data', 'guestbook2009');
+$setup->setConnectionName($connectionKey);
+$setup->run();
