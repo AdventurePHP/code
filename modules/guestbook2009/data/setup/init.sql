@@ -1,10 +1,10 @@
-INSERT INTO `ass_attribute2language` (`AttributeID`, `LanguageID`) VALUES
+INSERT INTO `ass_attribute2language` (`Source_AttributeID`, `Target_LanguageID`) VALUES
 (1, 2),
 (2, 2),
 (3, 1),
 (4, 1);
 
-INSERT INTO `cmp_guestbook2langdepvalues` (`GuestbookID`, `AttributeID`) VALUES
+INSERT INTO `cmp_guestbook2langdepvalues` (`Source_GuestbookID`, `Target_AttributeID`) VALUES
 (1, 1),
 (1, 2),
 (1, 3),
