@@ -24,6 +24,8 @@ import('modules::genericormapper::data', 'GenericORRelationMapper');
  * @package modules::genericormapper::data
  * @class GenericORMapperFactory
  *
+ * @deprecated Please use the GORM with the DIServiceManager instead of this factory to initialize he desired instance!
+ *
  * Implements a factory for creating GenericORRelationMapper instances. Automatically
  * configures the desired instance using the given params.
  * <p/>

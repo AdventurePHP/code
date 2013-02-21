@@ -41,7 +41,7 @@ $setup->setContext('{CONTEXT}');
 // adapt storage engine (default is MyISAM)
 //$setup->setStorageEngine('MyISAM|INNODB');
 
-// adapt data type of the indexed columns, that are used for object and relation ids
+// adapt data type of the indexed columns, that are used for object ids
 //$setup->setIndexColumnDataType('INT(5) UNSIGNED');
 
 // initialize mapping configuration

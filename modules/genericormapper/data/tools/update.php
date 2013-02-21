@@ -30,7 +30,7 @@ require('../../apps/core/pagecontroller/pagecontroller.php');
 Registry::register('apf::core', 'Environment', '{ENVIRONMENT}');
 
 // include UpdateMapper
-import('modules::genericormapper::data::tools', 'GenericORMapperUpdate');
+import('modules::genericormapper::data::tools', 'GenericORMapperManagementTool');
 
 // create update tool
 $update = new GenericORMapperManagementTool();
@@ -41,7 +41,7 @@ $update->setContext('{CONTEXT}');
 // adapt storage engine (default is MyISAM)
 //$update->setStorageEngine('MyISAM|INNODB');
 
-// adapt data type of the indexed columns, that are used for object and relation ids
+// adapt data type of the indexed columns, that are used for object ids
 //$update->setIndexColumnDataType('INT(5) UNSIGNED');
 
 // initialize mapping configuration

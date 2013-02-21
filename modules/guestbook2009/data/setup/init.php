@@ -13,16 +13,13 @@
  *
  * Please note, that you may have to adapt the include path for the <em>pagecontroller.php</em>.
  */
-import('modules::genericormapper::data', 'GenericORMapperFactory');
+import('modules::genericormapper::data', 'GenericORRelationMapper');
 
-/* @var $ormFact GenericORMapperFactory */
-$ormFact = &Singleton::getInstance('GenericORMapperFactory');
-$ormFact->setContext($context);
-$orm = &$ormFact->getGenericORMapper(
-   'modules::guestbook2009::data',
-   'guestbook2009',
-   $connectionKey
-);
+$orm = new GenericORRelationMapper();
+$orm->addMappingConfiguration('modules::guestbook2009::data', 'guestbook2009');
+$orm->addRelationConfiguration('modules::guestbook2009::data', 'guestbook2009');
+$orm->setConnectionName($connectionKey);
+$orm->setup();
 
 // --- setup available languages ----------------------------------------------------------------
 $langDe = new GenericDomainObject('Language');
