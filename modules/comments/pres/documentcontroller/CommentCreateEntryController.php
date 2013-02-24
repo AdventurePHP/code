@@ -18,12 +18,12 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::comments::pres::documentcontroller', 'commentBaseController');
+import('modules::comments::pres::documentcontroller', 'CommentBaseDocumentController');
 import('tools::link', 'LinkGenerator');
 
 /**
  * @package modules::comments::pres::documentcontroller
- * @class comment_form_v1_controller
+ * @class CommentCreateEntryController
  *
  * Implements the document controller for the 'form.html' template.
  *
@@ -31,7 +31,7 @@ import('tools::link', 'LinkGenerator');
  * @version
  * Version 0.1, 22.08.2007<br />
  */
-class comment_form_v1_controller extends commentBaseController {
+class CommentCreateEntryController extends CommentBaseDocumentController {
 
    /**
     * @public

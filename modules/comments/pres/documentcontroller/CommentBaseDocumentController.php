@@ -22,15 +22,15 @@ import('modules::comments::biz', 'ArticleComment');
 
 /**
  * @package modules::comments::pres::documentcontroller
- * @class commentBaseController
+ * @class CommentBaseDocumentController
  *
  * Provides basic functionality for the document controllers of the comment module.
  *
- * @author Christian W. Schafer
+ * @author Christian W. Schäfer
  * @version
  * Version 0.1, 21.08.2007<br />
  */
-abstract class commentBaseController extends BaseDocumentController {
+abstract class CommentBaseDocumentController extends BaseDocumentController {
 
    /**
     * @protected

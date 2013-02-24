@@ -18,13 +18,13 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::comments::pres::documentcontroller', 'commentBaseController');
+import('modules::comments::pres::documentcontroller', 'CommentBaseDocumentController');
 import('tools::string', 'AdvancedBBCodeParser');
 import('tools::link', 'LinkGenerator');
 
 /**
  * @package modules::comments::pres::documentcontroller
- * @class comment_listing_v1_controller
+ * @class CommentListingController
  *
  * Implements the document controller for the 'listing.html' template.
  *
@@ -34,7 +34,7 @@ import('tools::link', 'LinkGenerator');
  * Version 0.2, 20.04.2008 (Added a display restriction)<br />
  * Version 0.3, 12.06.2008 (Removed the display restriction)<br />
  */
-class comment_listing_v1_controller extends commentBaseController {
+class CommentListingController extends CommentBaseDocumentController {
 
    /**
     * @public
