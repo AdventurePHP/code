@@ -324,7 +324,7 @@ final class BenchmarkTimer {
    /**
     * @private
     *
-    * Stopps the root process and returns it.
+    * Stops the root process and returns it.
     *
     * @return BenchmarkProcess The stopped root process.
     *
@@ -534,7 +534,7 @@ final class BenchmarkTimer {
       if ($process->hasChildProcesses()) {
 
          $processChildren = $process->getProcesses();
-         foreach ($processChildren as $offset => $child) {
+         foreach ($processChildren as $child) {
             $buffer .= self::$NEWLINE;
             $buffer .= $this->createReport4Process($child);
          }
