@@ -34,11 +34,12 @@ final class Folder extends FilesystemItem {
     * @public
     *
     * @param   string $path The path of the Folder
+    * @param   int $permission The permission to create the folder with.
     * @return  Folder The domain object for further usage
     *
     * @author  Nicolas Pecher
     * @version Version 0.1, 01.05.2012
-    * @version Version 0.2, 14.08.2012 (Bugfix: default permissions are now set to ug+rwx; using php's built in recursive path creation)
+    * @version Version 0.2, 14.08.2012 (Bug-fix: default permissions are now set to ug+rwx; using PHP's built in recursive path creation)
     */
    public function create($path, $permission = 0770) {
       if (!is_dir($path)) {

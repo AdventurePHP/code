@@ -328,22 +328,21 @@ class MultiFileUploadManager extends APFObject {
    }
 
    /**
-    * Speichert alle über den Taglib erstellten Einstellungen.
+    * Saves all settings that have applied by the responsible taglib.
     *
-    * @param string $filesize - Byte Wert der Maximalen Dateigröße (default: 10 MB)
-    * @param string $MimeTypes - Array mit allen MimeTypes die erlaubt sind. (default: pdf,gif,jpeg,png)
-    * @return integer
+    * @param string $fileSize - Byte value of the maximum file size (default: 10 MB)
+    * @param array $mimeTypes - Array with all allowed MIME types (default: pdf,gif,jpeg,png)
     *
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
-   public function setSettings($filesize = null, $mimeTypes = array()) {
+   public function setSettings($fileSize = null, $mimeTypes = array()) {
 
       $settings = array();
-      $settings['max'] = 10485760; // 10485760 entspricht 10 MB
+      $settings['max'] = 10485760; // 10485760 is 10 MB
 
-      if ($filesize !== null) {
-         $settings['max'] = intval($filesize);
+      if ($fileSize !== null) {
+         $settings['max'] = intval($fileSize);
       }
 
       if (count($mimeTypes) > 0 && $mimeTypes[0] != '') {
@@ -376,7 +375,7 @@ class MultiFileUploadManager extends APFObject {
    }
 
    /**
-    * Erstellt den uploadLink
+    * Creates the upload link.
     *
     * @return string
     *
