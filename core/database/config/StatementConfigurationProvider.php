@@ -49,7 +49,7 @@ class StatementConfigurationProvider extends BaseConfigurationProvider implement
       }
 
       throw new ConfigurationException('[StatementConfigurationProvider::loadConfiguration()] '
-            . 'Statement with namepace "' . $namespace . '", context "' . $context . '", '
+            . 'Statement with namespace "' . $namespace . '", context "' . $context . '", '
             . ' language "' . $language . '", environment "' . $environment . '", and name '
             . '"' . $name . '" cannot be loaded!', E_USER_ERROR);
    }

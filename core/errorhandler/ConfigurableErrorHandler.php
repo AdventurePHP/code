@@ -23,7 +23,7 @@
  * @package core::errorhandler
  * @class ConfigurableErrorHandler
  *
- * Implements a configurable error handler, that ignores errors convering to the configured
+ * Implements a configurable error handler, that ignores errors underneath the configured
  * error level. This handler can be used, if you want to ignore certain errors due to
  * whatever reason.
  *

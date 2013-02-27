@@ -37,7 +37,7 @@
  * controller behaviour, release 1.14 ships only one filter.
  * <p/>
  * In order to create your own url layout resolver, implement the
- * <em>ChainedContentFilter</em> interface and add it to the resetted filter
+ * <em>ChainedContentFilter</em> interface and add it to the reset filter
  * chain. Details and examples can be found within the manual.
  *
  *
@@ -103,12 +103,12 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
     */
    private function filterRewriteUrl() {
 
-      // extract the PHPSESSID from $_REQUEST if existent
-      $PHPSESSID = (string)'';
+      // extract the session id from $_REQUEST if existent
+      $sessionId = (string)'';
       $sessionName = ini_get('session.name');
 
       if (isset($_REQUEST[$sessionName])) {
-         $PHPSESSID = $_REQUEST[$sessionName];
+         $sessionId = $_REQUEST[$sessionName];
       }
 
       // initialize param to analyze
@@ -117,7 +117,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
          $query = $_REQUEST[self::$REWRITE_QUERY_PARAM];
       }
 
-      // delete the rewite param indicator
+      // delete the rewrite param indicator
       unset($_REQUEST[self::$REWRITE_QUERY_PARAM]);
       unset($_GET[self::$REWRITE_QUERY_PARAM]);
 
@@ -180,9 +180,9 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
       // re-add POST params
       $_REQUEST = array_merge($_REQUEST, $_POST);
 
-      // add PHPSESSID to the request again
-      if (!empty($PHPSESSID)) {
-         $_REQUEST[$sessionName] = $PHPSESSID;
+      // add session id to the request again
+      if (!empty($sessionId)) {
+         $_REQUEST[$sessionName] = $sessionId;
       }
    }
 

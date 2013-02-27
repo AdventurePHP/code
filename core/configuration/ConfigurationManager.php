@@ -409,7 +409,7 @@ final class ConfigurationManager {
     * @static
     *
     * Returns a configuration provider identified by the given file extension. In case no
-    * provider can be found, the first registered provider is returned to have a fallack
+    * provider can be found, the first registered provider is returned to have a fallback
     * for pre 1.13 configuration style and to enable the developer to specify fallback
     * providers by the order the providers are registered.
     * <p/>

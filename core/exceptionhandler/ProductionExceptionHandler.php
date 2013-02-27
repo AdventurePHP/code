@@ -23,7 +23,7 @@
  * @package core::exceptionhandler
  * @class ProductionExceptionHandler
  *
- * Implements a live exception handler, that logs the occured exception and redirects
+ * Implements a live exception handler, that logs the occurred exception and redirects
  * to a statically configured page to hide the exception from the customer (e.g. for
  * security reasons).
  *
