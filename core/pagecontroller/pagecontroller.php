@@ -2307,10 +2307,12 @@ class PlaceHolderTag extends Document {
     * Version 0.2, 06.02.2013 (Added string place holder support)<br />
     */
    public function transform() {
+      // preserve content to allow multiple transformation
+      $content = $this->content;
       foreach ($this->stringReplacement as $key => $value) {
-         $this->content = str_replace('{' . $key . '}', $value, $this->content);
+         $content = str_replace('{' . $key . '}', $value, $content);
       }
-      return $this->content;
+      return $content;
    }
 
 }
