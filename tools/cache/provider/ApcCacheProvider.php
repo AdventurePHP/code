@@ -167,7 +167,6 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
    public function write(CacheKey $cacheKey, $object) {
 
       // write to cache (try to replace all the time)
-      $namespace = $this->getConfigAttribute('Cache.Namespace');
       $identifier = $this->getCacheIdentifier($cacheKey);
 
       $serialized = @serialize($object);

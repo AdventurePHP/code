@@ -86,7 +86,9 @@ class FormSuccessDisplayTag extends AbstractFormControl {
     * Version 0.1, 30.12.2009<br />
     */
    public function transform() {
-      if ($this->getParentObject()->isSent() && $this->getParentObject()->isValid()) {
+      /* @var $form HtmlFormTag */
+      $form = $this->getParentObject();
+      if ($form->isSent() && $form->isValid()) {
          $this->transformChildren();
          return $this->content;
       }

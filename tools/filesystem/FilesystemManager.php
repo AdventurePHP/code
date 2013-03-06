@@ -200,7 +200,7 @@ class FilesystemManager {
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.11.2008<br />
-    * Version 0.2, 24.11.2008 (Bugfix: recursion on windows systems broken due to directory seperator problems)<br />
+    * Version 0.2, 24.11.2008 (Bug-fix: recursion on windows systems broken due to directory separator problems)<br />
     * Version 0.3, 29.11.2008 (Added check, if the file to delete does exist)<br />
     * Version 0.4, 07.08.2010 (Removed trigger_error(), introduced exception)<br />
     */

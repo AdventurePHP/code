@@ -50,7 +50,7 @@ final class CacheManagerFabric extends APFObject {
     * @author Christian Achatz
     * @version
     * Version 0.1, 22.11.2008<br />
-    * Version 0.2, 04.08.2010 (Bugfix: initializing two cache managers failed due to wrong service mode)<br />
+    * Version 0.2, 04.08.2010 (Bug-fix: initializing two cache managers failed due to wrong service mode)<br />
     */
    public function &getCacheManager($configSection) {
 

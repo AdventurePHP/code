@@ -43,7 +43,7 @@ final class Folder extends FilesystemItem {
     */
    public function create($path, $permission = 0770) {
       if (!is_dir($path)) {
-         
+
          // due to a potential PHP bug with directly passing the permissions
          // we have to initiate a workaround containing explicit formatting as
          // well as umask setting to create the folders with correct permissions
@@ -66,10 +66,10 @@ final class Folder extends FilesystemItem {
          // thus, the umask is set to 0000 to avoid permission shifts. this maybe
          // a PHP bug but umasks unlike 0000 lead to wrong permissions, however.
          $oldUmask = umask(0);
-         
+
          // the last parameter allows the creation of nested directories
          mkdir($path, $permission, true);
-         
+
          umask($oldUmask);
       }
       $this->open($path);
@@ -159,7 +159,10 @@ final class Folder extends FilesystemItem {
     */
    public function getContent() {
       $children = scandir($this->getPath());
+
+      /* @var $content FilesystemItem[] */
       $content = array();
+
       $i = 0;
       foreach ($children as $child) {
          if ($child !== '.' && $child !== '..') {

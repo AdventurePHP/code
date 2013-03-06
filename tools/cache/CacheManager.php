@@ -27,7 +27,7 @@ import('tools::cache', 'CacheBase');
  *
  * Implements the cache manager component. Due to the generic implementation, all forms of
  * caches can be implemented. For this reason, various targets and cache types are supported
- * by the included reader and writer concept. For application examples, please refere to the
+ * by the included reader and writer concept. For application examples, please refer to the
  * online documentation. The configuration is accessible from the outside via the getAttribute()
  * method.
  *

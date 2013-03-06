@@ -29,7 +29,7 @@ import('tools::form::validator', 'TextFieldValidator');
  * which tries to identify bots by the time they need to fill in the data in a
  * form.
  * The time (in seconds) before the tag becomes valid can be specified in the
- * target form:timecaptcha element whith the attribute <em>seconds</em>.
+ * target &lt;form:timecaptcha/&gt; element with the attribute <em>seconds</em>.
  * Default is 2 seconds.
  *
  * @author Ralf Schubert

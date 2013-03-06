@@ -30,7 +30,7 @@ import('tools::form::validator', 'TextFieldValidator');
  * <p/>
  * In case you have two password fields - one for the password and one to double
  * check the input - the validator must be applied to the main password field, that
- * specifies the <em>ref</em> attribute containg the name of the second password
+ * specifies the <em>ref</em> attribute containing the name of the second password
  * field. The code looks as follows:
  * <pre>
  *   <form:password name="pass" ref="pass2" />

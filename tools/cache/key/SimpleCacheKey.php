@@ -22,7 +22,7 @@ import('tools::cache', 'CacheKey');
 
 /**
  * @package tools::cache::key
- * @class SimpleCachKey
+ * @class SimpleCacheKey
  *
  * Implements a simple cache key letting you address a cache item with a simple string.
  *
