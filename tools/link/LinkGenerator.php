@@ -215,7 +215,7 @@ final class Url {
     * list. Setting a query parameter's value to <em>null</em> indicates to
     * delete the parameter within the LinkScheme implementation.
     *
-    * @param array $query An assoziative array of the query params to merge.
+    * @param array $query An associative array of the query params to merge.
     * @return Url This object for further usage.
     *
     * @author Christian Achatz
@@ -321,9 +321,15 @@ final class Url {
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.03.2011<br />
+    * Version 0.2, 09.03.2013 (Now uses standard PHP variables in stead of a Registry value to allow better url input filter manipulation)<br />
     */
    public static function fromCurrent($absolute = false) {
-      $url = self::fromString(Registry::retrieve('apf::core', 'CurrentRequestURL'));
+
+      // construct url from standard PHP variables
+      $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
+      $currentUrlString = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+      $url = self::fromString($currentUrlString);
       if ($absolute === false) {
          $url->setScheme(null);
          $url->setHost(null);
@@ -336,11 +342,11 @@ final class Url {
     * @public
     * @static
     *
-    * Creates a url representation from the refering url.
+    * Creates a url representation from the referring url.
     *
     * @param boolean $absolute True, in case the url should be absolute, false otherwise.
     * @return Url The current url representation.
-    * @throws UrlFormatException In case the given referer is not a valid url.
+    * @throws UrlFormatException In case the given referrer is not a valid url.
     *
     * @author dave
     * @version
@@ -356,7 +362,7 @@ final class Url {
          }
          return $url;
       }
-      throw new UrlFormatException('Empty referer url cannot be used to create a url representation.');
+      throw new UrlFormatException('Empty referrer url cannot be used to create a url representation.');
    }
 
    /**
