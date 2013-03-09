@@ -21,15 +21,15 @@
 
 /**
  * @package modules::socialbookmark::biz
- * @class bookmarkEntry
+ * @class SocialBookmarkItem
  *
  * Represents a single bookmark service (e.g. google, technorati, ...).
  *
- * @author Christian W. Sch�fer
+ * @author Christian W. Schafer
  * @version
  * Version 0.1, 02.06.2007<br />
  */
-class bookmarkEntry {
+class SocialBookmarkItem {
 
    /**
     * @protected
@@ -39,45 +39,45 @@ class bookmarkEntry {
 
    /**
     * @protected
-    * @var string Name des URL-Parameters f�r die zu bookmarkende URL.
+    * @var string Name of the url parameter for the url to bookmark.
     */
    private $urlParamName;
 
    /**
     * @protected
-    * @var string Name des Titel-Parameters f�r die zu bookmarkende URL.
+    * @var string Name of the utl parameter for the title to bookmark.
     */
    private $titleParamName;
 
    /**
     * @protected
-    * @var string Titel des Bookmark-Eintrags (Link-Titel, Alt-Text).
+    * @var string Title of the bookmark entry (e.g. used as link title or alt text).
     */
    private $title;
 
    /**
     * @protected
-    * @var string URL des Bookmark-Icons ohne Endung.
+    * @var string Name of the bookmark icon without it's extension.
     */
    private $imageUrl;
 
    /**
     * @protected
-    * @var string Endung des Bookmark-Icons.
+    * @var string File extension of the bookmark icon.
     */
    private $imageExt;
 
    /**
     * @public
     *
-    * @param string $baseURL Basis-URL des Bookmark-Services.
-    * @param string $bookmarkURL Name des URL-Parameters.
-    * @param string $bookmarkTitle Name des Titel-Parameter.
-    * @param string $title Titel des Services.
-    * @param string $imageURL Bildname ohne Endung.
-    * @param string $imageExt Endung des Bildes.
+    * @param string $baseURL Base url of the bookmark service.
+    * @param string $bookmarkURL Name of the url parameter for the url to bookmark.
+    * @param string $bookmarkTitle Name of the url parameter of the title.
+    * @param string $title Title of the bookmark entry (e.g. used as link title or alt text).
+    * @param string $imageURL Name of the bookmark icon without it's extension.
+    * @param string $imageExt File extension of the bookmark icon.
     *
-    * @author Christian W. Sch�fer
+    * @author Christian W. Schäfer
     * @version
     * Version 0.1, 02.06.2007<br />
     */

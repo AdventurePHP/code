@@ -19,21 +19,19 @@
  * -->
  */
 import('tools::link', 'LinkGenerator');
-import('modules::socialbookmark::biz', 'bookmarkEntry');
+import('modules::socialbookmark::biz', 'SocialBookmarkItem');
 import('tools::media::taglib', 'MediaInclusionTag');
 
 /**
  * @package modules::socialbookmark::biz
- * @class socialBookmarkManager
+ * @class SocialBookmarkBarManager
  *
- * Generiert einen Bookmark-HTML-Code. Um die angezeigten Services erweitern zu k�nnen die
- * Methode addBookmarkService() verwendet werden. Muss �ber den ServiceManager instanziiert
- * werden.
- * <p />
- * Erwartet eine Konfiguration mit dem Namen "{ENVIRONMENT}_bookmarkservices.ini" unter
- * dem Namespace "/config/modules/socialbookmark/{Context}/" mit jeweils einer Sektion f�r einen
- * Bookmarkservice. Diese muss wie folgt aufgebaut sein (Beispiel f�r del.icio.us):
- * <pre>
+ * Generates the HTML code of the bookmark bar. In order to add new services you can use the <em><addBookmarkService()/em>
+ * method. This class must be instantiated via the ServiceManager.
+ * <p/>
+ * Expects a configuration file with name <em>{ENVIRONMENT}_bookmarkservices.ini</em> being present under the namespace
+ * <em>modules::socialbookmark</em> with one configuration section per bookmark service. E.g.:
+ * <code>
  * [del.icio.us]
  * BookmarkService.BaseURL = "http://del.icio.us/post"
  * BookmarkService.Param.URL = "url"
@@ -41,26 +39,16 @@ import('tools::media::taglib', 'MediaInclusionTag');
  * BookmarkService.Display.Title = "Bookmark &#64; del.icio.us"
  * BookmarkService.Display.Image = "bookmark_del_icio_us"
  * BookmarkService.Display.ImageExt = "png"
- * </pre>
- * Dar�ber hinaus muss f�r die FrontController-basierte Ausgabe der Bilder eine
- * Action-Konfiguration unter "/config/modules/socialbookmark/actions/{Context}/" angelegt sein
- * und die Action f�r das Anzeigen der Bilder definieren. Diese muss folgende Werte haben:
- * <pre>
- * [showImage]
- * FC.ActionNamespace = "modules::socialbookmark::biz::actions"
- * FC.ActionFile = "ShowImageAction"
- * FC.ActionClass = "ShowImageAction"
- * FC.InputFile = "ShowImageInput"
- * FC.InputClass = "ShowImageInput"
- * FC.InputParams = "img:bookmark_del_icio_us|imgext:png"
- * </pre>
+ * </code>
+ * Besides, this component uses the <em>&lt;*mediastream /&gt;</em> tag that requires a front controller action to be
+ * configured for the display of images. Please refer to the documentation for details on this.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 02.06.2007<br />
  * Version 0.2, 07.09.2007<br />
  */
-class socialBookmarkManager extends APFObject {
+class SocialBookmarkBarManager extends APFObject {
 
    /**
     * @var string Url of the page to bookmark.
@@ -83,18 +71,18 @@ class socialBookmarkManager extends APFObject {
    private $imageHeight = '20';
 
    /**
-    * @var bookmarkEntry[] The configured bookmark services.
+    * @var BookmarkItem[] The configured bookmark services.
     */
    private $bookmarkServices = array();
 
    /**
     * @public
     *
-    * F�gt einen Bookmark-Service hinzu.<br />
+    * Let's you add a bookmark service.
     *
-    * @param bookmarkEntry $service The bookmark entry to add.
+    * @param BookmarkItem $service The bookmark entry to add.
     *
-    * @author Christian W. Sch�fer
+    * @author Christian W. Schäfer
     * @version
     * Version 0.1, 07.09.2007<br />
     */
@@ -121,23 +109,24 @@ class socialBookmarkManager extends APFObject {
    /**
     * @public
     *
-    * Generiert einen Bookmark-HTML-Code und gibt diesen zur�ck.
+    * Generates the bookmark bar HTML code.
     *
-    * @return string HTML-Code der konfigurierten Bookmarks.
+    * @return string HTML code of the configured bookmarks.
     *
-    * @author Christian W. Sch�fer
+    * @author Christian W. Schäfer
     * @version
     * Version 0.1, 02.06.2007<br />
     * Version 0.2, 07.09.2007<br />
-    * Version 0.3, 08.09.2007 (Profiling hinzugef�gt)<br />
+    * Version 0.3, 08.09.2007 (Added profiling)<br />
     */
    public function getBookmarkCode() {
 
+      /* @var $t BenchmarkTimer */
       $t = &Singleton::getInstance('BenchmarkTimer');
-      $id = 'socialBookmarkManager::getBookmarkCode()';
+      $id = 'SocialBookmarkBarManager::getBookmarkCode()';
       $t->start($id);
 
-      // generate the current's page url, if no url was set
+      // generate the current page's url, if no url was set
       if (empty($this->url)) {
          $this->url = Registry::retrieve('apf::core', 'CurrentRequestURL');
       }
@@ -149,7 +138,7 @@ class socialBookmarkManager extends APFObject {
 
          $service = $services->getSection($serviceName);
          $this->bookmarkServices[] =
-               new bookmarkEntry(
+               new SocialBookmarkItem(
                   $service->getValue('BookmarkService.BaseURL'),
                   $service->getValue('BookmarkService.Param.URL'),
                   $service->getValue('BookmarkService.Param.Title'),
@@ -173,21 +162,21 @@ class socialBookmarkManager extends APFObject {
    /**
     * @protected
     *
-    * Generiert einen Bookmark-HTML-Code aus einem BookmarkEntry.
+    * Generates the HTML code of a single bookmark entry.
     *
-    * @param BookmarkEntry $bookmarkEntry BookmarkEntry-Objekt
-    * @return string HTML-Code des Bookmarks.
+    * @param SocialBookmarkItem $bookmarkEntry Bookmark item.
+    * @return string HTML code of the applied bookmark entry.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 02.06.2007<br />
     * Version 0.2, 07.09.2007<br />
-    * Version 0.3, 08.09.2007 (Profiling hinzugef�gt)<br />
-    * Version 0.4, 15.04.2008 (URL-Rewriting beachtet)<br />
-    * Version 0.5, 25.05.2008 (Page-Title wird nun �bergeben)<br />
+    * Version 0.3, 08.09.2007 (Added profiling)<br />
+    * Version 0.4, 15.04.2008 (Now URL rewriting is respected)<br />
+    * Version 0.5, 25.05.2008 (Page title is now applied)<br />
     * Version 0.6, 21.06.2008 (Replaced APPS__URL_REWRITING with a value from the registry)<br />
     */
-   protected function generateBookmarkEntry(bookmarkEntry $bookmarkEntry) {
+   protected function generateBookmarkEntry(SocialBookmarkItem $bookmarkEntry) {
 
       $code = '<a rel="nofollow" href="';
       $code .= LinkGenerator::generateUrl(

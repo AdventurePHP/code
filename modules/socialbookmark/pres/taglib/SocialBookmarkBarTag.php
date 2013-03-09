@@ -18,7 +18,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::socialbookmark::biz', 'socialBookmarkManager');
+import('modules::socialbookmark::biz', 'SocialBookmarkBarManager');
 
 /**
  * @package modules::socialbookmark::pres::taglib
@@ -55,8 +55,8 @@ class SocialBookmarkBarTag extends Document {
 
    public function transform() {
 
-      $bm = & $this->getServiceObject('modules::socialbookmark::biz', 'socialBookmarkManager');
-      /* @var $bm socialBookmarkManager */
+      $bm = & $this->getServiceObject('modules::socialbookmark::biz', 'SocialBookmarkBarManager');
+      /* @var $bm SocialBookmarkBarManager */
 
       $bm->setImageWidth($this->getAttributes('width'));
       $bm->setImageHeight($this->getAttributes('height'));
