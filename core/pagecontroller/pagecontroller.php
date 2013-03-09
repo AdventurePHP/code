@@ -95,7 +95,7 @@ Registry::register('apf::core', 'Charset', 'UTF-8');
 if (isset($_SERVER['SERVER_PORT']) && isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
    $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
    Registry::register('apf::core', 'URLBasePath', $protocol . $_SERVER['HTTP_HOST']);
-   Registry::register('apf::core', 'CurrentRequestURL', $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], true);
+   Registry::register('apf::core', 'CurrentRequestURL', $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 }
 
 // include necessary core libraries for the page controller
