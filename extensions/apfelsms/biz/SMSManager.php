@@ -117,7 +117,7 @@ class SMSManager extends APFObject {
     * @return string
     */
    public function getSMSVersion() {
-      return 'v0.3-RC4';
+      return 'v0.4';
    }
 
 
@@ -222,7 +222,7 @@ class SMSManager extends APFObject {
          $pageDec = $this->getDIServiceObject('extensions::apfelsms::pages::decorators', $serviceName);
          $pageDec->setDecType($type);
       } catch (ConfigurationException $ce) {
-         throw new SMSUnknownTypeException('[SMSManager::getPageDec()] Service configuration for page decorators of type "' . $type . '" with serviceName "' . $serviceName . '" is most likely not existent. Maybe you have an invalid page decorator type in your data-source!? Please check your configuration, espacially the serviceobjects.ini in namespace "extensions::apfelsms::pages::decorators".', E_USER_ERROR);
+         throw new SMSUnknownTypeException('[SMSManager::getPageDec()] Service configuration for page decorators of type "' . $type . '" with serviceName "' . $serviceName . '" could not be found. Maybe you have an invalid page decorator type in your data-source!? Please check your configuration, espacially the serviceobjects.ini in namespace "extensions::apfelsms::pages::decorators".', E_USER_ERROR);
       }
       catch (InvalidArgumentException $ie) {
          throw new SMSConfigurationException('[SMSManager::getPageDec()] Your configuration for page decorators of type "' . $type . '" with serviceName "' . $serviceName . '" is buggy. DIServiceManager throws following exception: ' . $ie, E_USER_ERROR);

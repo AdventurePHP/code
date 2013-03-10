@@ -7,6 +7,7 @@ import('tools::link', 'LinkGenerator');
  * @package APFelSMS
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (02.10.12)
+ *           v02. (09.03.13) Changed HTTP status code on redirect to 301 (moved permanently)
  *
  */
 class SMSRedirectAction extends AbstractFrontcontrollerAction {
@@ -53,7 +54,7 @@ class SMSRedirectAction extends AbstractFrontcontrollerAction {
 
                $referencedPageURL = $referencedPage->getLink(Url::fromCurrent(true));
 
-               header('Location: ' . $referencedPageURL, true, 307); // HTTP status code 303: Temporary Redirect
+               header('Location: ' . $referencedPageURL, true, 301); // HTTP status code 301: moved permanently
                exit;
             }
 

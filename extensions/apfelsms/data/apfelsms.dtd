@@ -13,7 +13,7 @@
 <!ELEMENT js (#PCDATA)>
 
 <!--pageDec -->
-<!ELEMENT pageDec (referencedPageId|requestParam|externalURL|providerServiceName|providerServiceNamespace)*>
+<!ELEMENT pageDec (referencedPageId|requestParam|externalURL|providerServiceName|providerServiceNamespace|permissionName)*>
 <!ATTLIST pageDec type CDATA #REQUIRED>
         
 <!-- pageDec type "alias" -->
@@ -28,5 +28,8 @@
 <!ELEMENT externalURL (#PCDATA)>
 
 <!-- pageDec type "accessCtrl" -->
-<!ELEMENT providerServiceNamespace (#PCDATA)>
 <!ELEMENT providerServiceName (#PCDATA)>
+<!ELEMENT providerServiceNamespace (#PCDATA)>
+<!ELEMENT permissionName (#PCDATA)>
+
+

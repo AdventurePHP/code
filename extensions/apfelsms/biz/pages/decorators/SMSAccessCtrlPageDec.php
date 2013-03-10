@@ -8,35 +8,40 @@ import('extensions::apfelsms::biz::pages::decorators::providers', 'SMSAccessCtrl
  * @package APFelSMS
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (30.09.12)
+ *           v0.2 (19.01.13) Added permissionName parameter
+ *           v0.3 (08.03.13) Added default for providerServiceNamespace
  *
  */
 class SMSAccessCtrlPageDec extends SMSAbstractPageDec {
-
 
    /**
     * @var string
     */
    protected $providerServiceNamespace;
 
-
    /**
     * @var string
     */
    protected $providerServiceName;
 
+   /**
+    * @var mixed
+    * @since v0.2
+    */
+   protected $permissionName;
 
    /**
     * @var SMSAccessCtrlProvider
     */
    protected $provider;
 
-
    /**
     * @var array
     */
    public static $mapVars = array(
-      'providerServiceNamespace' => null,
-      'providerServiceName' => null
+      'providerServiceNamespace' => 'extensions::apfelsms::pages::decorators::provider',
+      'providerServiceName'      => null,
+      'permissionName'           => 'SMSViewPermission'
    );
 
 
@@ -45,7 +50,7 @@ class SMSAccessCtrlPageDec extends SMSAbstractPageDec {
     */
    public function isAccessProtected() {
 
-      return $this->getProvider()->isAccessProtected($this->getOuterPage());
+      return $this->getProvider()->isAccessProtected($this->getOuterPage(), $this->permissionName);
 
    }
 
