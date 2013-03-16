@@ -2662,7 +2662,7 @@ interface DocumentController extends APFService {
     * @version
     * Version 0.1, 20.10.2010<br />
     */
-   public function getDocument();
+   public function &getDocument();
 
    /**
     * @public
