@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\socialbookmark\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,9 +20,9 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::link', 'LinkGenerator');
-import('modules::socialbookmark::biz', 'SocialBookmarkItem');
-import('tools::media::taglib', 'MediaInclusionTag');
+use APF\tools\link\LinkGenerator;
+use APF\modules\socialbookmark\biz\SocialBookmarkItem;
+use APF\tools\media\taglib\MediaInclusionTag;
 
 /**
  * @package modules::socialbookmark::biz
@@ -122,7 +124,7 @@ class SocialBookmarkBarManager extends APFObject {
    public function getBookmarkCode() {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $id = 'SocialBookmarkBarManager::getBookmarkCode()';
       $t->start($id);
 

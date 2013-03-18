@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\guestbook2009\pres\controller\admin;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::guestbook2009::pres::controller::admin', 'GuestbookBackendBaseController');
+use APF\modules\guestbook2009\pres\controller\admin\GuestbookBackendBaseController;
 
 /**
  * @package modules::guestbook2009::pres

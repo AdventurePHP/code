@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\socialbookmark\pres\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::socialbookmark::biz', 'SocialBookmarkBarManager');
+use APF\core\pagecontroller\Document;
+use APF\modules\socialbookmark\biz\SocialBookmarkBarManager;
 
 /**
  * @package modules::socialbookmark::pres::taglib

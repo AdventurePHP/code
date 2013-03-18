@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\usermanagement\pres\documentcontroller\registration;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,15 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::pres::documentcontroller', 'UmgtBaseController');
+use APF\core\configuration\ConfigurationException;
+use APF\core\logging\LogEntry;
+use APF\core\singleton\Singleton;
+use APF\modules\usermanagement\biz\model\UmgtUser;
+use APF\modules\usermanagement\biz\model\UmgtGroup;
+use APF\modules\usermanagement\biz\model\UmgtRole;
+use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+
+use APF\core\logging\Logger;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::registration
@@ -89,8 +99,7 @@ class umgt_registration_controller extends UmgtBaseController {
                $user->addRole($initialRole);
             }
          } catch (ConfigurationException $e) {
-            import('core::logging', 'Logger');
-            $l = &Singleton::getInstance('Logger');
+            $l = &Singleton::getInstance('APF\core\logging\Logger');
             /* @var $l Logger */
             $l->logEntry('registration', 'Registration cannot add initial groups or roles due to the following '
                   . 'exception: ' . $e . ' This may be ok, in case you have no initial groups and/or roles specified.',
@@ -100,10 +109,9 @@ class umgt_registration_controller extends UmgtBaseController {
          try {
             $uM->saveUser($user);
             $this->getTemplate('register-ok')->transformOnPlace();
-         } catch (Exception $e) {
+         } catch (\Exception $e) {
             $this->getTemplate('system-error')->transformOnPlace();
-            import('core::logging', 'Logger');
-            $l = &Singleton::getInstance('Logger');
+            $l = &Singleton::getInstance('APF\core\logging\Logger');
             /* @var $l Logger */
             $l->logEntry('registration', 'Registration is not possible due to ' . $e, LogEntry::SEVERITY_ERROR);
          }

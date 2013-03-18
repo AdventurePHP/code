@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\usermanagement\pres\documentcontroller\role;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,12 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::pres::documentcontroller', 'UmgtBaseController');
+use APF\modules\usermanagement\biz\model\UmgtPermission;
+use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\form\taglib\MultiSelectBoxTag;
+use APF\tools\form\taglib\SelectBoxOptionTag;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::role

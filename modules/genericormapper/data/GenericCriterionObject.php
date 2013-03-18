@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\genericormapper\data;
+
 
 /**
  * <!--
@@ -30,7 +32,7 @@
  * @version
  * Version 0.1, 17.06.2008<br />
  * Version 0.2, 21.06.2008 (Added more indicators)<br />
- * Version 0.3, 28.05.2010 (Bugfix: added method to return the property indicators)<br />
+ * Version 0.3, 28.05.2010 (Bug-fix: added method to return the property indicators)<br />
  * Version 0.4, 18.07.2010 (Added "Fluent Interface" support.)<br />
  * Version 0.5, 15.01.2011 (Removed dependency on APFObject.)<br />
  * Version 0.6, 27.04.2011 (Added uniqid to avoid conflicts between tables.)<br />

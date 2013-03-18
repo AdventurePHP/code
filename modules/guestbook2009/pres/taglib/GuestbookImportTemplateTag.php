@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\guestbook2009\pres\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::guestbook2009::biz', 'GuestbookModel');
+use APF\modules\guestbook2009\biz\GuestbookModel;
 
 /**
  * @package modules::guestbook2009::pres::taglib
@@ -50,7 +52,7 @@ class GuestbookImportTemplateTag extends ImportTemplateTag {
 
       // do not include the guestbook, if gbid is not set/existent
       if ($guestbookId == null || ((int)$guestbookId) == 0) {
-         throw new InvalidArgumentException('[GuestbookImportTemplateTag::onParseTime()] The attribute '
+         throw new \InvalidArgumentException('[GuestbookImportTemplateTag::onParseTime()] The attribute '
                . '"gbid" is empty or not present or the value is not an id. Please specify the '
                . 'attribute correctly in order to include the guestbook module!');
       }

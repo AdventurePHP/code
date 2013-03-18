@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\guestbook\pres\documentcontroller;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::guestbook::biz', 'GuestbookManager');
-import('modules::guestbook::pres::documentcontroller', 'guestbookBaseController');
+use APF\modules\guestbook\biz\GuestbookManager;
+use APF\modules\guestbook\pres\documentcontroller\guestbookBaseController;
 
 /**
  * @package modules::guestbook::pres::documentcontroller

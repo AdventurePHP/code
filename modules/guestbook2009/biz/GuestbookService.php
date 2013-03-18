@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\guestbook2009\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,13 +20,13 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::guestbook2009::biz', 'Entry');
-import('modules::guestbook2009::biz', 'Guestbook');
-import('modules::guestbook2009::biz', 'User');
-import('tools::http', 'HeaderManager');
-import('core::session', 'SessionManager');
-import('tools::link', 'LinkGenerator');
-import('modules::pager::biz', 'PagerManagerFabric');
+use APF\modules\guestbook2009\biz\Entry;
+use APF\modules\guestbook2009\biz\Guestbook;
+use APF\modules\guestbook2009\biz\User;
+use APF\tools\http\HeaderManager;
+use APF\core\session\SessionManager;
+use APF\tools\link\LinkGenerator;
+use APF\modules\pager\biz\PagerManagerFabric;
 
 /**
  * @package modules::guestbook2009::biz
@@ -80,7 +82,7 @@ final class GuestbookService extends APFObject {
     */
    public function loadPagedEntryList() {
 
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $t->start('loadPagedEntryList');
 
       $pager = &$this->getPager();

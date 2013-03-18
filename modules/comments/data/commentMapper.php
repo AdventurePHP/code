@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\comments\data;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -19,7 +21,7 @@
  * -->
  */
 
-import('modules::comments::biz', 'ArticleComment');
+use APF\modules\comments\biz\ArticleComment;
 
 /**
  * @package modules::comments::date
@@ -85,7 +87,7 @@ class commentMapper extends APFObject {
     * current application instance.
     *
     * @return AbstractDatabaseHandler The database connection.
-    * @throws InvalidArgumentException In case the connection key does not refer to a valid connection definition.
+    * @throws \InvalidArgumentException In case the connection key does not refer to a valid connection definition.
     *
     * @author Christian Achatz
     * @version
@@ -98,7 +100,7 @@ class commentMapper extends APFObject {
       $config = $this->getConfiguration('modules::comments', 'comments.ini');
       $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey');
       if ($connectionKey == null) {
-         throw new InvalidArgumentException('[commentMapper::getConnection()] The module\'s '
+         throw new \InvalidArgumentException('[commentMapper::getConnection()] The module\'s '
                   . 'configuration file does not contain a valid database connection key. Please '
                   . 'specify the database configuration according to the example configuration files!',
             E_USER_ERROR);

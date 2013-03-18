@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\usermanagement\biz\model;
+
 
 //<*UmgtApplicationBase:start*> DO NOT CHANGE THIS COMMENT!
 /**
@@ -6,7 +8,7 @@
  * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!
  * You can change class "UmgtApplication" which extends this base-class.
  */
-import('modules::genericormapper::data', 'GenericDomainObject');
+use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
  * @package modules::usermanagement::biz::model

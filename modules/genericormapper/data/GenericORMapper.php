@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\genericormapper\data;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,10 +20,10 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::genericormapper::data', 'GenericORMapperDataObject');
-import('modules::genericormapper::data', 'BaseMapper');
-import('modules::genericormapper::data', 'GenericDomainObject');
-import('modules::genericormapper::data', 'GenericCriterionObject');
+use APF\modules\genericormapper\data\GenericORMapperDataObject;
+use APF\modules\genericormapper\data\BaseMapper;
+use APF\modules\genericormapper\data\GenericDomainObject;
+use APF\modules\genericormapper\data\GenericCriterionObject;
 
 /**
  * @package modules::genericormapper::data
@@ -372,7 +374,7 @@ class GenericORMapper extends BaseMapper {
     * @param string $objectName The name of the object in mapping table.
     * @param int $objectId The database id of the desired object.
     * @return GenericORMapperDataObject The desired object.
-    * @throws InvalidArgumentException In case the applied object id is not numeric.
+    * @throws \InvalidArgumentException In case the applied object id is not numeric.
     *
     * @author Christian Achatz
     * @version
@@ -383,7 +385,7 @@ class GenericORMapper extends BaseMapper {
 
       // check for invalid ids to avoid SQL injection
       if (!is_numeric($objectId)) {
-         throw new InvalidArgumentException('[GenericORMapper::loadObjectByID()] Given object '
+         throw new \InvalidArgumentException('[GenericORMapper::loadObjectByID()] Given object '
                . 'id "' . $objectId . '" is not an integer. Thus object with name "' . $objectName . '" '
                . 'cannot be loaded!', E_USER_ERROR);
       }
@@ -442,9 +444,15 @@ class GenericORMapper extends BaseMapper {
 
          // create service object if needed
          if (isset($this->domainObjectsTable[$objectName])) {
+
             $class = $this->domainObjectsTable[$objectName]['Class'];
-            import($this->domainObjectsTable[$objectName]['Namespace'], $class);
-            $object = new $class($objectName);
+            $namespace = $this->domainObjectsTable[$objectName]['Namespace'];
+
+            // determine fully qualified namespace and class
+            $fqNamespace = 'APF\\' . str_replace('::', '\\', $namespace);
+            $fqClass = $fqNamespace . '\\' . $class;
+
+            $object = new $fqClass($objectName);
          } else {
             $object = new GenericDomainObject($objectName);
          }

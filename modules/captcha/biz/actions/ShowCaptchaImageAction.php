@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\captcha\biz\actions;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::session', 'SessionManager');
-import('tools::http', 'HeaderManager');
+use APF\core\session\SessionManager;
+use APF\tools\http\HeaderManager;
 
 /**
  * @package modules::captcha::biz::actions

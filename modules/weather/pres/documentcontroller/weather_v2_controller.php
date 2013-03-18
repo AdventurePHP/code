@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\weather\pres\documentcontroller;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -99,7 +101,7 @@ class weather_v2_controller extends BaseDocumentController {
     * Helper method to get the XML string.<br />
     *
     * @return string Content of the XML stream of the source or null.
-    * @throws InvalidArgumentException In case of XSLT errors.
+    * @throws \InvalidArgumentException In case of XSLT errors.
     *
     * @author Tobias Lückel
     * @version
@@ -133,7 +135,7 @@ class weather_v2_controller extends BaseDocumentController {
                if ($result) {
                   return $result;
                } else {
-                  throw new InvalidArgumentException('[weather_v2_controller::__getXML()] XSLT Error!');
+                  throw new \InvalidArgumentException('[weather_v2_controller::__getXML()] XSLT Error!');
                }
             } else {
                return $plainXml;
@@ -142,7 +144,7 @@ class weather_v2_controller extends BaseDocumentController {
             return null;
          }
       } else {
-         throw new InvalidArgumentException('[weather_v2_controller::__getXML()] Attribute "xml_source" not present in "core:importdesign" tag for weather module!');
+         throw new \InvalidArgumentException('[weather_v2_controller::__getXML()] Attribute "xml_source" not present in "core:importdesign" tag for weather module!');
       }
    }
 

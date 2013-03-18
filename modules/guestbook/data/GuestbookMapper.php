@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\guestbook\data;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -19,9 +21,9 @@
  * -->
  */
 
-import('modules::guestbook::biz', 'Guestbook');
-import('modules::guestbook::biz', 'Entry');
-import('modules::guestbook::biz', 'Comment');
+use APF\modules\guestbook\biz\Guestbook;
+use APF\modules\guestbook\biz\Entry;
+use APF\modules\guestbook\biz\Comment;
 
 /**
  * @package modules::guestbook::data

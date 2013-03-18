@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\genericormapper\data;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -29,5 +31,5 @@
  * @version
  * Version 0.1, 20.02.2010<br />
  */
-class GenericORMapperException extends Exception {
+class GenericORMapperException extends \Exception {
 }

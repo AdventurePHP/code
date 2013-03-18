@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\genericormapper\data;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,13 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::genericormapper::data', 'GenericDomainObject');
-import('modules::genericormapper::data', 'GenericORMapperException');
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\configuration\ConfigurationException;
+use APF\core\database\AbstractDatabaseHandler;
+use APF\core\database\ConnectionManager;
+use APF\core\database\DatabaseConnection;
+use APF\core\pagecontroller\APFObject;
+use APF\core\singleton\Singleton;
 
 /**
  * @package modules::genericormapper::data
@@ -281,7 +288,7 @@ class BaseMapper extends APFObject {
     */
    public function addMappingConfiguration($configNamespace, $configNameAffix) {
 
-      $t = & Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addMappingConfiguration()');
 
@@ -357,7 +364,7 @@ class BaseMapper extends APFObject {
     */
    public function addRelationConfiguration($configNamespace, $configNameAffix) {
 
-      $t = & Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addRelationConfiguration()');
 
@@ -424,7 +431,7 @@ class BaseMapper extends APFObject {
     */
    public function addDomainObjectsConfiguration($configNamespace, $configNameAffix) {
 
-      $t = & Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('BaseMapper::addDomainObjectsConfiguration()');
 

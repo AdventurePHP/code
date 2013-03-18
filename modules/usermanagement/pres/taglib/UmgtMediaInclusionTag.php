@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\usermanagement\pres\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::media::taglib', 'MediaInclusionTag');
+use APF\core\pagecontroller\TagLib;
+use APF\tools\media\taglib\MediaInclusionTag;
 
 /**
  * @package modules::usermanagement::pres::taglib

@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\comments\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,11 +20,11 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::comments::data', 'commentMapper');
-import('tools::link', 'LinkGenerator');
-import('tools::string', 'StringAssistant');
-import('core::session', 'SessionManager');
-import('tools::http', 'HeaderManager');
+use APF\modules\comments\data\commentMapper;
+use APF\tools\link\LinkGenerator;
+use APF\tools\string\StringAssistant;
+use APF\core\session\SessionManager;
+use APF\tools\http\HeaderManager;
 
 /**
  * @package modules::comments::biz

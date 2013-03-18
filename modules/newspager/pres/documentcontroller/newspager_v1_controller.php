@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\newspager\pres\documentcontroller;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::newspager::biz', 'newspagerManager');
+use APF\modules\newspager\biz\newspagerManager;
 
 /**
  * @package modules::newspager::pres
@@ -48,7 +50,7 @@ class newspager_v1_controller extends BaseDocumentController {
       // get current data dir or trigger error
       $DataDir = $this->getDocument()->getAttribute('datadir');
       if ($DataDir === null) {
-         throw new InvalidArgumentException('[newspager_v1_controller::transformContent()] Tag '
+         throw new \InvalidArgumentException('[newspager_v1_controller::transformContent()] Tag '
                . 'attribute "datadir" was not present in the &lt;core:importdesign /&gt; tag '
                . 'definition! Please specify a news content directory!');
       }

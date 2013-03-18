@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\captcha\pres\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,13 +20,13 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::form::taglib', 'AbstractFormControl');
-import('tools::form::taglib', 'TextFieldTag');
-import('tools::form::validator', 'AbstractFormValidator');
-import('tools::request', 'RequestHandler');
-import('tools::string', 'StringAssistant');
-import('core::session', 'SessionManager');
-import('tools::link', 'LinkGenerator');
+use APF\tools\form\taglib\AbstractFormControl;
+use APF\tools\form\taglib\TextFieldTag;
+use APF\tools\form\validator\AbstractFormValidator;
+use APF\tools\request\RequestHandler;
+use APF\tools\string\StringAssistant;
+use APF\core\session\SessionManager;
+use APF\tools\link\LinkGenerator;
 
 /**
  * @package modules::captcha::pres::taglib

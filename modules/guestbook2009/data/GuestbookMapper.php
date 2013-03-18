@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\guestbook2009\data;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,10 +20,10 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::genericormapper::data', 'GenericORMapperFactory');
-import('modules::guestbook2009::biz', 'User');
-import('modules::guestbook2009::biz', 'Entry');
-import('modules::guestbook2009::biz', 'Guestbook');
+use APF\modules\genericormapper\data\GenericORMapperFactory;
+use APF\modules\guestbook2009\biz\User;
+use APF\modules\guestbook2009\biz\Entry;
+use APF\modules\guestbook2009\biz\Guestbook;
 
 /**
  * @package modules::guestbook2009::data
@@ -120,7 +122,7 @@ class GuestbookMapper extends APFObject {
     *
     * @param GenericDomainObject $guestbook The generic domain object.
     * @return Entry The guestbook's domain object.
-    * @throws InvalidArgumentException In case the guestbook entry cannot be loaded.
+    * @throws \InvalidArgumentException In case the guestbook entry cannot be loaded.
     *
     * @author Christian Achatz
     * @version
@@ -132,7 +134,7 @@ class GuestbookMapper extends APFObject {
          /* @var $model GuestbookModel */
          $model = &$this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
          $gbId = $model->getGuestbookId();
-         throw new InvalidArgumentException('[GuestbookManager::mapGenericGuestbook2DomainObject()] '
+         throw new \InvalidArgumentException('[GuestbookManager::mapGenericGuestbook2DomainObject()] '
                . 'No guestbook with id "' . $gbId . '" stored in database! Please check your guestbook tag '
                . 'inclusion.', E_USER_ERROR);
       }
@@ -378,7 +380,7 @@ class GuestbookMapper extends APFObject {
       }
 
       // invoke benchmarker to be able to monitor the performance
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $t->start('mapGenericEntries2DomainObjects()');
 
       // load the language object for the current language to enable

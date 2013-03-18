@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\usermanagement\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,16 +20,23 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::biz::model', 'UmgtApplication');
-import('modules::usermanagement::biz::model', 'UmgtGroup');
-import('modules::usermanagement::biz::model', 'UmgtPermission');
-import('modules::usermanagement::biz::model', 'UmgtRole');
-import('modules::usermanagement::biz::model', 'UmgtUser');
-import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinition');
-import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinitionType');
-import('modules::usermanagement::biz::model', 'UmgtAuthToken');
+use APF\core\configuration\Configuration;
+use APF\core\configuration\ConfigurationException;
+use APF\core\pagecontroller\APFObject;
 
-import('modules::genericormapper::data', 'GenericCriterionObject');
+use APF\modules\genericormapper\data\GenericORRelationMapper;
+use APF\modules\genericormapper\data\GenericCriterionObject;
+
+use APF\modules\usermanagement\biz\model\UmgtApplication;
+use APF\modules\usermanagement\biz\model\UmgtGroup;
+use APF\modules\usermanagement\biz\model\UmgtPermission;
+use APF\modules\usermanagement\biz\model\UmgtRole;
+use APF\modules\usermanagement\biz\model\UmgtUser;
+use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
+use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinitionType;
+use APF\modules\usermanagement\biz\model\UmgtAuthToken;
+
+use APF\modules\usermanagement\biz\provider\PasswordHashProvider;
 
 /**
  * @package modules::usermanagement::biz
@@ -231,7 +240,7 @@ class UmgtManager extends APFObject {
     * @protected
     *
     * Implements the central dynamic salt method. If you desire to use another
-    * dynamic salt, extend the UmgtManager and reimplement this method! Be sure,
+    * dynamic salt, extend the UmgtManager and re-implement this method! Be sure,
     * to keep all other methods untouched.
     *
     * @param UmgtUser $user Current user

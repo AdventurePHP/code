@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\usermanagement\biz\login;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under

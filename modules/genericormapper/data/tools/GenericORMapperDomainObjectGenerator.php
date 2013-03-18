@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\genericormapper\data\tools;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,9 +20,9 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::genericormapper::data', 'BaseMapper');
-import('tools::filesystem', 'Folder');
-import('tools::filesystem', 'File');
+use APF\modules\genericormapper\data\BaseMapper;
+use APF\tools\filesystem\Folder;
+use APF\tools\filesystem\File;
 
 /**
  * @package modules::genericormapper::data::tools
@@ -88,7 +90,9 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
    protected function createNewServiceObject($name) {
       $filename = APPS__PATH . '/' . str_replace('::', '/', $this->domainObjectsTable[$name]['Namespace']) . '/' . $this->domainObjectsTable[$name]['Class'] . '.php';
 
-      $content = '<?php' . PHP_EOL . PHP_EOL .
+      $content = '<?php
+namespace APF\modules\genericormapper\data\tools;
+' . PHP_EOL . PHP_EOL .
             $this->generateBaseObjectCode($name) . PHP_EOL . PHP_EOL .
             $this->generateObjectCode($name) . PHP_EOL;
 

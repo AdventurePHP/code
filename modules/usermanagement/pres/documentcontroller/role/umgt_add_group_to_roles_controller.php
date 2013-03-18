@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\usermanagement\pres\documentcontroller\role;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,12 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::pres::documentcontroller', 'UmgtBaseController');
+use APF\modules\usermanagement\biz\model\UmgtRole;
+use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\form\taglib\MultiSelectBoxTag;
+use APF\tools\form\taglib\SelectBoxOptionTag;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::role
@@ -34,22 +41,22 @@ class umgt_add_group_to_roles_controller extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('Roles');
+      $form = & $this->getForm('Roles');
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
 
       $group = $uM->loadGroupByID(RequestHandler::getValue('groupid'));
       $roles = $uM->loadRolesNotWithGroup($group);
 
       if (count($roles) === 0) {
-         $tmpl = &$this->getTemplate('NoMoreRoles');
+         $tmpl = & $this->getTemplate('NoMoreRoles');
          $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $group->getDisplayName());
          $tmpl->getLabel('message-2')->setPlaceHolder('group-view-link', $this->generateLink(array('mainview' => 'group', 'roleview' => null, 'groupid' => null)));
          $tmpl->transformOnPlace();
          return;
       }
 
-      $rolesControl = &$form->getFormElementByName('Roles');
+      $rolesControl = & $form->getFormElementByName('Roles');
       /* @var $rolesControl MultiSelectBoxTag */
       foreach ($roles as $role) {
          $rolesControl->addOption($role->getDisplayName(), $role->getObjectId());
@@ -59,7 +66,7 @@ class umgt_add_group_to_roles_controller extends UmgtBaseController {
 
       if ($form->isSent() && $form->isValid()) {
 
-         $options = &$rolesControl->getSelectedOptions();
+         $options = & $rolesControl->getSelectedOptions();
          $additionalRoles = array();
          foreach ($options as $option) {
             /* @var $option SelectBoxOptionTag */

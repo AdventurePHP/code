@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\newspager\data;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,9 +20,9 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::newspager::biz', 'newspagerContent');
-import('tools::filesystem', 'File');
-import('tools::filesystem', 'Folder');
+use APF\modules\newspager\biz\newspagerContent;
+use APF\tools\filesystem\File;
+use APF\tools\filesystem\Folder;
 
 /**
  * @package modules::newspager::data

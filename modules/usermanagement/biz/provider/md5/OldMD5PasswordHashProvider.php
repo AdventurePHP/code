@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\usermanagement\biz\provider\md5;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::biz::provider', 'DefaultPasswordHashProvider');
+use APF\modules\usermanagement\biz\provider\DefaultPasswordHashProvider;
 
 /**
  * This is the old PasswordHashProvider which was used before 1.14

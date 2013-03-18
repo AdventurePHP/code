@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\usermanagement\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::biz::model', 'UmgtUser');
+use APF\core\pagecontroller\APFObject;
+use APF\modules\usermanagement\biz\model\UmgtUser;
 
 /**
  * @package modules::usermanagement::biz
@@ -56,7 +59,7 @@ class UmgtUserSessionStore extends APFObject {
     *
     * @param string $applicationIdentifier Identifies the application.
     * @return UmgtUser The currently logged-in user.
-    * @throws InvalidArgumentException In case the application identifier is not given.
+    * @throws \InvalidArgumentException In case the application identifier is not given.
     *
     * @author Christian Achatz
     * @version
@@ -64,7 +67,7 @@ class UmgtUserSessionStore extends APFObject {
     */
    public function getUser($applicationIdentifier) {
       if (empty($applicationIdentifier)) {
-         throw new InvalidArgumentException($this->getExceptionMessage());
+         throw new \InvalidArgumentException($this->getExceptionMessage());
       }
       return isset($this->store[$applicationIdentifier]) ? $this->store[$applicationIdentifier] : null;
    }
@@ -77,7 +80,7 @@ class UmgtUserSessionStore extends APFObject {
     *
     * @param string $applicationIdentifier Identifies the application.
     * @param UmgtUser $user The user to store within the session.
-    * @throws InvalidArgumentException In case the application identifier is not given.
+    * @throws \InvalidArgumentException In case the application identifier is not given.
     *
     * @author Christian Achatz
     * @version
@@ -85,7 +88,7 @@ class UmgtUserSessionStore extends APFObject {
     */
    public function setUser($applicationIdentifier, UmgtUser $user) {
       if (empty($applicationIdentifier)) {
-         throw new InvalidArgumentException($this->getExceptionMessage());
+         throw new \InvalidArgumentException($this->getExceptionMessage());
       }
       $this->store[$applicationIdentifier] = $user;
    }
@@ -128,7 +131,7 @@ class UmgtUserSessionStore extends APFObject {
     * Logs out the user for the current application.
     *
     * @param string $applicationIdentifier Identifies the application.
-    * @throws InvalidArgumentException In case the application identifier is not given.
+    * @throws \InvalidArgumentException In case the application identifier is not given.
     *
     * @author Christian Achatz
     * @version
@@ -136,7 +139,7 @@ class UmgtUserSessionStore extends APFObject {
     */
    public function logout($applicationIdentifier) {
       if (empty($applicationIdentifier)) {
-         throw new InvalidArgumentException($this->getExceptionMessage());
+         throw new \InvalidArgumentException($this->getExceptionMessage());
       }
       unset($this->store[$applicationIdentifier]);
    }

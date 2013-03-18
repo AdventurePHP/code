@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\genericormapper\data;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::genericormapper::data', 'GenericORMapperDataObject');
-import('modules::genericormapper::data', 'GenericORMapperException');
+use APF\modules\genericormapper\data\GenericORMapperDataObject;
+use APF\modules\genericormapper\data\GenericORMapperException;
 
 /**
  * @package modules::genericormapper::data
@@ -73,7 +75,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * Constructor of the generic domain object. Sets the object name if desired.
     *
     * @param string $objectName name of the domain object.
-    * @throws InvalidArgumentException In case the constructor argument is no valid object name.
+    * @throws \InvalidArgumentException In case the constructor argument is no valid object name.
     *
     * @author Christian Achatz
     * @version
@@ -81,7 +83,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     */
    public function __construct($objectName = null) {
       if (empty($objectName)) {
-         throw new InvalidArgumentException('[GenericDomainObject::__construct()] Creating a '
+         throw new \InvalidArgumentException('[GenericDomainObject::__construct()] Creating a '
                . 'GenericDomainObject must include an object name specification. Otherwise, '
                . 'the GenericORMapper cannot handle this instance.', E_USER_ERROR);
       }

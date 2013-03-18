@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\guestbook2009\data\setup;
+
 /**
  * In order to use this script for database setup, include this file after including the
  * <em>pagecontroller.php</em> file and setting the context and connection key.
@@ -13,7 +15,7 @@
  *
  * Please note, that you may have to adapt the include path for the <em>pagecontroller.php</em>.
  */
-import('modules::genericormapper::data::tools', 'GenericORMapperManagementTool');
+use APF\modules\genericormapper\data\tools\GenericORMapperManagementTool;
 $setup = new GenericORMapperManagementTool();
 $setup->setContext($context);
 $setup->addMappingConfiguration('modules::guestbook2009::data', 'guestbook2009');

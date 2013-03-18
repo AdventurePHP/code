@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\captcha\pres\validator;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -19,7 +21,7 @@
  * -->
  */
 
-import('tools::form::validator', 'TextFieldValidator');
+use APF\tools\form\validator\TextFieldValidator;
 
 /**
  * @package modules::captcha::pres::validator

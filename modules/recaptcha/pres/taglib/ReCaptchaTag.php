@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\recaptcha\pres\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,11 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::form::taglib', 'AbstractFormControl');
-import('modules::recaptcha::pres::taglib', 'ReCaptchaTranslationTag');
+use APF\core\pagecontroller\TagLib;
+use APF\tools\form\FormException;
+use APF\tools\form\filter\AbstractFormFilter;
+use APF\tools\form\taglib\AbstractFormControl;
+use APF\modules\recaptcha\pres\taglib\ReCaptchaTranslationTag;
 require_once(__DIR__ . '/../../external/google/recaptchalib.php');
 
 /**

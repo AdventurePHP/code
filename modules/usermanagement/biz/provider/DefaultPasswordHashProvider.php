@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\usermanagement\biz\provider;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,10 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::biz::provider', 'PasswordHashProvider');
-import('modules::usermanagement::biz', 'UmgtManager');
+use APF\core\pagecontroller\APFObject;
+use APF\core\service\APFService;
+use APF\modules\usermanagement\biz\provider\PasswordHashProvider;
+use APF\modules\usermanagement\biz\UmgtManager;
 
 /**
  * This is the default PasswordHashProvider for the user management manager. It implements
@@ -37,14 +41,14 @@ abstract class DefaultPasswordHashProvider extends APFObject implements Password
    private static $DEFAULT_HARDCODED_SALT = 'AdventurePHPFramework';
 
    /**
-    * @throws Exception
+    * @throws \Exception
     * @return string The hard-coded salt contained within the configuration
     */
    protected function getHardCodedSalt() {
       $section = $this->getConfiguration('modules::usermanagement::biz', 'umgtconfig.ini')
             ->getSection(UmgtManager::CONFIG_SECTION_NAME);
       if ($section === null) {
-         throw new Exception('[DefaultPasswordHashProvider::init()] No section with name"'
+         throw new \Exception('[DefaultPasswordHashProvider::init()] No section with name"'
                   . UmgtManager::CONFIG_SECTION_NAME . '" found in the umgtconfig.ini!',
             E_USER_ERROR);
       } else {

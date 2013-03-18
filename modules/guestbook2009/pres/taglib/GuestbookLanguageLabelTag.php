@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\guestbook2009\pres\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under

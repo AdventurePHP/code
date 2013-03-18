@@ -1,4 +1,19 @@
 <?php
+namespace APF\modules\usermanagement\pres\condition;
+
+/**
+ * @package modules::usermanagement::pres::condition
+ * @class UserDependentContentCondition
+ *
+ * Defines the structure of a user dependent content condition for the user
+ * mangement module.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 01.06.2011
+ */
+use APF\modules\usermanagement\biz\model\UmgtUser;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,18 +33,6 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
-/**
- * @package modules::usermanagement::pres::condition
- * @class UserDependentContentCondition
- *
- * Defines the structure of a user dependent content condition for the user
- * mangement module.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 01.06.2011
- */
 interface UserDependentContentCondition {
 
    /**
@@ -48,31 +51,4 @@ interface UserDependentContentCondition {
     * @param array $options A set of options that are defined for the dicision (e.g. groups).
     */
    public function setOptions(array $options);
-}
-
-/**
- * @package modules::usermanagement::pres::condition
- * @class UserDependentContentConditionBase
- *
- * Implements basic functionality for content conditions.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 01.06.2011
- */
-abstract class UserDependentContentConditionBase extends APFObject {
-
-   private $options;
-
-   public function setOptions(array $options) {
-      $this->options = $options;
-   }
-
-   /**
-    * @return array The list of options.
-    */
-   public function getOptions() {
-      return $this->options;
-   }
-
 }

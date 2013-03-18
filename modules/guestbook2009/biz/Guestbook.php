@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\guestbook2009\biz;
+
 /**
  * Represents the Guestbook domain object of the guestbook.
  *

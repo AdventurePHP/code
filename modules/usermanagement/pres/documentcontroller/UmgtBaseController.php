@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\usermanagement\pres\documentcontroller;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,17 +20,13 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::biz::model', 'UmgtApplication');
-import('modules::usermanagement::biz::model', 'UmgtGroup');
-import('modules::usermanagement::biz::model', 'UmgtPermission');
-import('modules::usermanagement::biz::model', 'UmgtRole');
-import('modules::usermanagement::biz::model', 'UmgtUser');
-import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinition');
-import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinitionType');
+use APF\core\pagecontroller\BaseDocumentController;
+use APF\core\pagecontroller\TemplateTag;
+use APF\modules\usermanagement\biz\UmgtManager;
 
-import('tools::link', 'LinkGenerator');
-import('tools::request', 'RequestHandler');
-import('tools::http', 'HeaderManager');
+use APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag;
+use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller

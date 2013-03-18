@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\genericormapper\data\tools;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -30,7 +32,7 @@ require('../../apps/core/pagecontroller/pagecontroller.php');
 Registry::register('apf::core', 'Environment', '{ENVIRONMENT}');
 
 // include UpdateMapper
-import('modules::genericormapper::data::tools', 'GenericORMapperManagementTool');
+use APF\modules\genericormapper\data\tools\GenericORMapperManagementTool;
 
 // create update tool
 $update = new GenericORMapperManagementTool();

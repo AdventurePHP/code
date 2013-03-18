@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\usermanagement\pres\condition;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,21 +20,27 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::usermanagement::biz::model', 'UmgtApplication');
-import('modules::usermanagement::biz::model', 'UmgtGroup');
-import('modules::usermanagement::biz::model', 'UmgtPermission');
-import('modules::usermanagement::biz::model', 'UmgtRole');
-import('modules::usermanagement::biz::model', 'UmgtUser');
-import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinition');
-import('modules::usermanagement::biz::model', 'UmgtVisibilityDefinitionType');
+use APF\core\pagecontroller\APFObject;
+use APF\core\service\APFService;
 
-import('modules::usermanagement::pres::condition', 'UserDependentContentCondition');
+use APF\modules\usermanagement\biz\UmgtManager;
+use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 
-import('modules::usermanagement::pres::condition', 'UmgtLoggedOutCondition');
-import('modules::usermanagement::pres::condition', 'UmgtLoggedInCondition');
-import('modules::usermanagement::pres::condition', 'UmgtGroupCondition');
-import('modules::usermanagement::pres::condition', 'UmgtRoleCondition');
-import('modules::usermanagement::pres::condition', 'UmgtNotRoleCondition');
+use APF\modules\usermanagement\biz\model\UmgtApplication;
+use APF\modules\usermanagement\biz\model\UmgtGroup;
+use APF\modules\usermanagement\biz\model\UmgtPermission;
+use APF\modules\usermanagement\biz\model\UmgtRole;
+use APF\modules\usermanagement\biz\model\UmgtUser;
+use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
+use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinitionType;
+
+use APF\modules\usermanagement\pres\condition\UserDependentContentCondition;
+
+use APF\modules\usermanagement\pres\condition\UmgtLoggedOutCondition;
+use APF\modules\usermanagement\pres\condition\UmgtLoggedInCondition;
+use APF\modules\usermanagement\pres\condition\UmgtGroupCondition;
+use APF\modules\usermanagement\pres\condition\UmgtRoleCondition;
+use APF\modules\usermanagement\pres\condition\UmgtNotRoleCondition;
 
 /**
  * @package modules::usermanagement::pres::condition
@@ -142,7 +150,7 @@ class UserDependentContentConditionSet extends APFObject {
          $condition->setOptions($parsedOptions);
 
          return $condition === null ? false : $condition->matches($conditionKey, $user);
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
          return false;
       }
    }
@@ -157,7 +165,7 @@ class UserDependentContentConditionSet extends APFObject {
    /**
     * @param string $conditionKey
     * @return UserDependentContentCondition
-    * @throws Exception In case no condition can be found for the given condition key.
+    * @throws \Exception In case no condition can be found for the given condition key.
     */
    private function getCondition($conditionKey) {
 
@@ -168,7 +176,7 @@ class UserDependentContentConditionSet extends APFObject {
          }
       }
 
-      throw new Exception('No condition found for key "' . $conditionKey . '".');
+      throw new \Exception('No condition found for key "' . $conditionKey . '".');
    }
 
    /**

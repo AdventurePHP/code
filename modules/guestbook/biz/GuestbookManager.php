@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\guestbook\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,14 +20,14 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('modules::guestbook::biz', 'Guestbook');
-import('modules::guestbook::biz', 'Entry');
-import('modules::guestbook::biz', 'Comment');
-import('modules::guestbook::data', 'GuestbookMapper');
-import('modules::pager::biz', 'PagerManagerFabric');
-import('core::session', 'SessionManager');
-import('tools::http', 'HeaderManager');
-import('tools::link', 'LinkGenerator');
+use APF\modules\guestbook\biz\Guestbook;
+use APF\modules\guestbook\biz\Entry;
+use APF\modules\guestbook\biz\Comment;
+use APF\modules\guestbook\data\GuestbookMapper;
+use APF\modules\pager\biz\PagerManagerFabric;
+use APF\core\session\SessionManager;
+use APF\tools\http\HeaderManager;
+use APF\tools\link\LinkGenerator;
 
 /**
  * @package modules::guestbook::biz

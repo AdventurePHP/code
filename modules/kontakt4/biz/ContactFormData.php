@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\kontakt4\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under

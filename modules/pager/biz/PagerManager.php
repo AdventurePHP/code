@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\pager\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,10 +20,10 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::link', 'LinkGenerator');
-import('tools::request', 'RequestHandler');
-import('modules::pager::biz', 'PagerPage');
-import('modules::pager::data', 'PagerMapper');
+use APF\tools\link\LinkGenerator;
+use APF\tools\request\RequestHandler;
+use APF\modules\pager\biz\PagerPage;
+use APF\modules\pager\data\PagerMapper;
 
 /**
  * @package modules::pager::biz
@@ -60,7 +62,7 @@ final class PagerManager extends APFObject {
     * Initializes the pager. Loads the desired config section.
     *
     * @param string $initParam the name of the config section.
-    * @throws InvalidArgumentException In case the referred configuration section is missing.
+    * @throws \InvalidArgumentException In case the referred configuration section is missing.
     *
     * @author Christian Achatz
     * @version
@@ -80,7 +82,7 @@ final class PagerManager extends APFObject {
 
       // empty sections are not allowed since they produced NPE's
       if ($this->section === null) {
-         throw new InvalidArgumentException('[PagerManager::init()] The given configuration section '
+         throw new \InvalidArgumentException('[PagerManager::init()] The given configuration section '
                . '"' . $initParam . '" cannot be found within the pager configuration file. Please '
                . 'review your setup!');
       }
@@ -148,7 +150,7 @@ final class PagerManager extends APFObject {
     * @param string $loadMethod name of the load method for the domain object
     * @param string[] $addStmtParams additional statement parameters
     * @return APFObject[] List of domain objects for the current page.
-    * @throws InvalidArgumentException In case the data component does not have the desired get method.
+    * @throws \InvalidArgumentException In case the data component does not have the desired get method.
     *
     * @author Christian Achatz
     * @version
@@ -178,7 +180,7 @@ final class PagerManager extends APFObject {
          return $entries;
       }
 
-      throw new InvalidArgumentException('[PagerManager->loadEntriesByAppDataComponent()] '
+      throw new \InvalidArgumentException('[PagerManager->loadEntriesByAppDataComponent()] '
             . 'Given data component (' . get_class($dataComponent) . ') has no method "'
             . $loadMethod . '"! Thus, no entries can be loaded!', E_USER_ERROR);
    }
@@ -303,7 +305,7 @@ final class PagerManager extends APFObject {
     */
    private function createPages4PagerDisplay($addStmtParams = array()) {
 
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $t->start('PagerManager::createPages4PagerDisplay()');
 
       // initialize start params

@@ -1,4 +1,6 @@
 <?php
+namespace APF\modules\usermanagement\pres;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -28,7 +30,7 @@
 include_once('./apps/core/pagecontroller/pagecontroller.php');
 
 // import the front controller
-import('core::frontcontroller', 'Frontcontroller');
+use APF\core\frontcontroller\Frontcontroller;
 
 // create the front controller instance
 $fC = &Singleton::getInstance('Frontcontroller');
@@ -40,5 +42,5 @@ $fC->setContext('...');
 $fC->start('modules::usermanagement::pres::templates', 'main');
 
 // create the benchmark report
-$T = &Singleton::getInstance('BenchmarkTimer');
-echo $T->createReport();
+$t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+echo $t->createReport();
