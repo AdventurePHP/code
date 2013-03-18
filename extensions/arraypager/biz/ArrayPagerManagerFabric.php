@@ -1,5 +1,7 @@
 <?php
-import('extensions::arraypager::biz', 'ArrayPagerManager');
+namespace APF\extensions\arraypager\biz;
+
+use APF\extensions\arraypager\biz\ArrayPagerManager;
 
 /**
  * @package extensions::arraypager::biz

@@ -1,6 +1,7 @@
 <?php
+namespace APF\extensions\apfelsms\pres\taglibs;
 
-import('tools::string', 'StringAssistant');
+use APF\tools\string\StringAssistant;
 
 /**
  *

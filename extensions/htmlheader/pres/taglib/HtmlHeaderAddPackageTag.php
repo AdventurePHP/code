@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\htmlheader\pres\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::biz', 'JsPackageNode');
-import('extensions::htmlheader::biz', 'CssPackageNode');
+use APF\extensions\htmlheader\biz\JsPackageNode;
+use APF\extensions\htmlheader\biz\CssPackageNode;
 
 /**
  * @package extensions::htmlheader::pres::taglib

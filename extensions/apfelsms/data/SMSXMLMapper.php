@@ -1,6 +1,7 @@
 <?php
+namespace APF\extensions\apfelsms\data;
 
-import('extensions::apfelsms::data', 'SMSMapperInterface');
+use APF\extensions\apfelsms\data\SMSMapperInterface;
 
 /**
  *

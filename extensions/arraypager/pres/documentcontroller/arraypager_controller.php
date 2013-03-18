@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\arraypager\pres\documentcontroller;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::link', 'LinkGenerator');
-import('tools::request', 'RequestHandler');
+use APF\tools\link\LinkGenerator;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package extensions::arraypager::pres::documentcontroller
@@ -56,7 +58,7 @@ class arraypager_controller extends BaseDocumentController {
       }
 
       /* @var $objectBenchmark BenchmarkTimer */
-      $objectBenchmark = Singleton::getInstance('BenchmarkTimer');
+      $objectBenchmark = Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $objectBenchmark->start('ArrayPager');
 
       // Anzahl der Einträge

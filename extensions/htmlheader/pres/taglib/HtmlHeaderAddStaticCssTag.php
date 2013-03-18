@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\htmlheader\pres\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::biz', 'StaticCssNode');
+use APF\extensions\htmlheader\biz\StaticCssNode;
 
 /**
  * @package extensions::htmlheader::pres::taglib
@@ -45,7 +47,7 @@ class HtmlHeaderAddStaticCssTag extends Document {
 
       $file = $this->getAttribute('file');
       if ($file == null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please '
+         throw new \InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please '
                   . 'provide the "file" attribute in order to add a static stylesheet.',
             E_USER_ERROR);
       }

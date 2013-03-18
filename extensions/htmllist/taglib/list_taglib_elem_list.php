@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\htmllist\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmllist::taglib', 'list_control');
+use APF\extensions\htmllist\taglib\list_control;
 
 /**
  * @package extensions::htmllist::taglib

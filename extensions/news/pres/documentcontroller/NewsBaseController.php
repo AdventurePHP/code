@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\news\pres\documentcontroller;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under

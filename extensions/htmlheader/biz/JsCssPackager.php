@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\htmlheader\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::biz::filter', 'JsCssInclusionFilterChain');
+use APF\extensions\htmlheader\biz\filter\JsCssInclusionFilterChain;
 
 /**
  * @package extensions::htmlheader::biz
@@ -45,7 +47,7 @@ class JsCssPackager extends APFObject {
     *
     * @param string $name The package name.
     * @param bool $gzip Return package compressed with gzip.
-    * @throws InvalidArgumentException In case the package configuration section does not exist.
+    * @throws \InvalidArgumentException In case the package configuration section does not exist.
     *
     * @return String The complete package.
     *
@@ -57,7 +59,7 @@ class JsCssPackager extends APFObject {
       $cfgPack = $this->getPackageConfiguration()->getSection($name);
 
       if ($cfgPack === null) {
-         throw new InvalidArgumentException('Package with the given name was not found!');
+         throw new \InvalidArgumentException('Package with the given name was not found!');
       }
 
       $ServerCacheMinutes = $cfgPack->getValue('ServerCacheMinutes');
@@ -194,7 +196,7 @@ class JsCssPackager extends APFObject {
     * Version 1.0, 18.03.2010<br />
     */
    protected function shrinkJs($input) {
-      import('extensions::htmlheader::biz', 'JSMin');
+      use APF\extensions\htmlheader\biz\JSMin;
       return JSMin::minify($input);
    }
 

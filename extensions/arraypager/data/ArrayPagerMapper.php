@@ -1,5 +1,7 @@
 <?php
-import('core::session', 'SessionManager');
+namespace APF\extensions\arraypager\data;
+
+use APF\core\session\SessionManager;
 
 /**
  * @package extensions::arraypager::data

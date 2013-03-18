@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\postbox\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -25,7 +27,7 @@
  * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!
  * You can change class "PostboxFolder" which will extend this base-class.
  */
-import('extensions::postbox::biz', 'AbstractPostboxFolder');
+use APF\extensions\postbox\biz\AbstractPostboxFolder;
 class PostboxFolderBase extends AbstractPostboxFolder {
 
    public function __construct($objectName = null) {

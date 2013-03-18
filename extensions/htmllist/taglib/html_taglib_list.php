@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\htmllist\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,10 +20,10 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmllist::taglib', 'list_control');
-import('extensions::htmllist::taglib', 'list_taglib_definition');
-import('extensions::htmllist::taglib', 'list_taglib_ordered');
-import('extensions::htmllist::taglib', 'list_taglib_unordered');
+use APF\extensions\htmllist\taglib\list_control;
+use APF\extensions\htmllist\taglib\list_taglib_definition;
+use APF\extensions\htmllist\taglib\list_taglib_ordered;
+use APF\extensions\htmllist\taglib\list_taglib_unordered;
 
 /**
  * @package extensions::htmllist::taglib
@@ -58,7 +60,7 @@ class html_taglib_list extends list_control {
     *
     * @param string $id The id of the list.
     * @return AbstractTaglibList The desired instance.
-    * @throws InvalidArgumentException In case no list can be found.
+    * @throws \InvalidArgumentException In case no list can be found.
     */
    public function getListById($id) {
       if (count($this->children) > 0) {
@@ -74,7 +76,7 @@ class html_taglib_list extends list_control {
       $grandParent = $parent->getParentObject();
       $docCon = ($grandParent !== null) ? $grandParent->getDocumentController() : $docCon = 'n/a';
 
-      throw new InvalidArgumentException('[html_taglib_list::getListById()] No list with id "' . $id
+      throw new \InvalidArgumentException('[html_taglib_list::getListById()] No list with id "' . $id
          . '" in document controller "' . $docCon . '"!', E_USER_ERROR);
    }
 
@@ -84,7 +86,7 @@ class html_taglib_list extends list_control {
     * @param string $elementType The type of list to create (ul, ol).
     * @param array $elementAttributes The attributes of the list.
     * @return string The object id of the created list.
-    * @throws InvalidArgumentException In case the desired list cannot be created.
+    * @throws \InvalidArgumentException In case the desired list cannot be created.
     */
    protected function createList($elementType, array $elementAttributes = array()) {
 
@@ -121,7 +123,7 @@ class html_taglib_list extends list_control {
          return $objectId;
       } else {
          // throw error and return null as object id
-         throw new InvalidArgumentException('[html_taglib_list::createList()] No list element with name "'
+         throw new \InvalidArgumentException('[html_taglib_list::createList()] No list element with name "'
             . $elementType . '" found! Maybe the tag name is mis-spelt or the class is not '
             . 'imported yet. Please use import() or &lt;list:addtaglib /&gt;!');
       }

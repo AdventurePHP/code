@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\htmlheader\biz;
+
 
 /**
  * <!--
@@ -19,8 +21,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::link', 'LinkGenerator');
-import('extensions::htmlheader::biz', 'HeaderNode');
+use APF\tools\link\LinkGenerator;
+use APF\extensions\htmlheader\biz\HeaderNode;
 
 /**
  * @abstract

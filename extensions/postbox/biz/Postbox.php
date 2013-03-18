@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\postbox\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::postbox::biz', 'MessageChannel');
-import('extensions::postbox::biz', 'Message');
+use APF\extensions\postbox\biz\MessageChannel;
+use APF\extensions\postbox\biz\Message;
 
 /**
  * @package extensions::postbox::biz
@@ -113,13 +115,13 @@ class Postbox extends APFObject {
     *
     * @param string $Name The name of the Folder
     * @return PostboxFolder The new created folder
-    * @throws InvalidArgumentException
+    * @throws \InvalidArgumentException
     */
    public function createPostboxFolder($Name) {
       if ($this->getPostboxFolderByName($Name) !== null) {
-         throw new InvalidArgumentException('[Postbox::addPostboxFolder()] This postbox already contains a folder with this name!', 1);
+         throw new \InvalidArgumentException('[Postbox::addPostboxFolder()] This postbox already contains a folder with this name!', 1);
       }
-      import('extensions::postbox::biz', 'PostboxFolder');
+      use APF\extensions\postbox\biz\PostboxFolder;
       $Folder = new PostboxFolder();
       $Folder->setName($Name);
       $Folder->addRelatedObject('User2PostboxFolder', $this->User);
@@ -146,7 +148,7 @@ class Postbox extends APFObject {
     * @param GenericORMapperDataObject[] $Readers An array of users which will be recipients.
     *
     * @return MessageChannel The new created channel
-    * @throws InvalidArgumentException
+    * @throws \InvalidArgumentException
     */
    public function createChannel($Title, $MessageText, array $Readers) {
       $Message = new Message();
@@ -175,7 +177,7 @@ class Postbox extends APFObject {
       }
 
       if (!$RealReadersPresent) {
-         throw new InvalidArgumentException('[Postbox::createChannel()] There are no recipients, maybe you tried to send a message to yourself, or the recipient(s) are blocking you!');
+         throw new \InvalidArgumentException('[Postbox::createChannel()] There are no recipients, maybe you tried to send a message to yourself, or the recipient(s) are blocking you!');
       }
 
       $Channel->setDataComponent($this->ORM);

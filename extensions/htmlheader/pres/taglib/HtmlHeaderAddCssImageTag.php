@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\htmlheader\pres\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::biz', 'CssImageNode');
+use APF\extensions\htmlheader\biz\CssImageNode;
 
 /**
  * @package extensions::htmlheader::pres::taglib
@@ -42,7 +44,7 @@ class HtmlHeaderAddCssImageTag extends Document {
 
       $href = $this->getAttribute('href');
       if ($href == null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please provide the "href" '
+         throw new \InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please provide the "href" '
                . 'attribute in order to add a Css image.', E_USER_ERROR);
       }
       $rel = $this->getAttribute('rel', 'icon');

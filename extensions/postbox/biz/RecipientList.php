@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\postbox\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -25,7 +27,7 @@
  * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!
  * You can change class "RecipientList" which will extend this base-class.
  */
-import('extensions::postbox::biz', 'AbstractRecipientList');
+use APF\extensions\postbox\biz\AbstractRecipientList;
 class RecipientListBase extends AbstractRecipientList {
 
    public function __construct($objectName = null) {

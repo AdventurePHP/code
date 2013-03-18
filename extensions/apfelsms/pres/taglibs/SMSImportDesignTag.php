@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\apfelsms\pres\taglibs;
+
 /**
  * @package APFelSMS
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>

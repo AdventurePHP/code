@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\apfelsms\biz\pages\decorators;
+
 /**
  *
  * @package APFelSMS

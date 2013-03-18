@@ -1,4 +1,5 @@
 <?php
+namespace APF\extensions\htmlheader\biz\filter;
 
 /**
  * <!--

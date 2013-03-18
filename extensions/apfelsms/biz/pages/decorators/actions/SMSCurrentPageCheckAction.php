@@ -1,7 +1,8 @@
 <?php
+namespace APF\extensions\apfelsms\biz\pages\decorators\actions;
 
-import('core::session', 'SessionManager');
-import('tools::link', 'LinkGenerator');
+use APF\core\session\SessionManager;
+use APF\tools\link\LinkGenerator;
 
 /**
  *

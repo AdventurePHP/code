@@ -1,6 +1,7 @@
 <?php
+namespace APF\extensions\apfelsms\pres\taglibs;
 
-import('tools::string', 'StringAssistant');
+use APF\tools\string\StringAssistant;
 
 /**
  *
@@ -24,7 +25,7 @@ class SMSPageLinkTag extends Document {
       $pageId = $this->getAttribute('id');
 
       if (empty($pageId)) {
-         throw new InvalidArgumentException('No page id defined', E_USER_ERROR);
+         throw new \InvalidArgumentException('No page id defined', E_USER_ERROR);
       }
 
       /** @var $SMSM SMSManager */

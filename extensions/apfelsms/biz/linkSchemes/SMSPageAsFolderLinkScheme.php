@@ -1,6 +1,7 @@
 <?php
+namespace APF\extensions\apfelsms\biz\linkSchemes;
 
-import('tools::link', 'LinkGenerator');
+use APF\tools\link\LinkGenerator;
 
 /**
  *

@@ -1,6 +1,7 @@
 <?php
+namespace APF\extensions\apfelsms\biz\sites;
 
-import('extensions::apfelsms::biz::pages', 'SMSPageInterface');
+use APF\extensions\apfelsms\biz\pages\SMSPageInterface;
 
 /**
  *

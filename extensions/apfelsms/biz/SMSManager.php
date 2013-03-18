@@ -1,13 +1,13 @@
 <?php
+namespace APF\extensions\apfelsms\biz;
 
-import('tools::request', 'RequestHandler');
-import('tools::link', 'LinkGenerator');
-import('extensions::apfelsms::biz::pages::stores', "SMSPageStoreInterface");
+use APF\tools\request\RequestHandler;
+use APF\tools\link\LinkGenerator;
 
 /**
  * @package APFelSMS
  */
-class SMSException extends Exception {
+class SMSException extends \Exception {
 
 
 }
@@ -224,7 +224,7 @@ class SMSManager extends APFObject {
       } catch (ConfigurationException $ce) {
          throw new SMSUnknownTypeException('[SMSManager::getPageDec()] Service configuration for page decorators of type "' . $type . '" with serviceName "' . $serviceName . '" could not be found. Maybe you have an invalid page decorator type in your data-source!? Please check your configuration, espacially the serviceobjects.ini in namespace "extensions::apfelsms::pages::decorators".', E_USER_ERROR);
       }
-      catch (InvalidArgumentException $ie) {
+      catch (\InvalidArgumentException $ie) {
          throw new SMSConfigurationException('[SMSManager::getPageDec()] Your configuration for page decorators of type "' . $type . '" with serviceName "' . $serviceName . '" is buggy. DIServiceManager throws following exception: ' . $ie, E_USER_ERROR);
       }
 
@@ -257,7 +257,7 @@ class SMSManager extends APFObject {
          } catch (ConfigurationException $ce) {
             throw new SMSUnknownTypeException('[SMSManager::getPage()] Configured serviceName for pages "' . $this->pageServiceName . '" is most likely not existent. Please check your configuration, espacially the serviceobjects.ini in namespace "extensions::apfelsms::pages".', E_USER_ERROR);
          }
-         catch (InvalidArgumentException $ie) {
+         catch (\InvalidArgumentException $ie) {
             throw new SMSConfigurationException('[SMSManager::getPage()] Your configuration for pages is buggy. Please check service "' . $this->pageServiceName . '". DIServiceManager throws following exception: ' . $ie, E_USER_ERROR);
          }
 

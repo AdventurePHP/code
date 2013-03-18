@@ -1,6 +1,7 @@
 <?php
+namespace APF\extensions\apfelsms\biz\pages\decorators\providers;
 
-import('extensions::apfelsms::biz::pages::decorators::providers', 'SMSAccessCtrlProviderInterface');
+use APF\extensions\apfelsms\biz\pages\decorators\providers\SMSAccessCtrlProviderInterface;
 
 /**
  *

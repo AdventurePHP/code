@@ -1,6 +1,7 @@
 <?php
+namespace APF\extensions\apfelsms\biz\pages\stores;
 
-import('extensions::apfelsms::biz::pages::stores', 'SMSPageStoreInterface');
+use APF\extensions\apfelsms\biz\pages\stores\SMSPageStoreInterface;
 /**
  *
  * @package APFelSMS

@@ -1,6 +1,7 @@
 <?php
+namespace APF\extensions\apfelsms\biz\pages\decorators;
 
-import('extensions::apfelsms::biz::pages::decorators', 'SMSAliasPageDec');
+use APF\extensions\apfelsms\biz\pages\decorators\SMSAliasPageDec;
 
 /**
  *

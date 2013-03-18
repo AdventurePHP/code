@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\htmllist\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -19,7 +21,7 @@
  * -->
  */
 
-import('extensions::htmllist::taglib', 'list_taglib_elem_list');
+use APF\extensions\htmllist\taglib\list_taglib_elem_list;
 
 /**
  * @package extensions::htmllist::taglib

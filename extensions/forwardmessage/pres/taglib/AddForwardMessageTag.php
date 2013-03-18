@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\forwardmessage\pres\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -39,7 +41,7 @@ class AddForwardMessageTag extends Document {
    public function onParseTime() {
 
       if (!$name = $this->getAttribute('name')) {
-         throw new InvalidArgumentException('[AddForwardMessageTag::onParseTime()] '
+         throw new \InvalidArgumentException('[AddForwardMessageTag::onParseTime()] '
                . 'The attribute "name" is empty or not present. Thus message cannot be added!');
       }
 

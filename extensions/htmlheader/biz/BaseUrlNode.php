@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\htmlheader\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -19,8 +21,8 @@
  * -->
  */
 
-import('extensions::htmlheader::biz', 'HtmlNode');
-import('extensions::htmlheader::biz', 'BaseNode');
+use APF\extensions\htmlheader\biz\HtmlNode;
+use APF\extensions\htmlheader\biz\BaseNode;
 
 /**
  * @package extensions::htmlheader::biz

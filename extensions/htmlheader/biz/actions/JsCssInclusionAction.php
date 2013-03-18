@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\htmlheader\biz\actions;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::http', 'HeaderManager');
+use APF\tools\http\HeaderManager;
 
 /**
  * @package extensions::htmlheader::biz::actions
@@ -81,7 +83,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
          case 'js':
             return 'text/javascript';
          default:
-            throw new InvalidArgumentException('[JsCssInclusionAction::getMimeType()] The attribute '
+            throw new \InvalidArgumentException('[JsCssInclusionAction::getMimeType()] The attribute '
                   . '"type" must be either "css" or "js".');
       }
    }
@@ -108,7 +110,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
 
       $packageExpl = explode('.', $package);
       if (count($packageExpl) !== 2) {
-         throw new InvalidArgumentException('[JsCssInclusionAction::sendPackage()] The attribute
+         throw new \InvalidArgumentException('[JsCssInclusionAction::sendPackage()] The attribute
                  "package" has to be like "packagename.type", with type
                  beeing "js" or "css".');
       }
@@ -154,15 +156,15 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
 
       // Check if all required attributes are given
       if (empty($namespace)) {
-         throw new InvalidArgumentException('[JsCssInclusionAction::sendFile()] The attribute "path" '
+         throw new \InvalidArgumentException('[JsCssInclusionAction::sendFile()] The attribute "path" '
                . 'is empty or not present.');
       }
       if (empty($file)) {
-         throw new InvalidArgumentException('[JsCssInclusionAction::sendFile()] The attribute "file" '
+         throw new \InvalidArgumentException('[JsCssInclusionAction::sendFile()] The attribute "file" '
                . 'is empty or not present.');
       }
       if (empty($type)) {
-         throw new InvalidArgumentException('[JsCssInclusionAction::SendFile()] The attribute "type" '
+         throw new \InvalidArgumentException('[JsCssInclusionAction::SendFile()] The attribute "type" '
                . 'is empty or not present.');
       }
 

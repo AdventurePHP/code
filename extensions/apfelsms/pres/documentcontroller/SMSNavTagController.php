@@ -1,7 +1,8 @@
 <?php
+namespace APF\extensions\apfelsms\pres\documentcontroller;
 
-import('tools::link', 'LinkGenerator');
-import('tools::string', 'StringAssistant');
+use APF\tools\link\LinkGenerator;
+use APF\tools\string\StringAssistant;
 
 /**
  *

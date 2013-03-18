@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\news\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,6 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\genericormapper\data\GenericDomainObject;
 
 //<*NewsBase:start*> DO NOT CHANGE THIS COMMENT!
 /**
@@ -25,7 +28,6 @@
  * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!
  * You can change class "News" which will extend this base-class.
  */
-import('modules::genericormapper::data', 'GenericDomainObject');
 class NewsBase extends GenericDomainObject {
 
    public function __construct($objectName = null) {

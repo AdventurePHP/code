@@ -1,4 +1,6 @@
 <?php
+namespace APF\extensions\htmlheader\biz;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::biz', 'HtmlNode');
+use APF\extensions\htmlheader\biz\HtmlNode;
 
 /**
  * @abstract
