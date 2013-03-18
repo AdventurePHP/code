@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\form\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,14 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::form::taglib', 'AbstractFormControl');
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\TagLib;
+use APF\core\pagecontroller\XmlParser;
+use APF\core\registry\Registry;
+use APF\core\singleton\Singleton;
+use APF\tools\form\FormException;
+use APF\tools\form\taglib\AbstractFormControl;
 
 /**
  * @package tools::form::taglib
@@ -147,14 +156,14 @@ class HtmlFormTag extends Document {
       }
 
       // import dependent tags a little bit different, to increase performance up to factor 10!
-      foreach ($this->tagLibs as $taglib) {
-         /* @var $taglib TagLib */
+      /*foreach ($this->tagLibs as $taglib) {
+         /* @var $taglib TagLib * /
          if (strpos($this->content, '<' . $taglib->getPrefix() . ':' . $taglib->getName()) !== false) {
             if (!class_exists($taglib->getClass())) {
                import($taglib->getNamespace(), $taglib->getClass());
             }
          }
-      }
+      }*/
 
       $this->extractTagLibTags();
    }
@@ -417,7 +426,7 @@ class HtmlFormTag extends Document {
          /* @var $taglib TagLib */
          if ($taglib->getPrefix() === $prefix && $taglib->getName() === $name) {
             $class = $taglib->getClass();
-            import($taglib->getNamespace(), $class);
+            //import($taglib->getNamespace(), $class);
             break;
          }
       }
@@ -472,8 +481,8 @@ class HtmlFormTag extends Document {
     */
    protected function &getMarker($markerName) {
       try {
-         return $this->getChildNode('name', $markerName, 'DynamicFormElementMarkerTag');
-      } catch (InvalidArgumentException $e) {
+         return $this->getChildNode('name', $markerName, 'APF\tools\form\taglib\DynamicFormElementMarkerTag');
+      } catch (\InvalidArgumentException $e) {
          throw new FormException('[HtmlFormTag::addFormContentAfterMarker()] No marker object '
                . 'with name "' . $markerName . '" composed in current form for document controller "'
                . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
@@ -688,7 +697,7 @@ class HtmlFormTag extends Document {
     *
     * @param string $name The name of the form label to return.
     * @return FormLanguageLabelTag The instance of the desired label.
-    * @throws InvalidArgumentException In case no label can be found.
+    * @throws \InvalidArgumentException In case no label can be found.
     *
     * @author Christian Achatz
     * @version
@@ -696,9 +705,9 @@ class HtmlFormTag extends Document {
     */
    public function &getLabel($name) {
       try {
-         return $this->getChildNode('name', $name, 'FormLanguageLabelTag');
-      } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[HtmlFormTag::getLabel()] No label found with name "' . $name
+         return $this->getChildNode('name', $name, 'APF\tools\form\taglib\FormLanguageLabelTag');
+      } catch (\InvalidArgumentException $e) {
+         throw new \InvalidArgumentException('[HtmlFormTag::getLabel()] No label found with name "' . $name
                . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'
                . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR, $e);
       }
@@ -719,7 +728,7 @@ class HtmlFormTag extends Document {
     */
    public function transformForm() {
 
-      $t = & Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $id = '(HtmlFormTag) ' . $this->getObjectId() . '::transformForm()';
       $t->start($id);

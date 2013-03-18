@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\mail;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::validator', 'Validator');
-import('core::logging', 'Logger');
+use APF\tools\validator\Validator;
+use APF\core\logging\Logger;
 
 /**
  * @package tools::mail
@@ -126,7 +128,7 @@ class mailSender extends APFObject {
     * instance of the mailSender.
     *
     * @param string $initParam The name of the config section to initialize the component with.
-    * @throws InvalidArgumentException In case the init param is referring to non-existent config section.
+    * @throws \InvalidArgumentException In case the init param is referring to non-existent config section.
     *
     * @author Christian Schäfer
     * @version
@@ -148,7 +150,7 @@ class mailSender extends APFObject {
       $section = $config->getSection($initParam);
 
       if ($section === null) {
-         throw new InvalidArgumentException('[mailSender::init()] Section "' . $initParam
+         throw new \InvalidArgumentException('[mailSender::init()] Section "' . $initParam
                . '" is not present within the mail sender\'s configuration!');
       }
 
@@ -460,7 +462,7 @@ class mailSender extends APFObject {
 
       $header = $this->generateHeader();
       /* @var $log Logger */
-      $log = &Singleton::getInstance('Logger');
+      $log = &Singleton::getInstance('APF\core\logging\Logger');
       $sentEmails = array();
 
       for ($i = 0; $i < count($this->recipients); $i++) {

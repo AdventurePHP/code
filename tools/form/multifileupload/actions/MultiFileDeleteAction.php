@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\form\multifileupload\actions;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::http', 'HeaderManager');
-import('tools::form', 'FormException');
+use APF\tools\http\HeaderManager;
+use APF\tools\form\FormException;
 
 /**
  * @package tools::form::multifileupload::actions

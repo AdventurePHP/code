@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\form\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,6 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\tools\form\FormException;
+use APF\tools\form\validator\AbstractFormValidator;
 
 /**
  * @package tools::form::taglib
@@ -112,14 +116,14 @@ abstract class FormControlObserverBase extends AbstractFormControl {
                   . 'a button with name "' . $buttonName . '". Please check your taglib definition!');
          }
 
-         // include observer class
-         import($namespace, $class);
-
          // Construct observer injecting the control to validate and the button,
          // that triggers the event. As of 1.12, the type is presented to the
          // validator to enable special listener notification.
          /* @var $observer AbstractFormValidator */
-         $observer = new $class($control, $button, $type);
+         $fqNamespace = 'APF\\' . str_replace('::', '\\', $namespace);
+         $fqClass = $fqNamespace . '\\' . $class;
+
+         $observer = new $fqClass($control, $button, $type);
          $observer->setContext($this->context);
          $observer->setLanguage($this->language);
 

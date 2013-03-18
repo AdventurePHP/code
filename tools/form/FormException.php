@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\form;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -29,5 +31,5 @@
  * @version
  * Version 0.1, 13.03.2010<br />
  */
-class FormException extends Exception {
+class FormException extends \Exception {
 }

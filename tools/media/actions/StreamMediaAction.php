@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\media\actions;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -19,7 +21,9 @@
  * -->
  */
 session_cache_limiter('none');
-import('tools::http', 'HeaderManager');
+
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\tools\http\HeaderManager;
 
 /**
  * @package tools::media::actions
@@ -67,11 +71,11 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
             exit(0);
 
          } else {
-            throw new Exception('File with name "' . $fileName . '" cannot be found under sub-path "' . $namespace . '"!');
+            throw new \Exception('File with name "' . $fileName . '" cannot be found under sub-path "' . $namespace . '"!');
          }
       }
 
-      throw new Exception('You are not allowed to request "' . $fileName . '" under sub-path "' . $namespace . '"!');
+      throw new \Exception('You are not allowed to request "' . $fileName . '" under sub-path "' . $namespace . '"!');
    }
 
    /**

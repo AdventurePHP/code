@@ -1,4 +1,5 @@
 <?php
+namespace APF\tools\form\multifileupload\pres\taglib;
 
 /**
  * <!--
@@ -19,13 +20,14 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('extensions::htmlheader::biz', 'HtmlHeaderManager');
-import('extensions::htmlheader::biz', 'DynamicJsNode');
-import('extensions::htmlheader::biz', 'CssPackageNode');
-import('extensions::htmlheader::biz', 'StaticJsNode');
+use APF\extensions\htmlheader\biz\HtmlHeaderManager;
+use APF\extensions\htmlheader\biz\DynamicJsNode;
+use APF\extensions\htmlheader\biz\CssPackageNode;
+use APF\extensions\htmlheader\biz\StaticJsNode;
 
-import('extensions::htmlheader::biz', 'JsContentNode');
-import('extensions::htmlheader::biz', 'CssContentNode');
+use APF\extensions\htmlheader\biz\JsContentNode;
+use APF\extensions\htmlheader\biz\CssContentNode;
+
 /**
  * @class MultiFileUploadTag
  *

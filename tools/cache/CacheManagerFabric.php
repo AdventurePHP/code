@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\cache;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -45,7 +47,7 @@ final class CacheManagerFabric extends APFObject {
     *
     * @param string $configSection the config section.
     * @return CacheManager The desired cache manager instance.
-    * @throws InvalidArgumentException In case the given config section cannot be resolved.
+    * @throws \InvalidArgumentException In case the given config section cannot be resolved.
     *
     * @author Christian Achatz
     * @version
@@ -62,7 +64,7 @@ final class CacheManagerFabric extends APFObject {
 
          if ($section === null) {
             $env = Registry::retrieve('apf::core', 'Environment');
-            throw new InvalidArgumentException('[CacheManagerFabric::getCacheManager()] The desired config section "'
+            throw new \InvalidArgumentException('[CacheManagerFabric::getCacheManager()] The desired config section "'
                   . $configSection . '" does not exist within the cache configuration. Please check '
                   . 'your cache configuration ("' . $env . '_cacheconfig.ini") for namespace '
                   . '"tools::cache" and context "' . $this->context . '"!', E_USER_ERROR);

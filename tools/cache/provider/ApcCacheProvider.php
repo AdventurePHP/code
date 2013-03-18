@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\cache\provider;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -76,7 +78,7 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
    protected function getExpireTime() {
       try {
          return intval($this->getConfigAttribute('Cache.ExpireTime'));
-      } catch (InvalidArgumentException $e) {
+      } catch (\InvalidArgumentException $e) {
          return 0; // cache forever
       }
    }

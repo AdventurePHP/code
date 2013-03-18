@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\filesystem;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -29,7 +31,7 @@
  * @version
  * Version 0.1, 07.08.2010<br />
  */
-class FileException extends Exception {
+class FileException extends \Exception {
 }
 
 /**

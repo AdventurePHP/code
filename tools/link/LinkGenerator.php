@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\link;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,6 +20,9 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\frontcontroller\Frontcontroller;
+use APF\core\registry\Registry;
+use APF\core\singleton\Singleton;
 
 /**
  * @package tools::link
@@ -29,7 +34,7 @@
  * @version
  * Version 0.1, 08.04.2011<br />
  */
-class UrlFormatException extends Exception {
+class UrlFormatException extends \Exception {
 }
 
 /**
@@ -615,7 +620,7 @@ abstract class BasicLinkScheme {
     * Version 0.1, 29.12.2011<br />
     */
    protected function &getFrontcontrollerActions() {
-      $fC = & Singleton::getInstance('Frontcontroller');
+      $fC = & Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
       /* @var $fC Frontcontroller */
       return $fC->getActions();
    }
@@ -916,6 +921,7 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
 
 }
 
+// TODO extract to separate bootstrap file due to autoloading issues!
 // set up link scheme concerning the url rewriting configuration.
 // this can be done here, since import() ensures, that this file 
 // is only included once!

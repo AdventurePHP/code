@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\html\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,6 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\Document;
 
 /**
  * @package tools::html::taglib
@@ -59,19 +62,19 @@ class LanguageDependentImportTemplateTag extends Document {
    public function onParseTime() {
 
       /* @var $T BenchmarkTimer */
-      $T = &Singleton::getInstance('BenchmarkTimer');
+      $T = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $id = '(LanguageDependentImportTemplateTag) ' . $this->getObjectId() . '::onParseTime()';
       $T->start($id);
 
       // check attributes
       $namespace = $this->getAttribute('namespace');
       if ($namespace === null) {
-         throw new InvalidArgumentException('[LanguageDependentImportTemplateTag::onParseTime()] No attribute "namespace" given!', E_USER_ERROR);
+         throw new \InvalidArgumentException('[LanguageDependentImportTemplateTag::onParseTime()] No attribute "namespace" given!', E_USER_ERROR);
       }
 
       $template = $this->getAttribute('template');
       if ($template === null) {
-         throw new InvalidArgumentException('[LanguageDependentImportTemplateTag::onParseTime()] No attribute "template" given!', E_USER_ERROR);
+         throw new \InvalidArgumentException('[LanguageDependentImportTemplateTag::onParseTime()] No attribute "template" given!', E_USER_ERROR);
       }
 
       // load content
@@ -122,7 +125,7 @@ class LanguageDependentImportTemplateTag extends Document {
     *
     * @param string $namespace the namespace of the language file
     * @param string $filename the name of the language file
-    * @throws InvalidArgumentException In case the translation file cannot be found.
+    * @throws \InvalidArgumentException In case the translation file cannot be found.
     *
     * @author Christian Achatz
     * @version
@@ -142,11 +145,11 @@ class LanguageDependentImportTemplateTag extends Document {
          if ($domDoc instanceof SimpleXMLElement) {
             $this->content = $this->parseLanguageTokens($this->content, $domDoc);
          } else {
-            throw new InvalidArgumentException('[LanguageDependentImportTemplateTag::__parseLanguageFile()] The translation file ("' . $filename . '.xml") in namespace "' . $namespace . '" does not contain a valid XML document! The content is returned without translation.');
+            throw new \InvalidArgumentException('[LanguageDependentImportTemplateTag::__parseLanguageFile()] The translation file ("' . $filename . '.xml") in namespace "' . $namespace . '" does not contain a valid XML document! The content is returned without translation.');
          }
 
       } else {
-         throw new InvalidArgumentException('[LanguageDependentImportTemplateTag::__parseLanguageFile()] The desired translation file ("' . $filename . '.xml") does not exist in namespace "' . $namespace . '". Please check your tag definition or your configurarion! The content is returned without translation.');
+         throw new \InvalidArgumentException('[LanguageDependentImportTemplateTag::__parseLanguageFile()] The desired translation file ("' . $filename . '.xml") does not exist in namespace "' . $namespace . '". Please check your tag definition or your configurarion! The content is returned without translation.');
       }
 
    }

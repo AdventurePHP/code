@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\string;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -188,7 +190,7 @@ class AdvancedBBCodeParser extends APFObject {
     */
    private function setUpProvider() {
 
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('AdvancedBBCodeParser::setUpProvider()');
 
@@ -226,7 +228,7 @@ class AdvancedBBCodeParser extends APFObject {
     */
    public function parseCode($string) {
 
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('AdvancedBBCodeParser::parseCode()');
 

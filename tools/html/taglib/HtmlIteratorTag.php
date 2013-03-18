@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\html\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,9 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::html::taglib', 'HtmlIteratorItemTag');
-import('tools::request', 'RequestHandler');
+use APF\core\pagecontroller\Document;
+use APF\tools\html\taglib\HtmlIteratorItemTag;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package tools::html::taglib
@@ -146,7 +149,7 @@ class HtmlIteratorTag extends Document {
     * transform-on-place feature.
     *
     * @return string String representation of the iterator object.
-    * @throws InvalidArgumentException In case the data container does not contain an array or object list.
+    * @throws \InvalidArgumentException In case the data container does not contain an array or object list.
     *
     * @author Christian Achatz
     * @version
@@ -157,7 +160,7 @@ class HtmlIteratorTag extends Document {
     */
    public function transformIterator() {
 
-      $t = & Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('(HtmlIteratorTag) ' . $this->getObjectId() . '::transformIterator()');
 
@@ -256,7 +259,7 @@ class HtmlIteratorTag extends Document {
             $buffer .= $iteratorItem->transform();
 
          } else {
-            throw new InvalidArgumentException('[HtmlIteratorTag::transformIterator()] '
+            throw new \InvalidArgumentException('[HtmlIteratorTag::transformIterator()] '
                      . 'Given list entry is not an array or object (' . $this->dataContainer[$i]
                      . ')! The data container must contain a list of associative arrays or objects!',
                E_USER_WARNING);
@@ -310,7 +313,7 @@ class HtmlIteratorTag extends Document {
     * allowed to define more that one iterator item.
     *
     * @return string The iterator item's object id.
-    * @throws InvalidArgumentException In case no <iterator:item /> is specified.
+    * @throws \InvalidArgumentException In case no <iterator:item /> is specified.
     *
     * @author Christian Achatz
     * @version
@@ -325,7 +328,7 @@ class HtmlIteratorTag extends Document {
       }
 
       // defining no iterator item is not allowed!
-      throw new InvalidArgumentException('[HtmlIteratorTag::getIteratorItemObjectId()] '
+      throw new \InvalidArgumentException('[HtmlIteratorTag::getIteratorItemObjectId()] '
             . 'The definition for iterator "' . $this->getAttribute('name')
             . '" does not contain a iterator item, hence this is no legal iterator tag '
             . 'definition. Please refer to the documentation.', E_USER_ERROR);

@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\cookie;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under

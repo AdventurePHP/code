@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\link\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,11 +20,9 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::link::taglib', 'LinkLanguageLabelTag');
-import('tools::link::taglib', 'LinkLanguageTitleTag');
-import('tools::link::taglib', 'LinkLanguageLabelActiveTag');
-import('tools::link::taglib', 'LinkLanguageTitleActiveTag');
-import('tools::link::taglib', 'LinkGenerationTag');
+use APF\core\pagecontroller\TagLib;
+use APF\core\registry\Registry;
+use APF\tools\link\taglib\LinkGenerationTag;
 
 /**
  * @package tools::link::taglib
@@ -69,7 +69,7 @@ class HtmlLinkTag extends LinkGenerationTag {
 
       $this->attributeList['href'] = parent::transform();
       if ($this->attributeList['href'] === null) {
-         throw new InvalidArgumentException('[HtmlLinkTag::onParseTime()] The Attribute "href" is missing. '
+         throw new \InvalidArgumentException('[HtmlLinkTag::onParseTime()] The Attribute "href" is missing. '
                . 'Please provide the destination!', E_USER_ERROR);
       }
       // load Taglibs which might add some Attributes to this one.
@@ -86,7 +86,7 @@ class HtmlLinkTag extends LinkGenerationTag {
       }
 
       if (empty($content)) {
-         throw new InvalidArgumentException('No anchor text available!');
+         throw new \InvalidArgumentException('No anchor text available!');
       }
 
       if (!isset($this->attributeList['href'])) {

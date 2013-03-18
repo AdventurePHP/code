@@ -1,4 +1,5 @@
 <?php
+namespace APF\tools\form\multifileupload\biz;
 
 /**
  * <!--
@@ -19,12 +20,12 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::session', 'SessionManager');
-import('tools::link', 'LinkGenerator');
-import('tools::form', 'FormException');
+use APF\core\session\SessionManager;
+use APF\tools\link\LinkGenerator;
+use APF\tools\form\FormException;
 
-import('tools::filesystem', 'File');
-import('tools::filesystem', 'Folder');
+use APF\tools\filesystem\File;
+use APF\tools\filesystem\Folder;
 
 /**
  * @package tools::form::multifileupload::biz

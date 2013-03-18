@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\html\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -44,25 +46,25 @@ class FrontControllerImportTemplateTag extends ImportTemplateTag {
    public function onParseTime() {
 
       if (!isset($this->attributes['templatenamespace'])) {
-         throw new InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "templatenamespace" is not given!');
+         throw new \InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "templatenamespace" is not given!');
       } else {
          $templateNamespace = $this->attributes['templatenamespace'];
       }
 
       if (!isset($this->attributes['modelnamespace'])) {
-         throw new InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelnamespace" is not given!');
+         throw new \InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelnamespace" is not given!');
       } else {
          $modelNamespace = $this->attributes['modelnamespace'];
       }
 
       if (!isset($this->attributes['modelclass'])) {
-         throw new InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelclass" is not given!');
+         throw new \InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelclass" is not given!');
       } else {
          $modelClass = $this->attributes['modelclass'];
       }
 
       if (!isset($this->attributes['modelparam'])) {
-         throw new InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelparam" is not given!');
+         throw new \InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelparam" is not given!');
       } else {
          $modelParam = $this->attributes['modelparam'];
       }

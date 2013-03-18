@@ -1,4 +1,5 @@
 <?php
+namespace APF\tools\filesystem;
 
 /**
  * <!--
@@ -19,7 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::filesystem', 'FilesystemException');
+use APF\tools\filesystem\FilesystemException;
 /**
  * @abstract
  * @class   FilesystemItem

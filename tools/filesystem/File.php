@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\filesystem;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('tools::filesystem', 'FilesystemItem');
-import('tools::http', 'HeaderManager');
+use APF\tools\filesystem\FilesystemItem;
+use APF\tools\http\HeaderManager;
 
 /**
  * @package tools::filesystem

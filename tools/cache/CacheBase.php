@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\cache;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -41,7 +43,7 @@ abstract class CacheBase extends APFObject {
     *
     * @param string $name The name of the desired attribute.
     * @return string Value of the attribute.
-    * @throws InvalidArgumentException In case the desired attribute is not defined.
+    * @throws \InvalidArgumentException In case the desired attribute is not defined.
     *
     * @author Christian Achatz
     * @version
@@ -52,7 +54,7 @@ abstract class CacheBase extends APFObject {
       $value = $this->getAttribute($name);
       if ($value == null) {
          $env = Registry::retrieve('apf::core', 'Environment');
-         throw new InvalidArgumentException('[' . get_class($this)
+         throw new \InvalidArgumentException('[' . get_class($this)
                . '::getConfigAttribute()] The configuration directive "' . $name . '" is not '
                . 'present or empty. Please check your cache configuration ("' . $env
                . '_cacheconfig.ini") for namespace "tools::cache" and context "'

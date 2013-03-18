@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\string;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -154,7 +156,7 @@ class RandomStringManager extends APFObject {
     * @param string $select The SQL query to check, if the string is already in use.
     * @param string $connectionKey The database connection key.
     * @return string The created RandomString
-    * @throws InvalidArgumentException In case of mis-configuration.
+    * @throws \InvalidArgumentException In case of mis-configuration.
     *
     * @author dave
     * @version
@@ -164,11 +166,11 @@ class RandomStringManager extends APFObject {
       $this->randomString = '';
 
       if (!$select) {
-         throw new InvalidArgumentException('[RandomStringManager::advancedCreateHash()] You must provide a SQL query!', E_USER_ERROR);
+         throw new \InvalidArgumentException('[RandomStringManager::advancedCreateHash()] You must provide a SQL query!', E_USER_ERROR);
       }
 
       if (!$connectionKey) {
-         throw new InvalidArgumentException('[RandomStringManager::advancedCreateHash()] You must provide a ConnectionKey for the SQL Statement!', E_USER_ERROR);
+         throw new \InvalidArgumentException('[RandomStringManager::advancedCreateHash()] You must provide a ConnectionKey for the SQL Statement!', E_USER_ERROR);
       }
 
       $cM = &$this->getServiceObject('core::database', 'ConnectionManager');

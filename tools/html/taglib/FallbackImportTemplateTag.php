@@ -1,4 +1,6 @@
 <?php
+namespace APF\tools\html\taglib;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -75,7 +77,7 @@ class FallbackImportTemplateTag extends ImportTemplateTag {
          // it can be nessecary to send an 404-HTTP Error, check it here
          $send404Header = $this->getAttribute('send404Header');
          if ($send404Header != null && $send404Header != 'false') {
-            import('tools::http', 'HeaderManager');
+            use APF\tools\http\HeaderManager;
             HeaderManager::send('X-APF-Error: Template not found', true, 404);
          }
 
