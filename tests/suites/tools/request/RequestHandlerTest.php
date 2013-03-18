@@ -1,5 +1,7 @@
 <?php
-import('tools::request', 'RequestHandler');
+namespace APF\tests\suites\tools\request;
+
+use APF\tools\request\RequestHandler;
 
 /**
  * @package tests::suites::tools::request

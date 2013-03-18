@@ -1,4 +1,6 @@
 <?php
+namespace APF\tests\suites\core\registry;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::registry', 'Registry');
+use APF\core\registry\Registry;
 
 /**
  * @package tests::suites::core::registry
@@ -180,7 +182,7 @@ class RegistryPositivTest extends PHPUnit_Framework_TestCase {
    /**
     * @public
     * @depends testRegisterReadonlyMethod
-    * @expectedException InvalidArgumentException
+    * @expectedException \InvalidArgumentException
     *
     * Tests default usage with readonly flag set to true and the throw of an
     * exception if the register method is called again for the same key
