@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\filter;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,6 +20,10 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\singleton\Singleton;
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\registry\Registry;
+use APF\core\frontcontroller\Frontcontroller;
 
 /**
  * @package core::filter
@@ -73,7 +79,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
 
    public function filter(FilterChain &$chain, $input = null) {
 
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('ChainedGenericInputFilter');
 
@@ -190,7 +196,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
     * @return Frontcontroller The current front controller instance.
     */
    protected function &getFrontcontroller() {
-      return Singleton::getInstance('Frontcontroller');
+      return Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
    }
 
    /**

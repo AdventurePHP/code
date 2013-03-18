@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\database;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::database', 'AbstractDatabaseHandler');
+use APF\core\database\AbstractDatabaseHandler;
+use APF\core\logging\LogEntry;
 
 /**
  * @package core::database
@@ -80,10 +83,10 @@ class PDOHandler extends AbstractDatabaseHandler {
       }
 
       // connect to database
-      $this->dbConn = new PDO($dsn, $this->dbUser, $this->dbPass);
+      $this->dbConn = new \PDO($dsn, $this->dbUser, $this->dbPass);
 
       // switch errormode of PDO to exceptions
-      $this->dbConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $this->dbConn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
       // configure client connection
       $this->initCharsetAndCollation();
@@ -170,7 +173,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     * Prepares a statement for execution and returns a PDOStatement object
     *
     * @param string $statement The statement string
-    * @return PDOStatement A PDOStatement object to work with
+    * @return \PDOStatement A PDOStatement object to work with
     *
     * @author Tobias Lückel (megger)
     * @version
@@ -190,7 +193,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     * @param string $statementFile Name of the statement file (file body!).
     * @param string[] $params A list of statement parameters.
     * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
-    * @return PDOStatement A PDOStatement object to work with.
+    * @return \PDOStatement A PDOStatement object to work with.
     * @throws DatabaseHandlerException In case the statement execution failed.
     *
     * @author Tobias Lückel (megger)
@@ -232,7 +235,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     * @param string $statement The statement string.
     * @param boolean $logStatement Indicates, whether the given statement should be
     *                              logged for debug purposes.
-    * @return PDOStatement A PDOStatement object to work with.
+    * @return \PDOStatement A PDOStatement object to work with.
     * @throws DatabaseHandlerException In case the statement execution failed.
     *
     * @author Tobias Lückel (megger)
@@ -267,7 +270,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     *
     * Fetches a record from the database using the given PDOStatement.
     *
-    * @param PDOStatement $pdoStatement The PDOStatement returned by executeStatement() or executeTextStatement().
+    * @param \PDOStatement $pdoStatement The PDOStatement returned by executeStatement() or executeTextStatement().
     * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
     * @return string[] The associative result array. Returns false if no row was found.
     *
@@ -279,13 +282,13 @@ class PDOHandler extends AbstractDatabaseHandler {
       $return = null;
       switch ($type) {
          case self::ASSOC_FETCH_MODE:
-            $return = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+            $return = $pdoStatement->fetch(\PDO::FETCH_ASSOC);
             break;
          case self::OBJECT_FETCH_MODE:
-            $return = $pdoStatement->fetch(PDO::FETCH_OBJ);
+            $return = $pdoStatement->fetch(\PDO::FETCH_OBJ);
             break;
          case self::NUMERIC_FETCH_MODE:
-            $return = $pdoStatement->fetch(PDO::FETCH_NUM);
+            $return = $pdoStatement->fetch(\PDO::FETCH_NUM);
             break;
       }
       if ($return == null) {
@@ -316,7 +319,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     *
     * Returns the amount of rows, that are affected by a previous update or delete call.
     *
-    * @param PDOStatement $pdoStatement The PDOStatement.
+    * @param \PDOStatement $pdoStatement The PDOStatement.
     * @return int The number of affected rows.
     *
     * @author Tobias Lückel (megger)
@@ -335,7 +338,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     * However, this behaviour is not guaranteed for all databases and
     * should not be relied on for portable applications.
     *
-    * @param PDOStatement $pdoStatement The PDOStatement.
+    * @param \PDOStatement $pdoStatement The PDOStatement.
     * @return int The number of selected rows.
     *
     * @author Tobias Lückel (megger)

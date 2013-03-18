@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\errorhandler;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -116,8 +118,8 @@ class DefaultErrorHandler implements ErrorHandler {
     */
    protected function logError() {
       $message = '[' . ($this->generateErrorID()) . '] ' . $this->errorMessage . ' (Number: ' . $this->errorNumber . ', File: ' . $this->errorFile . ', Line: ' . $this->errorLine . ')';
-      import('core::logging', 'Logger');
-      $log = & Singleton::getInstance('Logger');
+      use APF\core\logging\Logger;
+      $log = & Singleton::getInstance('APF\core\logging\Logger');
       /* @var $log Logger */
       $log->addEntry(
          new SimpleLogEntry(
@@ -151,7 +153,7 @@ class DefaultErrorHandler implements ErrorHandler {
       // sometimes forgets about this import and throws a
       // Fatal error: Exception thrown without a stack frame in Unknown on line 0
       // exception.
-      import('core::benchmark', 'BenchmarkTimer');
+      use APF\core\benchmark\BenchmarkTimer;
 
       // create page
       $stacktrace = new Page();

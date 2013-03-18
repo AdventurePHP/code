@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\logging;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,20 +20,18 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-register_shutdown_function('flushLogger');
+use APF\core\registry\Registry;
+use APF\core\singleton\Singleton;
 
-/**
- * @package core::logging
- *
- * Wrapper for flushing the log buffer.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 29.03.2007<br />
- */
+use APF\core\logging\writer\FileLogWriter;
+
 function flushLogger() {
-   Singleton::getInstance('Logger')->flushLogBuffer();
+   /* @var $logger Logger */
+   $logger = & Singleton::getInstance('APF\core\logging\Logger');
+   $logger->flushLogBuffer();
 }
+
+register_shutdown_function('APF\core\logging\flushLogger');
 
 /**
  * @package core::logging
@@ -43,7 +43,7 @@ function flushLogger() {
  * @version
  * Version 0.1, 12.04.2010<br />
  */
-class LoggerException extends Exception {
+class LoggerException extends \Exception {
 }
 
 /**
@@ -317,6 +317,13 @@ class Logger {
     */
    public function __construct() {
       $this->logThreshold = self::$LOGGER_THRESHOLD_WARN;
+
+      $this->addLogWriter(
+         Registry::retrieve('apf::core', 'InternalLogTarget'),
+         new FileLogWriter(
+            str_replace('\\', '/', getcwd()) . '/logs'
+         )
+      );
    }
 
    /**
@@ -522,18 +529,3 @@ class Logger {
    }
 
 }
-
-// initialize the logger with it's framework-initial state /////////////////////////////////////////////////////////////
-/* @var $logger Logger */
-$logger = & Singleton::getInstance('Logger');
-
-// By default, a file-based log writer is initialized.
-// Please note, that the writer's target name can be configured
-// within the Registry for all framework-related log statements.
-import('core::logging::writer', 'FileLogWriter');
-$logger->addLogWriter(
-   Registry::retrieve('apf::core', 'InternalLogTarget'),
-   new FileLogWriter(
-      str_replace('\\', '/', getcwd()) . '/logs'
-   )
-);

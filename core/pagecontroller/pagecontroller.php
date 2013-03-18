@@ -1,59 +1,61 @@
 <?php
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+namespace APF\core\pagecontroller;
 
-/**
- * @file pagecontroller.php
- *
- * Setups the framework's core environment. Initializes the Registry, that stores parameters,
- * that are used within the complete framework. These are
- * <ul>
- * <li>Environment      : environment, the application is executed in. The value is 'DEFAULT' in common</li>
- * <li>URLRewriting     : indicates, is url rewriting should be used</li>
- * <li>LogDir           : path, where log files are stored. The value is './logs' by default.</li>
- * <li>URLBasePath      : absolute url base path of the application (not really necessary)</li>
- * <li>LibPath          : path, where the framework and your own libraries reside. This path can be used
- *                        to address files with in the lib path directly (e.g. images or other resources)</li>
- * <li>CurrentRequestURL: the fully qualified request url</li>
- * </ul>
- * Further, the built-in input and output filters are initialized. For this reason, the following
- * registry entries are created within the "apf::core::filter" namespace:
- * <ul>
- * <li>PageControllerInputFilter : the definition of the input filter</li>
- * <li>OutputFilter              : the definition of the output filter</li>
- * </ul>
- * The file also contains the page controller core implementation with the classes Page,
- * Document, TagLib, APFObject, XmlParser and BaseDocumentController (the basic MVC document controller).
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 20.06.2008<br />
- * Version 0.2, 16.07.2008 (added the LibPath to the registry namespace apf::core)
- * Version 0.3, 07.08.2008 (Made LibPath readonly)<br />
- * Version 0.4, 13.08.2008 (Fixed some timing problems with the registry initialisation)<br />
- * Version 0.5, 14.08.2008 (Changed LogDir initialisation to absolute paths)<br />
- * Version 0.6, 05.11.2008 (Added the 'CurrentRequestURL' attribute to the 'apf::core' namespace of the registry)<br />
- * Version 0.7, 11.12.2008 (Added the input and output filter initialization)<br />
- * Version 0.8, 01.02.2009 (Added the protocol prefix to the URLBasePath)<br />
- * Version 0.9, 21.02.2009 (Added the exception handler, turned off the php5 support in the import() function of the PHP4 branch)<br />
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
+
+   /**
+    * @file pagecontroller.php
+    *
+    * Setups the framework's core environment. Initializes the Registry, that stores parameters,
+    * that are used within the complete framework. These are
+    * <ul>
+    * <li>Environment      : environment, the application is executed in. The value is 'DEFAULT' in common</li>
+    * <li>URLRewriting     : indicates, is url rewriting should be used</li>
+    * <li>LogDir           : path, where log files are stored. The value is './logs' by default.</li>
+    * <li>URLBasePath      : absolute url base path of the application (not really necessary)</li>
+    * <li>LibPath          : path, where the framework and your own libraries reside. This path can be used
+    *                        to address files with in the lib path directly (e.g. images or other resources)</li>
+    * <li>CurrentRequestURL: the fully qualified request url</li>
+    * </ul>
+    * Further, the built-in input and output filters are initialized. For this reason, the following
+    * registry entries are created within the "apf::core::filter" namespace:
+    * <ul>
+    * <li>PageControllerInputFilter : the definition of the input filter</li>
+    * <li>OutputFilter              : the definition of the output filter</li>
+    * </ul>
+    * The file also contains the page controller core implementation with the classes Page,
+    * Document, TagLib, APFObject, XmlParser and BaseDocumentController (the basic MVC document controller).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.06.2008<br />
+    * Version 0.2, 16.07.2008 (added the LibPath to the registry namespace apf::core)
+    * Version 0.3, 07.08.2008 (Made LibPath readonly)<br />
+    * Version 0.4, 13.08.2008 (Fixed some timing problems with the registry initialisation)<br />
+    * Version 0.5, 14.08.2008 (Changed LogDir initialisation to absolute paths)<br />
+    * Version 0.6, 05.11.2008 (Added the 'CurrentRequestURL' attribute to the 'apf::core' namespace of the registry)<br />
+    * Version 0.7, 11.12.2008 (Added the input and output filter initialization)<br />
+    * Version 0.8, 01.02.2009 (Added the protocol prefix to the URLBasePath)<br />
+    * Version 0.9, 21.02.2009 (Added the exception handler, turned off the php5 support in the import() function of the PHP4 branch)<br />
+    */
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Define the internally used base path for the adventure php framework libraries.             //
 // In case of symlink usage or multi-project installation, you can define it manually.         //
@@ -67,7 +69,6 @@ if (!defined('APPS__PATH')) {
    $count = count($path);
    $appsPath = array();
    for ($i = 0; $i < $count; $i++) {
-
       if ($path[$i] != 'core') {
          $appsPath[] = $path[$i];
       } else {
@@ -79,10 +80,27 @@ if (!defined('APPS__PATH')) {
    define('APPS__PATH', implode($appsPath, '/'));
 }
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // include core libraries for the basic configuration
-import('core::singleton', 'Singleton');
-import('core::registry', 'Registry');
+use APF\core\configuration\Configuration;
+use APF\core\logging\LogEntry;
+use APF\core\logging\SimpleLogEntry;
+use APF\core\registry\Registry;
+use APF\core\singleton\Singleton;
+
+// include necessary core libraries for the page controller
+use APF\core\errorhandler\GlobalErrorHandler;
+use APF\core\exceptionhandler\GlobalExceptionHandler;
+use APF\core\service\ServiceManager;
+use APF\core\service\DIServiceManager;
+use APF\core\configuration\ConfigurationManager;
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\logging\Logger;
+
+use APF\core\service\APFService;
+use APF\tools\form\taglib\HtmlFormTag;
+use APF\tools\html\taglib\HtmlIteratorTag;
 
 // define base parameters of the framework's core and tools layer
 Registry::register('apf::core', 'Environment', 'DEFAULT');
@@ -98,16 +116,10 @@ if (isset($_SERVER['SERVER_PORT']) && isset($_SERVER['HTTP_HOST']) && isset($_SE
    Registry::register('apf::core', 'CurrentRequestURL', $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 }
 
-// include necessary core libraries for the page controller
-import('core::errorhandler', 'GlobalErrorHandler');
-import('core::exceptionhandler', 'GlobalExceptionHandler');
-import('core::service', 'ServiceManager');
-import('core::service', 'DIServiceManager');
-import('core::configuration', 'ConfigurationManager');
-import('core::benchmark', 'BenchmarkTimer');
 
 // set up configuration provider to let the developer customize it later on
-import('core::configuration::provider::ini', 'IniConfigurationProvider');
+use APF\core\configuration\provider\ini\IniConfigurationProvider;
+
 ConfigurationManager::registerProvider('ini', new IniConfigurationProvider());
 
 /**
@@ -121,7 +133,7 @@ ConfigurationManager::registerProvider('ini', new IniConfigurationProvider());
  * @version
  * Version 0.1, 28.03.2010<br />
  */
-class IncludeException extends Exception {
+class IncludeException extends \Exception {
 }
 
 /**
@@ -131,7 +143,7 @@ class IncludeException extends Exception {
  * Imports classes from a given namespace.
  * <p/>
  * Usage:
- * <pre>import('core::frontcontroller', 'Frontcontroller');</pre>
+ * <pre>use APF\core\frontcontroller\Frontcontroller;</pre>
  *
  * @param string $namespace the namespace of the file (=relative path, starting at the root of your code base).
  * @param string $file the body of the desired file / class to include (without extension).
@@ -150,26 +162,26 @@ class IncludeException extends Exception {
  * Version 0.9, 25.03.2009 (Cleared implementation for the PHP 5 branch)<br />
  * Version 1.0, 08.03.2010 (Introduced exception instead of trigger_error())<br />
  * Version 1.1, 22.02.2012 (Optimized performance for importing multiple equal files)<br />
- */
+
 function import($namespace, $file) {
 
-   // check if the file is already included, if yes, return
-   if (isset($GLOBALS['IMPORT_CACHE'][$namespace . $file])) {
-      return;
-   } else {
-      $GLOBALS['IMPORT_CACHE'][$namespace . $file] = true;
-   }
-
-   // create the complete and absolute file name
-   $file = APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $file . '.php';
-
-   // do a file_exists() instead of @include() because fatal errors must not be caught here (e.g. class not found)!
-   if (file_exists($file)) {
-      include($file);
-   } else {
-      throw new IncludeException('[import()] The given file (' . $file . ') cannot be loaded!', E_USER_ERROR);
-   }
+// check if the file is already included, if yes, return
+if (isset($GLOBALS['IMPORT_CACHE'][$namespace . $file])) {
+return;
+} else {
+$GLOBALS['IMPORT_CACHE'][$namespace . $file] = true;
 }
+
+// create the complete and absolute file name
+$file = APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $file . '.php';
+
+// do a file_exists() instead of @include() because fatal errors must not be caught here (e.g. class not found)!
+if (file_exists($file)) {
+include($file);
+} else {
+throw new \APF\core\pagecontroller\IncludeException('[import()] The given file (' . $file . ') cannot be loaded!', E_USER_ERROR);
+}
+}*/
 
 /**
  * @package core::pagecontroller
@@ -223,7 +235,7 @@ function printObject($o, $transformHtml = false) {
  * @version
  * Version 0.1, 28.03.2010<br />
  */
-class ParserException extends Exception {
+class ParserException extends \Exception {
 }
 
 /**
@@ -419,6 +431,8 @@ final class XmlParser {
    }
 
 }
+
+use APF\core\service\APFDIService;
 
 /**
  * @package core::pagecontroller
@@ -1043,6 +1057,12 @@ class Document extends APFObject {
 
    /**
     * @protected
+    * @var string The namespace of the document controller to use at transformation time.
+    */
+   protected $documentControllerNamespace = null;
+
+   /**
+    * @protected
     * @var TagLib[] List of known taglibs.
     */
    protected $tagLibs = array();
@@ -1203,7 +1223,7 @@ class Document extends APFObject {
     * @param string $value The value of the attribute to select the desired node.
     * @param string $tagLibClass The expected class name of the node.
     * @return Document The desired child node.
-    * @throws InvalidArgumentException In case the node has no children or no child node can be found with the given selectors.
+    * @throws \InvalidArgumentException In case the node has no children or no child node can be found with the given selectors.
     *
     * @author Christian Achatz
     * @version
@@ -1221,10 +1241,10 @@ class Document extends APFObject {
             }
          }
       } else {
-         throw new InvalidArgumentException('[' . get_class($this) . '::getChildNode()] Current node has no children!',
+         throw new \InvalidArgumentException('[' . get_class($this) . '::getChildNode()] Current node has no children!',
             E_USER_ERROR);
       }
-      throw new InvalidArgumentException('[' . get_class($this) . '::getChildNode()] No child node with type "'
+      throw new \InvalidArgumentException('[' . get_class($this) . '::getChildNode()] No child node with type "'
             . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
             . 'document!', E_USER_ERROR);
    }
@@ -1240,7 +1260,7 @@ class Document extends APFObject {
     * @param string $value The value of the attribute to select the desired node.
     * @param string $tagLibClass The expected class name of the nodes.
     * @return Document[] The desired list of child nodes.
-    * @throws InvalidArgumentException In case the node has no children or no child node can be found with the given selectors.
+    * @throws \InvalidArgumentException In case the node has no children or no child node can be found with the given selectors.
     *
     * @author Christian Achatz
     * @version
@@ -1260,7 +1280,7 @@ class Document extends APFObject {
             }
          }
          if (count($result) == 0) {
-            throw new InvalidArgumentException('[' . get_class($this) . '::getChildNodes()] No child nodes with type "'
+            throw new \InvalidArgumentException('[' . get_class($this) . '::getChildNodes()] No child nodes with type "'
                   . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
                   . 'document!', E_USER_ERROR);
          } else {
@@ -1268,7 +1288,7 @@ class Document extends APFObject {
          }
       }
 
-      throw new InvalidArgumentException('[' . get_class($this) . '::getChildNodes()] Current node has no children!', E_USER_ERROR);
+      throw new \InvalidArgumentException('[' . get_class($this) . '::getChildNodes()] Current node has no children!', E_USER_ERROR);
    }
 
    /**
@@ -1279,7 +1299,7 @@ class Document extends APFObject {
     * @param string $name name of the place holder.
     * @param string $value value of the place holder.
     * @return Document This instance for further usage.
-    * @throws InvalidArgumentException In case the place holder cannot be found.
+    * @throws \InvalidArgumentException In case the place holder cannot be found.
     *
     * @author Christian Achatz, Jan Wiese
     * @version
@@ -1313,7 +1333,7 @@ class Document extends APFObject {
          }
          $message .= 'node type "' . get_class($this) . '"! Please check your template code: ' . $this->getContent() . '.';
 
-         throw new InvalidArgumentException($message, E_USER_ERROR);
+         throw new \InvalidArgumentException($message, E_USER_ERROR);
       }
 
       return $this;
@@ -1360,7 +1380,7 @@ class Document extends APFObject {
     * @param string $key Key name of string place holder.
     * @param string $value Value, the string place holder is replaced with.
     * @return Document This instance for further usage.
-    * @throws InvalidArgumentException In case no place holder has been found.
+    * @throws \InvalidArgumentException In case no place holder has been found.
     *
     * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
     * @version
@@ -1406,15 +1426,8 @@ class Document extends APFObject {
     * Version 0.3, 14.02.2011 (Refactored method signature to be more type safe)<br />
     */
    public function addTagLib(TagLib $tag) {
-
       // add the taglib to the current node
       $this->tagLibs[] = $tag;
-
-      // import taglib class
-      $moduleName = $tag->getClass();
-      if (!class_exists($moduleName)) {
-         import($tag->getNamespace(), $moduleName);
-      }
    }
 
    /**
@@ -1550,7 +1563,7 @@ class Document extends APFObject {
       $tagLibLoops = 0;
       $i = 0;
 
-      $t = & Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
 
       // Parse the known taglibs. Here, we have to use a while loop, because one parser loop
@@ -1562,6 +1575,7 @@ class Document extends APFObject {
                   . 'parsing loops reached!', E_USER_ERROR);
          }
 
+         $namespace = $this->tagLibs[$i]->getNamespace();
          $class = $this->tagLibs[$i]->getClass();
          $prefix = $this->tagLibs[$i]->getPrefix();
          $name = $this->tagLibs[$i]->getName();
@@ -1635,7 +1649,12 @@ class Document extends APFObject {
 
             // get the tag attributes of the current tag
             $attributes = XmlParser::getTagAttributes($prefix, $name, $tagString);
-            $object = new $class();
+
+            // determine fully qualified namespace and class
+            $fqNamespace = 'APF\\' . str_replace('::', '\\', $namespace);
+            $fqClass = $fqNamespace . '\\' . $class;
+
+            $object = new $fqClass();
             /* @var $object Document */
 
             // inject context of the parent object
@@ -1732,10 +1751,11 @@ class Document extends APFObject {
          }
 
          // Lazily import document controller class.
-         import($controllerAttributes['namespace'], $controllerAttributes['class']);
+         //import($controllerAttributes['namespace'], $controllerAttributes['class']);
 
          // remark controller class
          $this->documentController = $controllerAttributes['class'];
+         $this->documentControllerNamespace = $controllerAttributes['namespace'];
 
          // remove definition from content to be not displayed
          $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
@@ -1778,7 +1798,7 @@ class Document extends APFObject {
     * expects the method to return the content of the transformed node.
     *
     * @return string The transformed content of the current DOM node.
-    * @throws InvalidArgumentException In case the document controller class is missing.
+    * @throws \InvalidArgumentException In case the document controller class is missing.
     *
     * @author Christian Schäfer
     * @version
@@ -1791,7 +1811,7 @@ class Document extends APFObject {
     */
    public function transform() {
 
-      $t = & Singleton::getInstance('BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::transform()');
 
@@ -1804,12 +1824,16 @@ class Document extends APFObject {
          $id = '(' . $this->documentController . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
          $t->start($id);
 
-         if (!class_exists($this->documentController)) {
-            throw new InvalidArgumentException('[' . get_class($this) . '::transform()] DocumentController "'
-                  . $this->documentController . '" cannot be found! Maybe the class name is mis-spelt!', E_USER_ERROR);
+         // determine fully qualified namespace and class
+         $fqNamespace = 'APF\\' . str_replace('::', '\\', $this->documentControllerNamespace);
+         $fqClass = $fqNamespace . '\\' . $this->documentController;
+
+         if (!class_exists($fqClass)) {
+            throw new \InvalidArgumentException('[' . get_class($this) . '::transform()] DocumentController "'
+                  . $fqClass . '" cannot be found! Maybe the class name is mis-spelt!', E_USER_ERROR);
          }
 
-         $docCon = new $this->documentController;
+         $docCon = new $fqClass;
          /* @var $docCon DocumentController */
 
          // inject context
@@ -1986,14 +2010,14 @@ class AppendNodeTag extends Document {
       // check attributes
       $namespace = $this->getAttribute('namespace');
       if ($namespace === null) {
-         throw new InvalidArgumentException('[AppendNodeTag::onParseTime()] Attribute '
+         throw new \InvalidArgumentException('[AppendNodeTag::onParseTime()] Attribute '
                . '"namespace" is not present or empty! Please provide the namespace of the '
                . 'desired template.', E_USER_ERROR);
       }
 
       $template = $this->getAttribute('template');
       if ($template === null) {
-         throw new InvalidArgumentException('[AppendNodeTag::onParseTime()] Attribute '
+         throw new \InvalidArgumentException('[AppendNodeTag::onParseTime()] Attribute '
                . '"template" is not present or empty! Please provide the name of the desired '
                . 'template.', E_USER_ERROR);
       }
@@ -2220,9 +2244,8 @@ class AddTaglibTag extends Document {
       $prefix = $this->getAttribute('prefix');
       $class = $this->getAttribute('class');
 
-      $this->getParentObject()->addTagLib(
-         new TagLib($namespace, $class, $prefix, $name)
-      );
+      $tagLib = new TagLib($namespace, $class, $prefix, $name);
+      $this->getParentObject()->addTagLib($tagLib);
 
       // Resets the attributes list to avoid selection issues with the
       // getChildNode() and getChildNodes() methods that may select this
@@ -2382,7 +2405,7 @@ class TemplateTag extends Document {
     *
     * @param string $name The name of the template label to return.
     * @return LanguageLabelTag The instance of the desired label.
-    * @throws InvalidArgumentException In case no label can be found.
+    * @throws \InvalidArgumentException In case no label can be found.
     *
     * @author Christian Achatz
     * @version
@@ -2390,9 +2413,9 @@ class TemplateTag extends Document {
     */
    public function &getLabel($name) {
       try {
-         return $this->getChildNode('name', $name, 'LanguageLabelTag');
-      } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[TemplateTag::getLabel()] No label found with name "' . $name
+         return $this->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabelTag');
+      } catch (\InvalidArgumentException $e) {
+         throw new \InvalidArgumentException('[TemplateTag::getLabel()] No label found with name "' . $name
                . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
                . $this->getParentObject()->getDocumentController() . '"! Perhaps, the tag library for template:getstring '
                . 'is not loaded.', E_USER_ERROR, $e);
@@ -2507,7 +2530,7 @@ class LanguageLabelTag extends Document {
     * configuration file. Checks the attributes needed for displaying data.
     *
     * @return string The desired translation text.
-    * @throws InvalidArgumentException In case of parameter issues.
+    * @throws \InvalidArgumentException In case of parameter issues.
     *
     * @author Christian Achatz
     * @version
@@ -2519,21 +2542,21 @@ class LanguageLabelTag extends Document {
       // check for attribute "namespace"
       $namespace = $this->getAttribute('namespace');
       if ($namespace === null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
+         throw new \InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
                . '"namespace" given in tag definition!', E_USER_ERROR);
       }
 
       // check for attribute "config"
       $configName = $this->getAttribute('config');
       if ($configName === null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
+         throw new \InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
                . '"config" given in tag definition!', E_USER_ERROR);
       }
 
       // check for attribute "entry"
       $entry = $this->getAttribute('entry');
       if ($entry === null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
+         throw new \InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
                . '"entry" given in tag definition!', E_USER_ERROR);
       }
 
@@ -2548,7 +2571,7 @@ class LanguageLabelTag extends Document {
          // get environment variable from registry to have nice exception message
          $env = Registry::retrieve('apf::core', 'Environment');
 
-         throw new InvalidArgumentException('[' . get_class($this) . '::transform()] Given entry "'
+         throw new \InvalidArgumentException('[' . get_class($this) . '::transform()] Given entry "'
                . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'
                . $env . '_' . $configName . '" in namespace "' . $namespace . '" and context "'
                . $this->getContext() . '"!', E_USER_ERROR);
@@ -2596,6 +2619,7 @@ class LanguageLabelTag extends Document {
    }
 
 }
+
 
 /**
  * @package core::pagecontroller
@@ -2662,7 +2686,7 @@ interface DocumentController extends APFService {
     * @version
     * Version 0.1, 20.10.2010<br />
     */
-   public function &getDocument();
+   public function getDocument();
 
    /**
     * @public
@@ -2729,7 +2753,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     *
     * @param string $name The name of the place holder to fill.
     * @param string $value The value to insert into the place holder.
-    * @throws InvalidArgumentException In case the place holder cannot be found.
+    * @throws \InvalidArgumentException In case the place holder cannot be found.
     *
     * @author Christian Schäfer, Jan Wiese
     * @version
@@ -2740,8 +2764,8 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    protected function setPlaceHolder($name, $value) {
       try {
          $this->document->setPlaceHolder($name, $value);
-      } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place holders '
+      } catch (\InvalidArgumentException $e) {
+         throw new \InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place holders '
                . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
       }
    }
@@ -2765,7 +2789,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * @param string $name Place holder name.
     * @param string $key Key name of string place holder.
     * @param string $value Value, the string place holder is replaced with.
-    * @throws InvalidArgumentException In case no place holder has been found.
+    * @throws \InvalidArgumentException In case no place holder has been found.
     *
     * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
     * @version
@@ -2774,8 +2798,8 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    protected function setStringPlaceHolder($name, $key, $value) {
       try {
          $this->document->setStringPlaceHolder($name, $key, $value);
-      } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::setStringPlaceHolder()] No place holders '
+      } catch (\InvalidArgumentException $e) {
+         throw new \InvalidArgumentException('[' . get_class($this) . '::setStringPlaceHolder()] No place holders '
                . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
       }
    }
@@ -2798,7 +2822,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * values are used as the place holder's values.
     *
     * @param string[] $placeHolderValues Key-value-couples to fill place holders.
-    * @throws InvalidArgumentException In case one of the place holders cannot be found.
+    * @throws \InvalidArgumentException In case one of the place holders cannot be found.
     *
     * @author Christian Achatz
     * @version
@@ -2823,9 +2847,8 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    protected function setPlaceHolderIfExist($name, $value) {
       try {
          $this->setPlaceHolder($name, $value);
-      } catch (Exception $e) {
-         import('core::logging', 'Logger');
-         $log = & Singleton::getInstance('Logger');
+      } catch (\Exception $e) {
+         $log = & Singleton::getInstance('APF\core\logging\Logger');
          /* @var $log Logger */
          $log->addEntry(
             new SimpleLogEntry(
@@ -2867,7 +2890,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     *
     * @param string $formName The name of the form to return.
     * @return HtmlFormTag The instance of the desired form.
-    * @throws InvalidArgumentException In case the form cannot be found.
+    * @throws \InvalidArgumentException In case the form cannot be found.
     *
     * @author Christian Achatz
     * @version
@@ -2876,9 +2899,9 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function &getForm($formName) {
       try {
-         return $this->getDocument()->getChildNode('name', $formName, 'HtmlFormTag');
-      } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::getForm()] No form object with name "'
+         return $this->getDocument()->getChildNode('name', $formName, 'APF\tools\form\taglib\HtmlFormTag');
+      } catch (\InvalidArgumentException $e) {
+         throw new \InvalidArgumentException('[' . get_class($this) . '::getForm()] No form object with name "'
                . $formName . '" composed in current document for document controller "' . get_class($this)
                . '"! Perhaps tag library html:form is not loaded in current document!', E_USER_ERROR, $e);
       }
@@ -2892,7 +2915,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     *
     * @param string $name The name of the template to return.
     * @return TemplateTag The desired template instance.
-    * @throws InvalidArgumentException In case the template cannot be found.
+    * @throws \InvalidArgumentException In case the template cannot be found.
     *
     * @author Christian Schäfer
     * @version
@@ -2903,9 +2926,9 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function &getTemplate($name) {
       try {
-         return $this->getDocument()->getChildNode('name', $name, 'TemplateTag');
-      } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::getTemplate()] No template with name "'
+         return $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\TemplateTag');
+      } catch (\InvalidArgumentException $e) {
+         throw new \InvalidArgumentException('[' . get_class($this) . '::getTemplate()] No template with name "'
                . $name . '" composed in current document for document controller "' . get_class($this)
                . '"!', E_USER_ERROR, $e);
       }
@@ -2919,13 +2942,13 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     *
     * @param string $name The content of the tag's "name" attribute to select the node.
     * @return LanguageLabelTag The instance of the desired label node.
-    * @throws InvalidArgumentException In case no label node can be found.
+    * @throws \InvalidArgumentException In case no label node can be found.
     */
    protected function &getLabel($name) {
       try {
-         return $this->getDocument()->getChildNode('name', $name, 'LanguageLabelTag');
-      } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::getLabel()] No label with name "'
+         return $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabelTag');
+      } catch (\InvalidArgumentException $e) {
+         throw new \InvalidArgumentException('[' . get_class($this) . '::getLabel()] No label with name "'
                . $name . '" composed in current document for document controller "' . get_class($this)
                . '"! Perhaps tag library html:getstring is not loaded in current template!', E_USER_ERROR, $e);
       }
@@ -2947,9 +2970,9 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function placeHolderExists($name) {
       try {
-         $this->getDocument()->getChildNode('name', $name, 'PlaceHolderTag');
+         $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\PlaceHolderTag');
          return true;
-      } catch (InvalidArgumentException $e) {
+      } catch (\InvalidArgumentException $e) {
          return false;
       }
    }
@@ -2971,9 +2994,9 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function templatePlaceHolderExists(TemplateTag &$template, $name) {
       try {
-         $template->getChildNode('name', $name, 'PlaceHolderTag');
+         $template->getChildNode('name', $name, 'APF\core\pagecontroller\PlaceHolderTag');
          return true;
-      } catch (InvalidArgumentException $e) {
+      } catch (\InvalidArgumentException $e) {
          return false;
       }
    }
@@ -2986,7 +3009,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * @param string $name Name of the iterator.
     * @return HtmlIteratorTag The desired iterator.
     * @throws IncludeException In case the iterator taglib is not loaded.
-    * @throws InvalidArgumentException In case the desired iterator cannot be returned.
+    * @throws \InvalidArgumentException In case the desired iterator cannot be returned.
     *
     * @author Christian Achatz
     * @version
@@ -2994,9 +3017,9 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function &getIterator($name) {
       try {
-         return $this->getDocument()->getChildNode('name', $name, 'HtmlIteratorTag');
-      } catch (InvalidArgumentException $e) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::getIterator()] No iterator with name "'
+         return $this->getDocument()->getChildNode('name', $name, 'APF\tools\html\taglib\HtmlIteratorTag');
+      } catch (\InvalidArgumentException $e) {
+         throw new \InvalidArgumentException('[' . get_class($this) . '::getIterator()] No iterator with name "'
                . $name . '" composed in current document for document controller "' . get_class($this) . '"! '
                . 'Perhaps tag library html:iterator is not loaded in current template!', E_USER_ERROR, $e);
       }

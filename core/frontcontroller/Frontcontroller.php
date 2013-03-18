@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\frontcontroller;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,16 +20,21 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::filter', 'FilterChain');
+use APF\core\pagecontroller\APFObject;
+use APF\core\pagecontroller\Page;
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\singleton\Singleton;
 
 // add the front controller filter that is a wrapper on the front controller's input
 // filters concerning thr url rewriting configuration
-import('core::filter', 'ChainedGenericInputFilter');
+use APF\core\filter\InputFilterChain;
+use APF\core\filter\ChainedGenericInputFilter;
 InputFilterChain::getInstance()->appendFilter(new ChainedGenericInputFilter());
 
 // add generic output filter that is a wrapper for the page controller's output
 // filter to adapt the url layout if url rewriting is activated
-import('core::filter', 'ChainedGenericOutputFilter');
+use APF\core\filter\OutputFilterChain;
+use APF\core\filter\ChainedGenericOutputFilter;
 OutputFilterChain::getInstance()->appendFilter(new ChainedGenericOutputFilter());
 
 /**
@@ -620,7 +627,7 @@ class Frontcontroller extends APFObject {
     * @param string $namespace Namespace of the action.
     * @param string $name Name of the action (section key of the config file).
     * @param array $params (Input-)params of the action.
-    * @throws InvalidArgumentException In case the action cannot be found within the appropriate
+    * @throws \InvalidArgumentException In case the action cannot be found within the appropriate
     * configuration or the action implementation classes are not available.
     *
     * @author Christian Schäfer
@@ -646,7 +653,7 @@ class Frontcontroller extends APFObject {
       // throw exception, in case the action config is not present
       if ($actionConfig == null) {
          $env = Registry::retrieve('apf::core', 'Environment');
-         throw new InvalidArgumentException('[Frontcontroller::addAction()] No config '
+         throw new \InvalidArgumentException('[Frontcontroller::addAction()] No config '
                . 'section for action key "' . $name . '" available in configuration file "' . $env
                . '_actionconfig.ini" in namespace "' . $namespace . '" and context "'
                . $this->getContext() . '"!', E_USER_ERROR);
@@ -669,7 +676,7 @@ class Frontcontroller extends APFObject {
 
       // check for class being present
       if (!class_exists($actionClass) || !class_exists($inputClass)) {
-         throw new InvalidArgumentException('[Frontcontroller::addAction()] Action class with name "'
+         throw new \InvalidArgumentException('[Frontcontroller::addAction()] Action class with name "'
                . $actionClass . '" or input class with name "' . $inputClass
                . '" could not be found. Please check your action configuration file!', E_USER_ERROR);
       }
@@ -765,7 +772,7 @@ class Frontcontroller extends APFObject {
    protected function runActions($type = AbstractFrontcontrollerAction::TYPE_PRE_PAGE_CREATE) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
 
       foreach ($this->actionStack as $actionHash => $DUMMY) {
 

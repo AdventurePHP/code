@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\singleton;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,10 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::session', 'SessionManager');
-register_shutdown_function(array('SessionSingleton', 'saveObjects'));
+use APF\core\session\SessionManager;
+use APF\core\pagecontroller\APFObject;
+
+register_shutdown_function(array('APF\core\singleton\SessionSingleton', 'saveObjects'));
 
 /**
  * @package core::singleton
@@ -71,7 +75,7 @@ class SessionSingleton extends Singleton {
     * @param string $className The name of the class, that should be created a session singleton instance from.
     * @param string $instanceId The id of the instance to return.
     * @return APFObject The desired object's singleton instance.
-    * @throws Exception In case the implementation class cannot be found.
+    * @throws \Exception In case the implementation class cannot be found.
     *
     * @author Christian Achatz
     * @version
@@ -91,7 +95,7 @@ class SessionSingleton extends Singleton {
 
          if ($cachedObject === null) {
             if (!class_exists($className)) {
-               throw new Exception('[SessionSingleton::getInstance()] Class "' . $className . '" '
+               throw new \Exception('[SessionSingleton::getInstance()] Class "' . $className . '" '
                      . 'cannot be found! Maybe the class name is mis-spelt!', E_USER_ERROR);
             }
 

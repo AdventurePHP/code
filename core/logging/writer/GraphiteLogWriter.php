@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\logging\writer;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::logging::entry', 'GraphiteLogEntry');
+use APF\core\logging\entry\GraphiteLogEntry;
 
 /**
  * @package core::logging::writer
@@ -29,10 +31,10 @@ import('core::logging::entry', 'GraphiteLogEntry');
  * <p/>
  * Use the following code to register this log writer:
  * <code>
- * import('core::logging', 'Logger');
- * $logger = & Singleton::getInstance('Logger');
+ * use APF\core\logging\Logger;
+ * $logger = & Singleton::getInstance('APF\core\logging\Logger');
  *
- * import('core::logging::writer', 'GraphiteLogWriter');
+ * use APF\core\logging\writer\GraphiteLogWriter;
  * $logger->addLogWriter('graphite', new GraphiteLogWriter('localhost', '8125'));
  * </code>
  *

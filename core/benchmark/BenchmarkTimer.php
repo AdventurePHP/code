@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\benchmark;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -27,7 +29,7 @@
  * and your software. Must be used as a singleton to guarantee, that all benchmark tags
  * are included within the report. Usage (for each time!):
  * <pre>
- * $t = &Singleton::getInstance('BenchmarkTimer');
+ * $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
  * $t->start('my_tag');
  * ...
  * $t->stop('my_tag');
@@ -35,7 +37,7 @@
  * In order to create a benchmark report (typically at the end of your bootstrap file,
  * please note the following:
  * <pre>
- * $t = &Singleton::getInstance('BenchmarkTimer');
+ * $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
  * echo $t->createReport();
  * </pre>
  *
@@ -173,7 +175,7 @@ final class BenchmarkTimer {
     * This method is used to starts a new benchmark timer.
     *
     * @param string $name The (unique!) name of the benchmark tag.
-    * @throws InvalidArgumentException In case the given name is null.
+    * @throws \InvalidArgumentException In case the given name is null.
     *
     * @author Christian Schäfer
     * @version
@@ -189,7 +191,7 @@ final class BenchmarkTimer {
       $startTime = $this->generateMicroTime();
 
       if ($name === null) {
-         throw new InvalidArgumentException('[BenchmarkTimer::start()] Required parameter name is not set!');
+         throw new \InvalidArgumentException('[BenchmarkTimer::start()] Required parameter name is not set!');
       }
 
       if ($this->getRunningProcessByName($name) === null) {
@@ -201,7 +203,7 @@ final class BenchmarkTimer {
          $this->setCurrentParent($newProcess);
          $this->addRunningProcess($newProcess);
       } else {
-         throw new InvalidArgumentException('[BenchmarkTimer::start()] Benchmark process with name "' . $name
+         throw new \InvalidArgumentException('[BenchmarkTimer::start()] Benchmark process with name "' . $name
                . '" is already running! Use a different one!');
       }
 
@@ -213,7 +215,7 @@ final class BenchmarkTimer {
     * Stops the benchmark timer, started with start().
     *
     * @param string $name The (unique!) name of the benchmark tag.
-    * @throws InvalidArgumentException In case the named process is not running.
+    * @throws \InvalidArgumentException In case the named process is not running.
     *
     * @author Christian Schäfer
     * @version
@@ -234,7 +236,7 @@ final class BenchmarkTimer {
          $this->setCurrentParent($currentProcess->getParentProcess());
          $this->removeRunningProcess($name);
       } else {
-         throw new InvalidArgumentException('[BenchmarkTimer::stop()] Process with name "' . $name
+         throw new \InvalidArgumentException('[BenchmarkTimer::stop()] Process with name "' . $name
                . '" is not running yet!');
       }
 

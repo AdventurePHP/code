@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\database;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,6 +20,12 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\ConfigurationManager;
+use APF\core\pagecontroller\APFObject;
+
+use APF\core\database\config\StatementConfigurationProvider;
+use APF\core\registry\Registry;
+use APF\core\service\APFService;
 
 /**
  * @package core::database
@@ -76,7 +84,6 @@ final class ConnectionManager extends APFObject {
    public function __construct() {
       $providers = ConfigurationManager::getRegisteredProviders();
       if (!in_array(self::$STATEMENT_FILE_EXTENSION, $providers)) {
-         import('core::database::config', 'StatementConfigurationProvider');
          ConfigurationManager::registerProvider(self::$STATEMENT_FILE_EXTENSION, new StatementConfigurationProvider());
       }
    }
@@ -94,7 +101,7 @@ final class ConnectionManager extends APFObject {
     * @param string $connectionKey Desired configuration section.
     * @param string $instanceId The id of the database driver instance.
     * @return AbstractDatabaseHandler An instance of a connection layer implementation.
-    * @throws InvalidArgumentException In case of missing configuration.
+    * @throws \InvalidArgumentException In case of missing configuration.
     *
     * @author Christian Achatz, Tobias Lückel (megger)
     * @version
@@ -124,14 +131,10 @@ final class ConnectionManager extends APFObject {
 
       if ($section == null) {
          $env = Registry::retrieve('apf::core', 'Environment');
-         throw new InvalidArgumentException('[ConnectionManager::getConnection()] The given '
+         throw new \InvalidArgumentException('[ConnectionManager::getConnection()] The given '
                . 'configuration section ("' . $connectionKey . '") does not exist in configuration file "'
                . $env . '_connections.ini" in namespace "core::database" for context "'
                . $this->context . '"!', E_USER_ERROR);
-      }
-
-      if (!class_exists($section->getValue('DB.Type') . 'Handler')) {
-         import('core::database', $section->getValue('DB.Type') . 'Handler');
       }
 
       // re-map options to array to be able to initialize the database connection using the service manager

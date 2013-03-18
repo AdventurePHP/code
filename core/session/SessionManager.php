@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\session;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -50,7 +52,7 @@ final class SessionManager {
     * session in case it is not started yet.
     *
     * @param string $namespace The desired namespace.
-    * @throws Exception In case, the namespace is empty.
+    * @throws \Exception In case, the namespace is empty.
     *
     * @author Christian Schäfer
     * @version
@@ -60,7 +62,7 @@ final class SessionManager {
 
       // change in 1.12: session manager must not be created without a namespace!
       if (empty($namespace)) {
-         throw new Exception('Session manager cannot be created using an empty session namespace!', E_USER_ERROR);
+         throw new \Exception('Session manager cannot be created using an empty session namespace!', E_USER_ERROR);
       }
 
       // set namespace

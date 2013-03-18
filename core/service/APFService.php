@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\service;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -129,56 +131,3 @@ interface APFService {
    public function init($initParam);
 
 }
-
-/**
- * @package core::service
- * @interface APFDIService
- *
- * Defines the structure of an APF service that is initialized with the <em>DIServiceManager</em>.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 27.08.2011<br />
- */
-interface APFDIService extends APFService {
-
-   /**
-    * @public
-    *
-    * Marks the service as initialized.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 27.08.2011<br />
-    */
-   public function markAsInitialized();
-
-   /**
-    * @public
-    *
-    * Marks the service as *not* initialized or *no more* initialized. This causes the DIServiceManager
-    * to initialize or re-initialize the service on next access.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 27.08.2011<br />
-    */
-   public function markAsPending();
-
-   /**
-    * @public
-    *
-    * Returns the initialization of the present service. In case the service is initialized,
-    * the DIServiceManager to omit the call of the setup method defined within the DI service
-    * object definition section.
-    *
-    * @return bool The initialization status (true = initialized, false = not initialized).
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 27.08.2011<br />
-    */
-   public function isInitialized();
-
-}
-

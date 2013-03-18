@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\configuration\provider\json;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::configuration::provider', 'BaseConfigurationProvider');
-import('core::configuration::provider::json', 'JsonConfiguration');
+use APF\core\configuration\provider\BaseConfigurationProvider;
+use APF\core\configuration\provider\json\JsonConfiguration;
 
 /**
  * @package core::configuration::provider::ini

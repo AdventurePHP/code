@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\logging\entry;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -30,7 +32,7 @@
  * <p/>
  * Use the following code sample to add a graphite log entry:
  * <code>
- * $logger = & Singleton::getInstance('Logger');
+ * $logger = & Singleton::getInstance('APF\core\logging\Logger');
  * $logger->addEntry(new GraphiteLogEntry(
  *    'graphite',
  *    'services.web.rendering-times',

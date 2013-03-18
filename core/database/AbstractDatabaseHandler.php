@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\database;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,8 +20,13 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::logging', 'Logger');
-import('core::database', 'DatabaseConnection');
+use APF\core\configuration\ConfigurationException;
+use APF\core\database\config\StatementConfiguration;
+use APF\core\logging\Logger;
+use APF\core\database\DatabaseConnection;
+use APF\core\pagecontroller\APFObject;
+use APF\core\registry\Registry;
+use APF\core\singleton\Singleton;
 
 /**
  * @package core::database
@@ -361,7 +368,7 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     * Version 0.1, 07.05.2012<br />
     */
    public function setup() {
-      $this->dbLog = & Singleton::getInstance('Logger');
+      $this->dbLog = & Singleton::getInstance('APF\core\logging\Logger');
       $this->connect();
    }
 

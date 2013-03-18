@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\database;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,6 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\service\APFDIService;
 
 /**
  * @package core::database
@@ -29,7 +32,7 @@
  * @version
  * Version 0.1, 08.03.2010<br />
  */
-class DatabaseHandlerException extends Exception {
+class DatabaseHandlerException extends \Exception {
 }
 
 /**

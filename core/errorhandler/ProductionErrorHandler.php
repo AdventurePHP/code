@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\errorhandler;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -30,7 +32,7 @@
  * In order to use the error handler, please add the following code to your
  * bootstrap file:
  * <code>
- * import('core::errorhandler', 'ProductionErrorHandler');
+ * use APF\core\errorhandler\ProductionErrorHandler;
  * GlobalErrorHandler::registerErrorHandler(
  *    new ProductionErrorHandler('/pages/global-error')
  * );

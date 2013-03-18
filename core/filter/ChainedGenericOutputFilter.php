@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\filter;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,6 +20,9 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\registry\Registry;
+use APF\core\singleton\Singleton;
 
 /**
  * @package core::filter
@@ -53,7 +58,7 @@ class ChainedGenericOutputFilter implements ChainedContentFilter {
    public function filter(FilterChain &$chain, $input = null) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $t->start('ChainedGenericOutputFilter');
 
       // in case the url rewrite mode is activated, rewrite

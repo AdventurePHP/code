@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\database\config;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::configuration::provider', 'BaseConfiguration');
+use APF\core\configuration\Configuration;
+use APF\core\configuration\provider\BaseConfiguration;
 
 /**
  * @package core::database::configuration

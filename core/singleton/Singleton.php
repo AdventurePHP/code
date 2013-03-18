@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\singleton;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,6 +20,7 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\APFObject;
 
 /**
  * @package core::singleton
@@ -63,7 +66,7 @@ class Singleton {
     * @param string $className The name of the class, that should be created a singleton instance from.
     * @param string $instanceId The id of the instance to return.
     * @return APFObject The desired object's singleton instance.
-    * @throws Exception In case the implementation class cannot be found.
+    * @throws \Exception In case the implementation class cannot be found.
     *
     * @author Christian Achatz
     * @version
@@ -72,6 +75,8 @@ class Singleton {
     */
    public static function &getInstance($className, $instanceId = null) {
 
+      file_put_contents(__FUNCTION__ . '.log', $className, FILE_APPEND);
+
       // the cache key is set to the class name for "normal" singleton instances.
       // in case an instance id is given, more than one singleton instance can
       // be created specified by the instance id - but only one per instance id
@@ -79,13 +84,10 @@ class Singleton {
       $cacheKey = $instanceId === null ? $className : $instanceId;
 
       if (!isset(self::$CACHE[$cacheKey])) {
-
-         if (!class_exists($className)) {
-            throw new Exception('[Singleton::getInstance()] Class "' . $className . '" cannot be '
-                  . 'found! Maybe the class name is mis-spelt!', E_USER_ERROR);
-         }
-
+         file_put_contents(__FUNCTION__ . '.log', ' --> create: ' . $cacheKey . PHP_EOL, FILE_APPEND);
          self::$CACHE[$cacheKey] = new $className();
+      } else {
+         file_put_contents(__FUNCTION__ . '.log', ' --> deliver: ' . $cacheKey . PHP_EOL, FILE_APPEND);
       }
 
       return self::$CACHE[$cacheKey];

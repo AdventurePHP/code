@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\database;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,8 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::database', 'AbstractDatabaseHandler');
+use APF\core\database\AbstractDatabaseHandler;
+use APF\core\logging\LogEntry;
 
 /**
  * @package core::database
@@ -97,7 +100,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     *
     * Closes the database connection.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 2002<br />
     * Version 0.2, 10.04.2004<br />
@@ -186,7 +189,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.01.2008<br />
-    * Version 0.2, 17.11.2008 (Bugfix: if the method is called before any other, the connection is null)<br />
+    * Version 0.2, 17.11.2008 (Bug-fix: if the method is called before any other, the connection is null)<br />
     */
    public function escapeValue($value) {
       return mysql_real_escape_string($value, $this->dbConn);

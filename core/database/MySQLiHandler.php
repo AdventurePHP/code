@@ -1,4 +1,6 @@
 <?php
+namespace APF\core\database;
+
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -18,7 +20,9 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-import('core::database', 'AbstractDatabaseHandler');
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\database\AbstractDatabaseHandler;
+use APF\core\singleton\Singleton;
 
 /**
  * @package core::database
@@ -154,7 +158,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // must be present in the order defined in the statement. Thus we must
       // re-order the $params array.
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $statementId = md5($statement);
       $id = $statementId . ' re-order bind params';
       $t->start($id);
@@ -242,7 +246,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    public function executeTextBindStatement($statement, array $params = array(), $logStatement = false) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('BenchmarkTimer');
+      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $statementId = md5($statement);
 
       // prepare statement
