@@ -20,6 +20,10 @@ namespace APF\core\configuration\provider\apc;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\Configuration;
+use APF\core\configuration\ConfigurationException;
+use APF\core\configuration\ConfigurationManager;
+use APF\core\configuration\ConfigurationProvider;
 use APF\core\configuration\provider\apc\ApcConfiguration;
 
 /**

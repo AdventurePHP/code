@@ -1,25 +1,25 @@
 <?php
 namespace APF\core\configuration\provider;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
  * @package core::configuration::provider
@@ -94,17 +94,21 @@ abstract class BaseConfigurationProvider {
       }
 
       // assemble the context
-      $contextPath = ($this->omitContext || $context === null ) ? '' : '/' . str_replace('::', '/', $context);
+      $contextPath = ($this->omitContext || $context === null) ? '' : '/' . str_replace('::', '/', $context);
 
       // assemble file name
       $fileName = ($this->omitEnvironment || $environment === null) ? '/' . $name : '/' . $environment . '_' . $name;
 
-      // using APPS__PATH is about 50 times faster than the registry!
-      return APPS__PATH
-      . '/config'
-      . '/' . str_replace('::', '/', $namespace)
-      . $contextPath
-      . $fileName;
+      // gather namespace and full(!) config name and use class loader to determine root path
+      // TODO remove mapping to APF after migration to allow multiple root paths
+      $fqNamespace = 'APF\\' . str_replace('::', '\\', $namespace);
+      $classLoader = \RootClassLoader::getLoaderByNamespace($fqNamespace);
+      $rootPath = $classLoader->getRootPath();
+      return $rootPath
+            . '/config'
+            . '/' . str_replace('::', '/', $namespace)
+            . $contextPath
+            . $fileName;
    }
 
    /**

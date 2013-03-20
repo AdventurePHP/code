@@ -1,25 +1,25 @@
 <?php
 namespace APF\core\pagecontroller;
 
-   /**
-    * <!--
-    * This file is part of the adventure php framework (APF) published under
-    * http://adventure-php-framework.org.
-    *
-    * The APF is free software: you can redistribute it and/or modify
-    * it under the terms of the GNU Lesser General Public License as published
-    * by the Free Software Foundation, either version 3 of the License, or
-    * (at your option) any later version.
-    *
-    * The APF is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    * GNU Lesser General Public License for more details.
-    *
-    * You should have received a copy of the GNU Lesser General Public License
-    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
-    * -->
-    */
+/**
+ * <!--
+ * This file is part of the adventure php framework (APF) published under
+ * http://adventure-php-framework.org.
+ *
+ * The APF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The APF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ * -->
+ */
 
    /**
     * @file pagecontroller.php
@@ -1478,7 +1478,13 @@ class Document extends APFObject {
       // sanitize the design name to avoid xss or code injection
       $name = preg_replace('/[^A-Za-z0-9\-_]/', '', $name);
 
-      $file = $this->getTemplateFilePath($namespace, $name);
+      try {
+         $file = $this->getTemplateFilePath($namespace, $name);
+      } catch (\Exception $e) {
+         // rethrow exception with meaningful content (class loader exception would be too missleading)
+         throw new IncludeException('[' . get_class($this) . '::loadContentFromFile()] Template "' . $name
+               . '" not existent in namespace "' . $namespace . '"!', E_USER_ERROR, $e);
+      }
 
       if (file_exists($file)) {
          // Append the content to the current content buffer. In case the existing content should be
@@ -1492,7 +1498,7 @@ class Document extends APFObject {
             $code = ' Please check your template code (' . $this->getParentObject()->getContent() . ').';
          }
 
-         throw new IncludeException('[' . get_class($this) . '::loadContentFromFile()] Design "' . $name
+         throw new IncludeException('[' . get_class($this) . '::loadContentFromFile()] Template "' . $name
                . '" not existent in namespace "' . $namespace . '" (file: "' . $file . '")!' . $code, E_USER_ERROR);
 
       }
@@ -1515,7 +1521,12 @@ class Document extends APFObject {
     * Version 0.1, 31.10.2012<br />
     */
    protected function getTemplateFilePath($namespace, $name) {
-      return APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $name . '.html';
+      // gather namespace and full(!) template name and use class loader to determine root path
+      $classLoader = \RootClassLoader::getLoaderByNamespace($namespace);
+      $rootPath = $classLoader->getRootPath();
+      $vendor = $classLoader->getVendorName();
+      $fqNamespace = str_replace($vendor . '\\', '', $namespace);
+      return $rootPath . '/' . str_replace('\\', '/', $fqNamespace) . '/' . $name . '.html';
    }
 
    /**

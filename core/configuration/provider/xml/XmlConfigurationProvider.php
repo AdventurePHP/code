@@ -20,6 +20,9 @@ namespace APF\core\configuration\provider\xml;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\Configuration;
+use APF\core\configuration\ConfigurationException;
+use APF\core\configuration\ConfigurationProvider;
 use APF\core\configuration\provider\BaseConfigurationProvider;
 use APF\core\configuration\provider\xml\XmlConfiguration;
 
@@ -95,7 +98,7 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
 
    public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
 
-      $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><configuration></configuration>');
+      $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><configuration></configuration>');
 
       foreach ($config->getSectionNames() as $sectionName) {
          $this->processSection($xml, $config->getSection($sectionName), $sectionName);
@@ -119,7 +122,7 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
     *
     * Transforms a given config section into the applied xml structure.
     *
-    * @param SimpleXMLElement $xml The parent XML node.
+    * @param \SimpleXMLElement $xml The parent XML node.
     * @param Configuration $config The current section to translate.
     * @param string $name The name of the section to add.
     *
@@ -127,7 +130,7 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
     * @version
     * Version 0.1, 28.10.2010<br />
     */
-   private function processSection(SimpleXMLElement &$xml, Configuration $config, $name) {
+   private function processSection(\SimpleXMLElement &$xml, Configuration $config, $name) {
 
       // create current section and append it to the parent node structure.
       $section = $xml->addChild('section');
@@ -149,27 +152,27 @@ class XmlConfigurationProvider extends BaseConfigurationProvider implements Conf
     * @private
     *
     * @param Configuration $config
-    * @param SimpleXMLElement $section
+    * @param \SimpleXMLElement $section
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 09.10.2010<br />
     */
-   private function parseSection(Configuration $config, SimpleXMLElement $section) {
+   private function parseSection(Configuration $config, \SimpleXMLElement $section) {
       $config->setSection((string)$section->attributes()->name, $this->parseXmlElement($section));
    }
 
    /**
     * @private
     *
-    * @param SimpleXMLElement $element The current XML node.
+    * @param \SimpleXMLElement $element The current XML node.
     * @return XmlConfiguration The configuration representing the current XML node.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 09.10.2010<br />
     */
-   private function parseXmlElement(SimpleXMLElement $element) {
+   private function parseXmlElement(\SimpleXMLElement $element) {
 
       $config = new XmlConfiguration();
 

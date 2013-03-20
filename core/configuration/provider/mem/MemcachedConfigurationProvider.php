@@ -20,6 +20,10 @@ namespace APF\core\configuration\provider\mem;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\Configuration;
+use APF\core\configuration\ConfigurationException;
+use APF\core\configuration\ConfigurationManager;
+use APF\core\configuration\ConfigurationProvider;
 use APF\core\configuration\provider\mem\MemcachedConfiguration;
 
 /**
@@ -47,7 +51,7 @@ class MemcachedConfigurationProvider implements ConfigurationProvider {
    private $persistenceProviderExtension; // perhaps we do not need it!
 
    /**
-    * @var Memcached The memcached service.
+    * @var \Memcache The memcached service.
     */
    private $memcachedService;
 
@@ -62,13 +66,13 @@ class MemcachedConfigurationProvider implements ConfigurationProvider {
     * Initializes the memcached configuration provider.
     *
     * @param string $persistenceProviderExtension The name of the extension of the provider to use to load the persistent config with.
-    * @param Memcache $memcachedService The memcached connection.
+    * @param \Memcache $memcachedService The memcached connection.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 30.10.2010<br />
     */
-   public function __construct($persistenceProviderExtension, Memcache $memcachedService) {
+   public function __construct($persistenceProviderExtension, \Memcache $memcachedService) {
       $this->persistenceProviderExtension = $persistenceProviderExtension;
       $this->memcachedService = $memcachedService;
    }

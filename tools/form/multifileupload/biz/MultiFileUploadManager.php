@@ -20,6 +20,7 @@ namespace APF\tools\form\multifileupload\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\APFObject;
 use APF\core\session\SessionManager;
 use APF\tools\link\LinkGenerator;
 use APF\tools\form\FormException;

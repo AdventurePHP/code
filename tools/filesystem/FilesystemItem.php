@@ -20,6 +20,7 @@ namespace APF\tools\filesystem;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\APFObject;
 use APF\tools\filesystem\FilesystemException;
 /**
  * @abstract
@@ -289,7 +290,7 @@ abstract class FilesystemItem extends APFObject {
     * filectime returns also a new timestamop when owner or rights of the file has been changed!
     * Check also documentation: http://de.php.net/manual/en/function.filectime.php
     * 
-    * @return  DateTime The creation time as a DateTime-Instance of the file
+    * @return \DateTime The creation time as a DateTime-Instance of the file
     * 
     * @author  dave
     * @version Version 0.1, 16.08.2012
@@ -298,13 +299,13 @@ abstract class FilesystemItem extends APFObject {
 
       clearstatcache();
 
-      $DateTime = new DateTime();
+      $time = new \DateTime();
 
-      if (!method_exists($DateTime, 'setTimestamp')) {
+      if (!method_exists($time, 'setTimestamp')) {
          $Timestamp = filectime($this->getPath());
-         return new DateTime("@$Timestamp");
+         return new \DateTime("@$Timestamp");
       } else {
-         return $DateTime->setTimestamp(filectime($this->getPath()));
+         return $time->setTimestamp(filectime($this->getPath()));
       }
    }
 
@@ -319,7 +320,7 @@ abstract class FilesystemItem extends APFObject {
     * Please keep in mind that time resolution may differ from one file system to another.
     * Check also documentation: http://de.php.net/manual/en/function.filemtime.php
     * 
-    * @return  DateTime The modification time as a DateTime-Instance of the file
+    * @return \DateTime The modification time as a DateTime-Instance of the file
     * 
     * @author  dave
     * @version Version 0.1, 16.08.2012
@@ -328,13 +329,13 @@ abstract class FilesystemItem extends APFObject {
 
       clearstatcache();
 
-      $DateTime = new DateTime();
+      $time = new \DateTime();
 
-      if (!method_exists($DateTime, 'setTimestamp')) {
+      if (!method_exists($time, 'setTimestamp')) {
          $Timestamp = filemtime($this->getPath());
-         return new DateTime("@$Timestamp");
+         return new \DateTime("@$Timestamp");
       } else {
-         return $DateTime->setTimestamp(filemtime($this->getPath()));
+         return $time->setTimestamp(filemtime($this->getPath()));
       }
    }
 

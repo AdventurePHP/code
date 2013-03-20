@@ -22,6 +22,7 @@ namespace APF\tools\media\actions;
  */
 session_cache_limiter('none');
 
+use APF\core\configuration\ConfigurationException;
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\tools\http\HeaderManager;
 

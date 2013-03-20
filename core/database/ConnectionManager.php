@@ -49,7 +49,7 @@ use APF\core\service\APFService;
  * DB.User = ""
  * DB.Pass = ""
  * DB.Name = ""
- * DB.Type = "MySQLx|SQLite|..."
+ * DB.Type = "APF\core\database\MySQLxHandler|APF\core\database\SQLiteHandler|..."
  * [DB.DebugMode = "true|false"]
  * [DB.Charset = ""]
  * [DB.Collation = ""]
@@ -144,7 +144,7 @@ final class ConnectionManager extends APFObject {
       }
 
       // create the connection lazily
-      $this->connections[$cacheKey] = $this->getAndInitServiceObject('core::database', $section->getValue('DB.Type') . 'Handler', $options, APFService::SERVICE_TYPE_NORMAL);
+      $this->connections[$cacheKey] = $this->getAndInitServiceObject('core::database', $section->getValue('DB.Type'), $options, APFService::SERVICE_TYPE_NORMAL);
       return $this->connections[$cacheKey];
    }
 
