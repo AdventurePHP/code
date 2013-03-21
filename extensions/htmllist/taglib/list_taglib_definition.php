@@ -34,8 +34,8 @@ use APF\core\pagecontroller\TagLib;
 class list_taglib_definition extends AbstractTaglibList {
 
    public function __construct() {
-      $this->tagLibs[] = new TagLib('extensions::htmllist::taglib', 'list_taglib_elem_defterm', 'list', 'elem_defterm');
-      $this->tagLibs[] = new TagLib('extensions::htmllist::taglib', 'list_taglib_elem_defdef', 'list', 'elem_defdef');
+      $this->tagLibs[] = new TagLib('APF\extensions\htmllist\taglib\list_taglib_elem_defterm', 'list', 'elem_defterm');
+      $this->tagLibs[] = new TagLib('APF\extensions\htmllist\taglib\list_taglib_elem_defdef', 'list', 'elem_defdef');
    }
 
    /**

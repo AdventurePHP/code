@@ -85,50 +85,50 @@ class HtmlFormTag extends Document {
 
       // Place the listener here, to ensure, that it is there, when the
       // notification is sent!
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'ValidationListenerTag', 'form', 'listener');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\ValidationListenerTag', 'form', 'listener');
 
       // Please note, that the form:addfilter taglib is placed before the
       // form:addvalidator, because filtering must take place before the
       // validation. Otherwise, we might get unexpected results.
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'AddFormControlFilterTag', 'form', 'addfilter');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'AddFormControlValidatorTag', 'form', 'addvalidator');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\AddFormControlFilterTag', 'form', 'addfilter');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\AddFormControlValidatorTag', 'form', 'addvalidator');
 
       // The time of adding the form errors is not relevant, because the action
       // takes place on transform time. But for clarity, we add it near the listeners.
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FormErrorDisplayTag', 'form', 'error');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FormSuccessDisplayTag', 'form', 'success');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormErrorDisplayTag', 'form', 'error');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormSuccessDisplayTag', 'form', 'success');
 
       // Buttons are analyzed right early to be able to initialize form controls
       // concerning the status of the form (e.g. sent!).
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'ButtonTag', 'form', 'button');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'ResetButtonTag', 'form', 'reset');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'ImageButtonTag', 'form', 'imagebutton');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\ButtonTag', 'form', 'button');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\ResetButtonTag', 'form', 'reset');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\ImageButtonTag', 'form', 'imagebutton');
 
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FormLabelTag', 'form', 'label');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormLabelTag', 'form', 'label');
 
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'TextFieldTag', 'form', 'text');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'SelectBoxTag', 'form', 'select');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'DateSelectorTag', 'form', 'date');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FormPlaceHolderTag', 'form', 'placeholder');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'PasswordFieldTag', 'form', 'password');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'HiddenFieldTag', 'form', 'hidden');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'CheckBoxTag', 'form', 'checkbox');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'RadioButtonTag', 'form', 'radio');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FileUploadTag', 'form', 'file');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'TextAreaTag', 'form', 'area');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'MultiSelectBoxTag', 'form', 'multiselect');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FormLanguageLabelTag', 'form', 'getstring');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'DynamicFormElementMarkerTag', 'form', 'marker');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'FormAddTaglibTag', 'form', 'addtaglib');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\TextFieldTag', 'form', 'text');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\SelectBoxTag', 'form', 'select');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\DateSelectorTag', 'form', 'date');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormPlaceHolderTag', 'form', 'placeholder');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\PasswordFieldTag', 'form', 'password');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\HiddenFieldTag', 'form', 'hidden');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\CheckBoxTag', 'form', 'checkbox');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\RadioButtonTag', 'form', 'radio');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FileUploadTag', 'form', 'file');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\TextAreaTag', 'form', 'area');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\MultiSelectBoxTag', 'form', 'multiselect');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormLanguageLabelTag', 'form', 'getstring');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\DynamicFormElementMarkerTag', 'form', 'marker');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormAddTaglibTag', 'form', 'addtaglib');
 
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'TimeCaptchaTag', 'form', 'timecaptcha');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'CsrfProtectionHashTag', 'form', 'csrfhash');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\TimeCaptchaTag', 'form', 'timecaptcha');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\CsrfProtectionHashTag', 'form', 'csrfhash');
 
       // analyzing the form:time tag must be done after the form:timecaptcha, since
       // the tag parser analyzes the whole tag string and form:time is fully contained
       // in form:timecaptcha. this restriction of the APF parser is accepted due to
       // performance reasons!
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'TimeSelectorTag', 'form', 'time');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\TimeSelectorTag', 'form', 'time');
 
       // setup attributes within white-list
       $this->attributeWhiteList = array_merge(AbstractFormControl::$CORE_ATTRIBUTES, AbstractFormControl::$EVENT_ATTRIBUTES, AbstractFormControl::$I18N_ATTRIBUTES);
@@ -154,16 +154,6 @@ class HtmlFormTag extends Document {
             )
          );
       }
-
-      // import dependent tags a little bit different, to increase performance up to factor 10!
-      /*foreach ($this->tagLibs as $taglib) {
-         /* @var $taglib TagLib * /
-         if (strpos($this->content, '<' . $taglib->getPrefix() . ':' . $taglib->getName()) !== false) {
-            if (!class_exists($taglib->getClass())) {
-               import($taglib->getNamespace(), $taglib->getClass());
-            }
-         }
-      }*/
 
       $this->extractTagLibTags();
    }
@@ -400,7 +390,7 @@ class HtmlFormTag extends Document {
     *
     * Adds a new form element to the child list.
     *
-    * @param string $elementType type of the element (e.g. "form:text")
+    * @param string $elementType Type of the element (e.g. "form:text")
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
     * @return string Id of the new form object (e.g. for addressing the new element)
     * @throws FormException In case form element cannot be found.
@@ -426,44 +416,36 @@ class HtmlFormTag extends Document {
          /* @var $taglib TagLib */
          if ($taglib->getPrefix() === $prefix && $taglib->getName() === $name) {
             $class = $taglib->getClass();
-            //import($taglib->getNamespace(), $class);
             break;
          }
       }
 
-      // check, if class exists to ensure instance can be created
-      if (class_exists($class)) {
+      // generate object id
+      $objectId = XmlParser::generateUniqID();
 
-         // generate object id
-         $objectId = XmlParser::generateUniqID();
+      // create new form element
+      $formControl = new $class();
+      /* @var $formControl AbstractFormControl */
 
-         // create new form element
-         $formControl = new $class();
-         /* @var $formControl AbstractFormControl */
+      // add standard and user defined attributes
+      $formControl->setObjectId($objectId);
+      $formControl->setLanguage($this->language);
+      $formControl->setContext($this->context);
+      $formControl->setAttributes($elementAttributes);
 
-         // add standard and user defined attributes
-         $formControl->setObjectId($objectId);
-         $formControl->setLanguage($this->language);
-         $formControl->setContext($this->context);
-         $formControl->setAttributes($elementAttributes);
+      // add form element to DOM tree and call the onParseTime() method
+      $formControl->setParentObject($this);
+      $formControl->onParseTime();
 
-         // add form element to DOM tree and call the onParseTime() method
-         $formControl->setParentObject($this);
-         $formControl->onParseTime();
+      // add new form element to children list
+      $this->children[$objectId] = $formControl;
 
-         // add new form element to children list
-         $this->children[$objectId] = $formControl;
+      // call the onAfterAppend() method
+      $this->children[$objectId]->onAfterAppend();
 
-         // call the onAfterAppend() method
-         $this->children[$objectId]->onAfterAppend();
+      // return object id for further addressing
+      return $objectId;
 
-         // return object id for further addressing
-         return $objectId;
-      }
-
-      throw new FormException('[HtmlFormTag::createFormElement()] No form element with name "'
-            . $elementType . '" found! Maybe the tag name is mis-spelt or the class is not '
-            . 'imported yet. Please use import() or &lt;form:addtaglib /&gt;!');
    }
 
    /**

@@ -25,14 +25,6 @@ use APF\core\singleton\Singleton;
 
 use APF\core\logging\writer\FileLogWriter;
 
-function flushLogger() {
-   /* @var $logger Logger */
-   $logger = & Singleton::getInstance('APF\core\logging\Logger');
-   $logger->flushLogBuffer();
-}
-
-register_shutdown_function('APF\core\logging\flushLogger');
-
 /**
  * @package core::logging
  * @class LoggerException
@@ -318,6 +310,9 @@ class Logger {
    public function __construct() {
       $this->logThreshold = self::$LOGGER_THRESHOLD_WARN;
 
+      // By default, a file-based log writer is initialized.
+      // Please note, that the writer's target name can be configured
+      // within the Registry for all framework-related log statements.
       $this->addLogWriter(
          Registry::retrieve('apf::core', 'InternalLogTarget'),
          new FileLogWriter(

@@ -20,19 +20,23 @@ namespace APF\tools\form\multifileupload\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\BaseDocumentController;
+use APF\tools\form\multifileupload\pres\taglib\MultiFileUploadTag;
+
 class DemoController extends BaseDocumentController {
+
    public function transformContent() {
 
-      $form = &$this->getForm('file_upload');
+      $form = & $this->getForm('file_upload');
 
-      /* @var $uploadtest MultiFileUploadTag */
-      $uploadtest = $form->getFormElementByName('testfield');
+      /* @var $uploadTest MultiFileUploadTag */
+      $uploadTest = $form->getFormElementByName('testfield');
 
       if ($form->isSent()) {
-         $files = $uploadtest->getFiles();
+         $files = $uploadTest->getFiles();
 
-         // Für die weitere Verarbeitung steht nun das Array files mit allen Dateien zur Verfügung.
-         echo printObject($files);
+         // please note the array with all files uploaded within the above form
+         echo \APF\core\pagecontroller\printObject($files);
       } else {
          $form->transformOnPlace();
       }

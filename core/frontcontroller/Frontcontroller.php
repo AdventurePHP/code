@@ -23,6 +23,7 @@ namespace APF\core\frontcontroller;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
 use APF\core\benchmark\BenchmarkTimer;
+use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
 // add the front controller filter that is a wrapper on the front controller's input
@@ -660,9 +661,9 @@ class Frontcontroller extends APFObject {
       }
 
       // include action implementation
+      // TODO mapping of classes requires namespace to be removed!
       $actionAndInputNamespace = $actionConfig->getValue('FC.ActionNamespace');
       $actionClass = $actionConfig->getValue('FC.ActionClass');
-      import($actionAndInputNamespace, $actionClass);
 
       // check for custom input implementation
       $inputClass = $actionConfig->getValue('FC.InputClass');
@@ -670,8 +671,6 @@ class Frontcontroller extends APFObject {
       // include input implementation in case a custom implementation is desired
       if (empty($inputClass)) {
          $inputClass = 'FrontcontrollerInput';
-      } else {
-         import($actionAndInputNamespace, $inputClass);
       }
 
       // check for class being present

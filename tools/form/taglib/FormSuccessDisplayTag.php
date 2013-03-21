@@ -45,9 +45,9 @@ use APF\core\pagecontroller\TagLib;
 class FormSuccessDisplayTag extends AbstractFormControl {
 
    public function __construct() {
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'success', 'placeholder');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'success', 'getstring');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'success', 'addtaglib');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'success', 'placeholder');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'success', 'getstring');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'success', 'addtaglib');
    }
 
    /**

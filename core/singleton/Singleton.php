@@ -75,8 +75,6 @@ class Singleton {
     */
    public static function &getInstance($className, $instanceId = null) {
 
-      file_put_contents(__FUNCTION__ . '.log', $className, FILE_APPEND);
-
       // the cache key is set to the class name for "normal" singleton instances.
       // in case an instance id is given, more than one singleton instance can
       // be created specified by the instance id - but only one per instance id
@@ -84,10 +82,7 @@ class Singleton {
       $cacheKey = $instanceId === null ? $className : $instanceId;
 
       if (!isset(self::$CACHE[$cacheKey])) {
-         file_put_contents(__FUNCTION__ . '.log', ' --> create: ' . $cacheKey . PHP_EOL, FILE_APPEND);
          self::$CACHE[$cacheKey] = new $className();
-      } else {
-         file_put_contents(__FUNCTION__ . '.log', ' --> deliver: ' . $cacheKey . PHP_EOL, FILE_APPEND);
       }
 
       return self::$CACHE[$cacheKey];

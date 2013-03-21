@@ -20,107 +20,22 @@ namespace APF\core\pagecontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
-   /**
-    * @file pagecontroller.php
-    *
-    * Setups the framework's core environment. Initializes the Registry, that stores parameters,
-    * that are used within the complete framework. These are
-    * <ul>
-    * <li>Environment      : environment, the application is executed in. The value is 'DEFAULT' in common</li>
-    * <li>URLRewriting     : indicates, is url rewriting should be used</li>
-    * <li>LogDir           : path, where log files are stored. The value is './logs' by default.</li>
-    * <li>URLBasePath      : absolute url base path of the application (not really necessary)</li>
-    * <li>LibPath          : path, where the framework and your own libraries reside. This path can be used
-    *                        to address files with in the lib path directly (e.g. images or other resources)</li>
-    * <li>CurrentRequestURL: the fully qualified request url</li>
-    * </ul>
-    * Further, the built-in input and output filters are initialized. For this reason, the following
-    * registry entries are created within the "apf::core::filter" namespace:
-    * <ul>
-    * <li>PageControllerInputFilter : the definition of the input filter</li>
-    * <li>OutputFilter              : the definition of the output filter</li>
-    * </ul>
-    * The file also contains the page controller core implementation with the classes Page,
-    * Document, TagLib, APFObject, XmlParser and BaseDocumentController (the basic MVC document controller).
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.06.2008<br />
-    * Version 0.2, 16.07.2008 (added the LibPath to the registry namespace apf::core)
-    * Version 0.3, 07.08.2008 (Made LibPath readonly)<br />
-    * Version 0.4, 13.08.2008 (Fixed some timing problems with the registry initialisation)<br />
-    * Version 0.5, 14.08.2008 (Changed LogDir initialisation to absolute paths)<br />
-    * Version 0.6, 05.11.2008 (Added the 'CurrentRequestURL' attribute to the 'apf::core' namespace of the registry)<br />
-    * Version 0.7, 11.12.2008 (Added the input and output filter initialization)<br />
-    * Version 0.8, 01.02.2009 (Added the protocol prefix to the URLBasePath)<br />
-    * Version 0.9, 21.02.2009 (Added the exception handler, turned off the php5 support in the import() function of the PHP4 branch)<br />
-    */
-/////////////////////////////////////////////////////////////////////////////////////////////////
-// Define the internally used base path for the adventure php framework libraries.             //
-// In case of symlink usage or multi-project installation, you can define it manually.         //
-/////////////////////////////////////////////////////////////////////////////////////////////////
-if (!defined('APPS__PATH')) {
-
-   // get current path
-   $path = explode('/', str_replace('\\', '/', dirname(__FILE__)));
-
-   // get relevant segments
-   $count = count($path);
-   $appsPath = array();
-   for ($i = 0; $i < $count; $i++) {
-      if ($path[$i] != 'core') {
-         $appsPath[] = $path[$i];
-      } else {
-         break;
-      }
-   }
-
-   // define the APPS__PATH constant to be used in the import() function (performance hack!)
-   define('APPS__PATH', implode($appsPath, '/'));
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-// include core libraries for the basic configuration
+use APF\core\loader\RootClassLoader;
 use APF\core\configuration\Configuration;
+use APF\core\logging\Logger;
 use APF\core\logging\LogEntry;
 use APF\core\logging\SimpleLogEntry;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
-// include necessary core libraries for the page controller
-use APF\core\errorhandler\GlobalErrorHandler;
-use APF\core\exceptionhandler\GlobalExceptionHandler;
 use APF\core\service\ServiceManager;
 use APF\core\service\DIServiceManager;
 use APF\core\configuration\ConfigurationManager;
 use APF\core\benchmark\BenchmarkTimer;
-use APF\core\logging\Logger;
 
 use APF\core\service\APFService;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\html\taglib\HtmlIteratorTag;
-
-// define base parameters of the framework's core and tools layer
-Registry::register('apf::core', 'Environment', 'DEFAULT');
-Registry::register('apf::core', 'URLRewriting', false);
-Registry::register('apf::core', 'InternalLogTarget', 'apf');
-Registry::register('apf::core', 'LibPath', APPS__PATH, true);
-Registry::register('apf::core', 'Charset', 'UTF-8');
-
-// define current request url entry (check if the indices exist is important for cli-usage, because there they are neither available nor helpful)
-if (isset($_SERVER['SERVER_PORT']) && isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
-   $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
-   Registry::register('apf::core', 'URLBasePath', $protocol . $_SERVER['HTTP_HOST']);
-   Registry::register('apf::core', 'CurrentRequestURL', $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-}
-
-
-// set up configuration provider to let the developer customize it later on
-use APF\core\configuration\provider\ini\IniConfigurationProvider;
-
-ConfigurationManager::registerProvider('ini', new IniConfigurationProvider());
 
 /**
  * @package core::pagecontroller
@@ -135,53 +50,6 @@ ConfigurationManager::registerProvider('ini', new IniConfigurationProvider());
  */
 class IncludeException extends \Exception {
 }
-
-/**
- * @package core::pagecontroller
- * @function import
- *
- * Imports classes from a given namespace.
- * <p/>
- * Usage:
- * <pre>use APF\core\frontcontroller\Frontcontroller;</pre>
- *
- * @param string $namespace the namespace of the file (=relative path, starting at the root of your code base).
- * @param string $file the body of the desired file / class to include (without extension).
- * @throws IncludeException In case the requested component does not exist.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 03.12.2005<br />
- * Version 0.2, 14.04.2006<br />
- * Version 0.3, 14.01.2007 (Implemented proprietary support for PHP 5)<br />
- * Version 0.4, 03.03.2007 (Did some cosmetics)<br />
- * Version 0.5, 03.03.2007 (Added support for mixed operation under PHP 4 and PHP 5)<br />
- * Version 0.6, 24.03.2008 (Improved Performance due to include cache introduction)<br />
- * Version 0.7, 20.06.2008 (Moved to pagecontroller.php due to the Registry introduction)<br />
- * Version 0.8, 13.11.2008 (Replaced the include_once() calls with include()s to gain performance)<br />
- * Version 0.9, 25.03.2009 (Cleared implementation for the PHP 5 branch)<br />
- * Version 1.0, 08.03.2010 (Introduced exception instead of trigger_error())<br />
- * Version 1.1, 22.02.2012 (Optimized performance for importing multiple equal files)<br />
-
-function import($namespace, $file) {
-
-// check if the file is already included, if yes, return
-if (isset($GLOBALS['IMPORT_CACHE'][$namespace . $file])) {
-return;
-} else {
-$GLOBALS['IMPORT_CACHE'][$namespace . $file] = true;
-}
-
-// create the complete and absolute file name
-$file = APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $file . '.php';
-
-// do a file_exists() instead of @include() because fatal errors must not be caught here (e.g. class not found)!
-if (file_exists($file)) {
-include($file);
-} else {
-throw new \APF\core\pagecontroller\IncludeException('[import()] The given file (' . $file . ') cannot be loaded!', E_USER_ERROR);
-}
-}*/
 
 /**
  * @package core::pagecontroller
@@ -537,7 +405,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.1, 26.02.2011<br />
     */
    public function getVersion() {
-      return '1.17-SVN';
+      return '2.0-SVN';
    }
 
    /**
@@ -824,11 +692,6 @@ abstract class APFObject implements APFDIService {
 final class TagLib {
 
    /**
-    * @var string The namespace of the tag implementation.
-    */
-   private $namespace;
-
-   /**
     * @var string The class name of the tag implementation .
     */
    private $class;
@@ -848,35 +711,19 @@ final class TagLib {
     *
     * Defines a taglib.
     *
-    * @param string $namespace The namespace of the tag implementation.
-    * @param string $class The class name of the tag implementation.
+    * @param string $class The fully qualified class name of the tag implementation.
     * @param string $prefix The prefix of the tag  (e.g. <em>core<em> for tag <em>&lt;core:importdesign /&gt;).
     * @param string $name The name of the tag  (e.g. <em>importdesign<em> for tag <em>&lt;core:importdesign /&gt;).
     *
-    * @author Christian Schäfer
+    * @author Christian Schäfer, Christian Achatz
     * @version
     * Version 0.1, 28.12.2006<br />
+    * Version 0.2, 21.03.2013 (Tag classes are now namespace-aware)<br />
     */
-   public function __construct($namespace, $class, $prefix, $name) {
-      $this->namespace = $namespace;
+   public function __construct($class, $prefix, $name) {
       $this->class = $class;
       $this->prefix = $prefix;
       $this->name = $name;
-   }
-
-   /**
-    * @public
-    *
-    * Returns the namespace of the taglib.
-    *
-    * @return string The namespace of the taglib.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 12.09.2009<br />
-    */
-   public function getNamespace() {
-      return $this->namespace;
    }
 
    /**
@@ -1099,12 +946,12 @@ class Document extends APFObject {
       // we are *not* using the addTaglib() method, because the following tags are
       // already included in the pagecontroller.php and adding the tags directly
       // is twice as fast compared to the addTagLib() method.
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'core', 'addtaglib');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'ImportTemplateTag', 'core', 'importdesign');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AppendNodeTag', 'core', 'appendnode');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'TemplateTag', 'html', 'template');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'html', 'placeholder');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'html', 'getstring');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'core', 'addtaglib');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\ImportTemplateTag', 'core', 'importdesign');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AppendNodeTag', 'core', 'appendnode');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\TemplateTag', 'html', 'template');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'html', 'placeholder');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'html', 'getstring');
    }
 
    /**
@@ -1481,7 +1328,7 @@ class Document extends APFObject {
       try {
          $file = $this->getTemplateFilePath($namespace, $name);
       } catch (\Exception $e) {
-         // rethrow exception with meaningful content (class loader exception would be too missleading)
+         // rethrow exception with meaningful content (class loader exception would be too misleading)
          throw new IncludeException('[' . get_class($this) . '::loadContentFromFile()] Template "' . $name
                . '" not existent in namespace "' . $namespace . '"!', E_USER_ERROR, $e);
       }
@@ -1522,7 +1369,7 @@ class Document extends APFObject {
     */
    protected function getTemplateFilePath($namespace, $name) {
       // gather namespace and full(!) template name and use class loader to determine root path
-      $classLoader = \RootClassLoader::getLoaderByNamespace($namespace);
+      $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
       $rootPath = $classLoader->getRootPath();
       $vendor = $classLoader->getVendorName();
       $fqNamespace = str_replace($vendor . '\\', '', $namespace);
@@ -1586,7 +1433,6 @@ class Document extends APFObject {
                   . 'parsing loops reached!', E_USER_ERROR);
          }
 
-         $namespace = $this->tagLibs[$i]->getNamespace();
          $class = $this->tagLibs[$i]->getClass();
          $prefix = $this->tagLibs[$i]->getPrefix();
          $name = $this->tagLibs[$i]->getName();
@@ -1661,11 +1507,8 @@ class Document extends APFObject {
             // get the tag attributes of the current tag
             $attributes = XmlParser::getTagAttributes($prefix, $name, $tagString);
 
-            // determine fully qualified namespace and class
-            $fqNamespace = 'APF\\' . str_replace('::', '\\', $namespace);
-            $fqClass = $fqNamespace . '\\' . $class;
-
-            $object = new $fqClass();
+            // class is loaded by the class loader lazily
+            $object = new $class();
             /* @var $object Document */
 
             // inject context of the parent object
@@ -1761,12 +1604,8 @@ class Document extends APFObject {
                   . 'Template code: ' . $this->getContent());
          }
 
-         // Lazily import document controller class.
-         //import($controllerAttributes['namespace'], $controllerAttributes['class']);
-
-         // remark controller class
+         // remark controller class (fq class name!)
          $this->documentController = $controllerAttributes['class'];
-         $this->documentControllerNamespace = $controllerAttributes['namespace'];
 
          // remove definition from content to be not displayed
          $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
@@ -1835,16 +1674,8 @@ class Document extends APFObject {
          $id = '(' . $this->documentController . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
          $t->start($id);
 
-         // determine fully qualified namespace and class
-         $fqNamespace = 'APF\\' . str_replace('::', '\\', $this->documentControllerNamespace);
-         $fqClass = $fqNamespace . '\\' . $this->documentController;
-
-         if (!class_exists($fqClass)) {
-            throw new \InvalidArgumentException('[' . get_class($this) . '::transform()] DocumentController "'
-                  . $fqClass . '" cannot be found! Maybe the class name is mis-spelt!', E_USER_ERROR);
-         }
-
-         $docCon = new $fqClass;
+         // class is loaded via the class loader lazily
+         $docCon = new $this->documentController;
          /* @var $docCon DocumentController */
 
          // inject context
@@ -2250,12 +2081,11 @@ class AddTaglibTag extends Document {
     * Version 0.5, 20.12.2012 (Removed fallback mechanism for 1.17)<br />
     */
    public function onParseTime() {
-      $name = $this->getAttribute('name');
-      $namespace = $this->getAttribute('namespace');
-      $prefix = $this->getAttribute('prefix');
       $class = $this->getAttribute('class');
+      $name = $this->getAttribute('name');
+      $prefix = $this->getAttribute('prefix');
 
-      $tagLib = new TagLib($namespace, $class, $prefix, $name);
+      $tagLib = new TagLib($class, $prefix, $name);
       $this->getParentObject()->addTagLib($tagLib);
 
       // Resets the attributes list to avoid selection issues with the
@@ -2389,9 +2219,9 @@ class TemplateTag extends Document {
     * Version 0.8, 11.02.2012 (Added template:getstring tag as known tag (refactoring!))<br />
     */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'template', 'placeholder');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'template', 'addtaglib');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'template', 'getstring');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'template', 'placeholder');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'template', 'addtaglib');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'template', 'getstring');
    }
 
    /**

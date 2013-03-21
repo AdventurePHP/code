@@ -21,6 +21,8 @@ namespace APF\core\logging\writer;
  * -->
  */
 use APF\core\logging\LogWriter;
+use APF\core\logging\LogEntry;
+use APF\core\logging\LoggerException;
 
 /**
  * @package core::logging::writer

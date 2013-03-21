@@ -43,7 +43,7 @@ class FormLabelTag extends AbstractFormControl {
 
    public function __construct() {
       $this->attributeWhiteList = array('for', 'id', 'class');
-      $this->tagLibs = array(new TagLib('tools::form::taglib', 'LabelLanguageLabelTag', 'label', 'getstring'));
+      $this->tagLibs = array(new TagLib('APF\tools\form\taglib\LabelLanguageLabelTag', 'label', 'getstring'));
    }
 
    public function onParseTime() {
