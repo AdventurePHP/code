@@ -134,8 +134,10 @@ class RandomStringManager extends APFObject {
     * @version
     * Version 0.1, 07.09.2011<br />
     * Version 0.2, 15.10.2012 (Optimized performance of the method)<br />
+    * Verison 0.3, 20.03.2013 (At start reset randomString)<br />
     */
    public function createHash() {
+      $this->randomString = null;
       $chars = $this->mbStringToArray($this->chars);
       $charactersCount = count($chars);
 
@@ -159,9 +161,10 @@ class RandomStringManager extends APFObject {
     * @author dave
     * @version
     * Version 0.1, 07.09.2011<br />
+    * Version 0.2, 20.03.2013 (At start reset randomString)<br />
     */
    public function advancedCreateHash($select, $connectionKey) {
-      $this->randomString = '';
+      $this->randomString = null;
 
       if (!$select) {
          throw new InvalidArgumentException('[RandomStringManager::advancedCreateHash()] You must provide a SQL query!', E_USER_ERROR);
@@ -199,10 +202,11 @@ class RandomStringManager extends APFObject {
     * @author dave
     * @version
     * Version 0.1, 15.10.2012<br />
+    * Version 0.2, 20.03.2013 (At start reset serialNumber)<br />
     */
    public function createSerial() {
       $k = strlen($this->scheme);
-      $serialNumber = '';
+      $serialNumber = null;
       for ($i = 0; $i < $k; $i++) {
          switch ($this->scheme[$i]) {
             case 'X':
