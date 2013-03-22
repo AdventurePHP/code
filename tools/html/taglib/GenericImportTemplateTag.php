@@ -20,6 +20,9 @@ namespace APF\tools\html\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\ImportTemplateTag;
+use APF\core\singleton\Singleton;
+use APF\core\frontcontroller\Frontcontroller;
 
 /**
  * @package tools::html::taglib
@@ -56,7 +59,7 @@ class GenericImportTemplateTag extends ImportTemplateTag {
    /**
     * @public
     *
-    *  Handles the tag's attributes (ses class documentation) and includes the desired template.
+    * Handles the tag's attributes (ses class documentation) and includes the desired template.
     *
     * @author Christian Achatz
     * @version
@@ -145,16 +148,11 @@ class GenericImportTemplateTag extends ImportTemplateTag {
 
          // register action with the front controller
          /* @var $fC Frontcontroller */
-         $fC = &Singleton::getInstance('Frontcontroller');
+         $fC = &Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
          $action = &$fC->getActionByName($depact_name);
          if ($action === null) {
             $fC->addAction($depact_namespace, $depact_name, $actionParamList);
          }
-      }
-
-      // include the model class
-      if (!class_exists($modelClass)) {
-         import($modelNamespace, $modelFile);
       }
 
       // get model

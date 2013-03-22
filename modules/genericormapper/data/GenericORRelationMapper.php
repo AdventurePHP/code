@@ -180,7 +180,7 @@ class GenericORRelationMapper extends GenericORMapper {
       $namespace = $this->domainObjectsTable[$objectName]['Namespace'];
       $class = $this->domainObjectsTable[$objectName]['Class'];
 
-      import($namespace, $class);
+      // TODO switch to fully qualified addressing
       $object = new $class($objectName);
       if (!($object instanceof TreeItem)) {
          throw new GenericORMapperException('[GenericORRelationMapper::loadTreeItemList()] The object named "'
@@ -252,7 +252,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @version
     * Version 0.1, 26.06.2008 (Extracted from buildSelectStatementByCriterion())<br />
     * Version 0.2, 16.02.2010 (Added value escaping to avoid SQL injection)<br />
-    * Version 0.3, 28.05.2010 (Bugfix: corrected where definition creation)<br />
+    * Version 0.3, 28.05.2010 (Bug-fix: corrected where definition creation)<br />
     */
    protected function buildWhere($objectName, GenericCriterionObject $criterion) {
 
@@ -747,7 +747,7 @@ class GenericORRelationMapper extends GenericORMapper {
       }
 
       // check if object has related objects in it
-      $relatedObjects = &$object->getAllRelatedObjects();
+      $relatedObjects = & $object->getAllRelatedObjects();
       if (count($relatedObjects) > 0) {
 
          foreach ($relatedObjects as $relationKey => $DUMMY) {
@@ -1171,7 +1171,7 @@ class GenericORRelationMapper extends GenericORMapper {
 
             // only add, if the current object is involved in the association
             if ($attributes['SourceObject'] === $objectName || $attributes['TargetObject'] === $objectName) {
-               $relationList[] = &$this->relationTable[$sectionName];
+               $relationList[] = & $this->relationTable[$sectionName];
             }
          }
       }
@@ -1212,7 +1212,7 @@ class GenericORRelationMapper extends GenericORMapper {
       foreach ($this->relationTable as $sectionName => $attributes) {
 
          if ($attributes['Type'] == 'COMPOSITION' && $attributes[$directionAttribute] == $objectName) {
-            $relationList[] = &$this->relationTable[$sectionName];
+            $relationList[] = & $this->relationTable[$sectionName];
          }
       }
 
@@ -1605,7 +1605,7 @@ class GenericORRelationMapper extends GenericORMapper {
     *
     * Extracts the timestamps for the relation from the given GDO<br />
     *
-    * @param array $objects The given list of objects.
+    * @param GenericDomainObject[] $objects The given list of objects.
     * @param string $prefix The unique prefix.
     * @return GenericORMapperDataObject[] List of the objects.
     *
@@ -1613,7 +1613,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @version
     * Version 0.1, 27.07.2012<br />
     */
-   protected function extractRelationTimestamps($objects, $prefix) {
+   protected function extractRelationTimestamps(array $objects, $prefix) {
       if ($prefix !== null) {
          foreach ($objects AS &$object) {
             $object->extractRelationTimestamps($prefix);

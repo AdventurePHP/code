@@ -1,29 +1,29 @@
 <?php
 namespace APF\extensions\apfelsms\data;
 
+use APF\core\loader\RootClassLoader;
+use APF\core\pagecontroller\APFObject;
+use APF\core\registry\Registry;
+use APF\extensions\apfelsms\biz\SMSConfigurationException;
+use APF\extensions\apfelsms\biz\SMSException;
+use APF\extensions\apfelsms\biz\SMSManager;
+use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\extensions\apfelsms\data\SMSMapperInterface;
 
 /**
- *
  * @package APFelSMS
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (06.06.12)
- *
  */
 class SMSXMLMapper extends APFObject implements SMSMapper {
 
-
    const PAGE_NODENAME = 'page';
-
 
    const PAGEDEC_NODENAME = 'pageDec';
 
-
    const PAGEDEC_TYPE_ATTRNAME = 'type';
 
-
    const ARRAYVAR_KEY_ATTRNAME = 'key';
-
 
    /**
     * @var string
@@ -32,7 +32,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
 
    /**
-    * @var DOMDocument
+    * @var \DOMDocument
     */
    protected $XML_DOMDocument = null;
 
@@ -42,7 +42,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
     */
    public function setup() {
 
-      $libPath = Registry::retrieve('apf::core', 'LibPath');
+      $libPath =  RootClassLoader::getLoaderByVendor('APF')->getRootPath();
       $filename = $this->getXMLFilename();
       $fullPath = $libPath . '/' . $filename;
 
@@ -50,7 +50,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
          throw new SMSConfigurationException('[SMSXMLMapper::setup()] XML file "' . $filename . '" could not be found. (Full path: "' . $fullPath . '").', E_USER_ERROR);
       }
 
-      $this->XML_DOMDocument = new DOMDocument();
+      $this->XML_DOMDocument = new \DOMDocument();
       $this->XML_DOMDocument->load($fullPath);
 
       // we need to validate the document, to let the DTD be parsed and the id attribute be recognized as id by DOMDocument::getElementById().
@@ -112,7 +112,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
       // loop through defined decorators
       for ($i = 0; $i < $decNodesList->length; $i++) {
 
-         /** @var $decNode DOMElement */
+         /** @var $decNode \DOMElement */
          $decNode = $decNodesList->item($i);
 
          if ($decNode->parentNode->getAttribute('id') !== $pageId) {

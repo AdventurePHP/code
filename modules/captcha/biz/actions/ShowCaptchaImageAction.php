@@ -20,6 +20,8 @@ namespace APF\modules\captcha\biz\actions;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\loader\RootClassLoader;
 use APF\core\session\SessionManager;
 use APF\tools\http\HeaderManager;
 
@@ -44,7 +46,7 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
    /**
     * @public
     *
-    *  Implements the front controller's run method.
+    * Implements the front controller's run method.
     *
     * @author Christian Achatz
     * @version
@@ -52,14 +54,15 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
     */
    public function run() {
 
-      $sessMgr = new SessionManager('modules::captcha');
+      $session = new SessionManager('modules::captcha');
 
       // read captcha string from the session.
       $CaptchaStringName = $this->getInput()->getAttribute('name');
-      $text = $sessMgr->loadSessionData($CaptchaStringName);
+      $text = $session->loadSessionData($CaptchaStringName);
 
       // choose background
-      $background = APPS__PATH . '/modules/captcha/pres/images/captcha_' . rand(1, 12) . '.png';
+      $rootPath = $this->getRootPath();
+      $background = $rootPath . '/modules/captcha/pres/images/captcha_' . rand(1, 12) . '.png';
 
       // create image from background
       $img = ImageCreateFromPNG($background);
@@ -68,12 +71,12 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
       $color = ImageColorAllocate($img, 0, 0, 0);
 
       // define font type
-      $ttf = APPS__PATH . '/modules/captcha/pres/fonts/' . $this->fonts[rand(0, count($this->fonts) - 1)];
+      $font = $rootPath . '/modules/captcha/pres/fonts/' . $this->fonts[rand(0, count($this->fonts) - 1)];
 
       // define font size
-      $ttfsize = 25;
+      $fontSize = 25;
 
-      // Winkel definieren
+      // define the angle
       $angle = rand(0, 5);
 
       // define start point x
@@ -83,7 +86,7 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
       $t_y = 35;
 
       // insert text into image
-      imagettftext($img, $ttfsize, $angle, $t_x, $t_y, $color, $ttf, $text);
+      imagettftext($img, $fontSize, $angle, $t_x, $t_y, $color, $font, $text);
 
       // display image
       HeaderManager::send('Content-Type: image/png', true);
@@ -96,6 +99,13 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
       imagedestroy($img);
 
       exit();
+   }
+
+   /**
+    * @return string The root path of the APF code base.
+    */
+   private function getRootPath() {
+      return RootClassLoader::getLoaderByVendor('APF')->getRootPath();
    }
 
 }

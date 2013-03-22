@@ -31,8 +31,7 @@ use APF\core\pagecontroller\APFObject;
  * every class. This eases unit tests, because explicit singleton implementations cause side
  * effects during unit testing. As a cache container, the $GLOBALS array is used.
  * Usage:
- * <pre>import('my::namespace','MyClass');
- * $myObject = &Singleton::getInstance('MyClass');</pre>
+ * <pre>$myObject = &Singleton::getInstance('VENDOR\my\namespace\MyClass');</pre>
  *
  * @author Christian Achatz
  * @version

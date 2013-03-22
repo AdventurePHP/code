@@ -20,6 +20,8 @@ namespace APF\tools\html\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\ImportTemplateTag;
+use APF\core\service\APFService;
 
 /**
  * @package tools::html::taglib
@@ -67,10 +69,6 @@ class FrontControllerImportTemplateTag extends ImportTemplateTag {
          throw new \InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelparam" is not given!');
       } else {
          $modelParam = $this->attributes['modelparam'];
-      }
-
-      if (!class_exists($modelClass)) {
-         import($modelNamespace, $modelClass);
       }
 
       // get initialization mode

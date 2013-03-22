@@ -21,6 +21,7 @@ namespace APF\tools\link;
  * -->
  */
 use APF\core\frontcontroller\Frontcontroller;
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
@@ -919,14 +920,4 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
          ));
    }
 
-}
-
-// TODO extract to separate bootstrap file due to autoloading issues!
-// set up link scheme concerning the url rewriting configuration.
-// this can be done here, since import() ensures, that this file 
-// is only included once!
-if (Registry::retrieve('apf::core', 'URLRewriting', false)) {
-   LinkGenerator::setLinkScheme(new RewriteLinkScheme());
-} else {
-   LinkGenerator::setLinkScheme(new DefaultLinkScheme());
 }

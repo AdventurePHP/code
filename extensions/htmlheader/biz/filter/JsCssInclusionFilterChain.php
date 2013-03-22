@@ -20,6 +20,7 @@ namespace APF\extensions\htmlheader\biz\filter;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\filter\AbstractFilterChain;
 
 /**
  * This FilterChain allows it to use special output filters for js and css

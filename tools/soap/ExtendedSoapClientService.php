@@ -21,6 +21,7 @@ namespace APF\tools\soap;
  * -->
  */
 use APF\tools\soap\WsdlObjectMapping;
+use APF\core\pagecontroller\APFObject;
 
 /**
  * @package tools::soap
@@ -46,7 +47,7 @@ class ExtendedSoapClientService extends APFObject {
    private $wsdlUrl;
 
    /**
-    * @var SoapClient The instance of the PHP soap client.
+    * @var \SoapClient The instance of the PHP soap client.
     */
    private $client = null;
 
@@ -93,7 +94,7 @@ class ExtendedSoapClientService extends APFObject {
     *
     * Factory method for the PHP SoapClient.
     *
-    * @return SoapClient The instance of the soap client.
+    * @return \SoapClient The instance of the soap client.
     *
     * @author Christian Achatz
     * @version
@@ -101,7 +102,7 @@ class ExtendedSoapClientService extends APFObject {
     */
    protected function getClient() {
       if ($this->client === null) {
-         $this->client = new SoapClient($this->wsdlUrl, $this->options);
+         $this->client = new \SoapClient($this->wsdlUrl, $this->options);
       }
       return $this->client;
    }
@@ -167,7 +168,7 @@ class ExtendedSoapClientService extends APFObject {
     * @param string $action The name of the SOAP method.
     * @param array $arguments The SPA method's input parameters (usually an associative array).
     * @return mixed The response of the call (string or a response object).
-    * @throws SoapFault In case of any SOAP call error.
+    * @throws \SoapFault In case of any SOAP call error.
     *
     * @author Christian Achatz
     * @version
@@ -184,7 +185,7 @@ class ExtendedSoapClientService extends APFObject {
 
       // check for hidden soap faults
       if (isset($client->__soap_fault) && $client->__soap_fault != null) {
-         throw new SoapFault('SOAP-ERROR', 'SOAP call "' . $action . '"" failed with request "' . $arguments . '" with message "'
+         throw new \SoapFault('SOAP-ERROR', 'SOAP call "' . $action . '"" failed with request "' . $arguments . '" with message "'
                . $client->__soap_fault . '"! ' . 'Cause: ' . $response);
       }
 
@@ -218,8 +219,8 @@ class ExtendedSoapClientService extends APFObject {
     * @param string $action The WSDL method's name.
     * @param string $request The SOAP request string.
     * @param boolean $oneWay True in case no answer is expected.
-    * @return SimpleXMLElement|null The answer of the request or null in case $oneWay is set to TRUE.
-    * @throws SoapFault In case of any SOAP call error.
+    * @return \SimpleXMLElement|null The answer of the request or null in case $oneWay is set to TRUE.
+    * @throws \SoapFault In case of any SOAP call error.
     *
     * @author Christian Achatz
     * @version
@@ -238,7 +239,7 @@ class ExtendedSoapClientService extends APFObject {
 
          // check for hidden soap faults
          if (isset($client->__soap_fault) && $client->__soap_fault != null) {
-            throw new SoapFault('SOAP-ERROR', 'SOAP call "' . $action . '"" failed with request "' . $request
+            throw new \SoapFault('SOAP-ERROR', 'SOAP call "' . $action . '"" failed with request "' . $request
                   . '" with message "' . $client->__soap_fault . '"! ' . 'Cause: ' . $response);
          }
 
@@ -487,11 +488,9 @@ class ExtendedSoapClientService extends APFObject {
     * Version 0.1, 26.01.2012<br />
     */
    public function registerWsdlObjectMapping(WsdlObjectMapping $mapping) {
-      $this->options['classmap'][$mapping->getWsdlType()] = $mapping->getPhpClassName();
 
-      if (!class_exists($mapping->getPhpClassName())) {
-         import($mapping->getPhpClassNamespace(), $mapping->getPhpClassName());
-      }
+      // just register PHP class, because the class will be fully qualified and loaded via auto loading
+      $this->options['classmap'][$mapping->getWsdlType()] = $mapping->getPhpClassName();
 
       // reconfiguration requires to create a new instance.
       $this->client = null;

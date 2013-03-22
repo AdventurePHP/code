@@ -28,6 +28,7 @@ use APF\core\logging\SimpleLogEntry;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
+use APF\core\service\APFDIService;
 use APF\core\service\ServiceManager;
 use APF\core\service\DIServiceManager;
 use APF\core\configuration\ConfigurationManager;
@@ -299,8 +300,6 @@ final class XmlParser {
    }
 
 }
-
-use APF\core\service\APFDIService;
 
 /**
  * @package core::pagecontroller

@@ -20,10 +20,12 @@ namespace APF\modules\weather\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\loader\RootClassLoader;
+use APF\core\pagecontroller\BaseDocumentController;
 
 /**
  * @package modules::weather::pres::documentcontroller
- * @class weather_v2_controller
+ * @class Weather2Controller
  *
  * Implements an xml consumer to display current weather information.
  * Please provide the attribute "xml_source" in the core:importdesign tag that
@@ -33,7 +35,7 @@ namespace APF\modules\weather\pres\documentcontroller;
  * @version
  * Version 0.1, 17.08.2010<br />
  */
-class weather_v2_controller extends BaseDocumentController {
+class Weather2Controller extends BaseDocumentController {
 
    /**
     * @public
@@ -55,7 +57,7 @@ class weather_v2_controller extends BaseDocumentController {
       } else {
 
          // Display error message
-         $templateNoEntries = &$this->getTemplate('NoEntries_' . $this->language);
+         $templateNoEntries = & $this->getTemplate('NoEntries_' . $this->language);
          $templateNoEntries->setPlaceHolder('Source', $this->getXMLSource());
          $templateNoEntries->transformOnPlace();
       }
@@ -76,7 +78,7 @@ class weather_v2_controller extends BaseDocumentController {
    protected function transformXml($XML) {
 
       // Get references on the templates used
-      $Template__Information = &$this->getTemplate('Information');
+      $Template__Information = & $this->getTemplate('Information');
 
       // Create DOM document and get an reference on the channel node
       $DomDoc = simplexml_load_string($XML);
@@ -121,21 +123,23 @@ class weather_v2_controller extends BaseDocumentController {
             if ($xsltNamespace != null && $xsltFile != null) {
 
                // create XML source
-               $xml = new DOMDocument();
+               $xml = new \DOMDocument();
                $xml->loadXML($plainXml);
 
-               $xsl = new DOMDocument();
-               $xsl->load(APPS__PATH . '/' . str_replace('::', '/', $xsltNamespace) . '/' . $xsltFile . '.xsl');
+               $xsl = new \DOMDocument();
+
+               $rootPath = RootClassLoader::getLoaderByVendor('APF')->getRootPath();
+               $xsl->load($rootPath . '/' . str_replace('::', '/', $xsltNamespace) . '/' . $xsltFile . '.xsl');
 
                // configure transformer
-               $proc = new XSLTProcessor();
+               $proc = new \XSLTProcessor();
                $proc->importStyleSheet($xsl); // import XSL document
 
                $result = $proc->transformToXML($xml);
                if ($result) {
                   return $result;
                } else {
-                  throw new \InvalidArgumentException('[weather_v2_controller::__getXML()] XSLT Error!');
+                  throw new \InvalidArgumentException('[Weather2Controller::getXML()] XSLT Error!');
                }
             } else {
                return $plainXml;
@@ -144,7 +148,7 @@ class weather_v2_controller extends BaseDocumentController {
             return null;
          }
       } else {
-         throw new \InvalidArgumentException('[weather_v2_controller::__getXML()] Attribute "xml_source" not present in "core:importdesign" tag for weather module!');
+         throw new \InvalidArgumentException('[Weather2Controller::getXML()] Attribute "xml_source" not present in "core:importdesign" tag for weather module!');
       }
    }
 

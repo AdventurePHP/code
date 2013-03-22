@@ -20,10 +20,17 @@ namespace APF\modules\kontakt4\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\ConfigurationException;
+use APF\core\loader\RootClassLoader;
+use APF\core\pagecontroller\APFObject;
+use APF\core\pagecontroller\IncludeException;
 use APF\modules\kontakt4\biz\ContactFormData;
 use APF\modules\kontakt4\biz\ContactFormRecipient;
+use APF\modules\kontakt4\data\ContactMapper;
 use APF\tools\link\LinkGenerator;
 use APF\tools\http\HeaderManager;
+use APF\tools\link\Url;
+use APF\tools\mail\mailSender;
 
 /**
  * @package modules::kontakt4::biz
@@ -56,7 +63,7 @@ class ContactManager extends APFObject {
    public function sendContactForm(ContactFormData $formData) {
 
       // set up the mail sender
-      $MAIL = &$this->getAndInitServiceObject('tools::mail', 'mailSender', 'ContactForm');
+      $MAIL = & $this->getAndInitServiceObject('tools::mail', 'mailSender', 'ContactForm');
       /* @var $MAIL mailSender */
 
       $recipient = $this->getMapper()->loadRecipientPerId($formData->getRecipientId());
@@ -247,12 +254,19 @@ class ContactManager extends APFObject {
     * Version 0.1, 19.10.2011<br />
     */
    private function getEmailTemplateContent($namespace, $template) {
-      $file = APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $template . '.html';
+      $file = $this->getRootPath() . '/' . str_replace('\\', '/', $namespace) . '/' . $template . '.html';
       if (file_exists($file)) {
          return file_get_contents($file);
       }
       throw new IncludeException('Email template file "' . $file . '" cannot be loaded. '
             . 'Please review your contact module configuration!');
+   }
+
+   /**
+    * @return string The root path of the APF code base.
+    */
+   private function getRootPath() {
+      return RootClassLoader::getLoaderByVendor('APF')->getRootPath();
    }
 
 }

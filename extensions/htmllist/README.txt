@@ -37,8 +37,7 @@ EXAMPLE:
 ================================================================================
 
 
-import('extensions::htmllist::taglib','html_taglib_list');
-
+use APF\extensions\htmllist\taglib\html_taglib_list;
 ...
 $this->list = new html_taglib_list();
 $this->list->addList( 'list:unordered' , array( 'id' => 'rsslist' ) );

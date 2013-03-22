@@ -20,6 +20,8 @@ namespace APF\tools\html\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\loader\RootClassLoader;
+use APF\core\pagecontroller\ImportTemplateTag;
 
 /**
  * @package tools::html::taglib
@@ -144,7 +146,7 @@ class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
          if ($sec !== null) {
             $incParamName = $sec->getValue($incparam);
          }
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
          if ($this->getAttribute('deactivateConfigException', 'false') != "true") {
             throw $e;
          }
@@ -158,26 +160,32 @@ class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
       // If requested template does not exist, load default.
       $template = '';
 
+      $rootPath = $this->getRootPath();
+      $basePath = $rootPath . '/' . str_replace('\\', '/', $namespace);
       if (isset($_REQUEST[$incParamName]) && $_REQUEST[$incParamName] !== null && $_REQUEST[$incParamName] != '') {
          $templateToTest = $this->getFileName($prefix, '', $_REQUEST[$incParamName]);
-         $files = glob(str_replace('::', '/', APPS__PATH . '::' . $namespace) . '/' . $templateToTest);
+         $files = glob($basePath . '/' . $templateToTest);
          if (count($files) >= 1) {
-            $template = substr(str_replace(str_replace('::', '/', APPS__PATH . '::' . $namespace . '::'), '', $files[0]), 0, -5);
+            $template = substr(str_replace($basePath, '', $files[0]), 0, -5);
          }
       }
 
       if ($template == '') {
          // load default
          $templateToTest = $this->getFileName($prefix, $templateID);
-         $files = glob(str_replace('::', '/', APPS__PATH . '::' . $namespace) . '/' . $templateToTest);
+         $files = glob($basePath . '/' . $templateToTest);
          if (count($files) >= 1) {
-            $template = substr(str_replace(str_replace('::', '/', APPS__PATH . '::' . $namespace . '::'), '', $files[0]), 0, -5);
+            $template = substr(str_replace($basePath, '', $files[0]), 0, -5);
          }
       }
 
       $this->loadContentFromFile($namespace, $template);
       $this->extractDocumentController();
       $this->extractTagLibTags();
+   }
+
+   private function getRootPath() {
+      return RootClassLoader::getLoaderByVendor('APF')->getRootPath();
    }
 
 }

@@ -81,7 +81,7 @@ $HHM->addRefresh('index.php', 5, array("test" => "abc"));
 $HHM->title = "Example title";
 
 // Import css-node class
-import('extensions::htmlheader::biz','CssNode');
+use APF\extensions\htmlheader\biz\CssNode;
 
 // Get instance and configure in constructor: (Before 1.12 Revision 874)
 $CssNode = new CssNode($namespace, $filename);
@@ -92,7 +92,7 @@ $CssNode = new CssNode($namespace, $filename);
 $HHM->addCss($CssNode);
 
 // Import js-node class
-import('extensions::htmlheader::biz','JsNode');
+use APF\extensions\htmlheader\biz\JsNode;
 
 // Get instance and configure in constructor: (Before 1.12 Revision 874)
 $JsNode = new JsNode($namespace, $filename);

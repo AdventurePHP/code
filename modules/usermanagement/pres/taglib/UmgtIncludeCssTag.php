@@ -1,18 +1,5 @@
 <?php
 namespace APF\modules\usermanagement\pres\taglib;
-
-/**
- * @package modules::usermanagement::pres::taglib
- * @class UmgtIncludeCssTag
- *
- * Includes the css required to display the user management backend.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 30.08.2011<br />
- */
-use APF\core\pagecontroller\Document;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -32,12 +19,26 @@ use APF\core\pagecontroller\Document;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\loader\RootClassLoader;
+use APF\core\pagecontroller\Document;
+
+/**
+ * @package modules::usermanagement::pres::taglib
+ * @class UmgtIncludeCssTag
+ *
+ * Includes the css required to display the user management backend.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 30.08.2011<br />
+ */
 class UmgtIncludeCssTag extends Document {
 
    public function transform() {
+      $rootPath = RootClassLoader::getLoaderByVendor('APF')->getRootPath();
       return '<style type="text/css">'
             . PHP_EOL
-            . file_get_contents(APPS__PATH . '/modules/usermanagement/pres/css/umgt.css')
+            . file_get_contents($rootPath . '/modules/usermanagement/pres/css/umgt.css')
             . PHP_EOL
             . '</style>';
    }

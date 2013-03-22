@@ -20,7 +20,15 @@ namespace APF\extensions\htmlheader\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\Configuration;
+use APF\core\configuration\ConfigurationException;
+use APF\core\loader\RootClassLoader;
+use APF\core\pagecontroller\APFObject;
+use APF\core\pagecontroller\IncludeException;
+use APF\core\registry\Registry;
 use APF\extensions\htmlheader\biz\filter\JsCssInclusionFilterChain;
+use APF\tools\cache\CacheManagerFabric;
+use APF\tools\cache\key\SimpleCacheKey;
 
 /**
  * @package extensions::htmlheader::biz
@@ -149,8 +157,7 @@ class JsCssPackager extends APFObject {
 
    public function getFile($path, $file, $type, $gzip = false) {
 
-      $libBasePath = Registry::retrieve('apf::core', 'LibPath');
-      $filePath = $libBasePath . '/' . $path . '/' . $file . '.' . $type;
+      $filePath = $this->getRootPath() . '/' . $path . '/' . $file . '.' . $type;
 
       if (!file_exists($filePath)) {
          throw new IncludeException('[JsCssPackager::getFile()] The requested file "' . $file . '.'
@@ -196,7 +203,7 @@ class JsCssPackager extends APFObject {
     * Version 1.0, 18.03.2010<br />
     */
    protected function shrinkJs($input) {
-      use APF\extensions\htmlheader\biz\JSMin;
+      include(dirname(__FILE__) . '/JSMin.php');
       return JSMin::minify($input);
    }
 
@@ -256,9 +263,10 @@ class JsCssPackager extends APFObject {
     * Version 1.0, 18.03.2010<br />
     */
    protected function loadSingleFile($namespace, $file, $ext, $packageName) {
+
+      // TODO change addressing of package file
       $namespace = str_replace('::', '/', $namespace);
-      $libBasePath = Registry::retrieve('apf::core', 'LibPath');
-      $filePath = $libBasePath . '/' . $namespace . '/' . $file . '.' . $ext;
+      $filePath = $this->getRootPath() . '/' . $namespace . '/' . $file . '.' . $ext;
 
       if (file_exists($filePath)) {
          return file_get_contents($filePath);
@@ -286,13 +294,17 @@ class JsCssPackager extends APFObject {
          foreach ($section->getSectionNames() as $key) {
             $FilterInformation = $section->getSection($key);
 
+            // TODO change class addressing for shrinking configuration
             $namespace = $FilterInformation->getValue('Namespace');
             $name = $FilterInformation->getValue('Name');
 
-            import($namespace, $name);
             JsCssInclusionFilterChain::getInstance()->appendFilter(new $name());
          }
       }
+   }
+
+   private function getRootPath() {
+      return RootClassLoader::getLoaderByVendor('APF')->getRootPath();
    }
 
 }

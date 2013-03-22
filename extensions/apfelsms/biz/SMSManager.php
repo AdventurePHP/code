@@ -1,6 +1,8 @@
 <?php
 namespace APF\extensions\apfelsms\biz;
 
+use APF\core\pagecontroller\APFObject;
+use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
 use APF\tools\request\RequestHandler;
 use APF\tools\link\LinkGenerator;
 

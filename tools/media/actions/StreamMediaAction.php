@@ -24,6 +24,7 @@ session_cache_limiter('none');
 
 use APF\core\configuration\ConfigurationException;
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\loader\RootClassLoader;
 use APF\tools\http\HeaderManager;
 
 /**
@@ -51,7 +52,8 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
       $allowedExtensions = $this->getAllowedExtensions();
       if (isset($allowedExtensions[$extension])) {
 
-         $filePath = APPS__PATH . '/' . $namespace . '/' . $fileName;
+         $rootPath = RootClassLoader::getLoaderByVendor('APF')->getRootPath();
+         $filePath = $rootPath . '/' . $namespace . '/' . $fileName;
          if (file_exists($filePath)) {
 
             // map extension to known mime type

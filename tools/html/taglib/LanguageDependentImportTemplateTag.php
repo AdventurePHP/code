@@ -20,7 +20,10 @@ namespace APF\tools\html\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\Document;
+use APF\core\singleton\Singleton;
 
 /**
  * @package tools::html::taglib
@@ -61,10 +64,10 @@ class LanguageDependentImportTemplateTag extends Document {
     */
    public function onParseTime() {
 
-      /* @var $T BenchmarkTimer */
-      $T = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $id = '(LanguageDependentImportTemplateTag) ' . $this->getObjectId() . '::onParseTime()';
-      $T->start($id);
+      $t->start($id);
 
       // check attributes
       $namespace = $this->getAttribute('namespace');
@@ -89,7 +92,7 @@ class LanguageDependentImportTemplateTag extends Document {
       // parse known tags
       $this->extractTagLibTags();
 
-      $T->stop($id);
+      $t->stop($id);
 
    }
 
@@ -134,7 +137,8 @@ class LanguageDependentImportTemplateTag extends Document {
    protected function parseLanguageFile($namespace, $filename) {
 
       // create file name
-      $fileName = APPS__PATH . '/' . str_replace('::', '/', $namespace) . '/' . $filename . '.' . $this->language . '.xml';
+      $rootPath = RootClassLoader::getLoaderByVendor('APF')->getRootPath();
+      $fileName = $rootPath . '/' . str_replace('\\', '/', $namespace) . '/' . $filename . '.' . $this->language . '.xml';
 
       if (file_exists($fileName)) {
 
@@ -142,7 +146,7 @@ class LanguageDependentImportTemplateTag extends Document {
          $domDoc = @simplexml_load_string(file_get_contents($fileName));
 
          // translate tokens or throw error
-         if ($domDoc instanceof SimpleXMLElement) {
+         if ($domDoc instanceof \SimpleXMLElement) {
             $this->content = $this->parseLanguageTokens($this->content, $domDoc);
          } else {
             throw new \InvalidArgumentException('[LanguageDependentImportTemplateTag::__parseLanguageFile()] The translation file ("' . $filename . '.xml") in namespace "' . $namespace . '" does not contain a valid XML document! The content is returned without translation.');
@@ -186,7 +190,7 @@ class LanguageDependentImportTemplateTag extends Document {
     *
     *  Returns the value of a desired attribute of the given SimpleXMLElement.
     *
-    * @param SimpleXMLElement $element the XML node
+    * @param \SimpleXMLElement $element the XML node
     * @param string $name the name of the desired node attribute
     * @return string $attributeValue the value of the node attribute
     *

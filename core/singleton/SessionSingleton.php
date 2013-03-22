@@ -34,8 +34,7 @@ register_shutdown_function(array('APF\core\singleton\SessionSingleton', 'saveObj
  * from every class. This eases unit tests, because explicit singleton implementations cause
  * side effects during unit testing. As a cache container, the $GLOBALS array is used.
  * Usage:
- * <pre>import('my::namespace','MyClass');
- * $myObject = &SessionSingleton::getInstance('MyClass');</pre>
+ * <pre>$myObject = &SessionSingleton::getInstance('VENDOR\my\namespace\MyClass');</pre>
  *
  * @author Christian Schäfer
  * @version

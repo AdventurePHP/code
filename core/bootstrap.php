@@ -63,15 +63,19 @@
 // Define the internally used base path for the adventure php framework libraries.             //
 // In case of symlink usage or multi-project installation, you can define it manually.         //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-if (!isset($rootPath)) {
-   $rootPath = str_replace('/core', '', str_replace('\\', '/', dirname(__FILE__)));
+if (!isset($apfClassLoaderRootPath)) {
+   $apfClassLoaderRootPath = str_replace('/core', '', str_replace('\\', '/', dirname(__FILE__)));
 }
 
 // include the class loader
 include_once(dirname(__FILE__) . '/loader/RootClassLoader.php');
 
-\APF\core\loader\RootClassLoader::addLoader(new \APF\core\loader\StandardClassLoader('APF', $rootPath));
+// register class loader before including/configuring further elements
+\APF\core\loader\RootClassLoader::addLoader(new \APF\core\loader\StandardClassLoader('APF', $apfClassLoaderRootPath));
 spl_autoload_register(array('\APF\core\loader\RootClassLoader', 'load'));
+
+// include the page controller classes here (no auto loading) to avoid issues with multiple classes per file
+include_once(dirname(__FILE__) . '/pagecontroller/pagecontroller.php');
 
 use APF\core\configuration\ConfigurationManager;
 use APF\core\logging\Logger;
@@ -80,9 +84,7 @@ use APF\core\singleton\Singleton;
 
 // Define base parameters of the framework's core and tools layer
 Registry::register('apf::core', 'Environment', 'DEFAULT');
-Registry::register('apf::core', 'URLRewriting', false);
 Registry::register('apf::core', 'InternalLogTarget', 'apf');
-Registry::register('apf::core', 'LibPath', $rootPath, true);
 Registry::register('apf::core', 'Charset', 'UTF-8');
 
 // define current request url entry (check if the indices exist is important for cli-usage, because there they are neither available nor helpful)
@@ -94,6 +96,9 @@ if (isset($_SERVER['SERVER_PORT']) && isset($_SERVER['HTTP_HOST']) && isset($_SE
 
 // set up configuration provider to let the developer customize it later on
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
+use APF\tools\link\DefaultLinkScheme;
+use APF\tools\link\LinkGenerator;
+use APF\tools\link\RewriteLinkScheme;
 
 ConfigurationManager::registerProvider('ini', new IniConfigurationProvider());
 
@@ -104,5 +109,7 @@ register_shutdown_function(function () {
    $logger->flushLogBuffer();
 });
 
-// include the page controller to avoid issues with multiple classes per file
-include_once(dirname(__FILE__) . '/pagecontroller/pagecontroller.php');
+
+// Set up default link scheme configuration. In case url rewriting is required, please
+// specify another link scheme within your application bootstrap file.
+LinkGenerator::setLinkScheme(new DefaultLinkScheme());

@@ -20,6 +20,8 @@ namespace APF\extensions\htmllist\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\XmlParser;
+use APF\core\pagecontroller\Document;
 use APF\extensions\htmllist\taglib\list_control;
 use APF\extensions\htmllist\taglib\list_taglib_definition;
 use APF\extensions\htmllist\taglib\list_taglib_ordered;
@@ -124,8 +126,7 @@ class html_taglib_list extends list_control {
       } else {
          // throw error and return null as object id
          throw new \InvalidArgumentException('[html_taglib_list::createList()] No list element with name "'
-            . $elementType . '" found! Maybe the tag name is mis-spelt or the class is not '
-            . 'imported yet. Please use import() or &lt;list:addtaglib /&gt;!');
+            . $elementType . '" found! Maybe the tag name is mis-spelt. Please use &lt;list:addtaglib /&gt;!');
       }
    }
 

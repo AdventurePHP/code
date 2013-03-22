@@ -20,6 +20,7 @@ namespace APF\modules\genericormapper\data\tools;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\loader\RootClassLoader;
 use APF\modules\genericormapper\data\BaseMapper;
 use APF\tools\filesystem\Folder;
 use APF\tools\filesystem\File;
@@ -68,7 +69,7 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
     * @version 0.1,  15.01.2011<br />
     */
    protected function generateServiceObject($name) {
-      $filename = APPS__PATH . '/' . str_replace('::', '/', $this->domainObjectsTable[$name]['Namespace']) . '/' . $this->domainObjectsTable[$name]['Class'] . '.php';
+      $filename = $this->getRootPath() . '/' . str_replace('::', '/', $this->domainObjectsTable[$name]['Namespace']) . '/' . $this->domainObjectsTable[$name]['Class'] . '.php';
 
       // check if we need to update an old or create a new definition
       if (file_exists($filename)) {
@@ -76,6 +77,13 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
       } else {
          $this->createNewServiceObject($name, $filename);
       }
+   }
+
+   /**
+    * @return string The root path of the APF code base.
+    */
+   private function getRootPath() {
+      return RootClassLoader::getLoaderByVendor('APF')->getRootPath();
    }
 
    /**
@@ -88,7 +96,7 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
     * @version 0.1,  15.01.2011<br />
     */
    protected function createNewServiceObject($name) {
-      $filename = APPS__PATH . '/' . str_replace('::', '/', $this->domainObjectsTable[$name]['Namespace']) . '/' . $this->domainObjectsTable[$name]['Class'] . '.php';
+      $filename = $this->getRootPath() . '/' . str_replace('::', '/', $this->domainObjectsTable[$name]['Namespace']) . '/' . $this->domainObjectsTable[$name]['Class'] . '.php';
 
       $content = '<?php
 namespace APF\modules\genericormapper\data\tools;
@@ -116,7 +124,7 @@ namespace APF\modules\genericormapper\data\tools;
     * @version 0.1,  15.01.2011<br />
     */
    protected function updateServiceObject($name) {
-      $filename = APPS__PATH . '/' . str_replace('::', '/', $this->domainObjectsTable[$name]['Namespace']) . '/' . $this->domainObjectsTable[$name]['Class'] . '.php';
+      $filename = $this->getRootPath() . '/' . str_replace('::', '/', $this->domainObjectsTable[$name]['Namespace']) . '/' . $this->domainObjectsTable[$name]['Class'] . '.php';
 
       $content = file_get_contents($filename);
       $newCode = $this->generateBaseObjectCode($name);
@@ -160,6 +168,7 @@ namespace APF\modules\genericormapper\data\tools;
             ' * You can change class "' . $this->domainObjectsTable[$name]['Class'] . '" which extends this base-class.' . PHP_EOL .
             ' */' . PHP_EOL;
 
+      // TODO switch to fully qualified addressing
       if (isset($this->domainObjectsTable[$name]['Base'])) {
          $baseNamespace = $this->domainObjectsTable[$name]['Base']['Namespace'];
          $baseClass = $this->domainObjectsTable[$name]['Base']['Class'];
@@ -168,9 +177,7 @@ namespace APF\modules\genericormapper\data\tools;
          $baseClass = $this->DefaultBaseClass;
       }
 
-      $code .= 'import(\'' . $baseNamespace . '\', \'' . $baseClass . '\');' . PHP_EOL .
-            PHP_EOL .
-            '/**' . PHP_EOL .
+      $code .= '/**' . PHP_EOL .
             ' * @package ' . $this->domainObjectsTable[$name]['Namespace'] . PHP_EOL .
             ' * @class ' . $this->domainObjectsTable[$name]['Class'] . 'Base' . PHP_EOL .
             ' * ' . PHP_EOL .

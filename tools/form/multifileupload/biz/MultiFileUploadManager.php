@@ -20,6 +20,7 @@ namespace APF\tools\form\multifileupload\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\APFObject;
 use APF\core\session\SessionManager;
 use APF\tools\link\LinkGenerator;
@@ -27,6 +28,7 @@ use APF\tools\form\FormException;
 
 use APF\tools\filesystem\File;
 use APF\tools\filesystem\Folder;
+use APF\tools\link\Url;
 
 /**
  * @package tools::form::multifileupload::biz
@@ -66,7 +68,7 @@ class MultiFileUploadManager extends APFObject {
     */
    public function init($param) {
       if (!isset($param['formname']) || !isset($param['name'])) {
-         throw new FormException('[' . get_class($this) . '::addFile()] MultiFileUpload init params are not correct!', E_USER_ERROR);
+         throw new FormException('[' . get_class($this) . '::init()] MultiFileUpload init params are not correct!', E_USER_ERROR);
       }
       $this->formname = $param['formname'];
       $this->name = $param['name'];
@@ -75,12 +77,13 @@ class MultiFileUploadManager extends APFObject {
 
       //Temporäres Upload-Verzeichnis erstellen, falls es vorhanden ist, wird der Pfad zurück gegeben.
       $createFolder = new Folder();
-      $createFolder->create($this->getUploadPath());
+      $uploadPath = $this->getUploadPath();
+      $createFolder->create($uploadPath);
 
       if (!$createFolder) {
          throw new FormException('[' . get_class($this) . '::init()] The desired folder "'
                . $this->getContext() . '" could not be created under "'
-               . str_replace('::', '/', APPS__PATH . '::' . $this->tmpuploadpath) . '"! Please create the folder manually.', E_USER_ERROR);
+               . $uploadPath . '"! Please create the folder manually.', E_USER_ERROR);
       }
    }
 
@@ -93,7 +96,7 @@ class MultiFileUploadManager extends APFObject {
     * @version 1.0, 14.3.2011<br>
     */
    public function getUploadPath() {
-      return str_replace('::', '/', APPS__PATH . '::' . $this->tmpuploadpath . '::' . $this->getContext());
+      return $this->getRootPath() . '/' . $this->tmpuploadpath . '/' . $this->getContext();
    }
 
    /**
@@ -494,6 +497,13 @@ class MultiFileUploadManager extends APFObject {
     */
    public function deliverFile($uploadFileName) {
       readfile($this->getUploadPath() . '/' . $uploadFileName);
+   }
+
+   /**
+    * @return string The root path of the APF class loader.
+    */
+   private function getRootPath() {
+      return RootClassLoader::getLoaderByVendor('APF')->getRootPath();
    }
 
 }

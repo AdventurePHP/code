@@ -1,6 +1,7 @@
 <?php
 namespace APF\extensions\apfelsms\data;
 
+use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\extensions\apfelsms\biz\pages\SMSPageInterface;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDecInterface;
 

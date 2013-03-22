@@ -20,6 +20,10 @@ namespace APF\tools\string;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\pagecontroller\APFObject;
+use APF\core\service\APFService;
+use APF\core\singleton\Singleton;
 
 /**
  * @package tools::string
@@ -201,7 +205,6 @@ class AdvancedBBCodeParser extends APFObject {
 
             $namespace = $providerDefinition->getNamespace();
             $class = $providerDefinition->getClass();
-            import($namespace, $class);
 
             // convert definition and initialize provider
             $this->provider[$providerName] = $this->getServiceObject($namespace, $class, APFService::SERVICE_TYPE_NORMAL);
@@ -211,7 +214,6 @@ class AdvancedBBCodeParser extends APFObject {
       }
 
       $t->stop('AdvancedBBCodeParser::setUpProvider()');
-
    }
 
    /**
@@ -243,7 +245,6 @@ class AdvancedBBCodeParser extends APFObject {
       $t->stop('AdvancedBBCodeParser::parseCode()');
 
       return $string;
-
    }
 
 }
