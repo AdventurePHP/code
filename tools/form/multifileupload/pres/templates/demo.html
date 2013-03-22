@@ -1,13 +1,13 @@
-<@controller
-   namespace="tools::form::multifileupload::pres::documentcontroller"
-   class="DemoController"
-@><!DOCTYPE html>
+<@controller namespace="tools::form::multifileupload::pres::documentcontroller" class="DemoController" @>
+
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
    <head>
       <title>Multi file upload demo</title>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddCssTag" prefix="htmlheader" name="addcss" />
-      <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddJsTags" prefix="htmlheader" name="addjs" />
+      <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addcss" prefix="htmlheader" name="addcss" />
+      <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_addjs" prefix="htmlheader" name="addjs" />
 
       <htmlheader:addjs namespace="tools::form::multifileupload::pres::js" filename="jquery-1.6.3.min" priority="100" />
       <htmlheader:addjs namespace="tools::form::multifileupload::pres::js" filename="jquery-ui-1.8.21.custom.min"  priority="99" />
@@ -16,16 +16,18 @@
       <htmlheader:addjs namespace="tools::form::multifileupload::pres::js" filename="jquery.fileupload-ui" priority="89" />
       <htmlheader:addcss namespace="tools::form::multifileupload::pres::css" filename="jquery.fileupload-ui" />
 
-      <htmlheader:addcss namespace="tools::form::multifileupload::pres::css::ui-lightness" filename="jquery-ui-1.8.21.custom" />
+      <htmlheader:addcss namespace="tools::form::multifileupload::pres::css::south-street" filename="jquery-ui-1.8.21.custom" />
 
-      <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderGetHeadTag" prefix="htmlheader" name="gethead" />
+      <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="htmlheader_taglib_gethead" prefix="htmlheader" name="gethead" />
       <htmlheader:gethead />
+
    </head>
    <body>
-      <core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
+      <core:addtaglib namespace="tools::form::taglib" class="html_taglib_form" prefix="html" name="form" />
       <html:form name="file_upload" >
-         <form:addtaglib namespace="tools::form::multifileupload::pres::taglib" class="MultiFileUploadTag" prefix="form" name="multifileupload" />
+         <form:addtaglib namespace="tools::form::multifileupload::pres::taglib" class="form_taglib_multifileupload" prefix="form" name="multifileupload" />
          <form:multifileupload name="testfield"/>
+         
          <form:button name="send" value="Send"/>
       </html:form>
    </body>

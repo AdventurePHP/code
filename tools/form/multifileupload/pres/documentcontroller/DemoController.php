@@ -19,12 +19,12 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-class DemoController extends BaseDocumentController {
+class DemoController extends base_controller {
    public function transformContent() {
 
       $form = &$this->getForm('file_upload');
 
-      /* @var $uploadtest MultiFileUploadTag */
+      /* @var $uploadtest form_taglib_multifileupload */
       $uploadtest = $form->getFormElementByName('testfield');
 
       if ($form->isSent()) {
