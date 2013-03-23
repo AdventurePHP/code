@@ -20,13 +20,15 @@ namespace APF\modules\newspager\data;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\modules\newspager\biz\newspagerContent;
-use APF\tools\filesystem\File;
+use APF\core\pagecontroller\APFObject;
+use APF\core\pagecontroller\IncludeException;
+use APF\modules\newspager\biz\NewsItem;
+use APF\tools\filesystem\FilesystemItem;
 use APF\tools\filesystem\Folder;
 
 /**
  * @package modules::newspager::data
- * @class newspagerMapper
+ * @class NewsPagerMapper
  *
  *  Data layer component for loading the news page objects.<br />
  *
@@ -34,7 +36,7 @@ use APF\tools\filesystem\Folder;
  * @version
  * Version 0.1, 02.20.2008<br />
  */
-class newspagerMapper extends APFObject {
+class NewsPagerMapper extends APFObject {
 
    /**
     * @var string Defines the dir, where the news content is located.
@@ -62,8 +64,8 @@ class newspagerMapper extends APFObject {
     * Loads a news page object.
     *
     * @param int $page Desired page number.
-    * @return newspagerContent The newspagerContent domain object.
-    * @throws IncludeException
+    * @return NewsItem The NewsItem domain object.
+    * @throws IncludeException In case no news files are found.
     *
     * @author Christian Achatz
     * @version
@@ -78,6 +80,7 @@ class newspagerMapper extends APFObject {
       $rawFiles = $folder->open($this->dataDir)->getContent();
 
       // get files, that match the current language
+      /* @var $files FilesystemItem[] */
       $files = array();
       foreach ($rawFiles as $data) {
          if (substr_count($data->getName(), 'news_' . $this->getLanguage() . '_') > 0) {
@@ -89,7 +92,7 @@ class newspagerMapper extends APFObject {
       $newsCount = count($files);
 
       if ($newsCount == 0) {
-         throw new IncludeException('[newspagerMapper::getNewsByPage()] No news files are '
+         throw new IncludeException('[NewsPagerMapper::getNewsByPage()] No news files are '
                . 'given for language ' . $this->getLanguage(), E_USER_ERROR);
       }
 
@@ -107,14 +110,14 @@ class newspagerMapper extends APFObject {
       $newsArray = file($this->dataDir . '/' . $files[$page - 1]->getName());
 
       // initialize a new news content object
-      $newsItem = new newspagerContent();
+      $newsItem = new NewsItem();
 
       // fill headline
       if (isset($newsArray[0])) {
          $newsItem->setHeadline(trim($newsArray[0]));
       }
 
-      // fill subheadline
+      // fill sub headline
       if (isset($newsArray[1])) {
          $newsItem->setSubHeadline(trim($newsArray[1]));
       }
@@ -129,11 +132,9 @@ class newspagerMapper extends APFObject {
          $newsItem->setContent(trim($content));
       }
 
-      // set news count
       $newsItem->setNewsCount($newsCount);
 
       return $newsItem;
-
    }
 
 }

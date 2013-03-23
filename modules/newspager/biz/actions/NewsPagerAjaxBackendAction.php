@@ -20,19 +20,21 @@ namespace APF\modules\newspager\biz\actions;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\modules\newspager\biz\newspagerManager;
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\modules\newspager\biz\NewsItem;
+use APF\modules\newspager\biz\NewsPagerManager;
 
 /**
  * @package modules::newspager::biz
- * @class newspagerAction
+ * @class NewsPagerAjaxBackendAction
  *
- * Front controller action implemenatation for AJAX style loading of a news page.
+ * Front controller action implementation for AJAX style loading of a news page.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 02.20.2008<br />
  */
-class newspagerAction extends AbstractFrontcontrollerAction {
+class NewsPagerAjaxBackendAction extends AbstractFrontcontrollerAction {
 
    /**
     * @public
@@ -53,12 +55,12 @@ class newspagerAction extends AbstractFrontcontrollerAction {
       // inject the language here to ease service creation
       $this->setLanguage($this->getInput()->getAttribute('lang'));
 
-      /* @var $nM newspagerManager */
-      $nM = &$this->getAndInitServiceObject('modules::newspager::biz', 'newspagerManager', $dataDir);
+      /* @var $nM NewsPagerManager */
+      $nM = & $this->getAndInitServiceObject('modules::newspager::biz', 'NewsPagerManager', $dataDir);
 
       // load news object
       $news = $nM->getNewsByPage($page);
-      /* @var $news newspagerContent */
+      /* @var $news NewsItem */
 
       // create xml
       $xml = (string)'';

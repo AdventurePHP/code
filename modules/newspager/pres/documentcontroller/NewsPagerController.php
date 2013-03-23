@@ -20,19 +20,21 @@ namespace APF\modules\newspager\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\modules\newspager\biz\newspagerManager;
+use APF\core\pagecontroller\BaseDocumentController;
+use APF\core\registry\Registry;
+use APF\modules\newspager\biz\NewsPagerManager;
 
 /**
  * @package modules::newspager::pres
- * @class newspager_v1_controller
+ * @class NewsPagerController
  *
- *  Document controller for the newspager module.<br />
+ * Document controller for the newspager module.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 02.20.2008<br />
  */
-class newspager_v1_controller extends BaseDocumentController {
+class NewsPagerController extends BaseDocumentController {
 
    /**
     * @public
@@ -50,17 +52,17 @@ class newspager_v1_controller extends BaseDocumentController {
       // get current data dir or trigger error
       $DataDir = $this->getDocument()->getAttribute('datadir');
       if ($DataDir === null) {
-         throw new \InvalidArgumentException('[newspager_v1_controller::transformContent()] Tag '
+         throw new \InvalidArgumentException('[NewsPagerController::transformContent()] Tag '
                . 'attribute "datadir" was not present in the &lt;core:importdesign /&gt; tag '
                . 'definition! Please specify a news content directory!');
       }
 
       // get manager
-      $nM = &$this->getAndInitServiceObject('modules::newspager::biz', 'newspagerManager', $DataDir);
+      /* @var $manager NewsPagerManager */
+      $manager = & $this->getAndInitServiceObject('modules::newspager::biz', 'NewsPagerManager', $DataDir);
 
       // load default news page
-      $newsItem = $nM->getNewsByPage();
-      /* @var $newsItem newspagerContent */
+      $newsItem = $manager->getNewsByPage();
 
       // fill place holders
       $this->setPlaceHolder('NewsLanguage', $this->getLanguage());

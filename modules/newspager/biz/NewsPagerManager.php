@@ -20,11 +20,12 @@ namespace APF\modules\newspager\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\modules\newspager\data\newspagerMapper;
+use APF\core\pagecontroller\APFObject;
+use APF\modules\newspager\data\NewsPagerMapper;
 
 /**
  * @package modules::newspager::biz
- * @class newspagerManager
+ * @class NewsPagerManager
  *
  * Business component for loading the news page objects.<br />
  *
@@ -32,24 +33,13 @@ use APF\modules\newspager\data\newspagerMapper;
  * @version
  * Version 0.1, 02.20.2008<br />
  */
-class newspagerManager extends APFObject {
+class NewsPagerManager extends APFObject {
 
    /**
     * @var string Defines the dir, where the news content is located.
     */
    private $dataDir = null;
 
-   /**
-    * @public
-    *
-    * Initializes the manager.
-    *
-    * @param string $initParam the news content data dir
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 18.09.2008<br />
-    */
    public function init($initParam) {
 
       // cut trailing slash if necessary
@@ -67,7 +57,7 @@ class newspagerManager extends APFObject {
     * Loads a news page object.
     *
     * @param int $page desire page number
-    * @return newspagerContent The desired news item for the given page.
+    * @return NewsItem The desired news item for the given page.
     *
     * @author Christian Achatz
     * @version
@@ -75,8 +65,9 @@ class newspagerManager extends APFObject {
     * Version 0.2, 18.09.2008 (DataDir is now applied to the mapper)<br />
     */
    public function getNewsByPage($page = 1) {
-      $nM = &$this->getAndInitServiceObject('modules::newspager::data', 'newspagerMapper', $this->dataDir);
-      return $nM->getNewsByPage($page);
+      /* @var $mapper NewsPagerMapper */
+      $mapper = & $this->getAndInitServiceObject('modules::newspager::data', 'NewsPagerMapper', $this->dataDir);
+      return $mapper->getNewsByPage($page);
    }
 
 }

@@ -154,7 +154,7 @@ final class Folder extends FilesystemItem {
    /**
     * @public
     *
-    * @return  FilesystemItem[] An array of File- and Folder-Objects
+    * @return FilesystemItem[] An array of File- and Folder-Objects
     *
     * @author  Nicolas Pecher
     * @version Version 0.1, 01.05.2012

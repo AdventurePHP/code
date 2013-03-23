@@ -23,7 +23,7 @@ namespace APF\modules\newspager\biz;
 
 /**
  * @package modules::newspager::biz
- * @class newspagerContent
+ * @class NewsItem
  *
  *  Domain object class.<br />
  *
@@ -31,7 +31,7 @@ namespace APF\modules\newspager\biz;
  * @version
  * Version 0.1, 02.20.2008<br />
  */
-class newspagerContent {
+class NewsItem {
 
    /**
     * @protected
