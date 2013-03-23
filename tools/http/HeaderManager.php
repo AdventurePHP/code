@@ -80,13 +80,13 @@ class HeaderManager {
     *
     * @param string $content The content of the header.
     * @param bool $replacePrevHeaders Indicates, if previous headers should be overwritten.
-    * @param bool $httpStatus The HTTP status code.
+    * @param integer $httpStatus The HTTP status code.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 09.10.2008<br />
     */
-   public static function send($content, $replacePrevHeaders = false, $httpStatus = false) {
+   public static function send($content, $replacePrevHeaders = false, $httpStatus = null) {
 
       if ($httpStatus === false) {
          header($content, $replacePrevHeaders);
