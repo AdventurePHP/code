@@ -163,5 +163,3 @@ interface ChainedContentFilter {
     */
    public function filter(FilterChain &$chain, $input = null);
 }
-
-

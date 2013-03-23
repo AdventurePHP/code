@@ -20,6 +20,8 @@ namespace APF\core\errorhandler\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\BaseDocumentController;
+use APF\core\registry\Registry;
 
 /**
  * @package core::errorhandler::documentcontroller
@@ -49,7 +51,7 @@ class ErrorPageController extends BaseDocumentController {
       $errors = array_reverse(debug_backtrace());
       $buffer = (string)'';
 
-      $errorEntry = &$this->getTemplate('ErrorEntry');
+      $errorEntry = & $this->getTemplate('ErrorEntry');
 
       // generate stack trace
       for ($i = 0; $i < count($errors); $i++) {

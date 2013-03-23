@@ -24,7 +24,6 @@ use APF\core\configuration\Configuration;
 use APF\core\configuration\ConfigurationException;
 use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\ConfigurationProvider;
-use APF\core\configuration\provider\apc\ApcConfiguration;
 
 /**
  * @package core::configuration::provider::apc

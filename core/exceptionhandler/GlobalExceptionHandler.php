@@ -160,7 +160,7 @@ class DefaultExceptionHandler implements ExceptionHandler {
       // create page
       $stacktrace = new Page();
       $stacktrace->setContext('core::exceptionhandler');
-      $stacktrace->loadDesign('core::exceptionhandler::templates', 'exceptionpage');
+      $stacktrace->loadDesign('APF\core\exceptionhandler\templates', 'exceptionpage');
 
       // inject exception information into the document attributes array
       $doc = $stacktrace->getRootDocument();

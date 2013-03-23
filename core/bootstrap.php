@@ -132,3 +132,17 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\DefaultLinkScheme;
 
 LinkGenerator::setLinkScheme(new DefaultLinkScheme());
+
+// add the front controller filter that is a wrapper on the front controller's input
+// filters concerning thr url rewriting configuration
+use APF\core\filter\InputFilterChain;
+use APF\core\filter\ChainedGenericInputFilter;
+
+InputFilterChain::getInstance()->appendFilter(new ChainedGenericInputFilter());
+
+// add generic output filter that is a wrapper for the page controller's output
+// filter to adapt the url layout if url rewriting is activated
+use APF\core\filter\OutputFilterChain;
+use APF\core\filter\ChainedGenericOutputFilter;
+
+OutputFilterChain::getInstance()->appendFilter(new ChainedGenericOutputFilter());

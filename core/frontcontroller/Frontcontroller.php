@@ -20,23 +20,13 @@ namespace APF\core\frontcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\filter\InputFilterChain;
+use APF\core\filter\OutputFilterChain;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
-
-// add the front controller filter that is a wrapper on the front controller's input
-// filters concerning thr url rewriting configuration
-use APF\core\filter\InputFilterChain;
-use APF\core\filter\ChainedGenericInputFilter;
-InputFilterChain::getInstance()->appendFilter(new ChainedGenericInputFilter());
-
-// add generic output filter that is a wrapper for the page controller's output
-// filter to adapt the url layout if url rewriting is activated
-use APF\core\filter\OutputFilterChain;
-use APF\core\filter\ChainedGenericOutputFilter;
-OutputFilterChain::getInstance()->appendFilter(new ChainedGenericOutputFilter());
 
 /**
  * @package core::frontcontroller

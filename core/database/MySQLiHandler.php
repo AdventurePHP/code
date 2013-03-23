@@ -22,6 +22,7 @@ namespace APF\core\database;
  */
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\database\AbstractDatabaseHandler;
+use APF\core\logging\LogEntry;
 use APF\core\singleton\Singleton;
 
 /**
@@ -92,7 +93,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @param string $statementFile Name of the statement file (file body!).
     * @param string[] $params A list of statement parameters.
     * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
-    * @return MySQLi_Result The result of the statement executed.
+    * @return \MySQLi_Result The result of the statement executed.
     * @throws DatabaseHandlerException In case of any database related exception (e.g. statement
     *                                  syntax error or bind problems).
     *
@@ -309,7 +310,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Creates a MySQLi statement representation by the given statement string.
     *
     * @param string $statement The statement to create the statement instance of.
-    * @return MYSQLi_STMT The desired statement instance.
+    * @return \MYSQLi_STMT The desired statement instance.
     * @throws DatabaseHandlerException In case of any statement errors.
     *
     * @author Christian Achatz
@@ -335,7 +336,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     *
     * Binds the given params to the presented prepared statement.
     *
-    * @param MYSQLi_STMT $query The prepared query to bind the params to.
+    * @param \MYSQLi_STMT $query The prepared query to bind the params to.
     * @param string[] $params A list of statement parameters.
     *
     * @author Christian Achatz
@@ -368,7 +369,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     *
     * Fetches the result from a prepared query.
     *
-    * @param MYSQLi_STMT $query The prepared query to fetch the result from.
+    * @param \MYSQLi_STMT $query The prepared query to fetch the result from.
     * @return string[] The result array or null in case we have no result.
     *
     * @author Christian Achatz

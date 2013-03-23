@@ -20,7 +20,8 @@ namespace APF\core\logging\writer;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\logging\entry\GraphiteLogEntry;
+use APF\core\logging\LogWriter;
+use APF\core\logging\LoggerException;
 
 /**
  * @package core::logging::writer

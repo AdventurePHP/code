@@ -56,7 +56,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     * Version 0.6, 24.12.2005<br />
     * Version 0.7, 04.01.2005<br />
     * Version 0.8, 09.10.2008 (Removed the @ before mysql_connect to get a more detailed in case of connection errors)<br />
-    * Version 0.9, 18.03.2009 (Bugfix: create a new connection, even if the connection data is the same. This otherwise may result in interference of connections, that use different databases.)<br />
+    * Version 0.9, 18.03.2009 (Bug-fix: create a new connection, even if the connection data is the same. This otherwise may result in interference of connections, that use different databases.)<br />
     */
    protected function connect() {
 
@@ -142,7 +142,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     * Version 0.5, 05.08.2006 (File extension must not be present in the file name any more. Statement params are now optional.)<br />
     * Version 0.6, 05.08.2006 (Added the $showStatement param)<br />
     * Version 0.7, 29.03.2007 (Adapted implementation to the new page controller implementation)<br />
-    * Version 0.8, 07.03.2008 (Bugfix: query was not executed with the right connection)<br />
+    * Version 0.8, 07.03.2008 (Bug-fix: query was not executed with the right connection)<br />
     * Version 0.9, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
     * Version 1.0, 05.11.2008 (Added value escaping to the statement params)<br />
     * Version 1.1, 26.03.2009 (Enhanced the error messages)<br />

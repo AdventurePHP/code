@@ -20,6 +20,11 @@ namespace APF\core\logging\writer;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\database\AbstractDatabaseHandler;
+use APF\core\database\ConnectionManager;
+use APF\core\logging\LogWriter;
+use APF\core\logging\SimpleLogEntry;
+use APF\core\pagecontroller\APFObject;
 
 /**
  * @package core::logging::writer

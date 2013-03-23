@@ -76,6 +76,7 @@ final class ServiceManager {
          $instanceId = $namespace . '::' . $serviceName . '|' . $context . '_' . $language;
       }
 
+      // TODO switch to fully qualified addressing
       $fqNamespace = 'APF\\' . str_replace('::', '\\', $namespace);
       $fqClass = $fqNamespace . '\\' . $serviceName;
 

@@ -20,6 +20,8 @@ namespace APF\core\exceptionhandler\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\BaseDocumentController;
+use APF\core\registry\Registry;
 
 /**
  * @package core::exceptionhandler::documentcontroller
@@ -47,10 +49,10 @@ class ExceptionPageController extends BaseDocumentController {
       // get the exception trace, init output buffer
       $document = $this->getDocument();
       $exceptions = $document->getAttribute('trace');
-      $buffer = (string) '';
+      $buffer = (string)'';
 
       // get template
-      $templateExceptionEntry = &$this->getTemplate('ExceptionEntry');
+      $templateExceptionEntry = & $this->getTemplate('ExceptionEntry');
 
       // generate stacktrace
       for ($i = 0; $i < count($exceptions); $i++) {

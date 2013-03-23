@@ -20,6 +20,7 @@ namespace APF\core\logging\entry;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\logging\LogEntry;
 
 /**
  * @package core::logging::entry
