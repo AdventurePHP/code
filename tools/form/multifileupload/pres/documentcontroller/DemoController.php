@@ -1,5 +1,4 @@
 <?php
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -19,18 +18,30 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-class DemoController extends base_controller {
+
+/**
+ * @package tools::form::multifileupload::pres::documentcontroller
+ * @class DemoController
+ *
+ * Demo document controller that shows how to implement multi file upload.
+ *
+ * @author Werner Liemberger <wpublicmail@gmail.com>
+ * @version
+ * Version 1.0, 14.3.2011<br />
+ */
+class DemoController extends BaseDocumentController {
+
    public function transformContent() {
 
-      $form = &$this->getForm('file_upload');
+      $form = & $this->getForm('file_upload');
 
-      /* @var $uploadtest form_taglib_multifileupload */
-      $uploadtest = $form->getFormElementByName('testfield');
+      /* @var $uploadTest MultiFileUploadTag */
+      $uploadTest = $form->getFormElementByName('testfield');
 
       if ($form->isSent()) {
-         $files = $uploadtest->getFiles();
+         $files = $uploadTest->getFiles();
 
-         // Für die weitere Verarbeitung steht nun das Array files mit allen Dateien zur Verfügung.
+         // please note the array with all files uploaded within the above form
          echo printObject($files);
       } else {
          $form->transformOnPlace();
