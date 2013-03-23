@@ -20,6 +20,7 @@ namespace APF\modules\recaptcha\pres\validator;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\recaptcha\pres\taglib\ReCaptchaTag;
 use APF\tools\form\validator\TextFieldValidator;
 use APF\tools\request\RequestHandler;
 require_once(__DIR__ . '/../../external/google/recaptchalib.php');
@@ -45,7 +46,7 @@ class ReCaptchaValidator extends TextFieldValidator {
       $challengeContent = RequestHandler::getValue(ReCaptchaTag::RE_CAPTCHA_CHALLENGE_FIELD_IDENTIFIER);
       $answerIdentifier = RequestHandler::getValue(ReCaptchaTag::RE_CAPTCHA_CHALLENGE_ANSWER_IDENTIFIER);
 
-      /* @var $resp ReCaptchaResponse */
+      /* @var $resp \ReCaptchaResponse */
       $resp = recaptcha_check_answer(
          $control->getPrivateKey(),
          $_SERVER['REMOTE_ADDR'],
