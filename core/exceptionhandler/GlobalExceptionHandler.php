@@ -20,6 +20,13 @@ namespace APF\core\exceptionhandler;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\logging\LogEntry;
+use APF\core\logging\SimpleLogEntry;
+use APF\core\pagecontroller\Page;
+use APF\core\registry\Registry;
+use APF\core\singleton\Singleton;
+use APF\core\logging\Logger;
+use APF\core\benchmark\BenchmarkTimer;
 
 /**
  * @package core::exceptionhandler
@@ -38,13 +45,13 @@ interface ExceptionHandler {
     *
     * This method is intended to take the exception's information and processes it.
     *
-    * @param Exception $exception The current exception.
+    * @param \Exception $exception The current exception.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 21.02.2009<br />
     */
-   public function handleException(Exception $exception);
+   public function handleException(\Exception $exception);
 }
 
 /**
@@ -89,7 +96,7 @@ class DefaultExceptionHandler implements ExceptionHandler {
     */
    protected $exceptionTrace = array();
 
-   public function handleException(Exception $exception) {
+   public function handleException(\Exception $exception) {
 
       // fill attributes
       $this->exceptionNumber = $exception->getCode();
@@ -117,7 +124,7 @@ class DefaultExceptionHandler implements ExceptionHandler {
     */
    protected function logException() {
       $message = '[' . ($this->generateExceptionID()) . '] ' . $this->exceptionMessage . ' (Number: ' . $this->exceptionNumber . ', File: ' . $this->exceptionFile . ', Line: ' . $this->exceptionLine . ')';
-      use APF\core\logging\Logger;
+
       $log = Singleton::getInstance('APF\core\logging\Logger');
       /* @var $log Logger */
       $log->addEntry(
@@ -148,7 +155,7 @@ class DefaultExceptionHandler implements ExceptionHandler {
       // sometimes forgets about this import and throws a
       // Fatal error: Exception thrown without a stack frame in Unknown on line 0
       // exception.
-      use APF\core\benchmark\BenchmarkTimer;
+
 
       // create page
       $stacktrace = new Page();
@@ -240,14 +247,14 @@ abstract class GlobalExceptionHandler {
     * exception handling to the registered handler. In case no handler is registered or the mechanism is
     * disables, nothing will happen.
     *
-    * @param Exception $exception The current exception.
-    * @throws Exception In case the APF exception handler is disabled, the original exception is thrown.
+    * @param \Exception $exception The current exception.
+    * @throws \Exception In case the APF exception handler is disabled, the original exception is thrown.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 03.03.2012<br />
     */
-   public static function handleException(Exception $exception) {
+   public static function handleException(\Exception $exception) {
       if (self::$HANDLER === null) {
          // restore the PHP default exception handler to avoid loops or other issues
          restore_exception_handler();
@@ -255,7 +262,7 @@ abstract class GlobalExceptionHandler {
       } else {
          try {
             self::$HANDLER->handleException($exception);
-         } catch (Exception $exception) {
+         } catch (\Exception $exception) {
             // catch exceptions thrown within the exception handler to avoid
             // Fatal error: Exception thrown without a stack frame in Unknown on line 0
             // errors.
@@ -301,10 +308,6 @@ abstract class GlobalExceptionHandler {
       }
 
       // (re-)register the APF exception handler
-      set_exception_handler(array('GlobalExceptionHandler', 'handleException'));
+      set_exception_handler(array('APF\core\exceptionhandler\GlobalExceptionHandler', 'handleException'));
    }
 }
-
-// register the APF error handler to be able to easily configure the error handling mechanism
-GlobalExceptionHandler::registerExceptionHandler(new DefaultExceptionHandler());
-GlobalExceptionHandler::enable();

@@ -20,6 +20,13 @@ namespace APF\core\errorhandler;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\logging\LogEntry;
+use APF\core\logging\Logger;
+use APF\core\logging\SimpleLogEntry;
+use APF\core\pagecontroller\Page;
+use APF\core\registry\Registry;
+use APF\core\singleton\Singleton;
 
 /**
  * @package core::errorhandler
@@ -118,13 +125,13 @@ class DefaultErrorHandler implements ErrorHandler {
     */
    protected function logError() {
       $message = '[' . ($this->generateErrorID()) . '] ' . $this->errorMessage . ' (Number: ' . $this->errorNumber . ', File: ' . $this->errorFile . ', Line: ' . $this->errorLine . ')';
-      use APF\core\logging\Logger;
+
       $log = & Singleton::getInstance('APF\core\logging\Logger');
       /* @var $log Logger */
       $log->addEntry(
          new SimpleLogEntry(
-            // use the configured log target to allow custom configuration of APF-internal log statements
-            // to be written to a custom file/location
+         // use the configured log target to allow custom configuration of APF-internal log statements
+         // to be written to a custom file/location
             Registry::retrieve('apf::core', 'InternalLogTarget'),
             $message,
             LogEntry::SEVERITY_ERROR
@@ -153,7 +160,7 @@ class DefaultErrorHandler implements ErrorHandler {
       // sometimes forgets about this import and throws a
       // Fatal error: Exception thrown without a stack frame in Unknown on line 0
       // exception.
-      use APF\core\benchmark\BenchmarkTimer;
+
 
       // create page
       $stacktrace = new Page();
@@ -304,16 +311,7 @@ abstract class GlobalErrorHandler {
       }
 
       // (re-)register the APF error handler
-      set_error_handler(array('GlobalErrorHandler', 'handleError'));
+      set_error_handler(array('APF\core\errorhandler\GlobalErrorHandler', 'handleError'));
    }
 
 }
-
-// let PHP raise and display all errors to be able to handle them suitable by the APF error handler.
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-ini_set('html_errors', 'off');
-
-// register the APF error handler to be able to easily configure the error handling mechanism
-GlobalErrorHandler::registerErrorHandler(new DefaultErrorHandler());
-GlobalErrorHandler::enable();

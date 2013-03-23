@@ -20,6 +20,7 @@ namespace APF\core\exceptionhandler;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\registry\Registry;
 
 /**
  * @package core::exceptionhandler
@@ -35,7 +36,7 @@ namespace APF\core\exceptionhandler;
  */
 class ProductionExceptionHandler extends DefaultExceptionHandler {
 
-   public function handleException(Exception $exception) {
+   public function handleException(\Exception $exception) {
 
       // fill attributes
       $this->exceptionNumber = $exception->getCode();

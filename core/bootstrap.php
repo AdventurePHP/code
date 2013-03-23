@@ -74,15 +74,31 @@ include_once(dirname(__FILE__) . '/loader/RootClassLoader.php');
 \APF\core\loader\RootClassLoader::addLoader(new \APF\core\loader\StandardClassLoader('APF', $apfClassLoaderRootPath));
 spl_autoload_register(array('\APF\core\loader\RootClassLoader', 'load'));
 
+// register the APF error handler to be able to easily configure the error handling mechanism
+use APF\core\exceptionhandler\DefaultExceptionHandler;
+use APF\core\exceptionhandler\GlobalExceptionHandler;
+
+GlobalExceptionHandler::registerExceptionHandler(new DefaultExceptionHandler());
+GlobalExceptionHandler::enable();
+
+// let PHP raise and display all errors to be able to handle them suitable by the APF error handler.
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('html_errors', 'off');
+
+// register the APF error handler to be able to easily configure the error handling mechanism
+use APF\core\errorhandler\DefaultErrorHandler;
+use APF\core\errorhandler\GlobalErrorHandler;
+
+GlobalErrorHandler::registerErrorHandler(new DefaultErrorHandler());
+GlobalErrorHandler::enable();
+
 // include the page controller classes here (no auto loading) to avoid issues with multiple classes per file
 include_once(dirname(__FILE__) . '/pagecontroller/pagecontroller.php');
 
-use APF\core\configuration\ConfigurationManager;
-use APF\core\logging\Logger;
-use APF\core\registry\Registry;
-use APF\core\singleton\Singleton;
-
 // Define base parameters of the framework's core and tools layer
+use APF\core\registry\Registry;
+
 Registry::register('apf::core', 'Environment', 'DEFAULT');
 Registry::register('apf::core', 'InternalLogTarget', 'apf');
 Registry::register('apf::core', 'Charset', 'UTF-8');
@@ -95,21 +111,24 @@ if (isset($_SERVER['SERVER_PORT']) && isset($_SERVER['HTTP_HOST']) && isset($_SE
 }
 
 // set up configuration provider to let the developer customize it later on
+use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
-use APF\tools\link\DefaultLinkScheme;
-use APF\tools\link\LinkGenerator;
-use APF\tools\link\RewriteLinkScheme;
 
 ConfigurationManager::registerProvider('ini', new IniConfigurationProvider());
 
 // configure logger (outside namespace'd file! otherwise initialization will not work)
+use APF\core\singleton\Singleton;
+use APF\core\logging\Logger;
+
 register_shutdown_function(function () {
    /* @var $logger Logger */
    $logger = & Singleton::getInstance('APF\core\logging\Logger');
    $logger->flushLogBuffer();
 });
 
-
 // Set up default link scheme configuration. In case url rewriting is required, please
 // specify another link scheme within your application bootstrap file.
+use APF\tools\link\LinkGenerator;
+use APF\tools\link\DefaultLinkScheme;
+
 LinkGenerator::setLinkScheme(new DefaultLinkScheme());
