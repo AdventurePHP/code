@@ -21,6 +21,8 @@ namespace APF\tools\html\taglib;
  * -->
  */
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\PlaceHolderTag;
+use APF\core\pagecontroller\TagLib;
 
 /**
  * @package tools::html::taglib
@@ -44,9 +46,9 @@ class HtmlIteratorItemTag extends Document {
     * Version 0.1, 01.06.2008<br />
     */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'item', 'placeholder');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'item', 'getstring');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'item', 'addtaglib');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'item', 'placeholder');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'item', 'getstring');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'item', 'addtaglib');
    }
 
    public function onParseTime() {
@@ -70,7 +72,7 @@ class HtmlIteratorItemTag extends Document {
       if (count($this->children) > 0) {
          foreach ($this->children as $objectId => $DUMMY) {
             if ($this->children[$objectId] instanceof PlaceHolderTag) {
-               $placeHolders[] = &$this->children[$objectId];
+               $placeHolders[] = & $this->children[$objectId];
             }
          }
       }

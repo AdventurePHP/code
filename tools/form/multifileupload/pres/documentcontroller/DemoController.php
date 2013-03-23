@@ -23,6 +23,16 @@ namespace APF\tools\form\multifileupload\pres\documentcontroller;
 use APF\core\pagecontroller\BaseDocumentController;
 use APF\tools\form\multifileupload\pres\taglib\MultiFileUploadTag;
 
+/**
+ * @package tools::form::multifileupload::pres::documentcontroller
+ * @class DemoController
+ *
+ * Demo document controller that shows how to implement multi file upload.
+ *
+ * @author Werner Liemberger <wpublicmail@gmail.com>
+ * @version
+ * Version 1.0, 14.3.2011<br />
+ */
 class DemoController extends BaseDocumentController {
 
    public function transformContent() {

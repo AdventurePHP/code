@@ -20,6 +20,10 @@ namespace APF\extensions\form\client\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\extensions\form\client\ClientValidationScriptStore;
+use APF\tools\form\FormException;
+use APF\tools\form\taglib\AbstractFormControl;
+use APF\tools\form\taglib\HtmlFormTag;
 
 /**
  * @package extensions::form::client
@@ -62,7 +66,7 @@ class AddFormControlClientValidatorTag extends AbstractFormControl {
 
       // Configure referenced controls
       /* @var $parent HtmlFormTag */
-      $parent = $this->parentObject;
+      $parent = $this->getParentObject();
       foreach ($controlsTmp as $control) {
          if (($ref = $parent->getFormElementByName($control)->getAttribute('ref')) !== NULL) {
             $controlsTmp[] = $ref;

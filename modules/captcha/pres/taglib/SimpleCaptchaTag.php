@@ -20,10 +20,13 @@ namespace APF\modules\captcha\pres\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\XmlParser;
+use APF\tools\form\filter\AbstractFormFilter;
 use APF\tools\form\taglib\AbstractFormControl;
+use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\TextFieldTag;
 use APF\tools\form\validator\AbstractFormValidator;
-use APF\tools\request\RequestHandler;
+use APF\tools\link\Url;
 use APF\tools\string\StringAssistant;
 use APF\core\session\SessionManager;
 use APF\tools\link\LinkGenerator;
@@ -148,7 +151,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
          $this->textField->setAttribute(AbstractFormValidator::$CUSTOM_MARKER_CLASS_ATTRIBUTE, $errorClass);
       }
 
-      $this->textFieldName = md5($this->parentObject->getAttribute('name') . '_captcha');
+      $this->textFieldName = md5($this->getParentObject()->getAttribute('name') . '_captcha');
       $this->textField->setAttribute('name', $this->textFieldName);
       $this->textField->setAttribute('maxlength', '5');
 
@@ -158,7 +161,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
       $this->textField->onParseTime();
 
       // apply the onAfterAppend method to guarantee native APF environment
-      $this->textField->setParentObject($this->parentObject);
+      $this->textField->setParentObject($this->getParentObject());
       $this->textField->onAfterAppend();
 
       // get the captcha string from session
@@ -247,7 +250,9 @@ class SimpleCaptchaTag extends AbstractFormControl {
       // clear field on form errors
       $cleanOnError = $this->getAttribute('clearonformerror');
       if ($cleanOnError === 'true') {
-         if (!$this->parentObject->isValid()) {
+         /* @var $parent HtmlFormTag */
+         $parent = $this->getParentObject();
+         if (!$parent->isValid()) {
             $this->textField->setAttribute('value', '');
          }
       }

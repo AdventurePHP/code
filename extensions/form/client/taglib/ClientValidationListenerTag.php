@@ -20,12 +20,15 @@ namespace APF\extensions\form\client\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\TagLib;
+use APF\tools\form\taglib\HtmlFormTag;
+use APF\tools\form\taglib\AbstractFormControl;
 
 /**
  * @package extensions::form::client
  * @class ClientValidationListenerTag
  *
- *  This taglib adds an clientlistener, which can be displayed by clientside form validation.
+ *  This taglib adds an client listener, which can be displayed by client-side form validation.
  *
  * @author Ralf Schubert  <ralf.schubert@the-screeze.de>
  * @version
@@ -80,7 +83,7 @@ class ClientValidationListenerTag extends AbstractFormControl {
       $controlName = $this->attributes['control'];
 
       /* @var $parent HtmlFormTag */
-      $parent = $this->parentObject;
+      $parent = $this->getParentObject();
       $control = $parent->getFormElementByName($controlName);
 
       $this->transformChildren();
@@ -123,4 +126,5 @@ class ClientValidationListenerTag extends AbstractFormControl {
             '});</script>';
       return $output;
    }
+
 }

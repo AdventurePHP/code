@@ -20,7 +20,10 @@ namespace APF\tools\html\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\benchmark\BenchmarkTimer;
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\TagLib;
+use APF\core\singleton\Singleton;
 use APF\tools\html\taglib\HtmlIteratorItemTag;
 use APF\tools\request\RequestHandler;
 
@@ -78,10 +81,10 @@ class HtmlIteratorTag extends Document {
     * Version 0.2, 09.08.2009 (Added the addtaglib tag to enable custom tags.)<br />
     */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('tools::html::taglib', 'HtmlIteratorItemTag', 'iterator', 'item');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'iterator', 'addtaglib');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'iterator', 'getstring');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'iterator', 'placeholder');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'iterator', 'addtaglib');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'iterator', 'getstring');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'iterator', 'placeholder');
+      $this->tagLibs[] = new TagLib('APF\tools\html\taglib\HtmlIteratorItemTag', 'iterator', 'item');
    }
 
    /**
@@ -245,14 +248,14 @@ class HtmlIteratorTag extends Document {
                $localGetter = $placeHolders[$objectId]->getAttribute('getter');
                if ($localGetter == null) {
                   $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
-                     $getter
-                     }(
-                        $placeHolders[$objectId]->getAttribute('name'))
+                           $getter
+                           }(
+                              $placeHolders[$objectId]->getAttribute('name'))
                   );
                } else {
                   $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
-                  $localGetter
-                  }());
+                        $localGetter
+                        }());
                }
             }
 
@@ -276,14 +279,13 @@ class HtmlIteratorTag extends Document {
       // transform all other child tags except the iterator item(s)
       foreach ($this->children as $objectId => $DUMMY) {
 
-         if (get_class($this->children[$objectId]) !== 'HtmlIteratorItemTag') {
+         if (!($this->children[$objectId] instanceof HtmlIteratorItemTag)) {
             $iterator = str_replace('<' . $objectId . ' />', $this->children[$objectId]->transform(), $iterator);
          }
 
       }
 
       return $iterator;
-
    }
 
    /**
@@ -322,7 +324,7 @@ class HtmlIteratorTag extends Document {
    protected function getIteratorItemObjectId() {
 
       foreach ($this->children as $objectId => $DUMMY) {
-         if (get_class($this->children[$objectId]) === 'HtmlIteratorItemTag') {
+         if ($this->children[$objectId] instanceof HtmlIteratorItemTag) {
             return $objectId;
          }
       }

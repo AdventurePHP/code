@@ -20,6 +20,10 @@ namespace APF\extensions\form\client\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\service\APFService;
+use APF\extensions\form\client\ClientValidationScriptStore;
+use APF\tools\form\taglib\AbstractFormControl;
+use APF\tools\form\taglib\HtmlFormTag;
 
 /**
  * @package extensions::form::client
@@ -48,7 +52,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
     */
    public function onParseTime() {
       // inject form id to append validators
-      $this->parentObject->setAttribute('id', $this->getFormId());
+      $this->getParentObject()->setAttribute('id', $this->getFormId());
    }
 
    /**
@@ -61,10 +65,11 @@ class GetClientFormValidationTag extends AbstractFormControl {
     * Version 1.0, 18.03.2010<br />
     */
    protected function getFormId() {
-      $formId = $this->parentObject->getAttribute('id');
+      $parent = $this->getParentObject();
+      $formId = $parent->getAttribute('id');
       if ($formId === null) {
-         $formId = 'apf-form-' . $this->parentObject->getObjectId();
-         $this->parentObject->setAttribute('id', $formId);
+         $formId = 'apf-form-' . $parent->getObjectId();
+         $parent->setAttribute('id', $formId);
       }
       return $formId;
    }
@@ -81,7 +86,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
    public function transform() {
 
       // We handle all js-functions which need to be called on the form element in a
-      // seperate index, in order to avoid multiple selecting of the form.
+      // separate index, in order to avoid multiple selecting of the form.
       $javascript = array(
          'general' => '',
          'form' => '$(\'form[id=' . $this->getFormId() . ']\')'
@@ -151,7 +156,7 @@ class GetClientFormValidationTag extends AbstractFormControl {
 
       // Check type of control, and generate jQuery selector
       /* @var $parent HtmlFormTag */
-      $parent = $this->parentObject;
+      $parent = $this->getParentObject();
       switch (get_class($parent->getFormElementByName($definition['control']))) {
          case 'SelectBoxTag':
             $jQSelector = ':input[name=\'' . $definition['control'] . '\[\]\']';
@@ -162,7 +167,6 @@ class GetClientFormValidationTag extends AbstractFormControl {
          default:
             $jQSelector = ':input[name=\'' . $definition['control'] . '\']';
       }
-
 
       // check if we need to set an onBlur event, and if we set it already on this control.
       if ($definition['onblur'] === true) {

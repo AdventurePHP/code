@@ -20,6 +20,7 @@ namespace APF\extensions\form\client\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\tools\form\taglib\AbstractFormControl;
 
 /**
  * @package extensions::form::client
@@ -79,7 +80,7 @@ class FormClientErrorDisplayTag extends AbstractFormControl {
    public function transform() {
       $this->transformChildren();
 
-      $formID = $this->parentObject->getAttribute('id');
+      $formID = $this->getParentObject()->getAttribute('id');
       $output = '<div id="apf-error-' . $formID . '" class="apf-form-clienterror">' . $this->content . '</div>';
       /*
        * Generate javascript for binding on the ValidationNotify event.

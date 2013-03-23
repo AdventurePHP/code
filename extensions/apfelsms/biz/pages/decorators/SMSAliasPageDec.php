@@ -1,36 +1,31 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators;
-
 use APF\extensions\apfelsms\biz\pages\decorators\SMSAbstractPageDec;
 
 /**
  *
  * @package APFelSMS
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
- * @version : v0.1 (06.06.12)
  * @desc    : An alias page decorator uses the template name (and title/navTitle if own are not defined) of a referenced page
  *            There is no impact on the link (url returned by getLink()) or parents and children
- *
+ * @version :  v0.1 (06.06.12)
+ *             v0.2 (15.03.13) fixed bug in method getNavTitle(), which returned title instead of navTitle
  */
 class SMSAliasPageDec extends SMSAbstractPageDec {
-
 
    /**
     * @var SMSPage
     */
    protected $referencedPage;
 
-
    /**
     * @var string
     */
    protected $referencedPageId;
 
-
    public static $mapVars = array(
       'referencedPageId' => null
    );
-
 
    /**
     * @return SMSPage
@@ -50,7 +45,6 @@ class SMSAliasPageDec extends SMSAbstractPageDec {
 
    }
 
-
    /**
     * @return string
     */
@@ -58,7 +52,6 @@ class SMSAliasPageDec extends SMSAbstractPageDec {
 
       return $this->getReferencedPage()->getTemplateName();
    }
-
 
    /**
     * @return string
@@ -76,9 +69,12 @@ class SMSAliasPageDec extends SMSAbstractPageDec {
 
    }
 
+   /**
+    * @return string
+    */
    public function getNavTitle() {
 
-      $navTitle = $this->SMSPage->getTitle();
+      $navTitle = $this->SMSPage->getNavTitle();
 
       if (empty($navTitle)) {
          return $this->getReferencedPage()->getNavTitle();
@@ -94,7 +90,6 @@ class SMSAliasPageDec extends SMSAbstractPageDec {
 
       return $this->getReferencedPage()->isAccessProtected();
    }
-
 
    /**
     * @return bool

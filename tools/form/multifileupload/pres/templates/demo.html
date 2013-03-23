@@ -16,7 +16,7 @@
       <htmlheader:addjs namespace="tools::form::multifileupload::pres::js" filename="jquery.fileupload-ui" priority="89" />
       <htmlheader:addcss namespace="tools::form::multifileupload::pres::css" filename="jquery.fileupload-ui" />
 
-      <htmlheader:addcss namespace="tools::form::multifileupload::pres::css::ui-lightness" filename="jquery-ui-1.8.21.custom" />
+      <htmlheader:addcss namespace="tools::form::multifileupload::pres::css::south-street" filename="jquery-ui-1.8.21.custom" />
 
       <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderGetHeadTag" prefix="htmlheader" name="gethead" />
       <htmlheader:gethead />
@@ -26,6 +26,7 @@
       <html:form name="file_upload" >
          <form:addtaglib namespace="tools::form::multifileupload::pres::taglib" class="MultiFileUploadTag" prefix="form" name="multifileupload" />
          <form:multifileupload name="testfield"/>
+         
          <form:button name="send" value="Send"/>
       </html:form>
    </body>

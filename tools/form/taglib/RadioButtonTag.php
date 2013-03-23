@@ -20,6 +20,7 @@ namespace APF\tools\form\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\tools\form\FormException;
 
 /**
  * @package tools::form::taglib
@@ -83,7 +84,7 @@ class RadioButtonTag extends AbstractFormControl {
       // Check for name and value beeing present. Otherwise
       // presetting will fail!
       if ($name === null || $value === null) {
-         $formName = $this->parentObject->getAttribute('name');
+         $formName = $this->getParentObject()->getAttribute('name');
          throw new FormException('[RadioButtonTag::presetValue()] Attribute "name" and or "value" is '
                . 'missing for &lt;form:radio /&gt; definition within form "' . $formName . '". '
                . 'Please check your tag definition!', E_USER_ERROR);
