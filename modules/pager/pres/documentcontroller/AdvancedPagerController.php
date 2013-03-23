@@ -20,12 +20,15 @@ namespace APF\modules\pager\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\BaseDocumentController;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 use APF\tools\request\RequestHandler;
+use APF\modules\pager\biz\PageItem;
 
 /**
  * @package modules::schwarzesbrett::pres::documentcontroller::pager
- * @class pager_2_v1_controller
+ * @class AdvancedPagerController
  *
  * Implements a document controller displaying the model information of the pager. This
  * includes:
@@ -43,7 +46,7 @@ use APF\tools\request\RequestHandler;
  * Version 0.5, 16.11.2007 (Migrated to FrontcontrollerLinkHandler)<br />
  * Version 0.6, 21.09.2010 (Migrated to page addressing instead of the start parameter)<br />
  */
-class pager_2_v1_controller extends BaseDocumentController {
+class AdvancedPagerController extends BaseDocumentController {
 
    public function transformContent() {
 
@@ -53,7 +56,7 @@ class pager_2_v1_controller extends BaseDocumentController {
       $config = $document->getAttribute('Config');
       $anchorName = $document->getAttribute('AnchorName');
 
-      /* @var $pages PagerPage[] */
+      /* @var $pages PageItem[] */
       $pages = $document->getAttribute('Pages');
 
       // do not display the pager in case we have no pages

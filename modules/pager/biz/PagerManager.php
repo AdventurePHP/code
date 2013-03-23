@@ -29,7 +29,7 @@ use APF\modules\pager\data\PagerMapper;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\request\RequestHandler;
-use APF\modules\pager\biz\PagerPage;
+use APF\modules\pager\biz\PageItem;
 
 /**
  * @package modules::pager::biz
@@ -298,7 +298,7 @@ final class PagerManager extends APFObject {
     * Creates a list of pager pages and returns it.
     *
     * @param string[] $addStmtParams list of additional statement params
-    * @return PagerPage[] List of pages.
+    * @return Page[] List of pages.
     *
     * @author Christian Achatz
     * @version
@@ -330,12 +330,12 @@ final class PagerManager extends APFObject {
       $pageCount = ceil($entriesCount / $countPerPage);
 
       // create the page representation objects
-      /* @var $pages PagerPage[] */
+      /* @var $pages PageItem[] */
       $pages = array();
       for ($i = 0; $i < $pageCount; $i++) {
 
          // create a new pager page object
-         $pages[$i] = new PagerPage();
+         $pages[$i] = new PageItem();
 
          // generate the link
          $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($this->section->getValue('Pager.ParameterPageName') => $start)));
@@ -424,8 +424,6 @@ final class PagerManager extends APFObject {
     */
    public function getPageCount($addStmtParams = array()) {
       $countPerPage = $this->getCountPerPage();
-
-      $currentStart = (int)RequestHandler::getValue($this->section->getValue('Pager.ParameterPageName'), 1) * $countPerPage;
 
       // initialize page delimiter params
       /* @var $m PagerMapper */

@@ -20,6 +20,8 @@ namespace APF\modules\pager\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\APFObject;
+use APF\core\service\APFService;
 use APF\modules\pager\biz\PagerManager;
 
 /**
@@ -27,7 +29,7 @@ use APF\modules\pager\biz\PagerManager;
  * @class PagerManagerFabric
  *
  * Implements the factory of the pager manager. Initializes concrete PagerManager
- * instances and caches them for futher usage.
+ * instances and caches them for further usage.
  * Application sample:
  * <pre>$pMF = &$this->getServiceObject('modules::pager::biz','PagerManagerFabric');
  * $pM = &$pMF->getPagerManager('{ConfigSection}',{AdditionalParamArray});</pre>

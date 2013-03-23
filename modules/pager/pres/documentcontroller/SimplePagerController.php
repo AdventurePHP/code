@@ -20,11 +20,12 @@ namespace APF\modules\pager\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\tools\request\RequestHandler;
+use APF\core\pagecontroller\BaseDocumentController;
+use APF\modules\pager\biz\PageItem;
 
 /**
  * @package modules::schwarzesbrett::pres::documentcontroller::pager
- * @class pager_v1_controller
+ * @class SimplePagerController
  *
  * Implements a simple pager representation.
  *
@@ -32,33 +33,35 @@ use APF\tools\request\RequestHandler;
  * @version
  * Version 0.1, 06.08.2006<br />
  */
-class pager_v1_controller extends BaseDocumentController {
+class SimplePagerController extends BaseDocumentController {
 
    public function transformContent() {
 
       $buffer = (string)'';
 
-      $count = count($this->attributes['Pages']);
+      /* @var $pages PageItem[] */
+      $pages = $this->attributes['Pages'];
+      $count = count($pages);
       for ($i = 0; $i < $count; $i++) {
 
-         if ($this->attributes['Pages'][$i]->isSelected() == true) {
-            $tmplPage = &$this->getTemplate('Page_Selected');
+         if ($pages[$i]->isSelected() == true) {
+            $tmplPage = & $this->getTemplate('Page_Selected');
          } else {
-            $tmplPage = &$this->getTemplate('Page_Normal');
+            $tmplPage = & $this->getTemplate('Page_Normal');
          }
 
          if (isset($this->attributes['AnchorName'])) {
-            $tmplPage->setPlaceHolder('Link', $this->attributes['Pages'][$i]->getLink() . '#' . $this->attributes['AnchorName']);
+            $tmplPage->setPlaceHolder('Link', $pages[$i]->getLink() . '#' . $this->attributes['AnchorName']);
          } else {
-            $tmplPage->setPlaceHolder('Link', $this->attributes['Pages'][$i]->getLink());
+            $tmplPage->setPlaceHolder('Link', $pages[$i]->getLink());
          }
-         $tmplPage->setPlaceHolder('Seite', $this->attributes['Pages'][$i]->getPage());
+         $tmplPage->setPlaceHolder('Seite', $pages[$i]->getPage());
 
          $buffer .= $tmplPage->transformTemplate();
 
       }
 
-      $tmplPage = &$this->getTemplate('Page_' . $this->language);
+      $tmplPage = & $this->getTemplate('Page_' . $this->language);
       $this->setPlaceHolder('Page', $tmplPage->transformTemplate());
       $this->setPlaceHolder('Content', $buffer);
    }

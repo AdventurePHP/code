@@ -23,7 +23,7 @@ namespace APF\modules\pager\biz;
 
 /**
  * @package modules::pager::biz
- * @class PagerPage
+ * @class PageItem
  *
  * Represents the business object of the pager module.
  *
@@ -32,7 +32,7 @@ namespace APF\modules\pager\biz;
  * Version 0.1, 06.08.2006<br />
  * Version 0.2, 22.09.2010<br />
  */
-final class PagerPage {
+final class PageItem {
 
    /**
     * @var int The page id.
