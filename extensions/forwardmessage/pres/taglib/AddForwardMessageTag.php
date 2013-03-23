@@ -20,6 +20,9 @@ namespace APF\extensions\forwardmessage\pres\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\TagLib;
+use APF\extensions\forwardmessage\biz\ForwardMessageManager;
 
 /**
  * @package extensions::forwardmessage::pres::taglib
@@ -35,7 +38,7 @@ namespace APF\extensions\forwardmessage\pres\taglib;
 class AddForwardMessageTag extends Document {
 
    public function __construct() {
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'message', 'getstring');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'message', 'getstring');
    }
 
    public function onParseTime() {
@@ -62,7 +65,7 @@ class AddForwardMessageTag extends Document {
       // add message that is the essence of the tag's transformed content
 
       /* @var $forwardMessageMgr ForwardMessageManager */
-      $forwardMessageMgr = &$this->getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $forwardMessageMgr = & $this->getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', APFService::SERVICE_TYPE_SESSION_SINGLETON);
       $forwardMessageMgr->addMessage($name, parent::transform(), $show, $group);
    }
 

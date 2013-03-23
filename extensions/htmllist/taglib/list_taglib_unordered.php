@@ -20,8 +20,7 @@ namespace APF\extensions\htmllist\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
-use APF\extensions\htmllist\taglib\list_taglib_elem_list;
+use APF\core\pagecontroller\TagLib;
 
 /**
  * @package extensions::htmllist::taglib
@@ -35,7 +34,7 @@ use APF\extensions\htmllist\taglib\list_taglib_elem_list;
 class list_taglib_unordered extends AbstractTaglibList {
 
    public function __construct() {
-      $this->tagLibs[] = new TagLib('extensions::htmllist::taglib', 'list_taglib_elem_list', 'list', 'elem_list');
+      $this->tagLibs[] = new TagLib('APF\extensions\htmllist\taglib\list_taglib_elem_list', 'list', 'elem_list');
    }
 
    /**

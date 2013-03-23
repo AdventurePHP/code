@@ -20,8 +20,11 @@ namespace APF\tools\form\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\tools\form\taglib\SelectBoxOptionTag;
+use APF\core\pagecontroller\TagLib;
+use APF\core\pagecontroller\XmlParser;
 use APF\tools\form\taglib\SelectBoxGroupTag;
+use APF\tools\form\taglib\SelectBoxOptionTag;
+use APF\tools\form\validator\AbstractFormValidator;
 
 /**
  * @package tools::form::taglib
@@ -53,8 +56,8 @@ class SelectBoxTag extends AbstractFormControl {
     * Version 0.2, 03.03.2007 (Removed "&" before "new")<br />
     */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'SelectBoxOptionTag', 'select', 'option');
-      $this->tagLibs[] = new TagLib('tools::form::taglib', 'SelectBoxGroupTag', 'select', 'group');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\SelectBoxOptionTag', 'select', 'option');
+      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\SelectBoxGroupTag', 'select', 'group');
       $this->attributeWhiteList[] = 'disabled';
       $this->attributeWhiteList[] = 'name';
       $this->attributeWhiteList[] = 'size';
@@ -173,6 +176,7 @@ class SelectBoxTag extends AbstractFormControl {
     * Returns the desired group by a given group label.
     *
     * @param string $label The label of the group to return.
+    *
     * @return SelectBoxGroupTag The desired group or null.
     *
     * @author Christian Achatz

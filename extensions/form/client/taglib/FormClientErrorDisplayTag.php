@@ -20,6 +20,7 @@ namespace APF\extensions\form\client\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\TagLib;
 use APF\tools\form\taglib\AbstractFormControl;
 
 /**
@@ -42,9 +43,9 @@ class FormClientErrorDisplayTag extends AbstractFormControl {
     * Version 1.0, 18.03.2010<br />
     */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'PlaceHolderTag', 'error', 'placeholder');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'LanguageLabelTag', 'error', 'getstring');
-      $this->tagLibs[] = new TagLib('core::pagecontroller', 'AddTaglibTag', 'error', 'addtaglib');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'error', 'placeholder');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'error', 'getstring');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'error', 'addtaglib');
    }
 
    /**
