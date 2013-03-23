@@ -79,7 +79,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
       // that we can address the element with it's plain name in the template.
       $name = $this->getAttribute('name');
       if (substr_count($name, '[') > 0 || substr_count($name, ']') > 0) {
-         $doc = &$this->parentObject->getParentObject();
+         $doc = & $this->parentObject->getParentObject();
          $docCon = $doc->getDocumentController();
          throw new FormException('[MultiSelectBoxTag::onParseTime()] The attribute "name" of the '
                . '&lt;form:multiselect /&gt; tag with name "' . $this->attributes['name']
@@ -113,22 +113,22 @@ class MultiSelectBoxTag extends SelectBoxTag {
       }
 
       if ($this->isVisible) {
-      // add brackets for the "name" attribute to ensure multi select capability!
-      $name = array('name' => $this->getAttribute('name') . '[]');
-      $select = '<select ' . $this->getSanitizedAttributesAsString(array_merge($this->attributes, $name)) . '>';
-      $select .= $this->content . '</select>';
+         // add brackets for the "name" attribute to ensure multi select capability!
+         $name = array('name' => $this->getAttribute('name') . '[]');
+         $select = '<select ' . $this->getSanitizedAttributesAsString(array_merge($this->attributes, $name)) . '>';
+         $select .= $this->content . '</select>';
 
-      if (count($this->children) > 0) {
-         foreach ($this->children as $objectId => $DUMMY) {
-            $select = str_replace('<' . $objectId . ' />',
-               $this->children[$objectId]->transform(),
-               $select
-            );
+         if (count($this->children) > 0) {
+            foreach ($this->children as $objectId => $DUMMY) {
+               $select = str_replace('<' . $objectId . ' />',
+                  $this->children[$objectId]->transform(),
+                  $select
+               );
+            }
          }
-      }
 
-      return $select;
-   }
+         return $select;
+      }
       return '';
    }
 
@@ -154,13 +154,13 @@ class MultiSelectBoxTag extends SelectBoxTag {
       foreach ($this->children as $objectId => $DUMMY) {
 
          if (get_class($this->children[$objectId]) == 'SelectBoxGroupTag') {
-            $options = &$this->children[$objectId]->getSelectedOptions();
+            $options = & $this->children[$objectId]->getSelectedOptions();
             foreach ($options as $id => $INNER_DUMMY) {
                $selectedOptions[] = & $options[$id];
             }
          } else {
             if ($this->children[$objectId]->getAttribute('selected') === 'selected') {
-               $selectedOptions[] = &$this->children[$objectId];
+               $selectedOptions[] = & $this->children[$objectId];
             }
          }
 
@@ -239,6 +239,10 @@ class MultiSelectBoxTag extends SelectBoxTag {
     */
    public function isSelected() {
       return count($this->getSelectedOptions()) > 0;
+   }
+
+   protected function removeSelectedOptions($selectedObjectId) {
+      // Do nothing here, since MultiSelectBox allows multiple selected options.
    }
 
 }
