@@ -1,12 +1,12 @@
-<@controller namespace="modules::guestbook2009::pres::controller::admin" class="delete_controller" @>
-<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
+<@controller class="APF\modules\guestbook2009\pres\controller\admin\GuestbookDeleteEntryController" @>
+<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form"/>
 Please select an entry to delete!
-<br />
-<br />
-<core:appendnode 
-   namespace="modules::guestbook2009::pres::templates::admin"
-   template="choose"
-/>
+<br/>
+<br/>
+<core:appendnode
+      namespace="modules::guestbook2009::pres::templates::admin"
+      template="choose"
+      />
 <div class="gb--admin-delete">
    <html:template name="confirm_text">
       <div class="gb--admin-delete-text">
@@ -15,12 +15,12 @@ Please select an entry to delete!
    </html:template>
    <div class="gb--admin-delete-forms">
       <html:form name="delete_yes" method="post">
-         <form:button name="yes" value="Yes" />
-         <form:hidden name="entryid" />
+         <form:button name="yes" value="Yes"/>
+         <form:hidden name="entryid"/>
       </html:form>
       <html:form name="delete_no" method="post">
-         <form:button name="no" value="No" />
-         <form:hidden name="entryid" />
+         <form:button name="no" value="No"/>
+         <form:hidden name="entryid"/>
       </html:form>
    </div>
 </div>

@@ -21,6 +21,7 @@ namespace APF\modules\guestbook2009\pres\taglib;
  * -->
  */
 use APF\modules\guestbook2009\pres\taglib\GuestbookLanguageLabelTag;
+use APF\tools\form\taglib\FormControl;
 
 /**
  * @package modules::guestbook2009::pres

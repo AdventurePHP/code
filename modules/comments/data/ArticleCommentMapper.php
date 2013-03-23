@@ -20,12 +20,14 @@ namespace APF\modules\comments\data;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
+use APF\core\database\AbstractDatabaseHandler;
+use APF\core\database\ConnectionManager;
+use APF\core\pagecontroller\APFObject;
 use APF\modules\comments\biz\ArticleComment;
 
 /**
  * @package modules::comments::date
- * @class commentMapper
+ * @class ArticleCommentMapper
  *
  * Represents the data layer component of the comment function. Loads and saves entries.
  *
@@ -33,23 +35,23 @@ use APF\modules\comments\biz\ArticleComment;
  * @version
  * Version 0.1, 22.08.2007
  */
-class commentMapper extends APFObject {
+class ArticleCommentMapper extends APFObject {
 
    /**
     * @public
     *
     * Loads an article comment object by id. Can be used by the pager.
     *
-    * @param string $commentId ID des Eintrags
-    * @return ArticleComment A comment object.
+    * @param string $commentId ID of the entry.
+    * @return ArticleComment The comment object.
     *
-    * @author Christian W.Sch�fer
+    * @author Christian W. Schäfer
     * @version
     * Version 0.1, 22.08.2007<br />
     */
    public function loadArticleCommentByID($commentId) {
 
-      $SQL = &$this->getConnection();
+      $SQL = & $this->getConnection();
       $select = 'SELECT ArticleCommentID, Name, EMail, Comment, Date, Time
                     FROM article_comments
                     WHERE ArticleCommentID = \'' . $commentId . '\';';
@@ -70,7 +72,7 @@ class commentMapper extends APFObject {
     */
    public function saveArticleComment(ArticleComment $comment) {
 
-      $conn = &$this->getConnection();
+      $conn = & $this->getConnection();
       if ($comment->getId() == null) {
          $insert = 'INSERT INTO article_comments
                        (Name, EMail, Comment, Date, Time, CategoryKey)
@@ -96,11 +98,11 @@ class commentMapper extends APFObject {
    private function &getConnection() {
 
       /* @var $cM ConnectionManager */
-      $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
+      $cM = & $this->getServiceObject('core::database', 'ConnectionManager');
       $config = $this->getConfiguration('modules::comments', 'comments.ini');
       $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey');
       if ($connectionKey == null) {
-         throw new \InvalidArgumentException('[commentMapper::getConnection()] The module\'s '
+         throw new \InvalidArgumentException('[ArticleCommentMapper::getConnection()] The module\'s '
                   . 'configuration file does not contain a valid database connection key. Please '
                   . 'specify the database configuration according to the example configuration files!',
             E_USER_ERROR);

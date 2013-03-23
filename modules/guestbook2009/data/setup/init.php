@@ -3,11 +3,11 @@ namespace APF\modules\guestbook2009\data\setup;
 
 /**
  * In order to use this script for database initialization, include this file after including the
- * <em>pagecontroller.php</em> file and setting the context and connection key.
+ * <em>bootstrap.php</em> file and setting the context and connection key.
  *
  * @example
  * <code>
- * include('./apps/core/pagecontroller/pagecontroller.php');
+ * include('./apps/core/bootstrap.php');
  * $context = 'mycontext';
  * $connectionKey = 'mysql-db';
  * include('./apps/modules/guestbook2009/data/setup/init.php');
@@ -15,9 +15,11 @@ namespace APF\modules\guestbook2009\data\setup;
  *
  * Please note, that you may have to adapt the include path for the <em>pagecontroller.php</em>.
  */
+use APF\modules\genericormapper\data\GenericDomainObject;
 use APF\modules\genericormapper\data\GenericORRelationMapper;
 
 $orm = new GenericORRelationMapper();
+$orm->setContext($context);
 $orm->addMappingConfiguration('modules::guestbook2009::data', 'guestbook2009');
 $orm->addRelationConfiguration('modules::guestbook2009::data', 'guestbook2009');
 $orm->setConnectionName($connectionKey);

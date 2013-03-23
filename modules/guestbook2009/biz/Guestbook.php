@@ -2,6 +2,9 @@
 namespace APF\modules\guestbook2009\biz;
 
 /**
+ * @package APF\modules\guestbook2009\biz
+ * @class Guestbook
+ *
  * Represents the Guestbook domain object of the guestbook.
  *
  * @author Christian Achatz
@@ -11,20 +14,17 @@ namespace APF\modules\guestbook2009\biz;
 final class Guestbook {
 
    /**
-    * @private
-    * The title of the guestbook.
+    * @var string The title of the guestbook.
     */
    private $title;
 
    /**
-    * @private
-    * The description of the guestbook.
+    * @var string The description of the guestbook.
     */
    private $description;
 
    /**
-    * @private
-    * The entries of the guestbook.
+    * @var Entry[] The entries of the guestbook.
     */
    private $entries = array();
 
@@ -36,6 +36,9 @@ final class Guestbook {
       return $this->description;
    }
 
+   /**
+    * @return Entry[]
+    */
    public function getEntries() {
       return $this->entries;
    }
@@ -48,11 +51,11 @@ final class Guestbook {
       $this->description = $description;
    }
 
-   public function setEntries($entries) {
+   public function setEntries(array $entries) {
       $this->entries = $entries;
    }
 
-   public function addEntry($entry) {
+   public function addEntry(Entry $entry) {
       $this->entries[] = $entry;
    }
 

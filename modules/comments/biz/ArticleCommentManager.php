@@ -20,15 +20,17 @@ namespace APF\modules\comments\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\modules\comments\data\commentMapper;
+use APF\core\pagecontroller\APFObject;
+use APF\modules\comments\data\ArticleCommentMapper;
+use APF\modules\pager\biz\PagerManager;
+use APF\modules\pager\biz\PagerManagerFabric;
 use APF\tools\link\LinkGenerator;
-use APF\tools\string\StringAssistant;
-use APF\core\session\SessionManager;
 use APF\tools\http\HeaderManager;
+use APF\tools\link\Url;
 
 /**
  * @package modules::comments::biz
- * @class commentManager
+ * @class ArticleCommentManager
  *
  *  Implements the business component of the comment module.
  *
@@ -37,26 +39,14 @@ use APF\tools\http\HeaderManager;
  * Version 0.1, 22.08.2007<br />
  * Version 0.2, 28.12.2007 (Added CAPTCHA support)<br />
  */
-class commentManager extends APFObject {
+class ArticleCommentManager extends APFObject {
 
    /**
     * @protected
-    *  Schl�ssel f�r die auszuliefernde Kategorie.
+    * @var string Category key.
     */
    protected $categoryKey;
 
-   /**
-    * @public
-    *
-    *  Implementierung der abstrakte "init()"-Methode.<br />
-    *
-    * @param string $initParam Kategorie-Schl�ssel
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 13.04.2007<br />
-    * Version 0.2, 28.12.2007 (Captcha-Unterst�tzung hinzugef�gt)<br />
-    */
    public function init($initParam) {
       $this->categoryKey = $initParam;
    }
@@ -64,68 +54,62 @@ class commentManager extends APFObject {
    /**
     * @public
     *
-    *  L�d eine Liste von Kommentaren.<br />
+    * Loads a list of comment entries.
     *
-    * @return Array $Entries Liste von ArticleComment-Objekten
+    * @return ArticleComment[] The list of desired entries.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 21.08.2007<br />
-    * Version 0.2, 01.09.2007 (Verwendung des PagerManagers auf loadEntriesByAppDataComponent() umgestellt)<br />
+    * Version 0.2, 01.09.2007 (Switched to PagerManager::loadEntriesByAppDataComponent())<br />
     */
    public function loadEntries() {
-
-      $pMF = &$this->getServiceObject('modules::pager::biz', 'PagerManagerFabric');
-      $pM = &$pMF->getPagerManager('ArticleComments');
-
-      $M = &$this->getServiceObject('modules::comments::data', 'commentMapper');
-      return $pM->loadEntriesByAppDataComponent($M, 'loadArticleCommentByID', array('CategoryKey' => $this->categoryKey));
+      $pager = & $this->getPagerManager();
+      $m = & $this->getServiceObject('modules::comments::data', 'ArticleCommentMapper');
+      return $pager->loadEntriesByAppDataComponent($m, 'loadArticleCommentByID', array('CategoryKey' => $this->categoryKey));
    }
 
    /**
     * @public
     *
-    *  Gibt die HTML-Ausgabe des Pagers zur�ck.<br />
+    * Returns the HTML representation of the pager.
     *
-    * @param string $anchorName the desired anchor name (optional)
-    * @return string $pagerOutput the HTML code of the pager
+    * @param string $anchorName The desired anchor name (optional).
+    * @return string The HTML code of the pager.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 21.08.2007<br />
     * Version 0.2, 29.08.2007 (Added the anchor name)<br />
     * Version 0.3, 24.01.2009 (Introduced the $anchorName parameter)<br />
     */
    public function getPager($anchorName = null) {
-      $pMF = &$this->getServiceObject('modules::pager::biz', 'PagerManagerFabric');
-      $pM = &$pMF->getPagerManager('ArticleComments');
-      $pM->setAnchorName($anchorName);
-      return $pM->getPager(array('CategoryKey' => $this->categoryKey));
+      $pager = & $this->getPagerManager();
+      $pager->setAnchorName($anchorName);
+      return $pager->getPager(array('CategoryKey' => $this->categoryKey));
    }
 
    /**
     * @public
     *
-    *  Gibt die URL-Parameter des Pagers zur�ck.<br />
+    * Returns the url parameters the pager used.
     *
-    * @return array $URLParameter Pager-URL-Parameter
+    * @return string[] Pager URL parameters.
     *
-    * @author Christian Sch�fer
+    * @author Christian Schäfer
     * @version
     * Version 0.1, 21.08.2007<br />
     */
    public function getURLParameter() {
-      $pMF = &$this->getServiceObject('modules::pager::biz', 'PagerManagerFabric');
-      $pM = &$pMF->getPagerManager('ArticleComments');
-      return $pM->getPagerURLParameters();
+      return $this->getPagerManager()->getPagerURLParameters();
    }
 
    /**
     * @public
     *
-    *  Speichert einen Kommentar-Eintrag.<br />
+    * Saves a comment.
     *
-    * @param ArticleComment $articleComment ArticleComment-Objekt
+    * @param ArticleComment $articleComment The entry to save.
     *
     * @author Christian Schäfer
     * @version
@@ -135,13 +119,23 @@ class commentManager extends APFObject {
     */
    public function saveEntry($articleComment) {
 
-      $M = &$this->getServiceObject('modules::comments::data', 'commentMapper');
+      /* @var $M ArticleCommentMapper */
+      $M = & $this->getServiceObject('modules::comments::data', 'ArticleCommentMapper');
 
       $articleComment->setCategoryKey($this->categoryKey);
       $M->saveArticleComment($articleComment);
 
       $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('coview' => 'listing')));
       HeaderManager::forward($link . '#comments');
+   }
+
+   /**
+    * @return PagerManager
+    */
+   private function &getPagerManager() {
+      /* @var $pMF PagerManagerFabric */
+      $pMF = & $this->getServiceObject('modules::pager::biz', 'PagerManagerFabric');
+      return $pMF->getPagerManager('ArticleComments');
    }
 
 }

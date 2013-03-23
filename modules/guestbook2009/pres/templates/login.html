@@ -1,34 +1,35 @@
-<@controller namespace="modules::guestbook2009::pres::controller" class="login_controller" @>
-<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
+<@controller class="APF\modules\guestbook2009\pres\controller\GuestbookLoginController" @>
+<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form"/>
 <div class="gb--login">
    Please log in to administrate the guestbook.
-   <br />
-   <br />
+   <br/>
+   <br/>
    <html:form name="login" method="post">
-      <form:placeholder name="error" />
+      <form:placeholder name="error"/>
       <label class="gb--login-label-user">Username:</label>
       <form:text
-         maxlength="100"
-         name="username"
-         class="gb--login-field-username"
-      />
-      <br />
+            maxlength="100"
+            name="username"
+            class="gb--login-field-username"
+            />
+      <br/>
       <label class="gb--login-label-password">Password:</label>
       <form:password
-         maxlength="100"
-         name="password"
-         class="gb--login-field-password"
-      />
-      <br />
-      <br />
+            maxlength="100"
+            name="password"
+            class="gb--login-field-password"
+            />
+      <br/>
+      <br/>
+
       <div class="gb--login-button-placer">
-         <form:button name="login" value="Login" class="gb--login-button-login" />
+         <form:button name="login" value="Login" class="gb--login-button-login"/>
       </div>
       <form:addvalidator
-         class="TextLengthValidator"
-         button="login"
-         control="username|password"
-      />
+            class="TextLengthValidator"
+            button="login"
+            control="username|password"
+            />
    </html:form>
    <html:template name="error">
       <div class="gb--login-error-form">

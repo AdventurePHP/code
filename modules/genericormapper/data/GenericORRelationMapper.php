@@ -1156,7 +1156,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * @author Christian Achatz
     * @version
     * Version 0.1, 30.05.2008<br />
-    * Version 0.2, 28.12.2008 (Bugfix: only associations are returned, where the object is involved)<br />
+    * Version 0.2, 28.12.2008 (Bug-fix: only associations are returned, where the object is involved)<br />
     */
    protected function &getAssociationsByObjectName($objectName) {
 
@@ -1439,10 +1439,10 @@ class GenericORRelationMapper extends GenericORMapper {
     * @version
     * Version 0.1, 01.09.2010<br />
     * Version 0.2, 24.03.2011 (Added support for relations between the same table)<br />
-    * Version 0.3, 27.04.2011 (BUGFIX: Removed explicit type 'GenericCriterionObject' of the parameter list, because
+    * Version 0.3, 27.04.2011 (Bug-fix: Removed explicit type 'GenericCriterionObject' of the parameter list, because
     *                          'loadObjectsWithRelation' and 'loadObjectsWithoutRelation' should pass null value<br />
-    *                          BUGFIX: Corrected the where statement because of relations between the same table)<br />
-    * Version 0.4, 21.11.2011 (BUGFIX: The CriterionObject now works with the sourceTable, not with the targetTable)<br />
+    *                          Bug-fix: Corrected the where statement because of relations between the same table)<br />
+    * Version 0.4, 21.11.2011 (Bug-fix: The CriterionObject now works with the sourceTable, not with the targetTable)<br />
     */
    private function loadObjects4RelationName($objectName, $relationName, $criterion, $relationCondition) {
 

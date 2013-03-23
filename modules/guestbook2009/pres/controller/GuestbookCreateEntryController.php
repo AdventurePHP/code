@@ -23,10 +23,11 @@ namespace APF\modules\guestbook2009\pres\controller;
 use APF\modules\guestbook2009\biz\User;
 use APF\modules\guestbook2009\biz\Entry;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * @package modules::guestbook2009::pres::controller
- * @class create_controller
+ * @class GuestbookCreateEntryController
  *
  * Implements the document controller, that handles the "create new entry" view.
  *
@@ -34,27 +35,27 @@ use APF\tools\link\LinkGenerator;
  * @version
  * Version 0.1, 10.05.2009<br />
  */
-class create_controller extends BaseDocumentController {
+class GuestbookCreateEntryController extends GuestbookBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('create_entry');
+      $form = & $this->getForm('create_entry');
 
       if ($form->isSent() && $form->isValid()) {
 
          // Fill domain objects by extracting the values
          // from the form elements directly.
-         $name = &$form->getFormElementByName('name');
-         $email = &$form->getFormElementByName('email');
-         $website = &$form->getFormElementByName('website');
+         $name = & $form->getFormElementByName('name');
+         $email = & $form->getFormElementByName('email');
+         $website = & $form->getFormElementByName('website');
 
          $user = new User();
          $user->setName($name->getAttribute('value'));
          $user->setEmail($email->getAttribute('value'));
          $user->setWebsite($website->getAttribute('value'));
 
-         $title = &$form->getFormElementByName('title');
-         $text = &$form->getFormElementByName('text');
+         $title = & $form->getFormElementByName('title');
+         $text = & $form->getFormElementByName('text');
          $entry = new Entry();
          $entry->setTitle($title->getAttribute('value'));
          $entry->setText($text->getContent());
@@ -62,8 +63,7 @@ class create_controller extends BaseDocumentController {
          $entry->setEditor($user);
 
          // Save the entry using the business component.
-         $gbService = &$this->getDIServiceObject('modules::guestbook2009::biz', 'GuestbookService');
-         $gbService->saveEntry($entry);
+         $this->getGuestbookService()->saveEntry($entry);
       }
 
       // set language dependent button label by using the
@@ -71,7 +71,7 @@ class create_controller extends BaseDocumentController {
       // DOM node.
       $config = $this->getConfiguration('modules::guestbook2009::pres', 'language.ini');
       $buttonLabel = $config->getSection($this->language)->getValue('form.label.button');
-      $button = &$form->getFormElementByName('send');
+      $button = & $form->getFormElementByName('send');
       $button->setAttribute('value', $buttonLabel);
 
       // Transform on definition place to render

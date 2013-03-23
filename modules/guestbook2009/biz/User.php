@@ -22,6 +22,9 @@ namespace APF\modules\guestbook2009\biz;
  */
 
 /**
+ * @package APF\modules\guestbook2009\biz
+ * @class User
+ *
  * Represents the User domain object of the guestbook.
  *
  * @author Christian Achatz
@@ -31,38 +34,32 @@ namespace APF\modules\guestbook2009\biz;
 final class User {
 
    /**
-    * @private
-    * The user name.
+    * @var string The user name.
     */
    private $username;
 
    /**
-    * @private
-    * The user's password.
+    * @var string The user's password.
     */
    private $password;
 
    /**
-    * @private
-    * The user's name.
+    * @var string The user's name.
     */
    private $name;
 
    /**
-    * @private
-    * The user's email address.
+    * @var string The user's email address.
     */
    private $email;
 
    /**
-    * @private
-    * The user's website.
+    * @var string The user's website.
     */
    private $website;
 
    /**
-    * @private
-    * Contains the id of the entry used to identify on update/delete.
+    * @var string Contains the id of the entry used to identify on update/delete.
     */
    private $id;
 

@@ -20,16 +20,22 @@ namespace APF\modules\guestbook2009\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\pagecontroller\APFObject;
+use APF\core\singleton\Singleton;
 use APF\modules\guestbook2009\biz\Entry;
 use APF\modules\guestbook2009\biz\Guestbook;
 use APF\modules\guestbook2009\biz\User;
+use APF\modules\guestbook2009\data\GuestbookMapper;
+use APF\modules\pager\biz\PagerManager;
+use APF\modules\pager\biz\PagerManagerFabric;
 use APF\tools\http\HeaderManager;
 use APF\core\session\SessionManager;
 use APF\tools\link\LinkGenerator;
-use APF\modules\pager\biz\PagerManagerFabric;
+use APF\tools\link\Url;
 
 /**
- * @package modules::guestbook2009::biz
+ * @package APF\modules\guestbook2009\biz
  * @class GuestbookService
  *
  * Implements the central business component of the guestbook. Must be initialized with
@@ -42,14 +48,12 @@ use APF\modules\pager\biz\PagerManagerFabric;
 final class GuestbookService extends APFObject {
 
    /**
-    * Stores the pager instance for further usage.
-    * @var PagerManager
+    * @var PagerManager Stores the pager instance for further usage.
     */
    private $pager = null;
 
    /**
-    * Defines the name of the pager config section.
-    * @var string
+    * @var string Defines the name of the pager config section.
     */
    private $pagerConfigSection;
 
@@ -82,16 +86,18 @@ final class GuestbookService extends APFObject {
     */
    public function loadPagedEntryList() {
 
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $t->start('loadPagedEntryList');
 
-      $pager = &$this->getPager();
+      $pager = & $this->getPager();
 
-      $model = &$this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+      /* @var $model GuestbookModel */
+      $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
       $entryIds = $pager->loadEntries(array('GuestbookID' => $model->getGuestbookId()));
 
       $entries = array();
-      $mapper = &$this->getMapper();
+      $mapper = & $this->getMapper();
       foreach ($entryIds as $entryId) {
          $entries[] = $mapper->loadEntry($entryId);
       }
@@ -112,8 +118,9 @@ final class GuestbookService extends APFObject {
     * Version 0.1, 13.06.2009<br />
     */
    public function getPagerOutput() {
-      $model = &$this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
-      $pager = &$this->getPager();
+      /* @var $model GuestbookModel */
+      $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+      $pager = & $this->getPager();
       return $pager->getPager(array('GuestbookID' => $model->getGuestbookId()));
    }
 
@@ -129,7 +136,7 @@ final class GuestbookService extends APFObject {
     * Version 0.1, 13.06.2009<br />
     */
    public function getPagerURLParams() {
-      $pager = &$this->getPager();
+      $pager = & $this->getPager();
       return $pager->getPagerURLParameters();
    }
 
@@ -149,8 +156,9 @@ final class GuestbookService extends APFObject {
    private function &getPager() {
 
       if ($this->pager === null) {
-         $pMF = &$this->getServiceObject('modules::pager::biz', 'PagerManagerFabric');
-         $this->pager = &$pMF->getPagerManager($this->pagerConfigSection);
+         /* @var $pMF PagerManagerFabric */
+         $pMF = & $this->getServiceObject('modules::pager::biz', 'PagerManagerFabric');
+         $this->pager = & $pMF->getPagerManager($this->pagerConfigSection);
       }
 
       return $this->pager;
@@ -168,7 +176,7 @@ final class GuestbookService extends APFObject {
     * Version 0.1, 21.05.2009<br />
     */
    public function loadEntryListForSelection() {
-      $mapper = &$this->getMapper();
+      $mapper = & $this->getMapper();
       return $mapper->loadEntryListForSelection();
    }
 
@@ -177,7 +185,7 @@ final class GuestbookService extends APFObject {
     *
     * Loads a dedicated entry.
     *
-    * @param int $id The id of the desired entr<.
+    * @param int $id The id of the desired entry.
     * @return Entry An entry.
     *
     * @author Christian Achatz
@@ -185,7 +193,7 @@ final class GuestbookService extends APFObject {
     * Version 0.1, 21.05.2009<br />
     */
    public function loadEntry($id) {
-      $mapper = &$this->getMapper();
+      $mapper = & $this->getMapper();
       return $mapper->loadEntry($id);
    }
 
@@ -201,7 +209,7 @@ final class GuestbookService extends APFObject {
     * Version 0.1, 21.05.2009<br />
     */
    public function loadGuestbook() {
-      $mapper = &$this->getMapper();
+      $mapper = & $this->getMapper();
       return $mapper->loadGuestbook();
    }
 
@@ -219,7 +227,7 @@ final class GuestbookService extends APFObject {
    public function deleteEntry(Entry $entry) {
 
       if ($entry !== null) {
-         $mapper = &$this->getMapper();
+         $mapper = & $this->getMapper();
          $mapper->deleteEntry($entry);
       }
 
@@ -243,7 +251,8 @@ final class GuestbookService extends APFObject {
    public function logout() {
 
       // logout by cleaning the session
-      $model = &$this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+      /* @var $model GuestbookModel */
+      $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
       $guestbookId = $model->getGuestbookId();
       $session = new SessionManager('modules::guestbook2009::biz::' . $guestbookId);
       $session->deleteSessionData('LoggedIn');
@@ -268,7 +277,8 @@ final class GuestbookService extends APFObject {
     */
    public function checkAccessAllowed() {
 
-      $model = &$this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+      /* @var $model GuestbookModel */
+      $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
       $guestbookId = $model->getGuestbookId();
       $session = new SessionManager('modules::guestbook2009::biz::' . $guestbookId);
       $loggedId = $session->loadSessionData('LoggedIn');
@@ -298,11 +308,12 @@ final class GuestbookService extends APFObject {
     */
    public function validateCredentials(User $user) {
 
-      $mapper = &$this->getMapper();
+      $mapper = & $this->getMapper();
       if ($mapper->validateCredentials($user)) {
 
          // log user in
-         $model = &$this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+         /* @var $model GuestbookModel */
+         $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
          $guestbookId = $model->getGuestbookId();
          $session = new SessionManager('modules::guestbook2009::biz::' . $guestbookId);
          $session->saveSessionData('LoggedIn', 'true');
@@ -330,7 +341,7 @@ final class GuestbookService extends APFObject {
     */
    public function saveEntry(Entry $entry) {
 
-      $mapper = &$this->getMapper();
+      $mapper = & $this->getMapper();
       $mapper->saveEntry($entry);
 
       // Forward to the desired view to prevent F5-bugs.

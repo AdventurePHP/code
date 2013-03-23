@@ -1061,7 +1061,7 @@ class UmgtManager extends APFObject {
     * @author Christian Achatz
     * @version
     * Version 0.1, 28.12.2008<br />
-    * Version 0.2, 18.02.2009 (Bugfix: addUser2Groups() does not exist)<br />
+    * Version 0.2, 18.02.2009 (Bug-fix: addUser2Groups() does not exist)<br />
     */
    public function attachUsers2Group(array $users, UmgtGroup $group) {
       for ($i = 0; $i < count($users); $i++) {
@@ -1309,7 +1309,7 @@ class UmgtManager extends APFObject {
     * @author Christian Achatz
     * @version
     * Version 0.1, 27.12.2008<br />
-    * Version 0.2, 28.12.2008 (Bugfix: criterion definition contained wrong relation indicator)<br />
+    * Version 0.2, 28.12.2008 (Bug-fix: criterion definition contained wrong relation indicator)<br />
     */
    public function loadUsersNotWithRole(UmgtRole $role) {
       $crit = new GenericCriterionObject();

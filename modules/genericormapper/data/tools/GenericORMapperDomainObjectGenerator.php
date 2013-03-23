@@ -37,8 +37,8 @@ use APF\tools\filesystem\File;
  */
 class GenericORMapperDomainObjectGenerator extends BaseMapper {
 
-   protected $DefaultBaseNamespace = 'modules::genericormapper::data';
-   protected $DefaultBaseClass = 'GenericDomainObject';
+   protected static $DEFAULT_BASE_NAMESPACE = 'modules::genericormapper::data';
+   protected static $DEFAULT_BASE_CLASS = 'GenericDomainObject';
 
    /**
     * Generates all service objects which are defined in *_domainobjects.ini
@@ -173,8 +173,8 @@ namespace APF\modules\genericormapper\data\tools;
          $baseNamespace = $this->domainObjectsTable[$name]['Base']['Namespace'];
          $baseClass = $this->domainObjectsTable[$name]['Base']['Class'];
       } else {
-         $baseNamespace = $this->DefaultBaseNamespace;
-         $baseClass = $this->DefaultBaseClass;
+         $baseNamespace = self::$DEFAULT_BASE_NAMESPACE;
+         $baseClass = self::$DEFAULT_BASE_CLASS;
       }
 
       $code .= '/**' . PHP_EOL .

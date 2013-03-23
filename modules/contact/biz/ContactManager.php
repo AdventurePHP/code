@@ -33,7 +33,7 @@ use APF\tools\link\Url;
 use APF\tools\mail\mailSender;
 
 /**
- * @package modules::kontakt4::biz
+ * @package modules::contact::biz
  * @class ContactManager
  *
  * Implements the business component for the contact form.
@@ -137,7 +137,7 @@ class ContactManager extends APFObject {
     * @return ContactMapper
     */
    private function &getMapper() {
-      return $this->getServiceObject('modules::kontakt4::data', 'ContactMapper');
+      return $this->getServiceObject('modules::contact::data', 'ContactMapper');
    }
 
    /**
@@ -163,7 +163,7 @@ class ContactManager extends APFObject {
     */
    private function getNotificationText(array $values = array()) {
 
-      $config = $this->getConfiguration('modules::kontakt4', 'mail_templates.ini');
+      $config = $this->getConfiguration('modules::contact', 'mail_templates.ini');
       $section = $config->getSection($this->getLanguage());
       if ($section === null) {
          throw new ConfigurationException('Configuration section "' . $this->getLanguage() . '" is not present within '
@@ -202,7 +202,7 @@ class ContactManager extends APFObject {
     * Version 0.1, 19.10.2011<br />
     */
    private function getConfirmationText(array $values = array()) {
-      $config = $this->getConfiguration('modules::kontakt4', 'mail_templates.ini');
+      $config = $this->getConfiguration('modules::contact', 'mail_templates.ini');
       $section = $config->getSection($this->getLanguage());
       if ($section === null) {
          throw new ConfigurationException('Configuration section "' . $this->getLanguage() . '" is not present within '

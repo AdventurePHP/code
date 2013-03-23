@@ -158,7 +158,7 @@ class HtmlIteratorTag extends Document {
     * @version
     * Version 0.1, 01.06.2008<br />
     * Version 0.2, 04.06.2008 (Enhanced method)<br />
-    * Version 0.3, 15.06.2008 (Bugfix: the item was not found using PHP5)<br />
+    * Version 0.3, 15.06.2008 (Bug-fix: the item was not found using PHP5)<br />
     * Version 0.4, 09.08.2009 (Added new taglibs iterator:addtaglib and iterator:getstring due to request in forum)<br />
     */
    public function transformIterator() {

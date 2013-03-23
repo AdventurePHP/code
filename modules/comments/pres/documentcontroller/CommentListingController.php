@@ -20,7 +20,10 @@ namespace APF\modules\comments\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\comments\biz\ArticleComment;
+use APF\modules\comments\biz\ArticleCommentManager;
 use APF\modules\comments\pres\documentcontroller\CommentBaseDocumentController;
+use APF\tools\link\Url;
 use APF\tools\string\AdvancedBBCodeParser;
 use APF\tools\link\LinkGenerator;
 
@@ -53,15 +56,17 @@ class CommentListingController extends CommentBaseDocumentController {
     */
    public function transformContent() {
 
-      $M = &$this->getAndInitServiceObject('modules::comments::biz', 'commentManager', $this->getCategoryKey());
+      /* @var $m ArticleCommentManager */
+      $m = &$this->getAndInitServiceObject('modules::comments::biz', 'ArticleCommentManager', $this->getCategoryKey());
 
       // load the entries using the business component
-      $entries = $M->loadEntries();
+      $entries = $m->loadEntries();
 
       $buffer = (string)'';
       $template = &$this->getTemplate('ArticleComment');
 
       // init bb code parser (remove some provider, that we don't need configuration files)
+      /* @var $bP AdvancedBBCodeParser */
       $bP = &$this->getServiceObject('tools::string', 'AdvancedBBCodeParser');
       $bP->removeProvider('standard.font.color');
       $bP->removeProvider('standard.font.size');
@@ -72,7 +77,7 @@ class CommentListingController extends CommentBaseDocumentController {
          /* @var $entry ArticleComment */
          $template->setPlaceHolder('Number', $i++);
          $template->setPlaceHolder('Name', $entry->getName());
-         $template->setPlaceHolder('Date', DateTime::createFromFormat('Y-m-d', $entry->getDate())->format('d.m.Y'));
+         $template->setPlaceHolder('Date', \DateTime::createFromFormat('Y-m-d', $entry->getDate())->format('d.m.Y'));
          $template->setPlaceHolder('Time', $entry->getTime());
          $template->setPlaceHolder('Comment', $bP->parseCode($entry->getComment()));
 
@@ -89,11 +94,11 @@ class CommentListingController extends CommentBaseDocumentController {
       $this->setPlaceHolder('Content', $buffer);
 
       // display the pager
-      $this->setPlaceHolder('Pager', $M->getPager('comments'));
+      $this->setPlaceHolder('Pager', $m->getPager('comments'));
 
       // get the pager url params from the business component
       // to be able to delete them from the url.
-      $urlParams = $M->getURLParameter();
+      $urlParams = $m->getURLParameter();
 
       // generate the add comment link
       $this->setPlaceHolder('Link',

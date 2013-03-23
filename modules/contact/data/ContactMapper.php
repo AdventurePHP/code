@@ -20,10 +20,11 @@ namespace APF\modules\kontakt4\data;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\APFObject;
 use APF\modules\kontakt4\biz\ContactFormRecipient;
 
 /**
- * @package modules::kontakt4::data
+ * @package modules::contact::data
  * @class ContactMapper
  *
  * Implements the data layer component of the contact form.
@@ -50,8 +51,9 @@ class ContactMapper extends APFObject {
     */
    public function loadRecipients() {
 
-      $config = $this->getConfiguration('modules::kontakt4', 'recipients.ini');
+      $config = $this->getConfiguration('modules::contact', 'recipients.ini');
 
+      /* @var $recipients ContactFormRecipient[] */
       $recipients = array();
       foreach ($config->getSectionNames() as $name) {
 
@@ -88,6 +90,7 @@ class ContactMapper extends APFObject {
     */
    public function loadRecipientPerId($id) {
 
+      /* @var $recipients ContactFormRecipient[] */
       $recipients = $this->loadRecipients();
 
       if (!is_array($recipients)) {

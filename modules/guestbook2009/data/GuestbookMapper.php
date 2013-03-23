@@ -20,7 +20,13 @@ namespace APF\modules\guestbook2009\data;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\modules\genericormapper\data\GenericORMapperFactory;
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\pagecontroller\APFObject;
+use APF\core\singleton\Singleton;
+use APF\modules\genericormapper\data\GenericCriterionObject;
+use APF\modules\genericormapper\data\GenericDomainObject;
+use APF\modules\genericormapper\data\GenericORRelationMapper;
+use APF\modules\guestbook2009\biz\GuestbookModel;
 use APF\modules\guestbook2009\biz\User;
 use APF\modules\guestbook2009\biz\Entry;
 use APF\modules\guestbook2009\biz\Guestbook;
@@ -45,10 +51,9 @@ class GuestbookMapper extends APFObject {
    private $connectionName;
 
    /**
-    * The GenericORMapper init type.
-    * @var string
+    * @var GenericORRelationMapper The GORM instance.
     */
-   private $initType;
+   private $orm;
 
    /**
     * @public
@@ -128,23 +133,22 @@ class GuestbookMapper extends APFObject {
     * @version
     * Version 0.1, 21.05.2009<br />
     */
-   private function mapGenericGuestbook2DomainObject($guestbook) {
+   private function mapGenericGuestbook2DomainObject(GenericDomainObject $guestbook) {
 
       if ($guestbook == null) {
          /* @var $model GuestbookModel */
-         $model = &$this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+         $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
          $gbId = $model->getGuestbookId();
          throw new \InvalidArgumentException('[GuestbookManager::mapGenericGuestbook2DomainObject()] '
                . 'No guestbook with id "' . $gbId . '" stored in database! Please check your guestbook tag '
                . 'inclusion.', E_USER_ERROR);
       }
 
-      $orm = &$this->getGenericORMapper();
       $crit = new GenericCriterionObject();
       $lang = $this->getCurrentLanguage();
       $crit->addRelationIndicator('Attribute2Language', $lang);
 
-      $attributes = $orm->loadRelatedObjects($guestbook, 'Guestbook2LangDepValues', $crit);
+      $attributes = $this->orm->loadRelatedObjects($guestbook, 'Guestbook2LangDepValues', $crit);
 
       $domGuestbook = new Guestbook();
       foreach ($attributes as $attribute) {
@@ -159,7 +163,6 @@ class GuestbookMapper extends APFObject {
       }
 
       return $domGuestbook;
-
    }
 
 
@@ -176,7 +179,6 @@ class GuestbookMapper extends APFObject {
     * Version 0.1, 06.05.2009<br />
     */
    public function loadEntry($id) {
-
       $crit = new GenericCriterionObject();
       $crit->addOrderIndicator('CreationTimestamp', 'DESC');
       $crit->addPropertyIndicator('EntryID', $id);
@@ -185,7 +187,6 @@ class GuestbookMapper extends APFObject {
          $gb->loadRelatedObjects('Guestbook2Entry', $crit)
       );
       return $entryList[0];
-
    }
 
    /**
@@ -199,10 +200,9 @@ class GuestbookMapper extends APFObject {
     * @version
     * Version 0.1, 10.05.2009<br />
     */
-   public function saveEntry($entry) {
+   public function saveEntry(Entry $entry) {
       $genericEntry = $this->mapDomainObject2GenericEntry($entry);
-      $orm = &$this->getGenericORMapper();
-      $orm->saveObject($genericEntry);
+      $this->orm->saveObject($genericEntry);
    }
 
    /**
@@ -216,31 +216,28 @@ class GuestbookMapper extends APFObject {
     * @version
     * Version 0.1, 21.05.2009<br />
     */
-   public function deleteEntry($domEntry) {
+   public function deleteEntry(Entry $domEntry) {
 
-      $orm = &$this->getGenericORMapper();
       $entry = new GenericDomainObject('Entry');
       $entry->setProperty('EntryID', $domEntry->getId());
 
       // Delete the attributes of the entry, so that the object
       // itself can be deleted. If we don't do this, the ORM
       // will not be glad, because the entry still has child objects!
-      $attributes = $orm->loadRelatedObjects($entry, 'Entry2LangDepValues');
+      $attributes = $this->orm->loadRelatedObjects($entry, 'Entry2LangDepValues');
       foreach ($attributes as $attribute) {
-         $orm->deleteObject($attribute);
+         $this->orm->deleteObject($attribute);
       }
 
       // delete associated users, because we don't need them anymore.
-      $users = $orm->loadRelatedObjects($entry, 'Editor2Entry');
+      $users = $this->orm->loadRelatedObjects($entry, 'Editor2Entry');
       foreach ($users as $user) {
-         $orm->deleteObject($user);
+         $this->orm->deleteObject($user);
       }
 
       // now delete entry object (associations are deleted automatically)
-      $orm->deleteObject($entry);
-
+      $this->orm->deleteObject($entry);
    }
-
 
    /**
     * @public
@@ -254,25 +251,19 @@ class GuestbookMapper extends APFObject {
     * @version
     * Version 0.1, 17.05.2009<br />
     */
-   public function validateCredentials($user) {
-
+   public function validateCredentials(User $user) {
       $authCrit = new GenericCriterionObject();
       $authCrit->addPropertyIndicator('Username', $user->getUsername());
       $authCrit->addPropertyIndicator('Password', md5($user->getPassword()));
-      $orm = &$this->getGenericORMapper();
-      $gbUser = $orm->loadObjectByCriterion('User', $authCrit);
-      if ($gbUser !== null) {
-         return true;
-      }
-      return false;
-
+      $gbUser = $this->orm->loadObjectByCriterion('User', $authCrit);
+      return $gbUser !== null;
    }
 
 
    /**
     * @private
     *
-    * Mapps a domain object to a GenericDomainObject to prepare the entry for saving it.
+    * Maps a domain object to a GenericDomainObject to prepare the entry for saving it.
     *
     * @param Entry $domEntry The Entry domain object.
     * @return GenericDomainObject The generic domain object representing the Entry object.
@@ -281,7 +272,7 @@ class GuestbookMapper extends APFObject {
     * @version
     * Version 0.1, 06.05.2009<br />
     */
-   private function mapDomainObject2GenericEntry($domEntry) {
+   private function mapDomainObject2GenericEntry(Entry $domEntry) {
 
       $lang = $this->getCurrentLanguage();
 
@@ -338,25 +329,22 @@ class GuestbookMapper extends APFObject {
     * @version
     * Version 0.1, 06.05.2009<br />
     */
-   private function getGenericAttribute($domEntry, $name) {
+   private function getGenericAttribute(Entry $domEntry, $name) {
 
       // try to load
       $entry = new GenericDomainObject('Entry');
       $entry->setProperty('EntryID', $domEntry->getId());
 
-      $orm = &$this->getGenericORMapper();
-
       $crit = new GenericCriterionObject();
       $crit->addPropertyIndicator('Name', $name);
       $crit->addRelationIndicator('Attribute2Language', $this->getCurrentLanguage());
 
-      $attributes = $orm->loadRelatedObjects($entry, 'Entry2LangDepValues', $crit);
+      $attributes = $this->orm->loadRelatedObjects($entry, 'Entry2LangDepValues', $crit);
       if (isset($attributes[0])) {
          return $attributes[0];
       }
 
       return new GenericDomainObject('Attribute');
-
    }
 
    /**
@@ -372,7 +360,7 @@ class GuestbookMapper extends APFObject {
     * @version
     * Version 0.1, 06.05.2009<br />
     */
-   private function mapGenericEntries2DomainObjects($entries = array(), $addEditor = true) {
+   private function mapGenericEntries2DomainObjects(array $entries = array(), $addEditor = true) {
 
       // return empty array, because having no entries means nothing to do!
       if (count($entries) == 0) {
@@ -380,12 +368,12 @@ class GuestbookMapper extends APFObject {
       }
 
       // invoke benchmarker to be able to monitor the performance
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $t->start('mapGenericEntries2DomainObjects()');
 
       // load the language object for the current language to enable
       // language dependent mapping!
-      $orm = &$this->getGenericORMapper();
       $lang = $this->getCurrentLanguage();
 
       // define the criterion
@@ -393,11 +381,12 @@ class GuestbookMapper extends APFObject {
       $critEntries->addRelationIndicator('Attribute2Language', $lang);
 
       $gbEntries = array();
+      /* @var $current GenericDomainObject */
       foreach ($entries as $current) {
 
          // Check, whether there are attributes related in the current language.
          // If not, do NOT add an entry, because it will be empty!
-         $attributes = $orm->loadRelatedObjects($current, 'Entry2LangDepValues', $critEntries);
+         $attributes = $this->orm->loadRelatedObjects($current, 'Entry2LangDepValues', $critEntries);
          if (count($attributes) > 0) {
 
             // load the entry itself
@@ -418,7 +407,7 @@ class GuestbookMapper extends APFObject {
             // add the editor's data
             if ($addEditor === true) {
                $editor = new User();
-               $user = $orm->loadRelatedObjects($current, 'Editor2Entry');
+               $user = $this->orm->loadRelatedObjects($current, 'Editor2Entry');
                $editor->setName($user[0]->getProperty('Name'));
                $editor->setEmail($user[0]->getProperty('Email'));
                $editor->setWebsite($user[0]->getProperty('Website'));
@@ -428,35 +417,12 @@ class GuestbookMapper extends APFObject {
 
             $entry->setId($current->getProperty('EntryID'));
             $gbEntries[] = $entry;
-
          }
 
       }
 
       $t->stop('mapGenericEntries2DomainObjects()');
       return $gbEntries;
-
-   }
-
-   /**
-    * @private
-    *
-    * Returns the desired instance of the GenericORMapper configured for this application case.
-    *
-    * @return GenericORRelationMapper The or mapper instance.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 06.05.2009<br />
-    * Version 0.2, 16.03.2010 (Bugfix 299: moved the service type to the GORM factory call)<br />
-    */
-   private function &getGenericORMapper() {
-      $ormFact = &$this->getServiceObject('modules::genericormapper::data', 'GenericORMapperFactory', $this->initType);
-      return $ormFact->getGenericORMapper(
-         'modules::guestbook2009::data',
-         'guestbook2009',
-         $this->connectionName
-      );
    }
 
    /**
@@ -478,17 +444,16 @@ class GuestbookMapper extends APFObject {
    /**
     * @public
     *
-    * Initializer method for usage with the DIServiceManager. Sets the database
-    * connection name.
+    * Injects the GenericORRelationMapper into the guestbook mapper.
     *
-    * @param string $initType The database connection to use.
+    * @param GenericORRelationMapper $orm The generic o/r mapper instance.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 13.06.2009<br />
     */
-   public function setORMInitType($initType) {
-      $this->initType = $initType;
+   public function setORM(GenericORRelationMapper $orm) {
+      $this->orm = $orm;
    }
 
    /**
@@ -501,12 +466,9 @@ class GuestbookMapper extends APFObject {
     * Version 0.1, 06.05.2009<br />
     */
    private function getCurrentLanguage() {
-
       $crit = new GenericCriterionObject();
       $crit->addPropertyIndicator('ISOCode', $this->language);
-      $orm = &$this->getGenericORMapper();
-      return $orm->loadObjectByCriterion('Language', $crit);
-
+      return $this->orm->loadObjectByCriterion('Language', $crit);
    }
 
    /**
@@ -521,10 +483,9 @@ class GuestbookMapper extends APFObject {
     * Version 0.1, 16.05.2009<br />
     */
    private function getCurrentGuestbook() {
-      $orm = &$this->getGenericORMapper();
       /* @var $model GuestbookModel */
-      $model = &$this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
-      return $orm->loadObjectByID('Guestbook', $model->getGuestbookId());
+      $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+      return $this->orm->loadObjectByID('Guestbook', $model->getGuestbookId());
    }
 
 }

@@ -1,5 +1,5 @@
 <?php
-namespace APF\modules\guestbook2009\pres\controller;
+namespace APF\modules\kontakt4\biz;
 
 /**
  * <!--
@@ -20,28 +20,46 @@ namespace APF\modules\guestbook2009\pres\controller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\modules\guestbook2009\biz\Guestbook;
+use APF\core\pagecontroller\APFObject;
 
 /**
- * @package modules::guestbook2009::pres
- * @class guestbook_controller
+ * @package modules::contact::biz
+ * @class ContactFormRecipient
  *
- * Displays the guestbook's language dependent attributes.
+ * Represents the domain object for the contact form.
  *
- * @author Christian Achatz
+ * @author Christian Schäfer
  * @version
- * Version 0.1, 21.05.2009<br />
+ * Version 0.1, 03.06.2005<br />
  */
-class guestbook_controller extends BaseDocumentController {
+class ContactFormRecipient extends APFObject {
 
-   public function transformContent() {
+   private $id = '';
+   private $name = '';
+   private $email = '';
 
-      /* @var $gs GuestbookService */
-      $gS = &$this->getDIServiceObject('modules::guestbook2009::biz', 'GuestbookService');
-      $guestbook = $gS->loadGuestbook();
-      $this->setPlaceHolder('title', $guestbook->getTitle());
-      $this->setPlaceHolder('description', $guestbook->getDescription());
+   public function setId($id) {
+      $this->id = $id;
+   }
 
+   public function setName($name) {
+      $this->name = $name;
+   }
+
+   public function setEmailAddress($email) {
+      $this->email = $email;
+   }
+
+   public function getId() {
+      return $this->id;
+   }
+
+   public function getName() {
+      return $this->name;
+   }
+
+   public function getEmailAddress() {
+      return $this->email;
    }
 
 }

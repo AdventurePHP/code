@@ -20,11 +20,12 @@ namespace APF\modules\guestbook2009\pres\controller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\modules\guestbook2009\biz\GuestbookService;
+use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * @package modules::guestbook2009::pres::controller
- * @class list_controller
+ * @class GuestbookListController
  *
  * Implements the document controller for the guestbook's list view.
  *
@@ -33,15 +34,14 @@ use APF\modules\guestbook2009\biz\GuestbookService;
  * Version 0.1, 03.05.2009<br />
  * Version 0.2, 06.06.2009 (Added dynamic link generation)<br />
  */
-class list_controller extends BaseDocumentController {
+class GuestbookListController extends GuestbookBaseController {
 
    public function transformContent() {
 
-      /* @var $gS GuestbookService */
-      $gS = &$this->getDIServiceObject('modules::guestbook2009::biz', 'GuestbookService');
+      $gS = & $this->getGuestbookService();
       $entryList = $gS->loadPagedEntryList();
 
-      $tmpl_entry = &$this->getTemplate('entry');
+      $tmpl_entry = & $this->getTemplate('entry');
       $buffer = (string)'';
       foreach ($entryList as $entry) {
 
@@ -63,7 +63,7 @@ class list_controller extends BaseDocumentController {
       // add the pager
       $this->setPlaceHolder('pager', $gS->getPagerOutput());
 
-      // add dyamic link
+      // add dynamic link
       $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('gbview' => 'create')));
       $this->setPlaceHolder('createlink', $link);
    }

@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\genericormapper\data\tools;
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -25,19 +23,20 @@ echo 'This is a sample update script, that must be adapted to your requirements!
       . 'Please do not use as is to avoid unexpected results! :)';
 exit(0);
 
-// include page controller
-require('../../apps/core/pagecontroller/pagecontroller.php');
+// include APF bootstrap file
+require('./apps/core/bootstrap.php');
 
 // configure the registry if desired
+use APF\core\registry\Registry;
+
 Registry::register('apf::core', 'Environment', '{ENVIRONMENT}');
 
-// include UpdateMapper
 use APF\modules\genericormapper\data\tools\GenericORMapperManagementTool;
 
 // create update tool
 $update = new GenericORMapperManagementTool();
 
-// set Context (important for the configuration files!)
+// set context (important for the configuration files!)
 $update->setContext('{CONTEXT}');
 
 // adapt storage engine (default is MyISAM)

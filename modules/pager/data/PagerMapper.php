@@ -20,7 +20,12 @@ namespace APF\modules\pager\data;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\database\AbstractDatabaseHandler;
+use APF\core\database\ConnectionManager;
+use APF\core\pagecontroller\APFObject;
 use APF\core\session\SessionManager;
+use APF\core\singleton\Singleton;
 
 /**
  * @package modules::pager::data
@@ -61,7 +66,7 @@ final class PagerMapper extends APFObject {
     * @return AbstractDatabaseHandler The current database connection.
     */
    private function &getConnection() {
-      $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
+      $cM = & $this->getServiceObject('core::database', 'ConnectionManager');
       /* @var $cM ConnectionManager */
       return $cM->getConnection($this->connectionKey);
    }
@@ -105,12 +110,14 @@ final class PagerMapper extends APFObject {
     */
    public function getEntriesCount($namespace, $statement, $params = array(), $cache = true) {
 
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('PagerMapper::getEntriesCount()');
 
       // try to load the entries count from the session
       $entriesCount = null;
+      $session = null;
+      $sessionKey = null;
       if ($cache === true) {
          $session = new SessionManager('modules::pager::biz');
          $sessionKey = $this->getSessionKey($namespace, $statement, $params) . '_EntriesCount';
@@ -119,7 +126,7 @@ final class PagerMapper extends APFObject {
 
       // load from database if not in session
       if ($entriesCount === null) {
-         $conn = &$this->getConnection();
+         $conn = & $this->getConnection();
          $result = $conn->executeStatement($namespace, $statement, $params);
          $data = $conn->fetchData($result);
          $entriesCount = $data['EntriesCount'];
@@ -151,15 +158,17 @@ final class PagerMapper extends APFObject {
     * Version 0.2, 19.01.2009 (Added the connection key handling)<br />
     * Version 0.3, 24.01.2009 (Added session caching)<br />
     * Version 0.4, 25.01.2009 (Removed nullpointer bug due to session object definition)<br />
-    * Version 0.5, 27.12.2010 (Bugfix: In case of empty results, no empty objects are returned any more.)<br />
+    * Version 0.5, 27.12.2010 (Bug-fix: In case of empty results, no empty objects are returned any more.)<br />
     */
    public function loadEntries($namespace, $statement, $params = array(), $cache = true) {
 
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('PagerMapper::loadEntries()');
 
       // try to load the entries count from the session
+      $session = null;
+      $sessionKey = null;
       if ($cache === true) {
          $session = new SessionManager('modules::pager::biz');
          $sessionKey = $this->getSessionKey($namespace, $statement, $params) . '_EntryIDs';
@@ -171,7 +180,7 @@ final class PagerMapper extends APFObject {
       // load from database if not in session
       if ($entryIds === null) {
 
-         $conn = &$this->getConnection();
+         $conn = & $this->getConnection();
          $result = $conn->executeStatement($namespace, $statement, $params);
 
          // map empty results to empty array

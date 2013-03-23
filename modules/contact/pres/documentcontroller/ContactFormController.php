@@ -20,12 +20,17 @@ namespace APF\modules\kontakt4\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\BaseDocumentController;
+use APF\modules\kontakt4\biz\ContactManager;
+use APF\modules\kontakt4\biz\ContactFormRecipient;
+use APF\tools\form\taglib\SelectBoxTag;
 use APF\tools\link\LinkGenerator;
 use APF\modules\kontakt4\biz\ContactFormData;
+use APF\tools\link\Url;
 
 /**
- * @package modules::kontakt4::pres::documentcontroller
- * @class contact_form_controller
+ * @package modules::contact::pres::documentcontroller
+ * @class ContactFormController
  *
  * Document controller for the form view of the contact module.
  *
@@ -36,7 +41,7 @@ use APF\modules\kontakt4\biz\ContactFormData;
  * Version 0.3, 23.02.2007<br />
  * Version 0.4, 12.09.2009 (Refactoring due to changes of the form taglibs)<br />
  */
-class contact_form_controller extends BaseDocumentController {
+class ContactFormController extends BaseDocumentController {
 
    /**
     * @public
@@ -64,7 +69,7 @@ class contact_form_controller extends BaseDocumentController {
       $recipients = & $form->getFormElementByName('Empfaenger');
 
       /* @var $cM ContactManager */
-      $cM = & $this->getServiceObject('modules::kontakt4::biz', 'ContactManager');
+      $cM = & $this->getServiceObject('modules::contact::biz', 'ContactManager');
       /* @var $recipientList ContactFormRecipient[] */
       $recipientList = $cM->loadRecipients();
 
@@ -95,13 +100,13 @@ class contact_form_controller extends BaseDocumentController {
          $formData->setMessage($text->getContent());
 
          /* @var $cM ContactManager */
-         $cM = & $this->getServiceObject('modules::kontakt4::biz', 'ContactManager');
+         $cM = & $this->getServiceObject('modules::contact::biz', 'ContactManager');
          $cM->sendContactForm($formData);
 
       } else {
 
          // label the button
-         $config = $this->getConfiguration('modules::kontakt4', 'language');
+         $config = $this->getConfiguration('modules::contact', 'language');
          $value = $config->getSection($this->language)->getValue('form.button');
          $button = & $form->getFormElementByName('sendFormContact');
          $button->setAttribute('value', $value);

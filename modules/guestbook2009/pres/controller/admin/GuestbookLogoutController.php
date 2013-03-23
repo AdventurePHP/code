@@ -24,7 +24,7 @@ use APF\modules\guestbook2009\pres\controller\admin\GuestbookBackendBaseControll
 
 /**
  * @package modules::guestbook2009::pres
- * @class logout_controller
+ * @class GuestbookLogoutController
  *
  * Handles the logout call. The class itself is only a wrapper to call the
  * service. This is done, because the guestbook is not based on the front
@@ -34,12 +34,10 @@ use APF\modules\guestbook2009\pres\controller\admin\GuestbookBackendBaseControll
  * @version
  * Version 0.1, 21.05.2009<br />
  */
-class logout_controller extends GuestbookBackendBaseController {
+class GuestbookLogoutController extends GuestbookBackendBaseController {
 
    public function transformContent() {
-      /* @var $gS GuestbookService */
-      $gS = &$this->getDIServiceObject('modules::guestbook2009::biz', 'GuestbookService');
-      $gS->logout();
+      $this->getGuestbookService()->logout();
    }
 
 }

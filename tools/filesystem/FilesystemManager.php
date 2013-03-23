@@ -64,7 +64,7 @@ class FilesystemManager {
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.11.2008<br />
-    * Version 0.2, 24.11.2008 (Bugfix: recursion on windows systems broken due to directory separator problems)<br />
+    * Version 0.2, 24.11.2008 (Bug-fix: recursion on windows systems broken due to directory separator problems)<br />
     */
    public static function deleteFolder($folder, $recursive = false) {
 
@@ -111,7 +111,7 @@ class FilesystemManager {
     * @author Christian Achatz
     * @version
     * Version 0.1, 21.11.2008<br />
-    * Version 0.2, 13.08.2010 (Bugfix: default permissions are now set to ug+rwx; using php's built in recursive path creation)<br />
+    * Version 0.2, 13.08.2010 (Bug-fix: default permissions are now set to ug+rwx; using php's built in recursive path creation)<br />
     */
    public static function createFolder($folder, $permissions = 0770) {
 

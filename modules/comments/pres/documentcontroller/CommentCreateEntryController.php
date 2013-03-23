@@ -20,8 +20,11 @@ namespace APF\modules\comments\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\comments\biz\ArticleComment;
+use APF\modules\comments\biz\ArticleCommentManager;
 use APF\modules\comments\pres\documentcontroller\CommentBaseDocumentController;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * @package modules::comments::pres::documentcontroller
@@ -53,7 +56,8 @@ class CommentCreateEntryController extends CommentBaseDocumentController {
 
       if ($form->isSent() == true) {
 
-         $M = &$this->getAndInitServiceObject('modules::comments::biz', 'commentManager', $this->getCategoryKey());
+         /* @var $m ArticleCommentManager */
+         $m = &$this->getAndInitServiceObject('modules::comments::biz', 'ArticleCommentManager', $this->getCategoryKey());
 
          if ($form->isValid() == true) {
 
@@ -67,7 +71,7 @@ class CommentCreateEntryController extends CommentBaseDocumentController {
             $comment = &$form->getFormElementByName('Comment');
             $articleComment->setComment($comment->getContent());
 
-            $M->saveEntry($articleComment);
+            $m->saveEntry($articleComment);
          } else {
             $this->buildForm();
          }

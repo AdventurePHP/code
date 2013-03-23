@@ -20,10 +20,16 @@ namespace APF\modules\pager\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\configuration\Configuration;
+use APF\core\pagecontroller\APFObject;
+use APF\core\pagecontroller\Page;
+use APF\core\singleton\Singleton;
+use APF\modules\pager\data\PagerMapper;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 use APF\tools\request\RequestHandler;
 use APF\modules\pager\biz\PagerPage;
-use APF\modules\pager\data\PagerMapper;
 
 /**
  * @package modules::pager::biz
@@ -45,7 +51,7 @@ final class PagerManager extends APFObject {
     * @private
     * @since 0.5
     * Contains the current configuration.
-    * @var string[]
+    * @var Configuration
     */
    private $section = null;
 
@@ -137,7 +143,8 @@ final class PagerManager extends APFObject {
     * Version 0.4, 24.01.2009 (Changed the API of the method. Moved the additional param handling to this method)<br />
     */
    public function loadEntries($addStmtParams = array()) {
-      $m = &$this->getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
+      /* @var $m PagerMapper */
+      $m = & $this->getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
       return $m->loadEntries($this->section->getValue('Pager.StatementNamespace'), $this->section->getValue('Pager.EntriesStatement'), $this->getStatementParams($addStmtParams), $this->section->getValue('Pager.CacheInSession'));
    }
 
@@ -158,7 +165,7 @@ final class PagerManager extends APFObject {
     * Version 0.2, 18.09.2007 (Introduced PHP 4 compatibility)<br />
     * Version 0.3, 24.01.2009 (Added the $addStmtParams param to the API)<br />
     * Version 0.4, 25.01.2009 (Refactored the function. Now uses the $this->loadEntries() to load the ids)<br />
-    * Version 0.5, 27.12.2010 (Bugfix: In case of empty results, no empty objects are returned any more.)<br />
+    * Version 0.5, 27.12.2010 (Bug-fix: In case of empty results, no empty objects are returned any more.)<br />
     */
    public function loadEntriesByAppDataComponent(&$dataComponent, $loadMethod, $addStmtParams = array()) {
 
@@ -242,7 +249,7 @@ final class PagerManager extends APFObject {
       $pager->loadDesign($this->section->getValue('Pager.DesignNamespace'), $this->section->getValue('Pager.DesignTemplate'));
 
       // add the necessary config params and pages
-      $document = &$pager->getRootDocument();
+      $document = & $pager->getRootDocument();
       $document->setAttribute('Pages', $this->createPages4PagerDisplay($addStmtParams));
       $document->setAttribute('Config', array(
             'ParameterPageName' => $this->section->getValue('Pager.ParameterPageName'),
@@ -305,7 +312,8 @@ final class PagerManager extends APFObject {
     */
    private function createPages4PagerDisplay($addStmtParams = array()) {
 
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $t->start('PagerManager::createPages4PagerDisplay()');
 
       // initialize start params
@@ -315,12 +323,14 @@ final class PagerManager extends APFObject {
       $currentStart = (int)RequestHandler::getValue($this->section->getValue('Pager.ParameterPageName'), 1) * $countPerPage;
 
       // initialize page delimiter params
-      $M = &$this->getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
-      $entriesCount = $M->getEntriesCount($this->section->getValue('Pager.StatementNamespace'), $this->section->getValue('Pager.CountStatement'), $this->getStatementParams($addStmtParams), $this->section->getValue('Pager.CacheInSession'));
+      /* @var $m PagerMapper */
+      $m = & $this->getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
+      $entriesCount = $m->getEntriesCount($this->section->getValue('Pager.StatementNamespace'), $this->section->getValue('Pager.CountStatement'), $this->getStatementParams($addStmtParams), $this->section->getValue('Pager.CacheInSession'));
 
       $pageCount = ceil($entriesCount / $countPerPage);
 
       // create the page representation objects
+      /* @var $pages PagerPage[] */
       $pages = array();
       for ($i = 0; $i < $pageCount; $i++) {
 
@@ -418,8 +428,9 @@ final class PagerManager extends APFObject {
       $currentStart = (int)RequestHandler::getValue($this->section->getValue('Pager.ParameterPageName'), 1) * $countPerPage;
 
       // initialize page delimiter params
-      $M = &$this->getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
-      $entriesCount = $M->getEntriesCount($this->section->getValue('Pager.StatementNamespace'), $this->section->getValue('Pager.CountStatement'), $this->getStatementParams($addStmtParams), $this->section->getValue('Pager.CacheInSession'));
+      /* @var $m PagerMapper */
+      $m = & $this->getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
+      $entriesCount = $m->getEntriesCount($this->section->getValue('Pager.StatementNamespace'), $this->section->getValue('Pager.CountStatement'), $this->getStatementParams($addStmtParams), $this->section->getValue('Pager.CacheInSession'));
 
       return ceil($entriesCount / $countPerPage);
    }
@@ -436,6 +447,9 @@ final class PagerManager extends APFObject {
     * Version 0.1, 22.08.2010
     */
    public function getCountPerPage() {
+
+      $countPerPage = 0;
+
       if ($this->isDynamicPageSizeActivated()) {
          $countPerPage = (int)RequestHandler::getValue($this->section->getValue('Pager.ParameterCountName'), 0);
       }
@@ -486,7 +500,9 @@ final class PagerManager extends APFObject {
     * Version 0.1, 22.09.2010<br />
     */
    public function isDynamicPageSizeActivated() {
-      if ($this->section->getValue('Pager.AllowDynamicEntriesPerPage') !== null && $this->section->getValue('Pager.AllowDynamicEntriesPerPage') === 'true') {
+      if ($this->section->getValue('Pager.AllowDynamicEntriesPerPage') !== null
+            && $this->section->getValue('Pager.AllowDynamicEntriesPerPage') === 'true'
+      ) {
          return true;
       } else {
          return false;

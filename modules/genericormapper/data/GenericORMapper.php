@@ -23,7 +23,6 @@ namespace APF\modules\genericormapper\data;
 use APF\modules\genericormapper\data\GenericORMapperDataObject;
 use APF\modules\genericormapper\data\BaseMapper;
 use APF\modules\genericormapper\data\GenericDomainObject;
-use APF\modules\genericormapper\data\GenericCriterionObject;
 
 /**
  * @package modules::genericormapper::data

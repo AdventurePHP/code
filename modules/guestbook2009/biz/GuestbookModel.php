@@ -20,8 +20,12 @@ namespace APF\modules\guestbook2009\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\APFObject;
 
 /**
+ * @package APF\modules\guestbook2009\biz
+ * @class GuestbookModel
+ *
  * The GuestbookModel represents the application status. It is used to store the
  * id of the guestbook.
  *
@@ -32,7 +36,6 @@ namespace APF\modules\guestbook2009\biz;
 final class GuestbookModel extends APFObject {
 
    /**
-    * @protected
     * @var int Stores the id of the guestbook. It is filled by the taglib including the
     * guestbook and consumed by the service and data mapper.
     */

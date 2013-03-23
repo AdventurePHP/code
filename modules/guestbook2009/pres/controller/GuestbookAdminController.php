@@ -21,10 +21,11 @@ namespace APF\modules\guestbook2009\pres\controller;
  * -->
  */
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * @package modules::guestbook2009::pres::controller
- * @class admin_controller
+ * @class GuestbookAdminController
  *
  * Implements the document controller for the admin main view. Generates the links
  * for the subviews to edit or delete an entry.
@@ -33,16 +34,14 @@ use APF\tools\link\LinkGenerator;
  * @version
  * Version 0.1, 18.05.2009<br />
  */
-class admin_controller extends BaseDocumentController {
+class GuestbookAdminController extends GuestbookBaseController {
 
    public function transformContent() {
 
       // invoke the service to check, if the current user may request this page
-      $gS = &$this->getDIServiceObject('modules::guestbook2009::biz', 'GuestbookService');
-      $gS->checkAccessAllowed();
+      $this->getGuestbookService()->checkAccessAllowed();
 
-      // generate the admin menu links using the fc linkhander to
-      // be able to include the module in either page.
+      // generate the admin menu links to be able to include the module in either page.
       $editLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
          'gbview' => 'admin',
          'adminview' => 'edit'

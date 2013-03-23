@@ -22,7 +22,7 @@ namespace APF\modules\kontakt4\biz;
  */
 
 /**
- * @package modules::kontakt4::biz
+ * @package modules::contact::biz
  * @class ContactFormData
  *
  * Implements a DTO to communicate between the presentation and the business layer.

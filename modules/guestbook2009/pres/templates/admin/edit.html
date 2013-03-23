@@ -1,12 +1,12 @@
-<@controller namespace="modules::guestbook2009::pres::controller::admin" class="edit_controller" @>
+<@controller class="APF\modules\guestbook2009\pres\controller\admin\GuestbookEditEntryController" @>
 Please select an entry to edit!
-<br />
-<br />
-<core:appendnode 
-   namespace="modules::guestbook2009::pres::templates::admin"
-   template="choose"
-/>
-<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
+<br/>
+<br/>
+<core:appendnode
+      namespace="modules::guestbook2009::pres::templates::admin"
+      template="choose"
+      />
+<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form"/>
 <div class="gb--admin-edit">
    <div class="gb--admin-edit-form">
       <html:form name="edit_entry" method="post">
@@ -15,71 +15,72 @@ Please select an entry to edit!
          </div>
          <label class="gb--admin-edit-label-name">Name:</label>
          <form:text
-            maxlength="100"
-            class="gb--admin-edit-field-name"
-            name="name"
-         />
-         <br />
+               maxlength="100"
+               class="gb--admin-edit-field-name"
+               name="name"
+               />
+         <br/>
          <label class="gb--admin-edit-label-email">Email:</label>
          <form:text
-            maxlength="100"
-            class="gb--admin-edit-field-email"
-            name="email"
-         />
-         <br />
+               maxlength="100"
+               class="gb--admin-edit-field-email"
+               name="email"
+               />
+         <br/>
          <label class="gb--admin-edit-label-website">Website:</label>
          <form:text
-            maxlength="100"
-            class="gb--admin-edit-field-website"
-            name="website"
-         />
-         <br />
+               maxlength="100"
+               class="gb--admin-edit-field-website"
+               name="website"
+               />
+         <br/>
          <label class="gb--admin-edit-label-title">Title:</label>
          <form:text
-            maxlength="100"
-            class="gb--admin-edit-field-title"
-            name="title"
-         />
-         <br />
-         <br />
+               maxlength="100"
+               class="gb--admin-edit-field-title"
+               name="title"
+               />
+         <br/>
+         <br/>
          <label class="gb--admin-edit-label-text">Text:</label>
-         <br />
+         <br/>
          <form:area
-            class="gb--admin-edit-field-text"
-            name="text"
-         />
-         <br />
-         <br />
+               class="gb--admin-edit-field-text"
+               name="text"
+               />
+         <br/>
+         <br/>
+
          <div class="gb--admin-edit-button-placer">
-            <form:button class="gb--admin-edit-button-save" name="send" value="Save" />
+            <form:button class="gb--admin-edit-button-save" name="send" value="Save"/>
          </div>
-         <form:hidden name="entryid" />
-         <form:hidden name="editorid" />
+         <form:hidden name="entryid"/>
+         <form:hidden name="editorid"/>
          <form:addvalidator
-            class="TextLengthValidator"
-            button="send"
-            control="name|title|text"
-         />
+               class="TextLengthValidator"
+               button="send"
+               control="name|title|text"
+               />
          <form:addfilter
-            class="NoSpecialCharactersFilter"
-            button="send"
-            control="name|title"
-         />
+               class="NoSpecialCharactersFilter"
+               button="send"
+               control="name|title"
+               />
          <form:addvalidator
-            class="EMailValidator"
-            button="send"
-            control="email"
-         />
+               class="EMailValidator"
+               button="send"
+               control="email"
+               />
          <form:addfilter
-            class="StripTagsFilter"
-            button="send"
-            control="website|text"
-         />
+               class="StripTagsFilter"
+               button="send"
+               control="website|text"
+               />
          <form:addfilter
-            class="EMailFilter"
-            button="send"
-            control="email"
-         />
+               class="EMailFilter"
+               button="send"
+               control="email"
+               />
       </html:form>
    </div>
 </div>

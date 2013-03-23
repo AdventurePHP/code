@@ -20,41 +20,23 @@ namespace APF\modules\guestbook2009\pres\controller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\modules\guestbook2009\biz\User;
 
 /**
  * @package modules::guestbook2009::pres
- * @class login_controller
+ * @class GuestbookController
  *
- * Implements the document controller, to handle the login subview.
+ * Displays the guestbook's language dependent attributes.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 18.05.2009<br />
+ * Version 0.1, 21.05.2009<br />
  */
-class login_controller extends BaseDocumentController {
+class GuestbookController extends GuestbookBaseController {
 
    public function transformContent() {
-
-      $form = &$this->getForm('login');
-
-      if ($form->isSent() && $form->isValid()) {
-
-         $fieldUser = &$form->getFormElementByName('username');
-         $fieldPass = &$form->getFormElementByName('password');
-         $user = new User();
-         $user->setUsername($fieldUser->getAttribute('value'));
-         $user->setPassword($fieldPass->getAttribute('value'));
-
-         /* @var $gS GuestbookService */
-         $gS = &$this->getDIServiceObject('modules::guestbook2009::biz', 'GuestbookService');
-         if (!$gS->validateCredentials($user)) {
-            $error = &$this->getTemplate('error');
-            $form->setPlaceHolder('error', $error->transformTemplate());
-         }
-      }
-
-      $form->transformOnPlace();
+      $guestbook = $this->getGuestbookService()->loadGuestbook();
+      $this->setPlaceHolder('title', $guestbook->getTitle());
+      $this->setPlaceHolder('description', $guestbook->getDescription());
    }
 
 }

@@ -1,14 +1,14 @@
-<@controller namespace="modules::guestbook2009::pres::controller" class="guestbook_controller" @>
+<@controller class="APF\modules\guestbook2009\pres\controller\GuestbookController" @>
 <div class="gb--main">
    <div class="gb--main-heading">
-      <html:placeholder name="title" />
+      <html:placeholder name="title"/>
    </div>
    <div class="gb--main-text">
-      <html:placeholder name="description" />
+      <html:placeholder name="description"/>
    </div>
    <core:importdesign
-      namespace="modules::guestbook2009::pres::templates"
-      template="[gbview=list]"
-      incparam="gbview"
-   />
+         namespace="modules::guestbook2009::pres::templates"
+         template="[gbview=list]"
+         incparam="gbview"
+         />
 </div>

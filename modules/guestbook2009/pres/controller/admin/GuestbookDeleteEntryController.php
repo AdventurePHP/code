@@ -20,12 +20,13 @@ namespace APF\modules\guestbook2009\pres\controller\admin;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\guestbook2009\biz\Entry;
 use APF\modules\guestbook2009\pres\controller\admin\GuestbookBackendBaseController;
 use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::guestbook2009::pres
- * @class delete_controller
+ * @class GuestbookDeleteEntryController
  *
  * Implements the document controller to handle the delete flow.
  *
@@ -33,7 +34,7 @@ use APF\tools\request\RequestHandler;
  * @version
  * Version 0.1, 21.05.2009<br />
  */
-class delete_controller extends GuestbookBackendBaseController {
+class GuestbookDeleteEntryController extends GuestbookBackendBaseController {
 
    public function transformContent() {
 
@@ -42,13 +43,10 @@ class delete_controller extends GuestbookBackendBaseController {
          $this->displayEntrySelection('delete');
       } else {
 
-         $form_yes = &$this->getForm('delete_yes');
-         $form_no = &$this->getForm('delete_no');
+         $form_yes = & $this->getForm('delete_yes');
+         $form_no = & $this->getForm('delete_no');
 
          if ($form_no->isSent() || $form_yes->isSent()) {
-
-            /* @var $gS GuestbookService */
-            $gS = &$this->getDIServiceObject('modules::guestbook2009::biz', 'GuestbookService');
 
             $entry = null;
             if ($form_yes->isSent()) {
@@ -56,14 +54,14 @@ class delete_controller extends GuestbookBackendBaseController {
                $entry->setId($entryId);
             }
 
-            $gS->deleteEntry($entry);
+            $this->getGuestbookService()->deleteEntry($entry);
          } else {
 
-            $hidden_yes_entryid = &$form_yes->getFormElementByName('entryid');
+            $hidden_yes_entryid = & $form_yes->getFormElementByName('entryid');
             $hidden_yes_entryid->setAttribute('value', $entryId);
             $form_yes->transformOnPlace();
 
-            $hidden_no_entryid = &$form_no->getFormElementByName('entryid');
+            $hidden_no_entryid = & $form_no->getFormElementByName('entryid');
             $hidden_no_entryid->setAttribute('value', $entryId);
             $form_no->transformOnPlace();
 

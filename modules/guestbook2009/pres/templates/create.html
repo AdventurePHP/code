@@ -1,118 +1,144 @@
-<@controller namespace="modules::guestbook2009::pres::controller" class="create_controller" @>
-<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
+<@controller class="APF\modules\guestbook2009\pres\controller\GuestbookCreateEntryController" @>
+<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form"/>
 <core:addtaglib
       namespace="modules::guestbook2009::pres::taglib"
       class="GuestbookLanguageLabelTag"
       prefix="html"
       name="langlabel"
-/>
+      />
 <div class="gb--create-entry">
    <div class="gb--create-text">
-      <html:langlabel entry="form.headline.start" /><a href="<html:placeholder name="overviewlink" />" title="<html:langlabel entry="form.headline.link.title" />"><html:langlabel entry="form.headline.link.text" /></a><html:langlabel entry="form.headline.end" />
+      <html:langlabel entry="form.headline.start"/>
+      <a href="<html:placeholder name=" overviewlink" />" title="
+      <html:langlabel entry="form.headline.link.title"/>
+      ">
+      <html:langlabel entry="form.headline.link.text"/>
+      </a>
+      <html:langlabel entry="form.headline.end"/>
    </div>
    <div class="gb--create-form">
       <html:form name="create_entry" method="post">
-         <form:addtaglib namespace="modules::guestbook2009::pres::taglib" class="GuestbookFormLanguageLabelTag" prefix="form" name="langlabel" />
+         <form:addtaglib namespace="modules::guestbook2009::pres::taglib" class="GuestbookFormLanguageLabelTag"
+                         prefix="form" name="langlabel"/>
          <div class="gb--create-block-name">
-            <div class="gb--create-label-name"><form:langlabel entry="form.label.name"/>:</div>
+            <div class="gb--create-label-name">
+               <form:langlabel entry="form.label.name"/>
+               :
+            </div>
             <div class="gb--create-fieldset-name">
                <form:text
-                  maxlength="100"
-                  class="gb--create-field-name"
-                  name="name"
-               />
+                     maxlength="100"
+                     class="gb--create-field-name"
+                     name="name"
+                     />
             </div>
          </div>
          <div class="gb--create-block-email">
-            <div class="gb--create-label-email"><form:langlabel entry="form.label.email"/>:</div>
+            <div class="gb--create-label-email">
+               <form:langlabel entry="form.label.email"/>
+               :
+            </div>
             <div class="gb--create-fieldset-email">
                <form:text
-                  maxlength="100"
-                  class="gb--create-field-email"
-                  name="email"
-               />
+                     maxlength="100"
+                     class="gb--create-field-email"
+                     name="email"
+                     />
             </div>
          </div>
          <div class="gb--create-block-website">
-            <div class="gb--create-label-website"><form:langlabel entry="form.label.website"/>:</div>
+            <div class="gb--create-label-website">
+               <form:langlabel entry="form.label.website"/>
+               :
+            </div>
             <div class="gb--create-fieldset-website">
                <form:text
-                  maxlength="100"
-                  class="gb--create-field-website"
-                  name="website"
-               />
+                     maxlength="100"
+                     class="gb--create-field-website"
+                     name="website"
+                     />
             </div>
          </div>
          <div class="gb--create-block-title">
-            <div class="gb--create-label-title"><form:langlabel entry="form.label.title"/>:</div>
+            <div class="gb--create-label-title">
+               <form:langlabel entry="form.label.title"/>
+               :
+            </div>
             <div class="gb--create-fieldset-title">
                <form:text
-                  maxlength="100"
-                  class="gb--create-field-title"
-                  name="title"
-               />
+                     maxlength="100"
+                     class="gb--create-field-title"
+                     name="title"
+                     />
             </div>
          </div>
          <div class="gb--create-block-text">
-            <div class="gb--create-label-text"><form:langlabel entry="form.label.text"/>:</div>
+            <div class="gb--create-label-text">
+               <form:langlabel entry="form.label.text"/>
+               :
+            </div>
             <div class="gb--create-fieldset-text">
                <form:area
-                  class="gb--create-field-text"
-                  name="text"
-               />
+                     class="gb--create-field-text"
+                     name="text"
+                     />
             </div>
          </div>
          <div class="gb--create-block-captcha">
-            <div class="gb--create-label-captcha"><form:langlabel entry="form.label.captcha"/>:</div>
+            <div class="gb--create-label-captcha">
+               <form:langlabel entry="form.label.captcha"/>
+               :
+            </div>
             <div class="gb--create-fieldset-captcha">
-               <form:addtaglib namespace="modules::captcha::pres::taglib" class="SimpleCaptchaTag" prefix="form" name="captcha" />
+               <form:addtaglib namespace="modules::captcha::pres::taglib" class="SimpleCaptchaTag" prefix="form"
+                               name="captcha"/>
                <form:captcha
-                  text_class="gb--create-field-captcha-text"
-                  image_class="gb--create-field-captcha-image"
-                  name="Captcha"
-                  clearonerror="true"
-               />
+                     text_class="gb--create-field-captcha-text"
+                     image_class="gb--create-field-captcha-image"
+                     name="Captcha"
+                     clearonerror="true"
+                     />
                <form:addvalidator
-                  namespace="modules::captcha::pres::validator"
-                  class="CaptchaValidator"
-                  control="Captcha"
-                  button="send"
-               />
+                     namespace="modules::captcha::pres::validator"
+                     class="CaptchaValidator"
+                     control="Captcha"
+                     button="send"
+                     />
             </div>
          </div>
          <div class="gb--create-button-placer">
-            <form:button class="gb--button-create" name="send" />
+            <form:button class="gb--button-create" name="send"/>
          </div>
          <form:addvalidator
-            class="TextLengthValidator"
-            button="send"
-            control="name|title|text"
-         />
+               class="TextLengthValidator"
+               button="send"
+               control="name|title|text"
+               />
          <form:addfilter
-            class="NoSpecialCharactersFilter"
-            button="send"
-            control="name|title"
-         />
+               class="NoSpecialCharactersFilter"
+               button="send"
+               control="name|title"
+               />
          <form:addvalidator
-            class="EMailValidator"
-            button="send"
-            control="email"
-         />
+               class="EMailValidator"
+               button="send"
+               control="email"
+               />
          <form:addfilter
-            class="StripTagsFilter"
-            button="send"
-            control="email|website|text"
-         />
+               class="StripTagsFilter"
+               button="send"
+               control="email|website|text"
+               />
          <form:addfilter
-            class="StripTagsFilter"
-            button="send"
-            control="website|text"
-         />
+               class="StripTagsFilter"
+               button="send"
+               control="website|text"
+               />
          <form:addfilter
-            class="EMailFilter"
-            button="send"
-            control="email"
-         />
+               class="EMailFilter"
+               button="send"
+               control="email"
+               />
       </html:form>
    </div>
 </div>

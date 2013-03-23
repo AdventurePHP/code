@@ -20,8 +20,12 @@ namespace APF\modules\guestbook2009\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\guestbook2009\biz\User;
 
 /**
+ * @package APF\modules\guestbook2009\biz
+ * @class Entry
+ *
  * Represents the Entry domain object of the guestbook.
  *
  * @author Christian Achatz
@@ -31,41 +35,38 @@ namespace APF\modules\guestbook2009\biz;
 final class Entry {
 
    /**
-    * @private
-    * The title of the entry.
+    * @var string The title of the entry.
     */
    private $title;
 
    /**
-    * @private
-    * The text of the entry.
+    * @var string The text of the entry.
     */
    private $text;
 
    /**
-    * @private
-    * The creation timestamp of the entry.
+    * @var string The creation timestamp of the entry.
     */
    private $creationTimestamp;
 
    /**
-    * @private
-    * The modification timestamp of the entry.
+    * @var string The modification timestamp of the entry.
     */
    private $modificationTimestamp;
 
    /**
-    * @private
-    * The creator of the entry.
+    * @var User The creator of the entry.
     */
    private $user;
 
    /**
-    * @private
-    * Contains the id of the entry used to identify on update/delete.
+    * @var string Contains the id of the entry used to identify on update/delete.
     */
    private $id;
 
+   /**
+    * @return User The editor of this entry.
+    */
    public function getEditor() {
       return $this->user;
    }
@@ -90,7 +91,7 @@ final class Entry {
       return $this->id;
    }
 
-   public function setEditor($user) {
+   public function setEditor(User $user) {
       $this->user = $user;
    }
 

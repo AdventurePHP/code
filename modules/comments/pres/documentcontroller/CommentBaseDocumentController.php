@@ -20,7 +20,7 @@ namespace APF\modules\comments\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\modules\comments\biz\ArticleComment;
+use APF\core\pagecontroller\BaseDocumentController;
 
 /**
  * @package modules::comments::pres::documentcontroller
@@ -48,7 +48,7 @@ abstract class CommentBaseDocumentController extends BaseDocumentController {
     * Version 0.2, 02.05.2011 (Refactored to return the value to have a more clean API)<br />
     */
    protected function getCategoryKey() {
-      $parent = &$this->getDocument()->getParentObject();
+      $parent = & $this->getDocument()->getParentObject();
       return $parent->getAttribute('categorykey', 'standard');
    }
 

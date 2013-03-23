@@ -20,7 +20,11 @@ namespace APF\modules\guestbook2009\pres\controller\admin;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\guestbook2009\biz\Entry;
+use APF\modules\guestbook2009\pres\controller\GuestbookBaseController;
+use APF\tools\form\taglib\SelectBoxTag;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * @package modules::guestbook2009::pres
@@ -33,7 +37,7 @@ use APF\tools\link\LinkGenerator;
  * @version
  * Version 0.1, 18.05.2009<br />
  */
-abstract class GuestbookBackendBaseController extends BaseDocumentController {
+abstract class GuestbookBackendBaseController extends GuestbookBaseController {
 
    /**
     * Displays the select field using the choose.html template imported into
@@ -48,14 +52,12 @@ abstract class GuestbookBackendBaseController extends BaseDocumentController {
    protected function displayEntrySelection($adminView) {
 
       // fill the select list
-      $form = &$this->getForm('selectentry');
+      $form = & $this->getForm('selectentry');
 
       /* @var $select SelectBoxTag */
-      $select = &$form->getFormElementByName('entryid');
+      $select = & $form->getFormElementByName('entryid');
 
-      /* @var $gS GuestbookService */
-      $gS = &$this->getDIServiceObject('modules::guestbook2009::biz', 'GuestbookService');
-      $entriesList = $gS->loadEntryListForSelection();
+      $entriesList = $this->getGuestbookService()->loadEntryListForSelection();
 
       foreach ($entriesList as $entry) {
          /* @var $entry Entry */

@@ -1,39 +1,54 @@
-<@controller namespace="modules::guestbook2009::pres::controller" class="list_controller" @>
+<@controller class="APF\modules\guestbook2009\pres\controller\GuestbookListController" @>
 <core:addtaglib
       namespace="modules::guestbook2009::pres::taglib"
       class="GuestbookLanguageLabelTag"
       prefix="html"
       name="langlabel"
-/>
+      />
 <div class="gb--list-entries">
    <div class="gb--list-text">
-      <html:langlabel entry="list.headline.start" /><a href="<html:placeholder name="createlink" />" title="<html:langlabel entry="list.headline.link.title" />"><html:langlabel entry="list.headline.link.text" /></a><html:langlabel entry="list.headline.end" />
+      <html:langlabel entry="list.headline.start"/>
+      <a href="<html:placeholder name=" createlink" />" title="
+      <html:langlabel entry="list.headline.link.title"/>
+      ">
+      <html:langlabel entry="list.headline.link.text"/>
+      </a>
+      <html:langlabel entry="list.headline.end"/>
    </div>
    <div class="gb--list-pager">
-      <html:placeholder name="pager" />
+      <html:placeholder name="pager"/>
    </div>
    <div class="gb--list-content">
-      <html:placeholder name="content" />
+      <html:placeholder name="content"/>
    </div>
 </div>
 <html:template name="entry">
-      <template:addtaglib
-            namespace="modules::guestbook2009::pres::taglib"
-            class="GuestbookLanguageLabelTag"
-            prefix="template"
-            name="langlabel"
-      />
-      <div class="gb--list-entry">
-         <div class="gb--list-entry-header">
-            <h4><template:placeholder name="title" /></h4>
-            <template:placeholder name="name" />, <template:placeholder name="website" />
-         </div>
-         <div class="gb--list-entry-body">
-            <template:placeholder name="text"/>
-         </div>
-         <div class="gb--list-entry-footer">
-            <template:langlabel entry="list.date"/>: <template:placeholder name="date" />,
-            <template:langlabel entry="list.time"/>: <template:placeholder name="time" />
-         </div>
+   <template:addtaglib
+         namespace="modules::guestbook2009::pres::taglib"
+         class="GuestbookLanguageLabelTag"
+         prefix="template"
+         name="langlabel"
+         />
+   <div class="gb--list-entry">
+      <div class="gb--list-entry-header">
+         <h4>
+            <template:placeholder name="title"/>
+         </h4>
+         <template:placeholder name="name"/>
+         ,
+         <template:placeholder name="website"/>
       </div>
+      <div class="gb--list-entry-body">
+         <template:placeholder name="text"/>
+      </div>
+      <div class="gb--list-entry-footer">
+         <template:langlabel entry="list.date"/>
+         :
+         <template:placeholder name="date"/>
+         ,
+         <template:langlabel entry="list.time"/>
+         :
+         <template:placeholder name="time"/>
+      </div>
+   </div>
 </html:template>

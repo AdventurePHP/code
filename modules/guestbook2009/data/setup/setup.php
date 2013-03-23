@@ -3,11 +3,11 @@ namespace APF\modules\guestbook2009\data\setup;
 
 /**
  * In order to use this script for database setup, include this file after including the
- * <em>pagecontroller.php</em> file and setting the context and connection key.
+ * <em>bootstrap.php</em> file and setting the context and connection key.
  *
  * @example
  * <code>
- * include('./apps/core/pagecontroller/pagecontroller.php');
+ * include('./apps/core/bootstrap.php');
  * $context = 'mycontext';
  * $connectionKey = 'mysql-db';
  * include('./apps/modules/guestbook2009/data/setup/setup.php');
