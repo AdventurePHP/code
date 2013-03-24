@@ -20,20 +20,21 @@ namespace APF\modules\weather\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\BaseDocumentController;
 
 /**
  * @package modules::weather::pres::documentcontroller
- * @class weather_v1_controller
+ * @class WeatherController
  *
- *  Implements an rss consumer to display current weather information.
- *  Please provide the attribute "rss_source" in the core:importdesign tag that
- *  includes the weather module.
+ * Implements an rss consumer to display current weather information.
+ * Please provide the attribute "rss_source" in the core:importdesign tag that
+ * includes the weather module.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 20.04.2008<br />
  */
-class weather_v1_controller extends BaseDocumentController {
+class WeatherController extends BaseDocumentController {
 
    /**
     * @public
@@ -54,8 +55,8 @@ class weather_v1_controller extends BaseDocumentController {
       if ($XML != null) {
 
          // Get references on the templates used
-         $Template__Channel = &$this->getTemplate('Channel');
-         $Template__Item = &$this->getTemplate('Item');
+         $Template__Channel = & $this->getTemplate('Channel');
+         $Template__Item = & $this->getTemplate('Item');
 
          // Create DOM document and get an reference on the channel node
          $DomDoc = simplexml_load_string($XML);
@@ -97,58 +98,10 @@ class weather_v1_controller extends BaseDocumentController {
       } else {
 
          // Display error message
-         $templateNoEntries = &$this->getTemplate('NoEntries_' . $this->language);
+         $templateNoEntries = & $this->getTemplate('NoEntries_' . $this->language);
          $templateNoEntries->setPlaceHolder('Source', $this->getRSSSource());
          $this->setPlaceHolder('Content', $templateNoEntries->transformTemplate());
       }
-   }
-
-   /**
-    * @protected
-    *
-    *  Helper method to get the content of the first child of a given DOM node.<br />
-    *
-    * @param DOMNode $Node; Desired DOM node
-    * @return string Content of the first node
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.04.2008<br />
-    */
-   protected function getFirstChildContent($Node) {
-      $FirstChild = $Node->first_child();
-      return $FirstChild->node_value();
-   }
-
-   /**
-    * @protected
-    *
-    *  Helper method to get the child nodes of a given node type.<br />
-    *
-    * @param DOMNode $Node; Desired DOM node
-    * @param string $Name; Name of the nodes to be returned
-    * @return Document[] List of child nodes
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.04.2008<br />
-    */
-   protected function &getChildNodesByNodeName(&$Node, $Name) {
-
-      // Get all child nodes
-      $AllChildNodes = $Node->child_nodes();
-      $count = count($AllChildNodes);
-      $ChildNodes = array();
-
-      // Search for desired child nodes
-      for ($i = 0; $i < $count; $i++) {
-
-         if ($AllChildNodes[$i]->node_name() == $Name) {
-            $ChildNodes[] = &$AllChildNodes[$i];
-         }
-      }
-
-      return $ChildNodes;
    }
 
    /**
@@ -216,17 +169,17 @@ class weather_v1_controller extends BaseDocumentController {
             return null;
          }
       } else {
-         throw new \InvalidArgumentException('[weather_v1_controller::getRSSFeed()] Attribute "rss_source" not present in "core:importdesign" tag for weather module!');
+         throw new \InvalidArgumentException('[WeatherController::getRSSFeed()] Attribute "rss_source" not present in "core:importdesign" tag for weather module!');
       }
    }
 
    /**
     * @protected
     *
-    *  Helper method to read the attribute "rss_source" from the current object<br />
-    *  (core:importdesign), that is used to include the module.<br />
+    * Helper method to read the attribute "rss_source" from the current object
+    * (core:importdesign), that is used to include the module.
     *
-    * @return string Source URL of the RSS stream
+    * @return string Source URL of the RSS stream.
     *
     * @author Christian Achatz
     * @version

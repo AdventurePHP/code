@@ -20,7 +20,13 @@ namespace APF\modules\socialbookmark\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\pagecontroller\APFObject;
+use APF\core\registry\Registry;
+use APF\core\singleton\Singleton;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
+use APF\tools\link\DefaultLinkScheme;
 use APF\modules\socialbookmark\biz\SocialBookmarkItem;
 use APF\tools\media\taglib\MediaInclusionTag;
 
@@ -73,7 +79,7 @@ class SocialBookmarkBarManager extends APFObject {
    private $imageHeight = '20';
 
    /**
-    * @var BookmarkItem[] The configured bookmark services.
+    * @var SocialBookmarkItem[] The configured bookmark services.
     */
    private $bookmarkServices = array();
 
@@ -82,7 +88,7 @@ class SocialBookmarkBarManager extends APFObject {
     *
     * Let's you add a bookmark service.
     *
-    * @param BookmarkItem $service The bookmark entry to add.
+    * @param SocialBookmarkItem $service The bookmark entry to add.
     *
     * @author Christian W. Schäfer
     * @version
