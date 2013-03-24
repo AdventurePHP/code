@@ -1,6 +1,6 @@
 <@controller
    namespace="modules::usermanagement::pres::documentcontroller::group"
-   class="umgt_group_details_controller"
+   class="GroupDetailsController"
 @>
 <core:addtaglib namespace="tools::html::taglib" class="HtmlIteratorTag" prefix="html" name="iterator" />
 <h3><html:getstring
@@ -26,7 +26,7 @@
 <html:iterator name="Users">
    <ul>
    <iterator:item getter="getProperty">
-      <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="UmgtMediaInclusionTag" prefix="umgt" name="media" />
+      <item:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media" />
       <li>
          <umgt:media filename="user.png">
             <media:getstring
@@ -49,7 +49,7 @@
 <html:iterator name="Roles">
    <ul>
    <iterator:item>
-      <item:addtaglib namespace="modules::usermanagement::pres::taglib" class="UmgtMediaInclusionTag" prefix="umgt" name="media" />
+      <item:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media" />
       <li>
          <umgt:media filename="role.png">
             <media:getstring

@@ -20,6 +20,9 @@ namespace APF\modules\usermanagement\pres;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\singleton\Singleton;
+use APF\core\frontcontroller\Frontcontroller;
+use APF\core\benchmark\BenchmarkTimer;
 
 /**
  * @file umgt.php
@@ -27,13 +30,14 @@ namespace APF\modules\usermanagement\pres;
  */
 
 // include the pagecontroller (change the path to what ever you want)
-include_once('./apps/core/pagecontroller/pagecontroller.php');
+include_once('./apps/core/bootstrap.php');
 
 // import the front controller
-use APF\core\frontcontroller\Frontcontroller;
+
 
 // create the front controller instance
-$fC = &Singleton::getInstance('Frontcontroller');
+/* @var $fC Frontcontroller */
+$fC = & Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
 
 // set the current context (change the context to what ever you want)
 $fC->setContext('...');
@@ -42,5 +46,6 @@ $fC->setContext('...');
 $fC->start('modules::usermanagement::pres::templates', 'main');
 
 // create the benchmark report
-$t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+/* @var $t BenchmarkTimer */
+$t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
 echo $t->createReport();

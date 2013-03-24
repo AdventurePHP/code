@@ -20,11 +20,16 @@ namespace APF\modules\usermanagement\pres\documentcontroller\group;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\form\taglib\MultiSelectBoxTag;
+use APF\tools\form\taglib\SelectBoxOptionTag;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::group
- * @class umgt_group_remove_role_from_groups_controller
+ * @class GroupRemoveRoleFromGroupsController
  *
  * Let's you remove a role from one or more groups starting at the role main view.
  *
@@ -32,7 +37,7 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
  * @version
  * Version 0.1, 08.09.2011<br />
  */
-class umgt_group_remove_role_from_groups_controller extends UmgtBaseController {
+class GroupRemoveRoleFromGroupsController extends UmgtBaseController {
 
    public function transformContent() {
 

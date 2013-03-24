@@ -20,7 +20,9 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\form\taglib\SelectBoxTag;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::proxy
@@ -52,6 +54,7 @@ class umgt_proxy_list_controller extends UmgtBaseController {
 
       foreach ($types as $type) {
          /* @var $type UmgtVisibilityDefinition */
+         // TODO correct method call regarding document model of the UMGT module
          $select->addOption($type->getAppObjectName(), $type->getObjectId());
       }
 
@@ -59,10 +62,7 @@ class umgt_proxy_list_controller extends UmgtBaseController {
 
       // load definition list managed by the filter in case it has been applied
       if ($form->isSent()) {
-         $typeId = $form
-               ->getFormElementByName('proxytypeid')
-               ->getSelectedOption()
-               ->getValue();
+         $typeId = $select->getSelectedOption()->getValue();
          $type = $uM->loadVisibilityDefinitionTypeById($typeId);
 
          // By convention: the filter can be removed by applying null.

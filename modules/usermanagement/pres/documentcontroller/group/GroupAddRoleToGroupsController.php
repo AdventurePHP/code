@@ -20,19 +20,24 @@ namespace APF\modules\usermanagement\pres\documentcontroller\group;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\form\taglib\MultiSelectBoxTag;
+use APF\tools\form\taglib\SelectBoxOptionTag;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::group
- * @class umgt_group_remove_user_from_groups_controller
+ * @class GroupAddRoleToGroupsController
  *
- * Let's you remove a user from one or more groups starting at the user main view.
+ * Let's you add a role to one or more groups starting at the role main view.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 04.09.2011<br />
+ * Version 0.1, 07.09.2011<br />
  */
-class umgt_group_remove_user_from_groups_controller extends UmgtBaseController {
+class GroupAddRoleToGroupsController extends UmgtBaseController {
 
    public function transformContent() {
 
@@ -40,13 +45,13 @@ class umgt_group_remove_user_from_groups_controller extends UmgtBaseController {
 
       $uM = &$this->getManager();
 
-      $user = $uM->loadUserByID(RequestHandler::getValue('userid'));
-      $groups = $uM->loadGroupsWithUser($user);
+      $role = $uM->loadRoleByID(RequestHandler::getValue('roleid'));
+      $groups = $uM->loadGroupsNotWithRole($role);
 
       if (count($groups) === 0) {
-         $tmpl = &$this->getTemplate('NoGroups');
-         $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $user->getDisplayName());
-         $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
+         $tmpl = &$this->getTemplate('NoMoreGroups');
+         $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $role->getDisplayName());
+         $tmpl->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
          $tmpl->transformOnPlace();
          return;
       }
@@ -60,19 +65,19 @@ class umgt_group_remove_user_from_groups_controller extends UmgtBaseController {
       if ($form->isSent() && $form->isValid()) {
 
          $options = &$groupsControl->getSelectedOptions();
-         $groupsToRemove = array();
+         $additionalGroups = array();
          foreach ($options as $option) {
             /* @var $option SelectBoxOptionTag */
-            $groupToRemove = new UmgtGroup();
-            $groupToRemove->setObjectId($option->getValue());
-            $groupsToRemove[] = $groupToRemove;
-            unset($groupToRemove);
+            $additionalGroup = new UmgtGroup();
+            $additionalGroup->setObjectId($option->getValue());
+            $additionalGroups[] = $additionalGroup;
+            unset($additionalGroup);
          }
 
-         $uM->detachUserFromGroups($user, $groupsToRemove);
+         $uM->attachRoleToGroups($role, $additionalGroups);
 
          // back to user main view
-         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
+         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
       } else {
          $form->transformOnPlace();
       }

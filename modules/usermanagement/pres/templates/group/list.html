@@ -1,6 +1,6 @@
 <@controller
    namespace="modules::usermanagement::pres::documentcontroller::group"
-   class="umgt_group_list_controller"
+   class="GroupListController"
 @>
 <table class="vis-def">
    <thead>
@@ -30,7 +30,7 @@
 </table>
 
 <html:template name="Group">
-   <template:addtaglib namespace="modules::usermanagement::pres::taglib" class="UmgtMediaInclusionTag" prefix="umgt" name="media"/>
+   <template:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media"/>
    <tr>
       <td>
          <umgt:media filename="group.png">

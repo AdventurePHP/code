@@ -1,5 +1,5 @@
 <?php
-namespace APF\modules\usermanagement\pres\documentcontroller\group;
+namespace APF\modules\usermanagement\pres\documentcontroller\permission;
 
 /**
  * <!--
@@ -20,41 +20,43 @@ namespace APF\modules\usermanagement\pres\documentcontroller\group;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtPermission;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\http\HeaderManager;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_group_add_controller
+ * @class PermissionAddController
  *
- * Implements the controller to add a group.
+ * Implements the controller to add a permission.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_group_add_controller extends UmgtBaseController {
+class PermissionAddController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('GroupAdd');
+      $uM = &$this->getManager();
+
+      $form = &$this->getForm('PermissionAdd');
+
       if ($form->isSent() == true && $form->isValid() == true) {
 
-         $uM = &$this->getManager();
+         $displayName = $form->getFormElementByName('DisplayName');
+         $name = $form->getFormElementByName('Name');
+         $value = $form->getFormElementByName('Value');
 
-         $group = new UmgtGroup();
-
-         $displayName = &$form->getFormElementByName('DisplayName');
-         $group->setDisplayName($displayName->getValue());
-
-         $description = &$form->getFormElementByName('Description');
-         $group->setDescription($description->getValue());
-
-         $uM->saveGroup($group);
-
-         // redirect to the desired view
-         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '')));
+         $permission = new UmgtPermission();
+         $permission->setDisplayName($displayName->getValue());
+         $permission->setName($name->getValue());
+         $permission->setValue($value->getValue());
+         $uM->savePermission($permission);
+         HeaderManager::forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '')));
 
       }
+
       $form->transformOnPlace();
 
    }

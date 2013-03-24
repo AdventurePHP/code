@@ -20,19 +20,24 @@ namespace APF\modules\usermanagement\pres\documentcontroller\group;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\form\taglib\MultiSelectBoxTag;
+use APF\tools\form\taglib\SelectBoxOptionTag;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::group
- * @class umgt_group_add_role_to_groups_controller
+ * @class GroupAddUserToGroupsController
  *
- * Let's you add a role to one or more groups starting at the role main view.
+ * Let's you add a user to one or more groups starting at the user main view.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 07.09.2011<br />
+ * Version 0.1, 04.09.2011<br />
  */
-class umgt_group_add_role_to_groups_controller extends UmgtBaseController {
+class GroupAddUserToGroupsController extends UmgtBaseController {
 
    public function transformContent() {
 
@@ -40,13 +45,13 @@ class umgt_group_add_role_to_groups_controller extends UmgtBaseController {
 
       $uM = &$this->getManager();
 
-      $role = $uM->loadRoleByID(RequestHandler::getValue('roleid'));
-      $groups = $uM->loadGroupsNotWithRole($role);
+      $user = $uM->loadUserByID(RequestHandler::getValue('userid'));
+      $groups = $uM->loadGroupsNotWithUser($user);
 
       if (count($groups) === 0) {
          $tmpl = &$this->getTemplate('NoMoreGroups');
-         $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $role->getDisplayName());
-         $tmpl->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
+         $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $user->getDisplayName());
+         $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
          $tmpl->transformOnPlace();
          return;
       }
@@ -69,10 +74,11 @@ class umgt_group_add_role_to_groups_controller extends UmgtBaseController {
             unset($additionalGroup);
          }
 
-         $uM->attachRoleToGroups($role, $additionalGroups);
+         $uM->attachUser2Groups($user, $additionalGroups);
 
          // back to user main view
-         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'groupview' => null, 'roleid' => null)));
+         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
+
       } else {
          $form->transformOnPlace();
       }

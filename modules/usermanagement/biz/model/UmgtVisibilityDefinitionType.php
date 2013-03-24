@@ -1,7 +1,6 @@
 <?php
 namespace APF\modules\usermanagement\biz\model;
 
-
 //<*UmgtVisibilityDefinitionTypeBase:start*> DO NOT CHANGE THIS COMMENT!
 /**
  * Automatically generated BaseObject for UmgtVisibilityDefinitionType. !!DO NOT CHANGE THIS BASE-CLASS!!

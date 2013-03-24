@@ -1,6 +1,6 @@
 <@controller
    namespace="modules::usermanagement::pres::documentcontroller::permission"
-   class="umgt_permission_list_controller"
+   class="PermissionListController"
 @>
 <table class="vis-def">
    <thead>
@@ -29,7 +29,7 @@
    </tbody>
 </table>
 <html:template name="Permission">
-   <template:addtaglib namespace="modules::usermanagement::pres::taglib" class="UmgtMediaInclusionTag" prefix="umgt" name="media" />
+   <template:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media" />
    <tr>
       <td>
          <umgt:media filename="permission.png">

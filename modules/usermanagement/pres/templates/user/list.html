@@ -1,6 +1,5 @@
 <@controller
-   namespace="modules::usermanagement::pres::documentcontroller::user"
-   class="umgt_user_list_controller"
+   class="APF\modules\usermanagement\pres\documentcontroller\user\umgt_user_list_controller"
 @>
 <table class="vis-def">
    <thead>
@@ -34,7 +33,7 @@
 </table>
 
 <html:template name="User">
-   <template:addtaglib namespace="modules::usermanagement::pres::taglib" class="UmgtMediaInclusionTag" prefix="umgt" name="media"/>
+   <template:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media"/>
    <tr>
       <td>
          <umgt:media filename="user.png">

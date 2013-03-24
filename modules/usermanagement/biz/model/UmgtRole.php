@@ -1,7 +1,6 @@
 <?php
 namespace APF\modules\usermanagement\biz\model;
 
-
 //<*UmgtRoleBase:start*> DO NOT CHANGE THIS COMMENT!
 /**
  * Automatically generated BaseObject for UmgtRole. !!DO NOT CHANGE THIS BASE-CLASS!!

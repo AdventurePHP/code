@@ -20,10 +20,14 @@ namespace APF\modules\usermanagement\biz\login;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\service\APFService;
+use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 use APF\tools\http\HeaderManager;
 use APF\tools\link\LinkGenerator;
 use APF\tools\cookie\CookieManager;
 use APF\modules\usermanagement\biz\login\UmgtAutoLoginAction;
+use APF\tools\link\Url;
 
 /**
  * @package modules::usermanagement::biz::login
@@ -41,7 +45,7 @@ class UmgtLogoutAction extends AbstractFrontcontrollerAction {
    public function run() {
       $logout = $this->getInput()->getAttribute('logout', 'false');
       if ($logout === 'true') {
-         $sessionStore = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+         $sessionStore = & $this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
          /* @var $sessionStore UmgtUserSessionStore */
          $sessionStore->logout($this->getContext());
 
@@ -50,7 +54,7 @@ class UmgtLogoutAction extends AbstractFrontcontrollerAction {
          $cM->deleteCookie(UmgtAutoLoginAction::AUTO_LOGIN_COOKIE_NAME);
 
          // redirect to target page
-         $urlProvider = &$this->getDIServiceObject('modules::usermanagement::biz', 'LogoutRedirectUrlProvider');
+         $urlProvider = & $this->getDIServiceObject('modules::usermanagement::biz', 'LogoutRedirectUrlProvider');
          /* @var $urlProvider UmgtRedirectUrlProvider */
          HeaderManager::forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
          exit(0);

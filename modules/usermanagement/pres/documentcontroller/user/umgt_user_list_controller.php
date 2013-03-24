@@ -20,6 +20,7 @@ namespace APF\modules\usermanagement\pres\documentcontroller\user;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**

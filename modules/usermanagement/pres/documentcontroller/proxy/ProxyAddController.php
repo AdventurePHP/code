@@ -20,11 +20,19 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtGroup;
+use APF\modules\usermanagement\biz\model\UmgtUser;
+use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
+use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinitionType;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\form\taglib\MultiSelectBoxTag;
+use APF\tools\form\taglib\SelectBoxTag;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::proxy
- * @class umgt_proxy_add_controller
+ * @class ProxyAddController
  *
  * Let's the user create a new visibility entry (proxy type <-> proxy <-> user+group).
  *
@@ -32,14 +40,14 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
  * @version
  * Version 0.1, 26.05.2010<br />
  */
-class umgt_proxy_add_controller extends UmgtBaseController {
+class ProxyAddController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $uM = &$this->getManager();
-      $form = &$this->getForm('visibilitydef');
+      $uM = & $this->getManager();
+      $form = & $this->getForm('visibilitydef');
 
-      // prefill mode if "proxytypeid" and "appobjectid" are given
+      // pre-fill mode if "proxytypeid" and "appobjectid" are given
       $proxyTypeId = RequestHandler::getValue('proxytypeid');
       $appObjectId = RequestHandler::getValue('appobjectid');
       $proxyId = RequestHandler::getValue('proxyid');
@@ -54,7 +62,9 @@ class umgt_proxy_add_controller extends UmgtBaseController {
 
       // load the defined visibility types
       $proxyTypes = $uM->loadVisibilityDefinitionTypes();
-      $typeElement = &$form->getFormElementByName('proxytypeid');
+
+      /* @var $typeElement SelectBoxTag */
+      $typeElement = & $form->getFormElementByName('proxytypeid');
 
       foreach ($proxyTypes as $proxyType) {
          $typeElement->addOption(
@@ -65,7 +75,9 @@ class umgt_proxy_add_controller extends UmgtBaseController {
 
       // load users
       $userList = $uM->getPagedUserList();
-      $usersElement = &$form->getFormElementByName('users');
+
+      /* @var $usersElement MultiSelectBoxTag */
+      $usersElement = & $form->getFormElementByName('users');
       foreach ($userList as $user) {
          $usersElement->addOption(
             $user->getDisplayName(),
@@ -78,7 +90,9 @@ class umgt_proxy_add_controller extends UmgtBaseController {
 
       // load groups
       $groups = $uM->getPagedGroupList();
-      $groupsElement = &$form->getFormElementByName('groups');
+
+      /* @var $groupsElement MultiSelectBoxTag */
+      $groupsElement = & $form->getFormElementByName('groups');
       foreach ($groups as $group) {
          $groupsElement->addOption(
             $group->getDisplayName(),
@@ -95,7 +109,7 @@ class umgt_proxy_add_controller extends UmgtBaseController {
          // setup type
          $type = new UmgtVisibilityDefinitionType();
          $type->setObjectId(
-            $form->getFormElementByName('proxytypeid')->getSelectedOption()->getAttribute('value')
+            $typeElement->getSelectedOption()->getAttribute('value')
          );
 
          // setup proxy
@@ -106,7 +120,7 @@ class umgt_proxy_add_controller extends UmgtBaseController {
 
          // setup users
          $users = array();
-         foreach ($form->getFormElementByName('users')->getSelectedOptions() as $option) {
+         foreach ($usersElement->getSelectedOptions() as $option) {
             $user = new UmgtUser();
             $user->setObjectId($option->getAttribute('value'));
             $users[] = $user;
@@ -115,7 +129,7 @@ class umgt_proxy_add_controller extends UmgtBaseController {
 
          // setup groups
          $groups = array();
-         foreach ($form->getFormElementByName('groups')->getSelectedOptions() as $option) {
+         foreach ($groupsElement->getSelectedOptions() as $option) {
             $group = new UmgtGroup();
             $group->setObjectId($option->getAttribute('value'));
             $groups[] = $group;

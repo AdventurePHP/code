@@ -20,11 +20,14 @@ namespace APF\modules\usermanagement\pres\documentcontroller\permission;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtPermission;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_permission_edit_controller
+ * @class PermissionEditController
  *
  * Implements the controller to edit a permission.
  *
@@ -32,7 +35,7 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_permission_edit_controller extends UmgtBaseController {
+class PermissionEditController extends UmgtBaseController {
 
    public function transformContent() {
 

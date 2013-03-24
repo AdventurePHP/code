@@ -20,41 +20,48 @@ namespace APF\modules\usermanagement\pres\documentcontroller\group;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_group_details_controller
+ * @class GroupDeleteController
  *
- * Implements the controller to show a group's details.
+ * Implements the controller to delete a group.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_group_details_controller extends UmgtBaseController {
+class GroupDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 
-      // load data
-      $uM = &$this->getManager();
+      // get the group id from the request
       $groupId = RequestHandler::getValue('groupid');
+
+      // load the current group and print the display name
+      $uM = &$this->getManager();
       $group = $uM->loadGroupByID($groupId);
+      $this->getLabel('display-name')->setPlaceHolder('display-name', $group->getDisplayName());
 
-      // display user data
-      $this->getLabel('headline')->setPlaceHolder('display-name', $group->getDisplayName());
+      // prepare the forms and execute action
+      $formNo = &$this->getForm('GroupDelNo');
+      $formYes = &$this->getForm('GroupDelYes');
 
-      // display users
-      $users = $uM->loadUsersWithGroup($group);
-      $usersIterator = &$this->getIterator('Users');
-      $usersIterator->fillDataContainer($users);
-      $usersIterator->transformOnPlace();
-
-      // display roles
-      $roles = $uM->loadRolesWithGroup($group);
-      $iteratorRoles = &$this->getIterator('Roles');
-      $iteratorRoles->fillDataContainer($roles);
-      $iteratorRoles->transformOnPlace();
+      if ($formYes->isSent()) {
+         $group = new UmgtGroup();
+         $group->setObjectId($groupId);
+         $uM->deleteGroup($group);
+         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+      } elseif ($formNo->isSent()) {
+         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+      } else {
+         $formNo->transformOnPlace();
+         $formYes->transformOnPlace();
+      }
 
    }
 

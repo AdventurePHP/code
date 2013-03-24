@@ -24,7 +24,7 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::permission
- * @class umgt_permission_list_controller
+ * @class PermissionListController
  *
  * Implements the controller to list the existing permissions.
  *
@@ -32,7 +32,7 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_permission_list_controller extends UmgtBaseController {
+class PermissionListController extends UmgtBaseController {
 
    public function transformContent() {
 

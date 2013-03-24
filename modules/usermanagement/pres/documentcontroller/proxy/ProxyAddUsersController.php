@@ -20,9 +20,13 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\modules\usermanagement\pres\documentcontroller\proxy\UmgtPermissionBaseController;
+use APF\tools\form\taglib\MultiSelectBoxTag;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
-class umgt_proxy_add_groups_controller extends UmgtPermissionBaseController {
+class ProxyAddUsersController extends UmgtPermissionBaseController {
 
    public function transformContent() {
 
@@ -40,10 +44,10 @@ class umgt_proxy_add_groups_controller extends UmgtPermissionBaseController {
             ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
             ->setPlaceHolder('proxy-type', $proxyType->getAppObjectName());
 
-      $users = $uM->loadGroupsNotWithVisibilityDefinition($proxy);
+      $users = $uM->loadUsersNotWithVisibilityDefinition($proxy);
 
       if (count($users) === 0) {
-         $tmpl = &$this->getTemplate('NoMoreGroups');
+         $tmpl = &$this->getTemplate('NoMoreUsers');
          $tmpl->getLabel('message-1')
                ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
                ->setPlaceHolder('object-type', $proxyType->getObjectName());
@@ -53,7 +57,7 @@ class umgt_proxy_add_groups_controller extends UmgtPermissionBaseController {
          return;
       }
 
-      $usersControl = &$form->getFormElementByName('groups');
+      $usersControl = &$form->getFormElementByName('users');
       /* @var $usersControl MultiSelectBoxTag */
       foreach ($users as $id => $DUMMY) {
          $usersControl->addOption($users[$id]->getDisplayName(), $users[$id]->getObjectId());
@@ -62,7 +66,7 @@ class umgt_proxy_add_groups_controller extends UmgtPermissionBaseController {
       if ($form->isSent() && $form->isValid()) {
          $proxy = new UmgtVisibilityDefinition();
          $proxy->setObjectId($proxyId);
-         $uM->attachGroups2VisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('groups', 'UmgtGroup'));
+         $uM->attachUsers2VisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('users', 'UmgtUser'));
 
          HeaderManager::forward(
             $this->generateLink(
@@ -76,7 +80,6 @@ class umgt_proxy_add_groups_controller extends UmgtPermissionBaseController {
       }
 
       $form->transformOnPlace();
-
    }
 
 }

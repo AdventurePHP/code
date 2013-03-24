@@ -1,5 +1,5 @@
 <?php
-namespace APF\modules\usermanagement\pres\documentcontroller\group;
+namespace APF\modules\usermanagement\pres\documentcontroller\permission;
 
 /**
  * <!--
@@ -20,41 +20,42 @@ namespace APF\modules\usermanagement\pres\documentcontroller\group;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtPermission;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_group_delete_controller
+ * @class PermissionDeleteController
  *
- * Implements the controller to delete a group.
+ * Implements the delete controller for a permission.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_group_delete_controller extends UmgtBaseController {
+class PermissionDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 
-      // get the group id from the request
-      $groupId = RequestHandler::getValue('groupid');
-
-      // load the current group and print the display name
+      $permissionId = RequestHandler::getValue('permissionid');
       $uM = &$this->getManager();
-      $group = $uM->loadGroupByID($groupId);
-      $this->getLabel('display-name')->setPlaceHolder('display-name', $group->getDisplayName());
+      $permission = $uM->loadPermissionByID($permissionId);
+      $this->getLabel('display-name')->setPlaceHolder('display-name', $permission->getDisplayName());
 
-      // prepare the forms and execute action
-      $formNo = &$this->getForm('GroupDelNo');
-      $formYes = &$this->getForm('GroupDelYes');
+      $formNo = &$this->getForm('PermissionDelNo');
+      $formYes = &$this->getForm('PermissionDelYes');
 
       if ($formYes->isSent()) {
-         $group = new UmgtGroup();
-         $group->setObjectId($groupId);
-         $uM->deleteGroup($group);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+
+         $permission = new UmgtPermission();
+         $permission->setObjectId($permissionId);
+         $uM->deletePermission($permission);
+         HeaderManager::forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
+
       } elseif ($formNo->isSent()) {
-         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+         HeaderManager::forward($this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
       } else {
          $formNo->transformOnPlace();
          $formYes->transformOnPlace();

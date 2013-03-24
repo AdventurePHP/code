@@ -41,7 +41,7 @@ use APF\core\logging\Logger;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::login
- * @class umgt_login_controller
+ * @class LoginController
  *
  * Manages the login form and authenticates the user concerning the
  * authentication method configured.
@@ -50,7 +50,7 @@ use APF\core\logging\Logger;
  * @version
  * Version 0.1, 01.06.2011
  */
-class umgt_login_controller extends BaseDocumentController {
+class LoginController extends BaseDocumentController {
 
    private static $EMAIL_AND_PASSWORD_LOGIN = 'email';
    private static $USERNAME_AND_PASSWORD_LOGIN = 'username';

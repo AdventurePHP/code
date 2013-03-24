@@ -20,36 +20,38 @@ namespace APF\modules\usermanagement\pres\documentcontroller\group;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtGroup;
+use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\form\taglib\MultiSelectBoxTag;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_group_add_user_controller
+ * @package modules::usermanagement::pres::documentcontroller::group
+ * @class GroupRemoveUserFromGroupController
  *
- * Implements the controller to list the groups.
+ * Implements the controller to remove a user from a group.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 27.12.2008<br />
+ * Version 0.1, 26.12.2008<br />
  */
-class umgt_group_add_user_controller extends UmgtBaseController {
+class GroupRemoveUserFromGroupController extends UmgtBaseController {
 
    public function transformContent() {
 
-      // initialize form
+      // initialize the form
       $form = &$this->getForm('User');
       $userControl = &$form->getFormElementByName('User');
-
       /* @var $userControl MultiSelectBoxTag */
       $groupId = RequestHandler::getValue('groupid');
-
       $uM = &$this->getManager();
       $group = $uM->loadGroupById($groupId);
-
-      $users = $uM->loadUsersNotWithGroup($group);
+      $users = $uM->loadUsersWithGroup($group);
       $count = count($users);
 
-      // display hint, if group has associated all users
+      // display hint, if no user is assigned to this group
       if ($count == 0) {
          $template = &$this->getTemplate('NoMoreUser');
          $template->getLabel('message-1')->setPlaceHolder('display-name', $group->getDisplayName());
@@ -58,26 +60,29 @@ class umgt_group_add_user_controller extends UmgtBaseController {
          return;
       }
 
-      // fill multi-select field
+      // fill the multiselect field
       for ($i = 0; $i < $count; $i++) {
-         $userControl->addOption($users[$i]->getDisplayName(), $users[$i]->getObjectId());
+         $userControl->addOption($users[$i]->getLastName() . ', ' . $users[$i]->getFirstName(), $users[$i]->getObjectId());
       }
 
+      // remove the desired users
       if ($form->isSent() && $form->isValid()) {
 
          $options = &$userControl->getSelectedOptions();
-         $count = count($options);
 
-         $newUsers = array();
-         for ($i = 0; $i < $count; $i++) {
-            $newUser = new UmgtUser();
-            $newUser->setObjectId($options[$i]->getAttribute('value'));
-            $newUsers[] = $newUser;
-            unset($newUser);
+         $users = array();
+         for ($i = 0; $i < count($options); $i++) {
+            $user = new UmgtUser();
+            $user->setObjectId($options[$i]->getAttribute('value'));
+            $users[] = $user;
+            unset($user);
          }
 
-         $uM->attachUsers2Group($newUsers, $group);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+         $group = new UmgtGroup();
+         $group->setObjectId($groupId);
+
+         $uM->detachUsersFromGroup($users, $group);
+         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'groupview' => null, 'groupid' => null)));
 
       } else {
          $form->transformOnPlace();

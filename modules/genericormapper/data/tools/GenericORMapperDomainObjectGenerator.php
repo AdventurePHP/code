@@ -96,10 +96,11 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
     * @version 0.1,  15.01.2011<br />
     */
    protected function createNewServiceObject($name) {
-      $filename = $this->getRootPath() . '/' . str_replace('::', '/', $this->domainObjectsTable[$name]['Namespace']) . '/' . $this->domainObjectsTable[$name]['Class'] . '.php';
+      $namespace = str_replace('\\', '/', $this->domainObjectsTable[$name]['Namespace']);
+      $filename = $this->getRootPath() . '/' . $namespace . '/' . $this->domainObjectsTable[$name]['Class'] . '.php';
 
       $content = '<?php
-namespace APF\modules\genericormapper\data\tools;
+namespace ' . $namespace . ';
 ' . PHP_EOL . PHP_EOL .
             $this->generateBaseObjectCode($name) . PHP_EOL . PHP_EOL .
             $this->generateObjectCode($name) . PHP_EOL;
@@ -183,6 +184,7 @@ namespace APF\modules\genericormapper\data\tools;
             ' * ' . PHP_EOL .
             ' * This class provides the descriptive getter and setter methods for the "' . $this->domainObjectsTable[$name]['Class'] . '" domain object.' . PHP_EOL .
             ' */' . PHP_EOL .
+            'use APF\modules\genericormapper\data\GenericDomainObject;' . PHP_EOL . PHP_EOL .
             'abstract class ' . $this->domainObjectsTable[$name]['Class'] . 'Base extends ' . $baseClass . ' {' . PHP_EOL . PHP_EOL .
             '   public function __construct($objectName = null){' . PHP_EOL .
             '      parent::__construct(\'' . $name . '\');' . PHP_EOL .

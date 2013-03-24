@@ -1,6 +1,5 @@
 <@controller
-   namespace="modules::usermanagement::pres::documentcontroller"
-   class="umgt_user_controller"
+   class="APF\modules\usermanagement\pres\documentcontroller\umgt_user_controller"
 @>
 <div class="umgt-menu">
    <a href="<html:placeholder name="manage_user" />" title="<html:getstring
@@ -19,4 +18,4 @@
                      config="labels.ini"
                      entry="frontend.user.navi.add.label"/></a>
 </div>
-<core:importdesign namespace="modules::usermanagement::pres::templates::user" template="[userview = list]" incparam="userview" />
+<core:importdesign namespace="APF\modules\usermanagement\pres\templates\user" template="[userview = list]" incparam="userview" />

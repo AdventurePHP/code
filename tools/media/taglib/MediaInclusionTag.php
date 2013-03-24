@@ -22,6 +22,7 @@ namespace APF\tools\media\taglib;
  */
 use APF\core\pagecontroller\Document;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * @package tools::media::taglib

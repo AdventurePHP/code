@@ -20,6 +20,7 @@ namespace APF\modules\usermanagement\pres\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\LanguageLabelTag;
 
 /**
  * Injects a language dependent title to a <umgt:media /> tag.

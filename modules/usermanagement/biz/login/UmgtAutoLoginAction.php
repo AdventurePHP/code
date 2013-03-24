@@ -20,6 +20,10 @@ namespace APF\modules\usermanagement\biz\login;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\service\APFService;
+use APF\modules\usermanagement\biz\UmgtManager;
+use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 use APF\tools\cookie\CookieManager;
 
 /**
@@ -41,7 +45,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
    public function run() {
 
       /* @var $sessionStore UmgtUserSessionStore */
-      $sessionStore = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $sessionStore = & $this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       $appIdent = $this->getContext();
       $user = $sessionStore->getUser($appIdent);
@@ -55,7 +59,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
          if ($authToken !== null) {
 
             /* @var $umgt UmgtManager */
-            $umgt = &$this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
+            $umgt = & $this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
             $savedToken = $umgt->loadAuthTokenByTokenString($authToken);
 
             if ($savedToken !== null) {

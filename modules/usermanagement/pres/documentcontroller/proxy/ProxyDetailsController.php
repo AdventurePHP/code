@@ -20,9 +20,12 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtGroup;
+use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\request\RequestHandler;
 
-class umgt_proxy_details_controller extends UmgtBaseController {
+class ProxyDetailsController extends UmgtBaseController {
 
    public function transformContent() {
 
