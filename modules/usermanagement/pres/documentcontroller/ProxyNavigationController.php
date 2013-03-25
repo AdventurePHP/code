@@ -24,19 +24,21 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_role_controller
+ * @class ProxyNavigationController
  *
- * Implements the document controller to display the role sub menu.
+ * Implements the documentcontroller to display the role sub menu.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 29.12.2008<br />
  */
-class umgt_role_controller extends UmgtBaseController {
+class ProxyNavigationController extends UmgtBaseController {
 
    public function transformContent() {
-      $this->setPlaceHolder('manage_roles', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
-      $this->setPlaceHolder('role_add', $this->generateLink(array('mainview' => 'role', 'roleview' => 'add', 'roleid' => null)));
+      $this->setPlaceHolder('display_proxy_types', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => '', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null)));
+      $this->setPlaceHolder('proxy_type_add', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typeadd', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null)));
+      $this->setPlaceHolder('proxy_add', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxyadd', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null)));
+      $this->setPlaceHolder('proxy_type_list', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null)));
    }
 
 }

@@ -24,21 +24,19 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_proxy_controller
+ * @class PermissionNavigationController
  *
- * Implements the documentcontroller to display the role sub menu.
+ * Displays the permission sub menu.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 29.12.2008<br />
+ * Version 0.1, 28.12.2008<br />
  */
-class umgt_proxy_controller extends UmgtBaseController {
+class PermissionNavigationController extends UmgtBaseController {
 
    public function transformContent() {
-      $this->setPlaceHolder('display_proxy_types', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => '', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null)));
-      $this->setPlaceHolder('proxy_type_add', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typeadd', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null)));
-      $this->setPlaceHolder('proxy_add', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'proxyadd', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null)));
-      $this->setPlaceHolder('proxy_type_list', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist', 'proxytypeid' => '', 'appobjectid' => null, 'proxyid' => null, 'objectid' => null, 'objecttype' => null)));
+      $this->setPlaceHolder('manage_permissions', $this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
+      $this->setPlaceHolder('permission_add', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'add', 'permissionsetid' => '', 'permissionid' => '')));
    }
 
 }

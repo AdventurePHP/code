@@ -20,11 +20,14 @@ namespace APF\modules\usermanagement\pres\documentcontroller\user;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::user
- * @class umgt_edit_controller
+ * @class UserEditController
  *
  * Implements the edit controller for a user.
  *
@@ -32,7 +35,7 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
  * @version
  * Version 0.1, 26.12.2008<br />
  */
-class umgt_edit_controller extends UmgtBaseController {
+class UserEditController extends UmgtBaseController {
 
    /**
     * @public
@@ -50,22 +53,22 @@ class umgt_edit_controller extends UmgtBaseController {
       $userId = RequestHandler::getValue('userid');
 
       // setup the form
-      $form = &$this->getForm('UserForm');
-      $fieldUserId = &$form->getFormElementByName('userid');
+      $form = & $this->getForm('UserForm');
+      $fieldUserId = & $form->getFormElementByName('userid');
       $fieldUserId->setAttribute('value', $userId);
 
-      $firstName = &$form->getFormElementByName('FirstName');
-      $lastName = &$form->getFormElementByName('LastName');
-      $streetName = &$form->getFormElementByName('StreetName');
-      $streetNumber = &$form->getFormElementByName('StreetNumber');
-      $zipCode = &$form->getFormElementByName('ZIPCode');
-      $city = &$form->getFormElementByName('City');
-      $email = &$form->getFormElementByName('EMail');
-      $mobile = &$form->getFormElementByName('Mobile');
-      $username = &$form->getFormElementByName('Username');
+      $firstName = & $form->getFormElementByName('FirstName');
+      $lastName = & $form->getFormElementByName('LastName');
+      $streetName = & $form->getFormElementByName('StreetName');
+      $streetNumber = & $form->getFormElementByName('StreetNumber');
+      $zipCode = & $form->getFormElementByName('ZIPCode');
+      $city = & $form->getFormElementByName('City');
+      $email = & $form->getFormElementByName('EMail');
+      $mobile = & $form->getFormElementByName('Mobile');
+      $username = & $form->getFormElementByName('Username');
 
       // get the manager
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
 
       if ($form->isSent() == true) {
 
@@ -87,8 +90,8 @@ class umgt_edit_controller extends UmgtBaseController {
             $user->setUsername($username->getValue());
 
             // read the password field
-            $passField1 = &$form->getFormElementByName('Password');
-            $passField2 = &$form->getFormElementByName('Password2');
+            $passField1 = & $form->getFormElementByName('Password');
+            $passField2 = & $form->getFormElementByName('Password2');
             $pass1 = $passField1->getAttribute('value');
             $pass2 = $passField2->getAttribute('value');
 

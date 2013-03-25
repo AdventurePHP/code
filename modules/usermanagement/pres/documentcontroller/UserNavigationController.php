@@ -24,19 +24,19 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_group_controller
+ * @class UserNavigationController
  *
- * Displays the group sub menu.
+ *  Displays the user sub menu.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 28.12.2008<br />
  */
-class umgt_group_controller extends UmgtBaseController {
+class UserNavigationController extends UmgtBaseController {
 
    public function transformContent() {
-      $this->setPlaceHolder('manage_groups', $this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
-      $this->setPlaceHolder('add_group', $this->generateLink(array('mainview' => 'group', 'groupview' => 'add', 'groupid' => '')));
+      $this->setPlaceHolder('manage_user', $this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
+      $this->setPlaceHolder('user_add', $this->generateLink(array('mainview' => 'user', 'userview' => 'add', 'userid' => '')));
    }
 
 }

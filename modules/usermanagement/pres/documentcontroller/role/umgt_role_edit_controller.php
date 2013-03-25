@@ -20,7 +20,10 @@ namespace APF\modules\usermanagement\pres\documentcontroller\role;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller

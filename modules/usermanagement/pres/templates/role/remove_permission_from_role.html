@@ -1,12 +1,11 @@
 <@controller
-   namespace="modules::usermanagement::pres::documentcontroller::role"
-   class="remove_permission_from_role_controller"
+   class="APF\modules\usermanagement\pres\documentcontroller\role\remove_permission_from_role_controller"
 @>
 <h3><html:getstring
      namespace="modules::usermanagement::pres"
      config="labels.ini"
      entry="frontend.role.remove-permission-from-role.headline"/></h3>
-<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
+<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <html:form name="Permissions" method="post">
    <div>
       <form:addvalidator

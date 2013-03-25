@@ -21,6 +21,7 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
  * -->
  */
 use APF\modules\usermanagement\pres\documentcontroller\proxy\UmgtPermissionBaseController;
+use APF\tools\request\RequestHandler;
 
 class umgt_proxy_remove_users_controller extends UmgtPermissionBaseController {
 

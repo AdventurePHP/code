@@ -1,6 +1,5 @@
 <@controller
-   namespace="modules::usermanagement::pres::documentcontroller::group"
-   class="GroupEditController"
+   class="APF\modules\usermanagement\pres\documentcontroller\group\GroupEditController"
 @>
 <h3><html:getstring
       name="headline"
@@ -15,7 +14,7 @@
          entry="frontend.group.edit.intro.text"
          />
 </p>
-<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
+<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <html:form name="GroupEdit" method="post">
    <div>
       <form:addvalidator

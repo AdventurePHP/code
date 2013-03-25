@@ -1,13 +1,12 @@
 <@controller
-   namespace="modules::usermanagement::pres::documentcontroller::role"
-   class="umgt_remove_group_from_roles_controller"
+   class="APF\modules\usermanagement\pres\documentcontroller\role\umgt_remove_group_from_roles_controller"
 @>
 <h3><html:getstring
       namespace="modules::usermanagement::pres"
       config="labels.ini"
       entry="frontend.group.remove-roles-from-group.headline"
       /></h3>
-<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
+<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <html:form name="Roles" method="post">
    <div>
       <form:addvalidator

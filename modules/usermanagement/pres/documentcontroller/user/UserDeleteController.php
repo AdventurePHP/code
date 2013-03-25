@@ -20,11 +20,14 @@ namespace APF\modules\usermanagement\pres\documentcontroller\user;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::user
- * @class umgt_user_delete_controller
+ * @class UserDeleteController
  *
  * Implements the controller to delete a user.
  *
@@ -32,18 +35,18 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
  * @version
  * Version 0.1, 26.12.2008<br />
  */
-class umgt_user_delete_controller extends UmgtBaseController {
+class UserDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 
       $userId = RequestHandler::getValue('userid');
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
       $user = $uM->loadUserById($userId);
 
       $this->getLabel('DisplayName')->setPlaceHolder('display-name', $user->getDisplayName());
 
-      $formNo = &$this->getForm('UserDelNo');
-      $formYes = &$this->getForm('UserDelYes');
+      $formNo = & $this->getForm('UserDelNo');
+      $formYes = & $this->getForm('UserDelYes');
 
       if ($formYes->isSent()) {
          $user = new UmgtUser();

@@ -24,19 +24,19 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_permission_controller
+ * @class RoleNavigationController
  *
- *  Displays the user sub menu.
+ * Implements the document controller to display the role sub menu.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 28.12.2008<br />
+ * Version 0.1, 29.12.2008<br />
  */
-class umgt_user_controller extends UmgtBaseController {
+class RoleNavigationController extends UmgtBaseController {
 
    public function transformContent() {
-      $this->setPlaceHolder('manage_user', $this->generateLink(array('mainview' => 'user', 'userview' => '', 'userid' => '')));
-      $this->setPlaceHolder('user_add', $this->generateLink(array('mainview' => 'user', 'userview' => 'add', 'userid' => '')));
+      $this->setPlaceHolder('manage_roles', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
+      $this->setPlaceHolder('role_add', $this->generateLink(array('mainview' => 'role', 'roleview' => 'add', 'roleid' => null)));
    }
 
 }

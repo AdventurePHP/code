@@ -21,10 +21,11 @@ namespace APF\modules\usermanagement\pres\documentcontroller\user;
  * -->
  */
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::user
- * @class umgt_user_details_controller
+ * @class UserDetailsController
  *
  * Implements the controller to display a user's details.
  *
@@ -32,19 +33,19 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
  * @version
  * Version 0.1, 26.12.2008<br />
  */
-class umgt_user_details_controller extends UmgtBaseController {
+class UserDetailsController extends UmgtBaseController {
 
    public function transformContent() {
 
       // load data
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
       $userId = RequestHandler::getValue('userid');
       $user = $uM->loadUserByID($userId);
 
       // display user data
       $this->getLabel('headline')->setPlaceHolder('display-name', $user->getDisplayName());
 
-      $template = &$this->getTemplate('User');
+      $template = & $this->getTemplate('User');
       $template->setPlaceHolder('FirstName', $user->getFirstName());
       $template->setPlaceHolder('LastName', $user->getLastName());
       $template->setPlaceHolder('EMail', $user->getEMail());
@@ -52,18 +53,18 @@ class umgt_user_details_controller extends UmgtBaseController {
 
       // display groups
       $groups = $uM->loadGroupsWithUser($user);
-      $iteratorGroups = &$this->getIterator('Groups');
+      $iteratorGroups = & $this->getIterator('Groups');
       $iteratorGroups->fillDataContainer($groups);
       $iteratorGroups->transformOnPlace();
 
       // display roles
       $roles = $uM->loadRolesWithUser($user);
-      $iteratorRoles = &$this->getIterator('Roles');
+      $iteratorRoles = & $this->getIterator('Roles');
       $iteratorRoles->fillDataContainer($roles);
       $iteratorRoles->transformOnPlace();
 
       $proxies = $uM->loadAllVisibilityDefinitions($user);
-      $iteratorProxies = &$this->getIterator('Proxies');
+      $iteratorProxies = & $this->getIterator('Proxies');
       $iteratorProxies->fillDataContainer($proxies);
       $iteratorProxies->transformOnPlace();
 

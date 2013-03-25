@@ -24,30 +24,19 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_menu_controller
+ * @class GroupNavigationController
  *
- * Displays the user management menu.
+ * Displays the group sub menu.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 28.12.2008<br />
  */
-class umgt_menu_controller extends UmgtBaseController {
+class GroupNavigationController extends UmgtBaseController {
 
    public function transformContent() {
-
-      // define the general param exclusion array
-      $generalExclusion = array('userid' => '', 'groupid' => '', 'roleid' => '', 'permissionid' => '', 'proxyid' => '',
-         'userview' => '', 'groupview' => '', 'roleview' => '', 'permissionsetview' => '',
-         'permissionview' => '', 'proxyview' => '');
-
-      // display the links
-      $this->setPlaceHolder('manage_user', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'user'))));
-      $this->setPlaceHolder('manage_groups', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'group'))));
-      $this->setPlaceHolder('manage_roles', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'role'))));
-      $this->setPlaceHolder('manage_permissions', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'permission'))));
-      $this->setPlaceHolder('manage_proxies', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'proxy'))));
-
+      $this->setPlaceHolder('manage_groups', $this->generateLink(array('mainview' => 'group', 'groupview' => '', 'groupid' => '')));
+      $this->setPlaceHolder('add_group', $this->generateLink(array('mainview' => 'group', 'groupview' => 'add', 'groupid' => '')));
    }
 
 }

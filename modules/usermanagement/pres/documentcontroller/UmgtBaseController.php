@@ -79,7 +79,7 @@ abstract class UmgtBaseController extends BaseDocumentController {
    /**
     * @protected
     *
-    * Returns the media inclusion tag contained i nthe given template.
+    * Returns the media inclusion tag contained in the given template.
     *
     * @param TemplateTag $template The template to search the media file tag in.
     * @return UmgtMediaInclusionTag The media file inclusion tag.
@@ -89,7 +89,7 @@ abstract class UmgtBaseController extends BaseDocumentController {
     * Version 0.1, 05.06.2010<br />
     */
    protected function &getIcon(TemplateTag $template) {
-      $children = &$template->getChildren();
+      $children = & $template->getChildren();
       foreach ($children as $objectId => $DUMMY) {
          if ($children[$objectId] instanceof UmgtMediaInclusionTag) {
             return $children[$objectId];

@@ -24,19 +24,30 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_permission_controller
+ * @class MainNavigationController
  *
- * Displays the permission sub menu.
+ * Displays the user management menu.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 28.12.2008<br />
  */
-class umgt_permission_controller extends UmgtBaseController {
+class MainNavigationController extends UmgtBaseController {
 
    public function transformContent() {
-      $this->setPlaceHolder('manage_permissions', $this->generateLink(array('mainview' => 'permission', 'permissionview' => '', 'permissionid' => '')));
-      $this->setPlaceHolder('permission_add', $this->generateLink(array('mainview' => 'permission', 'permissionview' => 'add', 'permissionsetid' => '', 'permissionid' => '')));
+
+      // define the general param exclusion array
+      $generalExclusion = array('userid' => '', 'groupid' => '', 'roleid' => '', 'permissionid' => '', 'proxyid' => '',
+         'userview' => '', 'groupview' => '', 'roleview' => '', 'permissionsetview' => '',
+         'permissionview' => '', 'proxyview' => '');
+
+      // display the links
+      $this->setPlaceHolder('manage_user', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'user'))));
+      $this->setPlaceHolder('manage_groups', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'group'))));
+      $this->setPlaceHolder('manage_roles', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'role'))));
+      $this->setPlaceHolder('manage_permissions', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'permission'))));
+      $this->setPlaceHolder('manage_proxies', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'proxy'))));
+
    }
 
 }

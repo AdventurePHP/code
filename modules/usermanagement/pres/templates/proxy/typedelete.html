@@ -1,6 +1,5 @@
 <@controller
-   namespace="modules::usermanagement::pres::documentcontroller::proxy"
-   class="umgt_type_delete_controller"
+   class="APF\modules\usermanagement\pres\documentcontroller\proxy\umgt_type_delete_controller"
 @>
 <h3><html:getstring
        namespace="modules::usermanagement::pres"
@@ -19,7 +18,7 @@
       config="labels.ini"
       entry="frontend.proxy.delete-type.warning.text"/>
 </div>
-<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
+<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <html:form name="ProxyTypeDelNo" method="post">
    <div>
       <form:button name="No">

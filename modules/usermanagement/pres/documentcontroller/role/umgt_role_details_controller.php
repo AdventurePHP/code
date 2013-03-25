@@ -21,6 +21,7 @@ namespace APF\modules\usermanagement\pres\documentcontroller\role;
  * -->
  */
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller

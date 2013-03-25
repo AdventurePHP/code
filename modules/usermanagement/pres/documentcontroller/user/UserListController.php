@@ -25,7 +25,7 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::user
- * @class umgt_user_list_controller
+ * @class UserListController
  *
  * Implements the list controller for users.
  *
@@ -33,11 +33,11 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
  * @version
  * Version 0.1, 26.12.2008<br />
  */
-class umgt_user_list_controller extends UmgtBaseController {
+class UserListController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
       $userList = $uM->getPagedUserList();
 
       $buffer = '';

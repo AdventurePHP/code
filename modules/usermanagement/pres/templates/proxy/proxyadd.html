@@ -1,6 +1,5 @@
 <@controller
-   namespace="modules::usermanagement::pres::documentcontroller::proxy"
-   class="ProxyAddController"
+   class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddController"
 @>
 <h3><html:getstring
        namespace="modules::usermanagement::pres"
@@ -12,7 +11,7 @@
           config="labels.ini"
           entry="frontend.proxy.add-proxy.intro.text"/>
 </p>
-<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
+<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <html:form name="visibilitydef" method="post">
    <div>
       <h4><form:getstring

@@ -20,11 +20,13 @@ namespace APF\modules\usermanagement\pres\documentcontroller\user;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\http\HeaderManager;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::user
- * @class umgt_user_add_controller
+ * @class UserAddController
  *
  * Implements the controller to add a user.
  *
@@ -32,25 +34,25 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
  * @version
  * Version 0.1, 26.12.2008<br />
  */
-class umgt_user_add_controller extends UmgtBaseController {
+class UserAddController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('UserForm');
+      $form = & $this->getForm('UserForm');
       if ($form->isSent() == true && $form->isValid() == true) {
 
-         $firstName = &$form->getFormElementByName('FirstName');
-         $lastName = &$form->getFormElementByName('LastName');
-         $streetName = &$form->getFormElementByName('StreetName');
-         $streetNumber = &$form->getFormElementByName('StreetNumber');
-         $zipCode = &$form->getFormElementByName('ZIPCode');
-         $city = &$form->getFormElementByName('City');
-         $email = &$form->getFormElementByName('EMail');
-         $mobile = &$form->getFormElementByName('Mobile');
-         $username = &$form->getFormElementByName('Username');
-         $password = &$form->getFormElementByName('Password');
+         $firstName = & $form->getFormElementByName('FirstName');
+         $lastName = & $form->getFormElementByName('LastName');
+         $streetName = & $form->getFormElementByName('StreetName');
+         $streetNumber = & $form->getFormElementByName('StreetNumber');
+         $zipCode = & $form->getFormElementByName('ZIPCode');
+         $city = & $form->getFormElementByName('City');
+         $email = & $form->getFormElementByName('EMail');
+         $mobile = & $form->getFormElementByName('Mobile');
+         $username = & $form->getFormElementByName('Username');
+         $password = & $form->getFormElementByName('Password');
 
-         $uM = &$this->getManager();
+         $uM = & $this->getManager();
          $user = new UmgtUser();
 
          $user->setFirstName($firstName->getValue());

@@ -20,6 +20,9 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::proxy
@@ -29,10 +32,10 @@ class umgt_type_delete_controller extends UmgtBaseController {
 
    public function transformContent() {
 
-      $formNo = &$this->getForm('ProxyTypeDelNo');
-      $formYes = &$this->getForm('ProxyTypeDelYes');
+      $formNo = & $this->getForm('ProxyTypeDelNo');
+      $formYes = & $this->getForm('ProxyTypeDelYes');
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
       $proxyTypeId = RequestHandler::getValue('proxytypeid');
       $proxyType = $uM->loadVisibilityDefinitionTypeById($proxyTypeId);
 
