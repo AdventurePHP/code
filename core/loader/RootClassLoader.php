@@ -20,7 +20,6 @@ namespace APF\core\loader;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\pagecontroller\IncludeException;
 
 /**
  * @package APF\core\loader
@@ -40,6 +39,7 @@ interface ClassLoader {
     * Decision on what to do with none-vendor classes can be done by the ClassLoader itself!
     *
     * @param string $class The class to load.
+    * @throws \InvalidArgumentException In case the class cannot be loaded.
     *
     * @author Christian Achatz
     * @version
@@ -131,7 +131,7 @@ class StandardClassLoader implements ClassLoader {
          if (file_exists($file)) {
             include($file);
          } else {
-            throw new IncludeException('[StandardClassLoader::load()] Loading class "'
+            throw new \InvalidArgumentException('[StandardClassLoader::load()] Loading class "'
                   . $class . '" filed since file "' . $file . '" cannot be loaded!', E_USER_ERROR);
          }
       }
@@ -218,7 +218,7 @@ class RootClassLoader {
     *
     * @param string $vendorName The name of the desired class loader to get.
     * @return ClassLoader The desired class loader.
-    * @throws \Exception In case no class loader is found.
+    * @throws \InvalidArgumentException In case no class loader is found.
     *
     * @author Christian Achatz
     * @version
@@ -228,7 +228,7 @@ class RootClassLoader {
       if (isset(self::$loaders[$vendorName])) {
          return self::$loaders[$vendorName];
       }
-      throw new \Exception('No class loader with vendor "' . $vendorName . '" registered!');
+      throw new \InvalidArgumentException('No class loader with vendor "' . $vendorName . '" registered!');
    }
 
    /**
