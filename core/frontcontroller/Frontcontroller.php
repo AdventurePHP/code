@@ -651,8 +651,6 @@ class Frontcontroller extends APFObject {
       }
 
       // include action implementation
-      // TODO mapping of classes requires namespace to be removed!
-      $actionAndInputNamespace = $actionConfig->getValue('FC.ActionNamespace');
       $actionClass = $actionConfig->getValue('FC.ActionClass');
 
       // check for custom input implementation
@@ -660,7 +658,7 @@ class Frontcontroller extends APFObject {
 
       // include input implementation in case a custom implementation is desired
       if (empty($inputClass)) {
-         $inputClass = 'FrontcontrollerInput';
+         $inputClass = 'APF\core\frontcontroller\FrontcontrollerInput';
       }
 
       // check for class being present
