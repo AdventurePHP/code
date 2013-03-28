@@ -32,7 +32,7 @@ use APF\core\logging\Logger;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::registration
- * @class umgt_registration_controller
+ * @class RegistrationController
  *
  * This document controller handles the user registration.
  *
@@ -40,11 +40,11 @@ use APF\core\logging\Logger;
  * @version
  * Version 0.1, 16.09.2011<br />
  */
-class umgt_registration_controller extends UmgtBaseController {
+class RegistrationController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('register');
+      $form = & $this->getForm('register');
 
       if ($form->isSent() && $form->isValid()) {
 
@@ -99,7 +99,7 @@ class umgt_registration_controller extends UmgtBaseController {
                $user->addRole($initialRole);
             }
          } catch (ConfigurationException $e) {
-            $l = &Singleton::getInstance('APF\core\logging\Logger');
+            $l = & Singleton::getInstance('APF\core\logging\Logger');
             /* @var $l Logger */
             $l->logEntry('registration', 'Registration cannot add initial groups or roles due to the following '
                   . 'exception: ' . $e . ' This may be ok, in case you have no initial groups and/or roles specified.',
@@ -111,7 +111,7 @@ class umgt_registration_controller extends UmgtBaseController {
             $this->getTemplate('register-ok')->transformOnPlace();
          } catch (\Exception $e) {
             $this->getTemplate('system-error')->transformOnPlace();
-            $l = &Singleton::getInstance('APF\core\logging\Logger');
+            $l = & Singleton::getInstance('APF\core\logging\Logger');
             /* @var $l Logger */
             $l->logEntry('registration', 'Registration is not possible due to ' . $e, LogEntry::SEVERITY_ERROR);
          }

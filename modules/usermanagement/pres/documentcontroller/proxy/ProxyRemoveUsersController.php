@@ -20,20 +20,33 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\modules\usermanagement\pres\documentcontroller\proxy\UmgtPermissionBaseController;
+use APF\tools\form\taglib\SelectBoxTag;
+use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
-class umgt_proxy_remove_groups_controller extends UmgtPermissionBaseController {
+/**
+ * @package APF\modules\usermanagement\pres\documentcontroller\proxy
+ * @class ProxyRemoveUsersController
+ *
+ * Document controller to remove users from an existing visibility definition.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 19.04.2010<br />
+ */
+class ProxyRemoveUsersController extends UmgtPermissionBaseController {
 
    public function transformContent() {
 
       $proxyId = RequestHandler::getValue('proxyid');
-      $form = &$this->getForm(self::$FORM_NAME);
+      $form = & $this->getForm(self::$FORM_NAME);
 
       $proxyIdControl = $form->getFormElementByName('proxyid');
       $proxyIdControl->setAttribute('value', $proxyId);
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
       $proxy = $uM->loadVisibilityDefinitionById($proxyId);
       $proxyType = $uM->loadVisibilityDefinitionType($proxy);
 
@@ -41,10 +54,10 @@ class umgt_proxy_remove_groups_controller extends UmgtPermissionBaseController {
             ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
             ->setPlaceHolder('proxy-type', $proxyType->getAppObjectName());
 
-      $groups = $uM->loadGroupsWithVisibilityDefinition($proxy);
+      $users = $uM->loadUsersWithVisibilityDefinition($proxy);
 
-      if (count($groups) === 0) {
-         $tmpl = &$this->getTemplate('NoMoreGroups');
+      if (count($users) === 0) {
+         $tmpl = & $this->getTemplate('NoMoreUsers');
          $tmpl->getLabel('message-1')
                ->setPlaceHolder('app-object-id', $proxy->getAppObjectId())
                ->setPlaceHolder('object-type', $proxyType->getObjectName());
@@ -54,17 +67,16 @@ class umgt_proxy_remove_groups_controller extends UmgtPermissionBaseController {
          return;
       }
 
-      $groupsControl = &$form->getFormElementByName('groups');
-
-      /* @var $groupsControl MultiSelectBoxTag */
-      foreach ($groups as $id => $DUMMY) {
-         $groupsControl->addOption($groups[$id]->getDisplayName(), $groups[$id]->getObjectId());
+      $usersControl = & $form->getFormElementByName('users');
+      /* @var $usersControl SelectBoxTag */
+      foreach ($users as $id => $DUMMY) {
+         $usersControl->addOption($users[$id]->getDisplayName(), $users[$id]->getObjectId());
       }
 
       if ($form->isSent() && $form->isValid()) {
          $proxy = new UmgtVisibilityDefinition();
          $proxy->setObjectId($proxyId);
-         $uM->detachGroupsFromVisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('groups', 'UmgtGroup'));
+         $uM->detachUsersFromVisibilityDefinition($proxy, $this->mapSelectedOptions2DomainObjects('users', 'UmgtUser'));
 
          HeaderManager::forward(
             $this->generateLink(

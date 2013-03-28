@@ -20,49 +20,47 @@ namespace APF\modules\usermanagement\pres\documentcontroller\role;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_role_details_controller
+ * @class RoleDeleteController
  *
- * Implements the controller to list the existing roles.
+ * Implements the controller to delete a role.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_role_details_controller extends UmgtBaseController {
+class RoleDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 
-      // load data
-      $uM = &$this->getManager();
       $roleId = RequestHandler::getValue('roleid');
-      $role = $uM->loadRoleByID($roleId);
+      $uM = & $this->getManager();
 
-      // display user data
+      $role = $uM->loadRoleById($roleId);
       $this->getLabel('display-name')->setPlaceHolder('display-name', $role->getDisplayName());
-      $this->setPlaceHolder('Description', $role->getDescription());
 
-      // display users
-      $users = $uM->loadUsersWithRole($role);
-      $iterator = &$this->getIterator('Users');
-      $iterator->fillDataContainer($users);
-      $iterator->transformOnPlace();
+      $formNo = & $this->getForm('RoleDelNo');
+      $formYes = & $this->getForm('RoleDelYes');
 
-      // display groups
-      $groups = $uM->loadGroupsWithRole($role);
-      $iterator = &$this->getIterator('Groups');
-      $iterator->fillDataContainer($groups);
-      $iterator->transformOnPlace();
+      if ($formYes->isSent()) {
 
-      // display permissions
-      $permissions = $uM->loadPermissionsWithRole($role);
-      $iterator = &$this->getIterator('Permissions');
-      $iterator->fillDataContainer($permissions);
-      $iterator->transformOnPlace();
+         $role = new UmgtRole();
+         $role->setObjectId($roleId);
+         $uM->deleteRole($role);
+         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
+
+      } elseif ($formNo->isSent()) {
+         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
+      } else {
+         $formNo->transformOnPlace();
+         $formYes->transformOnPlace();
+      }
 
    }
 

@@ -26,9 +26,9 @@ use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::proxy
- * @class umgt_type_edit_controller
+ * @class ProxyTypeDeleteController
  */
-class umgt_type_delete_controller extends UmgtBaseController {
+class ProxyTypeDeleteController extends UmgtBaseController {
 
    public function transformContent() {
 

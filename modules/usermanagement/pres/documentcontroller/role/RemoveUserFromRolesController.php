@@ -30,7 +30,7 @@ use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::role
- * @class umgt_remove_user_from_roles_controller
+ * @class RemoveUserFromRolesController
  *
  * Let's you remove a user from one or more roles.
  *
@@ -38,26 +38,26 @@ use APF\tools\request\RequestHandler;
  * @version
  * Version 0.1, 04.09.2011<br />
  */
-class umgt_remove_user_from_roles_controller extends UmgtBaseController {
+class RemoveUserFromRolesController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('Roles');
+      $form = & $this->getForm('Roles');
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
 
       $user = $uM->loadUserByID(RequestHandler::getValue('userid'));
       $roles = $uM->loadRolesWithUser($user);
 
       if (count($roles) === 0) {
-         $tmpl = &$this->getTemplate('NoMoreRoles');
+         $tmpl = & $this->getTemplate('NoMoreRoles');
          $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $user->getDisplayName());
          $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
          $tmpl->transformOnPlace();
          return;
       }
 
-      $rolesControl = &$form->getFormElementByName('Roles');
+      $rolesControl = & $form->getFormElementByName('Roles');
       /* @var $rolesControl MultiSelectBoxTag */
       foreach ($roles as $role) {
          $rolesControl->addOption($role->getDisplayName(), $role->getObjectId());
@@ -65,7 +65,7 @@ class umgt_remove_user_from_roles_controller extends UmgtBaseController {
 
       if ($form->isSent() && $form->isValid()) {
 
-         $options = &$rolesControl->getSelectedOptions();
+         $options = & $rolesControl->getSelectedOptions();
          $rolesToRemove = array();
          foreach ($options as $option) {
             /* @var $option SelectBoxOptionTag */

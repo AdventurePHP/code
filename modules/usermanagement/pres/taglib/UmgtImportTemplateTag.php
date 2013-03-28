@@ -20,6 +20,8 @@ namespace APF\modules\usermanagement\pres\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\ImportTemplateTag;
+use APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet;
 
 /**
  * @package modules::usermanagement::pres::taglib
@@ -53,7 +55,7 @@ class UmgtImportTemplateTag extends ImportTemplateTag {
 
    public function onParseTime() {
 
-      $condSet = &$this->getServiceObject('modules::usermanagement::pres::condition', 'UserDependentContentConditionSet');
+      $condSet = & $this->getServiceObject('modules::usermanagement::pres::condition', 'UserDependentContentConditionSet');
       /* @var $condSet UserDependentContentConditionSet */
 
       if ($condSet->conditionMatches($this->getContext(), $this->getAttribute('condition'), $this->getAttribute('options'))) {

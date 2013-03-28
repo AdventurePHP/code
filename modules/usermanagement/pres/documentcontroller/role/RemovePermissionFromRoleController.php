@@ -29,35 +29,35 @@ use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::role
- * @class add_permission_to_role_controller
+ * @class RemovePermissionFromRoleController
  *
- * Let's you add permissions to a role.
+ * Let's you remove permissions to a role.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 08.09.2011<br />
  */
-class add_permission_to_role_controller extends UmgtBaseController {
+class RemovePermissionFromRoleController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('Permissions');
-      $uM = &$this->getManager();
+      $form = & $this->getForm('Permissions');
+      $uM = & $this->getManager();
 
       $role = $uM->loadRoleByID(RequestHandler::getValue('roleid'));
       $form->getLabel('display-name')->setPlaceHolder('display-name', $role->getDisplayName());
 
-      $permissions = $uM->loadPermissionsNotWithRole($role);
+      $permissions = $uM->loadPermissionsWithRole($role);
 
       if (count($permissions) === 0) {
-         $template = &$this->getTemplate('NoMorePermissions');
+         $template = & $this->getTemplate('NoMorePermissions');
          $template->getLabel('message-1')->setPlaceHolder('display-name', $role->getDisplayName());
          $template->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
          $template->transformOnPlace();
          return;
       }
 
-      $permissionControl = &$form->getFormElementByName('Permissions');
+      $permissionControl = & $form->getFormElementByName('Permissions');
       /* @var $permissionControl MultiSelectBoxTag */
 
       foreach ($permissions as $permission) {
@@ -76,7 +76,7 @@ class add_permission_to_role_controller extends UmgtBaseController {
             unset($permissionToAdd);
          }
 
-         $uM->attachPermissions2Role($permissionsToAdd, $role);
+         $uM->detachPermissionsFromRole($permissionsToAdd, $role);
          HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
 
       } else {

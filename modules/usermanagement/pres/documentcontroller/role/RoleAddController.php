@@ -20,11 +20,15 @@ namespace APF\modules\usermanagement\pres\documentcontroller\role;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtPermission;
+use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\form\taglib\MultiSelectBoxTag;
+use APF\tools\http\HeaderManager;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::role
- * @class umgt_role_add_controller
+ * @class RoleAddController
  *
  * Implements the controller to add a role.
  *
@@ -32,12 +36,12 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_role_add_controller extends UmgtBaseController {
+class RoleAddController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('RoleAdd');
-      $permissionControl = &$form->getFormElementByName('Permission');
+      $form = & $this->getForm('RoleAdd');
+      $permissionControl = & $form->getFormElementByName('Permission');
       /* @var $permissionControl MultiSelectBoxTag */
 
       $uM = $this->getManager();
@@ -52,16 +56,16 @@ class umgt_role_add_controller extends UmgtBaseController {
 
       if ($form->isSent() == true && $form->isValid() == true) {
 
-         $uM = &$this->getManager();
+         $uM = & $this->getManager();
          $role = new UmgtRole();
 
-         $displayName = &$form->getFormElementByName('DisplayName');
+         $displayName = & $form->getFormElementByName('DisplayName');
          $role->setDisplayName($displayName->getValue());
 
-         $description = &$form->getFormElementByName('Description');
+         $description = & $form->getFormElementByName('Description');
          $role->setDescription($description->getValue());
 
-         $options = &$permissionControl->getSelectedOptions();
+         $options = & $permissionControl->getSelectedOptions();
 
          for ($i = 0; $i < count($options); $i++) {
             $newPermission = new UmgtPermission();

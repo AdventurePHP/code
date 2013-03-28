@@ -28,7 +28,7 @@ use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::role
- * @class umgt_role_detachfromuser_controller
+ * @class RoleRemoveUsersController
  *
  * Implements the controller to detach a role from a user.
  *
@@ -36,7 +36,7 @@ use APF\tools\request\RequestHandler;
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_role_detachfromuser_controller extends UmgtBaseController {
+class RoleRemoveUsersController extends UmgtBaseController {
 
    public function transformContent() {
 
@@ -44,18 +44,18 @@ class umgt_role_detachfromuser_controller extends UmgtBaseController {
       $roleid = RequestHandler::getValue('roleid');
 
       // initialize the form
-      $form = &$this->getForm('User');
-      $user = &$form->getFormElementByName('User');
+      $form = & $this->getForm('User');
+      $user = & $form->getFormElementByName('User');
       /* @var $user MultiSelectBoxTag */
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
       $role = $uM->loadRoleByID($roleid);
       $users = $uM->loadUsersWithRole($role);
       $count = count($users);
 
       // display a hint, if no users are assigned to this role
       if ($count == 0) {
-         $template = &$this->getTemplate('NoMoreUser');
+         $template = & $this->getTemplate('NoMoreUser');
          $template->getLabel('message-1')->setPlaceHolder('display-name', $role->getDisplayName());
          $template->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
          $template->transformOnPlace();
@@ -70,7 +70,7 @@ class umgt_role_detachfromuser_controller extends UmgtBaseController {
       // detach users from the role
       if ($form->isSent() && $form->isValid()) {
 
-         $options = &$user->getSelectedOptions();
+         $options = & $user->getSelectedOptions();
          $newUsers = array();
          for ($i = 0; $i < count($options); $i++) {
             $newUser = new UmgtUser();

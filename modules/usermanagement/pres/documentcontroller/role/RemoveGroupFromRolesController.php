@@ -29,55 +29,57 @@ use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::role
- * @class umgt_add_user_to_roles_controller
+ * @class RemoveGroupFromRolesController
  *
- * Let's you add a user to one or more roles.
+ * Let's you remove a group from one or more roles.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 04.09.2011<br />
+ * Version 0.1, 07.09.2011<br />
  */
-class umgt_add_user_to_roles_controller extends UmgtBaseController {
+class RemoveGroupFromRolesController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('Roles');
+      $form = & $this->getForm('Roles');
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
 
-      $user = $uM->loadUserByID(RequestHandler::getValue('userid'));
-      $roles = $uM->loadRolesNotWithUser($user);
+      $group = $uM->loadGroupByID(RequestHandler::getValue('groupid'));
+      $roles = $uM->loadRolesWithGroup($group);
 
       if (count($roles) === 0) {
-         $tmpl = &$this->getTemplate('NoMoreRoles');
-         $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $user->getDisplayName());
-         $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
+         $tmpl = & $this->getTemplate('NoMoreRoles');
+         $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $group->getDisplayName());
+         $tmpl->getLabel('message-2')->setPlaceHolder('group-view-link', $this->generateLink(array('mainview' => 'group', 'roleview' => null, 'groupid' => null)));
          $tmpl->transformOnPlace();
          return;
       }
 
-      $rolesControl = &$form->getFormElementByName('Roles');
+      $rolesControl = & $form->getFormElementByName('Roles');
       /* @var $rolesControl MultiSelectBoxTag */
       foreach ($roles as $role) {
          $rolesControl->addOption($role->getDisplayName(), $role->getObjectId());
       }
 
+      $form->getLabel('display-name')->setPlaceHolder('display-name', $group->getDisplayName());
+
       if ($form->isSent() && $form->isValid()) {
 
-         $options = &$rolesControl->getSelectedOptions();
-         $additionalRoles = array();
+         $options = & $rolesControl->getSelectedOptions();
+         $rolesToRemove = array();
          foreach ($options as $option) {
             /* @var $option SelectBoxOptionTag */
-            $additionalRole = new UmgtRole();
-            $additionalRole->setObjectId($option->getValue());
-            $additionalRoles[] = $additionalRole;
-            unset($additionalRole);
+            $roleToRemove = new UmgtRole();
+            $roleToRemove->setObjectId($option->getValue());
+            $rolesToRemove[] = $roleToRemove;
+            unset($roleToRemove);
          }
 
-         $uM->attachUser2Roles($user, $additionalRoles);
+         $uM->detachGroupFromRoles($group, $rolesToRemove);
 
-         // back to user main view
-         HeaderManager::forward($this->generateLink(array('mainview' => 'user', 'roleview' => null, 'userid' => null)));
+         // back to group main view
+         HeaderManager::forward($this->generateLink(array('mainview' => 'group', 'roleview' => null, 'groupid' => null)));
 
       } else {
          $form->transformOnPlace();

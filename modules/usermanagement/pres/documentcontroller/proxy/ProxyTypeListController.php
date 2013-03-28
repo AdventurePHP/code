@@ -24,33 +24,35 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::proxy
- * @class umt_type_add_controller
+ * @class ProxyTypeListController
+ *
+ * Displays the list of proxy types defined. Offers the possibility to
+ * edit and delete a type definition.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 06.06.2010<br />
  */
-class umgt_type_add_controller extends UmgtBaseController {
+class ProxyTypeListController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('add');
+      $uM = & $this->getManager();
 
-      if ($form->isSent() && $form->isValid()) {
+      $buffer = (string)'';
+      $template = & $this->getTemplate('Type');
 
-         $proxyName = &$form->getFormElementByName('proxytypename');
-         $proxyType = new UmgtVisibilityDefinitionType();
-         $proxyType->setAppObjectName($proxyName->getAttribute('value'));
-         $uM = &$this->getManager();
-         try {
-            $uM->saveVisibilityDefinitionType($proxyType);
-            HeaderManager::forward($this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typelist')));
-         } catch (DatabaseHandlerException $dhe) {
-            // mark field as invalid
-            // due to the fact, that we have a
-            // form error, it is also displayed!
-            $proxyName->markAsInvalid();
-            $proxyName->appendCssClass(AbstractFormValidator::$DEFAULT_MARKER_CLASS);
-         }
+      $list = $uM->loadVisibilityDefinitionTypes();
+      foreach ($list as $id => $DUMMY) {
+         $template->setPlaceHolder('AppObjectName', $list[$id]->getAppObjectName());
 
+         $proxyTypeId = $list[$id]->getObjectId();
+         $template->setPlaceHolder('type_edit', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typeedit', 'proxytypeid' => $proxyTypeId)));
+         $template->setPlaceHolder('type_delete', $this->generateLink(array('mainview' => 'proxy', 'proxyview' => 'typedelete', 'proxytypeid' => $proxyTypeId)));
+
+         $buffer .= $template->transformTemplate();
       }
-      $form->transformOnPlace();
+      $this->setPlaceHolder('TypeList', $buffer);
 
    }
 

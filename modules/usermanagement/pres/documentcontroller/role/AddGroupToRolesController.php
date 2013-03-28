@@ -29,7 +29,7 @@ use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::role
- * @class umgt_add_group_to_roles_controller
+ * @class AddGroupToRolesController
  *
  * Let's you add a group to one or more roles.
  *
@@ -37,7 +37,7 @@ use APF\tools\request\RequestHandler;
  * @version
  * Version 0.1, 04.09.2011<br />
  */
-class umgt_add_group_to_roles_controller extends UmgtBaseController {
+class AddGroupToRolesController extends UmgtBaseController {
 
    public function transformContent() {
 

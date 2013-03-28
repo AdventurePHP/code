@@ -26,7 +26,7 @@ use APF\tools\form\taglib\SelectBoxTag;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::proxy
- * @class umgt_proxy_list_controller
+ * @class ProxyListController
  *
  * Implements the controller listing the existing proxy objects.
  *
@@ -34,16 +34,16 @@ use APF\tools\form\taglib\SelectBoxTag;
  * @version
  * Version 0.1, 19.04.2010<br />
  */
-class umgt_proxy_list_controller extends UmgtBaseController {
+class ProxyListController extends UmgtBaseController {
 
    public function transformContent() {
 
       // display filter form
-      $uM = &$this->getManager();
-      $form = &$this->getForm('type-filter');
+      $uM = & $this->getManager();
+      $form = & $this->getForm('type-filter');
 
       $types = $uM->loadVisibilityDefinitionTypes();
-      $select = &$form->getFormElementByName('proxytypeid');
+      $select = & $form->getFormElementByName('proxytypeid');
       /* @var $select SelectBoxTag */
 
       // add default option that deletes any filter
@@ -74,7 +74,7 @@ class umgt_proxy_list_controller extends UmgtBaseController {
       }
 
       $buffer = (string)'';
-      $template = &$this->getTemplate('Proxy');
+      $template = & $this->getTemplate('Proxy');
       foreach ($proxies as $proxy) {
 
          $proxyId = $proxy->getObjectId();

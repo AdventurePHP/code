@@ -20,69 +20,72 @@ namespace APF\modules\usermanagement\pres\documentcontroller\role;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\modules\usermanagement\biz\model\UmgtPermission;
+use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
-use APF\tools\form\taglib\SelectBoxOptionTag;
 use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::role
- * @class remove_permission_from_role_controller
+ * @package modules::usermanagement::pres::documentcontroller
+ * @class RoleAddUsersController
  *
- * Let's you remove permissions to a role.
+ * Implements the controller to assign a role to a user.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 08.09.2011<br />
+ * Version 0.1, 27.12.2008<br />
+ * Version 0.2, 29.12.2008 (Applied API change of the usermanagement manager)<br />
  */
-class remove_permission_from_role_controller extends UmgtBaseController {
+class RoleAddUsersController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $form = &$this->getForm('Permissions');
-      $uM = &$this->getManager();
+      // get role id
+      $roleId = RequestHandler::getValue('roleid');
 
-      $role = $uM->loadRoleByID(RequestHandler::getValue('roleid'));
-      $form->getLabel('display-name')->setPlaceHolder('display-name', $role->getDisplayName());
+      // initialize the form
+      $form = & $this->getForm('User');
+      $user = & $form->getFormElementByName('User');
+      /* @var $user MultiSelectBoxTag */
+      $uM = & $this->getManager();
+      $role = $uM->loadRoleById($roleId);
+      $users = $uM->loadUsersNotWithRole($role);
+      $count = count($users);
 
-      $permissions = $uM->loadPermissionsWithRole($role);
-
-      if (count($permissions) === 0) {
-         $template = &$this->getTemplate('NoMorePermissions');
+      // display a hint, if a role already assigned to all users
+      if ($count == 0) {
+         $template = & $this->getTemplate('NoMoreUser');
          $template->getLabel('message-1')->setPlaceHolder('display-name', $role->getDisplayName());
          $template->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
          $template->transformOnPlace();
          return;
       }
 
-      $permissionControl = &$form->getFormElementByName('Permissions');
-      /* @var $permissionControl MultiSelectBoxTag */
-
-      foreach ($permissions as $permission) {
-         $permissionControl->addOption($permission->getDisplayName(), $permission->getObjectId());
+      // fill multi-select field
+      for ($i = 0; $i < $count; $i++) {
+         $user->addOption($users[$i]->getLastName() . ', ' . $users[$i]->getFirstName(), $users[$i]->getObjectId());
       }
 
+      // assign role to the desired users
       if ($form->isSent() && $form->isValid()) {
 
-         $options = $permissionControl->getSelectedOptions();
-         $permissionsToAdd = array();
-         foreach ($options as $option) {
-            /* @var $option SelectBoxOptionTag */
-            $permissionToAdd = new UmgtPermission();
-            $permissionToAdd->setObjectId($option->getValue());
-            $permissionsToAdd[] = $permissionToAdd;
-            unset($permissionToAdd);
+         $options = & $user->getSelectedOptions();
+         $newUsers = array();
+
+         for ($i = 0; $i < count($options); $i++) {
+            $newUser = new UmgtUser();
+            $newUser->setObjectId($options[$i]->getAttribute('value'));
+            $newUsers[] = $newUser;
+            unset($newUser);
          }
 
-         $uM->detachPermissionsFromRole($permissionsToAdd, $role);
-         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
+         $uM->attachUsersToRole($newUsers, $role);
+         HeaderManager::forward($this->generateLink(array('mainview' => 'role', 'roleview' => '', 'roleid' => '')));
 
       } else {
          $form->transformOnPlace();
       }
-
 
    }
 

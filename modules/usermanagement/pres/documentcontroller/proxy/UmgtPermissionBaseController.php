@@ -20,15 +20,28 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtGroup;
+use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\form\taglib\MultiSelectBoxTag;
 
+/**
+ * @package APF\modules\usermanagement\pres\documentcontroller\proxy
+ * @class UmgtPermissionBaseController
+ *
+ * Base controller for visibility definition functionality.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 06.06.2010<br />
+ */
 abstract class UmgtPermissionBaseController extends UmgtBaseController {
 
    protected static $FORM_NAME = 'add_perm';
 
    protected function mapSelectedOptions2DomainObjects($elementName, $objectName) {
 
-      $form = &$this->getForm(self::$FORM_NAME);
+      $form = & $this->getForm(self::$FORM_NAME);
 
       /* @var $control MultiSelectBoxTag */
       $control = $form->getFormElementByName($elementName);

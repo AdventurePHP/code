@@ -27,7 +27,7 @@ use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_role_edit_controller
+ * @class RoleEditController
  *
  * Implements the controller to edit a role.
  *
@@ -35,7 +35,7 @@ use APF\tools\request\RequestHandler;
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_role_edit_controller extends UmgtBaseController {
+class RoleEditController extends UmgtBaseController {
 
    public function transformContent() {
 
@@ -43,15 +43,15 @@ class umgt_role_edit_controller extends UmgtBaseController {
       $roleId = RequestHandler::getValue('roleid');
 
       // initialize the form
-      $form = &$this->getForm('RoleEdit');
+      $form = & $this->getForm('RoleEdit');
 
-      $hidden = &$form->getFormElementByName('roleid');
+      $hidden = & $form->getFormElementByName('roleid');
       $hidden->setAttribute('value', $roleId);
 
-      $displayName = &$form->getFormElementByName('DisplayName');
-      $description = &$form->getFormElementByName('Description');
+      $displayName = & $form->getFormElementByName('DisplayName');
+      $description = & $form->getFormElementByName('Description');
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
 
       // load selected roles to be able to highlight them within the select field
       $role = $uM->loadRoleByID($roleId);
@@ -60,7 +60,7 @@ class umgt_role_edit_controller extends UmgtBaseController {
 
          if ($form->isValid() == true) {
 
-            $displayName = &$form->getFormElementByName('DisplayName');
+            $displayName = & $form->getFormElementByName('DisplayName');
 
             $role = new UmgtRole();
             $role->setObjectId($roleId);

@@ -20,11 +20,16 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\usermanagement\biz\model\UmgtGroup;
+use APF\modules\usermanagement\biz\model\UmgtUser;
+use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
+use APF\tools\http\HeaderManager;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller::proxy
- * @class umgt_revoke_access_controller
+ * @class ProxyRevokeAccessController
  *
  * Revokes a visibility permission for a given user or group.
  *
@@ -32,11 +37,11 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
  * @version
  * Version 0.1, 05.06.2010<br />
  */
-class umgt_revoke_access_controller extends UmgtBaseController {
+class ProxyRevokeAccessController extends UmgtBaseController {
 
    public function transformContent() {
 
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
 
       $objectId = RequestHandler::getValue('objectid');
       $objectType = RequestHandler::getValue('objecttype');
@@ -50,8 +55,8 @@ class umgt_revoke_access_controller extends UmgtBaseController {
       /* @var $object UmgtUser|UmgtGroup */
       $object->setObjectId($objectId);
 
-      $formYes = &$this->getForm('RevokeYes');
-      $formNo = &$this->getForm('RevokeNo');
+      $formYes = & $this->getForm('RevokeYes');
+      $formNo = & $this->getForm('RevokeNo');
 
       if ($formYes->isSent()) {
 
@@ -64,7 +69,7 @@ class umgt_revoke_access_controller extends UmgtBaseController {
       } elseif ($formNo->isSent()) {
       } else {
 
-         $label = &$this->getLabel('intro-text');
+         $label = & $this->getLabel('intro-text');
 
          $labels = $this->getConfiguration('modules::usermanagement::pres', 'labels.ini')
                ->getSection($this->getLanguage());

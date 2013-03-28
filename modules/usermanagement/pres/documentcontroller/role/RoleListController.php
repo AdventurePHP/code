@@ -25,7 +25,7 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
  * @package modules::usermanagement::pres::documentcontroller
- * @class umgt_role_list_controller
+ * @class RoleListController
  *
  * Implements the controller list the existing roles.
  *
@@ -33,17 +33,17 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
  * @version
  * Version 0.1, 27.12.2008<br />
  */
-class umgt_role_list_controller extends UmgtBaseController {
+class RoleListController extends UmgtBaseController {
 
    public function transformContent() {
 
       // load role list
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
       $roleList = $uM->getPagedRoleList();
 
       // display list
       $buffer = (string)'';
-      $template = &$this->getTemplate('Role');
+      $template = & $this->getTemplate('Role');
       foreach ($roleList as $role) {
 
          $roleId = $role->getObjectId();
