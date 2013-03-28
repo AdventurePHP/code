@@ -83,13 +83,12 @@ abstract class FormControlObserverBase extends AbstractFormControl {
       // validate the required attributes
       $controlDef = $this->getAttribute('control');
       $buttonName = $this->getAttribute('button');
-      $namespace = $this->getAttribute('namespace');
       $class = $this->getAttribute('class');
 
       /* @var $parent HtmlFormTag */
       $parent = $this->parentObject;
 
-      if (empty($controlDef) || empty($buttonName) || empty($class) || empty($namespace)) {
+      if (empty($controlDef) || empty($buttonName) || empty($class)) {
          $formName = $parent->getAttribute('name');
          throw new FormException('[' . get_class($this) . '::onAfterAppend()] Required attribute '
                . '"control", "button", "class" or "namespace" missing. Please review your '
@@ -123,10 +122,7 @@ abstract class FormControlObserverBase extends AbstractFormControl {
          // that triggers the event. As of 1.12, the type is presented to the
          // validator to enable special listener notification.
          /* @var $observer AbstractFormValidator */
-         $fqNamespace = 'APF\\' . str_replace('::', '\\', $namespace);
-         $fqClass = $fqNamespace . '\\' . $class;
-
-         $observer = new $fqClass($control, $button, $type);
+         $observer = new $class($control, $button, $type);
          $observer->setContext($this->context);
          $observer->setLanguage($this->language);
 

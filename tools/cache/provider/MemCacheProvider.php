@@ -20,6 +20,9 @@ namespace APF\tools\cache\provider;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\tools\cache\CacheBase;
+use APF\tools\cache\CacheKey;
+use APF\tools\cache\CacheProvider;
 
 /**
  * @package tools::cache::provider
@@ -150,7 +153,7 @@ class MemCacheProvider extends CacheBase implements CacheProvider {
     *
     * Returns the memcache connection (instance of PHP's Memcache class).
     *
-    * @return Memcache The desired memcache connection.
+    * @return \Memcache The desired memcache connection.
     *
     * @author Christian Achatz
     * @version
@@ -164,7 +167,7 @@ class MemCacheProvider extends CacheBase implements CacheProvider {
       $pconn = $this->getConfigAttribute('Cache.PersistentConnect');
 
       // initialize memcache connection
-      $mem = new Memcache();
+      $mem = new \Memcache();
       if ($pconn == 'true') {
          $type = 'pconnect';
       } else {

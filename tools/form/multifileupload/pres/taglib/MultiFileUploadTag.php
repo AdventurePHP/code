@@ -20,13 +20,14 @@ namespace APF\tools\form\multifileupload\pres\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\Configuration;
+use APF\core\service\APFService;
 use APF\extensions\htmlheader\biz\HtmlHeaderManager;
-use APF\extensions\htmlheader\biz\DynamicJsNode;
-use APF\extensions\htmlheader\biz\CssPackageNode;
-use APF\extensions\htmlheader\biz\StaticJsNode;
 
 use APF\extensions\htmlheader\biz\JsContentNode;
 use APF\extensions\htmlheader\biz\CssContentNode;
+use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
+use APF\tools\form\taglib\AbstractFormControl;
 
 /**
  * @class MultiFileUploadTag
@@ -46,25 +47,38 @@ class MultiFileUploadTag extends AbstractFormControl {
    /**
     * @var MultiFileUploadManager
     */
-   private $MultifileuploadManager = null; //Multifileupload biz referenz
-   private $LanguageConfig; //Sprachkonfiguration referenz
-   private $MFUConfig; //MultiFileUploadConfig referenz
-   private $formname; //Formularname
-   private $name; //Oploadfeld-Name
+   private $manager;
+
+   /**
+    * @var Configuration Language-dependent labels.
+    */
+   private $languageConfig;
+
+   /**
+    * @var Configuration Upload configuration.
+    */
+   private $MFUConfig;
+
+   private $formName;
+   private $uploadFieldName;
 
    public function onParseTime() {
 
-      $this->formname = $this->getParentObject()->getAttribute('name');
+      $this->formName = $this->getParentObject()->getAttribute('name');
       $this->presetValue();
 
       // get Settings
-      $this->name = $this->getAttribute('name');
+      $this->uploadFieldName = $this->getAttribute('name');
       $maxFileSize = $this->getAttribute('max-file-size');
       $MimeTypes = $this->getAttribute('allowed-mime-types');
 
-      // Einstellungen speichern.
-      $this->MultifileuploadManager = &$this->getAndInitServiceObject('tools::form::multifileupload::biz', 'MultiFileUploadManager', array('formname' => $this->formname, 'name' => $this->name), 'SINGLETON');
-      $this->MultifileuploadManager->setSettings($maxFileSize, explode(',', $MimeTypes));
+      $this->manager = & $this->getAndInitServiceObject(
+         'tools::form::multifileupload::biz',
+         'MultiFileUploadManager',
+         array('formname' => $this->formName, 'name' => $this->uploadFieldName),
+         APFService::SERVICE_TYPE_SINGLETON
+      );
+      $this->manager->setSettings($maxFileSize, explode(',', $MimeTypes));
    }
 
    /**
@@ -74,7 +88,7 @@ class MultiFileUploadTag extends AbstractFormControl {
     */
    public function onAfterAppend() {
       $this->getParentObject()->setAttribute('enctype', 'multipart/form-data');
-      $this->getParentObject()->setAttribute('id', $this->formname);
+      $this->getParentObject()->setAttribute('id', $this->formName);
    }
 
    /**
@@ -90,15 +104,16 @@ class MultiFileUploadTag extends AbstractFormControl {
    public function transform() {
 
       // Dateien im temporären Verzischnis löschen, die älter als 86400 Sekunden (1 Tag) sind
-      $this->MultifileuploadManager->deleteOldFiles();
+      $this->manager->deleteOldFiles();
 
       // Zugriff auf Sprachconfig:
-      $this->LanguageConfig = $this->getConfiguration('tools::form::multifileupload', 'language.ini')->getSection($this->language);
+      $this->languageConfig = $this->getConfiguration('tools::form::multifileupload', 'language.ini')->getSection($this->language);
 
       // Zugriff auf MultiFileUploadConfig
-      $this->MFUConfig = $this->getConfiguration('tools::form::multifileupload', 'multifileupload.ini')->getSection($this->name);
+      $this->MFUConfig = $this->getConfiguration('tools::form::multifileupload', 'multifileupload.ini')->getSection($this->uploadFieldName);
 
       // Zugriff auf HTML-Header-Manager
+      /* @var $HHM HtmlHeaderManager */
       $HHM = $this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
 
 
@@ -115,8 +130,8 @@ class MultiFileUploadTag extends AbstractFormControl {
 
 
       /*       * ********** Upload Tabellen erstellen Anfang *********** */
-      $return .= '<table id="' . $this->name . '_files_upload_table"></table>';
-      $return .= '<table id="' . $this->name . '_files_download_table">' . $this->createFileTable($this->MultifileuploadManager->getFiles()) . '</table>';
+      $return .= '<table id="' . $this->uploadFieldName . '_files_upload_table"></table>';
+      $return .= '<table id="' . $this->uploadFieldName . '_files_download_table">' . $this->createFileTable($this->manager->getFiles()) . '</table>';
       /*       * ********** Upload Tabellen erstellen Ende *********** */
 
 
@@ -160,7 +175,7 @@ class MultiFileUploadTag extends AbstractFormControl {
                   . '<td class="file_upload_preview">' . $image . '</td>'
                   . '<td><a href="' . $file['filelink'] . '" target="_blank">' . $file['name'] . '</a></td>'
                   . '<td>' . $file['filesize'] . '</td>'
-                  . '<td class="delete"><a href="' . $file['deletelink'] . '" target="_blank" onclick="return deletefile(\'' . $file['deletelink'] . '\',this)"><div class="ui-state-default ui-corner-all" title="' . $this->LanguageConfig->getValue('delete.label') . '"><span class="ui-icon ui-icon-trash">' . $this->LanguageConfig->getValue('delete.label') . '</span></div></a></td>'
+                  . '<td class="delete"><a href="' . $file['deletelink'] . '" target="_blank" onclick="return deletefile(\'' . $file['deletelink'] . '\',this)"><div class="ui-state-default ui-corner-all" title="' . $this->languageConfig->getValue('delete.label') . '"><span class="ui-icon ui-icon-trash">' . $this->languageConfig->getValue('delete.label') . '</span></div></a></td>'
                   . '</tr>';
          }
       }
@@ -176,9 +191,9 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.3.2011<br>
     */
    public function uploadFiles() {
-      $name = &$this->name;
+      $name = & $this->uploadFieldName;
       if (isset($_FILES[$name]) && $_FILES[$name]['name'] != '') {
-         $addfile = $this->MultifileuploadManager->addFile($_FILES[$name], false);
+         $addfile = $this->manager->addFile($_FILES[$name], false);
          unset($_FILES[$name]);
          return $addfile;
       } else {
@@ -195,7 +210,7 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.3.2011<br>
     */
    public function getFiles() {
-      return $this->MultifileuploadManager->getFiles();
+      return $this->manager->getFiles();
    }
 
    /**
@@ -204,14 +219,14 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @param string $uploadname - md5 Wert der raufgeladenen Datei
     * @param string $dir - Zielverzeichnis
     * @param string $name - Name unter dem die Datei gespeichert wird.
-    * @return FilesystemManager::renameFile
+    * @return bool <em>True</em> in case the file move has been successfully, <em>false</em> otherwise.
     *
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     * @version 1.1, 14.09.2012 (removed bug for method moveFile)<br>
     */
    public function moveFile($uploadname, $dir, $name) {
-      return $this->MultifileuploadManager->moveFile($uploadname, $dir, $name);
+      return $this->manager->moveFile($uploadname, $dir, $name);
    }
 
    /**
@@ -223,11 +238,11 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.3.2011<br>
     */
    public function getUploadPath() {
-      return $this->MultifileuploadManager->getUploadPath();
+      return $this->manager->getUploadPath();
    }
 
    /**
-    * Erstellt anhand eines übergebenen Array MimeTypes einen String mit erlaubten Dateiendungen
+    * Erstellt anhand eines übergebenen Array mimeTypes einen String mit erlaubten Dateiendungen
     *
     * @param array $MimeTypes
     * @return string
@@ -249,33 +264,29 @@ class MultiFileUploadTag extends AbstractFormControl {
    }
 
    /**
-    * Erzeugt den String um die erlaubten Dateityopen per JS zu prüfen
+    * @private
     *
-    * @param array $MimeTypes
-    * @return string
+    * Creates the allowed extension string for the JS code.
+    *
+    * @param array $mimeTypes The list of allowed MIME types.
+    * @return string The JS regexp string.
     *
     * @author dave
-    * @version 1.0, 14.07.2012
+    * @version
+    * Version 1.0, 14.07.2012<br />
     */
-   private function createFileExtensionForJS($MimeTypes) {
+   private function createFileExtensionForJS(array $mimeTypes) {
+      $return = '';
+      foreach ($mimeTypes as $mimeType) {
 
-      // Erlaube MimeTypen entsprechend aufbereiten damti sie im JS verwendet werden können:
-      $endungen = '';
-      // Die erlaubten MimeTypen für den Fehler Dialog aufbereiten.
-      $dateitypen = '';
-      foreach ($MimeTypes as $mimeType) {
-
-         $endung = substr(strrchr($mimeType, "/"), 1);
-
-         if ($endungen == '') {
-            $endungen = '/\.(' . $endung . ')';
-            $dateitypen = $endung;
+         $extension = substr(strrchr($mimeType, '/'), 1);
+         if ($return == '') {
+            $return = '/\.(' . $extension . ')';
          } else {
-            $endungen .= '|(' . $endung . ')';
-            $dateitypen .= ', ' . $endung;
+            $return .= '|(' . $extension . ')';
          }
       }
-      return $endungen .= '$/i';
+      return $return . '$/i';
    }
 
    /**
@@ -287,10 +298,9 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 13.07.2012<br>
     */
    private function createDialogFileDelete() {
-
       return '<div class="confirm_delete ui-dialog-content ui-widget-content dialog_confirm_delete" title="'
-            . $this->LanguageConfig->getValue('delete.title') . '">'
-            . $this->LanguageConfig->getValue('delete.message') . '</div>';
+            . $this->languageConfig->getValue('delete.title') . '">'
+            . $this->languageConfig->getValue('delete.message') . '</div>';
    }
 
    /**
@@ -302,10 +312,9 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 13.07.2012<br>
     */
    private function createDialogFileSize() {
-
       return '<div class="filesize_dialog ui-dialog-content ui-widget-content" title="'
-            . $this->LanguageConfig->getValue('filesize.title') . '">'
-            . $this->LanguageConfig->getValue('filesize.message') . ' ' . $this->MultifileuploadManager->getMaxFileSizeWithUnit() . '</div>';
+            . $this->languageConfig->getValue('filesize.title') . '">'
+            . $this->languageConfig->getValue('filesize.message') . ' ' . $this->manager->getMaxFileSizeWithUnit() . '</div>';
    }
 
    /**
@@ -317,10 +326,9 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 13.07.2012<br>
     */
    private function createDialogFileType() {
-
       return '<div class="filetype_dialog ui-dialog-content ui-widget-content" title="'
-            . $this->LanguageConfig->getValue('filetype.title') . '">'
-            . $this->LanguageConfig->getValue('filetype.message') . ' ' . $this->createFileExtensionFromMimeType($this->MultifileuploadManager->getMimeTypes()) . '</div>';
+            . $this->languageConfig->getValue('filetype.title') . '">'
+            . $this->languageConfig->getValue('filetype.message') . ' ' . $this->createFileExtensionFromMimeType($this->manager->getMimeTypes()) . '</div>';
    }
 
    /**
@@ -332,10 +340,9 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 13.07.2012<br>
     */
    private function createUploadButton() {
-
-      return '<div id="' . $this->name . '_file_upload_container"><input type="file" name="' . $this->name . '" id="' . $this->name . '" multiple="multiple" /><button>'
-            . $this->LanguageConfig->getValue('upload.button.label') . '</button><div class="uploadlabel">'
-            . $this->LanguageConfig->getValue('upload.label') . '</div></div>';
+      return '<div id="' . $this->uploadFieldName . '_file_upload_container"><input type="file" name="' . $this->uploadFieldName . '" id="' . $this->uploadFieldName . '" multiple="multiple" /><button>'
+            . $this->languageConfig->getValue('upload.button.label') . '</button><div class="uploadlabel">'
+            . $this->languageConfig->getValue('upload.label') . '</div></div>';
    }
 
    /**
@@ -347,8 +354,7 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.07.2012<br>
     */
    private function createUploadTable() {
-
-      return '$(\'#' . $this->name . '_files_upload_table\'),';
+      return '$(\'#' . $this->uploadFieldName . '_files_upload_table\'),';
    }
 
    /**
@@ -360,8 +366,7 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.07.2012<br>
     */
    private function createDownloadTable() {
-
-      return '$(\'#' . $this->name . '_files_download_table\'),';
+      return '$(\'#' . $this->uploadFieldName . '_files_download_table\'),';
    }
 
    /**
@@ -374,7 +379,6 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @verison 1.1, 16.09.2012 (Fixed some smaller problems with escaping of tags)<br>
     */
    private function buildUploadRow() {
-
       return '
          function (files, index) {
             return $(\'<tr>\' +
@@ -382,7 +386,7 @@ class MultiFileUploadTag extends AbstractFormControl {
                   \'<td>\' + files[index].name + \'<\/td>\' +
                   \'<td class="file_upload_progress"><div><\/div><\/td>\' +
                   \'<td class="value">0 %<\/td>\' +
-                  \'<td class="delete"><button class="ui-state-default ui-corner-all" title="' . $this->LanguageConfig->getValue('cancel.label') . '"><span class="ui-icon ui-icon-cancel">' . $this->LanguageConfig->getValue('cancel.label') . '<\/span><\/button><\/td>\' +
+                  \'<td class="delete"><button class="ui-state-default ui-corner-all" title="' . $this->languageConfig->getValue('cancel.label') . '"><span class="ui-icon ui-icon-cancel">' . $this->languageConfig->getValue('cancel.label') . '<\/span><\/button><\/td>\' +
                \'<\/tr>\');
          },';
    }
@@ -397,7 +401,6 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @verison 1.1, 16.09.2012 (Fixed some smaller problems with escaping of tags)<br>
     */
    private function buildDownloadRow() {
-
       return '
          function (file) {
             var bild = "";
@@ -409,7 +412,7 @@ class MultiFileUploadTag extends AbstractFormControl {
                   \'<td class="file_upload_preview">\' + bild + \' <\/td>\' +
                   \'<td><a href="\' + file.filelink + \'" target="_blank" >\' + file.name + \'<\/a><\/td>\' +
                   \'<td>\'+file.filesize+\'<\/td>\'+
-                  \'<td><a href="\' + file.deletelink + \'" target="_blank" onclick="return deletefile(\\\'\' + file.deletelink + \'\\\',this)" ><div class="ui-state-default ui-corner-all" title="' . $this->LanguageConfig->getValue('delete.label') . '"><span class="ui-icon ui-icon-trash">' . $this->LanguageConfig->getValue('delete.label') . '<\/span><\/div><\/a><\/td>\'+
+                  \'<td><a href="\' + file.deletelink + \'" target="_blank" onclick="return deletefile(\\\'\' + file.deletelink + \'\\\',this)" ><div class="ui-state-default ui-corner-all" title="' . $this->languageConfig->getValue('delete.label') . '"><span class="ui-icon ui-icon-trash">' . $this->languageConfig->getValue('delete.label') . '<\/span><\/div><\/a><\/td>\'+
                \'<\/tr>\');
          },';
    }
@@ -423,15 +426,14 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.07.2012
     */
    private function createFileSizeCheck() {
-
       return '
-         if (files[index].size > ' . $this->MultifileuploadManager->getMaxFileSize() . ') {
+         if (files[index].size > ' . $this->manager->getMaxFileSize() . ') {
             $(".filesize_dialog").dialog({
                modal: true,
                height: 220,
                width: 300,
                buttons: {
-                  "' . $this->LanguageConfig->getValue('filesize.ok') . '": function() {
+                  "' . $this->languageConfig->getValue('filesize.ok') . '": function() {
                      $(this).dialog("close");
                   }
                }
@@ -450,14 +452,13 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.07.2012
     */
    private function createMimeTypeCheck() {
-
       return '
-         var regexp = ' . $this->createFileExtensionForJS($this->MultifileuploadManager->getMimeTypes()) . ';
+         var regexp = ' . $this->createFileExtensionForJS($this->manager->getMimeTypes()) . ';
          if (!regexp.test(files[index].name)) {
             $(".filetype_dialog").dialog({
                modal: true,height:220,width:300,
                buttons: {
-                  "' . $this->LanguageConfig->getValue('filetype.ok') . '": function() {
+                  "' . $this->languageConfig->getValue('filetype.ok') . '": function() {
                      $(this).dialog("close");
                   }
                }
@@ -476,7 +477,6 @@ class MultiFileUploadTag extends AbstractFormControl {
     * @version 1.0, 14.07.2012
     */
    private function createJSCode() {
-
       $code = '
             $(".uploadlabel").css("display", "block");
 
@@ -489,7 +489,7 @@ class MultiFileUploadTag extends AbstractFormControl {
                   height: 240,
                   width: 400,
                   buttons: {
-                     "' . $this->LanguageConfig->getValue('delete.ok') . '": function() {
+                     "' . $this->languageConfig->getValue('delete.ok') . '": function() {
                         $(this).dialog("close");
                         var jqxhr = $.ajax({
                            url: link
@@ -498,7 +498,7 @@ class MultiFileUploadTag extends AbstractFormControl {
                            $(elem).parent().parent().remove();
                         })
                      },
-                     "' . $this->LanguageConfig->getValue('delete.no') . '" : function() {
+                     "' . $this->languageConfig->getValue('delete.no') . '" : function() {
                         $(this).dialog("close");
                         return false;
                      }
@@ -508,15 +508,15 @@ class MultiFileUploadTag extends AbstractFormControl {
             }
 
             $(function () {
-                $(\'#' . $this->formname . '\').fileUploadUI({
-                   url: "' . $this->MultifileuploadManager->link() . '",
-                   fieldName: "' . $this->name . '",
+                $(\'#' . $this->formName . '\').fileUploadUI({
+                   url: "' . $this->manager->link() . '",
+                   fieldName: "' . $this->uploadFieldName . '",
                    uploadTable: ' . $this->createUploadTable() . '
                    downloadTable: ' . $this->createDownloadTable() . '
                    buildUploadRow: ' . $this->buildUploadRow() . '
                    buildDownloadRow: ' . $this->buildDownloadRow() . '
                    
-                   dropZone: $("#' . $this->name . '_file_upload_container"),
+                   dropZone: $("#' . $this->uploadFieldName . '_file_upload_container"),
                    parseResponse: function (xhr) {
                       if (typeof xhr.responseText !== "undefined") {
                             return $.parseJSON(xhr.responseText);

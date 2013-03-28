@@ -20,6 +20,7 @@ namespace APF\tools\form\provider\csrf;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\APFObject;
 use APF\tools\form\provider\csrf\CSRFHashProvider;
 
 /**

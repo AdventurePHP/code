@@ -32,28 +32,30 @@ use APF\tools\link\Url;
 
 /**
  * @package tools::form::multifileupload::biz
- * @class multifileupload
+ * @class MultiFileUploadManager
  *
- * Businesskomponente der Multifileupload Erweiterung
+ * Business component for the multi file upload extension.
  *
  * @author Werner Liemberger <wpublicmail@gmail.com>
  * @version 1.0, 14.3.2011<br>
  */
 class MultiFileUploadManager extends APFObject {
 
-   private $sessionnamespace;
-   private $sessionnamespace_default = 'tools::form::multifileupload';
+   private $sessionNamespace;
+   private static $DEFAULT_SESSION_NAMESPACE = 'tools::form::multifileupload';
+
    private $maxFileSize = null;
-   private $MimeTypes = array();
-   private $settingsloaded = false;
-   private $formname;
+   private $mimeTypes = array();
+   private $settingsLoaded = false;
+   private $formName;
    private $name;
-   private $tmpuploadpath = 'tools::form::multifileupload::uploaddir';
+
+   private $tmpUploadPath = 'tools::form::multifileupload::uploaddir';
 
    /**
     * @var SessionManager
     */
-   private $sessionmanager;
+   private $sessionManager;
 
    /**
     * Initiert das Service. Es werden die nötigen Parameter name und formname erwartet.
@@ -70,10 +72,10 @@ class MultiFileUploadManager extends APFObject {
       if (!isset($param['formname']) || !isset($param['name'])) {
          throw new FormException('[' . get_class($this) . '::init()] MultiFileUpload init params are not correct!', E_USER_ERROR);
       }
-      $this->formname = $param['formname'];
+      $this->formName = $param['formname'];
       $this->name = $param['name'];
-      $this->sessionnamespace = $this->sessionnamespace_default . ':' . $param['formname'] . ':' . $param['name'];
-      $this->sessionmanager = new SessionManager($this->sessionnamespace);
+      $this->sessionNamespace = self::$DEFAULT_SESSION_NAMESPACE . '\\' . $param['formname'] . '\\' . $param['name'];
+      $this->sessionManager = new SessionManager($this->sessionNamespace);
 
       //Temporäres Upload-Verzeichnis erstellen, falls es vorhanden ist, wird der Pfad zurück gegeben.
       $createFolder = new Folder();
@@ -96,7 +98,7 @@ class MultiFileUploadManager extends APFObject {
     * @version 1.0, 14.3.2011<br>
     */
    public function getUploadPath() {
-      return $this->getRootPath() . '/' . $this->tmpuploadpath . '/' . $this->getContext();
+      return $this->getRootPath() . '/' . $this->tmpUploadPath . '/' . $this->getContext();
    }
 
    /**
@@ -109,7 +111,7 @@ class MultiFileUploadManager extends APFObject {
     */
    public function getFiles() {
       $this->checkSessionFiles();
-      return $this->sessionmanager->loadSessionData('files');
+      return $this->sessionManager->loadSessionData('files');
    }
 
    /**
@@ -148,7 +150,7 @@ class MultiFileUploadManager extends APFObject {
     * @version 1.0, 14.3.2011<br>
     */
    private function checkSessionFiles() {
-      $files = $this->sessionmanager->loadSessionData('files');
+      $files = $this->sessionManager->loadSessionData('files');
       if (is_array($files)) {
          $files_buff = null;
          $uploadpath = $this->getUploadPath();
@@ -159,7 +161,7 @@ class MultiFileUploadManager extends APFObject {
             }
             $files_buff[] = $file;
          }
-         $this->sessionmanager->saveSessionData('files', $files_buff);
+         $this->sessionManager->saveSessionData('files', $files_buff);
       }
    }
 
@@ -179,7 +181,7 @@ class MultiFileUploadManager extends APFObject {
     */
    public function addFile($file, $js = true) {
       // Einstellungen laden.
-      if ($this->settingsloaded == false) {
+      if ($this->settingsLoaded == false) {
          $this->loadSettings();
       }
       $file['uploadname'] = md5($file['tmp_name']) . '.mfuc';
@@ -207,9 +209,9 @@ class MultiFileUploadManager extends APFObject {
       }
 
       if ($moved == true) {
-         $files = $this->sessionmanager->loadSessionData('files');
+         $files = $this->sessionManager->loadSessionData('files');
          $files[] = $file;
-         $this->sessionmanager->saveSessionData('files', $files);
+         $this->sessionManager->saveSessionData('files', $files);
 
          // wenn diese Funktion mittels JS aufgerufen wird, dann liefert sie ein array mit den
          // dateiinfos zurück. ansonsten einfach nur true.
@@ -318,17 +320,17 @@ class MultiFileUploadManager extends APFObject {
          $files_buff = null;
          foreach ($files as $file) {
             if ($uploadname === null) {
-               #unlink($this->tmpuploadpath . '/' . $files[$i]['uploadname']);
+               #unlink($this->tmpUploadPath . '/' . $files[$i]['uploadname']);
                unset($file);
                continue;
             } elseif ($file['uploadname'] == $uploadname) {
-               #unlink($this->tmpuploadpath . '/' . $files[$i]['uploadname']);
+               #unlink($this->tmpUploadPath . '/' . $files[$i]['uploadname']);
                unset($file);
                continue;
             }
             $files_buff[] = $file;
          }
-         $this->sessionmanager->saveSessionData('files', $files_buff);
+         $this->sessionManager->saveSessionData('files', $files_buff);
       }
    }
 
@@ -336,12 +338,12 @@ class MultiFileUploadManager extends APFObject {
     * Saves all settings that have applied by the responsible taglib.
     *
     * @param string $fileSize - Byte value of the maximum file size (default: 10 MB)
-    * @param array $mimeTypes - Array with all allowed MIME types (default: pdf,gif,jpeg,png)
+    * @param string[] $mimeTypes - Array with all allowed MIME types (default: pdf,gif,jpeg,png)
     *
     * @author Werner Liemberger <wpublicmail@gmail.com>
     * @version 1.0, 14.3.2011<br>
     */
-   public function setSettings($fileSize = null, $mimeTypes = array()) {
+   public function setSettings($fileSize = null, array $mimeTypes = array()) {
 
       $settings = array();
       $settings['max'] = 10485760; // 10485760 is 10 MB
@@ -361,9 +363,9 @@ class MultiFileUploadManager extends APFObject {
          $settings['mime'][] = 'image/png';
       }
 
-      $this->MimeTypes = $settings['mime'];
+      $this->mimeTypes = $settings['mime'];
       $this->maxFileSize = $settings['max'];
-      $this->sessionmanager->saveSessionData('settings', $settings);
+      $this->sessionManager->saveSessionData('settings', $settings);
    }
 
    /**
@@ -373,10 +375,10 @@ class MultiFileUploadManager extends APFObject {
     * @version 1.0, 14.3.2011<br>
     */
    public function loadSettings() {
-      $settings = $this->sessionmanager->loadSessionData('settings');
-      $this->MimeTypes = $settings['mime'];
+      $settings = $this->sessionManager->loadSessionData('settings');
+      $this->mimeTypes = $settings['mime'];
       $this->maxFileSize = $settings['max'];
-      $this->settingsloaded = true;
+      $this->settingsLoaded = true;
    }
 
    /**
@@ -391,7 +393,7 @@ class MultiFileUploadManager extends APFObject {
       $scheme = LinkGenerator::cloneLinkScheme();
       $scheme->setEncodeAmpersands(false);
       $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'tools::form::multifileupload', 'multifileupload', array(
-         'formname' => $this->formname,
+         'formname' => $this->formName,
          'name' => $this->name), $scheme);
       return $link;
    }
@@ -409,7 +411,7 @@ class MultiFileUploadManager extends APFObject {
       $scheme = LinkGenerator::cloneLinkScheme();
       $scheme->setEncodeAmpersands(false);
       $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'tools::form::multifileupload', 'multifiledelete', array(
-         'formname' => $this->formname,
+         'formname' => $this->formName,
          'name' => $this->name,
          'uploadname' => $uploadname), $scheme);
       return $link;
@@ -440,7 +442,7 @@ class MultiFileUploadManager extends APFObject {
     * @version 1.0, 14.3.2011<br>
     */
    public function getMimeTypes() {
-      return $this->MimeTypes;
+      return $this->mimeTypes;
    }
 
    /**
@@ -482,7 +484,7 @@ class MultiFileUploadManager extends APFObject {
 
       return LinkGenerator::generateActionUrl(
          Url::fromCurrent(), 'tools::form::multifileupload', 'multifilegetfile', array(
-         'formname' => $this->formname,
+         'formname' => $this->formName,
          'name' => $this->name,
          'uploadname' => $uploadname), $scheme);
    }

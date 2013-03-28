@@ -21,7 +21,6 @@ namespace APF\tools\form\validator;
  * -->
  */
 use APF\core\pagecontroller\APFObject;
-use APF\tools\form\FormException;
 use APF\tools\form\taglib\AbstractFormControl;
 
 /**

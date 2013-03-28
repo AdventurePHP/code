@@ -20,6 +20,10 @@ namespace APF\tools\form\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\tools\form\FormException;
+use APF\tools\form\taglib\SelectBoxTag;
+use APF\tools\form\taglib\AbstractFormControl;
+use APF\tools\form\validator\AbstractFormValidator;
 
 /**
  * @package tools::form::taglib
@@ -89,6 +93,7 @@ class TimeSelectorTag extends AbstractFormControl {
       $minutes->setLanguage($this->language);
       $minutes->setContext($this->context);
 
+      $seconds = null;
       if ($this->showSeconds != false) {
          $seconds = new SelectBoxTag();
          $seconds->setLanguage($this->language);
@@ -306,7 +311,7 @@ class TimeSelectorTag extends AbstractFormControl {
    /**
     * @public
     *
-    * Returns a reference on the Dours control of the time control.
+    * Returns a reference on the hours control of the time control.
     *
     * @return SelectBoxTag The hours control.
     *
@@ -405,7 +410,7 @@ class TimeSelectorTag extends AbstractFormControl {
    /**
     * @protected
     *
-    * Appends a zero for hours, miuntes or seconds numbers without leading zeros.
+    * Appends a zero for hours, minutes or seconds numbers without leading zeros.
     *
     * @param int $input The hour, minute or second number.
     * @return string Hour, minute or second number with leading zero.

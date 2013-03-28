@@ -20,6 +20,8 @@ namespace APF\tools\form\multifileupload\actions;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
 use APF\tools\http\HeaderManager;
 use APF\tools\form\FormException;
 
@@ -29,9 +31,6 @@ use APF\tools\form\FormException;
  *
  * This action deletes the given file physically and from session.
  *
- * @param string $name - Name des Formularfeldes
- * @param string $formname - Name des Formulars
- * @return boolean erfolgreich - true|false
  * @author Werner Liemberger <wpublicmail@gmail.com>
  * @version 1.0, 14.3.2011<br>
  * @version 1.1, 11.07.2012 (Change Exception to FormException)<br>
@@ -39,24 +38,21 @@ use APF\tools\form\FormException;
 class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
 
    public function run() {
-      // Header modifizieren, damit nichts gecached wird.
+      // modify header to avoid caching of this request
       HeaderManager::send('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
       HeaderManager::send('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
       HeaderManager::send('Cache-Control: no-cache, must-revalidate');
       HeaderManager::send('Pragma: no-cache');
 
-
       try {
-         //Formular, Feldnamen sowie uploadnamen erhalten.
-         $Fieldname = $this->getInput()->getAttribute('name');
-         $formname = $this->getInput()->getAttribute('formname');
-         $uploadname = $this->getInput()->getAttribute('uploadname');
+         $fieldName = $this->getInput()->getAttribute('name');
+         $formName = $this->getInput()->getAttribute('formname');
+         $uploadName = $this->getInput()->getAttribute('uploadname');
 
-         /* @var $MultifileuploadManager MultiFileUploadManager */
-         $MultifileuploadManager = &$this->getAndInitServiceObject('tools::form::multifileupload::biz', 'MultiFileUploadManager', array('formname' => $formname, 'name' => $Fieldname));
-         if ($uploadname !== null) {
-            $MultifileuploadManager->deleteFile($uploadname);
-            echo "Erfolgreich gelöscht!";
+         /* @var $manager MultiFileUploadManager */
+         $manager = & $this->getAndInitServiceObject('tools::form::multifileupload::biz', 'MultiFileUploadManager', array('formname' => $formName, 'name' => $fieldName));
+         if ($uploadName !== null) {
+            $manager->deleteFile($uploadName);
          } else {
             throw new FormException('[' . get_class($this) . '::run()] No filename was transmitted to the server!', E_USER_ERROR);
          }

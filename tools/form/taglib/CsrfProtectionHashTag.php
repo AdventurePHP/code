@@ -20,6 +20,8 @@ namespace APF\tools\form\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\tools\form\FormException;
+use APF\tools\form\provider\csrf\CSRFHashProvider;
 use APF\tools\form\validator\CSRFHashValidator;
 
 /**
@@ -84,7 +86,9 @@ class CsrfProtectionHashTag extends AbstractFormControl {
       parent::onParseTime();
 
       // add the csrfhash validator for every button
-      $buttons = $this->getParentObject()->getFormElementsByTagName('form:button');
+      /* @var $form HtmlFormTag */
+      $form = $this->getParentObject();
+      $buttons = $form->getFormElementsByTagName('form:button');
       foreach ($buttons as $offset => $DUMMY) {
          $this->addValidator(new CSRFHashValidator($this, $buttons[$offset]));
       }

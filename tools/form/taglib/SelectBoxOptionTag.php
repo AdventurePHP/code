@@ -45,7 +45,7 @@ class SelectBoxOptionTag extends AbstractFormControl {
    /**
     * @protected
     *
-    * Overwrites the <em>onParseTime()</em> methode, because here is nothing to do.
+    * Overwrites the <em>onParseTime()</em> method, because here is nothing to do.
     *
     * @author Christian Achatz
     * @version

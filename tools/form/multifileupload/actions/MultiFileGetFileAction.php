@@ -20,6 +20,8 @@ namespace APF\tools\form\multifileupload\actions;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
 use APF\tools\http\HeaderManager;
 use APF\tools\form\FormException;
 
@@ -29,8 +31,6 @@ use APF\tools\form\FormException;
  *
  * This action delivers a file that has been uploaded using the multi-upload feature.
  *
- * @param string $name - Name des Formularfeldes
- * @param string $formname - Name des Formulares
  * @author Werner Liemberger <wpublicmail@gmail.com>
  * @version 1.0, 14.3.2011<br>
  * @version 1.1, 11.07.2012 (Change Exception to FormException)<br>
@@ -38,27 +38,28 @@ use APF\tools\form\FormException;
 class MultiFileGetFileAction extends AbstractFrontcontrollerAction {
 
    public function run() {
-      //Formular, Feldnamen sowie uploadnamen erhalten.
-      $name = $this->getInput()->getAttribute('name');
-      $formname = $this->getInput()->getAttribute('formname');
-      $uploadname = $this->getInput()->getAttribute('uploadname');
+      $fieldName = $this->getInput()->getAttribute('name');
+      $formName = $this->getInput()->getAttribute('formname');
+      $uploadName = $this->getInput()->getAttribute('uploadname');
 
-      // Wenn alle Variablen vorhanden sind, dann Datei laden.
-      if ($name !== null && $formname !== null && $uploadname !== null) {
+      // only upload if we have a valid request
+      if ($fieldName !== null && $formName !== null && $uploadName !== null) {
 
-         /* @var $M MultiFileUploadManager */
-         $M = &$this->getAndInitServiceObject('tools::form::multifileupload::biz', 'MultiFileUploadManager', array('formname' => $formname, 'name' => $name));
-         $file = $M->getFile($uploadname);
+         /* @var $manager MultiFileUploadManager */
+         $manager = & $this->getAndInitServiceObject('tools::form::multifileupload::biz', 'MultiFileUploadManager', array('formname' => $formName, 'name' => $fieldName));
+         $file = $manager->getFile($uploadName);
          if (is_array($file)) {
-            // Header senden
+            // modify header to avoid caching of this request
             HeaderManager::send('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
             HeaderManager::send('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
             HeaderManager::send('Cache-Control: no-cache, must-revalidate');
             HeaderManager::send('Pragma: no-cache');
+
+            // send attachment headers to allow download with correct file name
             HeaderManager::send('Content-type: ' . $file['type']);
             HeaderManager::send('Content-Disposition: inline; filename="' . $file['name'] . '"');
             HeaderManager::send('Content-Length: ' . $file['size']);
-            $M->deliverFile($uploadname);
+            $manager->deliverFile($uploadName);
          } else {
             throw new FormException('[' . get_class($this) . '::run()] The file was not found on the server!', E_USER_ERROR);
          }

@@ -20,6 +20,10 @@ namespace APF\tools\cache\provider;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\tools\cache\CacheBase;
+use APF\tools\cache\CacheKey;
+use APF\tools\cache\CacheProvider;
+use APF\tools\cache\key\AdvancedCacheKey;
 
 /**
  * @package tools::cache::provider

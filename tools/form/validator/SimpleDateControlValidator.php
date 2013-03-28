@@ -55,8 +55,8 @@ class SimpleDateControlValidator extends TextFieldValidator {
          return false;
       }
 
-      $date = DateTime::createFromFormat('Y-m-d', $input);
-      $today = new DateTime();
+      $date = \DateTime::createFromFormat('Y-m-d', $input);
+      $today = new \DateTime();
       return $today < $date;
    }
 

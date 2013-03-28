@@ -20,6 +20,8 @@ namespace APF\tools\form\multifileupload\actions;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\tools\form\multifileupload\biz\MultiFileUploadManager;
 use APF\tools\http\HeaderManager;
 use APF\tools\form\FormException;
 
@@ -29,9 +31,6 @@ use APF\tools\form\FormException;
  *
  * This action tales the files uploaded via form and saves them.
  *
- * @param string $name - Name des Formularfeldes
- * @param string $formname -Name des Formulares
- * @return string JSON response.
  * @author Werner Liemberger <wpublicmail@gmail.com>
  * @version 1.0, 14.3.2011<br>
  * @version 1.1, 11.07.2012 (Change Exception to FormException)<br>
@@ -39,23 +38,21 @@ use APF\tools\form\FormException;
 class MultiFileUploadAction extends AbstractFrontcontrollerAction {
 
    public function run() {
-      // Header modifizieren, damit nichts gecached wird.
+      // modify header to avoid caching of this request
       HeaderManager::send('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
       HeaderManager::send('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
       HeaderManager::send('Cache-Control: no-cache, must-revalidate');
       HeaderManager::send('Pragma: no-cache');
 
       try {
-         //Formular und Feldnamen erhalten.
-         $Fieldname = $this->getInput()->getAttribute('name');
-         $formname = $this->getInput()->getAttribute('formname');
+         $fieldName = $this->getInput()->getAttribute('name');
+         $formName = $this->getInput()->getAttribute('formname');
 
-         // Anhand des Feldnamen auf die Datei zugreifen und sie in die Session eintragen.
-         /* @var $MultifileuploadManager MultiFileUploadManager */
-         $MultifileuploadManager = &$this->getAndInitServiceObject('tools::form::multifileupload::biz', 'MultiFileUploadManager', array('formname' => $formname, 'name' => $Fieldname));
-         if (!empty($_FILES[$Fieldname])) {
-            $fileinfo = $MultifileuploadManager->addFile($_FILES[$Fieldname]);
-            echo json_encode($fileinfo);
+         /* @var $manager MultiFileUploadManager */
+         $manager = &$this->getAndInitServiceObject('tools::form::multifileupload::biz', 'MultiFileUploadManager', array('formname' => $formName, 'name' => $fieldName));
+         if (!empty($_FILES[$fieldName])) {
+            $fileInfo = $manager->addFile($_FILES[$fieldName]);
+            echo json_encode($fileInfo);
          } else {
             throw new FormException('[' . get_class($this) . '::run()] No file was transmitted to the server!', E_USER_ERROR);
          }

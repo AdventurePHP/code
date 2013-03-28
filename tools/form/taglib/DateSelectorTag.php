@@ -21,6 +21,7 @@ namespace APF\tools\form\taglib;
  * -->
  */
 use APF\tools\form\taglib\SelectBoxTag;
+use APF\tools\form\validator\AbstractFormValidator;
 
 /**
  * @package tools::form::taglib
@@ -174,7 +175,7 @@ class DateSelectorTag extends AbstractFormControl {
       // since the onParseTime() methods directly presets the value from the request, we have
       // to correct implausible dates using the PHP DateTime API.
       if (isset($_REQUEST[$name])) {
-         $date = DateTime::createFromFormat('Y-m-d', $_REQUEST[$name][$this->offsetNames['Year']]
+         $date = \DateTime::createFromFormat('Y-m-d', $_REQUEST[$name][$this->offsetNames['Year']]
                . '-' . $_REQUEST[$name][$this->offsetNames['Month']]
                . '-' . $_REQUEST[$name][$this->offsetNames['Day']]);
          if ($date !== false) {
@@ -306,7 +307,7 @@ class DateSelectorTag extends AbstractFormControl {
 
       // use date time API to ensure calender conforming dates (e.g. don't create implausible
       // dates such as 1937-04-31).
-      $date = DateTime::createFromFormat('Y-m-d', $year->getValue() . '-' . $month->getValue() . '-' . $day->getValue());
+      $date = \DateTime::createFromFormat('Y-m-d', $year->getValue() . '-' . $month->getValue() . '-' . $day->getValue());
 
       // In case an empty date has been submitted (e.g. because the "prepend-empty-options" attribute
       // is set) return null.
@@ -329,7 +330,7 @@ class DateSelectorTag extends AbstractFormControl {
     * Version 0.2, 30.04.2012 (Introduced a more fail-safe way of initializing the date)<br />
     */
    public function setDate($date) {
-      $formattedDate = DateTime::createFromFormat('Y-m-d', $date);
+      $formattedDate = \DateTime::createFromFormat('Y-m-d', $date);
 
       $this->getDayControl()->setOption2Selected($this->appendZero($formattedDate->format('d')));
       $this->getMonthControl()->setOption2Selected($this->appendZero($formattedDate->format('m')));

@@ -22,6 +22,7 @@ namespace APF\tools\filesystem;
  */
 use APF\core\pagecontroller\APFObject;
 use APF\tools\filesystem\FilesystemException;
+
 /**
  * @abstract
  * @class   FilesystemItem

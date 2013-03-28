@@ -20,8 +20,8 @@ namespace APF\tools\form\validator;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\tools\form\taglib\FileUploadTag;
 use APF\tools\form\validator\TextFieldValidator;
-
 
 /**
  * @package tools::form::validator
@@ -53,10 +53,12 @@ class MimeTypeValidator extends TextFieldValidator {
    public function validate($input) {
 
       // check, whether file was specified
-      if ($this->control->hasUploadedFile()) {
+      /* @var $control FileUploadTag */
+      $control = $this->control;
+      if ($control->hasUploadedFile()) {
 
          // retrieve file model to check the MIME type against the accepted types
-         $fileModel = $this->control->getFile();
+         $fileModel = $control->getFile();
 
          // store values in variables to not break the in_array() functionality
          $acceptedTypes = $this->getAcceptedMIMETypes();
