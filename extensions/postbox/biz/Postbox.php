@@ -20,8 +20,13 @@ namespace APF\extensions\postbox\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\APFObject;
 use APF\extensions\postbox\biz\MessageChannel;
 use APF\extensions\postbox\biz\Message;
+use APF\modules\genericormapper\data\GenericCriterionObject;
+use APF\modules\genericormapper\data\GenericORMapperDataObject;
+use APF\modules\genericormapper\data\GenericORRelationMapper;
+use APF\extensions\postbox\biz\PostboxFolder;
 
 /**
  * @package extensions::postbox::biz
@@ -121,7 +126,7 @@ class Postbox extends APFObject {
       if ($this->getPostboxFolderByName($Name) !== null) {
          throw new \InvalidArgumentException('[Postbox::addPostboxFolder()] This postbox already contains a folder with this name!', 1);
       }
-      use APF\extensions\postbox\biz\PostboxFolder;
+
       $Folder = new PostboxFolder();
       $Folder->setName($Name);
       $Folder->addRelatedObject('User2PostboxFolder', $this->User);
@@ -316,4 +321,5 @@ class Postbox extends APFObject {
    public function isOnUsersBlacklist(GenericORMapperDataObject &$User) {
       return $this->ORM->isAssociated('User2BlockedUser', $User, $this->User);
    }
+
 }

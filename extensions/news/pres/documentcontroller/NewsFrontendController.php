@@ -20,12 +20,14 @@ namespace APF\extensions\news\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\registry\Registry;
 use APF\extensions\news\pres\documentcontroller\NewsBaseController;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * @package extensions::news::pres::documentcontroller::backend
- * @class frontend_controller
+ * @class NewsFrontendController
  *
  * Document controller for the frontend of the news.
  *
@@ -33,7 +35,7 @@ use APF\tools\link\LinkGenerator;
  * @version
  * Version 1.0, 18.06.2011<br />
  */
-class frontend_controller extends NewsBaseController {
+class NewsFrontendController extends NewsBaseController {
 
    public function transformContent() {
       $appKey = $this->getAppKey();
@@ -57,7 +59,7 @@ class frontend_controller extends NewsBaseController {
       $charset = Registry::retrieve('apf::core', 'Charset');
 
       foreach ($newsList as &$news) {
-         $Date = new DateTime($news->getProperty('CreationTimestamp'));
+         $Date = new \DateTime($news->getProperty('CreationTimestamp'));
          $Author = '';
 
          if ($news->getAuthor() !== '') {
@@ -103,7 +105,7 @@ class frontend_controller extends NewsBaseController {
       $Links = array();
       for ($x = 1; $x <= $PageCount; $x++) {
          $Link = LinkGenerator::generateUrl(
-            URL::fromCurrent()
+            Url::fromCurrent()
                   ->mergeQuery(
                array(
                   $PageParameter => $x

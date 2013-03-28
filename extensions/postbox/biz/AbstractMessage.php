@@ -20,6 +20,8 @@ namespace APF\extensions\postbox\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\modules\genericormapper\data\GenericDomainObject;
+use APF\modules\genericormapper\data\GenericORMapperDataObject;
 
 /**
  * @package extensions::postbox::biz::abstractdomainobjects
@@ -87,11 +89,11 @@ abstract class AbstractMessage extends GenericDomainObject {
     *
     * @param bool $saveTree Optional. Default: true. If set to false only the message will be saved, and not the relation-tree
     * @return AbstractMessage Returns itself (fluent-interface)
-    * @throws BadFunctionCallException
+    * @throws \BadFunctionCallException
     */
    public function save($saveTree = true) {
       if ($this->getDataComponent() === null) {
-         throw new BadFunctionCallException('[Message::save()] DataComponent is not set, if the object was not loaded by ORM, you need to set it manually!');
+         throw new \BadFunctionCallException('[Message::save()] DataComponent is not set, if the object was not loaded by ORM, you need to set it manually!');
       }
       $this->getDataComponent()->saveObject($this, $saveTree);
       return $this;

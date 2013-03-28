@@ -1,6 +1,8 @@
 <?php
 namespace APF\extensions\arraypager\biz;
 
+use APF\core\pagecontroller\APFObject;
+use APF\core\service\APFService;
 use APF\extensions\arraypager\biz\ArrayPagerManager;
 
 /**

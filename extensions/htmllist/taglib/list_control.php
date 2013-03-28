@@ -21,6 +21,7 @@ namespace APF\extensions\htmllist\taglib;
  * -->
  */
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\XmlParser;
 
 /**
  * @package extensions::htmllist::taglib

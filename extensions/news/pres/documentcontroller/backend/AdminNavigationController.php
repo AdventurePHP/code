@@ -20,7 +20,9 @@ namespace APF\extensions\news\pres\documentcontroller\backend;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\BaseDocumentController;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * Documentcontroller for news menu.
@@ -29,14 +31,14 @@ use APF\tools\link\LinkGenerator;
  * @version
  * Version 1.0,  18.06.2011<br />
  */
-class menu_controller extends BaseDocumentController {
+class AdminNavigationController extends BaseDocumentController {
 
    public function transformContent() {
       $generalExclusion = array('deleteyes' => null, 'deletenewsid' => null, 'editnewsid' => null);
 
       $this->setPlaceHolder(
          'list', LinkGenerator::generateUrl(
-            URL::fromCurrent()
+            Url::fromCurrent()
                   ->mergeQuery($generalExclusion)
                   ->mergeQuery(
                array(
@@ -47,7 +49,7 @@ class menu_controller extends BaseDocumentController {
       );
       $this->setPlaceHolder(
          'new', LinkGenerator::generateUrl(
-            URL::fromCurrent()
+            Url::fromCurrent()
                   ->mergeQuery($generalExclusion)
                   ->mergeQuery(
                array(

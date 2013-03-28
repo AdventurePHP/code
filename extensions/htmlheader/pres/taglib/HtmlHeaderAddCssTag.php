@@ -21,6 +21,8 @@ namespace APF\extensions\htmlheader\pres\taglib;
  * -->
  */
 use APF\extensions\htmlheader\biz\DynamicCssNode;
+use APF\core\pagecontroller\Document;
+use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 
 /**
  * @package extensions::htmlheader::pres::taglib

@@ -20,6 +20,8 @@ namespace APF\extensions\htmlheader\pres\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\Document;
+use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\CssImageNode;
 
 /**
@@ -39,8 +41,8 @@ use APF\extensions\htmlheader\biz\CssImageNode;
 class HtmlHeaderAddCssImageTag extends Document {
 
    public function transform() {
-      $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
       /* @var $header HtmlHeaderManager */
+      $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
 
       $href = $this->getAttribute('href');
       if ($href == null) {

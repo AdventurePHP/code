@@ -38,7 +38,6 @@ class JsCssInclusionFilterChain extends AbstractFilterChain {
    private static $CHAIN;
 
    private function __construct() {
-
    }
 
    /**

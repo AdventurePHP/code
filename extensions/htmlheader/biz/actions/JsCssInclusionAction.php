@@ -20,6 +20,8 @@ namespace APF\extensions\htmlheader\biz\actions;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\extensions\htmlheader\biz\JsCssPackager;
 use APF\tools\http\HeaderManager;
 
 /**

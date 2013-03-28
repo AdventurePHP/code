@@ -20,7 +20,6 @@ namespace APF\extensions\htmlheader\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 use APF\extensions\htmlheader\biz\HtmlNode;
 use APF\extensions\htmlheader\biz\BaseNode;
 

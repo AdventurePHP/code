@@ -20,6 +20,12 @@ namespace APF\extensions\htmlheader\pres\filter;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\filter\ChainedContentFilter;
+use APF\core\filter\FilterChain;
+use APF\core\pagecontroller\APFObject;
+use APF\extensions\htmlheader\biz\HtmlHeaderManager;
+use APF\extensions\htmlheader\biz\HeaderNode;
+use APF\extensions\htmlheader\biz\HtmlNode;
 use APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetHeadTag;
 use APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetBodyJsTag;
 
@@ -60,8 +66,8 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
 
    private function getHeaderContent() {
 
-      $iM = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
       /* @var $iM HtmlHeaderManager */
+      $iM = & $this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
 
       $outputHead = '';
       $outputBody = '';

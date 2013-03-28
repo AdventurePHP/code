@@ -20,7 +20,11 @@ namespace APF\extensions\arraypager\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\benchmark\BenchmarkTimer;
+use APF\core\pagecontroller\BaseDocumentController;
+use APF\core\singleton\Singleton;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 use APF\tools\request\RequestHandler;
 
 /**
@@ -57,9 +61,9 @@ class arraypager_controller extends BaseDocumentController {
          return;
       }
 
-      /* @var $objectBenchmark BenchmarkTimer */
-      $objectBenchmark = Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
-      $objectBenchmark->start('ArrayPager');
+      /* @var $t BenchmarkTimer */
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t->start('ArrayPager');
 
       // Anzahl der Einträge
       $integerEntriesCount = $this->attributes['Config']['Entries'];
@@ -243,7 +247,7 @@ class arraypager_controller extends BaseDocumentController {
          unset($objectTemplateEntries);
       }
 
-      $objectBenchmark->stop('ArrayPager');
+      $t->stop('ArrayPager');
    }
 
 }

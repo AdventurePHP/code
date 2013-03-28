@@ -20,6 +20,9 @@ namespace APF\extensions\forwardmessage\pres\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\Document;
+use APF\core\service\APFService;
+use APF\extensions\forwardmessage\biz\ForwardMessageManager;
 
 /**
  * @package extensions::forwardmessage::pres::taglib
@@ -74,7 +77,7 @@ class DisplayForwardMessagesTag extends Document {
       }
 
       /* @var $manager ForwardMessageManager */
-      $manager = &$this->getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $manager = & $this->getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', APFService::SERVICE_TYPE_SESSION_SINGLETON);
       return $manager->getMessages($groups);
    }
 

@@ -1,6 +1,4 @@
 <?php
-namespace APF\extensions\htmlheader\biz;
-
 /**
 * jsmin.php - PHP implementation of Douglas Crockford's JSMin.
 *
@@ -289,5 +287,5 @@ class JSMin {
 }
 
 // -- Exceptions ---------------------------------------------------------------
-class JSMinException extends \Exception {}
+class JSMinException extends Exception {}
 ?>

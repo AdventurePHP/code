@@ -20,12 +20,14 @@ namespace APF\extensions\news\pres\documentcontroller\backend;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\registry\Registry;
 use APF\extensions\news\pres\documentcontroller\NewsBaseController;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * @package extensions::news::pres::documentcontroller::backend
- * @class list_controller
+ * @class NewsListController
  *
  * Document controller for listing the news in the backend with links for editing
  * and deleting.
@@ -34,7 +36,7 @@ use APF\tools\link\LinkGenerator;
  * @version
  * Version 1.0,  16.06.2011<br />
  */
-class list_controller extends NewsBaseController {
+class NewsListController extends NewsBaseController {
 
    public function transformContent() {
 
@@ -59,14 +61,14 @@ class list_controller extends NewsBaseController {
          $DataArray[] = array(
             'Title' => htmlentities($News->getTitle(), ENT_QUOTES, $charset, false),
             'Date' => $News->getProperty('CreationTimestamp'),
-            'LinkEdit' => LinkGenerator::generateUrl(URL::fromCurrent()->mergeQuery(
+            'LinkEdit' => LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
                   array(
                      'backendview' => 'edit',
                      'editnewsid' => (int)$News->getObjectId()
                   )
                )
             ),
-            'LinkDelete' => LinkGenerator::generateUrl(URL::fromCurrent()->mergeQuery(
+            'LinkDelete' => LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
                   array(
                      'backendview' => 'delete',
                      'deletenewsid' => (int)$News->getObjectId()
@@ -89,4 +91,5 @@ class list_controller extends NewsBaseController {
    protected function getAppKey() {
       return $this->getDocument()->getParentObject()->getAttribute('app-ident', $this->getContext());
    }
+
 }

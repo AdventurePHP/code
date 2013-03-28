@@ -20,11 +20,14 @@ namespace APF\extensions\news\pres\documentcontroller\backend;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\registry\Registry;
+use APF\extensions\news\biz\News;
 use APF\extensions\news\pres\documentcontroller\NewsBaseController;
+use APF\tools\request\RequestHandler;
 
 /**
  * @package extensions::news::pres::documentcontroller::backend
- * @class edit_controller
+ * @class NewsEditController
  *
  * Document controller for editing and creating news.
  *
@@ -32,7 +35,7 @@ use APF\extensions\news\pres\documentcontroller\NewsBaseController;
  * @version
  * Version 0.1,  17.06.2011<br />
  */
-class edit_controller extends NewsBaseController {
+class NewsEditController extends NewsBaseController {
 
    public function transformContent() {
 
@@ -47,6 +50,7 @@ class edit_controller extends NewsBaseController {
       // If an id is given, an existing news should be updated,
       // so we check here if it really exists.
       $editId = RequestHandler::getValue('editnewsid');
+      $news = null;
       if ($editId !== null && $editId !== '') {
          $news = $newsManager->getNewsById((int)$editId);
          if ($news === null) {

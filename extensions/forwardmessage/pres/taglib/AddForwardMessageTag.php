@@ -22,6 +22,7 @@ namespace APF\extensions\forwardmessage\pres\taglib;
  */
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\TagLib;
+use APF\core\service\APFService;
 use APF\extensions\forwardmessage\biz\ForwardMessageManager;
 
 /**

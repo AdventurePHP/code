@@ -20,6 +20,8 @@ namespace APF\extensions\news\pres\documentcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\BaseDocumentController;
+use APF\extensions\news\biz\NewsManager;
 
 /**
  * @package extensions::news::pres::documentcontroller

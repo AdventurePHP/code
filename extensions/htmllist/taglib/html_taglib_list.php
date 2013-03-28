@@ -23,9 +23,6 @@ namespace APF\extensions\htmllist\taglib;
 use APF\core\pagecontroller\XmlParser;
 use APF\core\pagecontroller\Document;
 use APF\extensions\htmllist\taglib\list_control;
-use APF\extensions\htmllist\taglib\list_taglib_definition;
-use APF\extensions\htmllist\taglib\list_taglib_ordered;
-use APF\extensions\htmllist\taglib\list_taglib_unordered;
 
 /**
  * @package extensions::htmllist::taglib

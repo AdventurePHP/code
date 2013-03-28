@@ -20,6 +20,7 @@ namespace APF\extensions\htmlheader\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\APFObject;
 
 /**
  * @package extensions::htmlheader::biz

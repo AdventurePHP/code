@@ -21,12 +21,13 @@ namespace APF\extensions\news\pres\documentcontroller\backend;
  * -->
  */
 use APF\extensions\news\pres\documentcontroller\NewsBaseController;
+use APF\tools\link\Url;
 use APF\tools\request\RequestHandler;
 use APF\tools\link\LinkGenerator;
 
 /**
  * @package extensions::news::pres::documentcontroller::backend
- * @class delete_controller
+ * @class NewsDeleteController
  *
  * Document controller for deleting news.
  *
@@ -34,7 +35,7 @@ use APF\tools\link\LinkGenerator;
  * @version
  * Version 1.0,  18.06.2011<br />
  */
-class delete_controller extends NewsBaseController {
+class NewsDeleteController extends NewsBaseController {
 
    public function transformContent() {
 
@@ -59,7 +60,7 @@ class delete_controller extends NewsBaseController {
       $tpl = $this->getTemplate('delete');
       $tpl->setPlaceHolder(
          'LinkYes', LinkGenerator::generateUrl(
-            URL::fromCurrent()->mergeQuery(
+            Url::fromCurrent()->mergeQuery(
                array(
                   'backendview' => 'delete',
                   'deletenewsid' => (int)$deleteId,
@@ -70,7 +71,7 @@ class delete_controller extends NewsBaseController {
       );
       $tpl->setPlaceHolder(
          'LinkNo', LinkGenerator::generateUrl(
-            URL::fromCurrent()->mergeQuery(
+            Url::fromCurrent()->mergeQuery(
                array(
                   'backendview' => 'list',
                   'deletenewsid' => null

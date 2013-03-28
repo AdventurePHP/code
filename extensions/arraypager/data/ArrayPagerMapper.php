@@ -1,6 +1,7 @@
 <?php
 namespace APF\extensions\arraypager\data;
 
+use APF\core\pagecontroller\APFObject;
 use APF\core\session\SessionManager;
 
 /**

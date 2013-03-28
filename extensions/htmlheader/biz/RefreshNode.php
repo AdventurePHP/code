@@ -23,6 +23,7 @@ namespace APF\extensions\htmlheader\biz;
 use APF\extensions\htmlheader\biz\HtmlNode;
 use APF\extensions\htmlheader\biz\MetaNode;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * @package extensions::htmlheader::biz
