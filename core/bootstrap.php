@@ -31,11 +31,6 @@
  * <ul>
  * <li>Environment      : environment, the application is executed in. The value is 'DEFAULT' in common</li>
  * <li>URLRewriting     : indicates, is url rewriting should be used</li>
- * <li>LogDir           : path, where log files are stored. The value is './logs' by default.</li>
- * <li>URLBasePath      : absolute url base path of the application (not really necessary)</li>
- * <li>LibPath          : path, where the framework and your own libraries reside. This path can be used
- *                        to address files with in the lib path directly (e.g. images or other resources)</li>
- * <li>CurrentRequestURL: the fully qualified request url</li>
  * </ul>
  * Further, the built-in input and output filters are initialized. For this reason, the following
  * registry entries are created within the "apf::core::filter" namespace:
@@ -103,13 +98,6 @@ Registry::register('apf::core', 'Environment', 'DEFAULT');
 Registry::register('apf::core', 'InternalLogTarget', 'apf');
 Registry::register('apf::core', 'Charset', 'UTF-8');
 
-// define current request url entry (check if the indices exist is important for cli-usage, because there they are neither available nor helpful)
-if (isset($_SERVER['SERVER_PORT']) && isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
-   $protocol = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
-   Registry::register('apf::core', 'URLBasePath', $protocol . $_SERVER['HTTP_HOST']);
-   Registry::register('apf::core', 'CurrentRequestURL', $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-}
-
 // set up configuration provider to let the developer customize it later on
 use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
@@ -131,6 +119,7 @@ register_shutdown_function(function () {
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\DefaultLinkScheme;
 
+Registry::retrieve('apf::core', 'URLRewriting', false); // define default value for url rewriting configuration
 LinkGenerator::setLinkScheme(new DefaultLinkScheme());
 
 // add the front controller filter that is a wrapper on the front controller's input
