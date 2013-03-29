@@ -130,13 +130,13 @@ class SocialBookmarkBarManager extends APFObject {
    public function getBookmarkCode() {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $id = 'SocialBookmarkBarManager::getBookmarkCode()';
       $t->start($id);
 
       // generate the current page's url, if no url was set
       if (empty($this->url)) {
-         $this->url = Registry::retrieve('apf::core', 'CurrentRequestURL');
+         $this->url = LinkGenerator::generateUrl(Url::fromCurrent(true));
       }
 
       // get services from config file

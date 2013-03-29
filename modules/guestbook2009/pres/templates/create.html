@@ -99,8 +99,7 @@
                      clearonerror="true"
                      />
                <form:addvalidator
-                     namespace="modules::captcha::pres::validator"
-                     class="CaptchaValidator"
+                     class="APF\modules\captcha\pres\validator\CaptchaValidator"
                      control="Captcha"
                      button="send"
                      />
@@ -110,32 +109,32 @@
             <form:button class="gb--button-create" name="send"/>
          </div>
          <form:addvalidator
-               class="TextLengthValidator"
+               class="APF\tools\form\validator\TextLengthValidator"
                button="send"
                control="name|title|text"
                />
          <form:addfilter
-               class="NoSpecialCharactersFilter"
+               class="APF\tools\form\validator\NoSpecialCharactersFilter"
                button="send"
                control="name|title"
                />
          <form:addvalidator
-               class="EMailValidator"
+               class="APF\tools\form\validator\EMailValidator"
                button="send"
                control="email"
                />
          <form:addfilter
-               class="StripTagsFilter"
+               class="APF\tools\form\validator\StripTagsFilter"
                button="send"
                control="email|website|text"
                />
          <form:addfilter
-               class="StripTagsFilter"
+               class="APF\tools\form\validator\StripTagsFilter"
                button="send"
                control="website|text"
                />
          <form:addfilter
-               class="EMailFilter"
+               class="APF\tools\form\validator\EMailFilter"
                button="send"
                control="email"
                />

@@ -21,7 +21,7 @@
                entry="frontend.role.add.display-name.label"/></label>
          <form:text name="DisplayName" maxlength="100" />
          <form:addvalidator
-               class="TextLengthValidator"
+               class="APF\tools\form\validator\TextLengthValidator"
                button="Add"
                control="DisplayName"
                />
@@ -40,7 +40,7 @@
                entry="frontend.role.add.permissions.label"/></label>
          <form:multiselect name="Permission" size="4"/>
          <form:addvalidator
-               class="MultiSelectFieldValidator"
+               class="APF\tools\form\validator\MultiSelectFieldValidator"
                button="Add"
                control="Permission"
                />

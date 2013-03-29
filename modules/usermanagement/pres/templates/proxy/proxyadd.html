@@ -32,13 +32,12 @@
                entry="frontend.proxy.add-proxy.proxy-app-id.label"/></label>
          <form:text id="appobjectid" name="appobjectid" maxlength="50" minlength="1"/>
          <form:addvalidator
-               class="TextLengthValidator"
+               class="APF\tools\form\validator\TextLengthValidator"
                button="add"
                control="appobjectid"
                />
          <form:addvalidator
-               namespace="modules::usermanagement::pres::validator"
-               class="AppObjectIdValidator"
+               class="APF\modules\usermanagement\pres\validator\AppObjectIdValidator"
                button="add"
                control="appobjectid"
                />
@@ -66,8 +65,7 @@
          <form:multiselect id="groups" name="groups" size="6"/>
       </div>
       <form:addvalidator
-            namespace="modules::usermanagement::pres::validator"
-            class="UserOrGroupActivatedValidator"
+            class="APF\modules\usermanagement\pres\validator\UserOrGroupActivatedValidator"
             control="users"
             button="add"
             />

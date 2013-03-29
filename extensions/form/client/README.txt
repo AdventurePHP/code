@@ -21,7 +21,7 @@ Für die Validierung wird jQuery benötigt. Erstellt wurde die Extension auf Gru
 möglicherweise ist es aber auch mit früheren und folgenden Versionen kompatibel.
 jQuery kann hier [[http://jquery.com/]] bezogen werden.
 
-Für jeden Validator liegt unter ''extensions::form::client::validator'' eine eigene ''*.js'' Datei vor.
+Für jeden Validator liegt unter ''APF\extensions\form\client\validator'' eine eigene ''*.js'' Datei vor.
 Ausserdem liegt dort die '''FormValidator.js'''-Datei, welche Grundvoraussetzung für die Verwendung ist.
 Um die Einbindung der Dateien muss sich der Entwickler zwar selbst kümmern, jedoch gibt es bereits
 praktische Extensions, welche die meiste Arbeit abnehmen.
@@ -46,10 +46,10 @@ Wir gehen ab sofort davon aus, dass wir uns im Template innerhalb eines <html:fo
 === Einbindung der Taglibs ===
 Vor der Verwendung müssen die einzelnen Taglibs noch dem Formular bekannt gemacht werden:
 <source lang="xml">
-<form:addtaglib namespace="extensions::form::client::taglib" class="AddFormControlClientValidatorTag" prefix="form" name="addclientvalidator" />
-<form:addtaglib namespace="extensions::form::client::taglib" class="GetClientFormValidationTag" prefix="form" name="getclientvalidator" />
-<form:addtaglib namespace="extensions::form::client::taglib" class="ClientValidationListenerTag" prefix="form" name="clientlistener" />
-<form:addtaglib namespace="extensions::form::client::taglib" class="FormClientErrorDisplayTag" prefix="form" name="clienterror" />
+<form:addtaglib class="APF\extensions\form\client\taglib\AddFormControlClientValidatorTag" prefix="form" name="addclientvalidator" />
+<form:addtaglib class="APF\extensions\form\client\taglib\GetClientFormValidationTag" prefix="form" name="getclientvalidator" />
+<form:addtaglib class="APF\extensions\form\client\taglib\ClientValidationListenerTag" prefix="form" name="clientlistener" />
+<form:addtaglib class="APF\extensions\form\client\taglib\FormClientErrorDisplayTag" prefix="form" name="clienterror" />
 </source>
 
 
@@ -77,12 +77,12 @@ sowie eine eigene valmarkerclass.
     maxlength="10"
 />
 <form:addvalidator
-    class="TextLengthValidator"
+    class="APF\extensions\form\client\validator\TextLengthValidator"
     button="submit"
     control="text1"
 />
 <form:addclientvalidator
-    class="TextLengthValidator"
+    class="APF\extensions\form\client\validator\TextLengthValidator"
     button="submit"
     control="text1"
     onblur="true"

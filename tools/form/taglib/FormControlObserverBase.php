@@ -91,7 +91,7 @@ abstract class FormControlObserverBase extends AbstractFormControl {
       if (empty($controlDef) || empty($buttonName) || empty($class)) {
          $formName = $parent->getAttribute('name');
          throw new FormException('[' . get_class($this) . '::onAfterAppend()] Required attribute '
-               . '"control", "button", "class" or "namespace" missing. Please review your '
+               . '"control", "button", or "class" missing. Please review your '
                . '&lt;form:addvalidator /&gt; or &lt;form:addfilter /&gt; taglib definition in form "'
                . $formName . '"!');
       }

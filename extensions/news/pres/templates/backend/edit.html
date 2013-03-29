@@ -45,12 +45,12 @@
     </fieldset>
     
     <form:addvalidator 
-        class="TextLengthValidator" 
+        class="APF\tools\form\validator\TextLengthValidator"
         button="send" 
         control="news-edit-title|news-edit-text" 
     />
     <form:addfilter 
-        class="StripTagsFilter" 
+        class="APF\tools\form\filter\StripTagsFilter"
         button="send" 
         control="news-edit-title|news-edit-user" 
     />

@@ -13,7 +13,7 @@
             class="cm--create-element-name"
          />
          <form:addvalidator
-            class="TextLengthValidator"
+            class="APF\tools\form\validator\TextLengthValidator"
             button="Save"
             control="Name|Comment"
          />
@@ -25,12 +25,12 @@
             class="cm--create-element-email"
          />
          <form:addvalidator
-            class="EMailValidator"
+            class="APF\tools\form\validator\EMailValidator"
             button="Save"
             control="EMail"
          />
          <form:addfilter
-            class="EMailFilter"
+            class="APF\tools\form\validator\EMailFilter"
             button="Save"
             control="EMail"
          />
@@ -56,8 +56,7 @@
              clearonerror="true"
          />
          <form:addvalidator
-            namespace="modules::captcha::pres::validator"
-            class="CaptchaValidator"
+            class="APF\modules\captcha\pres\validator\CaptchaValidator"
             control="Captcha"
             button="Save"
          />

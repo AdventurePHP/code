@@ -30,17 +30,17 @@
             </div>
          </form:error>
          <form:addvalidator
-            class="TextLengthValidator"
+            class="APF\tools\form\validator\TextLengthValidator"
             button="sendFormContact"
             control="AbsenderName|Betreff|Text"
          />
          <form:addvalidator
-            class="EMailValidator"
+            class="APF\tools\form\validator\EMailValidator"
             button="sendFormContact"
             control="AbsenderAdresse"
          />
          <form:addfilter
-            class="EMailFilter"
+            class="APF\tools\form\validator\EMailFilter"
             button="sendFormContact"
             control="AbsenderAdresse"
          />
@@ -76,8 +76,7 @@
                disable_inline="true"
             />
             <form:addvalidator
-               namespace="modules::captcha::pres::validator"
-               class="CaptchaValidator"
+               class="APF\modules\captcha\pres\validator\CaptchaValidator"
                control="captcha-control"
                button="sendFormContact"
             />

@@ -38,21 +38,6 @@ class AddFormControlFilterTag extends FormControlObserverBase {
    /**
     * @public
     *
-    * Pre-fills the namespace attribute, to be able to leave it out
-    * while declaring an form:addfilter tag and using packaged
-    * validators.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 30.08.2009<br />
-    */
-   public function __construct() {
-      $this->setAttribute('namespace', 'tools::form::filter');
-   }
-
-   /**
-    * @public
-    *
     * Adds the desired filter to the given form element.
     *
     * @author Christian Achatz

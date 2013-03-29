@@ -38,21 +38,6 @@ class AddFormControlValidatorTag extends FormControlObserverBase {
    /**
     * @public
     *
-    * Pre-fills the namespace attribute, to be able to leave it out
-    * while declaring an form:addvalidator tag and using packaged
-    * validators.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 30.08.2009<br />
-    */
-   public function __construct() {
-      $this->setAttribute('namespace', 'tools::form::validator');
-   }
-
-   /**
-    * @public
-    *
     * Add the desired validator to the given form element.
     *
     * @author Christian Achatz

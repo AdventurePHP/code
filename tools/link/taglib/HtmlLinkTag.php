@@ -22,6 +22,8 @@ namespace APF\tools\link\taglib;
  */
 use APF\core\pagecontroller\TagLib;
 use APF\core\registry\Registry;
+use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 use APF\tools\link\taglib\LinkGenerationTag;
 
 /**
@@ -116,7 +118,8 @@ class HtmlLinkTag extends LinkGenerationTag {
     * Version 0.1, 30.11.2012<br />
     */
    public function isActive() {
-      if (substr_count(str_replace('&', '&amp;', Registry::retrieve('apf::core', 'CurrentRequestURL')), $this->attributeList['href']) > 0) {
+      $currentUrl = LinkGenerator::generateUrl(Url::fromCurrent(true));
+      if (substr_count(str_replace('&', '&amp;', $currentUrl), $this->attributeList['href']) > 0) {
          return true;
       }
       return false;

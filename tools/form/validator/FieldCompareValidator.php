@@ -41,7 +41,7 @@ use APF\tools\form\validator\TextFieldValidator;
  *   <form:password name="pass" ref="pass2" />
  *   <form:password name="pass2" />
  *   <form:addvalidator
- *     class="FieldCompareValidator"
+ *     class="APF\tools\form\validator\FieldCompareValidator"
  *     control="pass"
  *     button="login"
  *   />

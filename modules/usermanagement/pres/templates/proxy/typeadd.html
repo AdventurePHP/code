@@ -27,9 +27,9 @@
                entry="frontend.proxy.add-type.proxy-type-name.label"/></label>
          <form:text id="proxytypename" name="proxytypename" maxlength="100" />
          <form:addvalidator
+               class="APF\tools\form\validator\TextLengthValidator"
                control="proxytypename"
                button="send"
-               class="TextLengthValidator"
                />
       </p>
       <p>
