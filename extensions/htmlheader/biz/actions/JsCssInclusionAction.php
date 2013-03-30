@@ -177,7 +177,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
       $this->sendHeaders($this->ttl, $mimeType);
 
       /* @var $packager JsCssPackager */
-      $packager = $this->getAndInitServiceObject('extensions::htmlheader::biz', 'JsCssPackager', null);
+      $packager = $this->getServiceObject('APF\extensions\htmlheader\biz\JsCssPackager');
       echo $packager->getFile($namespace, $file, $type, $this->gzipIsSupported());
 
    }
