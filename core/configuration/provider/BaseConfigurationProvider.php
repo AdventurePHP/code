@@ -101,13 +101,13 @@ abstract class BaseConfigurationProvider {
       $fileName = ($this->omitEnvironment || $environment === null) ? '/' . $name : '/' . $environment . '_' . $name;
 
       // gather namespace and full(!) config name and use class loader to determine root path
-      // TODO remove mapping to APF after migration to allow multiple root paths
-      $fqNamespace = 'APF\\' . str_replace('::', '\\', $namespace);
-      $classLoader = RootClassLoader::getLoaderByNamespace($fqNamespace);
+      $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
       $rootPath = $classLoader->getRootPath();
+      $vendor = $classLoader->getVendorName();
+      $fqNamespace = str_replace($vendor . '\\', '', $namespace);
       return $rootPath
             . '/config'
-            . '/' . str_replace('::', '/', $namespace)
+            . '/' . str_replace('\\', '/', $fqNamespace)
             . $contextPath
             . $fileName;
    }

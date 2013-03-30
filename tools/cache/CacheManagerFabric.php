@@ -62,7 +62,7 @@ final class CacheManagerFabric extends APFObject {
       if (!isset($this->cacheManagerCache[$configSection])) {
 
          // load config
-         $config = $this->getConfiguration('tools::cache', 'cacheconfig.ini');
+         $config = $this->getConfiguration('APF\tools\cache', 'cacheconfig.ini');
          $section = $config->getSection($configSection);
 
          if ($section === null) {

@@ -555,7 +555,7 @@ class Frontcontroller extends APFObject {
     * Version 0.1, 03.06.2007<br />
     */
    protected function getActionNamespaceByURLString($namespaceUrlRepresentation) {
-      return str_replace($this->namespaceURLDelimiter, '::', $namespaceUrlRepresentation);
+      return str_replace($this->namespaceURLDelimiter, '\\', $namespaceUrlRepresentation);
    }
 
    /**

@@ -71,7 +71,7 @@ class ProxyRevokeAccessController extends UmgtBaseController {
 
          $label = & $this->getLabel('intro-text');
 
-         $labels = $this->getConfiguration('modules::usermanagement::pres', 'labels.ini')
+         $labels = $this->getConfiguration('APF\modules\usermanagement\pres', 'labels.ini')
                ->getSection($this->getLanguage());
 
          if ($objectType == 'User') {

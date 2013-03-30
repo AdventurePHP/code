@@ -52,7 +52,7 @@ class ProxyDetailsController extends UmgtBaseController {
       }
       ksort($sortedList);
 
-      $config = $this->getConfiguration('modules::usermanagement::pres', 'labels.ini');
+      $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'labels.ini');
       $section = $config->getSection($this->getLanguage());
 
       foreach ($sortedList as $item) {

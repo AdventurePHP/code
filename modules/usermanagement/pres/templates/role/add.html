@@ -3,20 +3,20 @@
 @>
 <core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <h3><html:getstring
-      namespace="modules::usermanagement::pres"
+      namespace="APF\modules\usermanagement\pres"
       config="labels.ini"
       entry="frontend.role.add.headline"/></h3>
 <html:form name="RoleAdd" method="post">
    <div>
       <p>
          <form:getstring
-               namespace="modules::usermanagement::pres"
+               namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.role.add.intro.text"/>
       </p>
       <p>
          <label><form:getstring
-               namespace="modules::usermanagement::pres"
+               namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.role.add.display-name.label"/></label>
          <form:text name="DisplayName" maxlength="100" />
@@ -28,14 +28,14 @@
       </p>
       <p>
          <label><form:getstring
-               namespace="modules::usermanagement::pres"
+               namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.role.add.description.label"/></label>
          <form:area name="Description"/>
       </p>
       <p>
          <label><form:getstring
-               namespace="modules::usermanagement::pres"
+               namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.role.add.permissions.label"/></label>
          <form:multiselect name="Permission" size="4"/>
@@ -48,7 +48,7 @@
       <p>
          <form:button name="Add">
             <button:getstring
-                  namespace="modules::usermanagement::pres"
+                  namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="frontend.role.add.button.label"/>
          </form:button>

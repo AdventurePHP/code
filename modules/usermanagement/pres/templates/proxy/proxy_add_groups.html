@@ -3,7 +3,7 @@
 @>
 <core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <h3><html:getstring
-       namespace="modules::usermanagement::pres"
+       namespace="APF\modules\usermanagement\pres"
        config="labels.ini"
        entry="frontend.proxy.add-groups-to-proxy.headline"/></h3>
 
@@ -12,21 +12,21 @@
       <p>
          <form:getstring
                name="intro-text"
-               namespace="modules::usermanagement::pres"
+               namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.add-groups-to-proxy.intro.text"/>
       </p>
       <form:listener control="groups">
          <div class="error-cont">
             <listener:getstring
-                  namespace="modules::usermanagement::pres"
+                  namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="frontend.proxy.add-groups-to-proxy.validator.message"/>
          </div>
       </form:listener>
       <div>
          <label for="groups"><form:getstring
-               namespace="modules::usermanagement::pres"
+               namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.add-groups-to-proxy.groups.label"/></label>
          <form:multiselect id="groups" name="groups" size="6"/>
@@ -38,7 +38,7 @@
             />
       <form:button name="add">
          <html:getstring
-               namespace="modules::usermanagement::pres"
+               namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.add-groups-to-proxy.button.label"/>
       </form:button>
@@ -49,14 +49,14 @@
    <p>
       <template:getstring
             name="message-1"
-            namespace="modules::usermanagement::pres"
+            namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="frontend.proxy.add-groups-to-proxy.message.1"/>
    </p>
    <p>
       <template:getstring
             name="message-2"
-            namespace="modules::usermanagement::pres"
+            namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="frontend.proxy.add-groups-to-proxy.message.2"/>
    </p>

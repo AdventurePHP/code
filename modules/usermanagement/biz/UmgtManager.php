@@ -164,7 +164,7 @@ class UmgtManager extends APFObject {
     * @return Configuration The configuration section used to initialize this service.
     */
    protected function getConfigurationSection() {
-      return $this->getConfiguration('modules::usermanagement::biz', 'umgtconfig.ini')->getSection(self::CONFIG_SECTION_NAME);
+      return $this->getConfiguration('APF\modules\usermanagement\biz', 'umgtconfig.ini')->getSection(self::CONFIG_SECTION_NAME);
    }
 
    /**
@@ -2179,7 +2179,7 @@ class UmgtManager extends APFObject {
     */
    public function getAutoLoginCookieLifeTime() {
       try {
-         $config = $this->getConfiguration('modules::usermanagement::pres', 'login');
+         $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'login');
          $section = $config->getSection(UmgtManager::CONFIG_SECTION_NAME);
          $cookieLifeTime = $section == null
                ? self::AUTO_LOGIN_COOKIE_LIFETIME

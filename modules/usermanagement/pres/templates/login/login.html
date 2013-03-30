@@ -7,28 +7,28 @@
       <form:placeholder name="login-error" />
       <label for="umgt-fe-login-user">
          <form:getstring
-            namespace="modules::usermanagement::pres"
+            namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="login.form.username.label" />
       </label>
       <form:text id="umgt-fe-login-user" name="username" />
       <label for="umgt-fe-login-pass">
          <form:getstring
-            namespace="modules::usermanagement::pres"
+            namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="login.form.password.label" />
       </label>
       <form:password id="umgt-fe-login-pass" name="password" />
       <label for="umgt-fe-login-remember-me">
          <form:getstring
-               namespace="modules::usermanagement::pres"
+               namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="login.form.remember-me.label" />
       </label>
       <form:checkbox name="remember-me" id="umgt-fe-login-remember-me" value="1" />
       <form:button id="umgt-fe-login-send" name="sendFormLogin">
          <button:getstring
-            namespace="modules::usermanagement::pres"
+            namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="login.form.button.label" />
       </form:button>
@@ -43,7 +43,7 @@
 <html:template name="login-error">
    <div class="credentials-error">
       <template:getstring
-         namespace="modules::usermanagement::pres"
+         namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
          entry="login.credentials.error" />
    </div>
@@ -52,7 +52,7 @@
 <html:template name="system-error">
    <div class="system-error">
       <template:getstring
-         namespace="modules::usermanagement::pres"
+         namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
          entry="login.system.error" />
    </div>
@@ -61,7 +61,7 @@
 <html:template name="login-ok">
    <div class="credentials-ok">
       <template:getstring
-         namespace="modules::usermanagement::pres"
+         namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
          entry="login.already.logged.in" />
    </div>

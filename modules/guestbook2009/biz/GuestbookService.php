@@ -370,7 +370,7 @@ final class GuestbookService extends APFObject {
     * Version 0.1, 10.05.2009<br />
     */
    private function &getMapper() {
-      return $this->getDIServiceObject('modules::guestbook2009::data', 'GuestbookMapper');
+      return $this->getDIServiceObject('APF\modules\guestbook2009\data', 'GuestbookMapper');
    }
 
 }

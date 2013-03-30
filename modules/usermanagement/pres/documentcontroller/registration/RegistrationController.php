@@ -136,7 +136,7 @@ class RegistrationController extends UmgtBaseController {
     */
    private function getInitialGroups() {
 
-      $config = $this->getConfiguration('modules::usermanagement::pres', 'registration.ini');
+      $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'registration.ini');
       $section = $config->getSection('Default');
 
       if ($section === null) {
@@ -172,7 +172,7 @@ class RegistrationController extends UmgtBaseController {
     */
    private function getInitialRoles() {
 
-      $config = $this->getConfiguration('modules::usermanagement::pres', 'registration.ini');
+      $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'registration.ini');
       $section = $config->getSection('Default');
 
       if ($section === null) {

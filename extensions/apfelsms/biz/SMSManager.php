@@ -1,8 +1,13 @@
 <?php
 namespace APF\extensions\apfelsms\biz;
 
+use APF\core\configuration\ConfigurationException;
 use APF\core\pagecontroller\APFObject;
+use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
+use APF\extensions\apfelsms\biz\pages\stores\SMSPageStore;
+use APF\extensions\apfelsms\biz\sites\SMSSite;
+use APF\extensions\apfelsms\data\SMSMapper;
 use APF\tools\request\RequestHandler;
 use APF\tools\link\LinkGenerator;
 

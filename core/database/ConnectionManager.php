@@ -124,7 +124,7 @@ final class ConnectionManager extends APFObject {
       }
 
       // read configuration
-      $config = $this->getConfiguration('core::database', 'connections.ini');
+      $config = $this->getConfiguration('APF\core\database', 'connections.ini');
 
       // get config section
       $section = $config->getSection($connectionKey);

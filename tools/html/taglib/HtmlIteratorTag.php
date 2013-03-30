@@ -179,7 +179,7 @@ class HtmlIteratorTag extends Document {
          if ($pager != false) {
 
             // get pager-config
-            $pagerConfig = $this->getConfiguration('modules::pager', 'pager');
+            $pagerConfig = $this->getConfiguration('APF\modules\pager', 'pager');
             $pagerConfig = $pagerConfig->getSection($pager);
 
             // get the number of entries per page

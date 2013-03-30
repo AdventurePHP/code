@@ -107,10 +107,10 @@ class MultiFileUploadTag extends AbstractFormControl {
       $this->manager->deleteOldFiles();
 
       // Zugriff auf Sprachconfig:
-      $this->languageConfig = $this->getConfiguration('tools::form::multifileupload', 'language.ini')->getSection($this->language);
+      $this->languageConfig = $this->getConfiguration('APF\tools\form\multifileupload', 'language.ini')->getSection($this->language);
 
       // Zugriff auf MultiFileUploadConfig
-      $this->MFUConfig = $this->getConfiguration('tools::form::multifileupload', 'multifileupload.ini')->getSection($this->uploadFieldName);
+      $this->MFUConfig = $this->getConfiguration('APF\tools\form\multifileupload', 'multifileupload.ini')->getSection($this->uploadFieldName);
 
       // Zugriff auf HTML-Header-Manager
       /* @var $HHM HtmlHeaderManager */

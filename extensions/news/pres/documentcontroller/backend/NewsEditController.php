@@ -42,7 +42,7 @@ class NewsEditController extends NewsBaseController {
       $appKey = $this->getAppKey();
       $form = $this->getForm('edit');
 
-      $cfg = $this->getConfiguration('extensions::news', 'labels.ini');
+      $cfg = $this->getConfiguration('APF\extensions\news', 'labels.ini');
       $lang = $cfg->getSection($this->getLanguage());
 
       $newsManager = $this->getNewsManager();

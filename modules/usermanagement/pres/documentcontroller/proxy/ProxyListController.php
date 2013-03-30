@@ -48,7 +48,7 @@ class ProxyListController extends UmgtBaseController {
 
       // add default option that deletes any filter
       $select->addOption(
-         $this->getConfiguration('modules::usermanagement::pres', 'labels.ini')
+         $this->getConfiguration('APF\modules\usermanagement\pres', 'labels.ini')
                ->getSection($this->getLanguage())
                ->getValue('frontend.proxy.list.delete-filter.label'), 0);
 

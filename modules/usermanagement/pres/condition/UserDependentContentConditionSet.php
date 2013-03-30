@@ -159,7 +159,7 @@ class UserDependentContentConditionSet extends APFObject {
     * @return UmgtManager
     */
    private function &getUmgtManager() {
-      return $this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
+      return $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
    }
 
    /**

@@ -48,7 +48,7 @@ class NewsFrontendController extends NewsBaseController {
          return;
       }
 
-      $Cfg = $this->getConfiguration('extensions::news', 'news.ini');
+      $Cfg = $this->getConfiguration('APF\extensions\news', 'news.ini');
       $AllowHtml = ($Cfg->getSection('General')->getValue('AllowHtml') == 'TRUE') ? TRUE : FALSE;
 
       $List = $this->getIterator('list');
@@ -98,7 +98,7 @@ class NewsFrontendController extends NewsBaseController {
          return '';
       }
 
-      $Cfg = $this->getConfiguration('extensions::news', 'news.ini');
+      $Cfg = $this->getConfiguration('APF\extensions\news', 'news.ini');
       $PageParameter = $Cfg->getSection('Paging')->getValue('PageParameter');
 
       $Page = $newsManager->getPageNumber($appKey);

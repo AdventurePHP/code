@@ -3,12 +3,12 @@
 @>
 <core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <h3><html:getstring
-       namespace="modules::usermanagement::pres"
+       namespace="APF\modules\usermanagement\pres"
        config="labels.ini"
        entry="frontend.proxy.edit-type.headline"/></h3>
 <p>
    <html:getstring
-       namespace="modules::usermanagement::pres"
+       namespace="APF\modules\usermanagement\pres"
        config="labels.ini"
        entry="frontend.proxy.edit-type.intro.text"/>
 </p>
@@ -17,14 +17,14 @@
       <form:error>
          <div class="error-cont">
             <error:getstring
-                  namespace="modules::usermanagement::pres"
+                  namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="frontend.proxy.edit-type.validation.message"/>
          </div>
       </form:error>
       <p>
          <label for="proxytypename"><form:getstring
-               namespace="modules::usermanagement::pres"
+               namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.edit-type.type-name.label"/></label>
          <form:text id="proxytypename" name="proxytypename" maxlength="100" />
@@ -37,7 +37,7 @@
       <p>
          <form:button name="send">
             <button:getstring
-                  namespace="modules::usermanagement::pres"
+                  namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="frontend.proxy.edit-type.button.label"/>
          </form:button>

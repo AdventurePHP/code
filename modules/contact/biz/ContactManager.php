@@ -163,7 +163,7 @@ class ContactManager extends APFObject {
     */
    private function getNotificationText(array $values = array()) {
 
-      $config = $this->getConfiguration('modules::contact', 'mail_templates.ini');
+      $config = $this->getConfiguration('APF\modules\contact', 'mail_templates.ini');
       $section = $config->getSection($this->getLanguage());
       if ($section === null) {
          throw new ConfigurationException('Configuration section "' . $this->getLanguage() . '" is not present within '
@@ -202,7 +202,7 @@ class ContactManager extends APFObject {
     * Version 0.1, 19.10.2011<br />
     */
    private function getConfirmationText(array $values = array()) {
-      $config = $this->getConfiguration('modules::contact', 'mail_templates.ini');
+      $config = $this->getConfiguration('APF\modules\contact', 'mail_templates.ini');
       $section = $config->getSection($this->getLanguage());
       if ($section === null) {
          throw new ConfigurationException('Configuration section "' . $this->getLanguage() . '" is not present within '

@@ -4,14 +4,14 @@
 <core:addtaglib namespace="tools::html::taglib" class="HtmlIteratorTag" prefix="html" name="iterator" />
 <h3><html:getstring
       name="display-name"
-      namespace="modules::usermanagement::pres"
+      namespace="APF\modules\usermanagement\pres"
       config="labels.ini"
       entry="frontend.role.details.headline"/></h3>
 <p>
    <html:placeholder name="Description" />
 </p>
 <h4><html:getstring
-      namespace="modules::usermanagement::pres"
+      namespace="APF\modules\usermanagement\pres"
       config="labels.ini"
       entry="frontend.role.details.permissions.label"/></h4>
 <html:iterator name="Permissions">
@@ -21,7 +21,7 @@
          <li>
             <umgt:media filename="permission.png">
                <media:getstring
-                  namespace="modules::usermanagement::pres"
+                  namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="frontend.role.details.permission-img.label"/>
             </umgt:media>
@@ -33,7 +33,7 @@
 </html:iterator>
 
 <h4><html:getstring
-      namespace="modules::usermanagement::pres"
+      namespace="APF\modules\usermanagement\pres"
       config="labels.ini"
       entry="frontend.role.details.users.label"/></h4>
 <html:iterator name="Users">
@@ -43,7 +43,7 @@
          <li>
             <umgt:media filename="user.png">
                <media:getstring
-                  namespace="modules::usermanagement::pres"
+                  namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="frontend.role.details.user-img.label"/>
             </umgt:media>
@@ -54,7 +54,7 @@
 </html:iterator>
 
 <h4><html:getstring
-      namespace="modules::usermanagement::pres"
+      namespace="APF\modules\usermanagement\pres"
       config="labels.ini"
       entry="frontend.role.details.groups.label"/></h4>
 <html:iterator name="Groups">
@@ -64,7 +64,7 @@
          <li>
             <umgt:media filename="group.png">
                <media:getstring
-                  namespace="modules::usermanagement::pres"
+                  namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="frontend.role.details.group-img.label"/>
             </umgt:media>

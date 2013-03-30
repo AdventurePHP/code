@@ -83,7 +83,7 @@ final class PagerManager extends APFObject {
    public function init($initParam) {
 
       // initialize the config
-      $config = $this->getConfiguration('modules::pager', 'pager');
+      $config = $this->getConfiguration('APF\modules\pager', 'pager');
       $this->section = $config->getSection($initParam);
 
       // empty sections are not allowed since they produced NPE's

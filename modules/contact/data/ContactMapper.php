@@ -51,7 +51,7 @@ class ContactMapper extends APFObject {
     */
    public function loadRecipients() {
 
-      $config = $this->getConfiguration('modules::contact', 'recipients.ini');
+      $config = $this->getConfiguration('APF\modules\contact', 'recipients.ini');
 
       /* @var $recipients ContactFormRecipient[] */
       $recipients = array();

@@ -54,7 +54,7 @@ class UmgtLogoutAction extends AbstractFrontcontrollerAction {
          $cM->deleteCookie(UmgtAutoLoginAction::AUTO_LOGIN_COOKIE_NAME);
 
          // redirect to target page
-         $urlProvider = & $this->getDIServiceObject('modules::usermanagement::biz', 'LogoutRedirectUrlProvider');
+         $urlProvider = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'LogoutRedirectUrlProvider');
          /* @var $urlProvider UmgtRedirectUrlProvider */
          HeaderManager::forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
          exit(0);

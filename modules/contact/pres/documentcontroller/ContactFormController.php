@@ -106,7 +106,7 @@ class ContactFormController extends BaseDocumentController {
       } else {
 
          // label the button
-         $config = $this->getConfiguration('modules::contact', 'language');
+         $config = $this->getConfiguration('APF\modules\contact', 'language');
          $value = $config->getSection($this->language)->getValue('form.button');
          $button = & $form->getFormElementByName('sendFormContact');
          $button->setAttribute('value', $value);

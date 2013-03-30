@@ -97,7 +97,7 @@ class LoginController extends BaseDocumentController {
                   }
 
                   // redirect to target page
-                  $urlProvider = &$this->getDIServiceObject('modules::usermanagement::biz', 'LoginRedirectUrlProvider');
+                  $urlProvider = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'LoginRedirectUrlProvider');
                   /* @var $urlProvider UmgtRedirectUrlProvider */
                   HeaderManager::forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
                   exit(0);
@@ -136,10 +136,10 @@ class LoginController extends BaseDocumentController {
     */
    private function loadUser($username, $password) {
       /* @var $umgt UmgtManager */
-      $umgt = &$this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
+      $umgt = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
       try {
-         $config = $this->getConfiguration('modules::usermanagement::pres', 'login');
+         $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'login');
          $section = $config->getSection(UmgtManager::CONFIG_SECTION_NAME);
          $loginType = $section == null ? self::$USERNAME_AND_PASSWORD_LOGIN : $section->getValue('login.type');
       } catch (ConfigurationException $e) {
@@ -158,7 +158,7 @@ class LoginController extends BaseDocumentController {
 
    public function createAutoLogin($user) {
       /* @var $umgt UmgtManager */
-      $umgt = &$this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
+      $umgt = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
       $cM = new CookieManager(UmgtAutoLoginAction::AUTO_LOGIN_COOKIE_NAMESPACE);
 

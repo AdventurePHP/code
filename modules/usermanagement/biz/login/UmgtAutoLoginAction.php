@@ -59,7 +59,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
          if ($authToken !== null) {
 
             /* @var $umgt UmgtManager */
-            $umgt = & $this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
+            $umgt = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
             $savedToken = $umgt->loadAuthTokenByTokenString($authToken);
 
             if ($savedToken !== null) {

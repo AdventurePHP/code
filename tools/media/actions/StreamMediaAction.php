@@ -197,7 +197,7 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
     */
    private function getExtensions() {
 
-      $config = $this->getConfiguration('tools::media', 'allowed_extensions.ini');
+      $config = $this->getConfiguration('APF\tools\media', 'allowed_extensions.ini');
       $section = $config->getSection('Default');
 
       if ($section == null) {

@@ -99,7 +99,7 @@ class ArticleCommentMapper extends APFObject {
 
       /* @var $cM ConnectionManager */
       $cM = & $this->getServiceObject('core::database', 'ConnectionManager');
-      $config = $this->getConfiguration('modules::comments', 'comments.ini');
+      $config = $this->getConfiguration('APF\modules\comments', 'comments.ini');
       $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey');
       if ($connectionKey == null) {
          throw new \InvalidArgumentException('[ArticleCommentMapper::getConnection()] The module\'s '

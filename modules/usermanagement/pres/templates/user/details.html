@@ -3,7 +3,7 @@
 @>
 <h3><html:getstring
       name="headline"
-      namespace="modules::usermanagement::pres"
+      namespace="APF\modules\usermanagement\pres"
       config="labels.ini"
       entry="frontend.user.details.headline"
       /></h3>
@@ -11,7 +11,7 @@
 <core:addtaglib namespace="tools::html::taglib" class="HtmlIteratorTag" prefix="html" name="iterator" />
 <h4><html:getstring
       name="headline"
-      namespace="modules::usermanagement::pres"
+      namespace="APF\modules\usermanagement\pres"
       config="labels.ini"
       entry="frontend.user.details.user-details.label"/></h4>
 <html:template name="User">
@@ -25,7 +25,7 @@
 
 <h4><html:getstring
       name="headline"
-      namespace="modules::usermanagement::pres"
+      namespace="APF\modules\usermanagement\pres"
       config="labels.ini"
       entry="frontend.user.details.groups.label"/></h4>
 <html:iterator name="Groups">
@@ -35,7 +35,7 @@
          <li>
             <umgt:media filename="group.png">
                <media:getstring
-                  namespace="modules::usermanagement::pres"
+                  namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="frontend.user.details.group-img.label"
                />
@@ -48,7 +48,7 @@
 
 <h4><html:getstring
       name="headline"
-      namespace="modules::usermanagement::pres"
+      namespace="APF\modules\usermanagement\pres"
       config="labels.ini"
       entry="frontend.user.details.roles.label"/></h4>
 <html:iterator name="Roles">
@@ -58,7 +58,7 @@
       <li>
          <umgt:media filename="role.png">
             <media:getstring
-               namespace="modules::usermanagement::pres"
+               namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.user.details.role-img.label"
             />
@@ -71,7 +71,7 @@
       
 <h4><html:getstring
       name="headline"
-      namespace="modules::usermanagement::pres"
+      namespace="APF\modules\usermanagement\pres"
       config="labels.ini"
       entry="frontend.user.details.objects.label"/></h4>
 <html:iterator name="Proxies">
@@ -81,26 +81,26 @@
       <li>
          <umgt:media filename="visibility_def.png">
             <media:getstring
-               namespace="modules::usermanagement::pres"
+               namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.user.details.proxy-img.label"
             />
          </umgt:media>
 
          <item:getstring
-               namespace="modules::usermanagement::pres"
+               namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.user.details.app-obj-id.label"/>
          <strong><item:placeholder getter="getAppObjectId" /></strong>
 
          <item:getstring
-            namespace="modules::usermanagement::pres"
+            namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="frontend.user.details.proxy-id.label" />
          <strong><item:placeholder getter="getObjectId" /></strong>
 
          <item:getstring
-            namespace="modules::usermanagement::pres"
+            namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="frontend.user.details.permissions.label" />
          <strong><item:placeholder getter="getReadPermission" /></strong>/<strong><item:placeholder getter="getWritePermission" /></strong>/<strong><item:placeholder getter="getLinkPermission" /></strong>/<strong><item:placeholder getter="getDeletePermission" /></strong>

@@ -47,7 +47,7 @@ class JsCssPackager extends APFObject {
     * @return Configuration The current package configuration.
     */
    private function getPackageConfiguration() {
-      return $this->getConfiguration('extensions::htmlheader::biz', 'JsCssPackager.ini');
+      return $this->getConfiguration('APF\extensions\htmlheader\biz', 'JsCssPackager.ini');
    }
 
    /**
@@ -170,7 +170,7 @@ class JsCssPackager extends APFObject {
       $filteredContent = JsCssInclusionFilterChain::getInstance()->filter(file_get_contents($filePath));
 
       try {
-         $config = $this->getConfiguration('extensions::htmlheader::biz', 'JsCssInclusion.ini');
+         $config = $this->getConfiguration('APF\extensions\htmlheader\biz', 'JsCssInclusion.ini');
 
          $sectionGeneral = $config->getSection('General');
          if ($sectionGeneral !== null) {
@@ -204,7 +204,7 @@ class JsCssPackager extends APFObject {
     */
    protected function shrinkJs($input) {
       include(dirname(__FILE__) . '/JSMin.php');
-      return JSMin::minify($input);
+      return \JSMin::minify($input);
    }
 
    /**
@@ -282,7 +282,7 @@ class JsCssPackager extends APFObject {
    protected function initFilterChain($fileType) {
 
       try {
-         $config = $this->getConfiguration('extensions::htmlheader::biz', 'JsCssInclusion.ini');
+         $config = $this->getConfiguration('APF\extensions\htmlheader\biz', 'JsCssInclusion.ini');
       } catch (ConfigurationException $e) {
          return;
       }
