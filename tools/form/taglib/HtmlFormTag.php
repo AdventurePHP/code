@@ -174,8 +174,15 @@ class HtmlFormTag extends Document {
    public function isSent() {
 
       foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId]->isSent() === true) {
-            return true;
+         // Only include real form elements to avoid unnecessary
+         // implementation overhead for elements that just want to
+         // be used within forms but do not act as form elements!
+         // See http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=1387
+         // for details.
+         if ($this->children[$objectId] instanceof FormControl) {
+            if ($this->children[$objectId]->isSent() === true) {
+               return true;
+            }
          }
       }
 
@@ -197,8 +204,15 @@ class HtmlFormTag extends Document {
    public function isValid() {
 
       foreach ($this->children as $objectId => $DUMMY) {
-         if ($this->children[$objectId]->isValid() === false) {
-            return false;
+         // Only include real form elements to avoid unnecessary
+         // implementation overhead for elements that just want to
+         // be used within forms but do not act as form elements!
+         // See http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=1387
+         // for details.
+         if ($this->children[$objectId] instanceof FormControl) {
+            if ($this->children[$objectId]->isValid() === false) {
+               return false;
+            }
          }
       }
 
