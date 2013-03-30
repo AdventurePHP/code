@@ -1,7 +1,10 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators\providers;
 
-use APF\extensions\apfelsms\biz\pages\decorators\providers\SMSAccessCtrlProviderInterface;
+use APF\core\pagecontroller\APFObject;
+use APF\core\service\APFService;
+use APF\extensions\apfelsms\biz\pages\SMSPage;
+use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 
 /**
  *
@@ -26,11 +29,11 @@ class SMSUmgtLoggedInAccessCtrlProvider extends APFObject implements SMSAccessCt
    public function isAccessProtected(SMSPage $page, $permissionName) {
 
       /** @var $umgtUS UmgtUserSessionStore */
-      $umgtUS = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $umgtUS = & $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       // load current user
       $user = $umgtUS->getUser($this->getContext());
-    
+
 
       // user IS NOT logged in
       if ($user === null) {
@@ -56,6 +59,5 @@ class SMSUmgtLoggedInAccessCtrlProvider extends APFObject implements SMSAccessCt
    public function getAccessProtectedOnLogin() {
       return $this->accessProtectedOnLogin;
    }
-
 
 }

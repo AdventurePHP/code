@@ -41,8 +41,8 @@ use APF\modules\genericormapper\data\GenericORRelationMapper;
  * <p/>
  * Further, the factory must be created using the service manager. Sample:
  * <pre>$gormFact = &$this->getServiceObject('APF\modules\genericormapper\data\GenericORMapperFactory');
- * $gormFact = &$this->getServiceObject('modules::genericormapper::data', 'GenericORMapperFactory', APFService::SERVICE_TYPE_NORMAL);
- * $gormFact = &$this->getServiceObject('modules::genericormapper::data', 'GenericORMapperFactory', APFService::SERVICE_TYPE_SESSION_SINGLETON);</pre>
+ * $gormFact = &$this->getServiceObject('APF\modules\genericormapper\data\GenericORMapperFactory', APFService::SERVICE_TYPE_NORMAL);
+ * $gormFact = &$this->getServiceObject('APF\modules\genericormapper\data\GenericORMapperFactory', APFService::SERVICE_TYPE_SESSION_SINGLETON);</pre>
  *
  * @author Christian Achatz
  * @version

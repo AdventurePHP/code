@@ -1,8 +1,10 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators;
 
-use APF\extensions\apfelsms\biz\pages\SMSPageInterface;
-use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDecInterface;
+use APF\core\pagecontroller\APFObject;
+use APF\extensions\apfelsms\biz\SMSException;
+use APF\extensions\apfelsms\biz\pages\SMSPage;
+use APF\tools\link\Url;
 
 /**
  *
@@ -412,6 +414,5 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
 
       return $this->SMSPage->getOuterPage();
    }
-
 
 }

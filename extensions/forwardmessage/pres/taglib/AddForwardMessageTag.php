@@ -66,7 +66,7 @@ class AddForwardMessageTag extends Document {
       // add message that is the essence of the tag's transformed content
 
       /* @var $forwardMessageMgr ForwardMessageManager */
-      $forwardMessageMgr = & $this->getServiceObject('extensions::forwardmessage::biz', 'ForwardMessageManager', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $forwardMessageMgr = & $this->getServiceObject('APF\extensions\forwardmessage\biz\ForwardMessageManager', APFService::SERVICE_TYPE_SESSION_SINGLETON);
       $forwardMessageMgr->addMessage($name, parent::transform(), $show, $group);
    }
 

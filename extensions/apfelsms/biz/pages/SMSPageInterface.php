@@ -1,6 +1,8 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages;
 
+use APF\tools\link\Url;
+
 /**
  *
  * @package APFelSMS

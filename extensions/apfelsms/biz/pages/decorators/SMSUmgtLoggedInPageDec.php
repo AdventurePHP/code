@@ -1,7 +1,9 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators;
 
+use APF\core\service\APFService;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSAbstractPageDec;
+use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 
 /**
  *
@@ -20,7 +22,6 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
     */
    protected $hiddenOnLogin = false;
 
-   
 
    /**
     * @return boolean
@@ -28,7 +29,7 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
    public function isHidden() {
 
       /** @var $umgtUS UmgtUserSessionStore */
-      $umgtUS = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $umgtUS = & $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       // load current user
       $user = $umgtUS->getUser($this->getContext());
@@ -40,12 +41,12 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
 
       // user IS logged in
       return $this->hiddenOnLogin;
-      
+
    }
 
 
    /**
-    * @param boolean  $hiddenOnLogin
+    * @param boolean $hiddenOnLogin
     * @since v0.2
     */
    public function setHiddenOnLogin($hiddenOnLogin) {
@@ -60,6 +61,5 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
    public function getHiddenOnLogin() {
       return $this->hiddenOnLogin;
    }
-
 
 }

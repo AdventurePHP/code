@@ -58,7 +58,7 @@ class LoginController extends BaseDocumentController {
    public function transformContent() {
 
       /* @var $sessionStore UmgtUserSessionStore */
-      $sessionStore = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $sessionStore = &$this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       $appIdent = $this->getContext();
       $user = $sessionStore->getUser($appIdent);

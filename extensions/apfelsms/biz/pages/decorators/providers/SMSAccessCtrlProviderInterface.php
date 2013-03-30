@@ -1,6 +1,8 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators\providers;
 
+use APF\extensions\apfelsms\biz\pages\SMSPage;
+
 /**
  *
  * @package APFelSMS
@@ -10,7 +12,7 @@ namespace APF\extensions\apfelsms\biz\pages\decorators\providers;
  *
  */
 interface SMSAccessCtrlProvider {
-   
+
 
    /**
     * @abstract

@@ -26,14 +26,6 @@ use APF\core\service\APFService;
 use APF\modules\usermanagement\biz\UmgtManager;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 
-use APF\modules\usermanagement\biz\model\UmgtApplication;
-use APF\modules\usermanagement\biz\model\UmgtGroup;
-use APF\modules\usermanagement\biz\model\UmgtPermission;
-use APF\modules\usermanagement\biz\model\UmgtRole;
-use APF\modules\usermanagement\biz\model\UmgtUser;
-use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
-use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinitionType;
-
 use APF\modules\usermanagement\pres\condition\UserDependentContentCondition;
 
 use APF\modules\usermanagement\pres\condition\UmgtLoggedOutCondition;
@@ -195,7 +187,7 @@ class UserDependentContentConditionSet extends APFObject {
     * @return UmgtUserSessionStore The session store of the umgt module.
     */
    private function &getUserSessionStore() {
-      return $this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      return $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
    }
 
 }

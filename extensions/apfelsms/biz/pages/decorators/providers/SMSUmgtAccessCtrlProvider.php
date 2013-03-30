@@ -1,6 +1,12 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators\providers;
 
+use APF\core\pagecontroller\APFObject;
+use APF\core\service\APFService;
+use APF\extensions\apfelsms\biz\pages\SMSPage;
+use APF\modules\usermanagement\biz\UmgtManager;
+use APF\modules\usermanagement\biz\UmgtUserSessionStore;
+
 /**
  *
  * @package APFelSMS
@@ -37,7 +43,7 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
       }
 
       /** @var $umgtUS UmgtUserSessionStore */
-      $umgtUS = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $umgtUS = & $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       // load current user
       $user = $umgtUS->getUser($this->getContext());
@@ -48,7 +54,7 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
       }
 
       /** @var $umgtM UmgtManager */
-      $umgtM = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
+      $umgtM = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
       $permissions = $umgtM->loadUserPermissions($user);
 
@@ -62,7 +68,7 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
 
          }
       }
-      
+
 
       // no permission found, protected against access
       return $this->cache[$permissionName] = true;

@@ -1,6 +1,12 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators\providers;
 
+use APF\core\pagecontroller\APFObject;
+use APF\core\service\APFService;
+use APF\extensions\apfelsms\biz\pages\SMSPage;
+use APF\modules\usermanagement\biz\UmgtManager;
+use APF\modules\usermanagement\biz\UmgtUserSessionStore;
+
 /**
  *
  * @package APFelSMS
@@ -41,7 +47,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       }
 
       /** @var $umgtUS UmgtUserSessionStore */
-      $umgtUS = &$this->getServiceObject('modules::usermanagement::biz', 'UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $umgtUS = & $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       // load current user
       $user = $umgtUS->getUser($this->getContext());
@@ -52,7 +58,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       }
 
       /** @var $umgtM UmgtManager */
-      $umgtM = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
+      $umgtM = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
       // load visibilities from users and groups
       $groups = $umgtM->loadGroupsWithUser($user);
@@ -60,7 +66,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       if ($visibilityType === null) {
          return $this->cache[$permissionName][$pageId] = true; // visibility type is not existent
       }
-      
+
       $visibilities = $umgtM->loadVisibilityDefinitionsByUser($user, $visibilityType);
       if (count($groups) > 0) {
          foreach ($groups AS $group) {
@@ -77,7 +83,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
          foreach ($visibilities AS $visibility) {
 
             if ($visibility->getAppObjectId() == $pageId &&
-               ((bool) $visibility->getReadPermission())
+                  ((bool)$visibility->getReadPermission())
             ) {
                return $this->cache[$permissionName][$pageId] = false; // visibility definition with read permission found, grant access
             }
@@ -95,7 +101,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
     * @param boolean $anonymousAccess
     */
    public function setAnonymousAccess($anonymousAccess) {
-      $this->anonymousAccess = (strtolower((string) $anonymousAccess) == 'true');
+      $this->anonymousAccess = (strtolower((string)$anonymousAccess) == 'true');
    }
 
 
