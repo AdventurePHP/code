@@ -42,7 +42,7 @@ class PostboxFactory extends APFObject {
     */
    public function getPostbox(GenericORMapperDataObject &$user) {
       /* @var $postbox Postbox */
-      $postbox = & $this->getDIServiceObject('extensions::postbox', 'Postbox');
+      $postbox = & $this->getDIServiceObject('APF\extensions\postbox', 'Postbox');
       return $postbox->setUser($user);
    }
 

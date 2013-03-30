@@ -53,7 +53,7 @@ class UmgtTemplateTag extends TemplateTag {
    }
 
    public function transform() {
-      $condSet = &$this->getServiceObject('modules::usermanagement::pres::condition', 'UserDependentContentConditionSet');
+      $condSet = &$this->getServiceObject('APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet');
       /* @var $condSet UserDependentContentConditionSet */
 
       if ($condSet->conditionMatches($this->getContext(), $this->getAttribute('condition'), $this->getAttribute('options'))) {

@@ -137,7 +137,7 @@ class GuestbookMapper extends APFObject {
 
       if ($guestbook == null) {
          /* @var $model GuestbookModel */
-         $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+         $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
          $gbId = $model->getGuestbookId();
          throw new \InvalidArgumentException('[GuestbookManager::mapGenericGuestbook2DomainObject()] '
                . 'No guestbook with id "' . $gbId . '" stored in database! Please check your guestbook tag '
@@ -484,7 +484,7 @@ class GuestbookMapper extends APFObject {
     */
    private function getCurrentGuestbook() {
       /* @var $model GuestbookModel */
-      $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+      $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
       return $this->orm->loadObjectByID('Guestbook', $model->getGuestbookId());
    }
 

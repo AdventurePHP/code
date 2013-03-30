@@ -35,7 +35,7 @@ class SMSAliasPageDec extends SMSAbstractPageDec {
       if (!($this->referencedPage instanceof SMSPage)) {
 
          /** @var SMSManager $SMSM */
-         $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+         $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
          $this->referencedPage = $SMSM->getPage($this->referencedPageId);
 

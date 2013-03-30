@@ -55,7 +55,7 @@ class UmgtImportTemplateTag extends ImportTemplateTag {
 
    public function onParseTime() {
 
-      $condSet = & $this->getServiceObject('modules::usermanagement::pres::condition', 'UserDependentContentConditionSet');
+      $condSet = & $this->getServiceObject('APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet');
       /* @var $condSet UserDependentContentConditionSet */
 
       if ($condSet->conditionMatches($this->getContext(), $this->getAttribute('condition'), $this->getAttribute('options'))) {

@@ -67,7 +67,7 @@ class CommentListingController extends CommentBaseDocumentController {
 
       // init bb code parser (remove some provider, that we don't need configuration files)
       /* @var $bP AdvancedBBCodeParser */
-      $bP = &$this->getServiceObject('tools::string', 'AdvancedBBCodeParser');
+      $bP = &$this->getServiceObject('APF\tools\string\AdvancedBBCodeParser');
       $bP->removeProvider('standard.font.color');
       $bP->removeProvider('standard.font.size');
 

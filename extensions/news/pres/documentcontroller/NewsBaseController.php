@@ -46,7 +46,7 @@ abstract class NewsBaseController extends BaseDocumentController {
     * @return NewsManager The instance of the business component.
     */
    protected function getNewsManager() {
-      return $this->getDIServiceObject('extensions::news', 'NewsManager');
+      return $this->getDIServiceObject('APF\extensions\news', 'NewsManager');
    }
 
 }

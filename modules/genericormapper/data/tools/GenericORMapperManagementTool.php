@@ -268,7 +268,7 @@ class GenericORMapperManagementTool extends BaseMapper {
       $sql = null;
       if (!empty($this->connectionName)) {
          /* @var $cM ConnectionManager */
-         $cM = & $this->getServiceObject('core::database', 'ConnectionManager');
+         $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
          $sql = & $cM->getConnection($this->connectionName);
 
          // analyze the current database

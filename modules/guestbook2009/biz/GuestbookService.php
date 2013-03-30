@@ -93,7 +93,7 @@ final class GuestbookService extends APFObject {
       $pager = & $this->getPager();
 
       /* @var $model GuestbookModel */
-      $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+      $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
       $entryIds = $pager->loadEntries(array('GuestbookID' => $model->getGuestbookId()));
 
       $entries = array();
@@ -119,7 +119,7 @@ final class GuestbookService extends APFObject {
     */
    public function getPagerOutput() {
       /* @var $model GuestbookModel */
-      $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+      $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
       $pager = & $this->getPager();
       return $pager->getPager(array('GuestbookID' => $model->getGuestbookId()));
    }
@@ -157,7 +157,7 @@ final class GuestbookService extends APFObject {
 
       if ($this->pager === null) {
          /* @var $pMF PagerManagerFabric */
-         $pMF = & $this->getServiceObject('modules::pager::biz', 'PagerManagerFabric');
+         $pMF = & $this->getServiceObject('APF\modules\pager\biz\PagerManagerFabric');
          $this->pager = & $pMF->getPagerManager($this->pagerConfigSection);
       }
 
@@ -252,7 +252,7 @@ final class GuestbookService extends APFObject {
 
       // logout by cleaning the session
       /* @var $model GuestbookModel */
-      $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+      $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
       $guestbookId = $model->getGuestbookId();
       $session = new SessionManager('modules::guestbook2009::biz::' . $guestbookId);
       $session->deleteSessionData('LoggedIn');
@@ -278,7 +278,7 @@ final class GuestbookService extends APFObject {
    public function checkAccessAllowed() {
 
       /* @var $model GuestbookModel */
-      $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+      $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
       $guestbookId = $model->getGuestbookId();
       $session = new SessionManager('modules::guestbook2009::biz::' . $guestbookId);
       $loggedId = $session->loadSessionData('LoggedIn');
@@ -313,7 +313,7 @@ final class GuestbookService extends APFObject {
 
          // log user in
          /* @var $model GuestbookModel */
-         $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+         $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
          $guestbookId = $model->getGuestbookId();
          $session = new SessionManager('modules::guestbook2009::biz::' . $guestbookId);
          $session->saveSessionData('LoggedIn', 'true');

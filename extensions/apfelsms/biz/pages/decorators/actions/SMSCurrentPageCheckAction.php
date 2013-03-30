@@ -54,7 +54,7 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
 
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
       $SMSS = $SMSM->getSite();
 
 

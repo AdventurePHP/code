@@ -36,7 +36,7 @@ use APF\core\service\APFService;
  * must be created as a service object.
  * <p/>
  * <pre>
- * $connMgr = &$this->getServiceObject('core::database', 'ConnectionManager');
+ * $connMgr = &$this->getServiceObject('APF\core\database\ConnectionManager');
  * $dBConn = &$connMgr->getConnection('{ConnectionKey}');
  * </pre>
  * The appropriate configuration file must reside under the <em>core::database</em> namespace

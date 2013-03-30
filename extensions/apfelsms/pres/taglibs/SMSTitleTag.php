@@ -25,7 +25,7 @@ class SMSTitleTag extends Document {
    public function transform() {
 
       /** @var $site SMSSite */
-      $site = $this->getDIServiceObject('extensions::apfelsms', 'Site');
+      $site = $this->getDIServiceObject('APF\extensions\apfelsms', 'Site');
 
       $siteTitle = StringAssistant::escapeSpecialCharacters($site->getWebsiteTitle());
 

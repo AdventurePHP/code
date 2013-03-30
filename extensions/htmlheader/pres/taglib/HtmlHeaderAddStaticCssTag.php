@@ -44,7 +44,7 @@ use APF\extensions\htmlheader\biz\StaticCssNode;
 class HtmlHeaderAddStaticCssTag extends Document {
 
    public function transform() {
-      $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+      $header = &$this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
       /* @var $header HtmlHeaderManager */
 
       $file = $this->getAttribute('file');

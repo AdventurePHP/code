@@ -69,7 +69,7 @@ class ContactFormController extends BaseDocumentController {
       $recipients = & $form->getFormElementByName('Empfaenger');
 
       /* @var $cM ContactManager */
-      $cM = & $this->getServiceObject('modules::contact::biz', 'ContactManager');
+      $cM = & $this->getServiceObject('APF\modules\contact\biz\ContactManager');
       /* @var $recipientList ContactFormRecipient[] */
       $recipientList = $cM->loadRecipients();
 
@@ -100,7 +100,7 @@ class ContactFormController extends BaseDocumentController {
          $formData->setMessage($text->getContent());
 
          /* @var $cM ContactManager */
-         $cM = & $this->getServiceObject('modules::contact::biz', 'ContactManager');
+         $cM = & $this->getServiceObject('APF\modules\contact\biz\ContactManager');
          $cM->sendContactForm($formData);
 
       } else {

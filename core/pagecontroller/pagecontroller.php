@@ -538,8 +538,7 @@ abstract class APFObject implements APFDIService {
     *
     * Returns a service object according to the current application context.
     *
-    * @param string $namespace Namespace of the service object (currently ignored).
-    * @param string $serviceName Name of the service object (=class name).
+    * @param string $class Fully qualified class name of the service object.
     * @param string $type The initializing type (see service manager for details).
     * @param string $instanceId The id of the instance to return.
     * @return APFObject The desired service object.
@@ -553,9 +552,8 @@ abstract class APFObject implements APFDIService {
     * Version 0.5, 24.02.2008 (Added the service type param)<br />
     * Version 0.6  21.11.2012 Jens Prangenberg <jprangenberg@mywebhd.com> (Added the instanceid param)<br />
     */
-   protected function &getServiceObject($namespace, $serviceName, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
-      return ServiceManager::getServiceObject(
-         $namespace, $serviceName, $this->getContext(), $this->getLanguage(), $type, $instanceId);
+   protected function &getServiceObject($class, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
+      return ServiceManager::getServiceObject($class, $this->getContext(), $this->getLanguage(), $type, $instanceId);
    }
 
    /**
@@ -563,8 +561,7 @@ abstract class APFObject implements APFDIService {
     *
     * Returns a initialized service object according to the current application context.
     *
-    * @param string $namespace Namespace of the service object (currently ignored).
-    * @param string $serviceName Name of the service object (=class name).
+    * @param string $class Fully qualified class name of the service object.
     * @param string $initParam The initialization parameter.
     * @param string $type The initializing type (see service manager for details).
     * @param string $instanceId The id of the instance to return.
@@ -577,9 +574,8 @@ abstract class APFObject implements APFDIService {
     * Version 0.3, 24.02.2008 (Added the service type param)<br />
     * Version 0.4  21.11.2012 Jens Prangenberg <jprangenberg@mywebhd.com> (Added the instanceid param)<br />
     */
-   protected function &getAndInitServiceObject($namespace, $serviceName, $initParam, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
-      return ServiceManager::getAndInitServiceObject(
-         $namespace, $serviceName, $this->getContext(), $this->getLanguage(), $initParam, $type, $instanceId);
+   protected function &getAndInitServiceObject($class, $initParam, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
+      return ServiceManager::getAndInitServiceObject($class, $this->getContext(), $this->getLanguage(), $initParam, $type, $instanceId);
    }
 
    /**

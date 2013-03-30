@@ -135,7 +135,7 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
    protected function &getDatabaseConnection() {
       $connectionKey = $this->getConfigAttribute('Cache.Connection');
       /* @var $cM ConnectionManager */
-      $cM = &$this->getServiceObject('core::database', 'ConnectionManager');
+      $cM = &$this->getServiceObject('APF\core\database\ConnectionManager');
       return $cM->getConnection($connectionKey);
    }
 

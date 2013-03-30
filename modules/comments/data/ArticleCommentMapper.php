@@ -98,7 +98,7 @@ class ArticleCommentMapper extends APFObject {
    private function &getConnection() {
 
       /* @var $cM ConnectionManager */
-      $cM = & $this->getServiceObject('core::database', 'ConnectionManager');
+      $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
       $config = $this->getConfiguration('APF\modules\comments', 'comments.ini');
       $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey');
       if ($connectionKey == null) {

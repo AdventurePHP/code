@@ -12,7 +12,7 @@ class SMSImportDesignTag extends ImportTemplateTag {
    public function onParseTime() {
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
       $SMSS = $SMSM->getSite();
 
 

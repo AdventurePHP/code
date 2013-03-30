@@ -52,7 +52,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       }
 
       /** @var $umgtM UmgtManager */
-      $umgtM = &$this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
+      $umgtM = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
       // load visibilities from users and groups
       $groups = $umgtM->loadGroupsWithUser($user);

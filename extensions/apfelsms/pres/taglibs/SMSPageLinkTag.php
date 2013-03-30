@@ -29,7 +29,7 @@ class SMSPageLinkTag extends Document {
       }
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
 
       ////

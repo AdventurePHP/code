@@ -48,7 +48,7 @@ class GuestbookImportTemplateTag extends ImportTemplateTag {
    public function onParseTime() {
 
       /* @var $model GuestbookModel */
-      $model = & $this->getServiceObject('modules::guestbook2009::biz', 'GuestbookModel');
+      $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
       $guestbookId = $this->getAttribute('gbid');
 
       // do not include the guestbook, if gbid is not set/existent

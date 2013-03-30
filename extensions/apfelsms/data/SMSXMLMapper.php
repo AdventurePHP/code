@@ -105,7 +105,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
       }
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       $outsitePageRepresentingObject = $mappedPage;
 

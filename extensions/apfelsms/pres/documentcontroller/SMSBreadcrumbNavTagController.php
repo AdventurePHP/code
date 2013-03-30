@@ -17,7 +17,7 @@ class SMSBreadcrumbNavTagController extends BaseDocumentController {
 
    public function transformContent() {
 
-      $this->SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $this->SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       $doc = $this->getDocument();
       $basePageId = $doc->getAttribute('SMSBreadcrumbNavBasePageId');

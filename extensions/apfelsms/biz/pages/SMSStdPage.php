@@ -213,7 +213,7 @@ class SMSStdPage extends APFObject implements SMSPage {
    public function setPageRequestParamInURL(Url $url) {
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       $pageRequestParam = $SMSM->getPageRequestParamName();
       $url->setQueryParameter($pageRequestParam, $this->getId());
@@ -250,7 +250,7 @@ class SMSStdPage extends APFObject implements SMSPage {
    protected function loadChildren() {
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       $ids = $SMSM->getMapper()->getChildrenIds($this);
 
@@ -272,7 +272,7 @@ class SMSStdPage extends APFObject implements SMSPage {
    public function getSiblings($includeMe = false) {
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       $siblingIds = $SMSM->getMapper()->getSiblingAndOwnIds($this);
 
@@ -317,7 +317,7 @@ class SMSStdPage extends APFObject implements SMSPage {
    protected function loadParent() {
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       $id = $SMSM->getMapper()->getParentId($this);
 
@@ -336,7 +336,7 @@ class SMSStdPage extends APFObject implements SMSPage {
    public function getOuterPage() {
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       return $SMSM->getPage($this->getId());
 
@@ -376,7 +376,7 @@ class SMSStdPage extends APFObject implements SMSPage {
    public function isCurrentSite() {
 
       /* @var $SMSS SMSSite */
-      $SMSS = $this->getDIServiceObject('extensions::apfelsms', 'Site');
+      $SMSS = $this->getDIServiceObject('APF\extensions\apfelsms', 'Site');
 
       $currentSiteId = $SMSS->getCurrentPageId();
       $thisId = $this->getId();

@@ -200,7 +200,7 @@ class BaseMapper extends APFObject {
     * Version 0.1, 16.03.2010 (Introduced due to bug 299)<br />
     */
    protected function createDatabaseConnection() {
-      $cM = & $this->getServiceObject('core::database', 'ConnectionManager');
+      $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
       /* @var $cM ConnectionManager */
       $this->dbDriver = & $cM->getConnection($this->connectionName);
    }

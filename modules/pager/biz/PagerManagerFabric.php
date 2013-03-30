@@ -31,7 +31,7 @@ use APF\modules\pager\biz\PagerManager;
  * Implements the factory of the pager manager. Initializes concrete PagerManager
  * instances and caches them for further usage.
  * Application sample:
- * <pre>$pMF = &$this->getServiceObject('modules::pager::biz','PagerManagerFabric');
+ * <pre>$pMF = &$this->getServiceObject('APF\modules\pager\biz\PagerManagerFabric');
  * $pM = &$pMF->getPagerManager('{ConfigSection}',{AdditionalParamArray});</pre>
  *
  * @author Christian Achatz

@@ -114,7 +114,7 @@ abstract class BBCodeParserProvider extends APFObject {
  *
  * Implements the advanced bbcode parser for the adventure php framework.
  * Usage:
- * <pre>$bP = &$this->getServiceObject('tools::string','AdvancedBBCodeParser');
+ * <pre>$bP = &$this->getServiceObject('APF\tools\string\AdvancedBBCodeParser');
  * [$bP->addProvider(...,...);]
  * [$bP->removeProvider(...);]
  * $string = '...';

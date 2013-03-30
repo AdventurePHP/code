@@ -28,7 +28,7 @@ class SMSNavTagController extends BaseDocumentController {
 
    public function transformContent() {
 
-      $this->SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $this->SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       $doc = $this->getDocument();
       $level = $doc->getAttribute('SMSNavLevel');

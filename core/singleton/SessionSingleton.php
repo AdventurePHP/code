@@ -43,7 +43,7 @@ register_shutdown_function(array('APF\core\singleton\SessionSingleton', 'saveObj
  */
 class SessionSingleton extends Singleton {
 
-   const SESSION_NAMESPACE = 'core::singleton::session';
+   const SESSION_NAMESPACE = 'APF\core\singleton';
 
    /**
     * @var string[] Stores the objects, that are requested as singletons.
@@ -71,7 +71,7 @@ class SessionSingleton extends Singleton {
     * class (e.g. two different GenericORRelationMapper instances for your application and
     * the UMGT).
     *
-    * @param string $className The name of the class, that should be created a session singleton instance from.
+    * @param string $class The name of the class, that should be created a session singleton instance from.
     * @param string $instanceId The id of the instance to return.
     * @return APFObject The desired object's singleton instance.
     * @throws \Exception In case the implementation class cannot be found.
@@ -80,25 +80,21 @@ class SessionSingleton extends Singleton {
     * @version
     * Version 0.1, 24.02.2008<br />
     */
-   public static function &getInstance($className, $instanceId = null) {
+   public static function &getInstance($class, $instanceId = null) {
 
       // the cache key is set to the class name for "normal" singleton instances.
       // in case an instance id is given, more than one singleton instance can
       // be created specified by the instance id - but only one per instance id
       // (->SPRING bean creation style).
-      $cacheKey = $instanceId === null ? $className : $instanceId;
+      $cacheKey = $instanceId === null ? $class : $instanceId;
 
       if (!isset(self::$CACHE[$cacheKey])) {
 
          $cachedObject = self::getSessionManager()->loadSessionData($cacheKey);
 
          if ($cachedObject === null) {
-            if (!class_exists($className)) {
-               throw new \Exception('[SessionSingleton::getInstance()] Class "' . $className . '" '
-                     . 'cannot be found! Maybe the class name is mis-spelt!', E_USER_ERROR);
-            }
-
-            self::$CACHE[$cacheKey] = new $className();
+            // no class check needed due to autoloading!
+            self::$CACHE[$cacheKey] = new $class();
          } else {
             self::$CACHE[$cacheKey] = unserialize($cachedObject);
          }

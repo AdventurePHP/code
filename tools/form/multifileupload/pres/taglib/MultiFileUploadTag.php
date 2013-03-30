@@ -114,7 +114,7 @@ class MultiFileUploadTag extends AbstractFormControl {
 
       // Zugriff auf HTML-Header-Manager
       /* @var $HHM HtmlHeaderManager */
-      $HHM = $this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+      $HHM = $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
 
 
       /*       * ********** Upload Button erstellen Anfang *********** */

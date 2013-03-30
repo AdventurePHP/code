@@ -171,7 +171,7 @@ final class DIServiceManager {
       }
 
       // Check if configuration section was complete. If not throw an exception to fail fast.
-      if ($serviceType === null || $namespace === null || $class === null) {
+      if ($serviceType === null || $class === null) {
          throw new \InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "' .
                   $sectionName . '" from namespace "' . $configNamespace . '" cannot be accomplished, due to missing
                or incorrect configuration! Please revise the configuration file and consult the manual!',
@@ -186,7 +186,7 @@ final class DIServiceManager {
       // this is no problem. Hence, the injected instance is then only one time constructed.
 
       /* @var $serviceObject APFDIService */
-      $serviceObject = & ServiceManager::getServiceObject($namespace, $class, $context, $language, $serviceType, $cacheKey);
+      $serviceObject = & ServiceManager::getServiceObject($class, $context, $language, $serviceType, $cacheKey);
 
       // do param injection (static configuration)
       $cfTasks = $section->getSection('conf');

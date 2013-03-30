@@ -67,7 +67,7 @@ class HtmlHeaderOutputFilter extends APFObject implements ChainedContentFilter {
    private function getHeaderContent() {
 
       /* @var $iM HtmlHeaderManager */
-      $iM = & $this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+      $iM = & $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
 
       $outputHead = '';
       $outputBody = '';

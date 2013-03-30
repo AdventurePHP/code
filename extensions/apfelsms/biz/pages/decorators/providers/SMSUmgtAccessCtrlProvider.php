@@ -48,7 +48,7 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
       }
 
       /** @var $umgtM UmgtManager */
-      $umgtM = &$this->getDIServiceObject('modules::usermanagement::biz', 'UmgtManager');
+      $umgtM = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
       $permissions = $umgtM->loadUserPermissions($user);
 

@@ -35,7 +35,7 @@ use APF\extensions\postbox\biz\PostboxFolder;
  * Represents a Postbox for a defined User. Must be loaded through PostboxFactory!
  * This is the central component of the extension.
  * @example:
- * $PostboxFactory = $this->getServiceObject('extensions::postbox::biz','PostboxFactory');
+ * $PostboxFactory = $this->getServiceObject('APF\extensions\postbox\biz\PostboxFactory');
  * $Postbox = $PostboxFactory->getPostbox($User);
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>

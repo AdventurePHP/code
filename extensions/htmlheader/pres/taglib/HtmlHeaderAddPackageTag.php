@@ -39,7 +39,7 @@ class HtmlHeaderAddPackageTag extends Document {
    public function transform() {
 
       /* @var $header HtmlHeaderManager */
-      $header = $this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+      $header = $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
 
       $url = $this->getAttribute('url');
       $name = $this->getAttribute('name');

@@ -45,7 +45,7 @@ use APF\extensions\htmlheader\biz\StaticJsNode;
 class HtmlHeaderAddStaticJsTag extends Document {
 
    public function transform() {
-      $header = &$this->getServiceObject('extensions::htmlheader::biz', 'HtmlHeaderManager');
+      $header = &$this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
       /* @var $header HtmlHeaderManager */
 
       $file = $this->getAttribute('file');

@@ -66,7 +66,7 @@ final class PagerMapper extends APFObject {
     * @return AbstractDatabaseHandler The current database connection.
     */
    private function &getConnection() {
-      $cM = & $this->getServiceObject('core::database', 'ConnectionManager');
+      $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
       /* @var $cM ConnectionManager */
       return $cM->getConnection($this->connectionKey);
    }

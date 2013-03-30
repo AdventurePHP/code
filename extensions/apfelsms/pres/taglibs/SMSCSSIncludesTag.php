@@ -29,7 +29,7 @@ class SMSCSSIncludesTag extends Document {
    public function transform() {
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       $currentPage = $SMSM->getSite()->getCurrentPage();
 

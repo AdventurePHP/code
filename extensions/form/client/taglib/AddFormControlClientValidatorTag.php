@@ -102,7 +102,7 @@ class AddFormControlClientValidatorTag extends AbstractFormControl {
       }
 
       /* @var $CVSS ClientValidationScriptStore */
-      $CVSS = & $this->getServiceObject('extensions::form::client', 'ClientValidationScriptStore');
+      $CVSS = & $this->getServiceObject('APF\extensions\form\client\ClientValidationScriptStore');
       $CVSS->addClientValidator($class, $button, $controls, $options, $onblur, $namespace);
    }
 

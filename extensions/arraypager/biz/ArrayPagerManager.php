@@ -87,7 +87,7 @@ final class ArrayPagerManager extends APFObject {
     * Version 0.1, 21.12.2009<br />
     */
    protected function &getDataMapper() {
-      return $this->getServiceObject('extensions::arraypager::data', 'ArrayPagerMapper');
+      return $this->getServiceObject('APF\extensions\arraypager\data\ArrayPagerMapper');
    }
 
    /**

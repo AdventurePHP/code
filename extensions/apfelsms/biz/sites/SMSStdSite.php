@@ -78,7 +78,7 @@ class SMSStdSite extends APFObject implements SMSSite {
       }
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       return $SMSM->getPage($this->getStartPageId());
 
@@ -122,7 +122,7 @@ class SMSStdSite extends APFObject implements SMSSite {
       }
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       try {
          $currentPage = $SMSM->getPage($this->getCurrentPageId());
@@ -191,7 +191,7 @@ class SMSStdSite extends APFObject implements SMSSite {
       }
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       return $SMSM->getPage($this->get403PageId());
    }
@@ -239,7 +239,7 @@ class SMSStdSite extends APFObject implements SMSSite {
       }
 
       /** @var $SMSM SMSManager */
-      $SMSM = $this->getDIServiceObject('extensions::apfelsms', 'Manager');
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       return $SMSM->getPage($this->get404PageId());
    }

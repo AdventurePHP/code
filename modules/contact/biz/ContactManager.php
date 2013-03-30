@@ -137,7 +137,7 @@ class ContactManager extends APFObject {
     * @return ContactMapper
     */
    private function &getMapper() {
-      return $this->getServiceObject('modules::contact::data', 'ContactMapper');
+      return $this->getServiceObject('APF\modules\contact\data\ContactMapper');
    }
 
    /**
