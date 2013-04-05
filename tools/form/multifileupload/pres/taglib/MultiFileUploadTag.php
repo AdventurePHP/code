@@ -73,8 +73,7 @@ class MultiFileUploadTag extends AbstractFormControl {
       $MimeTypes = $this->getAttribute('allowed-mime-types');
 
       $this->manager = & $this->getAndInitServiceObject(
-         'tools::form::multifileupload::biz',
-         'MultiFileUploadManager',
+         'APF\tools\form\multifileupload\biz\MultiFileUploadManager',
          array('formname' => $this->formName, 'name' => $this->uploadFieldName),
          APFService::SERVICE_TYPE_SINGLETON
       );

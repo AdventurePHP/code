@@ -50,8 +50,8 @@ class NewsPagerController extends BaseDocumentController {
    public function transformContent() {
 
       // get current data dir or trigger error
-      $DataDir = $this->getDocument()->getAttribute('datadir');
-      if ($DataDir === null) {
+      $dataDir = $this->getDocument()->getAttribute('datadir');
+      if ($dataDir === null) {
          throw new \InvalidArgumentException('[NewsPagerController::transformContent()] Tag '
                . 'attribute "datadir" was not present in the &lt;core:importdesign /&gt; tag '
                . 'definition! Please specify a news content directory!');
@@ -59,7 +59,7 @@ class NewsPagerController extends BaseDocumentController {
 
       // get manager
       /* @var $manager NewsPagerManager */
-      $manager = & $this->getAndInitServiceObject('modules::newspager::biz', 'NewsPagerManager', $DataDir);
+      $manager = & $this->getAndInitServiceObject('APF\modules\newspager\biz\NewsPagerManager', $dataDir);
 
       // load default news page
       $newsItem = $manager->getNewsByPage();
@@ -75,11 +75,11 @@ class NewsPagerController extends BaseDocumentController {
       if (Registry::retrieve('apf::core', 'URLRewriting') === true) {
          $this->setPlaceHolder('NewsServiceBaseURL', '/~/modules_newspager_biz-action/Pager/page/');
          $this->setPlaceHolder('NewsServiceLangParam', '/lang/');
-         $this->setPlaceHolder('NewsServiceDataDir', '/datadir/' . base64_encode($DataDir));
+         $this->setPlaceHolder('NewsServiceDataDir', '/datadir/' . base64_encode($dataDir));
       } else {
          $this->setPlaceHolder('NewsServiceBaseURL', './?modules_newspager_biz-action:Pager=page:');
          $this->setPlaceHolder('NewsServiceLangParam', '|lang:');
-         $this->setPlaceHolder('NewsServiceDataDir', '|datadir:' . base64_encode($DataDir));
+         $this->setPlaceHolder('NewsServiceDataDir', '|datadir:' . base64_encode($dataDir));
       }
 
       if ($this->getLanguage() == 'de') {

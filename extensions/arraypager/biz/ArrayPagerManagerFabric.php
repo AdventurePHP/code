@@ -45,9 +45,9 @@ final class ArrayPagerManagerFabric extends APFObject {
       $stringPagerHash = md5($stringConfig);
 
       // initialize desired pager lazily
-      if (isset($this->pagers[$stringPagerHash]) === FALSE) {
-         $this->pagers[$stringPagerHash] = $this->getAndInitServiceObject('extensions::arraypager::biz',
-            'ArrayPagerManager',
+      if (isset($this->pagers[$stringPagerHash]) === false) {
+         $this->pagers[$stringPagerHash] = $this->getAndInitServiceObject(
+            'APF\extensions\arraypager\biz\ArrayPagerManager',
             $stringConfig,
             APFService::SERVICE_TYPE_NORMAL
          );

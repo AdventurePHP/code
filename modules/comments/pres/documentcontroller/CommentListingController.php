@@ -57,7 +57,7 @@ class CommentListingController extends CommentBaseDocumentController {
    public function transformContent() {
 
       /* @var $m ArticleCommentManager */
-      $m = &$this->getAndInitServiceObject('modules::comments::biz', 'ArticleCommentManager', $this->getCategoryKey());
+      $m = &$this->getAndInitServiceObject('APF\modules\comments\biz\ArticleCommentManager', $this->getCategoryKey());
 
       // load the entries using the business component
       $entries = $m->loadEntries();

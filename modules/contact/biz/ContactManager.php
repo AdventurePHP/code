@@ -63,14 +63,14 @@ class ContactManager extends APFObject {
    public function sendContactForm(ContactFormData $formData) {
 
       // set up the mail sender
-      $MAIL = & $this->getAndInitServiceObject('tools::mail', 'mailSender', 'ContactForm');
-      /* @var $MAIL mailSender */
+      $mail = & $this->getAndInitServiceObject('APF\tools\mail\mailSender', 'ContactForm');
+      /* @var $mail mailSender */
 
       $recipient = $this->getMapper()->loadRecipientPerId($formData->getRecipientId());
       /* @var $recipient ContactFormRecipient */
 
-      $MAIL->setRecipient($recipient->getEmailAddress(), $recipient->getName());
-      $MAIL->setContent(
+      $mail->setRecipient($recipient->getEmailAddress(), $recipient->getName());
+      $mail->setContent(
          $this->getNotificationText(
             array(
                'sender-name' => $formData->getSenderName(),
@@ -83,18 +83,18 @@ class ContactManager extends APFObject {
          )
       );
 
-      $MAIL->setSubject($formData->getSubject());
+      $mail->setSubject($formData->getSubject());
 
       // send mail to notify the recipient
-      $MAIL->sendMail();
+      $mail->sendMail();
 
-      $MAIL->clearRecipients();
-      $MAIL->clearCCRecipients();
-      $MAIL->clearContent();
+      $mail->clearRecipients();
+      $mail->clearCCRecipients();
+      $mail->clearContent();
 
-      $MAIL->setRecipient($formData->getSenderEmail(), $formData->getSenderName());
+      $mail->setRecipient($formData->getSenderEmail(), $formData->getSenderName());
 
-      $MAIL->setContent(
+      $mail->setContent(
          $this->getConfirmationText(
             array(
                'sender-name' => $formData->getSenderName(),
@@ -107,10 +107,10 @@ class ContactManager extends APFObject {
          )
       );
 
-      $MAIL->setSubject($formData->getSubject());
+      $mail->setSubject($formData->getSubject());
 
       // send mail to notify the sender
-      $MAIL->sendMail();
+      $mail->sendMail();
 
       // redirect to the thanks page to avoid F5 bugs!
       $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('contactview' => 'thanks')));

@@ -66,7 +66,7 @@ class NewsPagerManager extends APFObject {
     */
    public function getNewsByPage($page = 1) {
       /* @var $mapper NewsPagerMapper */
-      $mapper = & $this->getAndInitServiceObject('modules::newspager::data', 'NewsPagerMapper', $this->dataDir);
+      $mapper = & $this->getAndInitServiceObject('APF\modules\newspager\data\NewsPagerMapper', $this->dataDir);
       return $mapper->getNewsByPage($page);
    }
 

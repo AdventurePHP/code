@@ -34,7 +34,6 @@ use APF\core\frontcontroller\Frontcontroller;
  * a look at the ServiceManager documentation. To use this tag, the following attributes must be
  * involved:
  * <pre>&lt;generic:importdesign
- *             modelnamespace=""
  *             modelfile=""
  *             modelclass=""
  *             modelmode="NORMAL|SINGLETON|SESSIONSINGLETON"
@@ -45,7 +44,7 @@ use APF\core\frontcontroller\Frontcontroller;
  *             dependentactionname="ActionName"
  *             [dependentactionparams="param1:value1|param2:value2"]]
  * /&gt;</pre>
- * The dependentaction* params can be used to register a dependent action to the front controller.
+ * The <em>dependentaction*</em> params can be used to register a dependent action to the front controller.
  * This optional mechanism can be used to have an action registered, that is used for navigation
  * purposes (aka click on link displays the start page instead of the module's view).
  *
@@ -68,14 +67,6 @@ class GenericImportTemplateTag extends ImportTemplateTag {
     * Version 0.3, 29.12.2208 (Added the dependent action options)<br />
     */
    public function onParseTime() {
-
-      // modelnamespace=""
-      $modelNamespace = $this->getAttribute('modelnamespace');
-      if ($modelNamespace === null) {
-         throw new \InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
-               . 'The attribute "modelnamespace" is empty or not present. Please provide '
-               . 'the namespace of the model within this attribute!');
-      }
 
       // modelfile=""
       $modelFile = $this->getAttribute('modelfile');
@@ -156,7 +147,7 @@ class GenericImportTemplateTag extends ImportTemplateTag {
       }
 
       // get model
-      $model = &$this->getServiceObject($modelNamespace, $modelClass, $modelMode);
+      $model = &$this->getServiceObject($modelClass, $modelMode);
 
       // check for the get method
       if (!method_exists($model, $getMethod)) {

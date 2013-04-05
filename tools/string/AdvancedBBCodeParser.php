@@ -40,12 +40,6 @@ final class BBCodeParserDefinition {
 
    /**
     * @private
-    * @var string Represents the namespace of the parser provider.
-    */
-   private $namespace;
-
-   /**
-    * @private
     * @var string Represents the class name of the parser provider an thus the file name
     * (without extension!).
     */
@@ -56,20 +50,14 @@ final class BBCodeParserDefinition {
     *
     * Initializes the BBCodeParser definition.
     *
-    * @param string $namespace the namespace of the parser
     * @param string $class the class name of the parser
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 28.10.2008
     */
-   public function __construct($namespace, $class) {
-      $this->namespace = $namespace;
+   public function __construct($class) {
       $this->class = $class;
-   }
-
-   public function getNamespace() {
-      return $this->namespace;
    }
 
    public function getClass() {
@@ -143,10 +131,10 @@ class AdvancedBBCodeParser extends APFObject {
     * Version 0.1, 28.10.2008
     */
    public function __construct() {
-      $this->provider['standard.font.style'] = new BBCodeParserDefinition('tools::string::bbcpprovider', 'FontStyleProvider');
-      $this->provider['standard.font.size'] = new BBCodeParserDefinition('tools::string::bbcpprovider', 'FontSizeProvider');
-      $this->provider['standard.font.color'] = new BBCodeParserDefinition('tools::string::bbcpprovider', 'FontColorProvider');
-      $this->provider['standard.newline'] = new BBCodeParserDefinition('tools::string::bbcpprovider', 'NewLineProvider');
+      $this->provider['standard.font.style'] = new BBCodeParserDefinition('APF\tools\string\bbcpprovider\FontStyleProvider');
+      $this->provider['standard.font.size'] = new BBCodeParserDefinition('APF\tools\string\bbcpprovider\FontSizeProvider');
+      $this->provider['standard.font.color'] = new BBCodeParserDefinition('APF\tools\string\bbcpprovider\FontColorProvider');
+      $this->provider['standard.newline'] = new BBCodeParserDefinition('APF\tools\string\bbcpprovider\NewLineProvider');
    }
 
    /**
@@ -194,7 +182,7 @@ class AdvancedBBCodeParser extends APFObject {
     */
    private function setUpProvider() {
 
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('AdvancedBBCodeParser::setUpProvider()');
 
@@ -203,12 +191,10 @@ class AdvancedBBCodeParser extends APFObject {
          if ($providerDefinition instanceof BBCodeParserDefinition) {
             /* @var $providerDefinition BBCodeParserDefinition */
 
-            $namespace = $providerDefinition->getNamespace();
             $class = $providerDefinition->getClass();
 
             // convert definition and initialize provider
-            $this->provider[$providerName] = $this->getServiceObject($namespace, $class, APFService::SERVICE_TYPE_NORMAL);
-
+            $this->provider[$providerName] = $this->getServiceObject($class, APFService::SERVICE_TYPE_NORMAL);
          }
 
       }
@@ -230,7 +216,7 @@ class AdvancedBBCodeParser extends APFObject {
     */
    public function parseCode($string) {
 
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
       $t->start('AdvancedBBCodeParser::parseCode()');
 

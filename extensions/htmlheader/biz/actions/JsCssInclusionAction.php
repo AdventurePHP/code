@@ -124,7 +124,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
 
 
       /* @var $packager JsCssPackager */
-      $packager = $this->getAndInitServiceObject('extensions::htmlheader::biz', 'JsCssPackager', null);
+      $packager = $this->getServiceObject('APF\extensions\htmlheader\biz\JsCssPackager');
       $output = $packager->getPackage($packName, $this->gzipIsSupported());
 
       // Get ClientCachePeriod (in days), and convert to seconds

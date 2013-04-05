@@ -56,7 +56,7 @@ class NewsPagerAjaxBackendAction extends AbstractFrontcontrollerAction {
       $this->setLanguage($this->getInput()->getAttribute('lang'));
 
       /* @var $nM NewsPagerManager */
-      $nM = & $this->getAndInitServiceObject('modules::newspager::biz', 'NewsPagerManager', $dataDir);
+      $nM = & $this->getAndInitServiceObject('APF\modules\newspager\biz\NewsPagerManager', $dataDir);
 
       // load news object
       $news = $nM->getNewsByPage($page);

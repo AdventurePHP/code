@@ -143,13 +143,19 @@ final class PagerManager extends APFObject {
     * Version 0.4, 24.01.2009 (Changed the API of the method. Moved the additional param handling to this method)<br />
     */
    public function loadEntries($addStmtParams = array()) {
-      /* @var $m PagerMapper */
-      $m = & $this->getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
+      $m = & $this->getMapper();
       return $m->loadEntries(
          $this->section->getValue('Pager.StatementNamespace'),
          $this->section->getValue('Pager.EntriesStatement'),
          $this->getStatementParams($addStmtParams), $this->section->getValue('Pager.CacheInSession')
       );
+   }
+
+   /**
+    * @return PagerMapper
+    */
+   protected function getMapper() {
+      return $this->getAndInitServiceObject('APF\modules\pager\data\PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
    }
 
    /**
@@ -327,8 +333,7 @@ final class PagerManager extends APFObject {
       $currentStart = (int)RequestHandler::getValue($this->section->getValue('Pager.ParameterPageName'), 1) * $countPerPage;
 
       // initialize page delimiter params
-      /* @var $m PagerMapper */
-      $m = & $this->getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
+      $m = & $this->getMapper();
       $entriesCount = $m->getEntriesCount($this->section->getValue('Pager.StatementNamespace'), $this->section->getValue('Pager.CountStatement'), $this->getStatementParams($addStmtParams), $this->section->getValue('Pager.CacheInSession'));
 
       $pageCount = ceil($entriesCount / $countPerPage);
@@ -430,8 +435,7 @@ final class PagerManager extends APFObject {
       $countPerPage = $this->getCountPerPage();
 
       // initialize page delimiter params
-      /* @var $m PagerMapper */
-      $m = & $this->getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
+      $m = & $this->getMapper();
       $entriesCount = $m->getEntriesCount($this->section->getValue('Pager.StatementNamespace'), $this->section->getValue('Pager.CountStatement'), $this->getStatementParams($addStmtParams), $this->section->getValue('Pager.CacheInSession'));
 
       return ceil($entriesCount / $countPerPage);

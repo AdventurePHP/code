@@ -31,8 +31,7 @@ use APF\core\service\APFService;
  * model. This tag can be configured for any application case using the following attributes:
  * <ul>
  *   <li>templatenamespace: Namespace of the template</li>
- *   <li>modelnamespace: Namespace of the application model</li>
- *   <li>modelclass: Name of the model class</li>
+ *   <li>modelclass: Fully-qualified model class</li>
  *   <li>modelparam: Name of the model parameter to use as the template name</li>
  *   <li>context: Set's the context of the current node (incl. all children)</li>
  *   <li>sessionsingleton: defines, if the model is retrieved sessionsingleton or just singleton (values: true|false)</li>
@@ -51,12 +50,6 @@ class FrontControllerImportTemplateTag extends ImportTemplateTag {
          throw new \InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "templatenamespace" is not given!');
       } else {
          $templateNamespace = $this->attributes['templatenamespace'];
-      }
-
-      if (!isset($this->attributes['modelnamespace'])) {
-         throw new \InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelnamespace" is not given!');
-      } else {
-         $modelNamespace = $this->attributes['modelnamespace'];
       }
 
       if (!isset($this->attributes['modelclass'])) {
@@ -79,7 +72,7 @@ class FrontControllerImportTemplateTag extends ImportTemplateTag {
       }
 
       // read the name of the template from the model
-      $model = &$this->getServiceObject($modelNamespace, $modelClass, $initMode);
+      $model = & $this->getServiceObject($modelClass, $initMode);
       $templateName = $model->getAttribute($modelParam);
 
       if (isset($this->attributes['context'])) {
