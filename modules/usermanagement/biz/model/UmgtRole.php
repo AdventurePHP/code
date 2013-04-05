@@ -10,14 +10,14 @@ namespace APF\modules\usermanagement\biz\model;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtRoleBase
- * 
- * This class provides the descriptive getter and setter methods for the "UmgtRole" domain object.
+ *
+ * This class provides the descriptive getter and setter methods for the "APF\modules\usermanagement\biz\model\UmgtRole" domain object.
  */
 abstract class UmgtRoleBase extends GenericDomainObject {
 
-   public function __construct($objectName = null){
+   public function __construct($objectName = null) {
       parent::__construct('Role');
    }
 
@@ -88,10 +88,10 @@ abstract class UmgtRoleBase extends GenericDomainObject {
 // DO NOT CHANGE THIS COMMENT! <*UmgtRoleBase:end*>
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtRole
- * 
- * This class represents the "UmgtRole" domain object.
+ *
+ * This class represents the "APF\modules\usermanagement\biz\model\UmgtRole" domain object.
  * <p/>
  * Please use this class to add your own functionality.
  */
@@ -102,12 +102,13 @@ class UmgtRole extends UmgtRoleBase {
     * <p/>
     * To create an instance of this object, just call
     * <code>
+    * use APF\modules\usermanagement\biz\model\UmgtRole;
     * $object = new UmgtRole();
     * </code>
     *
     * @param string $objectName The internal object name of the domain object.
     */
-   public function __construct($objectName = null){
+   public function __construct($objectName = null) {
       parent::__construct();
    }
 

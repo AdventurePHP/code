@@ -10,14 +10,14 @@ namespace APF\modules\usermanagement\biz\model;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtUserBase
- * 
- * This class provides the descriptive getter and setter methods for the "UmgtUser" domain object.
+ *
+ * This class provides the descriptive getter and setter methods for the "APF\modules\usermanagement\biz\model\UmgtUser" domain object.
  */
 abstract class UmgtUserBase extends GenericDomainObject {
 
-   public function __construct($objectName = null){
+   public function __construct($objectName = null) {
       parent::__construct('User');
    }
 
@@ -352,10 +352,10 @@ abstract class UmgtUserBase extends GenericDomainObject {
 // DO NOT CHANGE THIS COMMENT! <*UmgtUserBase:end*>
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtUser
  *
- * This class represents the "UmgtUser" domain object.
+ * This class represents the "APF\modules\usermanagement\biz\model\UmgtUser" domain object.
  * <p/>
  * Please use this class to add your own functionality.
  */
@@ -366,6 +366,7 @@ class UmgtUser extends UmgtUserBase {
     * <p/>
     * To create an instance of this object, just call
     * <code>
+    * use APF\modules\usermanagement\biz\model\UmgtUser;
     * $object = new UmgtUser();
     * </code>
     *

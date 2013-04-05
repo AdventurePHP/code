@@ -10,14 +10,14 @@ namespace APF\modules\usermanagement\biz\model;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtVisibilityDefinitionBase
- * 
- * This class provides the descriptive getter and setter methods for the "UmgtVisibilityDefinition" domain object.
+ *
+ * This class provides the descriptive getter and setter methods for the "APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition" domain object.
  */
 abstract class UmgtVisibilityDefinitionBase extends GenericDomainObject {
 
-   public function __construct($objectName = null){
+   public function __construct($objectName = null) {
       parent::__construct('AppProxy');
    }
 
@@ -160,10 +160,10 @@ abstract class UmgtVisibilityDefinitionBase extends GenericDomainObject {
 // DO NOT CHANGE THIS COMMENT! <*UmgtVisibilityDefinitionBase:end*>
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtVisibilityDefinition
- * 
- * This class represents the "UmgtVisibilityDefinition" domain object.
+ *
+ * This class represents the "APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition" domain object.
  * <p/>
  * Please use this class to add your own functionality.
  */
@@ -174,12 +174,13 @@ class UmgtVisibilityDefinition extends UmgtVisibilityDefinitionBase {
     * <p/>
     * To create an instance of this object, just call
     * <code>
+    * use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
     * $object = new UmgtVisibilityDefinition();
     * </code>
     *
     * @param string $objectName The internal object name of the domain object.
     */
-   public function __construct($objectName = null){
+   public function __construct($objectName = null) {
       parent::__construct();
    }
 

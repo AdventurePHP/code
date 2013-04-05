@@ -1,7 +1,6 @@
 <?php
 namespace APF\modules\usermanagement\biz\model;
 
-
 //<*UmgtAuthTokenBase:start*> DO NOT CHANGE THIS COMMENT!
 /**
  * Automatically generated BaseObject for UmgtAuthToken. !!DO NOT CHANGE THIS BASE-CLASS!!
@@ -11,10 +10,10 @@ namespace APF\modules\usermanagement\biz\model;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtAuthTokenBase
  *
- * This class provides the descriptive getter and setter methods for the "UmgtAuthToken" domain object.
+ * This class provides the descriptive getter and setter methods for the "APF\modules\usermanagement\biz\model\UmgtAuthToken" domain object.
  */
 abstract class UmgtAuthTokenBase extends GenericDomainObject {
 
@@ -65,10 +64,10 @@ abstract class UmgtAuthTokenBase extends GenericDomainObject {
 // DO NOT CHANGE THIS COMMENT! <*UmgtAuthTokenBase:end*>
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtAuthToken
  *
- * This class represents the "UmgtAuthToken" domain object.
+ * This class represents the "APF\modules\usermanagement\biz\model\UmgtAuthToken" domain object.
  * <p/>
  * Please use this class to add your own functionality.
  */
@@ -79,6 +78,7 @@ class UmgtAuthToken extends UmgtAuthTokenBase {
     * <p/>
     * To create an instance of this object, just call
     * <code>
+    * use APF\modules\usermanagement\biz\model\UmgtAuthToken;
     * $object = new UmgtAuthToken();
     * </code>
     *

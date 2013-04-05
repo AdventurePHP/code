@@ -1,7 +1,6 @@
 <?php
 namespace APF\modules\usermanagement\biz\model;
 
-
 //<*UmgtApplicationBase:start*> DO NOT CHANGE THIS COMMENT!
 /**
  * Automatically generated BaseObject for UmgtApplication. !!DO NOT CHANGE THIS BASE-CLASS!!
@@ -11,14 +10,14 @@ namespace APF\modules\usermanagement\biz\model;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtApplicationBase
- * 
- * This class provides the descriptive getter and setter methods for the "UmgtApplication" domain object.
+ *
+ * This class provides the descriptive getter and setter methods for the "APF\modules\usermanagement\biz\model\UmgtApplication" domain object.
  */
 abstract class UmgtApplicationBase extends GenericDomainObject {
 
-   public function __construct($objectName = null){
+   public function __construct($objectName = null) {
       parent::__construct('Application');
    }
 
@@ -65,10 +64,10 @@ abstract class UmgtApplicationBase extends GenericDomainObject {
 // DO NOT CHANGE THIS COMMENT! <*UmgtApplicationBase:end*>
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtApplication
- * 
- * This class represents the "UmgtApplication" domain object.
+ *
+ * This class represents the "APF\modules\usermanagement\biz\model\UmgtApplication" domain object.
  * <p/>
  * Please use this class to add your own functionality.
  */
@@ -79,12 +78,13 @@ class UmgtApplication extends UmgtApplicationBase {
     * <p/>
     * To create an instance of this object, just call
     * <code>
+    * use APF\modules\usermanagement\biz\model\UmgtApplication;
     * $object = new UmgtApplication();
     * </code>
     *
     * @param string $objectName The internal object name of the domain object.
     */
-   public function __construct($objectName = null){
+   public function __construct($objectName = null) {
       parent::__construct();
    }
 

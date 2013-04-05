@@ -10,14 +10,14 @@ namespace APF\modules\usermanagement\biz\model;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtPermissionBase
- * 
- * This class provides the descriptive getter and setter methods for the "UmgtPermission" domain object.
+ *
+ * This class provides the descriptive getter and setter methods for the "APF\modules\usermanagement\biz\model\UmgtPermission" domain object.
  */
 abstract class UmgtPermissionBase extends GenericDomainObject {
 
-   public function __construct($objectName = null){
+   public function __construct($objectName = null) {
       parent::__construct('Permission');
    }
 
@@ -112,10 +112,10 @@ abstract class UmgtPermissionBase extends GenericDomainObject {
 // DO NOT CHANGE THIS COMMENT! <*UmgtPermissionBase:end*>
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtPermission
- * 
- * This class represents the "UmgtPermission" domain object.
+ *
+ * This class represents the "APF\modules\usermanagement\biz\model\UmgtPermission" domain object.
  * <p/>
  * Please use this class to add your own functionality.
  */
@@ -126,12 +126,13 @@ class UmgtPermission extends UmgtPermissionBase {
     * <p/>
     * To create an instance of this object, just call
     * <code>
+    * use APF\modules\usermanagement\biz\model\UmgtPermission;
     * $object = new UmgtPermission();
     * </code>
     *
     * @param string $objectName The internal object name of the domain object.
     */
-   public function __construct($objectName = null){
+   public function __construct($objectName = null) {
       parent::__construct();
    }
 

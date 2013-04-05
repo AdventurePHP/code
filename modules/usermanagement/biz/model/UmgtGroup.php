@@ -1,7 +1,6 @@
 <?php
 namespace APF\modules\usermanagement\biz\model;
 
-
 //<*UmgtGroupBase:start*> DO NOT CHANGE THIS COMMENT!
 /**
  * Automatically generated BaseObject for UmgtGroup. !!DO NOT CHANGE THIS BASE-CLASS!!
@@ -11,10 +10,10 @@ namespace APF\modules\usermanagement\biz\model;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtGroupBase
  *
- * This class provides the descriptive getter and setter methods for the "UmgtGroup" domain object.
+ * This class provides the descriptive getter and setter methods for the "APF\modules\usermanagement\biz\model\UmgtGroup" domain object.
  */
 abstract class UmgtGroupBase extends GenericDomainObject {
 
@@ -89,10 +88,10 @@ abstract class UmgtGroupBase extends GenericDomainObject {
 // DO NOT CHANGE THIS COMMENT! <*UmgtGroupBase:end*>
 
 /**
- * @package modules::usermanagement::biz::model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtGroup
  *
- * This class represents the "UmgtGroup" domain object.
+ * This class represents the "APF\modules\usermanagement\biz\model\UmgtGroup" domain object.
  * <p/>
  * Please use this class to add your own functionality.
  */
@@ -103,6 +102,7 @@ class UmgtGroup extends UmgtGroupBase {
     * <p/>
     * To create an instance of this object, just call
     * <code>
+    * use APF\modules\usermanagement\biz\model\UmgtGroup;
     * $object = new UmgtGroup();
     * </code>
     *
