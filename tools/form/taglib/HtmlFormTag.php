@@ -150,7 +150,7 @@ class HtmlFormTag extends Document {
          $this->setAttribute(
             self::$METHOD_ATTRIBUTE_NAME,
             strtolower(
-               Registry::retrieve('apf::tools', 'FormDefaultMethod', self::$METHOD_POST_VALUE_NAME)
+               Registry::retrieve('APF\tools', 'FormDefaultMethod', self::$METHOD_POST_VALUE_NAME)
             )
          );
       }

@@ -38,7 +38,7 @@ class RegistryPositivTest extends PHPUnit_Framework_TestCase {
     * @protected static
     * @var string Registry namespace of the key
     */
-   protected static $REGISTRY_NAMESPACE = 'apf::test::registry';
+   protected static $REGISTRY_NAMESPACE = 'APF\test\registry';
 
    /**
     * @protected static
@@ -71,7 +71,7 @@ class RegistryPositivTest extends PHPUnit_Framework_TestCase {
     * Version 0.1, 17.12.2011<br />
     */
    public function testConstructorNotCallable() {
-      $oReflectionRegistry = new ReflectionClass('Registry');
+      $oReflectionRegistry = new \ReflectionClass('Registry');
       assertFalse($oReflectionRegistry->isInstantiable(), 'Registry object should not be abled to be instanced!');
    }
 
@@ -88,7 +88,7 @@ class RegistryPositivTest extends PHPUnit_Framework_TestCase {
     * Version 0.1, 17.12.2011<br />
     */
    public function testStaticClassHasFinalAttribute() {
-      $oReflectionRegistry = new ReflectionClass('Registry');
+      $oReflectionRegistry = new \ReflectionClass('Registry');
       assertTrue($oReflectionRegistry->isFinal(), 'Registry object should be declared as final!');
    }
 
@@ -105,7 +105,7 @@ class RegistryPositivTest extends PHPUnit_Framework_TestCase {
     * Version 0.1, 17.12.2011<br />
     */
    public function testMethodsExisting() {
-      $oReflectionRegistry = new ReflectionClass('Registry');
+      $oReflectionRegistry = new \ReflectionClass('Registry');
       assertTrue($oReflectionRegistry->hasMethod('register'));
       assertTrue($oReflectionRegistry->hasMethod('retrieve'));
    }
@@ -123,7 +123,7 @@ class RegistryPositivTest extends PHPUnit_Framework_TestCase {
     * Version 0.1, 17.12.2011<br />
     */
    public function testRegisterDefaultMethod() {
-      $oReflectionRegistry = new ReflectionClass('Registry');
+      $oReflectionRegistry = new \ReflectionClass('Registry');
       $aProperties = $oReflectionRegistry->getStaticProperties();
       $aRegistryStore = $aProperties['REGISTRY_STORE'];
       // --- Prefilled with default values
@@ -166,7 +166,7 @@ class RegistryPositivTest extends PHPUnit_Framework_TestCase {
          self::$REGISTRY_VALUE,
          true);
 
-      $oReflectionRegistry = new ReflectionClass('Registry');
+      $oReflectionRegistry = new \ReflectionClass('Registry');
       $aProperties = $oReflectionRegistry->getStaticProperties();
       $aRegistryStore = $aProperties['REGISTRY_STORE'];
       assertEquals(2, count($aRegistryStore));

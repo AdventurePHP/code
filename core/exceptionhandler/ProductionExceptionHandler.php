@@ -50,7 +50,7 @@ class ProductionExceptionHandler extends DefaultExceptionHandler {
       $this->logException();
 
       // redirect to configured page
-      $url = Registry::retrieve('apf::core::exceptionhandler', 'ProductionExceptionRedirectUrl', '/');
+      $url = Registry::retrieve('APF\core\exceptionhandler', 'ProductionExceptionRedirectUrl', '/');
       header('Location: ' . $url, null, 302);
       exit(0);
 
