@@ -31,31 +31,18 @@ use APF\core\registry\Registry;
 
 Registry::register('apf::core', 'Environment', '{ENVIRONMENT}');
 
-use APF\modules\genericormapper\data\tools\GenericORMapperManagementTool;
+use APF\modules\genericormapper\data\tools\GenericORMapperDomainObjectGenerator;
 
 // create setup tool
-$setup = new GenericORMapperManagementTool();
+$generator = new GenericORMapperDomainObjectGenerator();
 
 // set context (important for the configuration files!)
-$setup->setContext('{CONTEXT}');
-
-// adapt storage engine (default is MyISAM)
-//$setup->setStorageEngine('MyISAM|INNODB');
-
-// adapt data type of the indexed columns, that are used for object ids
-//$setup->setIndexColumnDataType('INT(5) UNSIGNED');
+$generator->setContext('{CONTEXT}');
 
 // initialize mapping configuration
-$setup->addMappingConfiguration('{CONFIG_NAMESPACE}', '{CONFIG_NAME_AFFIX}');
+$generator->addMappingConfiguration('{CONFIG_NAMESPACE}', '{CONFIG_NAME_AFFIX}');
 
-// initialize relation configuration
-$setup->addRelationConfiguration('{CONFIG_NAMESPACE}', '{CONFIG_NAME_AFFIX}');
+// initialize domain object configuration
+$generator->addDomainObjectsConfiguration('{CONFIG_NAMESPACE}', '{CONFIG_NAME_AFFIX}');
 
-// initialize database connection (optional; if not set, statements will be printed instead if direct update)
-$setup->setConnectionName('{CONNECTION_NAME}');
-
-// create database layout directly
-$setup->run(true);
-
-// display statements only
-$setup->run(false);
+$generator->generateServiceObjects();

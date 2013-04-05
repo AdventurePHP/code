@@ -24,7 +24,7 @@ echo 'This is a sample update script, that must be adapted to your requirements!
 exit(0);
 
 // include APF bootstrap file
-require('./apps/core/bootstrap.php');
+require('./APF/core/bootstrap.php');
 
 // configure the registry if desired
 use APF\core\registry\Registry;
