@@ -26,7 +26,7 @@ use APF\extensions\news\pres\documentcontroller\NewsBaseController;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package extensions::news::pres::documentcontroller::backend
+ * @package APF\extensions\news\pres\documentcontroller\backend
  * @class NewsEditController
  *
  * Document controller for editing and creating news.

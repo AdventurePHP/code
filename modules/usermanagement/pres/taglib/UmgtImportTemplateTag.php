@@ -24,7 +24,7 @@ use APF\core\pagecontroller\ImportTemplateTag;
 use APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet;
 
 /**
- * @package modules::usermanagement::pres::taglib
+ * @package APF\modules\usermanagement\pres\taglib
  * @class UmgtImportTemplateTag
  *
  * Enables you to include templates based on various conditions registered within

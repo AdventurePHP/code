@@ -28,7 +28,7 @@ use APF\core\session\SessionManager;
 use APF\core\singleton\Singleton;
 
 /**
- * @package modules::pager::data
+ * @package APF\modules\pager\data
  * @class PagerMapper
  *
  * Represents the data layer of the pager.

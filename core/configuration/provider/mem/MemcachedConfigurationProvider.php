@@ -26,7 +26,7 @@ use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\ConfigurationProvider;
 
 /**
- * @package core::configuration::provider::memcached
+ * @package APF\core\configuration\provider\memcached
  * @class MemcachedConfigurationProvider
  *
  * Implements a configuration provider to store a configuration within a memcached store.

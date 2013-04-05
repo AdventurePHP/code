@@ -27,7 +27,7 @@ use APF\tools\cache\CacheKey;
 use APF\tools\cache\CacheProvider;
 
 /**
- * @package tools::cache::provider
+ * @package APF\tools\cache\provider
  * @class DBCacheProvider
  *
  * Implements the cache reader for normal content to the database.

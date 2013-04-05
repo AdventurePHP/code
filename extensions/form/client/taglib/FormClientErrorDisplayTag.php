@@ -24,7 +24,7 @@ use APF\core\pagecontroller\TagLib;
 use APF\tools\form\taglib\AbstractFormControl;
 
 /**
- * @package extensions::form::client
+ * @package APF\extensions\form\client
  * @class FormClientErrorDisplayTag
  *
  *  This taglib adds an clienterror, which can be displayed by the client form validation.

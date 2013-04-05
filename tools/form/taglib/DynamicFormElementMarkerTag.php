@@ -22,7 +22,7 @@ namespace APF\tools\form\taglib;
  */
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class DynamicFormElementMarkerTag
  *
  * Represents the <form:marker /> tag, that can be used to dynamically create forms. Please

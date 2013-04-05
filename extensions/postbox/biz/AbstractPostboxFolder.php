@@ -25,7 +25,7 @@ use APF\modules\genericormapper\data\GenericCriterionObject;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package extensions::postbox::biz::abstractdomainobjects
+ * @package APF\extensions\postbox\biz\abstractdomainobjects
  * @class AbstractPostboxFolder
  *
  * This is the base class for "PostboxFolder" from the Postbox-Extension.

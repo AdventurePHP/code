@@ -22,7 +22,7 @@ namespace APF\core\session;
  */
 
 /**
- * @package core::session
+ * @package APF\core\session
  * @class SessionManager
  *
  * Provides advances session handling with namespaces. Example:

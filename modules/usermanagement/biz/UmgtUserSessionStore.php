@@ -24,7 +24,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 
 /**
- * @package modules::usermanagement::biz
+ * @package APF\modules\usermanagement\biz
  * @class UmgtUserSessionStore
  *
  * Stores the user information for each application identifier separately to

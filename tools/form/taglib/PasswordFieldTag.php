@@ -23,7 +23,7 @@ namespace APF\tools\form\taglib;
 use APF\tools\form\taglib\TextFieldTag;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class PasswordFieldTag
  *
  * Represents a APF password field.

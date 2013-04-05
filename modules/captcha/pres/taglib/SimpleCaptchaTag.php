@@ -32,7 +32,7 @@ use APF\core\session\SessionManager;
 use APF\tools\link\LinkGenerator;
 
 /**
- * @package modules::captcha::pres::taglib
+ * @package APF\modules\captcha\pres\taglib
  * @class SimpleCaptchaTag
  *
  * Implements a CAPTCHA-Taglib to extend a form's features. Inherits from AbstractFormControl

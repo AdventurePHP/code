@@ -22,7 +22,7 @@ namespace APF\extensions\forwardmessage\biz;
  */
 
 /**
- * @package extensions::forwardmessage::biz
+ * @package APF\extensions\forwardmessage\biz
  * @class ForwardMessageManager
  *
  * Represents a single message within the forward message extension.

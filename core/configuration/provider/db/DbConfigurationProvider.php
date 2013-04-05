@@ -30,7 +30,7 @@ use APF\core\database\ConnectionManager;
 use APF\core\service\ServiceManager;
 
 /**
- * @package core::configuration::provider::db
+ * @package APF\core\configuration\provider\db
  * @class DbConfigurationProvider
  *
  * This provider implements the APF configuration scheme for database tables. It enables

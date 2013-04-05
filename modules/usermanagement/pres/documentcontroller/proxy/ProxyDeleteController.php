@@ -26,7 +26,7 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::proxy
+ * @package APF\modules\usermanagement\pres\documentcontroller\proxy
  * @class ProxyDeleteController
  *
  * Deletes a visibility definition.

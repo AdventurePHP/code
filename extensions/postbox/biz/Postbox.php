@@ -29,7 +29,7 @@ use APF\modules\genericormapper\data\GenericORRelationMapper;
 use APF\extensions\postbox\biz\PostboxFolder;
 
 /**
- * @package extensions::postbox::biz
+ * @package APF\extensions\postbox\biz
  * @class Postbox
  *
  * Represents a Postbox for a defined User. Must be loaded through PostboxFactory!

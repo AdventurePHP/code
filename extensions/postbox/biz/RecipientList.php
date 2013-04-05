@@ -48,7 +48,7 @@ class RecipientListBase extends AbstractRecipientList {
 // DO NOT CHANGE THIS COMMENT! <*RecipientListBase:end*>
 
 /**
- * @package extensions::postbox::biz
+ * @package APF\extensions\postbox\biz
  * @class RecipientList
  *
  * Domain object for "RecipientList"

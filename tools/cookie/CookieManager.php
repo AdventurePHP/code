@@ -22,7 +22,7 @@ namespace APF\tools\cookie;
  */
 
 /**
- * @package tools::cookie
+ * @package APF\tools\cookie
  * @class CookieManager
  *
  * The CookieManager is a tool, that provides sophisticated cookie handling. It features

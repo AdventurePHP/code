@@ -29,7 +29,7 @@ use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
 /**
- * @package core::database
+ * @package APF\core\database
  * @class AbstractDatabaseHandler
  * @abstract
  *

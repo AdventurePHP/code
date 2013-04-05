@@ -25,7 +25,7 @@ use APF\core\pagecontroller\Document;
 use APF\extensions\htmlheader\pres\filter\HtmlHeaderOutputFilter;
 
 /**
- * @package extensions::htmlheader::pres::taglib
+ * @package APF\extensions\htmlheader\pres\taglib
  * @class HtmlHeaderGetHeadTag
  *
  * Taglib for receiving the complete htmlheader.

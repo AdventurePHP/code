@@ -26,7 +26,7 @@ use APF\tools\filesystem\FilesystemException;
 /**
  * @abstract
  * @class   FilesystemItem
- * @package tools::filesystem
+ * @package APF\tools\filesystem
  *
  * Defines the base class for File and Folder
  *

@@ -22,7 +22,7 @@ namespace APF\tools\form\taglib;
  */
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class TextFieldTag
  *
  * Represents a APF text field.

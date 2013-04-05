@@ -24,7 +24,7 @@ use APF\tools\form\FormException;
 use APF\tools\form\taglib\ButtonTag;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class ImageButtonTag
  *
  * Represents an image button.

@@ -23,7 +23,7 @@ namespace APF\tools\cache\key;
 use APF\tools\cache\key\SimpleCacheKey;
 
 /**
- * @package tools::cache::key
+ * @package APF\tools\cache\key
  * @class AdvancedCacheKey
  *
  * Describes an enhanced cache key, that addresses a cache item using a

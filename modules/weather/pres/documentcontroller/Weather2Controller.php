@@ -24,7 +24,7 @@ use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\BaseDocumentController;
 
 /**
- * @package modules::weather::pres::documentcontroller
+ * @package APF\modules\weather\pres\documentcontroller
  * @class Weather2Controller
  *
  * Implements an xml consumer to display current weather information.

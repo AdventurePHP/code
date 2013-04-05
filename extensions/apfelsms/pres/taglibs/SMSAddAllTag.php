@@ -6,7 +6,7 @@ use APF\core\pagecontroller\TagLib;
 
 /**
  *
- * @package APFelSMS
+ * @package APF\APFelSMS
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (11.08.12)
  */

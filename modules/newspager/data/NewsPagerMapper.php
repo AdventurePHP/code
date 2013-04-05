@@ -27,7 +27,7 @@ use APF\tools\filesystem\FilesystemItem;
 use APF\tools\filesystem\Folder;
 
 /**
- * @package modules::newspager::data
+ * @package APF\modules\newspager\data
  * @class NewsPagerMapper
  *
  *  Data layer component for loading the news page objects.<br />

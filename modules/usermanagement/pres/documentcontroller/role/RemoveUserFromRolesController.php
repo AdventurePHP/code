@@ -29,7 +29,7 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::role
+ * @package APF\modules\usermanagement\pres\documentcontroller\role
  * @class RemoveUserFromRolesController
  *
  * Let's you remove a user from one or more roles.

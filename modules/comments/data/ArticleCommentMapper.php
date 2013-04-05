@@ -26,7 +26,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\modules\comments\biz\ArticleComment;
 
 /**
- * @package modules::comments::date
+ * @package APF\modules\comments\date
  * @class ArticleCommentMapper
  *
  * Represents the data layer component of the comment function. Loads and saves entries.

@@ -23,7 +23,7 @@ namespace APF\tests\suites\core\registry;
 use APF\core\registry\Registry;
 
 /**
- * @package tests::suites::core::registry
+ * @package APF\tests\suites\core\registry
  * @class RegistryPositivTest
  *
  * Test methods of registry class with valid parameters<br />

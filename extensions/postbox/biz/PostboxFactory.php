@@ -24,7 +24,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\modules\genericormapper\data\GenericORMapperDataObject;
 
 /**
- * @package extensions::postbox::biz
+ * @package APF\extensions\postbox\biz
  * @class PostboxFactory
  *
  * This factory generates the Postbox-objects for given users.

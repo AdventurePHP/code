@@ -26,7 +26,7 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package modules::guestbook2009::pres::controller
+ * @package APF\modules\guestbook2009\pres\controller
  * @class GuestbookCreateEntryController
  *
  * Implements the document controller, that handles the "create new entry" view.

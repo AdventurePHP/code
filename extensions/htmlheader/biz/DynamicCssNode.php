@@ -24,7 +24,7 @@ use APF\extensions\htmlheader\biz\HtmlNode;
 use APF\extensions\htmlheader\biz\CssNode;
 
 /**
- * @package extensions::htmlheader::biz
+ * @package APF\extensions\htmlheader\biz
  * @Class DynamicCssNode
  *
  * Css file node for HtmlHeaderManagers data.

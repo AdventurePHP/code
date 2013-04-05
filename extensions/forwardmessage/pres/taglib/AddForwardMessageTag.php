@@ -26,7 +26,7 @@ use APF\core\service\APFService;
 use APF\extensions\forwardmessage\biz\ForwardMessageManager;
 
 /**
- * @package extensions::forwardmessage::pres::taglib
+ * @package APF\extensions\forwardmessage\pres\taglib
  * @class AddForwardMessageTag
  *
  * Adds a status message for the next page.

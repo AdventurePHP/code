@@ -23,7 +23,7 @@ namespace APF\tools\media\taglib;
 use APF\tools\media\taglib\MediaInclusionTag;
 
 /**
- * @package tools::media::taglib
+ * @package APF\tools\media\taglib
  * @class FormMediaInclusionTag
  *
  * Implements the form:mediastream tag. See class MediaInclusionTag for more details.

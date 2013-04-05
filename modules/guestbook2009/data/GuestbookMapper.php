@@ -32,7 +32,7 @@ use APF\modules\guestbook2009\biz\Entry;
 use APF\modules\guestbook2009\biz\Guestbook;
 
 /**
- * @package modules::guestbook2009::data
+ * @package APF\modules\guestbook2009\data
  * @class GuestbookMapper
  *
  * Implements the data mapper for the guestbook module. Translates the single-language

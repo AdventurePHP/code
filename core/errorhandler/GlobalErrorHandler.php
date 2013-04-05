@@ -29,7 +29,7 @@ use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
 /**
- * @package core::errorhandler
+ * @package APF\core\errorhandler
  * @class ErrorHandler
  *
  * Describes the signature of any APF error handler.
@@ -60,7 +60,7 @@ interface ErrorHandler {
 }
 
 /**
- * @package core::errorhandler
+ * @package APF\core\errorhandler
  * @class DefaultErrorHandler
  *
  * Implements the default error handler of the APF. Logs errors to a logfile and displays the
@@ -197,7 +197,7 @@ class DefaultErrorHandler implements ErrorHandler {
 }
 
 /**
- * @package core::errorhandler
+ * @package APF\core\errorhandler
  * @class GlobalErrorHandler
  *
  * This is the APF error handler automatically registered to handle errors.

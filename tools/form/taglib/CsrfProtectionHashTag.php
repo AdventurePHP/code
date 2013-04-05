@@ -25,7 +25,7 @@ use APF\tools\form\provider\csrf\CSRFHashProvider;
 use APF\tools\form\validator\CSRFHashValidator;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class CsrfProtectionHashTag
  *
  * Generates a hidden input field with a hash to prevent the form

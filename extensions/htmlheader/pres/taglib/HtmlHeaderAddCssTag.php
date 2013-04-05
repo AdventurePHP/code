@@ -25,7 +25,7 @@ use APF\core\pagecontroller\Document;
 use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 
 /**
- * @package extensions::htmlheader::pres::taglib
+ * @package APF\extensions\htmlheader\pres\taglib
  * @class HtmlHeaderAddCssTag
  *
  *  Taglib for adding stylesheets to htmlheader.

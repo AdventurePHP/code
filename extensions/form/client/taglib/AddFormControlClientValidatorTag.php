@@ -26,7 +26,7 @@ use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\taglib\HtmlFormTag;
 
 /**
- * @package extensions::form::client
+ * @package APF\extensions\form\client
  * @class AddFormControlClientValidatorTag
  *
  *  This taglib adds validators to one or more controls.

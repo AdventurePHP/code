@@ -23,7 +23,7 @@ namespace APF\modules\usermanagement\pres\documentcontroller;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller
+ * @package APF\modules\usermanagement\pres\documentcontroller
  * @class MainNavigationController
  *
  * Displays the user management menu.

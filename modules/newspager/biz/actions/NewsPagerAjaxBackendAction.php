@@ -25,7 +25,7 @@ use APF\modules\newspager\biz\NewsItem;
 use APF\modules\newspager\biz\NewsPagerManager;
 
 /**
- * @package modules::newspager::biz
+ * @package APF\modules\newspager\biz
  * @class NewsPagerAjaxBackendAction
  *
  * Front controller action implementation for AJAX style loading of a news page.

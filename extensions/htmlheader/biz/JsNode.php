@@ -22,7 +22,7 @@ namespace APF\extensions\htmlheader\biz;
  */
 
 /**
- * @package extensions::htmlheader::biz
+ * @package APF\extensions\htmlheader\biz
  * @class JsNode
  *
  * This interface specifies a <em>&lt;script /&gt;</em> tag.

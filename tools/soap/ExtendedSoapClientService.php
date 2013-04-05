@@ -24,7 +24,7 @@ use APF\tools\soap\WsdlObjectMapping;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package tools::soap
+ * @package APF\tools\soap
  * @class ExtendedSoapClientService
  *
  * Implements a wrapper class for PHP's SoapClient service to have a more convenient service and to

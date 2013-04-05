@@ -23,7 +23,7 @@ namespace APF\modules\comments\pres\documentcontroller;
 use APF\core\pagecontroller\BaseDocumentController;
 
 /**
- * @package modules::comments::pres::documentcontroller
+ * @package APF\modules\comments\pres\documentcontroller
  * @class CommentBaseDocumentController
  *
  * Provides basic functionality for the document controllers of the comment module.

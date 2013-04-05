@@ -24,7 +24,7 @@ use APF\extensions\htmlheader\biz\CssNode;
 use APF\extensions\htmlheader\biz\StaticCssNode;
 
 /**
- * @package extensions::htmlheader::biz
+ * @package APF\extensions\htmlheader\biz
  * @class ConditionalStaticCssNode
  *
  * Implements a conditional static css node.

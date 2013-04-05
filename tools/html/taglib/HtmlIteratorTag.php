@@ -28,7 +28,7 @@ use APF\tools\html\taglib\HtmlIteratorItemTag;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package tools::html::taglib
+ * @package APF\tools\html\taglib
  * @class HtmlIteratorTag
  *
  * Implements a taglib, that can display a list of objects (arrays with numeric offsets)

@@ -23,7 +23,7 @@ namespace APF\tools\form\validator;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package tools::form::validator
+ * @package APF\tools\form\validator
  * @class SimpleDateControlValidator
  *
  * Implements a simple date control validator. It expects the selected date to

@@ -24,7 +24,7 @@ use APF\core\pagecontroller\BaseDocumentController;
 use APF\extensions\news\biz\NewsManager;
 
 /**
- * @package extensions::news::pres::documentcontroller
+ * @package APF\extensions\news\pres\documentcontroller
  * @class NewsBaseController
  *
  * Implements basic functionality for the news extension's document controllers.

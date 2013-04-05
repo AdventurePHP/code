@@ -25,7 +25,7 @@ use APF\modules\genericormapper\data\BaseMapper;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package modules::genericormapper::data
+ * @package APF\modules\genericormapper\data
  * @class GenericORMapper
  *
  * Implements an abstract OR mapper, that can map any objects defined in the object

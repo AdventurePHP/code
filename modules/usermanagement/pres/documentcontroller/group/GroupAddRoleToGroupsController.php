@@ -28,7 +28,7 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::group
+ * @package APF\modules\usermanagement\pres\documentcontroller\group
  * @class GroupAddRoleToGroupsController
  *
  * Let's you add a role to one or more groups starting at the role main view.

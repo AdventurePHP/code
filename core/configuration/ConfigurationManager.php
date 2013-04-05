@@ -22,7 +22,7 @@ namespace APF\core\configuration;
  */
 
 /**
- * @package core::configuration
+ * @package APF\core\configuration
  * @class Configuration
  *
  * Defines the scheme, a APF configuration object must have. Each configuration
@@ -124,7 +124,7 @@ interface Configuration {
 }
 
 /**
- * @package core::configuration
+ * @package APF\core\configuration
  * @class ConfigurationProvider
  *
  * Defines the scheme, a APF configuration provider must have. A configuration
@@ -200,7 +200,7 @@ interface ConfigurationProvider {
 }
 
 /**
- * @package core::configuration
+ * @package APF\core\configuration
  * @class ConfigurationException
  *
  * Represents a specialized exception for configuration errors.
@@ -213,7 +213,7 @@ class ConfigurationException extends \Exception {
 }
 
 /**
- * @package core::configuration
+ * @package APF\core\configuration
  * @class ConfigurationManager
  *
  * This class represents the central APF configuration facility introduced in release 1.13

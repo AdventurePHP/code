@@ -23,7 +23,7 @@ namespace APF\extensions\form\client;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package extensions::form::client
+ * @package APF\extensions\form\client
  * @class ClientValidationScriptStore
  *
  * A store which contains all necessary information for client validators.

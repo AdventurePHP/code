@@ -6,7 +6,7 @@ use APF\core\service\APFService;
 use APF\extensions\arraypager\biz\ArrayPagerManager;
 
 /**
- * @package extensions::arraypager::biz
+ * @package APF\extensions\arraypager\biz
  * @class ArrayPagerManagerFabric
  *
  * Implements the factory of the array-pager manager. Initializes concrete ArrayPagerManager

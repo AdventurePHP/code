@@ -5,7 +5,7 @@ use APF\tools\link\Url;
 
 /**
  *
- * @package APFelSMS
+ * @package APF\APFelSMS
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version :  v0.2 (18.06.12)
  *             v0.3 (20.06.12) Added method isReference()

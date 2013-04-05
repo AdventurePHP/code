@@ -26,7 +26,7 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\MultiSelectBoxTag;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\proxy
+ * @package APF\APF\modules\usermanagement\pres\documentcontroller\proxy
  * @class UmgtPermissionBaseController
  *
  * Base controller for visibility definition functionality.

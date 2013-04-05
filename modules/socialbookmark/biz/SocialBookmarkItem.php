@@ -22,7 +22,7 @@ namespace APF\modules\socialbookmark\biz;
  */
 
 /**
- * @package modules::socialbookmark::biz
+ * @package APF\modules\socialbookmark\biz
  * @class SocialBookmarkItem
  *
  * Represents a single bookmark service (e.g. google, technorati, ...).

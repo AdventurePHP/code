@@ -25,7 +25,7 @@ use APF\tools\filesystem\File;
 
 /**
  * @class   Folder
- * @package tools::filesystem
+ * @package APF\tools\filesystem
  *
  * @author  Nicolas Pecher
  * @version Version 0.1, 30.04.2012

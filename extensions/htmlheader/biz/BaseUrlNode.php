@@ -24,7 +24,7 @@ use APF\extensions\htmlheader\biz\HtmlNode;
 use APF\extensions\htmlheader\biz\BaseNode;
 
 /**
- * @package extensions::htmlheader::biz
+ * @package APF\extensions\htmlheader\biz
  * @class BaseUrlNode
  *
  * Implements a simple base node.

@@ -24,7 +24,7 @@ use APF\core\session\SessionManager;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package tools::form::validator
+ * @package APF\tools\form\validator
  * @class TimeCaptchaValidator
  *
  * Implements, in combination with TimeCaptchaTag, a non-visual captcha

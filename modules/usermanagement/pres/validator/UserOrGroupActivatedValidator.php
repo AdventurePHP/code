@@ -23,7 +23,7 @@ namespace APF\modules\usermanagement\pres\validator;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package modules::usermanagement::pres::validator
+ * @package APF\modules\usermanagement\pres\validator
  * @class UserOrGroupActivatedValidator
  *
  * Validator for for combined user and group multi select fields within the proxy forms.

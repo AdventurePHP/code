@@ -27,7 +27,7 @@ use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 use APF\tools\cookie\CookieManager;
 
 /**
- * @package modules::usermanagement::biz::login
+ * @package APF\modules\usermanagement\biz\login
  * @class UmgtAutoLoginAction
  */
 class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {

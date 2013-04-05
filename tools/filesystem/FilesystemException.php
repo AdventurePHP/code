@@ -22,7 +22,7 @@ namespace APF\tools\filesystem;
  */
 
 /**
- * @package tools::filesystem
+ * @package APF\tools\filesystem
  * @class FilesystemException
  *
  * Defines a custom exception thrown by the filesystem.

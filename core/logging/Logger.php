@@ -26,7 +26,7 @@ use APF\core\singleton\Singleton;
 use APF\core\logging\writer\FileLogWriter;
 
 /**
- * @package core::logging
+ * @package APF\core\logging
  * @class LoggerException
  *
  * Defines a custom exception for the logger component.
@@ -39,7 +39,7 @@ class LoggerException extends \Exception {
 }
 
 /**
- * @package core::logging
+ * @package APF\core\logging
  * @class LogWriter
  *
  * Defines the interface for a log writer that can be registered
@@ -79,7 +79,7 @@ interface LogWriter {
 }
 
 /**
- * @package core::logging
+ * @package APF\core\logging
  * @class LogEntry
  *
  * Defines the scheme of a log entry.
@@ -144,7 +144,7 @@ interface LogEntry {
 }
 
 /**
- * @package core::logging
+ * @package APF\core\logging
  * @class LogEntry
  *
  * Implements a log entry.
@@ -224,7 +224,7 @@ class SimpleLogEntry implements LogEntry {
 }
 
 /**
- * @package core::logging
+ * @package APF\core\logging
  * @class Logger
  *
  * Implements a generic logger used in the framework's core components and your applications. The

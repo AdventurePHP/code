@@ -24,7 +24,7 @@ use APF\core\pagecontroller\TagLib;
 use APF\tools\media\taglib\MediaInclusionTag;
 
 /**
- * @package modules::usermanagement::pres::taglib
+ * @package APF\modules\usermanagement\pres\taglib
  * @class UmgtMediaInclusionTag
  *
  * Implements the image displaying taglib. Based on the <*:mediastream/> taglib.

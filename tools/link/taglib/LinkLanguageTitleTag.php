@@ -22,7 +22,7 @@ namespace APF\tools\link\taglib;
  */
 
 /**
- * @package tools::link::taglib
+ * @package APF\tools\link\taglib
  * @class LinkLanguageTitleTag
  *
  * Re-implements the language label tag for the link tags.

@@ -6,7 +6,7 @@ use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
 
 /**
  *
- * @package APFelSMS
+ * @package APF\APFelSMS
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.2 (18.06.12)
  *

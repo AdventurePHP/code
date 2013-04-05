@@ -23,7 +23,7 @@ namespace APF\modules\guestbook2009\pres\controller;
 use APF\modules\guestbook2009\biz\User;
 
 /**
- * @package modules::guestbook2009::pres
+ * @package APF\modules\guestbook2009\pres
  * @class GuestbookLoginController
  *
  * Implements the document controller, to handle the login subview.

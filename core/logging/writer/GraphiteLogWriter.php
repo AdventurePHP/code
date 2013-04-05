@@ -24,7 +24,7 @@ use APF\core\logging\LogWriter;
 use APF\core\logging\LoggerException;
 
 /**
- * @package core::logging::writer
+ * @package APF\core\logging\writer
  * @class GraphiteLogWriter
  *
  * Implements a UDP-based non-blocking log writer to be used with the statsd daemon

@@ -24,7 +24,7 @@ use APF\extensions\htmlheader\biz\HtmlNode;
 use APF\extensions\htmlheader\biz\TitleNode;
 
 /**
- * @package extensions::htmlheader::biz
+ * @package APF\extensions\htmlheader\biz
  * @class SimpleTitleNode
  *
  * Implements title node.

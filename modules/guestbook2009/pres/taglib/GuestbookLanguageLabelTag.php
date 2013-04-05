@@ -23,7 +23,7 @@ namespace APF\modules\guestbook2009\pres\taglib;
 use APF\core\pagecontroller\LanguageLabelTag;
 
 /**
- * @package modules::guestbook2009::pres
+ * @package APF\modules\guestbook2009\pres
  * @class GuestbookLanguageLabelTag
  *
  * Implements the wrapper taglib for displaying the lang dependent labels, that can be

@@ -28,7 +28,7 @@ use APF\tools\link\Url;
 
 /**
  * @abstract
- * @package extensions::htmlheader::biz
+ * @package APF\extensions\htmlheader\biz
  * @class HtmlNode
  *
  * General node for HtmlHeaderManagers data.

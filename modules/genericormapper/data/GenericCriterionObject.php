@@ -22,7 +22,7 @@ namespace APF\modules\genericormapper\data;
     */
 
 /**
- * @package modules::genericormapper::data
+ * @package APF\modules\genericormapper\data
  * @class GenericCriterionObject
  *
  * Implements a generic criterion object, that can be used to load a domain object or domain object list.<br />

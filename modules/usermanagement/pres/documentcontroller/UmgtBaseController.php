@@ -29,7 +29,7 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller
+ * @package APF\modules\usermanagement\pres\documentcontroller
  * @class UmgtBaseController
  *
  * Implements a base controller for the concrete document controllers of

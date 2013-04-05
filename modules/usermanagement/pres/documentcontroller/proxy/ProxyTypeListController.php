@@ -23,7 +23,7 @@ namespace APF\modules\usermanagement\pres\documentcontroller\proxy;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::proxy
+ * @package APF\modules\usermanagement\pres\documentcontroller\proxy
  * @class ProxyTypeListController
  *
  * Displays the list of proxy types defined. Offers the possibility to

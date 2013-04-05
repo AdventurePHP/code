@@ -24,7 +24,7 @@ use APF\core\pagecontroller\Document;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package tools::html::taglib::doc
+ * @package APF\tools\html\taglib\doc
  * @class CreateDocumentFromFileTag
  *
  * Implements a taglib that creates a child node by the content of a file.

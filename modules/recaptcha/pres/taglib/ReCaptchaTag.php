@@ -28,7 +28,7 @@ use APF\modules\recaptcha\pres\taglib\ReCaptchaTranslationTag;
 require_once(__DIR__ . '/../../external/google/recaptchalib.php');
 
 /**
- * @package modules::recaptcha::pres::taglib
+ * @package APF\modules\recaptcha\pres\taglib
  * @class ReCaptchaTag
  *
  * Implements a re-captcha wrapper for Google's ReCaptcha.

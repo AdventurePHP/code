@@ -24,7 +24,7 @@ use APF\core\database\AbstractDatabaseHandler;
 use APF\core\logging\LogEntry;
 
 /**
- * @package core::database
+ * @package APF\core\database
  * @class MySQLxHandler
  *
  * This class implements a connection handler for the ConnectionManager to use with mysql

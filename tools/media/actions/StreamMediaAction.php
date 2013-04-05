@@ -28,7 +28,7 @@ use APF\core\loader\RootClassLoader;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package tools::media::actions
+ * @package APF\tools\media\actions
  * @class StreamMediaAction
  *
  * Implementation of the streamMedia action, that streams various media files (css, image, ...)

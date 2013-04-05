@@ -26,7 +26,7 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller
+ * @package APF\modules\usermanagement\pres\documentcontroller
  * @class RoleDeleteController
  *
  * Implements the controller to delete a role.

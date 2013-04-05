@@ -29,7 +29,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\core\singleton\Singleton;
 
 /**
- * @package modules::genericormapper::data
+ * @package APF\modules\genericormapper\data
  * @class BaseMapper
  *
  * Implements the base class for all concrete or-mapper implementations.<br />

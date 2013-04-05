@@ -22,7 +22,7 @@ namespace APF\modules\pager\biz;
  */
 
 /**
- * @package modules::pager::biz
+ * @package APF\modules\pager\biz
  * @class PageItem
  *
  * Represents the business object of the pager module.

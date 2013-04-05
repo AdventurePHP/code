@@ -10,7 +10,7 @@ namespace APF\modules\usermanagement\biz\model;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package APF\modules\usermanagement\biz\model
+ * @package APF\APF\modules\usermanagement\biz\model
  * @class UmgtRoleBase
  *
  * This class provides the descriptive getter and setter methods for the "APF\modules\usermanagement\biz\model\UmgtRole" domain object.
@@ -88,7 +88,7 @@ abstract class UmgtRoleBase extends GenericDomainObject {
 // DO NOT CHANGE THIS COMMENT! <*UmgtRoleBase:end*>
 
 /**
- * @package APF\modules\usermanagement\biz\model
+ * @package APF\APF\modules\usermanagement\biz\model
  * @class UmgtRole
  *
  * This class represents the "APF\modules\usermanagement\biz\model\UmgtRole" domain object.

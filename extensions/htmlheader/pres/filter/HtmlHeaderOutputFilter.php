@@ -30,7 +30,7 @@ use APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetHeadTag;
 use APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetBodyJsTag;
 
 /**
- * @package extensions::htmlheader::pres::filter
+ * @package APF\extensions\htmlheader\pres\filter
  * @class HtmlHeaderOutputFilter
  *
  * Implements an output filter that injects the content of the html header manager

@@ -23,7 +23,7 @@ namespace APF\extensions\htmlheader\biz;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package extensions::htmlheader::biz
+ * @package APF\extensions\htmlheader\biz
  * @class HtmlHeaderManager
  *
  * Container for htmlheader objects.

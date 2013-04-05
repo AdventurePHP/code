@@ -24,7 +24,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\tools\form\provider\csrf\CSRFHashProvider;
 
 /**
- * @package tools::form::provider::csrf
+ * @package APF\tools\form\provider\csrf
  * @class EncyptedSIDHashProvider
  *
  * Generates a hash based on the user's SID.

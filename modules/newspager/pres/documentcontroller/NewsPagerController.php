@@ -25,7 +25,7 @@ use APF\core\registry\Registry;
 use APF\modules\newspager\biz\NewsPagerManager;
 
 /**
- * @package modules::newspager::pres
+ * @package APF\modules\newspager\pres
  * @class NewsPagerController
  *
  * Document controller for the newspager module.

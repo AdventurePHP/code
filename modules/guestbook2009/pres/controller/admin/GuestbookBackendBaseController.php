@@ -27,7 +27,7 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package modules::guestbook2009::pres
+ * @package APF\modules\guestbook2009\pres
  * @class GuestbookBackendBaseController
  *
  * Provides basic functionality to display the selection menu for

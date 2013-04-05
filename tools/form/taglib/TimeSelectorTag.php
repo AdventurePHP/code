@@ -26,7 +26,7 @@ use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\validator\AbstractFormValidator;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class TimeSelectorTag
  *
  * Represents a APF form time control.

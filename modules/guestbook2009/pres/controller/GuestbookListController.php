@@ -24,7 +24,7 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package modules::guestbook2009::pres::controller
+ * @package APF\modules\guestbook2009\pres\controller
  * @class GuestbookListController
  *
  * Implements the document controller for the guestbook's list view.

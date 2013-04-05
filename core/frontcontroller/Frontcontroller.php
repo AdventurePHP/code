@@ -29,7 +29,7 @@ use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
 /**
- * @package core::frontcontroller
+ * @package APF\core\frontcontroller
  * @class AbstractFrontcontrollerAction
  * @abstract
  *
@@ -288,7 +288,7 @@ abstract class AbstractFrontcontrollerAction extends APFObject {
 }
 
 /**
- * @package core::frontcontroller
+ * @package APF\core\frontcontroller
  * @class FrontcontrollerInput
  *
  * Implements a base class for input parameters for front controller actions.
@@ -315,7 +315,7 @@ class FrontcontrollerInput extends APFObject {
 }
 
 /**
- * @package core::frontcontroller
+ * @package APF\core\frontcontroller
  * @class Frontcontroller
  *
  * Implements the APF front controller. It enables the developer to execute actions

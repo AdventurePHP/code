@@ -23,7 +23,7 @@ namespace APF\extensions\htmllist\taglib;
 use APF\core\pagecontroller\TagLib;
 
 /**
- * @package extensions::htmllist::taglib
+ * @package APF\extensions\htmllist\taglib
  * @class list_taglib_unordered
  *
  * Represents a HTMLList unordered list.

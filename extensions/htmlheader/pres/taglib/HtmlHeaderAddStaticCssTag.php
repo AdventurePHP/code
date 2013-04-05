@@ -25,7 +25,7 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\StaticCssNode;
 
 /**
- * @package extensions::htmlheader::pres::taglib
+ * @package APF\extensions\htmlheader\pres\taglib
  * @class HtmlHeaderAddStaticCssTag
  *
  * Taglib for adding static stylesheets to the html header.

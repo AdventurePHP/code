@@ -31,7 +31,7 @@ use APF\tools\filesystem\Folder;
 use APF\tools\link\Url;
 
 /**
- * @package tools::form::multifileupload::biz
+ * @package APF\tools\form\multifileupload\biz
  * @class MultiFileUploadManager
  *
  * Business component for the multi file upload extension.

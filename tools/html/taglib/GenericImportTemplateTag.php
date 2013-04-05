@@ -25,7 +25,7 @@ use APF\core\singleton\Singleton;
 use APF\core\frontcontroller\Frontcontroller;
 
 /**
- * @package tools::html::taglib
+ * @package APF\tools\html\taglib
  * @class GenericImportTemplateTag
  *
  * Implements a fully generic including tag. The tag retrieves both namespace and the template

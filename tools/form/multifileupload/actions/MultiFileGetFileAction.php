@@ -26,7 +26,7 @@ use APF\tools\http\HeaderManager;
 use APF\tools\form\FormException;
 
 /**
- * @package tools::form::multifileupload::actions
+ * @package APF\tools\form\multifileupload\actions
  * @class MultiFileGetFileAction
  *
  * This action delivers a file that has been uploaded using the multi-upload feature.

@@ -23,7 +23,7 @@ namespace APF\tools\form\validator;
 use APF\tools\form\validator\SelectFieldValidator;
 
 /**
- * @package tools::form::validator
+ * @package APF\tools\form\validator
  * @class MultiSelectFieldValidator
  *
  * Implements a simple multi select field validator, that expects the value

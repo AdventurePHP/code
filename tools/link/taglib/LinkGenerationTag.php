@@ -24,7 +24,7 @@ use APF\core\pagecontroller\Document;
 use APF\tools\link\LinkGenerator;
 
 /**
- * @package tools::link::taglib
+ * @package APF\tools\link\taglib
  * @class LinkGenerationTag
  *
  * This taglib generates a url with the given parameters taking care of the

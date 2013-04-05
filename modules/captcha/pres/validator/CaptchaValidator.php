@@ -24,7 +24,7 @@ use APF\tools\form\taglib\TextFieldTag;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package modules::captcha::pres::validator
+ * @package APF\modules\captcha\pres\validator
  * @class CaptchaValidator
  *
  * Implements a validator for the captcha field.

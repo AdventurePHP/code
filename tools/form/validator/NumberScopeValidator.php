@@ -23,7 +23,7 @@ namespace APF\tools\form\validator;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package tools::form::validator
+ * @package APF\tools\form\validator
  * @class NumberScopeValidator
  *
  * Validates a given form control to contain a number within a defined scope.

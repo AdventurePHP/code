@@ -26,7 +26,7 @@ use APF\tools\link\Url;
 
 /**
  * @abstract
- * @package extensions::htmlheader::biz
+ * @package APF\extensions\htmlheader\biz
  * @class PackageNode
  *
  * Provides basic functionality for css and js package nodes

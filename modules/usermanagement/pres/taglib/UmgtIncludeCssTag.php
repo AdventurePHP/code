@@ -23,7 +23,7 @@ use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\Document;
 
 /**
- * @package modules::usermanagement::pres::taglib
+ * @package APF\modules\usermanagement\pres\taglib
  * @class UmgtIncludeCssTag
  *
  * Includes the css required to display the user management backend.

@@ -48,7 +48,7 @@ class MessageChannelBase extends AbstractMessageChannel {
 // DO NOT CHANGE THIS COMMENT! <*MessageChannelBase:end*>
 
 /**
- * @package extensions::postbox::biz
+ * @package APF\extensions\postbox\biz
  * @class MessageChannel
  *
  * Domain object for "MessageChannel"

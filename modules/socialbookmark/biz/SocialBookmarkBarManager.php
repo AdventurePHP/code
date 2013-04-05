@@ -31,7 +31,7 @@ use APF\modules\socialbookmark\biz\SocialBookmarkItem;
 use APF\tools\media\taglib\MediaInclusionTag;
 
 /**
- * @package modules::socialbookmark::biz
+ * @package APF\modules\socialbookmark\biz
  * @class SocialBookmarkBarManager
  *
  * Generates the HTML code of the bookmark bar. In order to add new services you can use the <em><addBookmarkService()/em>

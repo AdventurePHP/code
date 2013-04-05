@@ -24,7 +24,7 @@ use APF\tools\validator\Validator;
 use APF\core\logging\Logger;
 
 /**
- * @package tools::mail
+ * @package APF\tools\mail
  * @class mailSender
  *
  *  Provides a mail() wrapper.

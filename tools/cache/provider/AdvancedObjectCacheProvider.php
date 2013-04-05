@@ -24,7 +24,7 @@ use APF\tools\cache\CacheKey;
 use APF\tools\cache\provider\AdvancedTextCacheProvider;
 
 /**
- * @package tools::cache::provider
+ * @package APF\tools\cache\provider
  * @class AdvancedObjectCacheProvider
  *
  * Implements the cache provider for serialized php objects using the AdvancedTextCacheProvider.

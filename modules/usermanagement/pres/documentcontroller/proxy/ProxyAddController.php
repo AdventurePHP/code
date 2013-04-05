@@ -31,7 +31,7 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::proxy
+ * @package APF\modules\usermanagement\pres\documentcontroller\proxy
  * @class ProxyAddController
  *
  * Let's the user create a new visibility entry (proxy type <-> proxy <-> user+group).

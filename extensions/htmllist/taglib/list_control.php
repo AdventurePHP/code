@@ -24,7 +24,7 @@ use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\XmlParser;
 
 /**
- * @package extensions::htmllist::taglib
+ * @package APF\extensions\htmllist\taglib
  * @class list_control
  *
  * Implements a base class for all HTMLList elements.
@@ -36,7 +36,7 @@ abstract class list_control extends Document {
 }
 
 /**
- * @package extensions::htmllist::taglib
+ * @package APF\extensions\htmllist\taglib
  * @class AbstractTaglibList
  *
  * Abstract class for list classes.

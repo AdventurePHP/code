@@ -26,7 +26,7 @@ use APF\tools\filesystem\Folder;
 use APF\tools\filesystem\File;
 
 /**
- * @package modules::genericormapper::data::tools
+ * @package APF\modules\genericormapper\data\tools
  * @class GenericORMapperDomainObjectGenerator
  *
  * Automatically generates DomainObjects for the GenericORMapper

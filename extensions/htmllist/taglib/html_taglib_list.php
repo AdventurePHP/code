@@ -25,7 +25,7 @@ use APF\core\pagecontroller\Document;
 use APF\extensions\htmllist\taglib\list_control;
 
 /**
- * @package extensions::htmllist::taglib
+ * @package APF\extensions\htmllist\taglib
  * @class html_taglib_list
  *
  * Represents a HTMLList list (DOM node).

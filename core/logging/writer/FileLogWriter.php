@@ -25,7 +25,7 @@ use APF\core\logging\LogEntry;
 use APF\core\logging\LoggerException;
 
 /**
- * @package core::logging::writer
+ * @package APF\core\logging\writer
  * @class FileLogWriter
  *
  * Implements a log writer to persist the applied entries to log files.

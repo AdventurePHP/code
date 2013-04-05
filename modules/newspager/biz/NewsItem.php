@@ -22,7 +22,7 @@ namespace APF\modules\newspager\biz;
  */
 
 /**
- * @package modules::newspager::biz
+ * @package APF\modules\newspager\biz
  * @class NewsItem
  *
  *  Domain object class.<br />

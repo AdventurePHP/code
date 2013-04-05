@@ -30,7 +30,7 @@ use APF\modules\usermanagement\biz\login\UmgtAutoLoginAction;
 use APF\tools\link\Url;
 
 /**
- * @package modules::usermanagement::biz::login
+ * @package APF\modules\usermanagement\biz\login
  * @class UmgtLogoutAction
  *
  * This front controller action logs out the user and initializes a redirect

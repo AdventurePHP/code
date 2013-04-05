@@ -23,7 +23,7 @@ namespace APF\extensions\news\pres\taglib;
 use APF\tools\media\taglib\MediaInclusionTag;
 
 /**
- * @package extensions::news::pres::taglib
+ * @package APF\extensions\news\pres\taglib
  * @class NewsMediaInclusionTag
  *
  * Implements the image displaying tablib. Based on the *:mediastream taglib.

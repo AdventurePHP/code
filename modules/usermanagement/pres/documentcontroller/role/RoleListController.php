@@ -24,7 +24,7 @@ use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller
+ * @package APF\modules\usermanagement\pres\documentcontroller
  * @class RoleListController
  *
  * Implements the controller list the existing roles.

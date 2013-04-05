@@ -26,7 +26,7 @@ use APF\core\pagecontroller\APFObject;
 register_shutdown_function(array('APF\core\singleton\SessionSingleton', 'saveObjects'));
 
 /**
- * @package core::singleton
+ * @package APF\core\singleton
  * @class SessionSingleton
  * @static
  *

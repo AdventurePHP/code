@@ -22,7 +22,7 @@ namespace APF\modules\comments\biz;
  */
 
 /**
- * @package modules::comments::biz
+ * @package APF\modules\comments\biz
  * @class ArticleComment
  *
  * Represents the business object of the article commend module

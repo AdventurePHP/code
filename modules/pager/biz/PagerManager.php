@@ -32,7 +32,7 @@ use APF\tools\request\RequestHandler;
 use APF\modules\pager\biz\PageItem;
 
 /**
- * @package modules::pager::biz
+ * @package APF\modules\pager\biz
  * @class PagerManager
  *
  * Represents a concrete pager.

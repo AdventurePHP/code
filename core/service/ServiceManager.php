@@ -25,7 +25,7 @@ use APF\core\service\APFService;
 use APF\core\singleton\Singleton;
 
 /**
- * @package core::service
+ * @package APF\core\service
  * @class ServiceManager
  *
  * Provides a simple dependency injection container for objects created during application flow.

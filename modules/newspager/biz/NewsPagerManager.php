@@ -24,7 +24,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\modules\newspager\data\NewsPagerMapper;
 
 /**
- * @package modules::newspager::biz
+ * @package APF\modules\newspager\biz
  * @class NewsPagerManager
  *
  * Business component for loading the news page objects.<br />

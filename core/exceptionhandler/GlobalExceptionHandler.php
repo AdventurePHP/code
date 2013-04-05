@@ -29,7 +29,7 @@ use APF\core\logging\Logger;
 use APF\core\benchmark\BenchmarkTimer;
 
 /**
- * @package core::exceptionhandler
+ * @package APF\core\exceptionhandler
  * @class ExceptionHandler
  *
  * Describes the signature of any APF exception handler.
@@ -55,7 +55,7 @@ interface ExceptionHandler {
 }
 
 /**
- * @package core::exceptionhandler
+ * @package APF\core\exceptionhandler
  * @class DefaultExceptionHandler
  *
  * Implements the default APF exception handler for uncaught exceptions.
@@ -194,7 +194,7 @@ class DefaultExceptionHandler implements ExceptionHandler {
 }
 
 /**
- * @package core::exceptionhandler
+ * @package APF\core\exceptionhandler
  * @class GlobalExceptionHandler
  *
  * This is the APF exception handler automatically registered to handle exceptions.

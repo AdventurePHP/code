@@ -33,7 +33,7 @@ use APF\tools\link\Url;
 use APF\tools\mail\mailSender;
 
 /**
- * @package modules::contact::biz
+ * @package APF\modules\contact\biz
  * @class ContactManager
  *
  * Implements the business component for the contact form.

@@ -24,7 +24,7 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::user
+ * @package APF\modules\usermanagement\pres\documentcontroller\user
  * @class UserListController
  *
  * Implements the list controller for users.

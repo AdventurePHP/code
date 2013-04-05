@@ -23,7 +23,7 @@ namespace APF\core\configuration\provider;
 use APF\core\configuration\Configuration;
 
 /**
- * @package core::configuration::provider
+ * @package APF\core\configuration\provider
  * @class BaseConfiguration
  *
  * Provides base functionality for the concrete configuration object implementations.

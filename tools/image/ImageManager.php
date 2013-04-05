@@ -22,7 +22,7 @@ namespace APF\tools\image;
  */
 
 /**
- * @package tools::image
+ * @package APF\tools\image
  * @class ImageManager
  *
  * Provides methods to manipulate images.

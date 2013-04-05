@@ -23,7 +23,7 @@ namespace APF\tools\form\filter;
 use APF\tools\form\filter\AbstractFormFilter;
 
 /**
- * @package tools::form::filter
+ * @package APF\tools\form\filter
  * @class FloatFilter
  *
  * Implements a filter that can be used to convert text input of floating numbers

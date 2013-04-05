@@ -26,7 +26,7 @@ use APF\tools\request\RequestHandler;
 require_once(__DIR__ . '/../../external/google/recaptchalib.php');
 
 /**
- * @package modules::recaptcha::pres::validator
+ * @package APF\modules\recaptcha\pres\validator
  * @class ReCaptchaValidator
  *
  * Validates a reCaptcha field.

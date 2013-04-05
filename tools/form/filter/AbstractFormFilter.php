@@ -24,7 +24,7 @@ use APF\core\filter\AbstractFilter;
 use APF\tools\form\taglib\AbstractFormControl;
 
 /**
- * @package tools::form::filter
+ * @package APF\tools\form\filter
  * @class AbstractFormFilter
  *
  * Defines the base class for all form filters. In case you want to implement your

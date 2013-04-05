@@ -25,7 +25,7 @@ use APF\extensions\htmlheader\biz\JsCssPackager;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package extensions::htmlheader::biz::actions
+ * @package APF\extensions\htmlheader\biz\actions
  * @class JsCssInclusionAction
  *
  * Implements an FC-action which returns .css and .js files

@@ -8,7 +8,7 @@ use APF\extensions\arraypager\data\ArrayPagerMapper;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package extensions::arraypager::biz
+ * @package APF\extensions\arraypager\biz
  * @class ArrayPagerManager
  *
  * Represents a concrete pager.

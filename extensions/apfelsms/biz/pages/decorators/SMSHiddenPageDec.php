@@ -5,7 +5,7 @@ use APF\extensions\apfelsms\biz\pages\decorators\SMSAbstractPageDec;
 
 /**
  *
- * @package APFelSMS
+ * @package APF\APFelSMS
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (06.06.12)
  * @desc    : Hides the page in navigations

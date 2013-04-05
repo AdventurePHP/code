@@ -23,7 +23,7 @@ namespace APF\core\singleton;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package core::singleton
+ * @package APF\core\singleton
  * @class Singleton
  * @static
  *

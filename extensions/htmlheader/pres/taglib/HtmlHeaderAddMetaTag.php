@@ -25,7 +25,7 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\SimpleMetaNode;
 
 /**
- * @package extensions::htmlheader::pres::taglib
+ * @package APF\extensions\htmlheader\pres\taglib
  * @class HtmlHeaderAddMetaTag
  *
  * Taglib for adding meta nodes to htmlheader.

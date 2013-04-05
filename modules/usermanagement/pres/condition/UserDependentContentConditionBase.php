@@ -4,7 +4,7 @@ namespace APF\modules\usermanagement\pres\condition;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package modules::usermanagement::pres::condition
+ * @package APF\modules\usermanagement\pres\condition
  * @class UserDependentContentConditionBase
  *
  * Implements basic functionality for content conditions.

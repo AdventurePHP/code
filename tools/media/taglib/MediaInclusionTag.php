@@ -25,7 +25,7 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package tools::media::taglib
+ * @package APF\tools\media\taglib
  * @class MediaInclusionTag
  *
  * Implements the base class for the <*:mediastream /> tag implementations. Generates a

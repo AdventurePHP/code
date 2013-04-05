@@ -24,7 +24,7 @@ use APF\core\pagecontroller\BaseDocumentController;
 use APF\core\registry\Registry;
 
 /**
- * @package core::exceptionhandler::documentcontroller
+ * @package APF\core\exceptionhandler\documentcontroller
  * @class ExceptionPageController
  *
  * Implements the exception page's document controller.

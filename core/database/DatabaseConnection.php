@@ -23,7 +23,7 @@ namespace APF\core\database;
 use APF\core\service\APFDIService;
 
 /**
- * @package core::database
+ * @package APF\core\database
  * @class DatabaseHandlerException
  *
  * Represents an exception, that is thrown during database operations.
@@ -36,7 +36,7 @@ class DatabaseHandlerException extends \Exception {
 }
 
 /**
- * @package core::database
+ * @package APF\core\database
  * @class DatabaseConnection
  *
  * This interface defines the structure and functionality of APF database connections.

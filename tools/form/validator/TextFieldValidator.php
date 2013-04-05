@@ -26,7 +26,7 @@ use APF\tools\form\taglib\ValidationListenerTag;
 use APF\tools\form\validator\AbstractFormValidator;
 
 /**
- * @package tools::form::validator
+ * @package APF\tools\form\validator
  * @class TextFieldValidator
  * @abstract
  *

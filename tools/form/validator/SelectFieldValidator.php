@@ -23,7 +23,7 @@ namespace APF\tools\form\validator;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package tools::form::validator
+ * @package APF\tools\form\validator
  * @class SelectFieldValidator
  *
  * Implements a base class for all select field validators.

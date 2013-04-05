@@ -28,7 +28,7 @@ use APF\tools\string\AdvancedBBCodeParser;
 use APF\tools\link\LinkGenerator;
 
 /**
- * @package modules::comments::pres::documentcontroller
+ * @package APF\modules\comments\pres\documentcontroller
  * @class CommentListingController
  *
  * Implements the document controller for the 'listing.html' template.

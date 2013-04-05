@@ -22,7 +22,7 @@ namespace APF\tools\form;
  */
 
 /**
- * @package tools::form
+ * @package APF\tools\form
  * @class FormException
  *
  * This exception represents unsupported states during form handling.

@@ -22,7 +22,7 @@ namespace APF\modules\guestbook2009\pres\controller;
  */
 
 /**
- * @package modules::guestbook2009::pres
+ * @package APF\modules\guestbook2009\pres
  * @class GuestbookController
  *
  * Displays the guestbook's language dependent attributes.

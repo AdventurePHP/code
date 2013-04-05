@@ -26,7 +26,7 @@ use APF\core\registry\Registry;
 use APF\core\frontcontroller\Frontcontroller;
 
 /**
- * @package core::filter
+ * @package APF\core\filter
  * @class ChainedGenericInputFilter
  *
  * Implements the default APF filter that resolves the URL layout of the

@@ -25,7 +25,7 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller
+ * @package APF\modules\usermanagement\pres\documentcontroller
  * @class PermissionAddController
  *
  * Implements the controller to add a permission.

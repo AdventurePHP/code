@@ -22,7 +22,7 @@ namespace APF\core\service;
  */
 
 /**
- * @package core::service
+ * @package APF\core\service
  * @interface APFService
  *
  * Defines the structure of an APF service that is initialized with the <em>ServiceManager</em>.

@@ -25,7 +25,7 @@ use APF\core\pagecontroller\PlaceHolderTag;
 use APF\core\pagecontroller\TagLib;
 
 /**
- * @package tools::html::taglib
+ * @package APF\tools\html\taglib
  * @class HtmlIteratorItemTag
  *
  * Represents an item within the iterator.

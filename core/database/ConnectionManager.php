@@ -28,7 +28,7 @@ use APF\core\registry\Registry;
 use APF\core\service\APFService;
 
 /**
- * @package core::database
+ * @package APF\core\database
  * @class ConnectionManager
  *
  * The ConnectionManager is a database connection fabric. You can use it to create APF style

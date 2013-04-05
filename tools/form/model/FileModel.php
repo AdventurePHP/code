@@ -22,7 +22,7 @@ namespace APF\tools\form\model;
  */
 
 /**
- * @package tools::form::model
+ * @package APF\tools\form\model
  * @class FileModel
  *
  * Represents a file object created during http file upload.

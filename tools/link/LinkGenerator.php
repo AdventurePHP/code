@@ -26,7 +26,7 @@ use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
 /**
- * @package tools::link
+ * @package APF\tools\link
  * @class UrlFormatException
  *
  * Represents an exception that indicated illegal urls.
@@ -39,7 +39,7 @@ class UrlFormatException extends \Exception {
 }
 
 /**
- * @package tools::link
+ * @package APF\tools\link
  * @class Url
  *
  * This class represents a url designed to generate related urls using
@@ -408,7 +408,7 @@ final class Url {
 }
 
 /**
- * @package tools::link
+ * @package APF\tools\link
  * @class LinkScheme
  *
  * Defines the structure of the APF link scheme implementations. A link scheme
@@ -445,7 +445,7 @@ interface LinkScheme {
 }
 
 /**
- * @package tools::link
+ * @package APF\tools\link
  * @class LinkGenerator
  *
  * The <em>LinkGenerator</em> is a generic link generation tool that can be configured
@@ -544,7 +544,7 @@ final class LinkGenerator {
 }
 
 /**
- * @package tools::link
+ * @package APF\tools\link
  * @class BasicLinkScheme
  *
  * Implements basic functionality used by different link scheme implementations.
@@ -751,7 +751,7 @@ abstract class BasicLinkScheme {
 }
 
 /**
- * @package tools::link
+ * @package APF\tools\link
  * @class DefaultLinkScheme
  *
  * This link scheme implementation is intended to handle &quot;normal&quot; urls
@@ -824,7 +824,7 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
 }
 
 /**
- * @package tools::link
+ * @package APF\tools\link
  * @class RewriteLinkScheme
  *
  * This link scheme implementation is intended to handle rewritten urls

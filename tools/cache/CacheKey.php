@@ -22,7 +22,7 @@ namespace APF\tools\cache;
  */
 
 /**
- * @package tools::cache
+ * @package APF\tools\cache
  * @class CacheKey
  *
  * Describes the requirements of a cache key, a selection criterion for cache items..

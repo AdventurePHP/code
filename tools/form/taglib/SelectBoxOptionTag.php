@@ -22,7 +22,7 @@ namespace APF\tools\form\taglib;
  */
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class SelectBoxOptionTag
  *
  * Represents a select option of an APF select field.

@@ -35,7 +35,7 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\modules\guestbook2009\biz
+ * @package APF\APF\modules\guestbook2009\biz
  * @class GuestbookService
  *
  * Implements the central business component of the guestbook. Must be initialized with

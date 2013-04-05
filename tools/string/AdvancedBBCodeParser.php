@@ -26,7 +26,7 @@ use APF\core\service\APFService;
 use APF\core\singleton\Singleton;
 
 /**
- * @package tools::string
+ * @package APF\tools\string
  * @class BBCodeParserDefinition
  *
  * Internal representation of an BBCodeParserProvider. Nearly the same as the TagLib class for
@@ -68,7 +68,7 @@ final class BBCodeParserDefinition {
 
 /**
  * @abstract
- * @package tools::string
+ * @package APF\tools\string
  * @class BBCodeParserProvider
  *
  * The interface for all concrete implementations of the parser provider.
@@ -97,7 +97,7 @@ abstract class BBCodeParserProvider extends APFObject {
 }
 
 /**
- * @package tools::string
+ * @package APF\tools\string
  * @class AdvancedBBCodeParser
  *
  * Implements the advanced bbcode parser for the adventure php framework.

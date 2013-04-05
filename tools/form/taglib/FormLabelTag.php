@@ -23,7 +23,7 @@ namespace APF\tools\form\taglib;
 use APF\core\pagecontroller\TagLib;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class FormLabelTag
  *
  * Represents a &lt;label /&gt; form tag that is APF parser sensitive in terms of visibility management.

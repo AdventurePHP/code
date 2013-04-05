@@ -35,7 +35,7 @@ use APF\modules\usermanagement\pres\condition\UmgtRoleCondition;
 use APF\modules\usermanagement\pres\condition\UmgtNotRoleCondition;
 
 /**
- * @package modules::usermanagement::pres::condition
+ * @package APF\modules\usermanagement\pres\condition
  * @class UserDependentContentConditionSet
  *
  * Represents a set of conditions that can be used to match the current situation to

@@ -24,7 +24,7 @@ use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
- * @package core::database::configuration
+ * @package APF\core\database\configuration
  * @class StatementConfiguration
  *
  * Implements a configuration abstraction for database statements stored within files.

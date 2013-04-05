@@ -26,7 +26,7 @@ use APF\core\session\SessionManager;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package modules::captcha::biz::actions
+ * @package APF\modules\captcha\biz\actions
  * @class ShowCaptchaImageAction
  *
  * Front controller action that displays a captcha image.

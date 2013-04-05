@@ -23,7 +23,7 @@ namespace APF\tools\form\taglib;
 use APF\core\pagecontroller\TagLib;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class ValidationListenerTag
  *
  * Implements a taglib, that outputs it's content, in case you notify

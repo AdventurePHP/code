@@ -22,7 +22,7 @@ namespace APF\core\errorhandler;
  */
 
 /**
- * @package core::errorhandler
+ * @package APF\core\errorhandler
  * @class ConfigurableErrorHandler
  *
  * Implements a configurable error handler, that ignores errors underneath the configured

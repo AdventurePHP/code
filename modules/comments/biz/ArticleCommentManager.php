@@ -29,7 +29,7 @@ use APF\tools\http\HeaderManager;
 use APF\tools\link\Url;
 
 /**
- * @package modules::comments::biz
+ * @package APF\modules\comments\biz
  * @class ArticleCommentManager
  *
  *  Implements the business component of the comment module.

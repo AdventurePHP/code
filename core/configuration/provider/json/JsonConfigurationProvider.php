@@ -27,7 +27,7 @@ use APF\core\configuration\provider\BaseConfigurationProvider;
 use APF\core\configuration\provider\json\JsonConfiguration;
 
 /**
- * @package core::configuration::provider::ini
+ * @package APF\core\configuration\provider\ini
  * @class JsonConfigurationProvider
  *
  * Implements the configuration provider for the default APF json format. The

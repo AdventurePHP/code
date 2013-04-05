@@ -4,7 +4,7 @@ namespace APF\core\filter;
 use APF\core\filter\AbstractFilterChain;
 
 /**
- * @package core::filter
+ * @package APF\core\filter
  * @class OutputFilterChain
  *
  * Represents the singleton instance of the output filter chain.

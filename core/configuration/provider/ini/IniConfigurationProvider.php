@@ -27,7 +27,7 @@ use APF\core\configuration\provider\ini\IniConfiguration;
 use APF\core\configuration\Configuration;
 
 /**
- * @package core::configuration::provider::ini
+ * @package APF\core\configuration\provider\ini
  * @class IniConfigurationProvider
  *
  * Implements the configuration provider for the default APF ini format. The

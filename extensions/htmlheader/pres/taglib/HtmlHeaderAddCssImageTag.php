@@ -25,7 +25,7 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\CssImageNode;
 
 /**
- * @package extensions::htmlheader::pres::taglib
+ * @package APF\extensions\htmlheader\pres\taglib
  * @class HtmlHeaderAddCssImageTag
  *
  * Taglib for adding an image to the html header.

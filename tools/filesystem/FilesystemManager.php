@@ -23,7 +23,7 @@ namespace APF\tools\filesystem;
 
 /**
  * @class FileException
- * @package tools::filesystem
+ * @package APF\tools\filesystem
  *
  * Represents an exception, that is thrown on errors concerning file operations.
  *
@@ -37,7 +37,7 @@ class FileException extends \Exception {
 /**
  * @static
  * @class FilesystemManager
- * @package tools::filesystem
+ * @package APF\tools\filesystem
  *
  * Implements a helper tool for filesystem access, directory and file handling.
  *

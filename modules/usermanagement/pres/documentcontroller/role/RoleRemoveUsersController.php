@@ -27,7 +27,7 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::role
+ * @package APF\modules\usermanagement\pres\documentcontroller\role
  * @class RoleRemoveUsersController
  *
  * Implements the controller to detach a role from a user.

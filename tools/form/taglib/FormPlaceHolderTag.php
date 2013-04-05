@@ -23,7 +23,7 @@ namespace APF\tools\form\taglib;
 use APF\core\pagecontroller\PlaceHolderTag;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class FormPlaceHolderTag
  *
  * Represents a APF form place holder.

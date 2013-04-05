@@ -25,7 +25,7 @@ use APF\core\pagecontroller\Document;
 use APF\extensions\htmlheader\pres\filter\HtmlHeaderOutputFilter;
 
 /**
- * @package extensions::htmlheader::pres::taglib
+ * @package APF\extensions\htmlheader\pres\taglib
  * @class HtmlHeaderGetBodyJsTag
  *
  * Taglib for receiving javascript definitions which should be placed at

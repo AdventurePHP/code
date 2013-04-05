@@ -25,7 +25,7 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\StaticJsNode;
 
 /**
- * @package extensions::htmlheader::pres::taglib
+ * @package APF\extensions\htmlheader\pres\taglib
  * @class HtmlHeaderAddStaticJsTag
  *
  * Taglib for adding static java script to the html header.

@@ -23,7 +23,7 @@ namespace APF\modules\genericormapper\data;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package modules::genericormapper::data
+ * @package APF\modules\genericormapper\data
  * @class GenericORMapperDIMappingConfiguration
  *
  * Represents a configuration service to be able to add a further mapping configuration to

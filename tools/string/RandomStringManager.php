@@ -22,7 +22,7 @@ namespace APF\tools\string;
  */
 
 /**
- * @package tools::string
+ * @package APF\tools\string
  * @class RandomStringManager
  *
  * This class creates a random string.

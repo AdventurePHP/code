@@ -25,7 +25,7 @@ use APF\core\service\APFService;
 use APF\modules\pager\biz\PagerManager;
 
 /**
- * @package modules::pager::biz
+ * @package APF\modules\pager\biz
  * @class PagerManagerFabric
  *
  * Implements the factory of the pager manager. Initializes concrete PagerManager

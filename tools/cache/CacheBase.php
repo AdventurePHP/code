@@ -24,7 +24,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\core\registry\Registry;
 
 /**
- * @package tools::cache
+ * @package APF\tools\cache
  * @class CacheBase
  * @abstract
  *

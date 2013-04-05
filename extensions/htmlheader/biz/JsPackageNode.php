@@ -24,7 +24,7 @@ use APF\extensions\htmlheader\biz\PackageNode;
 use APF\extensions\htmlheader\biz\JsNode;
 
 /**
- * @package extensions::htmlheader::biz
+ * @package APF\extensions\htmlheader\biz
  * @class JsPackageNode
  *
  * Implements a js node, that loads a js package.

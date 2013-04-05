@@ -29,7 +29,7 @@ use APF\modules\kontakt4\biz\ContactFormData;
 use APF\tools\link\Url;
 
 /**
- * @package modules::contact::pres::documentcontroller
+ * @package APF\modules\contact\pres\documentcontroller
  * @class ContactFormController
  *
  * Document controller for the form view of the contact module.

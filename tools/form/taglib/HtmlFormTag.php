@@ -30,7 +30,7 @@ use APF\tools\form\FormException;
 use APF\tools\form\taglib\AbstractFormControl;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class HtmlFormTag
  *
  * Represents a APF form element (DOM node).

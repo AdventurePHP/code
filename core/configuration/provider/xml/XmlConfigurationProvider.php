@@ -27,7 +27,7 @@ use APF\core\configuration\provider\BaseConfigurationProvider;
 use APF\core\configuration\provider\xml\XmlConfiguration;
 
 /**
- * @package core::configuration::provider::ini
+ * @package APF\core\configuration\provider\ini
  * @class XmlConfigurationProvider
  *
  * Implements the configuration provider for the default APF xml format. The

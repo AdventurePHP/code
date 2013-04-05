@@ -24,7 +24,7 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\condition\UserDependentContentCondition;
 
 /**
- * @package modules::usermanagement::pres::condition
+ * @package APF\modules\usermanagement\pres\condition
  * @class UmgtLoggedOutCondition
  *
  * Implements the decision logic, whether a user is logged out.

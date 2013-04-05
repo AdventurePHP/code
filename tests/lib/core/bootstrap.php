@@ -20,7 +20,7 @@
  */
 
 /**
- * @package tests::lib::core
+ * @package APF\tests\lib\core
  *
  * Bootstrap to start test application environment.<br />
  *

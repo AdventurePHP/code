@@ -2,7 +2,7 @@
 namespace APF\modules\usermanagement\pres\condition;
 
 /**
- * @package modules::usermanagement::pres::condition
+ * @package APF\modules\usermanagement\pres\condition
  * @class UserDependentContentCondition
  *
  * Defines the structure of a user dependent content condition for the user

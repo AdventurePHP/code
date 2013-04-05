@@ -27,7 +27,7 @@ use APF\core\configuration\provider\BaseConfigurationProvider;
 use APF\core\database\config\StatementConfiguration;
 
 /**
- * @package core::database::config
+ * @package APF\core\database\config
  * @class StatementConfigurationProvider
  *
  * Implements the configuration provider to handle stored statements to treat them as "normal"

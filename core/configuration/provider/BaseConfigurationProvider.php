@@ -23,7 +23,7 @@ namespace APF\core\configuration\provider;
 use APF\core\loader\RootClassLoader;
 
 /**
- * @package core::configuration::provider
+ * @package APF\core\configuration\provider
  * @class BaseConfigurationProvider
  *
  * Provides basic configuration provider functionality.

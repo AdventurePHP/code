@@ -25,7 +25,7 @@ use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package tools::form::validator
+ * @package APF\tools\form\validator
  * @class CSRFHashValidator
  *
  * Checks the csrf hash from the csrfhash field.

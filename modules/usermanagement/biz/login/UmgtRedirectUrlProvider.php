@@ -22,7 +22,7 @@ namespace APF\modules\usermanagement\biz\login;
  */
 
 /**
- * @package modules::usermanagement::biz::login
+ * @package APF\modules\usermanagement\biz\login
  * @class UmgtRedirectUrlProvider
  *
  * This interface specifies the structure of any url generation provider that is

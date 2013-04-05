@@ -23,7 +23,7 @@ namespace APF\extensions\htmlheader\biz;
 use APF\extensions\htmlheader\biz\HeaderNode;
 
 /**
- * @package extensions::htmlheader::biz
+ * @package APF\extensions\htmlheader\biz
  * @Class CssNode
  *
  * This interface specifies a <em>&lt;link /&gt;</em> or <em>&lt;style /&gt;</em> tag.

@@ -12,7 +12,7 @@ use APF\tools\request\RequestHandler;
 use APF\tools\link\LinkGenerator;
 
 /**
- * @package APFelSMS
+ * @package APF\APFelSMS
  */
 class SMSException extends \Exception {
 
@@ -21,7 +21,7 @@ class SMSException extends \Exception {
 
 
 /**
- * @package APFelSMS
+ * @package APF\APFelSMS
  */
 class SMSUnknownTypeException extends SMSException {
 
@@ -30,7 +30,7 @@ class SMSUnknownTypeException extends SMSException {
 
 
 /**
- * @package APFelSMS
+ * @package APF\APFelSMS
  */
 class SMSWrongParameterException extends SMSException {
 
@@ -39,7 +39,7 @@ class SMSWrongParameterException extends SMSException {
 
 
 /**
- * @package APFelSMS
+ * @package APF\APFelSMS
  */
 class SMSConfigurationException extends SMSException {
 
@@ -48,7 +48,7 @@ class SMSConfigurationException extends SMSException {
 
 
 /**
- * @package APFelSMS
+ * @package APF\APFelSMS
  */
 class SMSWrongDataException extends SMSException {
 
@@ -65,7 +65,7 @@ class SMSWrongDataException extends SMSException {
  * You need to inject an SMSMapper using setMapper() and a site using setSite().
  * Please also configure setup() as setupmethod in your DIService configuration.
  *
- * @package APFelSMS
+ * @package APF\APFelSMS
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version :  v0.1 (06.06.12)
  *             v0.2 (20.06.12) Added language support in getInstance() and Constructor

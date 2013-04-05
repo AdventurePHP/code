@@ -22,7 +22,7 @@ namespace APF\tools\string\bbcpprovider;
  */
 
 /**
- * @package tools::string::bbcpprovider
+ * @package APF\tools\string\bbcpprovider
  * @class FontSizeProvider
  *
  * Implements the font color parser.

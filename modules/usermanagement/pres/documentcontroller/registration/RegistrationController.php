@@ -31,7 +31,7 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\core\logging\Logger;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::registration
+ * @package APF\modules\usermanagement\pres\documentcontroller\registration
  * @class RegistrationController
  *
  * This document controller handles the user registration.

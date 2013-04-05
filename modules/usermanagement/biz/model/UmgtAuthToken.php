@@ -10,7 +10,7 @@ namespace APF\modules\usermanagement\biz\model;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package APF\modules\usermanagement\biz\model
+ * @package APF\APF\modules\usermanagement\biz\model
  * @class UmgtAuthTokenBase
  *
  * This class provides the descriptive getter and setter methods for the "APF\modules\usermanagement\biz\model\UmgtAuthToken" domain object.
@@ -64,7 +64,7 @@ abstract class UmgtAuthTokenBase extends GenericDomainObject {
 // DO NOT CHANGE THIS COMMENT! <*UmgtAuthTokenBase:end*>
 
 /**
- * @package APF\modules\usermanagement\biz\model
+ * @package APF\APF\modules\usermanagement\biz\model
  * @class UmgtAuthToken
  *
  * This class represents the "APF\modules\usermanagement\biz\model\UmgtAuthToken" domain object.

@@ -27,7 +27,7 @@ use APF\core\logging\SimpleLogEntry;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package core::logging::writer
+ * @package APF\core\logging\writer
  * @class DatabaseLogWriter
  *
  * Implements a log writer to persist the applied entries to a database table.

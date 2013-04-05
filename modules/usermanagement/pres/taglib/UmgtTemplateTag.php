@@ -24,7 +24,7 @@ use APF\core\pagecontroller\TemplateTag;
 use APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet;
 
 /**
- * @package modules::usermanagement::pres::taglib
+ * @package APF\modules\usermanagement\pres\taglib
  * @class UmgtTemplateTag
  *
  * Enables you to display template content based on various conditions registered within

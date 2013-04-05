@@ -23,7 +23,7 @@ namespace APF\modules\captcha\pres\filter;
 use APF\tools\form\filter\AbstractFormFilter;
 
 /**
- * @package modules::captcha::pres::filter
+ * @package APF\modules\captcha\pres\filter
  * @class CaptchaFilter
  *
  * Implements a filter for the captcha field.

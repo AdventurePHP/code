@@ -26,7 +26,7 @@ use APF\core\logging\LogEntry;
 use APF\core\singleton\Singleton;
 
 /**
- * @package core::database
+ * @package APF\core\database
  * @class MySQLiHandler
  *
  * This class implements a connection handler for the ConnectionManager

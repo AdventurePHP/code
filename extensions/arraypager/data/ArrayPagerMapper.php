@@ -5,7 +5,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\core\session\SessionManager;
 
 /**
- * @package extensions::arraypager::data
+ * @package APF\extensions\arraypager\data
  * @class ArrayPagerMapper
  *
  * Represents the data layer of the array-pager.

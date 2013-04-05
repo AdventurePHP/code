@@ -24,7 +24,7 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package modules::guestbook2009::pres::controller
+ * @package APF\modules\guestbook2009\pres\controller
  * @class GuestbookAdminController
  *
  * Implements the document controller for the admin main view. Generates the links

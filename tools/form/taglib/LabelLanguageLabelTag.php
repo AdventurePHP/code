@@ -23,7 +23,7 @@ namespace APF\tools\form\taglib;
 use APF\core\pagecontroller\LanguageLabelTag;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class LabelLanguageLabelTag
  *
  * Implements a taglib that let's you easily label your form label tag. This makes

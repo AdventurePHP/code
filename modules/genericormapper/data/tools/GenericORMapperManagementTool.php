@@ -26,7 +26,7 @@ use APF\modules\genericormapper\data\BaseMapper;
 use APF\modules\genericormapper\data\GenericORMapperException;
 
 /**
- * @package modules::genericormapper::data
+ * @package APF\modules\genericormapper\data
  * @class GenericORMapperManagementTool
  *
  * This tool allows you to setup a database for use with the generic or mapper. It enables

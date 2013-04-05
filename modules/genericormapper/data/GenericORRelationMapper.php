@@ -23,7 +23,7 @@ namespace APF\modules\genericormapper\data;
 use APF\modules\genericormapper\data\GenericORMapper;
 
 /**
- * @package modules::genericormapper::data
+ * @package APF\modules\genericormapper\data
  * @class GenericORRelationMapper
  *
  * Implements the or data mapper, that handles objects and theire relations. Please create

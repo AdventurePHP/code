@@ -26,7 +26,7 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::group
+ * @package APF\modules\usermanagement\pres\documentcontroller\group
  * @class GroupEditController
  *
  * Implements the controller to edit a group.

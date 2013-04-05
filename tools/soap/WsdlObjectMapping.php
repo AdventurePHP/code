@@ -23,7 +23,7 @@ namespace APF\tools\soap;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package tools::soap
+ * @package APF\tools\soap
  * @class WsdlObjectMapping
  *
  * Implements a wrapper class for an WSDL-to-PHP object mapping that can be registered with the APFSoapClient in

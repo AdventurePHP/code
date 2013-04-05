@@ -25,7 +25,7 @@ use APF\core\registry\Registry;
 use APF\core\service\APFService;
 
 /**
- * @package tools::cache
+ * @package APF\tools\cache
  * @class CacheManagerFabric
  *
  * Fabric for the cache manager. Must be created singleton using the service manager.

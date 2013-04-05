@@ -4,7 +4,7 @@ namespace APF\extensions\apfelsms\biz\pages\stores;
 use APF\extensions\apfelsms\biz\pages\stores\SMSPageStoreInterface;
 /**
  *
- * @package APFelSMS
+ * @package APF\APFelSMS
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (04.08.12)
  *

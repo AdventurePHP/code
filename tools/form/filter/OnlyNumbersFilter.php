@@ -23,7 +23,7 @@ namespace APF\tools\form\filter;
 use APF\tools\form\filter\AbstractFormFilter;
 
 /**
- * @package tools::form::filter
+ * @package APF\tools\form\filter
  * @class OnlyNumbersFilter
  *
  * Implements a filter, that only accepts numbers.

@@ -25,7 +25,7 @@ use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
 /**
- * @package core::filter
+ * @package APF\core\filter
  * @class ChainedGenericOutputFilter
  *
  * Implements the output filter for the new filter chain implementation

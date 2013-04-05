@@ -27,7 +27,7 @@ use APF\tools\request\RequestHandler;
 use APF\modules\pager\biz\PageItem;
 
 /**
- * @package modules::schwarzesbrett::pres::documentcontroller::pager
+ * @package APF\modules\schwarzesbrett\pres\documentcontroller\pager
  * @class AdvancedPagerController
  *
  * Implements a document controller displaying the model information of the pager. This

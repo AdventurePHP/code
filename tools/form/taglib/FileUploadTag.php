@@ -24,7 +24,7 @@ use APF\tools\form\model\FileModel;
 use APF\tools\form\taglib\TextFieldTag;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class FileUploadTag
  *
  * Represents the APF form file field.

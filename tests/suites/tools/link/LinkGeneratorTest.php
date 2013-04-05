@@ -28,7 +28,7 @@ use APF\tools\link\RewriteLinkScheme;
 use APF\tools\link\Url;
 
 /**
- * @package tests::suites::tools::link
+ * @package APF\tests\suites\tools\link
  * @class TestFrontControllerAction
  *
  * Implements a dummy front controller action to enable testing the link scheme.
@@ -43,7 +43,7 @@ class TestFrontControllerAction extends AbstractFrontcontrollerAction {
 }
 
 /**
- * @package tests::suites::tools::link
+ * @package APF\tests\suites\tools\link
  * @class TestableDefaultLinkScheme
  *
  * Implements a testable link scheme regarding front controller link
@@ -73,7 +73,7 @@ class TestableDefaultLinkScheme extends DefaultLinkScheme {
 }
 
 /**
- * @package tests::suites::tools::link
+ * @package APF\tests\suites\tools\link
  * @class TestableRewriteLinkScheme
  *
  * Implements a testable link scheme regarding front controller link
@@ -103,7 +103,7 @@ class TestableRewriteLinkScheme extends RewriteLinkScheme {
 }
 
 /**
- * @package tests::suites::tools::link
+ * @package APF\tests\suites\tools\link
  * @class LinkGeneratorTest
  *
  * Implements tests for the link generator and the url abstraction.

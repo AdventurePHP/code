@@ -23,7 +23,7 @@ namespace APF\extensions\htmllist\taglib;
 use APF\extensions\htmllist\taglib\list_control;
 
 /**
- * @package extensions::htmllist::taglib
+ * @package APF\extensions\htmllist\taglib
  * @class list_taglib_elem_list
  *
  * Represents a HTMLList list element.

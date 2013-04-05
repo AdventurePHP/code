@@ -27,7 +27,7 @@ use APF\tools\link\Url;
 use APF\tools\link\taglib\LinkGenerationTag;
 
 /**
- * @package tools::link::taglib
+ * @package APF\tools\link\taglib
  * @class HtmlLinkTag
  *
  * This taglib generates a html link tag based on the LinkGenerationTag taglib.

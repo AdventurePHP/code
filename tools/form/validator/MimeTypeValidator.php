@@ -24,7 +24,7 @@ use APF\tools\form\taglib\FileUploadTag;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package tools::form::validator
+ * @package APF\tools\form\validator
  * @class MimeTypeValidator
  *
  * Implements a simple validator, that checks the uploaded file

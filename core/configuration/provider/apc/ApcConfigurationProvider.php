@@ -26,7 +26,7 @@ use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\ConfigurationProvider;
 
 /**
- * @package core::configuration::provider::apc
+ * @package APF\core\configuration\provider\apc
  * @class ApcConfigurationProvider
  *
  * Implements a configuration provider to store a configuration within an APC store.

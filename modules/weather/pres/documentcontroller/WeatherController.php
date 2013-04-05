@@ -23,7 +23,7 @@ namespace APF\modules\weather\pres\documentcontroller;
 use APF\core\pagecontroller\BaseDocumentController;
 
 /**
- * @package modules::weather::pres::documentcontroller
+ * @package APF\modules\weather\pres\documentcontroller
  * @class WeatherController
  *
  * Implements an rss consumer to display current weather information.

@@ -23,7 +23,7 @@ namespace APF\core\logging\entry;
 use APF\core\logging\LogEntry;
 
 /**
- * @package core::logging::entry
+ * @package APF\core\logging\entry
  * @class GraphiteLogEntry
  *
  * Implements a log entry that is compatible with the GraphiteLogWriter.

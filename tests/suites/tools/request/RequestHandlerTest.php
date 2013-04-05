@@ -4,7 +4,7 @@ namespace APF\tests\suites\tools\request;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package tests::suites::tools::request
+ * @package APF\tests\suites\tools\request
  * @class RequestHandlerTest
  *
  * Tests the RequestHandler. Written due to bug with "0" values.

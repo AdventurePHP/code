@@ -26,7 +26,7 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package extensions::news::pres::documentcontroller::backend
+ * @package APF\extensions\news\pres\documentcontroller\backend
  * @class NewsFrontendController
  *
  * Document controller for the frontend of the news.

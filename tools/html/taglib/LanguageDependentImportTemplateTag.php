@@ -26,7 +26,7 @@ use APF\core\pagecontroller\Document;
 use APF\core\singleton\Singleton;
 
 /**
- * @package tools::html::taglib
+ * @package APF\tools\html\taglib
  * @class LanguageDependentImportTemplateTag
  *
  * Implements a special importdesign tag, that can handle language files like eZComponents. The

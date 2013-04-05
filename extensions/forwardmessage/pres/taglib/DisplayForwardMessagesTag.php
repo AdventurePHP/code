@@ -25,7 +25,7 @@ use APF\core\service\APFService;
 use APF\extensions\forwardmessage\biz\ForwardMessageManager;
 
 /**
- * @package extensions::forwardmessage::pres::taglib
+ * @package APF\extensions\forwardmessage\pres\taglib
  * @class DisplayForwardMessagesTag
  *
  * @param string $groups String of groups that should be displayed. Separated by "," (e.g "message,error")

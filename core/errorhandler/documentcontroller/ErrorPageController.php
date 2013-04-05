@@ -24,7 +24,7 @@ use APF\core\pagecontroller\BaseDocumentController;
 use APF\core\registry\Registry;
 
 /**
- * @package core::errorhandler::documentcontroller
+ * @package APF\core\errorhandler\documentcontroller
  * @class ErrorPageController
  *
  * Implements the error page's document controller.

@@ -22,7 +22,7 @@ namespace APF\tools\request;
  */
 
 /**
- * @package tools::request
+ * @package APF\tools\request
  * @class PostHandler
  *
  * This component let's you easily retrieve values from the POST-request

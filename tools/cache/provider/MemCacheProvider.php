@@ -25,7 +25,7 @@ use APF\tools\cache\CacheKey;
 use APF\tools\cache\CacheProvider;
 
 /**
- * @package tools::cache::provider
+ * @package APF\tools\cache\provider
  * @class MemCacheProvider
  *
  * Implements the cache reader for serialized php objects stored in the memcached server.

@@ -23,7 +23,7 @@ namespace APF\tools\cache;
 use APF\tools\cache\CacheKey;
 
 /**
- * @package tools::cache
+ * @package APF\tools\cache
  * @class CacheProvider
  *
  * Interface for concrete provider implementations. To access the configuration, the provider

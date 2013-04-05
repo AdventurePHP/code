@@ -28,7 +28,7 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::group
+ * @package APF\modules\usermanagement\pres\documentcontroller\group
  * @class GroupRemoveUserFromGroupsController
  *
  * Let's you remove a user from one or more groups starting at the user main view.

@@ -26,7 +26,7 @@ use APF\tools\cache\CacheProvider;
 use APF\tools\cache\key\AdvancedCacheKey;
 
 /**
- * @package tools::cache::provider
+ * @package APF\tools\cache\provider
  * @class ApcCacheProvider
  *
  * Implements the cache reader for serialized php objects stored in an APC in-memory store.

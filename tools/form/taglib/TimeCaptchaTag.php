@@ -23,7 +23,7 @@ namespace APF\tools\form\taglib;
 use APF\core\session\SessionManager;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class TimeCaptchaTag
  *
  * Implements, in combination with TimeCaptchaValidator, a non-visual captcha

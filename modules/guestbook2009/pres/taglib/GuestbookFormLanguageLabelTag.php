@@ -24,7 +24,7 @@ use APF\modules\guestbook2009\pres\taglib\GuestbookLanguageLabelTag;
 use APF\tools\form\taglib\FormControl;
 
 /**
- * @package modules::guestbook2009::pres
+ * @package APF\modules\guestbook2009\pres
  * @class GuestbookFormLanguageLabelTag
  *
  * Displays language labels within forms.

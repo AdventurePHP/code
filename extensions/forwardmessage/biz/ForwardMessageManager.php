@@ -24,7 +24,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\extensions\forwardmessage\biz\ForwardMessage;
 
 /**
- * @package extensions::forwardmessage::biz
+ * @package APF\extensions\forwardmessage\biz
  * @class ForwardMessageManager
  *
  * Stores the status messages.

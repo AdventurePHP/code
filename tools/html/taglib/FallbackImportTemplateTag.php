@@ -22,7 +22,7 @@ namespace APF\tools\html\taglib;
  */
 
 /**
- * @package tools:html:taglib
+ * @package APF\tools:html:taglib
  * @class FallbackImportTemplateTag
  *
  * This class mainly implements the functionality of the core::importdesign tag. It generates a sub node

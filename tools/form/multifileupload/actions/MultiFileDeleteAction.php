@@ -26,7 +26,7 @@ use APF\tools\http\HeaderManager;
 use APF\tools\form\FormException;
 
 /**
- * @package tools::form::multifileupload::actions
+ * @package APF\tools\form\multifileupload\actions
  * @class MultiFileDeleteAction
  *
  * This action deletes the given file physically and from session.

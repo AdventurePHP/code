@@ -25,7 +25,7 @@ use APF\tools\cache\CacheProvider;
 use APF\tools\cache\CacheBase;
 
 /**
- * @package tools::cache
+ * @package APF\tools\cache
  * @class CacheManager
  *
  * Implements the cache manager component. Due to the generic implementation, all forms of

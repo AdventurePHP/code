@@ -24,7 +24,7 @@ use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
- * @package core::configuration::provider::ini
+ * @package APF\core\configuration\provider\ini
  * @class IniConfiguration
  *
  * Implements the configuration interface for the default APF ini scheme.

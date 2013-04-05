@@ -4,7 +4,7 @@ namespace APF\core\filter;
 use APF\core\filter\FilterChain;
 
 /**
- * @package core::filter
+ * @package APF\core\filter
  * @class AbstractFilterChain
  * @abstract
  *

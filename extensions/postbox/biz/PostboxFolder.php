@@ -48,7 +48,7 @@ class PostboxFolderBase extends AbstractPostboxFolder {
 // DO NOT CHANGE THIS COMMENT! <*PostboxFolderBase:end*>
 
 /**
- * @package extensions::postbox::biz
+ * @package APF\extensions\postbox\biz
  * @class PostboxFolder
  *
  * Domain object for "PostboxFolder"

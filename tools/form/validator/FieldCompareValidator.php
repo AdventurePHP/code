@@ -26,7 +26,7 @@ use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package tools::form::validator
+ * @package APF\tools\form\validator
  * @class FieldCompareValidator
  *
  * Implements a validator, that compares the content of two text fields. In

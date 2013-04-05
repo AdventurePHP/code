@@ -23,7 +23,7 @@ namespace APF\tools\form\taglib;
 use APF\tools\form\FormException;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class RadioButtonTag
  *
  * Represents a APF radio button.

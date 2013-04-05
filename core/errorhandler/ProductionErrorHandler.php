@@ -22,7 +22,7 @@ namespace APF\core\errorhandler;
  */
 
 /**
- * @package core::errorhandler
+ * @package APF\core\errorhandler
  * @class ProductionErrorHandler
  *
  * Implements a live error handler, that logs the occurred error and redirects to

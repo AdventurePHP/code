@@ -25,7 +25,7 @@ use APF\core\service\APFService;
 use APF\modules\genericormapper\data\GenericORRelationMapper;
 
 /**
- * @package modules::genericormapper::data
+ * @package APF\modules\genericormapper\data
  * @class GenericORMapperFactory
  *
  * @deprecated Please use the GORM with the DIServiceManager instead of this factory to initialize he desired instance!

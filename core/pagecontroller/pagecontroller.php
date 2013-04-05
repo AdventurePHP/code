@@ -39,7 +39,7 @@ use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\html\taglib\HtmlIteratorTag;
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class IncludeException
  *
  * This exception represents an error loading resources (modules,
@@ -53,7 +53,7 @@ class IncludeException extends \Exception {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @function printObject
  * @see http://php.net/print_r
  *
@@ -95,7 +95,7 @@ function printObject($o, $transformHtml = false) {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class ParserException
  *
  * Represents a APF parser exception.
@@ -108,7 +108,7 @@ class ParserException extends \Exception {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class XmlParser
  *
  * Static parser for XML / XSL Strings.
@@ -302,7 +302,7 @@ final class XmlParser {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class APFObject
  * @abstract
  *
@@ -673,7 +673,7 @@ abstract class APFObject implements APFDIService {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class TagLib
  *
  * This class represents a taglib and thus is used as a taglib definition. Each time,
@@ -767,7 +767,7 @@ final class TagLib {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class Page
  *
  * The Page object represents the root node of  a web page. It is used as a container for the
@@ -860,7 +860,7 @@ class Page extends APFObject {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class Document
  *
  * Represents a node within the APF DOM tree. Each document can compose several other documents
@@ -1794,7 +1794,7 @@ class Document extends APFObject {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class AppendNodeTag
  *
  * Parses a template and appends the child nodes to the parent's child list. Hence, this taglib
@@ -1950,7 +1950,7 @@ class AppendNodeTag extends Document {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class ImportTemplateTag
  *
  * This class implements the functionality of the core::importdesign tag. It generates a sub node
@@ -2044,7 +2044,7 @@ class ImportTemplateTag extends Document {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class AddTaglibTag
  *
  * Represents the functionality of the core:addtaglib tag. Adds a further taglib to the known
@@ -2110,7 +2110,7 @@ class AddTaglibTag extends Document {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class PlaceHolderTag
  *
  * Represents a place holder within a template file. Can be filled within a document controller
@@ -2177,7 +2177,7 @@ class PlaceHolderTag extends Document {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class TemplateTag
  *
  * Represents a reusable html fragment (template) within a template file. The tag's functionality
@@ -2324,7 +2324,7 @@ class TemplateTag extends Document {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class LanguageLabelTag
  * @abstract
  *
@@ -2458,7 +2458,7 @@ class LanguageLabelTag extends Document {
 
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class DocumentController
  *
  * Defines the interface for APF document controller implementations.
@@ -2541,7 +2541,7 @@ interface DocumentController extends APFService {
 }
 
 /**
- * @package core::pagecontroller
+ * @package APF\core\pagecontroller
  * @class BaseDocumentController
  * @abstract
  *

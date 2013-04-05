@@ -22,7 +22,7 @@ namespace APF\core\benchmark;
  */
 
 /**
- * @package core::benchmark
+ * @package APF\core\benchmark
  * @class BenchmarkTimer
  *
  * This class implements the benchmark timer used for measurement of the core components
@@ -692,7 +692,7 @@ final class BenchmarkTimer {
 }
 
 /**
- * @package core::benchmark
+ * @package APF\core\benchmark
  * @class BenchmarkProcess
  *
  * Represents a benchmark process node within the benchmark tree.

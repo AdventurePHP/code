@@ -22,7 +22,7 @@ namespace APF\tools\form\taglib;
  */
 
 /**
- * @package tools::html::taglib
+ * @package APF\tools\html\taglib
  * @class ResetButtonTag
  *
  * Implements the APF wrapper taglib for the HTML form reset button. Renders

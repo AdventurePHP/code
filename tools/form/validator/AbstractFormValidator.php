@@ -24,7 +24,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\tools\form\taglib\AbstractFormControl;
 
 /**
- * @package tools::form::filter
+ * @package APF\tools\form\filter
  * @class AbstractFormValidator
  *
  * This class defines the scheme of form validators. Implements some basic

@@ -24,7 +24,7 @@ use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
- * @package core::configuration::provider::db
+ * @package APF\core\configuration\provider\db
  * @class DbConfiguration
  *
  * Implements the configuration interface for the database scheme.

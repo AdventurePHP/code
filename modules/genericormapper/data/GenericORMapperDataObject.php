@@ -22,7 +22,7 @@ namespace APF\modules\genericormapper\data;
  */
 
 /**
- * @package modules::genericormapper::data
+ * @package APF\modules\genericormapper\data
  * @class GenericORMapperDataObject
  *
  * Defines the Interface which must be implemented by every domain object.

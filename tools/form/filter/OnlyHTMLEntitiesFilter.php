@@ -24,7 +24,7 @@ use APF\core\registry\Registry;
 use APF\tools\form\filter\AbstractFormFilter;
 
 /**
- * @package tools::form::filter
+ * @package APF\tools\form\filter
  * @class OnlyHTMLEntitiesFilter
  *
  * Implements a filter, that encodes all relevant characters into their

@@ -23,7 +23,7 @@ namespace APF\core\exceptionhandler;
 use APF\core\registry\Registry;
 
 /**
- * @package core::exceptionhandler
+ * @package APF\core\exceptionhandler
  * @class ProductionExceptionHandler
  *
  * Implements a live exception handler, that logs the occurred exception and redirects

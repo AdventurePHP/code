@@ -24,7 +24,7 @@ use APF\tools\form\FormException;
 use APF\tools\form\validator\AbstractFormValidator;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class FormControlObserverBase
  *
  * Implements a base class for the <em>form:addfilter</em> and

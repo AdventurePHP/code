@@ -22,7 +22,7 @@ namespace APF\modules\guestbook2009\biz;
  */
 
 /**
- * @package APF\modules\guestbook2009\biz
+ * @package APF\APF\modules\guestbook2009\biz
  * @class User
  *
  * Represents the User domain object of the guestbook.

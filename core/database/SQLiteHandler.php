@@ -24,7 +24,7 @@ use APF\core\database\AbstractDatabaseHandler;
 use APF\core\logging\LogEntry;
 
 /**
- * @package core::database
+ * @package APF\core\database
  * @class SQLiteHandler
  *
  * This class provides APF-style access to sqlite databases.

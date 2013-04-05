@@ -26,7 +26,7 @@ use APF\tools\form\taglib\SelectBoxOptionTag;
 use APF\tools\form\taglib\SelectBoxTag;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class MultiSelectBoxTag
  *
  * Represents the APF multiselect field.

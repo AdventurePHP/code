@@ -57,7 +57,7 @@ class MessageBase extends AbstractMessage {
 // DO NOT CHANGE THIS COMMENT! <*MessageBase:end*>
 
 /**
- * @package extensions::postbox::biz
+ * @package APF\extensions\postbox\biz
  * @class Message
  *
  * Domain object for "Message"

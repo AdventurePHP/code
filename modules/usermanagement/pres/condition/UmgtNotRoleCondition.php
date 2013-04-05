@@ -26,7 +26,7 @@ use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\condition\UserDependentContentCondition;
 
 /**
- * @package modules::usermanagement::pres::condition
+ * @package APF\modules\usermanagement\pres\condition
  * @class UmgtGroupCondition
  *
  * Implements the decision logic, whether a user's role is *NOT* part of given options array.

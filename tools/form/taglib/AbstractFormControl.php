@@ -27,7 +27,7 @@ use APF\tools\form\taglib\FormControl;
 use APF\tools\form\validator\AbstractFormValidator;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class AbstractFormControl
  * @abstract
  *

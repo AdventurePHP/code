@@ -26,7 +26,7 @@ use APF\tools\http\HeaderManager;
 use APF\tools\form\FormException;
 
 /**
- * @package tools::form::multifileupload::actions
+ * @package APF\tools\form\multifileupload\actions
  * @class MultiFileUploadAction
  *
  * This action tales the files uploaded via form and saves them.

@@ -27,7 +27,7 @@ use APF\tools\form\taglib\MultiSelectBoxTag;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::role
+ * @package APF\modules\usermanagement\pres\documentcontroller\role
  * @class RoleAddController
  *
  * Implements the controller to add a role.

@@ -23,7 +23,7 @@ namespace APF\tools\form\taglib;
 use APF\core\pagecontroller\AddTaglibTag;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class FormAddTaglibTag
  *
  * Re-implements the AddTaglibTag tag to comply with the FormControl interface.

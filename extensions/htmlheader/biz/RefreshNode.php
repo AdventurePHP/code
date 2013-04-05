@@ -26,7 +26,7 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package extensions::htmlheader::biz
+ * @package APF\extensions\htmlheader\biz
  * @class RefreshNode
  *
  * Implements a meta node that introduces the browser to redirect

@@ -24,7 +24,7 @@ use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
- * @package core::configuration::provider::xml
+ * @package APF\core\configuration\provider\xml
  * @class XmlConfiguration
  *
  * Implements the configuration interface for the default APF xml scheme.

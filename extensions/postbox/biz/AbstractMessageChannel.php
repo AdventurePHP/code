@@ -26,7 +26,7 @@ use APF\modules\genericormapper\data\GenericDomainObject;
 use APF\modules\genericormapper\data\GenericORMapperDataObject;
 
 /**
- * @package extensions::postbox::biz::abstractdomainobjects
+ * @package APF\extensions\postbox\biz\abstractdomainobjects
  * @class AbstractMessageChannel
  *
  * This is the base class for "MessageChannel" from the Postbox-Extension.

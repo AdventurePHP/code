@@ -28,7 +28,7 @@ use APF\modules\genericormapper\data\GenericORRelationMapper;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package extensions::news::biz
+ * @package APF\extensions\news\biz
  * @class NewsManager
  *
  * Manages the news system.

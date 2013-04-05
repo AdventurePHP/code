@@ -24,7 +24,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\modules\kontakt4\biz\ContactFormRecipient;
 
 /**
- * @package modules::contact::data
+ * @package APF\modules\contact\data
  * @class ContactMapper
  *
  * Implements the data layer component of the contact form.

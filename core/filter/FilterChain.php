@@ -24,7 +24,7 @@ namespace APF\core\filter;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package core::filter
+ * @package APF\core\filter
  * @class AbstractFilter
  * @abstract
  *
@@ -55,7 +55,7 @@ abstract class AbstractFilter extends APFObject {
 }
 
 /**
- * @package core::filter
+ * @package APF\core\filter
  * @class FilterChain
  *
  * Defines the structure of an APF filter chain used for input and output
@@ -136,7 +136,7 @@ interface FilterChain {
 }
 
 /**
- * @package core::filter
+ * @package APF\core\filter
  * @class ChainedContentFilter
  *
  * Defines the structure of an APF filter that is executed with a

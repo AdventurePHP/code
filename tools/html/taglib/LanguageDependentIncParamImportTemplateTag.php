@@ -24,7 +24,7 @@ use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\ImportTemplateTag;
 
 /**
- * @package tools::html::taglib
+ * @package APF\tools\html\taglib
  * @class LanguageDependentIncParamImportTemplateTag
  *
  * This is an extension of the core:importdesign taglib. With this taglib you are

@@ -22,7 +22,7 @@ namespace APF\core\loader;
  */
 
 /**
- * @package APF\core\loader
+ * @package APF\APF\core\loader
  * @class ClassLoader
  *
  * Defines an APF class loader that is used to load classes, templates and config files.
@@ -81,7 +81,7 @@ interface ClassLoader {
 }
 
 /**
- * @package APF\core\loader
+ * @package APF\APF\core\loader
  * @class StandardClassLoader
  *
  * Implements the standard APF class loader.
@@ -178,7 +178,7 @@ class StandardClassLoader implements ClassLoader {
 }
 
 /**
- * @package APF\core\loader
+ * @package APF\APF\core\loader
  * @class RootClassLoader
  *
  * This is the root class loader of the APF. To add further class loaders, please use

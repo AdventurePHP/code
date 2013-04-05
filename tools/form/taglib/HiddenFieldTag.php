@@ -22,7 +22,7 @@ namespace APF\tools\form\taglib;
  */
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class HiddenFieldTag
  *
  * Represents a HTML hidden field within the APF form tags.

@@ -25,7 +25,7 @@ use APF\modules\genericormapper\data\GenericDomainObject;
 use APF\modules\genericormapper\data\GenericORMapperDataObject;
 
 /**
- * @package extensions::postbox::biz::abstractdomainobjects
+ * @package APF\extensions\postbox\biz\abstractdomainobjects
  * @class AbstractRecipientList
  *
  * This is the base class for "RecipientList" from the Postbox-Extension.

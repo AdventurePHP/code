@@ -22,7 +22,7 @@ namespace APF\tools\form\provider\csrf;
  */
 
 /**
- * @package tools::form::provider::csrf
+ * @package APF\tools\form\provider\csrf
  * @class CSRFHashProvider
  *
  * Defines the structure of a csrf hash provider.

@@ -24,7 +24,7 @@ use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::group
+ * @package APF\modules\usermanagement\pres\documentcontroller\group
  * @class GroupListController
  *
  * Implements the controller to list the groups.

@@ -24,7 +24,7 @@ use APF\core\pagecontroller\LanguageLabelTag;
 use APF\core\registry\Registry;
 
 /**
- * @package modules::recaptcha::pres::taglib
+ * @package APF\modules\recaptcha\pres\taglib
  * @class ReCaptchaTranslationTag
  *
  * Implements a custom <em>&lt;*:getstring /&gt;</em> tag for the <em>&lt;form:recaptcha /&gt;</em>

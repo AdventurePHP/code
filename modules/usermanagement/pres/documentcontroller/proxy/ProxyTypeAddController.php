@@ -27,7 +27,7 @@ use APF\tools\form\validator\AbstractFormValidator;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::proxy
+ * @package APF\modules\usermanagement\pres\documentcontroller\proxy
  * @class ProxyTypeAddController
  */
 class ProxyTypeAddController extends UmgtBaseController {

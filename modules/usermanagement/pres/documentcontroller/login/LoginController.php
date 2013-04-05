@@ -40,7 +40,7 @@ use APF\tools\link\Url;
 use APF\core\logging\Logger;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::login
+ * @package APF\modules\usermanagement\pres\documentcontroller\login
  * @class LoginController
  *
  * Manages the login form and authenticates the user concerning the

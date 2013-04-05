@@ -27,7 +27,7 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package modules::comments::pres::documentcontroller
+ * @package APF\modules\comments\pres\documentcontroller
  * @class CommentCreateEntryController
  *
  * Implements the document controller for the 'form.html' template.

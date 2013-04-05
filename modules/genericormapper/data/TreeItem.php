@@ -23,7 +23,7 @@ namespace APF\modules\genericormapper\data;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package modules::genericormapper::data
+ * @package APF\modules\genericormapper\data
  * @class TreeItem
  *
  * @author Nicolas Pecher

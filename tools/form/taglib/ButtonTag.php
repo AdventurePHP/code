@@ -25,7 +25,7 @@ use APF\tools\form\FormException;
 use APF\tools\form\taglib\ButtonLanguageLabelTag;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class ButtonTag
  *
  * Represents an APF form button.

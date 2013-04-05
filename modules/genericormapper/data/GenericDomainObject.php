@@ -24,7 +24,7 @@ use APF\modules\genericormapper\data\GenericORMapperDataObject;
 use APF\modules\genericormapper\data\GenericORMapperException;
 
 /**
- * @package modules::genericormapper::data
+ * @package APF\modules\genericormapper\data
  * @class GenericDomainObject
  *
  * Generic class for all domain objects handled by the abstract or mapper.

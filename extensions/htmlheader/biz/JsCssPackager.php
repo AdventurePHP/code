@@ -31,7 +31,7 @@ use APF\tools\cache\CacheManagerFabric;
 use APF\tools\cache\key\SimpleCacheKey;
 
 /**
- * @package extensions::htmlheader::biz
+ * @package APF\extensions\htmlheader\biz
  * @class JsCssPackager
  *
  * A packager which can deliver multiple css and js files to client.

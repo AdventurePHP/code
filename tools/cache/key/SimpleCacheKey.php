@@ -23,7 +23,7 @@ namespace APF\tools\cache\key;
 use APF\tools\cache\CacheKey;
 
 /**
- * @package tools::cache::key
+ * @package APF\tools\cache\key
  * @class SimpleCacheKey
  *
  * Implements a simple cache key letting you address a cache item with a simple string.

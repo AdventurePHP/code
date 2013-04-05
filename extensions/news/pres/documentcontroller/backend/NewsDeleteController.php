@@ -26,7 +26,7 @@ use APF\tools\request\RequestHandler;
 use APF\tools\link\LinkGenerator;
 
 /**
- * @package extensions::news::pres::documentcontroller::backend
+ * @package APF\extensions\news\pres\documentcontroller\backend
  * @class NewsDeleteController
  *
  * Document controller for deleting news.

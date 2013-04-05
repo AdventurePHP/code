@@ -24,7 +24,7 @@ use APF\tools\filesystem\FilesystemItem;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package tools::filesystem
+ * @package APF\tools\filesystem
  * @class   File
  *
  * @author  Nicolas Pecher

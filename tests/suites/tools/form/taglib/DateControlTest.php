@@ -24,7 +24,7 @@ use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\taglib\DateSelectorTag;
 
 /**
- * @package tests::suites::tools::form::taglib
+ * @package APF\tests\suites\tools\form\taglib
  * @class DateControlTest
  *
  * Implements tests for the DateSelectorTag control.

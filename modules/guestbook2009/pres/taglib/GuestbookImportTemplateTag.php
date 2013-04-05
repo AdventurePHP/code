@@ -24,7 +24,7 @@ use APF\core\pagecontroller\ImportTemplateTag;
 use APF\modules\guestbook2009\biz\GuestbookModel;
 
 /**
- * @package modules::guestbook2009::pres::taglib
+ * @package APF\modules\guestbook2009\pres\taglib
  * @class GuestbookImportTemplateTag
  *
  * Implements the taglib class to include the guestbook and to fill the model

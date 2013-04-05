@@ -24,7 +24,7 @@ use APF\tools\form\taglib\SelectBoxTag;
 use APF\tools\form\validator\AbstractFormValidator;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class DateSelectorTag
  *
  * Represents a APF form date control. Please remember the following things when using the control:

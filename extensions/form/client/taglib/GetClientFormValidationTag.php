@@ -26,7 +26,7 @@ use APF\tools\form\taglib\AbstractFormControl;
 use APF\tools\form\taglib\HtmlFormTag;
 
 /**
- * @package extensions::form::client
+ * @package APF\extensions\form\client
  * @class GetClientFormValidationTag
  *
  *  This taglib generates and renders all information for client validation in the html.

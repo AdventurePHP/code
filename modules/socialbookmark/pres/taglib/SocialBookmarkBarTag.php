@@ -24,7 +24,7 @@ use APF\core\pagecontroller\Document;
 use APF\modules\socialbookmark\biz\SocialBookmarkBarManager;
 
 /**
- * @package modules::socialbookmark::pres::taglib
+ * @package APF\modules\socialbookmark\pres\taglib
  * @class SocialBookmarkBarTag
  *
  * Implements a taglib to display social bookmark images. To configure this tag the

@@ -39,7 +39,7 @@ use APF\modules\usermanagement\biz\model\UmgtAuthToken;
 use APF\modules\usermanagement\biz\provider\PasswordHashProvider;
 
 /**
- * @package modules::usermanagement::biz
+ * @package APF\modules\usermanagement\biz
  * @class UmgtManager
  *
  * Business component of the user management module. In standard case the component uses a crypt

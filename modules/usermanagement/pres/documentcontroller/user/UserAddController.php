@@ -25,7 +25,7 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::user
+ * @package APF\modules\usermanagement\pres\documentcontroller\user
  * @class UserAddController
  *
  * Implements the controller to add a user.

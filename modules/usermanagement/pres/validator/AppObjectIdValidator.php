@@ -23,7 +23,7 @@ namespace APF\modules\usermanagement\pres\validator;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package modules::usermanagement::pres::validator
+ * @package APF\modules\usermanagement\pres\validator
  * @class AppObjectIdValidator
  *
  * Validates the proxy id schema (alphanumeric since 1.17). See rules at

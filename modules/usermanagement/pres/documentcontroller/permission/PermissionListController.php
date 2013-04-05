@@ -23,7 +23,7 @@ namespace APF\modules\usermanagement\pres\documentcontroller\permission;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::permission
+ * @package APF\modules\usermanagement\pres\documentcontroller\permission
  * @class PermissionListController
  *
  * Implements the controller to list the existing permissions.

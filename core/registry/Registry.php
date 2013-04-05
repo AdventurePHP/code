@@ -22,7 +22,7 @@ namespace APF\core\registry;
  */
 
 /**
- * @package core::registry
+ * @package APF\core\registry
  * @class Registry
  *
  * Implements the registry pattern. You can register and retrieve namespace dependent values. The

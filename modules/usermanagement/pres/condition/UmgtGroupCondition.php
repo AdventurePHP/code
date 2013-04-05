@@ -25,7 +25,7 @@ use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\pres\condition\UserDependentContentCondition;
 
 /**
- * @package modules::usermanagement::pres::condition
+ * @package APF\modules\usermanagement\pres\condition
  * @class UmgtGroupCondition
  *
  * Implements the decision logic, whether a user is part of the groups

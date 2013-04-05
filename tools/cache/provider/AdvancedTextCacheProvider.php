@@ -27,7 +27,7 @@ use APF\tools\filesystem\FilesystemManager;
 use APF\tools\cache\provider\TextCacheProvider;
 
 /**
- * @package tools::cache::provider
+ * @package APF\tools\cache\provider
  * @class AdvancedTextCacheProvider
  *
  * Implements the cache provider for normal text content using

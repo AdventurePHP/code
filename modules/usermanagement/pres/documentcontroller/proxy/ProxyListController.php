@@ -25,7 +25,7 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\form\taglib\SelectBoxTag;
 
 /**
- * @package modules::usermanagement::pres::documentcontroller::proxy
+ * @package APF\modules\usermanagement\pres\documentcontroller\proxy
  * @class ProxyListController
  *
  * Implements the controller listing the existing proxy objects.

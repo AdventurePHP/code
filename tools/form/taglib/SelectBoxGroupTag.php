@@ -24,7 +24,7 @@ use APF\core\pagecontroller\TagLib;
 use APF\core\pagecontroller\XmlParser;
 
 /**
- * @package tools::form::taglib
+ * @package APF\tools\form\taglib
  * @class SelectBoxGroupTag
  *
  * Represents a select option group of an APF select field.

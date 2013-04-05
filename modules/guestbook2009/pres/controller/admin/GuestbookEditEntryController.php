@@ -26,7 +26,7 @@ use APF\modules\guestbook2009\pres\controller\admin\GuestbookBackendBaseControll
 use APF\tools\request\RequestHandler;
 
 /**
- * @package modules::guestbook2009::pres
+ * @package APF\modules\guestbook2009\pres
  * @class GuestbookEditEntryController
  *
  * Implements the document controller to handle the edit flow.
