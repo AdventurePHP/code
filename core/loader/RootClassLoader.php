@@ -203,7 +203,17 @@ class RootClassLoader {
    }
 
    /**
+    * @public
+    * @static
+    *
+    * Main entry for all class loading activities. This method is registered with the
+    * <em>spl_autoload_register()</em> function.
+    *
     * @param string $class The fully-qualified class name to load.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.03.2013<br />
     */
    public static function load($class) {
       foreach (self::$loaders as $loader) {
@@ -213,6 +223,7 @@ class RootClassLoader {
 
    /**
     * @public
+    * @static
     *
     * Returns a class loader by the applied vendor name.
     *
@@ -233,6 +244,7 @@ class RootClassLoader {
 
    /**
     * @public
+    * @static
     *
     * Returns a class loader by the applied namespace.
     *
@@ -245,7 +257,77 @@ class RootClassLoader {
     * Version 0.1, 20.03.2013<br />
     */
    public static function getLoaderByNamespace($namespace) {
-      return self::getLoaderByVendor(substr($namespace, 0, strpos($namespace, '\\')));
+      // we can use getVendor() here, because only the first section is of our interest!
+      return self::getLoaderByVendor(self::getVendor($namespace));
+   }
+
+   /**
+    * @public
+    * @static
+    *
+    * Returns a class loader by the applied namespace.
+    *
+    * @param string $class The fully-qualified class of the desired class loader to get.
+    * @return ClassLoader The desired class loader.
+    * @throws \Exception In case no class loader is found.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 05.04.2013<br />
+    */
+   public static function getLoaderByClass($class) {
+      return self::getLoaderByNamespace(self::getNamespace($class));
+   }
+
+   /**
+    * @public
+    * @static
+    *
+    * Determines the class name of a fully-qualified class for you.
+    *
+    * @param string $class Fully-qualified class name (e.g. <em>APF\core\loader\StandardClassLoader</em>).
+    * @return string The class name of the given class (e.g. <em>StandardClassLoader</em>).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 05.04.2013<br />
+    */
+   public static function getClassName($class) {
+      return substr($class, strrpos($class, '\\') + 1);
+   }
+
+   /**
+    * @public
+    * @static
+    *
+    * Determines the namespace of a fully-qualified class for you.
+    *
+    * @param string $class Fully-qualified class name (e.g. <em>APF\core\loader\StandardClassLoader</em>).
+    * @return string The class name of the given class (e.g. <em>APF\core\loader</em>).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 05.04.2013<br />
+    */
+   public static function getNamespace($class) {
+      return substr($class, 0, strrpos($class, '\\'));
+   }
+
+   /**
+    * @public
+    * @static
+    *
+    * Determines the vendor of a fully-qualified class for you.
+    *
+    * @param string $class Fully-qualified class name (e.g. <em>APF\core\loader\StandardClassLoader</em>).
+    * @return string The class name of the given class (e.g. <em>APF</em>).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 05.04.2013<br />
+    */
+   public static function getVendor($class) {
+      return substr($class, 0, strpos($class, '\\'));
    }
 
 }
