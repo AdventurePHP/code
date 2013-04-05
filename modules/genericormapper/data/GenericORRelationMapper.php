@@ -177,10 +177,8 @@ class GenericORRelationMapper extends GenericORMapper {
    protected function loadTreeItemList($objectName, GenericCriterionObject $criterion = null) {
 
       // check if the domain object is a subclass of TreeItem
-      $namespace = $this->domainObjectsTable[$objectName]['Namespace'];
       $class = $this->domainObjectsTable[$objectName]['Class'];
 
-      // TODO switch to fully qualified addressing
       $object = new $class($objectName);
       if (!($object instanceof TreeItem)) {
          throw new GenericORMapperException('[GenericORRelationMapper::loadTreeItemList()] The object named "'
