@@ -31,7 +31,7 @@ use APF\extensions\htmlheader\biz\SimpleMetaNode;
  * Taglib for adding meta nodes to htmlheader.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddMetaTag" prefix="htmlheader" name="addmeta" />
+ * <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddMetaTag" prefix="htmlheader" name="addmeta" />
  * <htmlheader:addmeta name="" content="" />
  *
  * @author Ralf Schubert

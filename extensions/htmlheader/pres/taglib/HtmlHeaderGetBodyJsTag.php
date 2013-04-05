@@ -32,7 +32,7 @@ use APF\extensions\htmlheader\pres\filter\HtmlHeaderOutputFilter;
  * the end of the body.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderGetBodyJsTag" prefix="htmlheader" name="getbodyjs" />
+ * <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetBodyJsTag" prefix="htmlheader" name="getbodyjs" />
  * <htmlheader:getbodyjs />
  *
  * @author Ralf Schubert <<a href="http://develovision.de/">Develovision</a>>

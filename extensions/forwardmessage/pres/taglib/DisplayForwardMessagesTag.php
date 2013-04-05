@@ -35,8 +35,7 @@ use APF\extensions\forwardmessage\biz\ForwardMessageManager;
  * @example
  * <code>
  * <core:addtaglib
- *    namespace="extensions::forwardmessage::pres::taglib"
- *    class="DisplayForwardMessagesTag"
+ *    class="APF\extensions\forwardmessage\pres\taglib\DisplayForwardMessagesTag"
  *    prefix="html"
  *    name="getforwardmessages"
  * />

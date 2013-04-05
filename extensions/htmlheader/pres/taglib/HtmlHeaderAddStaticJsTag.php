@@ -31,7 +31,7 @@ use APF\extensions\htmlheader\biz\StaticJsNode;
  * Taglib for adding static java script to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddStaticJsTag" prefix="htmlheader" name="addstaticcss" />
+ * <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddStaticJsTag" prefix="htmlheader" name="addstaticcss" />
  * <htmlheader:addstaticjs file="..." />
  * <ul>
  *   <li>file: The source location of the stylesheet</li>

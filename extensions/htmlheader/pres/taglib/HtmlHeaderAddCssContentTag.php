@@ -31,7 +31,7 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
  * Taglib for adding stylesheets content to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddCssContentTag" prefix="htmlheader" name="addcsscontent" />
+ * <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddCssContentTag" prefix="htmlheader" name="addcsscontent" />
  * <htmlheader:addcsscontent>
  *   ... css code ...
  * </htmlheader:addcsscontent>

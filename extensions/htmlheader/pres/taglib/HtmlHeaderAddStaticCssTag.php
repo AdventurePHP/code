@@ -31,7 +31,7 @@ use APF\extensions\htmlheader\biz\StaticCssNode;
  * Taglib for adding static stylesheets to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddStaticCssTag" prefix="htmlheader" name="addstaticcss" />
+ * <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddStaticCssTag" prefix="htmlheader" name="addstaticcss" />
  * <htmlheader:addstaticcss file="..." />
  * <ul>
  *   <li>file: The source location of the stylesheet</li>

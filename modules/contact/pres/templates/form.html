@@ -1,5 +1,5 @@
 <@controller class="APF\modules\contact\pres\documentcontroller\ContactFormController" @>
-<core:addtaglib namespace="tools::form::taglib" class="HtmlFormTag" prefix="html" name="form" />
+<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <p>
    <html:getstring namespace="modules::kontakt4" config="language" entry="formhint.text" />
 </p>
@@ -68,7 +68,7 @@
             <label for="contact-form-captcha">
                <form:getstring namespace="modules::kontakt4" config="language" entry="form.captcha" />
             </label>
-            <form:addtaglib namespace="modules::captcha::pres::taglib" class="SimpleCaptchaTag" prefix="form" name="captcha" />
+            <form:addtaglib class="APF\modules\captcha\pres\taglib\SimpleCaptchaTag" prefix="form" name="captcha" />
             <form:captcha
                name="captcha-control"
                clearonerror="true"

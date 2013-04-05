@@ -31,7 +31,7 @@ use APF\extensions\htmlheader\biz\JsContentNode;
  * Taglib for adding static stylesheets to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddJsContentTag" prefix="htmlheader" name="addjscontent" />
+ * <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddJsContentTag" prefix="htmlheader" name="addjscontent" />
  * <htmlheader:addjscontent>
  *   ... js code ...
  * </htmlheader:addjscontent>

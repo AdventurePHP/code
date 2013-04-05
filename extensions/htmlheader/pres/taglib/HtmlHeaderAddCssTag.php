@@ -31,7 +31,7 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
  *  Taglib for adding stylesheets to htmlheader.
  *
  * @example
- *  <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddCssTag" prefix="htmlheader" name="addcss" />
+ *  <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddCssTag" prefix="htmlheader" name="addcss" />
  *  Use FC-action to deliver file:
  *  <htmlheader:addcss namespace="{CONTEXT}::pres::frontend::static::css:anything" filename="examplefile" />
  *  <ul>

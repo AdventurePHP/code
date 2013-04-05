@@ -31,7 +31,7 @@ use APF\extensions\htmlheader\pres\filter\HtmlHeaderOutputFilter;
  * Taglib for receiving the complete htmlheader.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderGetHeadTag" prefix="htmlheader" name="gethead" />
+ * <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetHeadTag" prefix="htmlheader" name="gethead" />
  * <htmlheader:gethead />
  *
  * @author Ralf Schubert

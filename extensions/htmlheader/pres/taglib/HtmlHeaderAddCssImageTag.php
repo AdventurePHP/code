@@ -31,7 +31,7 @@ use APF\extensions\htmlheader\biz\CssImageNode;
  * Taglib for adding an image to the html header.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddCssImageTag" prefix="htmlheader" name="addcssimage" />
+ * <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddCssImageTag" prefix="htmlheader" name="addcssimage" />
  * <htmlheader:addcssimage rel="icon" href="favicon.png" type="image/png" />
  *
  * @author Werner Liemberger

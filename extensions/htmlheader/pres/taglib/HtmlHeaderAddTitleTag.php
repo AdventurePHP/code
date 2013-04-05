@@ -31,7 +31,7 @@ use APF\extensions\htmlheader\biz\SimpleTitleNode;
  * Taglib for adding a title to htmlheader.
  *
  * @example
- * <core:addtaglib namespace="extensions::htmlheader::pres::taglib" class="HtmlHeaderAddTitleTag" prefix="htmlheader" name="addtitle" />
+ * <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddTitleTag" prefix="htmlheader" name="addtitle" />
  * <htmlheader:addtitle [append="false"]>Testwebpage title</htmlheader:addtitle>
  * Set append to true, if you want to add the given tag-content at the end of
  * the existing title instead of overwriting it.
