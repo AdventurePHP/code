@@ -124,6 +124,7 @@ final class ConnectionManager extends APFObject {
       }
 
       // read configuration
+      // TODO decide whether database connections must be fully qualified in the future as well (e.g. like DI services)
       $config = $this->getConfiguration('APF\core\database', 'connections.ini');
 
       // get config section
@@ -144,7 +145,7 @@ final class ConnectionManager extends APFObject {
       }
 
       // create the connection lazily
-      $this->connections[$cacheKey] = $this->getAndInitServiceObject('core::database', $section->getValue('DB.Type'), $options, APFService::SERVICE_TYPE_NORMAL);
+      $this->connections[$cacheKey] = $this->getAndInitServiceObject($section->getValue('DB.Type'), $options, APFService::SERVICE_TYPE_NORMAL);
       return $this->connections[$cacheKey];
    }
 

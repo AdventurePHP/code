@@ -76,9 +76,8 @@ final class CacheManager extends CacheBase {
       $this->setAttributes($initParam);
 
       // include and create the provider
-      $namespace = $this->getConfigAttribute('Cache.Provider.Namespace');
-      $class = $this->getConfigAttribute('Cache.Provider.Class');
-      $this->provider = $this->getServiceObject($namespace, $class, APFService::SERVICE_TYPE_NORMAL);
+      $class = $this->getConfigAttribute('Cache.Provider');
+      $this->provider = $this->getServiceObject($class, APFService::SERVICE_TYPE_NORMAL);
       $this->provider->setAttributes($initParam);
 
       // map the active configuration key
