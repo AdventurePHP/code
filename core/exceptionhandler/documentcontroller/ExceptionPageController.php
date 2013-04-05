@@ -84,7 +84,7 @@ class ExceptionPageController extends BaseDocumentController {
 
       $this->setPlaceHolder('ExceptionID', $document->getAttribute('id'));
       $this->setPlaceHolder('ExceptionType', $document->getAttribute('type'));
-      $this->setPlaceHolder('ExceptionMessage', htmlspecialchars($document->getAttribute('message'), ENT_QUOTES, Registry::retrieve('apf::core', 'Charset'), false));
+      $this->setPlaceHolder('ExceptionMessage', htmlspecialchars($document->getAttribute('message'), ENT_QUOTES, Registry::retrieve('APF\core', 'Charset'), false));
       $this->setPlaceHolder('ExceptionNumber', $document->getAttribute('number'));
       $this->setPlaceHolder('ExceptionFile', $document->getAttribute('file'));
       $this->setPlaceHolder('ExceptionLine', $document->getAttribute('line'));

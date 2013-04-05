@@ -55,7 +55,7 @@ abstract class CacheBase extends APFObject {
 
       $value = $this->getAttribute($name);
       if ($value == null) {
-         $env = Registry::retrieve('apf::core', 'Environment');
+         $env = Registry::retrieve('APF\core', 'Environment');
          throw new \InvalidArgumentException('[' . get_class($this)
                . '::getConfigAttribute()] The configuration directive "' . $name . '" is not '
                . 'present or empty. Please check your cache configuration ("' . $env

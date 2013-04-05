@@ -66,7 +66,7 @@ class ReCaptchaTranslationTag extends LanguageLabelTag {
       if ($langSection === null) {
 
          // get environment variable from registry to have nice exception message
-         $env = Registry::retrieve('apf::core', 'Environment');
+         $env = Registry::retrieve('APF\core', 'Environment');
 
          throw new \InvalidArgumentException('[' . get_class($this) . '::onAfterAppend()] Given section "'
                . $this->getLanguage() . '" is not defined in configuration "' . $env . '_' . $configName
@@ -81,7 +81,7 @@ class ReCaptchaTranslationTag extends LanguageLabelTag {
       if ($customTranslations === null) {
 
          // get environment variable from registry to have nice exception message
-         $env = Registry::retrieve('apf::core', 'Environment');
+         $env = Registry::retrieve('APF\core', 'Environment');
 
          throw new \InvalidArgumentException('[' . get_class($this) . '::onAfterAppend()] Given entry "'
                . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'

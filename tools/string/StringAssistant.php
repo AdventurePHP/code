@@ -52,7 +52,7 @@ class StringAssistant {
     * Version 0.1, 11.01.2005<br />
     */
    public static function escapeSpecialCharacters($string) {
-      return addslashes(htmlspecialchars($string, ENT_QUOTES, Registry::retrieve('apf::core', 'Charset'), false));
+      return addslashes(htmlspecialchars($string, ENT_QUOTES, Registry::retrieve('APF\core', 'Charset'), false));
    }
 
    /**

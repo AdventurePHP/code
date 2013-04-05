@@ -29,7 +29,7 @@ require('./APF/core/bootstrap.php');
 // configure the registry if desired
 use APF\core\registry\Registry;
 
-Registry::register('apf::core', 'Environment', '{ENVIRONMENT}');
+Registry::register('APF\core', 'Environment', '{ENVIRONMENT}');
 
 use APF\modules\genericormapper\data\tools\GenericORMapperDomainObjectGenerator;
 

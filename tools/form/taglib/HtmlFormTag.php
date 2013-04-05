@@ -719,7 +719,7 @@ class HtmlFormTag extends Document {
       $action = $this->getAttribute('action');
       if ($action === null) {
          // escape current request uri to avoid XSS attacks
-         $this->setAttribute('action', htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, Registry::retrieve('apf::core', 'Charset'), false));
+         $this->setAttribute('action', htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, Registry::retrieve('APF\core', 'Charset'), false));
       }
 
       // transform the form including all child tags

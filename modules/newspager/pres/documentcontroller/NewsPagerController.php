@@ -72,7 +72,7 @@ class NewsPagerController extends BaseDocumentController {
       $this->setPlaceHolder('Content', $newsItem->getContent());
 
       // set news service base url
-      if (Registry::retrieve('apf::core', 'URLRewriting') === true) {
+      if (Registry::retrieve('APF\core', 'URLRewriting') === true) {
          $this->setPlaceHolder('NewsServiceBaseURL', '/~/modules_newspager_biz-action/Pager/page/');
          $this->setPlaceHolder('NewsServiceLangParam', '/lang/');
          $this->setPlaceHolder('NewsServiceDataDir', '/datadir/' . base64_encode($dataDir));

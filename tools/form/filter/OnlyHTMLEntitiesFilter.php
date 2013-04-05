@@ -37,7 +37,7 @@ use APF\tools\form\filter\AbstractFormFilter;
 class OnlyHTMLEntitiesFilter extends AbstractFormFilter {
 
    public function filter($input) {
-      return htmlentities(str_replace('&amp;', '&', $input), null, Registry::retrieve('apf::core', 'Charset'));
+      return htmlentities(str_replace('&amp;', '&', $input), null, Registry::retrieve('APF\core', 'Charset'));
    }
 
 }

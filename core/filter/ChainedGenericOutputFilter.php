@@ -63,7 +63,7 @@ class ChainedGenericOutputFilter implements ChainedContentFilter {
 
       // in case the url rewrite mode is activated, rewrite
       // the HTML content as before release 1.14.
-      $urlRewriting = Registry::retrieve('apf::core', 'URLRewriting');
+      $urlRewriting = Registry::retrieve('APF\core', 'URLRewriting');
       if ($urlRewriting === true) {
          $input = preg_replace_callback(
                          '/<form (.*?)action="(.*?)"(.*?)>(.*?)<\/form>/ims',

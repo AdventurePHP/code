@@ -56,7 +56,7 @@ class NewsFrontendController extends NewsBaseController {
       $Data = array();
 
       // retrieve the charset from the registry to guarantee interoperability!
-      $charset = Registry::retrieve('apf::core', 'Charset');
+      $charset = Registry::retrieve('APF\core', 'Charset');
 
       foreach ($newsList as &$news) {
          $Date = new \DateTime($news->getProperty('CreationTimestamp'));

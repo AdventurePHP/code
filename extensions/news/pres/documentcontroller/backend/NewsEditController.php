@@ -85,7 +85,7 @@ class NewsEditController extends NewsBaseController {
          $buttonValue = $lang->getValue('Form.Button.Edit');
 
          // retrieve the charset from the registry to guarantee interoperability!
-         $charset = Registry::retrieve('apf::core', 'Charset');
+         $charset = Registry::retrieve('APF\core', 'Charset');
 
          $formTitle->setAttribute('value', htmlspecialchars($news->getTitle(), ENT_QUOTES, $charset, false));
          $formUser->setAttribute('value', htmlspecialchars($news->getAuthor(), ENT_QUOTES, $charset, false));

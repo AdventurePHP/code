@@ -55,7 +55,7 @@ class NewsListController extends NewsBaseController {
       $DataArray = array();
 
       // retrieve the charset from the registry to guarantee interoperability!
-      $charset = Registry::retrieve('apf::core', 'Charset');
+      $charset = Registry::retrieve('APF\core', 'Charset');
 
       foreach ($NewsList as &$News) {
          $DataArray[] = array(

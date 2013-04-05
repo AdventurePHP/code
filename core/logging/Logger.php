@@ -314,7 +314,7 @@ class Logger {
       // Please note, that the writer's target name can be configured
       // within the Registry for all framework-related log statements.
       $this->addLogWriter(
-         Registry::retrieve('apf::core', 'InternalLogTarget'),
+         Registry::retrieve('APF\core', 'InternalLogTarget'),
          new FileLogWriter(
             str_replace('\\', '/', getcwd()) . '/logs'
          )

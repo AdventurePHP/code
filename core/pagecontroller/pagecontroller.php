@@ -81,7 +81,7 @@ function printObject($o, $transformHtml = false) {
    $buffer .= "\n<pre>";
 
    if ($transformHtml == true) {
-      $buffer .= htmlentities(print_r($o, true), null, Registry::retrieve('apf::core', 'Charset'));
+      $buffer .= htmlentities(print_r($o, true), null, Registry::retrieve('APF\core', 'Charset'));
    } else {
       $buffer .= print_R($o, true);
    }
@@ -594,7 +594,7 @@ abstract class APFObject implements APFDIService {
     */
    protected function getConfiguration($namespace, $name) {
       return ConfigurationManager::loadConfiguration(
-         $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('apf::core', 'Environment'), $name);
+         $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('APF\core', 'Environment'), $name);
    }
 
    /**
@@ -613,7 +613,7 @@ abstract class APFObject implements APFDIService {
     */
    protected function saveConfiguration($namespace, $name, Configuration $config) {
       ConfigurationManager::saveConfiguration(
-         $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('apf::core', 'Environment'), $name, $config);
+         $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('APF\core', 'Environment'), $name, $config);
    }
 
    /**
@@ -631,7 +631,7 @@ abstract class APFObject implements APFDIService {
     */
    protected function deleteConfiguration($namespace, $name) {
       ConfigurationManager::deleteConfiguration(
-         $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('apf::core', 'Environment'), $name);
+         $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('APF\core', 'Environment'), $name);
    }
 
    /**
@@ -654,7 +654,7 @@ abstract class APFObject implements APFDIService {
 
       // process white list entries only, when attribute is given
       // code duplication is done here due to performance reasons!!!
-      $charset = Registry::retrieve('apf::core', 'Charset');
+      $charset = Registry::retrieve('APF\core', 'Charset');
       if (count($whiteList) > 0) {
          foreach ($attributes as $offset => $value) {
             if (in_array($offset, $whiteList)) {
@@ -2405,7 +2405,7 @@ class LanguageLabelTag extends Document {
       if ($value == null) {
 
          // get environment variable from registry to have nice exception message
-         $env = Registry::retrieve('apf::core', 'Environment');
+         $env = Registry::retrieve('APF\core', 'Environment');
 
          throw new \InvalidArgumentException('[' . get_class($this) . '::transform()] Given entry "'
                . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'
@@ -2690,7 +2690,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
             new SimpleLogEntry(
             // use the configured log target to allow custom configuration of APF-internal log statements
             // to be written to a custom file/location
-               Registry::retrieve('apf::core', 'InternalLogTarget'),
+               Registry::retrieve('APF\core', 'InternalLogTarget'),
                   'Place holder with name "' . $name . '" does not exist within the current document '
                         . 'handled by document controller "' . get_class($this) . '". '
                         . 'Please check your setup. Details: ' . $e,

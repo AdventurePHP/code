@@ -643,7 +643,7 @@ class Frontcontroller extends APFObject {
 
       // throw exception, in case the action config is not present
       if ($actionConfig == null) {
-         $env = Registry::retrieve('apf::core', 'Environment');
+         $env = Registry::retrieve('APF\core', 'Environment');
          throw new \InvalidArgumentException('[Frontcontroller::addAction()] No config '
                . 'section for action key "' . $name . '" available in configuration file "' . $env
                . '_actionconfig.ini" in namespace "' . $namespace . '" and context "'

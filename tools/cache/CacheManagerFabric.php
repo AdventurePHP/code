@@ -66,7 +66,7 @@ final class CacheManagerFabric extends APFObject {
          $section = $config->getSection($configSection);
 
          if ($section === null) {
-            $env = Registry::retrieve('apf::core', 'Environment');
+            $env = Registry::retrieve('APF\core', 'Environment');
             throw new \InvalidArgumentException('[CacheManagerFabric::getCacheManager()] The desired config section "'
                   . $configSection . '" does not exist within the cache configuration. Please check '
                   . 'your cache configuration ("' . $env . '_cacheconfig.ini") for namespace '

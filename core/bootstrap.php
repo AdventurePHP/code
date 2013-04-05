@@ -94,9 +94,9 @@ include_once(dirname(__FILE__) . '/pagecontroller/pagecontroller.php');
 // Define base parameters of the framework's core and tools layer
 use APF\core\registry\Registry;
 
-Registry::register('apf::core', 'Environment', 'DEFAULT');
-Registry::register('apf::core', 'InternalLogTarget', 'apf');
-Registry::register('apf::core', 'Charset', 'UTF-8');
+Registry::register('APF\core', 'Environment', 'DEFAULT');
+Registry::register('APF\core', 'InternalLogTarget', 'apf');
+Registry::register('APF\core', 'Charset', 'UTF-8');
 
 // set up configuration provider to let the developer customize it later on
 use APF\core\configuration\ConfigurationManager;
@@ -119,7 +119,7 @@ register_shutdown_function(function () {
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\DefaultLinkScheme;
 
-Registry::retrieve('apf::core', 'URLRewriting', false); // define default value for url rewriting configuration
+Registry::register('APF\core', 'URLRewriting', false); // define default value for url rewriting configuration
 LinkGenerator::setLinkScheme(new DefaultLinkScheme());
 
 // add the front controller filter that is a wrapper on the front controller's input

@@ -132,7 +132,7 @@ class DefaultErrorHandler implements ErrorHandler {
          new SimpleLogEntry(
          // use the configured log target to allow custom configuration of APF-internal log statements
          // to be written to a custom file/location
-            Registry::retrieve('apf::core', 'InternalLogTarget'),
+            Registry::retrieve('APF\core', 'InternalLogTarget'),
             $message,
             LogEntry::SEVERITY_ERROR
          )

@@ -84,7 +84,7 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
       $t->start('ChainedGenericInputFilter');
 
       // apply desired filter method
-      $urlRewriting = Registry::retrieve('apf::core', 'URLRewriting');
+      $urlRewriting = Registry::retrieve('APF\core', 'URLRewriting');
       $filter = null;
       if ($urlRewriting === true) {
          $this->filterRewriteUrl();

@@ -88,7 +88,7 @@ class ErrorPageController extends BaseDocumentController {
 
       $document = $this->getDocument();
       $this->setPlaceHolder('ErrorID', $document->getAttribute('id'));
-      $this->setPlaceHolder('ErrorMessage', htmlspecialchars($document->getAttribute('message'), ENT_QUOTES, Registry::retrieve('apf::core', 'Charset'), false));
+      $this->setPlaceHolder('ErrorMessage', htmlspecialchars($document->getAttribute('message'), ENT_QUOTES, Registry::retrieve('APF\core', 'Charset'), false));
       $this->setPlaceHolder('ErrorNumber', $document->getAttribute('number'));
       $this->setPlaceHolder('ErrorFile', $document->getAttribute('file'));
       $this->setPlaceHolder('ErrorLine', $document->getAttribute('line'));
