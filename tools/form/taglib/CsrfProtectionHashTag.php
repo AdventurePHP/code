@@ -53,8 +53,7 @@ class CsrfProtectionHashTag extends AbstractFormControl {
     * Version 0.1, 06.11.2010
     */
    public function __construct() {
-      $this->setAttribute('namespace', 'tools::form::provider::csrf');
-      $this->setAttribute('class', 'EncryptedSIDHashProvider');
+      $this->setAttribute('class', 'APF\tools\form\provider\csrf\EncryptedSIDHashProvider');
    }
 
    /**
@@ -68,7 +67,6 @@ class CsrfProtectionHashTag extends AbstractFormControl {
     */
    public function onParseTime() {
 
-      $namespace = $this->getAttribute('namespace');
       $class = $this->getAttribute('class');
       $salt = $this->getAttribute('salt');
 
@@ -79,7 +77,7 @@ class CsrfProtectionHashTag extends AbstractFormControl {
       }
 
       /* @var $provider CSRFHashProvider */
-      $provider = &$this->getServiceObject($namespace, $class);
+      $provider = &$this->getServiceObject($class);
       $this->hash = $provider->generateHash($salt);
 
       // preset the value to make it available for the validator

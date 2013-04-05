@@ -75,7 +75,7 @@ class CookieManager {
     * Version 0.1, 08.11.2008<br />
     */
    public function setNamespace($namespace) {
-      $this->namespace = str_replace('::', '_', $namespace);
+      $this->namespace = str_replace('\\', '_', $namespace);
    }
 
    /**
@@ -88,7 +88,7 @@ class CookieManager {
     * Version 0.1, 10.01.2009<br />
     */
    public function getNamespace() {
-      return str_replace('_', '::', $this->namespace);
+      return str_replace('_', '\\', $this->namespace);
    }
 
    /**

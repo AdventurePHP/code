@@ -443,15 +443,8 @@ class GenericORMapper extends BaseMapper {
 
          // create service object if needed
          if (isset($this->domainObjectsTable[$objectName])) {
-
             $class = $this->domainObjectsTable[$objectName]['Class'];
-            $namespace = $this->domainObjectsTable[$objectName]['Namespace'];
-
-            // determine fully qualified namespace and class
-            $fqNamespace = 'APF\\' . str_replace('::', '\\', $namespace);
-            $fqClass = $fqNamespace . '\\' . $class;
-
-            $object = new $fqClass($objectName);
+            $object = new $class($objectName);
          } else {
             $object = new GenericDomainObject($objectName);
          }

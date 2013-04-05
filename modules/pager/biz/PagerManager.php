@@ -145,7 +145,11 @@ final class PagerManager extends APFObject {
    public function loadEntries($addStmtParams = array()) {
       /* @var $m PagerMapper */
       $m = & $this->getAndInitServiceObject('modules::pager::data', 'PagerMapper', $this->section->getValue('Pager.DatabaseConnection'));
-      return $m->loadEntries($this->section->getValue('Pager.StatementNamespace'), $this->section->getValue('Pager.EntriesStatement'), $this->getStatementParams($addStmtParams), $this->section->getValue('Pager.CacheInSession'));
+      return $m->loadEntries(
+         $this->section->getValue('Pager.StatementNamespace'),
+         $this->section->getValue('Pager.EntriesStatement'),
+         $this->getStatementParams($addStmtParams), $this->section->getValue('Pager.CacheInSession')
+      );
    }
 
    /**

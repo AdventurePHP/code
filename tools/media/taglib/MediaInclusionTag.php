@@ -50,7 +50,7 @@ class MediaInclusionTag extends Document {
             . '::onParseTime()] The tag definition does not contain a "filename" definition!');
       }
 
-      // split filename into extension and body, since they are transfered in separate parts
+      // split filename into extension and body, since they are transferred in separate parts
       $dot = strrpos($filename, '.');
       $this->setAttribute('extension', substr($filename, $dot + 1));
       $this->setAttribute('filebody', substr($filename, 0, $dot));

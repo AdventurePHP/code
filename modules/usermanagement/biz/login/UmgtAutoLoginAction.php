@@ -35,7 +35,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
    /**
     * @const Defines the cookie namespace of the auto login cookie.
     */
-   const AUTO_LOGIN_COOKIE_NAMESPACE = 'umgt::biz';
+   const AUTO_LOGIN_COOKIE_NAMESPACE = 'APF\umgt\biz';
 
    /**
     * @const Defines the cookie name for the user's permanent auth token.

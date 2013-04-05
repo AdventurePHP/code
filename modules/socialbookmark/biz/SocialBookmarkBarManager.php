@@ -207,7 +207,7 @@ class SocialBookmarkBarManager extends APFObject {
 
    private function getMediaUrl($image) {
       $media = new MediaInclusionTag();
-      $media->setAttribute('namespace', 'modules::socialbookmark::pres::image');
+      $media->setAttribute('namespace', 'APF\modules\socialbookmark\pres\image');
       $media->setAttribute('filename', $image);
       $media->setContent($this->getContext());
       $media->setLanguage($this->getLanguage());

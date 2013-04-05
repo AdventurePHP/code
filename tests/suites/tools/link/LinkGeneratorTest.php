@@ -20,8 +20,12 @@ namespace APF\tests\suites\tools\link;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\FrontcontrollerInput;
+use APF\tools\link\DefaultLinkScheme;
 use APF\tools\link\LinkGenerator;
-use APF\core\frontcontroller\Frontcontroller;
+use APF\tools\link\RewriteLinkScheme;
+use APF\tools\link\Url;
 
 /**
  * @package tests::suites::tools::link
@@ -108,7 +112,7 @@ class TestableRewriteLinkScheme extends RewriteLinkScheme {
  * @version
  * Version 0.1, 20.12.2011
  */
-class LinkGeneratorTest extends PHPUnit_Framework_TestCase {
+class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
    private static $DEFAULT_URL = '/page/001-main';
 

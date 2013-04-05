@@ -42,7 +42,7 @@ use APF\tools\link\Url;
 class MultiFileUploadManager extends APFObject {
 
    private $sessionNamespace;
-   private static $DEFAULT_SESSION_NAMESPACE = 'tools::form::multifileupload';
+   private static $DEFAULT_SESSION_NAMESPACE = 'APF\tools\form\multifileupload';
 
    private $maxFileSize = null;
    private $mimeTypes = array();
@@ -50,7 +50,7 @@ class MultiFileUploadManager extends APFObject {
    private $formName;
    private $name;
 
-   private $tmpUploadPath = 'tools::form::multifileupload::uploaddir';
+   private $tmpUploadPath = 'APF\tools\form\multifileupload\uploaddir';
 
    /**
     * @var SessionManager
@@ -98,7 +98,7 @@ class MultiFileUploadManager extends APFObject {
     * @version 1.0, 14.3.2011<br>
     */
    public function getUploadPath() {
-      return $this->getRootPath() . '/' . $this->tmpUploadPath . '/' . $this->getContext();
+      return $this->getRootPath() . '/' . str_replace('\\', '/', $this->tmpUploadPath) . '/' . $this->getContext();
    }
 
    /**
