@@ -54,7 +54,7 @@ class JsCssPackager extends APFObject {
     * Loads the content of all files, included in the package with the given name.
     *
     * @param string $name The package name.
-    * @param bool $gzip Return package compressed with gzip.
+    * @param bool $gZip Return package compressed with gzip.
     * @throws \InvalidArgumentException In case the package configuration section does not exist.
     *
     * @return String The complete package.
@@ -63,7 +63,7 @@ class JsCssPackager extends APFObject {
     * @version
     * Version 1.0, 18.03.2010<br />
     */
-   public function getPackage($name, $gzip = false) {
+   public function getPackage($name, $gZip = false) {
       $cfgPack = $this->getPackageConfiguration()->getSection($name);
 
       if ($cfgPack === null) {
@@ -82,7 +82,7 @@ class JsCssPackager extends APFObject {
          $cM = & $cMF->getCacheManager('jscsspackager_cache');
 
          $cacheKey = $name;
-         if ($gzip === true) {
+         if ($gZip === true) {
             $cacheKey .= '_gzip';
          }
 
@@ -106,12 +106,12 @@ class JsCssPackager extends APFObject {
          $cM->writeToCache(new SimpleCacheKey($name), $newPackage . $cacheExpires);
          $cM->writeToCache(new SimpleCacheKey($name . '_gzip'), $newPackageGzip . $cacheExpires);
 
-         return $gzip ? $newPackageGzip : $newPackage;
+         return $gZip ? $newPackageGzip : $newPackage;
       }
 
       /* We generate the package new, because we don't use a cache */
       $pack = $this->generatePackage($cfgPack, $name);
-      return $gzip ? gzencode($pack, 9) : $pack;
+      return $gZip ? gzencode($pack, 9) : $pack;
    }
 
    /**
@@ -155,7 +155,7 @@ class JsCssPackager extends APFObject {
       return $output;
    }
 
-   public function getFile($path, $file, $type, $gzip = false) {
+   public function getFile($path, $file, $type, $gZip = false) {
 
       $filePath = $this->getRootPath() . '/' . $path . '/' . $file . '.' . $type;
 
@@ -189,7 +189,7 @@ class JsCssPackager extends APFObject {
          // do nothing but go on without shrinking
       }
 
-      return $gzip ? gzencode($filteredContent, 9) : $filteredContent;
+      return $gZip ? gzencode($filteredContent, 9) : $filteredContent;
    }
 
    /**
@@ -264,16 +264,16 @@ class JsCssPackager extends APFObject {
     */
    protected function loadSingleFile($namespace, $file, $ext, $packageName) {
 
-      // TODO change addressing of package file
-      $namespace = str_replace('::', '/', $namespace);
-      $filePath = $this->getRootPath() . '/' . $namespace . '/' . $file . '.' . $ext;
+      $fqNamespace = str_replace('\\', '/', $namespace);
+      $filePath = $this->getRootPath() . '/' . $fqNamespace . '/' . $file . '.' . $ext;
 
       if (file_exists($filePath)) {
          return file_get_contents($filePath);
       }
+
       throw new IncludeException('[JsCssPackager::loadSingleFile()] The requested file "' . $file . '.' . $ext
-            . '" cannot be found in namespace "' . str_replace('/', '::', $namespace) . '". Please
-                    check the configuration of package "' . $packageName . '"!');
+            . '" cannot be found in namespace "' . $namespace . '". Please check the configuration of package "'
+            . $packageName . '"!');
    }
 
    /**
@@ -292,12 +292,8 @@ class JsCssPackager extends APFObject {
 
       if ($section !== null) {
          foreach ($section->getSectionNames() as $key) {
-            $FilterInformation = $section->getSection($key);
-
-            // TODO change class addressing for shrinking configuration
-            $namespace = $FilterInformation->getValue('Namespace');
-            $name = $FilterInformation->getValue('Name');
-
+            $filterInformation = $section->getSection($key);
+            $name = $filterInformation->getValue('Class');
             JsCssInclusionFilterChain::getInstance()->appendFilter(new $name());
          }
       }
