@@ -21,6 +21,8 @@ namespace APF\extensions\htmlheader\biz;
  * -->
  */
 use APF\extensions\htmlheader\biz\HtmlNode;
+use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * @abstract
@@ -56,7 +58,7 @@ abstract class PackageNode extends HtmlNode {
 
       // Generate url if not given
       $url = ($url === null) ? Url::fromCurrent(true) : Url::fromString($url);
-      return LinkGenerator::generateActionUrl($url, 'extensions::htmlheader', 'JsCss', array(
+      return LinkGenerator::generateActionUrl($url, 'APF\extensions\htmlheader', 'JsCss', array(
          'package' => $name . '.' . $this->getTypeIndicator()
       ));
    }
