@@ -53,8 +53,6 @@ class ProxyListController extends UmgtBaseController {
                ->getValue('frontend.proxy.list.delete-filter.label'), 0);
 
       foreach ($types as $type) {
-         /* @var $type UmgtVisibilityDefinition */
-         // TODO correct method call regarding document model of the UMGT module
          $select->addOption($type->getAppObjectName(), $type->getObjectId());
       }
 

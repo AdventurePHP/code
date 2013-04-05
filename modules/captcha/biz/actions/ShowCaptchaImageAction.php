@@ -29,7 +29,7 @@ use APF\tools\http\HeaderManager;
  * @package modules::captcha::biz::actions
  * @class ShowCaptchaImageAction
  *
- *  Front controller action that displays a captcha image.
+ * Front controller action that displays a captcha image.
  *
  * @author Christian Achatz
  * @version
