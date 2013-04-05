@@ -340,27 +340,6 @@ class ExtendedSoapClientService extends APFObject {
    }
 
    /**
-    * Let's you inject the HTTP BASE AUTH credentials via dependency injection to ease configuration
-    * (service injection).
-    * <p/>
-    * Besides, the credentials may be injected using the setHttpAuthUsername() and setHttpAuthPassword()
-    * methods as well (configuration injection).
-    *
-    * @param SoapHttpBaseAuthCredentials $credentials The HTTP BASE AUTH credentials to apply to the connection.
-    * @return ExtendedSoapClientService This instance for further usage.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.05.2012<br />
-    */
-   public function setHttpAuthCredentials(SoapHttpBaseAuthCredentials $credentials) {
-      $this->setHttpAuthUsername($credentials->getUsername());
-      $this->setHttpAuthPassword($credentials->getPassword());
-
-      return $this;
-   }
-
-   /**
     * @param int $compression The compression to use/accept.
     * @return ExtendedSoapClientService This instance for further usage.
     *

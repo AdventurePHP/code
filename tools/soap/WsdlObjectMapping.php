@@ -20,6 +20,7 @@ namespace APF\tools\soap;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\APFObject;
 
 /**
  * @package tools::soap
@@ -62,11 +63,6 @@ class WsdlObjectMapping extends APFObject {
    private $wsdlType;
 
    /**
-    * @var string The namespace of the PHP class.
-    */
-   private $phpClassNamespace;
-
-   /**
     * @var string The name of the PHP class.
     */
    private $phpClassName;
@@ -76,21 +72,19 @@ class WsdlObjectMapping extends APFObject {
     * ExtendedSoapClientService by the registerWsdlObjectMapping() method.
     *
     * @param string $wsdlType The name of the WSDL type.
-    * @param string $phpClassNamespace The namespace of the PHP class.
-    * @param string $phpClassName The name of the PHP class.
+    * @param string $phpClassName The fully qualified name of the PHP class.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.02.2012<br />
     */
-   public function __construct($wsdlType = null, $phpClassNamespace = null, $phpClassName = null) {
+   public function __construct($wsdlType = null, $phpClassName = null) {
       $this->wsdlType = $wsdlType;
-      $this->phpClassNamespace = $phpClassNamespace;
       $this->phpClassName = $phpClassName;
    }
 
    /**
-    * @param string $phpClassName The name of the PHP class.
+    * @param string $phpClassName The fully qualified name of the PHP class.
     * @return WsdlObjectMapping This object for further usage.
     */
    public function setPhpClassName($phpClassName) {
@@ -100,19 +94,6 @@ class WsdlObjectMapping extends APFObject {
 
    public function getPhpClassName() {
       return $this->phpClassName;
-   }
-
-   /**
-    * @param string $phpClassNamespace The namespace of the PHP class.
-    * @return WsdlObjectMapping This object for further usage.
-    */
-   public function setPhpClassNamespace($phpClassNamespace) {
-      $this->phpClassNamespace = $phpClassNamespace;
-      return $this;
-   }
-
-   public function getPhpClassNamespace() {
-      return $this->phpClassNamespace;
    }
 
    /**
