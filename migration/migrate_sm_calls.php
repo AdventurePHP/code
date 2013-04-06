@@ -1,7 +1,7 @@
 <?php
 include(dirname(__FILE__) . '/migrate_base.php');
 
-$files = find('.', '*.php');
+$files = filterApfDirectories(find('.', '*.php'));
 
 $search = '#\$this->getServiceObject\(\'([A-Za-z0-9:\-]+)\', ?\'([A-Za-z0-9_]+)\'\)#m';
 $searchWithType = '#\$this->getServiceObject\(\'([A-Za-z0-9:\-]+)\', ?\'([A-Za-z0-9_]+)\', ?([A-Za-z0-9:_]+)\)#m';
@@ -25,6 +25,23 @@ foreach ($files as $file) {
    $content = preg_replace_callback($searchDi, function ($matches) {
       return '$this->getDIServiceObject(\'APF\\' . str_replace('::', '\\', $matches[1]) . '\', ';
    }, $content);
+
+   // replace Singleton usages
+   $content = str_replace(
+      'Singleton::getInstance(\'BenchmarkTimer\')',
+      'Singleton::getInstance(\'APF\core\benchmark\BenchmarkTimer\')',
+      $content
+   );
+   $content = str_replace(
+      'Singleton::getInstance(\'Logger\')',
+      'Singleton::getInstance(\'APF\core\logging\Logger\')',
+      $content
+   );
+   $content = str_replace(
+      'Singleton::getInstance(\'Frontcontroller\')',
+      'Singleton::getInstance(\'APF\core\frontcontroller\Frontcontroller\')',
+      $content
+   );
 
    file_put_contents($file, $content);
 }

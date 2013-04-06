@@ -13,3 +13,15 @@ function find($dir, $pattern) {
    }
    return $files;
 }
+
+function filterApfDirectories($files) {
+   $filteredFiles = array();
+
+   foreach ($files as $file) {
+      if (preg_match('#[/|\\\\](core|modules|tools|tests|extensions|examples|migration)[/|\\\\]#', $file)) {
+         continue;
+      }
+      $filteredFiles[] = $file;
+   }
+   return $filteredFiles;
+}
