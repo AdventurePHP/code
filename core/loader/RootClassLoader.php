@@ -132,7 +132,7 @@ class StandardClassLoader implements ClassLoader {
             include($file);
          } else {
             throw new \InvalidArgumentException('[StandardClassLoader::load()] Loading class "'
-                  . $class . '" filed since file "' . $file . '" cannot be loaded!', E_USER_ERROR);
+                  . $class . '" failed since file "' . $file . '" cannot be loaded!', E_USER_ERROR);
          }
       }
    }

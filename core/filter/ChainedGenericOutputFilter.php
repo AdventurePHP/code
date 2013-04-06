@@ -67,10 +67,10 @@ class ChainedGenericOutputFilter implements ChainedContentFilter {
       if ($urlRewriting === true) {
          $input = preg_replace_callback(
                          '/<form (.*?)action="(.*?)"(.*?)>(.*?)<\/form>/ims',
-                         array('ChainedGenericOutputFilter', 'replaceForm'),
+                         array('APF\core\filter\ChainedGenericOutputFilter', 'replaceForm'),
                          preg_replace_callback(
                                  '/<a (.*?)href="(.*?)"(.*?)>(.*?)<\/a>/ims',
-                                 array('ChainedGenericOutputFilter', 'replaceLink'),
+                                 array('APF\core\filter\ChainedGenericOutputFilter', 'replaceLink'),
                                  $input)
          );
       }
