@@ -130,7 +130,7 @@ final class DIServiceManager {
    public static function &getServiceObject($configNamespace, $sectionName, $context, $language) {
 
       // build cache key. because configuration-file path includes context, include context (and language) in cache key
-      $cacheKey = $configNamespace . '::' . $sectionName . '|' . $context . '_' . $language;
+      $cacheKey = $configNamespace . '|' . $sectionName . '|' . $context . '|' . $language;
 
       // Check, whether service object was created before. If yes, deliver it from cache for all services types except NORMAL.
       // Do not cache ServiceType 'NORMAL' because we want to have different instances!
@@ -161,7 +161,6 @@ final class DIServiceManager {
          self::$SERVICE_TYPE_CACHE[$cacheKey] = $serviceType;
       }
 
-      $namespace = $section->getValue('namespace');
       $class = $section->getValue('class');
 
       // The behaviour of service types CACHED and NORMAL is equal in the following, thus remapping it.
@@ -210,9 +209,9 @@ final class DIServiceManager {
                $serviceObject->$method($value);
             } else {
                throw new \InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of'
-                     . ' configuration value "' . $directive->getValue('value') . '" cannot be accomplished'
-                     . ' to service object "' . $class . '" from namespace "' . $namespace . '"! Method '
-                     . $method . '() is not implemented!', E_USER_ERROR);
+                        . ' configuration value "' . $directive->getValue('value') . '" cannot be accomplished'
+                        . ' to service object "' . $class . '"! Method ' . $method . '() is not implemented!',
+                  E_USER_ERROR);
             }
          }
       }
@@ -253,10 +252,10 @@ final class DIServiceManager {
 
                $log->addEntry(
                   new SimpleLogEntry(
-                     // use the configured log target to allow custom configuration of APF-internal log statements
-                     // to be written to a custom file/location
+                  // use the configured log target to allow custom configuration of APF-internal log statements
+                  // to be written to a custom file/location
                      Registry::retrieve('APF\core', 'InternalLogTarget'),
-                     '[DIServiceManager::getServiceObject()] Injection stack trace: ' . $instructions,
+                        '[DIServiceManager::getServiceObject()] Injection stack trace: ' . $instructions,
                      LogEntry::SEVERITY_TRACE
                   )
                );
