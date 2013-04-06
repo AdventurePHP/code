@@ -6,9 +6,9 @@
     <table id="news-backendlist">
         <thead>
             <tr>
-                <th><iterator:getstring namespace="extensions::news" config="labels.ini" entry="Title" /></th>
-                <th><iterator:getstring namespace="extensions::news" config="labels.ini" entry="Date" /></th>
-                <th><iterator:getstring namespace="extensions::news" config="labels.ini" entry="Action" /></th>
+                <th><iterator:getstring namespace="APF\extensions\news" config="labels.ini" entry="Title" /></th>
+                <th><iterator:getstring namespace="APF\extensions\news" config="labels.ini" entry="Date" /></th>
+                <th><iterator:getstring namespace="APF\extensions\news" config="labels.ini" entry="Action" /></th>
             </tr>
         </thead>
         <tbody>
@@ -33,6 +33,6 @@
 
 <html:template name="noentry">
     <div id="news-noentry">
-        <template:getstring namespace="extensions::news" config="labels.ini" entry="NoEntry" />
+        <template:getstring namespace="APF\extensions\news" config="labels.ini" entry="NoEntry" />
     </div>
 </html:template>

@@ -31,19 +31,19 @@
 
 <html:template name="author">
     <span class="news-entry-author">
-        <span class="label"><template:getstring namespace="extensions::news" config="labels.ini" entry="Author" />: </span>
+        <span class="label"><template:getstring namespace="APF\extensions\news" config="labels.ini" entry="Author" />: </span>
         <template:placeholder name="authorname" />
     </span>
 </html:template>
 
 <html:template name="pager">
     <div id="news-pager">
-        <template:getstring namespace="extensions::news" config="labels.ini" entry="Page" />: <template:placeholder name="pages" />
+        <template:getstring namespace="APF\extensions\news" config="labels.ini" entry="Page" />: <template:placeholder name="pages" />
     </div>
 </html:template>
 
 <html:template name="noentry">
     <div id="news-noentry">
-        <template:getstring namespace="extensions::news" config="labels.ini" entry="NoEntry" />
+        <template:getstring namespace="APF\extensions\news" config="labels.ini" entry="NoEntry" />
     </div>
 </html:template>

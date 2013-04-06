@@ -2,11 +2,11 @@
 <core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <div class="cm--create">
    <div class="cm--create-head">
-      <html:getstring namespace="modules::comments" config="language" entry="formhint.text.1" /> <a href="<html:placeholder name="back" />#comments" title="<html:getstring namespace="modules::comments" config="language" entry="formhint.text.2.title" />"><strong><html:getstring namespace="modules::comments" config="language" entry="formhint.text.2" /></strong></a><html:getstring namespace="modules::comments" config="language" entry="formhint.text.3" />
+      <html:getstring namespace="APF\modules\comments" config="language" entry="formhint.text.1" /> <a href="<html:placeholder name="back" />#comments" title="<html:getstring namespace="APF\modules\comments" config="language" entry="formhint.text.2.title" />"><strong><html:getstring namespace="APF\modules\comments" config="language" entry="formhint.text.2" /></strong></a><html:getstring namespace="APF\modules\comments" config="language" entry="formhint.text.3" />
    </div>
    <div class="cm--create-form">
       <html:form name="AddComment" method="post">
-         <span><form:getstring namespace="modules::comments" config="language" entry="form.name" />*</span>
+         <span><form:getstring namespace="APF\modules\comments" config="language" entry="form.name" />*</span>
          <form:text
             maxlength="100"
             name="Name"
@@ -18,7 +18,7 @@
             control="Name|Comment"
          />
          <br />
-         <span><form:getstring namespace="modules::comments" config="language" entry="form.email" />*</span>
+         <span><form:getstring namespace="APF\modules\comments" config="language" entry="form.email" />*</span>
          <form:text
             maxlength="100"
             name="EMail"
@@ -36,7 +36,7 @@
          />
          <br />
          <br />
-         <form:getstring namespace="modules::comments" config="language" entry="form.comment" />
+         <form:getstring namespace="APF\modules\comments" config="language" entry="form.comment" />
          <br />
          <form:area
             name="Comment"
@@ -46,7 +46,7 @@
          />
          <br />
          <br />
-         <span><form:getstring namespace="modules::comments" config="language" entry="form.confirm" />*</span>
+         <span><form:getstring namespace="APF\modules\comments" config="language" entry="form.confirm" />*</span>
          <br />
          <br />
          <form:addtaglib class="APF\modules\captcha\pres\taglib\SimpleCaptchaTag" prefix="form" name="captcha" />
