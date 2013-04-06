@@ -54,7 +54,7 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
     */
    public function run() {
 
-      $session = new SessionManager('modules::captcha');
+      $session = new SessionManager('APF\modules\captcha');
 
       // read captcha string from the session.
       $CaptchaStringName = $this->getInput()->getAttribute('name');

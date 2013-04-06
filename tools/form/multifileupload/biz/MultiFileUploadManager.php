@@ -392,7 +392,7 @@ class MultiFileUploadManager extends APFObject {
    public function link() {
       $scheme = LinkGenerator::cloneLinkScheme();
       $scheme->setEncodeAmpersands(false);
-      $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'tools::form::multifileupload', 'multifileupload', array(
+      $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\tools\form\multifileupload', 'multifileupload', array(
          'formname' => $this->formName,
          'name' => $this->name), $scheme);
       return $link;
@@ -410,7 +410,7 @@ class MultiFileUploadManager extends APFObject {
    public function getDeleteLink($uploadname) {
       $scheme = LinkGenerator::cloneLinkScheme();
       $scheme->setEncodeAmpersands(false);
-      $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'tools::form::multifileupload', 'multifiledelete', array(
+      $link = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\tools\form\multifileupload', 'multifiledelete', array(
          'formname' => $this->formName,
          'name' => $this->name,
          'uploadname' => $uploadname), $scheme);
@@ -483,7 +483,7 @@ class MultiFileUploadManager extends APFObject {
       $scheme->setEncodeAmpersands(true);
 
       return LinkGenerator::generateActionUrl(
-         Url::fromCurrent(), 'tools::form::multifileupload', 'multifilegetfile', array(
+         Url::fromCurrent(), 'APF\tools\form\multifileupload', 'multifilegetfile', array(
          'formname' => $this->formName,
          'name' => $this->name,
          'uploadname' => $uploadname), $scheme);

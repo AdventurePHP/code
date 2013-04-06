@@ -1,8 +1,12 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators\actions;
 
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\session\SessionManager;
+use APF\extensions\apfelsms\biz\SMSManager;
+use APF\extensions\apfelsms\biz\SMSWrongParameterException;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  *
@@ -17,7 +21,7 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
    /**
     * @const string
     */
-   const SESSION_NAMESPACE = 'extensions::apfelsms::actions';
+   const SESSION_NAMESPACE = 'APF\extensions\apfelsms\actions';
 
 
    /**

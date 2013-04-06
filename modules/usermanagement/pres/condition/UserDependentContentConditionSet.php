@@ -45,12 +45,12 @@ use APF\modules\usermanagement\pres\condition\UmgtNotRoleCondition;
  * as follows:
  * <pre>
  * // add condition
- * $condSet = &$this->getServiceObject('modules::usermanagement::pres::condition',
+ * $condSet = &$this->getServiceObject('APF\modules\usermanagement\pres\condition',
  *                   'UserDependentContentConditionSet');
  * $condSet->addCondition(new FooCondition());
  *
  * // initialize with custom condition
- * $condSet = &$this->getServiceObject('modules::usermanagement::pres::condition',
+ * $condSet = &$this->getServiceObject('APF\modules\usermanagement\pres\condition',
  *                   'UserDependentContentConditionSet');
  * $condSet
  *         ->resetConditionList()

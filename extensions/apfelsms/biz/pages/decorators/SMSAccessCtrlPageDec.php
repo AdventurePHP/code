@@ -1,8 +1,9 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators;
 
+use APF\extensions\apfelsms\biz\SMSWrongDataException;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSAbstractPageDec;
-use APF\extensions\apfelsms\biz\pages\decorators\providers\SMSAccessCtrlProviderInterface;
+use APF\extensions\apfelsms\biz\pages\decorators\providers\SMSAccessCtrlProvider;
 
 /**
  *
@@ -40,9 +41,9 @@ class SMSAccessCtrlPageDec extends SMSAbstractPageDec {
     * @var array
     */
    public static $mapVars = array(
-      'providerServiceNamespace' => 'extensions::apfelsms::pages::decorators::provider',
-      'providerServiceName'      => null,
-      'permissionName'           => 'SMSViewPermission'
+      'providerServiceNamespace' => 'APF\extensions\apfelsms\pages\decorators\provider',
+      'providerServiceName' => null,
+      'permissionName' => 'SMSViewPermission'
    );
 
 

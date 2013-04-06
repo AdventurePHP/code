@@ -134,7 +134,7 @@ final class ConnectionManager extends APFObject {
          $env = Registry::retrieve('APF\core', 'Environment');
          throw new \InvalidArgumentException('[ConnectionManager::getConnection()] The given '
                . 'configuration section ("' . $connectionKey . '") does not exist in configuration file "'
-               . $env . '_connections.ini" in namespace "core::database" for context "'
+               . $env . '_connections.ini" in namespace "APF\core\database" for context "'
                . $this->context . '"!', E_USER_ERROR);
       }
 

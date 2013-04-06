@@ -60,7 +60,7 @@ class GuestbookImportTemplateTag extends ImportTemplateTag {
 
       $model->setGuestbookId($guestbookId);
 
-      $this->setAttribute('namespace', 'modules::guestbook2009::pres::templates');
+      $this->setAttribute('namespace', 'APF\modules\guestbook2009\pres\templates');
       $this->setAttribute('template', 'guestbook');
       parent::onParseTime();
 

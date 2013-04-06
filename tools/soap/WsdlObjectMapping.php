@@ -39,15 +39,13 @@ use APF\core\pagecontroller\APFObject;
  * $mapping = new WsdlObjectMapping();
  * $client->registerWsdlObjectMapping(
  *    $mapping->setWsdlType('login-response')
- *       ->setPhpClassNamespace('sample::namespace')
- *       ->setPhpClassName('LoginResponse')
+ *       ->setPhpClassName('VENDOR\sample\namespace\LoginResponse')
  *);
  *
  * // constructor usage
  * $mapping = new WsdlObjectMapping(
  *    'login-response',
- *    'sample::namespace',
- *    'LoginResponse'
+ *    'VENDOR\sample\namespace\LoginResponse'
  * );
  * </code>
  *

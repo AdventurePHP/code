@@ -20,14 +20,20 @@ namespace APF\tools\mail;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\tools\validator\Validator;
+use APF\core\logging\LogEntry;
+use APF\core\pagecontroller\APFObject;
 use APF\core\logging\Logger;
+use APF\core\singleton\Singleton;
+use APF\tools\form\taglib\ButtonTag;
+use APF\tools\form\taglib\HtmlFormTag;
+use APF\tools\form\taglib\TextFieldTag;
+use APF\tools\form\validator\EMailValidator;
 
 /**
  * @package APF\tools\mail
  * @class mailSender
  *
- *  Provides a mail() wrapper.
+ * Provides a mail() wrapper.
  *
  * @author Christian Schäfer
  * @version
@@ -37,7 +43,7 @@ use APF\core\logging\Logger;
  * Version 0.4, 14.01.2006 (Redesign / introduced new technology)<br />
  * Version 0.5, 21.06.2006 (Added CC recipients capability)<br />
  * Version 0.5, 30.03.2007 (Switched to the ConfigurationManager)<br />
- * Version 0.5, 03.09.2007 (Added BCC recipients capability and futher header)<br />
+ * Version 0.5, 03.09.2007 (Added BCC recipients capability and further header)<br />
  */
 class mailSender extends APFObject {
 
@@ -146,7 +152,7 @@ class mailSender extends APFObject {
       }
 
       // load config
-      $config = $this->getConfiguration('tools::mail', 'mailsender.ini');
+      $config = $this->getConfiguration('APF\tools\mail', 'mailsender.ini');
       $section = $config->getSection($initParam);
 
       if ($section === null) {
@@ -166,7 +172,6 @@ class mailSender extends APFObject {
       $this->clearRecipients();
       $this->clearCCRecipients();
       $this->clearContent();
-
    }
 
    /**
@@ -230,7 +235,6 @@ class mailSender extends APFObject {
       }
 
       return $mailHeader;
-
    }
 
    /**
@@ -245,11 +249,9 @@ class mailSender extends APFObject {
     * Version 0.1, 03.09.2007<br />
     */
    public function addHeader($header = '') {
-
       if (strpos($header, ':') !== false) {
          $this->mailHeader .= $header . '' . self::$EOL;
       }
-
    }
 
    /**
@@ -266,13 +268,11 @@ class mailSender extends APFObject {
     * Version 0.2, 14.01.2006<br />
     */
    public function setRecipient($recipientEMail, $recipientName) {
-
-      if (Validator::validateEMail($recipientEMail)) {
+      if ($this->validateEMail($recipientEMail)) {
          $this->recipients[count($this->recipients)] = array('Name' => $recipientName,
             'EMail' => $recipientEMail
          );
       }
-
    }
 
    /**
@@ -301,13 +301,11 @@ class mailSender extends APFObject {
     * Version 0.1, 21.06.2006<br />
     */
    public function setCCRecipient($recipientEMail, $recipientName) {
-
-      if (Validator::validateEMail($recipientEMail)) {
+      if ($this->validateEMail($recipientEMail)) {
          $this->ccRecipients[count($this->ccRecipients)] = array('Name' => $recipientName,
             'EMail' => $recipientEMail
          );
       }
-
    }
 
    /**
@@ -336,13 +334,11 @@ class mailSender extends APFObject {
     * Version 0.1, 03.09.2007<br />
     */
    public function setBCCRecipient($recipientEMail, $recipientName) {
-
-      if (Validator::validateEMail($recipientEMail)) {
+      if ($this->validateEMail($recipientEMail)) {
          $this->bccRecipients[count($this->bccRecipients)] = array('Name' => $recipientName,
             'EMail' => $recipientEMail
          );
       }
-
    }
 
    /**
@@ -361,7 +357,7 @@ class mailSender extends APFObject {
    /**
     * @public
     *
-    * Allows you to maipulate the sender.
+    * Allows you to manipulate the sender.
     *
     * @param string $senderEMail the email of the sender.
     * @param string $senderName the name of the sender.
@@ -371,12 +367,19 @@ class mailSender extends APFObject {
     * Version 0.1, 17.12.2006<br />
     */
    public function setSender($senderEMail, $senderName) {
-
-      if (Validator::validateEMail($senderEMail)) {
+      if ($this->validateEMail($senderEMail)) {
          $this->sender['Name'] = $senderName;
          $this->sender['EMail'] = $senderEMail;
       }
+   }
 
+   /**
+    * @param string $email The email to validate.
+    * @return bool True in case the email is valid, false otherwise.
+    */
+   private function validateEMail($email) {
+      $validator = new EMailValidator(new TextFieldTag(), new ButtonTag());
+      return $validator->validate($email);
    }
 
    /**
@@ -443,8 +446,6 @@ class mailSender extends APFObject {
     * Send an email to the recipients configured. The return array contains two associative
     * offsets including the following information:
     * <ul>
-    *   <li>AnzEMail (deprecated): the number of recipients.</li>
-    *   <li>Versandt (deprecated): the number of emails sent successfully.</li>
     *   <li>recipientcount (new!): the number of recipients.</li>
     *   <li>successcount (new!): the number of emails sent successfully.</li>
     * </ul>
@@ -462,7 +463,7 @@ class mailSender extends APFObject {
 
       $header = $this->generateHeader();
       /* @var $log Logger */
-      $log = &Singleton::getInstance('APF\core\logging\Logger');
+      $log = & Singleton::getInstance('APF\core\logging\Logger');
       $sentEmails = array();
 
       for ($i = 0; $i < count($this->recipients); $i++) {
@@ -479,11 +480,8 @@ class mailSender extends APFObject {
       }
 
       $status['recipientcount'] = count($this->recipients);
-      $status['AnzEMail'] = $status['recipientcount']; // for back compatibility!
       $status['successcount'] = count($sentEmails);
-      $status['Versandt'] = $status['successcount']; // for back compatibility!
       return $status;
-
    }
 
 }

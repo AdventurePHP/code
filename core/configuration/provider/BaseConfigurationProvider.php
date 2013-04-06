@@ -97,7 +97,7 @@ abstract class BaseConfigurationProvider {
       }
 
       // assemble the context
-      $contextPath = ($this->omitContext || $context === null) ? '' : '/' . str_replace('::', '/', $context);
+      $contextPath = ($this->omitContext || $context === null) ? '' : '/' . str_replace('\\', '/', $context);
 
       // assemble file name
       $fileName = ($this->omitEnvironment || $environment === null) ? '/' . $name : '/' . $environment . '_' . $name;

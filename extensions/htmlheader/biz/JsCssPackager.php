@@ -161,7 +161,7 @@ class JsCssPackager extends APFObject {
 
       if (!file_exists($filePath)) {
          throw new IncludeException('[JsCssPackager::getFile()] The requested file "' . $file . '.'
-                  . $type . '" cannot be found in namespace "' . str_replace('_', '::', $path) . '". Please '
+                  . $type . '" cannot be found in namespace "' . str_replace('_', '\\', $path) . '". Please '
                   . 'check your taglib definition for tag &lt;htmlheader:add* /&gt;!',
             E_USER_ERROR);
       }

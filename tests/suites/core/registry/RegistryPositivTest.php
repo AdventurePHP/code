@@ -128,7 +128,7 @@ class RegistryPositivTest extends PHPUnit_Framework_TestCase {
       $aRegistryStore = $aProperties['REGISTRY_STORE'];
       // --- Prefilled with default values
       assertEquals(1, count($aRegistryStore));
-      assertEquals(7, count($aRegistryStore['apf::core']));
+      assertEquals(7, count($aRegistryStore['APF\core']));
 
       Registry::register(
          self::$REGISTRY_NAMESPACE,
@@ -138,7 +138,7 @@ class RegistryPositivTest extends PHPUnit_Framework_TestCase {
       $aProperties = $oReflectionRegistry->getStaticProperties();
       $aRegistryStore = $aProperties['REGISTRY_STORE'];
       assertEquals(2, count($aRegistryStore));
-      assertEquals(7, count($aRegistryStore['apf::core']));
+      assertEquals(7, count($aRegistryStore['APF\core']));
       assertEquals(1, count($aRegistryStore[self::$REGISTRY_NAMESPACE]));
       assertTrue(array_key_exists(self::$REGISTRY_NAME, $aRegistryStore[self::$REGISTRY_NAMESPACE]));
       assertTrue(array_key_exists('value', $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]));
@@ -170,7 +170,7 @@ class RegistryPositivTest extends PHPUnit_Framework_TestCase {
       $aProperties = $oReflectionRegistry->getStaticProperties();
       $aRegistryStore = $aProperties['REGISTRY_STORE'];
       assertEquals(2, count($aRegistryStore));
-      assertEquals(7, count($aRegistryStore['apf::core']));
+      assertEquals(7, count($aRegistryStore['APF\core']));
       assertEquals(1, count($aRegistryStore[self::$REGISTRY_NAMESPACE]));
       assertTrue(array_key_exists(self::$REGISTRY_NAME, $aRegistryStore[self::$REGISTRY_NAMESPACE]));
       assertTrue(array_key_exists('value', $aRegistryStore[self::$REGISTRY_NAMESPACE][self::$REGISTRY_NAME]));

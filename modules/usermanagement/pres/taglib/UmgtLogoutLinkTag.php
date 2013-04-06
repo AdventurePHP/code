@@ -39,7 +39,7 @@ class UmgtLogoutLinkTag extends Document {
 
    public function transform() {
       $params = array('logout' => 'true');
-      return LinkGenerator::generateActionUrl(Url::fromCurrent(), 'modules::usermanagement::biz', 'logout', $params);
+      return LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\modules\usermanagement\biz', 'logout', $params);
    }
 
 }

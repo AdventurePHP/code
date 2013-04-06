@@ -119,7 +119,7 @@ final class PagerMapper extends APFObject {
       $session = null;
       $sessionKey = null;
       if ($cache === true) {
-         $session = new SessionManager('modules::pager::biz');
+         $session = new SessionManager('APF\modules\pager\biz');
          $sessionKey = $this->getSessionKey($namespace, $statement, $params) . '_EntriesCount';
          $entriesCount = $session->loadSessionData($sessionKey);
       }
@@ -170,7 +170,7 @@ final class PagerMapper extends APFObject {
       $session = null;
       $sessionKey = null;
       if ($cache === true) {
-         $session = new SessionManager('modules::pager::biz');
+         $session = new SessionManager('APF\modules\pager\biz');
          $sessionKey = $this->getSessionKey($namespace, $statement, $params) . '_EntryIDs';
          $entryIds = $session->loadSessionData($sessionKey);
       } else {

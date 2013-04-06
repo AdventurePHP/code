@@ -93,7 +93,7 @@ class TextCacheProvider extends CacheBase implements CacheProvider {
    protected function getCacheFile(CacheKey $cacheKey) {
 
       $baseFolder = $this->getConfigAttribute('Cache.BaseFolder');
-      $namespace = str_replace('::', '/', $this->getConfigAttribute('Cache.Namespace'));
+      $namespace = str_replace('\\', '/', $this->getConfigAttribute('Cache.Namespace'));
 
       $key = md5($cacheKey->getKey());
       $folder = substr($key, 0, 2);

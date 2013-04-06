@@ -231,10 +231,10 @@ class GenericORMapperManagementTool extends BaseMapper {
     * $gormTool = new GenericORMapperManagementTool();
     * $gormTool->setConnectionName('foo');
     *                                     // config namespace  // config affix
-    * $gormTool->addMappingConfiguration('blah::blah',        'foo');
+    * $gormTool->addMappingConfiguration('VENDOR\blah\blah',   'foo');
     *
     *                                      // config namespace  // config affix
-    * $gormTool->addRelationConfiguration('blah::blah',        'foo');
+    * $gormTool->addRelationConfiguration('VENDOR\blah\blah',   'foo');
     * ...
     * $gormTool->run(true); // true=update/create database directly, false=print statements for manual creation/update
     * </code>
@@ -255,8 +255,8 @@ class GenericORMapperManagementTool extends BaseMapper {
       // configuration files prior to call this method. E.g.:
       // $setup = new GenericORMapperManagementTool();
       // $setup->setContext('blah');
-      // $setup->addMappingConfiguration('path::to::my::application', 'foo');
-      // $setup->addMappingConfiguration('path::to::my::application', 'bar');
+      // $setup->addMappingConfiguration('VENDOR\path\to\my\application', 'foo');
+      // $setup->addMappingConfiguration('VENDOR\path\to\my\application', 'bar');
       // $setup->run();
       if (!empty($this->configNamespace) && !empty($this->configNameAffix)) {
          $this->addMappingConfiguration($this->configNamespace, $this->configNameAffix);

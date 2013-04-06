@@ -37,7 +37,7 @@ final class ArrayPagerManager extends APFObject {
    public function init($initParam) {
 
       // initialize the config
-      $namespace = 'extensions::arraypager';
+      $namespace = 'APF\extensions\arraypager';
       $configName = 'arraypager.ini';
       $config = $this->getConfiguration($namespace, $configName);
 

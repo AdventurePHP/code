@@ -1,7 +1,11 @@
 <?php
 namespace APF\extensions\apfelsms\biz\sites;
 
-use APF\extensions\apfelsms\biz\sites\SMSSiteInterface;
+use APF\core\pagecontroller\APFObject;
+use APF\extensions\apfelsms\biz\SMSManager;
+use APF\extensions\apfelsms\biz\SMSWrongParameterException;
+use APF\extensions\apfelsms\biz\pages\SMSPage;
+use APF\extensions\apfelsms\biz\sites\SMSSite;
 
 /**
  *
@@ -90,11 +94,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @throws SMSWrongParameterException
     */
    public function setStartPageId($startPageId) {
-
       $this->startPageId = $startPageId;
-
    }
-
 
    /**
     * @return string|integer

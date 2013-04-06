@@ -151,8 +151,7 @@ class ExtendedSoapClientService extends APFObject {
     *
     * $client->registerWsdlObjectMapping(new WsdlObjectMapping(
     *    'login-response',
-    *    'sample::namespace',
-    *    'LoginResponse'
+    *    'VENDOR\sample\namespace\LoginResponse'
     * ));
     *
     * $params = array(

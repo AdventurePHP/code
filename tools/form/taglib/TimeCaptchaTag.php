@@ -61,7 +61,7 @@ class TimeCaptchaTag extends AbstractFormControl {
     */
    public function transform() {
 
-      $session = new SessionManager('tools::form::taglib::TimeCaptchaTag');
+      $session = new SessionManager(get_class($this));
 
       // Delete every stored time in session, which is older than 40 minutes, in order to clean the session.
       $sessionStore = $session->getEntryDataKeys();

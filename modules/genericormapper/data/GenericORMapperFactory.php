@@ -91,7 +91,7 @@ final class GenericORMapperFactory extends APFObject {
     * <p/>
     * As of 1.12, this method has to be used as follows:
     * <pre>$gormFact = &$this->getServiceObject('APF\modules\genericormapper\data\GenericORMapperFactory');
-    * $orm = &$gormFact->getGenericORMapper('my::namespace','config_sub_key','db_connection'[,true|false]);</pre>
+    * $orm = &$gormFact->getGenericORMapper('VENDOR\my\namespace', 'config_sub_key', 'db_connection'[, true|false]);</pre>
     *
     * @param string $configNamespace namespace, where the desired mapper configuration is located
     * @param string $configNameAffix name affix of the object and relation definition files
@@ -117,8 +117,7 @@ final class GenericORMapperFactory extends APFObject {
       if (!isset($this->orMapperCache[$cacheKey])) {
          $this->orMapperCache[$cacheKey] =
                $this->getServiceObject(
-                  'modules::genericormapper::data',
-                  'GenericORRelationMapper',
+                  'APF\modules\genericormapper\data\GenericORRelationMapper',
                   APFService::SERVICE_TYPE_NORMAL);
 
          // as of 1.14 the mapper is explicitly initialized by the provided setter

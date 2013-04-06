@@ -58,7 +58,7 @@ class TestableDefaultLinkScheme extends DefaultLinkScheme {
 
       $actions = array();
       $action = new TestFrontControllerAction();
-      $action->setActionNamespace('cms::core::biz::setmodel');
+      $action->setActionNamespace('APF\cms\core\biz\setmodel');
       $action->setActionName('setModel');
       $action->setKeepInUrl(true); // to test action inclusion
 
@@ -88,7 +88,7 @@ class TestableRewriteLinkScheme extends RewriteLinkScheme {
 
       $actions = array();
       $action = new TestFrontControllerAction();
-      $action->setActionNamespace('cms::core::biz::setmodel');
+      $action->setActionNamespace('APF\cms\core\biz\setmodel');
       $action->setActionName('setModel');
       $action->setKeepInUrl(true); // to test action inclusion
 

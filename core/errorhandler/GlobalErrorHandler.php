@@ -164,7 +164,7 @@ class DefaultErrorHandler implements ErrorHandler {
 
       // create page
       $stacktrace = new Page();
-      $stacktrace->setContext('core::errorhandler');
+      $stacktrace->setContext('APF\core\errorhandler');
       $stacktrace->loadDesign('APF\core\errorhandler\templates', 'errorpage');
 
       // inject error information into the document attributes array

@@ -28,7 +28,7 @@ namespace APF\tools\cookie;
  * The CookieManager is a tool, that provides sophisticated cookie handling. It features
  * namespaces for usage in multi-application environments. The methods included allow you to
  * create, update and delete cookies within different namespaces. Usage:
- * <pre>$cM = new CookieManager('my::namespace');
+ * <pre>$cM = new CookieManager('VENDOR\my\namespace');
  * $cM->createCookie('my_param','my_value');
  * $cM->updateCookie('my_param','my_value_2');
  * $cM->deleteCookie('my_param');</pre>

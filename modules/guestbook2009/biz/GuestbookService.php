@@ -254,7 +254,7 @@ final class GuestbookService extends APFObject {
       /* @var $model GuestbookModel */
       $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
       $guestbookId = $model->getGuestbookId();
-      $session = new SessionManager('modules::guestbook2009::biz::' . $guestbookId);
+      $session = new SessionManager('APF\modules\guestbook2009\biz\\' . $guestbookId);
       $session->deleteSessionData('LoggedIn');
 
       // display the list view
@@ -280,7 +280,7 @@ final class GuestbookService extends APFObject {
       /* @var $model GuestbookModel */
       $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
       $guestbookId = $model->getGuestbookId();
-      $session = new SessionManager('modules::guestbook2009::biz::' . $guestbookId);
+      $session = new SessionManager('APF\modules\guestbook2009\biz\\' . $guestbookId);
       $loggedId = $session->loadSessionData('LoggedIn');
 
       // redirect to admin page
@@ -315,7 +315,7 @@ final class GuestbookService extends APFObject {
          /* @var $model GuestbookModel */
          $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
          $guestbookId = $model->getGuestbookId();
-         $session = new SessionManager('modules::guestbook2009::biz::' . $guestbookId);
+         $session = new SessionManager('APF\modules\guestbook2009\biz\\' . $guestbookId);
          $session->saveSessionData('LoggedIn', 'true');
 
          // redirect to admin page

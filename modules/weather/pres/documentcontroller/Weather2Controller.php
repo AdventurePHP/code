@@ -129,7 +129,7 @@ class Weather2Controller extends BaseDocumentController {
                $xsl = new \DOMDocument();
 
                $rootPath = RootClassLoader::getLoaderByVendor('APF')->getRootPath();
-               $xsl->load($rootPath . '/' . str_replace('::', '/', $xsltNamespace) . '/' . $xsltFile . '.xsl');
+               $xsl->load($rootPath . '/' . str_replace('\\', '/', $xsltNamespace) . '/' . $xsltFile . '.xsl');
 
                // configure transformer
                $proc = new \XSLTProcessor();

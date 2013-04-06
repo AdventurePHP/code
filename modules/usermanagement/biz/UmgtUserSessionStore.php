@@ -34,9 +34,8 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
  * using the service manager:
  * <pre>
  * $store = &$this->getServiceObject(
- *                         'modules::usermanagement::biz',
- *                         'UmgtUserSessionStore',
- *                         APFService::SERVICE_TYPE_SESSION_SINGLETON);
+ *             'APF\modules\usermanagement\biz\UmgtUserSessionStore',
+ *             APFService::SERVICE_TYPE_SESSION_SINGLETON);
  * </pre>
  * Otherwise, the scope of the object is not "session".
  *

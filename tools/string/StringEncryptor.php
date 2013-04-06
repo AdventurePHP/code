@@ -20,6 +20,8 @@ namespace APF\tools\string;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\ConfigurationException;
+use APF\core\pagecontroller\APFObject;
 
 /**
  * @package APF\tools\string
@@ -38,8 +40,7 @@ class StringEncryptor extends APFObject {
     * @public
     *
     * Creates a password hash with a static salt. The salt is read from a configuration
-    * names <em>{ENVIRONMENT}_encryption.ini</em> located under
-    * <em>config::tools::string::{CONTEXT}</em>.
+    * names <em>{ENVIRONMENT}_encryption.ini</em> located under <em>config/tools/string/{CONTEXT}</em>.
     *
     * @param string $password The clear text password.
     * @param string $section he name of the configuration section.
@@ -52,7 +53,7 @@ class StringEncryptor extends APFObject {
     * Version 0.2, 02.06.2007 (Switched to ConfigurationManager)<br />
     */
    public function getPasswordHash($password, $section = 'Standard') {
-      $config = $this->getConfiguration('tools::string', 'encryption.ini');
+      $config = $this->getConfiguration('APF\tools\string', 'encryption.ini');
       return crypt($password, $config->getSection($section)->getValue('PasswordSalt'));
    }
 

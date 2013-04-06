@@ -165,7 +165,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
       $this->textField->onAfterAppend();
 
       // get the captcha string from session
-      $sessMgr = new SessionManager('modules::captcha');
+      $sessMgr = new SessionManager('APF\modules\captcha');
       $this->captchaString = $sessMgr->loadSessionData($this->textFieldName);
       $sessMgr->saveSessionData($this->textFieldName, StringAssistant::generateCaptchaString(5));
 
@@ -223,7 +223,7 @@ class SimpleCaptchaTag extends AbstractFormControl {
       $disableInlineStyle = $disableInlineStyle === 'true' ? true : false;
 
       // create desired media url
-      $captchaUrl = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'modules::captcha::biz', 'showCaptcha', array(
+      $captchaUrl = LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\modules\captcha\biz', 'showCaptcha', array(
          'name' => $this->textFieldName
       ));
 

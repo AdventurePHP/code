@@ -30,10 +30,7 @@ use APF\core\benchmark\BenchmarkTimer;
  */
 
 // include the pagecontroller (change the path to what ever you want)
-include_once('./apps/core/bootstrap.php');
-
-// import the front controller
-
+include_once('./APF/core/bootstrap.php');
 
 // create the front controller instance
 /* @var $fC Frontcontroller */
@@ -43,7 +40,7 @@ $fC = & Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
 $fC->setContext('...');
 
 // start the front controller
-$fC->start('modules::usermanagement::pres::templates', 'main');
+$fC->start('APF\modules\usermanagement\pres\templates', 'main');
 
 // create the benchmark report
 /* @var $t BenchmarkTimer */

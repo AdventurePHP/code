@@ -59,7 +59,7 @@ abstract class CacheBase extends APFObject {
          throw new \InvalidArgumentException('[' . get_class($this)
                . '::getConfigAttribute()] The configuration directive "' . $name . '" is not '
                . 'present or empty. Please check your cache configuration ("' . $env
-               . '_cacheconfig.ini") for namespace "tools::cache" and context "'
+               . '_cacheconfig.ini") for namespace "APF\tools\cache" and context "'
                . $this->getContext() . '" or consult the documentation!', E_USER_ERROR);
       }
       return $value;

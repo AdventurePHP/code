@@ -20,6 +20,7 @@ namespace APF\tools\string\bbcpprovider;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\tools\string\BBCodeParserProvider;
 
 /**
  * @package APF\tools\string\bbcpprovider
@@ -51,7 +52,7 @@ class FontColorProvider extends BBCodeParserProvider {
    public function getOutput($string) {
 
       // get configuration
-      $config = $this->getConfiguration('tools::string::bbcpprovider', 'fontcolor.ini');
+      $config = $this->getConfiguration('APF\tools\string\bbcpprovider', 'fontcolor.ini');
       $colors = $config->getSection('Colors');
 
       foreach ($colors as $key => $value) {

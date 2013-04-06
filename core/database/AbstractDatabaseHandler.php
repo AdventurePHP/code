@@ -22,6 +22,7 @@ namespace APF\core\database;
  */
 use APF\core\configuration\ConfigurationException;
 use APF\core\database\config\StatementConfiguration;
+use APF\core\loader\RootClassLoader;
 use APF\core\logging\Logger;
 use APF\core\database\DatabaseConnection;
 use APF\core\pagecontroller\APFObject;
@@ -511,9 +512,11 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
          $config = $this->getConfiguration($namespace, $name);
       } catch (ConfigurationException $e) {
          $env = Registry::retrieve('APF\core', 'Environment');
+         $loader = RootClassLoader::getLoaderByNamespace($namespace);
+         $vendor = $loader->getVendorName();
          throw new DatabaseHandlerException('[' . get_class($this) . '->getPreparedStatement()] There\'s '
                . 'no statement file with name "' . $env . '_' . $name . '" for given '
-               . 'namespace "config::' . $namespace . '" and current context "' . $this->getContext()
+               . 'namespace "' . $vendor . '\config\\' . $namespace . '" and current context "' . $this->getContext()
                . '"! Root cause: ' . $e->getMessage(), E_USER_ERROR, $e);
       }
 

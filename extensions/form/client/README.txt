@@ -91,7 +91,7 @@ sowie eine eigene valmarkerclass.
 
 Die Addclientvalidator-Taglib akzeptiert 2 zusätzliche, optionale Attribute:
 * onblur: Clientseitig wird standartmäßig das Formular nach Klick auf den Absendebutton ausgewertet, und im Falle einer falschen Angabe dann das Absenden verhindert. Bei Bedarf kann ein Control aber auch sofort, wenn es den Fokus verliert, geprüft werden. (Das ist normalerweise der Fall, wenn der Benutzer fertig mit der Eingabe in dieses Feld ist) Beim Absenden findet dann nochmal eine Gesamtprüfung statt.
-* namespace: Wenn dieses Attribut nicht angegeben wird, wird unter dem Namespace ''extensions::form::client::validator'' nach dem Validator gesucht. Sollte sich der Validator an einer anderen Stelle befinden, muss dessen Namespace angegeben werden.
+* namespace: Wenn dieses Attribut nicht angegeben wird, wird unter dem Namespace ''APF\extensions\form\client\validator'' nach dem Validator gesucht. Sollte sich der Validator an einer anderen Stelle befinden, muss dessen Namespace angegeben werden.
 
 Es ist natürlich, genau wie bei <form:addvalidator />, möglich einen Validator auf mehrere Felder zu setzen,
 indem die Feldnamen durch | getrennt werden.

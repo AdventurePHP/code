@@ -114,7 +114,7 @@ class LanguageDependentImportTemplateTag extends Document {
       // use dictionary from the config namespace if applicable
       $dict_namespace = $this->getAttribute('dict_namespace');
       if ($dict_namespace !== null) {
-         $this->parseLanguageFile('config::' . $dict_namespace . '::' . $this->context, 'dictionary');
+         $this->parseLanguageFile('config\\' . $dict_namespace . '\\' . $this->context, 'dictionary');
       }
 
       // use local language file

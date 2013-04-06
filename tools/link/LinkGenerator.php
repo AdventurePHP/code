@@ -683,7 +683,7 @@ abstract class BasicLinkScheme {
    /**
     * @protected
     *
-    * Returns an url identifier that adresses the action described by the applied parameters.
+    * Returns an url identifier that addresses the action described by the applied parameters.
     *
     * @param string $namespace The namespace of the action.
     * @param string $name The name of the action.
@@ -695,7 +695,7 @@ abstract class BasicLinkScheme {
     * Version 0.1, 07.04.2011<br />
     */
    protected function formatActionIdentifier($namespace, $name, $urlRewriting) {
-      return str_replace('::', '_', $namespace) . '-action' . ($urlRewriting === true ? '/' : ':') . $name;
+      return str_replace('\\', '_', $namespace) . '-action' . ($urlRewriting === true ? '/' : ':') . $name;
    }
 
    /**

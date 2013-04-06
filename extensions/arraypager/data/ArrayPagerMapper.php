@@ -63,11 +63,18 @@ final class ArrayPagerMapper extends APFObject {
     * Version 0.1, 21.12.2009<br />
     */
    public function loadEntries($stringPager) {
-      $objectSession = new SessionManager ('extensions::arraypager::biz');
+      $objectSession = $this->getSessionManager();
       $stringSessionKey = $this->getSessionKey($stringPager);
       $arrayEntries = $objectSession->loadSessionData($stringSessionKey);
 
       return $arrayEntries;
+   }
+
+   /**
+    * @return SessionManager
+    */
+   protected function getSessionManager() {
+      return new SessionManager ('APF\extensions\arraypager\biz');
    }
 
    /**
@@ -80,10 +87,8 @@ final class ArrayPagerMapper extends APFObject {
     * @version
     * Version 0.1, 21.12.2009<br />
     */
-   public function registerEntries($stringPager,
-                                   $arrayData
-   ) {
-      $objectSession = new SessionManager('extensions::arraypager::biz');
+   public function registerEntries($stringPager, $arrayData) {
+      $objectSession = $this->getSessionManager();
       $stringSessionKey = $this->getSessionKey($stringPager);
       $objectSession->saveSessionData($stringSessionKey,
          $arrayData
@@ -100,7 +105,7 @@ final class ArrayPagerMapper extends APFObject {
     * Version 0.1, 21.12.2009<br />
     */
    public function unregisterEntries($stringPager) {
-      $objectSession = new SessionManager ('extensions::arraypager::biz');
+      $objectSession = $this->getSessionManager();
       $stringSessionKey = $this->getSessionKey($stringPager);
       $objectSession->deleteSessionData($stringSessionKey);
    }
@@ -116,7 +121,7 @@ final class ArrayPagerMapper extends APFObject {
     * Version 0.1, 21.12.2009<br />
     */
    public function checkPager($stringPager) {
-      $objectSession = new SessionManager ('extensions::arraypager::biz');
+      $objectSession = $this->getSessionManager();
       $stringSessionKey = $this->getSessionKey($stringPager);
       $mixedData = $objectSession->loadSessionData($stringSessionKey);
 

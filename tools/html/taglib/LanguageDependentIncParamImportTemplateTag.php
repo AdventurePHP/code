@@ -135,7 +135,7 @@ class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
       }
 
       $configFile = $this->getAttribute('config', 'requestparameter.ini');
-      $configNamespace = $this->getAttribute('configNamespace', 'tools::html');
+      $configNamespace = $this->getAttribute('configNamespace', 'APF\tools\html');
 
       // load Config
       try {

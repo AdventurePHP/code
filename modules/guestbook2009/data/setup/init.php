@@ -20,8 +20,8 @@ use APF\modules\genericormapper\data\GenericORRelationMapper;
 
 $orm = new GenericORRelationMapper();
 $orm->setContext($context);
-$orm->addMappingConfiguration('modules::guestbook2009::data', 'guestbook2009');
-$orm->addRelationConfiguration('modules::guestbook2009::data', 'guestbook2009');
+$orm->addMappingConfiguration('APF\modules\guestbook2009\data', 'guestbook2009');
+$orm->addRelationConfiguration('APF\modules\guestbook2009\data', 'guestbook2009');
 $orm->setConnectionName($connectionKey);
 $orm->setup();
 

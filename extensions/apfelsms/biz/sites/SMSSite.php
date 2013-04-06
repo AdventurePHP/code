@@ -1,7 +1,7 @@
 <?php
 namespace APF\extensions\apfelsms\biz\sites;
 
-use APF\extensions\apfelsms\biz\pages\SMSPageInterface;
+use APF\extensions\apfelsms\biz\pages\SMSPage;
 
 /**
  *
@@ -152,6 +152,5 @@ interface SMSSite {
     * @return boolean
     */
    public function currentIs404Page();
-
 
 }
