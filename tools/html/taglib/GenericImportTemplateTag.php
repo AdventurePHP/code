@@ -40,7 +40,7 @@ use APF\core\frontcontroller\Frontcontroller;
  *             namespaceparam=""
  *             templateparam=""
  *             [getmethod=""]
- *             [dependentactionnamespace="action::namespace"
+ *             [dependentactionnamespace="VENDOR\action\namespace"
  *             dependentactionname="ActionName"
  *             [dependentactionparams="param1:value1|param2:value2"]]
  * /&gt;</pre>

@@ -41,8 +41,7 @@ use APF\core\singleton\Singleton;
  * <code>
  * [news-store-db]
  * servicetype = "SINGLETON"
- * namespace = "core::database"
- * class = "MySQLiHandler"
+ * class = "APF\core\database\MySQLiHandler"
  * setupmethod = "setup"
  *
  * conf.host.method = "setHost"
@@ -80,12 +79,11 @@ use APF\core\singleton\Singleton;
  * <code>
  * [GORM]
  * servicetype = "SINGLETON"
- * namespace = "modules::genericormapper::data"
- * class = "GenericORRelationMapper"
+ * class = "APF\modules\genericormapper\data\GenericORRelationMapper"
  * setupmethod = "setup"
  * ...
  * init.db-conn.method = "setDatabaseConnection"
- * init.db-conn.namespace = "sample::namespace"
+ * init.db-conn.namespace = "VENDOR\sample\namespace"
  * init.db-conn.name = "news-store-db"
  * </code>
  *

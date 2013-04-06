@@ -32,8 +32,7 @@ use APF\core\pagecontroller\APFObject;
  * <pre>
  * [GORM-CONFIG-ADDITIONAL-SERVICEOBJECTS]
  * servicetype = "SINGLETON"
- * namespace = "modules::genericormapper::data"
- * class = "GenericORMapperDIDomainObjectsConfiguration"
+ * class = "APF\modules\genericormapper\data\GenericORMapperDIDomainObjectsConfiguration"
  * conf.namespace.method = "setConfigNamespace"
  * conf.namespace.value = "..."
  * conf.affix.method = "setConfigAffix"
@@ -43,8 +42,7 @@ use APF\core\pagecontroller\APFObject;
  * <pre>
  * [GORM]
  * servicetype = "..."
- * namespace = "modules::genericormapper::data"
- * class = "GenericORRelationMapper"
+ * class = "APF\modules\genericormapper\data\GenericORRelationMapper"
  * ...
  * init.additionalrelation.method = "addDIDomainObjectsConfiguration"
  * init.additionalrelation.namespace = "..."

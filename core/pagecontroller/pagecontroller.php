@@ -1802,7 +1802,7 @@ class Document extends APFObject {
  * includes the necessary "*:addtaglib" statements for the relevant tag definitions.
  * <p/>
  * Usage:
- * <pre>&lt;core:addtaglib namespace="core::pagecontroller" prefix="core" class="appendnode" /&gt;
+ * <pre>&lt;core:addtaglib class="APF\core\pagecontroller\AppendNodeTag" prefix="core" class="appendnode" /&gt;
  * &lt;core:appendnode namespace="..." template="..."[ includestatic="true"]/&gt;</pre>
  * <p/>
  * In case the <em>includestatic</em> is present and set to <em>true</em>, the static content
