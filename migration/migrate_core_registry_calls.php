@@ -1,7 +1,7 @@
 <?php
 include(dirname(__FILE__) . '/migrate_base.php');
 
-$files = find('.', '*.php');
+$files = filterApfDirectories(find('.', '*.php'));
 
 $search = '#Registry::(.+)\(\'apf::core\'#';
 

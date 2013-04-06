@@ -1,7 +1,7 @@
 <?php
 include(dirname(__FILE__) . '/migrate_base.php');
 
-$files = find('.', '*.html');
+$files = filterApfDirectories(find('.', '*.html'));
 
 $searchAddTaglib = '#<([A-Za-z0-9\-]+):addtaglib([\*| |\n|\r\n]+)namespace ?= ?"([A-Za-z0-9:\-]+)"([\*| |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-]+)"#';
 
