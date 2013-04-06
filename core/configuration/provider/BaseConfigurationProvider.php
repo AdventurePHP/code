@@ -20,6 +20,7 @@ namespace APF\core\configuration\provider;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\ConfigurationException;
 use APF\core\loader\RootClassLoader;
 
 /**
@@ -86,6 +87,7 @@ abstract class BaseConfigurationProvider {
     * @param string $environment The current environment.
     * @param string $name The name of the desired config.
     * @return string The appropriate file path.
+    * @throws ConfigurationException In case the root path cannot be determined using the applied namespace.
     */
    protected function getFilePath($namespace, $context, $language, $environment, $name) {
 
@@ -101,15 +103,21 @@ abstract class BaseConfigurationProvider {
       $fileName = ($this->omitEnvironment || $environment === null) ? '/' . $name : '/' . $environment . '_' . $name;
 
       // gather namespace and full(!) config name and use class loader to determine root path
-      $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
-      $rootPath = $classLoader->getRootPath();
-      $vendor = $classLoader->getVendorName();
-      $fqNamespace = str_replace($vendor . '\\', '', $namespace);
-      return $rootPath
-            . '/config'
-            . '/' . str_replace('\\', '/', $fqNamespace)
-            . $contextPath
-            . $fileName;
+      try {
+         $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
+         $rootPath = $classLoader->getRootPath();
+         $vendor = $classLoader->getVendorName();
+         $fqNamespace = str_replace($vendor . '\\', '', $namespace);
+         return $rootPath
+               . '/config'
+               . '/' . str_replace('\\', '/', $fqNamespace)
+               . $contextPath
+               . $fileName;
+      } catch (\Exception $e) {
+         // in order to ease debugging, we are wrapping the class loader exception to a more obvious exception message
+         throw new ConfigurationException('Class loader root path for namespace "' . $namespace . '" cannot be determined.'
+               . ' Please double-check your configuration!', E_USER_ERROR, $e);
+      }
    }
 
    /**
