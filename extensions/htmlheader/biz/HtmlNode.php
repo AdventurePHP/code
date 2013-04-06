@@ -1,7 +1,6 @@
 <?php
 namespace APF\extensions\htmlheader\biz;
 
-
 /**
  * <!--
  * This file is part of the adventure php framework (APF) published under
@@ -135,12 +134,12 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
          $UrlObj = ($url === null) ? Url::fromCurrent(true) : Url::fromString($url);
 
          return LinkGenerator::generateActionUrl($UrlObj, 'extensions::htmlheader', 'JsCss', array(
-            'path' => str_replace('::', '_', $namespace),
+            'path' => str_replace('\\', '_', $namespace),
             'type' => $type,
             'file' => $filename
          ));
       } else {
-         $namespace = str_replace('::', '/', $namespace);
+         $namespace = str_replace('\\', '/', $namespace);
          $url .= (substr($url, -1, 1) !== '/') ? '/' : '';
          return $url . $namespace . '/' . $filename . '.' . $type;
       }

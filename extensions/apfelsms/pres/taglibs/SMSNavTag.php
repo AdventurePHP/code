@@ -1,6 +1,9 @@
 <?php
 namespace APF\extensions\apfelsms\pres\taglibs;
 
+use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\Page;
+
 /**
  *
  * @package APF\APFelSMS
@@ -33,7 +36,7 @@ class SMSNavTag extends Document {
       // fetch template name and namespace
 
       $tmplName = $this->getAttribute('template', 'navTaglib');
-      $tmplNamespace = $this->getAttribute('namespace', 'extensions::apfelsms::pres::templates');
+      $tmplNamespace = $this->getAttribute('namespace', 'APF\extensions\apfelsms\pres\templates');
 
 
       $page = new Page();
@@ -47,7 +50,6 @@ class SMSNavTag extends Document {
       $rootDoc->setAttribute('SMSNavRelLevel', $rellevel);
       $rootDoc->setAttribute('SMSNavDepth', $depth);
       $rootDoc->setAttribute('SMSNavBasePageId', $basePageId);
-
 
       return $page->transform();
 

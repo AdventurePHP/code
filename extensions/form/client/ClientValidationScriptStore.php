@@ -58,21 +58,16 @@ class ClientValidationScriptStore extends APFObject {
     * @param array $controls An array with all controls the validator has to validate.
     * @param array $options The options for the validator.
     * @param bool $onblur If set to true, the validator will be also added as blur event. Default: false
-    * @param string $namespace The client validator namespace. Default: the namespace which is used from the default validators.
     *
     * @author Ralf Schubert
     * @version
     * Version 1.0, 18.03.2010<br />
     */
-   public function addClientValidator($class, $button, $controls, $options = null, $onblur = false, $namespace = null) {
-      if ($namespace === null) {
-         $namespace = 'extensions::form::client::validator';
-      }
+   public function addClientValidator($class, $button, $controls, $options = null, $onblur = false) {
 
       // add each control which needs this validator to scriptStore
       foreach ($controls as $control => $DUMMY) {
          $this->scriptStore[] = array(
-            'namespace' => $namespace,
             'class' => $class,
             'button' => $button,
             'control' => $control,

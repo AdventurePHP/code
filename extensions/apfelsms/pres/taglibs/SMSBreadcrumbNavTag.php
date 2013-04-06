@@ -1,6 +1,9 @@
 <?php
 namespace APF\extensions\apfelsms\pres\taglibs;
 
+use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\Page;
+
 /**
  *
  * @package APF\APFelSMS
@@ -12,7 +15,6 @@ class SMSBreadcrumbNavTag extends Document {
 
    public function transform() {
 
-
       ////
       // fetch attributes from taglib tag
 
@@ -22,12 +24,11 @@ class SMSBreadcrumbNavTag extends Document {
       // fetch basePageIdTitle
       $basePageIdTitle = $this->getAttribute('basePageIdTitle');
 
-
       ////
       // fetch template name and namespace
 
       $tmplName = $this->getAttribute('template', 'breadcrumbNavTaglib');
-      $tmplNamespace = $this->getAttribute('namespace', 'extensions::apfelsms::pres::templates');
+      $tmplNamespace = $this->getAttribute('namespace', 'APF\extensions\apfelsms\pres\templates');
 
 
       $page = new Page();
@@ -39,7 +40,6 @@ class SMSBreadcrumbNavTag extends Document {
       $rootDoc = $page->getRootDocument();
       $rootDoc->setAttribute('SMSBreadcrumbNavBasePageId', $basePageId);
       $rootDoc->setAttribute('SMSBreadcrumbNavBasePageIdTitle', $basePageIdTitle);
-
 
       return $page->transform();
 

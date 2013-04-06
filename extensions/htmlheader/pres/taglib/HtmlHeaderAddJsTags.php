@@ -33,7 +33,7 @@ use APF\extensions\htmlheader\biz\DynamicJsNode;
  * @example
  *  <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddJsTags" prefix="htmlheader" name="addjs" />
  *  Use FC-Action to deliver file:
- *  <htmlheader:addjs namespace="{CONTEXT}::pres::frontend::static::js::anything" filename="jsfile" />
+ *  <htmlheader:addjs namespace="VENDOR\namespace\of\component\js\anything" filename="jsfile" />
  *  <ul>
  *    <li>namespace: Namespace of javascript file</li>
  *    <li>filename: Javascript filename without '.js'</li>
@@ -42,7 +42,7 @@ use APF\extensions\htmlheader\biz\DynamicJsNode;
  * Use External file:
  * <htmlheader:addjs
  *    url="http://static/"
- *    folder="js::anything"
+ *    folder="js/anything"
  *    filename="jsfile"
  *    rewriting="false"
  *    fcaction="false"

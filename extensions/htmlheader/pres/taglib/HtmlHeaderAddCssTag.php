@@ -33,7 +33,7 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
  * @example
  *  <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddCssTag" prefix="htmlheader" name="addcss" />
  *  Use FC-action to deliver file:
- *  <htmlheader:addcss namespace="{CONTEXT}::pres::frontend::static::css:anything" filename="examplefile" />
+ *  <htmlheader:addcss namespace="VENDOR\namespace\of\component\css\anything" filename="examplefile" />
  *  <ul>
  *    <li>namespace: Namespace of stylesheet file</li>
  *    <li>filename: Stylesheet filename without '.css'</li>
@@ -42,7 +42,7 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
  *  Use External file:
  *  <htmlheader:addcss
  *    url="http://static/"
- *    folder="css::anything"
+ *    folder="css/anything"
  *    filename="examplefile"
  *    rewriting="false"
  *    fcaction="false"
