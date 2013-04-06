@@ -1,5 +1,5 @@
 <?php
-namespace APF\modules\kontakt4\data;
+namespace APF\modules\contact\data;
 
 /**
  * <!--
@@ -21,7 +21,7 @@ namespace APF\modules\kontakt4\data;
  * -->
  */
 use APF\core\pagecontroller\APFObject;
-use APF\modules\kontakt4\biz\ContactFormRecipient;
+use APF\modules\contact\biz\ContactFormRecipient;
 
 /**
  * @package APF\modules\contact\data

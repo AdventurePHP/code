@@ -1,5 +1,5 @@
 <?php
-namespace APF\modules\kontakt4\pres\documentcontroller;
+namespace APF\modules\contact\pres\documentcontroller;
 
 /**
  * <!--
@@ -21,11 +21,11 @@ namespace APF\modules\kontakt4\pres\documentcontroller;
  * -->
  */
 use APF\core\pagecontroller\BaseDocumentController;
-use APF\modules\kontakt4\biz\ContactManager;
-use APF\modules\kontakt4\biz\ContactFormRecipient;
+use APF\modules\contact\biz\ContactManager;
+use APF\modules\contact\biz\ContactFormRecipient;
 use APF\tools\form\taglib\SelectBoxTag;
 use APF\tools\link\LinkGenerator;
-use APF\modules\kontakt4\biz\ContactFormData;
+use APF\modules\contact\biz\ContactFormData;
 use APF\tools\link\Url;
 
 /**

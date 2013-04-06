@@ -1,7 +1,7 @@
 <@controller class="APF\modules\contact\pres\documentcontroller\ContactFormController" @>
 <core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <p>
-   <html:getstring namespace="APF\modules\kontakt4" config="language" entry="formhint.text" />
+   <html:getstring namespace="APF\modules\contact" config="language" entry="formhint.text" />
 </p>
 <div class="contact-form">
    <html:form name="contact" method="post">
@@ -45,28 +45,28 @@
             control="AbsenderAdresse"
          />
          <label for="contact-form-recipient">
-            <form:getstring namespace="APF\modules\kontakt4" config="language" entry="form.person" />
+            <form:getstring namespace="APF\modules\contact" config="language" entry="form.person" />
          </label>
          <form:select id="contact-form-recipient" name="Empfaenger" />
          <label for="contact-form-sendername">
-            <form:getstring namespace="APF\modules\kontakt4" config="language" entry="form.name" />
+            <form:getstring namespace="APF\modules\contact" config="language" entry="form.name" />
          </label>
          <form:text id="contact-form-sendername" name="AbsenderName" />
          <label for="contact-form-recipient-email">
-            <form:getstring namespace="APF\modules\kontakt4" config="language" entry="form.email" />
+            <form:getstring namespace="APF\modules\contact" config="language" entry="form.email" />
          </label>
          <form:text id="contact-form-recipient-email" name="AbsenderAdresse" />
          <label for="contact-form-subject">
-            <form:getstring namespace="APF\modules\kontakt4" config="language" entry="form.subject" />
+            <form:getstring namespace="APF\modules\contact" config="language" entry="form.subject" />
          </label>
          <form:text id="contact-form-subject" name="Betreff" />
          <label for="contact-form-textarea">
-            <form:getstring namespace="APF\modules\kontakt4" config="language" entry="form.comment" />
+            <form:getstring namespace="APF\modules\contact" config="language" entry="form.comment" />
          </label>
          <form:area id="contact-form-textarea" name="Text" cols="50" rows="6"/>
          <div class="fullsizebox captchabox">
             <label for="contact-form-captcha">
-               <form:getstring namespace="APF\modules\kontakt4" config="language" entry="form.captcha" />
+               <form:getstring namespace="APF\modules\contact" config="language" entry="form.captcha" />
             </label>
             <form:addtaglib class="APF\modules\captcha\pres\taglib\SimpleCaptchaTag" prefix="form" name="captcha" />
             <form:captcha

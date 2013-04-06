@@ -1,5 +1,5 @@
 <?php
-namespace APF\modules\kontakt4\biz;
+namespace APF\modules\contact\biz;
 
 /**
  * <!--
