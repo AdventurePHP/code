@@ -201,7 +201,7 @@ class DbConfigurationProvider extends BaseConfigurationProvider implements Confi
     */
    private function &getConnection($context, $language) {
       // create service "manually", since we have no convenience method
-      $connMgr = &ServiceManager::getServiceObject('core::database', 'ConnectionManager', $context, $language);
+      $connMgr = &ServiceManager::getServiceObject('APF\core\database\ConnectionManager', $context, $language);
       /* @var $connMgr ConnectionManager */
       return $connMgr->getConnection($this->connectionName);
    }

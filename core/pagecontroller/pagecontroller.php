@@ -2326,11 +2326,10 @@ class TemplateTag extends Document {
 /**
  * @package APF\core\pagecontroller
  * @class LanguageLabelTag
- * @abstract
  *
- * Implements a base class for the taglibs &lt;html:getstring /&gt; and
- * &lt;template:getstring /&gt;. This lib fetches the desired configuration value and
- * returns it on transformation time. The configuration files must be structured as follows:
+ * Implements a class for the taglibs &lt;html:getstring /&gt; and &lt;template:getstring /&gt;. This
+ * lib fetches the desired configuration value and returns it on transformation time. The configuration
+ * files must be structured as follows:
  * <p/>
  * <pre>
  * [de]

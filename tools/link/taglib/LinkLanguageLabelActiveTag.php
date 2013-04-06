@@ -20,6 +20,7 @@ namespace APF\tools\link\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\LanguageLabelTag;
 
 /**
  * @package APF\tools\link\taglib
@@ -43,9 +44,9 @@ class LinkLanguageLabelActiveTag extends LanguageLabelTag {
       }
 
       // removes remaining if link is not active
-      $count = substr_count($parent->getContent(), '<' . $this->getObjectId() . " />\r\n");
+      $count = substr_count($parent->getContent(), '<' . $this->getObjectId() . ' />' . PHP_EOL);
       if ($count > 0) {
-         $parent->setContent(str_replace('<' . $this->getObjectId() . ' />' . "\r\n", '', $parent->getContent()));
+         $parent->setContent(str_replace('<' . $this->getObjectId() . ' />' . PHP_EOL, '', $parent->getContent()));
       } else {
          $parent->setContent(str_replace('<' . $this->getObjectId() . ' />', '', $parent->getContent()));
       }

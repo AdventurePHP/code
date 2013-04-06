@@ -44,7 +44,7 @@ use APF\core\singleton\Singleton;
  * <br />
  * <pre>$initializedServiceObject =
  *             &$this->getDIServiceObject(
- *                        'namespace::of::the::configuration',
+ *                        'VENDOR\namespace\of\the\configuration',
  *                        'ServiceName'
  *             );</pre>
  * <br />
@@ -57,15 +57,14 @@ use APF\core\singleton\Singleton;
  * The configuration is done by a ini file located under the desired
  * namespace provided as the first argument to the getServiceObject()
  * method. It is named after the APF configuration file naming convention
- * and the filebody must be "serviceobjects". The scheme of the configuration
+ * and the file-body must be "serviceobjects". The scheme of the configuration
  * file looks as follows:
  * <pre>[&lt;ServiceObjectName&gt;]
- * servicetype = "SINGLETON|SESSIONSINGLETON|NORMAL"
- * namespace = "namespace::to::the::service::object::class"
- * class = "BothNameOfTheClassAndTheFile"
+ * servicetype = "SINGLETON|SESSIONSINGLETON|NORMAL|CACHED"
+ * class = "VENDOR\namespace\to\the\service\object\class\BothNameOfTheClassAndTheFile"
  *
  * init.&lt;foo&gt;.method = "nameOfTheFirstInjectionMethod"
- * init.&lt;foo&gt;.namespace = "namespace::of::the::service::object::to::inject"
+ * init.&lt;foo&gt;.namespace = "VENDOR\namespace\of\the\service\object\to\inject"
  * init.&lt;foo&gt;.name = "NameOfTheServiceObjectToInject"
  * ...
  * conf.&lt;baz&gt;.method = "nameOfTheConfigParamInjectionMethod"
