@@ -20,6 +20,7 @@ namespace APF\tools\media\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\tools\form\taglib\FormControl;
 use APF\tools\media\taglib\MediaInclusionTag;
 
 /**

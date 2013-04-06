@@ -79,7 +79,7 @@ class UmgtMediaInclusionTag extends MediaInclusionTag {
    public function transform() {
 
       // setup the desired attributes
-      $this->setAttribute('namespace', 'modules::usermanagement::pres::icons');
+      $this->setAttribute('namespace', 'APF\modules\usermanagement\pres\icons');
 
       // execute the parent's onParseTime()
       parent::onParseTime();

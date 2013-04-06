@@ -41,7 +41,7 @@ class NewsMediaInclusionTag extends MediaInclusionTag {
     */
    public function onParseTime() {
       // setup the desired attribute to have more convenience
-      $this->setAttribute('namespace', 'modules::usermanagement::pres::icons');
+      $this->setAttribute('namespace', 'APF\modules\usermanagement\pres\icons');
       parent::onParseTime();
    }
 
