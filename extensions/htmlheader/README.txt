@@ -24,8 +24,8 @@ Since 1.12 You can use it to deliver packages from the new JsCssPackager.
 <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddPackageTag" prefix="htmlheader" name="addpackage" />
 
 <!-- // Using taglibs //-->
-<htmlheader:addjs namespace="sites::example::pres::frontend::static::js" filename="jquery.min" />
-<htmlheader:addcss namespace="sites::example::pres::frontend::static::css" filename="stylesheet" />
+<htmlheader:addjs namespace="APF\sites\example\pres\frontend\static\js" filename="jquery.min" />
+<htmlheader:addcss namespace="APF\sites\example\pres\frontend\static\css" filename="stylesheet" />
 <htmlheader:addtitle append="false">This is an example title</htmlheader:addtitle>
 
 <!-- // Using external file support, added in 1.12 //-->
