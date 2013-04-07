@@ -6,6 +6,8 @@ $files = filterApfDirectories(find('.', '*.php'));
 $search = '#\$this->getServiceObject\(\'([A-Za-z0-9:\-]+)\', ?\'([A-Za-z0-9_]+)\'\)#m';
 $searchWithType = '#\$this->getServiceObject\(\'([A-Za-z0-9:\-]+)\', ?\'([A-Za-z0-9_]+)\', ?([A-Za-z0-9:_]+)\)#m';
 
+$searchWithInit = '#\$this->getAndInitServiceObject\(\'([A-Za-z0-9:\-]+)\', ?\'([A-Za-z0-9_]+)\', ?(.+)\);#';
+
 $searchDi = '#\$this\->getDIServiceObject\(\'([A-Za-z0-9:\-]+)\', ?#m';
 
 foreach ($files as $file) {
@@ -19,6 +21,11 @@ foreach ($files as $file) {
    // replace calls with service types
    $content = preg_replace_callback($searchWithType, function ($matches) {
       return '$this->getServiceObject(\'APF\\' . str_replace('::', '\\', $matches[1]) . '\\' . $matches[2] . '\', ' . $matches[3] . ')';
+   }, $content);
+
+   // replace calls with init calls
+   $content = preg_replace_callback($searchWithInit, function ($matches) {
+      return '$this->getAndInitServiceObject(\'APF\\' . str_replace('::', '\\', $matches[1]) . '\\' . $matches[2] . '\', ' . $matches[3] . ');';
    }, $content);
 
    // replace DI calls
