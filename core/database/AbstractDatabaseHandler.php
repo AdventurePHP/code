@@ -512,11 +512,9 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
          $config = $this->getConfiguration($namespace, $name);
       } catch (ConfigurationException $e) {
          $env = Registry::retrieve('APF\core', 'Environment');
-         $loader = RootClassLoader::getLoaderByNamespace($namespace);
-         $vendor = $loader->getVendorName();
          throw new DatabaseHandlerException('[' . get_class($this) . '->getPreparedStatement()] There\'s '
                . 'no statement file with name "' . $env . '_' . $name . '" for given '
-               . 'namespace "' . $vendor . '\config\\' . $namespace . '" and current context "' . $this->getContext()
+               . 'namespace "' . $namespace . '" and current context "' . $this->getContext()
                . '"! Root cause: ' . $e->getMessage(), E_USER_ERROR, $e);
       }
 
