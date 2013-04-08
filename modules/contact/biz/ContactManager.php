@@ -254,19 +254,19 @@ class ContactManager extends APFObject {
     * Version 0.1, 19.10.2011<br />
     */
    private function getEmailTemplateContent($namespace, $template) {
-      $file = $this->getRootPath() . '/' . str_replace('\\', '/', $namespace) . '/' . $template . '.html';
+      $loader = RootClassLoader::getLoaderByNamespace($namespace);
+      $rootPath = $loader->getRootPath();
+      $vendor = $loader->getVendorName();
+
+      $fqNamespace = str_replace('\\', '/', str_replace($vendor . '\\', '', $namespace));
+
+      $file = $rootPath . '/' . $fqNamespace . '/' . $template . '.html';
+
       if (file_exists($file)) {
          return file_get_contents($file);
       }
       throw new IncludeException('Email template file "' . $file . '" cannot be loaded. '
             . 'Please review your contact module configuration!');
-   }
-
-   /**
-    * @return string The root path of the APF code base.
-    */
-   private function getRootPath() {
-      return RootClassLoader::getLoaderByVendor('APF')->getRootPath();
    }
 
 }
