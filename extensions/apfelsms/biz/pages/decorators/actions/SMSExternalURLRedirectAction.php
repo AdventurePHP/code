@@ -1,7 +1,12 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators\actions;
 
+use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\extensions\apfelsms\biz\SMSManager;
+use APF\extensions\apfelsms\biz\pages\decorators\SMSExternalURLPageDec;
+use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  *

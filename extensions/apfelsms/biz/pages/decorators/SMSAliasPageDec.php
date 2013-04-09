@@ -1,5 +1,7 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators;
+use APF\extensions\apfelsms\biz\SMSManager;
+use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSAbstractPageDec;
 
 /**

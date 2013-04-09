@@ -1,7 +1,10 @@
 <?php
 namespace APF\extensions\apfelsms\pres\taglibs;
 
+use APF\extensions\apfelsms\biz\pages\SMSPage;
+use APF\extensions\apfelsms\biz\sites\SMSSite;
 use APF\tools\string\StringAssistant;
+use APF\core\pagecontroller\Document;
 
 /**
  *

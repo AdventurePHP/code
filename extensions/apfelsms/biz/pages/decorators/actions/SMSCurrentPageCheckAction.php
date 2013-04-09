@@ -115,7 +115,7 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
       $sessM = new SessionManager(self::SESSION_NAMESPACE);
       $sessM->saveSessionData(
          self::SESSION_LOOPCOUNT_NAME,
-            $sessM->loadSessionData(self::SESSION_LOOPCOUNT_NAME, 0) + 1
+            intval($sessM->loadSessionData(self::SESSION_LOOPCOUNT_NAME, 0)) + 1
       );
    }
 

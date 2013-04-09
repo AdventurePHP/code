@@ -1,7 +1,9 @@
 <?php
 namespace APF\extensions\apfelsms\biz\linkSchemes;
 
+use APF\tools\link\DefaultLinkScheme;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  *

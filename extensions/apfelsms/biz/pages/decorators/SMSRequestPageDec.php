@@ -2,6 +2,7 @@
 namespace APF\extensions\apfelsms\biz\pages\decorators;
 
 use APF\extensions\apfelsms\biz\pages\decorators\SMSAbstractPageDec;
+use APF\tools\link\Url;
 
 /**
  *

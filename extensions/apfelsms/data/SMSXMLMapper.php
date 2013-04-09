@@ -7,7 +7,11 @@ use APF\core\registry\Registry;
 use APF\extensions\apfelsms\biz\SMSConfigurationException;
 use APF\extensions\apfelsms\biz\SMSException;
 use APF\extensions\apfelsms\biz\SMSManager;
+use APF\extensions\apfelsms\biz\SMSUnknownTypeException;
+use APF\extensions\apfelsms\biz\SMSWrongDataException;
+use APF\extensions\apfelsms\biz\SMSWrongParameterException;
 use APF\extensions\apfelsms\biz\pages\SMSPage;
+use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
 use APF\extensions\apfelsms\data\SMSMapperInterface;
 
 /**
@@ -42,7 +46,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
     */
    public function setup() {
 
-      $libPath =  RootClassLoader::getLoaderByVendor('APF')->getRootPath();
+      $libPath = RootClassLoader::getLoaderByVendor('APF')->getRootPath();
       $filename = $this->getXMLFilename();
       $fullPath = $libPath . '/' . $filename;
 
@@ -189,11 +193,11 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
          $childNode = $childNodeList->item($i);
 
-         if (!($childNode instanceof DOMElement)) {
+         if (!($childNode instanceof \DOMElement)) {
             continue;
          }
 
-         /** @var $childNode DOMElement */
+         /** @var $childNode \DOMElement */
 
          if ($childNode->nodeName != self::PAGEDEC_NODENAME) {
             continue;
@@ -226,12 +230,12 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
    /**
     * @param array $varArray
-    * @param DOMElement $nodeInXML
+    * @param \DOMElement $nodeInXML
     * @param string|integer $pageId
     * @return array
     * @throws SMSWrongDataException
     */
-   protected function extractVarsFromXML(array $varArray, DOMElement $nodeInXML, $pageId) {
+   protected function extractVarsFromXML(array $varArray, \DOMElement $nodeInXML, $pageId) {
 
       $mapVarsBuffer = array();
 
@@ -249,7 +253,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
             $node = $allChildNodes->item($i);
 
-            if (!($node instanceof DOMElement)) {
+            if (!($node instanceof \DOMElement)) {
                continue;
             }
 
@@ -280,7 +284,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
             for ($i = 0; $i < count($varNodeList); $i++) {
                $varNode = $varNodeList[$i];
 
-               /** @var $varNode DOMElement */
+               /** @var $varNode \DOMElement */
 
                $value = $varNode->nodeValue;
                $key = $varNode->getAttribute(self::ARRAYVAR_KEY_ATTRNAME);
@@ -323,11 +327,11 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
          $childNode = $childNodeList->item($i);
 
-         if (!($childNode instanceof DOMElement)) {
+         if (!($childNode instanceof \DOMElement)) {
             continue;
          }
 
-         /** @var $childNode DOMElement */
+         /** @var $childNode \DOMElement */
 
          if ($childNode->nodeName != self::PAGE_NODENAME) {
             continue;
@@ -369,11 +373,11 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
          $node = $parentChildNodes->item($i);
 
-         if (!($node instanceof DOMElement)) {
+         if (!($node instanceof \DOMElement)) {
             continue;
          }
 
-         /** @var $node DOMElement */
+         /** @var $node \DOMElement */
          if ($node->nodeName != self::PAGE_NODENAME) {
             continue;
          }
@@ -403,7 +407,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
       $parentNode = $pageDOMNode->parentNode;
 
-      if (!($parentNode instanceof DOMElement)) {
+      if (!($parentNode instanceof \DOMElement)) {
          return null; // no parent node
       }
 

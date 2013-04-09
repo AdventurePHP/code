@@ -1,7 +1,9 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators;
 
+use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSRequestPageDec;
+use APF\tools\link\Url;
 
 /**
  *

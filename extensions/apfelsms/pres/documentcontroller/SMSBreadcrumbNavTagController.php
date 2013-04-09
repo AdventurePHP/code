@@ -1,6 +1,11 @@
 <?php
 namespace APF\extensions\apfelsms\pres\documentcontroller;
 
+use APF\core\pagecontroller\BaseDocumentController;
+use APF\extensions\apfelsms\biz\SMSManager;
+use APF\tools\link\Url;
+use APF\tools\string\StringAssistant;
+
 /**
  *
  * @package APF\APFelSMS

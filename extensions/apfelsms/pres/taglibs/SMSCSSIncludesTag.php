@@ -1,6 +1,9 @@
 <?php
 namespace APF\extensions\apfelsms\pres\taglibs;
 
+use APF\core\pagecontroller\Document;
+use APF\extensions\apfelsms\biz\SMSManager;
+
 /**
  *
  * @package APF\APFelSMS

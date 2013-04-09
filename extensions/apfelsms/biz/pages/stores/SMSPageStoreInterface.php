@@ -1,6 +1,8 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\stores;
 
+use APF\extensions\apfelsms\biz\pages\SMSPage;
+
 /**
  *
  * @package APF\APFelSMS

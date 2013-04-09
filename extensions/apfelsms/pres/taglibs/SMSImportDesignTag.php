@@ -1,6 +1,11 @@
 <?php
 namespace APF\extensions\apfelsms\pres\taglibs;
 
+use APF\core\pagecontroller\ImportTemplateTag;
+use APF\core\pagecontroller\IncludeException;
+use APF\extensions\apfelsms\biz\SMSException;
+use APF\extensions\apfelsms\biz\SMSManager;
+
 /**
  * @package APF\APFelSMS
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
@@ -43,7 +48,7 @@ class SMSImportDesignTag extends ImportTemplateTag {
          $page = $SMSM->getPage($pageId);
          $template = $page->getTemplateName();
 
-         // check if template is protected and fall back on notAllowedTemplate if neccessary
+         // check if template is protected and fall back on notAllowedTemplate if necessary
          if ($page->isAccessProtected()) {
             $notAllowedTemplate = $this->getAttribute('notAllowedTemplate');
 
@@ -66,7 +71,7 @@ class SMSImportDesignTag extends ImportTemplateTag {
 
       // check if template name is set
       if (empty($template)) {
-         throw new SMSException('[taglib_sms:importdesign] No template found.');
+         throw new SMSException('[SMSImportDesignTag:importdesign()] No template found.');
       }
 
       // inject template name

@@ -1,7 +1,10 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\stores;
 
-use APF\extensions\apfelsms\biz\pages\stores\SMSPageStoreInterface;
+use APF\core\pagecontroller\APFObject;
+use APF\extensions\apfelsms\biz\pages\stores\SMSPageStore;
+use APF\extensions\apfelsms\biz\pages\SMSPage;
+
 /**
  *
  * @package APF\APFelSMS

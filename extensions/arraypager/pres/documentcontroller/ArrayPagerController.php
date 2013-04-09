@@ -29,7 +29,7 @@ use APF\tools\request\RequestHandler;
 
 /**
  * @package APF\extensions\arraypager\pres\documentcontroller
- * @class arraypager_controller
+ * @class ArrayPagerController
  *
  *  Implements the document controller to display the paging bar. The bar includes:
  *  <ul>
@@ -42,7 +42,7 @@ use APF\tools\request\RequestHandler;
  * @version
  * Version 0.1, 20.12.2009<br />
  */
-class arraypager_controller extends BaseDocumentController {
+class ArrayPagerController extends BaseDocumentController {
 
    private $localParameters;
 
