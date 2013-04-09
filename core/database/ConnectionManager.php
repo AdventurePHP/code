@@ -145,7 +145,8 @@ final class ConnectionManager extends APFObject {
       }
 
       // create the connection lazily
-      $this->connections[$cacheKey] = $this->getAndInitServiceObject($section->getValue('DB.Type'), $options, APFService::SERVICE_TYPE_NORMAL);
+      $this->connections[$cacheKey] = $this->getServiceObject($section->getValue('DB.Type'), APFService::SERVICE_TYPE_NORMAL);
+      $this->connections[$cacheKey]->init($options);
       return $this->connections[$cacheKey];
    }
 
