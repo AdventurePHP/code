@@ -62,11 +62,11 @@ class ContactMapper extends APFObject {
          $count = count($recipients);
          $recipients[$count] = new ContactFormRecipient();
 
-         preg_match('/Kontakt ([0-9]+)/i', $name, $matches);
+         preg_match('/Contact ([0-9]+)/i', $name, $matches);
          $recipients[$count]->setId($matches[1]);
 
-         $recipients[$count]->setName($section->getValue('EmpfaengerName'));
-         $recipients[$count]->setEmailAddress($section->getValue('EmpfaengerAdresse'));
+         $recipients[$count]->setName($section->getValue('recipient-name'));
+         $recipients[$count]->setEmailAddress($section->getValue('recipient-address'));
 
       }
 

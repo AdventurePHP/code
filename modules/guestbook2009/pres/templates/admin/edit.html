@@ -62,7 +62,7 @@ Please select an entry to edit!
                control="name|title|text"
                />
          <form:addfilter
-               class="APF\tools\form\validator\NoSpecialCharactersFilter"
+               class="APF\tools\form\filter\NoSpecialCharactersFilter"
                button="send"
                control="name|title"
                />
@@ -72,12 +72,12 @@ Please select an entry to edit!
                control="email"
                />
          <form:addfilter
-               class="APF\tools\form\validator\StripTagsFilter"
+               class="APF\tools\form\filter\StripTagsFilter"
                button="send"
                control="website|text"
                />
          <form:addfilter
-               class="APF\tools\form\validator\EMailFilter"
+               class="APF\tools\form\filter\EMailFilter"
                button="send"
                control="email"
                />

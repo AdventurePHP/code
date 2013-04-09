@@ -144,13 +144,13 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
          $url->mergeQuery(array('foo' => 'bar', 'blubber' => null)),
          new TestableDefaultLinkScheme()
       );
-      assertEquals('http://localhost?foo=bar&amp;cms_core_biz_setmodel-action:setModel=page.config.section:external', $link);
+      assertEquals('http://localhost?foo=bar&amp;APF_cms_core_biz_setmodel-action:setModel=page.config.section:external', $link);
 
       $link = LinkGenerator::generateUrl(
          $url->mergeQuery(array('foo' => 'bar', 'blubber' => null)),
          new TestableRewriteLinkScheme()
       );
-      assertEquals('http://localhost/foo/bar/~/cms_core_biz_setmodel-action/setModel/page.config.section/external', $link);
+      assertEquals('http://localhost/foo/bar/~/APF_cms_core_biz_setmodel-action/setModel/page.config.section/external', $link);
    }
 
    public function testConstructorPlusFluentConfiguration() {
@@ -194,7 +194,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testLinkGenerationFrontcontrollerActionWithActionParsing() {
-      $actionNamespace = 'cms_core_biz_setmodel';
+      $actionNamespace = 'APF_cms_core_biz_setmodel';
       $url = new Url(null, null, null, '/de/my-page/topic/2-user-research/~/' . $actionNamespace . '-action/setModel/page.config.section/external');
       $link = LinkGenerator::generateUrl($url, new RewriteLinkScheme());
       assertNotContains($actionNamespace, $link);
@@ -216,7 +216,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
    public function testLinkGenerationForActionLinks() {
       $path = '/my-app';
-      $actionNamespace = 'tools_media';
+      $actionNamespace = 'APF_tools_media';
       $actionName = 'streamMedia';
       $foo = 'foo';
       $bar = 'bar';
@@ -224,11 +224,11 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $urlOne = new Url(null, null, null, $path);
       $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), new RewriteLinkScheme());
       // the rewrite link scheme supports no path since the path is interpreted as params and their values!
-      assertEquals('/~/tools_media-action/streamMedia/' . $foo . '/1/' . $bar . '/2', $link);
+      assertEquals('/~/APF_tools_media-action/streamMedia/' . $foo . '/1/' . $bar . '/2', $link);
 
       $urlTwo = new Url(null, null, null, $path);
       $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), new DefaultLinkScheme());
-      assertEquals($path . '?tools_media-action:streamMedia=' . $foo . ':1|' . $bar . ':2', $link);
+      assertEquals($path . '?APF_tools_media-action:streamMedia=' . $foo . ':1|' . $bar . ':2', $link);
    }
 
    public function testExclusionOfNullValueAndInclusionOfZeroValueParameters() {
