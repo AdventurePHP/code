@@ -26,29 +26,35 @@ use APF\core\singleton\Singleton;
 
 /**
  * @package APF\core\filter
- * @class ChainedGenericOutputFilter
+ * @class ChainedUrlRewritingOutputFilter
  *
  * Implements the output filter for the new filter chain implementation
- * (since release 1.13).
+ * (since release 1.13). Rewrites links and form actions if activated
+ * within your application's bootstrap file.
+ * <p/>
+ * As of APF 2.0 this filter complies with the <em>ChainedUrlRewritingInputFilter</em>
+ * that resolves an external url layout to an internal neutral representation. By
+ * default (no url rewriting is registered) no output filter is registered.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 13.01.2011<br />
+ * Version 0.2, 09.04.2013 (Refactored to an output filter that only applies in case url rewriting configuration is active)<br />
  */
-class ChainedGenericOutputFilter implements ChainedContentFilter {
+class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
 
    /**
     * @var string[][] The link rewrite replace pattern definition.
     */
    private static $REPLACE_PATTERN = array(
-       '/?' => '/',
-       './?' => '/',
-       '=' => '/',
-       '&' => '/',
-       '&amp;' => '/',
-       '?' => '/'
+      '/?' => '/',
+      './?' => '/',
+      '=' => '/',
+      '&' => '/',
+      '&amp;' => '/',
+      '?' => '/'
    );
-   
+
    /**
     * @var string The link rewrite deactivation indicator.
     */
@@ -58,24 +64,19 @@ class ChainedGenericOutputFilter implements ChainedContentFilter {
    public function filter(FilterChain &$chain, $input = null) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
-      $t->start('ChainedGenericOutputFilter');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t->start('ChainedUrlRewritingOutputFilter');
 
-      // in case the url rewrite mode is activated, rewrite
-      // the HTML content as before release 1.14.
-      $urlRewriting = Registry::retrieve('APF\core', 'URLRewriting');
-      if ($urlRewriting === true) {
-         $input = preg_replace_callback(
-                         '/<form (.*?)action="(.*?)"(.*?)>(.*?)<\/form>/ims',
-                         array('APF\core\filter\ChainedGenericOutputFilter', 'replaceForm'),
-                         preg_replace_callback(
-                                 '/<a (.*?)href="(.*?)"(.*?)>(.*?)<\/a>/ims',
-                                 array('APF\core\filter\ChainedGenericOutputFilter', 'replaceLink'),
-                                 $input)
-         );
-      }
+      $input = preg_replace_callback(
+         '/<form (.*?)action="(.*?)"(.*?)>(.*?)<\/form>/ims',
+         array('APF\core\filter\ChainedUrlRewritingOutputFilter', 'replaceForm'),
+         preg_replace_callback(
+            '/<a (.*?)href="(.*?)"(.*?)>(.*?)<\/a>/ims',
+            array('APF\core\filter\ChainedUrlRewritingOutputFilter', 'replaceLink'),
+            $input)
+      );
 
-      $t->stop('ChainedGenericOutputFilter');
+      $t->stop('ChainedUrlRewritingOutputFilter');
 
       // delegate filtering to the applied chain
       return $chain->filter($input);
@@ -97,7 +98,8 @@ class ChainedGenericOutputFilter implements ChainedContentFilter {
    public static function replaceLink($hits) {
       // avoid link rewriting, if it is deactivated by attribute
       if (preg_match(self::$REWRITE_DEACTIVATE_PATTERN, $hits[1])
-              || preg_match(self::$REWRITE_DEACTIVATE_PATTERN, $hits[3])) {
+            || preg_match(self::$REWRITE_DEACTIVATE_PATTERN, $hits[3])
+      ) {
          $hits[1] = preg_replace(self::$REWRITE_CONTROL_PATTERN, '', $hits[1]);
          $hits[3] = preg_replace(self::$REWRITE_CONTROL_PATTERN, '', $hits[3]);
       } elseif (substr_count($hits[2], 'mailto:') > 0) {

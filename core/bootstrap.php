@@ -119,19 +119,18 @@ register_shutdown_function(function () {
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\DefaultLinkScheme;
 
-Registry::register('APF\core', 'URLRewriting', false); // define default value for url rewriting configuration
 LinkGenerator::setLinkScheme(new DefaultLinkScheme());
 
-// add the front controller filter that is a wrapper on the front controller's input
-// filters concerning thr url rewriting configuration
+// Add the front controller filter that is a wrapper on the front controller's input
+// filters concerning thr url rewriting configuration. In case rewriting is required,
+// please specify another input filter within your application bootstrap file according
+// to your url mapping requirements (e.g. use the ChainedUrlRewritingInputFilter included
+// within the APF).
+// As shipped, the APF does not define an output filter since "normal" url handling
+// does not require rewriting. In case rewriting is required, please specify another output
+// filter according to your url mapping requirements (e.g. use the ChainedUrlRewritingOutputFilter
+// included within the APF).
 use APF\core\filter\InputFilterChain;
-use APF\core\filter\ChainedGenericInputFilter;
+use APF\core\filter\ChainedStandardInputFilter;
 
-InputFilterChain::getInstance()->appendFilter(new ChainedGenericInputFilter());
-
-// add generic output filter that is a wrapper for the page controller's output
-// filter to adapt the url layout if url rewriting is activated
-use APF\core\filter\OutputFilterChain;
-use APF\core\filter\ChainedGenericOutputFilter;
-
-OutputFilterChain::getInstance()->appendFilter(new ChainedGenericOutputFilter());
+InputFilterChain::getInstance()->appendFilter(new ChainedStandardInputFilter());

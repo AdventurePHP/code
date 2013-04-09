@@ -416,7 +416,7 @@ final class Url {
  * <p/>
  * Normally, link schemes are implemented together with input filters, that can
  * resolve the link formatting. The APF therefore ships two link scheme implementations
- * that follow the url structure of the <em>ChainedGenericInputFilter</em>.
+ * that follow the url structure of the <em>ChainedUrlRewritingInputFilter</em>.
  *
  * @author Christian Achatz
  * @version
@@ -453,9 +453,10 @@ interface LinkScheme {
  * within the bootstrap file, but can be overwritten on each single link generation
  * statement by applying the desired scheme.
  * <p/>
- * By default, the APF shipps two link scheme implementations: <em>DefaultLinkScheme</em>
+ * By default, the APF ships two link scheme implementations: <em>DefaultLinkScheme</em>
  * for normal urls and the <em>RewriteLinkScheme</em> for rewritten urls following
- * the layout that is resolved by the <em>ChainedGenericInputFilter</em>.
+ * the layout that is resolved by the <em>ChainedStandardInputFilter</em> (<em>DefaultLinkScheme</em>
+ * pendant) and the <em>ChainedUrlRewritingInputFilter</em> (<em>RewriteLinkScheme</em> pendant).
  * <p/>
  * This component provides facilities to generate &quot;normal&quot; urls as well as
  * front controller action urls that directly address such actions. The latter ones

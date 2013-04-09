@@ -23,15 +23,13 @@ namespace APF\core\filter;
 use APF\core\singleton\Singleton;
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\registry\Registry;
-use APF\core\frontcontroller\Frontcontroller;
 
 /**
  * @package APF\core\filter
- * @class ChainedGenericInputFilter
+ * @class ChainedUrlRewritingInputFilter
  *
- * Implements the default APF filter that resolves the URL layout of the
- * front and page controller with respect to to the url rewriting configuration
- * settings.
+ * Implements an input filter that resolves the URL layout of the front and page
+ * controller with respect to an active url rewriting setup.
  * <p/>
  * The APF url layout includes generic parameter mapping and any number of front
  * controller actions encoded into the url. Rewritten urls can define any number
@@ -44,14 +42,14 @@ use APF\core\frontcontroller\Frontcontroller;
  * <p/>
  * In order to create your own url layout resolver, implement the
  * <em>ChainedContentFilter</em> interface and add it to the reset filter
- * chain. Details and examples can be found within the manual.
- *
+ * chain/prepend it. Details and examples can be found within the manual.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 21.03.2011 (Initial migration from 1.13 concept)<br />
+ * Version 0.2, 09.04.2013 (Split original class into two input filter that either resolve normal or a rewrite url format (this one))<br />
  */
-class ChainedGenericInputFilter implements ChainedContentFilter {
+class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implements ChainedContentFilter {
 
    /**
     * @var string Defines the url parameter that is passed the
@@ -60,54 +58,20 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
    protected static $REWRITE_QUERY_PARAM = 'apf-rewritten-query';
 
    /**
-    * @protected
-    * Defines the global URL rewriting delimiter.
+    * @var string Defines the global URL rewriting delimiter.
     */
    protected static $REWRITE_URL_DELIMITER = '/';
 
    /**
-    * @protected
-    * Delimiter between params and action strings.
+    * @var string Delimiter between params and action strings.
     */
    protected static $ACTION_TO_PARAM_DELIMITER = '/~/';
 
-   /**
-    * @protected
-    * Defines the action keyword.
-    */
-   protected static $FC_ACTION_KEYWORD = '-action';
-
    public function filter(FilterChain &$chain, $input = null) {
 
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
-      $t->start('ChainedGenericInputFilter');
-
-      // apply desired filter method
-      $urlRewriting = Registry::retrieve('APF\core', 'URLRewriting');
-      $filter = null;
-      if ($urlRewriting === true) {
-         $this->filterRewriteUrl();
-      } else {
-         $this->filterStandardUrl();
-      }
-
-      $t->stop('ChainedGenericInputFilter');
-
-      // delegate further filtering to the applied chain
-      $chain->filter($input);
-   }
-
-   /**
-    * @private
-    *
-    * Resolves the url layout for APF rewrite urls.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 22.03.2011 (Initial migration from various filter classes into one)<br />
-    */
-   private function filterRewriteUrl() {
+      $t->start('ChainedUrlRewritingInputFilter');
 
       // extract the session id from $_REQUEST if existent
       $sessionId = (string)'';
@@ -190,64 +154,11 @@ class ChainedGenericInputFilter implements ChainedContentFilter {
       if (!empty($sessionId)) {
          $_REQUEST[$sessionName] = $sessionId;
       }
-   }
 
-   /**
-    * @return Frontcontroller The current front controller instance.
-    */
-   protected function &getFrontcontroller() {
-      return Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
-   }
+      $t->stop('ChainedUrlRewritingInputFilter');
 
-   /**
-    * @private
-    *
-    * Resolves the url layout for APF standard urls.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 22.03.2011 (Initial migration from various filter classes into one)<br />
-    */
-   private function filterStandardUrl() {
-
-      $namespaceKeywordDelimiter = '-';
-      $actionKeyword = 'action';
-      $keywordClassDelimiter = ':';
-      $inputDelimiter = '|';
-      $keyValueDelimiter = ':';
-
-      $fC = $this->getFrontcontroller();
-
-      foreach ($_REQUEST as $key => $value) {
-
-         if (substr_count($key, $namespaceKeywordDelimiter . $actionKeyword . $keywordClassDelimiter) > 0) {
-
-            // get namespace and class from the REQUEST key
-            $actionName = substr($key, strpos($key, $keywordClassDelimiter) + strlen($keywordClassDelimiter));
-            $actionNamespace = substr($key, 0, strpos($key, $namespaceKeywordDelimiter));
-
-            // initialize the input params
-            $inputParams = array();
-
-            // create param array
-            $paramsArray = explode($inputDelimiter, $value);
-
-            $count = count($paramsArray);
-            for ($i = 0; $i < $count; $i++) {
-
-               $tmpArray = explode($keyValueDelimiter, $paramsArray[$i]);
-
-               if (isset($tmpArray[0]) && isset($tmpArray[1])
-                   && !empty($tmpArray[0]) && !empty($tmpArray[1])
-               ) {
-                  $inputParams[$tmpArray[0]] = $tmpArray[1];
-               }
-            }
-
-            // add action to the front controller
-            $fC->addAction($actionNamespace, $actionName, $inputParams);
-         }
-      }
+      // delegate further filtering to the applied chain
+      $chain->filter($input);
    }
 
    /**

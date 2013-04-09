@@ -23,6 +23,8 @@ namespace APF\modules\newspager\pres\documentcontroller;
 use APF\core\pagecontroller\BaseDocumentController;
 use APF\core\registry\Registry;
 use APF\modules\newspager\biz\NewsPagerManager;
+use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * @package APF\modules\newspager\pres
@@ -72,15 +74,19 @@ class NewsPagerController extends BaseDocumentController {
       $this->setPlaceHolder('Content', $newsItem->getContent());
 
       // set news service base url
-      if (Registry::retrieve('APF\core', 'URLRewriting') === true) {
-         $this->setPlaceHolder('NewsServiceBaseURL', '/~/modules_newspager_biz-action/Pager/page/');
-         $this->setPlaceHolder('NewsServiceLangParam', '/lang/');
-         $this->setPlaceHolder('NewsServiceDataDir', '/datadir/' . base64_encode($dataDir));
-      } else {
-         $this->setPlaceHolder('NewsServiceBaseURL', './?modules_newspager_biz-action:Pager=page:');
-         $this->setPlaceHolder('NewsServiceLangParam', '|lang:');
-         $this->setPlaceHolder('NewsServiceDataDir', '|datadir:' . base64_encode($dataDir));
-      }
+      // TODO refactor/repair issues due to separate js and css files!
+      $url = LinkGenerator::generateActionUrl(
+         Url::fromCurrent(),
+         'APF\modules_newspager_biz',
+         'Pager',
+         array(
+            'page' => 1,
+            'lang' => $this->getLanguage(),
+            'datadir' => base64_encode($dataDir)
+         )
+      );
+
+      $this->setPlaceHolder('action-url', $url);
 
       if ($this->getLanguage() == 'de') {
          $this->setPlaceHolder('ErrorMsg', 'Es ist ein Fehler beim Aufrufen der News aufgetreten! Bitte versuchen Sie es später wieder.');
