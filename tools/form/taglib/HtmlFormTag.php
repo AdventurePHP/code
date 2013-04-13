@@ -131,6 +131,7 @@ class HtmlFormTag extends Document {
       $this->attributeWhiteList[] = 'accept';
       $this->attributeWhiteList[] = 'accept-charset'; // to explicitly specify an encoding
       $this->attributeWhiteList[] = 'autocomplete'; // to disable form auto-completion for browsers supporting this security feature
+      $this->attributeWhiteList[] = 'target';
    }
 
    public function onParseTime() {
