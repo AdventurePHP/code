@@ -67,13 +67,17 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
     *
     * Let's you retrieve the validity time of the cache entries.
     *
+    * @param CacheKey $cacheKey The current cache key.
     * @return int The validity time of the cache entry in seconds.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 08.01.2013<br />
     */
-   protected function getExpireTime() {
+   protected function getExpireTime(CacheKey $cacheKey) {
+      if ($cacheKey->getTtl() !== null) {
+         return $cacheKey->getTtl();
+      }
       try {
          return intval($this->getConfigAttribute('Cache.ExpireTime'));
       } catch (InvalidArgumentException $e) {
@@ -176,7 +180,7 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
       }
 
       // try to replace (apc_store does this in contrast to apc_set)
-      return apc_store($identifier, $serialized, $this->getExpireTime());
+      return apc_store($identifier, $serialized, $this->getExpireTime($cacheKey));
    }
 
    public function clear(CacheKey $cacheKey = null) {
