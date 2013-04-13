@@ -46,13 +46,14 @@ class AdvancedCacheKey extends SimpleCacheKey {
     *
     * @param string $cacheKey The cache key.
     * @param string $cacheSubKey The sub cache key.
+    * @param int $ttl The time-to-live of the current cache entry in seconds.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 06.08.2010<br />
     */
-   public function __construct($cacheKey, $cacheSubKey) {
-      parent::__construct($cacheKey);
+   public function __construct($cacheKey, $cacheSubKey, $ttl = null) {
+      parent::__construct($cacheKey, $ttl);
       $this->subKey = $cacheSubKey;
    }
 

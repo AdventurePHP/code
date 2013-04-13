@@ -35,9 +35,11 @@ use APF\tools\cache\CacheKey;
 class SimpleCacheKey implements CacheKey {
 
    private $cacheKey;
+   private $ttl;
 
-   public function __construct($cacheKey) {
+   public function __construct($cacheKey, $ttl = null) {
       $this->cacheKey = $cacheKey;
+      $this->ttl = $ttl;
    }
 
    public function getKey() {
@@ -46,6 +48,14 @@ class SimpleCacheKey implements CacheKey {
 
    public function setKey($cacheKey) {
       $this->cacheKey = $cacheKey;
+   }
+
+   public function getTtl() {
+      return $this->ttl;
+   }
+
+   public function setTtl($ttl) {
+      $this->ttl = $ttl;
    }
 
 }

@@ -46,4 +46,15 @@ interface CacheKey {
     */
    public function getKey();
 
+   /**
+    * @public
+    *
+    * Returns the time-to-live of the current cache key.
+    *
+    * @return int The time to live for the cache entry in seconds.
+    *
+    * @author Daniel Basedow
+    */
+   public function getTtl();
+
 }
