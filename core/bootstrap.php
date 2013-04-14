@@ -20,38 +20,21 @@
  */
 
 /**
- * This file sets up the core APF services/settings in order to start up very fast.
- */
-
-/**
  * @file bootstrap.php
  *
  * Setups the framework's core environment. Initializes the Registry, that stores parameters,
  * that are used within the complete framework. These are
  * <ul>
- * <li>Environment      : environment, the application is executed in. The value is 'DEFAULT' in common</li>
- * <li>URLRewriting     : indicates, is url rewriting should be used</li>
+ * <li>Environment      : environment, the application is executed in. The value is 'DEFAULT' in common.</li>
+ * <li>InternalLogTarget: the name of the standard log target where framework log statements are written to.</li>
+ * <li>Charset          : the internal character set used for string operations.</li>
  * </ul>
- * Further, the built-in input and output filters are initialized. For this reason, the following
- * registry entries are created within the "APF\core\filter" namespace:
- * <ul>
- * <li>PageControllerInputFilter : the definition of the input filter</li>
- * <li>OutputFilter              : the definition of the output filter</li>
- * </ul>
- * The file also contains the page controller core implementation with the classes Page,
- * Document, TagLib, APFObject, XmlParser and BaseDocumentController (the basic MVC document controller).
+ * Besides, link schemes, input and/or output filter configuration as well as default
+ * configuration providers are registered.
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 20.06.2008<br />
- * Version 0.2, 16.07.2008 (added the LibPath to the registry namespace APF\core)
- * Version 0.3, 07.08.2008 (Made LibPath readonly)<br />
- * Version 0.4, 13.08.2008 (Fixed some timing problems with the registry initialisation)<br />
- * Version 0.5, 14.08.2008 (Changed LogDir initialisation to absolute paths)<br />
- * Version 0.6, 05.11.2008 (Added the 'CurrentRequestURL' attribute to the 'APF\core' namespace of the registry)<br />
- * Version 0.7, 11.12.2008 (Added the input and output filter initialization)<br />
- * Version 0.8, 01.02.2009 (Added the protocol prefix to the URLBasePath)<br />
- * Version 0.9, 21.02.2009 (Added the exception handler, turned off the php5 support in the import() function of the PHP4 branch)<br />
+ * Version 0.1, 14.04.2013<br />
  */
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

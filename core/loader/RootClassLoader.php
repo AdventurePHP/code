@@ -151,6 +151,7 @@ class StandardClassLoader implements ClassLoader {
     * Let's you define the vendor name this class loader is registered for.
     *
     * @param string $name The vendor name.
+    * @return StandardClassLoader This instance for further usage.
     *
     * @author Christian Achatz
     * @version
@@ -158,6 +159,7 @@ class StandardClassLoader implements ClassLoader {
     */
    public function setVendorName($name) {
       $this->vendorName = $name;
+      return $this;
    }
 
    /**
@@ -166,6 +168,7 @@ class StandardClassLoader implements ClassLoader {
     * Let's you define the root path for load classes/configurations/templates.
     *
     * @param string $rootPath The root path to load classes/configurations/templates from.
+    * @return StandardClassLoader This instance for further usage.
     *
     * @author Christian Achatz
     * @version
@@ -173,6 +176,7 @@ class StandardClassLoader implements ClassLoader {
     */
    public function setRootPath($rootPath) {
       $this->rootPath = $rootPath;
+      return $this;
    }
 
 }
