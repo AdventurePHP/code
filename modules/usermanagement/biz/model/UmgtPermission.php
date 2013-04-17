@@ -10,7 +10,7 @@ namespace APF\modules\usermanagement\biz\model;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package APF\APF\modules\usermanagement\biz\model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtPermissionBase
  *
  * This class provides the descriptive getter and setter methods for the "APF\modules\usermanagement\biz\model\UmgtPermission" domain object.
@@ -112,7 +112,7 @@ abstract class UmgtPermissionBase extends GenericDomainObject {
 // DO NOT CHANGE THIS COMMENT! <*UmgtPermissionBase:end*>
 
 /**
- * @package APF\APF\modules\usermanagement\biz\model
+ * @package APF\modules\usermanagement\biz\model
  * @class UmgtPermission
  *
  * This class represents the "APF\modules\usermanagement\biz\model\UmgtPermission" domain object.

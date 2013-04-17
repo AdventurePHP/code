@@ -27,7 +27,7 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\APF\modules\usermanagement\pres\documentcontroller\proxy
+ * @package APF\modules\usermanagement\pres\documentcontroller\proxy
  * @class ProxyRemoveUsersController
  *
  * Document controller to remove users from an existing visibility definition.

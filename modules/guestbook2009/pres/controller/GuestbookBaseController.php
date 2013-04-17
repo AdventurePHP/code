@@ -24,7 +24,7 @@ use APF\core\pagecontroller\BaseDocumentController;
 use APF\modules\guestbook2009\biz\GuestbookService;
 
 /**
- * @package APF\APF\modules\guestbook2009\pres\controller
+ * @package APF\modules\guestbook2009\pres\controller
  * @class GuestbookBaseController
  *
  * Provides basic services for all guestbook2009 document controllers.
