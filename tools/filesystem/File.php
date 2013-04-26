@@ -163,8 +163,10 @@ class File extends FilesystemItem {
     *
     * @author  Nicolas Pecher
     * @version Version 0.1, 01.05.2012
+    *          Version 0.2, 24.04.2013, Added fclose() call.
     */
    public function delete() {
+      fclose($this->fileHandle);
       unlink($this->getPath());
       return $this;
    }
