@@ -134,6 +134,7 @@ class HtmlFormTag extends Document {
       $this->attributeWhiteList = array_merge(AbstractFormControl::$CORE_ATTRIBUTES, AbstractFormControl::$EVENT_ATTRIBUTES, AbstractFormControl::$I18N_ATTRIBUTES);
       $this->attributeWhiteList[] = self::$METHOD_ATTRIBUTE_NAME;
       $this->attributeWhiteList[] = 'action';
+      $this->attributeWhiteList[] = 'name'; // allowed with HTML5 again (see http://www.w3.org/html/wg/drafts/html/master/forms.html#attr-form-name)
       $this->attributeWhiteList[] = 'enctype';
       $this->attributeWhiteList[] = 'onsubmit';
       $this->attributeWhiteList[] = 'onreset';
