@@ -12,7 +12,7 @@ use APF\extensions\apfelsms\biz\SMSWrongDataException;
 use APF\extensions\apfelsms\biz\SMSWrongParameterException;
 use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
-use APF\extensions\apfelsms\data\SMSMapperInterface;
+use APF\extensions\apfelsms\data\SMSMapper;
 
 /**
  * @package APF\APFelSMS
