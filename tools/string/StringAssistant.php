@@ -20,6 +20,7 @@ namespace APF\tools\string;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\registry\Registry;
 
 /**
  * @package APF\tools\string

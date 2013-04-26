@@ -19,7 +19,8 @@ namespace APF\tools\string;
  * You should have received a copy of the GNU Lesser General Public License
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
- */
+ */   
+use APF\core\pagecontroller\APFObject;
 
 /**
  * @package APF\tools\string
@@ -177,9 +178,9 @@ class RandomStringManager extends APFObject {
       }
 
       $cM = &$this->getServiceObject('APF\core\database\ConnectionManager');
-      /* @var $cM ConnectionManager */
+      /* @var $cM \APF\core\database\ConnectionManager */
       $conn = &$cM->getConnection($connectionKey);
-      /* @var $conn AbstractDatabaseHandler */
+      /* @var $conn \APF\core\database\AbstractDatabaseHandler */
 
       $hash = $this->createHash();
       $hash = $conn->escapeValue($hash);
@@ -259,7 +260,7 @@ class RandomStringManager extends APFObject {
     *
     * @param boolean $OnlyNumeric Option to return only numeric character
     * @param boolean $OnlyBigLetter Option to return only a big letter, otherwise small letters will be returned
-    * @return char One random char from all available chars set by user
+    * @return string One random char from all available chars set by user
     *
     * @author dave
     * @version
