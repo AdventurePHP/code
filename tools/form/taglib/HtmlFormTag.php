@@ -104,12 +104,14 @@ class HtmlFormTag extends Document {
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\ResetButtonTag', 'form', 'reset');
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\ImageButtonTag', 'form', 'imagebutton');
 
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'form', 'placeholder'); 
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'form', 'getstring');
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'form', 'addtaglib');
+      
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormLabelTag', 'form', 'label');
-
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\TextFieldTag', 'form', 'text');
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\SelectBoxTag', 'form', 'select');
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\DateSelectorTag', 'form', 'date');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormPlaceHolderTag', 'form', 'placeholder');
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\PasswordFieldTag', 'form', 'password');
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\HiddenFieldTag', 'form', 'hidden');
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\CheckBoxTag', 'form', 'checkbox');
@@ -117,9 +119,7 @@ class HtmlFormTag extends Document {
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FileUploadTag', 'form', 'file');
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\TextAreaTag', 'form', 'area');
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\MultiSelectBoxTag', 'form', 'multiselect');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormLanguageLabelTag', 'form', 'getstring');
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\DynamicFormElementMarkerTag', 'form', 'marker');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormAddTaglibTag', 'form', 'addtaglib');
 
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\TimeCaptchaTag', 'form', 'timecaptcha');
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\CsrfProtectionHashTag', 'form', 'csrfhash');
@@ -694,7 +694,7 @@ class HtmlFormTag extends Document {
     * Let's you retrieve an &lt;form:getstring /&gt; tag instance with the specified name.
     *
     * @param string $name The name of the form label to return.
-    * @return FormLanguageLabelTag The instance of the desired label.
+    * @return \APF\core\pagecontroller\LanguageLabelTag The instance of the desired label.
     * @throws \InvalidArgumentException In case no label can be found.
     *
     * @author Christian Achatz
@@ -703,7 +703,7 @@ class HtmlFormTag extends Document {
     */
    public function &getLabel($name) {
       try {
-         return $this->getChildNode('name', $name, 'APF\tools\form\taglib\FormLanguageLabelTag');
+         return $this->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabelTag');
       } catch (\InvalidArgumentException $e) {
          throw new \InvalidArgumentException('[HtmlFormTag::getLabel()] No label found with name "' . $name
                . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'
