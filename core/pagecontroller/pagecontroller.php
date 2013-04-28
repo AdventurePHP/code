@@ -1229,7 +1229,7 @@ class Document extends APFObject {
     * Version 0.1, 03.10.2012<br />
     */
    public function &setStringPlaceHolder($name, $key, $value) {
-      $nodes = & $this->getChildNodes('name', $name, 'PlaceHolderTag');
+      $nodes = & $this->getChildNodes('name', $name, 'APF\core\pagecontroller\PlaceHolderTag');
       /* @var $nodes PlaceHolderTag[] */
       foreach ($nodes as $node) {
          $node->setStringReplacement($key, $value);
