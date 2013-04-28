@@ -24,6 +24,7 @@ use APF\core\benchmark\BenchmarkTimer;
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\TagLib;
 use APF\core\pagecontroller\XmlParser;
+use APF\core\pagecontroller\LanguageLabelTag;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 use APF\tools\form\FormException;
@@ -104,10 +105,10 @@ class HtmlFormTag extends Document {
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\ResetButtonTag', 'form', 'reset');
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\ImageButtonTag', 'form', 'imagebutton');
 
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'form', 'placeholder'); 
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'form', 'placeholder');
       $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'form', 'getstring');
       $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'form', 'addtaglib');
-      
+
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormLabelTag', 'form', 'label');
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\TextFieldTag', 'form', 'text');
       $this->tagLibs[] = new TagLib('APF\tools\form\taglib\SelectBoxTag', 'form', 'select');
@@ -694,7 +695,7 @@ class HtmlFormTag extends Document {
     * Let's you retrieve an &lt;form:getstring /&gt; tag instance with the specified name.
     *
     * @param string $name The name of the form label to return.
-    * @return \APF\core\pagecontroller\LanguageLabelTag The instance of the desired label.
+    * @return LanguageLabelTag The instance of the desired label.
     * @throws \InvalidArgumentException In case no label can be found.
     *
     * @author Christian Achatz
