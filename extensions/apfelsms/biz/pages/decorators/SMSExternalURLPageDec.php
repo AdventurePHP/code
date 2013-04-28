@@ -6,7 +6,7 @@ use APF\tools\link\Url;
 
 /**
  *
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (19.08.12)
  * @desc    . Returns an external URL as page URL.

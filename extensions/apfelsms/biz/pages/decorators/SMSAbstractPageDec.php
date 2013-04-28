@@ -8,7 +8,7 @@ use APF\tools\link\Url;
 
 /**
  *
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (06.06.12)
  *            v0.2 (23.09.12) Changed method signature of getDecoratorTypes and getAllDecorators to optional give-through arrays

@@ -7,7 +7,7 @@ use APF\extensions\apfelsms\biz\SMSException;
 use APF\extensions\apfelsms\biz\SMSManager;
 
 /**
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (11.08.12)
  */

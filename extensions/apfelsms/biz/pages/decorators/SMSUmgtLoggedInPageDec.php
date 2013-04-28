@@ -7,7 +7,7 @@ use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 
 /**
  *
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version v0.1 (19.01.13)
  *          v0.2 (08.03.13) Added hiddenOnLogin option. Renamed from SMSUmgtLoggedInOrHiddenPageDec to SMSUmgtLoggedInPageDec.

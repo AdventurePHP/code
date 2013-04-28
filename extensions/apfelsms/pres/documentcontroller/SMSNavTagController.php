@@ -10,7 +10,7 @@ use APF\tools\string\StringAssistant;
 
 /**
  *
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (08.08.12)
  *
@@ -19,7 +19,7 @@ class SMSNavTagController extends BaseDocumentController {
 
 
    /**
-    * @var SMSManager
+    * @var \APF\extensions\apfelsms\biz\SMSManager
     */
    protected $SMSM;
 
@@ -32,8 +32,10 @@ class SMSNavTagController extends BaseDocumentController {
 
    public function transformContent() {
 
-      $this->SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
-
+      /** @var $SMSM \APF\extensions\apfelsms\biz\SMSManager */
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
+      $this->SMSM = $SMSM;
+      
       $doc = $this->getDocument();
       $level = $doc->getAttribute('SMSNavLevel');
       $rellevel = $doc->getAttribute('SMSNavRelLevel');
@@ -47,6 +49,7 @@ class SMSNavTagController extends BaseDocumentController {
       if (!empty($basePageId)) {
          $basePage = $this->SMSM->getPage($basePageId);
       } else {
+         /** @var $SMSS \APF\extensions\apfelsms\biz\sites\SMSSite */
          $SMSS = $this->SMSM->getSite();
          $basePage = $SMSS->getCurrentPage();
       }

@@ -15,13 +15,17 @@ use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
 use APF\extensions\apfelsms\data\SMSMapper;
 
 /**
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
- * @version : v0.1 (06.06.12)
+ * @version :  v0.1 (06.06.2012)
+ *             v0.2 (28.04.2013) Added getPageType()-method to support multiple page types in one application
  */
 class SMSXMLMapper extends APFObject implements SMSMapper {
 
    const PAGE_NODENAME = 'page';
+
+   /** @since v0.2 */
+   const PAGE_TYPE_ATTRNAME = 'type';
 
    const PAGEDEC_NODENAME = 'pageDec';
 
@@ -43,6 +47,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
    /**
     * @throws SMSConfigurationException
+    * @version :  v0.1
     */
    public function setup() {
 
@@ -68,6 +73,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
     * @param SMSPage $page
     * @return SMSPage
     * @throws SMSException
+    * @version :  v0.1
     */
    public function mapPage(SMSPage $page) {
 
@@ -143,6 +149,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
     * @return SMSPage
     * @throws SMSWrongParameterException
     * @throws SMSUnknownTypeException
+    * @version :  v0.1
     */
    public function mapPageWithoutDecorators(SMSPage $page) {
 
@@ -179,6 +186,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
     * @param string|integer $pageId
     * @return SMSPageDec
     * @throws SMSWrongDataException
+    * @version :  v0.1
     */
    public function mapPageDec(SMSPageDec $pageDec, $pageId) {
 
@@ -234,6 +242,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
     * @param string|integer $pageId
     * @return array
     * @throws SMSWrongDataException
+    * @version :  v0.1
     */
    protected function extractVarsFromXML(array $varArray, \DOMElement $nodeInXML, $pageId) {
 
@@ -305,9 +314,30 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
 
    /**
+    * @param string|integer $pageId
+    * @return string The page type. String is empty if no page type attribute exists.
+    * @throws SMSException
+    * @since v0.2
+    * @version :  v0.1 (28.04.2013)
+    */
+   public function getPageType($pageId) {
+
+      $pageDOMNode = $this->XML_DOMDocument->getElementById($pageId);
+
+      if ($pageDOMNode === null) {
+         throw new SMSException('[SMSXMLMapper::getPageType()] Could not found node for page id "' . $pageId . '".', E_USER_ERROR);
+      }
+      
+      return $pageDOMNode->getAttribute(self::PAGE_TYPE_ATTRNAME);
+      
+   }
+
+
+   /**
     * @param SMSPage $page
     * @return array
     * @throws SMSWrongParameterException
+    * @version :  v0.1
     */
    public function getChildrenIds(SMSPage $page) {
 
@@ -349,6 +379,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
     * @param SMSPage $page
     * @return array
     * @throws SMSWrongParameterException
+    * @version :  v0.1
     */
    public function getSiblingAndOwnIds(SMSPage $page) {
 
@@ -394,6 +425,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
     * @param SMSPage $page
     * @return string|null
     * @throws SMSWrongParameterException
+    * @version :  v0.1
     */
    public function getParentId(SMSPage $page) {
 
@@ -423,6 +455,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
    /**
     * @return string Filename of XML data-source file
+    * @version :  v0.1
     */
    public function getXMLFilename() {
 
@@ -432,6 +465,7 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
    /**
     * @param string $filename Filename of XML data-source file
+    * @version :  v0.1
     */
    public function setXMLFilename($filename) {
 

@@ -10,7 +10,7 @@ use APF\tools\link\Url;
 
 /**
  *
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (03.10.12)
  *

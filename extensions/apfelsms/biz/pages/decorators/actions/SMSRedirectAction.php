@@ -11,7 +11,7 @@ use APF\tools\link\Url;
 
 /**
  *
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (02.10.12)
  *           v02. (09.03.13) Changed HTTP status code on redirect to 301 (moved permanently)

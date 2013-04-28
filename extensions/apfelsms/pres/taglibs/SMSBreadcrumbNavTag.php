@@ -6,7 +6,7 @@ use APF\core\pagecontroller\Page;
 
 /**
  *
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (23.09.12)
  *

@@ -7,7 +7,7 @@ use APF\extensions\apfelsms\biz\pages\SMSPage;
 
 /**
  *
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (04.08.12)
  *

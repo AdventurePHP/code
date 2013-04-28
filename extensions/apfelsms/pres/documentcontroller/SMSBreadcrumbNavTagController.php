@@ -8,7 +8,7 @@ use APF\tools\string\StringAssistant;
 
 /**
  *
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (23.09.12)
  *
@@ -21,8 +21,10 @@ class SMSBreadcrumbNavTagController extends BaseDocumentController {
    protected $SMSM;
 
    public function transformContent() {
-
-      $this->SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
+      
+      /** @var $SMSM SMSManager */
+      $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
+      $this->SMSM = $SMSM;
 
       $doc = $this->getDocument();
       $basePageId = $doc->getAttribute('SMSBreadcrumbNavBasePageId');
@@ -44,7 +46,8 @@ class SMSBreadcrumbNavTagController extends BaseDocumentController {
 
       ////
       // collect all breadcrumbs
-
+      
+      /** @var $reverseCrumbArray \APF\extensions\apfelsms\biz\pages\SMSPage[] */
       $reverseCrumbArray = array();
       $crumb = $currentPage;
 
@@ -56,7 +59,6 @@ class SMSBreadcrumbNavTagController extends BaseDocumentController {
             $reverseCrumbArray[] = $crumb;
          }
 
-         /** @var $oldCrumb SMSPage */
          $oldCrumb = $crumb;
          $crumb = $oldCrumb->getParent();
 
@@ -72,7 +74,8 @@ class SMSBreadcrumbNavTagController extends BaseDocumentController {
       if ($currentPage->getId() != $basePageId) {
          $reverseCrumbArray[] = $basePage;
       }
-
+      
+      /** @var $crumbArray \APF\extensions\apfelsms\biz\pages\SMSPage[] */
       $crumbArray = array_reverse($reverseCrumbArray);
 
 

@@ -9,7 +9,7 @@ use APF\tools\string\StringAssistant;
 
 /**
  *
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version :  v0.1 (26.08.12)
  *             v0.2 (22.09.12) Added magic page ids __current, __referer and __start
@@ -110,7 +110,8 @@ class SMSPageLinkTag extends Document {
                if (empty($siblings)) {
                   return '';
                }
-
+               
+               /** @var $visibleSiblings \APF\extensions\apfelsms\biz\pages\SMSPage[] */
                $visibleSiblings = array();
                foreach ($siblings AS $sibling) {
                   if ($sibling->isHidden()) {

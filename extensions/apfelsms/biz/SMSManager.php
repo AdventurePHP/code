@@ -12,7 +12,7 @@ use APF\tools\request\RequestHandler;
 use APF\tools\link\LinkGenerator;
 
 /**
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  */
 class SMSException extends \Exception {
 
@@ -21,7 +21,7 @@ class SMSException extends \Exception {
 
 
 /**
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  */
 class SMSUnknownTypeException extends SMSException {
 
@@ -30,7 +30,7 @@ class SMSUnknownTypeException extends SMSException {
 
 
 /**
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  */
 class SMSWrongParameterException extends SMSException {
 
@@ -39,7 +39,7 @@ class SMSWrongParameterException extends SMSException {
 
 
 /**
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  */
 class SMSConfigurationException extends SMSException {
 
@@ -48,7 +48,7 @@ class SMSConfigurationException extends SMSException {
 
 
 /**
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  */
 class SMSWrongDataException extends SMSException {
 
@@ -65,7 +65,7 @@ class SMSWrongDataException extends SMSException {
  * You need to inject an SMSMapper using setMapper() and a site using setSite().
  * Please also configure setup() as setupmethod in your DIService configuration.
  *
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version :  v0.1 (06.06.12)
  *             v0.2 (20.06.12) Added language support in getInstance() and Constructor
@@ -111,10 +111,10 @@ class SMSManager extends APFObject {
 
       //// Try to set up current Page Id
 
-      // get current page id
-      $startPageId = $this->site->getStartPageId(true); // get start page id for fallback
+      // get current page pageId
+      $startPageId = $this->site->getStartPageId(true); // get start page pageId for fallback
 
-      // if no id is present in request, use start page id
+      // if no pageId is present in request, use start page pageId
       $this->site->setCurrentPageId(RequestHandler::getValue($this->pageRequestParamName, $startPageId));
 
    }
@@ -209,6 +209,9 @@ class SMSManager extends APFObject {
 
 
    /**
+    * @desc
+    * Create new page decorator object with DIServiceManager and map with properties.
+    * 
     * @param string $type Decorator type name
     * @param string|integer $pageId Page id of the page, the decorator belongs to
     * @return SMSPageDec
@@ -221,20 +224,31 @@ class SMSManager extends APFObject {
       if (empty($type)) {
          throw new SMSWrongParameterException('[SMSManager::getPage] No valid decorator type given. Decorator type is empty.', E_USER_ERROR);
       }
-
+            
+      ////
+      // determine service name
+      
       $serviceName = ucfirst($type); // e.g., decorator type "hidden" has serviceName "Hidden"
-
+            
+      ////
+      // create pageDec object with DIServiceManager
+      
       try {
+         
          /** @var $pageDec SMSPageDec */
          $pageDec = $this->getDIServiceObject('APF\extensions\apfelsms\pages\decorators', $serviceName);
          $pageDec->setDecType($type);
-      } catch (ConfigurationException $ce) {
-         throw new SMSUnknownTypeException('[SMSManager::getPageDec()] Service configuration for page decorators of type "' . $type . '" with serviceName "' . $serviceName . '" could not be found. Maybe you have an invalid page decorator type in your data-source!? Please check your configuration, espacially the serviceobjects.ini in namespace "extensions::apfelsms::pages::decorators".', E_USER_ERROR);
+         
+      }
+      catch (ConfigurationException $ce) {
+         throw new SMSUnknownTypeException('[SMSManager::getPageDec()] Service configuration for page decorators of type "' . $type . '" with serviceName "' . $serviceName . '" could not be found. Maybe you have an invalid page decorator type in your data-source!? Please check your configuration, espacially the serviceobjects.ini in namespace "extensions\apfelsms\pages\decorators".', E_USER_ERROR);
       }
       catch (\InvalidArgumentException $ie) {
          throw new SMSConfigurationException('[SMSManager::getPageDec()] Your configuration for page decorators of type "' . $type . '" with serviceName "' . $serviceName . '" is buggy. DIServiceManager throws following exception: ' . $ie, E_USER_ERROR);
-      }
-
+      }      
+      
+      ////
+      // map pageDec
       $mappedPageDec = $this->mapper->mapPageDec($pageDec, $pageId);
 
       return $mappedPageDec;
@@ -243,38 +257,78 @@ class SMSManager extends APFObject {
 
 
    /**
-    * @param string $id Page Id
-    * @return SMSPage
-    * @throws SMSUnknownTypeException
+    * @desc
+    * Load page type from mapper, create new page object with DIServiceManager.
+    * Map page with pageDecorators and properties.
+    *
+    * @param string|integer $pageId Page id
+    * @throws SMSException
     * @throws SMSWrongParameterException
     * @throws SMSConfigurationException
+    * @throws SMSUnknownTypeException
+    * @return SMSPage
+    * @version :  v0.1
+    *             v0.2 (28.04.2013) Added support for different page types in one application
     */
-   public function getPage($id) {
+   public function getPage($pageId) {
 
-      if (empty($id)) {
+      if (empty($pageId)) {
          throw new SMSWrongParameterException('[SMSManager::getPage] No valid page id given. Page id is empty.', E_USER_ERROR);
       }
-
-      if (!$this->pageStore->isPageSet($id)) {
-
+      
+      ////
+      // check if page is prensent in page store. if not, creeate it.
+      if (!$this->pageStore->isPageSet($pageId)) {
+         
+         ////
+         // determine page type
+         
          try {
+            
+            // determine page type for page id
+            $pageType = $this->mapper->getPageType($pageId);
+            if(empty($pageType)){
+               $pageType = $this->pageServiceName; // choose default as fallback
+            }
+            
+         } catch (SMSException $smse) {
+            throw new SMSException('[SMSManager::getPage()] Could not find page with id "' . $pageId . '" in data source.', E_USER_ERROR); 
+         }
+                  
+         ////
+         // determine service name
+         
+         $serviceName = ucfirst($pageType); // e.g. page type "stdPage" has serviceName "StdPage"
+         
+         ////
+         // create page object with DIServiceManager
+         
+         try {  
+            
             /** @var $page SMSPage */
-            $page = $this->getDIServiceObject('APF\extensions\apfelsms\pages', $this->pageServiceName);
-            $page->setId($id);
+            $page = $this->getDIServiceObject('APF\extensions\apfelsms\pages', $serviceName);
+            $page->setId($pageId);
+            
          } catch (ConfigurationException $ce) {
-            throw new SMSUnknownTypeException('[SMSManager::getPage()] Configured serviceName for pages "' . $this->pageServiceName . '" is most likely not existent. Please check your configuration, espacially the serviceobjects.ini in namespace "extensions::apfelsms::pages".', E_USER_ERROR);
+            throw new SMSUnknownTypeException('[SMSManager::getPage()] Configured serviceName for pages "' . $serviceName . '" is most likely not existent. Please check your configuration, espacially the serviceobjects.ini in namespace "extensions::apfelsms::pages".', E_USER_ERROR);
          }
          catch (\InvalidArgumentException $ie) {
-            throw new SMSConfigurationException('[SMSManager::getPage()] Your configuration for pages is buggy. Please check service "' . $this->pageServiceName . '". DIServiceManager throws following exception: ' . $ie, E_USER_ERROR);
+            throw new SMSConfigurationException('[SMSManager::getPage()] Your configuration for pages is buggy. Please check service "' . $serviceName . '". DIServiceManager throws following exception: ' . $ie, E_USER_ERROR);
          }
-
+         
+         ////
+         // map page
          $mappedPage = $this->mapper->mapPage($page);
-
-         $this->pageStore->setPage($id, $mappedPage);
+         
+         ////
+         // add page to page store
+         $this->pageStore->setPage($pageId, $mappedPage);
 
       }
-
-      return $this->pageStore->getPage($id);
+      
+      ////
+      // get page from page store
+      return $this->pageStore->getPage($pageId);
    }
 
 }

@@ -7,7 +7,7 @@ use APF\tools\link\Url;
 
 /**
  *
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (21.06.12)
  * @desc    : Adds request params and uses template name of parent page

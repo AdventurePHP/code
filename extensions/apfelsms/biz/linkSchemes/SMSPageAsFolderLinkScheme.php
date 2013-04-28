@@ -7,7 +7,7 @@ use APF\tools\link\Url;
 
 /**
  *
- * @package APF\APFelSMS
+ * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version:   v0.1 (11.08.12)
  *             v0.2 (18.08.12) Fully refactored the inclusion of the old path
