@@ -115,18 +115,15 @@ class TextCacheProvider extends CacheBase implements CacheProvider {
       $baseFolder = $this->getConfigAttribute('Cache.BaseFolder');
 
       if ($cacheKey === null) {
-         FilesystemManager::deleteFolder($baseFolder, true);
+         return FilesystemManager::deleteFolder($baseFolder, true);
       } else {
          $cacheFile = $this->getCacheFile($cacheKey);
          try {
-            FilesystemManager::removeFile($cacheFile);
-            return true;
+            return FilesystemManager::removeFile($cacheFile);
          } catch (FileException $e) {
             return false;
          }
       }
-
-      return false;
    }
 
 }
