@@ -265,12 +265,34 @@ abstract class AbstractFrontcontrollerAction extends APFObject {
       return true;
    }
 
+   /**
+    * @public
+    *
+    * Returns the associated front controller instance.
+    *
+    * @return Frontcontroller The associated front controller instance.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
    public function &getFrontController() {
       return $this->frontController;
    }
 
+   /**
+    * @public
+    *
+    * Let's the front controller inject itself.
+    *
+    * @param Frontcontroller $frontController The current front controller instance.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
    public function setFrontController(Frontcontroller &$frontController) {
-      $this->frontController = &$frontController;
+      $this->frontController = & $frontController;
    }
 
    /**
@@ -309,7 +331,7 @@ class FrontcontrollerInput extends APFObject {
    }
 
    public function setAction(AbstractFrontcontrollerAction &$action) {
-      $this->action = &$action;
+      $this->action = & $action;
    }
 
 }
@@ -759,7 +781,7 @@ class Frontcontroller extends APFObject {
    protected function runActions($type = AbstractFrontcontrollerAction::TYPE_PRE_PAGE_CREATE) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
 
       foreach ($this->actionStack as $actionHash => $DUMMY) {
 
