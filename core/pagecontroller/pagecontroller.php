@@ -1044,7 +1044,7 @@ class Document extends APFObject {
     *
     * Returns the list of the current node's children.
     *
-    * @return APFObject[] The current node's children.
+    * @return Document[] The current node's children.
     *
     * @author Christian Achatz
     * @version
@@ -2178,6 +2178,67 @@ class PlaceHolderTag extends Document {
 
 /**
  * @package APF\core\pagecontroller
+ * @class TemplateTagClearApproach
+ *
+ * Defines the way a TemplateTag instance can be cleared using it within a loop
+ * before displaying the next item.
+ * <p/>
+ * This is especially necessary, in case place holders for the next line of a
+ * repeating output (e.g. lines of a table) should be cleared to conditionally
+ * contain no content.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 03.05.2013<br />
+ */
+interface TemplateTagClearApproach {
+
+   /**
+    * @public
+    *
+    * Clears the applied TemplateTag according to the implementation.
+    *
+    * @param TemplateTag $node The current TemplateTag node.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.05.2013<br />
+    */
+   public function clear(TemplateTag &$node);
+}
+
+/**
+ * @package APF\core\pagecontroller
+ * @class DefaultTemplateTagClearApproach
+ *
+ * Implements the default clear mechanism that resets the content of the place holders
+ * defines within the TemplateTag instance.
+ * <p/>
+ * Please note, that this implementation only covers instances of the PlaceHolderTag
+ * class that is the standard place holder tag within the APF. In case you intend to
+ * add your own implementation of place holders or elements that need to be cleared,
+ * please implement your custom clear strategy and apply to the <em>TemplateTag::clear()</em>
+ * method within the respective document controller.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 03.05.2013<br />
+ */
+class DefaultTemplateTagClearApproach implements TemplateTagClearApproach {
+
+   public function clear(TemplateTag &$node) {
+      $children = & $node->getChildren();
+      foreach ($children as $objectId => $DUMMY) {
+         if ($children[$objectId] instanceof PlaceHolderTag) {
+            $children[$objectId]->setContent('');
+         }
+      }
+   }
+
+}
+
+/**
+ * @package APF\core\pagecontroller
  * @class TemplateTag
  *
  * Represents a reusable html fragment (template) within a template file. The tag's functionality
@@ -2280,6 +2341,30 @@ class TemplateTag extends Document {
     */
    public function transformTemplate() {
       return $this->transformChildrenAndPreserveContent();
+   }
+
+   /**
+    * @public
+    *
+    * Allows you to clear a TemplateTag instance according to the applied clear approach.
+    * <p/>
+    * By default, the <em>DefaultTemplateTagClearApproach</em> is used reset the template's
+    * place holder tags by removing their content.
+    * <p/>
+    * In case you intend to add your own implementation of place holders or elements that need
+    * to be cleared, please implement your custom clear strategy and apply to this method.
+    *
+    * @param TemplateTagClearApproach $approach The clear approach to use.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.05.2013<br />
+    */
+   public function clear(TemplateTagClearApproach $approach = null) {
+      if ($approach === null) {
+         $approach = new DefaultTemplateTagClearApproach();
+      }
+      $approach->clear($this);
    }
 
    /**
