@@ -222,7 +222,7 @@ abstract class AbstractFrontcontrollerAction extends APFObject {
     * Set the indicator, whether the action should be kept in the url
     * generating a fully qualified front controller link.
     *
-    * @param string $keepInUrl The url generation indicator.
+    * @param bool $keepInUrl The url generation indicator.
     *
     * @author Christian Achatz
     * @version
@@ -238,7 +238,7 @@ abstract class AbstractFrontcontrollerAction extends APFObject {
     * Returns the indicator, whether the action should be kept in the url
     * generating a fully qualified front controller link.
     *
-    * @return string The url generation indicator.
+    * @return bool The url generation indicator.
     *
     * @author Christian Achatz
     * @version
