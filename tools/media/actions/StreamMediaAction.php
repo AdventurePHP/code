@@ -53,7 +53,13 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
       if (isset($allowedExtensions[$extension])) {
 
          $rootPath = RootClassLoader::getLoaderByVendor('APF')->getRootPath();
-         $filePath = $rootPath . '/' . $namespace . '/' . $fileName;
+
+         // Re-map namespace since as of 2.0 it contains the vendor that
+         // refers to the root path. Keeping the vendor would cause the
+         // sub-path to map to the wrong folder.
+         $namespace = str_replace('APF\\', '', $namespace);
+
+         $filePath = $rootPath . '/' . str_replace('\\', '/', $namespace) . '/' . $fileName;
          if (file_exists($filePath)) {
 
             // map extension to known mime type
@@ -93,7 +99,7 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
     * Version 0.1, 18.07.2011<br />
     */
    private function getSanitizedNamespace() {
-      $namespace = str_replace('_', '/', // resolve url notation for namespaces
+      $namespace = str_replace('_', '\\', // resolve url notation for namespaces
          preg_replace('/[^A-Za-z0-9\-_\.]/', '',
             $this->getInput()->getAttribute('namespace'))
 
