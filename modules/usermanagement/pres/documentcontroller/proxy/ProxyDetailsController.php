@@ -90,23 +90,23 @@ class ProxyDetailsController extends UmgtBaseController {
       // display special visibility definitions
       $tmpl = & $this->getTemplate('access-perms');
 
-      $read = $tmpl->getChildNode('id', 'read', 'UmgtMediaInclusionTag');
+      $read = $tmpl->getChildNode('id', 'read', 'APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag');
       $proxy->getReadPermission() == '1'
             ? $read->setAttribute('filename', 'yes.png')
             : $read->setAttribute('filename', 'no.png');
 
 
-      $write = $tmpl->getChildNode('id', 'write', 'UmgtMediaInclusionTag');
+      $write = $tmpl->getChildNode('id', 'write', 'APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag');
       $proxy->getWritePermission() == '1'
             ? $write->setAttribute('filename', 'yes.png')
             : $write->setAttribute('filename', 'no.png');
 
-      $relation = $tmpl->getChildNode('id', 'relation', 'UmgtMediaInclusionTag');
+      $relation = $tmpl->getChildNode('id', 'relation', 'APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag');
       $proxy->getLinkPermission() == '1'
             ? $relation->setAttribute('filename', 'yes.png')
             : $relation->setAttribute('filename', 'no.png');
 
-      $delete = $tmpl->getChildNode('id', 'delete', 'UmgtMediaInclusionTag');
+      $delete = $tmpl->getChildNode('id', 'delete', 'APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag');
       $proxy->getDeletePermission() == '1'
             ? $delete->setAttribute('filename', 'yes.png')
             : $delete->setAttribute('filename', 'no.png');
