@@ -76,6 +76,10 @@ class RoleListController extends UmgtBaseController {
 
       $permissions = $this->getManager()->loadPermissionsWithRole($role);
 
+      if (count($permissions) < 1) {
+         return '';
+      }
+
       $permissionList = '<ul>';
       foreach ($permissions as $permission) {
          $permissionList .= '<li>' . $permission->getDisplayName() . '</li>';
@@ -87,6 +91,10 @@ class RoleListController extends UmgtBaseController {
 
       $users = $this->getManager()->loadUsersWithRole($role);
 
+      if (count($users) < 1) {
+         return '';
+      }
+
       $userList = '<ul>';
       foreach ($users as $user) {
          $userList .= '<li>' . $user->getDisplayName() . '</li>';
@@ -97,6 +105,10 @@ class RoleListController extends UmgtBaseController {
    private function getGroupList(UmgtRole $role) {
 
       $groups = $this->getManager()->loadGroupsWithRole($role);
+
+      if (count($groups) < 1) {
+         return '';
+      }
 
       $groupList = '<ul>';
       foreach ($groups as $group) {

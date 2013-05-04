@@ -70,6 +70,11 @@ class UserListController extends UmgtBaseController {
 
    private function getRoleNames(UmgtUser $user) {
       $roles = $this->getManager()->loadRolesWithUser($user);
+
+      if (count($roles) < 1) {
+         return '';
+      }
+
       $roleNames = '<ul>';
       foreach ($roles as $role) {
          $roleNames .= '<li>' . $role->getDisplayName() . '</li>';
@@ -79,6 +84,11 @@ class UserListController extends UmgtBaseController {
 
    private function getGroupNames(UmgtUser $user) {
       $groups = $this->getManager()->loadGroupsWithUser($user);
+
+      if (count($groups) < 1) {
+         return '';
+      }
+
       $groupNames = '<ul>';
       foreach ($groups as $group) {
          $groupNames .= '<li>' . $group->getDisplayName() . '</li>';

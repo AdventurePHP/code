@@ -42,7 +42,7 @@ class GroupListController extends UmgtBaseController {
 
       // display group list
       $buffer = (string)'';
-      $template = &$this->getTemplate('Group');
+      $template = & $this->getTemplate('Group');
 
       foreach ($groups as $group) {
          $groupId = $group->getObjectId();
@@ -68,6 +68,11 @@ class GroupListController extends UmgtBaseController {
 
    private function getUsers(UmgtGroup $group) {
       $users = $this->getManager()->loadUsersWithGroup($group);
+
+      if (count($users) < 1) {
+         return '';
+      }
+
       $userNames = '<ul>';
       foreach ($users as $user) {
          $userNames .= '<li>' . $user->getDisplayName() . '</li>';
@@ -77,6 +82,11 @@ class GroupListController extends UmgtBaseController {
 
    private function getRoles(UmgtGroup $group) {
       $roles = $this->getManager()->loadRolesWithGroup($group);
+
+      if (count($roles) < 1) {
+         return '';
+      }
+
       $roleNames = '<ul>';
       foreach ($roles as $role) {
          $roleNames .= '<li>' . $role->getDisplayName() . '</li>';

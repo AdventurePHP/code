@@ -102,6 +102,11 @@ class ProxyListController extends UmgtBaseController {
 
    private function getUsers(UmgtVisibilityDefinition $proxy) {
       $users = $this->getManager()->loadUsersWithVisibilityDefinition($proxy);
+
+      if (count($users) < 1) {
+         return '';
+      }
+
       $userList = '<ul>';
       foreach ($users as $user) {
          $userList .= '<li>' . $user->getUsername() . '</li>';
@@ -111,6 +116,11 @@ class ProxyListController extends UmgtBaseController {
 
    private function getGroups(UmgtVisibilityDefinition $proxy) {
       $groups = $this->getManager()->loadGroupsWithVisibilityDefinition($proxy);
+
+      if (count($groups) < 1) {
+         return '';
+      }
+
       $groupList = '<ul>';
       foreach ($groups as $group) {
          $groupList .= '<li>' . $group->getDisplayName() . '</li>';
