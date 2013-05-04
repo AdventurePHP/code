@@ -130,7 +130,9 @@ final class DIServiceManager {
    public static function &getServiceObject($configNamespace, $sectionName, $context, $language) {
 
       // build cache key. because configuration-file path includes context, include context (and language) in cache key
-      $cacheKey = $configNamespace . '|' . $sectionName . '|' . $context . '|' . $language;
+      // In 2.0 language has been removed from the instance id since within multi-language applications
+      // you want to re-use the instance throughout different languages!
+      $cacheKey = $configNamespace . '|' . $sectionName . '|' . $context;
 
       // Check, whether service object was created before. If yes, deliver it from cache for all services types except NORMAL.
       // Do not cache ServiceType 'NORMAL' because we want to have different instances!

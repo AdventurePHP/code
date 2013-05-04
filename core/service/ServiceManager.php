@@ -68,11 +68,13 @@ final class ServiceManager {
     */
    public static function &getServiceObject($class, $context, $language, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
 
-      // Introduce generated instance key to create services with respect to context and language.
+      // Introduce generated instance key to create services with respect to the context.
       // In 1.15, creating instances of the same service implementation within different contexts
       // resulted in equal instances instead of different ones.
+      // In 2.0 language has been removed from the instance id since within multi-language applications
+      // you want to re-use the instance throughout different languages!
       if ($instanceId === null) {
-         $instanceId = $class . '|' . $context . '_' . $language;
+         $instanceId = $class . '|' . $context;
       }
 
       $serviceObject = null;
