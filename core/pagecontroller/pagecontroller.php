@@ -2232,6 +2232,10 @@ class DefaultTemplateTagClearApproach implements TemplateTagClearApproach {
          if ($children[$objectId] instanceof PlaceHolderTag) {
             $children[$objectId]->setContent('');
          }
+         if ($children[$objectId] instanceof LanguageLabelTag) {
+            /* @var $children LanguageLabelTag[] */
+            $children[$objectId]->clearPlaceHolders();
+         }
       }
    }
 
@@ -2516,6 +2520,22 @@ class LanguageLabelTag extends Document {
     */
    public function &setPlaceHolder($name, $value) {
       $this->placeHolders[$name] = $value;
+      return $this;
+   }
+
+   /**
+    * @public
+    *
+    * Resets the list of place holders that have been defined so far.
+    *
+    * @return LanguageLabelTag This instance for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 05.05.2013<br />
+    */
+   public function &clearPlaceHolders() {
+      $this->placeHolders = array();
       return $this;
    }
 
