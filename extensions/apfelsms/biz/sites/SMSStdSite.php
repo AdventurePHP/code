@@ -52,6 +52,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @return string
     */
    public function getWebsiteTitle() {
+
+
       return $this->websiteTitle;
    }
 
@@ -60,6 +62,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @param string $websiteTitle
     */
    public function setWebsiteTitle($websiteTitle) {
+
+
       $this->websiteTitle = $websiteTitle;
    }
 
@@ -68,6 +72,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @param SMSPage $startPage
     */
    public function setStartPage(SMSPage $startPage) {
+
+
       $this->startPageId = $startPage->getId();
    }
 
@@ -77,7 +83,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     */
    public function getStartPage() {
 
-      if ($this->getStartPageId() === null) {
+
+      if($this->getStartPageId() === null) {
          return null;
       }
 
@@ -94,13 +101,18 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @throws SMSWrongParameterException
     */
    public function setStartPageId($startPageId) {
+
+
       $this->startPageId = $startPageId;
    }
+
 
    /**
     * @return string|integer
     */
    public function getStartPageId() {
+
+
       return $this->startPageId;
    }
 
@@ -109,6 +121,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @param SMSPage $currentPage
     */
    public function setCurrentPage(SMSPage $currentPage) {
+
+
       $this->currentPageId = $currentPage->getId();
    }
 
@@ -118,7 +132,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     */
    public function getCurrentPage() {
 
-      if ($this->getCurrentPageId() === null) {
+
+      if($this->getCurrentPageId() === null) {
          return null;
       }
 
@@ -127,11 +142,13 @@ class SMSStdSite extends APFObject implements SMSSite {
 
       try {
          $currentPage = $SMSM->getPage($this->getCurrentPageId());
-      } catch (SMSWrongParameterException $e) {
+      }
+      catch (SMSWrongParameterException $e) {
          // in case of invalid request id
          $currentPage = $this->get404Page();
          $this->setCurrentPageId($this->get404PageId());
       }
+
       return $currentPage;
 
    }
@@ -143,6 +160,7 @@ class SMSStdSite extends APFObject implements SMSSite {
     */
    public function setCurrentPageId($currentPageId) {
 
+
       $this->currentPageId = $currentPageId;
 
    }
@@ -153,6 +171,7 @@ class SMSStdSite extends APFObject implements SMSSite {
     */
    public function getCurrentPageId() {
 
+
       return $this->currentPageId;
 
    }
@@ -162,6 +181,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @param string|integer $pageId
     */
    public function set403PageId($pageId) {
+
+
       $this->forbiddenPageId = $pageId;
    }
 
@@ -170,6 +191,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @return string|integer
     */
    public function get403PageId() {
+
+
       return $this->forbiddenPageId;
    }
 
@@ -178,6 +201,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @param SMSPage $page
     */
    public function set403Page(SMSPage $page) {
+
+
       $this->set403PageId($page->getId());
    }
 
@@ -187,7 +212,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     */
    public function get403Page() {
 
-      if ($this->get403PageId() === null) {
+
+      if($this->get403PageId() === null) {
          return null;
       }
 
@@ -202,6 +228,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @return boolean
     */
    public function currentIs403Page() {
+
+
       return $this->getCurrentPageId() == $this->get403PageId();
    }
 
@@ -210,6 +238,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @param string|integer $pageId
     */
    public function set404PageId($pageId) {
+
+
       $this->notFoundPageId = $pageId;
    }
 
@@ -218,6 +248,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @return string|integer
     */
    public function get404PageId() {
+
+
       return $this->notFoundPageId;
    }
 
@@ -226,6 +258,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @param SMSPage $page
     */
    public function set404Page(SMSPage $page) {
+
+
       $this->set404PageId($page->getId());
    }
 
@@ -235,7 +269,8 @@ class SMSStdSite extends APFObject implements SMSSite {
     */
    public function get404Page() {
 
-      if ($this->get404PageId() === null) {
+
+      if($this->get404PageId() === null) {
          return null;
       }
 
@@ -250,8 +285,9 @@ class SMSStdSite extends APFObject implements SMSSite {
     * @return boolean
     */
    public function currentIs404Page() {
+
+
       return $this->getCurrentPageId() == $this->get404PageId();
    }
-
 
 }

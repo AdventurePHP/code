@@ -27,7 +27,8 @@ class SMSStdPageStore extends APFObject implements SMSPageStore {
     */
    public function getPage($id) {
 
-      if (!isset($this->pages[$id])) {
+
+      if(!isset($this->pages[$id])) {
          return null;
       }
 
@@ -42,7 +43,8 @@ class SMSStdPageStore extends APFObject implements SMSPageStore {
     */
    public function isPageSet($id) {
 
-      if (isset($this->pages[$id])) {
+
+      if(isset($this->pages[$id])) {
          return true;
       }
 
@@ -56,6 +58,8 @@ class SMSStdPageStore extends APFObject implements SMSPageStore {
     * @param SMSPage $page
     */
    public function setPage($id, SMSPage $page) {
+
+
       $this->pages[$id] = $page;
    }
 

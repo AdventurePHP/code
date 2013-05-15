@@ -1,21 +1,22 @@
 <?php
 namespace APF\extensions\apfelsms\pres\documentcontroller;
 
-use APF\core\pagecontroller\BaseDocumentController;
 use APF\extensions\apfelsms\biz\SMSManager;
 use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\string\StringAssistant;
 
+
 /**
  *
  * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
- * @version: v0.1 (08.08.12)
+ * @version:   v0.1 (08.08.2012)
+ *             v.02 (15.05.2013) Added support to keep certain request parameters in url
  *
  */
-class SMSNavTagController extends BaseDocumentController {
+class SMSNavTagController extends SMSBaseNavTagController {
 
 
    /**
@@ -30,12 +31,14 @@ class SMSNavTagController extends BaseDocumentController {
    protected $autoDepth = false;
 
 
+
    public function transformContent() {
+
 
       /** @var $SMSM \APF\extensions\apfelsms\biz\SMSManager */
       $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
       $this->SMSM = $SMSM;
-      
+
       $doc = $this->getDocument();
       $level = $doc->getAttribute('SMSNavLevel');
       $rellevel = $doc->getAttribute('SMSNavRelLevel');
@@ -46,9 +49,10 @@ class SMSNavTagController extends BaseDocumentController {
       ////
       // fetch base page
 
-      if (!empty($basePageId)) {
+      if(!empty($basePageId)) {
          $basePage = $this->SMSM->getPage($basePageId);
-      } else {
+      }
+      else {
          /** @var $SMSS \APF\extensions\apfelsms\biz\sites\SMSSite */
          $SMSS = $this->SMSM->getSite();
          $basePage = $SMSS->getCurrentPage();
@@ -60,26 +64,28 @@ class SMSNavTagController extends BaseDocumentController {
       // evaluate input attributes
 
       // level
-      if (strtolower($rellevel) == 'true') {
+      if(strtolower($rellevel) == 'true') {
          $levelSummand = intval($level);
          $targetLevel = $basePageLevel + $levelSummand;
-      } else {
+      }
+      else {
          $targetLevel = intval($level);
       }
 
-      if ($targetLevel < 0) {
+      if($targetLevel < 0) {
          $targetLevel = 0;
       }
 
       // depth
-      if ($depth == 'auto') {
+      if($depth == 'auto') {
          $depth = 1;
          $this->autoDepth = true;
-      } else {
+      }
+      else {
          $depth = intval($depth);
       }
 
-      if ($depth < 1) {
+      if($depth < 1) {
          $depth = 1;
       }
 
@@ -88,7 +94,7 @@ class SMSNavTagController extends BaseDocumentController {
       // collect pages to display in first menu level (no subpages, even in case of depth > 1)
 
 
-      if ($targetLevel <= $basePageLevel) {
+      if($targetLevel <= $basePageLevel) {
 
          // go to target level page in current branch
          $targetLevelPage = $basePage;
@@ -99,7 +105,8 @@ class SMSNavTagController extends BaseDocumentController {
          $navPages = $targetLevelPage->getSiblings(true); // include target level page
 
 
-      } else {
+      }
+      else {
 
          $currentCollectingLevel = $basePageLevel + 1; // because we collect children, not siblings
          $collectedPages = $basePage->getChildren();
@@ -121,7 +128,7 @@ class SMSNavTagController extends BaseDocumentController {
          $navPages = $collectedPages;
       }
 
-      if (count($navPages) > 0) {
+      if(count($navPages) > 0) {
          $this->buildMenu($navPages, $depth);
       }
 
@@ -133,6 +140,7 @@ class SMSNavTagController extends BaseDocumentController {
     * @param $depth
     */
    protected function buildMenu(array $navPages, $depth) {
+
 
       // cull entries which should not be displayed
       $navPages = $this->cullEntries($navPages);
@@ -149,63 +157,71 @@ class SMSNavTagController extends BaseDocumentController {
     * @param SMSPage[] $navPages
     * @param $depth
     * @return string
+    * @version v0.1
+    *          v0.2 (15.05.2013) Added support to keep certain request parameters in url
     */
    protected function buildMenuEntries(array $navPages, $depth) {
+
 
       $lastCount = count($navPages);
       $count = 0;
       $buffer = '';
 
+      $url = $this->getUrlPrototype();
+
       foreach ($navPages AS $navPage) {
 
          $count++;
 
-         $linkURL = $navPage->getLink(Url::fromCurrent()->resetQuery());
+         $linkURL = $navPage->getLink(clone $url);
          $linkTitle = $navPage->getNavTitle();
          $linkText = $linkTitle;
          $linkClasses = '';
 
-         if ($count == 1) {
+         if($count == 1) {
             $linkClasses .= 'first ';
          }
 
-         if ($count == $lastCount) {
+         if($count == $lastCount) {
             $linkClasses .= 'last ';
          }
 
-         if ($navPage->isActive()) {
+         if($navPage->isActive()) {
             $linkClasses .= 'active ';
          }
 
-         if ($navPage->isCurrentSite()) {
+         if($navPage->isCurrentSite()) {
             $linkClasses .= 'current ';
          }
 
 
          $children = $navPage->getChildren();
-         if (($depth > 1 || ($this->autoDepth && $navPage->isActive())) && count($children) > 0) {
+         if(($depth > 1 || ($this->autoDepth && $navPage->isActive())) && count($children) > 0) {
 
             // cull entries which not should be displayed
             $subEntries = $this->cullEntries($children);
 
-            if (count($subEntries) > 0) {
+            if(count($subEntries) > 0) {
 
                $template = $this->getTemplate('navEntryWithSubs');
 
-               if ($this->autoDepth) {
+               if($this->autoDepth) {
                   $newDepth = 1;
-               } else {
+               }
+               else {
                   $newDepth = $depth - 1;
                }
 
                // recursive for subEntries
                $template->setPlaceHolder('subEntries', $this->buildMenuEntries($subEntries, $newDepth));
 
-            } else {
+            }
+            else {
                $template = $this->getTemplate('navEntry');
             }
 
-         } else {
+         }
+         else {
             $template = $this->getTemplate('navEntry');
          }
 
@@ -229,12 +245,13 @@ class SMSNavTagController extends BaseDocumentController {
     */
    protected function cullEntries(array $navPages) {
 
+
       $buffer = array();
 
       // detect hidden and protected files
       foreach ($navPages AS $navPage) {
 
-         if ($navPage->isHidden() || $navPage->isAccessProtected()) {
+         if($navPage->isHidden() || $navPage->isAccessProtected()) {
             continue;
          }
 
@@ -243,5 +260,6 @@ class SMSNavTagController extends BaseDocumentController {
 
       return $buffer;
    }
+
 
 }

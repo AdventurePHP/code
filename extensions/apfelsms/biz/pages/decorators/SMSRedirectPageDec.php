@@ -21,6 +21,7 @@ class SMSRedirectPageDec extends SMSAliasPageDec {
     */
    public function getLink(Url $url) {
 
+
       return $this->getReferencedPage()->getLink($url);
    }
 

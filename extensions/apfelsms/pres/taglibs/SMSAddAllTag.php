@@ -12,7 +12,9 @@ use APF\core\pagecontroller\TagLib;
  */
 class SMSAddAllTag extends Document {
 
+
    public function onParseTime() {
+
 
       $doc = $this->getParentObject();
 
@@ -40,7 +42,10 @@ class SMSAddAllTag extends Document {
       $doc->addTagLib($siteTitleTaglib);
    }
 
+
    public function transform() {
+
+
       return ''; // we are just dummy ;)
    }
 

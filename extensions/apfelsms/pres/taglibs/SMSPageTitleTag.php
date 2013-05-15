@@ -18,16 +18,18 @@ class SMSPageTitleTag extends Document {
 
    public function transform() {
 
+
       /** @var $SMSM SMSManager */
       $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       $page = $SMSM->getSite()->getCurrentPage();
 
       $pageId = $this->getAttribute('pageId');
-      if (!empty($pageId)) {
+      if(!empty($pageId)) {
          try {
             $page = $SMSM->getPage($pageId);
-         } catch (SMSException $e) {
+         }
+         catch (SMSException $e) {
             return 'Untitled'; // no title could be found (no valid ID)
          }
       }

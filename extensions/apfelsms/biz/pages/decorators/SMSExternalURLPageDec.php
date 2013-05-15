@@ -29,6 +29,8 @@ class SMSExternalURLPageDec extends SMSAbstractPageDec {
     * @param string $externalURL
     */
    public function setExternalURL($externalURL) {
+
+
       $this->externalURL = $externalURL;
    }
 
@@ -37,6 +39,8 @@ class SMSExternalURLPageDec extends SMSAbstractPageDec {
     * @return string
     */
    public function getExternalURL() {
+
+
       return $this->externalURL;
    }
 
@@ -46,6 +50,8 @@ class SMSExternalURLPageDec extends SMSAbstractPageDec {
     * @return string
     */
    public function getLink(Url $url) {
+
+
       return $this->getExternalURL();
    }
 

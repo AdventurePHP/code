@@ -17,10 +17,12 @@ use APF\modules\usermanagement\biz\UmgtUserSessionStore;
  */
 class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvider {
 
+
    /**
     * @var bool[] Caches protection status for each permissionName to gain performance
     */
    protected $cache = array();
+
 
    /**
     * @var bool If true, access is not protected for no user being logged in.
@@ -35,6 +37,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
     */
    public function isAccessProtected(SMSPage $page, $permissionName) {
 
+
       /*
       * !!! $permissionName is used for visibilityDefinitionType !!!
       */
@@ -42,7 +45,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       $pageId = $page->getId();
 
       // try to return chached protection status
-      if (isset($this->cache[$permissionName][$pageId])) {
+      if(isset($this->cache[$permissionName][$pageId])) {
          return $this->cache[$permissionName][$pageId];
       }
 
@@ -53,7 +56,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       $user = $umgtUS->getUser($this->getContext());
 
       // protect against access if no user is logged in and no anonymous acces is granted
-      if ($user === null) {
+      if($user === null) {
          return $this->cache[$permissionName][$pageId] = (!$this->anonymousAccess);
       }
 
@@ -63,12 +66,12 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       // load visibilities from users and groups
       $groups = $umgtM->loadGroupsWithUser($user);
       $visibilityType = $umgtM->loadVisibilityDefinitionTypeByName($permissionName);
-      if ($visibilityType === null) {
+      if($visibilityType === null) {
          return $this->cache[$permissionName][$pageId] = true; // visibility type is not existent
       }
 
       $visibilities = $umgtM->loadVisibilityDefinitionsByUser($user, $visibilityType);
-      if (count($groups) > 0) {
+      if(count($groups) > 0) {
          foreach ($groups AS $group) {
             $visibilities = array_merge(
                $visibilities,
@@ -79,11 +82,11 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
 
 
       // search visibility definitions
-      if (count($visibilities) > 0) {
+      if(count($visibilities) > 0) {
          foreach ($visibilities AS $visibility) {
 
-            if ($visibility->getAppObjectId() == $pageId &&
-                  ((bool)$visibility->getReadPermission())
+            if($visibility->getAppObjectId() == $pageId &&
+               ((bool) $visibility->getReadPermission())
             ) {
                return $this->cache[$permissionName][$pageId] = false; // visibility definition with read permission found, grant access
             }
@@ -93,7 +96,6 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       // no permission found, protected against access
       return $this->cache[$permissionName][$pageId] = true;
 
-
    }
 
 
@@ -101,7 +103,9 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
     * @param boolean $anonymousAccess
     */
    public function setAnonymousAccess($anonymousAccess) {
-      $this->anonymousAccess = (strtolower((string)$anonymousAccess) == 'true');
+
+
+      $this->anonymousAccess = (strtolower((string) $anonymousAccess) == 'true');
    }
 
 
@@ -109,6 +113,8 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
     * @return boolean
     */
    public function getAnonymousAccess() {
+
+
       return $this->anonymousAccess;
    }
 

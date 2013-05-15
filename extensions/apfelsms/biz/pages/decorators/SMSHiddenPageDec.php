@@ -19,6 +19,7 @@ class SMSHiddenPageDec extends SMSAbstractPageDec {
     */
    public function isHidden() {
 
+
       return true;
    }
 

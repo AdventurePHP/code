@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE apfelsms SYSTEM "apfelsms.dtd">
 <apfelsms>
-   
-   
+
+
    <!-- Main navigation and page tree -->
    <page id="index">
       <title>Herzlich Willkommen!</title>
@@ -13,8 +13,12 @@
       <page id="news-archive">
          <title>News-Archiv</title>
          <css>/styles/news.css</css>
-         <pageDec type="alias"><referencedPageId>news</referencedPageId></pageDec>
-         <pageDec type="request"><requestParam key="archive">show</requestParam></pageDec>
+         <pageDec type="alias">
+            <referencedPageId>news</referencedPageId>
+         </pageDec>
+         <pageDec type="request">
+            <requestParam key="archive">show</requestParam>
+         </pageDec>
       </page>
    </page>
    <page id="about">
@@ -29,8 +33,8 @@
       <title>Impressum &amp; Disclaimer</title>
       <navTitle>Impressum</navTitle>
    </page>
-   
-   
+
+
    <!-- Pages which does not occur in the navigation -->
    <page id="error404">
       <title>404 - Nicht gefunden!</title>
@@ -40,12 +44,12 @@
       <title>403 - Kein Zugriff!</title>
       <pageDec type="hidden" />
    </page>
-   
-   
+
+
    <!-- Additional navigation tree -->
    <page id="footer-nav">
       <pageDec type="hidden" />
-      
+
       <page id="footer-index">
          <pageDec type="redirect">
             <referencedPageId>index</referencedPageId>
@@ -65,10 +69,12 @@
          </pageDec>
       </page>
    </page>
-   
+
    <page id="apf-community">
       <pageDec type="hidden" />
-      <pageDec type="externalURL"><externalURL>http://forum.adventure-php-framework.org</externalURL></pageDec>
+      <pageDec type="externalURL">
+         <externalURL>http://forum.adventure-php-framework.org</externalURL>
+      </pageDec>
    </page>
-   
+
 </apfelsms>

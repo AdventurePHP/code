@@ -39,16 +39,17 @@ class SMSRedirectAction extends AbstractFrontcontrollerAction {
     */
    public function run() {
 
+
       /** @var $SMSM SMSManager */
       $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       $currentPage = $SMSM->getSite()->getCurrentPage();
 
-      if ($currentPage instanceof SMSPageDec) {
+      if($currentPage instanceof SMSPageDec) {
          /** @var $currentPage SMSPageDec */
 
          $decoratorTypes = $currentPage->getDecoratorTypes();
-         if (in_array(self::DECORATOR_TYPE, $decoratorTypes)) {
+         if(in_array(self::DECORATOR_TYPE, $decoratorTypes)) {
 
             /** @var $currentPage SMSRedirectPageDec
              *  (included in pageDecs)
@@ -57,7 +58,7 @@ class SMSRedirectAction extends AbstractFrontcontrollerAction {
             /** @var $referencedPage SMSPage */
             $referencedPage = $currentPage->getReferencedPage();
 
-            if ($currentPage->getId() != $referencedPage->getId()) {
+            if($currentPage->getId() != $referencedPage->getId()) {
 
                $referencedPageURL = $referencedPage->getLink(Url::fromCurrent(true));
 

@@ -1,10 +1,10 @@
 <?php
 namespace APF\extensions\apfelsms\pres\documentcontroller;
 
-use APF\core\pagecontroller\BaseDocumentController;
 use APF\extensions\apfelsms\biz\SMSManager;
 use APF\tools\link\Url;
 use APF\tools\string\StringAssistant;
+
 
 /**
  *
@@ -13,15 +13,18 @@ use APF\tools\string\StringAssistant;
  * @version: v0.1 (23.09.12)
  *
  */
-class SMSBreadcrumbNavTagController extends BaseDocumentController {
+class SMSBreadcrumbNavTagController extends SMSBaseNavTagController {
+
 
    /**
     * @var SMSManager
     */
    protected $SMSM;
 
+
    public function transformContent() {
-      
+
+
       /** @var $SMSM SMSManager */
       $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
       $this->SMSM = $SMSM;
@@ -33,9 +36,10 @@ class SMSBreadcrumbNavTagController extends BaseDocumentController {
       ////
       // fetch base page
 
-      if (!empty($basePageId)) {
+      if(!empty($basePageId)) {
          $basePage = $this->SMSM->getPage($basePageId);
-      } else {
+      }
+      else {
          $basePage = $this->SMSM->getSite()->getStartPage();
       }
 
@@ -46,7 +50,7 @@ class SMSBreadcrumbNavTagController extends BaseDocumentController {
 
       ////
       // collect all breadcrumbs
-      
+
       /** @var $reverseCrumbArray \APF\extensions\apfelsms\biz\pages\SMSPage[] */
       $reverseCrumbArray = array();
       $crumb = $currentPage;
@@ -55,14 +59,15 @@ class SMSBreadcrumbNavTagController extends BaseDocumentController {
 
          // Ignore origanisation-/system-nodes (hidden nodes without title)
          $crumbNavTitle = $crumb->getNavTitle();
-         if (!($crumb->isHidden() && empty($crumbNavTitle))) {
+         if(!($crumb->isHidden() && empty($crumbNavTitle))) {
             $reverseCrumbArray[] = $crumb;
          }
 
          $oldCrumb = $crumb;
          $crumb = $oldCrumb->getParent();
 
-      } while (
+      }
+      while (
          ($crumb !== null) // parent found?
          &&
          ($basePageLevel <= $oldCrumb->getLevel()) // are we still deeper than basePage?
@@ -71,10 +76,10 @@ class SMSBreadcrumbNavTagController extends BaseDocumentController {
       );
 
       // add the base page, if not same as current page
-      if ($currentPage->getId() != $basePageId) {
+      if($currentPage->getId() != $basePageId) {
          $reverseCrumbArray[] = $basePage;
       }
-      
+
       /** @var $crumbArray \APF\extensions\apfelsms\biz\pages\SMSPage[] */
       $crumbArray = array_reverse($reverseCrumbArray);
 
@@ -84,30 +89,32 @@ class SMSBreadcrumbNavTagController extends BaseDocumentController {
 
       $buffer = '';
       $lastKey = count($crumbArray) - 1;
+      
+      $url = $this->getUrlPrototype();
 
       foreach ($crumbArray AS $key => $crumb) {
 
          $template = $this->getTemplate('breadcrumb');
 
-         $linkURL = $crumb->getLink(Url::fromCurrent()->resetQuery());
+         $linkURL = $crumb->getLink(clone $url);
 
          $linkText = $crumb->getNavTitle();
-         if ($crumb->getId() == $basePageId) {
+         if($crumb->getId() == $basePageId) {
             // allow custom title for basePage
             $linkText = $doc->getAttribute('SMSBreadcrumbNavBasePageIdTitle', $crumb->getNavTitle());
          }
-         if (empty($linkText)) {
+         if(empty($linkText)) {
             $linkText = $crumb->getId();
          }
 
          $linkTitle = $linkText;
          $linkClasses = ' level_' . $crumb->getLevel();
 
-         if ($key == $lastKey) {
+         if($key == $lastKey) {
             $linkClasses .= ' last active current';
          }
 
-         if ($key == 0) {
+         if($key == 0) {
             $linkClasses .= ' first';
          }
 
@@ -124,7 +131,6 @@ class SMSBreadcrumbNavTagController extends BaseDocumentController {
       $containerTemplate->setPlaceHolder('breadcrumbs', $buffer);
 
       $containerTemplate->transformOnPlace();
-
 
    }
 

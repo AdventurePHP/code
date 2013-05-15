@@ -21,28 +21,33 @@ class SMSPageAsFolderLinkScheme extends DefaultLinkScheme {
 
    public function formatLink(Url $url) {
 
+
       $page = $url->getQueryParameter(self::$pageParamName);
 
-      if (!empty($page)) {
+      if(!empty($page)) {
 
          $oldPath = $url->getPath();
 
          ////
          // get path without filename
 
-         if (substr($oldPath, -1, 1) == '/') { // path don't contains filename
+         if(substr($oldPath, -1, 1) == '/') { // path don't contains filename
             $path = $oldPath;
-         } else if ($lastDelimiterPos = strrpos($oldPath, '/')) { // any path (with folder) given
-            $path = substr($oldPath, 0, $lastDelimiterPos + 1); // omit filename, include last delimiter
-         } else {
-            $path = '/';
+         }
+         else {
+            if($lastDelimiterPos = strrpos($oldPath, '/')) { // any path (with folder) given
+               $path = substr($oldPath, 0, $lastDelimiterPos + 1); // omit filename, include last delimiter
+            }
+            else {
+               $path = '/';
+            }
          }
 
          ////
          // omit page param "folder" at last position
 
          $paramLength = strlen(self::$pageParamName . '/');
-         if (substr($path, -1 * $paramLength) == self::$pageParamName . '/') {
+         if(substr($path, -1 * $paramLength) == self::$pageParamName . '/') {
             $pathLength = strlen($path);
             $path = substr($path, 0, $pathLength - $paramLength);
          }
@@ -58,7 +63,6 @@ class SMSPageAsFolderLinkScheme extends DefaultLinkScheme {
 
       return parent::formatLink($url);
    }
-
 
 }
 

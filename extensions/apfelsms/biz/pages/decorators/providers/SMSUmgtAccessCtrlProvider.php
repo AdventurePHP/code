@@ -18,10 +18,12 @@ use APF\modules\usermanagement\biz\UmgtUserSessionStore;
  */
 class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvider {
 
+
    /**
     * @var bool[] Caches protection status for each permissionName to gain performance
     */
    protected $cache = array();
+
 
    /**
     * @var bool If true, access is not protected for no user being logged in.
@@ -37,8 +39,9 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
     */
    public function isAccessProtected(SMSPage $page, $permissionName) {
 
+
       // try to return chached protection status
-      if (isset($this->cache[$permissionName])) {
+      if(isset($this->cache[$permissionName])) {
          return $this->cache[$permissionName];
       }
 
@@ -49,7 +52,7 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
       $user = $umgtUS->getUser($this->getContext());
 
       // protect against access if no user is logged in and no anonymous acces is granted
-      if ($user === null) {
+      if($user === null) {
          return $this->cache[$permissionName] = (!$this->anonymousAccess);
       }
 
@@ -59,10 +62,10 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
       $permissions = $umgtM->loadUserPermissions($user);
 
       // search permission
-      if (count($permissions) > 0) {
+      if(count($permissions) > 0) {
          foreach ($permissions AS $permission) {
 
-            if ($permission->getName() == $permissionName) {
+            if($permission->getName() == $permissionName) {
                return $this->cache[$permissionName] = false; // permission found, grant access
             }
 
@@ -80,6 +83,8 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
     * @param boolean $anonymousAccess
     */
    public function setAnonymousAccess($anonymousAccess) {
+
+
       $this->anonymousAccess = $anonymousAccess;
    }
 
@@ -88,6 +93,8 @@ class SMSUmgtAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvid
     * @return boolean
     */
    public function getAnonymousAccess() {
+
+
       return $this->anonymousAccess;
    }
 

@@ -27,6 +27,7 @@ class SMSTitleTag extends Document {
     */
    public function transform() {
 
+
       /** @var $site SMSSite */
       $site = $this->getDIServiceObject('APF\extensions\apfelsms', 'Site');
 
@@ -34,9 +35,10 @@ class SMSTitleTag extends Document {
 
       $currentPage = $site->getCurrentPage();
 
-      if ($currentPage === null) {
+      if($currentPage === null) {
          $pageTitle = $siteTitle;
-      } else {
+      }
+      else {
          /** @var $currentPage SMSPage */
          $pageTitle = $currentPage->getNavTitle();
       }

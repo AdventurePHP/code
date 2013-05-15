@@ -31,19 +31,20 @@ class SMSJSIncludesTag extends Document {
     */
    public function transform() {
 
+
       /** @var $SMSM SMSManager */
       $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       $currentPage = $SMSM->getSite()->getCurrentPage();
 
 
-      if ($currentPage === null) { // this is no normal operation, but ...
+      if($currentPage === null) { // this is no normal operation, but ...
          return ''; // be quiet
       }
 
       $jsArray = $currentPage->getJS();
 
-      if (count($jsArray) < 1) {
+      if(count($jsArray) < 1) {
          return ''; // no scripts to include
       }
 

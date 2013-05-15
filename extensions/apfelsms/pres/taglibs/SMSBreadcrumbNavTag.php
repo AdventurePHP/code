@@ -13,7 +13,9 @@ use APF\core\pagecontroller\Page;
  */
 class SMSBreadcrumbNavTag extends Document {
 
+
    public function transform() {
+
 
       ////
       // fetch attributes from taglib tag

@@ -1,5 +1,6 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators;
+
 use APF\extensions\apfelsms\biz\SMSManager;
 use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSAbstractPageDec;
@@ -15,26 +16,31 @@ use APF\extensions\apfelsms\biz\pages\decorators\SMSAbstractPageDec;
  */
 class SMSAliasPageDec extends SMSAbstractPageDec {
 
+
    /**
     * @var SMSPage
     */
    protected $referencedPage;
+
 
    /**
     * @var string
     */
    protected $referencedPageId;
 
+
    public static $mapVars = array(
       'referencedPageId' => null
    );
+
 
    /**
     * @return SMSPage
     */
    public function getReferencedPage() {
 
-      if (!($this->referencedPage instanceof SMSPage)) {
+
+      if(!($this->referencedPage instanceof SMSPage)) {
 
          /** @var SMSManager $SMSM */
          $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
@@ -47,23 +53,27 @@ class SMSAliasPageDec extends SMSAbstractPageDec {
 
    }
 
+
    /**
     * @return string
     */
    public function getTemplateName() {
 
+
       return $this->getReferencedPage()->getTemplateName();
    }
+
 
    /**
     * @return string
     */
    public function getTitle() {
 
+
       // alias pages may have their own title (or must, but thats a question of data storage layout)
       $title = $this->SMSPage->getTitle();
 
-      if (empty($title)) {
+      if(empty($title)) {
          return $this->getReferencedPage()->getTitle();
       }
 
@@ -71,32 +81,39 @@ class SMSAliasPageDec extends SMSAbstractPageDec {
 
    }
 
+
    /**
     * @return string
     */
    public function getNavTitle() {
 
+
       $navTitle = $this->SMSPage->getNavTitle();
 
-      if (empty($navTitle)) {
+      if(empty($navTitle)) {
          return $this->getReferencedPage()->getNavTitle();
       }
 
       return $navTitle;
    }
 
+
    /**
     * @return bool
     */
    public function isAccessProtected() {
 
+
       return $this->getReferencedPage()->isAccessProtected();
    }
+
 
    /**
     * @return bool
     */
    public function isReference() {
+
+
       return true;
    }
 

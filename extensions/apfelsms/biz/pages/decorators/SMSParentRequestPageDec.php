@@ -22,6 +22,7 @@ class SMSParentRequestPageDec extends SMSRequestPageDec {
     */
    protected function getOuterParent() {
 
+
       return $this->getOuterPage()->getParent();
    }
 
@@ -31,6 +32,7 @@ class SMSParentRequestPageDec extends SMSRequestPageDec {
     * @return string
     */
    public function getLink(Url $url) {
+
 
       $url->mergeQuery($this->getRequestParams());
 
@@ -46,6 +48,7 @@ class SMSParentRequestPageDec extends SMSRequestPageDec {
     */
    public function getTemplateName() {
 
+
       $parent = $this->getOuterParent();
 
       return $parent->getTemplateName();
@@ -58,9 +61,10 @@ class SMSParentRequestPageDec extends SMSRequestPageDec {
     */
    public function getTitle() {
 
+
       $title = $this->SMSPage->getTitle();
 
-      if (empty($title)) {
+      if(empty($title)) {
          return $this->getOuterParent()->getTitle();
       }
 
@@ -73,9 +77,10 @@ class SMSParentRequestPageDec extends SMSRequestPageDec {
     */
    public function getNavTitle() {
 
+
       $navTitle = $this->SMSPage->getTitle();
 
-      if (empty($navTitle)) {
+      if(empty($navTitle)) {
          return $this->getOuterParent()->getNavTitle();
       }
 
@@ -87,6 +92,8 @@ class SMSParentRequestPageDec extends SMSRequestPageDec {
     * @return bool
     */
    public function isAccessProtected() {
+
+
       return $this->getOuterParent()->isAccessProtected();
    }
 
@@ -95,6 +102,8 @@ class SMSParentRequestPageDec extends SMSRequestPageDec {
     * @return bool
     */
    public function isReference() {
+
+
       return true;
    }
 

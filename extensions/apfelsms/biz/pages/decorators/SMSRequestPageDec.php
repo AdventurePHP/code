@@ -32,6 +32,7 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
     */
    public function getLink(Url $url) {
 
+
       $url->mergeQuery($this->getRequestParams());
 
       return $this->SMSPage->getLink($url);
@@ -43,6 +44,7 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
     * @return array
     */
    public function getRequestParams() {
+
 
       return $this->requestParams;
    }
@@ -56,6 +58,7 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
     */
    public function setRequestParams(array $params) {
 
+
       return $this->requestParams = $params;
    }
 
@@ -67,6 +70,7 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
     * @return array The new, merged parameter array
     */
    public function mergeRequestParams(array $params) {
+
 
       return $this->requestParams = array_merge($this->requestParams, $params);
    }
@@ -80,7 +84,8 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
     */
    public function removeRequestParam($paramName) {
 
-      if (isset($this->requestParams[$paramName])) {
+
+      if(isset($this->requestParams[$paramName])) {
 
          $value = $this->requestParams[$paramName];
          unset($this->requestParams[$paramName]);
@@ -104,8 +109,9 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
     */
    public function addRequestParam($paramName, $paramValue, $forceOverwrite = false) {
 
+
       // skip if param already set
-      if (isset($this->requestParams[$paramName]) && !$forceOverwrite) {
+      if(isset($this->requestParams[$paramName]) && !$forceOverwrite) {
          return null;
       }
 
@@ -121,6 +127,7 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
     * @return string|null
     */
    public function getRequestParam($paramName) {
+
 
       return isset($this->requestParams[$paramName]) ? $this->requestParams[$paramName] : null;
    }

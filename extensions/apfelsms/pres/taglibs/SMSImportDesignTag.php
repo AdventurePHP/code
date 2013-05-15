@@ -16,6 +16,7 @@ class SMSImportDesignTag extends ImportTemplateTag {
 
    public function onParseTime() {
 
+
       /** @var $SMSM SMSManager */
       $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
       $SMSS = $SMSM->getSite();
@@ -26,10 +27,10 @@ class SMSImportDesignTag extends ImportTemplateTag {
 
       $notFoundTemplate = $this->getAttribute('notFoundTemplate');
 
-      if (empty($notFoundTemplate)) {
+      if(empty($notFoundTemplate)) {
          $_404page = $SMSS->get404Page();
 
-         if ($_404page !== null) {
+         if($_404page !== null) {
             $notFoundTemplate = $_404page->getTemplateName();
          }
       }
@@ -49,20 +50,21 @@ class SMSImportDesignTag extends ImportTemplateTag {
          $template = $page->getTemplateName();
 
          // check if template is protected and fall back on notAllowedTemplate if necessary
-         if ($page->isAccessProtected()) {
+         if($page->isAccessProtected()) {
             $notAllowedTemplate = $this->getAttribute('notAllowedTemplate');
 
-            if (empty($notAllowedTemplate)) {
+            if(empty($notAllowedTemplate)) {
                $_403page = $SMSS->get403Page();
 
-               if ($_403page !== null) {
+               if($_403page !== null) {
                   $notAllowedTemplate = $_403page->getTemplateName();
                }
             }
             $template = $notAllowedTemplate;
          }
 
-      } catch (SMSException $e) {
+      }
+      catch (SMSException $e) {
 
          // on exception (e.g. given page id is not existent) fall back on notFoundTemplate
          $template = $notFoundTemplate;
@@ -70,7 +72,7 @@ class SMSImportDesignTag extends ImportTemplateTag {
 
 
       // check if template name is set
-      if (empty($template)) {
+      if(empty($template)) {
          throw new SMSException('[SMSImportDesignTag:importdesign()] No template found.');
       }
 
@@ -84,7 +86,8 @@ class SMSImportDesignTag extends ImportTemplateTag {
 
       try {
          parent::onParseTime();
-      } catch (IncludeException $ie) {
+      }
+      catch (IncludeException $ie) {
 
          ////
          // fall back on notFoundTemplate if missing template was reason of exception
@@ -93,7 +96,7 @@ class SMSImportDesignTag extends ImportTemplateTag {
          $strPosDesign = strpos($message, 'Design');
          $strPosExists = strpos($message, 'not existent');
 
-         if ($strPosDesign === false || $strPosExists === false) {
+         if($strPosDesign === false || $strPosExists === false) {
             throw $ie; // other reason, abort and throw exception
          }
 

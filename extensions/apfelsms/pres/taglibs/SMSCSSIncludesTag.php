@@ -31,19 +31,20 @@ class SMSCSSIncludesTag extends Document {
     */
    public function transform() {
 
+
       /** @var $SMSM SMSManager */
       $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       $currentPage = $SMSM->getSite()->getCurrentPage();
 
 
-      if ($currentPage === null) { // this is no normal operation, but ...
+      if($currentPage === null) { // this is no normal operation, but ...
          return ''; // be quiet
       }
 
       $cssArray = $currentPage->getCSS();
 
-      if (count($cssArray) < 1) {
+      if(count($cssArray) < 1) {
          return ''; // no styles to include
       }
 
@@ -53,7 +54,7 @@ class SMSCSSIncludesTag extends Document {
       foreach ($cssArray AS $media => $urlReplacer) {
 
          $mediaReplacer = 'all';
-         if (is_string($media)) {
+         if(is_string($media)) {
             $mediaReplacer = $media;
          }
 

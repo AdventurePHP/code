@@ -16,6 +16,7 @@ class SMSNavTag extends Document {
 
    public function transform() {
 
+
       ////
       // fetch attributes from taglib tag
 
@@ -30,6 +31,9 @@ class SMSNavTag extends Document {
 
       // base page id
       $basePageId = $this->getAttribute('basePageId');
+
+      // keep request parameters
+      $keepRequestParams = $this->getAttribute('keepRequestParams');
 
 
       ////
@@ -50,6 +54,7 @@ class SMSNavTag extends Document {
       $rootDoc->setAttribute('SMSNavRelLevel', $rellevel);
       $rootDoc->setAttribute('SMSNavDepth', $depth);
       $rootDoc->setAttribute('SMSNavBasePageId', $basePageId);
+      $rootDoc->setAttribute('SMSNavKeepRequestParams', $keepRequestParams);
 
       return $page->transform();
 

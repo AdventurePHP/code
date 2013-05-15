@@ -16,6 +16,7 @@ use APF\modules\usermanagement\biz\UmgtUserSessionStore;
  */
 class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
 
+
    /**
     * @var boolean If true, page is hidden if user is logged in instead of hiding if no user is logged in.
     * @since v0.2
@@ -28,6 +29,7 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
     */
    public function isHidden() {
 
+
       /** @var $umgtUS UmgtUserSessionStore */
       $umgtUS = & $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
@@ -35,7 +37,7 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
       $user = $umgtUS->getUser($this->getContext());
 
       // user IS NOT logged in
-      if ($user === null) {
+      if($user === null) {
          return (!$this->hiddenOnLogin);
       }
 
@@ -50,7 +52,9 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
     * @since v0.2
     */
    public function setHiddenOnLogin($hiddenOnLogin) {
-      $this->hiddenOnLogin = (strtolower((string)$hiddenOnLogin) == 'true');
+
+
+      $this->hiddenOnLogin = (strtolower((string) $hiddenOnLogin) == 'true');
    }
 
 
@@ -59,6 +63,8 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
     * @since v0.2
     */
    public function getHiddenOnLogin() {
+
+
       return $this->hiddenOnLogin;
    }
 

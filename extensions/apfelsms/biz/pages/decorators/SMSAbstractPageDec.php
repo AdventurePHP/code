@@ -38,6 +38,8 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @param SMSPage $SMSPage
     */
    public function setPage(SMSPage $SMSPage) {
+
+
       $this->SMSPage = $SMSPage;
    }
 
@@ -46,6 +48,8 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @return SMSPage
     */
    public function getPage() {
+
+
       return $this->SMSPage;
    }
 
@@ -54,6 +58,8 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @param string $type
     */
    public function setDecType($type) {
+
+
       $this->type = $type;
    }
 
@@ -62,6 +68,8 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @return string
     */
    public function getDecType() {
+
+
       return $this->type;
    }
 
@@ -73,11 +81,12 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function getDecoratorTypes(array $giveThrough = array()) {
 
+
       $giveThrough[] = $this->getDecType();
 
       $page = $this->SMSPage;
 
-      if ($page instanceof SMSPageDec) {
+      if($page instanceof SMSPageDec) {
          /**
           * @var SMSPageDec $page
           */
@@ -95,11 +104,12 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function getAllDecorators(array $giveThrough = array()) {
 
+
       $giveThrough[] = $this;
 
       $page = $this->SMSPage;
 
-      if ($page instanceof SMSPageDec) {
+      if($page instanceof SMSPageDec) {
          /**
           * @var SMSPageDec $page
           */
@@ -118,6 +128,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function __call($name, $arguments) {
 
+
       return call_user_func_array(
          array($this->SMSPage, $name),
          $arguments
@@ -132,18 +143,20 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function providesDecMethod($name) {
 
-      if (method_exists($this, $name)) {
+
+      if(method_exists($this, $name)) {
          return true;
       }
 
       $page = $this->SMSPage;
 
-      if ($page instanceof SMSPageDec) {
+      if($page instanceof SMSPageDec) {
          /**
           * @var SMSPageDec $page
           */
          return $page->providesDecMethod($name);
       }
+
       return false;
 
    }
@@ -154,12 +167,13 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function getPageWithoutDecorators() {
 
+
       /**
        * @var SMSPageDec $site
        */
       $site = $this->SMSPage;
 
-      if (!($site instanceof SMSPageDec)) {
+      if(!($site instanceof SMSPageDec)) {
          /**
           * @var SMSPage $site
           */
@@ -177,14 +191,17 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function mapData(array $data) {
 
+
       foreach ($data AS $prop => $val) {
 
-         if (property_exists($this, $prop)) { // check if property is applicable
+         if(property_exists($this, $prop)) { // check if property is applicable
             $this->$prop = $val;
-         } elseif (is_array($val) && property_exists($this, $prop . 's')) { // try plural form, e.g. an XMl element name may be "requestParam" and belong to property "requestParams"
+         }
+         elseif(is_array($val) && property_exists($this, $prop . 's')) { // try plural form, e.g. an XMl element name may be "requestParam" and belong to property "requestParams"
             $pluralProp = $prop . 's';
             $this->$pluralProp = $val;
-         } else {
+         }
+         else {
             throw new SMSException('[' . get_class($this) . '::mapData()] Mapper delivers data that is not applicable to ' . get_class($this) . ' object');
          }
 
@@ -200,6 +217,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function setId($id) {
 
+
       return $this->SMSPage->setId($id);
    }
 
@@ -208,6 +226,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @return string Id of underlying SMSPage
     */
    public function getId() {
+
 
       return $this->SMSPage->getId();
    }
@@ -219,6 +238,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function setLevel($lvl) {
 
+
       return $this->SMSPage->setLevel($lvl);
    }
 
@@ -227,6 +247,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @return int
     */
    public function getLevel() {
+
 
       return $this->SMSPage->getLevel();
    }
@@ -237,6 +258,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function getTitle() {
 
+
       return $this->SMSPage->getTitle();
    }
 
@@ -245,6 +267,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @param string $title
     */
    public function setTitle($title) {
+
 
       return $this->SMSPage->setTitle($title);
    }
@@ -255,6 +278,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function getNavTitle() {
 
+
       return $this->SMSPage->getNavTitle();
    }
 
@@ -264,6 +288,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function setNavTitle($navTitle) {
 
+
       return $this->SMSPage->setNavTitle($navTitle);
    }
 
@@ -272,6 +297,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @return array(string) CSS includes of underlying SMSPage
     */
    public function getCSS() {
+
 
       return $this->SMSPage->getCSS();
    }
@@ -283,6 +309,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function addCSS($css, $media = null) {
 
+
       return $this->SMSPage->addCSS($css, $media);
    }
 
@@ -292,6 +319,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function getJS() {
 
+
       return $this->SMSPage->getJS();
    }
 
@@ -300,6 +328,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @param string $js
     */
    public function addJS($js) {
+
 
       return $this->SMSPage->addJS($js);
    }
@@ -311,6 +340,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function getLink(Url $url) {
 
+
       return $this->SMSPage->getLink($url);
    }
 
@@ -321,6 +351,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    final public function setPageRequestParamInURL(Url $url) {
 
+
       return $this->SMSPage->setPageRequestParamInURL($url);
    }
 
@@ -329,6 +360,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @return string
     */
    public function getTemplateName() {
+
 
       return $this->SMSPage->getTemplateName();
    }
@@ -339,6 +371,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function isHidden() {
 
+
       return $this->SMSPage->isHidden();
    }
 
@@ -347,6 +380,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @return boolean
     */
    public function isAccessProtected() {
+
 
       return $this->SMSPage->isAccessProtected();
    }
@@ -357,6 +391,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function isReference() {
 
+
       return $this->SMSPage->isReference();
    }
 
@@ -365,6 +400,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @return boolean
     */
    public function isCurrentSite() {
+
 
       return $this->SMSPage->isCurrentSite();
    }
@@ -375,6 +411,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function isActive() {
 
+
       return $this->SMSPage->isActive();
    }
 
@@ -383,6 +420,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @return SMSPage
     */
    public function getParent() {
+
 
       return $this->SMSPage->getParent();
    }
@@ -394,6 +432,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function getSiblings($includeMe = false) {
 
+
       return $this->SMSPage->getSiblings($includeMe);
    }
 
@@ -403,6 +442,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     */
    public function getChildren() {
 
+
       return $this->SMSPage->getChildren();
    }
 
@@ -411,6 +451,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
     * @return SMSPage
     */
    final public function getOuterPage() {
+
 
       return $this->SMSPage->getOuterPage();
    }

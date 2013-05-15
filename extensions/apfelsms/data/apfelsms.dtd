@@ -15,14 +15,13 @@
 <!--pageDec -->
 <!ELEMENT pageDec (referencedPageId|requestParam|externalURL|providerServiceName|providerServiceNamespace|permissionName)*>
 <!ATTLIST pageDec type CDATA #REQUIRED>
-        
+
 <!-- pageDec type "alias" -->
 <!ELEMENT referencedPageId (#PCDATA)>
 
 <!-- pageDec type "request" and "parentRequest" -->
 <!ELEMENT requestParam (#PCDATA)>
-<!ATTLIST requestParam
-        key CDATA #REQUIRED>
+<!ATTLIST requestParam key CDATA #REQUIRED>
 
 <!-- pageDec type "externalURL" -->
 <!ELEMENT externalURL (#PCDATA)>

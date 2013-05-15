@@ -37,16 +37,17 @@ class SMSExternalURLRedirectAction extends AbstractFrontcontrollerAction {
     */
    public function run() {
 
+
       /** @var $SMSM SMSManager */
       $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
 
       $currentPage = $SMSM->getSite()->getCurrentPage();
 
-      if ($currentPage instanceof SMSPageDec) {
+      if($currentPage instanceof SMSPageDec) {
          /** @var $currentPage SMSPageDec */
 
          $decoratorTypes = $currentPage->getDecoratorTypes();
-         if (in_array(self::DECORATOR_TYPE, $decoratorTypes)) {
+         if(in_array(self::DECORATOR_TYPE, $decoratorTypes)) {
 
             /**
              * @var $currentPage SMSExternalUrlPageDec
@@ -58,7 +59,7 @@ class SMSExternalURLRedirectAction extends AbstractFrontcontrollerAction {
             $currentURLObject = Url::fromCurrent();
 
             // protection against infinite redirection loops
-            if (
+            if(
                $externalURLObject->getHost() != $currentURLObject->getHost()
                ||
                $externalURLObject->getPath() != $currentURLObject->getPath()

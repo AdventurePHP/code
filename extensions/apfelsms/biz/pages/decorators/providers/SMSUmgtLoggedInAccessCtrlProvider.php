@@ -15,6 +15,7 @@ use APF\modules\usermanagement\biz\UmgtUserSessionStore;
  */
 class SMSUmgtLoggedInAccessCtrlProvider extends APFObject implements SMSAccessCtrlProvider {
 
+
    /**
     * @var boolean If true, page is protected if user is logged in instead of protecting if no user is logged in.
     */
@@ -28,6 +29,7 @@ class SMSUmgtLoggedInAccessCtrlProvider extends APFObject implements SMSAccessCt
     */
    public function isAccessProtected(SMSPage $page, $permissionName) {
 
+
       /** @var $umgtUS UmgtUserSessionStore */
       $umgtUS = & $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
@@ -36,7 +38,7 @@ class SMSUmgtLoggedInAccessCtrlProvider extends APFObject implements SMSAccessCt
 
 
       // user IS NOT logged in
-      if ($user === null) {
+      if($user === null) {
          return (!$this->accessProtectedOnLogin);
       }
 
@@ -49,7 +51,9 @@ class SMSUmgtLoggedInAccessCtrlProvider extends APFObject implements SMSAccessCt
     * @param boolean $accessProtectedOnLogin
     */
    public function setAccessProtectedOnLogin($accessProtectedOnLogin) {
-      $this->accessProtectedOnLogin = (strtolower((string)$accessProtectedOnLogin) == 'true');
+
+
+      $this->accessProtectedOnLogin = (strtolower((string) $accessProtectedOnLogin) == 'true');
    }
 
 
@@ -57,6 +61,8 @@ class SMSUmgtLoggedInAccessCtrlProvider extends APFObject implements SMSAccessCt
     * @return boolean
     */
    public function getAccessProtectedOnLogin() {
+
+
       return $this->accessProtectedOnLogin;
    }
 

@@ -177,11 +177,13 @@ interface SMSPage {
     */
    public function getChildren();
 
+
    /**
     * @abstract
     * @return SMSPage
     */
    public function getOuterPage();
+
 
    /**
     * @abstract

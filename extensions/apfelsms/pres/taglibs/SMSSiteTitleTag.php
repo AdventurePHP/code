@@ -17,6 +17,7 @@ class SMSSiteTitleTag extends Document {
 
    public function transform() {
 
+
       /** @var $SMSS SMSSite */
       $SMSS = $this->getDIServiceObject('APF\extensions\apfelsms', 'Site');
 

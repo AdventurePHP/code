@@ -9,7 +9,7 @@ use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
  * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version :  v0.2 (18.06.2012)
- *             v0.2 (28.04.2013) Added getPageType()-method to support multiple page types in one application 
+ *             v0.2 (28.04.2013) Added getPageType()-method to support multiple page types in one application
  */
 interface SMSMapper {
 
@@ -46,8 +46,8 @@ interface SMSMapper {
     * @since v0.3
     */
    public function getPageType($pageId);
-   
-   
+
+
    /**
     * @abstract
     * @param SMSPage $page
@@ -70,6 +70,5 @@ interface SMSMapper {
     * @return string
     */
    public function getParentId(SMSPage $page);
-
 
 }

@@ -26,9 +26,10 @@ class SMSPageLinkTag extends Document {
 
    public function transform() {
 
+
       $pageId = $this->getAttribute('id');
 
-      if (empty($pageId)) {
+      if(empty($pageId)) {
          throw new \InvalidArgumentException('No page id defined', E_USER_ERROR);
       }
 
@@ -40,7 +41,7 @@ class SMSPageLinkTag extends Document {
       // evaluate magic page ids
 
       $magicPageIds = array('__current', '__referer', '__start', '__parent', '__next', '__prev');
-      if (in_array($pageId, $magicPageIds)) {
+      if(in_array($pageId, $magicPageIds)) {
 
          switch ($pageId) {
             case '__current': // current page
@@ -52,7 +53,7 @@ class SMSPageLinkTag extends Document {
 
                // get http referer
 
-               if (!isset($_SERVER['HTTP_REFERER'])) {
+               if(!isset($_SERVER['HTTP_REFERER'])) {
                   // fallback on current page
                   $pageId = $SMSM->getSite()->getCurrentPageId();
                   break;
@@ -64,11 +65,11 @@ class SMSPageLinkTag extends Document {
                $currentUrl = Url::fromCurrent(true);
 
                // protection against url xss
-               if ($refererUrl->getHost() == $currentUrl->getHost()) {
+               if($refererUrl->getHost() == $currentUrl->getHost()) {
                   $pageId = $refererUrl->getQueryParameter($pageRequestParamName);
                }
 
-               if (empty($pageId)) {
+               if(empty($pageId)) {
                   // safety fallback on current page 
                   $pageId = $SMSM->getSite()->getCurrentPageId();
                }
@@ -76,7 +77,8 @@ class SMSPageLinkTag extends Document {
                // test for valid page id
                try {
                   $SMSM->getPage($pageId);
-               } catch (SMSException $e) {
+               }
+               catch (SMSException $e) {
                   $pageId = $SMSM->getSite()->getCurrentPageId();
                }
 
@@ -93,9 +95,10 @@ class SMSPageLinkTag extends Document {
 
                $parentPage = $currentPage->getParent();
 
-               if ($parentPage === null) {
+               if($parentPage === null) {
                   $pageId = $SMSM->getSite()->getStartPageId();
-               } else {
+               }
+               else {
                   $pageId = $parentPage->getId();
                }
 
@@ -107,14 +110,14 @@ class SMSPageLinkTag extends Document {
 
                $siblings = $currentPage->getSiblings(true);
 
-               if (empty($siblings)) {
+               if(empty($siblings)) {
                   return '';
                }
-               
+
                /** @var $visibleSiblings \APF\extensions\apfelsms\biz\pages\SMSPage[] */
                $visibleSiblings = array();
                foreach ($siblings AS $sibling) {
-                  if ($sibling->isHidden()) {
+                  if($sibling->isHidden()) {
                      continue;
                   }
                   $visibleSiblings[] = $sibling;
@@ -123,21 +126,22 @@ class SMSPageLinkTag extends Document {
                $currentIndex = null;
                $currentId = $currentPage->getId();
                foreach ($visibleSiblings AS $index => $sibling) {
-                  if ($sibling->getId() == $currentId) {
+                  if($sibling->getId() == $currentId) {
                      $currentIndex = $index;
                      break;
                   }
                }
 
-               if ($pageId == '__next') {
+               if($pageId == '__next') {
                   $summand = 1;
-               } else {
+               }
+               else {
                   $summand = -1;
                }
 
                $index = $currentIndex + $summand;
 
-               if (!isset($visibleSiblings[$index])) {
+               if(!isset($visibleSiblings[$index])) {
                   return '';
                }
 
@@ -152,7 +156,8 @@ class SMSPageLinkTag extends Document {
       // fetch page object
       try {
          $page = $SMSM->getPage($pageId);
-      } catch (SMSException $e) {
+      }
+      catch (SMSException $e) {
          // fallback on 404 error page (not found)
          $page = $SMSM->getSite()->get404Page();
       }
@@ -160,7 +165,7 @@ class SMSPageLinkTag extends Document {
 
       $content = $this->getContent();
 
-      if (empty($content)) {
+      if(empty($content)) {
          $content = StringAssistant::escapeSpecialCharacters($page->getNavTitle());
       }
 
