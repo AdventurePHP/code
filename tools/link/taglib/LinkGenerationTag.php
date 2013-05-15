@@ -22,6 +22,7 @@ namespace APF\tools\link\taglib;
  */
 use APF\core\pagecontroller\Document;
 use APF\tools\link\LinkGenerator;
+use APF\tools\link\Url;
 
 /**
  * @package APF\tools\link\taglib
@@ -34,6 +35,7 @@ use APF\tools\link\LinkGenerator;
  * @version
  * Version 0.1, 28.07.2011<br />
  * Version 0.2, 22.11.2012 Werner Liemberger: removed a:getstring and ignored href bug<br />
+ * Version 0.3, 15.05.2013 (Added use APF\tools\link\Url [Tobias Lückel|Megger])<br />
  */
 class LinkGenerationTag extends Document {
 

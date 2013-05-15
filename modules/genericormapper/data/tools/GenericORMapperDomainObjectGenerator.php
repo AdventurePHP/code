@@ -152,7 +152,9 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
     * @param string $fileName The file name the class will be written to.
     *
     * @author Ralf Schubert
-    * @version 0.1,  15.01.2011<br />
+    * @version
+    * Version 0.1, 15.01.2011<br />
+    * Version 0.2, 15.05.2013 (Update start- and endtag with classname instead of class [Tobias Lückel|Megger])<br />
     */
    protected function updateServiceObject($name, $fileName) {
 
@@ -170,8 +172,9 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
         ); */
       // *WORKAROUND* with preg_* functions not found, used some string functions instead:
       $class = $this->domainObjectsTable[$name]['Class'];
-      $startTag = '//<*' . $class . 'Base:start*>';
-      $endTag = '<*' . $class . 'Base:end*>';
+      $className = RootClassLoader::getClassName($class);
+      $startTag = '//<*' . $className . 'Base:start*>';
+      $endTag = '<*' . $className . 'Base:end*>';
       $start = strpos($content, $startTag);
       $length = strpos($content, $endTag, $start) + strlen($endTag) - $start;
       $content = substr_replace($content, $newCode, $start, $length);

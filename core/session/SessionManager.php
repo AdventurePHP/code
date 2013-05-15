@@ -57,8 +57,9 @@ final class SessionManager {
     * @author Christian Schäfer
     * @version
     * Version 0.1, 08.03.2006<br />
+    * Version 0.2, 15.05.2013 (Changed SessionManager to __construct [Tobias Lückel|Megger])<br />
     */
-   public function SessionManager($namespace = '') {
+   public function __construct($namespace = '') {
 
       // change in 1.12: session manager must not be created without a namespace!
       if (empty($namespace)) {

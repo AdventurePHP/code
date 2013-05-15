@@ -34,6 +34,7 @@ use APF\core\pagecontroller\APFObject;
  * 0.2, 27.09.2009<br />
  * 0.3, 20.03.2010 Added package support<br />
  * 0.4, 20.08.2010 (Enhancement with further node types)<br />
+ * 0.5, 15.05.2013 (Added namespace to getNodesByType [Tobias Lückel|Megger])<br />
  */
 class HtmlHeaderManager extends APFObject {
 
@@ -91,7 +92,7 @@ class HtmlHeaderManager extends APFObject {
     * @return HtmlNode The title or null.
     */
    public function getTitle() {
-      $titles = $this->getNodesByType('TitleNode');
+      $titles = $this->getNodesByType('APF\extensions\htmlheader\biz\TitleNode');
       if (count($titles) > 0) {
          return $titles[count($titles) - 1]; // always return the last title, to allow override!
       }
@@ -102,7 +103,7 @@ class HtmlHeaderManager extends APFObject {
     * @return CanonicalNode The canonical node or null.
     */
    public function getCanonical() {
-      $canonical = $this->getNodesByType('CanonicalNode');
+      $canonical = $this->getNodesByType('APF\extensions\htmlheader\biz\CanonicalNode');
       if (count($canonical) > 0) {
          return $canonical[count($canonical) - 1]; // always return the last title, to allow override!
       }
@@ -113,28 +114,28 @@ class HtmlHeaderManager extends APFObject {
     * @return CssNode[] The list of javascript nodes.
     */
    public function getStylesheetNodes() {
-      return $this->getNodesByType('CssNode');
+      return $this->getNodesByType('APF\extensions\htmlheader\biz\CssNode');
    }
 
    /**
     * @return JsNode[] The list of javascript nodes.
     */
    public function getJavascriptNodes() {
-      return $this->getNodesByType('JsNode');
+      return $this->getNodesByType('APF\extensions\htmlheader\biz\JsNode');
    }
 
    /**
     * @return MetaNode[] The meta nodes (HttpMetaNode, SimpleMetaNode).
     */
    public function getMetaNodes() {
-      return $this->getNodesByType('MetaNode');
+      return $this->getNodesByType('APF\extensions\htmlheader\biz\MetaNode');
    }
 
    /**
     * @return BaseNode[] The base nodes of the current header.
     */
    public function getBaseNodes() {
-      return $this->getNodesByType('BaseNode');
+      return $this->getNodesByType('APF\extensions\htmlheader\biz\BaseNode');
    }
 
    /**
