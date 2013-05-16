@@ -54,7 +54,7 @@ class SMSNavTag extends Document {
       $rootDoc->setAttribute('SMSNavRelLevel', $rellevel);
       $rootDoc->setAttribute('SMSNavDepth', $depth);
       $rootDoc->setAttribute('SMSNavBasePageId', $basePageId);
-      $rootDoc->setAttribute('SMSNavKeepRequestParams', $keepRequestParams);
+      $rootDoc->setAttribute('SMSBaseNavKeepRequestParams', $keepRequestParams);
 
       return $page->transform();
 

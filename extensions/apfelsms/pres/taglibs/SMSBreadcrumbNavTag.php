@@ -26,6 +26,9 @@ class SMSBreadcrumbNavTag extends Document {
       // fetch basePageIdTitle
       $basePageIdTitle = $this->getAttribute('basePageIdTitle');
 
+      // keep request parameters
+      $keepRequestParams = $this->getAttribute('keepRequestParams');
+
       ////
       // fetch template name and namespace
 
@@ -42,6 +45,7 @@ class SMSBreadcrumbNavTag extends Document {
       $rootDoc = $page->getRootDocument();
       $rootDoc->setAttribute('SMSBreadcrumbNavBasePageId', $basePageId);
       $rootDoc->setAttribute('SMSBreadcrumbNavBasePageIdTitle', $basePageIdTitle);
+      $rootDoc->setAttribute('SMSBaseNavKeepRequestParams', $keepRequestParams);
 
       return $page->transform();
 

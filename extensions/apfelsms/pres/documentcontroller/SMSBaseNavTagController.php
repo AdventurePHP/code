@@ -30,7 +30,7 @@ abstract class SMSBaseNavTagController extends BaseDocumentController {
 
 
       $url = Url::fromCurrent();
-      $keepRequestParams = $this->getDocument()->getAttribute('SMSNavKeepRequestParams');
+      $keepRequestParams = $this->getDocument()->getAttribute('SMSBaseNavKeepRequestParams');
 
 
       // keep all parameters (leave url unchanged)
