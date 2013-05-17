@@ -37,7 +37,7 @@ namespace APF\tools\image;
  */
 class ImageManager {
 
-   private function ImageManager() {
+   private function __construct() {
       // utility class
    }
 
@@ -68,12 +68,12 @@ class ImageManager {
     * Version 0.3, 31.01.2009 (Refactoring of the method. Now only the relevant image indicators are returned)<br />
     * Version 0.4, 01.02.2009 (Added a check, if the channel attribute is returned by getimagesize())<br />
     */
-   static function getImageAttributes($image, $attributeName = null) {
+   public static function getImageAttributes($image, $attributeName = null) {
 
       // check if the image is present on disk
       if (!file_exists($image)) {
          throw new \InvalidArgumentException('[ImageManager::showImageAttributes()] The given '
-                  . 'image ("' . $image . '") does not exist! Hence, no attributes can be analyzed.',
+            . 'image ("' . $image . '") does not exist! Hence, no attributes can be analyzed.',
             E_USER_ERROR);
       }
 
@@ -89,7 +89,7 @@ class ImageManager {
       // analyze the image attributes
       if (($attributes = getimagesize($image)) === false) {
          throw new \InvalidArgumentException('[ImageManager::showImageAttributes()] The attributes of the image ("'
-               . $image . '") cannot be analyzed since it is corrupt!');
+         . $image . '") cannot be analyzed since it is corrupt!');
       }
 
       // image define the image dimensions
@@ -141,22 +141,23 @@ class ImageManager {
     * the desired file.
     *
     * @param string $sourceImage full qualified path to the image file.
-    * @param int $width width of the resized image.
-    * @param int $height height of the resized image.
+    * @param int $width width of the adjusted image.
+    * @param int $height height of the adjusted image.
     * @param string $targetImage full qualified path to the target image.
-    * @param int $jpgQuality the jpg quality (0-100).
+    * @param int $jpgQuality The jpg quality (0-100).
+    * @param int $pngCompression The png compression level (0-9).
     * @throws \InvalidArgumentException In case the applied image does not exist.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 31.01.2009<br />
+    * Version 0.2, 01.05.2013 (Werner Liemberger: added pngCompression and bug-fix of the way the target image is saved.
     */
-   static function resizeImage($sourceImage, $width, $height, $targetImage = null, $jpgQuality = 80) {
-
+   public static function resizeImage($sourceImage, $width, $height, $targetImage = null, $jpgQuality = 80, $pngCompression = 0) {
       // check if the image is present on disk
       if (!file_exists($sourceImage)) {
          throw new \InvalidArgumentException('[ImageManager::resizeImage()] The given image ("'
-               . $sourceImage . '") does not exist! Hence, it cannot be resized.', E_USER_ERROR);
+         . $sourceImage . '") does not exist! Hence, it cannot be adjusted.', E_USER_ERROR);
       }
 
       // gather the current dimensions of the image
@@ -169,8 +170,7 @@ class ImageManager {
       if ($sourceImageType == 'jpg') {
          $sourceImageStream = imagecreatefromjpeg($sourceImage);
          $targetImageStream = imagecreatetruecolor($width, $height);
-      }
-      elseif ($sourceImageType == 'gif') {
+      } elseif ($sourceImageType == 'gif') {
          $sourceImageStream = imagecreatefromgif($sourceImage);
          $targetImageStream = imagecreate($width, $height);
       } else {
@@ -197,31 +197,47 @@ class ImageManager {
       // copy source image stream to target image stream and resize it
       imagecopyresized($targetImageStream, $sourceImageStream, 0, 0, 0, 0, $width, $height, $sourceImageWidth, $sourceImageHeight);
 
-      // save image (if desired) or flush it to stdout
-      if ($sourceImageType == 'jpg') {
-         if ($targetImage === null) {
-            imagejpeg($targetImageStream, '', $jpgQuality);
-         } else {
-            imagejpeg($targetImageStream, $targetImage, $jpgQuality);
-         }
-      } elseif ($sourceImageType == 'gif') {
-         if ($targetImage === null) {
-            imagegif($targetImageStream);
-         } else {
-            imagegif($targetImageStream, $targetImage);
+      if ($targetImage !== null) {
+         // Get image type. The target image won't exist before the operation,
+         // therefore the getimagesize() function from getImageAttributes
+         // produces a read error. That's the reason why the image type is...
+         $fileNamePartsArray = explode('.', $targetImage);
+         $targetImageType = end($fileNamePartsArray);
+         $targetImageType = strtolower($targetImageType);
+
+         // sometimes the file extension name is written with an "e", so correct that
+         $targetImageType = str_replace('jpeg', 'jpg', $targetImageType);
+
+         switch ($targetImageType) {
+            case 'jpg':
+               imagejpeg($targetImageStream, $targetImage, $jpgQuality);
+               break;
+            case 'gif':
+               imagegif($targetImageStream, $targetImage);
+               break;
+            case 'png':
+               imagepng($targetImageStream, $targetImage, $pngCompression);
+               break;
+            default:
+               throw new \InvalidArgumentException('[ImageManager::resizeImage()] The targetImage extension ("'
+               . $targetImageType . '") does not match "jpg", "png", or "gif"!', E_USER_ERROR);
          }
       } else {
-         if ($targetImage === null) {
-            imagepng($targetImageStream);
-         } else {
-            imagepng($targetImageStream, $targetImage);
+         switch ($sourceImageType) {
+            case 'jpg':
+               imagejpeg($targetImageStream, '', $jpgQuality);
+               break;
+            case 'gif':
+               imagegif($targetImageStream, '');
+               break;
+            default:
+               imagepng($targetImageStream, '', $pngCompression);
          }
       }
 
       // clean memory
       imagedestroy($targetImageStream);
       imagedestroy($sourceImageStream);
-
    }
 
 }
