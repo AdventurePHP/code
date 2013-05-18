@@ -315,7 +315,7 @@ final class BenchmarkTimer {
       $startTime = $this->generateMicroTime();
       $rootProcess = new BenchmarkProcess();
       $rootProcess->setProcessId($this->getID());
-      $rootProcess->setProcessName(get_class($this));
+      $rootProcess->setProcessName('Root');
       $rootProcess->setProcessLevel(0);
       $rootProcess->setProcessStartTime($startTime);
       $this->rootProcess = &$rootProcess;
