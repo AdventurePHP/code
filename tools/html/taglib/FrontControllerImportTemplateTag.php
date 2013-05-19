@@ -30,9 +30,9 @@ use APF\core\service\APFService;
  * Implements the functionality of the &lt;core:importdesign /&gt; tag that loads the view to display from an application
  * model. This tag can be configured for any application case using the following attributes:
  * <ul>
- *   <li>templatenamespace: Namespace of the template</li>
- *   <li>modelclass: Fully-qualified model class</li>
- *   <li>modelparam: Name of the model parameter to use as the template name</li>
+ *   <li>template-namespace: Namespace of the template</li>
+ *   <li>template-param: Name of the model parameter to use as the template name</li>
+ *   <li>model: Fully-qualified model class</li>
  *   <li>context: Set's the context of the current node (incl. all children)</li>
  *   <li>sessionsingleton: defines, if the model is retrieved sessionsingleton or just singleton (values: true|false)</li>
  * </ul>
@@ -46,22 +46,22 @@ class FrontControllerImportTemplateTag extends ImportTemplateTag {
 
    public function onParseTime() {
 
-      if (!isset($this->attributes['templatenamespace'])) {
-         throw new \InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "templatenamespace" is not given!');
+      if (!isset($this->attributes['template-namespace'])) {
+         throw new \InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "template-namespace" is not given!');
       } else {
-         $templateNamespace = $this->attributes['templatenamespace'];
+         $templateNamespace = $this->attributes['template-namespace'];
       }
 
-      if (!isset($this->attributes['modelclass'])) {
-         throw new \InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelclass" is not given!');
+      if (!isset($this->attributes['template-param'])) {
+         throw new \InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "template-param" is not given!');
       } else {
-         $modelClass = $this->attributes['modelclass'];
+         $modelParam = $this->attributes['template-param'];
       }
 
-      if (!isset($this->attributes['modelparam'])) {
-         throw new \InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "modelparam" is not given!');
+      if (!isset($this->attributes['model'])) {
+         throw new \InvalidArgumentException('[FrontControllerImportTemplateTag::onParseTime()] Attribute "model" is not given!');
       } else {
-         $modelParam = $this->attributes['modelparam'];
+         $modelClass = $this->attributes['model'];
       }
 
       // get initialization mode
