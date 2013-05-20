@@ -65,10 +65,10 @@ interface ClassLoader {
     *
     * Returns the root path this class loader instance uses to load PHP classes.
     * <p/>
-    * Further, tha root path is used to load templates and configuration files as well.
-    * This is because the APF uses one addressing scheme for all elements. Please note,
-    * that templates and configuration files naturally do not have namespaces but the
-    * APF introduces them with this mechanism for convenience and consistency reasons.
+    * Further, the root path is used to load templates files. This is because the APF
+    * uses one addressing scheme for all elements. Please note, that template files
+    * naturally do not have namespaces but the APF introduces them with this mechanism
+    * for convenience and consistency reasons.
     *
     * @return string The root path of the class loader.
     *
@@ -77,6 +77,24 @@ interface ClassLoader {
     * Version 0.1, 20.03.2013<br />
     */
    public function getRootPath();
+
+   /**
+    * @public
+    *
+    * Returns the root path this class loader instance advices the ConfigurationProvider
+    * to load the config files from.
+    * <p/>
+    * Please note that the APF uses one addressing scheme for all elements since configuration
+    * files naturally do not have namespaces. Namespaces have been introduced for convenience
+    * and consistency reasons.
+    *
+    * @return string The configuration root path of the class loader.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 19.05.2013<br />
+    */
+   public function getConfigurationRootPath();
 
 }
 
@@ -98,9 +116,14 @@ class StandardClassLoader implements ClassLoader {
    private $vendorName;
 
    /**
-    * @var string The root path to load classes/configurations/templates from.
+    * @var string The root path to load classes/templates from.
     */
    private $rootPath;
+
+   /**
+    * @var string The root path to load configurations from.
+    */
+   private $configRootPath;
 
    /**
     * @public
@@ -108,15 +131,26 @@ class StandardClassLoader implements ClassLoader {
     * Constructs the standard class loader.
     *
     * @param string $vendorName The vendor name this class loader is registered for.
-    * @param string $rootPath The root path to load classes/configurations/templates from.
+    * @param string $rootPath The root path to load classes/templates from.
+    * @param string $configRootPath The configuration root path to load configurations from.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.03.2013<br />
+    * Version 0.2, 19.05.2013 (Introduced config root path mechanism to allow separation of APF source and config files)<br />
     */
-   public function __construct($vendorName, $rootPath) {
+   public function __construct($vendorName, $rootPath, $configRootPath = null) {
       $this->vendorName = $vendorName;
       $this->rootPath = $rootPath;
+
+      // By default the configuration files are located under the classes root path.
+      // If desired, you can re-map the path to whatever you intend to structure your
+      // project folder structure.
+      if ($configRootPath === null) {
+         $configRootPath = $rootPath;
+      }
+
+      $this->configRootPath = $configRootPath;
    }
 
    public function load($class) {
@@ -143,6 +177,10 @@ class StandardClassLoader implements ClassLoader {
 
    public function getRootPath() {
       return $this->rootPath;
+   }
+
+   public function getConfigurationRootPath() {
+      return $this->configRootPath;
    }
 
    /**

@@ -105,7 +105,7 @@ abstract class BaseConfigurationProvider {
       // gather namespace and full(!) config name and use class loader to determine root path
       try {
          $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
-         $rootPath = $classLoader->getRootPath();
+         $rootPath = $classLoader->getConfigurationRootPath();
          $vendor = $classLoader->getVendorName();
          $fqNamespace = str_replace($vendor . '\\', '', $namespace);
          return $rootPath

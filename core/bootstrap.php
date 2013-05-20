@@ -45,11 +45,23 @@ if (!isset($apfClassLoaderRootPath)) {
    $apfClassLoaderRootPath = str_replace('/core', '', str_replace('\\', '/', dirname(__FILE__)));
 }
 
+// Manual definition of the configuration root path allows separation of APF source and configuration
+// files. By default, configuration files reside under the same root folder.
+if (!isset($apfClassLoaderConfigurationRootPath)) {
+   $apfClassLoaderConfigurationRootPath = $apfClassLoaderRootPath;
+}
+
 // include the class loader
 include_once(dirname(__FILE__) . '/loader/RootClassLoader.php');
 
 // register class loader before including/configuring further elements
-\APF\core\loader\RootClassLoader::addLoader(new \APF\core\loader\StandardClassLoader('APF', $apfClassLoaderRootPath));
+\APF\core\loader\RootClassLoader::addLoader(
+   new \APF\core\loader\StandardClassLoader(
+      'APF',
+      $apfClassLoaderRootPath,
+      $apfClassLoaderConfigurationRootPath
+   )
+);
 spl_autoload_register(array('\APF\core\loader\RootClassLoader', 'load'));
 
 // register the APF error handler to be able to easily configure the error handling mechanism
