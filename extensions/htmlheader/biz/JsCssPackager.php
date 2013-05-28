@@ -157,7 +157,7 @@ class JsCssPackager extends APFObject {
 
    public function getFile($path, $file, $type, $gZip = false) {
 
-      $filePath = $this->getRootPath() . '/' . $path . '/' . $file . '.' . $type;
+      $filePath = $this->getRootPath($path) . '/' . $this->removeVendorOfNamespace($path) . '/' . $file . '.' . $type;
 
       if (!file_exists($filePath)) {
          throw new IncludeException('[JsCssPackager::getFile()] The requested file "' . $file . '.'
@@ -264,8 +264,8 @@ class JsCssPackager extends APFObject {
     */
    protected function loadSingleFile($namespace, $file, $ext, $packageName) {
 
-      $fqNamespace = str_replace('\\', '/', $namespace);
-      $filePath = $this->getRootPath() . '/' . $fqNamespace . '/' . $file . '.' . $ext;
+      $fqNamespace = str_replace('\\', '/', $this->removeVendorOfNamespace($namespace));
+      $filePath = $this->getRootPath($namespace) . '/' . $fqNamespace . '/' . $file . '.' . $ext;
 
       if (file_exists($filePath)) {
          return file_get_contents($filePath);
@@ -298,9 +298,15 @@ class JsCssPackager extends APFObject {
          }
       }
    }
+   
+   //TODO Implementierung aus dem RootClassLoader verwenden wenn irgendwann vorhanden
+   protected function removeVendorOfNamespace($namespace) {
+       $loader = RootClassLoader::getLoaderByNamespace($namespace);
+       return str_replace($loader->getVendorName(), '', $namespace);
+   }
 
-   private function getRootPath() {
-      return RootClassLoader::getLoaderByVendor('APF')->getRootPath();
+   private function getRootPath($namespace) {
+      return RootClassLoader::getLoaderByNamespace($namespace)->getRootPath();
    }
 
 }

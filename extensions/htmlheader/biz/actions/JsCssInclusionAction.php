@@ -91,7 +91,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
    }
 
    protected function getSanitizedNamespace($namespace) {
-      $namespace = str_replace('_', '/', // resolve url notation for namespaces
+      $namespace = str_replace('_', '\\', // resolve url notation for namespaces
          preg_replace('/[^A-Za-z0-9\-_\.]/', '', $namespace)
       );
 
