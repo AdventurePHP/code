@@ -354,6 +354,27 @@ class RootClassLoader {
    public static function getNamespace($class) {
       return substr($class, 0, strrpos($class, '\\'));
    }
+   
+   /**
+    * @public
+    * @static
+    * 
+    * Determines the namespace without the leading vendor of a fully-qualified class for you.
+    * 
+    * @param string $class Fully-qualified class name (e.g. <em>APF\core\loader\StandardClassLoader</em>).
+    * @return string The class name without vendor of the given class (e.g. <em>core\loader</em>).
+    * 
+    * @author Jan Wiese
+    * @version
+    * Version 0.1, 28.05.2013<br />
+    */
+   public static function getNamespaceWithoutVendor($class){
+
+      $start = strpos($class, '\\');
+      $end = strrpos($class, '\\');
+
+      return substr($class, ($start+1), ($end-$start-1)); // plus/minus one to strip leading and trailing slashes
+   }
 
    /**
     * @public
