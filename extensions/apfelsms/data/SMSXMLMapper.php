@@ -46,6 +46,12 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
 
 
    /**
+    * @var string Namespace to determine path of XMl file _with_ trailing backslash
+    */
+   protected $XMLFileNamespace = 'APF\\';
+
+
+   /**
     * @var \DOMDocument
     */
    protected $XML_DOMDocument = null;
@@ -58,12 +64,16 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
    public function setup() {
 
 
-      $libPath = RootClassLoader::getLoaderByVendor('APF')->getRootPath();
+      $fileNamespace = $this->getXMLFileNamespace();
+      $vendor = RootClassLoader::getVendor($fileNamespace);
+      $libPath = RootClassLoader::getLoaderByVendor($vendor)->getRootPath();
+      $basePath = str_replace('\\', '/', RootClassLoader::getNamespaceWithoutVendor($fileNamespace));
       $filename = $this->getXMLFilename();
-      $fullPath = $libPath . '/' . $filename;
+      
+      $fullPath = $libPath . (empty($basePath) ? '' : '/' . $basePath) . '/' . $filename;
 
       if(!file_exists($fullPath)) {
-         throw new SMSConfigurationException('[SMSXMLMapper::setup()] XML file "' . $filename . '" could not be found. (Full path: "' . $fullPath . '").', E_USER_ERROR);
+         throw new SMSConfigurationException('[SMSXMLMapper::setup()] XML file "' . $filename . '" in namespace "' . $fileNamespace . '" could not be found. (Full path: "' . $fullPath . '").', E_USER_ERROR);
       }
 
       $this->XML_DOMDocument = new \DOMDocument();
@@ -477,7 +487,6 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
     */
    public function getXMLFilename() {
 
-
       return $this->XMLFilename;
    }
 
@@ -488,8 +497,25 @@ class SMSXMLMapper extends APFObject implements SMSMapper {
     */
    public function setXMLFilename($filename) {
 
-
       $this->XMLFilename = $filename;
+   }
+
+
+   /**
+    * @param string $XMLFileNamespace Namespace to determine path of XML file
+    */
+   public function setXMLFileNamespace($XMLFileNamespace) {
+
+      $this->XMLFileNamespace = $XMLFileNamespace;
+   }
+
+
+   /**
+    * @return string
+    */
+   public function getXMLFileNamespace() {
+
+      return $this->XMLFileNamespace;
    }
 
 }
