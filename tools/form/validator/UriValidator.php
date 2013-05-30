@@ -1,5 +1,4 @@
 <?php
-
 namespace APF\tools\form\validator;
 
 /**
@@ -35,12 +34,13 @@ use APF\tools\form\validator\TextFieldValidator;
  */
 class UriValidator extends TextFieldValidator {
 
-    public function validate($input) {
-        if (!empty($input) &&
-                preg_match('/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i', $input)) {
-            return true;
-        }
-        return false;
-    }
+   public function validate($input) {
+      if (!empty($input) &&
+            preg_match('/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i', $input)
+      ) {
+         return true;
+      }
+      return false;
+   }
 
 }
