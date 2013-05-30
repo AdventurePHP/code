@@ -38,13 +38,15 @@ class DynamicCssNode extends HtmlNode implements CssNode {
 
    /**
     * Receives information and configures node.
+    *
     * @param string $url Optional url.
     * @param string $namespace Namespace of file
     * @param string $filename Name of file (without .css)
     * @param bool $rewriting Optional. Create rewriting Url.
     * @param bool $fcaction Optional. Create link for FC-Action.
+    * @param string $media Optional css media definition (e.g. "print", "screen", or any other media query).
     */
-   public function __construct($url, $namespace, $filename, $rewriting = null, $fcaction = true) {
+   public function __construct($url, $namespace, $filename, $rewriting = null, $fcaction = true, $media = null) {
       $this->setAttribute('href', $this->buildFrontcontrollerLink(
          $url,
          $namespace,
@@ -55,6 +57,13 @@ class DynamicCssNode extends HtmlNode implements CssNode {
       ));
       $this->setAttribute('rel', 'stylesheet');
       $this->setAttribute('type', 'text/css');
+
+      // default to screen css file
+      if ($media === null) {
+         $media = 'screen';
+      }
+
+      $this->setAttribute('media', $media);
    }
 
    public function getChecksum() {

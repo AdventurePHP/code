@@ -35,9 +35,16 @@ use APF\extensions\htmlheader\biz\CssNode;
  */
 class CssContentNode extends HtmlNode implements CssNode {
 
-   public function __construct($content) {
+   public function __construct($content, $media = null) {
       $this->setContent($content);
       $this->setAttribute('type', 'text/css');
+
+      // default to screen css file
+      if ($media === null) {
+         $media = 'screen';
+      }
+
+      $this->setAttribute('media', $media);
    }
 
    protected function getTagName() {

@@ -28,7 +28,7 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
  * @package APF\extensions\htmlheader\pres\taglib
  * @class HtmlHeaderAddCssTag
  *
- *  Taglib for adding stylesheets to htmlheader.
+ * Taglib for adding stylesheets to html header.
  *
  * @example
  *  <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddCssTag" prefix="htmlheader" name="addcss" />
@@ -38,7 +38,6 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
  *    <li>namespace: Namespace of stylesheet file</li>
  *    <li>filename: Stylesheet filename without '.css'</li>
  *  </ul>
- *
  *  Use External file:
  *  <htmlheader:addcss
  *    url="http://static/"
@@ -46,6 +45,7 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
  *    filename="examplefile"
  *    rewriting="false"
  *    fcaction="false"
+ *    [media=""]
  *  />
  *  <ul>
  *    <li>url: URL of file server</li>
@@ -53,6 +53,7 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
  *    <li>filename: Css filename without '.css'</li>
  *    <li>rewriting: Rewriting of target server enabled? (optional, option will be used from actual application otherwise)
  *    <li>fcaction: Use an fc-action on target server? (optional, will be set to true by default)
+ *    <li>media: The media type of the css file (e.g. "screen", "print", or any other media query)</li>
  *  </ul>
  *
  * @author Ralf Schubert
@@ -68,7 +69,7 @@ class HtmlHeaderAddCssTag extends Document {
    public function transform() {
 
       /* @var $header HtmlHeaderManager */
-      $header = &$this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
+      $header = & $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
 
       $url = $this->getAttribute('url');
       $folder = $this->getAttribute('folder');
@@ -77,6 +78,8 @@ class HtmlHeaderAddCssTag extends Document {
 
       $rewriting = $this->getAttribute('rewriting');
       $fcaction = $this->getAttribute('fcaction');
+
+      $media = $this->getAttribute('media');
 
       if ($rewriting === 'true') {
          $rewriting = true;
@@ -91,9 +94,9 @@ class HtmlHeaderAddCssTag extends Document {
       }
 
       if ($url !== null) {
-         $node = new DynamicCssNode($url, $folder, $filename, $rewriting, $fcaction);
+         $node = new DynamicCssNode($url, $folder, $filename, $rewriting, $fcaction, $media);
       } else {
-         $node = new DynamicCssNode(null, $namespace, $filename, $rewriting, $fcaction);
+         $node = new DynamicCssNode(null, $namespace, $filename, $rewriting, $fcaction, $media);
       }
 
       $node->setPriority($this->getAttribute('priority'));

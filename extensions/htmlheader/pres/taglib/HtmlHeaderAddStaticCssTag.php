@@ -32,7 +32,7 @@ use APF\extensions\htmlheader\biz\StaticCssNode;
  *
  * @example
  * <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddStaticCssTag" prefix="htmlheader" name="addstaticcss" />
- * <htmlheader:addstaticcss file="..." />
+ * <htmlheader:addstaticcss file="..." [media=""]/>
  * <ul>
  *   <li>file: The source location of the stylesheet</li>
  * </ul>
@@ -44,21 +44,17 @@ use APF\extensions\htmlheader\biz\StaticCssNode;
 class HtmlHeaderAddStaticCssTag extends Document {
 
    public function transform() {
-      $header = &$this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
+      $header = & $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
       /* @var $header HtmlHeaderManager */
 
       $file = $this->getAttribute('file');
       if ($file == null) {
          throw new \InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please '
-                  . 'provide the "file" attribute in order to add a static stylesheet.',
+            . 'provide the "file" attribute in order to add a static stylesheet.',
             E_USER_ERROR);
       }
-      $node = new StaticCssNode($file);
 
-      $media = $this->getAttribute('media');
-      if ($media !== null) {
-         $node->setAttribute('media', $media);
-      }
+      $node = new StaticCssNode($file, $this->getAttribute('media'));
 
       $node->setPriority($this->getAttribute('priority'));
       $header->addNode($node);

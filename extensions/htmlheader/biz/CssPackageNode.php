@@ -35,10 +35,17 @@ use APF\extensions\htmlheader\biz\CssNode;
  */
 class CssPackageNode extends PackageNode implements CssNode {
 
-   public function __construct($url, $name, $rewriting = null) {
+   public function __construct($url, $name, $rewriting = null, $media = null) {
       parent::__construct($url, $name, $rewriting);
       $this->setAttribute('type', 'text/css');
       $this->setAttribute('rel', 'stylesheet');
+
+      // default to screen css file
+      if ($media === null) {
+         $media = 'screen';
+      }
+
+      $this->setAttribute('media', $media);
    }
 
    protected function getTagName() {

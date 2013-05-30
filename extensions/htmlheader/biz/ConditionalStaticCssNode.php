@@ -37,8 +37,8 @@ class ConditionalStaticCssNode extends StaticCssNode implements CssNode {
 
    private $condition;
 
-   public function __construct($file, $condition) {
-      parent::__construct($file);
+   public function __construct($file, $condition, $media = null) {
+      parent::__construct($file, $media);
       $this->condition = $condition;
    }
 

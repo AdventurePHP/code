@@ -20,7 +20,7 @@ namespace APF\extensions\htmlheader\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\extensions\htmlheader\biz\HtmlNode;
+use APF\extensions\htmlheader\biz\CssNode;
 use APF\extensions\htmlheader\biz\DynamicCssNode;
 
 /**
@@ -37,8 +37,8 @@ class ConditionalDynamicCssNode extends DynamicCssNode implements CssNode {
 
    private $condition;
 
-   public function  __construct($namespace, $filename, $condition, $url = null, $rewriting = null, $fcaction = true) {
-      parent::__construct($url, $namespace, $filename, $rewriting, $fcaction);
+   public function  __construct($namespace, $filename, $condition, $url = null, $rewriting = null, $fcaction = true, $media = null) {
+      parent::__construct($url, $namespace, $filename, $rewriting, $fcaction, $media);
       $this->condition = $condition;
    }
 

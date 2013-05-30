@@ -35,11 +35,17 @@ use APF\extensions\htmlheader\biz\CssNode;
  */
 class StaticCssNode extends HtmlNode implements CssNode {
 
-   public function __construct($file) {
+   public function __construct($file, $media = null) {
       $this->setAttribute('href', $file);
       $this->setAttribute('rel', 'stylesheet');
       $this->setAttribute('type', 'text/css');
-      $this->setAttribute('media', 'screen');
+
+      // default to screen css file
+      if ($media === null) {
+         $media = 'screen';
+      }
+
+      $this->setAttribute('media', $media);
    }
 
    protected function getTagName() {

@@ -46,6 +46,8 @@ class HtmlHeaderAddPackageTag extends Document {
       $type = $this->getAttribute('type');
       $rewriting = $this->getAttribute('rewriting') === 'true' ? true : false;
 
+      $media = $this->getAttribute('media');
+
       if ($type == 'js') {
          $node = new JsPackageNode($url, $name, $rewriting);
 
@@ -54,7 +56,7 @@ class HtmlHeaderAddPackageTag extends Document {
          }
 
       } else {
-         $node = new CssPackageNode($url, $name, $rewriting);
+         $node = new CssPackageNode($url, $name, $rewriting, $media);
       }
 
       $node->setPriority($this->getAttribute('priority'));

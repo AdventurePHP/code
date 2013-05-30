@@ -21,6 +21,7 @@ namespace APF\extensions\htmlheader\biz;
  * -->
  */
 use APF\extensions\htmlheader\biz\HtmlNode;
+use APF\extensions\htmlheader\biz\HeaderNode;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
@@ -34,7 +35,7 @@ use APF\tools\link\Url;
  * @version
  * Version 0.1, 25.04.2013 <br />
  */
-class RssNode extends HtmlNode implements CssNode {
+class RssNode extends HtmlNode implements HeaderNode {
 
    public function __construct($file) {
       $this->setAttribute('href', $file);

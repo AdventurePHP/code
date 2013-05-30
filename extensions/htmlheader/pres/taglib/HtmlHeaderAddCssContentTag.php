@@ -32,7 +32,7 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
  *
  * @example
  * <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddCssContentTag" prefix="htmlheader" name="addcsscontent" />
- * <htmlheader:addcsscontent>
+ * <htmlheader:addcsscontent [media=""]>
  *   ... css code ...
  * </htmlheader:addcsscontent>
  *
@@ -44,9 +44,9 @@ class HtmlHeaderAddCssContentTag extends Document {
 
    public function transform() {
       /* @var $header HtmlHeaderManager */
-      $header = &$this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
+      $header = & $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
 
-      $node = new CssContentNode($this->getContent());
+      $node = new CssContentNode($this->getContent(), $this->getAttribute('media'));
       $node->setPriority($this->getAttribute('priority'));
       $header->addNode($node);
 
