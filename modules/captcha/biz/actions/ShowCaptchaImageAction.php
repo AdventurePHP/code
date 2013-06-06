@@ -22,7 +22,7 @@ namespace APF\modules\captcha\biz\actions;
  */
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\loader\RootClassLoader;
-use APF\core\session\SessionManager;
+use APF\core\session\Session;
 use APF\tools\http\HeaderManager;
 
 /**
@@ -54,11 +54,11 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
     */
    public function run() {
 
-      $session = new SessionManager('APF\modules\captcha');
+      $session = new Session('APF\modules\captcha');
 
       // read captcha string from the session.
       $CaptchaStringName = $this->getInput()->getAttribute('name');
-      $text = $session->loadSessionData($CaptchaStringName);
+      $text = $session->load($CaptchaStringName);
 
       // choose background
       $rootPath = $this->getRootPath();

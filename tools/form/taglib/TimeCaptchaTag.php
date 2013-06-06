@@ -20,7 +20,7 @@ namespace APF\tools\form\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\session\SessionManager;
+use APF\core\session\Session;
 
 /**
  * @package APF\tools\form\taglib
@@ -61,18 +61,18 @@ class TimeCaptchaTag extends AbstractFormControl {
     */
    public function transform() {
 
-      $session = new SessionManager(get_class($this));
+      $session = new Session(get_class($this));
 
       // Delete every stored time in session, which is older than 40 minutes, in order to clean the session.
-      $sessionStore = $session->getEntryDataKeys();
+      $sessionStore = $session->getEntryKeys();
       foreach ($sessionStore as $key) {
-         if ($session->loadSessionData($key) <= (time() - 2400)) {
-            $session->deleteSessionData($key);
+         if ($session->load($key) <= (time() - 2400)) {
+            $session->delete($key);
          }
       }
 
       // save the new time in session.
-      $session->saveSessionData('form_' . $this->getParentObject()->getAttribute('name'), time());
+      $session->save('form_' . $this->getParentObject()->getAttribute('name'), time());
 
       return '';
    }

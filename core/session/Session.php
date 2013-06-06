@@ -23,25 +23,26 @@ namespace APF\core\session;
 
 /**
  * @package APF\core\session
- * @class SessionManager
+ * @class Session
  *
  * Provides advances session handling with namespaces. Example:
- * <pre>$sessMgr = new SessionManager('<namespace>');
- * $sessMgr->loadSessionData('<key>');
- * $sessMgr->saveSessionData('<key>','<value>');</pre>
+ * <pre>$session = new Session('{namespace}');
+ * $session->load('{key}');
+ * $session->save('{key}','{value}');</pre>
  * Further, you do not have to take care of starting or persisting sessions.
  *
- * @author Christian Schäfer
+ * @author Christian Schäfer, Christian Achatz
  * @version
  * Version 0.1, 08.03.2006<br />
  * Version 0.2, 12.04.2006 (Added the possibility to create the class singleton.)<br />
  * Version 0.3, 02.08.2009 (Ensured PHP 5.3.x/6.x.x compatibility with session handling.)<br />
+ * Version 0.4, 06.05.2013 (Renamed from SessionManager to Session to ensure better naming)<br />
  */
-final class SessionManager {
+final class Session {
 
    /**
     * @private
-    * The namespace of the current instance of the session manager.
+    * The namespace of the current instance of the session.
     */
    private $namespace;
 
@@ -57,16 +58,10 @@ final class SessionManager {
     * @author Christian Schäfer
     * @version
     * Version 0.1, 08.03.2006<br />
-    * Version 0.2, 15.05.2013 (Changed SessionManager to __construct [Tobias Lückel|Megger])<br />
+    * Version 0.2, 15.05.2013 (Changed to __construct [Tobias Lückel|Megger])<br />
     */
-   public function __construct($namespace = '') {
+   public function __construct($namespace) {
 
-      // change in 1.12: session manager must not be created without a namespace!
-      if (empty($namespace)) {
-         throw new \Exception('Session manager cannot be created using an empty session namespace!', E_USER_ERROR);
-      }
-
-      // set namespace
       $this->namespace = $namespace;
 
       // start session, because session_register() is
@@ -76,7 +71,7 @@ final class SessionManager {
          session_start();
       }
 
-      // init the session if not existent yet.
+      // init the session if not existent yet to avoid array access issues and weired error messages.
       if (!isset($_SESSION[$namespace])) {
          $_SESSION[$namespace] = array();
       }
@@ -91,9 +86,9 @@ final class SessionManager {
     * @author Christian Schäfer
     * @version
     * Version 0.1, 08.03.2006<br />
-    * Version 0.2, 18.07.2006 (Fixed bug, that after a post request, the session was valid again (Server: w3service.net)!)<br />
+    * Version 0.2, 18.07.2006 (Fixed bug, that after a post request, the session was valid again!)<br />
     */
-   public function destroySession() {
+   public function destroy() {
       $_SESSION[$this->namespace] = array();
    }
 
@@ -113,7 +108,7 @@ final class SessionManager {
     * Version 0.3, 30.01.2010 (Switched return value to null to be consistent with the RequestHandler)<br />
     * Version 0.4, 28.02.2010 (Added default value behaviour)<br />
     */
-   public function loadSessionData($attribute, $default = null) {
+   public function load($attribute, $default = null) {
       if (isset($_SESSION[$this->namespace][$attribute])) {
          return $_SESSION[$this->namespace][$attribute];
       } else {
@@ -133,7 +128,7 @@ final class SessionManager {
     * @version
     * Version 0.1, 15.03.2010<br />
     */
-   public function loadAllSessionData() {
+   public function loadAll() {
       return $_SESSION[$this->namespace];
    }
 
@@ -142,13 +137,13 @@ final class SessionManager {
     *
     * Returns the list of registered session keys as a numeric array.
     *
-    * @return array{string} The list of registered session keys.
+    * @return string[] The list of registered session keys.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 15.03.2010<br />
     */
-   public function getEntryDataKeys() {
+   public function getEntryKeys() {
       return array_keys($_SESSION[$this->namespace]);
    }
 
@@ -164,7 +159,7 @@ final class SessionManager {
     * @version
     * Version 0.1, 08.03.2006<br />
     */
-   public function saveSessionData($attribute, $value) {
+   public function save($attribute, $value) {
       $_SESSION[$this->namespace][$attribute] = $value;
    }
 
@@ -179,7 +174,7 @@ final class SessionManager {
     * @version
     * Version 0.1, 08.03.2006<br />
     */
-   public function deleteSessionData($attribute) {
+   public function delete($attribute) {
       unset($_SESSION[$this->namespace][$attribute]);
    }
 

@@ -22,7 +22,7 @@ namespace APF\tools\form\multifileupload\biz;
  */
 use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\APFObject;
-use APF\core\session\SessionManager;
+use APF\core\session\Session;
 use APF\tools\link\LinkGenerator;
 use APF\tools\form\FormException;
 
@@ -53,9 +53,9 @@ class MultiFileUploadManager extends APFObject {
    private $tmpUploadPath = 'APF\tools\form\multifileupload\uploaddir';
 
    /**
-    * @var SessionManager
+    * @var Session
     */
-   private $sessionManager;
+   private $session;
 
    /**
     * Initiert das Service. Es werden die nötigen Parameter name und formname erwartet.
@@ -75,7 +75,7 @@ class MultiFileUploadManager extends APFObject {
       $this->formName = $param['formname'];
       $this->name = $param['name'];
       $this->sessionNamespace = self::$DEFAULT_SESSION_NAMESPACE . '\\' . $param['formname'] . '\\' . $param['name'];
-      $this->sessionManager = new SessionManager($this->sessionNamespace);
+      $this->session = new Session($this->sessionNamespace);
 
       //Temporäres Upload-Verzeichnis erstellen, falls es vorhanden ist, wird der Pfad zurück gegeben.
       $createFolder = new Folder();
@@ -111,7 +111,7 @@ class MultiFileUploadManager extends APFObject {
     */
    public function getFiles() {
       $this->checkSessionFiles();
-      return $this->sessionManager->loadSessionData('files');
+      return $this->session->load('files');
    }
 
    /**
@@ -150,7 +150,7 @@ class MultiFileUploadManager extends APFObject {
     * @version 1.0, 14.3.2011<br>
     */
    private function checkSessionFiles() {
-      $files = $this->sessionManager->loadSessionData('files');
+      $files = $this->session->load('files');
       if (is_array($files)) {
          $files_buff = null;
          $uploadpath = $this->getUploadPath();
@@ -161,7 +161,7 @@ class MultiFileUploadManager extends APFObject {
             }
             $files_buff[] = $file;
          }
-         $this->sessionManager->saveSessionData('files', $files_buff);
+         $this->session->save('files', $files_buff);
       }
    }
 
@@ -209,9 +209,9 @@ class MultiFileUploadManager extends APFObject {
       }
 
       if ($moved == true) {
-         $files = $this->sessionManager->loadSessionData('files');
+         $files = $this->session->load('files');
          $files[] = $file;
-         $this->sessionManager->saveSessionData('files', $files);
+         $this->session->save('files', $files);
 
          // wenn diese Funktion mittels JS aufgerufen wird, dann liefert sie ein array mit den
          // dateiinfos zurück. ansonsten einfach nur true.
@@ -330,7 +330,7 @@ class MultiFileUploadManager extends APFObject {
             }
             $files_buff[] = $file;
          }
-         $this->sessionManager->saveSessionData('files', $files_buff);
+         $this->session->save('files', $files_buff);
       }
    }
 
@@ -365,7 +365,7 @@ class MultiFileUploadManager extends APFObject {
 
       $this->mimeTypes = $settings['mime'];
       $this->maxFileSize = $settings['max'];
-      $this->sessionManager->saveSessionData('settings', $settings);
+      $this->session->save('settings', $settings);
    }
 
    /**
@@ -375,7 +375,7 @@ class MultiFileUploadManager extends APFObject {
     * @version 1.0, 14.3.2011<br>
     */
    public function loadSettings() {
-      $settings = $this->sessionManager->loadSessionData('settings');
+      $settings = $this->session->load('settings');
       $this->mimeTypes = $settings['mime'];
       $this->maxFileSize = $settings['max'];
       $this->settingsLoaded = true;

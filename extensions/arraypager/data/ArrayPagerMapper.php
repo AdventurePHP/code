@@ -21,7 +21,7 @@ namespace APF\extensions\arraypager\data;
  * -->
  */
 use APF\core\pagecontroller\APFObject;
-use APF\core\session\SessionManager;
+use APF\core\session\Session;
 
 /**
  * @package APF\extensions\arraypager\data
@@ -84,16 +84,16 @@ final class ArrayPagerMapper extends APFObject {
    public function loadEntries($stringPager) {
       $objectSession = $this->getSessionManager();
       $stringSessionKey = $this->getSessionKey($stringPager);
-      $arrayEntries = $objectSession->loadSessionData($stringSessionKey);
+      $arrayEntries = $objectSession->load($stringSessionKey);
 
       return $arrayEntries;
    }
 
    /**
-    * @return SessionManager
+    * @return Session
     */
    protected function getSessionManager() {
-      return new SessionManager ('APF\extensions\arraypager\biz');
+      return new Session('APF\extensions\arraypager\biz');
    }
 
    /**
@@ -109,7 +109,7 @@ final class ArrayPagerMapper extends APFObject {
    public function registerEntries($stringPager, $arrayData) {
       $objectSession = $this->getSessionManager();
       $stringSessionKey = $this->getSessionKey($stringPager);
-      $objectSession->saveSessionData($stringSessionKey,
+      $objectSession->save($stringSessionKey,
          $arrayData
       );
    }
@@ -126,7 +126,7 @@ final class ArrayPagerMapper extends APFObject {
    public function unregisterEntries($stringPager) {
       $objectSession = $this->getSessionManager();
       $stringSessionKey = $this->getSessionKey($stringPager);
-      $objectSession->deleteSessionData($stringSessionKey);
+      $objectSession->delete($stringSessionKey);
    }
 
    /**
@@ -142,7 +142,7 @@ final class ArrayPagerMapper extends APFObject {
    public function checkPager($stringPager) {
       $objectSession = $this->getSessionManager();
       $stringSessionKey = $this->getSessionKey($stringPager);
-      $mixedData = $objectSession->loadSessionData($stringSessionKey);
+      $mixedData = $objectSession->load($stringSessionKey);
 
       $booleanExists = FALSE;
 

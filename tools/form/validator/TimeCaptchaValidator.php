@@ -20,7 +20,7 @@ namespace APF\tools\form\validator;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\session\SessionManager;
+use APF\core\session\Session;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
@@ -63,17 +63,17 @@ class TimeCaptchaValidator extends TextFieldValidator {
          $seconds = $this->defaultSeconds;
       }
 
-      $sessMgr = new SessionManager(get_class($this));
-      $sessTime = $sessMgr->loadSessionData('form_' . $this->control->getParentObject()->getAttribute('name'));
-      $sessMgr->deleteSessionData('form__' . $this->control->getParentObject()->getAttribute('name'));
-      unset($sessMgr);
+      $session = new Session(get_class($this));
+      $storedTime = intval($session->load('form_' . $this->control->getParentObject()->getAttribute('name')));
+      $session->delete('form__' . $this->control->getParentObject()->getAttribute('name'));
+      unset($session);
 
       // If there is no stored time in session control is not valid.
-      if ($sessTime === null) {
+      if ($storedTime === null) {
          return false;
       }
       // Form was sent too fast.
-      if (($sessTime + $seconds) >= time()) {
+      if (($seconds + $storedTime) >= time()) {
          return false;
       }
       return true;

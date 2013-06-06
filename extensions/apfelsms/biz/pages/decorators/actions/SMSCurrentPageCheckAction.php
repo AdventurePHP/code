@@ -2,7 +2,7 @@
 namespace APF\extensions\apfelsms\biz\pages\decorators\actions;
 
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
-use APF\core\session\SessionManager;
+use APF\core\session\Session;
 use APF\extensions\apfelsms\biz\SMSManager;
 use APF\extensions\apfelsms\biz\SMSWrongParameterException;
 use APF\tools\link\LinkGenerator;
@@ -115,10 +115,10 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
    protected function incrementLoopCounter() {
 
 
-      $sessM = new SessionManager(self::SESSION_NAMESPACE);
-      $sessM->saveSessionData(
+      $sessM = new Session(self::SESSION_NAMESPACE);
+      $sessM->save(
          self::SESSION_LOOPCOUNT_NAME,
-         intval($sessM->loadSessionData(self::SESSION_LOOPCOUNT_NAME, 0)) + 1
+         intval($sessM->load(self::SESSION_LOOPCOUNT_NAME, 0)) + 1
       );
    }
 
@@ -129,9 +129,9 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
    protected function checkLoopsOK() {
 
 
-      $sessM = new SessionManager(self::SESSION_NAMESPACE);
+      $sessM = new Session(self::SESSION_NAMESPACE);
 
-      return $sessM->loadSessionData(self::SESSION_LOOPCOUNT_NAME, 0) <= self::MAX_LOOPS;
+      return $sessM->load(self::SESSION_LOOPCOUNT_NAME, 0) <= self::MAX_LOOPS;
    }
 
 
@@ -141,7 +141,7 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
    protected function resetLoopCounter() {
 
 
-      $sessM = new SessionManager(self::SESSION_NAMESPACE);
-      $sessM->deleteSessionData(self::SESSION_LOOPCOUNT_NAME);
+      $sessM = new Session(self::SESSION_NAMESPACE);
+      $sessM->delete(self::SESSION_LOOPCOUNT_NAME);
    }
 }

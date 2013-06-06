@@ -28,7 +28,7 @@ use APF\tools\form\taglib\TextFieldTag;
 use APF\tools\form\validator\AbstractFormValidator;
 use APF\tools\link\Url;
 use APF\tools\string\StringAssistant;
-use APF\core\session\SessionManager;
+use APF\core\session\Session;
 use APF\tools\link\LinkGenerator;
 
 /**
@@ -165,9 +165,9 @@ class SimpleCaptchaTag extends AbstractFormControl {
       $this->textField->onAfterAppend();
 
       // get the captcha string from session
-      $sessMgr = new SessionManager('APF\modules\captcha');
-      $this->captchaString = $sessMgr->loadSessionData($this->textFieldName);
-      $sessMgr->saveSessionData($this->textFieldName, StringAssistant::generateCaptchaString(5));
+      $sessMgr = new Session('APF\modules\captcha');
+      $this->captchaString = $sessMgr->load($this->textFieldName);
+      $sessMgr->save($this->textFieldName, StringAssistant::generateCaptchaString(5));
 
    }
 

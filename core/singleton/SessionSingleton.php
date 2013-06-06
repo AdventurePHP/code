@@ -20,7 +20,7 @@ namespace APF\core\singleton;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\session\SessionManager;
+use APF\core\session\Session;
 use APF\core\pagecontroller\APFObject;
 
 register_shutdown_function(array('APF\core\singleton\SessionSingleton', 'saveObjects'));
@@ -51,9 +51,9 @@ class SessionSingleton extends Singleton {
    private static $CACHE = array();
 
    /**
-    * @var SessionManager The session manager instance to retrieve the session objects from.
+    * @var Session The session instance to retrieve the session objects from.
     */
-   private static $SESSION_MANAGER;
+   private static $SESSION;
 
    private function __construct() {
    }
@@ -90,10 +90,10 @@ class SessionSingleton extends Singleton {
 
       if (!isset(self::$CACHE[$cacheKey])) {
 
-         $cachedObject = self::getSessionManager()->loadSessionData($cacheKey);
+         $cachedObject = self::getSession()->load($cacheKey);
 
          if ($cachedObject === null) {
-            // no class check needed due to autoloading!
+            // no class check needed due to auto loading!
             self::$CACHE[$cacheKey] = new $class();
          } else {
             self::$CACHE[$cacheKey] = unserialize($cachedObject);
@@ -104,13 +104,13 @@ class SessionSingleton extends Singleton {
    }
 
    /**
-    * @return SessionManager
+    * @return Session
     */
-   private static function getSessionManager() {
-      if (self::$SESSION_MANAGER === null) {
-         self::$SESSION_MANAGER = new SessionManager(SessionSingleton::SESSION_NAMESPACE);
+   private static function getSession() {
+      if (self::$SESSION === null) {
+         self::$SESSION = new Session(SessionSingleton::SESSION_NAMESPACE);
       }
-      return self::$SESSION_MANAGER;
+      return self::$SESSION;
    }
 
    /**
@@ -122,15 +122,15 @@ class SessionSingleton extends Singleton {
     * @author Christian Schäfer
     * @version
     * Version 0.1, 24.02.2008<br />
-    * Version 0.2, 26.02.2008 (Include of the SessionManager was noted wrong)<br />
+    * Version 0.2, 26.02.2008 (Include of the Session was noted wrong)<br />
     * Version 0.3, 11.03.2010 (Refactoring to PHP5 only code)<br />
     * Version 0.4, 07.07.2012 (Included into SessionSingleton class to hide cache from the outside)<br />
     */
    public static function saveObjects() {
       if (count(self::$CACHE) > 0) {
-         $session = self::getSessionManager();
+         $session = self::getSession();
          foreach (self::$CACHE as $key => $DUMMY) {
-            $session->saveSessionData($key, serialize(self::$CACHE[$key]));
+            $session->save($key, serialize(self::$CACHE[$key]));
          }
       }
    }

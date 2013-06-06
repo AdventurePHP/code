@@ -24,7 +24,7 @@ use APF\core\benchmark\BenchmarkTimer;
 use APF\core\database\AbstractDatabaseHandler;
 use APF\core\database\ConnectionManager;
 use APF\core\pagecontroller\APFObject;
-use APF\core\session\SessionManager;
+use APF\core\session\Session;
 use APF\core\singleton\Singleton;
 
 /**
@@ -119,9 +119,9 @@ final class PagerMapper extends APFObject {
       $session = null;
       $sessionKey = null;
       if ($cache === true) {
-         $session = new SessionManager('APF\modules\pager\biz');
+         $session = new Session('APF\modules\pager\biz');
          $sessionKey = $this->getSessionKey($namespace, $statement, $params) . '_EntriesCount';
-         $entriesCount = $session->loadSessionData($sessionKey);
+         $entriesCount = $session->load($sessionKey);
       }
 
       // load from database if not in session
@@ -133,7 +133,7 @@ final class PagerMapper extends APFObject {
 
          // only save to session, when cache is enabled
          if ($cache === true) {
-            $session->saveSessionData($sessionKey, $entriesCount);
+            $session->save($sessionKey, $entriesCount);
          }
       }
 
@@ -170,9 +170,9 @@ final class PagerMapper extends APFObject {
       $session = null;
       $sessionKey = null;
       if ($cache === true) {
-         $session = new SessionManager('APF\modules\pager\biz');
+         $session = new Session('APF\modules\pager\biz');
          $sessionKey = $this->getSessionKey($namespace, $statement, $params) . '_EntryIDs';
-         $entryIds = $session->loadSessionData($sessionKey);
+         $entryIds = $session->load($sessionKey);
       } else {
          $entryIds = null;
       }
@@ -195,7 +195,7 @@ final class PagerMapper extends APFObject {
 
          // only save to session, when cache is enabled
          if ($cache === true) {
-            $session->saveSessionData($sessionKey, serialize($entryIds));
+            $session->save($sessionKey, serialize($entryIds));
          }
       } else {
          $entryIds = unserialize($entryIds);

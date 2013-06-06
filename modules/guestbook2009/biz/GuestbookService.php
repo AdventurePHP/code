@@ -30,7 +30,7 @@ use APF\modules\guestbook2009\data\GuestbookMapper;
 use APF\modules\pager\biz\PagerManager;
 use APF\modules\pager\biz\PagerManagerFabric;
 use APF\tools\http\HeaderManager;
-use APF\core\session\SessionManager;
+use APF\core\session\Session;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
@@ -254,8 +254,8 @@ final class GuestbookService extends APFObject {
       /* @var $model GuestbookModel */
       $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
       $guestbookId = $model->getGuestbookId();
-      $session = new SessionManager('APF\modules\guestbook2009\biz\\' . $guestbookId);
-      $session->deleteSessionData('LoggedIn');
+      $session = new Session('APF\modules\guestbook2009\biz\\' . $guestbookId);
+      $session->delete('LoggedIn');
 
       // display the list view
       $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
@@ -280,8 +280,8 @@ final class GuestbookService extends APFObject {
       /* @var $model GuestbookModel */
       $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
       $guestbookId = $model->getGuestbookId();
-      $session = new SessionManager('APF\modules\guestbook2009\biz\\' . $guestbookId);
-      $loggedId = $session->loadSessionData('LoggedIn');
+      $session = new Session('APF\modules\guestbook2009\biz\\' . $guestbookId);
+      $loggedId = $session->load('LoggedIn');
 
       // redirect to admin page
       if ($loggedId !== 'true') {
@@ -315,8 +315,8 @@ final class GuestbookService extends APFObject {
          /* @var $model GuestbookModel */
          $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
          $guestbookId = $model->getGuestbookId();
-         $session = new SessionManager('APF\modules\guestbook2009\biz\\' . $guestbookId);
-         $session->saveSessionData('LoggedIn', 'true');
+         $session = new Session('APF\modules\guestbook2009\biz\\' . $guestbookId);
+         $session->save('LoggedIn', 'true');
 
          // redirect to admin page
          $adminLink = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
