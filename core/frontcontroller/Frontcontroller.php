@@ -46,7 +46,6 @@ use APF\core\singleton\Singleton;
 abstract class AbstractFrontcontrollerAction extends APFObject {
 
    const TYPE_PRE_PAGE_CREATE = 'prepagecreate';
-   const TYPE_POST_PAGE_CREATE = 'postpagecreate';
    const TYPE_PRE_TRANSFORM = 'pretransform';
    const TYPE_POST_TRANSFORM = 'posttransform';
 
@@ -501,9 +500,6 @@ class Frontcontroller extends APFObject {
 
       // load desired design
       $page->loadDesign($namespace, $template);
-
-      // execute actions after page creation (see timing model)
-      $this->runActions(AbstractFrontcontrollerAction::TYPE_POST_PAGE_CREATE);
 
       // execute actions before transformation (see timing model)
       $this->runActions(AbstractFrontcontrollerAction::TYPE_PRE_TRANSFORM);
