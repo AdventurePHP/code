@@ -22,7 +22,6 @@ namespace APF\tools\form\taglib;
  */
 use APF\core\pagecontroller\TagLib;
 use APF\tools\form\FormException;
-use APF\tools\form\taglib\ButtonLanguageLabelTag;
 
 /**
  * @package APF\tools\form\taglib

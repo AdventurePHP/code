@@ -289,7 +289,7 @@ class HtmlFormTag extends Document {
       // get desired marker
       $marker = & $this->getMarker($markerName);
 
-      // get the object if
+      // get the object id
       $objectId = $marker->getObjectId();
 
       // add the desired content before the marker
@@ -313,7 +313,7 @@ class HtmlFormTag extends Document {
       // get desired marker
       $marker = & $this->getMarker($markerName);
 
-      // get the object if
+      // get the object id
       $objectId = $marker->getObjectId();
 
       // add the desired content before the marker
@@ -502,6 +502,23 @@ class HtmlFormTag extends Document {
     */
    public function setAction($action) {
       $this->setAttribute('action', $action);
+   }
+
+   /**
+    * @public
+    * @since 2.0
+    *
+    * Adds an additional attribute to the white list of the form.
+    *
+    * @param string $name The attribute which should be added to the white list.
+    *
+    * @author Ralf Schubert, Christian Achatz
+    * @version
+    * Version 0.1, 21.07.2010<br />
+    * Version 0.2, 08.06.2013 (Re-introduced white-list modification for form tag)<br />
+    */
+   public function addAttributeToWhitelist($name) {
+      $this->attributeWhiteList[] = $name;
    }
 
    /**
