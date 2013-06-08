@@ -58,6 +58,7 @@ final class Url {
    private $port;
    private $path;
    private $query = array();
+   private $anchor;
 
    /**
     * @public
@@ -69,17 +70,19 @@ final class Url {
     * @param int|null $port The url's port (e.g. 80, 443).
     * @param string $path The url's path (e.g. /foo/bar).
     * @param array $query An associative array of query parameters.
+    * @param string $anchor An optional anchor (e.g. #top).
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.03.2011<br />
     */
-   public function __construct($scheme, $host, $port, $path, array $query = array()) {
+   public function __construct($scheme, $host, $port, $path, array $query = array(), $anchor = null) {
       $this->scheme = $scheme;
       $this->host = $host;
       $this->port = $port;
       $this->path = $path;
       $this->query = $query;
+      $this->anchor = $anchor;
    }
 
    public function getScheme() {
@@ -111,6 +114,10 @@ final class Url {
     */
    public function getQuery() {
       return $this->query;
+   }
+
+   public function getAnchor() {
+      return $this->anchor;
    }
 
    /**
@@ -238,6 +245,22 @@ final class Url {
    /**
     * @public
     *
+    * Let's you inject the anchor of the url.
+    *
+    * @param string $anchor The anchor (e.g. #top).
+    * @return Url This object for further usage.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 04.04.2011<br />
+    */
+   public function &setAnchor($anchor) {
+      $this->anchor = $anchor;
+   }
+
+   /**
+    * @public
+    *
     * This method resets the list of parameters.
     *
     * @return Url This object for further usage.
@@ -310,8 +333,11 @@ final class Url {
       if (!isset($parts['query'])) {
          $parts['query'] = null;
       }
+      if (!isset($parts['fragment'])) {
+         $parts['fragment'] = null;
+      }
 
-      return new Url($parts['scheme'], $parts['host'], $parts['port'], $parts['path'], self::getQueryParams($parts['query']));
+      return new Url($parts['scheme'], $parts['host'], $parts['port'], $parts['path'], self::getQueryParams($parts['query']), $parts['fragment']);
    }
 
    /**
