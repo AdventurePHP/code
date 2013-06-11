@@ -34,15 +34,14 @@ use APF\core\frontcontroller\Frontcontroller;
  * a look at the ServiceManager documentation. To use this tag, the following attributes must be
  * involved:
  * <pre>&lt;generic:importdesign
- *             modelfile=""
- *             modelclass=""
- *             modelmode="NORMAL|SINGLETON|SESSIONSINGLETON"
- *             namespaceparam=""
- *             templateparam=""
- *             [getmethod=""]
- *             [dependentactionnamespace="VENDOR\action\namespace"
- *             dependentactionname="ActionName"
- *             [dependentactionparams="param1:value1|param2:value2"]]
+ *             model-class=""
+ *             model-mode="NORMAL|SINGLETON|SESSIONSINGLETON"
+ *             namespace-param=""
+ *             template-param=""
+ *             [get-method=""]
+ *             [dependent-action-namespace="VENDOR\action\namespace"
+ *             dependent-action-name="ActionName"
+ *             [dependent-action-params="param1:value1|param2:value2"]]
  * /&gt;</pre>
  * The <em>dependentaction*</em> params can be used to register a dependent action to the front controller.
  * This optional mechanism can be used to have an action registered, that is used for navigation
@@ -68,24 +67,16 @@ class GenericImportTemplateTag extends ImportTemplateTag {
     */
    public function onParseTime() {
 
-      // modelfile=""
-      $modelFile = $this->getAttribute('modelfile');
-      if ($modelFile === null) {
-         throw new \InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
-               . 'The attribute "modelfile" is empty or not present. Please provide the name '
-               . 'of the model file within this attribute!');
-      }
-
-      // modelclass=""
-      $modelClass = $this->getAttribute('modelclass');
+      // model-class=""
+      $modelClass = $this->getAttribute('model-class');
       if ($modelClass === null) {
          throw new \InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The attribute "modelclass" is empty or not present. Please provide the name '
                . 'of the model class within this attribute!');
       }
 
-      // modelmode="NORMAL|SINGLETON|SESSIONSINGLETON"
-      $modelMode = $this->getAttribute('modelmode');
+      // model-mode="NORMAL|SINGLETON|SESSIONSINGLETON"
+      $modelMode = $this->getAttribute('model-mode');
       if ($modelMode === null) {
          throw new \InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The attribute "modelmode" is empty or not present. Please provide the '
@@ -93,8 +84,8 @@ class GenericImportTemplateTag extends ImportTemplateTag {
                . 'NORMAL, SINGLETON or SESSIONSINGLETON.');
       }
 
-      // namespaceparam=""
-      $namespaceParam = $this->getAttribute('namespaceparam');
+      // namespace-param=""
+      $namespaceParam = $this->getAttribute('namespace-param');
       if ($namespaceParam === null) {
          throw new \InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The attribute "namespaceparam" is empty or not present. Please provide the '
@@ -102,32 +93,32 @@ class GenericImportTemplateTag extends ImportTemplateTag {
                . 'attribute!');
       }
 
-      // templateparam=""
-      $templateParam = $this->getAttribute('templateparam');
+      // template-param=""
+      $templateParam = $this->getAttribute('template-param');
       if ($templateParam === null) {
          throw new \InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] The '
                . 'attribute "templateparam" is empty or not present. Please provide the name '
                . 'of the model param for the name of the template file within this attribute!');
       }
 
-      // getmethod="" (e.g. "getAttribute" or "get")
-      $getMethod = $this->getAttribute('getmethod');
+      // get-method="" (e.g. "getAttribute" or "get")
+      $getMethod = $this->getAttribute('get-method');
       if ($getMethod === null) {
          $getMethod = 'getAttribute';
       }
 
       // register dependent action (needed, if the action is used for navigation purposes)
-      $depact_namespace = $this->getAttribute('dependentactionnamespace');
-      $depact_name = $this->getAttribute('dependentactionname');
-      $depact_params = $this->getAttribute('dependentactionparams');
+      $dependentActionNamespace = $this->getAttribute('dependent-action-namespace');
+      $dependentActionName = $this->getAttribute('dependent-action-name');
+      $dependentActionParams = $this->getAttribute('dependent-action-params');
 
-      if ($depact_namespace !== null && $depact_name !== null) {
+      if ($dependentActionNamespace !== null && $dependentActionName !== null) {
 
          // create param list
          $actionParamList = array();
-         if ($depact_params !== null) {
+         if ($dependentActionParams !== null) {
 
-            $paramPieces = explode('|', $depact_params);
+            $paramPieces = explode('|', $dependentActionParams);
 
             foreach ($paramPieces as $piece) {
                $temp = explode(':', $piece);
@@ -140,9 +131,9 @@ class GenericImportTemplateTag extends ImportTemplateTag {
          // register action with the front controller
          /* @var $fC Frontcontroller */
          $fC = &Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
-         $action = &$fC->getActionByName($depact_name);
+         $action = &$fC->getActionByName($dependentActionName);
          if ($action === null) {
-            $fC->addAction($depact_namespace, $depact_name, $actionParamList);
+            $fC->addAction($dependentActionNamespace, $dependentActionName, $actionParamList);
          }
       }
 
