@@ -35,7 +35,7 @@ use APF\tools\form\FormException;
  */
 class RadioButtonTag extends AbstractFormControl {
 
-   public function RadioButtonTag() {
+   public function __construct() {
       $this->attributeWhiteList[] = 'name';
       $this->attributeWhiteList[] = 'value';
       $this->attributeWhiteList[] = 'tabindex';
