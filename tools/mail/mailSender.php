@@ -35,6 +35,8 @@ use APF\tools\form\validator\EMailValidator;
  *
  * Provides a mail() wrapper.
  *
+ * @deprecated This service implementation is deprecated. Please use any available PHP solution instead (e.g. PHPMailer).
+ *
  * @author Christian Schäfer
  * @version
  * Version 0.1, 09.06.2004<br />
