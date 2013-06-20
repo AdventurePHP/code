@@ -53,7 +53,7 @@ final class Session {
     * session in case it is not started yet.
     *
     * @param string $namespace The desired namespace.
-    * @throws \Exception In case, the namespace is empty.
+    * @throws \InvalidArgumentException In case, the namespace is empty.
     *
     * @author Christian Schäfer
     * @version
@@ -61,6 +61,10 @@ final class Session {
     * Version 0.2, 15.05.2013 (Changed to __construct [Tobias Lückel|Megger])<br />
     */
    public function __construct($namespace) {
+
+      if (empty($namespace)) {
+         throw new \InvalidArgumentException('Session cannot be created with an empty namespace!');
+      }
 
       $this->namespace = $namespace;
 
