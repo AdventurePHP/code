@@ -24,7 +24,7 @@ use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\service\APFService;
 use APF\modules\usermanagement\biz\UmgtManager;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
-use APF\tools\cookie\CookieManager;
+use APF\tools\cookie\Cookie;
 
 /**
  * @package APF\modules\usermanagement\biz\login
@@ -33,14 +33,9 @@ use APF\tools\cookie\CookieManager;
 class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
 
    /**
-    * @const Defines the cookie namespace of the auto login cookie.
-    */
-   const AUTO_LOGIN_COOKIE_NAMESPACE = 'APF\umgt\biz';
-
-   /**
     * @const Defines the cookie name for the user's permanent auth token.
     */
-   const AUTO_LOGIN_COOKIE_NAME = 'AuthToken';
+   const AUTO_LOGIN_COOKIE_NAME = 'umgt-auth-token';
 
    public function run() {
 
@@ -53,13 +48,14 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
       // try to log-in user from cookie
       if ($user === null) {
 
-         $cM = new CookieManager(self::AUTO_LOGIN_COOKIE_NAMESPACE);
-         $authToken = $cM->readCookie(self::AUTO_LOGIN_COOKIE_NAME);
+         /* @var $umgt UmgtManager */
+         $umgt = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
+
+         $cookieLifeTime = $umgt->getAutoLoginCookieLifeTime();
+         $cookie = new Cookie(self::AUTO_LOGIN_COOKIE_NAME, time() + $cookieLifeTime);
+         $authToken = $cookie->getValue();
 
          if ($authToken !== null) {
-
-            /* @var $umgt UmgtManager */
-            $umgt = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
             $savedToken = $umgt->loadAuthTokenByTokenString($authToken);
 
             if ($savedToken !== null) {
@@ -68,8 +64,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
 
                if ($user !== null) {
                   $sessionStore->setUser($appIdent, $user);
-                  $cookieLifeTime = $umgt->getAutoLoginCookieLifeTime();
-                  $cM->updateCookie(self::AUTO_LOGIN_COOKIE_NAME, $savedToken->getToken(), time() + $cookieLifeTime);
+                  $cookie->setValue($savedToken->getToken());
                }
             }
          }

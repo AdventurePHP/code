@@ -25,7 +25,7 @@ use APF\core\service\APFService;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 use APF\tools\http\HeaderManager;
 use APF\tools\link\LinkGenerator;
-use APF\tools\cookie\CookieManager;
+use APF\tools\cookie\Cookie;
 use APF\modules\usermanagement\biz\login\UmgtAutoLoginAction;
 use APF\tools\link\Url;
 
@@ -50,8 +50,8 @@ class UmgtLogoutAction extends AbstractFrontcontrollerAction {
          $sessionStore->logout($this->getContext());
 
          // delete cookie to avoid re-log-in effects after clicking on log-out
-         $cM = new CookieManager(UmgtAutoLoginAction::AUTO_LOGIN_COOKIE_NAMESPACE);
-         $cM->deleteCookie(UmgtAutoLoginAction::AUTO_LOGIN_COOKIE_NAME);
+         $cookie = new Cookie(UmgtAutoLoginAction::AUTO_LOGIN_COOKIE_NAME);
+         $cookie->delete();
 
          // redirect to target page
          $urlProvider = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'LogoutRedirectUrlProvider');

@@ -30,7 +30,7 @@ use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 use APF\modules\usermanagement\biz\login\UmgtRedirectUrlProvider;
 use APF\modules\usermanagement\biz\model\UmgtAuthToken;
 use APF\modules\usermanagement\biz\model\UmgtUser;
-use APF\tools\cookie\CookieManager;
+use APF\tools\cookie\Cookie;
 use APF\tools\form\validator\AbstractFormValidator;
 use APF\tools\link\LinkGenerator;
 use APF\tools\http\HeaderManager;
@@ -58,13 +58,13 @@ class LoginController extends BaseDocumentController {
    public function transformContent() {
 
       /* @var $sessionStore UmgtUserSessionStore */
-      $sessionStore = &$this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
+      $sessionStore = & $this->getServiceObject('APF\modules\usermanagement\biz\UmgtUserSessionStore', APFService::SERVICE_TYPE_SESSION_SINGLETON);
 
       $appIdent = $this->getContext();
       $user = $sessionStore->getUser($appIdent);
 
       if ($user === null) {
-         $form = &$this->getForm('login');
+         $form = & $this->getForm('login');
 
          // generate url ourselves to not include the logout action instruction
          $form->setAction(LinkGenerator::generateUrl(Url::fromCurrent()));
@@ -97,7 +97,7 @@ class LoginController extends BaseDocumentController {
                   }
 
                   // redirect to target page
-                  $urlProvider = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'LoginRedirectUrlProvider');
+                  $urlProvider = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'LoginRedirectUrlProvider');
                   /* @var $urlProvider UmgtRedirectUrlProvider */
                   HeaderManager::forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
                   exit(0);
@@ -105,7 +105,7 @@ class LoginController extends BaseDocumentController {
             } catch (\Exception $e) {
                $this->getTemplate('system-error')->transformOnPlace();
 
-               $l = &Singleton::getInstance('APF\core\logging\Logger');
+               $l = & Singleton::getInstance('APF\core\logging\Logger');
                /* @var $l Logger */
                $l->logEntry('login', 'Login is not possible due to ' . $e, LogEntry::SEVERITY_ERROR);
             }
@@ -136,7 +136,7 @@ class LoginController extends BaseDocumentController {
     */
    private function loadUser($username, $password) {
       /* @var $umgt UmgtManager */
-      $umgt = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
+      $umgt = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
       try {
          $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'login');
@@ -158,14 +158,15 @@ class LoginController extends BaseDocumentController {
 
    public function createAutoLogin($user) {
       /* @var $umgt UmgtManager */
-      $umgt = &$this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
+      $umgt = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
-      $cM = new CookieManager(UmgtAutoLoginAction::AUTO_LOGIN_COOKIE_NAMESPACE);
+      $cookieLifeTime = $umgt->getAutoLoginCookieLifeTime();
+
+      $cookie = new Cookie(UmgtAutoLoginAction::AUTO_LOGIN_COOKIE_NAME, time() + $cookieLifeTime);
 
       $token = md5(rand(100000, 999999));
 
-      $cookieLifeTime = $umgt->getAutoLoginCookieLifeTime();
-      $cM->createCookie(UmgtAutoLoginAction::AUTO_LOGIN_COOKIE_NAME, $token, time() + $cookieLifeTime);
+      $cookie->setValue($token);
 
       $authToken = new UmgtAuthToken();
       $authToken->setToken($token);
