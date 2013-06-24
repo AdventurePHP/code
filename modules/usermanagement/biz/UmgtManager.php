@@ -35,6 +35,7 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinitionType;
 use APF\modules\usermanagement\biz\model\UmgtAuthToken;
+use APF\modules\usermanagement\biz\provider\UserFieldEncryptionProvider;
 
 use APF\modules\usermanagement\biz\provider\PasswordHashProvider;
 
@@ -618,6 +619,10 @@ class UmgtManager extends APFObject {
 
       $orm = & $this->getORMapper();
 
+      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('DisplayName')) {
+          $displayName = UserFieldEncryptionProvider::encrypt($displayName);
+      }
+      
       // escape the input values
       $dbDriver = & $orm->getDbDriver();
       $displayName = $dbDriver->escapeValue($displayName);
@@ -665,6 +670,10 @@ class UmgtManager extends APFObject {
    public function loadUserByFirstName($firstName) {
 
       $orm = & $this->getORMapper();
+      
+      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('FirstName')) {
+          $firstName = UserFieldEncryptionProvider::encrypt($firstName);
+      }
 
       // escape the input values
       $dbDriver = & $orm->getDbDriver();
@@ -691,6 +700,10 @@ class UmgtManager extends APFObject {
    public function loadUserByLastName($lastName) {
 
       $orm = & $this->getORMapper();
+      
+      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('LastName')) {
+          $lastName = UserFieldEncryptionProvider::encrypt($lastName);
+      }
 
       // escape the input values
       $dbDriver = & $orm->getDbDriver();
@@ -717,6 +730,10 @@ class UmgtManager extends APFObject {
    public function loadUserByEMail($email) {
 
       $orm = & $this->getORMapper();
+      
+      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('EMail')) {
+          $email = UserFieldEncryptionProvider::encrypt($email);
+      }
 
       // escape the input values
       $dbDriver = & $orm->getDbDriver();
@@ -744,6 +761,13 @@ class UmgtManager extends APFObject {
    public function loadUserByFirstNameAndLastName($firstName, $lastName) {
 
       $orm = & $this->getORMapper();
+      
+      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('FirstName')) {
+          $firstName = UserFieldEncryptionProvider::encrypt($firstName);
+      }
+      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('LastName')) {
+          $lastName = UserFieldEncryptionProvider::encrypt($lastName);
+      }
 
       // escape the input values
       $dbDriver = & $orm->getDbDriver();
@@ -771,6 +795,10 @@ class UmgtManager extends APFObject {
    public function loadUserByUserName($username) {
 
       $orm = & $this->getORMapper();
+      
+      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('Username')) {
+          $username = UserFieldEncryptionProvider::encrypt($username);
+      }
 
       // escape the input values
       $dbDriver = & $orm->getDbDriver();
@@ -2186,6 +2214,28 @@ class UmgtManager extends APFObject {
          $cookieLifeTime = self::AUTO_LOGIN_COOKIE_LIFETIME;
       }
       return $cookieLifeTime;
+   }
+   
+   /**
+    * Activates encryption. Loads configurations and gives them to encryption provider.
+    * Needs to be called before using UmgtUser-Objects or loading data from umgt, 
+    * when encryption should be used.
+    */
+   public function activateEncryption() {
+       if(UserFieldEncryptionProvider::$encryptedFieldNames === null) {
+            $config = $this->getConfigurationSection()->getSection('FieldEncryption');
+            /* @var $config Configuration */
+            
+            if($config === null) {
+                return;
+            }
+
+            $fieldNamesString = $config->getValue('FieldNames', '');
+            if(strlen($fieldNamesString) !== 0) {
+                UserFieldEncryptionProvider::$encryptedFieldNames = explode('|', $fieldNamesString);
+                UserFieldEncryptionProvider::$encryptionConfigKey = $config->getValue('Key', '');
+            }
+       }
    }
 
 }
