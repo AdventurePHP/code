@@ -75,7 +75,7 @@ class NumberScopeValidator extends TextFieldValidator {
       } else {
 
          // check for numeric value (int/float)
-         if (is_numeric($input)) {
+         if (!is_numeric($input)) {
             return false;
          }
 
