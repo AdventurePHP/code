@@ -225,10 +225,10 @@ class SMSNavTagController extends SMSBaseNavTagController {
             $template = $this->getTemplate('navEntry');
          }
 
-         $template->setPlaceHolder('linkURL', StringAssistant::escapeSpecialCharacters($linkURL));
-         $template->setPlaceHolder('linkTitle', StringAssistant::escapeSpecialCharacters($linkTitle));
-         $template->setPlaceHolder('linkClasses', $linkClasses);
-         $template->setPlaceHolder('linkText', StringAssistant::escapeSpecialCharacters($linkText));
+         $template->setStringPlaceHolder('anchor', 'URL', StringAssistant::escapeSpecialCharacters($linkURL));
+         $template->setStringPlaceHolder('anchor', 'TITLE', StringAssistant::escapeSpecialCharacters($linkTitle));
+         $template->setStringPlaceHolder('anchor', 'CLASSES', $linkClasses);
+         $template->setStringPlaceHolder('anchor', 'TEXT', StringAssistant::escapeSpecialCharacters($linkText));
 
          $buffer .= $template->transformTemplate();
 

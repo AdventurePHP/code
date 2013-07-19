@@ -118,10 +118,10 @@ class SMSBreadcrumbNavTagController extends SMSBaseNavTagController {
             $linkClasses .= ' first';
          }
 
-         $template->setPlaceHolder('linkURL', StringAssistant::escapeSpecialCharacters($linkURL));
-         $template->setPlaceHolder('linkTitle', StringAssistant::escapeSpecialCharacters($linkTitle));
-         $template->setPlaceHolder('linkText', StringAssistant::escapeSpecialCharacters($linkText));
-         $template->setPlaceHolder('linkClasses', $linkClasses);
+         $template->setStringPlaceHolder('anchor', 'URL', StringAssistant::escapeSpecialCharacters($linkURL));
+         $template->setStringPlaceHolder('anchor', 'TITLE', StringAssistant::escapeSpecialCharacters($linkTitle));
+         $template->setStringPlaceHolder('anchor', 'TEXT', StringAssistant::escapeSpecialCharacters($linkText));
+         $template->setStringPlaceHolder('anchor', 'CLASSES', $linkClasses);
 
          $buffer .= $template->transformTemplate();
       }

@@ -6,11 +6,11 @@
 </html:template>
 
 <html:template name="navEntry">
-    <li><a href="<template:placeholder name="linkURL" />" title="<template:placeholder name="linkTitle" />" class="<template:placeholder name="linkClasses" />"><template:placeholder name="linkText" /></a></li>
+    <li><template:placeholder name="anchor"><a href="{URL}" title="{TITLE}" class="{CLASSES}" >{TEXT}</a></template:placeholder></li>
 </html:template>
 
 <html:template name="navEntryWithSubs">
-    <li><a href="<template:placeholder name="linkURL" />" title="<template:placeholder name="linkTitle" />" class="<template:placeholder name="linkClasses" /> hasSubEntries"><template:placeholder name="linkText" /></a></li>
+    <li><template:placeholder name="anchor"><a href="{URL}" title="{TITLE}" class="hasSubEntries {CLASSES}" >{TEXT}</a></template:placeholder></li>
     <li class="subEntries">
         <ul>
             <template:placeholder name="subEntries" />

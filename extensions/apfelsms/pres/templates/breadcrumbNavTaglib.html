@@ -5,5 +5,5 @@
     </div>
 </html:template>
 <html:template name="breadcrumb">
-    <a href="<template:placeholder name="linkURL" />" title="<template:placeholder name="linkTitle" />" class="breadcrumb <template:placeholder name="linkClasses" />" ><template:placeholder name="linkText" /></a>
+    <template:placeholder name="anchor"><a href="{URL}" title="{TITLE}" class="breadcrumb {CLASSES}" >{TEXT}</a></template:placeholder>
 </html:template>
