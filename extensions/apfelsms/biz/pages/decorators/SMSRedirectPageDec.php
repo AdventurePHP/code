@@ -21,8 +21,25 @@ class SMSRedirectPageDec extends SMSAliasPageDec {
     */
    public function getLink(Url $url) {
 
-
       return $this->getReferencedPage()->getLink($url);
+   }
+
+
+   /**
+    * @return bool
+    */
+   public function isCurrentPage() {
+
+      return parent::isCurrentPage() || $this->getReferencedPage()->isCurrentPage();
+   }
+
+
+   /**
+    * @return bool
+    */
+   public function isActive() {
+      
+      return parent::isActive() || $this->getReferencedPage()->isActive();
    }
 
 }

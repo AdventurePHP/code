@@ -146,7 +146,7 @@ interface SMSPage {
     * @abstract
     * @return boolean
     */
-   public function isCurrentSite();
+   public function isCurrentPage();
 
 
    /**

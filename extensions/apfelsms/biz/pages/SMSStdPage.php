@@ -405,16 +405,16 @@ class SMSStdPage extends APFObject implements SMSPage {
    /**
     * @return bool
     */
-   public function isCurrentSite() {
+   public function isCurrentPage() {
 
 
       /* @var $SMSS SMSSite */
       $SMSS = $this->getDIServiceObject('APF\extensions\apfelsms', 'Site');
 
-      $currentSiteId = $SMSS->getCurrentPageId();
+      $currentPageId = $SMSS->getCurrentPageId();
       $thisId = $this->getId();
 
-      if($thisId == $currentSiteId) {
+      if($thisId == $currentPageId) {
          return true;
       }
 
@@ -430,7 +430,7 @@ class SMSStdPage extends APFObject implements SMSPage {
    public function isActive() {
 
 
-      if($this->isCurrentSite()) {
+      if($this->isCurrentPage()) {
          return true;
       }
 

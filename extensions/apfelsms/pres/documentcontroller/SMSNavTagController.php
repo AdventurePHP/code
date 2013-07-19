@@ -190,7 +190,7 @@ class SMSNavTagController extends SMSBaseNavTagController {
             $linkClasses .= 'active ';
          }
 
-         if($navPage->isCurrentSite()) {
+         if($navPage->isCurrentPage()) {
             $linkClasses .= 'current ';
          }
 

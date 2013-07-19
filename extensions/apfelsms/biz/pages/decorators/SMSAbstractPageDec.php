@@ -399,10 +399,10 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageD
    /**
     * @return boolean
     */
-   public function isCurrentSite() {
+   public function isCurrentPage() {
 
 
-      return $this->SMSPage->isCurrentSite();
+      return $this->SMSPage->isCurrentPage();
    }
 
 
