@@ -561,6 +561,8 @@ abstract class APFObject implements APFDIService {
     *
     * Returns a initialized service object according to the current application context.
     *
+    * @deprecated Please use getServiceObject() applying the init param to dedicated methods or the DIServiceManager instead.
+    *
     * @param string $class Fully qualified class name of the service object.
     * @param string $initParam The initialization parameter.
     * @param string $type The initializing type (see service manager for details).

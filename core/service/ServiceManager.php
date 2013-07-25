@@ -20,9 +20,10 @@ namespace APF\core\service;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\singleton\SessionSingleton;
 use APF\core\service\APFService;
 use APF\core\singleton\Singleton;
+use APF\core\singleton\SessionSingleton;
+use APF\core\singleton\ApplicationSingleton;
 
 /**
  * @package APF\core\service
@@ -65,6 +66,7 @@ final class ServiceManager {
     * Version 0.6, 10.08.2009 (Added lazy import, so that the developer must not care about the inclusion of the component.)<br />
     * Version 0.7, 04.03.2011 (Refactored to static method; enhanced code)<br />
     * Version 0.8, 07.07.2012 Jan Wiese <jw-lighting@ewetel.net> (Corrected service retrieval to respect context and language each time.)<br />
+    * Version 0.9, 23.07.2013 (Added "APPLICATIONSINGLETON" object creation mechanism.)<br />
     */
    public static function &getServiceObject($class, $context, $language, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
 
@@ -77,32 +79,39 @@ final class ServiceManager {
          $instanceId = $class . '|' . $context;
       }
 
-      $serviceObject = null;
-      if ($type == APFService::SERVICE_TYPE_SINGLETON) {
-         $serviceObject = & Singleton::getInstance($class, $instanceId);
-      } elseif ($type == APFService::SERVICE_TYPE_SESSION_SINGLETON) {
-         $serviceObject = & SessionSingleton::getInstance($class, $instanceId);
-      } elseif ($type == APFService::SERVICE_TYPE_NORMAL) {
-         $serviceObject = new $class();
-      } else {
-         throw new \InvalidArgumentException('[ServiceManager::getServiceObject()] The given type ('
-               . $type . ') is not supported. Please provide one out of "' . APFService::SERVICE_TYPE_SINGLETON
-               . '", "' . APFService::SERVICE_TYPE_SESSION_SINGLETON . '" or "' . APFService::SERVICE_TYPE_NORMAL
-               . '"', E_USER_WARNING);
+      $service = null;
+      switch ($type) {
+         case APFService::SERVICE_TYPE_SINGLETON:
+            $service = & Singleton::getInstance($class, $instanceId);
+            break;
+         case APFService::SERVICE_TYPE_SESSION_SINGLETON:
+            $service = & SessionSingleton::getInstance($class, $instanceId);
+            break;
+         case APFService::SERVICE_TYPE_APPLICATION_SINGLETON:
+            $service = & ApplicationSingleton::getInstance($class, $instanceId);
+            break;
+         case APFService::SERVICE_TYPE_NORMAL:
+            $service = new $class();
+            break;
+         default:
+            throw new \InvalidArgumentException('[ServiceManager::getServiceObject()] The given type ('
+            . $type . ') is not supported. Please provide one out of "' . APFService::SERVICE_TYPE_SINGLETON
+            . '", "' . APFService::SERVICE_TYPE_SESSION_SINGLETON . '" or "' . APFService::SERVICE_TYPE_NORMAL
+            . '"', E_USER_WARNING);
       }
 
       // inject the basic set of information to the APF style service
-      if ($serviceObject instanceof APFService) {
-         $serviceObject->setContext($context);
-         $serviceObject->setLanguage($language);
-         $serviceObject->setServiceType($type);
+      if ($service instanceof APFService) {
+         $service->setContext($context);
+         $service->setLanguage($language);
+         $service->setServiceType($type);
       } else {
          throw new \InvalidArgumentException('[ServiceManager::getServiceObject()] The precisely '
-               . 'now created object (' . $class . ') does not implement the APFService interface! '
-               . 'So the context, language and service type cannot be set correctly!', E_USER_WARNING);
+         . 'now created object (' . $class . ') does not implement the APFService interface! '
+         . 'So context, language and service type cannot be set correctly!', E_USER_WARNING);
       }
 
-      return $serviceObject;
+      return $service;
    }
 
    /**
@@ -111,6 +120,8 @@ final class ServiceManager {
     * Returns a service object, that is initialized with the given init param. The param itself
     * can be a primitive data type, an array or an object. Context and language are injected
     * as well.
+    *
+    * @deprecated Please use getServiceObject() applying the init param to dedicated methods or the DIServiceManager instead.
     *
     * @param string $class Fully qualified class name of the service object.
     * @param string $context The application context, the service object belongs to.
@@ -128,9 +139,9 @@ final class ServiceManager {
     * Version 0.3, 04.03.2011 (Refactored to static method)<br />
     */
    public static function &getAndInitServiceObject($class, $context, $language, $initParam, $type = APFService::SERVICE_TYPE_SINGLETON, $instanceId = null) {
-      $serviceObject = & self::getServiceObject($class, $context, $language, $type, $instanceId);
-      $serviceObject->init($initParam);
-      return $serviceObject;
+      $service = & self::getServiceObject($class, $context, $language, $type, $instanceId);
+      $service->init($initParam);
+      return $service;
    }
 
 }

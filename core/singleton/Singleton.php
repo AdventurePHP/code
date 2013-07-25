@@ -30,8 +30,12 @@ use APF\core\pagecontroller\APFObject;
  * Implements the generic singleton pattern. Can be used to create singleton objects from
  * every class. This eases unit tests, because explicit singleton implementations cause side
  * effects during unit testing. As a cache container, the $GLOBALS array is used.
+ * <p/>
+ * Singleton objects remain valid within one requests. They loose their validity with every
+ * new request.
+ * <p/>
  * Usage:
- * <pre>$myObject = &Singleton::getInstance('VENDOR\my\namespace\MyClass');</pre>
+ * <pre>$myObject = &Singleton::getInstance('VENDOR\..\Class');</pre>
  *
  * @author Christian Achatz
  * @version
@@ -55,7 +59,7 @@ class Singleton {
     *
     * Returns a singleton instance of the given class. In case the object is found in the
     * singleton cache, the cached object is returned.
-    * <p>
+    * <p/>
     * In case the instance id parameter is given, the singleton instance is created for
     * this key instead of for the class name itself. This mechanism is needed by the
     * DIServiceManager to create more than one (named) singleton instance of a given

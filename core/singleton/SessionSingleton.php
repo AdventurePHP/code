@@ -33,8 +33,12 @@ register_shutdown_function(array('APF\core\singleton\SessionSingleton', 'saveObj
  * Implements the generic session singleton pattern. Can be used to create singleton objects
  * from every class. This eases unit tests, because explicit singleton implementations cause
  * side effects during unit testing. As a cache container, the $GLOBALS array is used.
+ * <p/>
+ * Session singleton objects remain valid throughout multiple requests and within one
+ * sessions. They loose their validity when the session ends.
+ * <p/>
  * Usage:
- * <pre>$myObject = &SessionSingleton::getInstance('VENDOR\my\namespace\MyClass');</pre>
+ * <pre>$myObject = &SessionSingleton::getInstance('VENDOR\..\Class');</pre>
  *
  * @author Christian Schäfer
  * @version
@@ -42,8 +46,6 @@ register_shutdown_function(array('APF\core\singleton\SessionSingleton', 'saveObj
  * Version 0.2, 11.03.2010 (Refactoring to PHP5 only code)<br />
  */
 class SessionSingleton extends Singleton {
-
-   const SESSION_NAMESPACE = 'APF\core\singleton';
 
    /**
     * @var string[] Stores the objects, that are requested as singletons.
@@ -64,7 +66,7 @@ class SessionSingleton extends Singleton {
     *
     * Returns a session singleton instance of the given class. In case the object is found
     * in the session singleton cache, the cached object is returned.
-    * <p>
+    * <p/>
     * In case the instance id parameter is given, the singleton instance is created for
     * this key instead of for the class name itself. This mechanism is needed by the
     * DIServiceManager to create more than one (named) singleton instance of a given
@@ -108,7 +110,7 @@ class SessionSingleton extends Singleton {
     */
    private static function getSession() {
       if (self::$SESSION === null) {
-         self::$SESSION = new Session(SessionSingleton::SESSION_NAMESPACE);
+         self::$SESSION = new Session(__NAMESPACE__);
       }
       return self::$SESSION;
    }
