@@ -1744,26 +1744,24 @@ class Document extends APFObject {
       // create copy, to preserve it!
       $content = $this->content;
 
-      $docCon = $this->documentController;
-
       // execute the document controller if applicable
-      if(!empty($docCon)) {
+      if($this->documentController instanceof DocumentController) {
 
          // start benachmark timer
          $id = '(' . get_class($this->documentController) . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
          $t->start($id);
 
          // inject this document to be able to work on the DOM
-         $docCon->setDocument($this);
+         $this->documentController->setDocument($this);
 
          // inject the content to be able to access it
-         $docCon->setContent($content);
+         $this->documentController->setContent($content);
 
          // execute the document controller by using a standard method
-         $docCon->transformContent();
+         $this->documentController->transformContent();
 
          // retrieve the content
-         $content = $docCon->getContent();
+         $content = $this->documentController->getContent();
 
          $t->stop($id);
       }
