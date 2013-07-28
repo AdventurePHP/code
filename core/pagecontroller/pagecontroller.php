@@ -875,6 +875,27 @@ class Page extends APFObject {
  */
 class Document extends APFObject {
 
+
+   /**
+    * @const
+    * Attribute name for service name of document controller
+    */
+   const CONTROLLER_ATTR_SERVICE_NAME = 'service';
+
+   /**
+    * @const
+    * Attribute name for service namespace of document controller
+    */
+   const CONTROLLER_ATTR_SERVICE_NAMESPACE = 'namespace';
+
+   /**
+    * @const
+    * Attribute name for fully qualified class name of document controller
+    */
+   const CONTROLLER_ATTR_CLASS = 'class';
+
+
+
    /**
     * @protected
     * @var string Unique object identifier.
@@ -896,7 +917,7 @@ class Document extends APFObject {
 
    /**
     * @protected
-    * @var string|array The class name or service configuration of the document controller to use at transformation time.
+    * @var DocumentController The instance of the document controller to use at transformation time.
     */
    protected $documentController = null;
 
@@ -1248,7 +1269,7 @@ class Document extends APFObject {
     * Version 0.1, 20.02.2010<br />
     */
    public function getDocumentController() {
-      return $this->documentController;
+      return get_class($this->documentController);
    }
 
    /**
@@ -1574,7 +1595,7 @@ class Document extends APFObject {
     * @version
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 15.12.2009 (Added check for non existing class attribute)<br />
-    * Version 0.2, 27.07.2013 Jan Wiese (Introduced di-service support for documentcontrollers)<br />
+    * Version 0.2, 28.07.2013 Jan Wiese (Introduced di-service support for documentcontrollers. Moved controller creation here)<br />
     */
    protected function extractDocumentController() {
 
@@ -1582,46 +1603,88 @@ class Document extends APFObject {
       $controllerStartTag = '<@controller';
       $controllerEndTag = '@>';
 
-      if (strpos($this->content, $controllerStartTag) !== false) {
-
-         $tagStartPos = strpos($this->content, $controllerStartTag);
-         $tagEndPos = strpos($this->content, $controllerEndTag, $tagStartPos);
-         $controllerTag = substr($this->content, $tagStartPos + strlen($controllerStartTag), ($tagEndPos - $tagStartPos) - 1 - strlen($controllerStartTag));
-         $controllerAttributes = XmlParser::getAttributesFromString($controllerTag);
-
-
-         // check if di service type is given
-         if(isset($controllerAttributes['namespace']) && isset($controllerAttributes['servicename'])) {
-
-            // remark service namespace and name
-            $docConService = array();
-            $docConService['namespace'] = $controllerAttributes['namespace'];
-            $docConService['servicename'] = $controllerAttributes['servicename'];
-            $this->documentController = $docConService;
-
-         }
-         // check if normal type is given
-         elseif(isset($controllerAttributes['class'])) {
-
-            // remark controller class (fq class name!)
-            $this->documentController = $controllerAttributes['class'];
-
-         }
-         // no valid document controller definition given
-         else {
-
-            throw new ParserException('[Document::extractDocumentController()] Document controller '
-               . 'specification does not contain a valid controller class or service definition. '
-               . 'Please double check the template code and consult the documentation. '
-               . 'Template code: ' . $this->getContent());
-
-         }
-
-
-
-         // remove definition from content to be not displayed
-         $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
+      if(strpos($this->content, $controllerStartTag) === false) {
+         // no controller tag found
+         return;
       }
+
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      /* @var $t BenchmarkTimer */
+      $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::extractDocumentController()');
+
+      $tagStartPos = strpos($this->content, $controllerStartTag);
+      $tagEndPos = strpos($this->content, $controllerEndTag, $tagStartPos);
+      $controllerTag = substr($this->content, $tagStartPos + strlen($controllerStartTag), ($tagEndPos - $tagStartPos) - 1 - strlen($controllerStartTag));
+      $controllerAttributes = XmlParser::getAttributesFromString($controllerTag);
+
+
+      // check if di service type is given
+      if(
+         isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE]) &&
+         isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME])
+      ) {
+
+         // fetch di service parameters
+         $DINamespace = $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE];
+         $DIServicename = $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME];
+
+         // start benchmark timer
+         $id = '(' . $DINamespace . '\\' . $DIServicename . ') ' . (XmlParser::generateUniqID()) . '::__construct()';
+         $t->start($id);
+
+         try {
+            // create document controller via di service manager
+            $docCon = $this->getDIServiceObject($DINamespace, $DIServicename);
+         }
+         catch (\Exception $e) {
+            throw new \InvalidArgumentException('[' . get_class($this) . '::extractDocumentController()] Given documentcontroller '
+               . 'could not successfully be created using the di-service manager: ' . $e->getMessage(), $e->getCode());
+         }
+
+      }
+      // check if normal type is given
+      elseif(
+         isset($controllerAttributes[self::CONTROLLER_ATTR_CLASS])
+      ) {
+
+         $docConClass = $controllerAttributes[self::CONTROLLER_ATTR_CLASS];
+
+         // start benachmark timer
+         $id = '(' . $docConClass . ') ' . (XmlParser::generateUniqID()) . '::__construct()';
+         $t->start($id);
+
+         // class is loaded via the class loader lazily
+         $docCon = new $docConClass;
+         /* @var $docCon DocumentController */
+
+         // inject context
+         $docCon->setContext($this->getContext());
+
+         // inject current language
+         $docCon->setLanguage($this->getLanguage());
+
+      }
+      // no valid document controller definition given
+      else {
+
+         throw new ParserException('[' . get_class($this) . '::extractDocumentController()] Document '
+            . 'controller specification does not contain a valid controller class or service definition. '
+            . 'Please double check the template code and consult the documentation. '
+            . 'Template code: ' . $this->getContent());
+
+      }
+
+
+      // remark document controller
+      $this->documentController = $docCon;
+
+      // remove definition from content to be not displayed
+      $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
+
+      // stop benchmark timers
+      $t->stop($id);
+      $t->stop('(' . get_class($this) . ') ' . $this->getObjectId() . '::extractDocumentController()');
+
    }
 
    /**
@@ -1670,7 +1733,7 @@ class Document extends APFObject {
     * Version 0.4, 24.02.2007 (Switched timer inclusion to common benchmarker usage)<br />
     * Version 0.5, 09.04.2007 (Added language injection)<br />
     * Version 0.6, 09.02.2013 (Introduced the DocumentController interface)<br />
-    * Version 0.7, 27.07.2013 Jan Wiese (Introduced di-service support for documentcontrollers)<br />
+    * Version 0.7, 28.07.2013 Jan Wiese (Introduced di-service support for documentcontrollers. Moved controller creation to ::extractDocumentController())<br />
     */
    public function transform() {
 
@@ -1681,49 +1744,16 @@ class Document extends APFObject {
       // create copy, to preserve it!
       $content = $this->content;
 
+      $docCon = $this->documentController;
+
       // execute the document controller if applicable
-      if(!empty($this->documentController)) {
+      if(!empty($docCon)) {
 
-         // if $this->documentController is an array, the di-service type of creation is choosen
-         if(is_array($this->documentController)) {
+         // start benachmark timer
+         $id = '(' . get_class($this->documentController) . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
+         $t->start($id);
 
-            // fetch di service parameters
-            $DINamespace = $this->documentController['namespace'];
-            $DIServicename = $this->documentController['servicename'];
-
-            // start benchmark timer
-            $id = '(' . $DINamespace . '\\' . $DIServicename . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
-            $t->start($id);
-
-            try {
-               // create document controller via di service manager
-               $docCon = $this->getDIServiceObject($DINamespace, $DIServicename);
-            }
-            catch (\Exception $e) {
-               throw new \InvalidArgumentException('[' . get_class($this) . '::transform()] Given documentcontroller could not'
-                  . ' successfully be created using the di-service manager: ' . $e->getMessage(), $e->getCode());
-            }
-         }
-
-         else {
-
-            // start benachmark timer
-            $id = '(' . $this->documentController . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
-            $t->start($id);
-
-            // class is loaded via the class loader lazily
-            $docCon = new $this->documentController;
-            /* @var $docCon DocumentController */
-
-            // inject context
-            $docCon->setContext($this->getContext());
-
-            // inject current language
-            $docCon->setLanguage($this->getLanguage());
-
-         }
-
-         // inject document reference to be able to access the current DOM document
+         // inject this document to be able to work on the DOM
          $docCon->setDocument($this);
 
          // inject the content to be able to access it
