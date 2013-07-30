@@ -56,17 +56,17 @@ interface GenericORMapperDataObject {
 
    /**
     * @param string $relationName The name of the relation to load the objects with.
-    * @param GenericCriterionObject $criterion The criterion to limit the selection.
+    * @param GenericCriterionInterface $criterion The criterion to limit the selection.
     * @return GenericORMapperDataObject The related object.
     */
-   public function loadRelatedObject($relationName, GenericCriterionObject $criterion = null);
+   public function loadRelatedObject($relationName, GenericCriterionInterface $criterion = null);
 
    /**
     * @param string $relationName The name of the relation to load the objects with.
-    * @param GenericCriterionObject $criterion The criterion to limit the selection.
+    * @param GenericCriterionInterface $criterion The criterion to limit the selection.
     * @return GenericORMapperDataObject[] A list of related objects.
     */
-   public function loadRelatedObjects($relationName, GenericCriterionObject $criterion = null);
+   public function loadRelatedObjects($relationName, GenericCriterionInterface $criterion = null);
 
    public function createAssociation($relationName, GenericORMapperDataObject $targetObject);
 

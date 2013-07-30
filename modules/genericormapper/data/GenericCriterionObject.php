@@ -36,7 +36,7 @@ namespace APF\modules\genericormapper\data;
  * Version 0.5, 15.01.2011 (Removed dependency on APFObject.)<br />
  * Version 0.6, 27.04.2011 (Added uniqid to avoid conflicts between tables.)<br />
  */
-final class GenericCriterionObject {
+class GenericCriterionObject implements GenericCriterionInterface {
 
    /**
     * @private

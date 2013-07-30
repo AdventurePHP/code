@@ -185,15 +185,16 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * Load one related object.
     *
     * @param string $relationName name of the desired relation
-    * @param GenericCriterionObject $criterion criterion object
+    * @param GenericCriterionInterface $criterion criterion object
     * @return GenericORMapperDataObject object that is related with the current object or null.
     * @throws GenericORMapperException In case the data component is not initialized.
     *
     * @author Tobias Lückel
     * @version
     * Version 0.1, 09.09.2010<br />
+    * Version 0.2, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   public function loadRelatedObject($relationName, GenericCriterionObject $criterion = null) {
+   public function loadRelatedObject($relationName, GenericCriterionInterface $criterion = null) {
 
       // check weather data component is there
       if ($this->dataComponent === null) {
@@ -214,7 +215,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * Loads a list of related objects.
     *
     * @param string $relationName name of the desired relation
-    * @param GenericCriterionObject $criterion criterion object
+    * @param GenericCriterionInterface $criterion criterion object
     * @return GenericORMapperDataObject[] List of objects that are related with the current object or null.
     * @throws GenericORMapperException In case the data component is not initialized.
     *
@@ -224,8 +225,9 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * Version 0.2, 15.06.2008 (If data component is not initialized, the method now returns null)<br />
     * Version 0.3, 16.06.2008 (Caching of objects disabled, due to recursion errors)<br />
     * Version 0.4, 25.06.2008 (Added a second parameter to have influence on the loaded list)<br />
+    * Version 0.5, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   public function loadRelatedObjects($relationName, GenericCriterionObject $criterion = null) {
+   public function loadRelatedObjects($relationName, GenericCriterionInterface $criterion = null) {
 
       // check weather data component is there
       if ($this->dataComponent === null) {

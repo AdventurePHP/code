@@ -49,7 +49,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * Load an object list by a given criterion object.
     *
     * @param string $objectName name of the desired objects.
-    * @param GenericCriterionObject $criterion criterion object.
+    * @param GenericCriterionInterface $criterion criterion object.
     * @return GenericORMapperDataObject[] List of domain objects.
     * @throws GenericORMapperException In case no valid criterion is passed.
     *
@@ -58,8 +58,9 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.1, 17.05.2008<br />
     * Version 0.2, 21.06.2008 (Sourced out statement creation into an extra method)<br />
     * Version 0.3, 17.01.2009 (Added a check, if the criterion object is present. Otherwise return null.)<br />
+    * Version 0.4, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   public function loadObjectListByCriterion($objectName, GenericCriterionObject $criterion) {
+   public function loadObjectListByCriterion($objectName, GenericCriterionInterface $criterion) {
 
       if ($criterion === null) {
          throw new GenericORMapperException('[GenericORRelationMapper::loadObjectListByCriterion()] '
@@ -100,7 +101,7 @@ class GenericORRelationMapper extends GenericORMapper {
     *
     * @param string $objectName The name of the desired object
     * @param string $compositionName The name of the relation
-    * @param GenericCriterionObject $criterion The selection criterion
+    * @param GenericCriterionInterface $criterion The selection criterion
     * @param int $rootObjectId The ID of the root item of the tree
     * @param int $maxDepth The maximum depth of the tree
     * @return TreeItem|TreeItem[]
@@ -108,8 +109,9 @@ class GenericORRelationMapper extends GenericORMapper {
     * @author Nicolas Pecher
     * @version
     * Version 0.1. 23.04.2012
+    * Version 0.2, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   public function loadObjectTree($objectName, $compositionName, GenericCriterionObject $criterion = null, $rootObjectId = 0, $maxDepth = 0) {
+   public function loadObjectTree($objectName, $compositionName, GenericCriterionInterface $criterion = null, $rootObjectId = 0, $maxDepth = 0) {
 
       // get the objects which should be used for the tree
       $treeItems = $this->loadTreeItemList($objectName, $criterion);
@@ -166,15 +168,16 @@ class GenericORRelationMapper extends GenericORMapper {
     * Loads a list of TreeItems
     *
     * @param string $objectName The name of the objects which should be used to build up the tree.
-    * @param GenericCriterionObject $criterion An optional selection criterion to load the list of tree items.
+    * @param GenericCriterionInterface $criterion An optional selection criterion to load the list of tree items.
     * @return TreeItem[] A list of TreeItems.
     * @throws GenericORMapperException In case of wrong object hierarchy of the tree item DTO.
     *
     * @author Nicolas Pecher
     * @version
-    * Version 0.1. 23.04.2012
+    * Version 0.1, 23.04.2012
+    * Version 0.2, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   protected function loadTreeItemList($objectName, GenericCriterionObject $criterion = null) {
+   protected function loadTreeItemList($objectName, GenericCriterionInterface $criterion = null) {
 
       // check if the domain object is a subclass of TreeItem
       $class = $this->domainObjectsTable[$objectName]['Class'];
@@ -243,7 +246,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * Creates a list of WHERE statements by a given object name and a criterion object.<br />
     *
     * @param string $objectName name of the desired objects
-    * @param GenericCriterionObject $criterion criterion object
+    * @param GenericCriterionInterface $criterion criterion object
     * @return string[] List of WHERE statements.
     *
     * @author Christian Achatz
@@ -251,8 +254,9 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.1, 26.06.2008 (Extracted from buildSelectStatementByCriterion())<br />
     * Version 0.2, 16.02.2010 (Added value escaping to avoid SQL injection)<br />
     * Version 0.3, 28.05.2010 (Bug-fix: corrected where definition creation)<br />
+    * Version 0.4, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   protected function buildWhere($objectName, GenericCriterionObject $criterion) {
+   protected function buildWhere($objectName, GenericCriterionInterface $criterion) {
 
       $whereList = array();
 
@@ -291,15 +295,16 @@ class GenericORRelationMapper extends GenericORMapper {
     * Creates a list of ORDER statements by a given object name and a criterion object.<br />
     *
     * @param string $objectName name of the desired objects
-    * @param GenericCriterionObject $criterion criterion object
+    * @param GenericCriterionInterface $criterion criterion object
     * @return array List of ORDER statements.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 26.06.2008 (Extracted from buildSelectStatementByCriterion())<br />
     * Version 0.2, 16.02.2010 (Added value escaping to avoid SQL injection)<br />
+    * Version 0.3, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   protected function buildOrder($objectName, GenericCriterionObject $criterion) {
+   protected function buildOrder($objectName, GenericCriterionInterface $criterion) {
 
       // initialize return list
       $ORDER = array();
@@ -326,15 +331,16 @@ class GenericORRelationMapper extends GenericORMapper {
     * Creates a list of properties by a given object name and a criterion object.
     *
     * @param string $objectName Name of the desired objects.
-    * @param GenericCriterionObject $criterion Criterion object.
+    * @param GenericCriterionInterface $criterion Criterion object.
     * @return string List of properties.
     * @throws GenericORMapperException In case the object definition is not complete.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 26.06.2008 (Extracted from buildSelectStatementByCriterion())<br />
+    * Version 0.2, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObjetc [Tobias Lückel|Megger])<br />
     */
-   protected function buildProperties($objectName, GenericCriterionObject $criterion) {
+   protected function buildProperties($objectName, GenericCriterionInterface $criterion) {
 
       // check for valid object definition
       if (!isset($this->mappingTable[$objectName])) {
@@ -367,7 +373,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * Creates an SQL statement by a given object name and a criterion object.<br />
     *
     * @param string $objectName name of the desired objects
-    * @param GenericCriterionObject $criterion criterion object
+    * @param GenericCriterionInterface $criterion criterion object
     * @return string SQL statement.
     *
     * @author Christian Achatz, Tobias Lückel
@@ -377,8 +383,9 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.3, 25.06.2008 (Added LIKE-Feature. If the property indicator contains a '%' or '_', the resulting statement contains a LIKE clause instead of a = clause)<br />
     * Version 0.4, 24.03.2011 (Added support for relations between the same table)<br />
     * Verison 0.5, 27.04.2011 (Sourced out criterion statement creation into an extra method)<br />
+    * Version 0.6, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   protected function buildSelectStatementByCriterion($objectName, GenericCriterionObject $criterion) {
+   protected function buildSelectStatementByCriterion($objectName, GenericCriterionInterface $criterion) {
 
       // generate relation joins
       $joinList = $this->buildJoinStatementsByCriterion($objectName, $criterion);
@@ -416,14 +423,15 @@ class GenericORRelationMapper extends GenericORMapper {
     *
     * @param GenericORMapperDataObject $object current object
     * @param string $relationName name of the desired relation
-    * @param GenericCriterionObject $criterion criterion object
+    * @param GenericCriterionInterface $criterion criterion object
     * @return GenericORMapperDataObject related object.
     *
     * @author Tobias Lückel
     * @version
     * Version 0.1, 09.09.2010<br />
+    * Version 0.2, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   public function loadRelatedObject(GenericORMapperDataObject &$object, $relationName, GenericCriterionObject $criterion = null) {
+   public function loadRelatedObject(GenericORMapperDataObject &$object, $relationName, GenericCriterionInterface $criterion = null) {
       // create an empty criterion if the argument was null
       if ($criterion === null) {
          $criterion = new GenericCriterionObject();
@@ -444,7 +452,7 @@ class GenericORRelationMapper extends GenericORMapper {
     *
     * @param GenericORMapperDataObject $object current object
     * @param string $relationName name of the desired relation
-    * @param GenericCriterionObject $criterion criterion object
+    * @param GenericCriterionInterface $criterion criterion object
     * @return GenericORMapperDataObject[] List of the related objects.
     * @throws GenericORMapperException In case of invalid method calls.
     *
@@ -459,8 +467,9 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.6, 29.12.2008 (Added check, if given object is null)<br />
     * Version 0.7, 24.03.2011 (Added support for relations between the same table)<br />
     * Version 0.8, 27.04.2011 (Sourced out criterion statement creation into an extra method)<br />
+    * Version 0.9, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   public function loadRelatedObjects(GenericORMapperDataObject &$object, $relationName, GenericCriterionObject $criterion = null) {
+   public function loadRelatedObjects(GenericORMapperDataObject &$object, $relationName, GenericCriterionInterface $criterion = null) {
 
       // check if object is present
       if ($object === null) {
@@ -561,7 +570,7 @@ class GenericORRelationMapper extends GenericORMapper {
     *
     * @param GenericORMapperDataObject $object current object
     * @param string $relationName name of the desired relation
-    * @param GenericCriterionObject $criterion criterion object
+    * @param GenericCriterionInterface $criterion criterion object
     * @return GenericORMapperDataObject[] List of the *not* related objects.
     * @throws GenericORMapperException In case of incorrect configuration or gone objects.
     *
@@ -572,8 +581,9 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.3, 29.12.2008 (Added check, if given object is null)<br />
     * Version 0.4, 24.03.2011 (Added support for relations between the same table)<br />
     * Version 0.5, 27.04.2011 (Sourced out criterion statement creation into an extra method)<br />
+    * Version 0.6, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   public function loadNotRelatedObjects(GenericORMapperDataObject &$object, $relationName, GenericCriterionObject $criterion = null) {
+   public function loadNotRelatedObjects(GenericORMapperDataObject &$object, $relationName, GenericCriterionInterface $criterion = null) {
 
       // check if object is present
       if ($object === null) {
@@ -1342,15 +1352,16 @@ class GenericORRelationMapper extends GenericORMapper {
     * <em>loadRelationMultiplicity()</em>!
     *
     * @param string $objectName The name of object to load.
-    * @param GenericCriterionObject $criterion
+    * @param GenericCriterionInterface $criterion
     * @return int The amount of objects.
     * @throws GenericORMapperException In case of missing object definition.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 18.02.2010<br />
+    * Version 0.2, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   public function loadObjectCount($objectName, GenericCriterionObject $criterion = null) {
+   public function loadObjectCount($objectName, GenericCriterionInterface $criterion = null) {
 
       // avoid SQL errors for invalid object names
       if (!isset($this->mappingTable[$objectName])) {
@@ -1387,14 +1398,15 @@ class GenericORRelationMapper extends GenericORMapper {
     *
     * @param string $objectName The type of the objects to load.
     * @param string $relationName The name of relation, the object should have to or not.
-    * @param GenericCriterionObject $criterion An additional criterion to specify custom limitations.
+    * @param GenericCriterionInterface $criterion An additional criterion to specify custom limitations.
     * @return GenericORMapperDataObject[] The desired list of domain objects.
     *
     * @author Tobias Lückel
     * @version
     * Version 0.1, 01.09.2010<br />
+    * Version 0.2, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   public function loadObjectsWithRelation($objectName, $relationName, GenericCriterionObject $criterion = null) {
+   public function loadObjectsWithRelation($objectName, $relationName, GenericCriterionInterface $criterion = null) {
       return $this->loadObjects4RelationName($objectName, $relationName, $criterion, 'IS NOT NULL');
    }
 
@@ -1406,14 +1418,15 @@ class GenericORRelationMapper extends GenericORMapper {
     *
     * @param string $objectName The type of the objects to load.
     * @param string $relationName The name of relation, the object should have to or not.
-    * @param GenericCriterionObject $criterion An additional criterion to specify custom limitations.
+    * @param GenericCriterionInterface $criterion An additional criterion to specify custom limitations.
     * @return GenericORMapperDataObject[] The desired list of domain objects.
     *
     * @author Tobias Lückel
     * @version
     * Version 0.1, 01.09.2010<br />
+    * Version 0.2, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   public function loadObjectsWithoutRelation($objectName, $relationName, GenericCriterionObject $criterion = null) {
+   public function loadObjectsWithoutRelation($objectName, $relationName, GenericCriterionInterface $criterion = null) {
       return $this->loadObjects4RelationName($objectName, $relationName, $criterion, 'IS NULL');
    }
 
@@ -1428,7 +1441,7 @@ class GenericORRelationMapper extends GenericORMapper {
     *
     * @param string $objectName The type of the objects to load.
     * @param string $relationName The name of relation, the object should have to or not.
-    * @param GenericCriterionObject $criterion An additional criterion to specify custom limitations.
+    * @param GenericCriterionInterface $criterion An additional criterion to specify custom limitations.
     * @param string $relationCondition The relation condition (has relation or has none).
     * @return GenericORMapperDataObject[] The desired list of domain objects.
     * @throws GenericORMapperException In case of missing object definition for the given relation.
@@ -1441,6 +1454,7 @@ class GenericORRelationMapper extends GenericORMapper {
     *                          'loadObjectsWithRelation' and 'loadObjectsWithoutRelation' should pass null value<br />
     *                          Bug-fix: Corrected the where statement because of relations between the same table)<br />
     * Version 0.4, 21.11.2011 (Bug-fix: The CriterionObject now works with the sourceTable, not with the targetTable)<br />
+    * Version 0.5, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
    private function loadObjects4RelationName($objectName, $relationName, $criterion, $relationCondition) {
 
@@ -1523,15 +1537,16 @@ class GenericORRelationMapper extends GenericORMapper {
     * Creates JOIN statements by a given object name and criterion<br />
     *
     * @param string $objectName The given object name
-    * @param GenericCriterionObject $criterion criterion object
+    * @param GenericCriterionInterface $criterion criterion object
     * @return string[] JOIN statements.
     * @throws GenericORMapperException In case of issues with evaluation of the target object name.
     *
     * @author Tobias Lückel
     * @version
     * Version 0.1, 27.04.2011<br />
+    * Version 0.2, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   protected function buildJoinStatementsByCriterion($objectName, GenericCriterionObject $criterion) {
+   protected function buildJoinStatementsByCriterion($objectName, GenericCriterionInterface $criterion) {
       $joinList = array();
 
       $relations = $criterion->getRelations();
@@ -1571,14 +1586,15 @@ class GenericORRelationMapper extends GenericORMapper {
     * Creates WHERE statements by a given object name and criterion<br />
     *
     * @param string $objectName The given object name
-    * @param GenericCriterionObject $criterion criterion object
+    * @param GenericCriterionInterface $criterion criterion object
     * @return string[] WHERE statements.
     *
     * @author Tobias Lückel
     * @version
     * Version 0.1, 27.04.2011<br />
+    * Version 0.2, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   protected function buildWhereStatementsByCriterion($objectName, GenericCriterionObject $criterion) {
+   protected function buildWhereStatementsByCriterion($objectName, GenericCriterionInterface $criterion) {
       $whereList = array();
 
       $relations = $criterion->getRelations();
