@@ -158,6 +158,7 @@ class JsCssPackager extends APFObject {
    public function getFile($path, $file, $type, $gZip = false) {
 
       $filePath = $this->getRootPath($path) . '/' . $this->removeVendorOfNamespace($path) . '/' . $file . '.' . $type;
+	  $filePath = str_replace('\\', DIRECTORY_SEPERATOR, $filePath);
 
       if (!file_exists($filePath)) {
          throw new IncludeException('[JsCssPackager::getFile()] The requested file "' . $file . '.'
@@ -264,7 +265,7 @@ class JsCssPackager extends APFObject {
     */
    protected function loadSingleFile($namespace, $file, $ext, $packageName) {
 
-      $fqNamespace = str_replace('\\', '/', $this->removeVendorOfNamespace($namespace));
+      $fqNamespace = str_replace('\\', DIRECTORY_SEPERATOR, $this->removeVendorOfNamespace($namespace));
       $filePath = $this->getRootPath($namespace) . '/' . $fqNamespace . '/' . $file . '.' . $ext;
 
       if (file_exists($filePath)) {
