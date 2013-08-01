@@ -65,7 +65,7 @@ use APF\core\singleton\Singleton;
  *
  * init.&lt;foo&gt;.method = "nameOfTheFirstInjectionMethod"
  * init.&lt;foo&gt;.namespace = "VENDOR\namespace\of\the\service\object\to\inject"
- * init.&lt;foo&gt;.name = "NameOfTheServiceObjectToInject"
+ * init.&lt;foo&gt;.name = "NameOfTheServiceToInject"
  * ...
  * conf.&lt;baz&gt;.method = "nameOfTheConfigParamInjectionMethod"
  * conf.&lt;baz&gt;.value = "config value"</pre>
