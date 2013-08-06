@@ -1158,6 +1158,7 @@ class Document extends APFObject {
     *
     * @param string $name name of the place holder.
     * @param string $value value of the place holder.
+    * @param bool $append True in case the applied value should be appended, false otherwise.
     * @return Document This instance for further usage.
     * @throws \InvalidArgumentException In case the place holder cannot be found.
     *
@@ -1166,14 +1167,22 @@ class Document extends APFObject {
     * Version 0.1, 29.12.2006<br />
     * Version 0.2, 10.11.2008 (Removed check, if taglib class exists)<br />
     * Version 0.3, 07.02.2013 (Moved to Document to avoid multiple implementations)<br />
+    * Version 0.4, 05.08.2013 (Added support to append content to place holders)<br />
     */
-   public function &setPlaceHolder($name, $value) {
+   public function &setPlaceHolder($name, $value, $append = false) {
       $count = 0;
       foreach ($this->children as $objectId => $DUMMY) {
          if ($this->children[$objectId] instanceof PlaceHolderTag
-            && $this->children[$objectId]->getAttribute('name') === $name
+               && $this->children[$objectId]->getAttribute('name') === $name
          ) {
-            $this->children[$objectId]->setContent($value);
+            // false handled first, since most usages don't append --> slightly faster
+            if ($append === false) {
+               $this->children[$objectId]->setContent($value);
+            } else {
+               $this->children[$objectId]->setContent(
+                  $this->children[$objectId]->getContent() . $value
+               );
+            }
             $count++;
          }
       }
@@ -1217,15 +1226,17 @@ class Document extends APFObject {
     * values are used as the place holder's values.
     *
     * @param string[] $placeHolderValues Key-value-couples to fill place holders.
+    * @param bool $append True in case the applied values should be appended, false otherwise.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.11.2010<br />
     * Version 0.2, 09.02.2013 (Moved to Document to avoid multiple implementations)<br />
+    * Version 0.3, 06.08.2013 (Added support for appending content to place holders)<br />
     */
-   public function setPlaceHolders(array $placeHolderValues) {
+   public function setPlaceHolders(array $placeHolderValues, $append = false) {
       foreach ($placeHolderValues as $key => $value) {
-         $this->setPlaceHolder($key, $value);
+         $this->setPlaceHolder($key, $value, $append);
       }
    }
 
@@ -2320,6 +2331,9 @@ class DefaultTemplateTagClearApproach implements TemplateTagClearApproach {
  * Represents a reusable html fragment (template) within a template file. The tag's functionality
  * can be extended by the &lt;template:addtaglib /&gt; tag. Use setPlaceHolder() to set a place
  * holder's value and transformOnPlace() or transformTemplate() to generate the output.
+ * <p/>
+ * Besides, you may directly echo the template using it's __toString() implementation which internally
+ * uses the transformTemplate() method to generate the output implicitly.
  *
  * @author Christian Achatz
  * @version
@@ -2402,8 +2416,8 @@ class TemplateTag extends Document {
     * within a document controller. Usage:
     * <pre>
     * $template = &$this->getTemplate('MyTemplate');
-    * $template->setPlaceHolder('URL','http://adventure-php-framework.org');
-    * echo $template->transformTemplate();
+    * $template->setPlaceHolder('URL', 'http://adventure-php-framework.org');
+    * echo $template->transformTemplate(); // or echo $template; using the __toString() implementation
     * </pre>
     *
     * @return string The content of the transformed template.
@@ -2417,6 +2431,32 @@ class TemplateTag extends Document {
     */
    public function transformTemplate() {
       return $this->transformChildrenAndPreserveContent();
+   }
+
+   /**
+    * @public
+    *
+    * Returns the transformed state of the current template instance. Can be used to retrieve the
+    * content of the current template more convenient.
+    * <p/>
+    * You may want to use this method e.g. for transforming templates within a loop saving an
+    * explicit call to <em>transformTemplate()</em>. E.g.:
+    * <code>
+    * $tmpl = $this->getTemplate(...);
+    * $buffer = '';
+    * foreach($items as $item) {
+    *    $buffer .= $tmpl; // short version of $tmpl->transformTemplate()
+    * }
+    * </code>
+    *
+    * @return string The content of the transformed template.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 05.08.2013<br />
+    */
+   public function __toString() {
+      return $this->transformTemplate();
    }
 
    /**
@@ -2584,14 +2624,21 @@ class LanguageLabelTag extends Document {
     *
     * @param string $name The name of the place holder.
     * @param string $value The value of the place holder.
+    * @param bool $append True in case the applied value should be appended, false otherwise.
     * @return LanguageLabelTag This instance for further usage (e.g. adding further place holders).
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 11.01.2012<br />
+    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
     */
-   public function &setPlaceHolder($name, $value) {
-      $this->placeHolders[$name] = $value;
+   public function &setPlaceHolder($name, $value, $append = false) {
+      // false handled first, since most usages don't append --> slightly faster
+      if ($append === false) {
+         $this->placeHolders[$name] = $value;
+      } else {
+         $this->placeHolders[$name] = $this->placeHolders[$name] . $value;
+      }
       return $this;
    }
 
@@ -2765,6 +2812,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     *
     * @param string $name The name of the place holder to fill.
     * @param string $value The value to insert into the place holder.
+    * @param bool $append True in case the applied values should be appended, false otherwise.
     * @throws \InvalidArgumentException In case the place holder cannot be found.
     *
     * @author Christian Schäfer, Jan Wiese
@@ -2772,10 +2820,11 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 23.04.2009 (Corrected PHP4 style object access)<br />
     * Version 0.3, 09.02.2013 (Switched to Document::setPlaceHolder() implementation)<br />
+    * Version 0.4, 06.08.2013 (Added support for appending content to place holders)<br />
     */
-   protected function setPlaceHolder($name, $value) {
+   protected function setPlaceHolder($name, $value, $append = false) {
       try {
-         $this->document->setPlaceHolder($name, $value);
+         $this->document->setPlaceHolder($name, $value, $append);
       } catch (\InvalidArgumentException $e) {
          throw new \InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place holders '
             . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
@@ -2834,14 +2883,16 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * values are used as the place holder's values.
     *
     * @param string[] $placeHolderValues Key-value-couples to fill place holders.
+    * @param bool $append True in case the applied values should be appended, false otherwise.
     * @throws \InvalidArgumentException In case one of the place holders cannot be found.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 20.11.2010<br />
+    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
     */
-   protected function setPlaceHolders(array $placeHolderValues) {
-      $this->getDocument()->setPlaceHolders($placeHolderValues);
+   protected function setPlaceHolders(array $placeHolderValues, $append = false) {
+      $this->getDocument()->setPlaceHolders($placeHolderValues, $append);
    }
 
    /**
@@ -2851,14 +2902,16 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     *
     * @param string $name The name of the place holder.
     * @param string $value The place holder's value.
+    * @param bool $append True in case the applied values should be appended, false otherwise.
     *
     * @author Christian Achatz, Werner Liemberger
     * @version
     * Version 0.1, 02.07.2011<br />
+    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
     */
-   protected function setPlaceHolderIfExist($name, $value) {
+   protected function setPlaceHolderIfExist($name, $value, $append = false) {
       try {
-         $this->setPlaceHolder($name, $value);
+         $this->setPlaceHolder($name, $value, $append);
       } catch (\Exception $e) {
          $log = & Singleton::getInstance('APF\core\logging\Logger');
          /* @var $log Logger */
@@ -2883,14 +2936,16 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * the current document. See <em>BaseDocumentController::setPlaceHolderIfExist()</em> for details.
     *
     * @param array $placeHolderValues Key-value-couples to fill place holders.
+    * @param bool $append True in case the applied values should be appended, false otherwise.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 02.07.2011<br />
+    * Version 0.2, 06.08.2013 (Added support for appending content to place holders)<br />
     */
-   protected function setPlaceHoldersIfExist(array $placeHolderValues) {
+   protected function setPlaceHoldersIfExist(array $placeHolderValues, $append = false) {
       foreach ($placeHolderValues as $key => $value) {
-         $this->setPlaceHolderIfExist($key, $value);
+         $this->setPlaceHolderIfExist($key, $value, $append);
       }
    }
 
