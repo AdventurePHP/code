@@ -43,7 +43,7 @@ class GenericORMapper extends BaseMapper {
    /**
     * @var string The identifier, that marks a property as BIT type.
     */
-   private static $BIT_FIELD_IDENTIFIER = 'BIT';
+   protected static $BIT_FIELD_IDENTIFIER = 'BIT';
 
    /**
     * Bug 289: This identifier is used to distinguish between fiels, that can
@@ -51,7 +51,7 @@ class GenericORMapper extends BaseMapper {
     * map MySQL NULL values to empty PHP strings.
     * @var string Identifies fields, that can contain null values.
     */
-   private static $NULL_FIELD_IDENTIFIER = 'NULL DEFAULT NULL';
+   protected static $NULL_FIELD_IDENTIFIER = 'NULL DEFAULT NULL';
 
    /**
     * @public

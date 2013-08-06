@@ -1456,7 +1456,7 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.4, 21.11.2011 (Bug-fix: The CriterionObject now works with the sourceTable, not with the targetTable)<br />
     * Version 0.5, 29.07.2013 (Use GenericCriterionInterface instead of GenericCriterionObject [Tobias Lückel|Megger])<br />
     */
-   private function loadObjects4RelationName($objectName, $relationName, $criterion, $relationCondition) {
+   protected function loadObjects4RelationName($objectName, $relationName, $criterion, $relationCondition) {
 
       // gather information about the objects related to each other
       $sourceObject = $this->mappingTable[$objectName];

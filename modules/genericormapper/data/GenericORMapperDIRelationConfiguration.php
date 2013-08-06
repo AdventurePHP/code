@@ -58,12 +58,12 @@ class GenericORMapperDIRelationConfiguration extends APFObject {
    /**
     * @var string The configuration namespace of the additional GORM relation configuration.
     */
-   private $configNamespace;
+   protected $configNamespace;
 
    /**
     * @var string The configuration affix of the additional GORM relation configuration.
     */
-   private $configAffix;
+   protected $configAffix;
 
    public function getConfigNamespace() {
       return $this->configNamespace;

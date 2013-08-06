@@ -43,7 +43,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @var GenericORRelationMapper Data component, that can be used to lazy load attributes.
     * To set the member, use setDataComponent().
     */
-   private $dataComponent = null;
+   protected $dataComponent = null;
 
    /**
     * private
@@ -67,7 +67,7 @@ class GenericDomainObject implements GenericORMapperDataObject {
     * @private
     * @var string Timestamp value of relation-creation.
     */
-   private $relationCreationTimestamp = null;
+   protected $relationCreationTimestamp = null;
 
    /**
     * @public

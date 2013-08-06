@@ -58,12 +58,12 @@ final class GenericORMapperDIDomainObjectsConfiguration extends APFObject {
    /**
     * @var string The configuration namespace of the additional GORM domain object mapping configuration.
     */
-   private $configNamespace;
+   protected $configNamespace;
 
    /**
     * @var string The configuration affix of the additional GORM domain object mapping configuration.
     */
-   private $configAffix;
+   protected $configAffix;
 
    public function getConfigNamespace() {
       return $this->configNamespace;

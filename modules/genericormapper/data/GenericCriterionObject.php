@@ -42,43 +42,43 @@ class GenericCriterionObject implements GenericCriterionInterface {
     * @private
     * @var string[] Stores the relation indicators.
     */
-   private $relations = array();
+   protected $relations = array();
 
    /**
     * @private
     * @var string[] Stores an uniqid per relation name.
     */
-   private $uniqueRelationIds = array('source' => array(), 'target' => array());
+   protected $uniqueRelationIds = array('source' => array(), 'target' => array());
 
    /**
     * @private
     * @var string[] Stores the limit indicator.
     */
-   private $limit = array();
+   protected $limit = array();
 
    /**
     * @private
     * @var string[] Stores the property indicator.
     */
-   private $properties = array();
+   protected $properties = array();
 
    /**
     * @private
     * @var string[] Stores the current logical operator.
     */
-   private $logicalOperator = 'AND';
+   protected $logicalOperator = 'AND';
 
    /**
     * @private
     * @var string[] Stores the properties to load into the object.
     */
-   private $loadedProperties = array();
+   protected $loadedProperties = array();
 
    /**
     * @private
     * @var string[] Stores the order indicator.
     */
-   private $orders = array();
+   protected $orders = array();
 
    /**
     * @public

@@ -54,14 +54,14 @@ final class GenericORMapperFactory extends APFObject {
     * @private
     * @var GenericORRelationMapper[] Stores the o/r mapper instances.
     */
-   private $orMapperCache = array();
+   protected $orMapperCache = array();
 
    /**
     * @private
     * @since 1.14
     * @var string Defines the config file extension the GORM instance uses.
     */
-   private $configFileExtension = 'ini';
+   protected $configFileExtension = 'ini';
 
    /**
     * @public
