@@ -318,7 +318,7 @@ class SMSManager extends APFObject {
 
          }
          catch (SMSException $smse) {
-            throw new SMSException('[SMSManager::getPage()] Could not find page with id "' . $pageId . '" in data source.', E_USER_ERROR);
+            throw new SMSWrongParameterException('[SMSManager::getPage()] Could not find page with id "' . $pageId . '" in data source.', E_USER_ERROR);
          }
 
          ////
