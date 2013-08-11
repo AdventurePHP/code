@@ -157,13 +157,13 @@ class JsCssPackager extends APFObject {
 
    public function getFile($path, $file, $type, $gZip = false) {
 
-      $filePath = $this->getRootPath($path) . '/' . $this->removeVendorOfNamespace($path) . '/' . $file . '.' . $type;
-	  $filePath = str_replace('\\', DIRECTORY_SEPARATOR, $filePath);
+      $filePath = $this->getRootPath($path) . DIRECTORY_SEPARATOR . $this->removeVendorOfNamespace($path) . DIRECTORY_SEPARATOR . $file . '.' . $type;
+      $filePath = str_replace('\\', DIRECTORY_SEPARATOR, $filePath);
 
       if (!file_exists($filePath)) {
          throw new IncludeException('[JsCssPackager::getFile()] The requested file "' . $file . '.'
-                  . $type . '" cannot be found in namespace "' . str_replace('_', '\\', $path) . '" (FilePath: "'.$filePath.'"). Please '
-                  . 'check your taglib definition for tag &lt;htmlheader:add* /&gt;!',
+            . $type . '" cannot be found in namespace "' . str_replace('_', '\\', $path) . '" (FilePath: "' . $filePath . '"). Please '
+            . 'check your taglib definition for tag &lt;htmlheader:add* /&gt;!',
             E_USER_ERROR);
       }
 
@@ -204,7 +204,7 @@ class JsCssPackager extends APFObject {
     * Version 1.0, 18.03.2010<br />
     */
    protected function shrinkJs($input) {
-      include(dirname(__FILE__) . '/JSMin.php');
+      include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'JSMin.php');
       return \JSMin::minify($input);
    }
 
@@ -266,15 +266,15 @@ class JsCssPackager extends APFObject {
    protected function loadSingleFile($namespace, $file, $ext, $packageName) {
 
       $fqNamespace = str_replace('\\', DIRECTORY_SEPARATOR, $this->removeVendorOfNamespace($namespace));
-      $filePath = $this->getRootPath($namespace) . '/' . $fqNamespace . '/' . $file . '.' . $ext;
+      $filePath = $this->getRootPath($namespace) . DIRECTORY_SEPARATOR . $fqNamespace . DIRECTORY_SEPARATOR . $file . '.' . $ext;
 
       if (file_exists($filePath)) {
          return file_get_contents($filePath);
       }
 
       throw new IncludeException('[JsCssPackager::loadSingleFile()] The requested file "' . $file . '.' . $ext
-            . '" cannot be found in namespace "' . $namespace . '". Please check the configuration of package "'
-            . $packageName . '"!');
+      . '" cannot be found in namespace "' . $namespace . '". Please check the configuration of package "'
+      . $packageName . '"!');
    }
 
    /**
@@ -299,11 +299,9 @@ class JsCssPackager extends APFObject {
          }
       }
    }
-   
-   //TODO Implementierung aus dem RootClassLoader verwenden wenn irgendwann vorhanden
+
    protected function removeVendorOfNamespace($namespace) {
-       $loader = RootClassLoader::getLoaderByNamespace($namespace);
-       return str_replace($loader->getVendorName(), '', $namespace);
+      return RootClassLoader::getNamespaceWithoutVendor($namespace);
    }
 
    private function getRootPath($namespace) {
