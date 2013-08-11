@@ -695,12 +695,12 @@ final class TagLib {
    private $class;
 
    /**
-    * @var string The prefix of the tag (e.g. <em>core<em> for tag <em>&lt;core:importdesign /&gt;).
+    * @var string The prefix of the tag (e.g. <em>core</em> for tag <em>&lt;core:importdesign /&gt;</em>).
     */
    private $prefix;
 
    /**
-    * @var string The name of the tag (e.g. <em>importdesign<em> for tag <em>&lt;core:importdesign /&gt;).
+    * @var string The name of the tag (e.g. <em>importdesign</em> for tag <em>&lt;core:importdesign /&gt;</em>).
     */
    private $name;
 
@@ -710,8 +710,8 @@ final class TagLib {
     * Defines a taglib.
     *
     * @param string $class The fully qualified class name of the tag implementation.
-    * @param string $prefix The prefix of the tag  (e.g. <em>core<em> for tag <em>&lt;core:importdesign /&gt;).
-    * @param string $name The name of the tag  (e.g. <em>importdesign<em> for tag <em>&lt;core:importdesign /&gt;).
+    * @param string $prefix The prefix of the tag  (e.g. <em>core</em> for tag <em>&lt;core:importdesign /&gt;</em>).
+    * @param string $name The name of the tag  (e.g. <em>importdesign</em> for tag <em>&lt;core:importdesign /&gt;</em>).
     *
     * @author Christian Schäfer, Christian Achatz
     * @version
