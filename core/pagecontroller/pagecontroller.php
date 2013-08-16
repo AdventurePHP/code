@@ -894,8 +894,6 @@ class Document extends APFObject {
     */
    const CONTROLLER_ATTR_CLASS = 'class';
 
-
-
    /**
     * @protected
     * @var string Unique object identifier.
@@ -1280,7 +1278,7 @@ class Document extends APFObject {
     * Version 0.1, 20.02.2010<br />
     */
    public function getDocumentController() {
-      return get_class($this->documentController);
+      return $this->documentController === null ? null : get_class($this->documentController);
    }
 
    /**
@@ -1606,7 +1604,7 @@ class Document extends APFObject {
     * @version
     * Version 0.1, 28.12.2006<br />
     * Version 0.2, 15.12.2009 (Added check for non existing class attribute)<br />
-    * Version 0.2, 28.07.2013 Jan Wiese (Introduced di-service support for documentcontrollers. Moved controller creation here)<br />
+    * Version 0.2, 28.07.2013 Jan Wiese (Introduced di-service support for document controllers. Moved controller creation here)<br />
     */
    protected function extractDocumentController() {
 
@@ -1614,88 +1612,52 @@ class Document extends APFObject {
       $controllerStartTag = '<@controller';
       $controllerEndTag = '@>';
 
-      if(strpos($this->content, $controllerStartTag) === false) {
+      if (strpos($this->content, $controllerStartTag) === false) {
          // no controller tag found
          return;
       }
-
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
-      /* @var $t BenchmarkTimer */
-      $t->start('(' . get_class($this) . ') ' . $this->getObjectId() . '::extractDocumentController()');
 
       $tagStartPos = strpos($this->content, $controllerStartTag);
       $tagEndPos = strpos($this->content, $controllerEndTag, $tagStartPos);
       $controllerTag = substr($this->content, $tagStartPos + strlen($controllerStartTag), ($tagEndPos - $tagStartPos) - 1 - strlen($controllerStartTag));
       $controllerAttributes = XmlParser::getAttributesFromString($controllerTag);
 
-
-      // check if di service type is given
-      if(
-         isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE]) &&
-         isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME])
-      ) {
-
-         // fetch di service parameters
-         $DINamespace = $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE];
-         $DIServicename = $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME];
-
-         // start benchmark timer
-         $id = '(' . $DINamespace . '\\' . $DIServicename . ') ' . (XmlParser::generateUniqID()) . '::__construct()';
-         $t->start($id);
+      if (isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE]) && isset($controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME])) {
 
          try {
-            // create document controller via di service manager
-            $docCon = $this->getDIServiceObject($DINamespace, $DIServicename);
+            $docCon = $this->getDIServiceObject(
+               $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE],
+               $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME]
+            );
+         } catch (\Exception $e) {
+            throw new \InvalidArgumentException('[' . get_class($this) . '::extractDocumentController()] Given document controller '
+            . 'could not be created using the DIServiceManager. Message: ' . $e->getMessage(), $e->getCode());
          }
-         catch (\Exception $e) {
-            throw new \InvalidArgumentException('[' . get_class($this) . '::extractDocumentController()] Given documentcontroller '
-               . 'could not successfully be created using the di-service manager: ' . $e->getMessage(), $e->getCode());
-         }
 
-      }
-      // check if normal type is given
-      elseif(
-         isset($controllerAttributes[self::CONTROLLER_ATTR_CLASS])
-      ) {
-
-         $docConClass = $controllerAttributes[self::CONTROLLER_ATTR_CLASS];
-
-         // start benachmark timer
-         $id = '(' . $docConClass . ') ' . (XmlParser::generateUniqID()) . '::__construct()';
-         $t->start($id);
+      } elseif (isset($controllerAttributes[self::CONTROLLER_ATTR_CLASS])) {
 
          // class is loaded via the class loader lazily
-         $docCon = new $docConClass;
+         $docCon = new $controllerAttributes[self::CONTROLLER_ATTR_CLASS];
          /* @var $docCon DocumentController */
 
-         // inject context
+         // inject APF core attributes to guarantee native environment
          $docCon->setContext($this->getContext());
-
-         // inject current language
          $docCon->setLanguage($this->getLanguage());
 
-      }
-      // no valid document controller definition given
-      else {
+      } else {
 
+         // no valid document controller definition given, thus interrupt execution here
          throw new ParserException('[' . get_class($this) . '::extractDocumentController()] Document '
-            . 'controller specification does not contain a valid controller class or service definition. '
-            . 'Please double check the template code and consult the documentation. '
-            . 'Template code: ' . $this->getContent());
+         . 'controller specification does not contain a valid controller class or service definition. '
+         . 'Please double check the template code and consult the documentation. '
+         . 'Template code: ' . $this->getContent());
 
       }
 
-
-      // remark document controller
       $this->documentController = $docCon;
 
       // remove definition from content to be not displayed
       $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
-
-      // stop benchmark timers
-      $t->stop($id);
-      $t->stop('(' . get_class($this) . ') ' . $this->getObjectId() . '::extractDocumentController()');
-
    }
 
    /**
@@ -1758,7 +1720,7 @@ class Document extends APFObject {
       // execute the document controller if applicable
       if($this->documentController instanceof DocumentController) {
 
-         // start benachmark timer
+         // start benchmark timer
          $id = '(' . get_class($this->documentController) . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
          $t->start($id);
 
@@ -2689,8 +2651,9 @@ class LanguageLabelTag extends Document {
  * @author Christian Achatz
  * @version
  * Version 0.1, 09.02.2013<br />
+ * Version 0.2, 16.08.2013 (Document controllers are now able to be created by the DIServiceManager)<br />
  */
-interface DocumentController extends APFService {
+interface DocumentController extends APFDIService {
 
    /**
     * @public
