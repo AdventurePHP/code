@@ -585,7 +585,7 @@ class GenericORMapperManagementTool extends BaseMapper {
               $objectFields[$field['Field']] .= 'NOT NULL DEFAULT \'\'';
               } */
 
-            // add a null/not null indicator to preserve the correct datatype
+            // add a null/not null indicator to preserve the correct data type
             if ($field['Null'] == 'NO') {
                $objectFields[$field['Field']] .= ' NOT NULL';
             } else {
@@ -977,7 +977,7 @@ class GenericORMapperManagementTool extends BaseMapper {
       $create .= '  KEY `REVERSEJOIN` (`' . $tableAttributes['TargetID'] . '`, `' . $tableAttributes['SourceID'] . '`)' . PHP_EOL;
 
       // footer
-      return $create .= ') ENGINE=' . $this->getStorageEngine() . ' DEFAULT CHARSET=' . $this->getTableCharset() . ';';
+      return $create . ') ENGINE=' . $this->getStorageEngine() . ' DEFAULT CHARSET=' . $this->getTableCharset() . ';';
 
    }
 
