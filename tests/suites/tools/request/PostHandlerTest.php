@@ -11,7 +11,7 @@ use APF\tools\request\PostHandler;
  *
  * @author Christian Achatz
  */
-class PostHandlerTest extends PHPUnit_Framework_TestCase {
+class PostHandlerTest extends \PHPUnit_Framework_TestCase {
 
    protected function setUp() {
       $_POST = array();

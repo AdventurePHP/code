@@ -11,7 +11,7 @@ use APF\tools\request\RequestHandler;
  *
  * @author Christian Achatz
  */
-class RequestHandlerTest extends PHPUnit_Framework_TestCase {
+class RequestHandlerTest extends \PHPUnit_Framework_TestCase {
 
    protected function setUp() {
       $_REQUEST = array();

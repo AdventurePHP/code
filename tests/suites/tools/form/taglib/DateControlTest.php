@@ -33,7 +33,7 @@ use APF\tools\form\taglib\DateSelectorTag;
  * @version
  * Version 0.1, 08.07.2012<br />
  */
-class DateControlTest extends PHPUnit_Framework_TestCase {
+class DateControlTest extends \PHPUnit_Framework_TestCase {
 
    public function testPrependEmptyOptions() {
 
@@ -56,7 +56,7 @@ class DateControlTest extends PHPUnit_Framework_TestCase {
       $tag->onParseTime();
       $tag->onAfterAppend();
 
-      $today = new DateTime();
+      $today = new \DateTime();
       assertEquals($today->format('Y-m-d'), $tag->getDate());
    }
 
@@ -103,7 +103,7 @@ class DateControlTest extends PHPUnit_Framework_TestCase {
       $tag->onParseTime();
       $tag->onAfterAppend();
 
-      $expected = DateTime::createFromFormat('Y-m-d', $year . '-' . $month . '-' . $day);
+      $expected = \DateTime::createFromFormat('Y-m-d', $year . '-' . $month . '-' . $day);
       assertEquals($expected->format('Y-m-d'), $tag->getDate());
    }
 
@@ -120,7 +120,7 @@ class DateControlTest extends PHPUnit_Framework_TestCase {
       $tag->onParseTime();
       $tag->onAfterAppend();
 
-      $expected = DateTime::createFromFormat('Y-m-d', '2012-02-31');
+      $expected = \DateTime::createFromFormat('Y-m-d', '2012-02-31');
       assertEquals($expected->format('Y-m-d'), $tag->getDate());
    }
 

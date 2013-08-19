@@ -34,9 +34,23 @@ $_SERVER['REQUEST_URI'] = '';
 define('UnittestDir', dirname(__FILE__));
 date_default_timezone_set('Europe/Berlin');
 
-
 //
 // --- Loading first resources
 //
-require_once('../core/pagecontroller/pagecontroller.php');
+require_once('../core/bootstrap.php');
 require_once('PHPUnit/Framework/Assert/Functions.php');
+
+use APF\core\errorhandler\GlobalErrorHandler;
+
+GlobalErrorHandler::disable();
+
+use APF\core\exceptionhandler\GlobalExceptionHandler;
+
+GlobalExceptionHandler::disable();
+
+// Class loading hack to avoid class loading issues due to Frontcontroller.php containing both
+// - APF\core\frontcontroller\AbstractFrontcontrollerAction
+// - APF\core\frontcontroller\FrontcontrollerInput
+use APF\core\singleton\Singleton;
+
+$fC = Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
