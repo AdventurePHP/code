@@ -658,15 +658,32 @@ abstract class BasicLinkScheme {
     *
     * Creates a url sub-string that contains all action's encoded information that
     * have the <em>keepInUrl</em> flag set to true.
+    * <p/>
+    * In case an action has the <em>keepInUrl</em> flag defined with <em>true</em> and
+    * you decide to manually add the same action again using <em>LinkScheme::formatActionUrl()</em>
+    * the action definition added manually overrides the automatically generated action
+    * instruction.
+    * <p/>
+    * This means: in case an action with namespace <em>APF\tools\media</em> and name
+    * <em>streamMedia</em> is on the front controller action stack including parameters
+    * <em>foo</em> (=1) and <em>bar</em> (=2) and is added manually by
+    * <code>
+    * $url = Url::fromCurrent();
+    * $link = LinkGenerator::generateActionUrl($url, 'APF\tools\media', 'streamMedia', array('baz' => 1));
+    * </code>
+    * the resulting url will be <em>...?APF_tools_media-action:streamMedia=baz:1</em> instead of
+    * <em>...?APF_tools_media-action:streamMedia=foo:1|bar:2</em>.
     *
+    * @param array $query The current list of parameters.
     * @param boolean $urlRewriting True in case url rewriting is activated, false otherwise.
     * @return string All actions' url representations.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 07.04.2011<br />
+    * Version 0.2, 20.08.2013 (Added check for duplicate action generation caused by manual generateActionUrl() calls)<br />
     */
-   protected function getActionsUrlRepresentation($urlRewriting) {
+   protected function getActionsUrlRepresentation(array $query, $urlRewriting) {
 
       // retrieve actions from internal method (to enable testing)
       $actions = & $this->getFrontcontrollerActions();
@@ -675,7 +692,16 @@ abstract class BasicLinkScheme {
       foreach ($actions as $action) {
          /* @var $action AbstractFrontcontrollerAction */
          if ($action->getKeepInUrl() === true) {
-            $actionUrlRepresentation[] = $this->getActionUrlRepresentation($action, $urlRewriting);
+            // Only add actions in case they are not yet added within LinkGenerator::generateActionUrl().
+            // This is done to avoid duplicate action definition within the generated url. Please note,
+            // that this means "last definition wins" - manual definition overrides automatic generation.
+            // We can use this mechanism/logic here, because actions are always appended to the regular
+            // query. Hence, the given query will contain all manual action definitions before automatic
+            // appending takes place.
+            $key = $this->formatActionIdentifier($action->getActionNamespace(), $action->getActionName(), $urlRewriting);
+            if (!isset($query[$key])) {
+               $actionUrlRepresentation[] = $this->getActionUrlRepresentation($action, $urlRewriting);
+            }
          }
       }
 
@@ -701,10 +727,12 @@ abstract class BasicLinkScheme {
     * Version 0.1, 07.04.2011<br />
     */
    protected function getActionUrlRepresentation(AbstractFrontcontrollerAction $action, $urlRewriting) {
-      $actionParamsDelimiter = $urlRewriting === true ? '/' : '=';
       $value = $this->formatActionParameters($action->getInput()->getAttributes(), $urlRewriting);
       $key = $this->formatActionIdentifier($action->getActionNamespace(), $action->getActionName(), $urlRewriting);
-      return $key . $actionParamsDelimiter . $value;
+
+      // avoid "=" sign with empty value list
+      $actionParamsDelimiter = $urlRewriting === true ? '/' : '=';
+      return empty($value) ? $key : $key . $actionParamsDelimiter . $value;
    }
 
    /**
@@ -825,8 +853,8 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
          $resultUrl .= '?' . $queryString;
       }
 
-      // add fc actions
-      $actions = $this->getActionsUrlRepresentation(false);
+      // apply query to detect duplicate action definitions
+      $actions = $this->getActionsUrlRepresentation($query, false);
       if (!empty($actions)) {
          $resultUrl .= strpos($resultUrl, '?') === false ? '?' : '&';
          $resultUrl .= $actions;
@@ -908,11 +936,6 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
 
       $resultUrl = $this->getFormattedBaseUrl($url);
 
-      $path = $url->getPath();
-      if (!empty($path)) {
-         $resultUrl .= $path;
-      }
-
       $query = $url->getQuery();
       if (count($query) > 0) {
          foreach ($query as $name => $value) {
@@ -930,8 +953,8 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
          }
       }
 
-      // add fc actions
-      $actions = $this->getActionsUrlRepresentation(true);
+      // apply query to detect duplicate action definitions
+      $actions = $this->getActionsUrlRepresentation($query, true);
       if (!empty($actions)) {
          $resultUrl .= self::REWRITE_PARAM_TO_ACTION_DELIMITER . $actions;
       }

@@ -103,6 +103,82 @@ class TestableRewriteLinkScheme extends RewriteLinkScheme {
 }
 
 /**
+ * @package tests::suites::tools::link
+ * @class TestableDoubleActionLinkScheme
+ *
+ * Implements a testable link scheme regarding front controller link
+ * generation capabilities that avoids double-notation of actions.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 20.08.2013<br />
+ */
+class TestableDoubleActionLinkScheme extends DefaultLinkScheme {
+
+   private $actionNamespace;
+   private $actionName;
+
+   public function __construct($actionNamespace, $actionName) {
+      $this->actionNamespace = $actionNamespace;
+      $this->actionName = $actionName;
+   }
+
+   protected function &getFrontcontrollerActions() {
+
+      $actions = array();
+      $action = new TestFrontControllerAction();
+      $action->setActionNamespace($this->actionNamespace);
+      $action->setActionName($this->actionName);
+      $action->setKeepInUrl(true); // to test action inclusion
+
+      $action->setInput(new FrontcontrollerInput());
+
+      $actions[] = $action;
+
+      return $actions;
+   }
+
+}
+
+/**
+ * @package tests::suites::tools::link
+ * @class TestableDoubleActionRewriteLinkScheme
+ *
+ * Implements a testable link scheme regarding front controller link
+ * generation capabilities that avoids double-notation of actions.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 20.08.2013<br />
+ */
+class TestableDoubleActionRewriteLinkScheme extends RewriteLinkScheme {
+
+   private $actionNamespace;
+   private $actionName;
+
+   public function __construct($actionNamespace, $actionName) {
+      $this->actionNamespace = $actionNamespace;
+      $this->actionName = $actionName;
+   }
+
+   protected function &getFrontcontrollerActions() {
+
+      $actions = array();
+      $action = new TestFrontControllerAction();
+      $action->setActionNamespace($this->actionNamespace);
+      $action->setActionName($this->actionName);
+      $action->setKeepInUrl(true); // to test action inclusion
+
+      $action->setInput(new FrontcontrollerInput());
+
+      $actions[] = $action;
+
+      return $actions;
+   }
+
+}
+
+/**
  * @package APF\tests\suites\tools\link
  * @class LinkGeneratorTest
  *
@@ -229,6 +305,41 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       $urlTwo = new Url(null, null, null, $path);
       $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), new DefaultLinkScheme());
       assertEquals($path . '?APF_tools_media-action:streamMedia=' . $foo . ':1|' . $bar . ':2', $link);
+   }
+
+   /**
+    * Same action within url (keepInUrl=true) and applied via generateActionUrl() as request parameter
+    * should result in action appears only once within URL - the action that is applied manually wins.
+    */
+   public function testLinkGenerationForActionLinksWithDuplicateActions() {
+      $path = '/my-app';
+      $actionNamespace = 'APF_tools_media';
+      $actionName = 'streamMedia';
+      $foo = 'foo';
+      $bar = 'bar';
+
+      // configure link scheme to contain appropriate action
+      $defaultScheme = new TestableDoubleActionLinkScheme($actionNamespace, $actionName);
+      $rewriteScheme = new TestableDoubleActionRewriteLinkScheme($actionNamespace, $actionName);
+
+      $urlOne = new Url(null, null, null, $path);
+      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), $rewriteScheme);
+      // the rewrite link scheme supports no path since the path is interpreted as params and their values!
+      assertEquals('/~/APF_tools_media-action/streamMedia/' . $foo . '/1/' . $bar . '/2', $link);
+
+      $urlTwo = new Url(null, null, null, $path);
+      $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), $defaultScheme);
+      assertEquals($path . '?APF_tools_media-action:streamMedia=' . $foo . ':1|' . $bar . ':2', $link);
+
+      // without explicit action definition, the registered front controller action makes it into the url
+      $urlThree = new Url(null, null, null, $path);
+      $link = LinkGenerator::generateUrl($urlThree, $rewriteScheme);
+      // the rewrite link scheme supports no path since the path is interpreted as params and their values!
+      assertEquals('/~/APF_tools_media-action/streamMedia', $link);
+
+      $urlFour = new Url(null, null, null, $path);
+      $link = LinkGenerator::generateUrl($urlFour, $defaultScheme);
+      assertEquals($path . '?APF_tools_media-action:streamMedia', $link);
    }
 
    public function testExclusionOfNullValueAndInclusionOfZeroValueParameters() {
