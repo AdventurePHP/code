@@ -8,9 +8,10 @@ use APF\extensions\apfelsms\biz\pages\SMSPage;
  * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (06.06.12)
+ *          : v0.2 (20.08.13) SMSPageDec now extends SMSPage, (re)moved mapData() method
  *
  */
-interface SMSPageDec {
+interface SMSPageDec extends SMSPage {
 
 
    /**
@@ -71,11 +72,5 @@ interface SMSPageDec {
     */
    public function getPageWithoutDecorators();
 
-
-   /**
-    * @abstract
-    * @param array $data
-    */
-   public function mapData(array $data);
-
+   
 }

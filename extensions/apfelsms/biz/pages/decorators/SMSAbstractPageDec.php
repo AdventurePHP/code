@@ -13,7 +13,7 @@ use APF\tools\link\Url;
  * @version : v0.1 (06.06.12)
  *            v0.2 (23.09.12) Changed method signature of getDecoratorTypes and getAllDecorators to optional give-through arrays
  */
-abstract class SMSAbstractPageDec extends APFObject implements SMSPage, SMSPageDec {
+abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
 
    /**
