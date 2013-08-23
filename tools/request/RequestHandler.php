@@ -33,6 +33,21 @@ namespace APF\tools\request;
  */
 final class RequestHandler {
 
+   /**
+    * @const string Defines to use only content from the $_GET super-global.
+    */
+   const USE_GET_PARAMS = 'GET';
+
+   /**
+    * @const string Defines to use only content from the $_POST super-global.
+    */
+   const USE_POST_PARAMS = 'POST';
+
+   /**
+    * @const string Defines to use only content from the $_REQUEST super-global (default behaviour).
+    */
+   const USE_REQUEST_PARAMS = 'REQUEST';
+
    private function RequestHandler() {
    }
 
@@ -46,6 +61,7 @@ final class RequestHandler {
     *
     * @param string $name name of the request offset
     * @param string $defaultValue the default value
+    * @param string $type The type of parameter set to request.
     * @return string The desired value.
     *
     * @author Christian Achatz
@@ -54,11 +70,12 @@ final class RequestHandler {
     * Version 0.2, 10.08.2009 (Empty values are now treated as non existing values as well)<br />
     * Version 0.3, 19.10.2012 (Bug-fix: "0" values are now considered as an existing value)<br />
     */
-   public static function getValue($name, $defaultValue = null) {
-      return isset($_REQUEST[$name])
-            // avoid issues with "0" values being skipped due to empty() check
-            && (!empty($_REQUEST[$name]) || (string)$_REQUEST[$name] === '0')
-            ? $_REQUEST[$name]
+   public static function getValue($name, $defaultValue = null, $type = self::USE_REQUEST_PARAMS) {
+      $lookupTable = $GLOBALS['_' . $type];
+      return isset($lookupTable[$name])
+      // avoid issues with "0" values being skipped due to empty() check
+      && (!empty($lookupTable[$name]) || (string)$lookupTable[$name] === '0')
+            ? $lookupTable[$name]
             : $defaultValue;
    }
 
@@ -70,29 +87,28 @@ final class RequestHandler {
     * given default value or null is taken. Usage:
     * <pre>$values = RequestHandler::getValues(array('foo' => 'bar','baz'));</pre>
     *
-    * @param array $namesWithDefaults an input array with names and default values
-    * @return array The desired values
+    * @param array $namesWithDefaults an input array with names and default values.
+    * @param string $type The type of parameter set to request.
+    * @return array The desired values.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 13.12.2008<br />
     */
-   public static function getValues($namesWithDefaults) {
+   public static function getValues(array $namesWithDefaults, $type = self::USE_REQUEST_PARAMS) {
 
       $values = array();
 
       foreach ($namesWithDefaults as $name => $defaultValue) {
-
          if (is_int($name)) {
-            $values[$defaultValue] = RequestHandler::getValue($defaultValue);
+            $values[$defaultValue] = self::getValue($defaultValue, $type);
          } else {
-            $values[$name] = RequestHandler::getValue($name, $defaultValue);
+            $values[$name] = self::getValue($name, $defaultValue, $type);
          }
 
       }
 
       return $values;
-
    }
 
 }
