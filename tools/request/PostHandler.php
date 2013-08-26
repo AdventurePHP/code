@@ -20,12 +20,15 @@ namespace APF\tools\request;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\tools\request\RequestHandler;
 
 /**
  * @package APF\tools\request
  * @class PostHandler
  *
  * This component let's you easily retrieve values from the POST-request
+ *
+ * @deprecated Use RequestHandler instead.
  *
  * @author Ralf Schubert
  * @version
@@ -41,6 +44,8 @@ final class PostHandler {
     * given default value is taken. Usage:
     * <pre>$value = PostHandler::getValue('foo','bar');</pre>
     *
+    * @deprecated Use RequestHandler instead.
+    *
     * @param string $name name of the POST-request offset
     * @param string $defaultValue the default value
     * @return string The desired value.
@@ -49,13 +54,10 @@ final class PostHandler {
     * @version
     * Version 0.1, 04.03.2011<br />
     * Version 0.2, 19.10.2012 (Bug-fix: "0" values are now considered as an existing value)<br />
+    * Version 0.3, 26.08.2013 (Switched to usage of RequestHandler; marked as deprecated)<br />
     */
    public static function getValue($name, $defaultValue = null) {
-      return isset($_POST[$name])
-            // avoid issues with "0" values being skipped due to empty() check
-            && (!empty($_POST[$name]) || (string)$_POST[$name] === '0')
-            ? $_POST[$name]
-            : $defaultValue;
+      return RequestHandler::getValue($name, $defaultValue, RequestHandler::USE_POST_PARAMS);
    }
 
    /**
@@ -66,31 +68,18 @@ final class PostHandler {
     * given default value or null is taken. Usage:
     * <pre>$values = PostHandler::getValues(array('foo' => 'bar','baz'));</pre>
     *
+    * @deprecated Use RequestHandler instead.
+    *
     * @param array $namesWithDefaults an input array with names and default values
     * @return array The desired values
     *
     * @author Ralf Schubert
     * @version
     * Version 0.1, 04.03.2011<br />
+    * Version 0.2, 26.08.2013 (Switched to usage of RequestHandler; marked as deprecated)<br />
     */
    public static function getValues($namesWithDefaults) {
-
-      // initialize values
-      $values = array();
-
-      // retrieve values from the request
-      foreach ($namesWithDefaults as $name => $defaultValue) {
-
-         if (is_int($name)) {
-            $values[$defaultValue] = PostHandler::getValue($defaultValue);
-         } else {
-            $values[$name] = PostHandler::getValue($name, $defaultValue);
-         }
-
-      }
-
-      return $values;
-
+      return RequestHandler::getValues($namesWithDefaults, RequestHandler::USE_POST_PARAMS);
    }
 
 }
