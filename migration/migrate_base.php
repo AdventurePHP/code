@@ -18,10 +18,82 @@ function filterApfDirectories($files) {
    $filteredFiles = array();
 
    foreach ($files as $file) {
-      if (preg_match('#[/|\\\\](core|modules|tools|tests|extensions|examples|migration)[/|\\\\]#', $file)) {
+      if (preg_match('#\.[/|\\\\](core|modules|tools|tests|extensions|examples|migration)[/|\\\\]#', $file)) {
          continue;
       }
       $filteredFiles[] = $file;
    }
    return $filteredFiles;
+}
+
+function filterApplicationDirectories($files) {
+   $filteredFiles = array();
+
+   foreach ($files as $file) {
+      if (preg_match('#\.[/|\\\\](core|modules|tools|extensions)[/|\\\\]#', $file)) {
+         $filteredFiles[] = $file;
+      }
+   }
+   return $filteredFiles;
+}
+
+function addUseStatement($content, $class) {
+
+   // rely on class being defined only once (what is normally true having projects without using namespaces)
+   $simpleClass = substr($class, strrpos($class, '\\') + 1);
+
+   if (strpos($content, 'use ' . $class . ';') === false && strpos($content, 'class ' . $simpleClass) === false) {
+      // search for first use statement
+      $use = strpos($content, 'use ');
+      if ($use !== false) {
+         // since we do a preg_replace() only the first occurrence is affected and thus replaces.
+         // probably not the best way, but it works.
+         //$content = preg_replace('#use ([A-Za-z0-9\\\\-]+);#', 'use $1;' . PHP_EOL . 'use ' . $class . ';', $content);
+         $semicolon = strpos($content, ';', $use);
+         $length = $semicolon - $use + 1;
+         $currentUse = substr($content, $use, $length);
+         $content = substr_replace($content, $currentUse . PHP_EOL . 'use ' . $class . ';', $use, $length);
+      } else {
+         // if there is no use defined yet, add it below the namespace definition
+         $content = preg_replace('#namespace ([A-Za-z0-9\\\\-]+);#', 'namespace $1;' . PHP_EOL . PHP_EOL . 'use ' . $class . ';', $content);
+      }
+   }
+   return $content;
+}
+
+function getClassMap(array $files) {
+   $classMap = array();
+
+   foreach ($files as $file) {
+      $content = file_get_contents($file);
+
+      $matches = array();
+      preg_match('#namespace ([A-Za-z\\\\]+);#', $content, $matches);
+      if (isset($matches[1])) {
+         $namespace = $matches[1];
+      } else {
+         continue;
+      }
+
+      $matches = array();
+      preg_match_all('#(class|interface) ([A-Za-z]+) (implements|extends|{)#', $content, $matches, PREG_SET_ORDER);
+      foreach ($matches as $match) {
+         $class = $match[2];
+         $classMap[$class] = $namespace . '\\' . $class;
+      }
+
+   }
+   return $classMap;
+}
+
+function addUseStatements(array $files, array $classMap) {
+   foreach ($files as $file) {
+      $content = file_get_contents($file);
+      foreach ($classMap as $key => $value) {
+         if (strpos($content, $key) !== false) {
+            $content = addUseStatement($content, $value);
+         }
+      }
+      file_put_contents($file, $content);
+   }
 }
