@@ -17,5 +17,10 @@ $classMap = getClassMap($files);
 $files = filterApfDirectories(find('.', '*.php'));
 addUseStatements($files, $classMap);
 
-
-// resolve some weired stuff
+// special classes from PHP SPL that are often used
+$splClassMap = array(
+   'DateTime' => 'DateTime',
+   'DateInterval' => 'DateInterval',
+   'InvalidArgumentException' => 'InvalidArgumentException'
+);
+addUseStatements($files, $splClassMap);

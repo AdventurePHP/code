@@ -42,6 +42,7 @@ function addUseStatement($content, $class) {
    // rely on class being defined only once (what is normally true having projects without using namespaces)
    $simpleClass = substr($class, strrpos($class, '\\') + 1);
 
+   // this condition may lead to unused use statements that we accept over missing statements!
    if (strpos($content, 'use ' . $class . ';') === false && strpos($content, 'class ' . $simpleClass) === false) {
       // search for first use statement
       $use = strpos($content, 'use ');
@@ -90,7 +91,41 @@ function addUseStatements(array $files, array $classMap) {
    foreach ($files as $file) {
       $content = file_get_contents($file);
       foreach ($classMap as $key => $value) {
-         if (strpos($content, $key) !== false) {
+
+         // dedicated list of use cases to avoid multiple unused use statements!
+
+         // usage by instantiation
+         if (strpos($content, 'new ' . $key . '(') !== false) {
+            $content = addUseStatement($content, $value);
+         }
+         // usage by static call
+         if (strpos($content, $key . '::') !== false) {
+            $content = addUseStatement($content, $value);
+         }
+         // extends, implements
+         if (strpos($content, 'extends ' . $key) !== false) {
+            $content = addUseStatement($content, $value);
+         }
+         if (strpos($content, 'implements ' . $key) !== false) {
+            $content = addUseStatement($content, $value);
+         }
+         // type hinting
+         if (preg_match('#@var \$([A-Za-z0-9_]+) ' . $key . '#', $content)) {
+            $content = addUseStatement($content, $value);
+         }
+         if (strpos($content, '@var ' . $key) !== false) {
+            $content = addUseStatement($content, $value);
+         }
+         if (strpos($content, '(' . $key . ' $') !== false) {
+            $content = addUseStatement($content, $value);
+         }
+         if (strpos($content, ', ' . $key . ' $') !== false) {
+            $content = addUseStatement($content, $value);
+         }
+         if (strpos($content, '@return ' . $key) !== false) {
+            $content = addUseStatement($content, $value);
+         }
+         if (strpos($content, '@param ' . $key) !== false) {
             $content = addUseStatement($content, $value);
          }
       }
