@@ -8,6 +8,7 @@ foreach ($files as $file) {
 
    // rename class
    $content = str_replace('new SessionManager(', 'new Session(', $content);
+   $content = str_replace('use APF\core\session\SessionManager;', 'use APF\core\session\Session;', $content);
 
    // rename methods
    $content = str_replace('->destroySession(', '->destroy(', $content);
