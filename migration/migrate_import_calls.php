@@ -15,7 +15,7 @@ foreach ($files as $file) {
       $namespace = str_replace('.', '', str_replace('/', '\\', $file));
       $namespace = str_replace('\\\\', '\\', 'APF\\' . substr($namespace, 0, strrpos($namespace, '\\')));
 
-      $content = str_replace('<?php', '<?php' . PHP_EOL . 'namespace ' . $namespace . ';' . PHP_EOL, $content);
+      $content = str_replace('<?php', '<?php' . "\n" . 'namespace ' . $namespace . ';' . "\n", $content);
    }
 
    $content = preg_replace_callback($search, function ($matches) {

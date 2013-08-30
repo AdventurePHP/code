@@ -49,14 +49,13 @@ function addUseStatement($content, $class) {
       if ($use !== false) {
          // since we do a preg_replace() only the first occurrence is affected and thus replaces.
          // probably not the best way, but it works.
-         //$content = preg_replace('#use ([A-Za-z0-9\\\\-]+);#', 'use $1;' . PHP_EOL . 'use ' . $class . ';', $content);
          $semicolon = strpos($content, ';', $use);
          $length = $semicolon - $use + 1;
          $currentUse = substr($content, $use, $length);
-         $content = substr_replace($content, $currentUse . PHP_EOL . 'use ' . $class . ';', $use, $length);
+         $content = substr_replace($content, $currentUse . "\n" . 'use ' . $class . ';', $use, $length);
       } else {
          // if there is no use defined yet, add it below the namespace definition
-         $content = preg_replace('#namespace ([A-Za-z0-9\\\\-]+);#', 'namespace $1;' . PHP_EOL . PHP_EOL . 'use ' . $class . ';', $content);
+         $content = preg_replace('#namespace ([A-Za-z0-9\\\\-]+);#', 'namespace $1;' . "\n" . "\n" . 'use ' . $class . ';', $content);
       }
    }
    return $content;
