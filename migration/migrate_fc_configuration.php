@@ -3,9 +3,9 @@ include(dirname(__FILE__) . '/migrate_base.php');
 
 $files = find('config', '*actionconfig.ini');
 
-$search = '#FC.ActionNamespace ?= ?"([A-Za-z0-9:\-]+)"([\n|\r\n]+)?FC.ActionClass ?= ?"([A-Za-z0-9\-]+)"#';
+$search = '#FC.ActionNamespace ?= ?"([A-Za-z0-9:\-]+)"([\n|\r\n]+)?FC.ActionClass ?= ?"([A-Za-z0-9\-_]+)"#';
 
-$searchInput = '#FC.InputNamespace ?= ?"([A-Za-z0-9:\-]+)"([\n|\r\n]+)?FC.InputClass ?= ?"([A-Za-z0-9\-]+)"#';
+$searchInput = '#FC.ActionClass ?= ?"([A-Za-z\\\\_]+)"([\n|\r\n]+)?FC.InputClass ?= ?"([A-Za-z0-9\\\\-_]+)"#';
 
 foreach ($files as $file) {
    $content = file_get_contents($file);
@@ -15,10 +15,14 @@ foreach ($files as $file) {
       return 'FC.ActionClass = "APF\\' . str_replace('::', '\\', $matches[1]) . '\\' . $matches[3] . '"';
    }, $content);
 
-   // migrate input implementation
+   // migrate input implementation based on previous step to gather the namespace
    $content = preg_replace_callback($searchInput, function ($matches) {
-      return 'FC.InputClass = "APF\\' . str_replace('::', '\\', $matches[1]) . '\\' . $matches[3] . '"';
+      $namespace = substr($matches[1], 0, strrpos($matches[1], '\\'));
+      return 'FC.ActionClass = "' . $matches[1] . '"' . "\n" . 'FC.InputClass = "' . $namespace . '\\' . $matches[3] . '"';
    }, $content);
+
+   // remove empty action param definitions
+   $content = str_replace('FC.InputParams = ""', '', $content);
 
    file_put_contents($file, $content);
 }

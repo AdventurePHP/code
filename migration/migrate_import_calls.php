@@ -10,7 +10,6 @@ foreach ($files as $file) {
 
    // check for file-based namespace declaration
    if (!preg_match('#namespace ([A-Za-z0-9\\\\]+)#', $content)) {
-      //echo $file . ' has no namespace declaration! New namespace: ';
 
       $namespace = str_replace('.', '', str_replace('/', '\\', $file));
       $namespace = str_replace('\\\\', '\\', 'APF\\' . substr($namespace, 0, strrpos($namespace, '\\')));
