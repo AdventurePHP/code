@@ -84,6 +84,10 @@ echo "* Migrated session(manager) calls ..."
 $PHP_BINARY migration/migrate_missing_use_statements.php
 echo "* Add missing use statements ..."
 
+# resolve non-namespace'd class calls in singleton/session singleton
+$PHP_BINARY migration/migrate_singleton_calls.php
+echo "* Migrated Singleton/SessionSingleton calls ..."
+
 # migrates config
 echo "* Migrated configuration files:"
 $PHP_BINARY migration/migrate_config_calls.php
