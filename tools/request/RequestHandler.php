@@ -100,8 +100,8 @@ final class RequestHandler {
       $values = array();
 
       foreach ($namesWithDefaults as $name => $defaultValue) {
-         if (is_int($name)) {
-            $values[$defaultValue] = self::getValue($defaultValue, $type);
+         if (is_int($name)) { // in case $name is numeric, we got applied an array with numeric keys and no default values!
+            $values[$defaultValue] = self::getValue($defaultValue, null, $type);
          } else {
             $values[$name] = self::getValue($name, $defaultValue, $type);
          }
