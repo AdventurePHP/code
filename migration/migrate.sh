@@ -104,6 +104,8 @@ $PHP_BINARY migration/migrate_pager_configuration.php
 echo "  * Pager configuration"
 $PHP_BINARY migration/migrate_umgt_configuration.php
 echo "  * UMGT module configuration"
+$PHP_BINARY migration/migrate_contact_configuration.php
+echo "  * Contact module configuration"
 
 echo
 echo "######################################"
