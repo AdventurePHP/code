@@ -3,9 +3,9 @@ include(dirname(__FILE__) . '/migrate_base.php');
 
 $files = find('config', '*actionconfig.ini');
 
-$search = '#FC.ActionNamespace ?= ?"([A-Za-z0-9:\-]+)"([\n|\r\n]+)?FC.ActionClass ?= ?"([A-Za-z0-9\-_]+)"#';
+$search = '#FC.ActionNamespace ?= ?"([A-Za-z0-9:\-]+)"([\n|\r\n]+)?FC.ActionClass ?= ?"([A-Za-z0-9\\\\_]+)"#';
 
-$searchInput = '#FC.ActionClass ?= ?"([A-Za-z\\\\_]+)"([\n|\r\n]+)?FC.InputClass ?= ?"([A-Za-z0-9\\\\-_]+)"#';
+$searchInput = '#FC.ActionClass ?= ?"([A-Za-z0-9\\\\_]+)"([\n|\r\n]+)?FC.InputClass ?= ?"([A-Za-z0-9\\\\_]+)"#';
 
 foreach ($files as $file) {
    $content = file_get_contents($file);
