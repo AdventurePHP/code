@@ -59,9 +59,11 @@ class ChainedStandardInputFilter implements ChainedContentFilter {
 
    public function filter(FilterChain &$chain, $input = null) {
 
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
-      $t->start('ChainedStandardInputFilter');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+
+      $id = get_class($this);
+      $t->start($id);
 
       $namespaceKeywordDelimiter = '-';
       $actionKeyword = 'action';
@@ -102,7 +104,7 @@ class ChainedStandardInputFilter implements ChainedContentFilter {
          }
       }
 
-      $t->stop('ChainedStandardInputFilter');
+      $t->stop($id);
 
       // delegate further filtering to the applied chain
       $chain->filter($input);

@@ -65,7 +65,9 @@ class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
 
       /* @var $t BenchmarkTimer */
       $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
-      $t->start('ChainedUrlRewritingOutputFilter');
+
+      $id = get_class($this);
+      $t->start($id);
 
       $input = preg_replace_callback(
          '/<form (.*?)action="(.*?)"(.*?)>(.*?)<\/form>/ims',
@@ -76,7 +78,7 @@ class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
             $input)
       );
 
-      $t->stop('ChainedUrlRewritingOutputFilter');
+      $t->stop($id);
 
       // delegate filtering to the applied chain
       return $chain->filter($input);

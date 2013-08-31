@@ -69,9 +69,11 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
 
    public function filter(FilterChain &$chain, $input = null) {
 
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
-      $t->start('ChainedUrlRewritingInputFilter');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+
+      $id = get_class($this);
+      $t->start($id);
 
       // extract the session id from $_REQUEST if existent
       $sessionId = (string)'';
@@ -155,7 +157,7 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
          $_REQUEST[$sessionName] = $sessionId;
       }
 
-      $t->stop('ChainedUrlRewritingInputFilter');
+      $t->stop($id);
 
       // delegate further filtering to the applied chain
       $chain->filter($input);
