@@ -44,11 +44,12 @@ function addUseStatement($content, $class) {
 
    // this condition may lead to unused use statements that we accept over missing statements!
    if (strpos($content, 'use ' . $class . ';') === false && strpos($content, 'class ' . $simpleClass) === false) {
-      // search for first use statement
-      $use = strpos($content, 'use ');
+      // search for first use statement (but with line break in front to avoid interference with code comments)
+      $use = strpos($content, "\n" . 'use ');
       if ($use !== false) {
          // since we do a preg_replace() only the first occurrence is affected and thus replaces.
          // probably not the best way, but it works.
+         $use = $use + 1; // shift line break
          $semicolon = strpos($content, ';', $use);
          $length = $semicolon - $use + 1;
          $currentUse = substr($content, $use, $length);
@@ -115,7 +116,7 @@ function addUseStatements(array $files, array $classMap) {
          if (strpos($content, '@var ' . $key) !== false) {
             $content = addUseStatement($content, $value);
          }
-         if (strpos($content, '(' . $key . ' $') !== false) {
+         if (strpos($content, '(' . $key . ' $') !== false || strpos($content, '(' . $key . ' &$') !== false) {
             $content = addUseStatement($content, $value);
          }
          if (strpos($content, ', ' . $key . ' $') !== false) {
