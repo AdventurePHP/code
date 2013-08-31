@@ -3,7 +3,7 @@ include(dirname(__FILE__) . '/migrate_base.php');
 
 $files = filterApfDirectories(find('.', '*.html'));
 
-$searchAddTaglib = '#<([A-Za-z0-9\-]+):addtaglib([\*| |\n|\r\n]+)namespace ?= ?"([A-Za-z0-9:\-]+)"([\*| |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-]+)"#';
+$searchAddTaglib = '#<([A-Za-z0-9\-]+):addtaglib([\*| |\n|\r\n]+)namespace ?= ?"([A-Za-z0-9:\-]+)"([\*| |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-_]+)"#';
 
 $searchSingleNamespace = '#<([A-Za-z0-9\-]+):importdesign([\*| |\n|\r\n]+)namespace="([A-Za-z0-9:\-]+)"#';
 
@@ -15,10 +15,10 @@ $searchHeaderJs = '#<htmlheader:addjs([\*| |\n|\r\n]+)namespace="([A-Za-z0-9:\-]
 $searchHeaderCss = '#<htmlheader:addcss([\*| |\n|\r\n]+)namespace="([A-Za-z0-9:\-]+)"#';
 
 // respect explicit and none-explicit calls (explicits first!)
-$searchAddValidatorExplicit = '#<([A-Za-z0-9\-]+):addvalidator([ |\n|\r\n]+)namespace ?= ?"([A-Za-z0-9:\-]+)"([\*| |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-]+)"#';
-$searchAddValidator = '#<([A-Za-z0-9\-]+):addvalidator([ |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-]+)"#';
-$searchAddFilterExplicit = '#<([A-Za-z0-9\-]+):addfilter([ |\n|\r\n]+)namespace ?= ?"([A-Za-z0-9:\-]+)"([\*| |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-]+)"#';
-$searchAddFilter = '#<([A-Za-z0-9\-]+):addfilter([ |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-]+)"#';
+$searchAddValidatorExplicit = '#<([A-Za-z0-9\-]+):addvalidator([ |\n|\r\n]+)namespace ?= ?"([A-Za-z0-9:\-]+)"([\*| |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-_]+)"#';
+$searchAddValidator = '#<([A-Za-z0-9\-]+):addvalidator([ |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-_]+)"#';
+$searchAddFilterExplicit = '#<([A-Za-z0-9\-]+):addfilter([ |\n|\r\n]+)namespace ?= ?"([A-Za-z0-9:\-]+)"([\*| |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-_]+)"#';
+$searchAddFilter = '#<([A-Za-z0-9\-]+):addfilter([ |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-_]+)"#';
 
 foreach ($files as $file) {
    $content = file_get_contents($file);

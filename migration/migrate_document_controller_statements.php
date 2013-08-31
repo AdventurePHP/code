@@ -3,7 +3,7 @@ include(dirname(__FILE__) . '/migrate_base.php');
 
 $files = filterApfDirectories(find('.', '*.html'));
 
-$search = '#<@controller([ |\n|\r\n]+)namespace ?= ?"([A-Za-z0-9:\-]+)"([\*| |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-]+)"([ |\n|\r\n]+)@>#';
+$search = '#<@controller([ |\n|\r\n]+)namespace ?= ?"([A-Za-z0-9:\-]+)"([\*| |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-_]+)"([ |\n|\r\n]+)@>#';
 
 foreach ($files as $file) {
    $content = file_get_contents($file);

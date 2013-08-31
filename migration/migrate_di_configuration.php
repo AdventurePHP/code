@@ -3,7 +3,7 @@ include(dirname(__FILE__) . '/migrate_base.php');
 
 $files = find('config', '*serviceobjects.ini');
 
-$search = '#namespace ?= ?"([A-Za-z0-9:\-]+)"([\n|\r\n]+)?class ?= ?"([A-Za-z0-9\-]+)"#';
+$search = '#namespace ?= ?"([A-Za-z0-9:\-]+)"([\n|\r\n]+)?class ?= ?"([A-Za-z0-9\-_]+)"#';
 
 $searchReference = '#init.([A-Za-z\-_]+).namespace ?= ?"([A-Za-z0-9:]+)"#';
 
