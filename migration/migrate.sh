@@ -39,7 +39,7 @@ else
    then
       echo -e "\e[00;31m[ERROR]\e[00m"
       echo
-      echo -e "\e[00;31mPHP not found in your PATH-scope. Provide path to php as second parameter. Aborting!\e[00m"
+      echo -e "\e[00;31mPHP not found in your PATH-scope. Provide path to php as first parameter. Aborting!\e[00m"
       exit 1
    fi
    echo "[OK]"
