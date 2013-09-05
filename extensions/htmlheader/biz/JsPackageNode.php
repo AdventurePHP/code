@@ -35,8 +35,8 @@ use APF\extensions\htmlheader\biz\JsNode;
  */
 class JsPackageNode extends PackageNode implements JsNode {
 
-   public function __construct($url, $name, $rewriting = null) {
-      parent::__construct($url, $name, $rewriting);
+   public function __construct($url, $name) {
+      parent::__construct($url, $name);
       $this->setAttribute('type', 'text/javascript');
       // set the content, because otherwise ../> tag will destroy layout.
       $this->setContent('');

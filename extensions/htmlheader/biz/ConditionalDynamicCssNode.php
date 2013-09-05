@@ -37,8 +37,8 @@ class ConditionalDynamicCssNode extends DynamicCssNode implements CssNode {
 
    private $condition;
 
-   public function  __construct($namespace, $filename, $condition, $url = null, $rewriting = null, $fcaction = true, $media = null) {
-      parent::__construct($url, $namespace, $filename, $rewriting, $fcaction, $media);
+   public function  __construct($namespace, $filename, $condition, $url = null, $fcaction = true, $media = null) {
+      parent::__construct($url, $namespace, $filename, $fcaction, $media);
       $this->condition = $condition;
    }
 

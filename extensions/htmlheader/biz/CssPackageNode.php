@@ -35,8 +35,8 @@ use APF\extensions\htmlheader\biz\CssNode;
  */
 class CssPackageNode extends PackageNode implements CssNode {
 
-   public function __construct($url, $name, $rewriting = null, $media = null) {
-      parent::__construct($url, $name, $rewriting);
+   public function __construct($url, $name, $media = null) {
+      parent::__construct($url, $name);
       $this->setAttribute('type', 'text/css');
       $this->setAttribute('rel', 'stylesheet');
 

@@ -21,8 +21,8 @@ namespace APF\extensions\htmlheader\pres\taglib;
  * -->
  */
 use APF\core\pagecontroller\Document;
-use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\DynamicJsNode;
+use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 
 /**
  * @package APF\extensions\htmlheader\pres\taglib
@@ -44,14 +44,12 @@ use APF\extensions\htmlheader\biz\DynamicJsNode;
  *    url="http://static/"
  *    folder="js/anything"
  *    filename="jsfile"
- *    rewriting="false"
  *    fcaction="false"
  * />
  *  <ul>
  *    <li>url: URL of file server</li>
  *    <li>folder: Folder of javascript file</li>
  *    <li>filename: Javascript filename without '.js'</li>
- *    <li>rewriting: Rewriting of target server enabled? (optional, option will be used from actual application otherwise)
  *    <li>fcaction: Use an fc-action on target server? (optional, will be set to true by default)
  *    <li>appendtobody: If set to true, tag will not be included to htmlheader:gethead replacements, but to htmlheader:getbodyjs
  *  </ul>
@@ -74,14 +72,7 @@ class HtmlHeaderAddJsTags extends Document {
       $namespace = $this->getAttribute('namespace');
       $filename = $this->getAttribute('filename');
 
-      $rewriting = $this->getAttribute('rewriting');
       $fcaction = $this->getAttribute('fcaction');
-
-      if ($rewriting === 'true') {
-         $rewriting = true;
-      } elseif ($rewriting === 'false') {
-         $rewriting = false;
-      }
 
       if ($fcaction === 'true') {
          $fcaction = true;
@@ -90,9 +81,9 @@ class HtmlHeaderAddJsTags extends Document {
       }
 
       if ($url !== null) {
-         $node = new DynamicJsNode($url, $folder, $filename, $rewriting, $fcaction);
+         $node = new DynamicJsNode($url, $folder, $filename, $fcaction);
       } else {
-         $node = new DynamicJsNode(null, $namespace, $filename, $rewriting, $fcaction);
+         $node = new DynamicJsNode(null, $namespace, $filename, $fcaction);
       }
 
       if (strtolower($this->getAttribute('appendtobody')) === 'true') {

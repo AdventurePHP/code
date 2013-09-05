@@ -43,7 +43,6 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
  *    url="http://static/"
  *    folder="css/anything"
  *    filename="examplefile"
- *    rewriting="false"
  *    fcaction="false"
  *    [media=""]
  *  />
@@ -51,7 +50,6 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
  *    <li>url: URL of file server</li>
  *    <li>folder: Folder of css file</li>
  *    <li>filename: Css filename without '.css'</li>
- *    <li>rewriting: Rewriting of target server enabled? (optional, option will be used from actual application otherwise)
  *    <li>fcaction: Use an fc-action on target server? (optional, will be set to true by default)
  *    <li>media: The media type of the css file (e.g. "screen", "print", or any other media query)</li>
  *  </ul>
@@ -76,16 +74,9 @@ class HtmlHeaderAddCssTag extends Document {
       $namespace = $this->getAttribute('namespace');
       $filename = $this->getAttribute('filename');
 
-      $rewriting = $this->getAttribute('rewriting');
       $fcaction = $this->getAttribute('fcaction');
 
       $media = $this->getAttribute('media');
-
-      if ($rewriting === 'true') {
-         $rewriting = true;
-      } elseif ($rewriting === 'false') {
-         $rewriting = false;
-      }
 
       if ($fcaction === 'true') {
          $fcaction = true;
@@ -94,9 +85,9 @@ class HtmlHeaderAddCssTag extends Document {
       }
 
       if ($url !== null) {
-         $node = new DynamicCssNode($url, $folder, $filename, $rewriting, $fcaction, $media);
+         $node = new DynamicCssNode($url, $folder, $filename, $fcaction, $media);
       } else {
-         $node = new DynamicCssNode(null, $namespace, $filename, $rewriting, $fcaction, $media);
+         $node = new DynamicCssNode(null, $namespace, $filename, $fcaction, $media);
       }
 
       $node->setPriority($this->getAttribute('priority'));

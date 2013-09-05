@@ -44,19 +44,18 @@ class HtmlHeaderAddPackageTag extends Document {
       $url = $this->getAttribute('url');
       $name = $this->getAttribute('name');
       $type = $this->getAttribute('type');
-      $rewriting = $this->getAttribute('rewriting') === 'true' ? true : false;
 
       $media = $this->getAttribute('media');
 
       if ($type == 'js') {
-         $node = new JsPackageNode($url, $name, $rewriting);
+         $node = new JsPackageNode($url, $name);
 
          if (strtolower($this->getAttribute('appendtobody')) === 'true') {
             $node->setAppendToBody(true);
          }
 
       } else {
-         $node = new CssPackageNode($url, $name, $rewriting, $media);
+         $node = new CssPackageNode($url, $name, $media);
       }
 
       $node->setPriority($this->getAttribute('priority'));

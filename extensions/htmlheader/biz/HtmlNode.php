@@ -119,12 +119,11 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
     * @param string $url Optional url.
     * @param string $namespace Namespace of file
     * @param string $filename Name of file
-    * @param bool $urlRewriting Optional. Create rewriting Url.
     * @param bool $fcaction Optional. Create link for FC-Action.
     * @param string $type Filetype
     * @return string elements' link.
     */
-   protected function buildFrontcontrollerLink($url, $namespace, $filename, $urlRewriting, $fcaction, $type) {
+   protected function buildFrontcontrollerLink($url, $namespace, $filename, $fcaction, $type) {
 
       if ($fcaction === null) {
          $fcaction = true;

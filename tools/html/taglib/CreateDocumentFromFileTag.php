@@ -66,7 +66,7 @@ class CreateDocumentFromFileTag extends Document {
     * @author Christian Schäfer
     * @version
     * Version 0.1, 30.05.2006<br />
-    * Version 0.2, 31.05.2006 (Path changed from /apps/sites  to ./frontend/content)<br />
+    * Version 0.2, 31.05.2006 (Path changed from /APF/sites  to ./frontend/content)<br />
     * Version 0.3, 29.09.2007 (Introduced the language in the filename)<br />
     */
    protected function loadContent($pageName) {

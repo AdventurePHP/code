@@ -33,7 +33,6 @@ Since 1.12 You can use it to deliver packages from the new JsCssPackager.
     url="http://static/"
     folder="js::anything"
     filename="jquery.min"
-    rewriting="false"
     fcaction="false"
 />
 
@@ -41,7 +40,6 @@ Since 1.12 You can use it to deliver packages from the new JsCssPackager.
     url="http://static/"
     folder="css::anything"
     filename="stylesheet"
-    rewriting="false"
     fcaction="false"
 />
 
@@ -62,7 +60,6 @@ Since 1.12 You can use it to deliver packages from the new JsCssPackager.
 * folder: If you use an external file, specify folder which contains the file.
 * namespace: The namespace of the file.
 * filename: The name of the file, without extension (e.g. '.css', '.js').
-* rewriting: Optional. Generate url which uses url-rewriting? (Default: Same as application)
 * fcaction: Optional Use fc action for delivering file? (Default: true)
 * append: Set append to true if you want to add the given title at the end of the already existing title. Otherwise set to false, if you want to overwrite existing titles.
 
@@ -86,7 +83,7 @@ use APF\extensions\htmlheader\biz\CssNode;
 // Get instance and configure in constructor: (Before 1.12 Revision 874)
 $CssNode = new CssNode($namespace, $filename);
 //Get instance and configure in constructor: (After 1.12 Revision 874)
-//$CssNode = new CssNode($url, $namespace, $filename, $rewriting, $fcaction);
+//$CssNode = new CssNode($url, $namespace, $filename, $fcaction);
 
 // Add Node to HHM
 $HHM->addCss($CssNode);
@@ -97,14 +94,14 @@ use APF\extensions\htmlheader\biz\JsNode;
 // Get instance and configure in constructor: (Before 1.12 Revision 874)
 $JsNode = new JsNode($namespace, $filename);
 // Get instance and configure in constructor: (After 1.12 Revision 874)
-//$JsNode = new JsNode($url, $namespace, $filename, $rewriting, $fcaction);
+//$JsNode = new JsNode($url, $namespace, $filename, $fcaction);
 
 // Add Node to HHM
 $HHM->addJs($JsNode);
 
 
 // Define and add a JsCssPackager-Package to HHM
-$PackageNode = new PackageNode($url, $name, $type, $rewriting);
+$PackageNode = new PackageNode($url, $name, $type);
 $HHM->addPackage($PackageNode);
 </source>
 

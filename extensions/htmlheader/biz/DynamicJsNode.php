@@ -41,15 +41,13 @@ class DynamicJsNode extends HtmlNode implements JsNode {
     * @param string $url Optional url.
     * @param string $namespace Namespace of file
     * @param string $filename Name of file (without .js)
-    * @param bool $rewriting Optional. Create rewriting Url.
     * @param bool $fcaction Optional. Create link for FC-Action.
     */
-   public function __construct($url, $namespace, $filename, $rewriting = null, $fcaction = null) {
+   public function __construct($url, $namespace, $filename, $fcaction = null) {
       $this->setAttribute('src', $this->buildFrontcontrollerLink(
          $url,
          $namespace,
          $filename,
-         $rewriting,
          $fcaction,
          'js'
       ));

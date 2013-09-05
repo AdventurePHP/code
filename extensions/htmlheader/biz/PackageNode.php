@@ -38,11 +38,10 @@ use APF\tools\link\Url;
  */
 abstract class PackageNode extends HtmlNode {
 
-   public function __construct($url, $name, $rewriting = null) {
+   public function __construct($url, $name) {
       $this->setAttribute($this->getLocationAttributeName(), $this->buildPackageLink(
          $url,
-         $name,
-         $rewriting
+         $name
       ));
    }
 

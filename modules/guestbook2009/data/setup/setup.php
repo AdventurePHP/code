@@ -7,10 +7,10 @@ namespace APF\modules\guestbook2009\data\setup;
  *
  * @example
  * <code>
- * include('./apps/core/bootstrap.php');
+ * include('./APF/core/bootstrap.php');
  * $context = 'mycontext';
  * $connectionKey = 'mysql-db';
- * include('./apps/modules/guestbook2009/data/setup/setup.php');
+ * include('./APF/modules/guestbook2009/data/setup/setup.php');
  * </code>
  *
  * Please note, that you may have to adapt the include path for the <em>pagecontroller.php</em>.
