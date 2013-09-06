@@ -239,7 +239,7 @@ final class XmlParser {
     * Version 0.1, 22.12.2006<br />
     * Version 0.2, 30.12.2006 (Enhanced the documentation)<br />
     * Version 0.3, 14.01.2007 (Improved the error message)<br />
-    * Version 0.4, 14.11.2007 (Removed $hasFound; see http://forum.adventure-php-framework.org/de/viewtopic.php?t=7)<br />
+    * Version 0.4, 14.11.2007 (Removed $hasFound; see http://forum.adventure-php-framework.org/viewtopic.php?t=7)<br />
     */
    public static function getAttributesFromString($attributesString) {
 
@@ -2131,7 +2131,7 @@ class AddTaglibTag extends Document {
       // Resets the attributes list to avoid selection issues with the
       // getChildNode() and getChildNodes() methods that may select this
       // node when requesting a node by the "name" attribute. See bug
-      // http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=1192
+      // http://forum.adventure-php-framework.org/viewtopic.php?f=8&t=1192
       // for more details.
       $this->attributes = array();
    }

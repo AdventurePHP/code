@@ -53,7 +53,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // initiate connection
       $this->dbConn = mysqli_init();
 
-      // as discussed under http://forum.adventure-php-framework.org/de/viewtopic.php?f=6&t=614
+      // as discussed under http://forum.adventure-php-framework.org/viewtopic.php?f=6&t=614
       // the mysqli extension triggers an error instead of throwing an exception. thus we have
       // to add an ugly "@" sign to convert this error into an exception. :(
       @$this->dbConn->real_connect(

@@ -973,7 +973,7 @@ class GenericORMapperManagementTool extends BaseMapper {
       // key for all forward JOINs
       $create .= '  KEY `JOIN` (`' . $tableAttributes['SourceID'] . '`, `' . $tableAttributes['TargetID'] . '`),' . PHP_EOL;
 
-      // key for all reverse JOINs (see http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=548)
+      // key for all reverse JOINs (see http://forum.adventure-php-framework.org/viewtopic.php?f=8&t=548)
       $create .= '  KEY `REVERSEJOIN` (`' . $tableAttributes['TargetID'] . '`, `' . $tableAttributes['SourceID'] . '`)' . PHP_EOL;
 
       // footer

@@ -72,7 +72,7 @@ final class GenericORMapperFactory extends APFObject {
     *
     * @param string $initParam The config file extension to inject to the GORM instance.
     *
-    * @see http://forum.adventure-php-framework.org/de/viewtopic.php?f=11&t=487
+    * @see http://forum.adventure-php-framework.org/viewtopic.php?f=11&t=487
     *
     * @author Christian Achatz
     * @version

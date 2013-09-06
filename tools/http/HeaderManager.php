@@ -24,7 +24,7 @@ namespace APF\tools\http;
 /**
  * @package tools::http
  * @class HeaderManager
- * @see http://forum.adventure-php-framework.org/de/viewtopic.php?p=243#p243
+ * @see http://forum.adventure-php-framework.org/viewtopic.php?p=243#p243
  * @see http://tracker.adventure-php-framework.org/view.php?id=72
  *
  * The HeaderManager implements a wrapper of PHP's header() function and let's

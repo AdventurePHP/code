@@ -355,7 +355,7 @@ class UmgtManager extends APFObject {
       $orm = & $this->getORMapper();
 
       // check, whether user is an existing user, and yes, resolve the
-      // password conflict, described under http://forum.adventure-php-framework.org/de/viewtopic.php?f=8&t=202
+      // password conflict, described under http://forum.adventure-php-framework.org/viewtopic.php?f=8&t=202
       $userId = $user->getObjectId();
       $password = $user->getPassword();
       if ($userId !== null && $password !== null) {

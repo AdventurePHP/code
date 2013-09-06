@@ -20,6 +20,9 @@ namespace APF\tools\html\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\pagecontroller\ImportTemplateTag;
+use APF\core\pagecontroller\IncludeException;
+use APF\tools\http\HeaderManager;
 
 /**
  * @package APF\tools:html:taglib
@@ -44,7 +47,7 @@ class FallbackImportTemplateTag extends ImportTemplateTag {
     *
     * @author jw-lighting, Christian Achatz
     * @version
-    * Version 0.1, 16.07.2010, Christian Achatz (See more here: http://forum.adventure-php-framework.org/de/viewtopic.php?f=3&t=359#p3075)<br />
+    * Version 0.1, 16.07.2010, Christian Achatz (See more here: http://forum.adventure-php-framework.org/viewtopic.php?f=3&t=359#p3075)<br />
     * Version 0.2, 28.08.2010, jw-lighting (Added functionality and improved the code of v0.1 to this class)<br />
     * Version 0.3, 02.09.2010, jw-lighting (Added short-scripting support with the fallback attribute)<br />
     * Version 0.4, 03.09.2010, jw-lighting (Removed Bug: empty() can not use function return values, used temporary variables instead) <br />
@@ -74,10 +77,9 @@ class FallbackImportTemplateTag extends ImportTemplateTag {
             $this->setAttribute('incparam', $this->getAttribute('fallbackIncparam'));
          }
 
-         // it can be nessecary to send an 404-HTTP Error, check it here
+         // it can be necessary to send an 404-HTTP Error, check it here
          $send404Header = $this->getAttribute('send404Header');
          if ($send404Header != null && $send404Header != 'false') {
-            use APF\tools\http\HeaderManager;
             HeaderManager::send('X-APF-Error: Template not found', true, 404);
          }
 
