@@ -301,7 +301,8 @@ class JsCssPackager extends APFObject {
    }
 
    protected function removeVendorOfNamespace($namespace) {
-      return RootClassLoader::getNamespaceWithoutVendor($namespace);
+      $start = strpos($namespace, '\\');
+      return substr($namespace, $start + 1);
    }
 
    private function getRootPath($namespace) {
