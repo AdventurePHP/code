@@ -100,7 +100,6 @@ class LoginController extends BaseDocumentController {
                   $urlProvider = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'LoginRedirectUrlProvider');
                   /* @var $urlProvider UmgtRedirectUrlProvider */
                   HeaderManager::forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
-                  exit(0);
                }
             } catch (\Exception $e) {
                $this->getTemplate('system-error')->transformOnPlace();
