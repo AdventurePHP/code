@@ -113,7 +113,7 @@ class SMSManager extends APFObject {
       //// Try to set up current Page Id
 
       // get current page pageId
-      $startPageId = $this->site->getStartPageId(true); // get start page pageId for fallback
+      $startPageId = $this->site->getStartPageId(); // get start page pageId for fallback
 
       // if no pageId is present in request, use start page pageId
       $this->site->setCurrentPageId(RequestHandler::getValue($this->pageRequestParamName, $startPageId));
