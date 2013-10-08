@@ -73,7 +73,7 @@ class SMSImportDesignTag extends ImportTemplateTag {
 
       // check if template name is set
       if(empty($template)) {
-         throw new SMSException('[SMSImportDesignTag:importdesign()] No template found.');
+         throw new SMSException('[SMSImportDesignTag::onParseTime()] No template found.');
       }
 
       // inject template name
@@ -93,7 +93,7 @@ class SMSImportDesignTag extends ImportTemplateTag {
          // fall back on notFoundTemplate if missing template was reason of exception
 
          $message = $ie->getMessage();
-         $strPosDesign = strpos($message, 'Design');
+         $strPosDesign = strpos($message, 'Template'); // Changed from "Design" to "Template" since APF v2.0
          $strPosExists = strpos($message, 'not existent');
 
          if($strPosDesign === false || $strPosExists === false) {
