@@ -932,10 +932,11 @@ class Document extends APFObject {
    protected $children = array();
 
    /**
-    * @protected
-    * @var int The maximum number of parser loops to protect against infinite loops.
+    * @public
+    * @static
+    * @var int The maximum number of parser loops taken to analyze tags within a document. Used to protect against infinite loops.
     */
-   protected $maxLoops = 300;
+   public static $maxParserLoops = 500;
 
    /**
     * @public
@@ -1426,6 +1427,10 @@ class Document extends APFObject {
     * Please note that using nested structures must be supported by the tag implementations
     * by registering itself within the tag implementation class to create the nested sub-tree
     * on parse time.
+    * <p/>
+    * To protect against infinite loops with broken tag structures the parser uses <em>self::$maxParserLoops</em>
+    * to limit the parser cycles to a configurable amount of times. In case your project requires a
+    * higher value, please set <em>Document::$maxParserLoops</em> to an appropriate value.
     *
     * @author Christian Schäfer, Christian Achatz
     * @version
@@ -1450,7 +1455,7 @@ class Document extends APFObject {
       // can result in an increasing amount of known taglibs (core:addtaglib!).
       while ($i < count($this->tagLibs)) {
 
-         if ($tagLibLoops > $this->maxLoops) {
+         if ($tagLibLoops > self::$maxParserLoops) {
             throw new ParserException('[' . get_class($this) . '::extractTagLibTags()] Maximum numbers of '
                . 'parsing loops reached!', E_USER_ERROR);
          }
@@ -1464,7 +1469,7 @@ class Document extends APFObject {
 
          while (strpos($this->content, '<' . $token) !== false) {
 
-            if ($tagLoops > $this->maxLoops) {
+            if ($tagLoops > self::$maxParserLoops) {
                throw new ParserException('[' . get_class($this) . '::extractTagLibTags()] Maximum numbers of parsing loops reached!', E_USER_ERROR);
             }
 
