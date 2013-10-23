@@ -22,8 +22,8 @@ namespace APF\core\logging\writer;
  */
 use APF\core\database\AbstractDatabaseHandler;
 use APF\core\database\ConnectionManager;
+use APF\core\logging\entry\SimpleLogEntry;
 use APF\core\logging\LogWriter;
-use APF\core\logging\SimpleLogEntry;
 use APF\core\pagecontroller\APFObject;
 
 /**

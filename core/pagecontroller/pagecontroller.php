@@ -20,22 +20,20 @@ namespace APF\core\pagecontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\configuration\ConfigurationException;
-use APF\core\loader\RootClassLoader;
-use APF\core\configuration\Configuration;
-use APF\core\logging\Logger;
-use APF\core\logging\LogEntry;
-use APF\core\logging\SimpleLogEntry;
-use APF\core\registry\Registry;
-use APF\core\singleton\Singleton;
-
-use APF\core\service\APFDIService;
-use APF\core\service\ServiceManager;
-use APF\core\service\DIServiceManager;
-use APF\core\configuration\ConfigurationManager;
 use APF\core\benchmark\BenchmarkTimer;
-
+use APF\core\configuration\Configuration;
+use APF\core\configuration\ConfigurationManager;
+use APF\core\loader\RootClassLoader;
+use APF\core\logging\entry\SimpleLogEntry;
+use APF\core\logging\LogEntry;
+use APF\core\logging\Logger;
+use APF\core\registry\Registry;
+use APF\core\service\APFDIService;
 use APF\core\service\APFService;
+use APF\core\service\DIServiceManager;
+use APF\core\service\ServiceManager;
+
+use APF\core\singleton\Singleton;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\html\taglib\HtmlIteratorTag;
 

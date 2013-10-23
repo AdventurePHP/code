@@ -24,9 +24,9 @@ use APF\core\benchmark\BenchmarkTimer;
 use APF\core\configuration\ConfigurationException;
 use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\provider\ini\IniConfiguration;
+use APF\core\logging\entry\SimpleLogEntry;
 use APF\core\logging\LogEntry;
 use APF\core\logging\Logger;
-use APF\core\logging\SimpleLogEntry;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 

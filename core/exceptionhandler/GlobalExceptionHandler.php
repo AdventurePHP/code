@@ -20,13 +20,12 @@ namespace APF\core\exceptionhandler;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\logging\entry\SimpleLogEntry;
 use APF\core\logging\LogEntry;
-use APF\core\logging\SimpleLogEntry;
+use APF\core\logging\Logger;
 use APF\core\pagecontroller\Page;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
-use APF\core\logging\Logger;
-use APF\core\benchmark\BenchmarkTimer;
 
 /**
  * @package APF\core\exceptionhandler
