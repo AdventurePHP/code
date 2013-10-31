@@ -93,7 +93,7 @@ abstract class AbstractMessageChannel extends GenericDomainObject {
       /* @var $DBDriver MySQLxHandler */
       $DBDriver = $this->getDataComponent()->getDbDriver();
       $DBDriver->executeStatement(
-         'extensions::postbox',
+         'APF\extensions\postbox',
          'MessageChannel_setReadForUser.sql',
          array(
             'MessageChannelID' => (int)$this->getObjectId(),

@@ -31,14 +31,14 @@ Since 1.12 You can use it to deliver packages from the new JsCssPackager.
 <!-- // Using external file support, added in 1.12 //-->
 <htmlheader:addjs
     url="http://static/"
-    folder="js::anything"
+    folder="js\anything"
     filename="jquery.min"
     fcaction="false"
 />
 
 <htmlheader:addcss
     url="http://static/"
-    folder="css::anything"
+    folder="css\anything"
     filename="stylesheet"
     fcaction="false"
 />

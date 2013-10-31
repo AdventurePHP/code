@@ -38,7 +38,7 @@ use APF\tools\media\taglib\MediaInclusionTag;
  * method. This class must be instantiated via the ServiceManager.
  * <p/>
  * Expects a configuration file with name <em>{ENVIRONMENT}_bookmarkservices.ini</em> being present under the namespace
- * <em>modules::socialbookmark</em> with one configuration section per bookmark service. E.g.:
+ * <em>APF\modules\socialbookmark</em> with one configuration section per bookmark service. E.g.:
  * <code>
  * [del.icio.us]
  * BookmarkService.BaseURL = "http://del.icio.us/post"
