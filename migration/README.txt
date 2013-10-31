@@ -1,9 +1,10 @@
-To migrate your APF projects to version 2.0, first migrate to version 1.17 if neccesarry.
-Then call the migration php-scripts in this directory from the command line:
+PLEASE NOTE: In order to migrate your APF project to version 2.0 update to version 1.17 before.
 
-$ /path/to/php /path/to/apps-folder/migration/migrate_{SCRIPTNAME}.php
+MIGRATION can be done as follows using a LINUX-like shell (use cygwin for Windows boxes):
 
-If you are on an linux-system you can use the script migrate.sh.
+$ cd /path/to/your/project/APF
+$ ./migration/migrate.sh /path/to/php
 
-These scripts do a lot of work for you. However, some work have to be done by you!
-See discussion for more information: http://forum.adventure-php-framework.org/viewtopic.php?f=5&t=1407
+AFTER automatic migration please refer to the manual migration steps described under http://wiki.adventure-php-framework.org/de/Migration_von_1.17_auf_2.0.
+
+For QUESTIONS and/or DISCUSSION please refer to http://forum.adventure-php-framework.org/viewtopic.php?f=5&t=1407
