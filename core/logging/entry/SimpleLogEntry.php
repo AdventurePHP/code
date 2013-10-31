@@ -24,7 +24,7 @@ use APF\core\logging\LogEntry;
 
 /**
  * @package APF\core\logging\entry
- * @class LogEntry
+ * @class SimpleLogEntry
  *
  * Implements a log entry.
  *

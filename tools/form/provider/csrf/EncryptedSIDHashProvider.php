@@ -21,11 +21,10 @@ namespace APF\tools\form\provider\csrf;
  * -->
  */
 use APF\core\pagecontroller\APFObject;
-use APF\tools\form\provider\csrf\CSRFHashProvider;
 
 /**
  * @package APF\tools\form\provider\csrf
- * @class EncyptedSIDHashProvider
+ * @class EncryptedSIDHashProvider
  *
  * Generates a hash based on the user's SID.
  *
