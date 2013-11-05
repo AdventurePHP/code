@@ -20,9 +20,8 @@ namespace APF\tools\link;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\frontcontroller\Frontcontroller;
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
-use APF\core\registry\Registry;
+use APF\core\frontcontroller\Frontcontroller;
 use APF\core\singleton\Singleton;
 
 /**
@@ -256,6 +255,7 @@ final class Url {
     */
    public function &setAnchor($anchor) {
       $this->anchor = $anchor;
+      return $this;
    }
 
    /**
@@ -803,6 +803,29 @@ abstract class BasicLinkScheme {
       return empty($value) && strval($value) !== '0';
    }
 
+   /**
+    * @protected
+    *
+    * Appends an anchor if present within the url representation applied to a LinkScheme
+    * implementation.
+    *
+    * @param string $urlString The url constructed by the given url representation.
+    * @param Url $url The current url representation potentially including the anchor.
+    * @return string The final url.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 05.11.2013<br />
+    */
+   protected function appendAnchor($urlString, Url $url) {
+      // append anchor only if desired
+      $anchor = $url->getAnchor();
+      if (!empty($anchor)) {
+         $urlString .= '#' . $anchor;
+      }
+      return $urlString;
+   }
+
 }
 
 /**
@@ -864,6 +887,8 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
       if ($this->getEncodeAmpersands()) {
          return str_replace('&', '&amp;', $resultUrl);
       }
+
+      $resultUrl = $this->appendAnchor($resultUrl, $url);
 
       return $resultUrl;
    }
@@ -958,6 +983,8 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
       if (!empty($actions)) {
          $resultUrl .= self::REWRITE_PARAM_TO_ACTION_DELIMITER . $actions;
       }
+
+      $resultUrl = $this->appendAnchor($resultUrl, $url);
 
       return $resultUrl;
    }

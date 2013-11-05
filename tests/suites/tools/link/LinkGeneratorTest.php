@@ -356,4 +356,47 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
       assertEquals('/?foo=bar&include-one=0&include-two=0', $link);
    }
 
+   public function testAnchorWithNormalUrl() {
+
+      $anchor = 'test-anchor';
+      $path = '/folder1';
+      $foo = 'foo';
+      $bar = 'bar';
+      $baz = 'baz';
+      $url = new Url(null, null, null, $path, array($foo => $bar, $bar => $baz), $anchor);
+
+      $linkScheme = new DefaultLinkScheme(false);
+      $link = LinkGenerator::generateUrl($url, $linkScheme);
+
+      // expect anchor at the very end
+      assertTrue(preg_match('/#' . $anchor . '$/', $link) === 1);
+
+      // "normal" of URL generation should be left as-is (exclusion/regression test)
+      assertEquals(
+         $path . '?' . $foo . '=' . $bar . '&' . $bar . '=' . $baz,
+         LinkGenerator::generateUrl($url->setAnchor(null), $linkScheme)
+      );
+   }
+
+   public function testAnchorWithRewriteUrl() {
+
+      $anchor = 'test-anchor';
+      $foo = 'foo';
+      $bar = 'bar';
+      $baz = 'baz';
+      $url = new Url(null, null, null, null, array($foo => $bar, $bar => $baz), $anchor);
+
+      $linkScheme = new RewriteLinkScheme(false);
+      $link = LinkGenerator::generateUrl($url, $linkScheme);
+
+      // expect anchor at the very end
+      assertTrue(preg_match('/#' . $anchor . '$/', $link) === 1);
+
+      // "normal" of URL generation should be left as-is (exclusion/regression test)
+      assertEquals(
+         '/' . $foo . '/' . $bar . '/' . $bar . '/' . $baz,
+         LinkGenerator::generateUrl($url->setAnchor(null), $linkScheme)
+      );
+   }
+
 }
