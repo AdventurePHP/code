@@ -21,10 +21,9 @@ namespace APF\modules\recaptcha\pres\taglib;
  * -->
  */
 use APF\core\pagecontroller\TagLib;
-use APF\tools\form\FormException;
 use APF\tools\form\filter\AbstractFormFilter;
+use APF\tools\form\FormException;
 use APF\tools\form\taglib\AbstractFormControl;
-use APF\modules\recaptcha\pres\taglib\ReCaptchaTranslationTag;
 
 /**
  * @package APF\modules\recaptcha\pres\taglib
@@ -94,7 +93,7 @@ class ReCaptchaTag extends AbstractFormControl {
       if (empty($name)) {
          $form = $this->getParentObject();
          throw new FormException('ReCaptcha control within form "' . $form->getAttribute('name')
-               . '" has no "name" attribute specified! Please r-check your form definition.');
+            . '" has no "name" attribute specified! Please r-check your form definition.');
       }
 
       // parse <recaptcha:getstring /> tag.
@@ -140,6 +139,11 @@ class ReCaptchaTag extends AbstractFormControl {
    }
 
    public function transform() {
+
+      // Bug fix ID#77: in case the control has been deactivated, don't generate output.
+      if (!$this->isVisible) {
+         return '';
+      }
 
       $html = ' <script type="text/javascript">var RecaptchaOptions = { '
             . 'theme : \'' . $this->getThemeName() . '\','
