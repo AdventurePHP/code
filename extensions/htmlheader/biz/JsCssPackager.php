@@ -36,10 +36,16 @@ use APF\tools\cache\key\SimpleCacheKey;
  *
  * A packager which can deliver multiple css and js files to client.
  * Caching and shrinking is supported, but must be configured.
+ * <p/>
+ * Enabling Java Script shrinking requires download and inclusion of
+ * the <em>JsMin</em> library available under http://code.google.com/p/jsmin-php/.
+ * Please include <em>JSMin.php</em> e.g. within your bootstrap file to
+ * make the <em>JsMin</em> class available.
  *
- * @author Ralf Schubert <ralf.schubert@the-screeze.de>
+ * @author Ralf Schubert <ralf.schubert@the-screeze.de>, Christian Achatz
  * @version
  * Version 1.0, 18.03.2010<br />
+ * Version 1.1, 06.11.2013 (Removed inclusion of external JsMin library due to license issues described in ID#79)<br />
  */
 class JsCssPackager extends APFObject {
 
@@ -195,6 +201,9 @@ class JsCssPackager extends APFObject {
 
    /**
     * Shrinks a string containing javascript.
+    * <p/>
+    * Requires <em>JsMin</em> library. For details see class documentation or
+    * extension documentation.
     *
     * @param string $input The javascript which should be shrinked.
     * @return string The minified javascript.
@@ -204,7 +213,6 @@ class JsCssPackager extends APFObject {
     * Version 1.0, 18.03.2010<br />
     */
    protected function shrinkJs($input) {
-      include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'JSMin.php');
       return \JSMin::minify($input);
    }
 

@@ -63,6 +63,10 @@ Since 1.12 You can use it to deliver packages from the new JsCssPackager.
 * fcaction: Optional Use fc action for delivering file? (Default: true)
 * append: Set append to true if you want to add the given title at the end of the already existing title. Otherwise set to false, if you want to overwrite existing titles.
 
+Enabling Java Script shrinking requires download and inclusion of the '''JsMin''' library available under
+http://code.google.com/p/jsmin-php/. Please include '''JSMin.php''' e.g. within your bootstrap file to make the
+'''JsMin'' class available.
+
 Using without other taglibs, e.g. in document controller:
 You need to place the gethead taglib, but for the other taglibs you can use the
 following. (And for meta-refreshs you need to use it)
