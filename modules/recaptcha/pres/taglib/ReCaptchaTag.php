@@ -25,7 +25,6 @@ use APF\tools\form\FormException;
 use APF\tools\form\filter\AbstractFormFilter;
 use APF\tools\form\taglib\AbstractFormControl;
 use APF\modules\recaptcha\pres\taglib\ReCaptchaTranslationTag;
-require_once(__DIR__ . '/../../external/google/recaptchalib.php');
 
 /**
  * @package APF\modules\recaptcha\pres\taglib
@@ -38,10 +37,16 @@ require_once(__DIR__ . '/../../external/google/recaptchalib.php');
  * The lib currently included within the APF distribution is http://code.google.com/p/recaptcha/downloads/detail?name=recaptcha-php-1.11.zip&can=2&q=label%3Aphplib-Latest
  * <p/>
  * Details on the architecture of reCaptcha can be read about under https://developers.google.com/recaptcha/docs/display?hl=de.
+ * <p/>
+ * Using APF's ReCaptcha wrapper requires download and inclusion of Google's
+ * <em>recaptchalib</em> available under http://recaptcha.net/plugins/php/.
+ * Please include <em>recaptchalib.php</em> e.g. within your bootstrap file to
+ * make the included code available.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 22.09.2012<br />
+ * Version 0.2, 06.11.2013 (Removed inclusion of external recaptachalib library due to license issues described in ID#80)<br />
  */
 class ReCaptchaTag extends AbstractFormControl {
 

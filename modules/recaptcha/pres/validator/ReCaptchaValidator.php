@@ -23,17 +23,22 @@ namespace APF\modules\recaptcha\pres\validator;
 use APF\modules\recaptcha\pres\taglib\ReCaptchaTag;
 use APF\tools\form\validator\TextFieldValidator;
 use APF\tools\request\RequestHandler;
-require_once(__DIR__ . '/../../external/google/recaptchalib.php');
 
 /**
  * @package APF\modules\recaptcha\pres\validator
  * @class ReCaptchaValidator
  *
  * Validates a reCaptcha field.
+ * <p/>
+ * Using APF's ReCaptcha wrapper requires download and inclusion of Google's
+ * <em>recaptchalib</em> available under http://recaptcha.net/plugins/php/.
+ * Please include <em>recaptchalib.php</em> e.g. within your bootstrap file to
+ * make the included code available.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 22.09.2012<br />
+ * Version 0.2, 06.11.2013 (Removed inclusion of external recaptachalib library due to license issues described in ID#80)<br />
  */
 class ReCaptchaValidator extends TextFieldValidator {
 
