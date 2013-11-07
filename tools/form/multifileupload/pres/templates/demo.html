@@ -5,27 +5,31 @@
    <head>
       <title>Multi file upload demo</title>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddCssTag" prefix="htmlheader" name="addcss" />
-      <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddJsTags" prefix="htmlheader" name="addjs" />
 
-      <htmlheader:addjs namespace="APF\tools\form\multifileupload\pres\js" filename="jquery-1.6.3.min" priority="100" />
-      <htmlheader:addjs namespace="APF\tools\form\multifileupload\pres\js" filename="jquery-ui-1.8.21.custom.min"  priority="99" />
+      <!--
+         Add JS and CSS files here. E.g.:
 
-      <htmlheader:addjs namespace="APF\tools\form\multifileupload\pres\js" filename="jquery.fileupload" priority="90" />
-      <htmlheader:addjs namespace="APF\tools\form\multifileupload\pres\js" filename="jquery.fileupload-ui" priority="89" />
-      <htmlheader:addcss namespace="APF\tools\form\multifileupload\pres\css" filename="jquery.fileupload-ui" />
+         <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddCssTag" prefix="htmlheader" name="addcss" />
+         <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddJsTags" prefix="htmlheader" name="addjs" />
 
-      <htmlheader:addcss namespace="APF\tools\form\multifileupload\pres\css\south-street" filename="jquery-ui-1.8.21.custom" />
+         <htmlheader:addjs namespace="..." filename="jquery-*" priority="100" />
+         <htmlheader:addjs namespace="..." filename="jquery-ui-*"  priority="99" />
 
-      <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetHeadTag" prefix="htmlheader" name="gethead" />
-      <htmlheader:gethead />
+         <htmlheader:addjs namespace="..." filename="jquery.fileupload" priority="90" />
+         <htmlheader:addjs namespace="..." filename="jquery.fileupload-ui" priority="89" />
+         <htmlheader:addcss namespace="..." filename="jquery.fileupload-ui" />
+
+         <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderGetHeadTag" prefix="htmlheader" name="gethead" />
+         <htmlheader:gethead />
+
+      -->
    </head>
    <body>
       <core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
       <html:form name="file_upload" >
          <form:addtaglib class="APF\tools\form\multifileupload\pres\taglib\MultiFileUploadTag" prefix="form" name="multifileupload" />
          <form:multifileupload name="testfield"/>
-         
+
          <form:button name="send" value="Send"/>
       </html:form>
    </body>
