@@ -2057,11 +2057,9 @@ class ImportTemplateTag extends Document {
          $this->setLanguage($language);
       }
 
-      // manager inc param
-      $incParam = null;
-      if (isset($this->attributes['incparam'])) {
-         $incParam = $this->attributes['incparam'];
-      } else {
+      // manage inc param
+      $incParam = $this->getAttribute('incparam');
+      if ($incParam === null) {
          $incParam = 'pagepart';
       }
 
