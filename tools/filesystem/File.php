@@ -229,6 +229,7 @@ class File extends FilesystemItem {
     *
     * @author  Nicolas Pecher
     * @version Version 0.1, 01.05.2012
+	* 		   Version 0.2, 14.11.2013 (Bug #84: Truncate content and then write new content [Megger])
     */
    public function writeContent($content) {
 
@@ -237,6 +238,10 @@ class File extends FilesystemItem {
                . 'domain object by using File::open() or File::create() before calling '
                . 'this function.', E_USER_ERROR);
       }
+	  
+	  if (ftruncate($this->fileHandle, 0) === false) {
+		  return false;
+	  }
 
       if (fwrite($this->fileHandle, $content) === false) {
          return false;
