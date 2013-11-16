@@ -23,7 +23,6 @@ namespace APF\modules\comments\biz;
 use APF\core\pagecontroller\APFObject;
 use APF\modules\comments\data\ArticleCommentMapper;
 use APF\modules\pager\biz\PagerManager;
-use APF\modules\pager\biz\PagerManagerFabric;
 use APF\tools\link\LinkGenerator;
 use APF\tools\http\HeaderManager;
 use APF\tools\link\Url;
@@ -133,9 +132,7 @@ class ArticleCommentManager extends APFObject {
     * @return PagerManager
     */
    private function &getPagerManager() {
-      /* @var $pMF PagerManagerFabric */
-      $pMF = & $this->getServiceObject('APF\modules\pager\biz\PagerManagerFabric');
-      return $pMF->getPagerManager('ArticleComments');
+      return $this->getDIServiceObject('APF\modules\comments', 'CommentsPager');
    }
 
 }
