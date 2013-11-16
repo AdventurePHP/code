@@ -20,7 +20,6 @@ namespace APF\tools\filesystem;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\tools\filesystem\FilesystemItem;
 use APF\tools\http\HeaderManager;
 
 /**
@@ -81,7 +80,7 @@ class File extends FilesystemItem {
 
       if (!is_file($path)) {
          throw new FilesystemException('[File::open()] A file with the passed '
-               . 'path does not exists.', E_USER_ERROR);
+            . 'path does not exists.', E_USER_ERROR);
       }
 
       if (!is_resource($this->fileHandle)) {
@@ -228,20 +227,21 @@ class File extends FilesystemItem {
     * @throws FilesystemException In case the current object has not been opened or created before.
     *
     * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
-	* 		   Version 0.2, 14.11.2013 (Bug #84: Truncate content and then write new content [Megger])
+    * @version
+    * Version 0.1, 01.05.2012<br />
+    * Version 0.2, 14.11.2013 (Bug #84: Truncate content and then write new content [Megger])<br />
     */
    public function writeContent($content) {
 
       if (!is_resource($this->fileHandle)) {
          throw new FilesystemException('[File::writeContent()] You have to set up this '
-               . 'domain object by using File::open() or File::create() before calling '
-               . 'this function.', E_USER_ERROR);
+            . 'domain object by using File::open() or File::create() before calling '
+            . 'this function.', E_USER_ERROR);
       }
-	  
-	  if (ftruncate($this->fileHandle, 0) === false) {
-		  return false;
-	  }
+
+      if (ftruncate($this->fileHandle, 0) === false) {
+         return false;
+      }
 
       if (fwrite($this->fileHandle, $content) === false) {
          return false;
