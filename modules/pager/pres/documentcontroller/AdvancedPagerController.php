@@ -21,10 +21,10 @@ namespace APF\modules\pager\pres\documentcontroller;
  * -->
  */
 use APF\core\pagecontroller\BaseDocumentController;
+use APF\modules\pager\biz\PageItem;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 use APF\tools\request\RequestHandler;
-use APF\modules\pager\biz\PageItem;
 
 /**
  * @package APF\modules\schwarzesbrett\pres\documentcontroller\pager
@@ -36,6 +36,7 @@ use APF\modules\pager\biz\PageItem;
  * <li>List of pages</li>
  * <li>Previous and next button</li>
  * <li>Dynamic amount of entries per page (if activated)</li>
+ * </ul>
  *
  * @author Christian Achatz, Daniel Seemaier
  * @version
@@ -65,18 +66,18 @@ class AdvancedPagerController extends BaseDocumentController {
          return;
       }
 
-      $pageCount = (int)0;
-      $currentPage = (int)0;
+      $pageCount = (int) 0;
+      $currentPage = (int) 0;
 
       $buffer = '';
 
       for ($i = 0; $i < count($pages); $i++) {
 
          if ($pages[$i]->isSelected() == true) {
-            $template = & $this->getTemplate('Page_Selected');
+            $template = & $this->getTemplate('Page_Selected_' . $this->getLanguage());
             $currentPage = $pages[$i]->getPage();
          } else {
-            $template = & $this->getTemplate('Page');
+            $template = & $this->getTemplate('Page_' . $this->getLanguage());
          }
 
          if (isset($anchorName)) {
@@ -84,30 +85,29 @@ class AdvancedPagerController extends BaseDocumentController {
          } else {
             $template->setPlaceHolder('Link', $pages[$i]->getLink());
          }
-         $template->setPlaceHolder('Seite', $pages[$i]->getPage());
+         $template->setPlaceHolder('Page', $pages[$i]->getPage());
 
          $buffer .= $template->transformTemplate();
 
          $pageCount = $pages[$i]->getPageCount();
       }
-      $this->setPlaceHolder('Inhalt', $buffer);
+      $this->setPlaceHolder('Content', $buffer);
 
       // display previous page link
-
       if ($currentPage > 1) {
 
          $page = $currentPage - 1;
          $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($config['ParameterPageName'] => $page)));
-         $prevActive = & $this->getTemplate('VorherigeSeite_Aktiv');
+         $prevActive = & $this->getTemplate('PreviousPage_Active_' . $this->getLanguage());
          if (isset($anchorName)) {
             $prevActive->setPlaceHolder('Link', $link . '#' . $anchorName);
          } else {
             $prevActive->setPlaceHolder('Link', $link);
          }
-         $this->setPlaceHolder('VorherigeSeite', $prevActive->transformTemplate());
+         $this->setPlaceHolder('PreviousPage', $prevActive->transformTemplate());
       } else {
-         $prevInactive = & $this->getTemplate('VorherigeSeite_Inaktiv');
-         $this->setPlaceHolder('VorherigeSeite', $prevInactive->transformTemplate());
+         $prevInactive = & $this->getTemplate('PreviousPage_Inactive');
+         $this->setPlaceHolder('PreviousPage', $prevInactive->transformTemplate());
       }
 
       // display next page link
@@ -115,7 +115,7 @@ class AdvancedPagerController extends BaseDocumentController {
 
          $page = $currentPage + 1;
          $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($config['ParameterPageName'] => $page)));
-         $nextActive = & $this->getTemplate('NaechsteSeite_Aktiv');
+         $nextActive = & $this->getTemplate('NextPage_Active_' . $this->getLanguage());
 
          if (isset($anchorName)) {
             $nextActive->setPlaceHolder('Link', $link . '#' . $anchorName);
@@ -123,10 +123,10 @@ class AdvancedPagerController extends BaseDocumentController {
             $nextActive->setPlaceHolder('Link', $link);
          }
 
-         $this->setPlaceHolder('NaechsteSeite', $nextActive->transformTemplate());
+         $this->setPlaceHolder('NextPage', $nextActive->transformTemplate());
       } else {
-         $nextInactive = & $this->getTemplate('NaechsteSeite_Inaktiv');
-         $this->setPlaceHolder('NaechsteSeite', $nextInactive->transformTemplate());
+         $nextInactive = & $this->getTemplate('NextPage_Inactive');
+         $this->setPlaceHolder('NextPage', $nextInactive->transformTemplate());
       }
 
       // display the dynamic page size bar
@@ -134,14 +134,14 @@ class AdvancedPagerController extends BaseDocumentController {
 
          $entriesPerPageConfig = array(5, 10, 15, 20);
          $entriesPerPage = RequestHandler::getValue($config['ParameterCountName'], $config['EntriesPerPage']);
-         $buffer = (string)'';
+         $buffer = (string) '';
 
          foreach ($entriesPerPageConfig as $count) {
 
             if ($entriesPerPage == $count) {
-               $template = & $this->getTemplate('EntriesPerPage_Aktiv');
+               $template = & $this->getTemplate('EntriesPerPage_Active_' . $this->getLanguage());
             } else {
-               $template = & $this->getTemplate('EntriesPerPage_Inaktiv');
+               $template = & $this->getTemplate('EntriesPerPage_Inactive_' . $this->getLanguage());
             }
 
             $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($config['ParameterPageName'] => '1', $config['ParameterCountName'] => $count)));
@@ -160,7 +160,7 @@ class AdvancedPagerController extends BaseDocumentController {
          $dynPageSize->setPlaceHolder('EntriesPerPage', $buffer);
 
          // display language dependent labels
-         $entriesPerPageTmpl = & $this->getTemplate('EntriesPerPage_' . $this->language);
+         $entriesPerPageTmpl = & $this->getTemplate('EntriesPerPage_' . $this->getLanguage());
          $dynPageSize->setPlaceHolder('EntriesPerPage_Display', $entriesPerPageTmpl->transformTemplate());
 
          $dynPageSize->transformOnPlace();

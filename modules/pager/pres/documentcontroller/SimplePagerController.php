@@ -37,31 +37,35 @@ class SimplePagerController extends BaseDocumentController {
 
    public function transformContent() {
 
-      $buffer = (string)'';
+      $buffer = (string) '';
+
+      $document = $this->getDocument();
 
       /* @var $pages PageItem[] */
-      $pages = $this->attributes['Pages'];
+      $pages = $document->getAttribute('Pages');
       $count = count($pages);
       for ($i = 0; $i < $count; $i++) {
 
          if ($pages[$i]->isSelected() == true) {
-            $tmplPage = & $this->getTemplate('Page_Selected');
+            $tmplPage = & $this->getTemplate('Page_Selected_' . $this->getLanguage());
          } else {
-            $tmplPage = & $this->getTemplate('Page_Normal');
+            $tmplPage = & $this->getTemplate('Page_Normal_' . $this->getLanguage());
          }
 
-         if (isset($this->attributes['AnchorName'])) {
-            $tmplPage->setPlaceHolder('Link', $pages[$i]->getLink() . '#' . $this->attributes['AnchorName']);
-         } else {
+         $anchorName = $document->getAttribute('AnchorName');
+         if (empty($anchorName)) {
             $tmplPage->setPlaceHolder('Link', $pages[$i]->getLink());
+         } else {
+            $tmplPage->setPlaceHolder('Link', $pages[$i]->getLink() . '#' . $anchorName);
          }
-         $tmplPage->setPlaceHolder('Seite', $pages[$i]->getPage());
+
+         $tmplPage->setPlaceHolder('Page', $pages[$i]->getPage());
 
          $buffer .= $tmplPage->transformTemplate();
 
       }
 
-      $tmplPage = & $this->getTemplate('Page_' . $this->language);
+      $tmplPage = & $this->getTemplate('Page_' . $this->getLanguage());
       $this->setPlaceHolder('Page', $tmplPage->transformTemplate());
       $this->setPlaceHolder('Content', $buffer);
    }
