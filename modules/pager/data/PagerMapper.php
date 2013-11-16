@@ -50,7 +50,7 @@ final class PagerMapper extends APFObject {
    /**
     * @public
     *
-    *  Initializes the connection key of the mapper.
+    * Initializes the connection key of the mapper.
     *
     * @param string $initParam the database connection key
     *
@@ -74,7 +74,7 @@ final class PagerMapper extends APFObject {
    /**
     * @private
     *
-    *  Returns the session key for the current statement and params.
+    * Returns the session key for the current statement and params.
     *
     * @param string $namespace namespace of the statement
     * @param string $statement name of the statement file
@@ -92,7 +92,7 @@ final class PagerMapper extends APFObject {
    /**
     * @public
     *
-    *  Returns the number of entries of the current object.
+    * Returns the number of entries of the current object.
     *
     * @param string $namespace the namespace of the statement
     * @param string $statement the name of the statement file
@@ -119,7 +119,7 @@ final class PagerMapper extends APFObject {
       $session = null;
       $sessionKey = null;
       if ($cache === true) {
-         $session = new Session('APF\modules\pager\biz');
+         $session = new Session(__NAMESPACE__);
          $sessionKey = $this->getSessionKey($namespace, $statement, $params) . '_EntriesCount';
          $entriesCount = $session->load($sessionKey);
       }
@@ -170,7 +170,7 @@ final class PagerMapper extends APFObject {
       $session = null;
       $sessionKey = null;
       if ($cache === true) {
-         $session = new Session('APF\modules\pager\biz');
+         $session = new Session(__NAMESPACE__);
          $sessionKey = $this->getSessionKey($namespace, $statement, $params) . '_EntryIDs';
          $entryIds = $session->load($sessionKey);
       } else {
