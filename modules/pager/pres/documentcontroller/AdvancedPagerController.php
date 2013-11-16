@@ -54,7 +54,11 @@ class AdvancedPagerController extends BaseDocumentController {
       // fill document attributes to local variable
       $document = $this->getDocument();
 
-      $config = $document->getAttribute('Config');
+      $pageUrlParameterName = $document->getAttribute('PageUrlParameterName');
+      $countUrlParameterName = $document->getAttribute('CountUrlParameterName');
+      $entriesPerPage = $document->getAttribute('EntriesPerPage');
+      $isDynamicPageSizeActivated = $document->getAttribute('DynamicPageSizeActivated');
+
       $anchorName = $document->getAttribute('AnchorName');
 
       /* @var $pages PageItem[] */
@@ -97,7 +101,7 @@ class AdvancedPagerController extends BaseDocumentController {
       if ($currentPage > 1) {
 
          $page = $currentPage - 1;
-         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($config['ParameterPageName'] => $page)));
+         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($pageUrlParameterName => $page)));
          $prevActive = & $this->getTemplate('PreviousPage_Active_' . $this->getLanguage());
          if (isset($anchorName)) {
             $prevActive->setPlaceHolder('Link', $link . '#' . $anchorName);
@@ -114,7 +118,7 @@ class AdvancedPagerController extends BaseDocumentController {
       if ($currentPage < $pageCount) {
 
          $page = $currentPage + 1;
-         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($config['ParameterPageName'] => $page)));
+         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($pageUrlParameterName => $page)));
          $nextActive = & $this->getTemplate('NextPage_Active_' . $this->getLanguage());
 
          if (isset($anchorName)) {
@@ -130,10 +134,10 @@ class AdvancedPagerController extends BaseDocumentController {
       }
 
       // display the dynamic page size bar
-      if ($config['DynamicPageSizeActivated'] == true) {
+      if ($isDynamicPageSizeActivated == true) {
 
          $entriesPerPageConfig = array(5, 10, 15, 20);
-         $entriesPerPage = RequestHandler::getValue($config['ParameterCountName'], $config['EntriesPerPage']);
+         $entriesPerPage = RequestHandler::getValue($countUrlParameterName, $entriesPerPage);
          $buffer = (string) '';
 
          foreach ($entriesPerPageConfig as $count) {
@@ -144,7 +148,7 @@ class AdvancedPagerController extends BaseDocumentController {
                $template = & $this->getTemplate('EntriesPerPage_Inactive_' . $this->getLanguage());
             }
 
-            $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($config['ParameterPageName'] => '1', $config['ParameterCountName'] => $count)));
+            $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($pageUrlParameterName => '1', $countUrlParameterName => $count)));
 
             if (isset($anchorName)) {
                $template->setPlaceHolder('Link', $link . '#' . $anchorName);

@@ -358,13 +358,10 @@ final class PagerManager extends APFObject {
       // add the necessary config params and pages
       $document = & $pager->getRootDocument();
       $document->setAttribute('Pages', $this->createPages4PagerDisplay($addStmtParams));
-      $document->setAttribute('Config', array(
-            'ParameterPageName' => $this->pageUrlParameterName,
-            'ParameterCountName' => $this->countUrlParameterName,
-            'EntriesPerPage' => $this->entriesPerPage,
-            'DynamicPageSizeActivated' => $this->isDynamicPageSizeActivated()
-         )
-      );
+      $document->setAttribute('PageUrlParameterName', $this->pageUrlParameterName);
+      $document->setAttribute('CountUrlParameterName', $this->countUrlParameterName);
+      $document->setAttribute('EntriesPerPage', $this->entriesPerPage);
+      $document->setAttribute('DynamicPageSizeActivated', $this->isDynamicPageSizeActivated());
 
       // add the anchor if desired
       if ($this->anchorName !== null) {
