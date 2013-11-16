@@ -114,6 +114,8 @@ final class PagerMapper extends APFObject {
       /* @var $t BenchmarkTimer */
       $t->start('PagerMapper::getEntriesCount()');
 
+      $params = $this->sanitizeParameters($params);
+
       // try to load the entries count from the session
       $entriesCount = null;
       $session = null;
@@ -166,6 +168,8 @@ final class PagerMapper extends APFObject {
       /* @var $t BenchmarkTimer */
       $t->start('PagerMapper::loadEntries()');
 
+      $params = $this->sanitizeParameters($params);
+
       // try to load the entries count from the session
       $session = null;
       $sessionKey = null;
@@ -203,6 +207,18 @@ final class PagerMapper extends APFObject {
 
       $t->stop('PagerMapper::loadEntries()');
       return $entryIds;
+   }
+
+   /**
+    * @param array $params The list of pager statement parameters.
+    * @return array The sanitized list of pager statement parameters.
+    */
+   private function sanitizeParameters(array $params = array()) {
+      $conn = & $this->getConnection();
+      foreach ($params as $key => $value) {
+         $params[$conn->escapeValue($key)] = $conn->escapeValue($value);
+      }
+      return $params;
    }
 
 }
