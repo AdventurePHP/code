@@ -21,13 +21,28 @@ use APF\tools\string\StringAssistant;
 class SMSPageLinkTag extends Document {
 
 
-   public static $template = '<a href="{LINK}" title="{TITLE}">{TEXT}</a>';
+   public static $template = '<a {ATTR}>{TEXT}</a>';
+
+   protected static $attributeList = array('id', 'style', 'class', 'onabort',
+      'onclick', 'ondblclick', 'onmousedown', 'onmouseup',
+      'onmouseover', 'onmousemove', 'onmouseout',
+      'onkeypress', 'onkeydown', 'onkeyup', 'tabindex',
+      'dir', 'accesskey', 'title', 'charset',
+      'coords', 'href', 'hreflang', 'name', 'rel',
+      'rev', 'shape', 'target', 'xml:lang', 'onblur');
 
 
    public function transform() {
 
 
-      $pageId = $this->getAttribute('id');
+      $pageId = $this->getAttribute('pid');
+
+      $attList = null;
+
+      if(empty($pageId)){
+         $pageId = $this->getAttribute('id');
+         $attList = array_diff(self::$attributeList, array('id')); // remove id from attribute list
+      }
 
       if(empty($pageId)) {
          throw new \InvalidArgumentException('No page id defined', E_USER_ERROR);
@@ -169,13 +184,22 @@ class SMSPageLinkTag extends Document {
          $content = StringAssistant::escapeSpecialCharacters($page->getNavTitle());
       }
 
-      $title = StringAssistant::escapeSpecialCharacters($this->getAttribute('title', $page->getTitle()));
+      $this->setAttribute('title', $this->getAttribute('title', $page->getTitle()));
 
-      $link = StringAssistant::escapeSpecialCharacters($page->getLink(Url::fromCurrent()->resetQuery()));
+      $this->setAttribute('href', $page->getLink(Url::fromCurrent()->resetQuery()));
+
+      // is there an modified attribute list (without id attribute)
+      if(!is_array($attList)){
+         $attList = self::$attributeList;
+      }
+
 
       return str_replace(
-         array('{LINK}', '{TITLE}', '{TEXT}'),
-         array($link, $title, $content),
+         array('{ATTR}', '{TEXT}'),
+         array(
+            $this->getAttributesAsString($this->attributes, $attList),
+            $content
+         ),
          self::$template
       );
    }
