@@ -33,6 +33,7 @@ use APF\tools\cache\CacheProvider;
  * @author Christian Achatz
  * @version
  * Version 0.1, 31.10.2008<br />
+ * Version 0.2, 20.11.2013 (Added TTL support for cache entries as describes in issue ID#5)<br />
  */
 class MemCacheProvider extends CacheBase implements CacheProvider {
 
@@ -94,8 +95,9 @@ class MemCacheProvider extends CacheBase implements CacheProvider {
             // remember current namespace and key
             $this->cacheKeyStore[$namespace][] = $identifier;
 
-            // try to replace
-            $replace_result = $mem->replace($identifier, $serialized);
+            // 4th param of set() and replace() takes the expiry time in seconds from now.
+            // This allows us to easily introduce expiration time.
+            $replace_result = $mem->replace($identifier, $serialized, false, $this->getExpireTime($cacheKey));
 
             if ($replace_result !== true) {
                $store_result = $mem->set($identifier, $serialized);
