@@ -23,9 +23,10 @@ namespace APF\tools\cache\provider;
 use APF\tools\cache\CacheBase;
 use APF\tools\cache\CacheKey;
 use APF\tools\cache\CacheProvider;
+use APF\tools\cache\key\AdvancedCacheKey;
+use APF\tools\filesystem\File;
 use APF\tools\filesystem\FileException;
 use APF\tools\filesystem\FilesystemManager;
-use APF\tools\cache\key\AdvancedCacheKey;
 
 /**
  * @package APF\tools\cache\provider
@@ -36,14 +37,36 @@ use APF\tools\cache\key\AdvancedCacheKey;
  * @author Christian Achatz
  * @version
  * Version 0.1, 31.10.2008<br />
+ * Version 0.2, 20.11.2013 (Added TTL-based caching implementation option as described in ID#5)<br />
  */
 class TextCacheProvider extends CacheBase implements CacheProvider {
 
    public function read(CacheKey $cacheKey) {
+
+      // add a creation time check here to support it for all text-based providers
       $cacheFile = $this->getCacheFile($cacheKey);
-      return file_exists($cacheFile)
-            ? file_get_contents($cacheFile)
-            : null;
+
+      // Consider files only valid until *modification time* is at least not older than now (TTL).
+      if (file_exists($cacheFile)) {
+
+         $file = new File();
+         $creationTime = $file->open($cacheFile)->getModificationTime();
+
+         $creationTimeStamp = $creationTime->getTimestamp();
+         $ttl = $this->getExpireTime($cacheKey); // get combined TTL with fallback on global configuration
+
+         $now = time();
+
+         // evaluate with "cache forever"-safe ttl check (TTL=0)
+         $difference = $now - $creationTimeStamp;
+         if ($ttl === 0 || $difference <= $ttl) {
+            return file_get_contents($cacheFile);
+         } else {
+            return null;
+         }
+      } else {
+         return null;
+      }
    }
 
    public function write(CacheKey $cacheKey, $content) {
@@ -101,12 +124,9 @@ class TextCacheProvider extends CacheBase implements CacheProvider {
       if ($cacheKey instanceof AdvancedCacheKey) {
          $subKey = md5($cacheKey->getSubKey());
          $subFolder = substr($subKey, 0, 2);
-         return $baseFolder . '/' . $namespace
-               . '/' . $folder . '/' . $key . '/'
-               . $subFolder . '/' . $subKey . '.apfc';
+         return $baseFolder . '/' . $namespace . '/' . $folder . '/' . $key . '/' . $subFolder . '/' . $subKey . '.apfc';
       } else {
-         return $baseFolder . '/' . $namespace
-               . '/' . $folder . '/' . $key . '.apfc';
+         return $baseFolder . '/' . $namespace . '/' . $folder . '/' . $key . '.apfc';
       }
    }
 
