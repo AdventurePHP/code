@@ -19,5 +19,11 @@ foreach ($files as $file) {
       return 'Pager.DesignNamespace = "APF\\' . str_replace('::', '\\', $matches[1]) . '"';
    }, $content);
 
+   // migrate statement parameters configuration:
+   // - Pager.CountStatement.Params + Pager.EntriesStatement.Params => Pager.StatementParameters
+   // - content "copied" from Pager.EntriesStatement.Params
+   $content = preg_replace('#Pager.CountStatement.Params ?= ?"(.+)"#', '', $content);
+   $content = str_replace('Pager.EntriesStatement.Params', 'Pager.StatementParameters', $content);
+
    file_put_contents($file, $content);
 }
