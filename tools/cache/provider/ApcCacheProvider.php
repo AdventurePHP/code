@@ -71,29 +71,6 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
    /**
     * @protected
     *
-    * Let's you retrieve the validity time of the cache entries.
-    *
-    * @param CacheKey $cacheKey The current cache key.
-    * @return int The validity time of the cache entry in seconds.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 08.01.2013<br />
-    */
-   protected function getExpireTime(CacheKey $cacheKey) {
-      if ($cacheKey->getTtl() !== null) {
-         return $cacheKey->getTtl();
-      }
-      try {
-         return intval($this->getConfigAttribute('Cache.ExpireTime'));
-      } catch (\InvalidArgumentException $e) {
-         return 0; // cache forever
-      }
-   }
-
-   /**
-    * @protected
-    *
     * Gathers the entire list of cache entries and returns it.
     *
     * @return string[] The list of current cache entries.

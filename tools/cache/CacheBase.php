@@ -57,13 +57,35 @@ abstract class CacheBase extends APFObject {
       if ($value == null) {
          $env = Registry::retrieve('APF\core', 'Environment');
          throw new \InvalidArgumentException('[' . get_class($this)
-               . '::getConfigAttribute()] The configuration directive "' . $name . '" is not '
-               . 'present or empty. Please check your cache configuration ("' . $env
-               . '_cacheconfig.ini") for namespace "APF\tools\cache" and context "'
-               . $this->getContext() . '" or consult the documentation!', E_USER_ERROR);
+            . '::getConfigAttribute()] The configuration directive "' . $name . '" is not '
+            . 'present or empty. Please check your cache configuration ("' . $env
+            . '_cacheconfig.ini") for namespace "APF\tools\cache" and context "'
+            . $this->getContext() . '" or consult the documentation!', E_USER_ERROR);
       }
       return $value;
+   }
 
+   /**
+    * @protected
+    *
+    * Let's you retrieve the validity time of the cache entries.
+    *
+    * @param CacheKey $cacheKey The current cache key.
+    * @return int The validity time of the cache entry in seconds.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 08.01.2013<br />
+    */
+   protected function getExpireTime(CacheKey $cacheKey) {
+      if ($cacheKey->getTtl() !== null) {
+         return $cacheKey->getTtl();
+      }
+      try {
+         return intval($this->getConfigAttribute('Cache.ExpireTime'));
+      } catch (\InvalidArgumentException $e) {
+         return 0; // cache forever
+      }
    }
 
 }
