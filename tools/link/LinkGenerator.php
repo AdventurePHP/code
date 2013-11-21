@@ -883,12 +883,12 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
          $resultUrl .= $actions;
       }
 
+      $resultUrl = $this->appendAnchor($resultUrl, $url);
+      
       // encode ampersands if desired
       if ($this->getEncodeAmpersands()) {
          return str_replace('&', '&amp;', $resultUrl);
       }
-
-      $resultUrl = $this->appendAnchor($resultUrl, $url);
 
       return $resultUrl;
    }
