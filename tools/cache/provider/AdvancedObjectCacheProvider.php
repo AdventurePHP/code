@@ -21,7 +21,6 @@ namespace APF\tools\cache\provider;
  * -->
  */
 use APF\tools\cache\CacheKey;
-use APF\tools\cache\provider\AdvancedTextCacheProvider;
 
 /**
  * @package APF\tools\cache\provider

@@ -24,7 +24,6 @@ use APF\tools\cache\CacheKey;
 use APF\tools\cache\key\AdvancedCacheKey;
 use APF\tools\filesystem\FileException;
 use APF\tools\filesystem\FilesystemManager;
-use APF\tools\cache\provider\TextCacheProvider;
 
 /**
  * @package APF\tools\cache\provider

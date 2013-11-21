@@ -21,8 +21,6 @@ namespace APF\tools\cache;
  * -->
  */
 use APF\core\service\APFService;
-use APF\tools\cache\CacheProvider;
-use APF\tools\cache\CacheBase;
 
 /**
  * @package APF\tools\cache

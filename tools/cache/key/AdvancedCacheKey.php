@@ -20,7 +20,6 @@ namespace APF\tools\cache\key;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\tools\cache\key\SimpleCacheKey;
 
 /**
  * @package APF\tools\cache\key
