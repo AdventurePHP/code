@@ -127,7 +127,7 @@ class SMSManager extends APFObject {
    final public function getSMSVersion() {
 
 
-      return 'v1.0b';
+      return 'v1.0';
    }
 
 

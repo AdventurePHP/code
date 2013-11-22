@@ -176,7 +176,16 @@ class SMSPageLinkTag extends Document {
          // fallback on 404 error page (not found)
          $page = $SMSM->getSite()->get404Page();
       }
-
+      
+      // prepare URL generation
+      $url = Url::fromCurrent();
+      $url->resetQuery();
+      
+      // add anchor to url when set
+      $anchor = $this->getAttribute('anchor');
+      if(!empty($anchor)){
+         $url->setAnchor($anchor);
+      }
 
       $content = $this->getContent();
 
@@ -186,7 +195,7 @@ class SMSPageLinkTag extends Document {
 
       $this->setAttribute('title', $this->getAttribute('title', $page->getTitle()));
 
-      $this->setAttribute('href', $page->getLink(Url::fromCurrent()->resetQuery()));
+      $this->setAttribute('href', $page->getLink($url));
 
       // is there an modified attribute list (without id attribute) ?
       if(!is_array($attList)){
