@@ -188,7 +188,7 @@ class SMSPageLinkTag extends Document {
 
       $this->setAttribute('href', $page->getLink(Url::fromCurrent()->resetQuery()));
 
-      // is there an modified attribute list (without id attribute)
+      // is there an modified attribute list (without id attribute) ?
       if(!is_array($attList)){
          $attList = self::$attributeList;
       }

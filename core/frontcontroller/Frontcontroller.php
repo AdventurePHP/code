@@ -477,7 +477,6 @@ class Frontcontroller extends APFObject {
     * Version 0.8, 21.06.2008 (Introduced Registry to retrieve URLRewrite configuration)<br />
     * Version 0.9, 13.10.2008 (Removed $URLRewriting parameter, because URL rewriting must be configured in the registry)<br />
     * Version 1.0, 11.12.2008 (Switched to the new input filter concept)<br />
-    * Version 1.1, 20.08.2013 Jan Wiese (Added option to disable page transformation)<br />
     */
    public function start($namespace, $template) {
 
