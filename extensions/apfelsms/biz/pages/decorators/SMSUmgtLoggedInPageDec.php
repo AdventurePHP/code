@@ -2,7 +2,6 @@
 namespace APF\extensions\apfelsms\biz\pages\decorators;
 
 use APF\core\service\APFService;
-use APF\extensions\apfelsms\biz\pages\decorators\SMSAbstractPageDec;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 
 /**
@@ -37,7 +36,7 @@ class SMSUmgtLoggedInPageDec extends SMSAbstractPageDec {
       $user = $umgtUS->getUser($this->getContext());
 
       // user IS NOT logged in
-      if($user === null) {
+      if ($user === null) {
          return (!$this->hiddenOnLogin);
       }
 

@@ -1,7 +1,6 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators;
 
-use APF\extensions\apfelsms\biz\pages\decorators\SMSAbstractPageDec;
 use APF\tools\link\Url;
 
 /**
@@ -85,7 +84,7 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
    public function removeRequestParam($paramName) {
 
 
-      if(isset($this->requestParams[$paramName])) {
+      if (isset($this->requestParams[$paramName])) {
 
          $value = $this->requestParams[$paramName];
          unset($this->requestParams[$paramName]);
@@ -111,7 +110,7 @@ class SMSRequestPageDec extends SMSAbstractPageDec {
 
 
       // skip if param already set
-      if(isset($this->requestParams[$paramName]) && !$forceOverwrite) {
+      if (isset($this->requestParams[$paramName]) && !$forceOverwrite) {
          return null;
       }
 

@@ -1,7 +1,6 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators;
 
-use APF\extensions\apfelsms\biz\pages\decorators\SMSAliasPageDec;
 use APF\tools\link\Url;
 
 /**
@@ -38,7 +37,7 @@ class SMSRedirectPageDec extends SMSAliasPageDec {
     * @return bool
     */
    public function isActive() {
-      
+
       return parent::isActive() || $this->getReferencedPage()->isActive();
    }
 

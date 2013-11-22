@@ -2,7 +2,6 @@
 namespace APF\extensions\apfelsms\biz\pages\stores;
 
 use APF\core\pagecontroller\APFObject;
-use APF\extensions\apfelsms\biz\pages\stores\SMSPageStore;
 use APF\extensions\apfelsms\biz\pages\SMSPage;
 
 /**
@@ -28,7 +27,7 @@ class SMSStdPageStore extends APFObject implements SMSPageStore {
    public function getPage($id) {
 
 
-      if(!isset($this->pages[$id])) {
+      if (!isset($this->pages[$id])) {
          return null;
       }
 
@@ -44,7 +43,7 @@ class SMSStdPageStore extends APFObject implements SMSPageStore {
    public function isPageSet($id) {
 
 
-      if(isset($this->pages[$id])) {
+      if (isset($this->pages[$id])) {
          return true;
       }
 

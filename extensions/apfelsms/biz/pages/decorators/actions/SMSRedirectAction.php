@@ -2,11 +2,10 @@
 namespace APF\extensions\apfelsms\biz\pages\decorators\actions;
 
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
-use APF\extensions\apfelsms\biz\SMSManager;
-use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSRedirectPageDec;
-use APF\tools\link\LinkGenerator;
+use APF\extensions\apfelsms\biz\pages\SMSPage;
+use APF\extensions\apfelsms\biz\SMSManager;
 use APF\tools\link\Url;
 
 /**
@@ -45,11 +44,11 @@ class SMSRedirectAction extends AbstractFrontcontrollerAction {
 
       $currentPage = $SMSM->getSite()->getCurrentPage();
 
-      if($currentPage instanceof SMSPageDec) {
+      if ($currentPage instanceof SMSPageDec) {
          /** @var $currentPage SMSPageDec */
 
          $decoratorTypes = $currentPage->getDecoratorTypes();
-         if(in_array(self::DECORATOR_TYPE, $decoratorTypes)) {
+         if (in_array(self::DECORATOR_TYPE, $decoratorTypes)) {
 
             /** @var $currentPage SMSRedirectPageDec
              *  (included in pageDecs)
@@ -58,7 +57,7 @@ class SMSRedirectAction extends AbstractFrontcontrollerAction {
             /** @var $referencedPage SMSPage */
             $referencedPage = $currentPage->getReferencedPage();
 
-            if($currentPage->getId() != $referencedPage->getId()) {
+            if ($currentPage->getId() != $referencedPage->getId()) {
 
                $referencedPageURL = $referencedPage->getLink(Url::fromCurrent(true));
 

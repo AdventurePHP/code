@@ -2,7 +2,6 @@
 namespace APF\extensions\apfelsms\biz\pages\decorators;
 
 use APF\extensions\apfelsms\biz\pages\SMSPage;
-use APF\extensions\apfelsms\biz\pages\decorators\SMSRequestPageDec;
 use APF\tools\link\Url;
 
 /**
@@ -64,7 +63,7 @@ class SMSParentRequestPageDec extends SMSRequestPageDec {
 
       $title = $this->SMSPage->getTitle();
 
-      if(empty($title)) {
+      if (empty($title)) {
          return $this->getOuterParent()->getTitle();
       }
 
@@ -80,7 +79,7 @@ class SMSParentRequestPageDec extends SMSRequestPageDec {
 
       $navTitle = $this->SMSPage->getTitle();
 
-      if(empty($navTitle)) {
+      if (empty($navTitle)) {
          return $this->getOuterParent()->getNavTitle();
       }
 

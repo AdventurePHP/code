@@ -2,10 +2,9 @@
 namespace APF\extensions\apfelsms\biz\pages;
 
 use APF\core\pagecontroller\APFObject;
+use APF\extensions\apfelsms\biz\sites\SMSSite;
 use APF\extensions\apfelsms\biz\SMSException;
 use APF\extensions\apfelsms\biz\SMSManager;
-use APF\extensions\apfelsms\biz\pages\SMSPage;
-use APF\extensions\apfelsms\biz\sites\SMSSite;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
@@ -73,10 +72,10 @@ class SMSStdPage extends APFObject implements SMSPage {
     * @var array
     */
    public static $mapVars = array(
-      'title'    => '',
+      'title' => '',
       'navTitle' => '',
-      'js'       => array(),
-      'css'      => array()
+      'js' => array(),
+      'css' => array()
    );
 
 
@@ -137,7 +136,7 @@ class SMSStdPage extends APFObject implements SMSPage {
    function addCSS($css, $media = null) {
 
 
-      if(!empty($media)) {
+      if (!empty($media)) {
          $this->css[$media] = $css;
 
          return;
@@ -194,7 +193,7 @@ class SMSStdPage extends APFObject implements SMSPage {
    public function getNavTitle() {
 
 
-      if(empty($this->navTitle)) {
+      if (empty($this->navTitle)) {
          return $this->title;
       }
 
@@ -259,7 +258,7 @@ class SMSStdPage extends APFObject implements SMSPage {
    public function getChildren() {
 
 
-      if(empty($this->children)) {
+      if (empty($this->children)) {
          $this->loadChildren();
       }
 
@@ -279,7 +278,7 @@ class SMSStdPage extends APFObject implements SMSPage {
 
       $ids = $SMSM->getMapper()->getChildrenIds($this);
 
-      if(count($ids) < 1) {
+      if (count($ids) < 1) {
          return;
       }
 
@@ -302,7 +301,7 @@ class SMSStdPage extends APFObject implements SMSPage {
 
       $siblingIds = $SMSM->getMapper()->getSiblingAndOwnIds($this);
 
-      if(count($siblingIds) < 1) {
+      if (count($siblingIds) < 1) {
          return null;
       }
 
@@ -310,7 +309,7 @@ class SMSStdPage extends APFObject implements SMSPage {
       foreach ($siblingIds AS $siblingId) {
 
          // skip this id, if not required
-         if(!$includeMe && $siblingId == $this->getId()) {
+         if (!$includeMe && $siblingId == $this->getId()) {
             continue;
          }
 
@@ -329,7 +328,7 @@ class SMSStdPage extends APFObject implements SMSPage {
    public function getParent() {
 
 
-      if(empty($this->parent)) {
+      if (empty($this->parent)) {
          $this->loadParent();
       }
 
@@ -349,7 +348,7 @@ class SMSStdPage extends APFObject implements SMSPage {
 
       $id = $SMSM->getMapper()->getParentId($this);
 
-      if($id === null) {
+      if ($id === null) {
          return;
       }
 
@@ -414,7 +413,7 @@ class SMSStdPage extends APFObject implements SMSPage {
       $currentPageId = $SMSS->getCurrentPageId();
       $thisId = $this->getId();
 
-      if($thisId == $currentPageId) {
+      if ($thisId == $currentPageId) {
          return true;
       }
 
@@ -430,18 +429,18 @@ class SMSStdPage extends APFObject implements SMSPage {
    public function isActive() {
 
 
-      if($this->isCurrentPage()) {
+      if ($this->isCurrentPage()) {
          return true;
       }
 
       $children = $this->getChildren();
 
-      if(count($children) < 1) {
+      if (count($children) < 1) {
          return false;
       }
 
       foreach ($children AS $child) {
-         if($child->isActive()) {
+         if ($child->isActive()) {
             return true;
          }
       }
@@ -461,14 +460,12 @@ class SMSStdPage extends APFObject implements SMSPage {
 
       foreach ($data AS $prop => $val) {
 
-         if(property_exists($this, $prop)) { // check if property is applicable
+         if (property_exists($this, $prop)) { // check if property is applicable
             $this->$prop = $val;
-         }
-         elseif(is_array($val) && property_exists($this, $prop . 's')) { // try plural form, e.g. an XMl element name may be "requestParam" and belong to property "requestParams"
+         } elseif (is_array($val) && property_exists($this, $prop . 's')) { // try plural form, e.g. an XMl element name may be "requestParam" and belong to property "requestParams"
             $pluralProp = $prop . 's';
             $this->$pluralProp = $val;
-         }
-         else {
+         } else {
             throw new SMSException('[' . get_class($this) . '::mapData()] Mapper delivers data that is not applicable to ' . get_class($this) . ' object');
          }
 

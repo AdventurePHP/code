@@ -2,7 +2,6 @@
 namespace APF\extensions\apfelsms\biz\linkSchemes;
 
 use APF\tools\link\DefaultLinkScheme;
-use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
@@ -24,21 +23,19 @@ class SMSPageAsFolderLinkScheme extends DefaultLinkScheme {
 
       $page = $url->getQueryParameter(self::$pageParamName);
 
-      if(!empty($page)) {
+      if (!empty($page)) {
 
          $oldPath = $url->getPath();
 
          ////
          // get path without filename
 
-         if(substr($oldPath, -1, 1) == '/') { // path don't contains filename
+         if (substr($oldPath, -1, 1) == '/') { // path don't contains filename
             $path = $oldPath;
-         }
-         else {
-            if($lastDelimiterPos = strrpos($oldPath, '/')) { // any path (with folder) given
+         } else {
+            if ($lastDelimiterPos = strrpos($oldPath, '/')) { // any path (with folder) given
                $path = substr($oldPath, 0, $lastDelimiterPos + 1); // omit filename, include last delimiter
-            }
-            else {
+            } else {
                $path = '/';
             }
          }
@@ -47,7 +44,7 @@ class SMSPageAsFolderLinkScheme extends DefaultLinkScheme {
          // omit page param "folder" at last position
 
          $paramLength = strlen(self::$pageParamName . '/');
-         if(substr($path, -1 * $paramLength) == self::$pageParamName . '/') {
+         if (substr($path, -1 * $paramLength) == self::$pageParamName . '/') {
             $pathLength = strlen($path);
             $path = substr($path, 0, $pathLength - $paramLength);
          }

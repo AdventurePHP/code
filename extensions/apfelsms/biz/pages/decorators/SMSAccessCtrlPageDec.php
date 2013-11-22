@@ -1,9 +1,8 @@
 <?php
 namespace APF\extensions\apfelsms\biz\pages\decorators;
 
-use APF\extensions\apfelsms\biz\SMSWrongDataException;
-use APF\extensions\apfelsms\biz\pages\decorators\SMSAbstractPageDec;
 use APF\extensions\apfelsms\biz\pages\decorators\providers\SMSAccessCtrlProvider;
+use APF\extensions\apfelsms\biz\SMSWrongDataException;
 
 /**
  *
@@ -47,8 +46,8 @@ class SMSAccessCtrlPageDec extends SMSAbstractPageDec {
     */
    public static $mapVars = array(
       'providerServiceNamespace' => 'APF\extensions\apfelsms\pages\decorators\provider',
-      'providerServiceName'      => null,
-      'permissionName'           => 'SMSViewPermission'
+      'providerServiceName' => null,
+      'permissionName' => 'SMSViewPermission'
    );
 
 
@@ -70,11 +69,11 @@ class SMSAccessCtrlPageDec extends SMSAbstractPageDec {
    public function getProvider() {
 
 
-      if(!($this->provider instanceof SMSAccessCtrlProvider)) {
+      if (!($this->provider instanceof SMSAccessCtrlProvider)) {
 
          $provider = $this->getDIServiceObject($this->providerServiceNamespace, $this->providerServiceName);
 
-         if(!($provider instanceof SMSAccessCtrlProvider)) {
+         if (!($provider instanceof SMSAccessCtrlProvider)) {
             throw new SMSWrongDataException('[SMSAccessCtrlPageDec::isAccessProtected()] Returned service object does not implement the SMSAccessCtrlProvider interface.', E_USER_ERROR);
          }
 

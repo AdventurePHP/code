@@ -2,10 +2,9 @@
 namespace APF\extensions\apfelsms\biz\sites;
 
 use APF\core\pagecontroller\APFObject;
+use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\extensions\apfelsms\biz\SMSManager;
 use APF\extensions\apfelsms\biz\SMSWrongParameterException;
-use APF\extensions\apfelsms\biz\pages\SMSPage;
-use APF\extensions\apfelsms\biz\sites\SMSSite;
 
 /**
  *
@@ -84,7 +83,7 @@ class SMSStdSite extends APFObject implements SMSSite {
    public function getStartPage() {
 
 
-      if($this->getStartPageId() === null) {
+      if ($this->getStartPageId() === null) {
          return null;
       }
 
@@ -133,7 +132,7 @@ class SMSStdSite extends APFObject implements SMSSite {
    public function getCurrentPage() {
 
 
-      if($this->getCurrentPageId() === null) {
+      if ($this->getCurrentPageId() === null) {
          return null;
       }
 
@@ -142,8 +141,7 @@ class SMSStdSite extends APFObject implements SMSSite {
 
       try {
          $currentPage = $SMSM->getPage($this->getCurrentPageId());
-      }
-      catch (SMSWrongParameterException $e) {
+      } catch (SMSWrongParameterException $e) {
          // in case of invalid request id
          $currentPage = $this->get404Page();
          $this->setCurrentPageId($this->get404PageId());
@@ -213,7 +211,7 @@ class SMSStdSite extends APFObject implements SMSSite {
    public function get403Page() {
 
 
-      if($this->get403PageId() === null) {
+      if ($this->get403PageId() === null) {
          return null;
       }
 
@@ -270,7 +268,7 @@ class SMSStdSite extends APFObject implements SMSSite {
    public function get404Page() {
 
 
-      if($this->get404PageId() === null) {
+      if ($this->get404PageId() === null) {
          return null;
       }
 

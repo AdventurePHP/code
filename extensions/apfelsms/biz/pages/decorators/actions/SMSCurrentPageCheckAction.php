@@ -5,7 +5,6 @@ use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\session\Session;
 use APF\extensions\apfelsms\biz\SMSManager;
 use APF\extensions\apfelsms\biz\SMSWrongParameterException;
-use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
@@ -52,7 +51,7 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
 
 
       // check loop counter (to protect against infinite redirect loops)
-      if(!$this->checkLoopsOK()) {
+      if (!$this->checkLoopsOK()) {
          header('X-APFelSMS: Infinite redirection loop detected', true, 500); // HTTP status code 500: Server error
       }
 
@@ -65,8 +64,7 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
       // first, check for exception caused by errors/invalid page id
       try {
          $currentPage = $SMSM->getPage($SMSS->getCurrentPageId());
-      }
-      catch (SMSWrongParameterException $e) {
+      } catch (SMSWrongParameterException $e) {
 
          // invalid page id
 
@@ -80,7 +78,7 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
 
 
       // check access protection
-      if($currentPage->isAccessProtected()) {
+      if ($currentPage->isAccessProtected()) {
 
          // page is access protected
 
@@ -93,12 +91,12 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
       }
 
       // check if 404 error page
-      if($SMSS->currentIs404Page()) {
+      if ($SMSS->currentIs404Page()) {
          header('X-APFelSMS: Invalid page id', true, 404);
       }
 
       //check if 403 error page
-      if($SMSS->currentIs403Page()) {
+      if ($SMSS->currentIs403Page()) {
          header('X-APFelSMS: Access protected page', true, 403);
       }
 
@@ -118,7 +116,7 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
       $sessM = new Session(self::SESSION_NAMESPACE);
       $sessM->save(
          self::SESSION_LOOPCOUNT_NAME,
-         intval($sessM->load(self::SESSION_LOOPCOUNT_NAME, 0)) + 1
+            intval($sessM->load(self::SESSION_LOOPCOUNT_NAME, 0)) + 1
       );
    }
 

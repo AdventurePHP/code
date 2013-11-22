@@ -2,7 +2,6 @@
 namespace APF\extensions\apfelsms\pres\documentcontroller;
 
 use APF\extensions\apfelsms\biz\SMSManager;
-use APF\tools\link\Url;
 use APF\tools\string\StringAssistant;
 
 
@@ -36,10 +35,9 @@ class SMSBreadcrumbNavTagController extends SMSBaseNavTagController {
       ////
       // fetch base page
 
-      if(!empty($basePageId)) {
+      if (!empty($basePageId)) {
          $basePage = $this->SMSM->getPage($basePageId);
-      }
-      else {
+      } else {
          $basePage = $this->SMSM->getSite()->getStartPage();
       }
 
@@ -59,24 +57,23 @@ class SMSBreadcrumbNavTagController extends SMSBaseNavTagController {
 
          // Ignore origanisation-/system-nodes (hidden nodes without title)
          $crumbNavTitle = $crumb->getNavTitle();
-         if(!($crumb->isHidden() && empty($crumbNavTitle))) {
+         if (!($crumb->isHidden() && empty($crumbNavTitle))) {
             $reverseCrumbArray[] = $crumb;
          }
 
          $oldCrumb = $crumb;
          $crumb = $oldCrumb->getParent();
 
-      }
-      while (
-         ($crumb !== null) // parent found?
-         &&
-         ($basePageLevel <= $oldCrumb->getLevel()) // are we still deeper than basePage?
-         &&
-         ($crumb->getId() != $basePageId) // not basePage?
+      } while (
+            ($crumb !== null) // parent found?
+            &&
+            ($basePageLevel <= $oldCrumb->getLevel()) // are we still deeper than basePage?
+            &&
+            ($crumb->getId() != $basePageId) // not basePage?
       );
 
       // add the base page, if not same as current page
-      if($currentPage->getId() != $basePageId) {
+      if ($currentPage->getId() != $basePageId) {
          $reverseCrumbArray[] = $basePage;
       }
 
@@ -89,7 +86,7 @@ class SMSBreadcrumbNavTagController extends SMSBaseNavTagController {
 
       $buffer = '';
       $lastKey = count($crumbArray) - 1;
-      
+
       $url = $this->getUrlPrototype();
 
       foreach ($crumbArray AS $key => $crumb) {
@@ -99,22 +96,22 @@ class SMSBreadcrumbNavTagController extends SMSBaseNavTagController {
          $linkURL = $crumb->getLink(clone $url);
 
          $linkText = $crumb->getNavTitle();
-         if($crumb->getId() == $basePageId) {
+         if ($crumb->getId() == $basePageId) {
             // allow custom title for basePage
             $linkText = $doc->getAttribute('SMSBreadcrumbNavBasePageIdTitle', $crumb->getNavTitle());
          }
-         if(empty($linkText)) {
+         if (empty($linkText)) {
             $linkText = $crumb->getId();
          }
 
          $linkTitle = $linkText;
          $linkClasses = ' level_' . $crumb->getLevel();
 
-         if($key == $lastKey) {
+         if ($key == $lastKey) {
             $linkClasses .= ' last active current';
          }
 
-         if($key == 0) {
+         if ($key == 0) {
             $linkClasses .= ' first';
          }
 

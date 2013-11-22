@@ -2,10 +2,9 @@
 namespace APF\extensions\apfelsms\biz\pages\decorators\actions;
 
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
-use APF\extensions\apfelsms\biz\SMSManager;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSExternalURLPageDec;
 use APF\extensions\apfelsms\biz\pages\decorators\SMSPageDec;
-use APF\tools\link\LinkGenerator;
+use APF\extensions\apfelsms\biz\SMSManager;
 use APF\tools\link\Url;
 
 /**
@@ -43,11 +42,11 @@ class SMSExternalURLRedirectAction extends AbstractFrontcontrollerAction {
 
       $currentPage = $SMSM->getSite()->getCurrentPage();
 
-      if($currentPage instanceof SMSPageDec) {
+      if ($currentPage instanceof SMSPageDec) {
          /** @var $currentPage SMSPageDec */
 
          $decoratorTypes = $currentPage->getDecoratorTypes();
-         if(in_array(self::DECORATOR_TYPE, $decoratorTypes)) {
+         if (in_array(self::DECORATOR_TYPE, $decoratorTypes)) {
 
             /**
              * @var $currentPage SMSExternalUrlPageDec
@@ -59,10 +58,10 @@ class SMSExternalURLRedirectAction extends AbstractFrontcontrollerAction {
             $currentURLObject = Url::fromCurrent();
 
             // protection against infinite redirection loops
-            if(
-               $externalURLObject->getHost() != $currentURLObject->getHost()
-               ||
-               $externalURLObject->getPath() != $currentURLObject->getPath()
+            if (
+                  $externalURLObject->getHost() != $currentURLObject->getHost()
+                  ||
+                  $externalURLObject->getPath() != $currentURLObject->getPath()
             ) {
                header('Location: ' . $externalURLString, true, 301); // HTTP status code 301: moved permanently
                exit;
