@@ -2,6 +2,26 @@
 namespace APF\core\exceptionhandler;
 
 /**
+ * <!--
+ * This file is part of the adventure php framework (APF) published under
+ * http://adventure-php-framework.org.
+ *
+ * The APF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The APF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+ * -->
+ */
+
+/**
  * @package APF\core\exceptionhandler
  * @class CLIExceptionHandler
  *
@@ -12,80 +32,71 @@ namespace APF\core\exceptionhandler;
  * Version 0.1, 25.11.2013<br />
  */
 class CLIExceptionHandler extends DefaultExceptionHandler {
-    /**
-     * @public
-     *
-     * Implements the exception handling function, that is called by the APF exception handling
-     * function.
-     *
-     * @param \Exception $exception the thrown exception.
-     *
-     * @author Tobias Lückel
-     * @version
-     * Version 0.1, 25.11.2013<br />
-     */
-    public function handleException(\Exception $exception)
-    {
 
-        // fill attributes
-        $this->exceptionNumber  = $exception->getCode();
-        $this->exceptionMessage = $exception->getMessage();
-        $this->exceptionFile    = $exception->getFile();
-        $this->exceptionLine    = $exception->getLine();
-        $this->exceptionTrace   = $exception->getTrace();
-        $this->exceptionType    = get_class($exception);
+   const TAB = "\t";
 
-        // log exception
-        $this->logException();
+   public function handleException(\Exception $exception) {
 
-        // build nice exception page
-        echo $this->buildExceptionOutput();
-    }
+      // fill attributes
+      $this->exceptionNumber = $exception->getCode();
+      $this->exceptionMessage = $exception->getMessage();
+      $this->exceptionFile = $exception->getFile();
+      $this->exceptionLine = $exception->getLine();
+      $this->exceptionTrace = $exception->getTrace();
+      $this->exceptionType = get_class($exception);
 
-    /**
-     * @protected
-     *
-     * Creates the exception output.
-     *
-     * @return string the exception output.
-     *
-     * @author Tobias Lückel[Megger]
-     * @version
-     * Version 0.1, 25.11.2013<br />
-     */
-    protected function buildExceptionOutput() {
-        $output = PHP_EOL;
-        $output .= '[' . $this->generateExceptionID() . ']';
-        $output .= '[' . $this->exceptionNumber . ']';
-        $output .= ' ' . $this->exceptionMessage . PHP_EOL;
-        $output .= "\t" . $this->exceptionFile . ':' . $this->exceptionLine . PHP_EOL;
-        $output .= 'Stacktrace:' . PHP_EOL;
+      // log exception
+      $this->logException();
 
-        $stacktrace = array_reverse($this->exceptionTrace);
-        foreach ($stacktrace as $item) {
-            $output .= "\t";
-            if (isset($item['class'])) {
-                $output .= $item['class'];
-            }
-            if (isset($item['type'])) {
-                $output .= $item['type'];
-            }
-            if (isset($item['function'])) {
-                $output .= $item['function'] . '()';
-            }
-            $output .= PHP_EOL;
-            $output .= "\t\t";
-            if (isset($item['file'])) {
-                $output .= $item['file'];
-            }
-            if (isset($item['file'])) {
-                $output .= ':' . $item['line'];
-            }
-            $output .= PHP_EOL;
-        }
+      // build nice exception page
+      echo $this->buildExceptionOutput();
+   }
 
-        $output .= PHP_EOL;
+   /**
+    * @protected
+    *
+    * Creates the exception output.
+    *
+    * @return string the exception output.
+    *
+    * @author Tobias Lückel[Megger]
+    * @version
+    * Version 0.1, 25.11.2013<br />
+    */
+   protected function buildExceptionOutput() {
+      $output = PHP_EOL;
+      $output .= '[' . $this->generateExceptionID() . ']';
+      $output .= '[' . $this->exceptionNumber . ']';
+      $output .= ' ' . $this->exceptionMessage . PHP_EOL;
+      $output .= self::TAB . $this->exceptionFile . ':' . $this->exceptionLine . PHP_EOL;
+      $output .= 'Stacktrace:' . PHP_EOL;
 
-        return $output;
-    }
+      $stacktrace = array_reverse($this->exceptionTrace);
+      foreach ($stacktrace as $item) {
+         $output .= self::TAB;
+         if (isset($item['class'])) {
+            $output .= $item['class'];
+         }
+         if (isset($item['type'])) {
+            $output .= $item['type'];
+         }
+         if (isset($item['function'])) {
+            $output .= $item['function'] . '()';
+         }
+         $output .= PHP_EOL;
+         $output .= self::TAB . self::TAB;
+         if (isset($item['file'])) {
+            $output .= $item['file'];
+         }
+         if (isset($item['file'])) {
+            $output .= ':' . $item['line'];
+         }
+         $output .= PHP_EOL;
+      }
+
+      $output .= PHP_EOL;
+
+      return $output;
+   }
+
 }
