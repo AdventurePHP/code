@@ -1508,7 +1508,10 @@ class Document extends APFObject {
                         $openingTagCount++;
                      }
 
-                  } else {
+                  } else if (substr($this->content, $tokenPos - 1, 1) == '/') {
+                     // ID#98: Check for explicit closing tag expressed by "</$token>" instead of relying
+                     // on the previous check. Otherwise, an occurrence of "$token" solely will lead to
+                     // a match for a closing tag which in fact is just an occurrence of the token.
                      $closingTagCount++;
                   }
 
