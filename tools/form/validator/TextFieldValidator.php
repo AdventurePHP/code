@@ -120,7 +120,7 @@ abstract class TextFieldValidator extends AbstractFormValidator {
     * @protected
     *
     * Marks a form control als invalid using a css class. See
-    * http://wiki.adventure-php-framework.org/de/Weiterentwicklung_Formular-Validierung
+    * http://wiki.adventure-php-framework.org/Weiterentwicklung_Formular-Validierung
     * for details.
     *
     * @param AbstractFormControl $control The control to mark as invalid.

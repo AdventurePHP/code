@@ -5,6 +5,6 @@ MIGRATION can be done as follows using a LINUX-like shell (use cygwin for Window
 $ cd /path/to/your/project/APF
 $ ./migration/migrate.sh /path/to/php
 
-AFTER automatic migration please refer to the manual migration steps described under http://wiki.adventure-php-framework.org/de/Migration_von_1.17_auf_2.0.
+AFTER automatic migration please refer to the manual migration steps described under http://wiki.adventure-php-framework.org/Migration_von_1.17_auf_2.0.
 
 For QUESTIONS and/or DISCUSSION please refer to http://forum.adventure-php-framework.org/viewtopic.php?f=5&t=1407
