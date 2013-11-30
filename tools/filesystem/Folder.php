@@ -20,8 +20,6 @@ namespace APF\tools\filesystem;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\tools\filesystem\FilesystemItem;
-use APF\tools\filesystem\File;
 
 /**
  * @class   Folder
@@ -90,8 +88,8 @@ final class Folder extends FilesystemItem {
     */
    public function open($path) {
       if (!is_dir($path)) {
-         throw new FilesystemException('[Folder::open()] A folder with the passed path '
-               . 'does not exists.', E_USER_ERROR);
+         throw new FilesystemException('[Folder::open()] A folder with the passed path "' . $path . '" does not exists!',
+            E_USER_ERROR);
       }
       $stat = stat($path);
       $pathParts = pathinfo($path);
