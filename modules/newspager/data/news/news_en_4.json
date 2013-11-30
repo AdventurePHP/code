@@ -1,0 +1,5 @@
+{
+    "headline": "Article summary IV",
+    "subline": "Implementation much more complex!",
+    "content": "Adding AJAX features to your application means, that you have to think very carefully about your application or module design. Writing AJAX applications needs much more understanding of good application design. Otherwise, this leads to bad software architecture!"
+}

@@ -25,7 +25,7 @@ namespace APF\modules\newspager\biz;
  * @package APF\modules\newspager\biz
  * @class NewsItem
  *
- *  Domain object class.<br />
+ * Domain object class.<br />
  *
  * @author Christian Achatz
  * @version
@@ -34,26 +34,22 @@ namespace APF\modules\newspager\biz;
 class NewsItem {
 
    /**
-    * @protected
-    *  Headline of a news page.
+    * @var string Headline of a news page.
     */
    private $headline;
 
    /**
-    * @protected
-    *  Subheadline of a news page.
+    * @var string Sub headline of a news page.
     */
    private $subHeadline;
 
    /**
-    * @protected
-    *  Content of a news page.
+    * @var string Content of a news page.
     */
    private $content;
 
    /**
-    * @protected
-    *  Number of news pages.
+    * @var int Number of news pages.
     */
    private $newsCount;
 

@@ -21,11 +21,11 @@ namespace APF\modules\newspager\biz\actions;
  * -->
  */
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
-use APF\modules\newspager\biz\NewsItem;
-use APF\modules\newspager\biz\NewsPagerManager;
+use APF\modules\newspager\data\NewsPagerProvider;
+use APF\tools\http\HeaderManager;
 
 /**
- * @package APF\modules\newspager\biz
+ * @package APF\modules\newspager\biz\actions
  * @class NewsPagerAjaxBackendAction
  *
  * Front controller action implementation for AJAX style loading of a news page.
@@ -49,32 +49,27 @@ class NewsPagerAjaxBackendAction extends AbstractFrontcontrollerAction {
     */
    public function run() {
 
-      $page = $this->getInput()->getAttribute('page');
-      $dataDir = base64_decode($this->getInput()->getAttribute('datadir'));
+      $input = $this->getInput();
+
+      $page = $input->getAttribute('page');
+      $dataDir = base64_decode($input->getAttribute('datadir'));
 
       // inject the language here to ease service creation
-      $this->setLanguage($this->getInput()->getAttribute('lang'));
+      $this->setLanguage($input->getAttribute('lang'));
 
-      /* @var $nM NewsPagerManager */
-      $nM = & $this->getAndInitServiceObject('APF\modules\newspager\biz\NewsPagerManager', $dataDir);
-
+      /* @var $provider NewsPagerProvider */
       // load news object
-      $news = $nM->getNewsByPage($page);
-      /* @var $news NewsItem */
+      $provider = & $this->getServiceObject('APF\modules\newspager\data\NewsPagerProvider');
+      $news = $provider->getNewsByPage($dataDir, $page);
 
-      // create xml
-      $xml = (string)'';
-      $xml .= '<?xml version="1.0" encoding="utf-8" ?>';
-      $xml .= '<news>';
-      $xml .= '<headline>' . $news->getHeadline() . '</headline>';
-      $xml .= '<subheadline>' . $news->getSubHeadline() . '</subheadline>';
-      $xml .= '<content>' . $news->getContent() . '</content>';
-      $xml .= '<newscount>' . $news->getNewsCount() . '</newscount>';
-      $xml .= '</news>';
-
-      // send xml
-      header('Content-Type: text/xml');
-      echo $xml;
+      // send json
+      HeaderManager::send('Content-Type: application/json');
+      echo json_encode(array(
+         'headline' => $news->getHeadline(),
+         'subheadline' => $news->getSubHeadline(),
+         'content' => $news->getContent(),
+         'newscount' => $news->getNewsCount()
+      ));
 
       // close application, since we've done all the work here.
       exit(0);

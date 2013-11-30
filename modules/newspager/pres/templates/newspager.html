@@ -1,16 +1,12 @@
 <@controller
    class="APF\modules\newspager\pres\documentcontroller\NewsPagerController"
 @>
-<div class="apf-news-pager">
-   <div class="prev">
-      <a href="#">&lt;</a>
-   </div>
+<div class="apf-news-pager" data-lang="<html:placeholder name="NewsLanguage" />" data-news-count="<html:placeholder name="NewsCount" />" data-error-message="<html:placeholder name="ErrorMsg" />" data-action-url="<html:placeholder name="ActionUrl" />" data-data-dir="<html:placeholder name="DataDir" />">
    <div class="news">
       <h3><html:placeholder name="Headline" /></h3>
-      <h4><html:placeholder name="Subheadline" /></h4>
+      <h4><html:placeholder name="SubHeadline" /></h4>
       <p><html:placeholder name="Content" /></p>
    </div>
-   <div class="next">
-      <a href="#">&gt;</a>
-   </div>
+   <a class="prev" href="#">&lt;</a>
+   <a class="next" href="#">&gt;</a>
 </div>

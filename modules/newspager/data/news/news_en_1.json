@@ -1,0 +1,5 @@
+{
+    "headline": "Article summary I",
+    "subline": "Encoded slashes lead to 404 error!",
+    "content": "Using a front controller action as a server side component, encoded slashes and backslashes lead to a 404 error if the \"AllowEncodedSlashes = On\" is not set in your VHOST configuration."
+}

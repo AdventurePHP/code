@@ -21,8 +21,7 @@ namespace APF\modules\newspager\pres\documentcontroller;
  * -->
  */
 use APF\core\pagecontroller\BaseDocumentController;
-use APF\core\registry\Registry;
-use APF\modules\newspager\biz\NewsPagerManager;
+use APF\modules\newspager\data\NewsPagerProvider;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
@@ -30,7 +29,7 @@ use APF\tools\link\Url;
  * @package APF\modules\newspager\pres
  * @class NewsPagerController
  *
- * Document controller for the newspager module.
+ * Document controller for the news pager module.
  *
  * @author Christian Achatz
  * @version
@@ -41,7 +40,7 @@ class NewsPagerController extends BaseDocumentController {
    /**
     * @public
     *
-    *  Implements the abstract transformation function of the BaseDocumentController class.<br />
+    * Implements the abstract transformation function of the BaseDocumentController class.
     *
     * @author Christian Achatz
     * @version
@@ -55,43 +54,36 @@ class NewsPagerController extends BaseDocumentController {
       $dataDir = $this->getDocument()->getAttribute('datadir');
       if ($dataDir === null) {
          throw new \InvalidArgumentException('[NewsPagerController::transformContent()] Tag '
-               . 'attribute "datadir" was not present in the &lt;core:importdesign /&gt; tag '
-               . 'definition! Please specify a news content directory!');
+            . 'attribute "datadir" was not present in the &lt;core:importdesign /&gt; tag '
+            . 'definition! Please specify a news content directory!');
       }
 
-      // get manager
-      /* @var $manager NewsPagerManager */
-      $manager = & $this->getAndInitServiceObject('APF\modules\newspager\biz\NewsPagerManager', $dataDir);
-
       // load default news page
-      $newsItem = $manager->getNewsByPage();
+      /* @var $provider NewsPagerProvider */
+      $provider = & $this->getServiceObject('APF\modules\newspager\data\NewsPagerProvider');
+      $newsItem = $provider->getNewsByPage($dataDir, 1);
 
       // fill place holders
       $this->setPlaceHolder('NewsLanguage', $this->getLanguage());
       $this->setPlaceHolder('NewsCount', $newsItem->getNewsCount());
       $this->setPlaceHolder('Headline', $newsItem->getHeadline());
-      $this->setPlaceHolder('Subheadline', $newsItem->getSubHeadline());
+      $this->setPlaceHolder('SubHeadline', $newsItem->getSubHeadline());
       $this->setPlaceHolder('Content', $newsItem->getContent());
 
       // set news service base url
-      // TODO refactor/repair issues due to separate js and css files!
       $url = LinkGenerator::generateActionUrl(
          Url::fromCurrent(),
-         'APF\modules_newspager_biz',
-         'Pager',
-         array(
-            'page' => 1,
-            'lang' => $this->getLanguage(),
-            'datadir' => base64_encode($dataDir)
-         )
+         'APF\modules\newspager\biz',
+         'Pager'
       );
+      $this->setPlaceHolder('ActionUrl', $url);
 
-      $this->setPlaceHolder('action-url', $url);
+      $this->setPlaceHolder('DataDir', base64_encode($dataDir));
 
       if ($this->getLanguage() == 'de') {
          $this->setPlaceHolder('ErrorMsg', 'Es ist ein Fehler beim Aufrufen der News aufgetreten! Bitte versuchen Sie es später wieder.');
       } else {
-         $this->setPlaceHolder('ErrorMsg', 'Requesting the next news page failed. Please come back again later.');
+         $this->setPlaceHolder('ErrorMsg', 'Requesting the next news page failed! Please try again later.');
       }
    }
 

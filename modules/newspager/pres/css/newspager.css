@@ -1,37 +1,40 @@
 .apf-news-pager {
-    width: 300px;
-    height: 176px;
-    border: 1px solid black;
-    display: block;
-    font-size: 10px;
-}
-
-.apf-news-pager div {
-    float: left;
-    height: 176px;
+    border: 1px solid #000000;
+    box-shadow: 2px 2px 2px #666666;
+    font-size: 0.8em;
+    min-height: 8em;
+    overflow: hidden;
+    position: relative;
 }
 
 .apf-news-pager .news {
-    width: 250px;
-    padding: 0 5px;
+    padding: 0 2em;
+    position: relative;
 }
 
-.newspager:after {
+.apf-news-pager:after {
     clear: both;
 }
 
-.apf-news-pager .prev,
-.apf-news-pager .next {
-    width: 20px;
-    background: #ccc;
-    text-align: center;
+.apf-news-pager a {
+    color: #0A437C;
+    font-size: 2em;
+    top: 0;
+    z-index: 100;
+    position: absolute;
+    background: #eee;
+    text-decoration: none;
 }
 
-.apf-news-pager .prev a,
-.apf-news-pager .next a {
-    margin: 82px 0 0;
-    display: block;
-    text-decoration: none;
+.apf-news-pager .prev {
+    box-shadow: 2px 0 2px #888;
+    left: 0;
+}
+
+.apf-news-pager .next {
+    box-shadow: -2px 0 2px #888;
+    left: auto;
+    right: 0;
 }
 
 .apf-news-pager .news .error {
