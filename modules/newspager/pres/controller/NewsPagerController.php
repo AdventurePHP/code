@@ -1,5 +1,5 @@
 <?php
-namespace APF\modules\newspager\pres\documentcontroller;
+namespace APF\modules\newspager\pres\controller;
 
 /**
  * <!--
@@ -26,7 +26,7 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\modules\newspager\pres
+ * @package APF\modules\newspager\pres\controller
  * @class NewsPagerController
  *
  * Document controller for the news pager module.
