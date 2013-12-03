@@ -1,5 +1,5 @@
 {
     "headline": "Article summary II",
-    "subline": "Poor AJAX debugging tool support!",
-    "content": "Unfortunately only the firefox browser contains a powerful debugging and analyzing tool (firebug), that really helps tracing your application. Opera features a firefox-like toolbar, and the internet explorer does not contain any equivalent product."
+    "subline": "Character encoding problems!",
+    "content": "Different browsers do handle character sets different for AJAX and normal HTTP requests. For instance, Firefox and Opera send data in UTF-8 format to the server although the page is delivered in ISO-8859-1 encoding. This leads to the problem, that data, that is sent back to the browser is encoded with the wrong character set."
 }

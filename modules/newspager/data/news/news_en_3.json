@@ -1,5 +1,5 @@
 {
     "headline": "Article summary III",
-    "subline": "Character encoding problems!",
-    "content": "Firefox and opera send user input data in UTF-8 format to the server although the page is delivered in ISO-8859-1 encoding. This leads to the problem, that data, that is sent back to the browser is encoded with the wrong character set."
+    "subline": "Implementation much more complex!",
+    "content": "Adding AJAX features to your application means, that you have to think very carefully about your application or module design. Writing AJAX applications needs much more understanding of good application design. Otherwise, this really leads to bad software architecture!"
 }
