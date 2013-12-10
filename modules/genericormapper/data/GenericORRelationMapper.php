@@ -1328,7 +1328,12 @@ class GenericORRelationMapper extends GenericORMapper {
     * Version 0.1, 16.03.2010<br />
     */
    public function __wakeup() {
-      $this->createDatabaseConnection();
+      // ID#102: Only re-create database connection in case a connection name has been
+      // specified (classic usage of the GORM with database connection created
+      // by the ConnectionManager.
+      if(!empty($this->connectionName)){
+         $this->createDatabaseConnection();
+      }
    }
 
    /**

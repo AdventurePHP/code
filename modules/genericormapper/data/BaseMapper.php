@@ -216,7 +216,12 @@ class BaseMapper extends APFObject {
     */
    public function setup() {
 
-      $this->createDatabaseConnection();
+      // ID#102: Only create database connection in case no connection name has been specified or
+      // driver instance has been injected. This allows usage of DIServiceManager and
+      // classic usage to create database connections via the ConnectionManager.
+      if (!empty($this->connectionName)) {
+         $this->createDatabaseConnection();
+      }
 
       // Only create mapping/relation/objects table when mapping has been
       // configured directly via
@@ -443,7 +448,6 @@ class BaseMapper extends APFObject {
             $addConfig = $this->getConfiguration($configNamespace, $configNameAffix . '_domainobjects.' . $this->getConfigFileExtension());
 
             // extract configuration to support pre 1.13 GORM config
-            $addObjects = array();
             foreach ($addConfig->getSectionNames() as $sectionName) {
                $section = $addConfig->getSection($sectionName);
                $this->domainObjectsTable[$sectionName] = array();
