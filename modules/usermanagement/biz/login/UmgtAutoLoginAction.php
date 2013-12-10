@@ -22,9 +22,11 @@ namespace APF\modules\usermanagement\biz\login;
  */
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\service\APFService;
+use APF\extensions\htmlheader\biz\actions\JsCssInclusionAction;
 use APF\modules\usermanagement\biz\UmgtManager;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 use APF\tools\cookie\Cookie;
+use APF\tools\media\actions\StreamMediaAction;
 
 /**
  * @package APF\modules\usermanagement\biz\login
@@ -36,6 +38,22 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
     * @const Defines the cookie name for the user's permanent auth token.
     */
    const AUTO_LOGIN_COOKIE_NAME = 'umgt-auth-token';
+
+   /**
+    * Checks, whether the current request is for resource serving purposes or is a "true"
+    * user request. If no, the action is considered out of order to not stress database and
+    * resource delivery to much!
+    *
+    * @return bool True in case the action is to be considered active, false otherwise.
+    */
+   public function isActive() {
+      foreach ($this->getFrontController()->getActions() as $action) {
+         if ($action instanceof UmgtLogoutAction || $action instanceof StreamMediaAction || $action instanceof JsCssInclusionAction) {
+            return false;
+         }
+      }
+      return true;
+   }
 
    public function run() {
 
