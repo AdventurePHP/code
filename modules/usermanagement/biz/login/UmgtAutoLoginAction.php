@@ -22,11 +22,9 @@ namespace APF\modules\usermanagement\biz\login;
  */
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\service\APFService;
-use APF\extensions\htmlheader\biz\actions\JsCssInclusionAction;
 use APF\modules\usermanagement\biz\UmgtManager;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 use APF\tools\cookie\Cookie;
-use APF\tools\media\actions\StreamMediaAction;
 
 /**
  * @package APF\modules\usermanagement\biz\login
@@ -43,16 +41,15 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
     * Checks, whether the current request is for resource serving purposes or is a "true"
     * user request. If no, the action is considered out of order to not stress database and
     * resource delivery to much!
+    * <p/>
+    * Check is done by the ACCEPT HTTP header as this is a true sign whether the browser is
+    * requesting an HTML page or is loading resources such as CSS or JS.
     *
     * @return bool True in case the action is to be considered active, false otherwise.
     */
    public function isActive() {
-      foreach ($this->getFrontController()->getActions() as $action) {
-         if ($action instanceof UmgtLogoutAction || $action instanceof StreamMediaAction || $action instanceof JsCssInclusionAction) {
-            return false;
-         }
-      }
-      return true;
+      $requestedMimeType = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
+      return strpos($requestedMimeType, 'text/html') !== false;
    }
 
    public function run() {
