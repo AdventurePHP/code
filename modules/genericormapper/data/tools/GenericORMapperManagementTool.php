@@ -20,8 +20,6 @@ namespace APF\modules\genericormapper\data\tools;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\database\AbstractDatabaseHandler;
-use APF\core\database\ConnectionManager;
 use APF\modules\genericormapper\data\BaseMapper;
 use APF\modules\genericormapper\data\GenericORMapperException;
 
@@ -250,7 +248,7 @@ class GenericORMapperManagementTool extends BaseMapper {
     */
    public function run($updateInPlace = true) {
 
-      // ID#104: clean up volatile data to allow multiple runs with deterministic results 
+      // ID#104: clean up volatile data to allow multiple runs with deterministic results
       $this->reEngineeredMappingTable = array();
       $this->databaseMappingTables = array();
       $this->reEngineeredRelationTable = array();
@@ -278,23 +276,21 @@ class GenericORMapperManagementTool extends BaseMapper {
          $this->addRelationConfiguration($this->configNamespace, $this->configNameAffix);
       }
 
-      // Generate layout from the database (reverse engineering of the database) if any
-      /* @var $sql AbstractDatabaseHandler */
-      $sql = null;
+      // ID#102: Only create database connection in case no connection name has been specified or
+      // driver instance has been injected. This allows usage of DIServiceManager and
+      // classic usage to create database connections via the ConnectionManager.
       if (!empty($this->connectionName)) {
-         /* @var $cM ConnectionManager */
-         $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
-         $sql = & $cM->getConnection($this->connectionName);
-
-         // analyze the current database
-         $this->analyzeDatabaseTables($sql);
-
-         // re-engineer the database tables concerning the relations
-         $this->reEngineerRelations($sql);
-
-         // re-engineer the database tables concerning the objects
-         $this->reEngineerMappings($sql);
+         $this->createDatabaseConnection();
       }
+
+      // analyze the current database
+      $this->analyzeDatabaseTables();
+
+      // re-engineer the database tables concerning the relations
+      $this->reEngineerRelations();
+
+      // re-engineer the database tables concerning the objects
+      $this->reEngineerMappings();
 
       // analyze the old and new mapping configuration
       $this->analyzeMappingConfigurationChanges();
@@ -318,9 +314,9 @@ class GenericORMapperManagementTool extends BaseMapper {
 
       // print alter statements or execute them immediately in case we have a connection name and
       // we have been told to update the database directly
-      if (!empty($this->connectionName) && $updateInPlace === true) {
+      if ($updateInPlace === true) {
          foreach ($this->updateStatements as $statement) {
-            $sql->executeTextStatement($statement);
+            $this->dbDriver->executeTextStatement($statement);
          }
       } else {
          echo '<pre>';
@@ -356,6 +352,7 @@ class GenericORMapperManagementTool extends BaseMapper {
     * @param string $b The second key.
     * @return int Compare status (0=equal, 1=different).
     */
+   /** @noinspection PhpUnusedPrivateMethodInspection Internally used for sort()'ing */
    private function compareRelations($a, $b) {
       $a = strtolower($a);
       $b = strtolower($b);
@@ -429,19 +426,17 @@ class GenericORMapperManagementTool extends BaseMapper {
     *
     * Analyzes the given database and stores the tables included.
     *
-    * @param AbstractDatabaseHandler $sql The database connection to analyze.
-    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 10.10.2009<br />
     * Version 0.2, 21.11.2010 (Now ignoring tables that are not created by the GORM)<br />
     */
-   private function analyzeDatabaseTables(AbstractDatabaseHandler $sql) {
+   private function analyzeDatabaseTables() {
 
       $selectTables = 'SHOW TABLES;';
-      $resultTables = $sql->executeTextStatement($selectTables);
+      $resultTables = $this->dbDriver->executeTextStatement($selectTables);
 
-      while ($dataTables = $sql->fetchData($resultTables)) {
+      while ($dataTables = $this->dbDriver->fetchData($resultTables)) {
 
          // gather the offset we are provided by the database due
          // to the fact, that we ordered an associative array!
@@ -467,20 +462,20 @@ class GenericORMapperManagementTool extends BaseMapper {
     *
     * Creates a relation mapping out of the database tables.
     *
-    * @param AbstractDatabaseHandler $sql The database connection to analyze.
+    * @author Christian Achatz
     * @version
     * Version 0.2, 07.03.2011 (Added support for relations between the same table)<br />
     */
-   private function reEngineerRelations(AbstractDatabaseHandler $sql) {
+   private function reEngineerRelations() {
 
       // create reverse engineered mapping entries
       foreach ($this->databaseRelationTables as $relationTable) {
 
          $selectCreate = 'SHOW COLUMNS FROM ' . $relationTable;
-         $resultCreate = $sql->executeTextStatement($selectCreate);
+         $resultCreate = $this->dbDriver->executeTextStatement($selectCreate);
 
          $fields = array();
-         while ($dataCreate = $sql->fetchData($resultCreate)) {
+         while ($dataCreate = $this->dbDriver->fetchData($resultCreate)) {
             $fields[] = $dataCreate;
          }
 
@@ -508,19 +503,17 @@ class GenericORMapperManagementTool extends BaseMapper {
     * Analyzes the current set of database tables and adds an alter statement for the
     * storage engine if necessary.
     *
-    * @param AbstractDatabaseHandler $sql The current database connection.
-    *
     * @author Christian Achatz
     * @version
     * Version 0.1, 12.03.2011<br />
     */
-   private function generateStorageEngineUpdate(AbstractDatabaseHandler $sql) {
+   private function generateStorageEngineUpdate() {
 
       foreach ($this->databaseMappingTables as $objectTable) {
 
          $selectEngine = 'SHOW CREATE TABLE `' . $objectTable . '`';
-         $resultEngine = $sql->executeTextStatement($selectEngine);
-         $dataEngine = $sql->fetchData($resultEngine);
+         $resultEngine = $this->dbDriver->executeTextStatement($selectEngine);
+         $dataEngine = $this->dbDriver->fetchData($resultEngine);
 
          preg_match('/\s*?ENGINE=([^\s]+)\s*?/', $dataEngine['Create Table'], $matches);
          $engine = $matches[1];
@@ -535,18 +528,16 @@ class GenericORMapperManagementTool extends BaseMapper {
     * @private
     *
     * Creates a object mapping out of the database tables.
-    *
-    * @param AbstractDatabaseHandler $sql The database connection to analyze.
     */
-   private function reEngineerMappings(AbstractDatabaseHandler $sql) {
+   private function reEngineerMappings() {
 
       foreach ($this->databaseMappingTables as $objectTable) {
 
          $selectCreate = 'SHOW COLUMNS FROM ' . $objectTable;
-         $resultCreate = $sql->executeTextStatement($selectCreate);
+         $resultCreate = $this->dbDriver->executeTextStatement($selectCreate);
 
          $fields = array();
-         while ($dataCreate = $sql->fetchData($resultCreate)) {
+         while ($dataCreate = $this->dbDriver->fetchData($resultCreate)) {
             $fields[] = $dataCreate;
          }
          $mainFields = $this->getRelevantFields($fields);
