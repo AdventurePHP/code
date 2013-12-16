@@ -250,6 +250,21 @@ class GenericORMapperManagementTool extends BaseMapper {
     */
    public function run($updateInPlace = true) {
 
+      // ID#104: clean up volatile data to allow multiple runs with deterministic results 
+      $this->reEngineeredMappingTable = array();
+      $this->databaseMappingTables = array();
+      $this->reEngineeredRelationTable = array();
+      $this->databaseRelationTables = array();
+      $this->newMappings = array();
+      $this->removedMappings = array();
+      $this->newMappingAttributes = array();
+      $this->removedMappingAttributes = array();
+      $this->alteredMappingAttributes = array();
+      $this->newRelations = array();
+      $this->removedRelations = array();
+      $this->alteredRelationAttributes = array();
+      $this->updateStatements = array();
+
       // Add mapping and relation configuration if passed along with the call.
       // To support setup with multiple configurations, please add each of the
       // configuration files prior to call this method. E.g.:
