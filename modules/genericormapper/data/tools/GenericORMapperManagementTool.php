@@ -135,6 +135,11 @@ class GenericORMapperManagementTool extends BaseMapper {
    private $alteredRelationAttributes = array();
 
    /**
+    * @var string[] Stores the changes index column fields for mapping and relation tables.
+    */
+   private $alteredIndexDataColumnTypeFields = array();
+
+   /**
     * @var string[] Stores the update statements.
     */
    private $updateStatements = array();
@@ -262,6 +267,7 @@ class GenericORMapperManagementTool extends BaseMapper {
       $this->removedRelations = array();
       $this->alteredRelationAttributes = array();
       $this->updateStatements = array();
+      $this->alteredIndexDataColumnTypeFields = array();
 
       // Add mapping and relation configuration if passed along with the call.
       // To support setup with multiple configurations, please add each of the
@@ -303,6 +309,12 @@ class GenericORMapperManagementTool extends BaseMapper {
 
       // generate relation update statements
       $this->generateRelationUpdateStatements();
+
+      // analyze existing index column data type
+      $this->analyzeIndexColumnDataTypeChanges();
+
+      // generate index data type update statements
+      $this->generateIndexColumnDataTypeStatements();
 
       // analyze potential changes in storage engines
       // NOTE: this option is commented out by now, since the mechanism
@@ -1025,6 +1037,72 @@ class GenericORMapperManagementTool extends BaseMapper {
 
       return implode(',' . PHP_EOL, $indices);
 
+   }
+
+   private function analyzeIndexColumnDataTypeChanges() {
+
+      $indexColumnDataType = $this->getIndexColumnDataType();
+      $normalizedIndexColumnDataType = strtolower($indexColumnDataType);
+
+      foreach ($this->databaseMappingTables as $objectTable) {
+
+         $selectCreate = 'SHOW COLUMNS FROM ' . $objectTable;
+         $resultCreate = $this->dbDriver->executeTextStatement($selectCreate);
+
+         $fields = array();
+         while ($dataCreate = $this->dbDriver->fetchData($resultCreate)) {
+            $fields[] = $dataCreate;
+         }
+
+         $primaryKey = $this->getPrimaryKeyName($fields);
+
+         foreach ($fields as $field) {
+            if ($field['Field'] === $primaryKey) {
+               // check for data type and note changes:
+               if (strtolower($field['Type']) !== $normalizedIndexColumnDataType) {
+                  $this->alteredIndexDataColumnTypeFields[] = array(
+                     'Table' => $objectTable,
+                     'Field' => $primaryKey,
+                     'ToDataType' => $indexColumnDataType
+                  );
+               }
+
+            }
+         }
+      }
+
+      foreach ($this->databaseRelationTables as $relationTable) {
+
+         $selectCreate = 'SHOW COLUMNS FROM ' . $relationTable;
+         $resultCreate = $this->dbDriver->executeTextStatement($selectCreate);
+
+         $fields = array();
+         while ($dataCreate = $this->dbDriver->fetchData($resultCreate)) {
+            $fields[] = $dataCreate;
+         }
+
+         foreach ($fields as $field) {
+
+            if (strpos($field['Field'], 'Source_') !== false || strpos($field['Field'], 'Target_') !== false) {
+               // check for data type and note changes:
+               if (strtolower($field['Type']) !== $normalizedIndexColumnDataType) {
+                  $this->alteredIndexDataColumnTypeFields[] = array(
+                     'Table' => $relationTable,
+                     'Field' => $field['Field'],
+                     'ToDataType' => $indexColumnDataType
+                  );
+               }
+            }
+
+         }
+      }
+
+   }
+
+   private function generateIndexColumnDataTypeStatements() {
+      foreach ($this->alteredIndexDataColumnTypeFields as $field) {
+         $this->updateStatements[] = 'ALTER TABLE `' . $field['Table'] . '` CHANGE COLUMN `' . $field['Field'] . '` `' . $field['Field'] . '` ' . $field['ToDataType'] . ';';
+      }
    }
 
 }
