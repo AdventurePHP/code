@@ -22,7 +22,6 @@ namespace APF\modules\comments\pres\documentcontroller;
  */
 use APF\modules\comments\biz\ArticleComment;
 use APF\modules\comments\biz\ArticleCommentManager;
-use APF\modules\comments\pres\documentcontroller\CommentBaseDocumentController;
 use APF\tools\link\Url;
 use APF\tools\string\AdvancedBBCodeParser;
 use APF\tools\link\LinkGenerator;
