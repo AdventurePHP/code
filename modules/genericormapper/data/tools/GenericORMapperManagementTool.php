@@ -1101,7 +1101,7 @@ class GenericORMapperManagementTool extends BaseMapper {
 
    private function generateIndexColumnDataTypeStatements() {
       foreach ($this->alteredIndexDataColumnTypeFields as $field) {
-         $this->updateStatements[] = 'ALTER TABLE `' . $field['Table'] . '` CHANGE COLUMN `' . $field['Field'] . '` `' . $field['Field'] . '` ' . $field['ToDataType'] . ';';
+         $this->updateStatements[] = 'ALTER TABLE `' . $field['Table'] . '` CHANGE COLUMN `' . $field['Field'] . '` `' . $field['Field'] . '` ' . $field['ToDataType'] . ' NOT NULL auto_increment;';
       }
    }
 
