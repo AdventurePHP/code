@@ -21,6 +21,7 @@ namespace APF\extensions\htmlheader\pres\taglib;
  * -->
  */
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\TagLib;
 use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\SimpleTitleNode;
 
@@ -29,18 +30,32 @@ use APF\extensions\htmlheader\biz\SimpleTitleNode;
  * @class HtmlHeaderAddTitleTag
  *
  * Taglib for adding a title to htmlheader.
- *
- * @example
+ * <p/>
+ * Example:
+ * <code>
  * <core:addtaglib class="APF\extensions\htmlheader\pres\taglib\HtmlHeaderAddTitleTag" prefix="htmlheader" name="addtitle" />
  * <htmlheader:addtitle [append="false"]>Testwebpage title</htmlheader:addtitle>
+ * <htmlheader:addtitle [append="false"]>
+ *    <addtitle:getstring namespace="" config="" entry="" />
+ * </htmlheader:addtitle>
+ * </code>
  * Set append to true, if you want to add the given tag-content at the end of
  * the existing title instead of overwriting it.
  *
- * @author Ralf Schubert
- * @version 0.1, 20.09.2009<br>
- * @version 0.2, 27.09.2009<br>
+ * @author Ralf Schubert, Christian Achatz
+ * @version 0.1, 20.09.2009<br />
+ * @version 0.2, 27.09.2009<br />
+ * @version 0.3, 20.12.2013 (Added support for *:getstring usage)<br />
  */
 class HtmlHeaderAddTitleTag extends Document {
+
+   public function __construct() {
+      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'addtitle', 'getstring');
+   }
+
+   public function onParseTime() {
+      $this->extractTagLibTags();
+   }
 
    public function transform() {
       /* @var $header HtmlHeaderManager */
