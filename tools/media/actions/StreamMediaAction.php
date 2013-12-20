@@ -52,12 +52,14 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
       $allowedExtensions = $this->getAllowedExtensions();
       if (isset($allowedExtensions[$extension])) {
 
-         $rootPath = RootClassLoader::getLoaderByVendor('APF')->getRootPath();
+         // ID#107: get specific vendor and map to root path instead of APF-only
+         $vendor = RootClassLoader::getVendor($namespace);
+         $rootPath = RootClassLoader::getLoaderByVendor($vendor)->getRootPath();
 
          // Re-map namespace since as of 2.0 it contains the vendor that
          // refers to the root path. Keeping the vendor would cause the
          // sub-path to map to the wrong folder.
-         $namespace = str_replace('APF\\', '', $namespace);
+         $namespace = str_replace($vendor . '\\', '', $namespace);
 
          $filePath = $rootPath . '/' . str_replace('\\', '/', $namespace) . '/' . $fileName;
          if (file_exists($filePath)) {
