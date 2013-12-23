@@ -88,6 +88,10 @@ echo "* Add missing use statements ..."
 $PHP_BINARY migration/migrate_singleton_calls.php
 echo "* Migrated Singleton/SessionSingleton calls ..."
 
+# migrate calls to CookieManager now named "Cookie"
+$PHP_BINARY migration/migrate_tools_cookie_calls.php
+echo "* Migrated CookieManager to Cookie class ..."
+
 # migrates config
 echo "* Migrated configuration files:"
 $PHP_BINARY migration/migrate_config_calls.php
