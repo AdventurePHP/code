@@ -144,13 +144,14 @@ final class XmlParser {
     * Version 0.7, 04.11.2008 (Fixed issue, that a combination of TAB and SPACE characters leads to wrong attributes parsing)<br />
     * Version 0.8, 05.11.2008 (Removed the TAB support due to performance and fault tolerance problems)<br />
     * Version 0.9, 26.09.2012 (Introduced additional arguments for prefix and name to gain performance)<br />
+    * Version 1.0, 23.12.2013 (ID#112: fixed parser issue with nested tags of the same tag name)<br />
     */
    public static function getTagAttributes($prefix, $name, $tagString) {
 
       // search for taglib to attributes string delimiter
       $tagAttributeDel = strpos($tagString, ' ');
 
-      // search for the closing sign
+      // search for the first appearance of the closing sign after the attribute string
       $posTagClosingSign = strpos($tagString, '>');
 
       // In case, the separator between tag and attribute is not found, or in case the tag
@@ -160,63 +161,32 @@ final class XmlParser {
          $tagAttributeDel = strpos($tagString, '>');
       }
 
-      // search for the first appearance of the closing sign after the attribute string
-      $posEndAttrib = strpos($tagString, '>');
-
       // extract the rest of the tag string.
-      $attributesString = substr($tagString, $tagAttributeDel + 1, $posEndAttrib - $tagAttributeDel);
+      $attributesString = substr($tagString, $tagAttributeDel + 1, $posTagClosingSign - $tagAttributeDel);
 
       // parse the tag's attributes
       $tagAttributes = XmlParser::getAttributesFromString($attributesString);
 
       // Check, whether the tag is self-closing. If not, read the content.
-      if (substr($tagString, $posEndAttrib - 1, 1) == '/') {
+      if (substr($tagString, $posTagClosingSign - 1, 1) == '/') {
          $content = '';
       } else {
-         // check, if explicitly-closing tag exists
-         if (strpos($tagString, '</' . $prefix . ':' . $name . '>') === false) {
+         // search for the outer-most explicit closing tag to support nested tag hierarchies
+         $tagEndPos = strrpos($tagString, '</' . $prefix . ':' . $name . '>');
+         if ($tagEndPos === false) {
             throw new ParserException('[XmlParser::getTagAttributes()] No closing tag found for '
                   . 'tag "<' . $prefix . ':' . $name . ' />"! Tag string: "' . $tagString . '".',
                E_USER_ERROR);
-         } else {
-
-            $found = true;
-            $offset = 0;
-            $posEndContent = 0;
-            $count = 0;
-            $maxCount = 10;
-            $endTag = '</' . $prefix . ':' . $name . '>';
-
-            while ($found == true) {
-
-               // save old value
-               $posEndContent = $offset;
-
-               // re-assign the position of the tag end limiter
-               $offset = strpos($tagString, $endTag, $offset + 1);
-
-               // in case no further position is found -> end at this point
-               if ($offset === false) {
-                  $found = false;
-               }
-
-               // in case more than max positions are found -> end at this point for security reasons
-               if ($count > $maxCount) {
-                  $found = false;
-               }
-
-               $count++;
-            }
-
-            // read the content of the tag
-            $content = substr($tagString, $posEndAttrib + 1, ($posEndContent - $posEndAttrib) - 1);
          }
+
+         // read the content of the tag
+         $content = substr($tagString, $posTagClosingSign + 1, ($tagEndPos - $posTagClosingSign) - 1);
       }
 
-      $attributes = array();
-      $attributes['attributes'] = $tagAttributes;
-      $attributes['content'] = $content;
-      return $attributes;
+      return array(
+         'attributes' => $tagAttributes,
+         'content' => $content
+      );
    }
 
    /**
