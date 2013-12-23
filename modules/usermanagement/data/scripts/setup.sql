@@ -80,6 +80,14 @@ CREATE TABLE IF NOT EXISTS `ent_appproxytype` (
   UNIQUE KEY `AppObjectNameUNIQUE` (`AppObjectName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `ent_authtoken` (
+  `AuthTokenID` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `Token` varchar(60) NOT NULL DEFAULT '',
+  `CreationTimestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModificationTimestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`AuthTokenID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `cmp_application2group` (
   `Source_ApplicationID` INT(5) UNSIGNED NOT NULL default '0',
   `Target_GroupID` INT(5) UNSIGNED NOT NULL default '0',
@@ -170,5 +178,12 @@ CREATE TABLE IF NOT EXISTS `ass_appproxy2appproxytype` (
   KEY `JOIN` (`Source_AppProxyID`, `Target_AppProxyTypeID`),
   KEY `REVERSEJOIN` (`Target_AppProxyTypeID`, `Source_AppProxyID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `ass_user2authtoken` (
+  `Source_UserID` int(5) unsigned NOT NULL DEFAULT '0',
+  `Target_AuthTokenID` int(5) unsigned NOT NULL DEFAULT '0',
+  KEY `JOIN` (`Source_UserID`,`Target_AuthTokenID`),
+  KEY `REVERSEJOIN` (`Target_AuthTokenID`,`Source_UserID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `ent_application` (`ApplicationID`, `DisplayName`) VALUES (1, 'Umgt');
