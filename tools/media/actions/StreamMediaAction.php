@@ -50,7 +50,7 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
 
       // Bug 782: check for allowed extension to avoid access to configuration files.
       $allowedExtensions = $this->getAllowedExtensions();
-      if (isset($allowedExtensions[$extension])) {
+      if ($this->isAllowedExtension($allowedExtensions, $extension)) {
 
          // ID#107: get specific vendor and map to root path instead of APF-only
          $vendor = RootClassLoader::getVendor($namespace);
@@ -65,7 +65,7 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
          if (file_exists($filePath)) {
 
             // map extension to known mime type
-            $contentType = $allowedExtensions[$extension];
+            $contentType = $this->getMimeType($allowedExtensions, $extension);
 
             // send desired header
             header('Content-Type: ' . $contentType);
@@ -87,6 +87,26 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
       }
 
       throw new \Exception('You are not allowed to request "' . $fileName . '" under sub-path "' . $namespace . '"!');
+   }
+
+   /**
+    * @param array $extensions The list of allowed extensions.
+    * @param string $extension The extension to check.
+    * @return bool True in case the given extension is allowed, false otherwise.
+    */
+   private function isAllowedExtension(array $extensions, $extension) {
+      $extension = strtolower($extension);
+      return isset($extensions[$extension]);
+   }
+
+   /**
+    * @param array $extensions The list of allowed extensions.
+    * @param string $extension The extension to check
+    * @return string Desired mime type,
+    */
+   private function getMimeType(array $extensions, $extension) {
+      $extension = strtolower($extension);
+      return $extensions[$extension];
    }
 
    /**
@@ -214,7 +234,8 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
 
       $extensions = array();
       foreach ($section->getValueNames() as $name) {
-         $extensions[$name] = $section->getValue($name);
+         // ID#108: map extensions to lower case to allow case insensitive checks
+         $extensions[strtolower($name)] = $section->getValue($name);
       }
 
       return $extensions;
