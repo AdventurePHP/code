@@ -23,8 +23,8 @@ namespace APF\modules\comments\biz;
 use APF\core\pagecontroller\APFObject;
 use APF\modules\comments\data\ArticleCommentMapper;
 use APF\modules\pager\biz\PagerManager;
-use APF\tools\link\LinkGenerator;
 use APF\tools\http\HeaderManager;
+use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
@@ -124,8 +124,12 @@ class ArticleCommentManager extends APFObject {
       $articleComment->setCategoryKey($this->categoryKey);
       $M->saveArticleComment($articleComment);
 
-      $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array('coview' => 'listing')));
-      HeaderManager::forward($link . '#comments');
+      $link = LinkGenerator::generateUrl(
+         Url::fromCurrent()
+               ->mergeQuery(array('coview' => 'listing'))
+               ->setAnchor('comments')
+      );
+      HeaderManager::forward($link);
    }
 
    /**
