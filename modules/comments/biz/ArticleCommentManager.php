@@ -116,7 +116,7 @@ class ArticleCommentManager extends APFObject {
     * Version 0.2, 28.12.2007<br />
     * Version 0.3, 02.02.2008<br />
     */
-   public function saveEntry($articleComment) {
+   public function saveEntry(ArticleComment $articleComment) {
 
       /* @var $M ArticleCommentMapper */
       $M = & $this->getServiceObject('APF\modules\comments\data\ArticleCommentMapper');
