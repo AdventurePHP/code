@@ -1,5 +1,5 @@
 <?php
-namespace APF\modules\comments\pres\documentcontroller;
+namespace APF\modules\comments\pres\controller;
 
 /**
  * <!--
@@ -22,12 +22,11 @@ namespace APF\modules\comments\pres\documentcontroller;
  */
 use APF\modules\comments\biz\ArticleComment;
 use APF\modules\comments\biz\ArticleCommentManager;
-use APF\modules\comments\pres\documentcontroller\CommentBaseDocumentController;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\modules\comments\pres\documentcontroller
+ * @package APF\modules\comments\pres\controller
  * @class CommentCreateEntryController
  *
  * Implements the document controller for the 'form.html' template.

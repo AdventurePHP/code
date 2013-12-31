@@ -1,5 +1,5 @@
 <?php
-namespace APF\modules\comments\pres\documentcontroller;
+namespace APF\modules\comments\pres\controller;
 
 /**
  * <!--
@@ -27,7 +27,7 @@ use APF\tools\string\AdvancedBBCodeParser;
 use APF\tools\link\LinkGenerator;
 
 /**
- * @package APF\modules\comments\pres\documentcontroller
+ * @package APF\modules\comments\pres\controller
  * @class CommentListingController
  *
  * Implements the document controller for the 'listing.html' template.

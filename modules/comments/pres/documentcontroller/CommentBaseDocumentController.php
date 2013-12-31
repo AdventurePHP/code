@@ -1,5 +1,5 @@
 <?php
-namespace APF\modules\comments\pres\documentcontroller;
+namespace APF\modules\comments\pres\controller;
 
 /**
  * <!--
@@ -23,7 +23,7 @@ namespace APF\modules\comments\pres\documentcontroller;
 use APF\core\pagecontroller\BaseDocumentController;
 
 /**
- * @package APF\modules\comments\pres\documentcontroller
+ * @package APF\modules\comments\pres\controller
  * @class CommentBaseDocumentController
  *
  * Provides basic functionality for the document controllers of the comment module.
