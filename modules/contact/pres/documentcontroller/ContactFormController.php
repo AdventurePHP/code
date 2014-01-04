@@ -22,11 +22,8 @@ namespace APF\modules\contact\pres\documentcontroller;
  */
 use APF\core\pagecontroller\BaseDocumentController;
 use APF\modules\contact\biz\ContactManager;
-use APF\modules\contact\biz\ContactFormRecipient;
 use APF\tools\form\taglib\SelectBoxTag;
-use APF\tools\link\LinkGenerator;
 use APF\modules\contact\biz\ContactFormData;
-use APF\tools\link\Url;
 
 /**
  * @package APF\modules\contact\pres\documentcontroller
@@ -39,7 +36,8 @@ use APF\tools\link\Url;
  * Version 0.1, 03.06.2006<br />
  * Version 0.2, 04.06.2006<br />
  * Version 0.3, 23.02.2007<br />
- * Version 0.4, 12.09.2009 (Refactoring due to changes of the form taglibs)<br />
+ * Version 0.4, 12.09.2009 (Refactoring due to changes of the form tags)<br />
+ * Version 0.5, 04.01.2014 (Button label now applied by <button:getstring /> tag)<br />
  */
 class ContactFormController extends BaseDocumentController {
 
@@ -54,23 +52,18 @@ class ContactFormController extends BaseDocumentController {
     * Version 0.2, 04.06.2006<br />
     * Version 0.3, 29.03.2007<br />
     * Version 0.4, 27.05.2007<br />
-    * Version 0.5, 12.09.2009 (Refactoring due to changes of the form taglibs)<br />
+    * Version 0.5, 12.09.2009 (Refactoring due to changes of the form tags)<br />
     */
    public function transformContent() {
 
       $form = & $this->getForm('contact');
 
-      // generate a generic action url, to be included in various pages
-      $action = LinkGenerator::generateUrl(Url::fromCurrent());
-      $form->setAction($action);
-
       // fill recipient list
       /* @var $recipients SelectBoxTag */
-      $recipients = & $form->getFormElementByName('Empfaenger');
+      $recipients = & $form->getFormElementByName('recipient');
 
       /* @var $cM ContactManager */
       $cM = & $this->getServiceObject('APF\modules\contact\biz\ContactManager');
-      /* @var $recipientList ContactFormRecipient[] */
       $recipientList = $cM->loadRecipients();
 
       for ($i = 0; $i < count($recipientList); $i++) {
@@ -81,22 +74,20 @@ class ContactFormController extends BaseDocumentController {
 
          $formData = new ContactFormData();
 
-         /* @var $recipient SelectBoxTag */
-         $recipient = & $form->getFormElementByName('Empfaenger');
-         $option = & $recipient->getSelectedOption();
-         $recipientId = $option->getAttribute('value');
+         $option = & $recipients->getSelectedOption();
+         $recipientId = $option->getValue();
          $formData->setRecipientId($recipientId);
 
-         $name = & $form->getFormElementByName('AbsenderName');
+         $name = & $form->getFormElementByName('sender-name');
          $formData->setSenderName($name->getAttribute('value'));
 
-         $email = & $form->getFormElementByName('AbsenderAdresse');
+         $email = & $form->getFormElementByName('sender-address');
          $formData->setSenderEmail($email->getAttribute('value'));
 
-         $subject = & $form->getFormElementByName('Betreff');
+         $subject = & $form->getFormElementByName('subject');
          $formData->setSubject($subject->getAttribute('value'));
 
-         $text = & $form->getFormElementByName('Text');
+         $text = & $form->getFormElementByName('content');
          $formData->setMessage($text->getContent());
 
          /* @var $cM ContactManager */
@@ -104,31 +95,7 @@ class ContactFormController extends BaseDocumentController {
          $cM->sendContactForm($formData);
 
       } else {
-
-         // label the button
-         $config = $this->getConfiguration('APF\modules\contact', 'language');
-         $value = $config->getSection($this->language)->getValue('form.button');
-         $button = & $form->getFormElementByName('sendFormContact');
-         $button->setAttribute('value', $value);
-
-         // fill listeners with the language dependent values
-         $senderError = & $form->getFormElementByID('sender-error');
-         $senderError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.name.error'));
-
-         $addrError = & $form->getFormElementByID('addr-error');
-         $addrError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.email.error'));
-
-         $subjectError = & $form->getFormElementByID('subject-error');
-         $subjectError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.subject.error'));
-
-         $textError = & $form->getFormElementByID('text-error');
-         $textError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.text.error'));
-
-         $captchaError = & $form->getFormElementByID('captcha-error');
-         $captchaError->setPlaceHolder('content', $config->getSection($this->language)->getValue('form.captcha.error'));
-
          $form->transformOnPlace();
-
       }
 
    }

@@ -24,8 +24,6 @@ use APF\core\configuration\ConfigurationException;
 use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\IncludeException;
-use APF\modules\contact\biz\ContactFormData;
-use APF\modules\contact\biz\ContactFormRecipient;
 use APF\modules\contact\data\ContactMapper;
 use APF\tools\link\LinkGenerator;
 use APF\tools\http\HeaderManager;

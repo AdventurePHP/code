@@ -10,20 +10,20 @@
             <div class="error-container">
                <ul>
          </form:error>
-         <form:listener control="AbsenderName" id="sender-error">
-            <li><listener:placeholder name="content" /></li>
+         <form:listener control="sender-name" id="sender-error">
+            <li><listener:getstring namespace="APF\modules\contact" config="language" entry="form.name.error" /></li>
          </form:listener>
-         <form:listener control="AbsenderAdresse" id="addr-error">
-            <li><listener:placeholder name="content" /></li>
+         <form:listener control="sender-address" id="addr-error">
+            <li><listener:getstring namespace="APF\modules\contact" config="language" entry="form.email.error" /></li>
          </form:listener>
-         <form:listener control="Betreff" id="subject-error">
-            <li><listener:placeholder name="content" /></li>
+         <form:listener control="subject" id="subject-error">
+            <li><listener:getstring namespace="APF\modules\contact" config="language" entry="form.subject.error" /></li>
          </form:listener>
-         <form:listener control="Text" id="text-error">
-            <li><listener:placeholder name="content" /></li>
+         <form:listener control="content" id="text-error">
+            <li><listener:getstring namespace="APF\modules\contact" config="language" entry="form.text.error" /></li>
          </form:listener>
-         <form:listener control="captcha" id="captcha-error">
-            <li><listener:placeholder name="content" /></li>
+         <form:listener control="captcha-control" id="captcha-error">
+            <li><listener:getstring namespace="APF\modules\contact" config="language" entry="form.captcha.error" /></li>
          </form:listener>
          <form:error id="bottomerror">
                </ul>
@@ -32,44 +32,45 @@
          <form:addvalidator
             class="APF\tools\form\validator\TextLengthValidator"
             button="sendFormContact"
-            control="AbsenderName|Betreff|Text"
+            control="sender-name|subject|content"
          />
          <form:addvalidator
             class="APF\tools\form\validator\EMailValidator"
             button="sendFormContact"
-            control="AbsenderAdresse"
+            control="sender-address"
          />
          <form:addfilter
             class="APF\tools\form\filter\EMailFilter"
             button="sendFormContact"
-            control="AbsenderAdresse"
+            control="sender-address"
          />
          <label for="contact-form-recipient">
             <form:getstring namespace="APF\modules\contact" config="language" entry="form.person" />
          </label>
-         <form:select id="contact-form-recipient" name="Empfaenger" />
+         <form:select id="contact-form-recipient" name="recipient" />
          <label for="contact-form-sendername">
             <form:getstring namespace="APF\modules\contact" config="language" entry="form.name" />
          </label>
-         <form:text id="contact-form-sendername" name="AbsenderName" />
+         <form:text id="contact-form-sendername" name="sender-name" />
          <label for="contact-form-recipient-email">
             <form:getstring namespace="APF\modules\contact" config="language" entry="form.email" />
          </label>
-         <form:text id="contact-form-recipient-email" name="AbsenderAdresse" />
+         <form:text id="contact-form-recipient-email" name="sender-address" />
          <label for="contact-form-subject">
             <form:getstring namespace="APF\modules\contact" config="language" entry="form.subject" />
          </label>
-         <form:text id="contact-form-subject" name="Betreff" />
+         <form:text id="contact-form-subject" name="subject" />
          <label for="contact-form-textarea">
             <form:getstring namespace="APF\modules\contact" config="language" entry="form.comment" />
          </label>
-         <form:area id="contact-form-textarea" name="Text" cols="50" rows="6"/>
+         <form:area id="contact-form-textarea" name="content" cols="50" rows="6"/>
          <div class="fullsizebox captchabox">
             <label for="contact-form-captcha">
                <form:getstring namespace="APF\modules\contact" config="language" entry="form.captcha" />
             </label>
             <form:addtaglib class="APF\modules\captcha\pres\taglib\SimpleCaptchaTag" prefix="form" name="captcha" />
             <form:captcha
+               id="contact-form-captcha"
                name="captcha-control"
                clearonerror="true"
                text_id="contact-form-captcha"
@@ -82,7 +83,9 @@
             />
          </div>
          <div class="fullsizebox buttonbox">
-            <form:button name="sendFormContact" class="button"/>
+            <form:button name="sendFormContact" class="button">
+               <button:getstring namespace="APF\modules\contact" config="language" entry="form.button" />
+            </form:button>
          </div>
       </div>
    </html:form>
