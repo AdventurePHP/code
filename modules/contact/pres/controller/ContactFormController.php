@@ -1,5 +1,5 @@
 <?php
-namespace APF\modules\contact\pres\documentcontroller;
+namespace APF\modules\contact\pres\controller;
 
 /**
  * <!--
@@ -21,12 +21,12 @@ namespace APF\modules\contact\pres\documentcontroller;
  * -->
  */
 use APF\core\pagecontroller\BaseDocumentController;
+use APF\modules\contact\biz\ContactFormData;
 use APF\modules\contact\biz\ContactManager;
 use APF\tools\form\taglib\SelectBoxTag;
-use APF\modules\contact\biz\ContactFormData;
 
 /**
- * @package APF\modules\contact\pres\documentcontroller
+ * @package APF\modules\contact\pres\controller
  * @class ContactFormController
  *
  * Document controller for the form view of the contact module.
