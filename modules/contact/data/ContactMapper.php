@@ -89,7 +89,7 @@ class ContactMapper extends APFObject {
     * Version 0.2, 04.06.2006<br />
     * Version 0.3, 04.03.2007<br />
     */
-   public function loadRecipientPerId($id) {
+   public function loadRecipientById($id) {
 
       /* @var $recipients ContactFormRecipient[] */
       $recipients = $this->loadRecipients();

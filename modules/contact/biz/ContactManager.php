@@ -61,11 +61,11 @@ class ContactManager extends APFObject {
    public function sendContactForm(ContactFormData $formData) {
 
       // set up the mail sender
-      $mail = & $this->getAndInitServiceObject('APF\tools\mail\mailSender', 'ContactForm');
       /* @var $mail mailSender */
+      $mail = & $this->getAndInitServiceObject('APF\tools\mail\mailSender', 'ContactForm');
 
-      $recipient = $this->getMapper()->loadRecipientPerId($formData->getRecipientId());
       /* @var $recipient ContactFormRecipient */
+      $recipient = $this->getMapper()->loadRecipientById($formData->getRecipientId());
 
       $mail->setRecipient($recipient->getEmailAddress(), $recipient->getName());
       $mail->setContent(
