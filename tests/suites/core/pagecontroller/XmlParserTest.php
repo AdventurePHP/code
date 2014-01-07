@@ -21,6 +21,7 @@ namespace APF\tests\suites\core\pagecontroller;
  * -->
  */
 use APF\core\pagecontroller\XmlParser;
+use APF\core\pagecontroller\ParserException;
 
 /**
  * @package APF\tests\suites\core\pagecontroller
@@ -152,13 +153,44 @@ class XmlParserTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testWrongMethodCall() {
-      $this->setExpectedException('APF\core\pagecontroller\ParserException');
-      XmlParser::getTagAttributes('foo', 'bar', '');
 
-      XmlParser::getTagAttributes('foo', '', '<foo:bar bar="baz" ');
-      XmlParser::getTagAttributes('', 'bar', '<foo:bar bar="baz" ');
-      XmlParser::getTagAttributes('', 'bar', '<foo:bar bar="baz"></foo:bar>');
-      XmlParser::getTagAttributes('foo', '', '<foo:bar bar="baz"></foo:bar>');
+      $message = 'Test returned without a ParserException';
+
+      try {
+         XmlParser::getTagAttributes('foo', 'bar', '');
+         $this->fail($message);
+      } catch (ParserException $e) {
+         $this->assertTrue(true);
+      }
+
+      try {
+         XmlParser::getTagAttributes('foo', '', '<foo:bar bar="baz" ');
+         $this->fail($message);
+      } catch (ParserException $e) {
+         $this->assertTrue(true);
+      }
+
+      try {
+         XmlParser::getTagAttributes('', 'bar', '<foo:bar bar="baz" ');
+         $this->fail($message);
+      } catch (ParserException $e) {
+         $this->assertTrue(true);
+      }
+
+      try {
+         XmlParser::getTagAttributes('', 'bar', '<foo:bar bar="baz"></foo:bar>');
+         $this->fail($message);
+      } catch (ParserException $e) {
+         $this->assertTrue(true);
+      }
+
+      try {
+         XmlParser::getTagAttributes('foo', '', '<foo:bar bar="baz"></foo:bar>');
+         $this->fail($message);
+      } catch (ParserException $e) {
+         $this->assertTrue(true);
+      }
+
    }
 
 }
