@@ -22,8 +22,6 @@ namespace APF\tools\form\taglib;
  */
 use APF\core\pagecontroller\TagLib;
 use APF\core\pagecontroller\XmlParser;
-use APF\tools\form\taglib\SelectBoxGroupTag;
-use APF\tools\form\taglib\SelectBoxOptionTag;
 use APF\tools\form\validator\AbstractFormValidator;
 
 /**
@@ -48,7 +46,7 @@ class SelectBoxTag extends AbstractFormControl {
    /**
     * @public
     *
-    * Initializes the child taglibs.
+    * Initializes the allowed child tags.
     *
     * @author Christian Schäfer
     * @version
@@ -85,7 +83,7 @@ class SelectBoxTag extends AbstractFormControl {
    /**
     * @public
     *
-    * Adds an option to the select field
+    * Adds an option to the select field.
     *
     * @param string $displayName The display text of the option.
     * @param string $value The option's value.
@@ -97,20 +95,34 @@ class SelectBoxTag extends AbstractFormControl {
     * Version 0.2, 07.06.2008 (objectId is now set to the added option)<br />
     */
    public function addOption($displayName, $value, $preSelected = false) {
+      $tag = new SelectBoxOptionTag();
+      $tag->setContent($displayName);
+      $tag->setAttribute('value', $value);
+      if ($preSelected == true) {
+         $tag->setAttribute('selected', 'selected');
+      }
+      $this->addOptionTag($tag);
+   }
 
+   /**
+    * @public
+    *
+    * Adds an option to the select field (OO style).
+    *
+    * @param SelectBoxOptionTag $tag The option to add to the select box.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 07.01.2014<br />
+    */
+   public function addOptionTag(SelectBoxOptionTag $tag) {
       // mark as dynamic field
       $this->isDynamicField = true;
 
       $objectId = XmlParser::generateUniqID();
-      $this->children[$objectId] = new SelectBoxOptionTag();
-
+      $this->children[$objectId] = $tag;
       $this->children[$objectId]->setObjectId($objectId);
-      $this->children[$objectId]->setContent($displayName);
-      $this->children[$objectId]->setAttribute('value', $value);
 
-      if ($preSelected == true) {
-         $this->children[$objectId]->setAttribute('selected', 'selected');
-      }
       $this->children[$objectId]->setLanguage($this->language);
       $this->children[$objectId]->setContext($this->context);
       $this->children[$objectId]->onParseTime();
@@ -133,9 +145,9 @@ class SelectBoxTag extends AbstractFormControl {
     * @param string $value The option's value.
     * @param boolean $preSelected True in case, the option should be selected, false otherwise.
     *
-    * @author Christian Achatz
+    * @author Christian Achatz, Ralf Schubert
     * @version
-    * Version 0.1, 15.02.2010<<br />
+    * Version 0.1, 15.02.2010<br />
     */
    public function addGroupOption($groupLabel, $displayName, $value, $preSelected = false) {
 
@@ -143,6 +155,47 @@ class SelectBoxTag extends AbstractFormControl {
       $this->isDynamicField = true;
 
       // retrieve or lazily create group
+      $group = & $this->getOrCreateGroup($groupLabel);
+
+      // add option to group
+      $group->addOption($displayName, $value, $preSelected);
+   }
+
+   /**
+    * @public
+    *
+    * Adds an option to a group specified by the applied label (OO-style).
+    *
+    * @param string $groupLabel The name of the group.
+    * @param SelectBoxOptionTag $option The option to add.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 07.01.2014<br />
+    */
+   public function addGroupOptionTag($groupLabel, SelectBoxOptionTag $option) {
+      // mark as dynamic field
+      $this->isDynamicField = true;
+
+      // retrieve or lazily create group
+      $group = & $this->getOrCreateGroup($groupLabel);
+
+      $group->addOptionTag($option);
+   }
+
+   /**
+    * @public
+    *
+    * Returns - or lazily creates - a desired option group.
+    *
+    * @param string $groupLabel The name of the group.
+    * @return SelectBoxGroupTag The option group.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 07.01.2014<br />
+    */
+   public function &getOrCreateGroup($groupLabel) {
       $group = & $this->getGroup($groupLabel);
       if ($group === null) {
 
@@ -165,9 +218,7 @@ class SelectBoxTag extends AbstractFormControl {
          // make group available for the subsequent call
          $group = & $this->children[$objectId];
       }
-
-      // add option to group
-      $group->addOption($displayName, $value, $preSelected);
+      return $group;
    }
 
    /**
@@ -181,7 +232,7 @@ class SelectBoxTag extends AbstractFormControl {
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 15.02.2010<<br />
+    * Version 0.1, 15.02.2010<br />
     */
    public function &getGroup($label) {
 

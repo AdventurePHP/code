@@ -58,7 +58,7 @@ class SelectBoxGroupTag extends AbstractFormControl {
    /**
     * @public
     *
-    * Adds an option to the select field
+    * Adds an option to the select field.
     *
     * @param string $displayName The display text of the option.
     * @param string $value The option's value.
@@ -70,16 +70,34 @@ class SelectBoxGroupTag extends AbstractFormControl {
     */
    public function addOption($displayName, $value, $preSelected = false) {
 
-      $objectId = XmlParser::generateUniqID();
-      $this->children[$objectId] = new SelectBoxOptionTag();
-
-      $this->children[$objectId]->setObjectId($objectId);
-      $this->children[$objectId]->setContent($displayName);
-      $this->children[$objectId]->setAttribute('value', $value);
+      $option = new SelectBoxOptionTag();
+      $option->setContent($displayName);
+      $option->setAttribute('value', $value);
 
       if ($preSelected == true) {
-         $this->children[$objectId]->setAttribute('selected', 'selected');
+         $option->setAttribute('selected', 'selected');
       }
+
+      $this->addOptionTag($option);
+   }
+
+   /**
+    * @public
+    *
+    * Adds an option to the select field (OO style).
+    *
+    * @param SelectBoxOptionTag $option The option to add.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 07.01.2014<br />
+    */
+   public function addOptionTag(SelectBoxOptionTag $option) {
+
+      $objectId = XmlParser::generateUniqID();
+      $this->children[$objectId] = $option;
+
+      $this->children[$objectId]->setObjectId($objectId);
       $this->children[$objectId]->setLanguage($this->language);
       $this->children[$objectId]->setContext($this->context);
       $this->children[$objectId]->onParseTime();
@@ -102,7 +120,7 @@ class SelectBoxGroupTag extends AbstractFormControl {
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 15.02.2010<<br />
+    * Version 0.1, 15.02.2010<br />
     */
    public function setOption2Selected($displayNameOrValue) {
       foreach ($this->children as $objectId => $DUMMY) {
