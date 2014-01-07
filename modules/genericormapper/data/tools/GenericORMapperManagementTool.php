@@ -135,9 +135,14 @@ class GenericORMapperManagementTool extends BaseMapper {
    private $alteredRelationAttributes = array();
 
    /**
-    * @var string[] Stores the changes index column fields for mapping and relation tables.
+    * @var string[] Stores the changes index column fields for mapping tables.
     */
-   private $alteredIndexDataColumnTypeFields = array();
+   private $alteredIndexDataColumnTypeObjectFields = array();
+
+   /**
+    * @var string[] Stores the changes index column fields for relation tables.
+    */
+   private $alteredIndexDataColumnTypeRelationFields = array();
 
    /**
     * @var string[] Stores the update statements.
@@ -267,7 +272,8 @@ class GenericORMapperManagementTool extends BaseMapper {
       $this->removedRelations = array();
       $this->alteredRelationAttributes = array();
       $this->updateStatements = array();
-      $this->alteredIndexDataColumnTypeFields = array();
+      $this->alteredIndexDataColumnTypeObjectFields = array();
+      $this->alteredIndexDataColumnTypeRelationFields = array();
 
       // Add mapping and relation configuration if passed along with the call.
       // To support setup with multiple configurations, please add each of the
@@ -1060,7 +1066,7 @@ class GenericORMapperManagementTool extends BaseMapper {
             if ($field['Field'] === $primaryKey) {
                // check for data type and note changes:
                if (strtolower($field['Type']) !== $normalizedIndexColumnDataType) {
-                  $this->alteredIndexDataColumnTypeFields[] = array(
+                  $this->alteredIndexDataColumnTypeObjectFields[] = array(
                      'Table' => $objectTable,
                      'Field' => $primaryKey,
                      'ToDataType' => $indexColumnDataType
@@ -1086,7 +1092,7 @@ class GenericORMapperManagementTool extends BaseMapper {
             if (strpos($field['Field'], 'Source_') !== false || strpos($field['Field'], 'Target_') !== false) {
                // check for data type and note changes:
                if (strtolower($field['Type']) !== $normalizedIndexColumnDataType) {
-                  $this->alteredIndexDataColumnTypeFields[] = array(
+                  $this->alteredIndexDataColumnTypeRelationFields[] = array(
                      'Table' => $relationTable,
                      'Field' => $field['Field'],
                      'ToDataType' => $indexColumnDataType
@@ -1100,8 +1106,12 @@ class GenericORMapperManagementTool extends BaseMapper {
    }
 
    private function generateIndexColumnDataTypeStatements() {
-      foreach ($this->alteredIndexDataColumnTypeFields as $field) {
+      foreach ($this->alteredIndexDataColumnTypeObjectFields as $field) {
          $this->updateStatements[] = 'ALTER TABLE `' . $field['Table'] . '` CHANGE COLUMN `' . $field['Field'] . '` `' . $field['Field'] . '` ' . $field['ToDataType'] . ' NOT NULL auto_increment;';
+      }
+      // generate relation table statements tailored to relation data model (w/o auto_increment)
+      foreach ($this->alteredIndexDataColumnTypeRelationFields as $field) {
+         $this->updateStatements[] = 'ALTER TABLE `' . $field['Table'] . '` CHANGE COLUMN `' . $field['Field'] . '` `' . $field['Field'] . '` ' . $field['ToDataType'] . ' NOT NULL default \'0\';';
       }
    }
 
