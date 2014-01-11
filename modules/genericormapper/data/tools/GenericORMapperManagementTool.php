@@ -1107,12 +1107,29 @@ class GenericORMapperManagementTool extends BaseMapper {
 
    private function generateIndexColumnDataTypeStatements() {
       foreach ($this->alteredIndexDataColumnTypeObjectFields as $field) {
-         $this->updateStatements[] = 'ALTER TABLE `' . $field['Table'] . '` CHANGE COLUMN `' . $field['Field'] . '` `' . $field['Field'] . '` ' . $field['ToDataType'] . ' NOT NULL auto_increment;';
+         if (!$this->isTableAboutToBeDeleted($field['Table'])) {
+            $this->updateStatements[] = 'ALTER TABLE `' . $field['Table'] . '` CHANGE COLUMN `' . $field['Field'] . '` `' . $field['Field'] . '` ' . $field['ToDataType'] . ' NOT NULL auto_increment;';
+         }
       }
       // generate relation table statements tailored to relation data model (w/o auto_increment)
       foreach ($this->alteredIndexDataColumnTypeRelationFields as $field) {
-         $this->updateStatements[] = 'ALTER TABLE `' . $field['Table'] . '` CHANGE COLUMN `' . $field['Field'] . '` `' . $field['Field'] . '` ' . $field['ToDataType'] . ' NOT NULL default \'0\';';
+         if (!$this->isTableAboutToBeDeleted($field['Table'])) {
+            $this->updateStatements[] = 'ALTER TABLE `' . $field['Table'] . '` CHANGE COLUMN `' . $field['Field'] . '` `' . $field['Field'] . '` ' . $field['ToDataType'] . ' NOT NULL default \'0\';';
+         }
       }
+   }
+
+   /**
+    * @param string $table The name of the table to check
+    * @return bool <em>True</em>, in case the table is about to be deleted, <em>false</em> otherwise.
+    */
+   private function isTableAboutToBeDeleted($table) {
+      foreach ($this->updateStatements as $statement) {
+         if (strpos($statement, 'DROP TABLE ' . $table) !== false) {
+            return true;
+         }
+      }
+      return false;
    }
 
 }
