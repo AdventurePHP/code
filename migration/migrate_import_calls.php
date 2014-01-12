@@ -3,7 +3,7 @@ include(dirname(__FILE__) . '/migrate_base.php');
 
 $files = filterApfDirectories(find('.', '*.php'));
 
-$search = '#import\(\'([A-Za-z0-9:\-]+)\', ?\'([A-Za-z0-9_]+)\'\);#m';
+$search = '#import\(([ |\n|\r\n]*)\'([A-Za-z0-9:\-]+)\',([ |\n|\r\n]*)\'([A-Za-z0-9_]+)\'([ |\n|\r\n]*)\);#';
 
 foreach ($files as $file) {
    $content = file_get_contents($file);
@@ -18,7 +18,7 @@ foreach ($files as $file) {
    }
 
    $content = preg_replace_callback($search, function ($matches) {
-      return 'use APF\\' . str_replace('::', '\\', $matches[1]) . '\\' . $matches[2] . ';';
+      return 'use APF\\' . str_replace('::', '\\', $matches[2]) . '\\' . $matches[4] . ';';
    }, $content);
 
    file_put_contents($file, $content);
