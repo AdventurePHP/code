@@ -5,14 +5,14 @@ $files = filterApfDirectories(find('.', '*.html'));
 
 $searchAddTaglib = '#<([A-Za-z0-9\-]+):addtaglib([\*| |\n|\r\n]+)namespace ?= ?"([A-Za-z0-9:\-]+)"([\*| |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-_]+)"#';
 
-$searchSingleNamespace = '#<([A-Za-z0-9\-]+):importdesign([\*| |\n|\r\n]+)namespace="([A-Za-z0-9:\-]+)"#';
+$searchSingleNamespace = '#<([A-Za-z0-9\-]+):importdesign([\*| |\n|\r\n]+)namespace="([A-Za-z0-9:\-_]+)"#';
 
-$searchGetStringNamespace = '#<([A-Za-z0-9\-]+):getstring([\*| |\n|\r\n]+)namespace="([A-Za-z0-9:\-]+)"#';
+$searchGetStringNamespace = '#<([A-Za-z0-9\-]+):getstring([\*| |\n|\r\n]+)namespace="([A-Za-z0-9:\-_]+)"#';
 
-$searchAppendNodeNamespace = '#<([A-Za-z0-9\-]+):appendnode([\*| |\n|\r\n]+)namespace="([A-Za-z0-9:\-]+)"#';
+$searchAppendNodeNamespace = '#<([A-Za-z0-9\-]+):appendnode([\*| |\n|\r\n]+)namespace="([A-Za-z0-9:\-_]+)"#';
 
-$searchHeaderJs = '#<htmlheader:addjs([\*| |\n|\r\n]+)namespace="([A-Za-z0-9:\-]+)"#';
-$searchHeaderCss = '#<htmlheader:addcss([\*| |\n|\r\n]+)namespace="([A-Za-z0-9:\-]+)"#';
+$searchHeaderJs = '#<htmlheader:addjs([\*| |\n|\r\n]+)namespace="([A-Za-z0-9:\-_]+)"#';
+$searchHeaderCss = '#<htmlheader:addcss([\*| |\n|\r\n]+)namespace="([A-Za-z0-9:\-_]+)"#';
 
 // respect explicit and none-explicit calls (explicits first!)
 $searchAddValidatorExplicit = '#<([A-Za-z0-9\-]+):addvalidator([ |\n|\r\n]+)namespace ?= ?"([A-Za-z0-9:\-]+)"([\*| |\n|\r\n]+)class ?= ?"([A-Za-z0-9\-_]+)"#';
