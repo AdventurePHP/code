@@ -1,6 +1,6 @@
 #!/bin/bash
 ########################################################################################################################
-# APF 2.0 automatic migration script
+# APF 2.0 automatic migration script                                                                                   #
 ########################################################################################################################
 
 echo "######################################"
@@ -52,6 +52,10 @@ echo "######################################"
 echo
 echo "Starting migration ..."
 
+# Run prepare scripts to ease migration
+echo "* Prepare addtaglib declarations for migration ..."
+$PHP_BINARY migration/prepare_addtaglib_statements.php
+
 # introduces namespaces and migrates import() to use
 $PHP_BINARY migration/migrate_import_calls.php
 echo "* Introduced namespace declarations ..."
@@ -84,6 +88,10 @@ echo "* Migrated session(manager) calls ..."
 $PHP_BINARY migration/migrate_missing_use_statements.php
 echo "* Add missing use statements ..."
 
+# cleanup for use statements without namespace
+echo "* Clean up unnecessary use statements ..."
+$PHP_BINARY migration/cleanup_existing_use_statements.php
+
 # resolve non-namespace'd class calls in singleton/session singleton
 $PHP_BINARY migration/migrate_singleton_calls.php
 echo "* Migrated Singleton/SessionSingleton calls ..."
@@ -91,6 +99,10 @@ echo "* Migrated Singleton/SessionSingleton calls ..."
 # migrate calls to CookieManager now named "Cookie"
 $PHP_BINARY migration/migrate_tools_cookie_calls.php
 echo "* Migrated CookieManager to Cookie class ..."
+
+# migrate PostHandler to RequestHandler calls
+$PHP_BINARY migration/migrate_posthandler.php
+echo "* Migrated PostHandler to RequestHandler class ..."
 
 # migrates config
 echo "* Migrated configuration files:"
