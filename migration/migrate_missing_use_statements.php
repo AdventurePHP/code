@@ -21,6 +21,10 @@ addUseStatements($files, $classMap);
 $splClassMap = array(
    'DateTime' => 'DateTime',
    'DateInterval' => 'DateInterval',
-   'InvalidArgumentException' => 'InvalidArgumentException'
+   'InvalidArgumentException' => 'InvalidArgumentException',
+   'DOMDocument' => 'DOMDocument',
+   'Exception' => 'Exception',
+   'stdClass' => 'stdClass',
+   'UnexpectedValueException' => 'UnexpectedValueException'
 );
 addUseStatements($files, $splClassMap);
