@@ -25,6 +25,7 @@ $splClassMap = array(
    'DOMDocument' => 'DOMDocument',
    'Exception' => 'Exception',
    'stdClass' => 'stdClass',
-   'UnexpectedValueException' => 'UnexpectedValueException'
+   'UnexpectedValueException' => 'UnexpectedValueException',
+   'SoapFault' => 'SoapFault'
 );
 addUseStatements($files, $splClassMap);
