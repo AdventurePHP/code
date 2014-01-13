@@ -9,7 +9,7 @@ foreach ($files as $file) {
    $content = file_get_contents($file);
 
    // check for file-based namespace declaration
-   if (!preg_match('#^namespace ([A-Za-z0-9\\\\]+)#', $content)) {
+   if (!preg_match('#namespace ([A-Za-z0-9\\\\]+);#', $content)) {
 
       $namespace = str_replace('.', '', str_replace('/', '\\', $file));
       $namespace = str_replace('\\\\', '\\', 'APF\\' . substr($namespace, 0, strrpos($namespace, '\\')));
