@@ -10,17 +10,21 @@ $files = filterApfDirectories(find('.', '*.php'));
 foreach ($files as $file) {
    $content = file_get_contents($file);
 
-   // remove old use
-   $content = str_replace('use APF\tools\request\PostHandler;', '', $content);
-   $content = str_replace('use \PostHandler;', '', $content);
+   if (strpos($content, 'PostHandler') !== false) {
 
-   // add new use statement
-   $content = addUseStatement($content, 'APF\tools\request\RequestHandler');
+      // remove old use
+      $content = str_replace('use APF\tools\request\PostHandler;', '', $content);
+      $content = str_replace('use \PostHandler;', '', $content);
 
-   // migrate calls
-   $content = preg_replace($search, 'RequestHandler::getValue($2, RequestHandler::USE_POST_PARAMS)', $content);
-   $content = preg_replace($searchWithDefault, 'RequestHandler::getValue($2, $4, RequestHandler::USE_POST_PARAMS)', $content);
-   $content = preg_replace($searchMultiple, 'RequestHandler::getValues($2, RequestHandler::USE_POST_PARAMS)', $content);
+      // add new use statement
+      $content = addUseStatement($content, 'APF\tools\request\RequestHandler');
+
+      // migrate calls
+      $content = preg_replace($search, 'RequestHandler::getValue($2, RequestHandler::USE_POST_PARAMS)', $content);
+      $content = preg_replace($searchWithDefault, 'RequestHandler::getValue($2, $4, RequestHandler::USE_POST_PARAMS)', $content);
+      $content = preg_replace($searchMultiple, 'RequestHandler::getValues($2, RequestHandler::USE_POST_PARAMS)', $content);
+
+   }
 
    file_put_contents($file, $content);
 }
