@@ -18,15 +18,17 @@ function removeSimpleUseStatements(array $files, array $classMap) {
          // remove existing use statements for classes without namespaces
          $content = str_replace('use ' . $key . ';', '', $content);
 
-         // remove extends/implements for classes without namespaces (e.g. " extends \APFObject {")
-         $content = str_replace(' extends \\' . $key . ' ', ' extends ' . $key . ' ', $content);
-         $content = str_replace(' implements \\' . $key . ' ', ' implements ' . $key . ' ', $content);
-
          // remove method type declarations for classes without namespace
-         // "@return \FooClass "
-         // "@param \CommonJSONClient "
-         $content = str_replace('@return \\' . $key . ' ', '@return ' . $key . ' ', $content);
+         // 1) "@return \FooClass"
+         $content = str_replace('@return \\' . $key, '@return ' . $key, $content);
+         // 2) "@param \CommonJSONClient $client"
          $content = str_replace('@param \\' . $key . ' ', '@param ' . $key . ' ', $content);
+         // 3) "@var $fC \Frontcontroller"
+         $content = preg_replace('#@var \$([A-Za-z_]+) \\\\' . $key . ' #', '@var \$$1 ' . $key . ' ', $content);
+
+         // clean up static calls for classes without namespaces
+         // e.g. $fC = \Singleton::getInstance(...);
+         $content = str_replace('\\' . $key . '::', $key . '::', $content);
 
       }
 
@@ -43,9 +45,7 @@ $files = filterApfDirectories(find('.', '*.php'));
 removeSimpleUseStatements($files, $classMap);
 
 // Resolve application class usages within application code ////////////////////////////////////////////////////////////
-$files = filterApfDirectories(find('.', '*.php'));
 $classMap = getClassMap($files);
 
 // apply class map to entire code
-$files = filterApfDirectories(find('.', '*.php'));
 removeSimpleUseStatements($files, $classMap);

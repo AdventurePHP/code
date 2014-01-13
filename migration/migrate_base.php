@@ -98,17 +98,30 @@ function addUseStatements(array $files, array $classMap) {
          if (strpos($content, 'new ' . $key . '(') !== false) {
             $content = addUseStatement($content, $value);
          }
+
          // usage by static call
          if (strpos($content, $key . '::') !== false) {
             $content = addUseStatement($content, $value);
          }
+
          // extends, implements
-         if (strpos($content, 'extends ' . $key) !== false) {
+         if (strpos($content, ' extends ' . $key . ' ') !== false) {
             $content = addUseStatement($content, $value);
          }
-         if (strpos($content, 'implements ' . $key) !== false) {
+         if (strpos($content, ' extends \\' . $key . ' ') !== false) {
+            // re-write absolute addressing with relative + use statement
+            $content = str_replace(' extends \\' . $key . ' ', ' extends ' . $key . ' ', $content);
             $content = addUseStatement($content, $value);
          }
+         if (strpos($content, ' implements ' . $key . ' ') !== false) {
+            $content = addUseStatement($content, $value);
+         }
+         if (strpos($content, ' implements \\' . $key . ' ') !== false) {
+            // re-write absolute addressing with relative + use statement
+            $content = str_replace(' implements \\' . $key . ' ', ' implements ' . $key . ' ', $content);
+            $content = addUseStatement($content, $value);
+         }
+
          // type hinting
          if (preg_match('#@var \$([A-Za-z0-9_]+) ' . $key . '#', $content)) {
             $content = addUseStatement($content, $value);
@@ -125,7 +138,7 @@ function addUseStatements(array $files, array $classMap) {
          if (strpos($content, '@return ' . $key) !== false) {
             $content = addUseStatement($content, $value);
          }
-         if (strpos($content, '@param ' . $key) !== false) {
+         if (strpos($content, '@param ' . $key . ' ') !== false) {
             $content = addUseStatement($content, $value);
          }
       }
