@@ -23,8 +23,10 @@ function removeSimpleUseStatements(array $files, array $classMap) {
          $content = str_replace('@return \\' . $key, '@return ' . $key, $content);
          // 2) "@param \CommonJSONClient $client"
          $content = str_replace('@param \\' . $key . ' ', '@param ' . $key . ' ', $content);
-         // 3) "@var $fC \Frontcontroller"
+         // 3) "@var $fC \Frontcontroller" --> inline statements
          $content = preg_replace('#@var \$([A-Za-z_]+) \\\\' . $key . ' #', '@var \$$1 ' . $key . ' ', $content);
+         // 4) "@var \Frontcontroller" --> class variables
+         $content = str_replace('@var \\' . $key, '@var ' . $key, $content);
 
          // clean up static calls for classes without namespaces
          // e.g. $fC = \Singleton::getInstance(...);
