@@ -3,7 +3,7 @@ include(dirname(__FILE__) . '/migrate_base.php');
 
 $files = find('config', '*umgtconfig.ini');
 
-$search = '#PasswordHashProvider\.([A-Za-z0-9\-]+)\.Namespace ?= ?"([A-Za-z0-9:\-]+)"([\n|\r\n]+)?PasswordHashProvider\.\1\.Class ?= ?"([A-Za-z0-9\-]+)"#';
+$search = '#PasswordHashProvider\.([A-Za-z0-9\-]+)\.Namespace ?= ?"([A-Za-z0-9:\-_]+)"([\n|\r\n]+)?PasswordHashProvider\.\1\.Class ?= ?"([A-Za-z0-9\-]+)"#';
 
 foreach ($files as $file) {
    $content = file_get_contents($file);

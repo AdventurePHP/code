@@ -3,9 +3,9 @@ include(dirname(__FILE__) . '/migrate_base.php');
 
 $files = find('config', '*serviceobjects.ini');
 
-$search = '#namespace ?= ?"([A-Za-z0-9:\-]+)"([\n|\r\n]+)?class ?= ?"([A-Za-z0-9\-_]+)"#';
+$search = '#namespace ?= ?"([A-Za-z0-9:\-_]+)"([\n|\r\n]+)?class ?= ?"([A-Za-z0-9\-_]+)"#';
 
-$searchReference = '#init.([A-Za-z\-_]+).namespace ?= ?"([A-Za-z0-9:]+)"#';
+$searchReference = '#init.([A-Za-z\-_]+).namespace ?= ?"([A-Za-z0-9:\-_]+)"#';
 
 $searchGormInit = '#conf.([A-Za-z\-_]+).method ?= ?"setConfigNamespace"([\*| |\n|\r\n]+)conf.([A-Za-z\-_]+).value ?= ?"([A-Za-z0-9:\-]+)"#';
 

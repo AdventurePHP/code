@@ -3,9 +3,9 @@ include(dirname(__FILE__) . '/migrate_base.php');
 
 $files = find('config', '*cacheconfig.ini');
 
-$search = '#Cache.Provider.Namespace ?= ?"([A-Za-z0-9:\-]+)"([\n|\r\n]+)?Cache.Provider.Class ?= ?"([A-Za-z0-9\-]+)"#';
+$search = '#Cache.Provider.Namespace ?= ?"([A-Za-z0-9:\-_]+)"([\n|\r\n]+)?Cache.Provider.Class ?= ?"([A-Za-z0-9\-]+)"#';
 
-$searchNamespace = '#Cache.Namespace ?= ?"([A-Za-z0-9:]+)"#';
+$searchNamespace = '#Cache.Namespace ?= ?"([A-Za-z0-9:\-_]+)"#';
 
 foreach ($files as $file) {
    $content = file_get_contents($file);

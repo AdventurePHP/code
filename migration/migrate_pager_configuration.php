@@ -3,8 +3,8 @@ include(dirname(__FILE__) . '/migrate_base.php');
 
 $files = find('config', '*pager.ini');
 
-$searchStatement = '#Pager\.StatementNamespace ?= ?"([A-Za-z0-9:\-]+)"#';
-$searchTemplate = '#Pager\.DesignNamespace ?= ?"([A-Za-z0-9:\-]+)"#';
+$searchStatement = '#Pager\.StatementNamespace ?= ?"([A-Za-z0-9:\-_]+)"#';
+$searchTemplate = '#Pager\.DesignNamespace ?= ?"([A-Za-z0-9:\-_]+)"#';
 
 foreach ($files as $file) {
    $content = file_get_contents($file);
