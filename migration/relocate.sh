@@ -38,7 +38,7 @@ echo "######################################"
 echo
 echo "Starting relocation ..."
 
-# execute relocation
+# relocate files in file system
 $PHP_BINARY migration/relocate.php $SOURCE_NAMESPACE $TARGET_NAMESPACE
 
 if [ $? -ne 0 ]
@@ -49,7 +49,6 @@ then
       exit 1
 fi
 
-echo
 echo
 echo "######################################"
 echo
