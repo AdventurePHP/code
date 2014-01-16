@@ -68,6 +68,10 @@ echo "* Migrated CookieManager to Cookie class ..."
 $PHP_BINARY migration/migrate_posthandler.php
 echo "* Migrated PostHandler to RequestHandler class ..."
 
+# migrate LinkGenerator calls for action urls
+echo "* Migrate LinkGenerator calls for action urls ..."
+$PHP_BINARY migration/migrate_linkgenerator_calls.php
+
 # migrates config
 echo "* Migrated configuration files:"
 $PHP_BINARY migration/migrate_config_calls.php
