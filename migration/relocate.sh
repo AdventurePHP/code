@@ -28,9 +28,6 @@ else
       TARGET_NAMESPACE=$3
 
       echo -e "\e[00;32m[OK]\e[00m"
-      echo
-      echo "Source namespace: $SOURCE_NAMESPACE"
-      echo "Target namespace: $TARGET_NAMESPACE"
 fi
 
 echo

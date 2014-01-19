@@ -1,25 +1,41 @@
 <?php
 include(dirname(__FILE__) . '/migrate_base.php');
 
+function sanitizeNamespace($namespace) {
+   return preg_replace('/[^A-Za-z0-9\\\\]/', '', $namespace);
+}
+
+function checkNamespace($namespace) {
+   return preg_match('/^[A-Z]+$/', $namespace) // vendor only
+   || preg_match('/^[A-Za-z0-9\\\\]+$/', $namespace); // vendor and sub-namespace
+}
+
 // gather necessary parameters
 $sourceNamespace = $argv[1];
 $targetNamespace = $argv[2];
 
+// sanitize namespaces
+$sourceNamespace = sanitizeNamespace($sourceNamespace);
+$targetNamespace = sanitizeNamespace($targetNamespace);
+
 // check for correct escaping, meaning that from and to namespace contain backslashes
-if (strpos($sourceNamespace, '\\') === false) {
+if (!checkNamespace($sourceNamespace)) {
    echo '--> Source namespace not well-formed ("' . $sourceNamespace . '") ... ';
    exit(1);
 }
-if (strpos($targetNamespace, '\\') === false) {
-   echo '--> Source namespace not well-formed ("' . $targetNamespace . '") ... ';
+if (!checkNamespace($targetNamespace)) {
+   echo '--> Target namespace not well-formed ("' . $targetNamespace . '") ... ';
    exit(1);
 }
+
+// show namespaces
+echo PHP_EOL . 'Source namespace: ' . $sourceNamespace . PHP_EOL;
+echo 'Target namespace: ' . $targetNamespace . PHP_EOL . PHP_EOL;
 
 $sourcePath = str_replace('\\', '/', $sourceNamespace);
 $targetPath = str_replace('\\', '/', $targetNamespace);
 
-
-// strip first path part as this is the VENDOR
+// strip first path part as this is the VENDOR (source always has sub-namespace since it is located under "APF")
 $realSourcePath = substr($sourcePath, strpos($sourcePath, '/') + 1);
 
 // assemble target path as it will be in parallel to this directory (at least for a start)
@@ -71,14 +87,20 @@ foreach ($files as $file) {
 
 // Display hint on config
 $sourceVendor = substr($sourceNamespace, 0, strpos($sourceNamespace, '\\'));
-$targetVendor = substr($targetNamespace, 0, strpos($targetNamespace, '\\'));
+$separatorPos = strpos($targetNamespace, '\\');
+if ($separatorPos === false) {
+   $targetVendor = $targetNamespace;
+} else {
+   $targetVendor = substr($targetNamespace, 0, $separatorPos);
+}
 
-$configPath = realpath(getcwd() . '/config');
-
-echo PHP_EOL . '######################################' . PHP_EOL . PHP_EOL;
-echo 'NOTE: Please note, that relocate.sh does not handle relocation of configuration files. Thus, please revise folder "'
-      . $configPath . '" and extract configuration files for vendor "' . $sourceVendor . '" to new vendor "'
-      . $targetVendor . '" as desired!' . PHP_EOL;
+$configPath = getcwd() . '/config';
+if (file_exists($configPath)) {
+   echo PHP_EOL . '######################################' . PHP_EOL . PHP_EOL;
+   echo 'NOTE: Please note, that relocate.sh does not handle relocation of configuration files. Thus, please revise folder "'
+         . realpath($configPath) . '" and extract configuration files for vendor "' . $sourceVendor . '" to new vendor "'
+         . $targetVendor . '" as desired!' . PHP_EOL;
+}
 
 // Display hint on class loader registration
 $targetVendorRootPath = realpath('../' . $targetVendor);
