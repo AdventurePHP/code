@@ -69,6 +69,26 @@ foreach ($files as $file) {
    }
 }
 
-// TODO what about the config?
+// Display hint on config
+$sourceVendor = substr($sourceNamespace, 0, strpos($sourceNamespace, '\\'));
+$targetVendor = substr($targetNamespace, 0, strpos($targetNamespace, '\\'));
+
+$configPath = realpath(getcwd() . '/config');
+
+echo PHP_EOL . '######################################' . PHP_EOL . PHP_EOL;
+echo 'NOTE: Please note, that relocate.sh does not handle relocation of configuration files. Thus, please revise folder "'
+      . $configPath . '" and extract configuration files for vendor "' . $sourceVendor . '" to new vendor "'
+      . $targetVendor . '" as desired!' . PHP_EOL;
+
+// Display hint on class loader registration
+$targetVendorRootPath = realpath('../' . $targetVendor);
+
+echo PHP_EOL . '######################################' . PHP_EOL . PHP_EOL;
+echo 'NOTE: Please be sure to add a new class loader configuration for new vendor "'
+      . $targetVendor . '" within your bootstrap file (index.php). You may want to use the following as a start: ';
+echo PHP_EOL . PHP_EOL;
+echo 'use APF\core\loader\RootClassLoader;' . PHP_EOL;
+echo 'use APF\core\loader\StandardClassLoader;' . PHP_EOL;
+echo 'RootClassLoader::addLoader(new StandardClassLoader(\'' . $targetVendor . '\', \'' . $targetVendorRootPath . '\'));' . PHP_EOL;
 
 exit(0);
