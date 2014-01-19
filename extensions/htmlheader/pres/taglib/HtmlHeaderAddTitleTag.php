@@ -62,7 +62,7 @@ class HtmlHeaderAddTitleTag extends Document {
       /* @var $header HtmlHeaderManager */
       $header = $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
 
-      $content = $this->getContent();
+      $content = trim(parent::transformChildrenAndPreserveContent());
       if (!empty($content)) {
 
          if ($this->getAttribute('append') === 'true') {
