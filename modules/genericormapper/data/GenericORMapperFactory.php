@@ -28,7 +28,7 @@ use APF\modules\genericormapper\data\GenericORRelationMapper;
  * @package APF\modules\genericormapper\data
  * @class GenericORMapperFactory
  *
- * @deprecated Please use the GORM with the DIServiceManager instead of this factory to initialize he desired instance!
+ * @deprecated Please use the GORM with the DIServiceManager instead of this factory to initialize the desired instance!
  *
  * Implements a factory for creating GenericORRelationMapper instances. Automatically
  * configures the desired instance using the given params.
