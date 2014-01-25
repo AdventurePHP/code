@@ -34,6 +34,7 @@ use APF\tools\form\FormException;
  * @author Werner Liemberger <wpublicmail@gmail.com>
  * @version 1.0, 14.3.2011<br>
  * @version 1.1, 11.07.2012 (Change Exception to FormException)<br>
+ * @version 1.2, 25.01.2014 (Security-patch: fixed path traversal vulnerability)<br>
  */
 class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
 
@@ -68,9 +69,9 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
    /**
     * @private
     *
-    * Cleans up the file body.
+    * Cleans up the upload name
     *
-    * @return string The file body of the resource to load.
+    * @return string The upload name of the resource to delete.
     *
     * @author Ralf Schubert
     * @version
