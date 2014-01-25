@@ -47,7 +47,7 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
       try {
          $fieldName = $this->getInput()->getAttribute('name');
          $formName = $this->getInput()->getAttribute('formname');
-         $uploadName = $this->getInput()->getAttribute('uploadname');
+         $uploadName = $this->getSanitizedUploadName();
 
          /* @var $manager MultiFileUploadManager */
          $manager = & $this->getAndInitServiceObject(
@@ -63,6 +63,21 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
       } catch (FormException $e) {
          throw $e;
       }
+   }
+   
+   /**
+    * @private
+    *
+    * Cleans up the file body.
+    *
+    * @return string The file body of the resource to load.
+    *
+    * @author Ralf Schubert
+    * @version
+    * Version 0.1, 25.01.2014<br />
+    */
+   private function getSanitizedUploadName() {
+      return preg_replace('/[^A-Za-z0-9\-_]/', '', $this->getInput()->getAttribute('uploadname'));
    }
 
 }
