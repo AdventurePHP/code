@@ -1,17 +1,17 @@
 <@controller class="APF\modules\guestbook2009\pres\controller\GuestbookAdminController" @>
 <div class="gb--admin-main">
-   <div class="gb--admin-menu">
-      <a href="<html:placeholder name=" editLink" />" title="Edit entry">Edit entry</a>
-      &nbsp;|&nbsp;
-      <a href="<html:placeholder name=" deleteLink" />" title="Delete entry">Delete entry</a>
-      &nbsp;|&nbsp;
-      <a href="<html:placeholder name=" logoutLink" />" title="Logout">Logout</a>
-   </div>
-   <div class="gb--admin-content">
-      <core:importdesign
-            namespace="APF\modules\guestbook2009\pres\templates\admin"
-            template="[adminview=start]"
-            incparam="adminview"
-            />
-   </div>
+    <div class="gb--admin-menu">
+        <a href="<html:placeholder name="editLink" />" title="Edit entry">Edit entry</a>
+        &nbsp;|&nbsp;
+        <a href="<html:placeholder name="deleteLink" />" title="Delete entry">Delete entry</a>
+        &nbsp;|&nbsp;
+        <a href="<html:placeholder name="logoutLink" />" title="Logout">Logout</a>
+    </div>
+    <div class="gb--admin-content">
+        <core:importdesign
+                namespace="APF\modules\guestbook2009\pres\templates\admin"
+                template="[adminview=start]"
+                incparam="adminview"
+                />
+    </div>
 </div>
