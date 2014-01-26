@@ -246,8 +246,15 @@ final class PagerManager extends APFObject {
          $entriesCount = $this->entriesPerPage;
       }
 
+      // determine offset by page with respect to the first page being a special case in calculation
+      $page = RequestHandler::getValue($this->pageUrlParameterName, 1);
+      $start = 0;
+      if ($page > 1) {
+         $start = ($page * $entriesCount) - $entriesCount;
+      }
+
       $defaultParams = array(
-         'Start' => (int) RequestHandler::getValue($this->pageUrlParameterName, 1) * $entriesCount - $entriesCount,
+         'Start' => $start,
          'EntriesCount' => $entriesCount
       );
       return array_merge($defaultParams, $this->generateStatementParams($this->statementParameters), $addStmtParams);
