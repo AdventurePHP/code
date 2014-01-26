@@ -1,6 +1,4 @@
 <?php
-namespace APF\modules\guestbook2009\data\setup;
-
 /**
  * In order to use this script for database initialization, include this file after including the
  * <em>bootstrap.php</em> file and setting the context and connection key.
