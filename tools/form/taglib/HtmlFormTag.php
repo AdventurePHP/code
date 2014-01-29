@@ -22,13 +22,12 @@ namespace APF\tools\form\taglib;
  */
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\LanguageLabelTag;
 use APF\core\pagecontroller\TagLib;
 use APF\core\pagecontroller\XmlParser;
-use APF\core\pagecontroller\LanguageLabelTag;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 use APF\tools\form\FormException;
-use APF\tools\form\taglib\AbstractFormControl;
 
 /**
  * @package APF\tools\form\taglib
@@ -161,6 +160,10 @@ class HtmlFormTag extends Document {
       $this->extractTagLibTags();
    }
 
+   public function onAfterAppend() {
+      $this->extractExpressionTags();
+   }
+
    /**
     * @public
     *
@@ -254,7 +257,7 @@ class HtmlFormTag extends Document {
       }
 
       throw new FormException('[HtmlFormTag::addFormElement()] Form element "' . $elementType
-            . '" cannot be added due to previous errors!');
+         . '" cannot be added due to previous errors!');
    }
 
    /**
@@ -357,7 +360,7 @@ class HtmlFormTag extends Document {
 
       // notify developer that object creation failed
       throw new FormException('[HtmlFormTag::addFormElementBeforeMarker()] Form element "'
-            . $elementType . '" cannot be added due to previous errors!');
+         . $elementType . '" cannot be added due to previous errors!');
    }
 
    /**
@@ -483,9 +486,9 @@ class HtmlFormTag extends Document {
          return $this->getChildNode('name', $markerName, 'APF\tools\form\taglib\DynamicFormElementMarkerTag');
       } catch (\InvalidArgumentException $e) {
          throw new FormException('[HtmlFormTag::addFormContentAfterMarker()] No marker object '
-               . 'with name "' . $markerName . '" composed in current form for document controller "'
-               . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
-               . 'the form with name "' . $this->getAttribute('name') . '"!', E_USER_ERROR, $e);
+            . 'with name "' . $markerName . '" composed in current form for document controller "'
+            . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
+            . 'the form with name "' . $this->getAttribute('name') . '"!', E_USER_ERROR, $e);
       }
    }
 
@@ -549,10 +552,10 @@ class HtmlFormTag extends Document {
       $parent = & $this->getParentObject();
       $docCon = $parent->getDocumentController();
       throw new FormException('[HtmlFormTag::getFormElementByName()] No form element with name "'
-            . $name . '" composed in current form "' . $this->getAttribute('name')
-            . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
-            . 'within this form (especially attributes, that are used for referencing other form '
-            . 'controls)!', E_USER_ERROR);
+         . $name . '" composed in current form "' . $this->getAttribute('name')
+         . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
+         . 'within this form (especially attributes, that are used for referencing other form '
+         . 'controls)!', E_USER_ERROR);
    }
 
    /**
@@ -606,8 +609,8 @@ class HtmlFormTag extends Document {
       $parent = & $this->getParentObject();
       $documentController = $parent->getDocumentController();
       throw new FormException('[HtmlFormTag::getFormElementByID()] No form element with id "'
-            . $id . '" composed in current form "' . $this->getAttribute('name')
-            . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
+         . $id . '" composed in current form "' . $this->getAttribute('name')
+         . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
    }
 
    /**
@@ -635,8 +638,8 @@ class HtmlFormTag extends Document {
       $parent = & $this->getParentObject();
       $documentController = $parent->getDocumentController();
       throw new FormException('[HtmlFormTag::getFormElementByObjectID()] No form element with id "'
-            . $objectId . '" composed in current form "' . $this->getAttribute('name')
-            . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
+         . $objectId . '" composed in current form "' . $this->getAttribute('name')
+         . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
    }
 
    /**
@@ -674,8 +677,8 @@ class HtmlFormTag extends Document {
       $parent = & $this->getParentObject();
       $documentController = $parent->getDocumentController();
       throw new FormException('[HtmlFormTag::getFormElementsByType()] No form elements composed in ' .
-            'current form "' . $this->getAttribute('name') . '" in document controller "'
-            . $documentController . '"!', E_USER_ERROR);
+         'current form "' . $this->getAttribute('name') . '" in document controller "'
+         . $documentController . '"!', E_USER_ERROR);
    }
 
    /**
@@ -702,8 +705,8 @@ class HtmlFormTag extends Document {
       $parent = & $this->getParentObject();
       $documentController = $parent->getDocumentController();
       throw new FormException('[HtmlFormTag::getTagClass()] No tag with name "' . $tagName
-            . '" registered in form with name "' . $this->getAttribute('name') . '" in document controller '
-            . $documentController . '!', E_USER_ERROR);
+         . '" registered in form with name "' . $this->getAttribute('name') . '" in document controller '
+         . $documentController . '!', E_USER_ERROR);
    }
 
    /**
@@ -724,8 +727,8 @@ class HtmlFormTag extends Document {
          return $this->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabelTag');
       } catch (\InvalidArgumentException $e) {
          throw new \InvalidArgumentException('[HtmlFormTag::getLabel()] No label found with name "' . $name
-               . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'
-               . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR, $e);
+            . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'
+            . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR, $e);
       }
    }
 
@@ -757,7 +760,7 @@ class HtmlFormTag extends Document {
       }
 
       // transform the form including all child tags
-      $htmlCode = (string)'<form ';
+      $htmlCode = (string) '<form ';
       $htmlCode .= $this->getAttributesAsString($this->attributes, $this->attributeWhiteList);
       $htmlCode .= '>';
 

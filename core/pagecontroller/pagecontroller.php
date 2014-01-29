@@ -23,6 +23,7 @@ namespace APF\core\pagecontroller;
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\configuration\Configuration;
 use APF\core\configuration\ConfigurationManager;
+use APF\core\expression\taglib\ExpressionEvaluationTag;
 use APF\core\loader\RootClassLoader;
 use APF\core\logging\entry\SimpleLogEntry;
 use APF\core\logging\LogEntry;
@@ -32,7 +33,6 @@ use APF\core\service\APFDIService;
 use APF\core\service\APFService;
 use APF\core\service\DIServiceManager;
 use APF\core\service\ServiceManager;
-
 use APF\core\singleton\Singleton;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\html\taglib\HtmlIteratorTag;
@@ -69,7 +69,7 @@ class IncludeException extends \Exception {
  */
 function printObject($o, $transformHtml = false) {
 
-   $buffer = (string)'';
+   $buffer = (string) '';
    $buffer .= "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
    $buffer .= "<br />\n";
    $buffer .= "<strong>\n";
@@ -117,6 +117,11 @@ class ParserException extends \Exception {
  * Version 0.1, 22.12.2006<br />
  */
 final class XmlParser {
+
+   /**
+    * @var int Let's you define the maximum number of attributes allows before the parser stops executions to prevent an endless loop.
+    */
+   public static $maxParserLoops = 20;
 
    private function __construct() {
    }
@@ -175,7 +180,7 @@ final class XmlParser {
          $tagEndPos = strrpos($tagString, '</' . $prefix . ':' . $name . '>');
          if ($tagEndPos === false) {
             throw new ParserException('[XmlParser::getTagAttributes()] No closing tag found for '
-                  . 'tag "<' . $prefix . ':' . $name . ' />"! Tag string: "' . $tagString . '".',
+               . 'tag "<' . $prefix . ':' . $name . ' />"! Tag string: "' . $tagString . '".',
                E_USER_ERROR);
          }
 
@@ -215,16 +220,15 @@ final class XmlParser {
       $offset = 0;
 
       $parserLoops = 0;
-      $parserMaxLoops = 20;
 
       while (true) {
 
          $parserLoops++;
 
          // limit parse loop count to avoid endless while loops
-         if ($parserLoops == $parserMaxLoops) {
+         if ($parserLoops > self::$maxParserLoops) {
             throw new ParserException('[XmlParser::getAttributesFromString()] Error while parsing: "'
-               . $attributesString . '". Maximum number of loops ("' . $parserMaxLoops
+               . $attributesString . '". Maximum number of loops ("' . self::$maxParserLoops
                . '") exceeded!', E_USER_ERROR);
          }
 
@@ -845,7 +849,6 @@ class Page extends APFObject {
  */
 class Document extends APFObject {
 
-
    /**
     * @const
     * Attribute name for service name of document controller
@@ -900,6 +903,12 @@ class Document extends APFObject {
     * @var Document[] List of the children of the current object.
     */
    protected $children = array();
+
+   /**
+    * @protected
+    * @var string[][] Data attributes of the current DOM document (similar to Java Script).
+    */
+   protected $data = array();
 
    /**
     * @public
@@ -1163,7 +1172,7 @@ class Document extends APFObject {
          // within BaseDocumentController catch and rethrow the exception enriched with further
          // information.
          $message = '[' . get_class($this) . '::setPlaceHolder()] No place holder with name "' . $name
-            . '" found within document with ';
+               . '" found within document with ';
 
          $nodeName = $this->getAttribute('name');
          if (!empty($nodeName)) {
@@ -1273,6 +1282,39 @@ class Document extends APFObject {
    /**
     * @public
     *
+    * Allows you to set data attributes to the current DOM node (similar to Java Script for HTML nodes).
+    *
+    * @param string $name The reference name of the data field to set/add.
+    * @param mixed $data The data to inject to the current node.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.01.2014<br />
+    */
+   public function setData($name, $data) {
+      $this->data[$name] = $data;
+   }
+
+   /**
+    * @public
+    *
+    * Allows you to retrieve a data attribute from the current DOM node (similar to Java Script for HTML nodes).
+    *
+    * @param string $name The reference name of the data field to set/add.
+    * @param mixed $default The desired default value (optional).
+    * @return mixed The desired data field content or the default value.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.01.2014<br />
+    */
+   public function getData($name, $default = null) {
+      return isset($this->data[$name]) ? $this->data[$name] : $default;
+   }
+
+   /**
+    * @public
+    *
     * Loads the initial template for the initial document. Can also be used to load
     * content from files within sub taglibs.
     *
@@ -1292,7 +1334,7 @@ class Document extends APFObject {
       // analyze document controller definition
       $this->extractDocumentController();
 
-      // parse known taglibs
+      // parse known tags
       $this->extractTagLibTags();
    }
 
@@ -1540,7 +1582,7 @@ class Document extends APFObject {
 
             // call onParseTime() to enable the taglib to initialize itself
             $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::children[('
-               . get_class($object) . ') ' . $objectId . ']::onParseTime()';
+                  . get_class($object) . ') ' . $objectId . ']::onParseTime()';
             $t->start($benchId);
             $object->onParseTime();
             $t->stop($benchId);
@@ -1609,7 +1651,7 @@ class Document extends APFObject {
             );
          } catch (\Exception $e) {
             throw new \InvalidArgumentException('[' . get_class($this) . '::extractDocumentController()] Given document controller '
-            . 'could not be created using the DIServiceManager. Message: ' . $e->getMessage(), $e->getCode());
+               . 'could not be created using the DIServiceManager. Message: ' . $e->getMessage(), $e->getCode());
          }
 
       } elseif (isset($controllerAttributes[self::CONTROLLER_ATTR_CLASS])) {
@@ -1626,9 +1668,9 @@ class Document extends APFObject {
 
          // no valid document controller definition given, thus interrupt execution here
          throw new ParserException('[' . get_class($this) . '::extractDocumentController()] Document '
-         . 'controller specification does not contain a valid controller class or service definition. '
-         . 'Please double check the template code and consult the documentation. '
-         . 'Template code: ' . $this->getContent());
+            . 'controller specification does not contain a valid controller class or service definition. '
+            . 'Please double check the template code and consult the documentation. '
+            . 'Template code: ' . $this->getContent());
 
       }
 
@@ -1636,6 +1678,93 @@ class Document extends APFObject {
 
       // remove definition from content to be not displayed
       $this->content = substr_replace($this->content, '', $tagStartPos, ($tagEndPos - $tagStartPos) + strlen($controllerEndTag));
+   }
+
+   /**
+    * @protected
+    *
+    * Parses the content of the current APF DOM node. Extracts all dynamic expression statements
+    * that are shortcuts on certain tags (e.g. place holders or dynamic access on DOM node data).
+    * <p/>
+    * The current implementation is able to handle place holders such as <em>${foo}</em> as well
+    * as dynamic expressions like <em>${foo[2]->getBar()->getBaz()}</em>. These are parsed and
+    * as a result instances of <em>PlaceHolderTag</em> or <em>ExpressionEvaluationTag</em> are
+    * added to the DOM node to be accessed as you are used to for other DOM nodes.
+    * <p/>
+    * To protect against infinite loops with broken expression statements the parser uses <em>self::$maxParserLoops</em>
+    * to limit the parser cycles to a configurable amount of times. In case your project requires a
+    * higher value, please set <em>Document::$maxParserLoops</em> to an appropriate value.
+    *
+    * @throws ParserException In case of incorrect expression statements or exceeding the configured amount of parser loops.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.01.2014<br />
+    */
+   protected function extractExpressionTags() {
+
+      $startToken = '${';
+      $endToken = '}';
+
+      $context = $this->getContext();
+      $language = $this->getLanguage();
+
+      $loops = 0;
+      $offset = 0;
+
+      while (true) {
+
+         if ($loops > self::$maxParserLoops) {
+            throw new ParserException('[' . get_class($this) . '::extractExpressionTags()] Maximum numbers of parsing loops reached!', E_USER_ERROR);
+         }
+
+         $start = strpos($this->content, $startToken, $offset);
+         if ($start === false) {
+            break;
+         }
+
+         $end = strpos($this->content, $endToken, $start);
+         if ($end === false) {
+            throw new ParserException('No closing marker "' . $endToken . '" found for advanced place holder declaration. Tag string: ' . htmlentities($this->content));
+            break;
+         }
+
+         $token = substr($this->content, $start + 2, $end - $start - 2);
+
+         // additional check for wrong tag definition
+         /*if (strpos($token, $startToken) !== false) {
+            throw new ParserException('No closing marker "' . $endToken . '" found for advanced place holder declaration. Token string: ' . htmlentities($token));
+         }*/
+
+         // create APF node to feel like being created during onParseTime()
+         $objectId = XmlParser::generateUniqID();
+
+         // "real" expressions always contain method calls or array access stuff, so we can consider this an expression
+         if (strpos($token, '->') === false && strpos($token, '[') === false) {
+            $this->children[$objectId] = new PlaceHolderTag();
+            $this->children[$objectId]->setAttribute('name', $token);
+         } else {
+            $this->children[$objectId] = new ExpressionEvaluationTag();
+            $this->children[$objectId]->setAttribute(ExpressionEvaluationTag::EXPRESSION, $token);
+         }
+
+         $this->children[$objectId]->setObjectId($objectId);
+         $this->children[$objectId]->setContext($context);
+         $this->children[$objectId]->setLanguage($language);
+
+         $this->children[$objectId]->setParentObject($this);
+
+         // add APF parser marker to allow content to be placed appropriately
+         $this->content = str_replace($startToken . $token . $endToken, '<' . $objectId . ' />', $this->content);
+
+         // re-adjust offset for performance reasons
+         $offset = $start + strlen($objectId) + 3;
+
+         // PLEASE NOTE: onParseTime() and onAfterAppend() not necessary for PlaceHolderTag and ExpressionEvaluationTag
+         $loops++;
+
+      }
+
    }
 
    /**
@@ -1696,7 +1825,7 @@ class Document extends APFObject {
       $content = $this->content;
 
       // execute the document controller if applicable
-      if($this->documentController instanceof DocumentController) {
+      if ($this->documentController instanceof DocumentController) {
 
          // start benchmark timer
          $id = '(' . get_class($this->documentController) . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
@@ -1928,7 +2057,7 @@ class AppendNodeTag extends Document {
          // the place holder of the present tag's marker
          $this->parentObject->setContent(
             str_replace('<' . $currentObjectId . ' />',
-               '<' . $currentObjectId . ' />' . $this->content,
+                  '<' . $currentObjectId . ' />' . $this->content,
                $parentContent)
          );
 
@@ -2060,6 +2189,10 @@ class ImportTemplateTag extends Document {
 
       // extract further xml tags
       $this->extractTagLibTags();
+   }
+
+   public function onAfterAppend() {
+      $this->extractExpressionTags();
    }
 
 }
@@ -2323,6 +2456,10 @@ class TemplateTag extends Document {
       $this->extractTagLibTags();
    }
 
+   public function onAfterAppend() {
+      $this->extractExpressionTags();
+   }
+
    /**
     * @public
     *
@@ -2537,8 +2674,8 @@ class LanguageLabelTag extends Document {
       // get configuration values
       $config = $this->getConfiguration($namespace, $configName);
       $value = $config->getSection($this->getLanguage()) === null
-         ? null
-         : $config->getSection($this->getLanguage())->getValue($entry);
+            ? null
+            : $config->getSection($this->getLanguage())->getValue($entry);
 
       if ($value == null) {
 
@@ -2616,7 +2753,6 @@ class LanguageLabelTag extends Document {
    }
 
 }
-
 
 /**
  * @package APF\core\pagecontroller
@@ -2763,7 +2899,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function setPlaceHolder($name, $value, $append = false) {
       try {
-         $this->document->setPlaceHolder($name, $value, $append);
+         $this->getDocument()->setPlaceHolder($name, $value, $append);
       } catch (\InvalidArgumentException $e) {
          throw new \InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place holders '
             . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
@@ -2797,7 +2933,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected function setStringPlaceHolder($name, $key, $value) {
       try {
-         $this->document->setStringPlaceHolder($name, $key, $value);
+         $this->getDocument()->setStringPlaceHolder($name, $key, $value);
       } catch (\InvalidArgumentException $e) {
          throw new \InvalidArgumentException('[' . get_class($this) . '::setStringPlaceHolder()] No place holders '
             . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
@@ -2859,7 +2995,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
             // use the configured log target to allow custom configuration of APF-internal log statements
             // to be written to a custom file/location
                Registry::retrieve('APF\core', 'InternalLogTarget'),
-               'Place holder with name "' . $name . '" does not exist within the current document '
+                  'Place holder with name "' . $name . '" does not exist within the current document '
                   . 'handled by document controller "' . get_class($this) . '". '
                   . 'Please check your setup. Details: ' . $e,
                LogEntry::SEVERITY_WARNING
@@ -3029,6 +3165,39 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
             . $name . '" composed in current document for document controller "' . get_class($this) . '"! '
             . 'Perhaps tag library html:iterator is not loaded in current template!', E_USER_ERROR, $e);
       }
+   }
+
+   /**
+    * @public
+    *
+    * Allows you to set data attributes to the DOM node this document controller is responsible for.
+    *
+    * @param string $name The reference name of the data field to set/add.
+    * @param mixed $data The data to inject to the current node.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.01.2014<br />
+    */
+   protected function setData($name, $data) {
+      $this->getDocument()->setData($name, $data);
+   }
+
+   /**
+    * @public
+    *
+    * Allows you to retrieve a data attribute from the DOM node this document controller is responsible for.
+    *
+    * @param string $name The reference name of the data field to set/add.
+    * @param mixed $default The desired default value (optional).
+    * @return mixed The desired data field content or the default value.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 29.01.2014<br />
+    */
+   protected function getData($name, $default = null) {
+      $this->getDocument()->getData($name, $default);
    }
 
 }
