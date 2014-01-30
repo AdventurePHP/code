@@ -21,6 +21,7 @@ namespace APF\core\expression;
  * -->
  */
 use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\ParserException;
 use Exception;
 
 /**
@@ -42,7 +43,7 @@ abstract class ExpressionEvaluator {
     * Evaluates a dynamic expression. Acts both as a factory as well as an
     * abstraction component to evaluate expressions.
     *
-    * @param Document $modelNode The APF DOM node that can be used to retrieve the model information.
+    * @param Document $dataNode The APF DOM node that can be used to retrieve the model information.
     * @param string $expressionString The APF dynamic expression string.
     * @return string The result of the expression evaluation.
     * @throws Exception In case evaluation of the given expression fails.
@@ -51,13 +52,13 @@ abstract class ExpressionEvaluator {
     * @version
     * Version 0.1, 29.01.2014<br />
     */
-   public static function evaluate(Document &$modelNode, $expressionString) {
+   public static function evaluate(Document &$dataNode, $expressionString) {
 
       $parts = explode('->', $expressionString);
 
       try {
          // always evaluate the first part separately (even if we have array access expressions later on)
-         $expression = new ModelEvaluationExpression($parts[0], $modelNode);
+         $expression = new ModelEvaluationExpression($parts[0], $dataNode);
          $result = $expression->getResult();
 
          foreach ($parts as $part) {
@@ -82,7 +83,7 @@ abstract class ExpressionEvaluator {
          }
       } catch (Exception $e) {
          // re-throw with more content
-         throw new Exception('Execution of expression "' . $expressionString . '" failed with message "' . $e->getMessage() . '"', E_USER_ERROR, $e);
+         throw new ParserException('Execution of expression "' . $expressionString . '" failed with message "' . $e->getMessage() . '"', E_USER_ERROR, $e);
       }
 
       return $result;

@@ -21,7 +21,7 @@ namespace APF\core\expression;
  * -->
  */
 use APF\core\pagecontroller\Document;
-use Exception;
+use APF\core\pagecontroller\ParserException;
 
 /**
  * @package APF\core\expression
@@ -56,7 +56,7 @@ class ModelEvaluationExpression extends EvaluationExpressionBase implements Eval
 
    protected function check($expression, $previousResult) {
       if (!($previousResult instanceof Document)) {
-         throw new Exception('$previousResult is not of type Document. Expression: "' . $expression . '".');
+         throw new ParserException('$previousResult is not of type Document but "' . gettype($previousResult) . '"! Expression: "' . $expression . '".');
       }
    }
 

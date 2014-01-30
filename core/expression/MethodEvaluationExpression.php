@@ -20,13 +20,16 @@ namespace APF\core\expression;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use Exception;
+use APF\core\pagecontroller\ParserException;
 
 /**
  * @package APF\core\expression
  * @class MethodEvaluationExpression
  *
- * Executes a method access.
+ * Executes a method access including dynamic string or integer arguments.
+ * <p/>
+ * Boolean values are not supported since no explicit type cast is executed but
+ * values are treated as string - either in simple quotes or literally.
  *
  * @author Christian Achatz
  * @version
@@ -41,29 +44,36 @@ class MethodEvaluationExpression extends EvaluationExpressionBase implements Eva
 
       $open = strpos($this->expression, self::BRACKET_OPEN);
       if ($open === false) {
-         throw new Exception('Expression "' . $this->expression . '" invalid for ' . __CLASS__ . '!');
+         throw new ParserException('No opening bracket found for expression "' . $this->expression . '"!');
       }
 
       $close = strpos($this->expression, self::BRACKET_CLOSE, $open);
       if ($close === false) {
-         throw new Exception('Expression "' . $this->expression . '" invalid for ' . __CLASS__ . '!');
+         throw new ParserException('No closing bracket found for expression "' . $this->expression . '"!');
       }
 
       $method = substr($this->expression, 0, $open);
 
-      // support on arguments
+      // extract arguments passed to the method (only trivial data types such as int and string supported)
+      $argumentsExpression = substr($this->expression, $open + 1, $close - $open - 1);
+      if (empty($argumentsExpression)) {
+         $arguments = array();
+      } else {
+         // sanitize arguments string to pass arguments as they are meant to be
+         $arguments = explode(',', str_replace('\'', '', str_replace(' ', '', $argumentsExpression)));
+      }
 
       if (!method_exists($this->previousResult, $method)) {
-         throw new Exception('Instance of type "' . get_class($this->previousResult)
+         throw new ParserException('Instance of type "' . get_class($this->previousResult)
             . '" has no method defined with name "' . $method . '()". Expression: "' . $this->expression . '".');
       }
 
-      return $this->previousResult->{$method}();
+      return call_user_func_array(array($this->previousResult, $method), $arguments);
    }
 
    protected function check($expression, $previousResult) {
       if (!is_object($previousResult)) {
-         throw new Exception('$previousResult is not of type object! Expression: "' . $expression . '".');
+         throw new ParserException('$previousResult is not of type object but "' . gettype($previousResult) . '"! Expression: "' . $expression . '".');
       }
    }
 

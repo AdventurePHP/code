@@ -20,7 +20,7 @@ namespace APF\core\expression;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use Exception;
+use APF\core\pagecontroller\ParserException;
 
 /**
  * @package APF\core\expression
@@ -39,30 +39,50 @@ class ArrayAccessEvaluationExpression extends EvaluationExpressionBase implement
 
    public function getResult() {
 
-      $open = strpos($this->expression, self::BRACKET_OPEN);
-      if ($open === false) {
-         throw new Exception('Expression "' . $this->expression . '" invalid for ' . __CLASS__ . '!');
+      // validate whether we are facing a correct expression
+      if (strpos($this->expression, self::BRACKET_OPEN) === false) {
+         throw new ParserException('No opening bracket found for expression "' . $this->expression . '"!');
       }
 
-      $close = strpos($this->expression, self::BRACKET_CLOSE, $open);
-      if ($close === false) {
-         throw new Exception('Expression "' . $this->expression . '" invalid for ' . __CLASS__ . '!');
+      $result = $this->previousResult;
+
+      $pointer = 0;
+
+      while (true) {
+
+         $open = strpos($this->expression, self::BRACKET_OPEN, $pointer);
+         if ($open === false) {
+            break;
+         }
+
+         $close = strpos($this->expression, self::BRACKET_CLOSE, $open);
+         if ($close === false) {
+            throw new ParserException('No closing bracket found for expression "' . $this->expression . '"!');
+         }
+
+         $pointer = $close;
+
+         $offset = substr($this->expression, $open + 1, $close - $open - 1);
+
+         // extract string in case we have a string offset
+         // support both >"< and >'<!
+         if (is_string($offset)) {
+            $offset = str_replace('\'', '', str_replace('"', '', $offset));
+         }
+
+         if (isset($result[$offset])) {
+            $result = $result[$offset];
+         } else {
+            throw new ParserException('Invalid offset "' . $offset . '" for expression "' . $this->expression . '"!');
+         }
       }
 
-      $offset = substr($this->expression, $open + 1, $close - $open - 1);
-
-      // extract string in case we have a string offset
-      // support both >"< and >'<!
-      if (is_string($offset)) {
-         $offset = str_replace('\'', '', str_replace('"', '', $offset));
-      }
-
-      return $this->previousResult[$offset];
+      return $result;
    }
 
    protected function check($expression, $previousResult) {
       if (!is_array($previousResult)) {
-         throw new Exception('$previousResult is not of type array! Expression: "' . $expression . '".');
+         throw new ParserException('$previousResult is not of type array but "' . gettype($previousResult) . '"! Expression: "' . $expression . '".');
       }
    }
 
