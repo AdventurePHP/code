@@ -54,6 +54,10 @@ class CreateDocumentFromFileTag extends Document {
 
    }
 
+   public function onAfterAppend() {
+      $this->extractExpressionTags();
+   }
+
    /**
     * @protected
     *
