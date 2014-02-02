@@ -63,6 +63,20 @@ class ExpressionEvaluatorTest extends \PHPUnit_Framework_TestCase {
       assertEquals($model->getMoreLinkModel()->getMoreLabel(), ExpressionEvaluator::evaluate($node, 'foo->getMoreLinkModel()->getMoreLabel()'));
    }
 
+   public function testMultiArrayAccessMethodChain() {
+      $node = new Document();
+      $model = new ContentModel();
+      $node->setData(
+         'foo',
+         array(
+            1 => array(
+               2 => $model
+            )
+         )
+      );
+      assertEquals($model->getCssClass(), ExpressionEvaluator::evaluate($node, 'foo[1]->bar[2]->getCssClass()'));
+   }
+
    public function testIllegalCallChain() {
       $this->setExpectedException('APF\core\pagecontroller\ParserException');
       ExpressionEvaluator::evaluate(new Document(), '->foo->getMoreLinkModel()->->getMoreLabel()');
