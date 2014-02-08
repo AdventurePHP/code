@@ -1479,15 +1479,13 @@ class Document extends APFObject {
 
          $tagLoops = 0;
 
-         while (strpos($this->content, '<' . $token) !== false) {
+         // Find the first occurrence of the current tag to distinguish between
+         // self- and explicitly-closing tags.
+         while (($tagStartPos = strpos($this->content, '<' . $token)) !== false) {
 
             if ($tagLoops > self::$maxParserLoops) {
                throw new ParserException('[' . get_class($this) . '::extractTagLibTags()] Maximum numbers of parsing loops reached!', E_USER_ERROR);
             }
-
-            // Find the first occurrence of the current tag to distinguish between
-            // self- and explicitly-closing tags.
-            $tagStartPos = strpos($this->content, '<' . $token);
 
             $bracket = strpos($this->content, '>', $tagStartPos);
             if (substr($this->content, $bracket - 1, 1) == '/') {
