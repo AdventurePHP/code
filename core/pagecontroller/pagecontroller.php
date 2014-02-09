@@ -1457,20 +1457,14 @@ class Document extends APFObject {
     */
    protected function extractTagLibTags() {
 
-      $tagLibLoops = 0;
       $i = 0;
 
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       /* @var $t BenchmarkTimer */
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
 
       // Parse the known taglibs. Here, we have to use a while loop, because one parser loop
       // can result in an increasing amount of known taglibs (core:addtaglib!).
       while ($i < count($this->tagLibs)) {
-
-         if ($tagLibLoops > self::$maxParserLoops) {
-            throw new ParserException('[' . get_class($this) . '::extractTagLibTags()] Maximum numbers of '
-               . 'parsing loops reached!', E_USER_ERROR);
-         }
 
          $class = $this->tagLibs[$i]->getClass();
          $prefix = $this->tagLibs[$i]->getPrefix();
