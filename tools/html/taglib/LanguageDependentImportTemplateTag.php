@@ -64,11 +64,6 @@ class LanguageDependentImportTemplateTag extends Document {
     */
    public function onParseTime() {
 
-      /* @var $t BenchmarkTimer */
-      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
-      $id = '(LanguageDependentImportTemplateTag) ' . $this->getObjectId() . '::onParseTime()';
-      $t->start($id);
-
       // check attributes
       $namespace = $this->getAttribute('namespace');
       if ($namespace === null) {
@@ -91,9 +86,6 @@ class LanguageDependentImportTemplateTag extends Document {
 
       // parse known tags
       $this->extractTagLibTags();
-
-      $t->stop($id);
-
    }
 
    /**
