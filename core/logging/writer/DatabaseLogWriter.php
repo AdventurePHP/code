@@ -147,9 +147,9 @@ class DatabaseLogWriter extends APFObject implements LogWriter {
                         `message`
                      ) VALUES (
                         \'' . $this->target . '\',
-                        \'' . $entry->getDate() . ' ' . $entry->getTime() . '\',
-                        \'' . $entry->getSeverity() . '\',
-                        \'' . $entry->getMessage() . '\'
+                        \'' . $conn->escapeValue($entry->getDate() . ' ' . $entry->getTime()) . '\',
+                        \'' . $conn->escapeValue($entry->getSeverity()) . '\',
+                        \'' . $conn->escapeValue($entry->getMessage()) . '\'
                      );';
          $conn->executeTextStatement($insert);
       }
