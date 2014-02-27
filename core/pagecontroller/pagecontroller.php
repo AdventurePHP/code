@@ -1412,7 +1412,7 @@ class Document extends APFObject {
       if ($vendorOnly === true) {
          $classLoader = RootClassLoader::getLoaderByVendor($namespace);
       } else {
-      $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
+         $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
       }
 
       $rootPath = $classLoader->getRootPath();
@@ -1420,9 +1420,9 @@ class Document extends APFObject {
       if ($vendorOnly === true) {
          return $rootPath . '/' . $name . '.html';
       } else {
-      $vendor = $classLoader->getVendorName();
+         $vendor = $classLoader->getVendorName();
          return $rootPath . '/' . str_replace('\\', '/', str_replace($vendor . '\\', '', $namespace)) . '/' . $name . '.html';
-   }
+      }
    }
 
    /**
