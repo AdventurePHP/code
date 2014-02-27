@@ -318,7 +318,12 @@ class RootClassLoader {
     * Version 0.1, 05.04.2013<br />
     */
    public static function getLoaderByClass($class) {
-      return self::getLoaderByNamespace(self::getNamespace($class));
+      $namespace = self::getNamespace($class);
+      if (self::isVendorOnlyNamespace($namespace)) {
+         return self::getLoaderByVendor($namespace);
+      } else {
+         return self::getLoaderByNamespace($namespace);
+      }
    }
 
    /**
@@ -354,26 +359,26 @@ class RootClassLoader {
    public static function getNamespace($class) {
       return substr($class, 0, strrpos($class, '\\'));
    }
-   
+
    /**
     * @public
     * @static
-    * 
+    *
     * Determines the namespace without the leading vendor of a fully-qualified class for you.
-    * 
+    *
     * @param string $class Fully-qualified class name (e.g. <em>APF\core\loader\StandardClassLoader</em>).
     * @return string The class name without vendor of the given class (e.g. <em>core\loader</em>).
-    * 
+    *
     * @author Jan Wiese
     * @version
     * Version 0.1, 28.05.2013<br />
     */
-   public static function getNamespaceWithoutVendor($class){
+   public static function getNamespaceWithoutVendor($class) {
 
       $start = strpos($class, '\\');
       $end = strrpos($class, '\\');
 
-      return substr($class, ($start+1), ($end-$start-1)); // plus/minus one to strip leading and trailing slashes
+      return substr($class, ($start + 1), ($end - $start - 1)); // plus/minus one to strip leading and trailing slashes
    }
 
    /**
@@ -391,6 +396,23 @@ class RootClassLoader {
     */
    public static function getVendor($class) {
       return substr($class, 0, strpos($class, '\\'));
+   }
+
+   /**
+    * @public
+    * @static
+    *
+    * Determines whether the given namespace only consists of a vendor.
+    *
+    * @param string $namespace A fully-qualified namespace (e.g. <em>APF\core\loader</em> or <em>APF</em>).
+    * @return bool <em>True</em> in case the namespace contains only the vendor declaration, <em>false</em> otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.02.2014<br />
+    */
+   public static function isVendorOnlyNamespace($namespace) {
+      return strpos($namespace, '\\') === false;
    }
 
 }

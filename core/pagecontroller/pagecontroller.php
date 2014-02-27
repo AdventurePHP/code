@@ -1403,12 +1403,26 @@ class Document extends APFObject {
     * Version 0.1, 31.10.2012<br />
     */
    protected function getTemplateFilePath($namespace, $name) {
+
       // gather namespace and full(!) template name and use class loader to determine root path
+
+      // ID#152: check whether we have a vendor-only namespace declaration to support
+      // Document::getTemplateFileName('APF', 'foo') calls
+      $vendorOnly = RootClassLoader::isVendorOnlyNamespace($namespace);
+      if ($vendorOnly === true) {
+         $classLoader = RootClassLoader::getLoaderByVendor($namespace);
+      } else {
       $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
+      }
+
       $rootPath = $classLoader->getRootPath();
+
+      if ($vendorOnly === true) {
+         return $rootPath . '/' . $name . '.html';
+      } else {
       $vendor = $classLoader->getVendorName();
-      $fqNamespace = str_replace($vendor . '\\', '', $namespace);
-      return $rootPath . '/' . str_replace('\\', '/', $fqNamespace) . '/' . $name . '.html';
+         return $rootPath . '/' . str_replace('\\', '/', str_replace($vendor . '\\', '', $namespace)) . '/' . $name . '.html';
+   }
    }
 
    /**
