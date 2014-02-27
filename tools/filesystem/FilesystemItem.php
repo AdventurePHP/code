@@ -68,6 +68,13 @@ abstract class FilesystemItem extends APFObject {
    public abstract function open($path);
    /**
     * @public
+    * 
+    * @author  Jan Wiese
+    * @version Version 0.1, 27.02.2014
+    */
+   public abstract function close();
+   /**
+    * @public
     *
     * @author  Nicolas Pecher
     * @version Version 0.1, 06.08.2012
@@ -242,10 +249,19 @@ abstract class FilesystemItem extends APFObject {
       $newPath = $this->getBasePath() . '/' . $newName;
       $fileExists = file_exists($newPath);
       if (($fileExists === true && $force === true) || $fileExists === false) {
-         if (rename($this->getPath(), $newPath) === false) {
+         
+         $this->close();
+         
+         $renameError = (rename($this->getPath(), $newPath) === false);
+                  
+         if($renameError){
+            $this->open($this->getPath());
             return false;
          }
+         
          $this->name = $newName;
+         $this->open($newPath);
+         
          return true;
       }
       return false;
