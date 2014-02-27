@@ -32,7 +32,6 @@ use APF\core\service\APFDIService;
 use APF\core\service\APFService;
 use APF\core\service\DIServiceManager;
 use APF\core\service\ServiceManager;
-
 use APF\core\singleton\Singleton;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\html\taglib\HtmlIteratorTag;
@@ -69,7 +68,7 @@ class IncludeException extends \Exception {
  */
 function printObject($o, $transformHtml = false) {
 
-   $buffer = (string)'';
+   $buffer = (string) '';
    $buffer .= "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
    $buffer .= "<br />\n";
    $buffer .= "<strong>\n";
@@ -1361,12 +1360,26 @@ class Document extends APFObject {
     * Version 0.1, 31.10.2012<br />
     */
    protected function getTemplateFilePath($namespace, $name) {
+
       // gather namespace and full(!) template name and use class loader to determine root path
-      $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
+
+      // ID#152: check whether we have a vendor-only namespace declaration to support
+      // Document::getTemplateFileName('APF', 'foo') calls
+      $vendorOnly = RootClassLoader::isVendorOnlyNamespace($namespace);
+      if ($vendorOnly === true) {
+         $classLoader = RootClassLoader::getLoaderByVendor($namespace);
+      } else {
+         $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
+      }
+
       $rootPath = $classLoader->getRootPath();
-      $vendor = $classLoader->getVendorName();
-      $fqNamespace = str_replace($vendor . '\\', '', $namespace);
-      return $rootPath . '/' . str_replace('\\', '/', $fqNamespace) . '/' . $name . '.html';
+
+      if ($vendorOnly === true) {
+         return $rootPath . '/' . $name . '.html';
+      } else {
+         $vendor = $classLoader->getVendorName();
+         return $rootPath . '/' . str_replace('\\', '/', str_replace($vendor . '\\', '', $namespace)) . '/' . $name . '.html';
+      }
    }
 
    /**
@@ -1696,7 +1709,7 @@ class Document extends APFObject {
       $content = $this->content;
 
       // execute the document controller if applicable
-      if($this->documentController instanceof DocumentController) {
+      if ($this->documentController instanceof DocumentController) {
 
          // start benchmark timer
          $id = '(' . get_class($this->documentController) . ') ' . (XmlParser::generateUniqID()) . '::transformContent()';
