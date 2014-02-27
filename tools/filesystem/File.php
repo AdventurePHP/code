@@ -110,13 +110,28 @@ class File extends FilesystemItem {
     *
     * Closes the opened file handle
     *
-    * @author  Nicolas Pecher
-    * @version Version 0.1, 01.05.2012
+    * @author  Jan Wiese
+    * @version Version 0.1, 27.02.2014
     */
-   public function __destruct() {
+   public function close(){
+
       if (is_resource($this->fileHandle)) {
          fclose($this->fileHandle);
       }
+   }
+
+   /**
+    * @public
+    *
+    * Closes the opened file handle on objects destruction
+    *
+    * @author  Nicolas Pecher
+    * @version Version 0.1, 01.05.2012
+    *          version 0.2, 27.02.2014 Moved closing functionality to close()
+    */
+   public function __destruct() {
+      
+      $this->close();
    }
 
    /**

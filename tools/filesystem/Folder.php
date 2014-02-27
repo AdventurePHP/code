@@ -100,6 +100,17 @@ final class Folder extends FilesystemItem {
       return $this;
    }
 
+
+   /**
+    * @public
+    * 
+    * @author  Jan Wiese
+    * @version Version 0.1, 27.02.2014
+    */
+   public function close(){
+      // empty, only dummy
+   }
+
    /**
     * @public
     *
