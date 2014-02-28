@@ -51,6 +51,11 @@ abstract class BaseConfigurationProvider {
    protected $omitEnvironment = false;
 
    /**
+    * @var bool Set to true, the /config sub folder is skipped from the configuration file path.
+    */
+   protected $omitConfigSubFolder = false;
+
+   /**
     * @var string The file extension of the provider.
     */
    protected $extension = null;
@@ -70,6 +75,10 @@ abstract class BaseConfigurationProvider {
 
    public function setOmitEnvironment($omitEnvironment) {
       $this->omitEnvironment = $omitEnvironment;
+   }
+
+   public function setOmitConfigSubFolder($omitConfigSubFolder) {
+      $this->omitConfigSubFolder = $omitConfigSubFolder;
    }
 
    public function setExtension($extension) {
@@ -106,17 +115,23 @@ abstract class BaseConfigurationProvider {
       try {
          $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
          $rootPath = $classLoader->getConfigurationRootPath();
+
+         // Add config sub folder only if desired. Allows you to set up a separate
+         // vendor-based config folder without another /config sub-folder (e.g.
+         // /src/VENDOR/foo/bar/Baz.php and /config/VENDOR/foo/bar/DEFAULT_config.ini).
+         if ($this->omitConfigSubFolder === false) {
+            $rootPath .= '/config';
+         }
+
          $vendor = $classLoader->getVendorName();
          $fqNamespace = str_replace($vendor . '\\', '', $namespace);
-         return $rootPath
-               . '/config'
-               . '/' . str_replace('\\', '/', $fqNamespace)
-               . $contextPath
-               . $fileName;
+
+         return $rootPath . '/' . str_replace('\\', '/', $fqNamespace) . $contextPath . $fileName;
+
       } catch (\Exception $e) {
          // in order to ease debugging, we are wrapping the class loader exception to a more obvious exception message
          throw new ConfigurationException('Class loader root path for namespace "' . $namespace . '" cannot be determined.'
-               . ' Please double-check your configuration!', E_USER_ERROR, $e);
+            . ' Please double-check your configuration!', E_USER_ERROR, $e);
       }
    }
 
