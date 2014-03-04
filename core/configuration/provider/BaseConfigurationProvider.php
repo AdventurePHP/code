@@ -86,6 +86,7 @@ abstract class BaseConfigurationProvider {
     * @param string $language The current application's language.
     * @param string $environment The current environment.
     * @param string $name The name of the desired config.
+    *
     * @return string The appropriate file path.
     * @throws ConfigurationException In case the root path cannot be determined using the applied namespace.
     */
@@ -104,19 +105,31 @@ abstract class BaseConfigurationProvider {
 
       // gather namespace and full(!) config name and use class loader to determine root path
       try {
-         $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
+
+         // ID#164: check whether we have a vendor-only namespace declaration to support
+         // $this->getFilePath('APF', ...) calls.
+         $vendorOnly = RootClassLoader::isVendorOnlyNamespace($namespace);
+         if ($vendorOnly === true) {
+            $classLoader = RootClassLoader::getLoaderByVendor($namespace);
+         } else {
+            $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
+         }
+
          $rootPath = $classLoader->getConfigurationRootPath();
          $vendor = $classLoader->getVendorName();
-         $fqNamespace = str_replace($vendor . '\\', '', $namespace);
-         return $rootPath
-               . '/config'
-               . '/' . str_replace('\\', '/', $fqNamespace)
-               . $contextPath
-               . $fileName;
+
+         if ($vendorOnly === true) {
+            $fqNamespace = '';
+         } else {
+            $fqNamespace = '/' . str_replace('\\', '/', str_replace($vendor . '\\', '', $namespace));
+         }
+
+         return $rootPath . '/config' . $fqNamespace . $contextPath . $fileName;
+
       } catch (\Exception $e) {
          // in order to ease debugging, we are wrapping the class loader exception to a more obvious exception message
          throw new ConfigurationException('Class loader root path for namespace "' . $namespace . '" cannot be determined.'
-               . ' Please double-check your configuration!', E_USER_ERROR, $e);
+            . ' Please double-check your configuration!', E_USER_ERROR, $e);
       }
    }
 
