@@ -605,10 +605,10 @@ class Frontcontroller extends APFObject {
       if ($config != null) {
 
          // separate param strings
-         if (strlen(trim($config->getValue($name, 'FC.InputParams'))) > 0) {
+         if (strlen(trim($config->getValue($name, 'InputParams'))) > 0) {
 
             // separate params
-            $staticParams = explode($this->inputDelimiter, $config->getValue($name, 'FC.InputParams'));
+            $staticParams = explode($this->inputDelimiter, $config->getValue($name, 'InputParams'));
 
             for ($i = 0; $i < count($staticParams); $i++) {
 
@@ -676,8 +676,8 @@ class Frontcontroller extends APFObject {
       
       // evalute which method to use: simple object or di service
       
-      $actionServiceName = $actionConfig->getValue('FC.ActionServiceName');
-      $actionServiceNamespace = $actionConfig->getValue('FC.ActionServiceNamespace');
+      $actionServiceName = $actionConfig->getValue('ActionServiceName');
+      $actionServiceNamespace = $actionConfig->getValue('ActionServiceNamespace');
       
       if(!(empty($actionServiceName) || empty($actionServiceNamespace))){
          // use di service
@@ -702,7 +702,7 @@ class Frontcontroller extends APFObject {
          // use simple object
          
          // include action implementation
-         $actionClass = $actionConfig->getValue('FC.ActionClass');
+         $actionClass = $actionConfig->getValue('ActionClass');
 
          // check for class being present
          if (!class_exists($actionClass)) {
@@ -726,7 +726,7 @@ class Frontcontroller extends APFObject {
 
 
       // check for custom input implementation
-      $inputClass = $actionConfig->getValue('FC.InputClass');
+      $inputClass = $actionConfig->getValue('InputClass');
 
       // include input implementation in case a custom implementation is desired
       if (empty($inputClass)) {
@@ -745,7 +745,7 @@ class Frontcontroller extends APFObject {
 
       // merge input params with the configured params (params included in the URL are kept!)
       $input->setAttributes(array_merge(
-         $this->generateParamsFromInputConfig($actionConfig->getValue('FC.InputParams')),
+         $this->generateParamsFromInputConfig($actionConfig->getValue('InputParams')),
          $params));
 
       $input->setAction($action);
