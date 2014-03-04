@@ -22,6 +22,8 @@ namespace APF\tests\suites\core\pagecontroller;
  */
 use APF\core\loader\RootClassLoader;
 use APF\core\loader\StandardClassLoader;
+use APF\core\pagecontroller\Document;
+use ReflectionMethod;
 
 /**
  * @package APF\tests\suites\core\pagecontroller
@@ -42,31 +44,32 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
       RootClassLoader::addLoader(new StandardClassLoader(self::VENDOR, self::SOURCE_PATH));
    }
 
+   /**
+    * @return ReflectionMethod The <em>APF\core\pagecontroller\Document::getTemplateFilePath()</em> method.
+    */
+   private function getMethod() {
+      $method = new ReflectionMethod('APF\core\pagecontroller\Document', 'getTemplateFilePath');
+      $method->setAccessible(true);
+
+      return $method;
+   }
+
    public function testWithNormalNamespace() {
 
-      $doc = new Document();
+      $method = $this->getMethod();
+      $document = new Document();
 
-      assertEquals(
-         self::SOURCE_PATH . '/foo/bar.html',
-         $doc->publicGetTemplateFilePath(self::VENDOR . '\foo', 'bar')
-      );
+      $filePath = $method->invokeArgs($document, array(self::VENDOR . '\foo', 'bar'));
+      assertEquals(self::SOURCE_PATH . '/foo/bar.html', $filePath);
 
-      assertEquals(
-         self::SOURCE_PATH . '/foo/bar/baz.html',
-         $doc->publicGetTemplateFilePath(self::VENDOR . '\foo\bar', 'baz')
-      );
+      $filePath = $method->invokeArgs($document, array(self::VENDOR . '\foo\bar', 'baz'));
+      assertEquals(self::SOURCE_PATH . '/foo/bar/baz.html', $filePath);
 
    }
 
    public function testWithVendorOnly() {
-
-      $doc = new Document();
-
-      assertEquals(
-         self::SOURCE_PATH . '/foo.html',
-         $doc->publicGetTemplateFilePath(self::VENDOR, 'foo')
-      );
-
+      $filePath = $this->getMethod()->invokeArgs(new Document(), array(self::VENDOR, 'foo'));
+      assertEquals(self::SOURCE_PATH . '/foo.html', $filePath);
    }
 
 }
