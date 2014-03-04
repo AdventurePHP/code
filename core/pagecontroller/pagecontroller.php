@@ -49,6 +49,7 @@ use APF\tools\html\taglib\HtmlIteratorTag;
  * Version 0.1, 28.03.2010<br />
  */
 class IncludeException extends \Exception {
+
 }
 
 /**
@@ -105,6 +106,7 @@ function printObject($o, $transformHtml = false) {
  * Version 0.1, 28.03.2010<br />
  */
 class ParserException extends \Exception {
+
 }
 
 /**
@@ -1576,7 +1578,13 @@ class Document extends APFObject {
             if ($end < $space) {
                // reset space indicator to bracket position to support opening
                // tags without attributes (<foo:bar> </foo:bar>)
-               $space = $end;
+               if ($selfClosing) {
+                  // Correct position by minus one due to "/>" at the end.
+                  // This only holds true for "<foo:bar/>" tags (no space after tag name).
+                  $space = $end - 1;
+               } else {
+                  $space = $end;
+               }
             }
 
             // n = tag name (e.g. "bar" with tag "<foo:bar />")
