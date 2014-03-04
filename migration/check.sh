@@ -1,18 +1,6 @@
 ########################################################################################################################
-# APF 2.0 automatic migration check routine                                                                            #
+# APF 2.1 automatic migration check routine                                                                            #
 ########################################################################################################################
-
-# check directory
-echo -n "Checking directory ... "
-if [ -d "./core" -a -d "./migration" ]
-then
-   echo -e "\e[00;32m[OK]\e[00m"
-else
-   echo -e "\e[00;31m[ERROR]\e[00m"
-   echo
-   echo -e "\e[00;31mScript not started within apps/APF directory. This is where \"core\", \"tools\", \"modules\" etc. directories reside. Aborting!\e[00m"
-   exit 1
-fi
 
 # evaluate php executable path
 echo -n "Checking PHP executable available ... "
