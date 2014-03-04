@@ -192,7 +192,7 @@ final class XmlParser {
 
       return array(
          'attributes' => $tagAttributes,
-         'content' => $content
+         'content'    => $content
       );
    }
 
@@ -920,6 +920,11 @@ class Document extends APFObject {
    protected $data = array();
 
    /**
+    * @var array Lazy cache for <em>Document::getTagLibClass()</em> to improve performance of <em>Document::extractTagLibTags()</em>.
+    */
+   protected $tagLibCache = array();
+
+   /**
     * @public
     * @static
     * @var int The maximum number of parser loops taken to analyze tags within a document. Used to protect against infinite loops.
@@ -1254,6 +1259,7 @@ class Document extends APFObject {
       foreach ($nodes as $node) {
          $node->setStringReplacement($key, $value);
       }
+
       return $this;
    }
 
@@ -1437,6 +1443,7 @@ class Document extends APFObject {
          return $rootPath . '/' . $name . '.html';
       } else {
          $vendor = $classLoader->getVendorName();
+
          return $rootPath . '/' . str_replace('\\', '/', str_replace($vendor . '\\', '', $namespace)) . '/' . $name . '.html';
       }
    }
@@ -1726,6 +1733,9 @@ class Document extends APFObject {
     * @private
     *
     * Returns the name of the tag implementation according to the given tag prefix and name.
+    * <p/>
+    * As this method gets called with each tag, it introduces a lazy cache to return the
+    * desired class faster with each known tag (improves performance up to 4%).
     *
     * @param string $prefix The tag prefix.
     * @param string $name The tag name.
@@ -1737,12 +1747,23 @@ class Document extends APFObject {
     * Version 0.1, 23.02.2014<br />
     */
    private function getTagLibClass($prefix, $name) {
+
+      // build simple cache key (prefix and name are already uniq; no md5() etc. necessary)
+      $cacheKey = $prefix . $name;
+
+      if (isset($this->tagLibCache[$cacheKey])) {
+         return $this->tagLibCache[$cacheKey];
+      }
+
       foreach ($this->tagLibs as $tag) {
          /* @var $tag TagLib */
          if ($tag->getPrefix() === $prefix && $tag->getName() === $name) {
-            return $tag->getClass();
+            $this->tagLibCache[$cacheKey] = $tag->getClass();
+
+            return $this->tagLibCache[$cacheKey];
          }
       }
+
       return null;
    }
 
@@ -2031,6 +2052,7 @@ class Document extends APFObject {
             '<' . $objectId . ' />', $this->children[$objectId]->transform(), $content
          );
       }
+
       return $content;
    }
 
@@ -2072,6 +2094,7 @@ class Document extends APFObject {
       foreach ($this->children as $objectId => $DUMMY) {
          $content = str_replace('<' . $objectId . ' />', '', $content);
       }
+
       return $content;
    }
 
@@ -2457,6 +2480,7 @@ class PlaceHolderTag extends Document {
       foreach ($this->stringReplacement as $key => $value) {
          $content = str_replace('{' . $key . '}', $value, $content);
       }
+
       return $content;
    }
 
@@ -2820,6 +2844,7 @@ class LanguageLabelTag extends Document {
             . $env . '_' . $configName . '" in namespace "' . $namespace . '" and context "'
             . $this->getContext() . '"!', E_USER_ERROR);
       }
+
       return $this->replace($value);
    }
 
@@ -2848,6 +2873,7 @@ class LanguageLabelTag extends Document {
       } else {
          $this->placeHolders[$name] = $this->placeHolders[$name] . $value;
       }
+
       return $this;
    }
 
@@ -2864,6 +2890,7 @@ class LanguageLabelTag extends Document {
     */
    public function &clearPlaceHolders() {
       $this->placeHolders = array();
+
       return $this;
    }
 
@@ -2884,6 +2911,7 @@ class LanguageLabelTag extends Document {
       foreach ($this->placeHolders as $key => $value) {
          $label = str_replace('{' . $key . '}', $value, $label);
       }
+
       return $label;
    }
 
@@ -3255,6 +3283,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    protected function placeHolderExists($name) {
       try {
          $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\PlaceHolderTag');
+
          return true;
       } catch (\InvalidArgumentException $e) {
          return false;
@@ -3280,6 +3309,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    protected function templatePlaceHolderExists(TemplateTag &$template, $name) {
       try {
          $template->getChildNode('name', $name, 'APF\core\pagecontroller\PlaceHolderTag');
+
          return true;
       } catch (\InvalidArgumentException $e) {
          return false;
