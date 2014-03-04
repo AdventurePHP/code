@@ -39,6 +39,7 @@ interface ClassLoader {
     * Decision on what to do with none-vendor classes can be done by the ClassLoader itself!
     *
     * @param string $class The class to load.
+    *
     * @throws \InvalidArgumentException In case the class cannot be loaded.
     *
     * @author Christian Achatz
@@ -161,12 +162,11 @@ class StandardClassLoader implements ClassLoader {
          $strippedClass = str_replace($this->vendorName . '\\', '', $class);
          $file = $this->rootPath . '/' . str_replace('\\', '/', $strippedClass) . '.php';
 
-         // do a file_exists() instead of @include() because fatal errors must not be caught here (e.g. class not found)!
+         // do a file_exists() instead of @include() because fatal errors within class loader lead to weired behaviour!
+         // ID#165: don't throw an exception here in case the class/file is not found to allow other class loaders
+         // to load the class (e.g. with different vendor)!
          if (file_exists($file)) {
             include($file);
-         } else {
-            throw new \InvalidArgumentException('[StandardClassLoader::load()] Loading class "'
-                  . $class . '" failed since file "' . $file . '" cannot be loaded!', E_USER_ERROR);
          }
       }
    }
@@ -189,6 +189,7 @@ class StandardClassLoader implements ClassLoader {
     * Let's you define the vendor name this class loader is registered for.
     *
     * @param string $name The vendor name.
+    *
     * @return StandardClassLoader This instance for further usage.
     *
     * @author Christian Achatz
@@ -197,6 +198,7 @@ class StandardClassLoader implements ClassLoader {
     */
    public function setVendorName($name) {
       $this->vendorName = $name;
+
       return $this;
    }
 
@@ -206,6 +208,7 @@ class StandardClassLoader implements ClassLoader {
     * Let's you define the root path for load classes/configurations/templates.
     *
     * @param string $rootPath The root path to load classes/configurations/templates from.
+    *
     * @return StandardClassLoader This instance for further usage.
     *
     * @author Christian Achatz
@@ -214,6 +217,7 @@ class StandardClassLoader implements ClassLoader {
     */
    public function setRootPath($rootPath) {
       $this->rootPath = $rootPath;
+
       return $this;
    }
 
@@ -270,6 +274,7 @@ class RootClassLoader {
     * Returns a class loader by the applied vendor name.
     *
     * @param string $vendorName The name of the desired class loader to get.
+    *
     * @return ClassLoader The desired class loader.
     * @throws \InvalidArgumentException In case no class loader is found.
     *
@@ -291,6 +296,7 @@ class RootClassLoader {
     * Returns a class loader by the applied namespace.
     *
     * @param string $namespace The namespace of the desired class loader to get.
+    *
     * @return ClassLoader The desired class loader.
     * @throws \Exception In case no class loader is found.
     *
@@ -310,6 +316,7 @@ class RootClassLoader {
     * Returns a class loader by the applied namespace.
     *
     * @param string $class The fully-qualified class of the desired class loader to get.
+    *
     * @return ClassLoader The desired class loader.
     * @throws \Exception In case no class loader is found.
     *
@@ -333,6 +340,7 @@ class RootClassLoader {
     * Determines the class name of a fully-qualified class for you.
     *
     * @param string $class Fully-qualified class name (e.g. <em>APF\core\loader\StandardClassLoader</em>).
+    *
     * @return string The class name of the given class (e.g. <em>StandardClassLoader</em>).
     *
     * @author Christian Achatz
@@ -350,6 +358,7 @@ class RootClassLoader {
     * Determines the namespace of a fully-qualified class for you.
     *
     * @param string $class Fully-qualified class name (e.g. <em>APF\core\loader\StandardClassLoader</em>).
+    *
     * @return string The class name of the given class (e.g. <em>APF\core\loader</em>).
     *
     * @author Christian Achatz
@@ -367,6 +376,7 @@ class RootClassLoader {
     * Determines the namespace without the leading vendor of a fully-qualified class for you.
     *
     * @param string $class Fully-qualified class name (e.g. <em>APF\core\loader\StandardClassLoader</em>).
+    *
     * @return string The class name without vendor of the given class (e.g. <em>core\loader</em>).
     *
     * @author Jan Wiese
@@ -388,6 +398,7 @@ class RootClassLoader {
     * Determines the vendor of a fully-qualified class for you.
     *
     * @param string $class Fully-qualified class name (e.g. <em>APF\core\loader\StandardClassLoader</em>).
+    *
     * @return string The class name of the given class (e.g. <em>APF</em>).
     *
     * @author Christian Achatz
@@ -405,6 +416,7 @@ class RootClassLoader {
     * Determines whether the given namespace only consists of a vendor.
     *
     * @param string $namespace A fully-qualified namespace (e.g. <em>APF\core\loader</em> or <em>APF</em>).
+    *
     * @return bool <em>True</em> in case the namespace contains only the vendor declaration, <em>false</em> otherwise.
     *
     * @author Christian Achatz
