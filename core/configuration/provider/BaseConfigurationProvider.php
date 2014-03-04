@@ -95,6 +95,7 @@ abstract class BaseConfigurationProvider {
     * @param string $language The current application's language.
     * @param string $environment The current environment.
     * @param string $name The name of the desired config.
+    *
     * @return string The appropriate file path.
     * @throws ConfigurationException In case the root path cannot be determined using the applied namespace.
     */
@@ -113,7 +114,16 @@ abstract class BaseConfigurationProvider {
 
       // gather namespace and full(!) config name and use class loader to determine root path
       try {
-         $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
+
+         // ID#164: check whether we have a vendor-only namespace declaration to support
+         // $this->getFilePath('APF', ...) calls.
+         $vendorOnly = RootClassLoader::isVendorOnlyNamespace($namespace);
+         if ($vendorOnly === true) {
+            $classLoader = RootClassLoader::getLoaderByVendor($namespace);
+         } else {
+            $classLoader = RootClassLoader::getLoaderByNamespace($namespace);
+         }
+
          $rootPath = $classLoader->getConfigurationRootPath();
 
          // Add config sub folder only if desired. Allows you to set up a separate
@@ -123,10 +133,14 @@ abstract class BaseConfigurationProvider {
             $rootPath .= '/config';
          }
 
-         $vendor = $classLoader->getVendorName();
-         $fqNamespace = str_replace($vendor . '\\', '', $namespace);
+         if ($vendorOnly === true) {
+            $fqNamespace = '';
+         } else {
+            $vendor = $classLoader->getVendorName();
+            $fqNamespace = '/' . str_replace('\\', '/', str_replace($vendor . '\\', '', $namespace));
+         }
 
-         return $rootPath . '/' . str_replace('\\', '/', $fqNamespace) . $contextPath . $fileName;
+         return $rootPath . $fqNamespace . $contextPath . $fileName;
 
       } catch (\Exception $e) {
          // in order to ease debugging, we are wrapping the class loader exception to a more obvious exception message
