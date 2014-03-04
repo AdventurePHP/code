@@ -101,11 +101,6 @@ abstract class BaseConfigurationProvider {
     */
    protected function getFilePath($namespace, $context, $language, $environment, $name) {
 
-      // fallback for missing file extensions (backward compatibility for pre-1.13 config files)
-      if (!preg_match('/\.' . $this->extension . '$/i', $name)) {
-         $name = $name . '.' . $this->extension;
-      }
-
       // assemble the context
       $contextPath = ($this->omitContext || $context === null) ? '' : '/' . str_replace('\\', '/', $context);
 

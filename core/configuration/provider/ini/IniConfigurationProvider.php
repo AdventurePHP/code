@@ -70,8 +70,7 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
 
       if (file_exists($fileName)) {
-         $rawConfig = parse_ini_file($fileName, true);
-         return $this->parseConfig($rawConfig);
+         return $this->parseConfig(parse_ini_file($fileName, true));
       }
 
       if ($this->activateEnvironmentFallback && $environment !== 'DEFAULT') {
