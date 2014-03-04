@@ -1,7 +1,7 @@
 <@controller class="APF\modules\comments\pres\controller\CommentListingController" @>
 <div class="cm--list">
    <div class="cm--list-head">
-      <html:getstring namespace="APF\modules\comments" config="language" entry="listing.text.1" /> <a rel="nofollow" href="<html:placeholder name="Link" />#comments" title="<html:getstring namespace="APF\modules\comments" config="language" entry="listing.text.2.title" />"><strong><html:getstring namespace="APF\modules\comments" config="language" entry="listing.text.2" /></strong></a> <html:getstring namespace="APF\modules\comments" config="language" entry="listing.text.3" />
+      <html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.1" /> <a rel="nofollow" href="<html:placeholder name="Link" />#comments" title="<html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.2.title" />"><strong><html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.2" /></strong></a> <html:getstring namespace="APF\modules\comments" config="language.ini" entry="listing.text.3" />
    </div>
    <div class="cm--list-pager">
       <html:placeholder name="Pager" />
@@ -27,6 +27,6 @@
 </html:template>
 <html:template name="NoEntries">
    <div class="cm--list-noentries">
-      <template:getstring namespace="APF\modules\comments" config="language" entry="noentries.text" />
+      <template:getstring namespace="APF\modules\comments" config="language.ini" entry="noentries.text" />
    </div>
 </html:template>
