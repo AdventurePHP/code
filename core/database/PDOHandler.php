@@ -56,8 +56,8 @@ class PDOHandler extends AbstractDatabaseHandler {
    public function init($initParam) {
 
       // set database type for pdo connection
-      if (isset($initParam['DB.PDO'])) {
-         $this->dbPDO = $initParam['DB.PDO'];
+      if (isset($initParam['PDO'])) {
+         $this->dbPDO = $initParam['PDO'];
       }
 
       parent::init($initParam);
@@ -353,7 +353,7 @@ class PDOHandler extends AbstractDatabaseHandler {
     * @private
     *
     * Returns the data source name (DSN) for the database connection.
-    * The string is build bases on the configuration parameter 'db.PDO'
+    * The string is build bases on the configuration parameter 'PDO'
     * Actual following db drivers are supported:
     *  - mysql(i)
     *

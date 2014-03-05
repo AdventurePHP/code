@@ -387,37 +387,37 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
 
       if ($this->isInitialized == false) {
 
-         if (isset($initParam['DB.Host'])) {
-            $this->setHost($initParam['DB.Host']);
+         if (isset($initParam['Host'])) {
+            $this->setHost($initParam['Host']);
          }
 
-         if (isset($initParam['DB.User'])) {
-            $this->setUser($initParam['DB.User']);
+         if (isset($initParam['User'])) {
+            $this->setUser($initParam['User']);
          }
 
-         if (isset($initParam['DB.Pass'])) {
-            $this->setPass($initParam['DB.Pass']);
+         if (isset($initParam['Pass'])) {
+            $this->setPass($initParam['Pass']);
          }
 
-         $this->setDatabaseName($initParam['DB.Name']);
+         $this->setDatabaseName($initParam['Name']);
 
-         if (isset($initParam['DB.Port'])) {
-            $this->setPort($initParam['DB.Port']);
+         if (isset($initParam['Port'])) {
+            $this->setPort($initParam['Port']);
          }
 
-         if (isset($initParam['DB.Socket'])) {
-            $this->setSocket($initParam['DB.Socket']);
+         if (isset($initParam['Socket'])) {
+            $this->setSocket($initParam['Socket']);
          }
 
-         if (isset($initParam['DB.DebugMode'])) {
-            $this->setDebug($initParam['DB.DebugMode']);
+         if (isset($initParam['DebugMode'])) {
+            $this->setDebug($initParam['DebugMode']);
          }
 
-         if (isset($initParam['DB.Charset'])) {
-            $this->setCharset($initParam['DB.Charset']);
+         if (isset($initParam['Charset'])) {
+            $this->setCharset($initParam['Charset']);
          }
-         if (isset($initParam['DB.Collation'])) {
-            $this->setCollation($initParam['DB.Collation']);
+         if (isset($initParam['Collation'])) {
+            $this->setCollation($initParam['Collation']);
          }
 
          $this->isInitialized = true;

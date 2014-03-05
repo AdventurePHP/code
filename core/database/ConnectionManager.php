@@ -44,15 +44,15 @@ use APF\core\service\APFService;
  * <p/>
  * <pre>
  * [{ConnectionKey}]
- * DB.Host = ""
- * [DB.Port = ""]
- * DB.User = ""
- * DB.Pass = ""
- * DB.Name = ""
- * DB.Type = "APF\core\database\MySQLxHandler|APF\core\database\SQLiteHandler|..."
- * [DB.DebugMode = "true|false"]
- * [DB.Charset = ""]
- * [DB.Collation = ""]
+ * Host = ""
+ * [Port = ""]
+ * User = ""
+ * Pass = ""
+ * Name = ""
+ * Type = "APF\core\database\MySQLxHandler|APF\core\database\SQLiteHandler|..."
+ * [DebugMode = "true|false"]
+ * [Charset = ""]
+ * [Collation = ""]
  * </pre>
  * <p/>
  * Further examples can be obtained in the <em>apf-configpack-*</em> release files.
