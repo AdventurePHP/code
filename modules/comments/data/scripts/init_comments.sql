@@ -1,10 +1,11 @@
-CREATE TABLE `article_comments` (
-`ArticleCommentID` INT( 5 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`Name` VARCHAR( 100 ) NOT NULL ,
-`EMail` VARCHAR( 100 ) NOT NULL ,
-`Comment` TEXT NOT NULL ,
-`Date` DATE NOT NULL ,
-`Time` TIME NOT NULL ,
-`CategoryKey` VARCHAR( 100 ) NOT NULL ,
-INDEX ( `Date` , `Time` , `CategoryKey` ) 
-) ENGINE = MYISAM ;
+CREATE TABLE IF NOT  EXISTS `article_comments` (
+  `ArticleCommentID` int(5) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(100) NOT NULL DEFAULT '',
+  `EMail` varchar(100) NOT NULL DEFAULT '',
+  `Comment` text NOT NULL,
+  `Date` date NOT NULL DEFAULT '0000-00-00',
+  `Time` time NOT NULL DEFAULT '00:00:00',
+  `CategoryKey` varchar(100) NOT NULL DEFAULT '',
+  PRIMARY KEY (`ArticleCommentID`),
+  KEY `Category` (`CategoryKey`)
+) DEFAULT CHARSET=utf8;
