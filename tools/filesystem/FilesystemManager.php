@@ -20,6 +20,7 @@ namespace APF\tools\filesystem;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use Exception;
 
 /**
  * @class FileException
@@ -32,6 +33,7 @@ namespace APF\tools\filesystem;
  * Version 0.1, 07.08.2010<br />
  */
 class FileException extends \Exception {
+
 }
 
 /**
@@ -59,6 +61,7 @@ class FilesystemManager {
     *
     * @param string $folder the base folder.
     * @param bool $recursive false = just current content, true = recursive.
+    *
     * @return bool Status code (true = ok, false = error).
     *
     * @author Christian Achatz
@@ -157,6 +160,7 @@ class FilesystemManager {
     * @param string $sourceFile the source file path.
     * @param string $targetFile the target file path.
     * @param bool $force true = overwrite, false = return error.
+    *
     * @return bool Status code (true = ok, false = error).
     * @throws FileException In case the source file is not present.
     *
@@ -173,7 +177,7 @@ class FilesystemManager {
       $target = str_replace('\\', '/', $targetFile);
       if (!file_exists($source)) {
          throw new FileException('[FilesystemManager::copyFile()] The source file "'
-               . $sourceFile . '" does not exist!', E_USER_NOTICE);
+            . $sourceFile . '" does not exist!', E_USER_NOTICE);
       }
 
       // copy source to target
@@ -196,6 +200,7 @@ class FilesystemManager {
     * Removes a given file from the filesystem.
     *
     * @param string $file the file to delete.
+    *
     * @return bool Status code (true = ok, false = error).
     * @throws FileException In case the file to remove is not existent.
     *
@@ -212,7 +217,7 @@ class FilesystemManager {
       $realFile = str_replace('\\', '/', realpath($file));
       if (!file_exists($realFile)) {
          throw new FileException('[FilesystemManager::removeFile()] The file "' . $file
-               . '" does not exist!', E_USER_NOTICE);
+            . '" does not exist!', E_USER_NOTICE);
       }
 
       return unlink($realFile);
@@ -233,6 +238,7 @@ class FilesystemManager {
     * @param string $file_max_size allowed files size in bytes.
     * @param string $file_type mime type of the current file.
     * @param array $allowed_mime_types list of allowed mime types.
+    *
     * @return bool True in case of success, false otherwise.
     *
     * @author Christian Achatz
@@ -272,6 +278,7 @@ class FilesystemManager {
     * @param string $sourceFile the source file path.
     * @param string $targetFile the target file path.
     * @param bool $force true = overwrite, false = return error.
+    *
     * @return bool Status code (true = ok, false = error).
     * @throws FileException In case the source file to rename is not existent.
     *
@@ -288,7 +295,7 @@ class FilesystemManager {
       $target = str_replace('\\', '/', $targetFile);
       if (!file_exists($source)) {
          throw new FileException('[FilesystemManager::renameFile()] The source file "'
-               . $sourceFile . '" does not exist!', E_USER_NOTICE);
+            . $sourceFile . '" does not exist!', E_USER_NOTICE);
       }
 
       // copy source to target
@@ -313,26 +320,29 @@ class FilesystemManager {
     * is included.
     *
     * @param string $folder the folder that should be read out.
-    * @param bool $fullpath false (list contains only file/dir names) | true (full path is returned).
+    * @param bool $fullPath false (list contains only file/dir names) | true (full path is returned).
+    *
+    * @throws FileException In case the given folder does not exist.
+    *
     * @return array A list of files within the given folder.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 29.11.2008<br />
+    * Version 0.2, 08.03.2014 (Removed <em>trigger_error()</em> and introduced exception)<br />
     */
-   public static function getFolderContent($folder, $fullpath = false) {
+   public static function getFolderContent($folder, $fullPath = false) {
 
       // check if folder exists
       $realFolder = str_replace('\\', '/', realpath($folder));
       if (!file_exists($realFolder)) {
-         trigger_error('[FilesystemManager::getFolderContent()] The given folder ("' . $folder . '") does not exist!');
-         return array();
+         throw new FileException('[FilesystemManager::getFolderContent()] The given folder ("' . $folder . '") does not exist!');
       }
 
       // gather folder content
       $folderContent = glob($realFolder . '/*');
 
-      if ($fullpath === false) {
+      if ($fullPath === false) {
 
          $count = count($folderContent);
 
@@ -363,6 +373,7 @@ class FilesystemManager {
     *
     * @param string $file the desired file.
     * @param string $attributeName the name of the attribute, that should be returned.
+    *
     * @return array A list of files within the given folder.
     * @throws FileException In case the file to get the attributes from is not existent.
     *
@@ -381,7 +392,7 @@ class FilesystemManager {
       $realFile = str_replace('\\', '/', realpath($file));
       if (!file_exists($realFile)) {
          throw new FileException('[FilesystemManager::getFileAttributes()] The given file ("'
-               . $file . '") does not exist!', E_USER_WARNING);
+            . $file . '") does not exist!', E_USER_WARNING);
       }
 
       // gather attributes
@@ -402,8 +413,8 @@ class FilesystemManager {
             return $attributes[$attributeName];
          } else {
             throw new FileException('[FilesytemManager::getFileAttributes()] The desired file '
-                  . 'attribute ("' . $attributes . '") is not a valid attribute. Please consult the '
-                  . ' API documentation!', E_USER_ERROR);
+               . 'attribute ("' . $attributes . '") is not a valid attribute. Please consult the '
+               . ' API documentation!', E_USER_ERROR);
          }
       }
 
@@ -418,6 +429,7 @@ class FilesystemManager {
     * Returns the size of the given folder. The size includes all files and subfolders.
     *
     * @param string $folder the desired folder.
+    *
     * @return int The size of the given folder.
     * @throws FileException In case the given folder is not existent.
     *
@@ -432,22 +444,22 @@ class FilesystemManager {
       $realFolder = str_replace('\\', '/', realpath($folder));
       if (!file_exists($realFolder)) {
          throw new FileException('[FilesystemManager::getFolderSize()] The given folder ("'
-               . $folder . '") does not exist!', E_USER_ERROR);
+            . $folder . '") does not exist!', E_USER_ERROR);
       }
 
       // get content of the desired folder
       $folderContent = FilesystemManager::getFolderContent($realFolder, true);
-      $size = (int)0;
+      $size = (int) 0;
 
       // collect size recursively
       $count = count($folderContent);
       for ($i = 0; $i < $count; $i++) {
 
          if (is_dir($folderContent[$i])) {
-            $size = (int)FilesystemManager::getFolderSize($folderContent[$i]) + $size;
+            $size = (int) FilesystemManager::getFolderSize($folderContent[$i]) + $size;
          } else {
             $fileAttributes = FilesystemManager::getFileAttributes($folderContent[$i]);
-            $size = (int)$fileAttributes['size'] + $size;
+            $size = (int) $fileAttributes['size'] + $size;
          }
       }
 
@@ -471,6 +483,7 @@ class FilesystemManager {
     *                        <em>false</em> in case the client OS should be used.
     * @param string $unit The unit to transform the value to.
     * @param boolean $decimal Returns (?) the unit of decimal prefix or the unit of the binary prefix.
+    *
     * @return string The formatted size of the applied byte amount.
     *
     * @author Werner Liemberger <wpublicmail [at] gmail DOT com>
@@ -505,9 +518,11 @@ class FilesystemManager {
             $size /= $divisor;
             $i++;
          }
+
          return round($size, $round) . ' ' . $units[$i];
       } else {
          $key = array_keys($units, $unit, true);
+
          return round($size / pow($divisor, $key[0]), $round) . ' ' . $unit;
       }
    }
