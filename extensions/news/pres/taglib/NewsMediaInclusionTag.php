@@ -61,7 +61,7 @@ class NewsMediaInclusionTag extends MediaInclusionTag {
       $imgSrc = parent::transform();
 
       $label = $this->getAttribute('label');
-      $cfg = $this->getConfiguration('APF\extensions\news', 'labels');
+      $cfg = $this->getConfiguration('APF\extensions\news', 'labels.ini');
       $lang = $cfg->getSection($this->getLanguage());
 
       $title = $lang->getValue($label);
