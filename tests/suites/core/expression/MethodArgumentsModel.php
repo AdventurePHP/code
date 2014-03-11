@@ -21,6 +21,16 @@ namespace APF\tests\suites\core\expression;
  * -->
  */
 
+/**
+ * @package APF\tests\suites\core\expression
+ * @class MethodArgumentsModel
+ *
+ * Dummy model for testing purposes.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 30.01.2014<br />
+ */
 class MethodArgumentsModel {
 
    public function singleParamCall($true = true) {
