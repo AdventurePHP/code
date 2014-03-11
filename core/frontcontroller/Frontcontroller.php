@@ -20,11 +20,11 @@ namespace APF\core\frontcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\benchmark\BenchmarkTimer;
 use APF\core\filter\InputFilterChain;
 use APF\core\filter\OutputFilterChain;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
-use APF\core\benchmark\BenchmarkTimer;
 use APF\core\registry\Registry;
 use APF\core\service\APFDIService;
 use APF\core\service\DIServiceManager;
@@ -74,7 +74,6 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements APFDIS
     * Defines the type of the action. Allowed values
     * <ul>
     *   <li>prepagecreate: executed before the page controller page is created</li>
-    *   <li>postpagecreate: executed after the page controller page is created</li>
     *   <li>pretransform: executed before transformation of the page</li>
     *   <li>posttransform: executed after transformation of the page</li>
     * </ul>
@@ -264,6 +263,24 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements APFDIS
     */
    public function isActive() {
       return true;
+   }
+
+   /**
+    * @public
+    *
+    * Allows you to manipulate the priority of this instance in comparison to other actions
+    * of the same type on the action stack.
+    * <p/>
+    * In case priority of another action is higher than the value returned by this method for
+    * the current instance, this action takes higher priority and is executed first.
+    * <p/>
+    * Default value is 10 to allow easier prioritization at a granular level. Example: returning
+    * <em>1</em> means higher priority, <em>20</em> means lower priority.
+    *
+    * @return int The action's priority on the action stack.
+    */
+   public function getPriority() {
+      return 10;
    }
 
    /**
@@ -463,6 +480,7 @@ class Frontcontroller extends APFObject {
     *
     * @param string $namespace Namespace of the templates.
     * @param string $template Name of the templates.
+    *
     * @return string The content of the transformed page.
     *
     * @author Christian Achatz
@@ -522,6 +540,7 @@ class Frontcontroller extends APFObject {
     * Returns the action specified by the input param.
     *
     * @param string $actionName The name of the action to return.
+    *
     * @return AbstractFrontcontrollerAction The desired action or null.
     *
     * @author Christian Schäfer
@@ -545,6 +564,7 @@ class Frontcontroller extends APFObject {
 
       // return null, if action could not be found
       $null = null;
+
       return $null;
    }
 
@@ -569,6 +589,7 @@ class Frontcontroller extends APFObject {
     * Creates the url representation of a given namespace.
     *
     * @param string $namespaceUrlRepresentation The url string.
+    *
     * @return string The namespace of the action.
     *
     * @author Christian Schäfer
@@ -639,6 +660,7 @@ class Frontcontroller extends APFObject {
     * @param string $namespace Namespace of the action.
     * @param string $name Name of the action (section key of the config file).
     * @param array $params (Input-)params of the action.
+    *
     * @throws \InvalidArgumentException In case the action cannot be found within the appropriate
     * configuration or the action implementation classes are not available.
     *
@@ -672,42 +694,38 @@ class Frontcontroller extends APFObject {
                . $this->getContext() . '"!', E_USER_ERROR);
       }
 
-      
-      
-      // evalute which method to use: simple object or di service
-      
+
+      // evaluate which method to use: simple object or di service
       $actionServiceName = $actionConfig->getValue('ActionServiceName');
       $actionServiceNamespace = $actionConfig->getValue('ActionServiceNamespace');
-      
-      if(!(empty($actionServiceName) || empty($actionServiceNamespace))){
+
+      if (!(empty($actionServiceName) || empty($actionServiceNamespace))) {
          // use di service
-         
-         try{
+
+         try {
             $action = DIServiceManager::getServiceObject(
-               $actionServiceNamespace,
-               $actionServiceName,
-               $this->getContext(),
-               $this->getLanguage()
+                  $actionServiceNamespace,
+                  $actionServiceName,
+                  $this->getContext(),
+                  $this->getLanguage()
             );
-         }
-         catch(\Exception $e){
+         } catch (\Exception $e) {
             throw new \InvalidArgumentException('[Frontcontroller::addAction()] Action could not
             be created using DIServiceManager with service name "' . $actionServiceName . '" and service
             namespace "' . $actionServiceNamespace . '". Please check your action and service
-            configuration files! Message from DIServiceManager was: '. $e->getMessage(), $e->getCode());
+            configuration files! Message from DIServiceManager was: ' . $e->getMessage(), $e->getCode());
          }
-         
-      }
-      else{
+
+      } else {
          // use simple object
-         
+
          // include action implementation
          $actionClass = $actionConfig->getValue('ActionClass');
 
          // check for class being present
          if (!class_exists($actionClass)) {
             throw new \InvalidArgumentException('[Frontcontroller::addAction()] Action class with name "'
-               . $actionClass . '" could not be found. Please check your action configuration file!', E_USER_ERROR);
+                  . $actionClass . '" could not be found. Please check your action configuration file!', E_USER_ERROR);
          }
 
          // init action
@@ -716,14 +734,12 @@ class Frontcontroller extends APFObject {
 
          $action->setContext($this->getContext());
          $action->setLanguage($this->getLanguage());
-         
+
       }
-      
-      
+
       // init action
       $action->setActionNamespace($namespace);
       $action->setActionName($name);
-
 
       // check for custom input implementation
       $inputClass = $actionConfig->getValue('InputClass');
@@ -745,8 +761,8 @@ class Frontcontroller extends APFObject {
 
       // merge input params with the configured params (params included in the URL are kept!)
       $input->setAttributes(array_merge(
-         $this->generateParamsFromInputConfig($actionConfig->getValue('InputParams')),
-         $params));
+            $this->generateParamsFromInputConfig($actionConfig->getValue('InputParams')),
+            $params));
 
       $input->setAction($action);
       $action->setInput($input);
@@ -755,7 +771,41 @@ class Frontcontroller extends APFObject {
       $action->setFrontController($this);
 
       // add the action as a child
-      $this->actionStack[md5($namespace . '~' . $name)] = $action;
+      $this->actionStack[] = $action;
+
+      // Sort actions to allow prioritization of actions. This is done using
+      // uksort() in order to both respect AbstractFrontcontrollerAction::getPriority()
+      // and the order of registration for equivalence groups.
+      uksort($this->actionStack, array($this, 'sortActions'));
+   }
+
+   /**
+    * @private
+    *
+    * Compares two actions to allow sorting of actions.
+    * <p/>
+    * Actions with a lower priority returned by <em>AbstractFrontcontrollerAction::getPriority()</em>
+    * are executed prior to others.
+    *
+    * @param int $a Offset one for comparison.
+    * @param int $b Offset two for comparison.
+    *
+    * @return int <em>-1</em> in case action <em>$one</em> has lower priority, <em>1</em> in case <em>$two</em> has higher priority. <em>0</em> in case actions are equal.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 11.03.2014<br />
+    */
+   private function sortActions($a, $b) {
+      if ($this->actionStack[$a]->getPriority() == $this->actionStack[$b]->getPriority()) {
+         if ($a == $b) {
+            return 0;
+         }
+
+         return $a > $b ? 1 : -1; // sort equals again to preserve order!
+      }
+
+      return $this->actionStack[$a]->getPriority() > $this->actionStack[$b]->getPriority() ? -1 : 1;
    }
 
    /**
@@ -764,6 +814,7 @@ class Frontcontroller extends APFObject {
     * Create an array from a input param string (scheme: <code>a:b|c:d</code>).
     *
     * @param string $inputConfig The config string contained in the action config.
+    *
     * @return string[] The resulting param-value array.
     *
     * @author Christian W. Schäfer
