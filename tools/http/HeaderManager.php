@@ -101,9 +101,10 @@ class HeaderManager {
     * @author Christian Achatz
     * @version
     * Version 0.1, 09.10.2008<br />
+    * Version 0.2, 11.03.2014 (ID#173: corrected wrong header() parameter usage)<br />
     */
    public static function forward($url, $exitAfterForward = true) {
-      header('Location: ' . self::decodeUrl($url), 303);
+      header('Location: ' . self::decodeUrl($url), false, 303);
 
       if (self::$EXIT_AFTER_FORWARD === true && $exitAfterForward === true) {
          exit(0);
