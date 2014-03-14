@@ -21,6 +21,7 @@ namespace APF\tests\suites\tools\link;
  * -->
  */
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\ActionUrlMapping;
 use APF\core\frontcontroller\FrontcontrollerInput;
 use APF\tools\link\DefaultLinkScheme;
 use APF\tools\link\LinkGenerator;
@@ -38,8 +39,10 @@ use APF\tools\link\Url;
  * Version 0.1, 29.12.2011<br />
  */
 class TestFrontControllerAction extends AbstractFrontcontrollerAction {
+
    public function run() {
    }
+
 }
 
 /**
@@ -54,6 +57,7 @@ class TestFrontControllerAction extends AbstractFrontcontrollerAction {
  * Version 0.1, 29.12.2011<br />
  */
 class TestableDefaultLinkScheme extends DefaultLinkScheme {
+
    protected function &getFrontcontrollerActions() {
 
       $actions = array();
@@ -84,6 +88,7 @@ class TestableDefaultLinkScheme extends DefaultLinkScheme {
  * Version 0.1, 29.12.2011<br />
  */
 class TestableRewriteLinkScheme extends RewriteLinkScheme {
+
    protected function &getFrontcontrollerActions() {
 
       $actions = array();
@@ -178,6 +183,74 @@ class TestableDoubleActionRewriteLinkScheme extends RewriteLinkScheme {
 
 }
 
+class TestableActionUrlMappingStandardLinkScheme extends DefaultLinkScheme {
+
+   const URL_TOKEN = 'media';
+
+   /**
+    * @var ActionUrlMapping[]
+    */
+   private $actionMappings = array();
+
+   public function addActionMapping(ActionUrlMapping $mapping) {
+      $this->actionMappings[] = $mapping;
+   }
+
+   protected function getActionUrlMapping($namespace, $name) {
+      foreach ($this->actionMappings as $mapping) {
+         if ($mapping->getNamespace() == $namespace && $mapping->getName() == $name) {
+            return $mapping;
+         }
+      }
+
+      return null;
+   }
+
+   protected function getActionUrMappingTokens() {
+      $keys = array();
+      foreach ($this->actionMappings as $mapping) {
+         $keys[] = $mapping->getUrlToken();
+      }
+
+      return $keys;
+   }
+
+}
+
+class TestableActionUrlMappingRewriteLinkScheme extends RewriteLinkScheme {
+
+   const URL_TOKEN = 'media';
+
+   /**
+    * @var ActionUrlMapping[]
+    */
+   private $actionMappings = array();
+
+   public function addActionMapping(ActionUrlMapping $mapping) {
+      $this->actionMappings[] = $mapping;
+   }
+
+   protected function getActionUrlMapping($namespace, $name) {
+      foreach ($this->actionMappings as $mapping) {
+         if ($mapping->getNamespace() == $namespace && $mapping->getName() == $name) {
+            return $mapping;
+         }
+      }
+
+      return null;
+   }
+
+   protected function getActionUrMappingTokens() {
+      $keys = array();
+      foreach ($this->actionMappings as $mapping) {
+         $keys[] = $mapping->getUrlToken();
+      }
+
+      return $keys;
+   }
+
+}
+
 /**
  * @package APF\tests\suites\tools\link
  * @class LinkGeneratorTest
@@ -195,8 +268,8 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
    public function testSimpleLinkScheme() {
       $url = new Url(null, null, null, self::$DEFAULT_URL);
       assertEquals(
-         self::$DEFAULT_URL,
-         LinkGenerator::generateUrl($url, new DefaultLinkScheme())
+            self::$DEFAULT_URL,
+            LinkGenerator::generateUrl($url, new DefaultLinkScheme())
       );
    }
 
@@ -217,14 +290,14 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
    public function testFrontcontrollerUrlGeneration() {
       $url = Url::fromString('')->setHost('localhost')->setScheme('http');
       $link = LinkGenerator::generateUrl(
-         $url->mergeQuery(array('foo' => 'bar', 'blubber' => null)),
-         new TestableDefaultLinkScheme()
+            $url->mergeQuery(array('foo' => 'bar', 'blubber' => null)),
+            new TestableDefaultLinkScheme()
       );
       assertEquals('http://localhost?foo=bar&amp;APF_cms_core_biz_setmodel-action:setModel=page.config.section:external', $link);
 
       $link = LinkGenerator::generateUrl(
-         $url->mergeQuery(array('foo' => 'bar', 'blubber' => null)),
-         new TestableRewriteLinkScheme()
+            $url->mergeQuery(array('foo' => 'bar', 'blubber' => null)),
+            new TestableRewriteLinkScheme()
       );
       assertEquals('http://localhost/foo/bar/~/APF_cms_core_biz_setmodel-action/setModel/page.config.section/external', $link);
    }
@@ -271,8 +344,13 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
    public function testLinkGenerationFrontcontrollerActionWithActionParsing() {
       $actionNamespace = 'APF_cms_core_biz_setmodel';
-      $url = new Url(null, null, null, '/de/my-page/topic/2-user-research/~/' . $actionNamespace . '-action/setModel/page.config.section/external');
+
+      $url = Url::fromString('/de/my-page/topic/2-user-research/~/' . $actionNamespace . '-action/setModel/page.config.section/external');
       $link = LinkGenerator::generateUrl($url, new RewriteLinkScheme());
+      assertNotContains($actionNamespace, $link);
+
+      $url = Url::fromString('/?de=my-page&topic=2-user-research&' . $actionNamespace . '-action:setModel=page.config.section:external');
+      $link = LinkGenerator::generateUrl($url, new DefaultLinkScheme());
       assertNotContains($actionNamespace, $link);
    }
 
@@ -292,7 +370,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
    public function testLinkGenerationForActionLinks() {
       $path = '/my-app';
-      $actionNamespace = 'APF_tools_media';
+      $actionNamespace = 'APF\tools\media';
       $actionName = 'streamMedia';
       $foo = 'foo';
       $bar = 'bar';
@@ -313,7 +391,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
     */
    public function testLinkGenerationForActionLinksWithDuplicateActions() {
       $path = '/my-app';
-      $actionNamespace = 'APF_tools_media';
+      $actionNamespace = 'APF\tools\media';
       $actionName = 'streamMedia';
       $foo = 'foo';
       $bar = 'bar';
@@ -345,11 +423,11 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
    public function testExclusionOfNullValueAndInclusionOfZeroValueParameters() {
       $url = Url::fromString('/');
       $url->mergeQuery(array(
-         'foo' => 'bar',
-         'exclude' => null,
+            'foo'         => 'bar',
+            'exclude'     => null,
          // see bug with ignoring zero values in 1.15 (fixed in 1.16)
-         'include-one' => '0',
-         'include-two' => 0
+            'include-one' => '0',
+            'include-two' => 0
       ));
 
       $link = LinkGenerator::generateUrl($url, new DefaultLinkScheme(false));
@@ -373,8 +451,8 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
       // "normal" of URL generation should be left as-is (exclusion/regression test)
       assertEquals(
-         $path . '?' . $foo . '=' . $bar . '&' . $bar . '=' . $baz,
-         LinkGenerator::generateUrl($url->setAnchor(null), $linkScheme)
+            $path . '?' . $foo . '=' . $bar . '&' . $bar . '=' . $baz,
+            LinkGenerator::generateUrl($url->setAnchor(null), $linkScheme)
       );
    }
 
@@ -394,9 +472,110 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase {
 
       // "normal" of URL generation should be left as-is (exclusion/regression test)
       assertEquals(
-         '/' . $foo . '/' . $bar . '/' . $bar . '/' . $baz,
-         LinkGenerator::generateUrl($url->setAnchor(null), $linkScheme)
+            '/' . $foo . '/' . $bar . '/' . $bar . '/' . $baz,
+            LinkGenerator::generateUrl($url->setAnchor(null), $linkScheme)
       );
+   }
+
+   public function testActionMapping() {
+
+      $actionNamespace = 'APF\tools\media';
+      $actionName = 'streamMedia';
+
+      $urlOne = new Url(null, null, null, null);
+      $scheme = new TestableActionUrlMappingRewriteLinkScheme();
+      $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
+      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, array(), $scheme);
+      // the rewrite link scheme supports no path since the path is interpreted as params and their values!
+      assertEquals('/~/' . TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN . '/', $link);
+
+      $urlTwo = new Url(null, null, null, null);
+      $scheme = new TestableActionUrlMappingStandardLinkScheme();
+      $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingStandardLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
+      $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, array(), $scheme);
+      assertEquals('?' . TestableActionUrlMappingStandardLinkScheme::URL_TOKEN, $link);
+   }
+
+   public function testActionMappingWithPath() {
+
+      $path = '/my-app';
+      $actionNamespace = 'APF\tools\media';
+      $actionName = 'streamMedia';
+      $foo = 'foo';
+      $bar = 'bar';
+
+      $urlOne = new Url(null, null, null, $path);
+      $scheme = new TestableActionUrlMappingRewriteLinkScheme();
+      $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
+      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), $scheme);
+      // the rewrite link scheme supports no path since the path is interpreted as params and their values!
+      assertEquals('/~/' . TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN . '/' . $foo . '/1/' . $bar . '/2', $link);
+
+      $urlTwo = new Url(null, null, null, $path);
+      $scheme = new TestableActionUrlMappingStandardLinkScheme();
+      $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingStandardLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
+      $link = LinkGenerator::generateActionUrl($urlTwo, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), $scheme);
+      assertEquals($path . '?' . TestableActionUrlMappingStandardLinkScheme::URL_TOKEN . '=' . $foo . ':1|' . $bar . ':2', $link);
+   }
+
+   // to be tested:
+   // - provide path in rewrite url to be extracted as action LinkGenerator.php:1007
+
+   // - mapped actions combined with non-mapped
+   // - multiple actions with one mapped and one non-mapped
+   // - extract parameters mixed with mapped actions
+   // - multiple mapped/non-mapped with keepInUrl=true:
+   //    keepInUrl=true (--> weiteres TestLinkScheme schreiben)
+   //    $actionTwoNamespace = 'APF\tools\media';
+   //    $actionTwoName = 'streamMedia';
+   // - rewrite case: action existent in path plus to be removed
+
+   /**
+    * Test mapped action mixed with existing static action in URL.
+    */
+   public function testActionInUrlAndOneMappedAction() {
+
+      $actionNamespace = 'APF\tools\media';
+      $actionName = 'streamMedia';
+      $foo = 'foo';
+      $bar = 'bar';
+
+      // "normal" action within URL but no keepInUrl=true set for action; generate action url
+      $urlOne = new Url(null, null, null, '/VENDOR_actions-action:doIt');
+      $scheme = new TestableActionUrlMappingRewriteLinkScheme();
+      $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
+      $link = LinkGenerator::generateActionUrl($urlOne, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), $scheme);
+      // the rewrite link scheme supports no path since the path is interpreted as params and their values!
+      assertEquals('/~/' . TestableActionUrlMappingRewriteLinkScheme::URL_TOKEN . '/' . $foo . '/1/' . $bar . '/2', $link);
+
+      // mapped action is within url but no keepInUrl=true set for action; generate normal url
+      $urlTwo = new Url(null, null, null, '/foo/bar/~/media');
+      $link = LinkGenerator::generateUrl($urlTwo, $scheme);
+      // the rewrite link scheme supports no path since the path is interpreted as params and their values!
+      assertEquals('/foo/bar', $link);
+
+      // normal action within URL but no keepInUrl=true set for action; generate action url
+      $urlThree = new Url(null, null, null, null, array('VENDOR_actions-action:doIt' => ''));
+      $scheme = new TestableActionUrlMappingStandardLinkScheme();
+      $scheme->addActionMapping(new ActionUrlMapping(TestableActionUrlMappingStandardLinkScheme::URL_TOKEN, $actionNamespace, $actionName));
+      $link = LinkGenerator::generateActionUrl($urlThree, $actionNamespace, $actionName, array($foo => '1', $bar => '2'), $scheme);
+      assertEquals('?' . TestableActionUrlMappingStandardLinkScheme::URL_TOKEN . '=' . $foo . ':1|' . $bar . ':2', $link);
+
+      // mapped action is within url but no keepInUrl=true set for action; generate normal url
+      $urlFour = new Url(null, null, null, '/foo/bar', array('media' => ''));
+      $link = LinkGenerator::generateUrl($urlFour, $scheme);
+      // the rewrite link scheme supports no path since the path is interpreted as params and their values!
+      assertEquals('/foo/bar', $link);
+
+   }
+
+   // - multiple mapped actions
+   public function testMultipleMappedActions() {
+
+      // - setup FC with 2 actions
+      // - set keepInUrl=true for both
+      // - generate "normal" URL with LinkGenerator::generateUrl()
+
    }
 
 }

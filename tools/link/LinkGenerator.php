@@ -21,6 +21,7 @@ namespace APF\tools\link;
  * -->
  */
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
+use APF\core\frontcontroller\ActionUrlMapping;
 use APF\core\frontcontroller\Frontcontroller;
 use APF\core\singleton\Singleton;
 
@@ -35,6 +36,7 @@ use APF\core\singleton\Singleton;
  * Version 0.1, 08.04.2011<br />
  */
 class UrlFormatException extends \Exception {
+
 }
 
 /**
@@ -49,6 +51,7 @@ class UrlFormatException extends \Exception {
  * Version 0.1, 29.03.2011<br />
  */
 final class Url {
+
    const DEFAULT_HTTP_PORT = '80';
    const DEFAULT_HTTPS_PORT = '443';
 
@@ -125,14 +128,16 @@ final class Url {
     * Let's you query a request parameter.
     *
     * @param string $name The name of the desired parameter.
+    * @param string $default The default value to return in case the parameter is not existing.
+    *
     * @return string The value of the parameter or null if it doesn't exist.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 04.04.2011<br />
     */
-   public function getQueryParameter($name) {
-      return isset($this->query[$name]) ? $this->query[$name] : null;
+   public function getQueryParameter($name, $default = null) {
+      return isset($this->query[$name]) ? $this->query[$name] : $default;
    }
 
    /**
@@ -141,6 +146,7 @@ final class Url {
     * Let's you inject the scheme of the url.
     *
     * @param string $scheme The url scheme (e.g. http, ftp).
+    *
     * @return Url This object for further usage.
     *
     * @author Christian Achatz
@@ -149,6 +155,7 @@ final class Url {
     */
    public function &setScheme($scheme) {
       $this->scheme = $scheme;
+
       return $this;
    }
 
@@ -158,6 +165,7 @@ final class Url {
     * Let's you inject the host of the url.
     *
     * @param string $host The url' host (e.g. example.com).
+    *
     * @return Url This object for further usage.
     *
     * @author Christian Achatz
@@ -166,6 +174,7 @@ final class Url {
     */
    public function &setHost($host) {
       $this->host = $host;
+
       return $this;
    }
 
@@ -175,6 +184,7 @@ final class Url {
     * Let's you inject the port of the url.
     *
     * @param int|null $port The url's port (e.g. 80, 443).
+    *
     * @return Url This object for further usage.
     *
     * @author Christian Achatz
@@ -183,6 +193,7 @@ final class Url {
     */
    public function &setPort($port) {
       $this->port = $port;
+
       return $this;
    }
 
@@ -192,6 +203,7 @@ final class Url {
     * Let's you inject the path of the url.
     *
     * @param string $path The url's path (e.g. /foo/bar).
+    *
     * @return Url This object for further usage.
     *
     * @author Christian Achatz
@@ -200,6 +212,7 @@ final class Url {
     */
    public function &setPath($path) {
       $this->path = $path;
+
       return $this;
    }
 
@@ -209,6 +222,7 @@ final class Url {
     * Let's you inject the desired amount of request parameters.
     *
     * @param array $query The query parameters to inject.
+    *
     * @return Url This object for further usage.
     *
     * @author Christian Achatz
@@ -217,6 +231,7 @@ final class Url {
     */
    public function &setQuery(array $query) {
       $this->query = $query;
+
       return $this;
    }
 
@@ -228,6 +243,7 @@ final class Url {
     * delete the parameter within the LinkScheme implementation.
     *
     * @param array $query An associative array of the query params to merge.
+    *
     * @return Url This object for further usage.
     *
     * @author Christian Achatz
@@ -238,6 +254,7 @@ final class Url {
       foreach ($query as $name => $value) {
          $this->query[$name] = $value;
       }
+
       return $this;
    }
 
@@ -247,6 +264,7 @@ final class Url {
     * Let's you inject the anchor of the url.
     *
     * @param string $anchor The anchor (e.g. #top).
+    *
     * @return Url This object for further usage.
     *
     * @author Christian Achatz
@@ -255,6 +273,7 @@ final class Url {
     */
    public function &setAnchor($anchor) {
       $this->anchor = $anchor;
+
       return $this;
    }
 
@@ -271,6 +290,7 @@ final class Url {
     */
    public function resetQuery() {
       $this->query = array();
+
       return $this;
    }
 
@@ -283,6 +303,7 @@ final class Url {
     *
     * @param string $name The name of the parameter.
     * @param string $value The value of the parameter.
+    *
     * @return Url This object for further usage.
     *
     * @author Christian Achatz
@@ -291,6 +312,7 @@ final class Url {
     */
    public function &setQueryParameter($name, $value) {
       $this->query[$name] = $value;
+
       return $this;
    }
 
@@ -301,6 +323,7 @@ final class Url {
     * Let's you construct a url applying a string.
     *
     * @param string $url The url to parse.
+    *
     * @return Url The resulting url.
     * @throws UrlFormatException In case the given string is not a valid url.
     *
@@ -347,6 +370,7 @@ final class Url {
     * Creates a url representation from the current request url.
     *
     * @param boolean $absolute True, in case the url should be absolute, false otherwise.
+    *
     * @return Url The current url representation.
     * @throws UrlFormatException In case the given string is not a valid url.
     *
@@ -367,6 +391,7 @@ final class Url {
          $url->setHost(null);
          $url->setPort(null);
       }
+
       return $url;
    }
 
@@ -377,6 +402,7 @@ final class Url {
     * Creates a url representation from the referring url.
     *
     * @param boolean $absolute True, in case the url should be absolute, false otherwise.
+    *
     * @return Url The current url representation.
     * @throws UrlFormatException In case the given referrer is not a valid url.
     *
@@ -392,6 +418,7 @@ final class Url {
             $url->setHost(null);
             $url->setPort(null);
          }
+
          return $url;
       }
       throw new UrlFormatException('Empty referrer url cannot be used to create a url representation.');
@@ -403,6 +430,7 @@ final class Url {
     * Generates a query param array from a given query string.
     *
     * @param string $query The query params string.
+    *
     * @return array The query params array.
     *
     * @author Christian Achatz
@@ -423,11 +451,12 @@ final class Url {
       $params = array();
       foreach ($parts as $part) {
          $tmp = explode('=', $part);
-         // include only param couples and ensure to exclude action definitions
-         if (isset($tmp[1]) && strpos($tmp[0], '-action') === false) {
+         // include only param couples
+         if (isset($tmp[1])) {
             $params[$tmp[0]] = $tmp[1];
          }
       }
+
       return $params;
    }
 
@@ -452,6 +481,7 @@ interface LinkScheme {
 
    /**
     * @param Url $url The url to generate.
+    *
     * @return string The result url.
     */
    public function formatLink(Url $url);
@@ -461,6 +491,7 @@ interface LinkScheme {
     * @param string $namespace The action's namespace.
     * @param string $name The action's name
     * @param array $params The action's parameters.
+    *
     * @return string The result url.
     */
    public function formatActionLink(Url $url, $namespace, $name, array $params = array());
@@ -544,12 +575,14 @@ final class LinkGenerator {
    /**
     * @param Url $url The url representation.
     * @param LinkScheme $scheme An optional link scheme to overwrite the global scheme.
+    *
     * @return string The formatted url.
     */
    public static function generateUrl(Url $url, LinkScheme $scheme = null) {
       if ($scheme === null) {
          return self::$LINK_SCHEME->formatLink($url);
       }
+
       return $scheme->formatLink($url);
    }
 
@@ -559,12 +592,14 @@ final class LinkGenerator {
     * @param string $name The action's name
     * @param array $params The action's parameters.
     * @param LinkScheme $scheme An optional link scheme to overwrite the global scheme.
+    *
     * @return string the formatted url.
     */
    public static function generateActionUrl(Url $url, $namespace, $name, array $params = array(), LinkScheme $scheme = null) {
       if ($scheme === null) {
          return self::$LINK_SCHEME->formatActionLink($url, $namespace, $name, $params);
       }
+
       return $scheme->formatActionLink($url, $namespace, $name, $params);
    }
 
@@ -581,6 +616,7 @@ final class LinkGenerator {
  * Version 0.1, 07.04.2011<br />
  */
 abstract class BasicLinkScheme {
+
    const DEFAULT_PARAM_TO_ACTION_DELIMITER = '&';
    const REWRITE_PARAM_TO_ACTION_DELIMITER = '/~/';
 
@@ -608,6 +644,7 @@ abstract class BasicLinkScheme {
     * it differs from the default ports.
     *
     * @param Url $url The current url representation.
+    *
     * @return string The formatted base url.
     *
     * @author Christian Achatz
@@ -648,9 +685,14 @@ abstract class BasicLinkScheme {
     * Version 0.1, 29.12.2011<br />
     */
    protected function &getFrontcontrollerActions() {
-      $fC = & Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
-      /* @var $fC Frontcontroller */
-      return $fC->getActions();
+      return $this->getFrontController()->getActions();
+   }
+
+   /**
+    * @return Frontcontroller
+    */
+   protected function &getFrontController() {
+      return Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');
    }
 
    /**
@@ -676,6 +718,7 @@ abstract class BasicLinkScheme {
     *
     * @param array $query The current list of parameters.
     * @param boolean $urlRewriting True in case url rewriting is activated, false otherwise.
+    *
     * @return string All actions' url representations.
     *
     * @author Christian Achatz
@@ -708,8 +751,10 @@ abstract class BasicLinkScheme {
       if (count($actionUrlRepresentation) > 0) {
          $delimiter = $urlRewriting === true ? self::REWRITE_PARAM_TO_ACTION_DELIMITER
                : self::DEFAULT_PARAM_TO_ACTION_DELIMITER;
+
          return implode($delimiter, $actionUrlRepresentation);
       }
+
       return '';
    }
 
@@ -720,6 +765,7 @@ abstract class BasicLinkScheme {
     *
     * @param AbstractFrontcontrollerAction $action The front controller action.
     * @param boolean $urlRewriting True in case url rewriting is activated, false otherwise.
+    *
     * @return string The action's url representations.
     *
     * @author Christian Achatz
@@ -732,6 +778,7 @@ abstract class BasicLinkScheme {
 
       // avoid "=" sign with empty value list
       $actionParamsDelimiter = $urlRewriting === true ? '/' : '=';
+
       return empty($value) ? $key : $key . $actionParamsDelimiter . $value;
    }
 
@@ -743,6 +790,7 @@ abstract class BasicLinkScheme {
     * @param string $namespace The namespace of the action.
     * @param string $name The name of the action.
     * @param boolean $urlRewriting True for activated url rewriting, false instead.
+    *
     * @return string The formatted action identifier.
     *
     * @author Christian Achatz
@@ -750,7 +798,30 @@ abstract class BasicLinkScheme {
     * Version 0.1, 07.04.2011<br />
     */
    protected function formatActionIdentifier($namespace, $name, $urlRewriting) {
+      // ID#63: get action URL mapping from front controller and format if appropriate
+      $mapping = $this->getActionUrlMapping($namespace, $name);
+      if ($mapping !== null) {
+         return $mapping->getUrlToken();
+      }
+
       return str_replace('\\', '_', $namespace) . '-action' . ($urlRewriting === true ? '/' : ':') . $name;
+   }
+
+   /**
+    * @param string $namespace The namespace of the action.
+    * @param string $name The name of the action.
+    *
+    * @return ActionUrlMapping|null The desired action URL mapping or <em>null</em>.
+    */
+   protected function getActionUrlMapping($namespace, $name) {
+      return $this->getFrontController()->getActionUrlMapping($namespace, $name);
+   }
+
+   /**
+    * @return string[] The list of action URL mapping tokens.
+    */
+   protected function getActionUrMappingTokens() {
+      return $this->getFrontController()->getActionUrMappingTokens();
    }
 
    /**
@@ -760,6 +831,7 @@ abstract class BasicLinkScheme {
     *
     * @param array $params The action parameters.
     * @param boolean $urlRewriting True for activated url rewriting, false instead.
+    *
     * @return string The url formatted attributes string.
     *
     * @author Christian Achatz
@@ -793,6 +865,7 @@ abstract class BasicLinkScheme {
     * Safely tests whether the applied value is considered empty or not.
     *
     * @param string $value The value to check.
+    *
     * @return bool True in case the value is empty, false otherwise.
     *
     * @author Christian Achatz
@@ -811,6 +884,7 @@ abstract class BasicLinkScheme {
     *
     * @param string $urlString The url constructed by the given url representation.
     * @param Url $url The current url representation potentially including the anchor.
+    *
     * @return string The final url.
     *
     * @author Christian Achatz
@@ -823,7 +897,38 @@ abstract class BasicLinkScheme {
       if (!empty($anchor)) {
          $urlString .= '#' . $anchor;
       }
+
       return $urlString;
+   }
+
+   /**
+    * @protected
+    *
+    * Removes action instructions from the query of a Url instance. Only works for
+    * normal URLs.
+    *
+    * @param Url $url The url to clean up.
+    *
+    * @return Url The url instance without action instructions-.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 14.03.2014<br />
+    */
+   protected function removeActionInstructions(Url $url) {
+
+      $mappings = $this->getActionUrMappingTokens();
+
+      $query = $url->getQuery();
+
+      // remove actions from query (either explicitly expressed by the action keyword or by url token)
+      foreach ($query as $name => $value) {
+         if (strpos($name, '-action') !== false || in_array($name, $mappings)) {
+            unset($query[$name]);
+         }
+      }
+
+      return $url->setQuery($query);
    }
 
 }
@@ -845,6 +950,16 @@ abstract class BasicLinkScheme {
 class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
 
    public function formatLink(Url $url) {
+      // remove existing action instructions since they should only appear with keepInUrl=true
+      return $this->formatLinkInternal($this->removeActionInstructions($url));
+   }
+
+   /**
+    * @param Url $url The URL instance to create a formatted link from.
+    *
+    * @return string The formatted URL.
+    */
+   protected function formatLinkInternal(Url $url) {
 
       $resultUrl = $this->getFormattedBaseUrl($url);
 
@@ -853,12 +968,16 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
          $resultUrl .= $path;
       }
 
+      // get URL mappings and try to resolve mapped actions
+      $mappings = $this->getActionUrMappingTokens();
+
       $query = $url->getQuery();
       $queryString = '';
+
       foreach ($query as $name => $value) {
          if ($this->isValueEmpty($value)) {
             // include actions that may have empty values
-            if (strpos($name, '-action') !== false) {
+            if (strpos($name, '-action') !== false || in_array($name, $mappings)) {
                if (!empty($queryString)) {
                   $queryString .= '&';
                }
@@ -884,7 +1003,7 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
       }
 
       $resultUrl = $this->appendAnchor($resultUrl, $url);
-      
+
       // encode ampersands if desired
       if ($this->getEncodeAmpersands()) {
          return str_replace('&', '&amp;', $resultUrl);
@@ -894,11 +1013,13 @@ class DefaultLinkScheme extends BasicLinkScheme implements LinkScheme {
    }
 
    public function formatActionLink(Url $url, $namespace, $name, array $params = array()) {
-      return $this->formatLink(
-         $url->setQueryParameter(
-            $this->formatActionIdentifier($namespace, $name, false),
-            $this->formatActionParameters($params, false)
-         ));
+      $url = $this->removeActionInstructions($url);
+
+      return $this->formatLinkInternal(
+            $url->setQueryParameter(
+                  $this->formatActionIdentifier($namespace, $name, false),
+                  $this->formatActionParameters($params, false)
+            ));
    }
 
 }
@@ -963,11 +1084,18 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
 
       $query = $url->getQuery();
       if (count($query) > 0) {
+
+         // get URL mappings and try to resolve mapped actions
+         $mappings = $this->getActionUrMappingTokens();
+
          foreach ($query as $name => $value) {
             // allow empty params that are action definitions to not
             // exclude actions with no params!
-            if (!$this->isValueEmpty($value) || ($this->isValueEmpty($value) && strpos($name, '-action') !== false)) {
-               if (strpos($name, '-action') === false) {
+            if (!$this->isValueEmpty($value)
+                  || ($this->isValueEmpty($value) && strpos($name, '-action') !== false)
+                  || ($this->isValueEmpty($value) && in_array($name, $mappings) !== false)
+            ) {
+               if (strpos($name, '-action') === false && in_array($name, $mappings) === false) {
                   $resultUrl .= '/' . $name . '/' . $value;
                } else {
                   // action blocks must be separated with group indicator
@@ -991,10 +1119,10 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
 
    public function formatActionLink(Url $url, $namespace, $name, array $params = array()) {
       return $this->formatLink(
-         $url->setQueryParameter(
-            $this->formatActionIdentifier($namespace, $name, true),
-            $this->formatActionParameters($params, true)
-         ));
+            $url->setQueryParameter(
+                  $this->formatActionIdentifier($namespace, $name, true),
+                  $this->formatActionParameters($params, true)
+            ));
    }
 
 }

@@ -20,10 +20,9 @@ namespace APF\core\filter;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\singleton\Singleton;
 use APF\core\benchmark\BenchmarkTimer;
-use APF\core\registry\Registry;
 use APF\core\frontcontroller\Frontcontroller;
+use APF\core\singleton\Singleton;
 
 /**
  * @package APF\core\filter
@@ -72,8 +71,15 @@ class ChainedStandardInputFilter implements ChainedContentFilter {
       $keyValueDelimiter = ':';
 
       $fC = $this->getFrontcontroller();
+      $tokens = $fC->getActionUrMappingTokens();
 
       foreach ($_REQUEST as $key => $value) {
+
+         // ID#63: re-map action instructions according to registered aliases
+         if (in_array($key, $tokens)) {
+            $mapping = $fC->getActionUrlMapping($key);
+            $key = str_replace('\\', '_', $mapping->getNamespace()) . '-action:' . $mapping->getName();
+         }
 
          if (substr_count($key, $namespaceKeywordDelimiter . $actionKeyword . $keywordClassDelimiter) > 0) {
 

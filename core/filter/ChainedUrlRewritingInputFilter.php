@@ -20,9 +20,8 @@ namespace APF\core\filter;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\singleton\Singleton;
 use APF\core\benchmark\BenchmarkTimer;
-use APF\core\registry\Registry;
+use APF\core\singleton\Singleton;
 
 /**
  * @package APF\core\filter
@@ -76,7 +75,7 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
       $t->start($id);
 
       // extract the session id from $_REQUEST if existent
-      $sessionId = (string)'';
+      $sessionId = (string) '';
       $sessionName = ini_get('session.name');
 
       if (isset($_REQUEST[$sessionName])) {
@@ -84,7 +83,7 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
       }
 
       // initialize param to analyze
-      $query = (string)'';
+      $query = (string) '';
       if (isset($_REQUEST[self::$REWRITE_QUERY_PARAM])) {
          $query = $_REQUEST[self::$REWRITE_QUERY_PARAM];
       }
@@ -93,15 +92,28 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
       unset($_REQUEST[self::$REWRITE_QUERY_PARAM]);
       unset($_GET[self::$REWRITE_QUERY_PARAM]);
 
+      // ID#63: re-map action instructions according to registered aliases
+      $fC = $this->getFrontcontroller();
+      $tokens = $fC->getActionUrMappingTokens();
+
+      // re-map action urls
+      foreach ($tokens as $token) {
+         if (strpos($query, '/' . $token . '/') !== false) {
+            $mapping = $fC->getActionUrlMapping($token);
+            $query = str_replace(
+                  '/' . $token . '/',
+                  '/' . str_replace('\\', '_', $mapping->getNamespace()) . '-action/' . $mapping->getName() . '/',
+                  $query
+            );
+         }
+      }
+
       // extract actions from the request url, in case the action keyword or the action
       // delimiter is present in url.
       if (substr_count($query, self::$ACTION_TO_PARAM_DELIMITER) > 0 || substr_count($query, self::$FC_ACTION_KEYWORD . '/') > 0) {
 
-         $fC = $this->getFrontcontroller();
-
          // split url by delimiter
          $requestURLParts = explode(self::$ACTION_TO_PARAM_DELIMITER, $query);
-
          $count = count($requestURLParts);
          for ($i = 0; $i < $count; $i++) {
 
@@ -139,8 +151,8 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
                $_REQUEST = array_merge($_REQUEST, $paramArray);
             }
          }
-      } else {
 
+      } else {
          // do page controller rewriting!
          $paramArray = $this->createRequestArray($query);
          $_REQUEST = array_merge($_REQUEST, $paramArray);
@@ -169,6 +181,7 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
     * Creates a request array out of a slash-separated url string.
     *
     * @param string $url URL string.
+    *
     * @return string[] List of URL params with their corresponding value.
     *
     * @author Christian Schäfer
@@ -208,6 +221,7 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
     * Removes trailing slashes from URL strings.
     *
     * @param string $url URL string.
+    *
     * @return string URL string without trailing slashes.
     *
     * @author Christian Schäfer
@@ -218,6 +232,7 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
       if (substr($url, 0, 1) == self::$REWRITE_URL_DELIMITER) {
          $url = substr($url, 1);
       }
+
       return $url;
    }
 

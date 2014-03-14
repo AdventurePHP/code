@@ -29,6 +29,7 @@ use APF\core\registry\Registry;
 use APF\core\service\APFDIService;
 use APF\core\service\DIServiceManager;
 use APF\core\singleton\Singleton;
+use InvalidArgumentException;
 
 /**
  * @package APF\core\frontcontroller
@@ -356,6 +357,58 @@ class FrontcontrollerInput extends APFObject {
 
 /**
  * @package APF\core\frontcontroller
+ * @class ActionUrlMapping
+ *
+ * Represents an action url mapping to simplify and prettify URLs.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 12.03.2014<br />
+ */
+class ActionUrlMapping {
+
+   /**
+    * @var string The URL shortcut for the action.
+    */
+   private $urlToken;
+
+   /**
+    * @var string The action namespace.
+    */
+   private $namespace;
+
+   /**
+    * @var string The action name.
+    */
+   private $name;
+
+   /**
+    * @param string $urlToken The URL shortcut for the action.
+    * @param string $namespace The action namespace.
+    * @param string $name The action name.
+    */
+   public function __construct($urlToken, $namespace, $name) {
+      $this->urlToken = $urlToken;
+      $this->namespace = $namespace;
+      $this->name = $name;
+   }
+
+   public function getUrlToken() {
+      return $this->urlToken;
+   }
+
+   public function getName() {
+      return $this->name;
+   }
+
+   public function getNamespace() {
+      return $this->namespace;
+   }
+
+}
+
+/**
+ * @package APF\core\frontcontroller
  * @class Frontcontroller
  *
  * Implements the APF front controller. It enables the developer to execute actions
@@ -436,6 +489,16 @@ class Frontcontroller extends APFObject {
     * @var string Delimiter between input param name and value (url rewrite case!).
     */
    private $urlRewritingKeyValueDelimiter = '/';
+
+   /**
+    * @var string[][] The registered URL mappings for actions accessible via token.
+    */
+   private $urlMappingsByToken = array();
+
+   /**
+    * @var string[][] The registered URL mappings for actions accessible via namespace and name.
+    */
+   private $urlMappingsByNamespaceAndName = array();
 
    public function getActionKeyword() {
       return $this->actionKeyword;
@@ -661,7 +724,7 @@ class Frontcontroller extends APFObject {
     * @param string $name Name of the action (section key of the config file).
     * @param array $params (Input-)params of the action.
     *
-    * @throws \InvalidArgumentException In case the action cannot be found within the appropriate
+    * @throws InvalidArgumentException In case the action cannot be found within the appropriate
     * configuration or the action implementation classes are not available.
     *
     * @author Christian Achatz
@@ -688,7 +751,7 @@ class Frontcontroller extends APFObject {
       // throw exception, in case the action config is not present
       if ($actionConfig == null) {
          $env = Registry::retrieve('APF\core', 'Environment');
-         throw new \InvalidArgumentException('[Frontcontroller::addAction()] No config '
+         throw new InvalidArgumentException('[Frontcontroller::addAction()] No config '
                . 'section for action key "' . $name . '" available in configuration file "' . $env
                . '_actionconfig.ini" in namespace "' . $namespace . '" and context "'
                . $this->getContext() . '"!', E_USER_ERROR);
@@ -710,7 +773,7 @@ class Frontcontroller extends APFObject {
                   $this->getLanguage()
             );
          } catch (\Exception $e) {
-            throw new \InvalidArgumentException('[Frontcontroller::addAction()] Action could not
+            throw new InvalidArgumentException('[Frontcontroller::addAction()] Action could not
             be created using DIServiceManager with service name "' . $actionServiceName . '" and service
             namespace "' . $actionServiceNamespace . '". Please check your action and service
             configuration files! Message from DIServiceManager was: ' . $e->getMessage(), $e->getCode());
@@ -724,7 +787,7 @@ class Frontcontroller extends APFObject {
 
          // check for class being present
          if (!class_exists($actionClass)) {
-            throw new \InvalidArgumentException('[Frontcontroller::addAction()] Action class with name "'
+            throw new InvalidArgumentException('[Frontcontroller::addAction()] Action class with name "'
                   . $actionClass . '" could not be found. Please check your action configuration file!', E_USER_ERROR);
          }
 
@@ -751,7 +814,7 @@ class Frontcontroller extends APFObject {
 
       // check for class being present
       if (!class_exists($inputClass)) {
-         throw new \InvalidArgumentException('[Frontcontroller::addAction()] Input class with name "' . $inputClass
+         throw new InvalidArgumentException('[Frontcontroller::addAction()] Input class with name "' . $inputClass
                . '" could not be found. Please check your action configuration file!', E_USER_ERROR);
       }
 
@@ -777,6 +840,51 @@ class Frontcontroller extends APFObject {
       // uksort() in order to both respect AbstractFrontcontrollerAction::getPriority()
       // and the order of registration for equivalence groups.
       uksort($this->actionStack, array($this, 'sortActions'));
+   }
+
+   /**
+    * @param ActionUrlMapping $mapping The URL mapping to add for actions.
+    */
+   public function registerActionUrMapping(ActionUrlMapping $mapping) {
+      // maintain two indexes for performance reasons
+      $this->urlMappingsByToken[$mapping->getUrlToken()] = $mapping;
+      $this->urlMappingsByNamespaceAndName[$mapping->getNamespace() . $mapping->getName()] = $mapping;
+   }
+
+   /**
+    * @return string[] The list of registered URL tokens.
+    */
+   public function getActionUrMappingTokens() {
+      return array_keys($this->urlMappingsByToken);
+   }
+
+   /**
+    * @public
+    *
+    * Returns the action URL mapping either by URL token or action namespace and name:
+    * <code>
+    * $fC->getActionUrlMapping('url-token');
+    * $fC->getActionUrlMapping('VENDOR\actions', 'do-something');
+    * </code>
+    *
+    * @param string $tokenOrNamespace The URL token of the mapping or the action namespace.
+    * @param string $name The action name.
+    *
+    * @return ActionUrlMapping|null The desired URL mapping or <em>null</em> in case no mapping is registered..
+    */
+   public function getActionUrlMapping($tokenOrNamespace, $name = null) {
+
+      // retrieve mapping by token
+      if ($name === null) {
+         return isset($this->urlMappingsByToken[$tokenOrNamespace])
+               ? $this->urlMappingsByToken[$tokenOrNamespace]
+               : null;
+      }
+
+      // retrieve mapping by action namespace and name
+      return isset($this->urlMappingsByNamespaceAndName[$tokenOrNamespace . $name])
+            ? $this->urlMappingsByNamespaceAndName[$tokenOrNamespace . $name]
+            : null;
    }
 
    /**
