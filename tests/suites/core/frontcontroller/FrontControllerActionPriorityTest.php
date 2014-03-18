@@ -21,13 +21,25 @@ namespace APF\tests\suites\core\frontcontroller;
  * -->
  */
 use APF\core\configuration\ConfigurationManager;
+use APF\core\configuration\provider\ini\IniConfiguration;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 use APF\core\frontcontroller\Frontcontroller;
 
-class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
+/**
+ * @package APF\tests\suites\core\frontcontroller
+ * @class FrontControllerActionPriorityTest
+ *
+ * Tests prioritization of front controller actions.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 11.03.2014<br />
+ */
+class FrontControllerActionPriorityTest extends \PHPUnit_Framework_TestCase {
 
    const TEST_ACTION_NAME = 'TestAction';
    const TEST_ACTION_NAMESPACE = 'APF\tests\core\frontcontroller';
+   const TEST_ACTION_CONFIG_NAME = 'actionconfig.ini';
 
    /**
     * @var IniConfigurationProvider
@@ -35,11 +47,24 @@ class FrontcontrollerTest extends \PHPUnit_Framework_TestCase {
    private $initialIniProvider;
 
    public function setUp() {
+
       // setup config provider to fake tests
       $this->initialIniProvider = ConfigurationManager::retrieveProvider('ini');
 
       // setup fake ini provider to avoid file-based configuration files
-      ConfigurationManager::registerProvider('ini', new FakeIniProvider());
+      $provider = new FakeIniProvider();
+
+      $config = new IniConfiguration();
+
+      // setup section for action
+      $action = new IniConfiguration();
+      $action->setValue('ActionClass', 'APF\tests\suites\core\frontcontroller\PriorityAwareTestAction');
+
+      $config->setSection(FrontControllerActionPriorityTest::TEST_ACTION_NAME, $action);
+
+      $provider->registerConfiguration(self::TEST_ACTION_NAMESPACE, self::TEST_ACTION_CONFIG_NAME, $config);
+
+      ConfigurationManager::registerProvider('ini', $provider);
 
    }
 

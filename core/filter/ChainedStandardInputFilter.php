@@ -64,39 +64,33 @@ class ChainedStandardInputFilter implements ChainedContentFilter {
       $id = get_class($this);
       $t->start($id);
 
-      $namespaceKeywordDelimiter = '-';
-      $actionKeyword = 'action';
-      $keywordClassDelimiter = ':';
-      $inputDelimiter = '|';
-      $keyValueDelimiter = ':';
-
       $fC = $this->getFrontcontroller();
-      $tokens = $fC->getActionUrMappingTokens();
+      $tokens = $fC->getActionUrlMappingTokens();
 
       foreach ($_REQUEST as $key => $value) {
 
          // ID#63: re-map action instructions according to registered aliases
          if (in_array($key, $tokens)) {
             $mapping = $fC->getActionUrlMapping($key);
-            $key = str_replace('\\', '_', $mapping->getNamespace()) . '-action:' . $mapping->getName();
+            $key = str_replace('\\', '_', $mapping->getNamespace()) . self::$FC_ACTION_KEYWORD . ':' . $mapping->getName();
          }
 
-         if (substr_count($key, $namespaceKeywordDelimiter . $actionKeyword . $keywordClassDelimiter) > 0) {
+         if (substr_count($key, self::$FC_ACTION_KEYWORD . ':') > 0) {
 
             // get namespace and class from the REQUEST key
-            $actionName = substr($key, strpos($key, $keywordClassDelimiter) + strlen($keywordClassDelimiter));
-            $actionNamespace = substr($key, 0, strpos($key, $namespaceKeywordDelimiter));
+            $actionName = substr($key, strpos($key, ':') + 1);
+            $actionNamespace = substr($key, 0, strpos($key, '-'));
 
             // initialize the input params
             $inputParams = array();
 
             // create param array
-            $paramsArray = explode($inputDelimiter, $value);
+            $paramsArray = explode('|', $value);
 
             $count = count($paramsArray);
             for ($i = 0; $i < $count; $i++) {
 
-               $tmpArray = explode($keyValueDelimiter, $paramsArray[$i]);
+               $tmpArray = explode(':', $paramsArray[$i]);
 
                if (isset($tmpArray[0]) && isset($tmpArray[1])
                      && !empty($tmpArray[0]) && !empty($tmpArray[1])

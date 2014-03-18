@@ -94,7 +94,7 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
 
       // ID#63: re-map action instructions according to registered aliases
       $fC = $this->getFrontcontroller();
-      $tokens = $fC->getActionUrMappingTokens();
+      $tokens = $fC->getActionUrlMappingTokens();
 
       // re-map action urls
       foreach ($tokens as $token) {

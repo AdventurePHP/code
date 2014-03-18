@@ -821,7 +821,7 @@ abstract class BasicLinkScheme {
     * @return string[] The list of action URL mapping tokens.
     */
    protected function getActionUrMappingTokens() {
-      return $this->getFrontController()->getActionUrMappingTokens();
+      return $this->getFrontController()->getActionUrlMappingTokens();
    }
 
    /**
@@ -1100,7 +1100,12 @@ class RewriteLinkScheme extends BasicLinkScheme implements LinkScheme {
                } else {
                   // action blocks must be separated with group indicator
                   // to be able to parse the parameters
-                  $resultUrl .= self::REWRITE_PARAM_TO_ACTION_DELIMITER . $name . '/' . $value;
+                  $resultUrl .= self::REWRITE_PARAM_TO_ACTION_DELIMITER . $name;
+
+                  // check whether value is empty and append action only
+                  if (!$this->isValueEmpty($value)) {
+                     $resultUrl .= '/' . $value;
+                  }
                }
             }
          }

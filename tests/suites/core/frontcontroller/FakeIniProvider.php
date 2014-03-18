@@ -20,22 +20,29 @@ namespace APF\tests\suites\core\frontcontroller;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\Configuration;
+use APF\core\configuration\ConfigurationException;
 use APF\core\configuration\provider\ini\IniConfiguration;
 use APF\core\configuration\provider\ini\IniConfigurationProvider;
 
 class FakeIniProvider extends IniConfigurationProvider {
 
+   /**
+    * @var Configuration[]
+    */
+   private $configurations = array();
+
+   public function registerConfiguration($namespace, $name, IniConfiguration $config) {
+      $this->configurations[$namespace . $name] = $config;
+   }
+
    public function loadConfiguration($namespace, $context, $language, $environment, $name) {
 
-      $config = new IniConfiguration();
+      if (isset($this->configurations[$namespace . $name])) {
+         return $this->configurations[$namespace . $name];
+      }
 
-      // setup section for action
-      $action = new IniConfiguration();
-      $action->setValue('ActionClass', 'APF\tests\suites\core\frontcontroller\PriorityAwareTestAction');
-
-      $config->setSection(FrontcontrollerTest::TEST_ACTION_NAME, $action);
-
-      return $config;
+      throw new ConfigurationException('Configuration with namespace "' . $namespace . '" and name "' . $name . '" not registered');
    }
 
 }

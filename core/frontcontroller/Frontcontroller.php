@@ -619,9 +619,9 @@ class Frontcontroller extends APFObject {
     */
    public function &getActionByName($actionName) {
 
-      foreach ($this->actionStack as $actionHash => $DUMMY) {
-         if ($this->actionStack[$actionHash]->getActionName() == $actionName) {
-            return $this->actionStack[$actionHash];
+      foreach ($this->actionStack as $offset => $DUMMY) {
+         if ($this->actionStack[$offset]->getActionName() == $actionName) {
+            return $this->actionStack[$offset];
          }
       }
 
@@ -843,18 +843,37 @@ class Frontcontroller extends APFObject {
    }
 
    /**
+    * @public
+    *
+    * Registers an action URL mapping with the front controller.
+    * <p/>
+    * Action mappings allow to shorten action instructions within the URL from e.g.
+    * <em>VENDOR_foo_bar-action:doIt</em> to <em>doId</em>.
+    *
     * @param ActionUrlMapping $mapping The URL mapping to add for actions.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.03.2014<br />
     */
-   public function registerActionUrMapping(ActionUrlMapping $mapping) {
+   public function registerActionUrlMapping(ActionUrlMapping $mapping) {
       // maintain two indexes for performance reasons
       $this->urlMappingsByToken[$mapping->getUrlToken()] = $mapping;
       $this->urlMappingsByNamespaceAndName[$mapping->getNamespace() . $mapping->getName()] = $mapping;
    }
 
    /**
+    * @public
+    *
+    * Returns the list of registered URL tokens that are registered with the front controller.
+    *
     * @return string[] The list of registered URL tokens.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 12.03.2014<br />
     */
-   public function getActionUrMappingTokens() {
+   public function getActionUrlMappingTokens() {
       return array_keys($this->urlMappingsByToken);
    }
 
@@ -981,17 +1000,17 @@ class Frontcontroller extends APFObject {
       /* @var $t BenchmarkTimer */
       $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
 
-      foreach ($this->actionStack as $actionHash => $DUMMY) {
+      foreach ($this->actionStack as $offset => $DUMMY) {
 
          // only execute, when the current action has a suitable type
-         if ($this->actionStack[$actionHash]->getType() == $type
-               && $this->actionStack[$actionHash]->isActive()
+         if ($this->actionStack[$offset]->getType() == $type
+               && $this->actionStack[$offset]->isActive()
          ) {
 
-            $id = get_class($this->actionStack[$actionHash]) . '::run()';
+            $id = get_class($this->actionStack[$offset]) . '::run()';
             $t->start($id);
 
-            $this->actionStack[$actionHash]->run();
+            $this->actionStack[$offset]->run();
 
             $t->stop($id);
          }
