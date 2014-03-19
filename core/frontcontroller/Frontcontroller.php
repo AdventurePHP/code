@@ -666,14 +666,19 @@ class Frontcontroller extends APFObject {
    /**
     * @public
     *
-    * Registers an action to the front controller. This includes action configuration using
+    * Registers an action with the front controller. This includes action configuration using
     * the action params defined within the action mapping. Each action definition is expected
     * to be stored in the <em>{ENVIRONMENT}_actionconfig.ini</em> file under the namespace
     * <em>{$namespace}\{$this->context}.</em>
+    * <p/>
+    * Using the forth parameter, you can directly register an action URL mapping. URL mappings
+    * allow you to shorten action URLs from e.g. <em>VENDOR_foo-action:bar=a:b|c:d</em> to
+    * <em>bar=a:b|c:d</em>. For details, please refer to <em>Frontcontroller::registerActionUrlMapping()</em>.
     *
     * @param string $namespace Namespace of the action to register.
     * @param string $name Name of the action to register.
     * @param array $params (Input-) params of the action.
+    * @param string $urlToken Name of the action URL mapping token to register along with the action.
     *
     * @author Christian Schäfer
     * @version
@@ -681,8 +686,9 @@ class Frontcontroller extends APFObject {
     * Version 0.2, 01.07.2007 (Action namespace is now translated at the addAction() method)<br />
     * Version 0.3, 01.07.2007 (Config params are now parsed correctly)<br />
     * Version 0.4, 27.09.2010 (Removed synthetic "actions" sub-namespace)<br />
+    * Version 0.5, 19.03.2014 (Added implicit registration of action mapping)<br />
     */
-   public function registerAction($namespace, $name, array $params = array()) {
+   public function registerAction($namespace, $name, array $params = array(), $urlToken = null) {
 
       $config = $this->getConfiguration($namespace, 'actionconfig.ini');
 
@@ -710,6 +716,11 @@ class Frontcontroller extends APFObject {
       }
 
       $this->addAction($namespace, $name, $params);
+
+      // register action URL mapping if desired
+      if ($urlToken !== null) {
+         $this->registerActionUrlMapping(new ActionUrlMapping($urlToken, $namespace, $name));
+      }
    }
 
    /**
@@ -836,7 +847,7 @@ class Frontcontroller extends APFObject {
       // add the action as a child
       $this->actionStack[] = $action;
 
-      // Sort actions to allow prioritization of actions. This is done using
+      // ID#83: Sort actions to allow prioritization of actions. This is done using
       // uksort() in order to both respect AbstractFrontcontrollerAction::getPriority()
       // and the order of registration for equivalence groups.
       uksort($this->actionStack, array($this, 'sortActions'));
@@ -912,7 +923,7 @@ class Frontcontroller extends APFObject {
     * Compares two actions to allow sorting of actions.
     * <p/>
     * Actions with a lower priority returned by <em>AbstractFrontcontrollerAction::getPriority()</em>
-    * are executed prior to others.
+    * are executed prior to others as described in CR ID#83.
     *
     * @param int $a Offset one for comparison.
     * @param int $b Offset two for comparison.
