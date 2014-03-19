@@ -105,6 +105,14 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
                   '/' . str_replace('\\', '_', $mapping->getNamespace()) . '-action/' . $mapping->getName() . '/',
                   $query
             );
+         } else if (substr($query, -(strlen($token) + 1)) == '/' . $token) {
+            // URL mapping appears at the end of the query and/or is the only part of it
+            $mapping = $fC->getActionUrlMapping($token);
+            $query = str_replace(
+                  '/' . $token,
+                  '/' . str_replace('\\', '_', $mapping->getNamespace()) . '-action/' . $mapping->getName(),
+                  $query
+            );
          }
       }
 

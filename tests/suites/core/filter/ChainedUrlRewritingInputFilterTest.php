@@ -31,15 +31,16 @@ use APF\tests\suites\core\frontcontroller\FakeIniProvider;
  * @package APF\tests\suites\core\filter
  * @class ChainedStandardInputFilterTest
  *
- * Tests the action mapping capabilities of the ChainedStandardInputFilter.
+ * Tests the action mapping capabilities of the ChainedUrlRewritingInputFilter.
  *
  * @author Christian Achatz
  * @version
  * Version 0.1, 18.03.2014<br />
  */
-class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
+class ChainedUrlRewritingInputFilterTest extends \PHPUnit_Framework_TestCase {
 
    const TEST_ACTION_CONFIG_NAME = 'actionconfig.ini';
+   const REWRITTEN_QUERY_ATTRIBUTE = 'apf-rewritten-query';
 
    /**
     * @var IniConfigurationProvider
@@ -77,6 +78,7 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       ConfigurationManager::registerProvider('ini', $this->initialIniProvider);
    }
 
+
    /**
     * Tests standard action as before realization of CR ID#63.
     */
@@ -87,9 +89,9 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       // action on stack w/o params
       $_REQUEST = array();
-      $_REQUEST['VENDOR_foo-action:' . $actionName] = '';
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/VENDOR_foo-action/' . $actionName;
 
-      $filter = new TestableChainedStandardInputFilter();
+      $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $filter->setFrontcontroller($fC);
       $filter->filter(new TestableFilterChain(), null);
@@ -101,9 +103,9 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       // action on stack w/ params
       $_REQUEST = array();
-      $_REQUEST['VENDOR_foo-action:' . $actionName] = 'one:1|two:2';
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/VENDOR_foo-action/' . $actionName . '/one/1/two/2';
 
-      $filter = new TestableChainedStandardInputFilter();
+      $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $filter->setFrontcontroller($fC);
       $filter->filter(new TestableFilterChain(), null);
@@ -119,10 +121,9 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       // action on stack w/o params
       $_REQUEST = array();
-      $_REQUEST['VENDOR_foo-action:say-foo'] = '';
-      $_REQUEST['VENDOR_bar-action:say-bar'] = '';
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/VENDOR_foo-action/say-foo/~/VENDOR_bar-action/say-bar';
 
-      $filter = new TestableChainedStandardInputFilter();
+      $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $filter->setFrontcontroller($fC);
       $filter->filter(new TestableFilterChain(), null);
@@ -139,10 +140,9 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       // action on stack w/ params
       $_REQUEST = array();
-      $_REQUEST['VENDOR_foo-action:say-foo'] = 'one:1|two:2';
-      $_REQUEST['VENDOR_bar-action:say-bar'] = 'one:1|two:2';
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/VENDOR_foo-action/say-foo/one/1/two/2/~/VENDOR_bar-action/say-bar/one/1/two/2';
 
-      $filter = new TestableChainedStandardInputFilter();
+      $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $filter->setFrontcontroller($fC);
       $filter->filter(new TestableFilterChain(), null);
@@ -162,13 +162,9 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
    public function testSimpleMultipleActionsMixedWithParams() {
 
       $_REQUEST = array();
-      $_REQUEST['zero'] = '0';
-      $_REQUEST['VENDOR_foo-action:say-foo'] = 'one:1|two:2';
-      $_REQUEST['VENDOR_bar-action:say-bar'] = 'one:1|two:2';
-      $_REQUEST['three'] = '3';
-      $_REQUEST['four'] = '4';
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/zero/0/~/VENDOR_foo-action/say-foo/one/1/two/2/~/VENDOR_bar-action/say-bar/one/1/two/2/~/three/3/four/4';
 
-      $filter = new TestableChainedStandardInputFilter();
+      $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $filter->setFrontcontroller($fC);
       $filter->filter(new TestableFilterChain(), null);
@@ -191,11 +187,11 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       $actionNamespace = 'VENDOR\foo';
       $actionName = 'say-foo';
 
-      // action on stack w/o params
+      // action on stack w/o params - start with action
       $_REQUEST = array();
-      $_REQUEST[$urlToken] = '';
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/' . $urlToken;
 
-      $filter = new TestableChainedStandardInputFilter();
+      $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
 
@@ -207,11 +203,43 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       assertEquals($actionName, $actions[0]->getActionName());
       assertEquals(array(), $actions[0]->getInput()->getAttributes());
 
-      // action on stack w/ params
+      // action on stack w/o params - start with action delimiter
       $_REQUEST = array();
-      $_REQUEST[$urlToken] = 'one:1|two:2';
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/~/' . $urlToken;
 
-      $filter = new TestableChainedStandardInputFilter();
+      $filter = new TestableChainedUrlRewritingInputFilter();
+      $fC = new Frontcontroller();
+      $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
+
+      $filter->setFrontcontroller($fC);
+      $filter->filter(new TestableFilterChain(), null);
+
+      $actions = $fC->getActions();
+      assertEquals($actionNamespace, $actions[0]->getActionNamespace());
+      assertEquals($actionName, $actions[0]->getActionName());
+      assertEquals(array(), $actions[0]->getInput()->getAttributes());
+
+      // action on stack w/ params - start with action
+      $_REQUEST = array();
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/' . $urlToken . '/one/1/two/2';
+
+      $filter = new TestableChainedUrlRewritingInputFilter();
+      $fC = new Frontcontroller();
+      $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
+
+      $filter->setFrontcontroller($fC);
+      $filter->filter(new TestableFilterChain(), null);
+
+      $actions = $fC->getActions();
+      assertEquals($actionNamespace, $actions[0]->getActionNamespace());
+      assertEquals($actionName, $actions[0]->getActionName());
+      assertEquals(array('one' => '1', 'two' => '2'), $actions[0]->getInput()->getAttributes());
+
+      // action on stack w/ params - start with action delimiter
+      $_REQUEST = array();
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/~/' . $urlToken . '/one/1/two/2';
+
+      $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $fC->registerActionUrlMapping(new ActionUrlMapping($urlToken, $actionNamespace, $actionName));
 
@@ -237,10 +265,9 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       // action on stack w/o params
       $_REQUEST = array();
-      $_REQUEST[$fooUrlToken] = '';
-      $_REQUEST[$barUrlToken] = '';
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/' . $fooUrlToken . '/~/' . $barUrlToken;
 
-      $filter = new TestableChainedStandardInputFilter();
+      $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $fC->registerActionUrlMapping(new ActionUrlMapping($fooUrlToken, $fooActionNamespace, $fooActionName));
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
@@ -258,12 +285,11 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       assertEquals($barActionName, $actions[1]->getActionName());
       assertEquals(array(), $actions[1]->getInput()->getAttributes());
 
-      // action on stack w/ params
+      // action on stack w/ params - start with action delimiter
       $_REQUEST = array();
-      $_REQUEST[$fooUrlToken] = 'one:1|two:2';
-      $_REQUEST[$barUrlToken] = 'one:1|two:2';
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/~/' . $fooUrlToken . '/one/1/two/2/~/' . $barUrlToken . '/one/1/two/2/';
 
-      $filter = new TestableChainedStandardInputFilter();
+      $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $fC->registerActionUrlMapping(new ActionUrlMapping($fooUrlToken, $fooActionNamespace, $fooActionName));
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
@@ -293,13 +319,11 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
       $barActionNamespace = 'VENDOR\bar';
       $barActionName = 'say-bar';
 
-      // action on stack w/o params
+      // action on stack w/o params - trailing slash special challenge ;)
       $_REQUEST = array();
-      $_REQUEST[$fooUrlToken] = '';
-      $_REQUEST['VENDOR_baz-action:say-baz'] = '';
-      $_REQUEST[$barUrlToken] = '';
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/' . $fooUrlToken . '/~/VENDOR_baz-action/say-baz/~/' . $barUrlToken . '/';
 
-      $filter = new TestableChainedStandardInputFilter();
+      $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $fC->registerActionUrlMapping(new ActionUrlMapping($fooUrlToken, $fooActionNamespace, $fooActionName));
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
@@ -323,11 +347,9 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
 
       // action on stack w/ params
       $_REQUEST = array();
-      $_REQUEST[$fooUrlToken] = 'one:1|two:2';
-      $_REQUEST['VENDOR_baz-action:say-baz'] = 'one:1|two:2';
-      $_REQUEST[$barUrlToken] = 'one:1|two:2';
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/~/' . $fooUrlToken . '/one/1/two/2/~/VENDOR_baz-action/say-baz/one/1/two/2/~/' . $barUrlToken . '/one/1/two/2';
 
-      $filter = new TestableChainedStandardInputFilter();
+      $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $fC->registerActionUrlMapping(new ActionUrlMapping($fooUrlToken, $fooActionNamespace, $fooActionName));
       $fC->registerActionUrlMapping(new ActionUrlMapping($barUrlToken, $barActionNamespace, $barActionName));
@@ -354,17 +376,25 @@ class ChainedStandardInputFilterTest extends \PHPUnit_Framework_TestCase {
    public function testParametersOnly() {
 
       $_REQUEST = array();
-      $_REQUEST['zero'] = '0';
-      $_REQUEST['one'] = '1';
-      $_REQUEST['two'] = '2';
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/zero/0/one/1/two/2';
 
-      $filter = new TestableChainedStandardInputFilter();
+      $filter = new TestableChainedUrlRewritingInputFilter();
       $fC = new Frontcontroller();
       $filter->setFrontcontroller($fC);
       $filter->filter(new TestableFilterChain(), null);
 
       assertEquals(array(), $fC->getActions());
 
+      // special case for rewrite URLs: action delimiter but with only "normal" params
+      $_REQUEST = array();
+      $_REQUEST[self::REWRITTEN_QUERY_ATTRIBUTE] = '/~/zero/0/one/1/two/2';
+
+      $filter = new TestableChainedUrlRewritingInputFilter();
+      $fC = new Frontcontroller();
+      $filter->setFrontcontroller($fC);
+      $filter->filter(new TestableFilterChain(), null);
+
+      assertEquals(array(), $fC->getActions());
    }
 
-}
+} 
