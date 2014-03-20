@@ -876,6 +876,33 @@ class Frontcontroller extends APFObject {
    /**
     * @public
     *
+    * Registers multiple action URL mappings with the front controller defined within a
+    * configuration file specified by it's namespace and name.
+    * <p/>
+    * For details please refer to Frontcontroller::registerActionUrlMapping().
+    *
+    * @param string $namespace The configuration file namespace.
+    * @param string $name The configuration file name.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.03.2014<br />
+    */
+   public function registerActionUrlMappings($namespace, $name) {
+      $config = $this->getConfiguration($namespace, $name);
+
+      foreach ($config->getSectionNames() as $urlToken) {
+         $section = $config->getSection($urlToken);
+         $this->registerActionUrlMapping(
+               new ActionUrlMapping($urlToken, $section->getValue('ActionNamespace'), $section->getValue('ActionName'))
+         );
+      }
+
+   }
+
+   /**
+    * @public
+    *
     * Returns the list of registered URL tokens that are registered with the front controller.
     *
     * @return string[] The list of registered URL tokens.
