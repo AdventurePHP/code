@@ -276,7 +276,7 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements APFDIS
     * the current instance, this action takes higher priority and is executed first.
     * <p/>
     * Default value is 10 to allow easier prioritization at a granular level. Example: returning
-    * <em>1</em> means higher priority, <em>20</em> means lower priority.
+    * <em>1</em> means lower priority, <em>20</em> means higher priority.
     *
     * @return int The action's priority on the action stack.
     */
