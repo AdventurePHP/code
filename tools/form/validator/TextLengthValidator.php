@@ -20,7 +20,6 @@ namespace APF\tools\form\validator;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\tools\validation\validators\TextLengthValidator as TextLengthValidatorImplementation;
 
 /**
  * @package APF\tools\form\validator
@@ -32,7 +31,7 @@ use APF\tools\validation\validators\TextLengthValidator as TextLengthValidatorIm
  * control definition.
  * <p/>
  * Applying attribute <em>mode</em> with value <em>strict</em> the content is
- * trim'd befor validation.
+ * trim'd before validation.
  *
  * @author Christian Achatz
  * @version
@@ -52,6 +51,7 @@ class TextLengthValidator extends TextFieldValidator {
     * Supports min and max length definition of the text to validate.
     *
     * @param string $input The text to validate.
+    *
     * @return boolean true, in case the control to validate is considered valid, false otherwise.
     *
     * @author Christian Achatz
@@ -59,8 +59,28 @@ class TextLengthValidator extends TextFieldValidator {
     * Version 0.1, 06.02.2010<br />
     */
    public function validate($input) {
-      $validator = new TextLengthValidatorImplementation($this->getMinLength(), $this->getMaxLength(), $this->getMode());
-      return $validator->validate($input);
+
+      $minlength = $this->getMinLength();
+      $maxlength = $this->getMaxLength();
+      $mode = $this->getMode();
+
+      // mode strict needs trim() on $input
+      if ($mode === 'strict') {
+         $input = trim($input);
+      }
+
+      // the max length being null, the text may contain an infinite number of characters
+      if ($maxlength === 0) {
+         if (!empty($input) && strlen($input) >= $minlength) {
+            return true;
+         }
+      } else {
+         if (!empty($input) && strlen($input) >= $minlength && strlen($input) <= $maxlength) {
+            return true;
+         }
+      }
+
+      return false;
    }
 
    /**
@@ -81,6 +101,7 @@ class TextLengthValidator extends TextFieldValidator {
       if ($minLength === null) {
          $minLength = 3;
       }
+
       return (int) $minLength;
    }
 
@@ -100,6 +121,7 @@ class TextLengthValidator extends TextFieldValidator {
    private function getMaxLength() {
       // max length being null is ok, because we consider it to indicate infinite length!
       $maxLength = $this->control->getAttribute(self::$MAX_LENGTH_ATTRIBUTE_NAME);
+
       return (int) $maxLength;
    }
 
