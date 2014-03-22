@@ -24,7 +24,7 @@ use APF\core\pagecontroller\BaseDocumentController;
 use APF\modules\pager\biz\PageItem;
 
 /**
- * @package APF\modules\schwarzesbrett\pres\documentcontroller\pager
+ * @package APF\modules\pager\pres\documentcontroller
  * @class SimplePagerController
  *
  * Implements a simple pager representation.

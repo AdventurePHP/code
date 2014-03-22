@@ -27,7 +27,7 @@ use APF\tools\link\Url;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\schwarzesbrett\pres\documentcontroller\pager
+ * @package APF\modules\pager\pres\documentcontroller
  * @class AdvancedPagerController
  *
  * Implements a document controller displaying the model information of the pager. This
