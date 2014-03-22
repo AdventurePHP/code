@@ -22,7 +22,10 @@ namespace APF\core\singleton;
  */
 use APF\core\pagecontroller\APFObject;
 
-register_shutdown_function(array('APF\core\singleton\ApplicationSingleton', 'saveObjects'));
+// ID#178: use closure functions instead of array() to avoid issued with PHP 5.4.x
+register_shutdown_function(function () {
+   ApplicationSingleton::saveObjects();
+});
 
 /**
  * @package APF\core\singleton
@@ -68,6 +71,7 @@ class ApplicationSingleton {
     *
     * @param string $class The name of the class, that should be created a singleton instance from.
     * @param string $instanceId The id of the instance to return.
+    *
     * @return APFObject The desired object's singleton instance.
     * @throws \Exception In case the implementation class cannot be found.
     *
