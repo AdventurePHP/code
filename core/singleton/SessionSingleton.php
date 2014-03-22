@@ -20,10 +20,13 @@ namespace APF\core\singleton;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\session\Session;
 use APF\core\pagecontroller\APFObject;
+use APF\core\session\Session;
 
-register_shutdown_function(array('APF\core\singleton\SessionSingleton', 'saveObjects'));
+// ID#178: use closure functions instead of array() to avoid issued with PHP 5.4.x
+register_shutdown_function(function () {
+   SessionSingleton::saveObjects();
+});
 
 /**
  * @package APF\core\singleton
@@ -75,6 +78,7 @@ class SessionSingleton extends Singleton {
     *
     * @param string $class The name of the class, that should be created a session singleton instance from.
     * @param string $instanceId The id of the instance to return.
+    *
     * @return APFObject The desired object's singleton instance.
     * @throws \Exception In case the implementation class cannot be found.
     *
@@ -112,6 +116,7 @@ class SessionSingleton extends Singleton {
       if (self::$SESSION === null) {
          self::$SESSION = new Session(__NAMESPACE__);
       }
+
       return self::$SESSION;
    }
 
