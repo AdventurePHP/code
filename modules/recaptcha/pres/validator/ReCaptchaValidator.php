@@ -31,7 +31,7 @@ use APF\tools\request\RequestHandler;
  * Validates a reCaptcha field.
  * <p/>
  * Using APF's ReCaptcha wrapper requires download and inclusion of Google's
- * <em>recaptchalib</em> available under http://recaptcha.net/plugins/php/.
+ * <em>recaptchalib</em> available under https://developers.google.com/recaptcha/.
  * Please include <em>recaptchalib.php</em> e.g. within your bootstrap file to
  * make the included code available.
  *

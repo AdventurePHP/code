@@ -38,7 +38,7 @@ use APF\tools\form\taglib\AbstractFormControl;
  * Details on the architecture of reCaptcha can be read about under https://developers.google.com/recaptcha/docs/display?hl=de.
  * <p/>
  * Using APF's ReCaptcha wrapper requires download and inclusion of Google's
- * <em>recaptchalib</em> available under http://recaptcha.net/plugins/php/.
+ * <em>recaptchalib</em> available under https://developers.google.com/recaptcha/.
  * Please include <em>recaptchalib.php</em> e.g. within your bootstrap file to
  * make the included code available.
  *
