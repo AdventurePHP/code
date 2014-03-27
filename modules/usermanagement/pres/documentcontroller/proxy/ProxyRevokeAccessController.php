@@ -50,7 +50,7 @@ class ProxyRevokeAccessController extends UmgtBaseController {
       $proxy = new UmgtVisibilityDefinition();
       $proxy->setObjectId($proxyId);
 
-      $class = 'Umgt' . $objectType;
+      $class = 'APF\modules\usermanagement\biz\model\Umgt' . $objectType;
       $object = new $class;
       /* @var $object UmgtUser|UmgtGroup */
       $object->setObjectId($objectId);
@@ -77,14 +77,14 @@ class ProxyRevokeAccessController extends UmgtBaseController {
          if ($objectType == 'User') {
             $object = $this->getManager()->loadUserByID($objectId);
             $label->setPlaceHolder(
-               'object-type',
-               $labels->getValue('frontend.proxy.revoke-access.object-type.user.label')
+                  'object-type',
+                  $labels->getValue('frontend.proxy.revoke-access.object-type.user.label')
             );
          } else {
             $object = $this->getManager()->loadGroupByID($objectId);
             $label->setPlaceHolder(
-               'object-type',
-               $labels->getValue('frontend.proxy.revoke-access.object-type.group.label')
+                  'object-type',
+                  $labels->getValue('frontend.proxy.revoke-access.object-type.group.label')
             );
          }
          $label->setPlaceHolder('display-name', $object->getDisplayName());
@@ -95,16 +95,17 @@ class ProxyRevokeAccessController extends UmgtBaseController {
 
          $formYes->transformOnPlace();
          $formNo->transformOnPlace();
+
          return;
       }
 
       HeaderManager::forward($this->generateLink(
-            array(
-               'mainview' => 'proxy',
-               'proxyview' => 'details',
-               'proxyid' => $proxyId
+                  array(
+                        'mainview'  => 'proxy',
+                        'proxyview' => 'details',
+                        'proxyid'   => $proxyId
+                  )
             )
-         )
       );
 
    }

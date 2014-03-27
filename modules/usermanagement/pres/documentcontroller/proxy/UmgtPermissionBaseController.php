@@ -49,11 +49,13 @@ abstract class UmgtPermissionBaseController extends UmgtBaseController {
 
       $objects = array();
       foreach ($selectedOptions as $selectedUser) {
-         $object = new $objectName;
+         $class = 'APF\modules\usermanagement\biz\model\\' . $objectName;
+         $object = new $class;
          /* @var $object UmgtUser|UmgtGroup */
          $object->setObjectId($selectedUser->getAttribute('value'));
          $objects[] = $object;
       }
+
       return $objects;
 
    }
