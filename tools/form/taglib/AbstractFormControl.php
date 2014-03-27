@@ -21,9 +21,8 @@ namespace APF\tools\form\taglib;
  * -->
  */
 use APF\core\pagecontroller\Document;
-use APF\tools\form\FormException;
 use APF\tools\form\filter\AbstractFormFilter;
-use APF\tools\form\taglib\FormControl;
+use APF\tools\form\FormException;
 use APF\tools\form\validator\AbstractFormValidator;
 
 /**
@@ -45,14 +44,14 @@ abstract class AbstractFormControl extends Document implements FormControl {
 
    public static $CORE_ATTRIBUTES = array('id', 'class', 'style', 'title');
    public static $EVENT_ATTRIBUTES = array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover',
-      'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup');
+         'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup');
    public static $I18N_ATTRIBUTES = array('lang', 'xml:lang', 'dir');
 
    public static $HTML5_ATTRIBUTES = array('placeholder', 'name', 'disabled', 'form', 'autocomplete', 'autofocus',
-      'list', 'maxlength', 'pattern', 'readonly', 'required', 'size', 'min',
-      'max', 'step', 'multiple', 'formaction', 'formenctype', 'formmethod',
-      'formtarget', 'formnovalidate', 'height', 'width', 'alt', 'src',
-      'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone');
+         'list', 'maxlength', 'pattern', 'readonly', 'required', 'size', 'min',
+         'max', 'step', 'multiple', 'formaction', 'formenctype', 'formmethod',
+         'formtarget', 'formnovalidate', 'height', 'width', 'alt', 'src',
+         'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone');
 
    /**
     * @since 1.11
@@ -73,24 +72,34 @@ abstract class AbstractFormControl extends Document implements FormControl {
    protected $isVisible = true;
 
    /**
+    * @var AbstractFormValidator[] The list of validators registered for the current control.
+    */
+   protected $validators = array();
+
+   /**
+    * @var AbstractFormFilter[] The list of validators registered for the current control.
+    */
+   protected $filters = array();
+
+   /**
     * @since 1.12
     * @var array{string} The attributes, that are allowed to render into the XHTML/1.1 strict document.
     */
    protected $attributeWhiteList = array(
-      // core attributes
-      'id', 'style', 'class',
+         // core attributes
+         'id', 'style', 'class',
 
-      // event attributes
-      'accesskey', 'tabindex', 'onfocus', 'onblur', 'onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover',
-      'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup',
+         // event attributes
+         'accesskey', 'tabindex', 'onfocus', 'onblur', 'onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover',
+         'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup',
 
-      // i18n attributes
-      'lang', 'xml:lang', 'dir',
+         // i18n attributes
+         'lang', 'xml:lang', 'dir',
 
-      // HTML5 attributes
-      'placeholder', 'name', 'disabled', 'form', 'autocomplete', 'autofocus', 'list', 'maxlength', 'pattern', 'readonly',
-      'required', 'size', 'min', 'max', 'step', 'multiple', 'formaction', 'formenctype', 'formmethod', 'formtarget',
-      'formnovalidate', 'height', 'width', 'alt', 'src', 'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone'
+         // HTML5 attributes
+         'placeholder', 'name', 'disabled', 'form', 'autocomplete', 'autofocus', 'list', 'maxlength', 'pattern', 'readonly',
+         'required', 'size', 'min', 'max', 'step', 'multiple', 'formaction', 'formenctype', 'formmethod', 'formtarget',
+         'formnovalidate', 'height', 'width', 'alt', 'src', 'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone'
    );
 
    /**
@@ -325,8 +334,15 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * @author Christian Achatz
     * @version
     * Version 0.1, 24.08.2009<br />
+    * Version 0.2, 27.03.2014 (Filters are now collected internally to allow retrieval for e.g. client validation rule generation. See ID#166.)<br />
     */
    public function addFilter(AbstractFormFilter &$filter) {
+
+      // ID#166: register filter for further usage.
+      $this->filters[] = $filter;
+
+      // Directly execute filter to allow adding filters within tags and
+      // document controllers for both static and dynamic form controls.
       if ($filter->isActive()) {
          $value = $this->getValue();
          $filteredValue = $filter->filter($value);
@@ -346,11 +362,22 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * @version
     * Version 0.1, 24.08.2009<br />
     * Version 0.2, 01.11.2010 (Added support for optional validators)<br />
+    * Version 0.3, 27.03.2014 (Filters are now collected internally to allow retrieval for e.g. client validation rule generation. See ID#166.)<br />
     */
    public function addValidator(AbstractFormValidator &$validator) {
+
+      // ID#166: register validator for further usage.
+      $this->validators[] = $validator;
+
+      // Directly execute validator to allow adding validators within tags and
+      // document controllers for both static and dynamic form controls.
       $value = $this->getValue();
+
+      // Check both for validator being active and for mandatory fields to allow optional
+      // validation (means: field has a registered validator but is sent with empty value).
       if ($validator->isActive() && $this->isMandatory($value)) {
          if (!$validator->validate($value)) {
+            // Execute validator callback to allow notification and validation event propagation.
             $validator->notify();
          }
       }
@@ -363,6 +390,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * optional validators that are only active in case a field is filled.
     *
     * @param mixed $value The current form control value.
+    *
     * @return bool True in case the field is mandatory, false otherwise.
     *
     * @author Christian Achatz, Ralf Schubert
@@ -373,6 +401,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       if ($this->getAttribute('optional', 'false') === 'true') {
          return !empty($value);
       }
+
       return true;
    }
 
@@ -414,6 +443,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * and white list definition within the taglib instance.
     *
     * @param string[] $attributes The attributes to convert to string.
+    *
     * @return string The attributes' xml string representation.
     *
     * @author Christian Achatz
@@ -471,7 +501,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     *
     * Returns the value of the form control. Does not always return the 'value'
     * attribute. This returns the attribute/content which contains the user input.
-    * (For example textareas store the input in the content, not in the value
+    * (For example text areas store the input in the content, not in the value
     * attribute)
     *
     * @return string The current value or content of the control.
@@ -493,6 +523,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * attribute. This set's the same attribute/content as the user would type it.
     *
     * @param string $value The value to set.
+    *
     * @return AbstractFormControl This instance for further usage.
     *
     * @since 1.14
@@ -503,6 +534,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
     */
    public function setValue($value) {
       $this->setAttribute('value', $value);
+
       return $this;
    }
 
@@ -628,6 +660,7 @@ abstract class AbstractFormControl extends Document implements FormControl {
       $dependentFields = $this->getAttribute('dependent-controls');
       if ($dependentFields === null) {
          $fields = array();
+
          return $fields;
       }
 
@@ -641,6 +674,40 @@ abstract class AbstractFormControl extends Document implements FormControl {
       }
 
       return $fields;
+   }
+
+   /**
+    * @public
+    * @since 2.1
+    *
+    * Allows you to retrieve all registered validators for this form control added within this form
+    * instance. May be used to generate client-side validation rules.
+    *
+    * @return AbstractFormValidator[] The validators registered for the current control.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.03.2014 (see ID#166)<br />
+    */
+   public function getValidators() {
+      return $this->validators;
+   }
+
+   /**
+    * @public
+    * @since 2.1
+    *
+    * Allows you to retrieve all registered filters for this form control registered within this form
+    * instance. May be used to generate client-side validation rules.
+    *
+    * @return AbstractFormFilter[] The filters registered for the current control.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.03.2014 (see ID#166)<br />
+    */
+   public function getFilters() {
+      return $this->filters;
    }
 
 }
