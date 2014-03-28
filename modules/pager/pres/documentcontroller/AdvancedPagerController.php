@@ -66,9 +66,10 @@ class AdvancedPagerController extends BaseDocumentController {
 
       // do not display the pager in case we have no pages
       if (count($pages) == 0) {
-         $this->content = '';
          return;
       }
+
+      $content = $this->getTemplate('content');
 
       $pageCount = (int) 0;
       $currentPage = (int) 0;
@@ -95,7 +96,7 @@ class AdvancedPagerController extends BaseDocumentController {
 
          $pageCount = $pages[$i]->getPageCount();
       }
-      $this->setPlaceHolder('Content', $buffer);
+      $content->setPlaceHolder('Content', $buffer);
 
       // display previous page link
       if ($currentPage > 1) {
@@ -108,10 +109,10 @@ class AdvancedPagerController extends BaseDocumentController {
          } else {
             $prevActive->setPlaceHolder('Link', $link);
          }
-         $this->setPlaceHolder('PreviousPage', $prevActive->transformTemplate());
+         $content->setPlaceHolder('PreviousPage', $prevActive->transformTemplate());
       } else {
          $prevInactive = & $this->getTemplate('PreviousPage_Inactive');
-         $this->setPlaceHolder('PreviousPage', $prevInactive->transformTemplate());
+         $content->setPlaceHolder('PreviousPage', $prevInactive->transformTemplate());
       }
 
       // display next page link
@@ -127,10 +128,10 @@ class AdvancedPagerController extends BaseDocumentController {
             $nextActive->setPlaceHolder('Link', $link);
          }
 
-         $this->setPlaceHolder('NextPage', $nextActive->transformTemplate());
+         $content->setPlaceHolder('NextPage', $nextActive->transformTemplate());
       } else {
          $nextInactive = & $this->getTemplate('NextPage_Inactive');
-         $this->setPlaceHolder('NextPage', $nextInactive->transformTemplate());
+         $content->setPlaceHolder('NextPage', $nextInactive->transformTemplate());
       }
 
       // display the dynamic page size bar
@@ -167,8 +168,10 @@ class AdvancedPagerController extends BaseDocumentController {
          $entriesPerPageTmpl = & $this->getTemplate('EntriesPerPage_' . $this->getLanguage());
          $dynPageSize->setPlaceHolder('EntriesPerPage_Display', $entriesPerPageTmpl->transformTemplate());
 
-         $dynPageSize->transformOnPlace();
+         $content->setPlaceHolder('DynamicPageSize', $dynPageSize->transformTemplate());
       }
+
+      $content->transformOnPlace();
 
    }
 

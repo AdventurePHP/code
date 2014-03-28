@@ -1,14 +1,18 @@
 <@controller class="APF\modules\pager\pres\documentcontroller\AdvancedPagerController" @>
-<div class="apf-pager">
-   <div class="apf-pages">
-      <html:placeholder name="PreviousPage" /><html:placeholder name="Content" /><html:placeholder name="NextPage" />
-   </div>
-   <html:template name="DynamicPageSize">
-      <div class="apf-page-size">
-         <span><template:placeholder name="EntriesPerPage_Display" /></span>&nbsp;|<template:placeholder name="EntriesPerPage" />
+<html:template name="content">
+   <div class="apf-pager">
+      <div class="apf-pages">
+         <template:placeholder name="PreviousPage" /><template:placeholder name="Content" /><template:placeholder name="NextPage" />
       </div>
-   </html:template>
-</div>
+      <template:placeholder name="DynamicPageSize" />
+   </div>
+</html:template>
+
+<html:template name="DynamicPageSize">
+   <div class="apf-page-size">
+      <span><template:placeholder name="EntriesPerPage_Display" /></span>&nbsp;|<template:placeholder name="EntriesPerPage" />
+   </div>
+</html:template>
 
 <html:template name="Page_Selected_de">
    <a class="active" href="<template:placeholder name="Link" />" title="Seite <template:placeholder name="Page" /> anzeigen"><template:placeholder name="Page" /></a>&nbsp;&nbsp;
@@ -18,7 +22,6 @@
    <a class="active" href="<template:placeholder name="Link" />" title="Display page <template:placeholder name="Page" />"><template:placeholder name="Page" /></a>&nbsp;&nbsp;
 </html:template>
 
-
 <html:template name="Page_de">
    <a href="<template:placeholder name="Link" />" title="Seite <template:placeholder name="Page" /> anzeigen"><template:placeholder name="Page" /></a>&nbsp;&nbsp;
 </html:template>
@@ -26,7 +29,6 @@
 <html:template name="Page_en">
    <a href="<template:placeholder name="Link" />" title="Display page <template:placeholder name="Page" />"><template:placeholder name="Page" /></a>&nbsp;&nbsp;
 </html:template>
-
 
 <html:template name="PreviousPage_Active_de">
    <a href="<template:placeholder name="Link" />" title="Vorherige Seite anzeigen!">&laquo;</a>&nbsp;&nbsp;
@@ -40,7 +42,6 @@
    <span class="first">&laquo;</span>
 </html:template>
 
-
 <html:template name="NextPage_Active_de">
    <a href="<template:placeholder name="Link" />" title="N&auml;chste Seite anzeigen!"><span>&raquo;</span></a>
 </html:template>
@@ -53,7 +54,6 @@
    <span>&raquo;</span>
 </html:template>
 
-
 <html:template name="EntriesPerPage_Active_de">
    <a href="<template:placeholder name="Link" />" title="<template:placeholder name="Count" /> Eintr&auml;ge pro Seite anzeigen"><strong><template:placeholder name="Count" /></strong></a> |
 </html:template>
@@ -61,7 +61,6 @@
 <html:template name="EntriesPerPage_Active_en">
    <a href="<template:placeholder name="Link" />" title="Display <template:placeholder name="Count" /> entries per page"><strong><template:placeholder name="Count" /></strong></a> |
 </html:template>
-
 
 <html:template name="EntriesPerPage_Inactive_de">
    <a href="<template:placeholder name="Link" />" title="<template:placeholder name="Count" /> Eintr&auml;ge pro Seite anzeigen"><template:placeholder name="Count" /></a> |
