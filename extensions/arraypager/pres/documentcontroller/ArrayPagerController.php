@@ -56,19 +56,20 @@ class ArrayPagerController extends BaseDocumentController {
       $anchorName = $document->getAttribute('AnchorName');
 
       $urlParams = array($config['ParameterEntries'] => $config['Entries']);
-      if ($config['EntriesChangeable'] === TRUE) {
+      if ($config['EntriesChangeable'] === true) {
          $urlParams = RequestHandler::getValues(array($config['ParameterEntries'] => $config['Entries']));
       }
 
       // Pager leer zurückgeben, falls keine Seiten vorhanden sind.
       if ($dataCount == 0) {
-         $this->content = '';
          return;
       }
 
       /* @var $t BenchmarkTimer */
       $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $t->start('ArrayPager');
+
+      $content = $this->getTemplate('pager');
 
       // Anzahl der Einträge
       $integerEntriesCount = $config['Entries'];
@@ -92,7 +93,7 @@ class ArrayPagerController extends BaseDocumentController {
          }
 
          $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-            array($config['ParameterPage'] => $integerPage)
+               array($config['ParameterPage'] => $integerPage)
          ));
 
          // Pager zusammenbauen
@@ -113,7 +114,7 @@ class ArrayPagerController extends BaseDocumentController {
       unset($integerPage);
 
       // Puffer in Inhalt einsetzen
-      $this->setPlaceHolder('Pager', $stringBuffer);
+      $content->setPlaceHolder('Pager', $stringBuffer);
 
       unset($stringBuffer);
 
@@ -123,7 +124,7 @@ class ArrayPagerController extends BaseDocumentController {
          $objectTemplatePreviousPage = $this->getTemplate('PreviousPage_Active');
 
          $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-            array($config['ParameterPage'] => ($integerCurrentPage - 1))
+               array($config['ParameterPage'] => ($integerCurrentPage - 1))
          ));
 
          if (!empty($anchorName)) {
@@ -138,7 +139,7 @@ class ArrayPagerController extends BaseDocumentController {
          $objectTemplatePreviousPage = $this->getTemplate('PreviousPage_Inactive');
       }
 
-      $this->setPlaceHolder('PreviousPage', $objectTemplatePreviousPage->transformTemplate());
+      $content->setPlaceHolder('PreviousPage', $objectTemplatePreviousPage->transformTemplate());
 
       unset($objectTemplatePreviousPage);
 
@@ -146,12 +147,12 @@ class ArrayPagerController extends BaseDocumentController {
       if ($integerCurrentPage < $integerPageCount) {
 
          $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-            array($config['ParameterPage'] => ($integerCurrentPage + 1))
+               array($config['ParameterPage'] => ($integerCurrentPage + 1))
          ));
 
          $objectTemplateNextPage = $this->getTemplate('NextPage_Active');
 
-         if (isset($anchorName) === TRUE) {
+         if (isset($anchorName) === true) {
             $objectTemplateNextPage->setPlaceHolder('URL', $stringURL . '#' . $anchorName);
          } else {
             $objectTemplateNextPage->setPlaceHolder('URL', $stringURL);
@@ -162,14 +163,14 @@ class ArrayPagerController extends BaseDocumentController {
          $objectTemplateNextPage = $this->getTemplate('NextPage_Inactive');
       }
 
-      $this->setPlaceHolder('NextPage', $objectTemplateNextPage->transformTemplate());
+      $content->setPlaceHolder('NextPage', $objectTemplateNextPage->transformTemplate());
 
       unset($objectTemplateNextPage);
 
-      if ($config['EntriesChangeable'] === TRUE) {
+      if ($config['EntriesChangeable'] === true) {
          // Einträge / Seite
          $arrayEntries = explode('|',
-            $config['EntriesPossible']
+               $config['EntriesPossible']
          );
          $stringBuffer = '';
 
@@ -181,12 +182,12 @@ class ArrayPagerController extends BaseDocumentController {
             }
 
             $stringURL = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(
-               array($config['ParameterPage'] => 1,
-                  $config['ParameterEntries'] => $integerEntries
-               )
+                  array($config['ParameterPage']    => 1,
+                        $config['ParameterEntries'] => $integerEntries
+                  )
             ));
 
-            if (isset($anchorName) === TRUE) {
+            if (isset($anchorName) === true) {
                $objectTemplateEntries->setPlaceHolder('URL', $stringURL . '#' . $anchorName);
             } else {
                $objectTemplateEntries->setPlaceHolder('URL', $stringURL);
@@ -209,10 +210,12 @@ class ArrayPagerController extends BaseDocumentController {
 
          unset($stringBuffer);
 
-         $this->setPlaceHolder('Entries', $objectTemplateEntries->transformTemplate());
+         $content->setPlaceHolder('Entries', $objectTemplateEntries->transformTemplate());
 
          unset($objectTemplateEntries);
       }
+
+      $content->transformOnPlace();
 
       $t->stop('ArrayPager');
    }
