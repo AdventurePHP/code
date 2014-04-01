@@ -1820,6 +1820,7 @@ class Document extends APFObject {
     * Version 0.5, 09.04.2007 (Added language injection)<br />
     * Version 0.6, 09.02.2013 (Introduced the DocumentController interface)<br />
     * Version 0.7, 28.07.2013 Jan Wiese (Introduced di-service support for documentcontrollers. Moved controller creation to ::extractDocumentController())<br />
+    * Version 0.8, 01.04.2014 (Removed content handling passing the current document's content to the document controller)<br />
     */
    public function transform() {
 
@@ -1840,14 +1841,8 @@ class Document extends APFObject {
          // inject this document to be able to work on the DOM
          $this->documentController->setDocument($this);
 
-         // inject the content to be able to access it
-         $this->documentController->setContent($content);
-
          // execute the document controller by using a standard method
          $this->documentController->transformContent();
-
-         // retrieve the content
-         $content = $this->documentController->getContent();
 
          $t->stop($id);
       }
@@ -2770,36 +2765,9 @@ class LanguageLabelTag extends Document {
  * @version
  * Version 0.1, 09.02.2013<br />
  * Version 0.2, 16.08.2013 (Document controllers are now able to be created by the DIServiceManager)<br />
+ * Version 0.3, 01.04.2014 (Removed content handling passing the current document's content to the document controller)<br />
  */
 interface DocumentController extends APFDIService {
-
-   /**
-    * @public
-    *
-    * Injects the content of the current Document the controller is responsible for. Since the
-    * content is retrieved by the current Document after executing {@link transformContent}
-    * the developer is able to modify the content if the current node within a document controller.
-    *
-    * @param string $content The content of the current Document node.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 09.02.2013<br />
-    */
-   public function setContent($content);
-
-   /**
-    * @public
-    *
-    * Let's the current Document retrieve the (potentially) modified content after transformation.
-    *
-    * @return  string The content of the current Document node.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 09.02.2013<br />
-    */
-   public function getContent();
 
    /**
     * @public
@@ -2842,6 +2810,7 @@ interface DocumentController extends APFDIService {
     * Version 0.1, 28.12.2006<br />
     */
    public function transformContent();
+
 }
 
 /**
@@ -2857,6 +2826,7 @@ interface DocumentController extends APFDIService {
  * Version 0.1, 28.12.2006<br />
  * Version 0.2, 04.11.2007 (Removed the isButtonPushed() method)<br />
  * Version 0.3, 09.02.2013 (Introduced the DocumentController interface)<br />
+ * Version 0.4, 01.04.2014 (Removed content handling passing the current document's content to the document controller)<br />
  */
 abstract class BaseDocumentController extends APFObject implements DocumentController {
 
@@ -2865,25 +2835,12 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected $document;
 
-   /**
-    * @var string The content of the Document the controller is responsible for.
-    */
-   protected $content;
-
    public function setDocument(Document &$document) {
       $this->document = & $document;
    }
 
    public function &getDocument() {
       return $this->document;
-   }
-
-   public function setContent($content) {
-      $this->content = $content;
-   }
-
-   public function getContent() {
-      return $this->content;
    }
 
    /**
