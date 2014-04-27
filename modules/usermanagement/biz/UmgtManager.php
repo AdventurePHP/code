@@ -2205,7 +2205,7 @@ class UmgtManager extends APFObject {
     */
    public function getAutoLoginCookieLifeTime() {
       try {
-         $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'login');
+         $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'login.ini');
          $section = $config->getSection(UmgtManager::CONFIG_SECTION_NAME);
          $cookieLifeTime = $section == null
                ? self::AUTO_LOGIN_COOKIE_LIFETIME

@@ -138,7 +138,7 @@ class LoginController extends BaseDocumentController {
       $umgt = & $this->getDIServiceObject('APF\modules\usermanagement\biz', 'UmgtManager');
 
       try {
-         $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'login');
+         $config = $this->getConfiguration('APF\modules\usermanagement\pres', 'login.ini');
          $section = $config->getSection(UmgtManager::CONFIG_SECTION_NAME);
          $loginType = $section == null ? self::$USERNAME_AND_PASSWORD_LOGIN : $section->getValue('login.type');
       } catch (ConfigurationException $e) {
