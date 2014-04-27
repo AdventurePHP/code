@@ -137,7 +137,7 @@ class NewsManager extends APFObject {
    public function getNewsByPage($page = null, $order = 'DESC', $appKey = null) {
       $page = $this->getPageNumber($appKey, $page);
 
-      $Cfg = $this->getConfiguration('APF\extensions\news', 'news');
+      $Cfg = $this->getConfiguration('APF\extensions\news', 'news.ini');
       $Paging = $Cfg->getSection('Paging');
       $EntriesPerPage = (int)$Paging->getValue('EntriesPerPage');
 
@@ -166,7 +166,7 @@ class NewsManager extends APFObject {
          $appKey = $this->getContext();
       }
 
-      $Cfg = $this->getConfiguration('APF\extensions\news', 'news');
+      $Cfg = $this->getConfiguration('APF\extensions\news', 'news.ini');
       $EntriesPerPage = (int)$Cfg->getSection('Paging')->getValue('EntriesPerPage');
       $NewsCount = $this->getNewsCount($appKey);
 
@@ -183,7 +183,7 @@ class NewsManager extends APFObject {
     */
    public function getPageNumber($appKey = null, $page = null) {
       if ($page === null) {
-         $Cfg = $this->getConfiguration('APF\extensions\news', 'news');
+         $Cfg = $this->getConfiguration('APF\extensions\news', 'news.ini');
          $PageParameter = $Cfg->getSection('Paging')->getValue('PageParameter');
 
          $page = RequestHandler::getValue($PageParameter, 1);

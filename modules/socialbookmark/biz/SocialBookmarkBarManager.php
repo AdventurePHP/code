@@ -140,7 +140,7 @@ class SocialBookmarkBarManager extends APFObject {
       }
 
       // get services from config file
-      $services = $this->getConfiguration('APF\modules\socialbookmark', 'bookmarkservices');
+      $services = $this->getConfiguration('APF\modules\socialbookmark', 'bookmarkservices.ini');
 
       foreach ($services->getSectionNames() as $serviceName) {
 
