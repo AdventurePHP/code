@@ -22,11 +22,8 @@ namespace APF\core\database;
  */
 use APF\core\configuration\ConfigurationException;
 use APF\core\database\config\StatementConfiguration;
-use APF\core\loader\RootClassLoader;
 use APF\core\logging\Logger;
-use APF\core\database\DatabaseConnection;
 use APF\core\pagecontroller\APFObject;
-use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
 /**
@@ -187,157 +184,19 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    protected $dbCharset = null;
 
    /**
-    * @public
-    *
-    * Defines the database host to connect to.
-    * <p/>
-    * Can be used for manual or DI configuration.
-    *
-    * @param string $host The database host to connect to.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.05.2012<br />
+    * @var array Default values for various statement execution methods.
     */
-   public function setHost($host) {
-      $this->dbHost = $host;
-   }
+   protected $defaultPlaceholder = array(
+         'executeStatement'     => self::PLACE_HOLDER_APF,
+         'executeTextStatement' => self::PLACE_HOLDER_QUESTION_MARKS,
+         'prepareStatement'     => self::PLACE_HOLDER_APF,
+         'prepareTextStatement' => self::PLACE_HOLDER_QUESTION_MARKS
+   );
 
    /**
-    * @public
-    *
-    * Defines the database port to connect to.
-    * <p/>
-    * Can be used for manual or DI configuration.
-    *
-    * @param int $port The database port to connect to.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.05.2012<br />
+    * @var bool
     */
-   public function setPort($port) {
-      $this->dbPort = $port;
-   }
-
-   /**
-    * @public
-    *
-    * Defines the database name to connect to.
-    * <p/>
-    * Can be used for manual or DI configuration.
-    *
-    * @param string $name Th name of the database to connect to.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.05.2012<br />
-    */
-   public function setDatabaseName($name) {
-      $this->dbName = $name;
-   }
-
-   /**
-    * @public
-    *
-    * Defines the user that is used to connect to the database.
-    * <p/>
-    * Can be used for manual or DI configuration.
-    *
-    * @param string $user The database user.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.05.2012<br />
-    */
-   public function setUser($user) {
-      $this->dbUser = $user;
-   }
-
-   /**
-    * @public
-    *
-    * Defines the password used to connect to the database.
-    * <p/>
-    * Can be used for manual or DI configuration.
-    *
-    * @param string $pass The database password.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.05.2012<br />
-    */
-   public function setPass($pass) {
-      $this->dbPass = $pass;
-   }
-
-   /**
-    * @public
-    *
-    * Defines the socket to connect to.
-    * <p/>
-    * Can be used for manual or DI configuration.
-    *
-    * @param string $socket The socket descriptor.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.05.2012<br />
-    */
-   public function setSocket($socket) {
-      $this->dbSocket = $socket;
-   }
-
-   /**
-    * @public
-    *
-    * Defines the character set of the database connection.
-    * <p/>
-    * Can be used for manual or DI configuration.
-    *
-    * @param string $charset The desired character set.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.05.2012<br />
-    */
-   public function setCharset($charset) {
-      $this->dbCharset = $charset;
-   }
-
-   /**
-    * @public
-    *
-    * Defines the collation of the database connection.
-    * <p/>
-    * Can be used for manual or DI configuration.
-    *
-    * @param string $collation The desired collation.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.05.2012<br />
-    */
-   public function setCollation($collation) {
-      $this->dbCollation = $collation;
-   }
-
-   /**
-    * @public
-    *
-    * Enables (true) or disables (false) the internal debugging feature (=statement logging).
-    * <p/>
-    * Can be used for manual or DI configuration.
-    *
-    * @param boolean $debug <em>True</em> in case the logging feature should be switched on, <em>false</em> otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.05.2012<br />
-    */
-   public function setDebug($debug) {
-      $this->dbDebug = ($debug == 'true' || $debug == '1') ? true : false;
-   }
+   protected $emulate = false;
 
    /**
     * @public
@@ -354,21 +213,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     */
    public function setLogTarget($logTarget) {
       $this->dbLogTarget = $logTarget;
-   }
-
-   /**
-    * @public
-    *
-    * Implements an initializer method to setup derived classes using the
-    * DIServiceManager.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.05.2012<br />
-    */
-   public function setup() {
-      $this->dbLog = & Singleton::getInstance('APF\core\logging\Logger');
-      $this->connect();
    }
 
    /**
@@ -426,6 +270,174 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    }
 
    /**
+    * @public
+    *
+    * Defines the database host to connect to.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $host The database host to connect to.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setHost($host) {
+      $this->dbHost = $host;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the user that is used to connect to the database.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $user The database user.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setUser($user) {
+      $this->dbUser = $user;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the password used to connect to the database.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $pass The database password.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setPass($pass) {
+      $this->dbPass = $pass;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the database name to connect to.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $name Th name of the database to connect to.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setDatabaseName($name) {
+      $this->dbName = $name;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the database port to connect to.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param int $port The database port to connect to.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setPort($port) {
+      $this->dbPort = $port;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the socket to connect to.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $socket The socket descriptor.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setSocket($socket) {
+      $this->dbSocket = $socket;
+   }
+
+   /**
+    * @public
+    *
+    * Enables (true) or disables (false) the internal debugging feature (=statement logging).
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param boolean $debug <em>True</em> in case the logging feature should be switched on, <em>false</em> otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setDebug($debug) {
+      $this->dbDebug = ($debug == 'true' || $debug == '1') ? true : false;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the character set of the database connection.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $charset The desired character set.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setCharset($charset) {
+      $this->dbCharset = $charset;
+   }
+
+   /**
+    * @public
+    *
+    * Defines the collation of the database connection.
+    * <p/>
+    * Can be used for manual or DI configuration.
+    *
+    * @param string $collation The desired collation.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setCollation($collation) {
+      $this->dbCollation = $collation;
+   }
+
+   /**
+    * @public
+    *
+    * Implements an initializer method to setup derived classes using the
+    * DIServiceManager.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.05.2012<br />
+    */
+   public function setup() {
+      $this->dbLog = & Singleton::getInstance('APF\core\logging\Logger');
+      $this->connect();
+   }
+
+   /**
     * @protected
     * @abstract
     *
@@ -438,6 +450,215 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     * Version 0.1, 10.02.2008<br />
     */
    abstract protected function connect();
+
+   /**
+    * @param null $statementType
+    *
+    * @return array|string
+    *
+    * TODO streamline API to not return two different data types!
+    */
+   public function getDefaultPlaceholder($statementType = null) {
+      if ($statementType === null) {
+         return $this->defaultPlaceholder;
+      } else {
+         return $this->defaultPlaceholder[$statementType];
+      }
+   }
+
+   /**
+    * @param string $method Name of the method to set the default place holder type for.
+    * @param int $placeHolderType The desired place holder type (see <em>DatabaseConnection::PLACE_HOLDER_*</em>).
+    */
+   public function setDefaultPlaceholder($method, $placeHolderType) {
+      $this->defaultPlaceholder[$method] = $placeHolderType;
+   }
+
+   public function executeStatement($namespace, $statementName, array $params = array(), $logStatement = false, $emulatePrepare = null, $placeHolderType = null) {
+      $statement = $this->getPreparedStatement($namespace, $statementName);
+      if ($placeHolderType === null) {
+         $placeHolderType = $this->defaultPlaceholder['executeStatement'];
+      }
+
+      // execute the statement with use of the current connection!
+      return $this->executeTextStatement($statement, $params, $logStatement, $emulatePrepare, $placeHolderType);
+   }
+
+   /**
+    * @protected
+    *
+    * Loads a statement file.
+    *
+    * @param string $namespace The namespace of the statement file.
+    * @param string $name The name of the statement's file body (e.g. load_entries.sql).
+    *
+    * @return string The statement.
+    * @throws DatabaseHandlerException In case the statement file cannot be loaded.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 03.02.2011<br />
+    */
+   protected function getPreparedStatement($namespace, $name) {
+      try {
+         $config = $this->getConfiguration($namespace, $name);
+      } catch (ConfigurationException $e) {
+         throw new DatabaseHandlerException($e->getMessage(), E_USER_ERROR, $e);
+      }
+
+      /* @var $config StatementConfiguration */
+
+      return $config->getStatement();
+   }
+
+   public function executeTextStatement($statement, array $params = array(), $logStatement = false, $emulatePrepare = null, $placeHolderType = null) {
+      if (empty($params)) {
+         return $this->execute($statement, $logStatement);
+      }
+      if ($placeHolderType === null) {
+         $placeHolderType = $this->defaultPlaceholder['executeTextStatement'];
+      }
+
+      $emulatePrepare = $emulatePrepare === null ? : $this->emulate;
+
+      if ($emulatePrepare === false) {
+         $prepare = $this->prepareTextStatement($statement, $logStatement, $placeHolderType);
+
+         return $prepare->execute($params);
+      }
+      if ($placeHolderType === self::PLACE_HOLDER_QUESTION_MARKS) {
+         $statement = $this->replaceQuestionMarks($statement, $params);
+      } else {
+         $statement = $this->replaceParams($this->splitStatement($statement, $placeHolderType), $params);
+      }
+
+      return $this->execute($statement, $logStatement);
+   }
+
+   /**
+    * @param $statement
+    * @param bool $logStatement
+    *
+    * @return mixed
+    */
+   abstract protected function execute($statement, $logStatement = false);
+
+   public function prepareTextStatement($statement, $logStatement = false, $placeHolderType = null) {
+      $params = array();
+      if ($placeHolderType === null) {
+         $placeHolderType = $this->defaultPlaceholder['prepareTextStatement'];
+      }
+      if ($placeHolderType !== self::PLACE_HOLDER_QUESTION_MARKS) {
+         $statement = $this->replaceParamsWithPlaceholder($this->splitStatement($statement, $placeHolderType), $params);
+      }
+
+      return $this->prepare($statement, $params, $logStatement);
+   }
+
+   /**
+    * @param string $statement The statement to split up.
+    * @param int $placeholderStyle The desired place holder style.
+    *
+    * @return array The split statement.
+    * @throws DatabaseHandlerException
+    */
+   protected function splitStatement($statement, $placeholderStyle) {
+      switch ($placeholderStyle) {
+         case self::PLACE_HOLDER_APF:
+            $pregString = '/\[([A-Za-z0-9_]+)\]/u';
+            break;
+         case self::PLACE_HOLDER_PDO:
+            $pregString = '/:([A-Za-z0-9_]+)/u';
+            break;
+         default:
+            throw new DatabaseHandlerException('Wrong Parameter given');
+      }
+      return preg_split($pregString, $statement, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+   }
+
+   /**
+    * @param array $parts Parts of a statement returned from <em>splitStatement()</em>.
+    * @param array $params The parameters for the statement.
+    *
+    * @return string Statement with question marks for prepare.
+    * @throws DatabaseHandlerException If parameter is not given.
+    */
+   protected function replaceParamsWithPlaceholder(array $parts, &$params) {
+      $statement = '';
+      $params[] = null;
+      foreach ($parts as $key => $value) {
+         if ($key % 2 === 0) {
+            $statement .= $value;
+         } else {
+            $statement .= '?';
+            $params[] = $value;
+         }
+      }
+
+      return $statement;
+   }
+
+   /**
+    * @param $statement
+    * @param array $params The parameters for the statement.
+    * @param $logStatement
+    *
+    * @return mixed
+    */
+   protected abstract function prepare($statement, array $params, $logStatement);
+
+   /**
+    * @param string $statement
+    * @param array $params The parameters for the statement.
+    *
+    * @return string
+    */
+   protected function replaceQuestionMarks($statement, array $params) {
+      $parts = explode('?', $statement);
+      $statement = '';
+      foreach ($parts as $key => $value) {
+         if ($key !== 0) {
+            if ($params[$key - 1] === null) {
+               $statement .= 'NULL';
+            } else {
+               $statement .= $this->quoteValue($params[$key - 1]);
+            }
+         }
+         $statement .= $value;
+      }
+
+      return $statement;
+   }
+
+   /**
+    * @param array $parts Parts of a statement returned from <em>splitStatement()</em>.
+    * @param array $params the parameters for the Statement
+    *
+    * @return string The prepared statement.
+    * @throws DatabaseHandlerException In case of unknown params.
+    */
+   protected function replaceParams(array $parts, array $params) {
+      $statement = '';
+      foreach ($parts as $key => $value) {
+         if ($key % 2 === 0) {
+            $statement .= $value;
+         } elseif (isset($params[$value])) {
+            if ($value === '__limit__') {
+               $statement .= (int) $params[$value];
+            } else {
+               $statement .= $this->quoteValue($params[$value]);
+            }
+         } else {
+            throw new DatabaseHandlerException('Unknown param "' . $value . '" for statement parts "' . implode(', ', $parts) . '"!');
+         }
+      }
+
+      return $statement;
+   }
+
+   public function prepareStatement($namespace, $fileName, $logStatement = false, $placeHolderType = null) {
+      return $this->prepareTextStatement($this->getPreparedStatement($namespace, $fileName), $logStatement, $placeHolderType);
+   }
 
    /**
     * @protected
@@ -454,21 +675,6 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
    abstract protected function close();
 
    /**
-    * @public
-    *
-    * Returns the last insert id generated by auto_increment or trigger.
-    *
-    * @return int The last insert id.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 04.01.2006<br />
-    */
-   public function getLastID() {
-      return $this->lastInsertId;
-   }
-
-   /**
     * @protected
     *
     * Configures the client connection's charset and collation.
@@ -480,55 +686,96 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     * Version 0.1, 08.02.2010<br />
     */
    protected function initCharsetAndCollation() {
-
-      if ($this->dbCharset !== null) {
-         $this->executeTextStatement('SET NAMES \'' . $this->dbCharset . '\'');
+      if ($this->dbCharset !== null || $this->dbCollation !== null) {
+         $setArray = array();
+         if ($this->dbCharset !== null) {
+            $setArray[] = ' NAMES \'' . $this->dbCharset . '\'';
+         }
+         if ($this->dbCollation !== null) {
+            $setArray[] = ' collation_connection = \'' . $this->dbCollation . '\'';
+            $setArray[] = ' collation_database = \'' . $this->dbCollation . '\'';
+         }
+         $statement = 'SET' . implode(',', $setArray);
+         $this->executeTextStatement($statement);
       }
+   }
 
-      if ($this->dbCollation !== null) {
-         $this->executeTextStatement('SET collation_connection = \'' . $this->dbCollation . '\'');
-         $this->executeTextStatement('SET collation_database = \'' . $this->dbCollation . '\'');
-      }
 
+   /**
+    * @public
+    *
+    * @deprecated Use executeStatement() with fetchAll() instead.
+    *
+    * @param $namespace
+    * @param $statementFile
+    * @param array $params
+    * @param bool $logStatement
+    *
+    * @return array
+    */
+   public function executeBindStatement($namespace, $statementFile, array $params = array(), $logStatement = false) {
+      $result = $this->executeStatement($namespace, $statementFile, $params, $logStatement);
+
+      return $result->fetchAll(Result::FETCH_ASSOC);
+   }
+
+
+   /**
+    * @public
+    *
+    * @deprecated  Use executeTextStatement with fetchAll instead
+    *
+    * @param $statement
+    * @param array $params
+    * @param bool $logStatement
+    *
+    * @return array
+    */
+   public function executeTextBindStatement($statement, array $params = array(), $logStatement = false) {
+      $result = $this->executeTextStatement($statement, $params, $logStatement);
+
+      return $result->fetchAll();
    }
 
    /**
-    * @protected
+    * @public
     *
-    * Loads a statement file and auto-replaces the params applied as arguments.
+    * @deprecated Use Result->fetchData() instead.
     *
-    * @param string $namespace The namespace of the statement file.
-    * @param string $name The name of the statement's file body (e.g. load_entries.sql).
-    * @param array $params An associative array with param names and their respective values.
-    * @return string The prepared statement.
-    * @throws DatabaseHandlerException In case the statement file cannot be loaded.
+    * Fetches a record from the database.
+    *
+    * @param Result $result The result of the current statement.
+    * @param int $type The type the returned data should have. Use the static FETCH_* constants.
+    *
+    * @return mixed The result array. Returns false if no row was found.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 03.02.2011<br />
+    * Version 0.1, 20.09.2009<br />
+    * Version 0.2, 08.08.2010 (Added optional second parameter) <br />
     */
-   protected function getPreparedStatement($namespace, $name, array $params = array()) {
-      try {
-         $config = $this->getConfiguration($namespace, $name);
-      } catch (ConfigurationException $e) {
-         $env = Registry::retrieve('APF\core', 'Environment');
-         throw new DatabaseHandlerException('[' . get_class($this) . '->getPreparedStatement()] There\'s '
-               . 'no statement file with name "' . $env . '_' . $name . '" for given '
-               . 'namespace "' . $namespace . '" and current context "' . $this->getContext()
-               . '"! Root cause: ' . $e->getMessage(), E_USER_ERROR, $e);
-      }
+   public function fetchData(Result $result, $type = self::ASSOC_FETCH_MODE) {
+      return $result->fetchData($type);
+   }
 
-      /* @var $config StatementConfiguration */
-      $statement = $config->getStatement();
-
-      // replace statement param by a escaped value
-      if (count($params) > 0) {
-         foreach ($params as $key => $value) {
-            $statement = str_replace('[' . $key . ']', $this->escapeValue($value), $statement);
-         }
-      }
-
-      return $statement;
+   /**
+    * @public
+    *
+    * @deprecated Use Result->getNumRows() instead.
+    *
+    * Returns the number of selected rows by a select Statement. Some databases do not support
+    * this so you should not relied on this behavior for portable applications.
+    *
+    * @param Result $result The result of the current statement.
+    *
+    * @return int The number of selected rows.
+    *
+    * @author Tobias Lückel (megger)
+    * @version
+    * Version 0.1, 11.04.2012<br />
+    */
+   public function getNumRows(Result $result) {
+      return $result->getNumRows();
    }
 
 }

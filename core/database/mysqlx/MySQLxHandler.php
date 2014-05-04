@@ -1,5 +1,5 @@
 <?php
-namespace APF\core\database;
+namespace APF\core\database\mysqlx;
 
 /**
  * <!--
@@ -21,10 +21,11 @@ namespace APF\core\database;
  * -->
  */
 use APF\core\database\AbstractDatabaseHandler;
+use APF\core\database\DatabaseHandlerException;
 use APF\core\logging\LogEntry;
 
 /**
- * @package APF\core\database
+ * @package APF\core\database\mysqlx
  * @class MySQLxHandler
  *
  * This class implements a connection handler for the ConnectionManager to use with mysql
@@ -120,37 +121,9 @@ class MySQLxHandler extends AbstractDatabaseHandler {
 
    }
 
-   /**
-    * @public
-    *
-    * Executes a statement, located within a statement file. The place holders contained in the
-    * file are replaced by the given values.
-    *
-    * @param string $namespace Namespace of the statement file.
-    * @param string $statementFile Name of the statement file (filebody!).
-    * @param string[] $params A list of statement parameters.
-    * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
-    * @return resource The database result resource.
-    * @throws DatabaseHandlerException In case the statement cannot be executed.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 24.12.2005<br />
-    * Version 0.2, 16.01.2006<br />
-    * Version 0.3, 19.01.2006<br />
-    * Version 0.4, 23.04.2006 (Changes due to the ApplicationManagers)<br />
-    * Version 0.5, 05.08.2006 (File extension must not be present in the file name any more. Statement params are now optional.)<br />
-    * Version 0.6, 05.08.2006 (Added the $showStatement param)<br />
-    * Version 0.7, 29.03.2007 (Adapted implementation to the new page controller implementation)<br />
-    * Version 0.8, 07.03.2008 (Bug-fix: query was not executed with the right connection)<br />
-    * Version 0.9, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
-    * Version 1.0, 05.11.2008 (Added value escaping to the statement params)<br />
-    * Version 1.1, 26.03.2009 (Enhanced the error messages)<br />
-    * Version 1.2, 03.05.2009 (Forth param set to true now results in a debug log entry instead of an error)<br />
-    */
-   public function executeStatement($namespace, $statementFile, array $params = array(), $logStatement = false) {
+   public function executeStatement($namespace, $statementName, array $params = array(), $logStatement = false, $emulatePrepare = null, $placeHolderType = null) {
 
-      $statement = $this->getPreparedStatement($namespace, $statementFile, $params);
+      $statement = $this->getPreparedStatement($namespace, $statementName, $params);
 
       // log statements in debug mode or when requested explicitly
       if ($this->dbDebug == true || $logStatement == true) {
@@ -232,20 +205,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
       @mysql_data_seek($result, $offset);
    }
 
-   /**
-    * @public
-    *
-    * Returns the amount of rows, that are affected by a previous update or delete call.
-    *
-    * @param resource $resultCursor The result resource pointer.
-    * @return int The number of affected rows.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 04.01.2006<br />
-    * Version 0.2, 07.03.2008<br />
-    */
-   public function getAffectedRows($resultCursor) {
+   public function getAffectedRows($unusedParam = null) {
       return mysql_affected_rows($this->dbConn);
    }
 
@@ -265,23 +225,7 @@ class MySQLxHandler extends AbstractDatabaseHandler {
       return mysql_num_rows($result);
    }
 
-   /**
-    * @public
-    *
-    * Executes a statement applied as a string to the method and returns the
-    * result pointer.
-    *
-    * @param string $statement The statement string.
-    * @param boolean $logStatement Indicates, whether the given statement should be
-    *                              logged for debug purposes.
-    * @return resource The database result resource.
-    * @throws DatabaseHandlerException In case of any database error.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 10.02.2008<br />
-    */
-   public function executeTextStatement($statement, $logStatement = false) {
+   public function executeTextStatement($statement, array $params = array(), $logStatement = false, $emulatePrepare = null, $placeHolderType = null) {
 
       // log statements in debug mode or when requested explicitly
       if ($this->dbDebug == true || $logStatement == true) {
@@ -342,6 +286,36 @@ class MySQLxHandler extends AbstractDatabaseHandler {
     */
    public function getDatabaseName() {
       return $this->dbName;
+   }
+
+   protected function execute($statement, $logStatement = false) {
+      // TODO: Implement execute() method.
+   }
+
+
+   protected function prepare($statement, array $params, $logStatement) {
+      // TODO: Implement prepare() method.
+   }
+
+
+   public function getLastID() {
+      // TODO: Implement getLastID() method.
+   }
+
+   public function quoteValue($value) {
+      // TODO: Implement quoteValue() method.
+   }
+
+   public function beginTransaction() {
+      // TODO: Implement beginTransaction() method.
+   }
+
+   public function commit() {
+      // TODO: Implement commit() method.
+   }
+
+   public function rollback() {
+      // TODO: Implement rollback() method.
    }
 
 }

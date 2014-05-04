@@ -1,0 +1,10 @@
+- AbstractDatabaseHandler::getNumRows() removed.
+- Review done:
+  - DatabaseConnection
+  - AbstractDatabaseHandler
+  - Result
+  - Statement
+  - MySQLiHandler
+  - PDOHandler
+  - MySQLxHandler (Result and Statement implementation missing)
+  - SQLiteHandler (Result and Statement implementation missing)

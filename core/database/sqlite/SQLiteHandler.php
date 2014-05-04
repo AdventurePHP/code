@@ -1,5 +1,5 @@
 <?php
-namespace APF\core\database;
+namespace APF\core\database\sqlite;
 
 /**
  * <!--
@@ -21,6 +21,8 @@ namespace APF\core\database;
  * -->
  */
 use APF\core\database\AbstractDatabaseHandler;
+use APF\core\database\DatabaseHandlerException;
+use APF\core\database\Result;
 use APF\core\logging\LogEntry;
 
 /**
@@ -29,9 +31,10 @@ use APF\core\logging\LogEntry;
  *
  * This class provides APF-style access to sqlite databases.
  *
- * @author Christian Achatz
+ * @author Christian Achatz, dingsda
  * @version
  * Version 0.1, 23.02.2008<br />
+ * Version 0.2, 03.05.2014 (Adapted to new interface scheme)<br />
  */
 class SQLiteHandler extends AbstractDatabaseHandler {
 
@@ -51,17 +54,6 @@ class SQLiteHandler extends AbstractDatabaseHandler {
       $this->dbLogTarget = 'sqlite';
    }
 
-   /**
-    * @protected
-    *
-    * Implements the connect method to create a connection to the desired sqlite database.
-    *
-    * @throws DatabaseHandlerException In case the database connection cannot be established.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 23.02.2008<br />
-    */
    protected function connect() {
 
       $this->dbConn = @sqlite_open($this->dbName, $this->dbMode, $this->dbError);
@@ -72,36 +64,12 @@ class SQLiteHandler extends AbstractDatabaseHandler {
       }
    }
 
-   /**
-    * @protected
-    *
-    * Implements the close method for the sqlite database.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 23.02.2008<br />
-    */
    protected function close() {
       @sqlite_close($this->dbConn);
       $this->dbConn = null;
    }
 
-   /**
-    * @public
-    *
-    * Executes a statement applied as a string to the method and returns the
-    * result pointer.
-    *
-    * @param string $statement The statement string.
-    * @param boolean $logStatement Indicates, whether the given statement should be
-    *                              logged for debug purposes.
-    * @return resource The database result resource.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 10.02.2008<br />
-    */
-   public function executeTextStatement($statement, $logStatement = false) {
+   public function executeTextStatement($statement, array $params = array(), $logStatement = false, $emulatePrepare = null, $placeHolderType = null) {
 
       if ($logStatement == true) {
          $this->dbLog->logEntry($this->dbLogTarget, '[SQLiteHandler::executeTextStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
@@ -121,25 +89,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
       return $result;
    }
 
-   /**
-    * @public
-    *
-    * Executes a statement, located within a statement file. The place holders contained in the
-    * file are replaced by the given values.
-    *
-    * @param string $namespace Namespace of the statement file.
-    * @param string $statementName Name of the statement file (filebody!).
-    * @param string[] $params A list of statement parameters.
-    * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
-    * @return resource The database result resource.
-    * @throws DatabaseHandlerException In case the statement file does not exist.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 24.02.2008<br />
-    * Version 0.2, 21.06.2008 (Replaced APPS__ENVIRONMENT with a value from the Registry)<br />
-    */
-   public function executeStatement($namespace, $statementName, array $params = array(), $logStatement = false) {
+   public function executeStatement($namespace, $statementName, array $params = array(), $logStatement = false, $emulatePrepare = null, $placeHolderType = null) {
 
       $statement = $this->getPreparedStatement($namespace, $statementName, $params);
 
@@ -168,6 +118,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     *
     * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
     * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
+    *
     * @return string[] The associative result array.
     *
     * @author Christian Achatz
@@ -191,6 +142,7 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     * Escapes given values to be SQL injection save.
     *
     * @param string $value The un-escaped value.
+    *
     * @return string The escaped string.
     *
     * @author Christian Achatz
@@ -206,15 +158,16 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     *
     * Returns the amount of rows, that are affected by a previous update or delete call.
     *
-    * @param resource $resultCursor The result resource pointer.
+    * @param resource $unusedParam The result resource pointer.
+    *
     * @return int The number of affected rows.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 24.02.2008<br />
     */
-   public function getAffectedRows($resultCursor) {
-      return sqlite_num_rows($resultCursor);
+   public function getAffectedRows($unusedParam = null) {
+      return sqlite_num_rows($unusedParam);
    }
 
    /**
@@ -222,15 +175,44 @@ class SQLiteHandler extends AbstractDatabaseHandler {
     *
     * Returns the number of selected rows by the given result resource.
     *
-    * @param resource $result The sqlite result resource.
+    * @param Result $result The sqlite result resource.
+    *
     * @return int The number of selected rows.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 12.03.2011 (Added missing method.)<br />
     */
-   public function getNumRows($result) {
+   public function getNumRows(Result $result) {
       return sqlite_num_rows($result);
+   }
+
+   protected function execute($statement, $logStatement = false) {
+      // TODO: Implement execute() method.
+   }
+
+   protected function prepare($statement, array $params, $logStatement) {
+      // TODO: Implement prepare() method.
+   }
+
+   public function getLastID() {
+      // TODO: Implement getLastID() method.
+   }
+
+   public function quoteValue($value) {
+      // TODO: Implement quoteValue() method.
+   }
+
+   public function beginTransaction() {
+      // TODO: Implement beginTransaction() method.
+   }
+
+   public function commit() {
+      // TODO: Implement commit() method.
+   }
+
+   public function rollback() {
+      // TODO: Implement rollback() method.
    }
 
 }
