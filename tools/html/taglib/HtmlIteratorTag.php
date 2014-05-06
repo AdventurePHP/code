@@ -23,8 +23,8 @@ namespace APF\tools\html\taglib;
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\TagLib;
+use APF\core\pagecontroller\TemplateTag;
 use APF\core\singleton\Singleton;
-use APF\tools\html\taglib\HtmlIteratorItemTag;
 use APF\tools\request\RequestHandler;
 
 /**
@@ -63,7 +63,6 @@ class HtmlIteratorTag extends Document {
     */
    protected $transformOnPlace = false;
 
-
    /**
     * @protected
     * The iteration number
@@ -73,7 +72,7 @@ class HtmlIteratorTag extends Document {
    /**
     * @public
     *
-    * Defines the known taglibs. In this case, only the iterator item is parsed.
+    * Defines the known tags. In this case, only the iterator item is parsed.
     *
     * @author Christian Achatz
     * @version
@@ -85,6 +84,9 @@ class HtmlIteratorTag extends Document {
       $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'iterator', 'getstring');
       $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'iterator', 'placeholder');
       $this->tagLibs[] = new TagLib('APF\tools\html\taglib\HtmlIteratorItemTag', 'iterator', 'item');
+
+      // ID#105: use template tag (abstraction to re-declare name of known tags) to ease creation of as fallback element
+      $this->tagLibs[] = new TagLib('APF\tools\html\taglib\HtmlIteratorFallbackTag', 'iterator', 'fallback');
    }
 
    /**
@@ -179,8 +181,7 @@ class HtmlIteratorTag extends Document {
          if ($pager != false) {
 
             // get pager-config
-            $pagerConfig = $this->getConfiguration('APF\modules\pager', 'pager.ini');
-            $pagerConfig = $pagerConfig->getSection($pager);
+            $pagerConfig = $this->getConfiguration('APF\modules\pager', 'pager.ini')->getSection($pager);
 
             // get the number of entries per page
             $entriesPerPage = RequestHandler::getValue(
@@ -215,59 +216,73 @@ class HtmlIteratorTag extends Document {
       $placeHolders = & $iteratorItem->getPlaceHolders();
 
       $itemCount = count($this->dataContainer);
-      for ($i = 0; $i < $itemCount; $i++) {
 
-         if (is_array($this->dataContainer[$i])) {
+      if ($itemCount === 0) {
 
-            foreach ($placeHolders as $objectId => $DUMMY) {
+         /* @var $fallback TemplateTag */
+         $fallbackObjectId = $this->getFallbackContentItemObjectId();
 
-               // if we find a place holder with IterationNumber as name-Attribute-Value set Iteration number
-               if ($placeHolders[$objectId]->getAttribute('name') == 'IterationNumber') {
-                  $placeHolders[$objectId]->setContent($this->iterationNumber);
-                  $this->iterationNumber++;
-                  continue;
+         // activate auto-transformation to display fallback content.
+         if ($fallbackObjectId !== null) {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->children[$fallbackObjectId]->transformTemplate();
+         }
+
+      } else {
+
+         for ($i = 0; $i < $itemCount; $i++) {
+
+            if (is_array($this->dataContainer[$i])) {
+
+               foreach ($placeHolders as $objectId => $DUMMY) {
+
+                  // if we find a place holder with IterationNumber as name-Attribute-Value set Iteration number
+                  if ($placeHolders[$objectId]->getAttribute('name') == 'IterationNumber') {
+                     $placeHolders[$objectId]->setContent($this->iterationNumber);
+                     $this->iterationNumber++;
+                     continue;
+                  }
+
+                  $placeHolders[$objectId]->setContent($this->dataContainer[$i][$placeHolders[$objectId]->getAttribute('name')]);
                }
 
-               $placeHolders[$objectId]->setContent($this->dataContainer[$i][$placeHolders[$objectId]->getAttribute('name')]);
-            }
+               $buffer .= $iteratorItem->transform();
 
-            $buffer .= $iteratorItem->transform();
+            } elseif (is_object($this->dataContainer[$i])) {
 
-         } elseif (is_object($this->dataContainer[$i])) {
+               foreach ($placeHolders as $objectId => $DUMMY) {
 
-            foreach ($placeHolders as $objectId => $DUMMY) {
+                  // if we find a place holder with IterationNumber as name-Attribute-Value set Iteration number
+                  if ($placeHolders[$objectId]->getAttribute('name') == 'IterationNumber') {
+                     $placeHolders[$objectId]->setContent($this->iterationNumber);
+                     $this->iterationNumber++;
+                     continue;
+                  }
 
-               // if we find a place holder with IterationNumber as name-Attribute-Value set Iteration number
-               if ($placeHolders[$objectId]->getAttribute('name') == 'IterationNumber') {
-                  $placeHolders[$objectId]->setContent($this->iterationNumber);
-                  $this->iterationNumber++;
-                  continue;
-               }
-
-               // evaluate per-place-holder getter
-               $localGetter = $placeHolders[$objectId]->getAttribute('getter');
-               if ($localGetter == null) {
-                  $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
+                  // evaluate per-place-holder getter
+                  $localGetter = $placeHolders[$objectId]->getAttribute('getter');
+                  if ($localGetter == null) {
+                     $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
                            $getter
                            }(
                               $placeHolders[$objectId]->getAttribute('name'))
-                  );
-               } else {
-                  $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
+                     );
+                  } else {
+                     $placeHolders[$objectId]->setContent($this->dataContainer[$i]->{
                         $localGetter
                         }());
+                  }
                }
+
+               $buffer .= $iteratorItem->transform();
+
+            } else {
+               throw new \InvalidArgumentException('[HtmlIteratorTag::transformIterator()] '
+                  . 'Given list entry is not an array or object (' . $this->dataContainer[$i]
+                  . ')! The data container must contain a list of associative arrays or objects!',
+                  E_USER_WARNING);
             }
-
-            $buffer .= $iteratorItem->transform();
-
-         } else {
-            throw new \InvalidArgumentException('[HtmlIteratorTag::transformIterator()] '
-                     . 'Given list entry is not an array or object (' . $this->dataContainer[$i]
-                     . ')! The data container must contain a list of associative arrays or objects!',
-               E_USER_WARNING);
          }
-
       }
 
       $t->stop('(HtmlIteratorTag) ' . $this->getObjectId() . '::transformIterator()');
@@ -276,7 +291,8 @@ class HtmlIteratorTag extends Document {
       // user to define some html code as well.
       $iterator = str_replace('<' . $itemObjectId . ' />', $buffer, $this->content);
 
-      // transform all other child tags except the iterator item(s)
+      // Transform all other child tags except the iterator item(s).
+      // ID#105: this also includes the default content in case no items available
       foreach ($this->children as $objectId => $DUMMY) {
 
          if (!($this->children[$objectId] instanceof HtmlIteratorItemTag)) {
@@ -331,10 +347,51 @@ class HtmlIteratorTag extends Document {
 
       // defining no iterator item is not allowed!
       throw new \InvalidArgumentException('[HtmlIteratorTag::getIteratorItemObjectId()] '
-            . 'The definition for iterator "' . $this->getAttribute('name')
-            . '" does not contain a iterator item, hence this is no legal iterator tag '
-            . 'definition. Please refer to the documentation.', E_USER_ERROR);
+         . 'The definition for iterator "' . $this->getAttribute('name')
+         . '" does not contain a iterator item, hence this is no legal iterator tag '
+         . 'definition. Please refer to the documentation.', E_USER_ERROR);
 
+   }
+
+   /**
+    * @protected
+    *
+    * Returns the fallback content template object id if found in the children list.
+    * All other occurrences are ignored, due to the fact, that it is not
+    * allowed to define more that one fallback content.
+    *
+    * @return string|null The fallback content's object id or <em>null</em> in case no <iterator:fallback /> is specified.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 06.05.2014<br />
+    */
+   protected function &getFallbackContentItemObjectId() {
+
+      foreach ($this->children as $objectId => $DUMMY) {
+         if ($this->children[$objectId] instanceof TemplateTag) {
+            return $objectId;
+         }
+      }
+
+      return null;
+   }
+
+   /**
+    * @public
+    *
+    * Returns the fallback content template in case defined for the present iterator.
+    *
+    * @return HtmlIteratorFallbackTag|null Fallback template or <em>null</em> in case nothing is defined.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 06.05.2014<br />
+    */
+   public function &getFallbackContent() {
+      $fallbackObjectId = $this->getFallbackContentItemObjectId();
+      $null = null;
+      return $fallbackObjectId === null ? $null : $this->children[$fallbackObjectId];
    }
 
 }
