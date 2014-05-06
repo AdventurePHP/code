@@ -73,6 +73,15 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // configure client connection
       $this->initCharsetAndCollation();
 
+      if ($this->dbCharset !== null) {
+         if (!$this->dbConn->set_charset($this->dbCharset)) {
+            throw new DatabaseHandlerException(
+               '[MySQLiHandler->connect()] Error loading character set ' . $this->dbCharset .
+               ' (' . $this->dbConn->error . ')!'
+            );
+         }
+      }
+
    }
 
    protected function close() {

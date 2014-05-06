@@ -20,7 +20,6 @@ namespace APF\core\database;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\database\AbstractDatabaseHandler;
 use APF\core\logging\LogEntry;
 
 /**
@@ -378,6 +377,9 @@ class PDOHandler extends AbstractDatabaseHandler {
                }
                if ($this->dbPort !== null) {
                   $dsn .= ';port=' . $this->dbPort;
+               }
+               if ($this->dbCharset !== null) {
+                  $dsn .= ';charset=' . $this->dbCharset;
                }
             }
             $dsn .= ';dbname=' . $this->dbName;
