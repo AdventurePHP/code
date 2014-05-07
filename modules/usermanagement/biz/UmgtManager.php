@@ -23,21 +23,18 @@ namespace APF\modules\usermanagement\biz;
 use APF\core\configuration\Configuration;
 use APF\core\configuration\ConfigurationException;
 use APF\core\pagecontroller\APFObject;
-
-use APF\modules\genericormapper\data\GenericORRelationMapper;
 use APF\modules\genericormapper\data\GenericCriterionObject;
-
+use APF\modules\genericormapper\data\GenericORRelationMapper;
 use APF\modules\usermanagement\biz\model\UmgtApplication;
+use APF\modules\usermanagement\biz\model\UmgtAuthToken;
 use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\biz\model\UmgtPermission;
 use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinition;
 use APF\modules\usermanagement\biz\model\UmgtVisibilityDefinitionType;
-use APF\modules\usermanagement\biz\model\UmgtAuthToken;
-use APF\modules\usermanagement\biz\provider\UserFieldEncryptionProvider;
-
 use APF\modules\usermanagement\biz\provider\PasswordHashProvider;
+use APF\modules\usermanagement\biz\provider\UserFieldEncryptionProvider;
 
 /**
  * @package APF\modules\usermanagement\biz
@@ -74,6 +71,7 @@ class UmgtManager extends APFObject {
 
    /**
     * Stores the providers, that hashes the user's password.
+    *
     * @var PasswordHashProvider[] The password hash providers.
     */
    protected $passwordHashProviders = array();
@@ -180,11 +178,11 @@ class UmgtManager extends APFObject {
     */
    public function __sleep() {
       return array(
-         'language',
-         'context',
-         'serviceType',
-         'applicationId',
-         'passwordHashProviderList'
+            'language',
+            'context',
+            'serviceType',
+            'applicationId',
+            'passwordHashProviderList'
       );
    }
 
@@ -197,6 +195,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $password the password to hash
     * @param UmgtUser $user current user.
+    *
     * @return bool Returns true if password matches.
     *
     * @author Ralf Schubert
@@ -227,6 +226,7 @@ class UmgtManager extends APFObject {
             // if fallback matched, first update hash in database to new provider (on-the-fly updating to new provider)
             $user->setPassword($password);
             $this->saveUser($user);
+
             return true;
          }
       }
@@ -243,6 +243,7 @@ class UmgtManager extends APFObject {
     * to keep all other methods untouched.
     *
     * @param UmgtUser $user Current user
+    *
     * @return string The dynamic salt
     *
     * @author Tobias Lückel
@@ -258,6 +259,7 @@ class UmgtManager extends APFObject {
          $dynamicSalt = md5(rand(10000, 99999));
          $user->setDynamicSalt($dynamicSalt);
       }
+
       return $dynamicSalt;
 
    }
@@ -272,6 +274,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $password The password to hash
     * @param UmgtUser $user The current user.
+    *
     * @return string The desired hash of the given password.
     *
     * @author Tobias Lückel
@@ -296,6 +299,7 @@ class UmgtManager extends APFObject {
    protected function getCurrentApplication() {
       $app = new UmgtApplication();
       $app->setObjectId($this->applicationId);
+
       return $app;
    }
 
@@ -341,6 +345,7 @@ class UmgtManager extends APFObject {
     * Saves a user object within the current application.
     *
     * @param UmgtUser $user current user.
+    *
     * @return int The id of the user.
     *
     * @author Christian Achatz
@@ -385,6 +390,7 @@ class UmgtManager extends APFObject {
       // save the user and return it's id
       $app = $this->getCurrentApplication();
       $user->addRelatedObject('Application2User', $app);
+
       return $orm->saveObject($user);
 
    }
@@ -395,6 +401,7 @@ class UmgtManager extends APFObject {
     * Saves an application object.
     *
     * @param UmgtApplication $app The application object to save.
+    *
     * @return int The id of the application.
     *
     * @author Christian Achatz
@@ -411,6 +418,7 @@ class UmgtManager extends APFObject {
     * Saves a group object within the current application.
     *
     * @param UmgtGroup $group current group.
+    *
     * @return int The id of the group.
     *
     * @author Christian Achatz
@@ -420,6 +428,7 @@ class UmgtManager extends APFObject {
    public function saveGroup(UmgtGroup &$group) {
       $app = $this->getCurrentApplication();
       $group->addRelatedObject('Application2Group', $app);
+
       return $this->getORMapper()->saveObject($group);
    }
 
@@ -429,6 +438,7 @@ class UmgtManager extends APFObject {
     * Saves a role object within the current application.
     *
     * @param UmgtRole $role current role.
+    *
     * @return int The id of the role.
     *
     * @author Christian Achatz
@@ -438,6 +448,7 @@ class UmgtManager extends APFObject {
    public function saveRole(UmgtRole &$role) {
       $app = $this->getCurrentApplication();
       $role->addRelatedObject('Application2Role', $app);
+
       return $this->getORMapper()->saveObject($role);
    }
 
@@ -447,6 +458,7 @@ class UmgtManager extends APFObject {
     * Saves a permission object within the current application.
     *
     * @param UmgtPermission $permission the permission.
+    *
     * @return int The id of the permission.
     *
     * @author Christian Achatz
@@ -458,6 +470,7 @@ class UmgtManager extends APFObject {
    public function savePermission(UmgtPermission &$permission) {
       $app = $this->getCurrentApplication();
       $permission->addRelatedObject('Application2Permission', $app);
+
       return $this->getORMapper()->saveObject($permission);
    }
 
@@ -479,6 +492,7 @@ class UmgtManager extends APFObject {
                     INNER JOIN ent_application ON cmp_application2user.Source_ApplicationID = ent_application.ApplicationID
                     WHERE ent_application.ApplicationID = \'' . $this->applicationId . '\'
                     ORDER BY ent_user.LastName ASC, ent_user.FirstName ASC';
+
       return $this->getORMapper()->loadObjectListByTextStatement('User', $select);
    }
 
@@ -558,6 +572,7 @@ class UmgtManager extends APFObject {
     */
    public function getPermissionList() {
       $app = $this->getCurrentApplication();
+
       return $this->getORMapper()->loadRelatedObjects($app, 'Application2Permission');
    }
 
@@ -567,6 +582,7 @@ class UmgtManager extends APFObject {
     * Returns a user domain object.
     *
     * @param int $userId id of the desired user
+    *
     * @return UmgtUser The user domain object.
     *
     * @author Christian Achatz
@@ -584,6 +600,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $username the user's username.
     * @param string $password the user's password.
+    *
     * @return UmgtUser The user domain object or null.
     *
     * @author Ralf Schubert
@@ -609,6 +626,7 @@ class UmgtManager extends APFObject {
     * Loads a user by it's display name.
     *
     * @param string $displayName The desired user's display name.
+    *
     * @return UmgtUser|null The desired user or null in case the user has not been found.
     *
     * @author Coach83
@@ -619,16 +637,17 @@ class UmgtManager extends APFObject {
 
       $orm = & $this->getORMapper();
 
-      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('DisplayName')) {
-          $displayName = UserFieldEncryptionProvider::encrypt($displayName);
+      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('DisplayName')) {
+         $displayName = UserFieldEncryptionProvider::encrypt($displayName);
       }
-      
+
       // escape the input values
       $dbDriver = & $orm->getDbDriver();
       $displayName = $dbDriver->escapeValue($displayName);
 
       // create the statement and select user
       $select = 'SELECT * FROM `ent_user` WHERE `DisplayName` = \'' . $displayName . '\';';
+
       return $orm->loadObjectByTextStatement('User', $select);
    }
 
@@ -639,6 +658,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $displayName The desired user's display name.
     * @param string $password The user's password.
+    *
     * @return UmgtUser|null The desired user or null in case the user has not been found or the password didn't match.
     *
     * @author Coach83
@@ -661,6 +681,7 @@ class UmgtManager extends APFObject {
     * Loads a user object by a given first name.
     *
     * @param string $firstName The first name of the user to load.
+    *
     * @return UmgtUser The user domain object or null.
     *
     * @author Christian Achatz
@@ -670,9 +691,9 @@ class UmgtManager extends APFObject {
    public function loadUserByFirstName($firstName) {
 
       $orm = & $this->getORMapper();
-      
-      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('FirstName')) {
-          $firstName = UserFieldEncryptionProvider::encrypt($firstName);
+
+      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('FirstName')) {
+         $firstName = UserFieldEncryptionProvider::encrypt($firstName);
       }
 
       // escape the input values
@@ -681,6 +702,7 @@ class UmgtManager extends APFObject {
 
       // create the statement and select user
       $select = 'SELECT * FROM `ent_user` WHERE `FirstName` = \'' . $firstName . '\';';
+
       return $orm->loadObjectByTextStatement('User', $select);
 
    }
@@ -691,6 +713,7 @@ class UmgtManager extends APFObject {
     * Loads a user object by a given last name.
     *
     * @param string $lastName The last name of the user to load.
+    *
     * @return UmgtUser The user domain object or null.
     *
     * @author Christian Achatz
@@ -700,9 +723,9 @@ class UmgtManager extends APFObject {
    public function loadUserByLastName($lastName) {
 
       $orm = & $this->getORMapper();
-      
-      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('LastName')) {
-          $lastName = UserFieldEncryptionProvider::encrypt($lastName);
+
+      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('LastName')) {
+         $lastName = UserFieldEncryptionProvider::encrypt($lastName);
       }
 
       // escape the input values
@@ -711,6 +734,7 @@ class UmgtManager extends APFObject {
 
       // create the statement and select user
       $select = 'SELECT * FROM `ent_user` WHERE `LastName` = \'' . $lastName . '\';';
+
       return $orm->loadObjectByTextStatement('User', $select);
 
    }
@@ -721,6 +745,7 @@ class UmgtManager extends APFObject {
     * Loads a user object by a given email.
     *
     * @param string $email The email of the user to load.
+    *
     * @return UmgtUser The user domain object or null.
     *
     * @author Christian Achatz
@@ -730,9 +755,9 @@ class UmgtManager extends APFObject {
    public function loadUserByEMail($email) {
 
       $orm = & $this->getORMapper();
-      
-      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('EMail')) {
-          $email = UserFieldEncryptionProvider::encrypt($email);
+
+      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('EMail')) {
+         $email = UserFieldEncryptionProvider::encrypt($email);
       }
 
       // escape the input values
@@ -741,6 +766,7 @@ class UmgtManager extends APFObject {
 
       // create the statement and select user
       $select = 'SELECT * FROM `ent_user` WHERE `EMail` = \'' . $email . '\';';
+
       return $orm->loadObjectByTextStatement('User', $select);
 
    }
@@ -752,6 +778,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $firstName The first name of the user to load.
     * @param string $lastName The last name of the user to load.
+    *
     * @return UmgtUser The user domain object or null.
     *
     * @author Christian Achatz
@@ -761,12 +788,12 @@ class UmgtManager extends APFObject {
    public function loadUserByFirstNameAndLastName($firstName, $lastName) {
 
       $orm = & $this->getORMapper();
-      
-      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('FirstName')) {
-          $firstName = UserFieldEncryptionProvider::encrypt($firstName);
+
+      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('FirstName')) {
+         $firstName = UserFieldEncryptionProvider::encrypt($firstName);
       }
-      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('LastName')) {
-          $lastName = UserFieldEncryptionProvider::encrypt($lastName);
+      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('LastName')) {
+         $lastName = UserFieldEncryptionProvider::encrypt($lastName);
       }
 
       // escape the input values
@@ -776,6 +803,7 @@ class UmgtManager extends APFObject {
 
       // create the statement and select user
       $select = 'SELECT * FROM `ent_user` WHERE `FirstName` = \'' . $firstName . '\' AND `LastName` = \'' . $lastName . '\';';
+
       return $orm->loadObjectByTextStatement('User', $select);
 
    }
@@ -786,6 +814,7 @@ class UmgtManager extends APFObject {
     * Loads a user object by a user name.
     *
     * @param string $username The user name of the user to load.
+    *
     * @return UmgtUser The user domain object or null.
     *
     * @author Christian Achatz
@@ -795,9 +824,9 @@ class UmgtManager extends APFObject {
    public function loadUserByUserName($username) {
 
       $orm = & $this->getORMapper();
-      
-      if(UserFieldEncryptionProvider::propertyHasEncryptionEnabled('Username')) {
-          $username = UserFieldEncryptionProvider::encrypt($username);
+
+      if (UserFieldEncryptionProvider::propertyHasEncryptionEnabled('Username')) {
+         $username = UserFieldEncryptionProvider::encrypt($username);
       }
 
       // escape the input values
@@ -806,6 +835,7 @@ class UmgtManager extends APFObject {
 
       // create the statement and select user
       $select = 'SELECT * FROM `ent_user` WHERE `Username` = \'' . $username . '\';';
+
       return $orm->loadObjectByTextStatement('User', $select);
 
    }
@@ -817,6 +847,7 @@ class UmgtManager extends APFObject {
     *
     * @param string $email the user's email
     * @param string $password the user's password
+    *
     * @return UmgtUser The user domain object or null
     *
     * @author Christian Achatz
@@ -843,6 +874,7 @@ class UmgtManager extends APFObject {
     * all other methods untouched.
     *
     * @param UmgtUser $user The user object to save.
+    *
     * @return string The desired display name.
     *
     * @author Christian Achatz
@@ -851,6 +883,7 @@ class UmgtManager extends APFObject {
     */
    protected function getDisplayName(UmgtUser $user) {
       $displayName = $user->getDisplayName();
+
       return empty($displayName)
             ? $user->getLastName() . ', ' . $user->getFirstName()
             : $user->getDisplayName();
@@ -862,6 +895,7 @@ class UmgtManager extends APFObject {
     * Returns a list of Permission domain objects for the given user.
     *
     * @param UmgtUser $user the user object
+    *
     * @return UmgtPermission[] $permissions the user's permissions
     *
     * @author Christian Achatz
@@ -915,6 +949,7 @@ class UmgtManager extends APFObject {
     * Returns a group domain object.
     *
     * @param int $groupId id of the desired group
+    *
     * @return UmgtGroup The group domain object.
     *
     * @author Christian Achatz
@@ -931,6 +966,7 @@ class UmgtManager extends APFObject {
     * Loads a group by a given name.
     *
     * @param string $groupName The name of the group to load
+    *
     * @return UmgtGroup The desired group domain object.
     *
     * @author Christian Achatz
@@ -940,6 +976,7 @@ class UmgtManager extends APFObject {
    public function loadGroupByName($groupName) {
       $crit = new GenericCriterionObject();
       $crit->addPropertyIndicator('DisplayName', $groupName);
+
       return $this->getORMapper()->loadObjectByCriterion('Group', $crit);
    }
 
@@ -949,6 +986,7 @@ class UmgtManager extends APFObject {
     * Returns a role domain object.
     *
     * @param int $roleId id of the desired role
+    *
     * @return UmgtRole The role domain object.
     *
     * @author Christian Achatz
@@ -965,6 +1003,7 @@ class UmgtManager extends APFObject {
     * Returns a role domain object identified by it's display name.
     *
     * @param string $name The name of the role to load.
+    *
     * @return UmgtRole The desired role.
     *
     * @author Christian Achatz
@@ -974,6 +1013,7 @@ class UmgtManager extends APFObject {
    public function loadRoleByName($name) {
       $crit = new GenericCriterionObject();
       $crit->addPropertyIndicator('DisplayName', $name);
+
       return $this->getORMapper()->loadObjectByCriterion('Role', $crit);
    }
 
@@ -983,6 +1023,7 @@ class UmgtManager extends APFObject {
     * Loads a permission by it's id.
     *
     * @param int $permissionId the permission's id
+    *
     * @return UmgtPermission The desiried permission.
     *
     * @author Christian Achatz
@@ -1138,6 +1179,7 @@ class UmgtManager extends APFObject {
     * Loads all groups, that are assigned to a given user.
     *
     * @param UmgtUser $user the user
+    *
     * @return UmgtGroup[] The group list.
     *
     * @author Christian Achatz
@@ -1155,6 +1197,7 @@ class UmgtManager extends APFObject {
     * Loads the groups that are assigned to the given role.
     *
     * @param UmgtRole $role The role to load the assigned groups.
+    *
     * @return UmgtGroup[] The list of groups, that are assigned to the given role.
     *
     * @author Christian Achatz
@@ -1165,6 +1208,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2Group', $app);
+
       return $this->getORMapper()->loadRelatedObjects($role, 'Role2Group', $crit);
    }
 
@@ -1174,6 +1218,7 @@ class UmgtManager extends APFObject {
     * Loads the groups that are *not* assigned to the given role.
     *
     * @param UmgtRole $role The role to load the *not* assigned groups.
+    *
     * @return UmgtGroup[] The list of groups, that are *not* assigned to the given role.
     *
     * @author Christian Achatz
@@ -1184,6 +1229,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2Group', $app);
+
       return $this->getORMapper()->loadNotRelatedObjects($role, 'Role2Group', $crit);
    }
 
@@ -1215,6 +1261,7 @@ class UmgtManager extends APFObject {
     * Loads all groups, that are not assigned to a given user.
     *
     * @param UmgtUser $user the user
+    *
     * @return UmgtGroup[] The group list.
     *
     * @author Christian Achatz
@@ -1225,6 +1272,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2Group', $app);
+
       return $this->getORMapper()->loadNotRelatedObjects($user, 'Group2User', $crit);
    }
 
@@ -1234,6 +1282,7 @@ class UmgtManager extends APFObject {
     *  Loads all users, that are assigned to a given group.
     *
     * @param UmgtGroup $group the group
+    *
     * @return UmgtUser[] The user list.
     *
     * @author Christian Achatz
@@ -1245,6 +1294,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2User', $app);
+
       return $this->getORMapper()->loadRelatedObjects($group, 'Group2User', $crit);
    }
 
@@ -1254,6 +1304,7 @@ class UmgtManager extends APFObject {
     *  Loads all users, that are not assigned to a given group.
     *
     * @param UmgtGroup $group the group
+    *
     * @return UmgtUser[] The user list.
     *
     * @author Christian Achatz
@@ -1264,6 +1315,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2User', $app);
+
       return $this->getORMapper()->loadNotRelatedObjects($group, 'Group2User', $crit);
    }
 
@@ -1273,6 +1325,7 @@ class UmgtManager extends APFObject {
     *  Loads all roles, that are assigned to a given user.
     *
     * @param UmgtUser $user the user
+    *
     * @return UmgtRole[] The role list.
     *
     * @author Christian Achatz
@@ -1283,6 +1336,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2Role', $app);
+
       return $this->getORMapper()->loadRelatedObjects($user, 'Role2User', $crit);
    }
 
@@ -1292,6 +1346,7 @@ class UmgtManager extends APFObject {
     *  Loads all roles, that are not assigned to a given user.
     *
     * @param UmgtUser $user the user
+    *
     * @return UmgtRole[] The role list.
     *
     * @author Christian Achatz
@@ -1302,6 +1357,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2Role', $app);
+
       return $this->getORMapper()->loadNotRelatedObjects($user, 'Role2User', $crit);
    }
 
@@ -1311,6 +1367,7 @@ class UmgtManager extends APFObject {
     *  Loads a list of users, that have a certail role.
     *
     * @param UmgtRole $role the role, the users should have
+    *
     * @return UmgtUser[] Desired user list.
     *
     * @author Christian Achatz
@@ -1321,6 +1378,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2User', $app);
+
       return $this->getORMapper()->loadRelatedObjects($role, 'Role2User', $crit);
    }
 
@@ -1330,6 +1388,7 @@ class UmgtManager extends APFObject {
     * Loads a list of users, that don't have the given role.
     *
     * @param UmgtRole $role The role, the users should not have
+    *
     * @return UmgtUser[] Desired user list.
     *
     * @author Christian Achatz
@@ -1341,6 +1400,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2User', $app);
+
       return $this->getORMapper()->loadNotRelatedObjects($role, 'Role2User', $crit);
    }
 
@@ -1350,6 +1410,7 @@ class UmgtManager extends APFObject {
     * Loads all roles, that are *not* assigned the applied group.
     *
     * @param UmgtGroup $group The group to load the roles with.
+    *
     * @return UmgtRole[] The list of roles, that are *not* assigned to the applied group.
     *
     * @author Christian Achatz
@@ -1360,6 +1421,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2Role', $app);
+
       return $this->getORMapper()->loadNotRelatedObjects($group, 'Role2Group', $crit);
    }
 
@@ -1369,6 +1431,7 @@ class UmgtManager extends APFObject {
     * Loads all roles, that are assigned the applied group
     *
     * @param UmgtGroup $group The group to load the roles with.
+    *
     * @return UmgtRole[] The list of roles, that are assigned to the applied group.
     *
     * @author Christian Achatz
@@ -1379,6 +1442,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2Role', $app);
+
       return $this->getORMapper()->loadRelatedObjects($group, 'Role2Group', $crit);
    }
 
@@ -1499,6 +1563,7 @@ class UmgtManager extends APFObject {
     */
    public function getRoleList() {
       $app = $this->getCurrentApplication();
+
       return $this->getORMapper()->loadRelatedObjects($app, 'Application2Permission');
    }
 
@@ -1508,6 +1573,7 @@ class UmgtManager extends APFObject {
     * Loads the permission associated to the given role.
     *
     * @param UmgtRole $role The role to load it's permissions.
+    *
     * @return UmgtPermission[] The permissions that are assigned to the applied role.
     *
     * @author Christian Achatz
@@ -1524,6 +1590,7 @@ class UmgtManager extends APFObject {
     * Loads the permission *not* associated to the given role.
     *
     * @param UmgtRole $role The role to load it's *not* associated permissions.
+    *
     * @return UmgtPermission[] The permissions that are *not* assigned to the applied role.
     *
     * @author Christian Achatz
@@ -1534,6 +1601,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2Permission', $app);
+
       return $this->getORMapper()->loadNotRelatedObjects($role, 'Role2Permission', $crit);
    }
 
@@ -1543,6 +1611,7 @@ class UmgtManager extends APFObject {
     * Loads all roles that are connected to the applied permission.
     *
     * @param UmgtPermission $permission The permission to load the roles.
+    *
     * @return UmgtRole[] The roles, that are assigned the given permission.
     *
     * @author Christian Achatz
@@ -1559,6 +1628,7 @@ class UmgtManager extends APFObject {
     * Loads all roles that are *not* connected to the applied permission.
     *
     * @param UmgtPermission $permission The permission to load the roles.
+    *
     * @return UmgtRole[] The roles, that are *not* assigned the given permission.
     *
     * @author Christian Achatz
@@ -1569,6 +1639,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2Role', $app);
+
       return $this->getORMapper()->loadNotRelatedObjects($permission, 'Role2Permission', $crit);
    }
 
@@ -1669,6 +1740,7 @@ class UmgtManager extends APFObject {
     * @param UmgtVisibilityDefinition $definition The visibility definition (object id of application's the target object).
     * @param UmgtUser[] $users The list of users, that should have visibility permissions on the given application object.
     * @param UmgtGroup[] $groups The list of groups, that should have visibility permissions on the given application object.
+    *
     * @return int The id of the desired visibility definition.
     *
     * @author Christian Achatz
@@ -1681,11 +1753,20 @@ class UmgtManager extends APFObject {
 
       // try to reuse existing visibility definitions having the same
       // combination of proxy + type!
-      $crit = new GenericCriterionObject();
-      $crit->addPropertyIndicator('AppObjectId', $definition->getAppObjectId());
-      $crit->addRelationIndicator('AppProxy2AppProxyType', $type);
-      $storedVisibilityDefinition = $orm->loadObjectByCriterion('AppProxy', $crit);
-      if ($storedVisibilityDefinition != null) {
+      $criterion = new GenericCriterionObject();
+      $criterion->addPropertyIndicator('AppObjectId', $definition->getAppObjectId());
+
+      $criterion->addRelationIndicator('AppProxy2AppProxyType', $type);
+
+      // Allow best balance between creating new visibility definitions for proxy id, proxy type, and permission setup.
+      // For details on the discussion, please refer to http://forum.adventure-php-framework.org/viewtopic.php?f=1&t=5387.
+      $criterion->addPropertyIndicator('ReadPermission', $definition->getReadPermission());
+      $criterion->addPropertyIndicator('WritePermission', $definition->getWritePermission());
+      $criterion->addPropertyIndicator('LinkPermission', $definition->getLinkPermission());
+      $criterion->addPropertyIndicator('DeletePermission', $definition->getDeletePermission());
+
+      $storedVisibilityDefinition = $orm->loadObjectByCriterion('AppProxy', $criterion);
+      if ($storedVisibilityDefinition !== null) {
          $definition = $storedVisibilityDefinition;
       }
 
@@ -1804,6 +1885,7 @@ class UmgtManager extends APFObject {
     * Returns a list of all visibility definitions for the current application.
     *
     * @param UmgtVisibilityDefinitionType $type An optional visibility definitioyn type marker to limit the result.
+    *
     * @return UmgtVisibilityDefinition[] The list of visibility definitions for the current application.
     *
     * @author Christian Achatz
@@ -1831,6 +1913,7 @@ class UmgtManager extends APFObject {
     * Loads the list of users, that have visibility permissions on the given proxy object.
     *
     * @param UmgtVisibilityDefinition $proxy The proxy object.
+    *
     * @return UmgtUser[] The list of users, that have visibility permission.
     *
     * @author Christian Achatz
@@ -1847,6 +1930,7 @@ class UmgtManager extends APFObject {
     * Loads the list of groups, that have visibility permissions on the given proxy object.
     *
     * @param UmgtVisibilityDefinition $proxy The proxy object.
+    *
     * @return UmgtGroup[] The list of groups, that have visibility permission.
     *
     * @author Christian Achatz
@@ -1864,6 +1948,7 @@ class UmgtManager extends APFObject {
     * Sorts the result according to the display name of the user and group.
     *
     * @param UmgtVisibilityDefinition $proxy The proxy the users and groups have access to.
+    *
     * @return UmgtUser[]|UmgtGroup[] A mixed list of users and groups, that have access to a given proxy.
     *
     * @author Christian Achatz
@@ -1872,8 +1957,8 @@ class UmgtManager extends APFObject {
     */
    public function loadUsersAndGroupsWithVisibilityDefinition(UmgtVisibilityDefinition $proxy) {
       return array_merge(
-         $this->loadUsersWithVisibilityDefinition($proxy),
-         $this->loadGroupsWithVisibilityDefinition($proxy)
+            $this->loadUsersWithVisibilityDefinition($proxy),
+            $this->loadGroupsWithVisibilityDefinition($proxy)
       );
    }
 
@@ -1883,6 +1968,7 @@ class UmgtManager extends APFObject {
     * Loads the list of users, that do not have visibility permissions on the given application proxy.
     *
     * @param UmgtVisibilityDefinition $definition The appropriate visibility definition.
+    *
     * @return UmgtUser[] The users, that do not have visibility permissions in the given object.
     *
     * @author Christian Achatz
@@ -1893,6 +1979,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2User', $app);
+
       return $this->getORMapper()->loadNotRelatedObjects($definition, 'AppProxy2User', $crit);
    }
 
@@ -1902,6 +1989,7 @@ class UmgtManager extends APFObject {
     * Loads the list of groups, that do not have visibility permissions on the given application proxy.
     *
     * @param UmgtVisibilityDefinition $definition The appropriate visibility definition.
+    *
     * @return UmgtGroup[] The groups, that do not have visibility permissions in the given object.
     *
     * @author Christian Achatz
@@ -1912,6 +2000,7 @@ class UmgtManager extends APFObject {
       $crit = new GenericCriterionObject();
       $app = $this->getCurrentApplication();
       $crit->addRelationIndicator('Application2Group', $app);
+
       return $this->getORMapper()->loadNotRelatedObjects($definition, 'AppProxy2Group', $crit);
    }
 
@@ -1921,6 +2010,7 @@ class UmgtManager extends APFObject {
     * Loads the list of visibility definitions for the given type.
     *
     * @param UmgtVisibilityDefinitionType $type The visibility definition type.
+    *
     * @return UmgtVisibilityDefinition[] A list of visibility definitions of the given type.
     *
     * @author Christian Achatz
@@ -1939,6 +2029,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtUser $user The currently logged-in user.
     * @param UmgtVisibilityDefinitionType $type The type of visibility definition (e.g. <em>Page</em>)
+    *
     * @return UmgtVisibilityDefinition[] A list of visibility definitions, the user and it'd groups have access to.
     *
     * @author Christian Achatz
@@ -1965,6 +2056,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtUser $user The currently logged-in user.
     * @param UmgtVisibilityDefinitionType $type The type of visibility definition (e.g. <em>Page</em>)
+    *
     * @return UmgtVisibilityDefinition[] A list of visibility definitions, the user has access to.
     *
     * @author Christian Achatz
@@ -1991,6 +2083,7 @@ class UmgtManager extends APFObject {
     *
     * @param UmgtGroup $group A desired group.
     * @param UmgtVisibilityDefinitionType $type The type of visibility definition (e.g. <em>Page</em>)
+    *
     * @return UmgtVisibilityDefinition[] A list of visibility definitions, the group has access to.
     *
     * @author Christian Achatz
@@ -2015,6 +2108,7 @@ class UmgtManager extends APFObject {
     * Loads a visibility definition by it's object id.
     *
     * @param string $id The of the visibility definition.
+    *
     * @return UmgtVisibilityDefinition The desired visibility definition.
     *
     * @author Christian Achatz
@@ -2033,6 +2127,7 @@ class UmgtManager extends APFObject {
     * unique throughout the system but the combination with the type is.
     *
     * @param int $appObjectId The application object id of the visibility definition.
+    *
     * @return UmgtVisibilityDefinition The desired visibility definition.
     *
     * @author Christian Achatz
@@ -2043,6 +2138,7 @@ class UmgtManager extends APFObject {
    public function loadVisibilityDefinitionByAppObjectId($appObjectId) {
       $crit = new GenericCriterionObject();
       $crit->addPropertyIndicator('AppObjectId', $appObjectId);
+
       return $this->getORMapper()->loadObjectByCriterion('AppProxy', $crit);
    }
 
@@ -2052,6 +2148,7 @@ class UmgtManager extends APFObject {
     * Saves a visibility definition type used to categorize an application object.
     *
     * @param UmgtVisibilityDefinitionType $proxyType The type to save.
+    *
     * @return int The id of the type.
     *
     * @author Christian Achatz
@@ -2061,6 +2158,7 @@ class UmgtManager extends APFObject {
    public function saveVisibilityDefinitionType(UmgtVisibilityDefinitionType &$proxyType) {
       $app = $this->getCurrentApplication();
       $proxyType->addRelatedObject('Application2AppProxyType', $app);
+
       return $this->getORMapper()->saveObject($proxyType);
    }
 
@@ -2090,6 +2188,7 @@ class UmgtManager extends APFObject {
     * Returns a proxy type object specified by the given id.
     *
     * @param int $id The id of the proxy type.
+    *
     * @return UmgtVisibilityDefinitionType The desired proxy type.
     *
     * @author Christian Achatz
@@ -2102,11 +2201,13 @@ class UmgtManager extends APFObject {
 
    /**
     * @param string $name The name of the visibility definition type.
+    *
     * @return UmgtVisibilityDefinitionType
     */
    public function loadVisibilityDefinitionTypeByName($name) {
       $crit = new GenericCriterionObject();
       $crit->addPropertyIndicator('AppObjectName', $name);
+
       return $this->getORMapper()->loadObjectByCriterion('AppProxyType', $crit);
    }
 
@@ -2116,6 +2217,7 @@ class UmgtManager extends APFObject {
     * Returns the type associated to the given application proxy object.
     *
     * @param UmgtVisibilityDefinition $proxy The proxy object to load the type of.
+    *
     * @return UmgtVisibilityDefinitionType The desired proxy type.
     *
     * @author Christian Achatz
@@ -2125,6 +2227,7 @@ class UmgtManager extends APFObject {
    public function loadVisibilityDefinitionType(UmgtVisibilityDefinition $proxy) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('AppProxy2AppProxyType', $proxy);
+
       return $this->getORMapper()->loadObjectByCriterion('AppProxyType', $crit);
    }
 
@@ -2146,6 +2249,7 @@ class UmgtManager extends APFObject {
    public function loadVisibilityDefinitionTypes() {
       $crit = new GenericCriterionObject();
       $crit->addOrderIndicator('AppObjectName');
+
       return $this->getORMapper()->loadObjectListByCriterion('AppProxyType', $crit);
    }
 
@@ -2157,11 +2261,13 @@ class UmgtManager extends APFObject {
     * This method is used to resolve the user by the current cookie.
     *
     * @param string $token The token string from the auto login cookie.
+    *
     * @return UmgtAuthToken|null Returns the desired token or null, if no token has been found.
     */
    public function loadAuthTokenByTokenString($token) {
       $crit = new GenericCriterionObject();
       $crit->addPropertyIndicator('Token', $token);
+
       return $this->getORMapper()->loadObjectByCriterion('AuthToken', $crit);
    }
 
@@ -2171,11 +2277,13 @@ class UmgtManager extends APFObject {
     * Resolves the appropriate user from the given auth token.
     *
     * @param UmgtAuthToken $token The current auth token.
+    *
     * @return UmgtUser|null The corresponding user or null if the user cannot be found.
     */
    public function loadUserByAuthToken(UmgtAuthToken $token) {
       $crit = new GenericCriterionObject();
       $crit->addRelationIndicator('User2AuthToken', $token);
+
       return $this->getORMapper()->loadObjectByCriterion('User', $crit);
    }
 
@@ -2213,29 +2321,30 @@ class UmgtManager extends APFObject {
       } catch (ConfigurationException $e) {
          $cookieLifeTime = self::AUTO_LOGIN_COOKIE_LIFETIME;
       }
+
       return $cookieLifeTime;
    }
-   
+
    /**
     * Activates encryption. Loads configurations and gives them to encryption provider.
-    * Needs to be called before using UmgtUser-Objects or loading data from umgt, 
+    * Needs to be called before using UmgtUser-Objects or loading data from umgt,
     * when encryption should be used.
     */
    public function activateEncryption() {
-       if(UserFieldEncryptionProvider::$encryptedFieldNames === null) {
-            $config = $this->getConfigurationSection()->getSection('FieldEncryption');
-            /* @var $config Configuration */
-            
-            if($config === null) {
-                return;
-            }
+      if (UserFieldEncryptionProvider::$encryptedFieldNames === null) {
+         $config = $this->getConfigurationSection()->getSection('FieldEncryption');
+         /* @var $config Configuration */
 
-            $fieldNamesString = $config->getValue('FieldNames', '');
-            if(strlen($fieldNamesString) !== 0) {
-                UserFieldEncryptionProvider::$encryptedFieldNames = explode('|', $fieldNamesString);
-                UserFieldEncryptionProvider::$encryptionConfigKey = $config->getValue('Key', '');
-            }
-       }
+         if ($config === null) {
+            return;
+         }
+
+         $fieldNamesString = $config->getValue('FieldNames', '');
+         if (strlen($fieldNamesString) !== 0) {
+            UserFieldEncryptionProvider::$encryptedFieldNames = explode('|', $fieldNamesString);
+            UserFieldEncryptionProvider::$encryptionConfigKey = $config->getValue('Key', '');
+         }
+      }
    }
 
 }
