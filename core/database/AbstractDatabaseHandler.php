@@ -22,9 +22,7 @@ namespace APF\core\database;
  */
 use APF\core\configuration\ConfigurationException;
 use APF\core\database\config\StatementConfiguration;
-use APF\core\loader\RootClassLoader;
 use APF\core\logging\Logger;
-use APF\core\database\DatabaseConnection;
 use APF\core\pagecontroller\APFObject;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
@@ -480,16 +478,18 @@ abstract class AbstractDatabaseHandler extends APFObject implements DatabaseConn
     * Version 0.1, 08.02.2010<br />
     */
    protected function initCharsetAndCollation() {
-
-      if ($this->dbCharset !== null) {
-         $this->executeTextStatement('SET NAMES \'' . $this->dbCharset . '\'');
+      if ($this->dbCharset !== null || $this->dbCollation !== null) {
+         $setArray = array();
+         if ($this->dbCharset !== null) {
+            $setArray[] = ' NAMES \'' . $this->dbCharset . '\'';
+         }
+         if ($this->dbCollation !== null) {
+            $setArray[] = ' collation_connection = \'' . $this->dbCollation . '\'';
+            $setArray[] = ' collation_database = \'' . $this->dbCollation . '\'';
+         }
+         $statement = 'SET' . implode(',', $setArray);
+         $this->executeTextStatement($statement);
       }
-
-      if ($this->dbCollation !== null) {
-         $this->executeTextStatement('SET collation_connection = \'' . $this->dbCollation . '\'');
-         $this->executeTextStatement('SET collation_database = \'' . $this->dbCollation . '\'');
-      }
-
    }
 
    /**

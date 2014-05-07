@@ -20,7 +20,6 @@ namespace APF\core\database;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\database\AbstractDatabaseHandler;
 use APF\core\logging\LogEntry;
 
 /**
@@ -76,6 +75,15 @@ class MySQLxHandler extends AbstractDatabaseHandler {
 
       // configure client connection
       $this->initCharsetAndCollation();
+
+      if ($this->dbCharset !== null) {
+         if (!mysql_set_charset($this->dbCharset, $this->dbConn)) {
+            throw new DatabaseHandlerException(
+               '[MySQLiHandler->connect()] Error loading character set ' . $this->dbCharset .
+               ' (' . mysql_error($this->dbConn) . ')!'
+            );
+         }
+      }
 
       // Select the database. The ugly @ sign is needed to provide nice error messages.
       $result = @mysql_select_db($this->dbName, $this->dbConn);
