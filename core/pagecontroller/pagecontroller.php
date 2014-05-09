@@ -1088,7 +1088,7 @@ class Document extends APFObject {
    }
 
    /**
-    * @protected
+    * @public
     *
     * Let's you retrieve a list of child nodes of the current document by specifying a selector
     * (attribute name and attribute value) and the expected node type (name of the taglib
