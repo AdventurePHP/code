@@ -33,13 +33,14 @@ use APF\core\pagecontroller\TagLib;
  * @author Christian Achatz
  * @version
  * Version 0.1, 01.06.2008<br />
+ * Version 0.3, 11.05.2014 (ID#187: allow template expressions within iterator items)<br />
  */
 class HtmlIteratorItemTag extends Document {
 
    /**
     * @public
     *
-    * Initializes the known taglibs.
+    * Initializes the known tags.
     *
     * @author Christian Achatz
     * @version
@@ -53,6 +54,10 @@ class HtmlIteratorItemTag extends Document {
 
    public function onParseTime() {
       $this->extractTagLibTags();
+   }
+
+   public function onAfterAppend() {
+      $this->extractExpressionTags();
    }
 
    /**

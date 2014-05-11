@@ -45,6 +45,7 @@ use InvalidArgumentException;
  * @version
  * Version 0.1, 01.06.2008<br />
  * Version 0.2, 04.06.2008 (Replaced __getIteratorItem() with key())<br />
+ * Version 0.3, 11.05.2014 (ID#187: allow template expressions within iterators)<br />
  */
 class HtmlIteratorTag extends Document {
 
@@ -98,17 +99,12 @@ class HtmlIteratorTag extends Document {
       $this->tagLibs[] = new TagLib('APF\tools\html\taglib\HtmlIteratorFallbackTag', 'iterator', 'fallback');
    }
 
-   /**
-    * @public
-    *
-    * Implements the onParseTime method. Parses the iterator item taglib.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 01.06.2008<br />
-    */
    public function onParseTime() {
       $this->extractTagLibTags();
+   }
+
+   public function onAfterAppend() {
+      $this->extractExpressionTags();
    }
 
    /**
@@ -229,7 +225,6 @@ class HtmlIteratorTag extends Document {
          /* @var $fallback TemplateTag */
          $fallbackObjectId = $this->getFallbackContentItemObjectId();
 
-
          if ($fallbackObjectId !== null) {
             $fallbackMode = $this->getAttribute('fallback-mode');
 
@@ -247,6 +242,10 @@ class HtmlIteratorTag extends Document {
       } else {
 
          for ($i = 0; $i < $itemCount; $i++) {
+
+            // ID#187: fill data container of the iterator item to allow object and array
+            // access from within the item using APF's template expression language.
+            $iteratorItem->setData('item', $this->dataContainer[$i]);
 
             if (is_array($this->dataContainer[$i])) {
 
