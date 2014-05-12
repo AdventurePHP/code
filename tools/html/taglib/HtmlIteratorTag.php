@@ -28,6 +28,71 @@ use InvalidArgumentException;
 
 /**
  * @package APF\tools\html\taglib
+ * @class IteratorStatus
+ *
+ * Represents the status of a current loop run within the iterator. Can be accessed
+ * via the extended template syntax:
+ * <code>
+ * ${status->isFirst()}
+ * </code>
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 12.05.2014 (ID#189: introduced status variable to ease access and usage)<br />
+ */
+class IteratorStatus {
+
+   /**
+    * @var bool <em>True</em>, in case current loop outputs the first element of the list, <em>false</em> otherwise.
+    */
+   private $isFirst;
+
+   /**
+    * @var bool <em>True</em>, in case current loop outputs the last element of the list, <em>false</em> otherwise.
+    */
+   private $isLast;
+
+   /**
+    * @return int The number of total items within this iterator run.
+    */
+   private $itemCount;
+
+   /**
+    * @var string Css class tailored to the current loop run (first, middle, last).
+    */
+   private $cssClass;
+
+   public function __construct($isFirst, $isLast, $itemCount, $cssClass) {
+      $this->isFirst = $isFirst;
+      $this->isLast = $isLast;
+      $this->itemCount = $itemCount;
+      $this->cssClass = $cssClass;
+   }
+
+   public function getCssClass() {
+      return $this->cssClass;
+   }
+
+   public function isFirst($asString = false) {
+      return $asString === false ? $this->isFirst : $this->convertToString($this->isFirst);
+   }
+
+   public function isLast($asString = false) {
+      return $asString === false ? $this->isLast : $this->convertToString($this->isLast);
+   }
+
+   public function getItemCount() {
+      return $this->itemCount;
+   }
+
+   private function convertToString($bool) {
+      return $bool === true ? '1' : '0';
+   }
+
+}
+
+/**
+ * @package APF\tools\html\taglib
  * @class HtmlIteratorTag
  *
  * Implements a taglib, that can display a list of objects (arrays with numeric offsets)
@@ -58,6 +123,21 @@ class HtmlIteratorTag extends Document {
     * @const Defines the "extended" fallback mode (fallback content is displayed instead).
     */
    const FALLBACK_MODE_REPLACE = 'replace';
+
+   /**
+    * @const Defines default CSS class for first item.
+    */
+   const DEFAULT_CSS_CLASS_FIRST = 'first';
+
+   /**
+    * @const Defines default CSS class for "normal" items.
+    */
+   const DEFAULT_CSS_CLASS_MIDDLE = 'middle';
+
+   /**
+    * @const Defines default CSS class for last item.
+    */
+   const DEFAULT_CSS_CLASS_LAST = 'last';
 
    /**
     * @protected
@@ -246,6 +326,22 @@ class HtmlIteratorTag extends Document {
             // ID#187: fill data container of the iterator item to allow object and array
             // access from within the item using APF's template expression language.
             $iteratorItem->setData('item', $this->dataContainer[$i]);
+
+            // ID#189: make status variables available for current run to allow output customizing on
+            // that basis (e.g. output separate CSS classes using custom tags within an <iterator:item />).
+            $isFirst = $i === 0;
+            $isLast = $i === ($itemCount - 1);
+
+            // ID#189: make CSS classes available tailored to the current loop run
+            if ($isFirst) {
+               $cssClass = $this->getAttribute('first-element-css-class', self::DEFAULT_CSS_CLASS_FIRST);
+            } else if ($isLast) {
+               $cssClass = $this->getAttribute('last-element-css-class', self::DEFAULT_CSS_CLASS_LAST);
+            } else {
+               $cssClass = $this->getAttribute('middle-element-css-class', self::DEFAULT_CSS_CLASS_MIDDLE);
+            }
+
+            $iteratorItem->setData('status', new IteratorStatus($isFirst, $isLast, $itemCount, $cssClass));
 
             if (is_array($this->dataContainer[$i])) {
 

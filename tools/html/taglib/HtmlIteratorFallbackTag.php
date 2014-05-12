@@ -42,9 +42,4 @@ class HtmlIteratorFallbackTag extends TemplateTag {
       $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'fallback', 'getstring');
    }
 
-   public function transformOnPlace() {
-      // Do nothing (safety first!) to not allow manipulation (=display) of fallback
-      // content within controller. This has to be managed by the iterator itself!
-   }
-
 }
