@@ -32,7 +32,7 @@ use APF\core\pagecontroller\TemplateTag;
  *
  * @author Christian Achatz
  * @version
- * Version 0.1, 06.05.2014<br />
+ * Version 0.1, 06.05.2014 (ID#105: added fallback content support)<br />
  */
 class HtmlIteratorFallbackTag extends TemplateTag {
 
