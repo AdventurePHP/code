@@ -58,14 +58,20 @@ class IteratorStatus {
    private $itemCount;
 
    /**
+    * @return int A counter that increments with each loop run. Can be used to number lists and tables.
+    */
+   private $counter;
+
+   /**
     * @var string Css class tailored to the current loop run (first, middle, last).
     */
    private $cssClass;
 
-   public function __construct($isFirst, $isLast, $itemCount, $cssClass) {
+   public function __construct($isFirst, $isLast, $itemCount, $counter, $cssClass) {
       $this->isFirst = $isFirst;
       $this->isLast = $isLast;
       $this->itemCount = $itemCount;
+      $this->counter = $counter;
       $this->cssClass = $cssClass;
    }
 
@@ -83,6 +89,10 @@ class IteratorStatus {
 
    public function getItemCount() {
       return $this->itemCount;
+   }
+
+   public function getCounter() {
+      return $this->counter;
    }
 
    private function convertToString($bool) {
@@ -341,7 +351,7 @@ class HtmlIteratorTag extends Document {
                $cssClass = $this->getAttribute('middle-element-css-class', self::DEFAULT_CSS_CLASS_MIDDLE);
             }
 
-            $iteratorItem->setData('status', new IteratorStatus($isFirst, $isLast, $itemCount, $cssClass));
+            $iteratorItem->setData('status', new IteratorStatus($isFirst, $isLast, $itemCount, $this->iterationNumber, $cssClass));
 
             if (is_array($this->dataContainer[$i])) {
 
@@ -350,7 +360,6 @@ class HtmlIteratorTag extends Document {
                   // if we find a place holder with IterationNumber as name-Attribute-Value set Iteration number
                   if ($placeHolders[$objectId]->getAttribute('name') == 'IterationNumber') {
                      $placeHolders[$objectId]->setContent($this->iterationNumber);
-                     $this->iterationNumber++;
                      continue;
                   }
 
@@ -366,7 +375,6 @@ class HtmlIteratorTag extends Document {
                   // if we find a place holder with IterationNumber as name-Attribute-Value set Iteration number
                   if ($placeHolders[$objectId]->getAttribute('name') == 'IterationNumber') {
                      $placeHolders[$objectId]->setContent($this->iterationNumber);
-                     $this->iterationNumber++;
                      continue;
                   }
 
@@ -393,6 +401,9 @@ class HtmlIteratorTag extends Document {
                      . ')! The data container must contain a list of associative arrays or objects!',
                      E_USER_WARNING);
             }
+
+            // increment counter that can be used to number lists or tables
+            $this->iterationNumber++;
          }
       }
 
