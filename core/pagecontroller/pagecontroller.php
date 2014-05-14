@@ -2034,6 +2034,9 @@ class AppendNodeTag extends Document {
     */
    public function onAfterAppend() {
 
+      // ID#191: extract "static" expressions (e.g. place holders)
+      $this->extractExpressionTags();
+
       // get parent children list
       /* @var $parentChildren Document[] */
       $parentChildren = & $this->parentObject->getChildren();
