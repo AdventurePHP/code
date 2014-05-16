@@ -376,29 +376,42 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @version
     * Version 0.1, 09.03.2010<br />
     */
-   private function fetchBindResult(&$query) {
-      $metaData = $query->result_metadata();
+   private function fetchBindResult(\mysqli_stmt $query) {
 
-      // in case the meta data is not present (e.g. for INSERT statements),
-      // we cannot fetch any data. thus we return null to indicate no result
-      if ($metaData === false) {
-         return null;
-      }
+      $result = null;
 
-      while ($field = $metaData->fetch_field()) {
-         $resultParams[] = &$resultRow[$field->name];
-      }
+      do {
 
-      call_user_func_array(array(&$query, 'bind_result'), $resultParams);
-      $bindResult = array();
-      while ($query->fetch()) {
-         foreach ($resultRow as $key => $val) {
-            $currentRow[$key] = $val;
+         $metaData = $query->result_metadata();
+
+         // in case the meta data is not present (e.g. for INSERT statements),
+         // we cannot fetch any data. thus we return null to indicate no result
+         if ($metaData === false) {
+            break;
          }
-         $bindResult[] = $currentRow;
-      }
-      return $bindResult;
+
+         $resultRow = array();
+         $resultParams = array();
+         while ($field = $metaData->fetch_field()) {
+            $resultParams[] = & $resultRow[$field->name];
+         }
+
+         $bindResult = array();
+
+         call_user_func_array(array(&$query, 'bind_result'), $resultParams);
+         while ($query->fetch()) {
+            $currentRow = array();
+            foreach ($resultRow as $key => $val) {
+               $currentRow[$key] = $val;
+            }
+            $bindResult[] = $currentRow;
+         }
+         $result[] = $bindResult;
+      } while ($query->more_results() && $query->next_result()); // for sprocs
+
+      return (count($result) === 1) ? $result[0] : $result;
    }
+
 
    /**
     * @public
