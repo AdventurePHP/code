@@ -64,14 +64,13 @@ class ProductionErrorHandler extends DefaultErrorHandler {
       $this->errorRedirectUrl = $errorRedirectUrl;
    }
 
-   public function handleError($errorNumber, $errorMessage, $errorFile, $errorLine, array $errorContext) {
+   public function handleError($errorNumber, $errorMessage, $errorFile, $errorLine) {
 
       // fill attributes
       $this->errorNumber = $errorNumber;
       $this->errorMessage = $errorMessage;
       $this->errorFile = $errorFile;
       $this->errorLine = $errorLine;
-      $this->errorContext = $errorContext;
 
       // log error
       $this->logError();

@@ -56,8 +56,8 @@ class ErrorPageController extends BaseDocumentController {
       // generate stack trace
       for ($i = 0; $i < count($errors); $i++) {
 
-         // don't display any further messages, because these belong to the error manager
-         if (isset($errors[$i]['function']) && preg_match('/handleError/i', $errors[$i]['function'])) {
+         // don't display any further messages, because these belong to the error handler
+         if (isset($errors[$i]['function']) && preg_match('/handleError|handleFatalError/i', $errors[$i]['function'])) {
             break;
          }
 

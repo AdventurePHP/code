@@ -48,13 +48,12 @@ interface ErrorHandler {
     * @param string $errorMessage The error message.
     * @param string $errorFile The file the error occurred in.
     * @param int $errorLine The line the error occurred at.
-    * @param array $errorContext The error context (symbol table at the error).
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 03.03.2012<br />
     */
-   public function handleError($errorNumber, $errorMessage, $errorFile, $errorLine, array $errorContext);
+   public function handleError($errorNumber, $errorMessage, $errorFile, $errorLine);
 
 }
 
@@ -91,19 +90,13 @@ class DefaultErrorHandler implements ErrorHandler {
     */
    protected $errorLine;
 
-   /**
-    * @var array Error line.
-    */
-   protected $errorContext;
-
-   public function handleError($errorNumber, $errorMessage, $errorFile, $errorLine, array $errorContext) {
+   public function handleError($errorNumber, $errorMessage, $errorFile, $errorLine) {
 
       // fill attributes
       $this->errorNumber = $errorNumber;
       $this->errorMessage = $errorMessage;
       $this->errorFile = $errorFile;
       $this->errorLine = $errorLine;
-      $this->errorContext = $errorContext;
 
       // log error
       $this->logError();
@@ -128,13 +121,13 @@ class DefaultErrorHandler implements ErrorHandler {
       $log = & Singleton::getInstance('APF\core\logging\Logger');
       /* @var $log Logger */
       $log->addEntry(
-         new SimpleLogEntry(
-         // use the configured log target to allow custom configuration of APF-internal log statements
-         // to be written to a custom file/location
-            Registry::retrieve('APF\core', 'InternalLogTarget'),
-            $message,
-            LogEntry::SEVERITY_ERROR
-         )
+            new SimpleLogEntry(
+            // use the configured log target to allow custom configuration of APF-internal log statements
+            // to be written to a custom file/location
+                  Registry::retrieve('APF\core', 'InternalLogTarget'),
+                  $message,
+                  LogEntry::SEVERITY_ERROR
+            )
       );
    }
 
@@ -217,6 +210,7 @@ class DefaultErrorHandler implements ErrorHandler {
  * @author Christian Achatz
  * @version
  * Version 0.1, 03.03.2012<br />
+ * Version 0.2, 16.05.2014 (ID#190: enable logging/catching of fatal errors with a separate shutdown function)<br />
  */
 abstract class GlobalErrorHandler {
 
@@ -224,6 +218,11 @@ abstract class GlobalErrorHandler {
     * @var ErrorHandler|null The instance of the error handler to use.
     */
    private static $HANDLER;
+
+   /**
+    * @var bool Indicates whether or not fatal errors are handled by the GlobalErrorHandler.
+    */
+   private static $catchFatalErrors = true;
 
    /**
     * @public
@@ -253,13 +252,12 @@ abstract class GlobalErrorHandler {
     * @param string $errorMessage The error message.
     * @param string $errorFile The file the error occurred in.
     * @param int $errorLine The line the error occurred at.
-    * @param array $errorContext The error context (symbol table at the error).
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 03.03.2012<br />
     */
-   public static function handleError($errorNumber, $errorMessage, $errorFile, $errorLine, array $errorContext) {
+   public static function handleError($errorNumber, $errorMessage, $errorFile, $errorLine) {
 
       // Don't raise error, if @ was applied
       if (error_reporting() == 0) {
@@ -269,9 +267,9 @@ abstract class GlobalErrorHandler {
       if (self::$HANDLER === null) {
          // restore the PHP default error handler to avoid loops or other issues
          restore_error_handler();
-         trigger_error($errorMessage, (int)$errorNumber);
+         trigger_error($errorMessage, (int) $errorNumber);
       } else {
-         self::$HANDLER->handleError($errorNumber, $errorMessage, $errorFile, $errorLine, $errorContext);
+         self::$HANDLER->handleError($errorNumber, $errorMessage, $errorFile, $errorLine);
       }
    }
 
@@ -287,8 +285,12 @@ abstract class GlobalErrorHandler {
     * Version 0.1, 03.03.2012<br />
     */
    public static function disable() {
+
       // restore PHP's default handler
       restore_error_handler();
+
+      // disable fatal error catching as well
+      self::$catchFatalErrors = false;
    }
 
    /**
@@ -311,6 +313,44 @@ abstract class GlobalErrorHandler {
 
       // (re-)register the APF error handler
       set_error_handler(array('APF\core\errorhandler\GlobalErrorHandler', 'handleError'));
+
+      // enable fatal error catching
+      self::$catchFatalErrors = true;
+
+      // Register callback for catching fatal errors. As this registration cannot be undone, a
+      // separate flag is maintained to switch off this handling using <em>disable()</em>.
+      register_shutdown_function(array('APF\core\errorhandler\GlobalErrorHandler', 'handleFatalError'));
+   }
+
+   /**
+    * @public
+    * @static
+    *
+    * Shutdown function registered during enabling the GlobalErrorHandler to catch fatal errors
+    * and handle identically to other errors caught by <em>handleError()</em>.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 16.05.2014 (ID#190: introduced fatal error catching)<br />
+    */
+   public static function handleFatalError() {
+
+      // Workaround for shutdown functions cannot be unregistered: check whether or not
+      // APF global error handling has been turned off. If yes, nothing to do.
+      if (self::$catchFatalErrors === false) {
+         return;
+      }
+
+      // only handle *real* issues but not warnings (e.g. deprecated PHP API) or notices
+      $errorTypes = array(E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING);
+
+      // Chain to the "normal" error handling for consistency reasons (e.g. using a logging-only
+      // production error handler for security reasons).
+      $error = error_get_last();
+      if ($error && in_array($error['type'], $errorTypes)) {
+         self::handleError((int) $error['type'], $error['message'], $error['file'], (int) $error['line']);
+      }
+
    }
 
 }

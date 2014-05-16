@@ -36,7 +36,7 @@ class CLIErrorHandler extends DefaultErrorHandler {
 
    const TAB = "\t";
 
-   public function handleError($errorNumber, $errorMessage, $errorFile, $errorLine, array $errorContext) {
+   public function handleError($errorNumber, $errorMessage, $errorFile, $errorLine) {
       // fill attributes
       $this->errorNumber = $errorNumber;
       $this->errorMessage = $errorMessage;
