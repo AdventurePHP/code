@@ -21,7 +21,6 @@ namespace APF\core\database;
  * -->
  */
 use APF\core\benchmark\BenchmarkTimer;
-use APF\core\database\AbstractDatabaseHandler;
 use APF\core\logging\LogEntry;
 use APF\core\singleton\Singleton;
 
@@ -57,12 +56,12 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // the mysqli extension triggers an error instead of throwing an exception. thus we have
       // to add an ugly "@" sign to convert this error into an exception. :(
       @$this->dbConn->real_connect(
-         $this->dbHost,
-         $this->dbUser,
-         $this->dbPass,
-         $this->dbName,
-         $this->dbPort,
-         $this->dbSocket);
+            $this->dbHost,
+            $this->dbUser,
+            $this->dbPass,
+            $this->dbName,
+            $this->dbPort,
+            $this->dbSocket);
 
       if ($this->dbConn->connect_error || mysqli_connect_error()) {
          throw new DatabaseHandlerException('[MySQLiHandler->connect()] Database connection '
@@ -76,8 +75,8 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       if ($this->dbCharset !== null) {
          if (!$this->dbConn->set_charset($this->dbCharset)) {
             throw new DatabaseHandlerException(
-               '[MySQLiHandler->connect()] Error loading character set ' . $this->dbCharset .
-               ' (' . $this->dbConn->error . ')!'
+                  '[MySQLiHandler->connect()] Error loading character set ' . $this->dbCharset .
+                  ' (' . $this->dbConn->error . ')!'
             );
          }
       }
@@ -87,8 +86,8 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    protected function close() {
       if (!$this->dbConn->close()) {
          throw new DatabaseHandlerException('[MySQLiHandler->close()] An error occurred during closing of the '
-                  . 'database connection (' . mysqli_errno($this->dbConn) . ': ' . mysqli_error($this->dbConn) . ')!',
-            E_USER_WARNING);
+               . 'database connection (' . mysqli_errno($this->dbConn) . ': ' . mysqli_error($this->dbConn) . ')!',
+               E_USER_WARNING);
       }
       $this->dbConn = null;
    }
@@ -102,6 +101,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @param string $statementFile Name of the statement file (file body!).
     * @param string[] $params A list of statement parameters.
     * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
+    *
     * @return \MySQLi_Result The result of the statement executed.
     * @throws DatabaseHandlerException In case of any database related exception (e.g. statement
     *                                  syntax error or bind problems).
@@ -151,6 +151,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @param string $statementFile Name of the statement file (filebody!).
     * @param string[] $params A list of statement parameters.
     * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
+    *
     * @return string[] The resulting rows of the database call within one single array.
     * @throws DatabaseHandlerException In case of any database related exception (e.g. statement
     *                                  syntax error or bind problems).
@@ -168,7 +169,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       // must be present in the order defined in the statement. Thus we must
       // re-order the $params array.
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $statementId = md5($statement);
       $id = $statementId . ' re-order bind params';
       $t->start($id);
@@ -193,11 +194,12 @@ class MySQLiHandler extends AbstractDatabaseHandler {
          }
       }
 
+      $t->stop($id);
+
       // log statements in debug mode or when requested explicitly
       if ($this->dbDebug == true || $logStatement == true) {
          $this->dbLog->logEntry($this->dbLogTarget, '[MySQLiHandler::executeBindStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
       }
-      $t->stop($id);
 
       // bind params
       $id = $statementId . ' prepare statement';
@@ -235,6 +237,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
 
       $query->free_result();
       $query->close();
+
       return $statementResult;
    }
 
@@ -246,6 +249,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @param string $statement The statement to execute.
     * @param array $params A list of statement parameters.
     * @param boolean $logStatement Indicates, if the statement is logged for debug purposes.
+    *
     * @return resource The execution result.
     * @throws DatabaseHandlerException In case the bind param mapping is wrong.
     *
@@ -256,7 +260,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
    public function executeTextBindStatement($statement, array $params = array(), $logStatement = false) {
 
       /* @var $t BenchmarkTimer */
-      $t = &Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
+      $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
       $statementId = md5($statement);
 
       // prepare statement
@@ -282,6 +286,11 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       $this->bindParams($query, $params);
       $t->stop($id);
 
+      // log statements in debug mode or when requested explicitly
+      if ($this->dbDebug === true || $logStatement === true) {
+         $this->dbLog->logEntry($this->dbLogTarget, '[MySQLiHandler::executeTextBindStatement()] Current statement: ' . $statement, LogEntry::SEVERITY_DEBUG);
+      }
+
       // execute statement
       $id = $statementId . ' execute';
       $t->start($id);
@@ -303,6 +312,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
 
       $query->free_result();
       $query->close();
+
       return $statementResult;
    }
 
@@ -319,6 +329,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Creates a MySQLi statement representation by the given statement string.
     *
     * @param string $statement The statement to create the statement instance of.
+    *
     * @return \MYSQLi_STMT The desired statement instance.
     * @throws DatabaseHandlerException In case of any statement errors.
     *
@@ -337,6 +348,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       if ($query === false || !empty($error) || !empty($errno)) {
          throw new DatabaseHandlerException($error, $errno);
       }
+
       return $query;
    }
 
@@ -362,14 +374,14 @@ class MySQLiHandler extends AbstractDatabaseHandler {
       $binds = array();
       foreach ($params as $key => $DUMMY) {
          // Bug 694: bind via reference to avoid "expected to be a reference, value given in" errors.
-         $binds[] = &$params[$key];
+         $binds[] = & $params[$key];
       }
       call_user_func_array(
-         array(&$query, 'bind_param'),
-         array_merge(
-            array(str_repeat('s', count($params))),
-            $binds
-         )
+            array(&$query, 'bind_param'),
+            array_merge(
+                  array(str_repeat('s', count($params))),
+                  $binds
+            )
       );
    }
 
@@ -379,6 +391,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Fetches the result from a prepared query.
     *
     * @param \MYSQLi_STMT $query The prepared query to fetch the result from.
+    *
     * @return string[] The result array or null in case we have no result.
     *
     * @author Christian Achatz
@@ -428,6 +441,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Quotes data for use in MySQL statements.
     *
     * @param string $value String to quote.
+    *
     * @return string Quoted string.
     *
     * @author Christian Achatz
@@ -445,6 +459,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     *
     * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
     * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
+    *
     * @return string[] The associative result array. Returns false if no row was found.
     *
     * @author Christian Achatz
@@ -466,9 +481,10 @@ class MySQLiHandler extends AbstractDatabaseHandler {
          $return = $resultCursor->fetch_row();
       }
 
-      if ($return === NULL) {
+      if ($return === null) {
          return false;
       }
+
       return $return;
    }
 
@@ -494,6 +510,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Returns the amount of rows, that are affected by a previous update or delete call.
     *
     * @param resource $resultCursor The result resource pointer.
+    *
     * @return int The number of affected rows.
     *
     * @author Christian Achatz
@@ -510,6 +527,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * Returns the number of selected rows by the given result resource.
     *
     * @param resource $result the mysql result resource.
+    *
     * @return int The number of selected rows.
     *
     * @author Christian Achatz
@@ -530,6 +548,7 @@ class MySQLiHandler extends AbstractDatabaseHandler {
     * @param string $statement The statement to execute.
     * @param boolean $logStatement Indicates, whether the given statement should be
     *                              logged for debug purposes.
+    *
     * @return resource The database result resource.
     * @throws DatabaseHandlerException In case of any database error.
     *
