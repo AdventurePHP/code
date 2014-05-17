@@ -456,7 +456,7 @@ class BaseMapper extends APFObject {
                }
                if ($section->getSection('Base') !== null) {
                   $this->domainObjectsTable[$sectionName]['Base'] = array(
-                     'Class' => $section->getSection('Base')->getValue('Class'),
+                        'Class' => $section->getSection('Base')->getValue('Class'),
                   );
                }
             }
@@ -495,6 +495,7 @@ class BaseMapper extends APFObject {
     *
     * @param string $objectName Name of the current configuration section (=name of the current object).
     * @param array $objectSection Current object definition params.
+    *
     * @return string[] Enhanced object definition.
     *
     * @author Christian Achatz
@@ -522,6 +523,7 @@ class BaseMapper extends APFObject {
     *
     * @param string $relationName nam of the current configuration section (=name of the current relation).
     * @param array $relationSection current relation definition params.
+    *
     * @return string[] Enhanced relation definition.
     *
     * @author Christian Achatz
@@ -546,6 +548,41 @@ class BaseMapper extends APFObject {
       $relationSection['TargetID'] = 'Target_' . $relationSection['TargetObject'] . 'ID';
 
       return $relationSection;
+   }
+
+   /**
+    * @public
+    *
+    * Checks, whether or not an object has been registered/defined w/ the GORM.
+    *
+    * @param string $objectName The name of the object to check.
+    *
+    * @return bool <em>True</em> in case object is defined, <em>false</em> otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 17.05.2014 (ID#141: added check method for objects)<br />
+    */
+   public function isObjectDefined($objectName) {
+      return isset($this->mappingTable[$objectName]);
+   }
+
+   /**
+    * @public
+    *
+    * Checks, whether or not an object property has been registered/defined w/ the GORM.
+    *
+    * @param string $objectName The name of the object to check.
+    * @param string $propertyName The name of the property to check.
+    *
+    * @return bool <em>True</em> in case object property is defined, <em>false</em> otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 17.05.2014 (ID#141: added check method for properties)<br />
+    */
+   public function isObjectPropertyDefined($objectName, $propertyName) {
+      return isset($this->mappingTable[$objectName][$propertyName]);
    }
 
 }
