@@ -84,6 +84,19 @@ class BaseMapper extends APFObject {
 
    /**
     * @protected
+    * @since 2.1
+    * @var string[] Storage Engine for the object tables.
+    */
+   protected $mappingStorageEngineTable = array();
+
+   /**
+    * @protected
+    * @since 2.1
+    * @var string[] Storage Engine for the relation tables.
+    */
+   protected $relationStorageEngineTable = array();
+   /**
+    * @protected
     * @var array Object relation table.
     */
    protected $relationTable = array();
@@ -118,6 +131,9 @@ class BaseMapper extends APFObject {
     * @var string Identifies the param that defines additional indices relevant for database setup.
     */
    protected static $ADDITIONAL_INDICES_INDICATOR = 'AddIndices';
+
+   protected static $STORAGE_ENGINE_INDICATOR = 'StorageEngine';
+
 
    public function getConfigNamespace() {
       return $this->configNamespace;
@@ -322,6 +338,12 @@ class BaseMapper extends APFObject {
             if (isset($addObjects[$objectName][self::$ADDITIONAL_INDICES_INDICATOR])) {
                $this->mappingIndexTable[$objectName] = $addObjects[$objectName][self::$ADDITIONAL_INDICES_INDICATOR];
             }
+            // Add Storage Engine definition to separate table. We do this before generating the mapping definition,
+            // because generateMappingItem() removes the additional index definition to keep the internal mapping table
+            // clean.
+            if (isset($addObjects[$objectName][self::$STORAGE_ENGINE_INDICATOR])) {
+               $this->mappingStorageEngineTable[$objectName] = $addObjects[$objectName][self::$STORAGE_ENGINE_INDICATOR];
+            }
 
             // Only create new items to avoid overwriting items with same name from different configuration files
             // (since we do not have namespaces for domain objects).
@@ -395,6 +417,10 @@ class BaseMapper extends APFObject {
             // (since we do not have namespaces for relations).
             if (!isset($this->relationTable[$relationName])) {
                $this->relationTable[$relationName] = $this->generateRelationItem($relationName, $addRelations[$relationName]);
+            }
+
+            if (isset($addObjects[$relationName][self::$STORAGE_ENGINE_INDICATOR])) {
+               $this->relationStorageEngineTable[$relationName] = $addObjects[$relationName][self::$STORAGE_ENGINE_INDICATOR];
             }
          }
 
@@ -510,6 +536,8 @@ class BaseMapper extends APFObject {
       $objectSection['ID'] = $objectName . 'ID';
       // remove the additional table definition
       unset($objectSection[self::$ADDITIONAL_INDICES_INDICATOR]);
+      // remove the storage Engine definition
+      unset($objectSection[self::$STORAGE_ENGINE_INDICATOR]);
 
       return $objectSection;
    }
@@ -544,6 +572,9 @@ class BaseMapper extends APFObject {
 
       // - name of the primary key of the target object
       $relationSection['TargetID'] = 'Target_' . $relationSection['TargetObject'] . 'ID';
+
+      // remove the Storage Engine definition
+      unset($relationSection[self::$STORAGE_ENGINE_INDICATOR]);
 
       return $relationSection;
    }
