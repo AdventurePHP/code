@@ -278,6 +278,7 @@ class GenericORMapperManagementTool extends BaseMapper {
       $this->indicesToCreate = array();
       $this->indicesToDrop = array();
       $this->storageEngineToChange = array();
+      $this->updateStatements=array();
 
       // Add mapping and relation configuration if passed along with the call.
       // To support setup with multiple configurations, please add each of the
