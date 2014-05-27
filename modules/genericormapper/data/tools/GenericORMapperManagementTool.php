@@ -1,5 +1,4 @@
 <?php
-
 namespace APF\modules\genericormapper\data\tools;
 
 /**
@@ -21,7 +20,6 @@ namespace APF\modules\genericormapper\data\tools;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-
 use APF\modules\genericormapper\data\BaseMapper;
 use APF\modules\genericormapper\data\GenericORMapperException;
 
@@ -278,7 +276,7 @@ class GenericORMapperManagementTool extends BaseMapper {
       $this->indicesToCreate = array();
       $this->indicesToDrop = array();
       $this->storageEngineToChange = array();
-      $this->updateStatements=array();
+      $this->updateStatements = array();
 
       // Add mapping and relation configuration if passed along with the call.
       // To support setup with multiple configurations, please add each of the
@@ -390,18 +388,18 @@ class GenericORMapperManagementTool extends BaseMapper {
       $indexDefinition = array();
       $indexDefinition[$tableName . 'ID'] = array('PRIMARY' => 'PRIMARY');
       if (!isset($this->mappingIndexTable[$tableName])) {
-
          return $indexDefinition;
       }
       foreach (explode('|', $this->mappingIndexTable[$tableName]) as $index) {
 
          $current = $index;
 
-// gather type
+         // gather type
          $startPos = strpos($current, '(');
          $endPos = strpos($current, ')', $startPos);
          $type = substr($current, $startPos + 1, $endPos - $startPos - 1);
-// replace index type to extract fields
+
+         // replace index type to extract fields
          $current = substr_replace($current, '', $startPos, $endPos + 1 - $startPos);
 
          $indexDefinition[str_replace(' ', '', $current)][str_replace(array(',', ' '), '', $current) . $type] = $type;
@@ -599,7 +597,7 @@ class GenericORMapperManagementTool extends BaseMapper {
          // prepare the result to fit mysql data type definition
 
          // strip spaces, convert to lowercase
-         $prepared = str_replace(' ','',strtolower($match[0]));
+         $prepared = str_replace(' ', '', strtolower($match[0]));
 
          // if result is an alias we replace it with the right column type
          $newType = (isset($this->mysqlAlias[$prepared])) ? str_ireplace($match[0], $this->mysqlAlias[$prepared], $type) : $type;
