@@ -159,7 +159,48 @@ class HeaderManager {
    }
 
    /**
+    * @public
+    * @static
+    *
+    * Sends a 404 answer back to the client.
+    *
+    * @param bool $exitAfterForward True in case code execution is stopped after this action, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.05.2014
+    */
+   public static function sendNotFound($exitAfterForward = true) {
+      self::send($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true, 404);
+
+      if (self::$EXIT_AFTER_FORWARD === true && $exitAfterForward === true) {
+         exit(0);
+      }
+   }
+
+   /**
+    * @public
+    * @static
+    *
+    * Sends an 500 answer back to the client.
+    *
+    * @param bool $exitAfterForward True in case code execution is stopped after this action, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 26.05.2014
+    */
+   public static function sendServerError($exitAfterForward = true) {
+      self::send($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+
+      if (self::$EXIT_AFTER_FORWARD === true && $exitAfterForward === true) {
+         exit(0);
+      }
+   }
+
+   /**
     * @param string $url The URL possibly containing encoded ampersands.
+    *
     * @return string The decoded url.
     */
    private static function decodeUrl($url) {
