@@ -59,7 +59,7 @@ class LinkGenerationTag extends Document {
       $queryOption = $this->getAttribute(self::QUERY_OPTION_ATTRIBUTE_NAME, self::QUERY_OPTION_OVERWRITE);
       $this->deleteAttribute(self::QUERY_OPTION_ATTRIBUTE_NAME);
 
-      $parameters = $this->getAttributes();
+      $parameters = $this->getUrlParameters();
       if ($queryOption === self::QUERY_OPTION_MERGE) {
          $url->mergeQuery($parameters);
       } else {
@@ -67,6 +67,19 @@ class LinkGenerationTag extends Document {
       }
 
       return LinkGenerator::generateUrl($url);
+   }
+
+   /**
+    * Returns the parameters to include during URL generation. For this tag, it's all tag parameters.
+    *
+    * @return string[] Associative list of url parameters.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 30.05.2014<br />
+    */
+   protected function getUrlParameters() {
+      return $this->getAttributes();
    }
 
 }
