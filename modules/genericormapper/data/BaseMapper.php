@@ -84,6 +84,19 @@ class BaseMapper extends APFObject {
 
    /**
     * @protected
+    * @since 2.1
+    * @var string[] Storage Engine for the object tables.
+    */
+   protected $mappingStorageEngineTable = array();
+
+   /**
+    * @protected
+    * @since 2.1
+    * @var string[] Storage Engine for the relation tables.
+    */
+   protected $relationStorageEngineTable = array();
+   /**
+    * @protected
     * @var array Object relation table.
     */
    protected $relationTable = array();
@@ -118,6 +131,9 @@ class BaseMapper extends APFObject {
     * @var string Identifies the param that defines additional indices relevant for database setup.
     */
    protected static $ADDITIONAL_INDICES_INDICATOR = 'AddIndices';
+
+   protected static $STORAGE_ENGINE_INDICATOR = 'StorageEngine';
+
 
    public function getConfigNamespace() {
       return $this->configNamespace;
@@ -322,6 +338,12 @@ class BaseMapper extends APFObject {
             if (isset($addObjects[$objectName][self::$ADDITIONAL_INDICES_INDICATOR])) {
                $this->mappingIndexTable[$objectName] = $addObjects[$objectName][self::$ADDITIONAL_INDICES_INDICATOR];
             }
+            // Add Storage Engine definition to separate table. We do this before generating the mapping definition,
+            // because generateMappingItem() removes the additional index definition to keep the internal mapping table
+            // clean.
+            if (isset($addObjects[$objectName][self::$STORAGE_ENGINE_INDICATOR])) {
+               $this->mappingStorageEngineTable[$objectName] = $addObjects[$objectName][self::$STORAGE_ENGINE_INDICATOR];
+            }
 
             // Only create new items to avoid overwriting items with same name from different configuration files
             // (since we do not have namespaces for domain objects).
@@ -396,6 +418,10 @@ class BaseMapper extends APFObject {
             if (!isset($this->relationTable[$relationName])) {
                $this->relationTable[$relationName] = $this->generateRelationItem($relationName, $addRelations[$relationName]);
             }
+
+            if (isset($addObjects[$relationName][self::$STORAGE_ENGINE_INDICATOR])) {
+               $this->relationStorageEngineTable[$relationName] = $addObjects[$relationName][self::$STORAGE_ENGINE_INDICATOR];
+            }
          }
 
          // mark relation config as cached
@@ -456,7 +482,7 @@ class BaseMapper extends APFObject {
                }
                if ($section->getSection('Base') !== null) {
                   $this->domainObjectsTable[$sectionName]['Base'] = array(
-                     'Class' => $section->getSection('Base')->getValue('Class'),
+                        'Class' => $section->getSection('Base')->getValue('Class'),
                   );
                }
             }
@@ -495,6 +521,7 @@ class BaseMapper extends APFObject {
     *
     * @param string $objectName Name of the current configuration section (=name of the current object).
     * @param array $objectSection Current object definition params.
+    *
     * @return string[] Enhanced object definition.
     *
     * @author Christian Achatz
@@ -510,6 +537,8 @@ class BaseMapper extends APFObject {
       $objectSection['ID'] = $objectName . 'ID';
       // remove the additional table definition
       unset($objectSection[self::$ADDITIONAL_INDICES_INDICATOR]);
+      // remove the storage Engine definition
+      unset($objectSection[self::$STORAGE_ENGINE_INDICATOR]);
 
       return $objectSection;
    }
@@ -522,6 +551,7 @@ class BaseMapper extends APFObject {
     *
     * @param string $relationName nam of the current configuration section (=name of the current relation).
     * @param array $relationSection current relation definition params.
+    *
     * @return string[] Enhanced relation definition.
     *
     * @author Christian Achatz
@@ -545,7 +575,45 @@ class BaseMapper extends APFObject {
       // - name of the primary key of the target object
       $relationSection['TargetID'] = 'Target_' . $relationSection['TargetObject'] . 'ID';
 
+      // remove the Storage Engine definition
+      unset($relationSection[self::$STORAGE_ENGINE_INDICATOR]);
+
       return $relationSection;
+   }
+
+   /**
+    * @public
+    *
+    * Checks, whether or not an object has been registered/defined w/ the GORM.
+    *
+    * @param string $objectName The name of the object to check.
+    *
+    * @return bool <em>True</em> in case object is defined, <em>false</em> otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 17.05.2014 (ID#141: added check method for objects)<br />
+    */
+   public function isObjectDefined($objectName) {
+      return isset($this->mappingTable[$objectName]);
+   }
+
+   /**
+    * @public
+    *
+    * Checks, whether or not an object property has been registered/defined w/ the GORM.
+    *
+    * @param string $objectName The name of the object to check.
+    * @param string $propertyName The name of the property to check.
+    *
+    * @return bool <em>True</em> in case object property is defined, <em>false</em> otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 17.05.2014 (ID#141: added check method for properties)<br />
+    */
+   public function isObjectPropertyDefined($objectName, $propertyName) {
+      return isset($this->mappingTable[$objectName][$propertyName]);
    }
 
 }

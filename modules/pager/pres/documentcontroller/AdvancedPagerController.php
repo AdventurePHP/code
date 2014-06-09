@@ -97,7 +97,7 @@ class AdvancedPagerController extends BaseDocumentController {
          $pageCount = $pages[$i]->getPageCount();
       }
       $content->setPlaceHolder('Content', $buffer);
-
+      
       // display previous page link
       if ($currentPage > 1) {
 
@@ -113,6 +113,18 @@ class AdvancedPagerController extends BaseDocumentController {
       } else {
          $prevInactive = & $this->getTemplate('PreviousPage_Inactive');
          $content->setPlaceHolder('PreviousPage', $prevInactive->transformTemplate());
+      }
+      
+      // display first page link
+      if ($currentPage > 2) {
+         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($pageUrlParameterName => '1')));
+         $firstActive = & $this->getTemplate('FirstPage_Active_' . $this->getLanguage());
+         if (isset($anchorName)) {
+            $firstActive->setPlaceHolder('Link', $link . '#' . $anchorName);
+         } else {
+            $firstActive->setPlaceHolder('Link', $link);
+         }
+         $content->setPlaceHolder('FirstPage', $firstActive->transformTemplate());
       }
 
       // display next page link
@@ -132,6 +144,18 @@ class AdvancedPagerController extends BaseDocumentController {
       } else {
          $nextInactive = & $this->getTemplate('NextPage_Inactive');
          $content->setPlaceHolder('NextPage', $nextInactive->transformTemplate());
+      }
+      
+      // display last page link
+      if ($currentPage < $pageCount - 1) {
+         $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($pageUrlParameterName => $pageCount)));
+         $lastActive = & $this->getTemplate('LastPage_Active_' . $this->getLanguage());
+         if (isset($anchorName)) {
+            $lastActive->setPlaceHolder('Link', $link . '#' . $anchorName);
+         } else {
+            $lastActive->setPlaceHolder('Link', $link);
+         }
+         $content->setPlaceHolder('LastPage', $lastActive->transformTemplate());
       }
 
       // display the dynamic page size bar
