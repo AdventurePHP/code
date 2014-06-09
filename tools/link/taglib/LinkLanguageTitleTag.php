@@ -42,7 +42,7 @@ class LinkLanguageTitleTag extends LanguageLabelTag {
             return;
          }
       }
-      $parent->addAttributeToAttributeList('title', parent::transform());
+      $parent->setAttribute('title', parent::transform());
    }
 
    public function transform() {
