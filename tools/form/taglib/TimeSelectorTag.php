@@ -21,9 +21,6 @@ namespace APF\tools\form\taglib;
  * -->
  */
 use APF\tools\form\FormException;
-use APF\tools\form\taglib\SelectBoxTag;
-use APF\tools\form\taglib\AbstractFormControl;
-use APF\tools\form\validator\AbstractFormValidator;
 
 /**
  * @package APF\tools\form\taglib
@@ -78,7 +75,7 @@ class TimeSelectorTag extends AbstractFormControl {
       $this->initOffsetNames();
 
       if (!empty($this->attributes['minutesinterval'])) {
-         $this->minutesInterval = (int)$this->attributes['minutesinterval'];
+         $this->minutesInterval = (int) $this->attributes['minutesinterval'];
       }
       if (!empty($this->attributes['showseconds']) && $this->attributes['showseconds'] == "false") {
          $this->showSeconds = false;
@@ -120,7 +117,7 @@ class TimeSelectorTag extends AbstractFormControl {
 
 
       // set the values for the hours select box
-      for ($i = (int)$this->hoursRange['Start']; $i <= (int)$this->hoursRange['End']; $i++) {
+      for ($i = (int) $this->hoursRange['Start']; $i <= (int) $this->hoursRange['End']; $i++) {
          $i = $this->appendZero($i);
          $hours->addOption($i, $i);
       }
@@ -196,6 +193,7 @@ class TimeSelectorTag extends AbstractFormControl {
       if ($id === null) {
          return $this->getAttribute('name');
       }
+
       return $id;
    }
 
@@ -217,7 +215,7 @@ class TimeSelectorTag extends AbstractFormControl {
          // as of 1.12, the time control should be rendered using a
          // surrounding span do enable the client validator extension
          // to address the control more easily.
-         $buffer = (string)'<span id="' . $this->getId() . '"';
+         $buffer = (string) '<span id="' . $this->getId() . '"';
 
          $style = $this->getAttribute('style');
          if ($style != null) {
@@ -242,26 +240,6 @@ class TimeSelectorTag extends AbstractFormControl {
    /**
     * @public
     *
-    * Re-implements the addValidator() method for the form control due
-    * to special behavior.
-    *
-    * @param AbstractFormValidator $validator The validator to add.
-    *
-    * @author Werner Liemberger
-    * @version
-    * Version 0.1, 21.2.2011<br />
-    */
-   public function addValidator(AbstractFormValidator &$validator) {
-      if ($validator->isActive()) {
-         if (!$validator->validate($this->getTime())) {
-            $validator->notify();
-         }
-      }
-   }
-
-   /**
-    * @public
-    *
     * Returns the time with the pattern HH:MM:SS or if ShowSeconds is false with HH:MM
     *
     * @return string Time with pattern HH:MM:SS or if ShowSeconds is false with HH:MM.
@@ -271,13 +249,30 @@ class TimeSelectorTag extends AbstractFormControl {
     * Version 0.1, 21.2.2011<br />
     */
    public function getTime() {
-      $hours = $this->getHoursControl()->getSelectedOption()->getAttribute('value');
-      $minutes = $this->getMinutesControl()->getSelectedOption()->getAttribute('value');
-      if ($this->showSeconds != false) {
-         $seconds = $this->getSecondsControl()->getSelectedOption()->getAttribute('value');
-         return $hours . ':' . $minutes . ':' . $seconds;
+
+      $hours = $this->getHoursControl()->getSelectedOption();
+      $minutes = $this->getMinutesControl()->getSelectedOption();
+
+      if ($this->showSeconds === false) {
+
+         // in case any of the select boxes are missing a none-empty selection, the time is null
+         if ($hours === null || $minutes === null) {
+            return null;
+         }
+
+         return $hours->getValue() . ':' . $minutes->getValue();
+
+      } else {
+         $seconds = $this->getSecondsControl()->getSelectedOption();
+
+         // in case any of the select boxes are missing a none-empty selection, the time is null
+         if ($hours === null || $minutes === null || $seconds === null) {
+            return null;
+         }
+
+         return $hours->getValue() . ':' . $minutes->getValue() . ':' . $seconds->getValue();
       }
-      return $hours . ':' . $minutes;
+
    }
 
    /**
@@ -286,6 +281,7 @@ class TimeSelectorTag extends AbstractFormControl {
     * Allows you to initialize the time control with a given time (e.g. "08:31" or "08:31:20" or "2011-02-21 08:31:00").
     *
     * @param string $time The time to initialize the control with.
+    *
     * @throws FormException In case of date parsing errors.
     *
     * @author Christian Achatz
@@ -393,15 +389,15 @@ class TimeSelectorTag extends AbstractFormControl {
 
          if (count($offsetNames) == 3) {
             $this->offsetNames = array(
-               'Hours' => $offsetNames[0],
-               'Minutes' => $offsetNames[1],
-               'Seconds' => $offsetNames[2]
+                  'Hours'   => $offsetNames[0],
+                  'Minutes' => $offsetNames[1],
+                  'Seconds' => $offsetNames[2]
             );
          }
          if (count($offsetNames) == 2) {
             $this->offsetNames = array(
-               'Hours' => $offsetNames[0],
-               'Minutes' => $offsetNames[1]
+                  'Hours'   => $offsetNames[0],
+                  'Minutes' => $offsetNames[1]
             );
          }
       }
@@ -413,6 +409,7 @@ class TimeSelectorTag extends AbstractFormControl {
     * Appends a zero for hours, minutes or seconds numbers without leading zeros.
     *
     * @param int $input The hour, minute or second number.
+    *
     * @return string Hour, minute or second number with leading zero.
     *
     * @author Werner Liemberger
@@ -446,6 +443,7 @@ class TimeSelectorTag extends AbstractFormControl {
     * Re-implements the setting of values for time controls
     *
     * @param string $value
+    *
     * @return AbstractFormControl
     *
     * @since 1.14
@@ -456,6 +454,7 @@ class TimeSelectorTag extends AbstractFormControl {
     */
    public function setValue($value) {
       $this->setTime($value);
+
       return $this;
    }
 

@@ -189,6 +189,7 @@ class SelectBoxTag extends AbstractFormControl {
     * Returns - or lazily creates - a desired option group.
     *
     * @param string $groupLabel The name of the group.
+    *
     * @return SelectBoxGroupTag The option group.
     *
     * @author Ralf Schubert
@@ -218,6 +219,7 @@ class SelectBoxTag extends AbstractFormControl {
          // make group available for the subsequent call
          $group = & $this->children[$objectId];
       }
+
       return $group;
    }
 
@@ -314,8 +316,8 @@ class SelectBoxTag extends AbstractFormControl {
             $this->children[$objectId]->setOption2Selected($displayNameOrValue);
          } else {
             // bug 981: introduced string-based comparison to avoid pre-select issues with "0".
-            if ($this->children[$objectId]->getAttribute('value') == (string)$displayNameOrValue
-                  || $this->children[$objectId]->getContent() == (string)$displayNameOrValue
+            if ($this->children[$objectId]->getAttribute('value') == (string) $displayNameOrValue
+                  || $this->children[$objectId]->getContent() == (string) $displayNameOrValue
             ) {
                $this->children[$objectId]->setAttribute('selected', 'selected');
                $selectedObjectId = $objectId;
@@ -375,13 +377,14 @@ class SelectBoxTag extends AbstractFormControl {
 
       // create html code
       if ($this->isVisible) {
-         $select = (string)'';
+         $select = (string) '';
          $select .= '<select ' . $this->getSanitizedAttributesAsString($this->attributes) . '>';
 
          $this->transformChildren();
 
          return $select . $this->content . '</select>';
       }
+
       return '';
    }
 
@@ -399,7 +402,16 @@ class SelectBoxTag extends AbstractFormControl {
     */
    public function addValidator(AbstractFormValidator &$validator) {
 
-      if ($validator->isActive()) {
+      // ID#166: register validator for further usage.
+      $this->validators[] = $validator;
+
+      // Directly execute validator to allow adding validators within tags and
+      // document controllers for both static and dynamic form controls.
+      $value = $this->getValue();
+
+      // Check both for validator being active and for mandatory fields to allow optional
+      // validation (means: field has a registered validator but is sent with empty value).
+      if ($validator->isActive() && $this->isMandatory($value)) {
          $option = & $this->getSelectedOption();
          if ($option === null) {
             $value = null;
@@ -476,6 +488,7 @@ class SelectBoxTag extends AbstractFormControl {
     * Re-implements the setting of values for select controls
     *
     * @param string $value The display name or the value of the option to pre-select.
+    *
     * @return SelectBoxTag
     *
     * @since 1.14
@@ -486,6 +499,7 @@ class SelectBoxTag extends AbstractFormControl {
     */
    public function setValue($value) {
       $this->setOption2Selected($value);
+
       return $this;
    }
 
