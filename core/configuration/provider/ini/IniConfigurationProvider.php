@@ -62,6 +62,45 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
     */
    private static $NAMESPACE_DELIMITER = '.';
 
+   /**
+    *
+    *
+    * @var int $groupDepth
+    */
+   protected $groupDepth = 1;
+
+   /**
+    * Use this method to to determine how many subsection should be grouped as Headers
+    * when saving the configuration. Default is 1
+    *
+    * <code>
+    * groupDepth of 1 will produce
+    * [Section]
+    * subsection.subsubsection.foo = "bar"
+    *
+    * groupDepth of 2 will produce
+    * [Section]
+    * [Section.subsection]
+    * subsubsection.foo = "bar"
+    *
+    * groupDepth of 3 will produce the following configuration
+    * [Section]
+    * [Section.subsection.subsubsection]
+    * foo = "bar"
+    * ...
+    * </code>
+    *
+    * @param int $depth
+    *
+    * @throws InvalidArgumentException in case the given value is less than 1
+    */
+   public function setGroupDepth($depth) {
+      if ($depth < 1) {
+         throw new \InvalidArgumentException('GroupDepth can only be set to a value greater then 0');
+      }
+      $this->groupDepth = $depth;
+   }
+
    public function loadConfiguration($namespace, $context, $language, $environment, $name) {
 
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
@@ -98,10 +137,24 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       if ($entries === false) {
          return null;
       }
-
       $config = new IniConfiguration();
+
       foreach ($entries as $section => $subEntries) {
-         $config->setSection($section, $this->parseSection($subEntries));
+         if (strpos($section, self::$NAMESPACE_DELIMITER) === false) {
+            $config->setSection($section, $this->parseSection($subEntries));
+         } else {
+            $sectionArray = explode(self::$NAMESPACE_DELIMITER, $section);
+            $deepConfig = $config;
+            $depth = count($sectionArray);
+            for ($i = 0; $i < $depth - 1; $i++) {
+               if ($deepConfig->getSection($sectionArray[$i]) === null) {
+                  $deepConfig->setSection($sectionArray[$i], new IniConfiguration());
+               }
+               $deepConfig = $deepConfig->getSection($sectionArray[$i]);
+            }
+            $deepConfig->setSection($sectionArray[$i], $this->parseSection($subEntries));
+
+         }
       }
 
       return $config;
@@ -121,48 +174,27 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
    private function parseSection(array $entries) {
 
       $config = new IniConfiguration();
-      foreach ($entries as $name => $value) {
-         $config->setValue($name, $value);
 
-         // do always parse sub sections to have a clear API for the configuration provider
-         $dot = strpos($name, self::$NAMESPACE_DELIMITER);
-         if ($dot !== false) {
-            $this->parseSubSection($config, $name, $value);
+      foreach ($entries as $entryName => $value) {
+         if (strpos($entryName, self::$NAMESPACE_DELIMITER) === false) {
+            $config->setValue($entryName, $value);
+         } else {
+            $sectionArray = explode(self::$NAMESPACE_DELIMITER, $entryName);
+            $deepConfig = $config;
+            $depth = count($sectionArray);
+            for ($i = 0; $i < $depth - 1; $i++) {
+               if ($deepConfig->getSection($sectionArray[$i]) === null) {
+                  $deepConfig->setSection($sectionArray[$i], new IniConfiguration());
+               }
+               $deepConfig = $deepConfig->getSection($sectionArray[$i]);
+            }
+            $deepConfig->setValue($sectionArray[$i], $value);
+
          }
       }
 
       return $config;
-   }
 
-   /**
-    * Creates the sub-section configuration representation in case the
-    * parse sub section feature is activated.
-    *
-    * @param Configuration $config The current configuration.
-    * @param string $name The name of the current section.
-    * @param string $value The value of the current section.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.10.2010<br />
-    */
-   private function parseSubSection(Configuration &$config, $name, $value) {
-
-      $dot = strpos($name, self::$NAMESPACE_DELIMITER);
-      if ($dot === false) {
-         $config->setValue($name, $value);
-      } else {
-         $subSectionName = substr($name, 0, $dot);
-         $remainingName = substr($name, $dot + strlen(self::$NAMESPACE_DELIMITER));
-
-         $nextSection = $config->getSection($subSectionName);
-         if ($nextSection === null) {
-            $nextSection = new IniConfiguration();
-         }
-
-         $this->parseSubSection($nextSection, $remainingName, $value);
-         $config->setSection($subSectionName, $nextSection);
-      }
    }
 
    public function saveConfiguration($namespace, $context, $language, $environment, $name, Configuration $config) {
@@ -170,9 +202,9 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       $fileName = $this->getFilePath($namespace, $context, $language, $environment, $name);
 
       $buffer = '';
-      foreach ($config->getSectionNames() as $name) {
-         $buffer .= '[' . $name . ']' . PHP_EOL;
-         $buffer .= $this->processSection($config->getSection($name));
+      foreach ($config->getSectionNames() as $sectionName) {
+
+         $buffer .= $this->processSection($config->getSection($sectionName), $sectionName);
          $buffer .= PHP_EOL;
       }
 
@@ -186,29 +218,40 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       }
    }
 
-   private function processSection(Configuration $section) {
+   private function processSection(Configuration $section, $currentName) {
+
+      $depth = substr_count($currentName, self::$NAMESPACE_DELIMITER)+1;
 
       $buffer = '';
 
-      // append simple values except the dot notation values
-      foreach ($section->getValueNames() as $name) {
-         $dot = strpos($name, self::$NAMESPACE_DELIMITER);
-         if ($dot === false) {
-            $value = $section->getValue($name);
+      $valueNames=$section->getValueNames();
 
-            if (is_array($value)) {
-               foreach ($value as $element) {
-                  $buffer .= $name . '[] = "' . $element . '"' . PHP_EOL;
-               }
-            } else {
-               $buffer .= $name . ' = "' . $value . '"' . PHP_EOL;
+      if(!empty($valueNames)|| $depth===1){
+         $buffer .= '[' . $currentName . ']' . PHP_EOL;
+      }
+
+      foreach ($valueNames as $name) {
+         $value = $section->getValue($name);
+
+         if (is_array($value)) {
+            foreach ($value as $element) {
+               $buffer .= $name . '[] = "' . $element . '"' . PHP_EOL;
             }
+         } else {
+            $buffer .= $name . ' = "' . $value . '"' . PHP_EOL;
          }
       }
 
-      // append regular sections (including the dot notation keys)
-      foreach ($section->getSectionNames() as $name) {
-         $buffer .= $this->generateComplexConfigValue($section->getSection($name), $name);
+
+      foreach ($section->getSectionNames() as $sectionName) {
+         if ($depth < $this->groupDepth) {
+            $buffer .= $this->processSection($section->getSection($sectionName), $currentName . '.' . $sectionName);
+         } else {
+            if($depth !== 1){
+               $buffer .= '[' . $currentName . ']' . PHP_EOL;
+            }
+            $buffer .= $this->generateComplexConfigValue($section->getSection($sectionName), $sectionName);
+         }
       }
 
       return $buffer;
