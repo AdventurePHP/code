@@ -4,7 +4,7 @@
 ########################################################################################################################
 
 echo "#############################################"
-echo "# APF 2.1 automatic configuration migration #"
+echo "# APF 2.11 automatic configuration migration #"
 echo "#############################################"
 echo
 
@@ -17,12 +17,6 @@ echo
 echo "#############################################"
 echo
 echo "Starting configuration migration ..."
-
-echo "* Front controller configuration files ..."
-$PHP_BINARY $SCRIPT_DIR/migrate_fc_configuration.php
-
-echo "* Database configuration files ..."
-$PHP_BINARY $SCRIPT_DIR/migrate_db_configuration.php
 
 echo
 echo "#############################################"
