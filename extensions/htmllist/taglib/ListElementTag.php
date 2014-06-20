@@ -20,21 +20,21 @@ namespace APF\extensions\htmllist\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\extensions\htmllist\taglib\list_control;
+use APF\core\pagecontroller\Document;
 
 /**
  * @package APF\extensions\htmllist\taglib
- * @class list_taglib_elem_defdef
+ * @class ListElementTag
  *
- * Represents a HTMLList definition list element for the definition itself.
+ * Represents a HTMLList list element.
  *
  * @author Florian Horn
  * @version 1.0, 03.04.2010<br />
  */
-class list_taglib_elem_defdef extends list_control {
+class ListElementTag extends Document {
 
    public function transform() {
-      return '<dd ' . $this->getAttributesAsString($this->attributes) . '>' . $this->content . '</dd>';
+      return '<li ' . $this->getAttributesAsString($this->attributes) . '>' . $this->content . '</li>';
    }
 
 }

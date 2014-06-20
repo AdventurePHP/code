@@ -20,21 +20,35 @@ namespace APF\extensions\htmllist\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\extensions\htmllist\taglib\list_control;
+use APF\core\pagecontroller\TagLib;
 
 /**
  * @package APF\extensions\htmllist\taglib
- * @class list_taglib_elem_list
+ * @class UnorderedListTag
  *
- * Represents a HTMLList list element.
+ * Represents a HTMLList unordered list.
  *
  * @author Florian Horn
  * @version 1.0, 03.04.2010<br />
  */
-class list_taglib_elem_list extends list_control {
+class UnorderedListTag extends AbstractListTag {
 
-   public function transform() {
-      return '<li ' . $this->getAttributesAsString($this->attributes) . '>' . $this->content . '</li>';
+   public function __construct() {
+      self::addTagLib(new TagLib('APF\extensions\htmllist\taglib\list_taglib_elem_list', 'list', 'elem_list'));
+   }
+
+   /**
+    * Adds a list element
+    * @param string $sContent
+    * @param string $sClass [optional]
+    * @return string
+    */
+   public function addElement($sContent, $sClass = '') {
+      return $this->addElement($sContent, $sClass, 'elem_list');
+   }
+
+   protected function getListIdentifier() {
+      return 'ul';
    }
 
 }

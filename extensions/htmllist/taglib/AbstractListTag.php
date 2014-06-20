@@ -25,26 +25,14 @@ use APF\core\pagecontroller\XmlParser;
 
 /**
  * @package APF\extensions\htmllist\taglib
- * @class list_control
- *
- * Implements a base class for all HTMLList elements.
- *
- * @author Florian Horn
- * @version 1.0, 03.04.2010<br />
- */
-abstract class list_control extends Document {
-}
-
-/**
- * @package APF\extensions\htmllist\taglib
- * @class AbstractTaglibList
+ * @class AbstractListTag
  *
  * Abstract class for list classes.
  *
  * @author Florian Horn
  * @version 1.0, 03.04.2010<br />
  */
-abstract class AbstractTaglibList extends list_control {
+abstract class AbstractListTag extends Document {
 
    public function onParseTime() {
       $this->extractTagLibTags();
@@ -81,7 +69,7 @@ abstract class AbstractTaglibList extends list_control {
     * Adds a list element.
     * @param string $content The content of the element.
     * @param string $cssClass The name of the implementation class.
-    * @param string $elementName The name of the tag (e.g. "elem_list" for list_taglib_elem_list class).
+    * @param string $elementName The name of the tag (e.g. "elem_list" for ListElementTag class).
     */
    protected function addElement($content, $cssClass, $elementName) {
 

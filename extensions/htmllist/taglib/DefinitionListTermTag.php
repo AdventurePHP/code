@@ -20,35 +20,21 @@ namespace APF\extensions\htmllist\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\pagecontroller\TagLib;
+use APF\core\pagecontroller\Document;
 
 /**
  * @package APF\extensions\htmllist\taglib
- * @class list_taglib_ordered
+ * @class DefinitionListTermTag
  *
- * Represents a HTMLList ordered list.
+ * Represents a HTMLList definition list element for the definition term.
  *
  * @author Florian Horn
  * @version 1.0, 03.04.2010<br />
  */
-class list_taglib_ordered extends AbstractTaglibList {
+class DefinitionListTermTag extends Document {
 
-   public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\extensions\htmllist\taglib\list_taglib_elem_list', 'list', 'elem_list');
-   }
-
-   /**
-    * Adds a list element.
-    * @param string $sContent
-    * @param string $sClass [optional]
-    * @return string
-    */
-   public function addElement($sContent, $sClass = '') {
-      return $this->addElement($sContent, $sClass, 'elem_list');
-   }
-
-   protected function getListIdentifier() {
-      return 'ol';
+   public function transform() {
+      return '<dt ' . $this->getAttributesAsString($this->attributes) . '>' . $this->content . '</dt>';
    }
 
 }

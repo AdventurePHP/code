@@ -20,26 +20,26 @@ namespace APF\extensions\htmllist\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\pagecontroller\XmlParser;
 use APF\core\pagecontroller\Document;
-use APF\extensions\htmllist\taglib\list_control;
+use APF\core\pagecontroller\XmlParser;
 
 /**
  * @package APF\extensions\htmllist\taglib
- * @class html_taglib_list
+ * @class HtmlListTag
  *
  * Represents a HTMLList list (DOM node).
  *
  * @author Florian Horn
  * @version 1.0, 03.04.2010<br />
  */
-class html_taglib_list extends list_control {
+class HtmlListTag extends Document {
 
    /**
     * Adds a list.
     *
     * @param string $elementType The type of list.
     * @param array $elementAttributes The attributes of the list.
+    *
     * @return string The object id of the list.
     */
    public function addList($elementType, $elementAttributes = array()) {
@@ -58,7 +58,8 @@ class html_taglib_list extends list_control {
     * Get a list by its identifier.
     *
     * @param string $id The id of the list.
-    * @return AbstractTaglibList The desired instance.
+    *
+    * @return AbstractListTag The desired instance.
     * @throws \InvalidArgumentException In case no list can be found.
     */
    public function getListById($id) {
@@ -75,8 +76,8 @@ class html_taglib_list extends list_control {
       $grandParent = $parent->getParentObject();
       $docCon = ($grandParent !== null) ? $grandParent->getDocumentController() : $docCon = 'n/a';
 
-      throw new \InvalidArgumentException('[html_taglib_list::getListById()] No list with id "' . $id
-         . '" in document controller "' . $docCon . '"!', E_USER_ERROR);
+      throw new \InvalidArgumentException('[HtmlListTag::getListById()] No list with id "' . $id
+            . '" in document controller "' . $docCon . '"!', E_USER_ERROR);
    }
 
    /**
@@ -84,6 +85,7 @@ class html_taglib_list extends list_control {
     *
     * @param string $elementType The type of list to create (ul, ol).
     * @param array $elementAttributes The attributes of the list.
+    *
     * @return string The object id of the created list.
     * @throws \InvalidArgumentException In case the desired list cannot be created.
     */
@@ -122,8 +124,8 @@ class html_taglib_list extends list_control {
          return $objectId;
       } else {
          // throw error and return null as object id
-         throw new \InvalidArgumentException('[html_taglib_list::createList()] No list element with name "'
-            . $elementType . '" found! Maybe the tag name is mis-spelt. Please use &lt;list:addtaglib /&gt;!');
+         throw new \InvalidArgumentException('[HtmlListTag::createList()] No list element with name "'
+               . $elementType . '" found! Maybe the tag name is mis-spelt. Please use &lt;list:addtaglib /&gt;!');
       }
    }
 

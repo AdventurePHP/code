@@ -24,43 +24,31 @@ use APF\core\pagecontroller\TagLib;
 
 /**
  * @package APF\extensions\htmllist\taglib
- * @class list_taglib_definition
+ * @class OrderedListTag
  *
- * Represents a HTMLList definition list.
+ * Represents a HTMLList ordered list.
  *
  * @author Florian Horn
  * @version 1.0, 03.04.2010<br />
  */
-class list_taglib_definition extends AbstractTaglibList {
+class OrderedListTag extends AbstractListTag {
 
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\extensions\htmllist\taglib\list_taglib_elem_defterm', 'list', 'elem_defterm');
-      $this->tagLibs[] = new TagLib('APF\extensions\htmllist\taglib\list_taglib_elem_defdef', 'list', 'elem_defdef');
+      self::addTagLib(new TagLib('APF\extensions\htmllist\taglib\list_taglib_elem_list', 'list', 'elem_list'));
    }
 
    /**
-    * Adds a definition term element.
+    * Adds a list element.
     * @param string $sContent
-    * @param string $sClass
+    * @param string $sClass [optional]
     * @return string
     */
-   public function addDefinitionTerm($sContent, $sClass = '') {
-      $this->addElement($sContent, $sClass, 'elem_defterm');
-   }
-
-   /**
-    * Adds a definition element.
-    *
-    * @param string $sContent
-    * @param string $sClass
-    * @return string
-    */
-   public function addDefinition($sContent, $sClass = '') {
-      $this->addElement($sContent, $sClass, 'elem_defdef');
+   public function addElement($sContent, $sClass = '') {
+      return $this->addElement($sContent, $sClass, 'elem_list');
    }
 
    protected function getListIdentifier() {
-      return 'dl';
+      return 'ol';
    }
 
 }
