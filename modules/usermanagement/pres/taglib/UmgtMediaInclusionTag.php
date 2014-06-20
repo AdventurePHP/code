@@ -36,7 +36,7 @@ use APF\tools\media\taglib\MediaInclusionTag;
 class UmgtMediaInclusionTag extends MediaInclusionTag {
 
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionLanguageLabelTag', 'media', 'getstring');
+      self::addTagLib(new TagLib('APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionLanguageLabelTag', 'media', 'getstring'));
    }
 
    /**

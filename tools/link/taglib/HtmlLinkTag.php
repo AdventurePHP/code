@@ -69,10 +69,10 @@ class HtmlLinkTag extends LinkGenerationTag {
          'target');
 
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\tools\link\taglib\LinkLanguageLabelTag', 'a', 'getstring');
-      $this->tagLibs[] = new TagLib('APF\tools\link\taglib\LinkLanguageLabelActiveTag', 'aActive', 'getstring');
-      $this->tagLibs[] = new TagLib('APF\tools\link\taglib\LinkLanguageTitleTag', 'title', 'getstring');
-      $this->tagLibs[] = new TagLib('APF\tools\link\taglib\LinkLanguageTitleActiveTag', 'titleActive', 'getstring');
+      self::addTagLib(new TagLib('APF\tools\link\taglib\LinkLanguageLabelTag', 'a', 'getstring'));
+      self::addTagLib(new TagLib('APF\tools\link\taglib\LinkLanguageLabelActiveTag', 'aActive', 'getstring'));
+      self::addTagLib(new TagLib('APF\tools\link\taglib\LinkLanguageTitleTag', 'title', 'getstring'));
+      self::addTagLib(new TagLib('APF\tools\link\taglib\LinkLanguageTitleActiveTag', 'titleActive', 'getstring'));
    }
 
    public function onParseTime() {

@@ -299,12 +299,6 @@ abstract class APFObject implements APFDIService {
 
    /**
     * @protected
-    * @var string[] The attributes of an object (merely the XML tag attributes).
-    */
-   protected $attributes = array();
-
-   /**
-    * @protected
     * @var string The context of the current object within the application.
     */
    protected $context = null;
@@ -374,7 +368,7 @@ abstract class APFObject implements APFDIService {
     * This method returns the current version of the present APF distribution. Please
     * note that this revision is no warranty that all files within your current
     * installation are subjected to the returned version number since the APF team
-    * cannot guarantee consistency throughout manual patching or manuel SVN updates.
+    * cannot guarantee consistency throughout manual patching or manual GIT updates.
     *
     * @return string The current APF version.
     *
@@ -383,140 +377,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.1, 26.02.2011<br />
     */
    public function getVersion() {
-      return '2.0-SVN';
-   }
-
-   /**
-    * @public
-    *
-    * Returns the object's attribute.
-    *
-    * @param string $name The name of the desired attribute.
-    * @param string $default The default value for the attribute.
-    *
-    * @return string Returns the value or null in case of errors.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    * Version 0.2, 02.02.2007 (Added default value handling)<br />
-    */
-   public function getAttribute($name, $default = null) {
-      return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
-   }
-
-   /**
-    * @public
-    *
-    * Let's you retrieve a tag attribute expressing to other developers that it is a mandatory attribute.
-    *
-    * @param string $name The name of the desired attribute.
-    *
-    * @return string Returns the value.
-    * @throws InvalidArgumentException In case the attribute is not present/defined.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 27.05.2014<br />
-    */
-   public function getRequiredAttribute($name) {
-
-      $attribute = $this->getAttribute($name);
-      if ($attribute === null) {
-         throw new InvalidArgumentException('[' . get_class($this) . '::getRequiredAttribute()] Attribute "' . $name
-               . '" has not been defined but is mandatory! Please re-check your template setup.');
-      }
-
-      return $attribute;
-   }
-
-   /**
-    * @public
-    *
-    * Sets an object's attribute.
-    *
-    * @param string $name Name of the attribute.
-    * @param string $value Value of the attribute.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    */
-   public function setAttribute($name, $value) {
-      $this->attributes[$name] = $value;
-   }
-
-   /**
-    * @public
-    *
-    * Returns an object's attributes.
-    *
-    * @return string[] Returns the list of attributes of the current object.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    */
-   public function getAttributes() {
-      return $this->attributes;
-   }
-
-   /**
-    * @public
-    *
-    * Deletes an attribute.
-    *
-    * @param string $name The name of the attribute to delete.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    */
-   public function deleteAttribute($name) {
-      unset($this->attributes[$name]);
-   }
-
-   /**
-    * @public
-    *
-    * Sets an object's attributes.
-    *
-    * @param array $attributes The attributes list.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    */
-   public function setAttributes(array $attributes = array()) {
-      if (count($attributes) > 0) {
-         if (!is_array($this->attributes)) {
-            $this->attributes = array();
-         }
-         $this->attributes = array_merge($this->attributes, $attributes);
-      }
-   }
-
-   /**
-    * @public
-    *
-    * Let's you add the applied value to the given attribute.
-    * <p/>
-    * Implicitly creates the attribute in case it doesn't exist.
-    *
-    * @param string $name The name of the attribute to add a value to.
-    * @param string $value The value to add to the current attribute value.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 09.01.2007<br />
-    * Version 0.2, 09.02.2013 (Moved to APFObject to avoid multiple implementations)<br />
-    */
-   public function addAttribute($name, $value) {
-      if (isset($this->attributes[$name])) {
-         $this->attributes[$name] .= $value;
-      } else {
-         $this->attributes[$name] = $value;
-      }
+      return '2.2-GIT';
    }
 
    /**
@@ -918,6 +779,12 @@ class Document extends APFObject {
 
    /**
     * @protected
+    * @var string[] The attributes of an object (merely the XML tag attributes).
+    */
+   protected $attributes = array();
+
+   /**
+    * @protected
     * @var string The content of the tag. Example:
     * <pre>&lt;foo:bar&gt;This is the content of the tag.&lt;/foo:bar&gt;</pre>
     */
@@ -928,12 +795,6 @@ class Document extends APFObject {
     * @var DocumentController The instance of the document controller to use at transformation time.
     */
    protected $documentController = null;
-
-   /**
-    * @protected
-    * @var TagLib[] List of known taglibs.
-    */
-   protected $tagLibs = array();
 
    /**
     * @protected
@@ -948,9 +809,14 @@ class Document extends APFObject {
    protected $data = array();
 
    /**
-    * @var array Lazy cache for <em>Document::getTagLibClass()</em> to improve performance of <em>Document::extractTagLibTags()</em>.
+    * @var TagLib[] List of known tags the APF parser uses to create tag instances during analysis phase.
     */
-   protected $tagLibCache = array();
+   protected static $knownTags = array();
+
+   /**
+    * @var TagLib[] List of known tags for a dedicated DOM node the APF parser uses to create tag instances during analysis phase.
+    */
+   protected $knownInstanceTags = array();
 
    /**
     * @public
@@ -976,15 +842,12 @@ class Document extends APFObject {
       $this->setObjectId(XmlParser::generateUniqID());
 
       // add the known taglibs (core taglibs!)
-      // we are *not* using the addTaglib() method, because the following tags are
-      // already included in the pagecontroller.php and adding the tags directly
-      // is twice as fast compared to the addTagLib() method.
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'core', 'addtaglib');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\ImportTemplateTag', 'core', 'importdesign');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AppendNodeTag', 'core', 'appendnode');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\TemplateTag', 'html', 'template');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'html', 'placeholder');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'html', 'getstring');
+      self::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'core', 'addtaglib'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\ImportTemplateTag', 'core', 'importdesign'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\AppendNodeTag', 'core', 'appendnode'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\TemplateTag', 'html', 'template'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'html', 'placeholder'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'html', 'getstring'));
    }
 
    /**
@@ -1045,6 +908,139 @@ class Document extends APFObject {
     */
    public function getObjectId() {
       return $this->objectId;
+   }
+
+   /**
+    * @public
+    *
+    * Returns the object's attribute.
+    *
+    * @param string $name The name of the desired attribute.
+    * @param string $default The default value for the attribute.
+    *
+    * @return string Returns the value or null in case of errors.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    * Version 0.2, 02.02.2007 (Added default value handling)<br />
+    */
+   public function getAttribute($name, $default = null) {
+      return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
+   }
+
+   /**
+    * @public
+    *
+    * Let's you retrieve a tag attribute expressing to other developers that it is a mandatory attribute.
+    *
+    * @param string $name The name of the desired attribute.
+    *
+    * @return string Returns the value.
+    * @throws InvalidArgumentException In case the attribute is not present/defined.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.05.2014<br />
+    */
+   public function getRequiredAttribute($name) {
+
+      $attribute = $this->getAttribute($name);
+      if ($attribute === null) {
+         throw new InvalidArgumentException('[' . get_class($this) . '::getRequiredAttribute()] Attribute "' . $name
+               . '" has not been defined but is mandatory! Please re-check your template setup.');
+      }
+
+      return $attribute;
+   }
+
+   /**
+    * @public
+    *
+    * Sets an object's attribute.
+    *
+    * @param string $name Name of the attribute.
+    * @param string $value Value of the attribute.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
+   public function setAttribute($name, $value) {
+      $this->attributes[$name] = $value;
+   }
+
+   /**
+    * @public
+    *
+    * Returns an object's attributes.
+    *
+    * @return string[] Returns the list of attributes of the current object.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
+   public function getAttributes() {
+      return $this->attributes;
+   }
+
+   /**
+    * @public
+    *
+    * Deletes an attribute.
+    *
+    * @param string $name The name of the attribute to delete.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
+   public function deleteAttribute($name) {
+      unset($this->attributes[$name]);
+   }
+
+   /**
+    * @public
+    *
+    * Sets an object's attributes.
+    *
+    * @param array $attributes The attributes list.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
+   public function setAttributes(array $attributes = array()) {
+      if (count($attributes) > 0) {
+         if (!is_array($this->attributes)) {
+            $this->attributes = array();
+         }
+         $this->attributes = array_merge($this->attributes, $attributes);
+      }
+   }
+
+   /**
+    * @public
+    *
+    * Let's you add the applied value to the given attribute.
+    * <p/>
+    * Implicitly creates the attribute in case it doesn't exist.
+    *
+    * @param string $name The name of the attribute to add a value to.
+    * @param string $value The value to add to the current attribute value.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 09.01.2007<br />
+    * Version 0.2, 09.02.2013 (Moved to APFObject to avoid multiple implementations)<br />
+    */
+   public function addAttribute($name, $value) {
+      if (isset($this->attributes[$name])) {
+         $this->attributes[$name] .= $value;
+      } else {
+         $this->attributes[$name] = $value;
+      }
    }
 
    /**
@@ -1275,7 +1271,7 @@ class Document extends APFObject {
     * @param string $value Value, the string place holder is replaced with.
     *
     * @return Document This instance for further usage.
-    * @throws \InvalidArgumentException In case no place holder has been found.
+    * @throws InvalidArgumentException In case no place holder has been found.
     *
     * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
     * @version
@@ -1298,7 +1294,7 @@ class Document extends APFObject {
     * be transformed using an MVC controller. In case no controller is defined
     * <em>null</em> is returned instead.
     *
-    * @return string The name of the document controller.
+    * @return string|null The name of the document controller.
     *
     * @author Christian Achatz
     * @version
@@ -1309,11 +1305,9 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
+    * This method adds a given tag to the <em>global</em> list of known tags for the APF parser.
     *
-    * This method is used to add more known taglibs to a document.
-    *
-    * @param TagLib $tag The tag lib to add.
+    * @param TagLib $tag The tag to add for the APF parser.
     *
     * @author Christian Schäfer, Christian Achatz
     * @version
@@ -1321,9 +1315,55 @@ class Document extends APFObject {
     * Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
     * Version 0.3, 14.02.2011 (Refactored method signature to be more type safe)<br />
     */
-   public function addTagLib(TagLib $tag) {
-      // add the taglib to the current node
-      $this->tagLibs[] = $tag;
+   public static function addTagLib(TagLib $tag) {
+      self::$knownTags[$tag->getPrefix() . ':' . $tag->getName()] = $tag;
+   }
+
+   /**
+    * This method adds a given tag to the <em>local</em> list of known tags for the APF parser.
+    * <p/>
+    * Using this method, you can override globally defined tags for this particular instance.
+    *
+    * @param TagLib $tag The tag to add for the APF parser used for this particular instance.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 14.02.2011 (ID#185, ID#1786: introduced local override mechanism)<br />
+    */
+   public function addInstanceTagLib(TagLib $tag) {
+      $this->knownInstanceTags[$tag->getPrefix() . ':' . $tag->getName()] = $tag;
+   }
+
+   /**
+    * This method adds a given list of tags to the list of known tags for the APF parser.
+    *
+    * @param TagLib[] $tags Tags to register for the APF parser.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 18.06.2014<br />
+    */
+   public static function addTagLibs(array $tags) {
+      foreach ($tags as $tag) {
+         self::addTagLib($tag);
+      }
+   }
+
+   /**
+    * This method adds a list of tag to the <em>local</em> list of known tags for the APF parser.
+    * <p/>
+    * Using this method, you can override globally defined tags for this particular instance.
+    *
+    * @param TagLib[] $tags Tag to add for the APF parser used for this particular instance.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 14.02.2011 (ID#185, ID#1786: introduced local override mechanism)<br />
+    */
+   public function addInstanceTagLibs(array $tags) {
+      foreach ($tags as $tag) {
+         self::addInstanceTagLib($tag);
+      }
    }
 
    /**
@@ -1479,10 +1519,9 @@ class Document extends APFObject {
    /**
     * @protected
     *
-    * Parses the content of the current APF DOM node. Extracts all known taglibs listed in
-    * the <em>$this->tagLibs</em> property. Each taglib is converted into a child document
-    * of the current tree element. The tag definition place is reminded by a marker tag using
-    * the internal id of the DOM node.
+    * Parses the content of the current APF DOM node. Extracts all tags contained in the current
+    * document content. Each tag is converted into a child Document of the current tree element.
+    * The tag definition place is remembered by a marker tag using the internal id of the DOM node.
     * <p/>
     * Since release 1.17 nested tag structures are supported. This means, that the APF parser
     * is able to handle symmetric structures like this:
@@ -1501,9 +1540,12 @@ class Document extends APFObject {
     *    </foo:bar>
     * </foo:bar>
     * </code>
-    * Please note that using nested structures must be supported by the tag implementations
-    * by registering itself within the tag implementation class to create the nested sub-tree
-    * on parse time.
+    * Please note that using nested structures must be supported by the tag implementations.
+    * <p/>
+    * The APF parser is able to handle nested tag structures with self-containing tags (directly of
+    * across multiple hierarchies) as of version 2.2. Thus, you can re-use tags across any hierarchy
+    * with the same prefix and name at your convenience or defined tags with different prefix and/or
+    * name as desired (e.g. using the same implementation).
     * <p/>
     * To protect against infinite loops with broken tag structures the parser uses <em>self::$maxParserLoops</em>
     * to limit the parser cycles to a configurable amount of times. In case your project requires a
@@ -1519,6 +1561,7 @@ class Document extends APFObject {
     * Version 0.6, 06.06.2009 (Improvement: content is not copied during parsing any more)<br />
     * Version 0.7, 30.12.2009 (Introduced benchmark marks for the onParseTime() event.)<br />
     * Version 0.8, 25.01.2013 (Re-writing of the tag parser to support nested tags with the same tag prefix and name)<br />
+    * Version 0.9, 20.06.2014 (Re-writing entire parser for 2.2 to support nested, self-containing tags across multiple hierarchies)<br />
     */
    protected function extractTagLibTags() {
 
@@ -1779,23 +1822,19 @@ class Document extends APFObject {
     * @author Christian Achatz
     * @version
     * Version 0.1, 23.02.2014<br />
+    * Version 0.2, 20.06.2014 (ID#186: added overriding mechanism on instance basis)<br />
     */
-   private function getTagLibClass($prefix, $name) {
+   protected function getTagLibClass($prefix, $name) {
 
-      // build simple cache key (prefix and name are already uniq; no md5() etc. necessary)
-      $cacheKey = $prefix . $name;
-
-      if (isset($this->tagLibCache[$cacheKey])) {
-         return $this->tagLibCache[$cacheKey];
+      // First, look at the list of tags registered for the current
+      // instance to allow overriding on an instance basis.
+      if (isset($this->knownInstanceTags[$prefix . ':' . $name])) {
+         return $this->knownInstanceTags[$prefix . ':' . $name]->getClass();
       }
 
-      foreach ($this->tagLibs as $tag) {
-         /* @var $tag TagLib */
-         if ($tag->getPrefix() === $prefix && $tag->getName() === $name) {
-            $this->tagLibCache[$cacheKey] = $tag->getClass();
-
-            return $this->tagLibCache[$cacheKey];
-         }
+      // Second, deliver tag implementation from global store.
+      if (isset(self::$knownTags[$prefix . ':' . $name])) {
+         return self::$knownTags[$prefix . ':' . $name]->getClass();
       }
 
       return null;
@@ -2001,6 +2040,7 @@ class Document extends APFObject {
     * Version 0.5, 09.04.2007 (Added language injection)<br />
     * Version 0.6, 09.02.2013 (Introduced the DocumentController interface)<br />
     * Version 0.7, 28.07.2013 Jan Wiese (Introduced di-service support for documentcontrollers. Moved controller creation to ::extractDocumentController())<br />
+    * Version 0.8, 01.04.2014 (Removed content handling passing the current document's content to the document controller)<br />
     */
    public function transform() {
 
@@ -2021,14 +2061,8 @@ class Document extends APFObject {
          // inject this document to be able to work on the DOM
          $this->documentController->setDocument($this);
 
-         // inject the content to be able to access it
-         $this->documentController->setContent($content);
-
          // execute the document controller by using a standard method
          $this->documentController->transformContent();
-
-         // retrieve the content
-         $content = $this->documentController->getContent();
 
          $t->stop($id);
       }
@@ -2422,12 +2456,26 @@ class AddTaglibTag extends Document {
     * Version 0.5, 20.12.2012 (Removed fallback mechanism for 1.17)<br />
     */
    public function onParseTime() {
-      $class = $this->getAttribute('class');
-      $name = $this->getAttribute('name');
-      $prefix = $this->getAttribute('prefix');
 
-      $tagLib = new TagLib($class, $prefix, $name);
-      $this->getParentObject()->addTagLib($tagLib);
+      $scope = $this->getAttribute('scope', 'global');
+
+      // add tag to parent instance in case overriding is explicitly desired
+      if ($scope === 'local') {
+         $this->addInstanceTagLib(new TagLib(
+                     $this->getRequiredAttribute('class'),
+                     $this->getRequiredAttribute('prefix'),
+                     $this->getRequiredAttribute('name')
+               )
+         );
+      } else {
+         self::addTagLib(
+               new TagLib(
+                     $this->getRequiredAttribute('class'),
+                     $this->getRequiredAttribute('prefix'),
+                     $this->getRequiredAttribute('name')
+               )
+         );
+      }
 
       // Resets the attributes list to avoid selection issues with the
       // getChildNode() and getChildNodes() methods that may select this
@@ -2629,9 +2677,9 @@ class TemplateTag extends Document {
     * Version 0.8, 11.02.2012 (Added template:getstring tag as known tag (refactoring!))<br />
     */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'template', 'placeholder');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'template', 'addtaglib');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'template', 'getstring');
+      self::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'template', 'placeholder'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'template', 'addtaglib'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'template', 'getstring'));
    }
 
    /**
@@ -2964,36 +3012,9 @@ class LanguageLabelTag extends Document {
  * @version
  * Version 0.1, 09.02.2013<br />
  * Version 0.2, 16.08.2013 (Document controllers are now able to be created by the DIServiceManager)<br />
+ * Version 0.3, 01.04.2014 (Removed content handling passing the current document's content to the document controller)<br />
  */
 interface DocumentController extends APFDIService {
-
-   /**
-    * @public
-    *
-    * Injects the content of the current Document the controller is responsible for. Since the
-    * content is retrieved by the current Document after executing {@link transformContent}
-    * the developer is able to modify the content if the current node within a document controller.
-    *
-    * @param string $content The content of the current Document node.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 09.02.2013<br />
-    */
-   public function setContent($content);
-
-   /**
-    * @public
-    *
-    * Let's the current Document retrieve the (potentially) modified content after transformation.
-    *
-    * @return  string The content of the current Document node.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 09.02.2013<br />
-    */
-   public function getContent();
 
    /**
     * @public
@@ -3036,6 +3057,7 @@ interface DocumentController extends APFDIService {
     * Version 0.1, 28.12.2006<br />
     */
    public function transformContent();
+
 }
 
 /**
@@ -3051,6 +3073,7 @@ interface DocumentController extends APFDIService {
  * Version 0.1, 28.12.2006<br />
  * Version 0.2, 04.11.2007 (Removed the isButtonPushed() method)<br />
  * Version 0.3, 09.02.2013 (Introduced the DocumentController interface)<br />
+ * Version 0.4, 01.04.2014 (Removed content handling passing the current document's content to the document controller)<br />
  */
 abstract class BaseDocumentController extends APFObject implements DocumentController {
 
@@ -3059,25 +3082,12 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     */
    protected $document;
 
-   /**
-    * @var string The content of the Document the controller is responsible for.
-    */
-   protected $content;
-
    public function setDocument(Document &$document) {
       $this->document = & $document;
    }
 
    public function &getDocument() {
       return $this->document;
-   }
-
-   public function setContent($content) {
-      $this->content = $content;
-   }
-
-   public function getContent() {
-      return $this->content;
    }
 
    /**

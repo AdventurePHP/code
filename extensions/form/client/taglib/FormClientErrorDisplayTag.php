@@ -43,9 +43,9 @@ class FormClientErrorDisplayTag extends AbstractFormControl {
     * Version 1.0, 18.03.2010<br />
     */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'error', 'placeholder');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'error', 'getstring');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'error', 'addtaglib');
+      self::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'error', 'placeholder'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'error', 'getstring'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'error', 'addtaglib'));
    }
 
    /**

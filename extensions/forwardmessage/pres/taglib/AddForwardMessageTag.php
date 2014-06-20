@@ -39,7 +39,7 @@ use APF\extensions\forwardmessage\biz\ForwardMessageManager;
 class AddForwardMessageTag extends Document {
 
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'message', 'getstring');
+      self::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'message', 'getstring'));
    }
 
    public function onParseTime() {

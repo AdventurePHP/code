@@ -47,9 +47,9 @@ class HtmlIteratorItemTag extends Document {
     * Version 0.1, 01.06.2008<br />
     */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'item', 'placeholder');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'item', 'getstring');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'item', 'addtaglib');
+      self::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'item', 'placeholder'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'item', 'getstring'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'item', 'addtaglib'));
    }
 
    public function onParseTime() {

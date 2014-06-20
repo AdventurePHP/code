@@ -18,6 +18,10 @@ echo "#############################################"
 echo
 echo "Starting migration ..."
 
+# migrate tag lib declaration
+echo "* Migrate taglib declaration statements ..."
+$PHP_BINARY $SCRIPT_DIR/migrate_taglib_registration.php
+
 echo
 echo "#############################################"
 echo

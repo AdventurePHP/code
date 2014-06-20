@@ -54,8 +54,8 @@ class SelectBoxTag extends AbstractFormControl {
     * Version 0.2, 03.03.2007 (Removed "&" before "new")<br />
     */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\SelectBoxOptionTag', 'select', 'option');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\SelectBoxGroupTag', 'select', 'group');
+      self::addTagLib(new TagLib('APF\tools\form\taglib\SelectBoxOptionTag', 'select', 'option'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\SelectBoxGroupTag', 'select', 'group'));
       $this->attributeWhiteList[] = 'disabled';
       $this->attributeWhiteList[] = 'name';
       $this->attributeWhiteList[] = 'size';

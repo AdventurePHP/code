@@ -53,8 +53,8 @@ class MultiSelectBoxTag extends SelectBoxTag {
     * Version 0.4, 28.08.2010 (Added option groups)<br />
     */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\SelectBoxOptionTag', 'select', 'option');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\SelectBoxGroupTag', 'select', 'group');
+      self::addTagLib(new TagLib('APF\tools\form\taglib\SelectBoxOptionTag', 'select', 'option'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\SelectBoxGroupTag', 'select', 'group'));
       $this->setAttribute('multiple', 'multiple');
       $this->attributeWhiteList[] = 'disabled';
       $this->attributeWhiteList[] = 'name';

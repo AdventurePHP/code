@@ -180,13 +180,13 @@ class HtmlIteratorTag extends Document {
     * Version 0.2, 09.08.2009 (Added the addtaglib tag to enable custom tags.)<br />
     */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'iterator', 'addtaglib');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'iterator', 'getstring');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'iterator', 'placeholder');
-      $this->tagLibs[] = new TagLib('APF\tools\html\taglib\HtmlIteratorItemTag', 'iterator', 'item');
+      self::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'iterator', 'addtaglib'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'iterator', 'getstring'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'iterator', 'placeholder'));
+      self::addTagLib(new TagLib('APF\tools\html\taglib\HtmlIteratorItemTag', 'iterator', 'item'));
 
       // ID#105: use template tag (abstraction to re-declare name of known tags) to ease creation of as fallback element
-      $this->tagLibs[] = new TagLib('APF\tools\html\taglib\HtmlIteratorFallbackTag', 'iterator', 'fallback');
+      self::addTagLib(new TagLib('APF\tools\html\taglib\HtmlIteratorFallbackTag', 'iterator', 'fallback'));
    }
 
    public function onParseTime() {

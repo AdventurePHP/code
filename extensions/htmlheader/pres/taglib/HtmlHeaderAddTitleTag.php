@@ -50,8 +50,8 @@ use APF\extensions\htmlheader\biz\SimpleTitleNode;
 class HtmlHeaderAddTitleTag extends Document {
 
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'addtitle', 'getstring');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'addtitle', 'addtaglib');
+      self::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'addtitle', 'getstring'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'addtitle', 'addtaglib'));
    }
 
    public function onParseTime() {

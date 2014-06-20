@@ -36,7 +36,7 @@ use APF\core\pagecontroller\XmlParser;
 class SelectBoxGroupTag extends AbstractFormControl {
 
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\SelectBoxOptionTag', 'group', 'option');
+      self::addTagLib(new TagLib('APF\tools\form\taglib\SelectBoxOptionTag', 'group', 'option'));
       $this->attributeWhiteList[] = 'label';
       $this->attributeWhiteList[] = 'disabled';
    }

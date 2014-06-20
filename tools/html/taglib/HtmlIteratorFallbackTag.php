@@ -37,9 +37,9 @@ use APF\core\pagecontroller\TemplateTag;
 class HtmlIteratorFallbackTag extends TemplateTag {
 
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'fallback', 'placeholder');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'fallback', 'addtaglib');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'fallback', 'getstring');
+      self::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'fallback', 'placeholder'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'fallback', 'addtaglib'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'fallback', 'getstring'));
    }
 
 }

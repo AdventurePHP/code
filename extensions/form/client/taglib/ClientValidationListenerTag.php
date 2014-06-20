@@ -44,9 +44,9 @@ class ClientValidationListenerTag extends AbstractFormControl {
     * Version 1.0, 18.03.2010<br />
     */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'listener', 'placeholder');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'listener', 'getstring');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'listener', 'addtaglib');
+      self::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'listener', 'placeholder'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'listener', 'getstring'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'listener', 'addtaglib'));
    }
 
    /**

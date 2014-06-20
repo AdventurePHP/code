@@ -85,50 +85,38 @@ class HtmlFormTag extends Document {
 
       // Place the listener here, to ensure, that it is there, when the
       // notification is sent!
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\ValidationListenerTag', 'form', 'listener');
+      self::addTagLib(new TagLib('APF\tools\form\taglib\ValidationListenerTag', 'form', 'listener'));
 
-      // Please note, that the form:addfilter taglib is placed before the
-      // form:addvalidator, because filtering must take place before the
-      // validation. Otherwise, we might get unexpected results.
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\AddFormControlFilterTag', 'form', 'addfilter');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\AddFormControlValidatorTag', 'form', 'addvalidator');
+      self::addTagLib(new TagLib('APF\tools\form\taglib\AddFormControlFilterTag', 'form', 'addfilter'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\AddFormControlValidatorTag', 'form', 'addvalidator'));
 
-      // The time of adding the form errors is not relevant, because the action
-      // takes place on transform time. But for clarity, we add it near the listeners.
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormErrorDisplayTag', 'form', 'error');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormSuccessDisplayTag', 'form', 'success');
+      self::addTagLib(new TagLib('APF\tools\form\taglib\FormErrorDisplayTag', 'form', 'error'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\FormSuccessDisplayTag', 'form', 'success'));
 
-      // Buttons are analyzed right early to be able to initialize form controls
-      // concerning the status of the form (e.g. sent!).
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\ButtonTag', 'form', 'button');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\ResetButtonTag', 'form', 'reset');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\ImageButtonTag', 'form', 'imagebutton');
+      self::addTagLib(new TagLib('APF\tools\form\taglib\ButtonTag', 'form', 'button'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\ResetButtonTag', 'form', 'reset'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\ImageButtonTag', 'form', 'imagebutton'));
 
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'form', 'placeholder');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'form', 'getstring');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'form', 'addtaglib');
+      self::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'form', 'placeholder'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'form', 'getstring'));
+      self::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'form', 'addtaglib'));
 
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FormLabelTag', 'form', 'label');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\TextFieldTag', 'form', 'text');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\SelectBoxTag', 'form', 'select');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\DateSelectorTag', 'form', 'date');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\PasswordFieldTag', 'form', 'password');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\HiddenFieldTag', 'form', 'hidden');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\CheckBoxTag', 'form', 'checkbox');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\RadioButtonTag', 'form', 'radio');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\FileUploadTag', 'form', 'file');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\TextAreaTag', 'form', 'area');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\MultiSelectBoxTag', 'form', 'multiselect');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\DynamicFormElementMarkerTag', 'form', 'marker');
+      self::addTagLib(new TagLib('APF\tools\form\taglib\FormLabelTag', 'form', 'label'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\TextFieldTag', 'form', 'text'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\SelectBoxTag', 'form', 'select'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\DateSelectorTag', 'form', 'date'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\TimeSelectorTag', 'form', 'time'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\PasswordFieldTag', 'form', 'password'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\HiddenFieldTag', 'form', 'hidden'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\CheckBoxTag', 'form', 'checkbox'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\RadioButtonTag', 'form', 'radio'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\FileUploadTag', 'form', 'file'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\TextAreaTag', 'form', 'area'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\MultiSelectBoxTag', 'form', 'multiselect'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\DynamicFormElementMarkerTag', 'form', 'marker'));
 
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\TimeCaptchaTag', 'form', 'timecaptcha');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\CsrfProtectionHashTag', 'form', 'csrfhash');
-
-      // analyzing the form:time tag must be done after the form:timecaptcha, since
-      // the tag parser analyzes the whole tag string and form:time is fully contained
-      // in form:timecaptcha. this restriction of the APF parser is accepted due to
-      // performance reasons!
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\TimeSelectorTag', 'form', 'time');
+      self::addTagLib(new TagLib('APF\tools\form\taglib\TimeCaptchaTag', 'form', 'timecaptcha'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\CsrfProtectionHashTag', 'form', 'csrfhash'));
 
       // setup attributes within white-list
       $this->attributeWhiteList = array_merge(AbstractFormControl::$CORE_ATTRIBUTES, AbstractFormControl::$EVENT_ATTRIBUTES, AbstractFormControl::$I18N_ATTRIBUTES);
@@ -150,10 +138,10 @@ class HtmlFormTag extends Document {
       $method = $this->getAttribute(self::$METHOD_ATTRIBUTE_NAME);
       if ($method === null) {
          $this->setAttribute(
-            self::$METHOD_ATTRIBUTE_NAME,
-            strtolower(
-               Registry::retrieve('APF\tools', 'FormDefaultMethod', self::$METHOD_POST_VALUE_NAME)
-            )
+               self::$METHOD_ATTRIBUTE_NAME,
+               strtolower(
+                     Registry::retrieve('APF\tools', 'FormDefaultMethod', self::$METHOD_POST_VALUE_NAME)
+               )
          );
       }
 
@@ -231,6 +219,7 @@ class HtmlFormTag extends Document {
     *
     * @param string $elementType Type of the element (e.g. "form:text")
     * @param string[] $elementAttributes Associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
+    *
     * @return string Id of the new form object or null (e.g. for addressing the new element)
     * @throws FormException In case the form element cannot be added.
     *
@@ -246,18 +235,18 @@ class HtmlFormTag extends Document {
       // create form element
       $objectId = $this->createFormElement($elementType, $elementAttributes);
 
-      // add form element if id is not null
-      if ($objectId !== null) {
-
-         // add position place holder to the content
-         $this->content .= '<' . $objectId . ' />';
-
-         // return object id of the new form element
-         return $objectId;
+      if ($objectId === null) {
+         // notify developer that object creation failed
+         throw new FormException('[HtmlFormTag::addFormElement()] Form element "'
+               . $elementType . '" cannot be added due to previous errors!');
       }
 
-      throw new FormException('[HtmlFormTag::addFormElement()] Form element "' . $elementType
-         . '" cannot be added due to previous errors!');
+      // add position place holder to the content
+      $this->content .= '<' . $objectId . ' />';
+
+      // return object id of the new form element
+      return $objectId;
+
    }
 
    /**
@@ -331,6 +320,7 @@ class HtmlFormTag extends Document {
     * @param string $markerName the desired marker name
     * @param string $elementType type of the element (e.g. "form:text")
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
+    *
     * @return string Id of the new form object or null (e.g. for addressing the new element)
     * @throws FormException In case object creation fails.
     *
@@ -344,23 +334,23 @@ class HtmlFormTag extends Document {
       // create new form element
       $objectId = $this->createFormElement($elementType, $elementAttributes);
 
-      // add form element if id is not null
-      if ($objectId !== null) {
+      if ($objectId === null) {
+         // notify developer that object creation failed
+         throw new FormException('[HtmlFormTag::addFormElementBeforeMarker()] Form element "'
+               . $elementType . '" cannot be added due to previous errors!');
 
-         // get desired marker
-         $marker = & $this->getMarker($markerName);
-
-         // add the position place holder to the content
-         $markerId = $marker->getObjectId();
-         $this->content = str_replace('<' . $markerId . ' />', '<' . $objectId . ' /><' . $markerId . ' />', $this->content);
-
-         // return object id of the new form element
-         return $objectId;
       }
 
-      // notify developer that object creation failed
-      throw new FormException('[HtmlFormTag::addFormElementBeforeMarker()] Form element "'
-         . $elementType . '" cannot be added due to previous errors!');
+      // get desired marker
+      $marker = & $this->getMarker($markerName);
+
+      // add the position place holder to the content
+      $markerId = $marker->getObjectId();
+      $this->content = str_replace('<' . $markerId . ' />', '<' . $objectId . ' /><' . $markerId . ' />', $this->content);
+
+      // return object id of the new form element
+      return $objectId;
+
    }
 
    /**
@@ -371,6 +361,7 @@ class HtmlFormTag extends Document {
     * @param string $markerName the desired marker name
     * @param string $elementType type of the element (e.g. "form:text")
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
+    *
     * @return string Id of the new form object or null (e.g. for addressing the new element)
     * @throws FormException In case object creation fails.
     *
@@ -384,25 +375,25 @@ class HtmlFormTag extends Document {
       // create new form element
       $objectId = $this->createFormElement($elementType, $elementAttributes);
 
-      // add form element if id is not null
-      if ($objectId !== null) {
-
-         // get desired marker
-         $marker = & $this->getMarker($markerName);
-
-         // add the position place holder to the content
-         $markerId = $marker->getObjectId();
-         $this->content = str_replace(
-            '<' . $markerId . ' />', '<' . $markerId . ' /><' . $objectId . ' />',
-            $this->content
-         );
-
-         // return object id of the new form element
-         return $objectId;
+      if ($objectId === null) {
+         // notify developer that object creation failed
+         throw new FormException('[HtmlFormTag::addFormElementBeforeMarker()] Form element "'
+               . $elementType . '" cannot be added due to previous errors!');
       }
 
-      // notify developer that object creation failed
-      throw new FormException('[HtmlFormTag::addFormElementBeforeMarker()] Form element "' . $elementType . '" cannot be added due to previous errors!');
+      // get desired marker
+      $marker = & $this->getMarker($markerName);
+
+      // add the position place holder to the content
+      $markerId = $marker->getObjectId();
+      $this->content = str_replace(
+            '<' . $markerId . ' />', '<' . $markerId . ' /><' . $objectId . ' />',
+            $this->content
+      );
+
+      // return object id of the new form element
+      return $objectId;
+
    }
 
    /**
@@ -412,6 +403,7 @@ class HtmlFormTag extends Document {
     *
     * @param string $elementType Type of the element (e.g. "form:text")
     * @param array $elementAttributes associative list of form element attributes (e.g. name, to enable the validation and presetting feature)
+    *
     * @return string Id of the new form object (e.g. for addressing the new element)
     * @throws FormException In case form element cannot be found.
     *
@@ -423,21 +415,9 @@ class HtmlFormTag extends Document {
     */
    protected function createFormElement($elementType, array $elementAttributes = array()) {
 
-      // define taglib class
-      $colon = strpos($elementType, ':');
-      $prefix = substr($elementType, 0, $colon);
-      $name = substr($elementType, $colon + 1);
-
-      // lazily import APF-internal taglib class. this is necessary, since taglibs are
-      // not statically included as of 1.14 but loaded dynamically due to performance
-      // reasons!
-      $class = null;
-      foreach ($this->tagLibs as $taglib) {
-         /* @var $taglib TagLib */
-         if ($taglib->getPrefix() === $prefix && $taglib->getName() === $name) {
-            $class = $taglib->getClass();
-            break;
-         }
+      $class = $this->getTagClass($elementType);
+      if ($class === null) {
+         return null;
       }
 
       // generate object id
@@ -474,6 +454,7 @@ class HtmlFormTag extends Document {
     * Returns a reference on the desired marker or null.
     *
     * @param string $markerName The desired marker's name.
+    *
     * @return DynamicFormElementMarkerTag The marker.
     * @throws FormException In case the marker cannot be found.
     *
@@ -486,9 +467,9 @@ class HtmlFormTag extends Document {
          return $this->getChildNode('name', $markerName, 'APF\tools\form\taglib\DynamicFormElementMarkerTag');
       } catch (\InvalidArgumentException $e) {
          throw new FormException('[HtmlFormTag::addFormContentAfterMarker()] No marker object '
-            . 'with name "' . $markerName . '" composed in current form for document controller "'
-            . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
-            . 'the form with name "' . $this->getAttribute('name') . '"!', E_USER_ERROR, $e);
+               . 'with name "' . $markerName . '" composed in current form for document controller "'
+               . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
+               . 'the form with name "' . $this->getAttribute('name') . '"!', E_USER_ERROR, $e);
       }
    }
 
@@ -530,6 +511,7 @@ class HtmlFormTag extends Document {
     * Returns a reference on the form element identified by the given name.
     *
     * @param string $name The name of the desired form element.
+    *
     * @return AbstractFormControl A reference on the form element.
     * @throws FormException In case the form element cannot be found.
     *
@@ -552,10 +534,10 @@ class HtmlFormTag extends Document {
       $parent = & $this->getParentObject();
       $docCon = $parent->getDocumentController();
       throw new FormException('[HtmlFormTag::getFormElementByName()] No form element with name "'
-         . $name . '" composed in current form "' . $this->getAttribute('name')
-         . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
-         . 'within this form (especially attributes, that are used for referencing other form '
-         . 'controls)!', E_USER_ERROR);
+            . $name . '" composed in current form "' . $this->getAttribute('name')
+            . '" in document controller "' . $docCon . '". Please double-check your taglib definitions '
+            . 'within this form (especially attributes, that are used for referencing other form '
+            . 'controls)!', E_USER_ERROR);
    }
 
    /**
@@ -564,6 +546,7 @@ class HtmlFormTag extends Document {
     * Returns a list of form controls with the given name.
     *
     * @param string $name The name of the form elements to collect (e.g. for radio buttons).
+    *
     * @return AbstractFormControl[] The list of form controls with the given name.
     *
     * @author Christian Achatz
@@ -579,6 +562,7 @@ class HtmlFormTag extends Document {
             }
          }
       }
+
       return $elements;
    }
 
@@ -588,6 +572,7 @@ class HtmlFormTag extends Document {
     * Returns a reference on the form element identified by the given id.
     *
     * @param string $id The ID of the desired form element.
+    *
     * @return AbstractFormControl A reference on the form element.
     * @throws FormException In case the form element cannot be found.
     *
@@ -609,8 +594,8 @@ class HtmlFormTag extends Document {
       $parent = & $this->getParentObject();
       $documentController = $parent->getDocumentController();
       throw new FormException('[HtmlFormTag::getFormElementByID()] No form element with id "'
-         . $id . '" composed in current form "' . $this->getAttribute('name')
-         . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
+            . $id . '" composed in current form "' . $this->getAttribute('name')
+            . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
    }
 
    /**
@@ -619,6 +604,7 @@ class HtmlFormTag extends Document {
     * Returns a reference on a form element addressed by it's internal object id.
     *
     * @param string $objectId The object id of of the desired form element.
+    *
     * @return AbstractFormControl A reference on the form element.
     * @throws FormException In case the form element cannot be found.
     *
@@ -638,8 +624,8 @@ class HtmlFormTag extends Document {
       $parent = & $this->getParentObject();
       $documentController = $parent->getDocumentController();
       throw new FormException('[HtmlFormTag::getFormElementByObjectID()] No form element with id "'
-         . $objectId . '" composed in current form "' . $this->getAttribute('name')
-         . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
+            . $objectId . '" composed in current form "' . $this->getAttribute('name')
+            . '" in document controller "' . $documentController . '"!', E_USER_ERROR);
    }
 
    /**
@@ -648,6 +634,7 @@ class HtmlFormTag extends Document {
     * Returns a list of form elements addressed by their tag name.
     *
     * @param string $tagName The tag name of the desired form element (e.g. "form:text").
+    *
     * @return AbstractFormControl[] A list of references on the form elements.
     * @throws FormException In case the form element cannot be found or desired tag is not registered.
     *
@@ -677,8 +664,8 @@ class HtmlFormTag extends Document {
       $parent = & $this->getParentObject();
       $documentController = $parent->getDocumentController();
       throw new FormException('[HtmlFormTag::getFormElementsByType()] No form elements composed in ' .
-         'current form "' . $this->getAttribute('name') . '" in document controller "'
-         . $documentController . '"!', E_USER_ERROR);
+            'current form "' . $this->getAttribute('name') . '" in document controller "'
+            . $documentController . '"!', E_USER_ERROR);
    }
 
    /**
@@ -687,6 +674,7 @@ class HtmlFormTag extends Document {
     * Returns the name of the tag implementation that refers to the applied tag name.
     *
     * @param string $tagName The name of the tag (e.g. form:listener).
+    *
     * @return string The name of the tag implementation class.
     * @throws FormException In case the referred tag name is not registered within the current form.
     *
@@ -695,18 +683,23 @@ class HtmlFormTag extends Document {
     * Version 0.1, 12.12.2012<br />
     */
    private function getTagClass($tagName) {
-      foreach ($this->tagLibs as $tagLib) {
-         /* @var $tagLib TagLib */
-         if ($tagLib->getPrefix() . ':' . $tagLib->getName() == $tagName) {
-            return $tagLib->getClass();
-         }
+
+      // gather tag implementation and return in case there is nothing defined
+      $colon = strpos($tagName, ':');
+      $prefix = substr($tagName, 0, $colon);
+      $name = substr($tagName, $colon + 1);
+
+      $class = $this->getTagLibClass($prefix, $name);
+      if ($class === null) {
+         $parent = & $this->getParentObject();
+         $documentController = $parent->getDocumentController();
+         throw new FormException('[HtmlFormTag::getTagClass()] No tag with name "' . $tagName
+               . '" registered in form with name "' . $this->getAttribute('name') . '" in document controller '
+               . $documentController . '!', E_USER_ERROR);
       }
 
-      $parent = & $this->getParentObject();
-      $documentController = $parent->getDocumentController();
-      throw new FormException('[HtmlFormTag::getTagClass()] No tag with name "' . $tagName
-         . '" registered in form with name "' . $this->getAttribute('name') . '" in document controller '
-         . $documentController . '!', E_USER_ERROR);
+      return $class;
+
    }
 
    /**
@@ -715,6 +708,7 @@ class HtmlFormTag extends Document {
     * Let's you retrieve an &lt;form:getstring /&gt; tag instance with the specified name.
     *
     * @param string $name The name of the form label to return.
+    *
     * @return LanguageLabelTag The instance of the desired label.
     * @throws \InvalidArgumentException In case no label can be found.
     *
@@ -727,8 +721,8 @@ class HtmlFormTag extends Document {
          return $this->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabelTag');
       } catch (\InvalidArgumentException $e) {
          throw new \InvalidArgumentException('[HtmlFormTag::getLabel()] No label found with name "' . $name
-            . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'
-            . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR, $e);
+               . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'
+               . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR, $e);
       }
    }
 
@@ -771,7 +765,7 @@ class HtmlFormTag extends Document {
             $t->start($childId);
 
             $this->content = str_replace('<' . $objectId . ' />',
-               $this->children[$objectId]->transform(), $this->content);
+                  $this->children[$objectId]->transform(), $this->content);
 
             $t->stop($childId);
          }
@@ -781,6 +775,7 @@ class HtmlFormTag extends Document {
       $htmlCode .= '</form>';
 
       $t->stop($id);
+
       return $htmlCode;
    }
 
