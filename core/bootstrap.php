@@ -18,6 +18,21 @@
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\ConfigurationManager;
+use APF\core\configuration\provider\ini\IniConfigurationProvider;
+use APF\core\errorhandler\DefaultErrorHandler;
+use APF\core\errorhandler\GlobalErrorHandler;
+use APF\core\exceptionhandler\DefaultExceptionHandler;
+use APF\core\exceptionhandler\GlobalExceptionHandler;
+use APF\core\filter\ChainedStandardInputFilter;
+use APF\core\filter\InputFilterChain;
+use APF\core\logging\Logger;
+use APF\core\pagecontroller\Document;
+use APF\core\pagecontroller\TagLib;
+use APF\core\registry\Registry;
+use APF\core\singleton\Singleton;
+use APF\tools\link\DefaultLinkScheme;
+use APF\tools\link\LinkGenerator;
 
 /**
  * @file bootstrap.php
@@ -56,18 +71,15 @@ include_once(dirname(__FILE__) . '/loader/RootClassLoader.php');
 
 // register class loader before including/configuring further elements
 \APF\core\loader\RootClassLoader::addLoader(
-   new \APF\core\loader\StandardClassLoader(
-      'APF',
-      $apfClassLoaderRootPath,
-      $apfClassLoaderConfigurationRootPath
-   )
+      new \APF\core\loader\StandardClassLoader(
+            'APF',
+            $apfClassLoaderRootPath,
+            $apfClassLoaderConfigurationRootPath
+      )
 );
 spl_autoload_register(array('\APF\core\loader\RootClassLoader', 'load'));
 
 // register the APF error handler to be able to easily configure the error handling mechanism
-use APF\core\exceptionhandler\DefaultExceptionHandler;
-use APF\core\exceptionhandler\GlobalExceptionHandler;
-
 GlobalExceptionHandler::registerExceptionHandler(new DefaultExceptionHandler());
 GlobalExceptionHandler::enable();
 
@@ -77,9 +89,6 @@ ini_set('display_errors', '1');
 ini_set('html_errors', 'off');
 
 // register the APF error handler to be able to easily configure the error handling mechanism
-use APF\core\errorhandler\DefaultErrorHandler;
-use APF\core\errorhandler\GlobalErrorHandler;
-
 GlobalErrorHandler::registerErrorHandler(new DefaultErrorHandler());
 GlobalErrorHandler::enable();
 
@@ -87,22 +96,14 @@ GlobalErrorHandler::enable();
 include_once(dirname(__FILE__) . '/pagecontroller/pagecontroller.php');
 
 // Define base parameters of the framework's core and tools layer
-use APF\core\registry\Registry;
-
 Registry::register('APF\core', 'Environment', 'DEFAULT');
 Registry::register('APF\core', 'InternalLogTarget', 'apf');
 Registry::register('APF\core', 'Charset', 'UTF-8');
 
 // set up configuration provider to let the developer customize it later on
-use APF\core\configuration\ConfigurationManager;
-use APF\core\configuration\provider\ini\IniConfigurationProvider;
-
 ConfigurationManager::registerProvider('ini', new IniConfigurationProvider());
 
 // configure logger (outside namespace'd file! otherwise initialization will not work)
-use APF\core\singleton\Singleton;
-use APF\core\logging\Logger;
-
 register_shutdown_function(function () {
    /* @var $logger Logger */
    $logger = & Singleton::getInstance('APF\core\logging\Logger');
@@ -111,9 +112,6 @@ register_shutdown_function(function () {
 
 // Set up default link scheme configuration. In case url rewriting is required, please
 // specify another link scheme within your application bootstrap file.
-use APF\tools\link\LinkGenerator;
-use APF\tools\link\DefaultLinkScheme;
-
 LinkGenerator::setLinkScheme(new DefaultLinkScheme());
 
 // Add the front controller filter that is a wrapper on the front controller's input
@@ -125,7 +123,19 @@ LinkGenerator::setLinkScheme(new DefaultLinkScheme());
 // does not require rewriting. In case rewriting is required, please specify another output
 // filter according to your url mapping requirements (e.g. use the ChainedUrlRewritingOutputFilter
 // included within the APF).
-use APF\core\filter\InputFilterChain;
-use APF\core\filter\ChainedStandardInputFilter;
-
 InputFilterChain::getInstance()->appendFilter(new ChainedStandardInputFilter());
+
+// Register tags to avoid multiple registration:
+
+// --> APF\core
+Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'core', 'addtaglib'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\AppendNodeTag', 'core', 'appendnode'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\ImportTemplateTag', 'core', 'importdesign'));
+
+Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'html', 'getstring'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'html', 'placeholder'));
+
+Document::addTagLib(new TagLib('APF\core\pagecontroller\TemplateTag', 'html', 'template'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'template', 'addtaglib'));
+Document::addTagLib(new  TagLib('APF\core\pagecontroller\LanguageLabelTag', 'template', 'getstring'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'template', 'placeholder'));
