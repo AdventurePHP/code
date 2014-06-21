@@ -44,7 +44,7 @@ class ButtonTag extends AbstractFormControl {
       $this->attributeWhiteList[] = 'tabindex';
       $this->attributeWhiteList[] = 'value';
 
-      $this->tagLibs = array(new TagLib('APF\tools\form\taglib\ButtonLanguageLabelTag', 'button', 'getstring'));
+      self::addTagLib(new TagLib('APF\tools\form\taglib\ButtonLanguageLabelTag', 'button', 'getstring'));
    }
 
    /**
