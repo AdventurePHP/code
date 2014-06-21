@@ -425,6 +425,17 @@ interface ActionParameters {
    public function getParameter($name, $default = null);
 
    /**
+    * Returns all action (URL) parameters with their values.
+    *
+    * @return array The action (URL) parameters with their respective values.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.06.2014<br />
+    */
+   public function getParameters();
+
+   /**
     * Returns the action associated with the current parameter instance.
     *
     * @return Action The front controller action this parameter instance belongs to.
@@ -488,6 +499,10 @@ class FrontcontrollerInput extends APFObject implements ActionParameters {
 
    public function getParameter($name, $default = null) {
       return isset($this->parameters[$name]) ? $this->parameters[$name] : $default;
+   }
+
+   public function getParameters() {
+      return $this->parameters;
    }
 
 }
