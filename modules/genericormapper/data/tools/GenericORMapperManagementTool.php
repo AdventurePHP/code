@@ -166,7 +166,7 @@ class GenericORMapperManagementTool extends BaseMapper {
 
    /**
     * Stores alias used by MySQL to avoid unnecessary update statements
-    * todo: can be expand by more alias
+    * TODO Extend with more aliases.
     *
     * @var array
     */
