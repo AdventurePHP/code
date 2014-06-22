@@ -215,14 +215,6 @@ Document::addTagLib(new TagLib('APF\modules\usermanagement\pres\taglib\UmgtMedia
 Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'addtitle', 'addtaglib'));
 Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'addtitle', 'getstring'));
 
-Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'error', 'addtaglib'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'error', 'placeholder'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'error', 'getstring'));
-
-Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'listener', 'addtaglib'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'listener', 'getstring'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'listener', 'placeholder'));
-
 Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'message', 'getstring'));
 
 Document::addTagLib(new TagLib('APF\extensions\htmllist\taglib\DefinitionListDefinitionTag', 'list', 'elem_defdef'));
