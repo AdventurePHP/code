@@ -20,7 +20,6 @@ namespace APF\tools\form\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\pagecontroller\TagLib;
 use APF\core\pagecontroller\XmlParser;
 
 /**
@@ -36,7 +35,6 @@ use APF\core\pagecontroller\XmlParser;
 class SelectBoxGroupTag extends AbstractFormControl {
 
    public function __construct() {
-      self::addTagLib(new TagLib('APF\tools\form\taglib\SelectBoxOptionTag', 'group', 'option'));
       $this->attributeWhiteList[] = 'label';
       $this->attributeWhiteList[] = 'disabled';
    }
@@ -197,6 +195,7 @@ class SelectBoxGroupTag extends AbstractFormControl {
       foreach ($this->children as $objectId => $DUMMY) {
          $html .= $this->children[$objectId]->transform();
       }
+
       return $html . '</optgroup>';
    }
 

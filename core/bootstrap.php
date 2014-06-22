@@ -125,9 +125,11 @@ LinkGenerator::setLinkScheme(new DefaultLinkScheme());
 // included within the APF).
 InputFilterChain::getInstance()->appendFilter(new ChainedStandardInputFilter());
 
-// Register tags to avoid multiple registration:
+// The 2.2 APF parser allows to globally register tags. This not only eases tag implementation and re-usage
+// but also registration at a central place (bootstrap file). The following section registers all APF tags
+// shipped with the release to have them available for custom tags. Tags are grouped per namespace.
 
-// --> APF\core
+// APF\core
 Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'core', 'addtaglib'));
 Document::addTagLib(new TagLib('APF\core\pagecontroller\AppendNodeTag', 'core', 'appendnode'));
 Document::addTagLib(new TagLib('APF\core\pagecontroller\ImportTemplateTag', 'core', 'importdesign'));
@@ -139,3 +141,90 @@ Document::addTagLib(new TagLib('APF\core\pagecontroller\TemplateTag', 'html', 't
 Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'template', 'addtaglib'));
 Document::addTagLib(new  TagLib('APF\core\pagecontroller\LanguageLabelTag', 'template', 'getstring'));
 Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'template', 'placeholder'));
+
+// APF\tools
+Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'form', 'addtaglib'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'form', 'getstring'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'form', 'placeholder'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\AddFormControlFilterTag', 'form', 'addfilter'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\AddFormControlValidatorTag', 'form', 'addvalidator'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\ButtonTag', 'form', 'button'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\CheckBoxTag', 'form', 'checkbox'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\CsrfProtectionHashTag', 'form', 'csrfhash'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\DateSelectorTag', 'form', 'date'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\DynamicFormElementMarkerTag', 'form', 'marker'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\FileUploadTag', 'form', 'file'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\FormErrorDisplayTag', 'form', 'error'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\FormLabelTag', 'form', 'label'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\FormSuccessDisplayTag', 'form', 'success'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\HiddenFieldTag', 'form', 'hidden'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\ImageButtonTag', 'form', 'imagebutton'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\MultiSelectBoxTag', 'form', 'multiselect'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\PasswordFieldTag', 'form', 'password'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\RadioButtonTag', 'form', 'radio'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\ResetButtonTag', 'form', 'reset'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\SelectBoxTag', 'form', 'select'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\TextAreaTag', 'form', 'area'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\TextFieldTag', 'form', 'text'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\TimeCaptchaTag', 'form', 'timecaptcha'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\TimeSelectorTag', 'form', 'time'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\ValidationListenerTag', 'form', 'listener'));
+
+Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'error', 'placeholder'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'error', 'addtaglib'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'error', 'getstring'));
+
+Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'listener', 'getstring'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'listener', 'addtaglib'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'listener', 'placeholder'));
+
+Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'success', 'getstring'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'success', 'addtaglib'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'success', 'placeholder'));
+
+Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'iterator', 'addtaglib'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'iterator', 'placeholder'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'iterator', 'getstring'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\TemplateTag', 'iterator', 'fallback'));
+Document::addTagLib(new TagLib('APF\tools\html\taglib\HtmlIteratorItemTag', 'iterator', 'item'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'item', 'addtaglib'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'item', 'getstring'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'item', 'placeholder'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'fallback', 'addtaglib'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'fallback', 'getstring'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'fallback', 'placeholder'));
+
+Document::addTagLib(new TagLib('APF\tools\form\taglib\ButtonLanguageLabelTag', 'button', 'getstring'));
+
+Document::addTagLib(new TagLib('APF\tools\form\taglib\LabelLanguageLabelTag', 'label', 'getstring'));
+
+Document::addTagLib(new TagLib('APF\tools\form\taglib\SelectBoxGroupTag', 'select', 'group'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\SelectBoxOptionTag', 'select', 'option'));
+Document::addTagLib(new TagLib('APF\tools\form\taglib\SelectBoxOptionTag', 'group', 'option'));
+
+Document::addTagLib(new TagLib('APF\tools\link\taglib\LinkLanguageLabelActiveTag', 'aActive', 'getstring'));
+Document::addTagLib(new TagLib('APF\tools\link\taglib\LinkLanguageLabelTag', 'a', 'getstring'));
+Document::addTagLib(new TagLib('APF\tools\link\taglib\LinkLanguageTitleActiveTag', 'titleActive', 'getstring'));
+Document::addTagLib(new TagLib('APF\tools\link\taglib\LinkLanguageTitleTag', 'title', 'getstring'));
+
+// APF\modules
+Document::addTagLib(new TagLib('APF\modules\recaptcha\pres\taglib\ReCaptchaTranslationTag', 'recaptcha', 'getstring'));
+Document::addTagLib(new TagLib('APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionLanguageLabelTag', 'media', 'getstring'));
+
+// APF\extensions
+Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'addtitle', 'addtaglib'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'addtitle', 'getstring'));
+
+Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'error', 'addtaglib'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'error', 'placeholder'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'error', 'getstring'));
+
+Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'listener', 'addtaglib'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'listener', 'getstring'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'listener', 'placeholder'));
+
+Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'message', 'getstring'));
+
+Document::addTagLib(new TagLib('APF\extensions\htmllist\taglib\DefinitionListDefinitionTag', 'list', 'elem_defdef'));
+Document::addTagLib(new TagLib('APF\extensions\htmllist\taglib\DefinitionListTermTag', 'list', 'elem_defterm'));
+Document::addTagLib(new TagLib('APF\extensions\htmllist\taglib\ListElementTag', 'list', 'elem_list'));

@@ -23,7 +23,6 @@ namespace APF\tools\form\taglib;
 use APF\core\benchmark\BenchmarkTimer;
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\LanguageLabelTag;
-use APF\core\pagecontroller\TagLib;
 use APF\core\pagecontroller\XmlParser;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
@@ -82,42 +81,6 @@ class HtmlFormTag extends Document {
     * Version 1.3, 15.06.2010 (Bug-fix: white listing did not recognize encrypt attribute)<br />
     */
    public function __construct() {
-
-      // Place the listener here, to ensure, that it is there, when the
-      // notification is sent!
-      self::addTagLib(new TagLib('APF\tools\form\taglib\ValidationListenerTag', 'form', 'listener'));
-
-      self::addTagLib(new TagLib('APF\tools\form\taglib\AddFormControlFilterTag', 'form', 'addfilter'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\AddFormControlValidatorTag', 'form', 'addvalidator'));
-
-      self::addTagLib(new TagLib('APF\tools\form\taglib\FormErrorDisplayTag', 'form', 'error'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\FormSuccessDisplayTag', 'form', 'success'));
-
-      self::addTagLib(new TagLib('APF\tools\form\taglib\ButtonTag', 'form', 'button'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\ResetButtonTag', 'form', 'reset'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\ImageButtonTag', 'form', 'imagebutton'));
-
-      self::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'form', 'placeholder'));
-      self::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'form', 'getstring'));
-      self::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'form', 'addtaglib'));
-
-      self::addTagLib(new TagLib('APF\tools\form\taglib\FormLabelTag', 'form', 'label'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\TextFieldTag', 'form', 'text'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\SelectBoxTag', 'form', 'select'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\DateSelectorTag', 'form', 'date'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\TimeSelectorTag', 'form', 'time'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\PasswordFieldTag', 'form', 'password'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\HiddenFieldTag', 'form', 'hidden'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\CheckBoxTag', 'form', 'checkbox'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\RadioButtonTag', 'form', 'radio'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\FileUploadTag', 'form', 'file'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\TextAreaTag', 'form', 'area'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\MultiSelectBoxTag', 'form', 'multiselect'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\DynamicFormElementMarkerTag', 'form', 'marker'));
-
-      self::addTagLib(new TagLib('APF\tools\form\taglib\TimeCaptchaTag', 'form', 'timecaptcha'));
-      self::addTagLib(new TagLib('APF\tools\form\taglib\CsrfProtectionHashTag', 'form', 'csrfhash'));
-
       // setup attributes within white-list
       $this->attributeWhiteList = array_merge(AbstractFormControl::$CORE_ATTRIBUTES, AbstractFormControl::$EVENT_ATTRIBUTES, AbstractFormControl::$I18N_ATTRIBUTES);
       $this->attributeWhiteList[] = self::$METHOD_ATTRIBUTE_NAME;
