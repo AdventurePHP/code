@@ -316,7 +316,7 @@ class HtmlIteratorTag extends Document {
          $fallbackObjectId = $this->getFallbackContentItemObjectId();
 
          if ($fallbackObjectId !== null) {
-            $fallbackMode = $this->getAttribute('fallback-mode');
+            $fallbackMode = $this->getAttribute('fallback-mode', self::FALLBACK_MODE_NORMAL);
 
             if ($fallbackMode === self::FALLBACK_MODE_NORMAL) {
                // activate auto-transformation to display fallback content.
