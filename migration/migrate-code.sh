@@ -1,10 +1,10 @@
 #!/bin/bash
 ########################################################################################################################
-# APF 2.1 automatic code migration script                                                                              #
+# APF 2.2 automatic code migration script                                                                              #
 ########################################################################################################################
 
 echo "#############################################"
-echo "# APF 2.1 automatic code migration          #"
+echo "# APF 2.2 automatic code migration          #"
 echo "#############################################"
 echo
 
@@ -17,6 +17,10 @@ echo
 echo "#############################################"
 echo
 echo "Starting migration ..."
+
+# migrate tag lib declaration
+echo "* Migrate taglib declaration statements ..."
+$PHP_BINARY $SCRIPT_DIR/migrate_taglib_registration.php
 
 echo
 echo "#############################################"

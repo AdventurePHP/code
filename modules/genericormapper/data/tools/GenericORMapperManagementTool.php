@@ -45,109 +45,144 @@ use APF\modules\genericormapper\data\GenericORMapperException;
 class GenericORMapperManagementTool extends BaseMapper {
 
    /**
-    * @private
-    * @var string[] Indicators for the data type mapping.
+    * Indicators for the data type mapping.
+    *
+    * @var string[]
     */
-   private $rowTypeMappingFrom = array(
-      '/^VARCHAR\(([0-9]+)\)$/i',
-      '/^TEXT$/i',
-      '/^DATE$/i'
+   protected $rowTypeMappingFrom = array(
+         '/^VARCHAR\(([0-9]+)\)$/i',
+         '/^TEXT$/i',
+         '/^DATE$/i',
    );
 
    /**
-    * @private
-    * @var string[] Replace strings for the data type mapping.
+    * Replace strings for the data type mapping.
+    *
+    * @var string[]
     */
-   private $rowTypeMappingTo = array(
-      'VARCHAR($1) character set [charset] NOT NULL default \'\'',
-      'TEXT character set [charset] NOT NULL',
-      'DATE NOT NULL default \'0000-00-00\''
+   protected $rowTypeMappingTo = array(
+         'VARCHAR($1) character set [charset] NOT NULL default \'\'',
+         'TEXT character set [charset] NOT NULL',
+         'DATE NOT NULL default \'0000-00-00\'',
    );
 
    /**
-    * @private
-    * @var string Stores the MySQL storage engine type.
+    * Stores the default MySQL storage engine type.
+    *
+    * @var string
     */
-   private $storageEngine = 'MyISAM';
+   protected $storageEngine = 'MyISAM';
 
    /**
-    * @private
-    * @var string The data type that is used for the indexed id columns.
+    * Data type for the index Column
+    *
+    * @var String
     */
-   private $indexColumnDataType = 'INT(5) UNSIGNED';
+   protected $indexColumnDataType = 'INT(5) UNSIGNED';
 
    /**
-    * @private
-    * @var string The character set of the tables to create.
+    * Stores the default Charset
+    *
+    * @var String
     */
-   private $tableCharset = 'utf8';
+   protected $tableCharset = 'utf8';
 
    /**
-    * @var string[] Mapping table reconstructed from the given database connection.
+    * Mapping and relation tables constructed from the configuration files
+    *
+    * @var array
     */
-   private $reEngineeredMappingTable = array();
-   private $databaseMappingTables = array();
+   protected $tablesFromConfig = array();
 
    /**
-    * @var string[] Relation table reconstructed from the given database connection.
+    * Mapping and relation tables constructed from the given database connection
+    *
+    * @var array
     */
-   private $reEngineeredRelationTable = array();
-   private $databaseRelationTables = array();
+   protected $tablesFromDatabase = array();
 
    /**
-    * @var string[] Stores the new mapping entries.
+    * Stores the new tables
+    *
+    * @var array
     */
-   private $newMappings = array();
+   protected $tablesToCreate = array();
 
    /**
-    * @var string[] Stores the removed mapping entries.
+    * Stores the removed tables
+    *
+    * @var array
     */
-   private $removedMappings = array();
+   protected $tablesToDrop = array();
 
    /**
-    * @var string[] Stores the attributes of mapping entries, that have been added.
+    * Stores the new columns
+    *
+    * @var array
     */
-   private $newMappingAttributes = array();
+   protected $columnsToCreate = array();
 
    /**
-    * @var string[] Stores the attributes of mapping entries, that have been removed.
+    * Stores the removed columns
+    *
+    * @var array
     */
-   private $removedMappingAttributes = array();
+   protected $columnsToDrop = array();
 
    /**
-    * @var string[] Stores the attributes of mapping entries, that have been altered.
+    * Stores the changed columns
+    *
+    * @var array
     */
-   private $alteredMappingAttributes = array();
+   protected $columnsToChange = array();
 
    /**
-    * @var string[] Stores the new relation entries.
+    * Stores the new indices
+    *
+    * @var array
     */
-   private $newRelations = array();
+   protected $indicesToCreate = array();
 
    /**
-    * @var string[] Stores the removed relation entries.
+    * Stores the removed indices
+    *
+    * @var array
     */
-   private $removedRelations = array();
+   protected $indicesToDrop = array();
 
    /**
-    * @var string[] Stores the attributes of relation entries, that have been altered.
+    * Stores the changed storage engines
+    *
+    * @var array
     */
-   private $alteredRelationAttributes = array();
+   protected $storageEngineToChange = array();
 
    /**
-    * @var string[] Stores the changes index column fields for mapping tables.
+    * Stores the update statements
+    *
+    * @var array
     */
-   private $alteredIndexDataColumnTypeObjectFields = array();
+   protected $updateStatements = array();
 
    /**
-    * @var string[] Stores the changes index column fields for relation tables.
+    * Stores alias used by MySQL to avoid unnecessary update statements
+    * TODO Extend with more aliases.
+    *
+    * @var array
     */
-   private $alteredIndexDataColumnTypeRelationFields = array();
+   protected $mysqlAlias = array(
+         'int'       => 'int(11)',
+         'integer'   => 'int(11)',
+         'boolean'   => 'tinyint(1)',
+         'bool'      => 'tinyint(1)',
+         'smallint'  => 'smallint(6)',
+         'mediumint' => 'mediumint(9)',
+         'bigint'    => 'bigint(20)'
+   );
 
-   /**
-    * @var string[] Stores the update statements.
-    */
-   private $updateStatements = array();
+   public function getStorageEngine() {
+      return $this->storageEngine;
+   }
 
    /**
     * @public
@@ -167,8 +202,8 @@ class GenericORMapperManagementTool extends BaseMapper {
       $this->storageEngine = $engine;
    }
 
-   public function getStorageEngine() {
-      return $this->storageEngine;
+   public function getIndexColumnDataType() {
+      return $this->indexColumnDataType;
    }
 
    /**
@@ -190,35 +225,6 @@ class GenericORMapperManagementTool extends BaseMapper {
     */
    public function setIndexColumnDataType($dataType) {
       $this->indexColumnDataType = $dataType;
-   }
-
-   public function getIndexColumnDataType() {
-      return $this->indexColumnDataType;
-   }
-
-   /**
-    * @public
-    * @since 1.12
-    *
-    * Let's you influence the character sets, the tables are created with. By default,
-    * utf8 is used to have good compatibility with most of the application cases. If
-    * you want to change it for certain reasons, use this method conjunction with an
-    * appropriate MySQL character set.
-    *
-    * @see http://dev.mysql.com/doc/refman/5.0/en/data-types.html
-    *
-    * @param string $tableCharset The desired charset (e.g. utf8).
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 15.04.2010<br />
-    */
-   public function setTableCharset($tableCharset) {
-      $this->tableCharset = $tableCharset;
-   }
-
-   public function getTableCharset() {
-      return $this->tableCharset;
    }
 
    /**
@@ -250,30 +256,27 @@ class GenericORMapperManagementTool extends BaseMapper {
     * @param boolean $updateInPlace Defines, if the update should be done for you (true) or if
     *                               the update statement should only be displayed (false).
     *                               Default is true.
+    *
     * @throws GenericORMapperException In case of missing connection name.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 04.10.2009<br />
     */
-   public function run($updateInPlace = true) {
+   public function run($updateInPlace = false) {
 
       // ID#104: clean up volatile data to allow multiple runs with deterministic results
-      $this->reEngineeredMappingTable = array();
-      $this->databaseMappingTables = array();
-      $this->reEngineeredRelationTable = array();
-      $this->databaseRelationTables = array();
-      $this->newMappings = array();
-      $this->removedMappings = array();
-      $this->newMappingAttributes = array();
-      $this->removedMappingAttributes = array();
-      $this->alteredMappingAttributes = array();
-      $this->newRelations = array();
-      $this->removedRelations = array();
-      $this->alteredRelationAttributes = array();
+      $this->tablesFromConfig = array();
+      $this->tablesFromDatabase = array();
+      $this->tablesToCreate = array();
+      $this->tablesToDrop = array();
+      $this->columnsToCreate = array();
+      $this->columnsToDrop = array();
+      $this->columnsToChange = array();
+      $this->indicesToCreate = array();
+      $this->indicesToDrop = array();
+      $this->storageEngineToChange = array();
       $this->updateStatements = array();
-      $this->alteredIndexDataColumnTypeObjectFields = array();
-      $this->alteredIndexDataColumnTypeRelationFields = array();
 
       // Add mapping and relation configuration if passed along with the call.
       // To support setup with multiple configurations, please add each of the
@@ -295,42 +298,23 @@ class GenericORMapperManagementTool extends BaseMapper {
          $this->createDatabaseConnection();
       }
 
-      // analyze the current database
-      $this->analyzeDatabaseTables();
 
-      // re-engineer the database tables concerning the relations
-      $this->reEngineerRelations();
+      $this->getTablesFromConfig();
+      $this->getTablesFromDatabase();
 
-      // re-engineer the database tables concerning the objects
-      $this->reEngineerMappings();
+      $this->compareTables();
 
-      // analyze the old and new mapping configuration
-      $this->analyzeMappingConfigurationChanges();
+      $this->generateDropTableStatements();
+      $this->generateCreateTableStatements();
+      $this->generateStorageEngineUpdateStatements();
+      $this->generateDropIndexStatements();
+      $this->generateDropColumnStatements();
+      $this->generateAddColumnStatements();
+      $this->generateChangeColumnStatements();
+      $this->generateAddIndexStatements();
 
-      // generate mapping update statements
-      $this->generateMappingUpdateStatements();
 
-      // analyze old and new relation configuration
-      $this->analyzeRelationConfigurationChanges();
-
-      // generate relation update statements
-      $this->generateRelationUpdateStatements();
-
-      // analyze existing index column data type
-      $this->analyzeIndexColumnDataTypeChanges();
-
-      // generate index data type update statements
-      $this->generateIndexColumnDataTypeStatements();
-
-      // analyze potential changes in storage engines
-      // NOTE: this option is commented out by now, since the mechanism
-      // implemented by 1.14-alpha is not sufficient for different storage
-      // engines by table. Within further check-ins we will provide a
-      // mechanism to specify the storage engine per table. Then this
-      // functionality will be re-enabled!
-      //$this->generateStorageEngineUpdate($sql);
-
-      // print alter statements or execute them immediately in case we have a connection name and
+      // print update statements or execute them immediately in case we have a connection name and
       // we have been told to update the database directly
       if ($updateInPlace === true) {
          foreach ($this->updateStatements as $statement) {
@@ -343,678 +327,70 @@ class GenericORMapperManagementTool extends BaseMapper {
          }
          echo '</pre>';
       }
+
    }
 
-   /**
-    * Compares two mapping keys. In case of mappings case sensitive comparison is done.
-    *
-    * @param string $a The first key.
-    * @param string $b The second key.
-    * @return int Compare status (0=equal, 1=different).
-    */
-   private function compareMappings($a, $b) {
-      if ($a === $b) {
-         return 0;
-      }
-      return 1;
-   }
+   protected function getTablesFromConfig() {
 
-   private function compareMappingValues($a, $b) {
-      return $this->compareMappings($a, $b);
-   }
+      $attrExceptions = array('ID', 'Table');
+      $tables = array();
 
-   /**
-    * Compares two relation keys. In case of relations case insensitive comparison is done.
-    *
-    * @param string $a The first key.
-    * @param string $b The second key.
-    * @return int Compare status (0=equal, 1=different).
-    */
-   /** @noinspection PhpUnusedPrivateMethodInspection Internally used for sort()'ing */
-   private function compareRelations($a, $b) {
-      $a = strtolower($a);
-      $b = strtolower($b);
-      if ($a === $b) {
-         return 0;
-      }
-      return 1;
-   }
-
-   /**
-    * Returns the type of
-    *
-    * @param string $tableName The
-    * @return string The relation type declaration.
-    */
-   private function getRelationTypeLabel($tableName) {
-      $tableName = strtolower($tableName);
-      if (substr_count($tableName, 'ass_') > 0) {
-         return 'ASSOCIATION';
-      }
-      return 'COMPOSITION';
-   }
-
-   /**
-    * @private
-    *
-    * Returns the fields, that are relevant for comparison.
-    *
-    * @param string[] $fields
-    * @return string[] The fields relevant for comparison.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 10.10.2009<br />
-    * Version 0.2, 13.10.2009 (Corrected check for primary key)<br />
-    */
-   private function getRelevantFields($fields) {
-      $resultFields = array();
-
-      foreach ($fields as $field) {
-         if ($field['Key'] != 'PRI' // do exclude primary key, but allow MUL indices!
-               && $field['Field'] != 'CreationTimestamp'
-               && $field['Field'] != 'ModificationTimestamp'
-         ) {
-            $resultFields[] = $field;
-         }
-      }
-
-      return $resultFields;
-   }
-
-   /**
-    * @private
-    *
-    * Returns the name of the primary key.
-    *
-    * @param string[] $fields The current definition's fields.
-    * @return string The name of the primary key.
-    */
-   private function getPrimaryKeyName($fields) {
-      foreach ($fields as $field) {
-         if ($field['Key'] == 'PRI') {
-            return $field['Field'];
-         }
-      }
-      return null;
-   }
-
-   /**
-    * @private
-    *
-    * Analyzes the given database and stores the tables included.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 10.10.2009<br />
-    * Version 0.2, 21.11.2010 (Now ignoring tables that are not created by the GORM)<br />
-    */
-   private function analyzeDatabaseTables() {
-
-      $selectTables = 'SHOW TABLES;';
-      $resultTables = $this->dbDriver->executeTextStatement($selectTables);
-
-      while ($dataTables = $this->dbDriver->fetchData($resultTables)) {
-
-         // gather the offset we are provided by the database due
-         // to the fact, that we ordered an associative array!
-         $keys = array_keys($dataTables);
-         $offset = $keys[0];
-
-         // collect tables
-         $tablePrefix = substr($dataTables[$offset], 0, 4);
-         switch ($tablePrefix) {
-            case 'ent_':
-               $this->databaseMappingTables[] = $dataTables[$offset];
-               break;
-            case 'ass_':
-            case 'cmp_':
-               $this->databaseRelationTables[] = $dataTables[$offset];
-               break;
-         }
-      }
-   }
-
-   /**
-    * @private
-    *
-    * Creates a relation mapping out of the database tables.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.2, 07.03.2011 (Added support for relations between the same table)<br />
-    */
-   private function reEngineerRelations() {
-
-      // create reverse engineered mapping entries
-      foreach ($this->databaseRelationTables as $relationTable) {
-
-         $selectCreate = 'SHOW COLUMNS FROM ' . $relationTable;
-         $resultCreate = $this->dbDriver->executeTextStatement($selectCreate);
-
-         $fields = array();
-         while ($dataCreate = $this->dbDriver->fetchData($resultCreate)) {
-            $fields[] = $dataCreate;
-         }
-
-         $relationName = substr($relationTable, 4);
-         $sourceId = $fields[0]['Field'];
-         $targetId = $fields[1]['Field'];
-         $sourceObject = str_replace('ID', '', $sourceId);
-         $targetObject = str_replace('ID', '', $targetId);
-
-         $this->reEngineeredRelationTable[$relationName] = array(
-            'Type' => $this->getRelationTypeLabel($relationTable),
-            'Table' => $relationTable,
-            'SourceID' => $sourceId,
-            'TargetID' => $targetId,
-            'SourceObject' => str_replace('Source_', '', $sourceObject),
-            'TargetObject' => str_replace('Target_', '', $targetObject),
-            'Timestamps' => ((isset ($fields[2]) === true && $fields[2]['Field'] == 'CreationTimestamp') ? 'TRUE' : 'FALSE')
+      foreach ($this->mappingTable as $table => $property) {
+         $tableName = $property['Table'];
+         $tables[$tableName] = array(
+               'Indices'       => $this->getIndices($table),
+               'StorageEngine' => (isset($this->mappingStorageEngineTable[$tableName])) ? $this->mappingStorageEngineTable[$tableName] : $this->storageEngine,
+               'Columns'       => array(
+                     $property['ID'] => $this->indexColumnDataType . ' NOT NULL auto_increment'
+               ),
+               'autoIncrement' => $property['ID']
          );
+         foreach ($property as $key => $value) {
+            if (!in_array($key, $attrExceptions)) {
+               $value1 = preg_replace(
+                     $this->rowTypeMappingFrom,
+                     $this->rowTypeMappingTo,
+                     $value);
+               $value = str_replace('[charset]', $this->getTableCharset(), $value1);
+               $tables[$tableName]['Columns'][$key] = $value;
+            }
+         }
+         $tables[$tableName]['Columns']['CreationTimestamp'] = 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP';
+         $tables[$tableName]['Columns']['ModificationTimestamp'] = 'timestamp NOT NULL DEFAULT \'0000-00-00 00:00:00\'';
+
       }
-   }
 
-   /**
-    * @private
-    *
-    * Analyzes the current set of database tables and adds an alter statement for the
-    * storage engine if necessary.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 12.03.2011<br />
-    */
-   private function generateStorageEngineUpdate() {
-
-      foreach ($this->databaseMappingTables as $objectTable) {
-
-         $selectEngine = 'SHOW CREATE TABLE `' . $objectTable . '`';
-         $resultEngine = $this->dbDriver->executeTextStatement($selectEngine);
-         $dataEngine = $this->dbDriver->fetchData($resultEngine);
-
-         preg_match('/\s*?ENGINE=([^\s]+)\s*?/', $dataEngine['Create Table'], $matches);
-         $engine = $matches[1];
-
-         if ($this->getStorageEngine() != $engine) {
-            $this->updateStatements[] = 'ALTER TABLE `' . $objectTable . '` ENGINE = ' . $this->getStorageEngine() . ';';
-         }
-      }
-   }
-
-   /**
-    * @private
-    *
-    * Creates a object mapping out of the database tables.
-    */
-   private function reEngineerMappings() {
-
-      foreach ($this->databaseMappingTables as $objectTable) {
-
-         $selectCreate = 'SHOW COLUMNS FROM ' . $objectTable;
-         $resultCreate = $this->dbDriver->executeTextStatement($selectCreate);
-
-         $fields = array();
-         while ($dataCreate = $this->dbDriver->fetchData($resultCreate)) {
-            $fields[] = $dataCreate;
-         }
-         $mainFields = $this->getRelevantFields($fields);
-         $primaryKey = $this->getPrimaryKeyName($fields);
-         $objectName = str_replace('ID', '', $primaryKey);
-
-         $objectFields = array();
-         foreach ($mainFields as $field) {
-
-            $objectFields[$field['Field']] = strtoupper($field['Type']);
-
-            /*
-              CREATE TABLE IF NOT EXISTS `test` (
-              `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-              `Test1` varchar(10) ,
-              `Test2` varchar(10) DEFAULT '',
-              `Test3` varchar(10) DEFAULT NULL,
-              `Test4` varchar(10) NOT NULL,
-              `Test5` varchar(10) NOT NULL DEFAULT '',
-              PRIMARY KEY (`ID`)
-              ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-              +-------+------------------+------+-----+---------+----------------+
-              | Field | Type             | Null | Key | Default | Extra          |
-              +-------+------------------+------+-----+---------+----------------+
-              | ID    | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
-              | Test1 | varchar(10)      | YES  |     | NULL    |                |
-              | Test2 | varchar(10)      | YES  |     |         |                |
-              | Test3 | varchar(10)      | YES  |     | NULL    |                |
-              | Test4 | varchar(10)      | NO   |     | NULL    |                |
-              | Test5 | varchar(10)      | NO   |     |         |                |
-              +-------+------------------+------+-----+---------+----------------+
-             */
-
-            // correct empty NULL values as NO for MySQL4
-            if (empty($field['Null'])) {
-               $field['Null'] = 'NO';
-            }
-
-            //
-            /* if($field['Null'] == 'YES' && $field['Default'] == 'NULL'){
-              $objectFields[$field['Field']] .= '';
-              }
-              elseif($field['Null'] == 'YES' && empty($field['Default'])){
-              $objectFields[$field['Field']] .= 'DEFAULT \'\'';
-              }
-              elseif($field['Null'] == 'NO' && $field['Default'] == 'NULL'){
-              $objectFields[$field['Field']] .= 'NOT NULL';
-              }
-              elseif($field['Null'] == 'NO' && empty($field['Default'])){
-              $objectFields[$field['Field']] .= 'NOT NULL DEFAULT \'\'';
-              } */
-
-            // add a null/not null indicator to preserve the correct data type
-            if ($field['Null'] == 'NO') {
-               $objectFields[$field['Field']] .= ' NOT NULL';
-            } else {
-               $objectFields[$field['Field']] .= ' NULL';
-            }
-
-            // add default indicator to preserve correct data type
-            if (!empty($field['Default'])) {
-               $objectFields[$field['Field']] .= ' DEFAULT \'' . $field['Default'] . '\'';
-            } else {
-               $objectFields[$field['Field']] .= ' DEFAULT \'\'';
-            }
-
-         }
-
-         $this->reEngineeredMappingTable[$objectName] = array_merge(
-            array(
-               'ID' => $primaryKey,
-               'Table' => $objectTable
-            ),
-            $objectFields
+      foreach ($this->relationTable as $property) {
+         $tableName = $property['Table'];
+         $tables[$tableName] = array(
+               'Indices'       => array(
+                     $property['TargetID'] . ',' . $property['SourceID'] => array('REVERSEJOIN' => 'INDEX'),
+                     $property['SourceID'] . ',' . $property['TargetID'] => array('JOIN' => 'INDEX')
+               ),
+               'StorageEngine' => (isset($this->relationStorageEngineTable[$tableName])) ? $this->relationStorageEngineTable[$tableName] : $this->storageEngine,
+               'Columns'       => array(
+                     $property['SourceID'] => $this->indexColumnDataType . ' NOT NULL default 0',
+                     $property['TargetID'] => $this->indexColumnDataType . ' NOT NULL default 0',
+               )
          );
-      }
-   }
-
-   /**
-    * @private
-    *
-    * Generates update statements for the mapping configuration.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 04.10.2009<br />
-    * Version 0.2, 13.10.2009 (Added ticks to delimit table names.)<br />
-    */
-   private function generateMappingUpdateStatements() {
-
-      foreach ($this->newMappings as $newMapping => $DUMMY) {
-         $this->updateStatements[] =
-               $this->generateMappingTableLayout(
-                  $newMapping,
-                  $this->mappingTable[$newMapping]
-               );
-      }
-
-      foreach ($this->removedMappings as $removedMapping => $DUMMY) {
-         $this->updateStatements[] = 'DROP TABLE '
-               . $this->reEngineeredMappingTable[$removedMapping]['Table']
-               . ';';
-      }
-
-      foreach ($this->newMappingAttributes as $newAttribute => $values) {
-
-         /* @var $values array */
-         if (count($values) > 0) {
-
-            foreach ($values as $name => $dataType) {
-               $dataType = preg_replace(
-                  $this->rowTypeMappingFrom,
-                  $this->rowTypeMappingTo,
-                  $dataType
-               );
-
-               // add dynamic character set specification
-               $dataType = str_replace('[charset]', $this->getTableCharset(), $dataType);
-
-               $this->updateStatements[] = 'ALTER TABLE `'
-                     . $this->mappingTable[$newAttribute]['Table'] . '` ADD `'
-                     . $name . '` ' . $dataType . ';';
-            }
+         if (isset ($property['Timestamps']) && strcasecmp($property['Timestamps'], 'TRUE') === 0) {
+            $tables[$tableName]['Columns']['CreationTimestamp'] = 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP';
          }
+
       }
 
-      foreach ($this->removedMappingAttributes as $removedAttribute => $values) {
-
-         if (count($values) > 0) {
-
-            foreach ($values as $name => $dataType) {
-               $this->updateStatements[] = 'ALTER TABLE `'
-                     . $this->mappingTable[$removedAttribute]['Table'] . '` DROP `' . $name . '`;';
-            }
-         }
-      }
-
-      foreach ($this->alteredMappingAttributes as $alteredAttribute => $values) {
-
-         if (count($values) > 0) {
-
-            foreach ($values as $name) {
-               $dataType = preg_replace(
-                  $this->rowTypeMappingFrom,
-                  $this->rowTypeMappingTo,
-                  $this->mappingTable[$alteredAttribute][$name]
-               );
-
-               // add dynamic character set specification
-               $dataType = str_replace('[charset]', $this->getTableCharset(), $dataType);
-
-               $this->updateStatements[] = 'ALTER TABLE `'
-                     . $this->mappingTable[$alteredAttribute]['Table'] . '` CHANGE `' . $name . '` '
-                     . '`' . $name . '` ' . $dataType . ';';
-            }
-         }
-      }
-   }
-
-   /**
-    * @private
-    *
-    * Analyzes the old and new mapping configuration and stores the changes locally.
-    */
-   private function analyzeMappingConfigurationChanges() {
-
-      // gather overall mapping changes
-      $this->newMappings = array_diff_ukey(
-         $this->mappingTable,
-         $this->reEngineeredMappingTable,
-         array($this, 'compareMappings')
-      );
-      $this->removedMappings = array_diff_ukey(
-         $this->reEngineeredMappingTable,
-         $this->mappingTable,
-         array($this, 'compareMappings')
-      );
-
-      // evaluate changes within the attributes
-      foreach ($this->mappingTable as $mappingKey => $mappingValue) {
-
-         // only scan entries, that are not within the new and removed ones!
-         if (!isset($this->newMappings[$mappingKey])
-               && !isset($this->removedMappings[$mappingKey])
-         ) {
-
-            // new columns
-            $this->newMappingAttributes[$mappingKey] = array_diff_ukey(
-               $this->mappingTable[$mappingKey],
-               $this->reEngineeredMappingTable[$mappingKey],
-               array($this, 'compareMappings')
-            );
-
-            // removed columns
-            $this->removedMappingAttributes[$mappingKey] = array_diff_ukey(
-               $this->reEngineeredMappingTable[$mappingKey],
-               $this->mappingTable[$mappingKey],
-               array($this, 'compareMappings')
-            );
-
-            // changed columns
-            foreach ($this->mappingTable[$mappingKey] as $key => $value) {
-
-               // only scan entries, that are also existent within the re-engineered mapping table!
-               if (isset($this->reEngineeredMappingTable[$mappingKey][$key])) {
-                  $diff = $this->compareMappingValues(
-                     $this->mappingTable[$mappingKey][$key],
-                     $this->reEngineeredMappingTable[$mappingKey][$key]
-                  );
-                  if ($diff === 1) {
-                     $this->alteredMappingAttributes[$mappingKey][] = $key;
-                  }
-               }
-            }
-         }
-      }
-   }
-
-   /**
-    * @private
-    *
-    * Analyzes the old and new relation configuration and stores the changes locally.
-    * With relations, only type changes can be applied. Otherwise the data structure
-    * gets corrupted!
-    */
-   private function analyzeRelationConfigurationChanges() {
-
-      // new relations
-      $this->newRelations = array_diff_ukey(
-         $this->relationTable,
-         $this->reEngineeredRelationTable,
-         array($this, 'compareRelations')
-      );
-
-      // removed relations
-      $this->removedRelations = array_diff_ukey(
-         $this->reEngineeredRelationTable,
-         $this->relationTable,
-         array($this, 'compareRelations')
-      );
-
-      // evaluate changes within the attributes
-      foreach ($this->relationTable as $relationKey => $relationValue) {
-
-         // use lowercase relation key for re-engineered values!
-         $reEngRelationKey = strtolower($relationKey);
-
-         // only scan entries, that are not within the new and removed ones!
-         if (!isset($this->newRelations[$relationKey])
-               && !isset($this->removedRelations[$relationKey])
-         ) {
-
-            // changed columns (we only check for relation type, because for all other
-            // cases, a new relation *must* be created!)
-            foreach ($this->relationTable[$relationKey] as $key => $DUMMY) {
-
-               // only scan entries, that are also existent within the re-engineered
-               // relation table! Further, only respect the type key.
-               if (isset($this->reEngineeredRelationTable[$reEngRelationKey][$key]) && $key == 'Type') {
-                  if ($this->reEngineeredRelationTable[$reEngRelationKey][$key]
-                        !== $this->relationTable[$relationKey][$key]
-                  ) {
-                     $this->alteredRelationAttributes[] = $relationKey;
-                  }
-               }
-
-               // check for changed columns (e.g. wrong namings for source and target columns)
-               if (isset($this->reEngineeredRelationTable[$reEngRelationKey][$key])
-                     && ($key === 'SourceID' || $key === 'TargetID')
-               ) {
-                  if ($this->reEngineeredRelationTable[$reEngRelationKey][$key] !== $this->relationTable[$relationKey][$key]) {
-                     $update = 'ALTER TABLE `' . $this->reEngineeredRelationTable[$reEngRelationKey]['Table'] . '` ';
-                     $update .= 'CHANGE `' . $this->reEngineeredRelationTable[$reEngRelationKey][$key] . '` `' . $this->relationTable[$relationKey][$key] . '` ' . $this->getIndexColumnDataType() . ' NOT NULL default \'0\';' . PHP_EOL;
-                     $this->updateStatements[] = $update;
-                  }
-               }
-
-               if (isset($this->reEngineeredRelationTable[$reEngRelationKey][$key])
-                     && isset($this->reEngineeredRelationTable[$reEngRelationKey]['TargetID'])
-                     && isset($this->reEngineeredRelationTable[$reEngRelationKey]['Table'])
-                     && ($key == 'SourceID')
-               ) {
-                  $sourceIdColumn = str_replace('Source_', '', $this->reEngineeredRelationTable[$reEngRelationKey][$key]);
-                  $targetIdColumn = str_replace('Target_', '', $this->reEngineeredRelationTable[$reEngRelationKey]['TargetID']);
-                  if ($sourceIdColumn == $this->reEngineeredRelationTable[$reEngRelationKey][$key] &&
-                        $targetIdColumn == $this->reEngineeredRelationTable[$reEngRelationKey]['TargetID']
-                  ) {
-                     // header
-                     $update = 'ALTER TABLE `' . $this->reEngineeredRelationTable[$reEngRelationKey]['Table'] . '` ' . PHP_EOL;
-
-                     // source id
-                     $update .= 'CHANGE `' . $sourceIdColumn . '`  `Source_' . $sourceIdColumn . '` ' . $this->getIndexColumnDataType() . ' NOT NULL default \'0\',' . PHP_EOL;
-
-                     // target id
-                     $update .= 'CHANGE `' . $targetIdColumn . '`  `Target_' . $targetIdColumn . '` ' . $this->getIndexColumnDataType() . ' NOT NULL default \'0\'' . PHP_EOL;
-
-                     $this->updateStatements[] = $update;
-                  }
-               }
-            }
-
-            // ensure to have the configuration for relation-timestamps
-            $this->relationTable[$relationKey]['Timestamps'] = ((isset ($this->relationTable[$relationKey]['Timestamps']) === true && strcasecmp($this->relationTable[$relationKey]['Timestamps'], 'TRUE') == 0) ? 'TRUE' : 'FALSE');
-
-            // check for changed relation-timestamps
-            if ($this->relationTable[$relationKey]['Timestamps'] != $this->reEngineeredRelationTable[$reEngRelationKey]['Timestamps']) {
-               // header
-               $update = 'ALTER TABLE `' . $this->reEngineeredRelationTable[$reEngRelationKey]['Table'] . '` ' . PHP_EOL;
-
-               // add relation-timestamps
-               if ($this->relationTable[$relationKey]['Timestamps'] == 'TRUE') {
-                  $update .= 'ADD `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP;';
-               } // remove relation-timestamps
-               else {
-                  $update .= 'DROP `CreationTimestamp`;';
-               }
-
-               $this->updateStatements[] = $update;
-            }
-         }
-      }
-   }
-
-   /**
-    * @private
-    *
-    * Generates update statements for relation changes.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 11.10.2009<br />
-    */
-   private function generateRelationUpdateStatements() {
-
-      foreach ($this->newRelations as $newRelation => $DUMMY) {
-         $this->updateStatements[] =
-               $this->generateRelationTableLayout($this->relationTable[$newRelation]);
-      }
-      foreach ($this->removedRelations as $removedRelation => $DUMMY) {
-         $this->updateStatements[] = 'DROP TABLE '
-               . $this->reEngineeredRelationTable[$removedRelation]['Table'] . ';';
-      }
-
-      // changed relation types: $this->alteredRelationAttributes
-      foreach ($this->alteredRelationAttributes as $alteredRelation) {
-         $reEngAlteredRelation = strtolower($alteredRelation);
-         $this->updateStatements[] = 'RENAME TABLE `'
-               . $this->reEngineeredRelationTable[$reEngAlteredRelation]['Table']
-               . '` TO `' . $this->relationTable[$alteredRelation]['Table'] . '`;';
-      }
-   }
-
-   /**
-    * @private
-    *
-    * Generates a create statement for the object mapping table.
-    *
-    * @param string $objectName The name of the current object definition.
-    * @param string[] $tableAttributes The mapping entry's attributes.
-    * @return string The create statement.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 11.10.2009<br />
-    */
-   private function generateMappingTableLayout($objectName, $tableAttributes) {
-
-      // header
-      $create = 'CREATE TABLE IF NOT EXISTS `' . $tableAttributes['Table'] . '` (' . PHP_EOL;
-
-      // id row
-      $create .= '  `' . $tableAttributes['ID'] . '` ' . $this->getIndexColumnDataType() . ' NOT NULL auto_increment,' . PHP_EOL;
-
-      // object properties
-      foreach ($tableAttributes as $key => $value) {
-         if ($key != 'ID' && $key != 'Table') {
-            $value = preg_replace($this->rowTypeMappingFrom, $this->rowTypeMappingTo, $value);
-
-            // add dynamic character set specification
-            $value = str_replace('[charset]', $this->getTableCharset(), $value);
-
-            $create .= '  `' . $key . '` ' . $value . ',' . PHP_EOL;
-         }
-      }
-
-      // creation and modification information
-      $create .= '  `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,' . PHP_EOL;
-      $create .= '  `ModificationTimestamp` timestamp NOT NULL default \'0000-00-00 00:00:00\',' . PHP_EOL;
-
-      // primary key
-      $create .= '  PRIMARY KEY (`' . $tableAttributes['ID'] . '`)';
-
-      // additional indices
-      $additionalIndices = $this->getAdditionalIndexDefinition($objectName);
-      if ($additionalIndices !== null) {
-         $create .= ',' . PHP_EOL . $additionalIndices . PHP_EOL;
-      } else {
-         $create .= PHP_EOL;
-      }
-
-      // footer
-      $create .= ') ENGINE=' . $this->getStorageEngine() . ' DEFAULT CHARSET=' . $this->getTableCharset() . ';';
-
-      // print statement
-      return $create;
+      $this->tablesFromConfig = $tables;
 
    }
 
-   /**
-    * @private
-    *
-    * Generates a create statement for the relation table.
-    *
-    * @param string[] $tableAttributes The relation's attributes.
-    * @return string The create statement.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 11.10.2009<br />
-    * Version 0.2, 24.08.2012 (Added support for creation-timestamp)<br />
-    */
-   private function generateRelationTableLayout($tableAttributes) {
+   protected function getIndices($tableName) {
 
-      // header
-      $create = 'CREATE TABLE IF NOT EXISTS `' . $tableAttributes['Table'] . '` (' . PHP_EOL;
-
-      // source id
-      $create .= '  `' . $tableAttributes['SourceID'] . '` ' . $this->getIndexColumnDataType() . ' NOT NULL default \'0\',' . PHP_EOL;
-
-      // target id
-      $create .= '  `' . $tableAttributes['TargetID'] . '` ' . $this->getIndexColumnDataType() . ' NOT NULL default \'0\',' . PHP_EOL;
-
-      // creation information
-      if (isset ($tableAttributes['Timestamps']) === true && strcasecmp($tableAttributes['Timestamps'], 'TRUE') == 0) {
-         $create .= '  `CreationTimestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,' . PHP_EOL;
+      $indexDefinition = array();
+      $indexDefinition[$tableName . 'ID'] = array('PRIMARY' => 'PRIMARY');
+      if (!isset($this->mappingIndexTable[$tableName])) {
+         return $indexDefinition;
       }
-
-      // key for all forward JOINs
-      $create .= '  KEY `JOIN` (`' . $tableAttributes['SourceID'] . '`, `' . $tableAttributes['TargetID'] . '`),' . PHP_EOL;
-
-      // key for all reverse JOINs (see http://forum.adventure-php-framework.org/viewtopic.php?f=8&t=548)
-      $create .= '  KEY `REVERSEJOIN` (`' . $tableAttributes['TargetID'] . '`, `' . $tableAttributes['SourceID'] . '`)' . PHP_EOL;
-
-      // footer
-      return $create . ') ENGINE=' . $this->getStorageEngine() . ' DEFAULT CHARSET=' . $this->getTableCharset() . ';';
-
-   }
-
-   private function getAdditionalIndexDefinition($objectName) {
-
-      // exit early returning null to indicate that no additional index definition is available
-      if (!isset($this->mappingIndexTable[$objectName])) {
-         return null;
-      }
-
-      $indices = array();
-
-      foreach (explode('|', $this->mappingIndexTable[$objectName]) as $index) {
+      foreach (explode('|', $this->mappingIndexTable[$tableName]) as $index) {
 
          $current = $index;
 
@@ -1026,110 +402,422 @@ class GenericORMapperManagementTool extends BaseMapper {
          // replace index type to extract fields
          $current = substr_replace($current, '', $startPos, $endPos + 1 - $startPos);
 
-         $fields = array();
-
-         foreach (explode(',', $current) as $field) {
-            $fields[] = '`' . $field . '`';
-         }
-
-         $type .= ' KEY `' . preg_replace('/[^A-Za-z0-9]/', '', $index) . '` (' . implode(', ', $fields) . ')';
-
-         // resolve INDEX KEY
-         $type = preg_replace('/INDEX KEY/i', 'KEY', $type);
-
-         $indices[] = '  ' . $type;
-
+         $indexDefinition[str_replace(' ', '', $current)][str_replace(array(',', ' '), '', $current) . $type] = $type;
       }
 
-      return implode(',' . PHP_EOL, $indices);
-
+      return $indexDefinition;
    }
 
-   private function analyzeIndexColumnDataTypeChanges() {
-
-      $indexColumnDataType = $this->getIndexColumnDataType();
-      $normalizedIndexColumnDataType = strtolower($indexColumnDataType);
-
-      foreach ($this->databaseMappingTables as $objectTable) {
-
-         $selectCreate = 'SHOW COLUMNS FROM ' . $objectTable;
-         $resultCreate = $this->dbDriver->executeTextStatement($selectCreate);
-
-         $fields = array();
-         while ($dataCreate = $this->dbDriver->fetchData($resultCreate)) {
-            $fields[] = $dataCreate;
-         }
-
-         $primaryKey = $this->getPrimaryKeyName($fields);
-
-         foreach ($fields as $field) {
-            if ($field['Field'] === $primaryKey) {
-               // check for data type and note changes:
-               if (strtolower($field['Type']) !== $normalizedIndexColumnDataType) {
-                  $this->alteredIndexDataColumnTypeObjectFields[] = array(
-                     'Table' => $objectTable,
-                     'Field' => $primaryKey,
-                     'ToDataType' => $indexColumnDataType
-                  );
-               }
-
-            }
-         }
-      }
-
-      foreach ($this->databaseRelationTables as $relationTable) {
-
-         $selectCreate = 'SHOW COLUMNS FROM ' . $relationTable;
-         $resultCreate = $this->dbDriver->executeTextStatement($selectCreate);
-
-         $fields = array();
-         while ($dataCreate = $this->dbDriver->fetchData($resultCreate)) {
-            $fields[] = $dataCreate;
-         }
-
-         foreach ($fields as $field) {
-
-            if (strpos($field['Field'], 'Source_') !== false || strpos($field['Field'], 'Target_') !== false) {
-               // check for data type and note changes:
-               if (strtolower($field['Type']) !== $normalizedIndexColumnDataType) {
-                  $this->alteredIndexDataColumnTypeRelationFields[] = array(
-                     'Table' => $relationTable,
-                     'Field' => $field['Field'],
-                     'ToDataType' => $indexColumnDataType
-                  );
-               }
-            }
-
-         }
-      }
-
-   }
-
-   private function generateIndexColumnDataTypeStatements() {
-      foreach ($this->alteredIndexDataColumnTypeObjectFields as $field) {
-         if (!$this->isTableAboutToBeDeleted($field['Table'])) {
-            $this->updateStatements[] = 'ALTER TABLE `' . $field['Table'] . '` CHANGE COLUMN `' . $field['Field'] . '` `' . $field['Field'] . '` ' . $field['ToDataType'] . ' NOT NULL auto_increment;';
-         }
-      }
-      // generate relation table statements tailored to relation data model (w/o auto_increment)
-      foreach ($this->alteredIndexDataColumnTypeRelationFields as $field) {
-         if (!$this->isTableAboutToBeDeleted($field['Table'])) {
-            $this->updateStatements[] = 'ALTER TABLE `' . $field['Table'] . '` CHANGE COLUMN `' . $field['Field'] . '` `' . $field['Field'] . '` ' . $field['ToDataType'] . ' NOT NULL default \'0\';';
-         }
-      }
+   public function getTableCharset() {
+      return $this->tableCharset;
    }
 
    /**
-    * @param string $table The name of the table to check
-    * @return bool <em>True</em>, in case the table is about to be deleted, <em>false</em> otherwise.
+    * @public
+    * @since 1.12
+    *
+    * Let's you influence the character sets, the tables are created with. By default,
+    * utf8 is used to have good compatibility with most of the application cases. If
+    * you want to change it for certain reasons, use this method conjunction with an
+    * appropriate MySQL character set.
+    *
+    * @see http://dev.mysql.com/doc/refman/5.0/en/data-types.html
+    *
+    * @param string $tableCharset The desired charset (e.g. utf8).
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 15.04.2010<br />
     */
-   private function isTableAboutToBeDeleted($table) {
-      foreach ($this->updateStatements as $statement) {
-         if (strpos($statement, 'DROP TABLE ' . $table) !== false) {
-            return true;
+   public function setTableCharset($tableCharset) {
+      $this->tableCharset = $tableCharset;
+   }
+
+   protected function getTablesFromDatabase() {
+
+      $getColumns = '(select
+                        `character_set_name` as `charset`,
+                        `table_name` as `tableName`,
+                        `column_name` as `columnName`,
+                        `column_default` as `defaultValue`,
+                        `is_nullable` as `isNullable` ,
+                        `column_type` as `type`,
+                        `extra`
+                     from information_schema.columns
+                     where
+                        `table_schema` = database()
+                        and (`table_name` like \'ent_%\'
+                        or `table_name` like \'ass_%\'
+                        or `table_name` like \'cmp_%\'));';
+      $resultColumns = $this->dbDriver->executeTextStatement($getColumns);
+
+      while ($columnsData = $this->dbDriver->fetchData($resultColumns)) {
+         $tableName = $columnsData['tableName'];
+         $columnName = $columnsData['columnName'];
+         unset($columnsData['tableName'], $columnsData['columnName']);
+         $this->tablesFromDatabase[$tableName]['Columns'][$columnName] = $columnsData;
+         $this->tablesFromDatabase[$tableName]['Indices'] = array();
+      }
+
+      $getEngine = '(select
+                        `table_name` as `TableName`,
+                        `Engine` as `StorageEngine`
+                     from information_schema.tables
+                     where
+                        `table_schema` = database()
+                        and
+                        (`table_name` like \'ent_%\'
+                        or `table_name` like \'ass_%\'
+                        or `table_name` like \'cmp_%\')
+                        );';
+      $resultEngine = $this->dbDriver->executeTextStatement($getEngine);
+
+      while ($engineData = $this->dbDriver->fetchData($resultEngine)) {
+         $this->tablesFromDatabase[$engineData['TableName']]['StorageEngine'] = $engineData['StorageEngine'];
+      }
+
+      $getIndex = 'select
+                     `index_name` as indexName ,
+                     `table_name` as tableName ,
+                     `non_unique` as nonUnique,
+                     `index_type` as indexType,
+                     group_concat(`column_name` ORDER BY `seq_in_index`) as \'columns\'
+                  from (
+                     select * from INFORMATION_SCHEMA.statistics
+                     where
+                        table_schema = database()
+                        and (`table_name` like \'ent_%\'
+                        or `table_name` like \'ass_%\'
+                        or `table_name` like \'cmp_%\')
+                  ) as indextable
+                  group by
+                     `non_unique`,
+                     `index_name`,
+                     `index_type`,
+                     `table_name`;';
+
+      $resultIndex = $this->dbDriver->executeTextStatement($getIndex);
+
+      while ($indexData = $this->dbDriver->fetchData($resultIndex)) {
+
+         if ($indexData['indexName'] == 'PRIMARY') {
+            $indexType = 'PRIMARY';
+         } elseif ($indexData['indexType'] == 'BTREE') {
+            if ($indexData['nonUnique'] == 0) {
+               $indexType = 'UNIQUE';
+            } else {
+               $indexType = 'INDEX';
+            }
+         } elseif ($indexData['indexType'] == 'FULLTEXT') {
+            $indexType = 'FULLTEXT';
+         } else
+            $indexType = '';
+         $this->tablesFromDatabase[$indexData['tableName']]['Indices'][$indexData['columns']][$indexData['indexName']] = $indexType;
+      }
+
+   }
+
+   protected function compareTables() {
+
+      $this->tablesToCreate = array_diff_key($this->tablesFromConfig, $this->tablesFromDatabase);
+      $this->tablesToDrop = array_diff_key($this->tablesFromDatabase, $this->tablesFromConfig);
+      $tablesFromDatabase = array_intersect_key($this->tablesFromDatabase, $this->tablesFromConfig);
+      $tablesFromConfig = array_intersect_key($this->tablesFromConfig, $this->tablesFromDatabase);
+
+      foreach ($tablesFromDatabase as $tableName => $property) {
+
+         $this->compareColumns($tableName, $property['Columns'], $tablesFromConfig[$tableName]['Columns']);
+         $this->compareStorageEngine($tableName, $property['StorageEngine'], $tablesFromConfig[$tableName]['StorageEngine']);
+         $this->compareIndices($tableName, $property['Indices'], $tablesFromConfig[$tableName]['Indices']);
+
+      }
+
+   }
+
+   protected function compareColumns($tableName, $columnsFromDatabase, $columnsFromConfig) {
+
+      // find deleted columns
+      $diff = array_diff_key($columnsFromDatabase, $columnsFromConfig);
+      if (!empty($diff)) {
+         $this->columnsToDrop[$tableName] = $diff;
+      }
+
+      // find new columns
+      $diff = array_diff_key($columnsFromConfig, $columnsFromDatabase);
+      if (!empty($diff)) {
+         $this->columnsToCreate[$tableName] = $diff;
+      }
+
+      // find changed columns
+      $intersect = array_intersect_key($columnsFromConfig, $columnsFromDatabase);
+
+      foreach ($intersect as $columnName => $type) {
+
+         // column property from database are presented as array for better comparison
+         // array(
+         //      'charset' => null,
+         //      'defaultValue' => '0',
+         //      'isNullable' => 'NO',
+         //      'type' => 'int(5)',
+         //      'extra' => '',
+         // )
+         $columnProperties = $columnsFromDatabase[$columnName];
+
+         if ($columnProperties['charset'] !== null) {
+            if (stripos($type, 'character set ' . $columnProperties['charset'] . ' ') === false) {
+               $this->columnsToChange[$tableName][$columnName] = $type;
+               continue;
+            }
+         }
+
+         // if "NOT NULL" is not in type definition MySQL assumes that null is allowed
+         if ($columnProperties['isNullable'] === 'NO' && stripos($type, 'NOT NULL') === false) {
+            // exept of timestamp columns
+            if (stripos($type, 'timestamp') !== 0) {
+               $this->columnsToChange[$tableName][$columnName] = $type;
+               continue;
+            }
+         }
+
+
+         if (stripos($type, 'auto_increment') !== false && $columnProperties['extra'] !== 'auto_increment') {
+
+            $this->columnsToChange[$tableName][$columnName] = $type;
+            continue;
+         }
+
+         // comparing the data type definition is more tricky
+         // find the column type from config
+         // result examples:
+         //       "int" from "int unsigned not null"
+         //       "int (4)" from "int (4) unsigned not null"
+         //       "varchar(20)" from "varchar(20) not null"
+         preg_match('#^[ ]*\w+[ ]*\([0-9]+\)|^[ ]*\w+#iu', $type, $match);
+
+         // prepare the result to fit mysql data type definition
+
+         // strip spaces, convert to lowercase
+         $prepared = str_replace(' ', '', strtolower($match[0]));
+
+         // if result is an alias we replace it with the right column type
+         $newType = (isset($this->mysqlAlias[$prepared])) ? str_ireplace($match[0], $this->mysqlAlias[$prepared], $type) : $type;
+
+         // now we can compare the data type
+         if (stripos($newType, $columnProperties['type']) === false) {
+            $this->columnsToChange[$tableName][$columnName] = $type;
+            continue;
+         }
+
+         // compare the default column values
+
+         if ($columnProperties['defaultValue'] === null) {
+            // mysql stores null as default value either if "default null" is in column type statement or no default definition is given
+            // so default value is only not NULL if "default ..." is presented but not "default null"
+            if (stripos($type, 'default') !== false && stripos($type, 'default null') === false) {
+               $this->columnsToChange[$tableName][$columnName] = $type;
+               continue;
+            }
+         } else {
+
+            // prepare the needle for stripos
+            switch ($columnProperties['defaultValue']) {
+               case '':
+                  $defaultStatement = 'DEFAULT \'\'';
+                  break;
+               case 'CURRENT_TIMESTAMP':
+                  $defaultStatement = 'DEFAULT CURRENT_TIMESTAMP';
+                  break;
+               default:
+                  $defaultStatement = 'DEFAULT ';
+                  $defaultStatement .= (!is_numeric($columnProperties['defaultValue'])) ? '\'' . $columnProperties['defaultValue'] . '\'' : $columnProperties['defaultValue'];
+                  break;
+            }
+            if (stripos($type, $defaultStatement) === false) {
+               $this->columnsToChange[$tableName][$columnName] = $type;
+               continue;
+            }
          }
       }
-      return false;
+   }
+
+   protected function compareStorageEngine($tableName, $storageEngineFromDatabase, $storageEngineFromConfig) {
+
+      if (strcasecmp($storageEngineFromDatabase, $storageEngineFromConfig)) {
+         $this->storageEngineToChange[$tableName] = $storageEngineFromConfig;
+      }
+
+   }
+
+   protected function compareIndices($tableName, $indicesFromDatabase, $indicesFromConfig) {
+
+      // find removed indices
+      $diff = array_diff_key($indicesFromDatabase, $indicesFromConfig);
+      if (!empty($diff)) {
+         $this->indicesToDrop[$tableName] = $diff;
+         // clean the comparison array
+         foreach ($diff as $indexColumns => $dummy) {
+            unset($indicesFromDatabase[$indexColumns]);
+         }
+      }
+
+      // find new indices
+      $diff = array_diff_key($indicesFromConfig, $indicesFromDatabase);
+      if (!empty($diff)) {
+         $this->indicesToCreate[$tableName] = $diff;
+         // clean the comparison array
+         foreach ($diff as $indexColumns => $dummy) {
+            unset($indicesFromConfig[$indexColumns]);
+         }
+      }
+
+      // for the remaining indices we compare the name and type from config with the database
+      foreach ($indicesFromConfig as $columns => $indices) {
+
+         foreach ($indices as $indexName => $indexType) {
+
+            if (!isset($indicesFromDatabase[$columns][$indexName])) {
+               $this->indicesToCreate[$tableName][$columns][$indexName] = $indexType;
+               continue;
+            }
+
+            if ($indicesFromDatabase[$columns][$indexName] !== $indexType) {
+
+               // there's no change index statement, so we have to drop it and create a new one
+               $this->indicesToDrop[$tableName][$columns][$indexName] = $indicesFromDatabase[$columns][$indexName];
+               $this->indicesToCreate[$tableName][$columns][$indexName] = $indexType;
+            }
+            // remove each index which was presented in config to clean the array
+            unset($indicesFromDatabase[$columns][$indexName]);
+         }
+
+      }
+
+      // all indices remained in database-array are to be dropped
+      foreach ($indicesFromDatabase as $columns => $indices) {
+         if (empty($indices)) {
+            continue;
+         }
+         foreach ($indices as $indexName => $indexType) {
+            $this->indicesToDrop[$tableName][$columns][$indexName] = $indexType;
+         }
+      }
+
+   }
+
+   protected function generateDropTableStatements() {
+
+      foreach ($this->tablesToDrop as $tableName => $dummy) {
+         $this->updateStatements[] = 'DROP TABLE `' . $tableName . '`';
+      }
+
+   }
+
+   protected function generateCreateTableStatements() {
+
+      foreach ($this->tablesToCreate as $tableName => $property) {
+
+         $create = 'CREATE TABLE IF NOT EXISTS `' . $tableName . '` (' . PHP_EOL;
+         foreach ($property['Columns'] as $columnName => $columnType) {
+            $create .= '  `' . $columnName . '` ' . $columnType . ',' . PHP_EOL;
+         }
+
+         $indexDefinition = array();
+
+         foreach ($property['Indices'] as $columns => $indices) {
+            foreach ($indices as $indexName => $indexType) {
+               $indexColumns = '`' . str_replace(',', '`,`', $columns) . '`';
+               switch ($indexType) {
+                  case 'PRIMARY':
+                     $indexDefinition[] = 'PRIMARY KEY (' . $indexColumns . ')';
+                     break;
+                  case 'UNIQUE':
+                     $indexDefinition[] = 'UNIQUE KEY `' . $indexName . '` (' . $indexColumns . ')';
+                     break;
+                  case 'INDEX':
+                     $indexDefinition[] = 'KEY `' . $indexName . '` (' . $indexColumns . ')';
+                     break;
+               }
+            }
+         }
+
+         $create .= implode(',' . PHP_EOL, $indexDefinition) . PHP_EOL;
+         $create .= ') ENGINE=' . $property['StorageEngine'] . ' DEFAULT charset=' . $this->tableCharset . PHP_EOL;
+
+         $this->updateStatements[] = $create;
+
+      }
+   }
+
+   protected function generateStorageEngineUpdateStatements() {
+
+      foreach ($this->storageEngineToChange as $tableName => $storageEngine) {
+         $this->updateStatements[] = 'ALTER TABLE `' . $tableName . '` ENGINE=' . $storageEngine;
+      }
+
+   }
+
+   protected function generateDropIndexStatements() {
+
+      foreach ($this->indicesToDrop as $tableName => $indices) {
+         foreach ($indices as $indexDefinitions) {
+            foreach ($indexDefinitions as $indexName => $indexType) {
+               $this->updateStatements[] = 'ALTER TABLE `' . $tableName . '` DROP INDEX `' . $indexName . '`;';
+            }
+         }
+      }
+
+   }
+
+   protected function generateDropColumnStatements() {
+
+      foreach ($this->columnsToDrop as $tableName => $columns) {
+         foreach ($columns as $columnName => $columnType) {
+            $this->updateStatements[] = 'ALTER TABLE `' . $tableName . '` DROP COLUMN `' . $columnName . '`;';
+         }
+
+      }
+
+   }
+
+   protected function generateAddColumnStatements() {
+
+      foreach ($this->columnsToCreate as $tableName => $columns) {
+         foreach ($columns as $columnName => $columnType) {
+            $this->updateStatements[] = 'ALTER TABLE `' . $tableName . '` ADD COLUMN `' . $columnName . '` ' . $columnType . ';';
+         }
+      }
+
+   }
+
+   protected function generateChangeColumnStatements() {
+
+      foreach ($this->columnsToChange as $tableName => $columns) {
+         foreach ($columns as $columnName => $columnType) {
+            $this->updateStatements[] = 'ALTER TABLE `' . $tableName . '` CHANGE COLUMN `' . $columnName . '` `' . $columnName . '` ' . $columnType . ';';
+         }
+      }
+
+   }
+
+   protected function generateAddIndexStatements() {
+
+      foreach ($this->indicesToCreate as $tableName => $indices) {
+         foreach ($indices as $columns => $indexDefinitions) {
+            foreach ($indexDefinitions as $indexName => $indexType) {
+               $columns = '`' . str_replace(',', '`,`', $columns) . '`';
+               switch ($indexType) {
+                  case 'UNIQUE':
+                  case 'INDEX':
+                     $this->updateStatements[] = 'ALTER TABLE `' . $tableName . '` ADD ' . $indexType . ' `' . $indexName . '`  (' . $columns . ');';
+                     break;
+                  case 'PRIMARY':
+                     $this->updateStatements[] = 'ALTER TABLE `' . $tableName . '` ADD PRIMARY KEY  (' . $columns . ');';
+                     break;
+               }
+            }
+         }
+      }
+
    }
 
 }

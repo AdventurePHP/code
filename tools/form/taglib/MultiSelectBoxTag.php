@@ -20,10 +20,7 @@ namespace APF\tools\form\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\pagecontroller\TagLib;
 use APF\tools\form\FormException;
-use APF\tools\form\taglib\SelectBoxOptionTag;
-use APF\tools\form\taglib\SelectBoxTag;
 
 /**
  * @package APF\tools\form\taglib
@@ -53,8 +50,6 @@ class MultiSelectBoxTag extends SelectBoxTag {
     * Version 0.4, 28.08.2010 (Added option groups)<br />
     */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\SelectBoxOptionTag', 'select', 'option');
-      $this->tagLibs[] = new TagLib('APF\tools\form\taglib\SelectBoxGroupTag', 'select', 'group');
       $this->setAttribute('multiple', 'multiple');
       $this->attributeWhiteList[] = 'disabled';
       $this->attributeWhiteList[] = 'name';
@@ -125,14 +120,15 @@ class MultiSelectBoxTag extends SelectBoxTag {
          if (count($this->children) > 0) {
             foreach ($this->children as $objectId => $DUMMY) {
                $select = str_replace('<' . $objectId . ' />',
-                  $this->children[$objectId]->transform(),
-                  $select
+                     $this->children[$objectId]->transform(),
+                     $select
                );
             }
          }
 
          return $select;
       }
+
       return '';
    }
 
@@ -169,6 +165,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
          }
 
       }
+
       return $selectedOptions;
 
    }
@@ -209,6 +206,7 @@ class MultiSelectBoxTag extends SelectBoxTag {
       if (isset($_REQUEST[$controlName])) {
          $values = $_REQUEST[$controlName];
       }
+
       return $values;
    }
 

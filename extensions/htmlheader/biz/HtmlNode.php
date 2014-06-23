@@ -20,9 +20,8 @@ namespace APF\extensions\htmlheader\biz;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\pagecontroller\APFObject;
+use APF\core\pagecontroller\Document;
 use APF\tools\link\LinkGenerator;
-use APF\extensions\htmlheader\biz\HeaderNode;
 use APF\tools\link\Url;
 
 /**
@@ -37,7 +36,7 @@ use APF\tools\link\Url;
  * 0.1, 25.09.2009 <br />
  * 0.2, 27.02.2010 (Added external file support) <br />
  */
-abstract class HtmlNode extends APFObject implements HeaderNode {
+abstract class HtmlNode extends Document implements HeaderNode {
 
    /**
     * @var string The content of the node.
@@ -60,6 +59,7 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
 
    public function setContent($content) {
       $this->content = $content;
+
       return $this;
    }
 
@@ -74,6 +74,7 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
 
    public function setAppendToBody($value) {
       $this->appendToBody = $value;
+
       return $this;
    }
 
@@ -121,6 +122,7 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
     * @param string $filename Name of file
     * @param bool $fcaction Optional. Create link for FC-Action.
     * @param string $type Filetype
+    *
     * @return string elements' link.
     */
    protected function buildFrontcontrollerLink($url, $namespace, $filename, $fcaction, $type) {
@@ -133,13 +135,14 @@ abstract class HtmlNode extends APFObject implements HeaderNode {
          $UrlObj = ($url === null) ? Url::fromCurrent(true) : Url::fromString($url);
 
          return LinkGenerator::generateActionUrl($UrlObj, 'APF\extensions\htmlheader', 'JsCss', array(
-            'path' => str_replace('\\', '_', $namespace),
-            'type' => $type,
-            'file' => $filename
+               'path' => str_replace('\\', '_', $namespace),
+               'type' => $type,
+               'file' => $filename
          ));
       } else {
          $namespace = str_replace('\\', '/', $namespace);
          $url .= (substr($url, -1, 1) !== '/') ? '/' : '';
+
          return $url . $namespace . '/' . $filename . '.' . $type;
       }
    }

@@ -20,8 +20,6 @@ namespace APF\tools\form\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\tools\form\taglib\SelectBoxTag;
-use APF\tools\form\validator\AbstractFormValidator;
 
 /**
  * @package APF\tools\form\taglib
@@ -69,8 +67,8 @@ class DateSelectorTag extends AbstractFormControl {
       $this->offsetNames = array('Day' => 'Day', 'Month' => 'Month', 'Year' => 'Year');
 
       // initialize the year range
-      $this->yearRange['Start'] = (int)date('Y') - 10;
-      $this->yearRange['End'] = (int)date('Y') + 10;
+      $this->yearRange['Start'] = (int) date('Y') - 10;
+      $this->yearRange['End'] = (int) date('Y') + 10;
    }
 
    /**
@@ -155,7 +153,7 @@ class DateSelectorTag extends AbstractFormControl {
          $year->setOption2Selected('');
       }
 
-      for ($i = (int)$this->yearRange['Start']; $i <= (int)$this->yearRange['End']; $i++) {
+      for ($i = (int) $this->yearRange['Start']; $i <= (int) $this->yearRange['End']; $i++) {
          $yearNumber = sprintf('%04s', $i);
          $year->addOption($yearNumber, $yearNumber);
       }
@@ -217,6 +215,7 @@ class DateSelectorTag extends AbstractFormControl {
       if ($id === null) {
          return $this->getAttribute('name');
       }
+
       return $id;
    }
 
@@ -265,26 +264,6 @@ class DateSelectorTag extends AbstractFormControl {
    /**
     * @public
     *
-    * Re-implements the addValidator() method for the form control due
-    * to special behavior.
-    *
-    * @param AbstractFormValidator $validator The validator to add.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 29.08.2009<br />
-    */
-   public function addValidator(AbstractFormValidator &$validator) {
-      if ($validator->isActive()) {
-         if (!$validator->validate($this->getDate())) {
-            $validator->notify();
-         }
-      }
-   }
-
-   /**
-    * @public
-    *
     * Returns the date with the pattern YYYY-MM-DD.
     *
     * @return string Date with pattern YYYY-MM-DD.
@@ -314,6 +293,7 @@ class DateSelectorTag extends AbstractFormControl {
       if ($date === false) {
          return null;
       }
+
       return $date->format('Y-m-d');
    }
 
@@ -424,9 +404,9 @@ class DateSelectorTag extends AbstractFormControl {
 
          if (count($offsetNames) == 3) {
             $this->offsetNames = array(
-               'Day' => $offsetNames[0],
-               'Month' => $offsetNames[1],
-               'Year' => $offsetNames[2]
+                  'Day'   => $offsetNames[0],
+                  'Month' => $offsetNames[1],
+                  'Year'  => $offsetNames[2]
             );
          }
       }
@@ -438,6 +418,7 @@ class DateSelectorTag extends AbstractFormControl {
     * Appends a zero for month or day numbers without leading zeros.
     *
     * @param int $input The month or day number.
+    *
     * @return string Month or day number with leading zero.
     *
     * @author Christian Achatz
@@ -471,6 +452,7 @@ class DateSelectorTag extends AbstractFormControl {
     * Re-implements the setting of values for date controls.
     *
     * @param string $value The date to set (e.g. "2012-04-30").
+    *
     * @return AbstractFormControl This control for further usage.
     *
     * @since 1.14
@@ -481,6 +463,7 @@ class DateSelectorTag extends AbstractFormControl {
     */
    public function setValue($value) {
       $this->setDate($value);
+
       return $this;
    }
 
@@ -497,11 +480,12 @@ class DateSelectorTag extends AbstractFormControl {
       $indexList = explode(';', $indices);
       if (count($indexList) == 3) {
          return array(
-            trim($indexList[0]),
-            trim($indexList[1]),
-            trim($indexList[2])
+               trim($indexList[0]),
+               trim($indexList[1]),
+               trim($indexList[2])
          );
       }
+
       return null;
    }
 

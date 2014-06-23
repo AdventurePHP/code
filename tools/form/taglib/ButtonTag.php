@@ -20,7 +20,6 @@ namespace APF\tools\form\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\pagecontroller\TagLib;
 use APF\tools\form\FormException;
 
 /**
@@ -43,8 +42,6 @@ class ButtonTag extends AbstractFormControl {
       $this->attributeWhiteList[] = 'disabled';
       $this->attributeWhiteList[] = 'tabindex';
       $this->attributeWhiteList[] = 'value';
-
-      $this->tagLibs = array(new TagLib('APF\tools\form\taglib\ButtonLanguageLabelTag', 'button', 'getstring'));
    }
 
    /**
@@ -100,6 +97,7 @@ class ButtonTag extends AbstractFormControl {
       if ($this->isVisible) {
          return '<input type="submit" ' . $this->getSanitizedAttributesAsString($this->getAttributes()) . ' />';
       }
+
       return '';
    }
 

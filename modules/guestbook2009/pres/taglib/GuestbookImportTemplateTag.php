@@ -39,7 +39,7 @@ class GuestbookImportTemplateTag extends ImportTemplateTag {
    /**
     * @public
     *
-    * Fills the model information and includes the guestbook's main template.
+    * Fills the model information and includes the guest book's main template.
     *
     * @author Christian Achatz
     * @version

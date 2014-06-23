@@ -1,5 +1,5 @@
 <?php
-namespace APF\extensions\htmllist\taglib;
+namespace APF\tools\html\model;
 
 /**
  * <!--
@@ -20,21 +20,29 @@ namespace APF\extensions\htmllist\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\extensions\htmllist\taglib\list_control;
 
 /**
- * @package APF\extensions\htmllist\taglib
- * @class list_taglib_elem_defterm
+ * @package APF\tools\html\model
+ * @class FrontControllerImportTemplateModel
  *
- * Represents a HTMLList definition list element for the definition term.
+ * Defines the model structure that your implementation must comply with using
+ * the <em>FrontControllerImportTemplateTag</em> tag in combination with a
+ * front controller action.
  *
- * @author Florian Horn
- * @version 1.0, 03.04.2010<br />
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 22.06.2014<br />
  */
-class list_taglib_elem_defterm extends list_control {
+interface FrontControllerImportTemplateModel {
 
-   public function transform() {
-      return '<dt ' . $this->getAttributesAsString($this->attributes) . '>' . $this->content . '</dt>';
-   }
+   /**
+    * @return string The namespace of the template to load.
+    */
+   public function getTemplateNamespace();
+
+   /**
+    * @return string The
+    */
+   public function getTemplateName();
 
 }

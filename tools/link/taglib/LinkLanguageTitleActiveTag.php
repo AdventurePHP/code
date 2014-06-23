@@ -40,7 +40,7 @@ class LinkLanguageTitleActiveTag extends LanguageLabelTag {
       /* @var $parent HtmlLinkTag */
       $parent = $this->getParentObject();
       if ($parent->isActive()) {
-         $parent->addAttributeToAttributeList('title', parent::transform());
+         $parent->setAttribute('title', parent::transform());
       }
 
       // removes remaining if link is not active

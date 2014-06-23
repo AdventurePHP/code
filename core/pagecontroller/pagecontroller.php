@@ -36,6 +36,7 @@ use APF\core\service\ServiceManager;
 use APF\core\singleton\Singleton;
 use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\html\taglib\HtmlIteratorTag;
+use InvalidArgumentException;
 
 /**
  * @package APF\core\pagecontroller
@@ -49,6 +50,7 @@ use APF\tools\html\taglib\HtmlIteratorTag;
  * Version 0.1, 28.03.2010<br />
  */
 class IncludeException extends \Exception {
+
 }
 
 /**
@@ -60,6 +62,7 @@ class IncludeException extends \Exception {
  *
  * @param object|array $o The object/array to display.
  * @param boolean $transformHtml In case the HTML characters should be escaped (true) or not (false).
+ *
  * @return string The object's string representation.
  *
  * @author Christian Schäfer
@@ -104,6 +107,7 @@ function printObject($o, $transformHtml = false) {
  * Version 0.1, 28.03.2010<br />
  */
 class ParserException extends \Exception {
+
 }
 
 /**
@@ -135,6 +139,7 @@ final class XmlParser {
     * @param string $prefix The prefix of the tag definition.
     * @param string $name The name of the tag definition.
     * @param string $tagString The string, that contains the tag definition.
+    *
     * @return string[] The attributes of the tag.
     * @throws ParserException In case of tag mismatch.
     *
@@ -180,8 +185,8 @@ final class XmlParser {
          $tagEndPos = strrpos($tagString, '</' . $prefix . ':' . $name . '>');
          if ($tagEndPos === false) {
             throw new ParserException('[XmlParser::getTagAttributes()] No closing tag found for '
-               . 'tag "<' . $prefix . ':' . $name . ' />"! Tag string: "' . $tagString . '".',
-               E_USER_ERROR);
+                  . 'tag "<' . $prefix . ':' . $name . ' />"! Tag string: "' . $tagString . '".',
+                  E_USER_ERROR);
          }
 
          // read the content of the tag
@@ -189,8 +194,8 @@ final class XmlParser {
       }
 
       return array(
-         'attributes' => $tagAttributes,
-         'content' => $content
+            'attributes' => $tagAttributes,
+            'content'    => $content
       );
    }
 
@@ -204,6 +209,7 @@ final class XmlParser {
     * </pre>
     *
     * @param string $attributesString The attributes string of the tag to analyze.
+    *
     * @return string[] The attributes of the tag.
     * @throws ParserException In case of tar attribute mismatch that may cause infinite loops.
     *
@@ -228,8 +234,8 @@ final class XmlParser {
          // limit parse loop count to avoid endless while loops
          if ($parserLoops > self::$maxParserLoops) {
             throw new ParserException('[XmlParser::getAttributesFromString()] Error while parsing: "'
-               . $attributesString . '". Maximum number of loops ("' . self::$maxParserLoops
-               . '") exceeded!', E_USER_ERROR);
+                  . $attributesString . '". Maximum number of loops ("' . self::$maxParserLoops
+                  . '") exceeded!', E_USER_ERROR);
          }
 
          // find attribute
@@ -290,12 +296,6 @@ final class XmlParser {
  * Version 0.4, 03.11.2008 (Added initializing values to some of the class members)<br />
  */
 abstract class APFObject implements APFDIService {
-
-   /**
-    * @protected
-    * @var string[] The attributes of an object (merely the XML tag attributes).
-    */
-   protected $attributes = array();
 
    /**
     * @protected
@@ -368,7 +368,7 @@ abstract class APFObject implements APFDIService {
     * This method returns the current version of the present APF distribution. Please
     * note that this revision is no warranty that all files within your current
     * installation are subjected to the returned version number since the APF team
-    * cannot guarantee consistency throughout manual patching or manuel SVN updates.
+    * cannot guarantee consistency throughout manual patching or manual GIT updates.
     *
     * @return string The current APF version.
     *
@@ -377,114 +377,7 @@ abstract class APFObject implements APFDIService {
     * Version 0.1, 26.02.2011<br />
     */
    public function getVersion() {
-      return '2.0-SVN';
-   }
-
-   /**
-    * @public
-    *
-    * Returns the object's attribute.
-    *
-    * @param string $name The name of the desired attribute.
-    * @param string $default The default value for the attribute.
-    * @return string Returns the value or null in case of errors.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    * Version 0.2, 02.02.2007 (Added default value handling)<br />
-    */
-   public function getAttribute($name, $default = null) {
-      return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
-   }
-
-   /**
-    * @public
-    *
-    * Sets an object's attribute.
-    *
-    * @param string $name Name of the attribute.
-    * @param string $value Value of the attribute.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    */
-   public function setAttribute($name, $value) {
-      $this->attributes[$name] = $value;
-   }
-
-   /**
-    * @public
-    *
-    * Returns an object's attributes.
-    *
-    * @return string[] Returns the list of attributes of the current object.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    */
-   public function getAttributes() {
-      return $this->attributes;
-   }
-
-   /**
-    * @public
-    *
-    * Deletes an attribute.
-    *
-    * @param string $name The name of the attribute to delete.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    */
-   public function deleteAttribute($name) {
-      unset($this->attributes[$name]);
-   }
-
-   /**
-    * @public
-    *
-    * Sets an object's attributes.
-    *
-    * @param array $attributes The attributes list.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    */
-   public function setAttributes(array $attributes = array()) {
-      if (count($attributes) > 0) {
-         if (!is_array($this->attributes)) {
-            $this->attributes = array();
-         }
-         $this->attributes = array_merge($this->attributes, $attributes);
-      }
-   }
-
-   /**
-    * @public
-    *
-    * Let's you add the applied value to the given attribute.
-    * <p/>
-    * Implicitly creates the attribute in case it doesn't exist.
-    *
-    * @param string $name The name of the attribute to add a value to.
-    * @param string $value The value to add to the current attribute value.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 09.01.2007<br />
-    * Version 0.2, 09.02.2013 (Moved to APFObject to avoid multiple implementations)<br />
-    */
-   public function addAttribute($name, $value) {
-      if (isset($this->attributes[$name])) {
-         $this->attributes[$name] .= $value;
-      } else {
-         $this->attributes[$name] = $value;
-      }
+      return '2.2-GIT';
    }
 
    /**
@@ -495,6 +388,7 @@ abstract class APFObject implements APFDIService {
     *
     * @param string $namespace The namespace of the service object definition.
     * @param string $name The name of the service object.
+    *
     * @return APFObject The pre-configured service object.
     *
     * @author Christian Achatz
@@ -503,7 +397,7 @@ abstract class APFObject implements APFDIService {
     */
    protected function &getDIServiceObject($namespace, $name) {
       return DIServiceManager::getServiceObject(
-         $namespace, $name, $this->getContext(), $this->getLanguage());
+            $namespace, $name, $this->getContext(), $this->getLanguage());
    }
 
    /**
@@ -514,6 +408,7 @@ abstract class APFObject implements APFDIService {
     * @param string $class Fully qualified class name of the service object.
     * @param string $type The initializing type (see service manager for details).
     * @param string $instanceId The id of the instance to return.
+    *
     * @return APFObject The desired service object.
     *
     * @author Christian Schäfer
@@ -540,6 +435,7 @@ abstract class APFObject implements APFDIService {
     * @param string $initParam The initialization parameter.
     * @param string $type The initializing type (see service manager for details).
     * @param string $instanceId The id of the instance to return.
+    *
     * @return APFObject The desired service object.
     *
     * @author Christian Schäfer
@@ -561,6 +457,7 @@ abstract class APFObject implements APFDIService {
     *
     * @param string $namespace The namespace of the configuration.
     * @param string $name The name of the configuration including it's extension.
+    *
     * @return Configuration The desired configuration.
     *
     * @author Christian Achatz
@@ -569,7 +466,7 @@ abstract class APFObject implements APFDIService {
     */
    protected function getConfiguration($namespace, $name) {
       return ConfigurationManager::loadConfiguration(
-         $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('APF\core', 'Environment'), $name);
+            $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('APF\core', 'Environment'), $name);
    }
 
    /**
@@ -588,7 +485,7 @@ abstract class APFObject implements APFDIService {
     */
    protected function saveConfiguration($namespace, $name, Configuration $config) {
       ConfigurationManager::saveConfiguration(
-         $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('APF\core', 'Environment'), $name, $config);
+            $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('APF\core', 'Environment'), $name, $config);
    }
 
    /**
@@ -606,7 +503,7 @@ abstract class APFObject implements APFDIService {
     */
    protected function deleteConfiguration($namespace, $name) {
       ConfigurationManager::deleteConfiguration(
-         $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('APF\core', 'Environment'), $name);
+            $namespace, $this->getContext(), $this->getLanguage(), Registry::retrieve('APF\core', 'Environment'), $name);
    }
 
    /**
@@ -617,6 +514,7 @@ abstract class APFObject implements APFDIService {
     *
     * @param array $attributes The list of attributes to convert to an xml string.
     * @param array $whiteList The list of attributes, the string may contain.
+    *
     * @return string The xml attributes string.
     *
     * @author Christian Achatz
@@ -881,6 +779,12 @@ class Document extends APFObject {
 
    /**
     * @protected
+    * @var string[] The attributes of an object (merely the XML tag attributes).
+    */
+   protected $attributes = array();
+
+   /**
+    * @protected
     * @var string The content of the tag. Example:
     * <pre>&lt;foo:bar&gt;This is the content of the tag.&lt;/foo:bar&gt;</pre>
     */
@@ -894,12 +798,6 @@ class Document extends APFObject {
 
    /**
     * @protected
-    * @var TagLib[] List of known taglibs.
-    */
-   protected $tagLibs = array();
-
-   /**
-    * @protected
     * @var Document[] List of the children of the current object.
     */
    protected $children = array();
@@ -909,6 +807,16 @@ class Document extends APFObject {
     * @var string[][] Data attributes of the current DOM document (similar to Java Script).
     */
    protected $data = array();
+
+   /**
+    * @var TagLib[] List of known tags the APF parser uses to create tag instances during analysis phase.
+    */
+   protected static $knownTags = array();
+
+   /**
+    * @var TagLib[] List of known tags for a dedicated DOM node the APF parser uses to create tag instances during analysis phase.
+    */
+   protected $knownInstanceTags = array();
 
    /**
     * @public
@@ -929,20 +837,7 @@ class Document extends APFObject {
     * Version 0.3, 11.02.2012 (Added html:getstring tag as known tag (refactoring!))<br />
     */
    public function __construct() {
-
-      // set the object id
       $this->setObjectId(XmlParser::generateUniqID());
-
-      // add the known taglibs (core taglibs!)
-      // we are *not* using the addTaglib() method, because the following tags are
-      // already included in the pagecontroller.php and adding the tags directly
-      // is twice as fast compared to the addTagLib() method.
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'core', 'addtaglib');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\ImportTemplateTag', 'core', 'importdesign');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AppendNodeTag', 'core', 'appendnode');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\TemplateTag', 'html', 'template');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'html', 'placeholder');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'html', 'getstring');
    }
 
    /**
@@ -1008,6 +903,139 @@ class Document extends APFObject {
    /**
     * @public
     *
+    * Returns the object's attribute.
+    *
+    * @param string $name The name of the desired attribute.
+    * @param string $default The default value for the attribute.
+    *
+    * @return string Returns the value or null in case of errors.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    * Version 0.2, 02.02.2007 (Added default value handling)<br />
+    */
+   public function getAttribute($name, $default = null) {
+      return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
+   }
+
+   /**
+    * @public
+    *
+    * Let's you retrieve a tag attribute expressing to other developers that it is a mandatory attribute.
+    *
+    * @param string $name The name of the desired attribute.
+    *
+    * @return string Returns the value.
+    * @throws InvalidArgumentException In case the attribute is not present/defined.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.05.2014<br />
+    */
+   public function getRequiredAttribute($name) {
+
+      $attribute = $this->getAttribute($name);
+      if ($attribute === null) {
+         throw new InvalidArgumentException('[' . get_class($this) . '::getRequiredAttribute()] Attribute "' . $name
+               . '" has not been defined but is mandatory! Please re-check your template setup.');
+      }
+
+      return $attribute;
+   }
+
+   /**
+    * @public
+    *
+    * Sets an object's attribute.
+    *
+    * @param string $name Name of the attribute.
+    * @param string $value Value of the attribute.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
+   public function setAttribute($name, $value) {
+      $this->attributes[$name] = $value;
+   }
+
+   /**
+    * @public
+    *
+    * Returns an object's attributes.
+    *
+    * @return string[] Returns the list of attributes of the current object.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
+   public function getAttributes() {
+      return $this->attributes;
+   }
+
+   /**
+    * @public
+    *
+    * Deletes an attribute.
+    *
+    * @param string $name The name of the attribute to delete.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
+   public function deleteAttribute($name) {
+      unset($this->attributes[$name]);
+   }
+
+   /**
+    * @public
+    *
+    * Sets an object's attributes.
+    *
+    * @param array $attributes The attributes list.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    */
+   public function setAttributes(array $attributes = array()) {
+      if (count($attributes) > 0) {
+         if (!is_array($this->attributes)) {
+            $this->attributes = array();
+         }
+         $this->attributes = array_merge($this->attributes, $attributes);
+      }
+   }
+
+   /**
+    * @public
+    *
+    * Let's you add the applied value to the given attribute.
+    * <p/>
+    * Implicitly creates the attribute in case it doesn't exist.
+    *
+    * @param string $name The name of the attribute to add a value to.
+    * @param string $value The value to add to the current attribute value.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 09.01.2007<br />
+    * Version 0.2, 09.02.2013 (Moved to APFObject to avoid multiple implementations)<br />
+    */
+   public function addAttribute($name, $value) {
+      if (isset($this->attributes[$name])) {
+         $this->attributes[$name] .= $value;
+      } else {
+         $this->attributes[$name] = $value;
+      }
+   }
+
+   /**
+    * @public
+    *
     * Returns the textual content of the current node.
     *
     * @return string The content of the current node.
@@ -1060,6 +1088,7 @@ class Document extends APFObject {
     * @param string $attributeName The name of the attribute to match against the given value.
     * @param string $value The value of the attribute to select the desired node.
     * @param string $tagLibClass The expected class name of the node.
+    *
     * @return Document The desired child node.
     * @throws \InvalidArgumentException In case the node has no children or no child node can be found with the given selectors.
     *
@@ -1080,15 +1109,15 @@ class Document extends APFObject {
          }
       } else {
          throw new \InvalidArgumentException('[' . get_class($this) . '::getChildNode()] Current node has no children!',
-            E_USER_ERROR);
+               E_USER_ERROR);
       }
       throw new \InvalidArgumentException('[' . get_class($this) . '::getChildNode()] No child node with type "'
-         . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
-         . 'document!', E_USER_ERROR);
+            . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
+            . 'document!', E_USER_ERROR);
    }
 
    /**
-    * @public
+    * @protected
     *
     * Let's you retrieve a list of child nodes of the current document by specifying a selector
     * (attribute name and attribute value) and the expected node type (name of the taglib
@@ -1097,6 +1126,7 @@ class Document extends APFObject {
     * @param string $attributeName The name of the attribute to match against the given value.
     * @param string $value The value of the attribute to select the desired node.
     * @param string $tagLibClass The expected class name of the nodes.
+    *
     * @return Document[] The desired list of child nodes.
     * @throws \InvalidArgumentException In case the node has no children or no child node can be found with the given selectors.
     *
@@ -1119,8 +1149,8 @@ class Document extends APFObject {
          }
          if (count($result) == 0) {
             throw new \InvalidArgumentException('[' . get_class($this) . '::getChildNodes()] No child nodes with type "'
-               . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
-               . 'document!', E_USER_ERROR);
+                  . $tagLibClass . '" and attribute selector ' . $attributeName . '="' . $value . '" composed in current '
+                  . 'document!', E_USER_ERROR);
          } else {
             return $result;
          }
@@ -1137,6 +1167,7 @@ class Document extends APFObject {
     * @param string $name name of the place holder.
     * @param string $value value of the place holder.
     * @param bool $append True in case the applied value should be appended, false otherwise.
+    *
     * @return Document This instance for further usage.
     * @throws \InvalidArgumentException In case the place holder cannot be found.
     *
@@ -1158,7 +1189,7 @@ class Document extends APFObject {
                $this->children[$objectId]->setContent($value);
             } else {
                $this->children[$objectId]->setContent(
-                  $this->children[$objectId]->getContent() . $value
+                     $this->children[$objectId]->getContent() . $value
                );
             }
             $count++;
@@ -1228,8 +1259,9 @@ class Document extends APFObject {
     * @param string $name Place holder name.
     * @param string $key Key name of string place holder.
     * @param string $value Value, the string place holder is replaced with.
+    *
     * @return Document This instance for further usage.
-    * @throws \InvalidArgumentException In case no place holder has been found.
+    * @throws InvalidArgumentException In case no place holder has been found.
     *
     * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
     * @version
@@ -1241,6 +1273,7 @@ class Document extends APFObject {
       foreach ($nodes as $node) {
          $node->setStringReplacement($key, $value);
       }
+
       return $this;
    }
 
@@ -1251,7 +1284,7 @@ class Document extends APFObject {
     * be transformed using an MVC controller. In case no controller is defined
     * <em>null</em> is returned instead.
     *
-    * @return string The name of the document controller.
+    * @return string|null The name of the document controller.
     *
     * @author Christian Achatz
     * @version
@@ -1262,11 +1295,9 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
+    * This method adds a given tag to the <em>global</em> list of known tags for the APF parser.
     *
-    * This method is used to add more known taglibs to a document.
-    *
-    * @param TagLib $tag The tag lib to add.
+    * @param TagLib $tag The tag to add for the APF parser.
     *
     * @author Christian Schäfer, Christian Achatz
     * @version
@@ -1274,9 +1305,55 @@ class Document extends APFObject {
     * Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
     * Version 0.3, 14.02.2011 (Refactored method signature to be more type safe)<br />
     */
-   public function addTagLib(TagLib $tag) {
-      // add the taglib to the current node
-      $this->tagLibs[] = $tag;
+   public static function addTagLib(TagLib $tag) {
+      self::$knownTags[$tag->getPrefix() . ':' . $tag->getName()] = $tag;
+   }
+
+   /**
+    * This method adds a given tag to the <em>local</em> list of known tags for the APF parser.
+    * <p/>
+    * Using this method, you can override globally defined tags for this particular instance.
+    *
+    * @param TagLib $tag The tag to add for the APF parser used for this particular instance.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 14.02.2011 (ID#185, ID#1786: introduced local override mechanism)<br />
+    */
+   public function addInstanceTagLib(TagLib $tag) {
+      $this->knownInstanceTags[$tag->getPrefix() . ':' . $tag->getName()] = $tag;
+   }
+
+   /**
+    * This method adds a given list of tags to the list of known tags for the APF parser.
+    *
+    * @param TagLib[] $tags Tags to register for the APF parser.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 18.06.2014<br />
+    */
+   public static function addTagLibs(array $tags) {
+      foreach ($tags as $tag) {
+         self::addTagLib($tag);
+      }
+   }
+
+   /**
+    * This method adds a list of tag to the <em>local</em> list of known tags for the APF parser.
+    * <p/>
+    * Using this method, you can override globally defined tags for this particular instance.
+    *
+    * @param TagLib[] $tags Tag to add for the APF parser used for this particular instance.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 14.02.2011 (ID#185, ID#1786: introduced local override mechanism)<br />
+    */
+   public function addInstanceTagLibs(array $tags) {
+      foreach ($tags as $tag) {
+         self::addInstanceTagLib($tag);
+      }
    }
 
    /**
@@ -1302,6 +1379,7 @@ class Document extends APFObject {
     *
     * @param string $name The reference name of the data field to set/add.
     * @param mixed $default The desired default value (optional).
+    *
     * @return mixed The desired data field content or the default value.
     *
     * @author Christian Achatz
@@ -1346,6 +1424,7 @@ class Document extends APFObject {
     *
     * @param string $namespace The namespace of the template.
     * @param string $name The name of the template (a.k.a. design).
+    *
     * @throws IncludeException In case the template file is not found.
     *
     * @author Christian Schäfer
@@ -1365,7 +1444,7 @@ class Document extends APFObject {
       } catch (\Exception $e) {
          // rethrow exception with meaningful content (class loader exception would be too misleading)
          throw new IncludeException('[' . get_class($this) . '::loadContentFromFile()] Template "' . $name
-            . '" not existent in namespace "' . $namespace . '"!', E_USER_ERROR, $e);
+               . '" not existent in namespace "' . $namespace . '"!', E_USER_ERROR, $e);
       }
 
       if (file_exists($file)) {
@@ -1381,7 +1460,7 @@ class Document extends APFObject {
          }
 
          throw new IncludeException('[' . get_class($this) . '::loadContentFromFile()] Template "' . $name
-            . '" not existent in namespace "' . $namespace . '" (file: "' . $file . '")!' . $code, E_USER_ERROR);
+               . '" not existent in namespace "' . $namespace . '" (file: "' . $file . '")!' . $code, E_USER_ERROR);
 
       }
    }
@@ -1396,6 +1475,7 @@ class Document extends APFObject {
     *
     * @param string $namespace The namespace of the template.
     * @param string $name The (file) name of the template.
+    *
     * @return string The template file path of the referred APF template.
     *
     * @author Christian Achatz
@@ -1421,6 +1501,7 @@ class Document extends APFObject {
          return $rootPath . '/' . $name . '.html';
       } else {
          $vendor = $classLoader->getVendorName();
+
          return $rootPath . '/' . str_replace('\\', '/', str_replace($vendor . '\\', '', $namespace)) . '/' . $name . '.html';
       }
    }
@@ -1428,10 +1509,9 @@ class Document extends APFObject {
    /**
     * @protected
     *
-    * Parses the content of the current APF DOM node. Extracts all known taglibs listed in
-    * the <em>$this->tagLibs</em> property. Each taglib is converted into a child document
-    * of the current tree element. The tag definition place is reminded by a marker tag using
-    * the internal id of the DOM node.
+    * Parses the content of the current APF DOM node. Extracts all tags contained in the current
+    * document content. Each tag is converted into a child Document of the current tree element.
+    * The tag definition place is remembered by a marker tag using the internal id of the DOM node.
     * <p/>
     * Since release 1.17 nested tag structures are supported. This means, that the APF parser
     * is able to handle symmetric structures like this:
@@ -1450,9 +1530,12 @@ class Document extends APFObject {
     *    </foo:bar>
     * </foo:bar>
     * </code>
-    * Please note that using nested structures must be supported by the tag implementations
-    * by registering itself within the tag implementation class to create the nested sub-tree
-    * on parse time.
+    * Please note that using nested structures must be supported by the tag implementations.
+    * <p/>
+    * The APF parser is able to handle nested tag structures with self-containing tags (directly of
+    * across multiple hierarchies) as of version 2.2. Thus, you can re-use tags across any hierarchy
+    * with the same prefix and name at your convenience or defined tags with different prefix and/or
+    * name as desired (e.g. using the same implementation).
     * <p/>
     * To protect against infinite loops with broken tag structures the parser uses <em>self::$maxParserLoops</em>
     * to limit the parser cycles to a configurable amount of times. In case your project requires a
@@ -1468,46 +1551,123 @@ class Document extends APFObject {
     * Version 0.6, 06.06.2009 (Improvement: content is not copied during parsing any more)<br />
     * Version 0.7, 30.12.2009 (Introduced benchmark marks for the onParseTime() event.)<br />
     * Version 0.8, 25.01.2013 (Re-writing of the tag parser to support nested tags with the same tag prefix and name)<br />
+    * Version 0.9, 20.06.2014 (Re-writing entire parser for 2.2 to support nested, self-containing tags across multiple hierarchies)<br />
     */
    protected function extractTagLibTags() {
 
-      $i = 0;
+      /**
+       * @var array The list of parsed tags within the current document.
+       */
+      $tags = array();
+
+      /**
+       * @var int The number of tokens within the current document (introduced also for performance reasons).
+       */
+      $count = 0;
 
       /* @var $t BenchmarkTimer */
       $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');
 
-      // Parse the known taglibs. Here, we have to use a while loop, because one parser loop
-      // can result in an increasing amount of known taglibs (core:addtaglib!).
-      while ($i < count($this->tagLibs)) {
+      $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::onParseTime()';
+      $t->start($benchId);
 
-         $class = $this->tagLibs[$i]->getClass();
-         $prefix = $this->tagLibs[$i]->getPrefix();
-         $name = $this->tagLibs[$i]->getName();
-         $token = $prefix . ':' . $name;
+      /**
+       * @var int Position pointer for tag search. Introduced for performance reasons to skip stuff that we already searched in.
+       */
+      $offset = 0;
 
-         $tagLoops = 0;
+      while (($colon = strpos($this->content, ':', $offset)) !== false) {
 
-         // Find the first occurrence of the current tag to distinguish between
-         // self- and explicitly-closing tags.
-         while (($tagStartPos = strpos($this->content, '<' . $token)) !== false) {
+         // start tag searching goes as follows
+         // - tag sub string starting at the current position of the colon with 12 chars
+         // search for last < in that sub-string
+         // tag prefixes must not be longer than 10 characters - for security reasons
+         $area = $colon >= 12 ? 12 : $colon; // in case the tag starts right at the beginning, the area to search gets smaller!
+         $start = strrpos(substr($this->content, $colon - $area, $area), '<');
 
-            if ($tagLoops > self::$maxParserLoops) {
-               throw new ParserException('[' . get_class($this) . '::extractTagLibTags()] Maximum numbers of parsing loops reached!', E_USER_ERROR);
+         // no open tag found --> continue!
+         if ($start === false) {
+            $offset = $colon + 1;
+            continue;
+         }
+
+         // do offset correction due to internal
+         $start = $colon - $area + $start; // $area (12 by default) for the sub-string part
+
+         // avoid issue with "<li>FOO:" constructs that will be recognized as tag
+         if (strpos(substr($this->content, $start, $colon - $start), '>') !== false) {
+            $offset = $colon + 1;
+            continue;
+         }
+
+         // find out whether we have an opening or closing tag
+         $end = strpos($this->content, '>', $colon + 1);
+
+         if (substr($this->content, $start, 2) !== '</') {
+
+            // Determine whether we have a self-closing tag or not. This is important
+            // within the following lines how to handle the tag.
+            if (substr($this->content, $end - 1, 1) == '/') {
+               $selfClosing = true;
+            } else {
+               $selfClosing = false;
             }
 
-            $bracket = strpos($this->content, '>', $tagStartPos);
-            if (substr($this->content, $bracket - 1, 1) == '/') {
-               $tagEndPos = $bracket + 1;
-               $endTagLength = 0;
+            // s = tag start position
+            $tags[$count]['s'] = $start;
+
+            // p = tag prefix (e.g. "foo" with tag "<foo:bar />")
+            $tags[$count]['p'] = substr($this->content, $start + 1, $colon - $start - 1);
+
+            // search for next space to gather tag name
+            $space = strpos($this->content, ' ', $colon);
+
+            // in case we encounter tag definitions w/o spaces, reset the space position
+            // to the next ">".
+            if ($space === false) {
+               if ($selfClosing === true) {
+                  $space = $end - 1;
+               } else {
+                  $space = $end;
+               }
+            }
+
+            // in case we encounter a closing bracket first, this may be due to
+            // a tag without attributes <foo:bar>...
+            if ($end < $space) {
+               // reset space indicator to bracket position to support opening
+               // tags without attributes (<foo:bar> </foo:bar>)
+               if ($selfClosing) {
+                  // Correct position by minus one due to "/>" at the end.
+                  // This only holds true for "<foo:bar/>" tags (no space after tag name).
+                  $space = $end - 1;
+               } else {
+                  $space = $end;
+               }
+            }
+
+            // n = tag name (e.g. "bar" with tag "<foo:bar />")
+            $tags[$count]['n'] = trim(substr($this->content, $colon + 1, $space - $colon - 1)); // instead of trim, maybe search for a new line instead
+
+            // assemble the token to allow easier closing tag search
+            $token = $tags[$count]['p'] . ':' . $tags[$count]['n'];
+
+            if ($selfClosing === true) {
+               // e = tag end position
+               $tags[$count]['e'] = $end + 1;
+               // set offset to end of last tag before starting with new one
+               $offset = $end + 1;
             } else {
-               $startTagLength = strlen('<' . $token);
-               $endTagLength = strlen('</' . $token . '>');
+               // if we've got an opening/not self-closing tag, let's search for our pendent closing tag
+               $tokenLength = strlen($token);
+               $startTagLength = $tokenLength + 1; // 1 for "<"
+               $endTagLength = $tokenLength + 3; // 3 for "</" plus ">"
 
                // initialize the token position cursor
-               $tokenPos = $tagStartPos;
-               $tagEndPos = $tagStartPos;
+               $tokenPos = $space; // for performance reasons: start right after the space to save some chars
+               $tagEndPos = $end;
 
-               $openingTagCount = 0;
+               $openingTagCount = 1; // for performance reasons: start at 1 and skip current tag position to save some chars
                $closingTagCount = 0;
 
                while (true) {
@@ -1521,7 +1681,7 @@ class Document extends APFObject {
                      // Check for explicitly closing tag, because self-closing tags
                      // do not count searching for a symmetric tag hierarchy included
                      // in another tag structure.
-                     $bracket = strpos($this->content, '>', $tokenPos + strlen($token));
+                     $bracket = strpos($this->content, '>', $tokenPos + $tokenLength);
                      if (substr($this->content, $bracket - 1, 1) !== '/') {
                         $openingTagCount++;
                      }
@@ -1546,64 +1706,79 @@ class Document extends APFObject {
                   $tokenPos = $tokenPos + $startTagLength;
                }
 
+               // e = tag end position
+               $tags[$count]['e'] = $tagEndPos + $endTagLength;
+
+               // set offset to end of last tag before starting with new one to skip already analyzed parts
+               $offset = $tags[$count]['e'];
             }
 
-            // extract the resulting tag string
-            $tagStringLength = ($tagEndPos - $tagStartPos) + $endTagLength;
-            $tagString = substr($this->content, $tagStartPos, $tagStringLength);
-
-            // get the tag attributes of the current tag
-            $attributes = XmlParser::getTagAttributes($prefix, $name, $tagString);
-
-            // class is loaded by the class loader lazily
-            $object = new $class();
-            /* @var $object Document */
-
-            // inject context of the parent object
-            $object->setContext($this->getContext());
-
-            // inject language of the parent object
-            $object->setLanguage($this->getLanguage());
-
-            // add the tag's attributes
-            $object->setAttributes($attributes['attributes']);
-
-            // initialize object id, that is used to reference the object
-            // within the APF DOM tree and to provide a unique key for the
-            // children index.
-            $objectId = XmlParser::generateUniqID();
-            $object->setObjectId($objectId);
-
-            // replace the position of the taglib with a place holder
-            // token string: <$objectId />.
-            // this needs to be done, to be able to place the content of the
-            // transformed taglib at transformation time correctly
-            $this->content = substr_replace($this->content, '<' . $objectId . ' />', $tagStartPos, $tagStringLength);
-
-            // advertise the parent object
-            $object->setParentObject($this);
-
-            // add the content to the current APF DOM node
-            $object->setContent($attributes['content']);
-
-            // call onParseTime() to enable the taglib to initialize itself
-            $benchId = '(' . get_class($this) . ') ' . $this->getObjectId() . '::children[('
-                  . get_class($object) . ') ' . $objectId . ']::onParseTime()';
-            $t->start($benchId);
-            $object->onParseTime();
-            $t->stop($benchId);
-
-            // add current object to the APF DOM tree (no reference, because this leads to NPEs!)
-            $this->children[$objectId] = $object;
-
-            $tagLoops++;
-
-            // delete current object to avoid interference.
-            unset($object);
          }
 
-         $i++;
+         $count++;
       }
+
+      // Offset correction necessary, since previously gathered tag positions are manipulated
+      // during building-up the tag markers!
+      $offsetCorrection = 0;
+
+      // extract content and loop into recursion ...
+      for ($i = 0; $i < $count; $i++) {
+
+         $tagStringLength = $tags[$i]['e'] - $tags[$i]['s'];
+
+         $attributes = XmlParser::getTagAttributes(
+               $tags[$i]['p'],
+               $tags[$i]['n'],
+               substr($this->content, $tags[$i]['s'] - $offsetCorrection, $tagStringLength)
+         );
+
+         // initialize object id, that is used to reference the object
+         // within the APF DOM tree and to provide a unique key for the
+         // children index.
+         $objectId = XmlParser::generateUniqID();
+
+         // class is loaded by the class loader lazily
+         $class = $this->getTagLibClass($tags[$i]['p'], $tags[$i]['n']);
+         if ($class === null) {
+            throw new ParserException('No tag definition found for prefix "' . $tags[$i]['p'] . '" and name "' . $tags[$i]['n']
+                  . '" in document with type "' . get_class($this) . '"! Template code: ' . htmlentities($this->content));
+         }
+
+         $this->children[$objectId] = new $class();
+         $this->children[$objectId]->setObjectId($objectId);
+
+         // inject context of the parent object
+         $this->children[$objectId]->setContext($this->getContext());
+
+         // inject language of the parent object
+         $this->children[$objectId]->setLanguage($this->getLanguage());
+
+         // add the tag's attributes
+         $this->children[$objectId]->setAttributes($attributes['attributes']);
+
+         // replace the position of the taglib with a place holder
+         // token string: <$objectId />.
+         // this needs to be done, to be able to place the content of the
+         // transformed tags at transformation time correctly
+         $this->content = substr_replace($this->content, '<' . $objectId . ' />', $tags[$i]['s'] - $offsetCorrection, $tagStringLength);
+
+         // advertise the parent object
+         $this->children[$objectId]->setParentObject($this);
+
+         // add the content to the current APF DOM node
+         $this->children[$objectId]->setContent($attributes['content']);
+
+         // call onParseTime() to enable the taglib to initialize itself
+         $this->children[$objectId]->onParseTime();
+
+         // correct parser offset to correctly place marker tags at the next parsing loop
+         // this is due to string replacement changes the initially gathered values
+         $offsetCorrection += $tagStringLength - 36;
+
+      }
+
+      $t->stop($benchId);
 
       // call onAfterAppend() on each child to enable the taglib to interact with
       // other APF DOM nodes to do extended initialization.
@@ -1618,6 +1793,41 @@ class Document extends APFObject {
 
          $t->stop($benchId);
       }
+
+   }
+
+   /**
+    * @private
+    *
+    * Returns the name of the tag implementation according to the given tag prefix and name.
+    * <p/>
+    * As this method gets called with each tag, it introduces a lazy cache to return the
+    * desired class faster with each known tag (improves performance up to 4%).
+    *
+    * @param string $prefix The tag prefix.
+    * @param string $name The tag name.
+    *
+    * @return null|string The name of the tag implementation or null.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 23.02.2014<br />
+    * Version 0.2, 20.06.2014 (ID#186: added overriding mechanism on instance basis)<br />
+    */
+   protected function getTagLibClass($prefix, $name) {
+
+      // First, look at the list of tags registered for the current
+      // instance to allow overriding on an instance basis.
+      if (isset($this->knownInstanceTags[$prefix . ':' . $name])) {
+         return $this->knownInstanceTags[$prefix . ':' . $name]->getClass();
+      }
+
+      // Second, deliver tag implementation from global store.
+      if (isset(self::$knownTags[$prefix . ':' . $name])) {
+         return self::$knownTags[$prefix . ':' . $name]->getClass();
+      }
+
+      return null;
    }
 
    /**
@@ -1652,12 +1862,12 @@ class Document extends APFObject {
 
          try {
             $docCon = $this->getDIServiceObject(
-               $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE],
-               $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME]
+                  $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAMESPACE],
+                  $controllerAttributes[self::CONTROLLER_ATTR_SERVICE_NAME]
             );
          } catch (\Exception $e) {
             throw new \InvalidArgumentException('[' . get_class($this) . '::extractDocumentController()] Given document controller '
-               . 'could not be created using the DIServiceManager. Message: ' . $e->getMessage(), $e->getCode());
+                  . 'could not be created using the DIServiceManager. Message: ' . $e->getMessage(), $e->getCode());
          }
 
       } elseif (isset($controllerAttributes[self::CONTROLLER_ATTR_CLASS])) {
@@ -1674,9 +1884,9 @@ class Document extends APFObject {
 
          // no valid document controller definition given, thus interrupt execution here
          throw new ParserException('[' . get_class($this) . '::extractDocumentController()] Document '
-            . 'controller specification does not contain a valid controller class or service definition. '
-            . 'Please double check the template code and consult the documentation. '
-            . 'Template code: ' . $this->getContent());
+               . 'controller specification does not contain a valid controller class or service definition. '
+               . 'Please double check the template code and consult the documentation. '
+               . 'Template code: ' . $this->getContent());
 
       }
 
@@ -1875,7 +2085,7 @@ class Document extends APFObject {
    protected function transformChildren() {
       foreach ($this->children as $objectId => $DUMMY) {
          $this->content = str_replace(
-            '<' . $objectId . ' />', $this->children[$objectId]->transform(), $this->content
+               '<' . $objectId . ' />', $this->children[$objectId]->transform(), $this->content
          );
       }
    }
@@ -1897,9 +2107,10 @@ class Document extends APFObject {
       $content = $this->getContent();
       foreach ($this->children as $objectId => $DUMMY) {
          $content = str_replace(
-            '<' . $objectId . ' />', $this->children[$objectId]->transform(), $content
+               '<' . $objectId . ' />', $this->children[$objectId]->transform(), $content
          );
       }
+
       return $content;
    }
 
@@ -1941,6 +2152,7 @@ class Document extends APFObject {
       foreach ($this->children as $objectId => $DUMMY) {
          $content = str_replace('<' . $objectId . ' />', '', $content);
       }
+
       return $content;
    }
 
@@ -2001,15 +2213,15 @@ class AppendNodeTag extends Document {
       $namespace = $this->getAttribute('namespace');
       if ($namespace === null) {
          throw new \InvalidArgumentException('[AppendNodeTag::onParseTime()] Attribute '
-            . '"namespace" is not present or empty! Please provide the namespace of the '
-            . 'desired template.', E_USER_ERROR);
+               . '"namespace" is not present or empty! Please provide the namespace of the '
+               . 'desired template.', E_USER_ERROR);
       }
 
       $template = $this->getAttribute('template');
       if ($template === null) {
          throw new \InvalidArgumentException('[AppendNodeTag::onParseTime()] Attribute '
-            . '"template" is not present or empty! Please provide the name of the desired '
-            . 'template.', E_USER_ERROR);
+               . '"template" is not present or empty! Please provide the name of the desired '
+               . 'template.', E_USER_ERROR);
       }
 
       // load the content
@@ -2034,6 +2246,9 @@ class AppendNodeTag extends Document {
     */
    public function onAfterAppend() {
 
+      // ID#191: extract "static" expressions (e.g. place holders)
+      $this->extractExpressionTags();
+
       // get parent children list
       /* @var $parentChildren Document[] */
       $parentChildren = & $this->parentObject->getChildren();
@@ -2057,9 +2272,9 @@ class AppendNodeTag extends Document {
          // include complete content of the current document and append it to
          // the place holder of the present tag's marker
          $this->parentObject->setContent(
-            str_replace('<' . $currentObjectId . ' />',
-                  '<' . $currentObjectId . ' />' . $this->content,
-               $parentContent)
+               str_replace('<' . $currentObjectId . ' />',
+                     '<' . $currentObjectId . ' />' . $this->content,
+                     $parentContent)
          );
 
       } else {
@@ -2231,12 +2446,26 @@ class AddTaglibTag extends Document {
     * Version 0.5, 20.12.2012 (Removed fallback mechanism for 1.17)<br />
     */
    public function onParseTime() {
-      $class = $this->getAttribute('class');
-      $name = $this->getAttribute('name');
-      $prefix = $this->getAttribute('prefix');
 
-      $tagLib = new TagLib($class, $prefix, $name);
-      $this->getParentObject()->addTagLib($tagLib);
+      $scope = $this->getAttribute('scope', 'global');
+
+      // add tag to parent instance in case overriding is explicitly desired
+      if ($scope === 'local') {
+         $this->addInstanceTagLib(new TagLib(
+                     $this->getRequiredAttribute('class'),
+                     $this->getRequiredAttribute('prefix'),
+                     $this->getRequiredAttribute('name')
+               )
+         );
+      } else {
+         self::addTagLib(
+               new TagLib(
+                     $this->getRequiredAttribute('class'),
+                     $this->getRequiredAttribute('prefix'),
+                     $this->getRequiredAttribute('name')
+               )
+         );
+      }
 
       // Resets the attributes list to avoid selection issues with the
       // getChildNode() and getChildNodes() methods that may select this
@@ -2326,6 +2555,7 @@ class PlaceHolderTag extends Document {
       foreach ($this->stringReplacement as $key => $value) {
          $content = str_replace('{' . $key . '}', $value, $content);
       }
+
       return $content;
    }
 
@@ -2420,33 +2650,15 @@ class TemplateTag extends Document {
     */
    protected $transformOnPlace = false;
 
-   /**
-    * @public
-    *
-    * Constructor of the class. Initializes the known taglibs.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 29.12.2006<br />
-    * Version 0.2, 30.12.2006 (Added the template:config tag)<br />
-    * Version 0.3, 05.01.2007 (Added the template:addtaglib tag)<br />
-    * Version 0.4, 12.01.2007 (Removed the template:addtaglib tag)<br />
-    * Version 0.5, 03.03.2007 (Removed the "&" before the "new" operator)<br />
-    * Version 0.6, 21.04.2007 (Added the template:addtaglib tag again)<br />
-    * Version 0.7, 02.05.2007 (Removed the template:config tag)<br />
-    * Version 0.8, 11.02.2012 (Added template:getstring tag as known tag (refactoring!))<br />
-    */
    public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'template', 'placeholder');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'template', 'addtaglib');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'template', 'getstring');
+      // nothing to do here, especially not generate document id as it is generated by the APF parser.
    }
 
    /**
     * @public
     *
     * Implements the onParseTime() method from the APFObject class. Uses the extractTagLibTags()
-    * function to parse the known taglibs.
+    * function to parse the known tags.
     *
     * @author Christian Achatz
     * @version
@@ -2467,6 +2679,7 @@ class TemplateTag extends Document {
     * Let's you retrieve an &lt;template:getstring /&gt; tag instance with the specified name.
     *
     * @param string $name The name of the template label to return.
+    *
     * @return LanguageLabelTag The instance of the desired label.
     * @throws \InvalidArgumentException In case no label can be found.
     *
@@ -2479,9 +2692,9 @@ class TemplateTag extends Document {
          return $this->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabelTag');
       } catch (\InvalidArgumentException $e) {
          throw new \InvalidArgumentException('[TemplateTag::getLabel()] No label found with name "' . $name
-            . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
-            . $this->getParentObject()->getDocumentController() . '"! Perhaps, the tag library for template:getstring '
-            . 'is not loaded.', E_USER_ERROR, $e);
+               . '" composed in template with name "' . $this->getAttribute('name') . '" for document controller "'
+               . $this->getParentObject()->getDocumentController() . '"! Perhaps, the tag library for template:getstring '
+               . 'is not loaded.', E_USER_ERROR, $e);
       }
    }
 
@@ -2655,21 +2868,21 @@ class LanguageLabelTag extends Document {
       $namespace = $this->getAttribute('namespace');
       if ($namespace === null) {
          throw new \InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
-            . '"namespace" given in tag definition!', E_USER_ERROR);
+               . '"namespace" given in tag definition!', E_USER_ERROR);
       }
 
       // check for attribute "config"
       $configName = $this->getAttribute('config');
       if ($configName === null) {
          throw new \InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
-            . '"config" given in tag definition!', E_USER_ERROR);
+               . '"config" given in tag definition!', E_USER_ERROR);
       }
 
       // check for attribute "entry"
       $entry = $this->getAttribute('entry');
       if ($entry === null) {
          throw new \InvalidArgumentException('[' . get_class($this) . '->transform()] No attribute '
-            . '"entry" given in tag definition!', E_USER_ERROR);
+               . '"entry" given in tag definition!', E_USER_ERROR);
       }
 
       // get configuration values
@@ -2684,10 +2897,11 @@ class LanguageLabelTag extends Document {
          $env = Registry::retrieve('APF\core', 'Environment');
 
          throw new \InvalidArgumentException('[' . get_class($this) . '::transform()] Given entry "'
-            . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'
-            . $env . '_' . $configName . '" in namespace "' . $namespace . '" and context "'
-            . $this->getContext() . '"!', E_USER_ERROR);
+               . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'
+               . $env . '_' . $configName . '" in namespace "' . $namespace . '" and context "'
+               . $this->getContext() . '"!', E_USER_ERROR);
       }
+
       return $this->replace($value);
    }
 
@@ -2701,6 +2915,7 @@ class LanguageLabelTag extends Document {
     * @param string $name The name of the place holder.
     * @param string $value The value of the place holder.
     * @param bool $append True in case the applied value should be appended, false otherwise.
+    *
     * @return LanguageLabelTag This instance for further usage (e.g. adding further place holders).
     *
     * @author Christian Achatz
@@ -2715,6 +2930,7 @@ class LanguageLabelTag extends Document {
       } else {
          $this->placeHolders[$name] = $this->placeHolders[$name] . $value;
       }
+
       return $this;
    }
 
@@ -2731,6 +2947,7 @@ class LanguageLabelTag extends Document {
     */
    public function &clearPlaceHolders() {
       $this->placeHolders = array();
+
       return $this;
    }
 
@@ -2740,6 +2957,7 @@ class LanguageLabelTag extends Document {
     * Replaces all place holders within the current label that are registered within this instance.
     *
     * @param string $label The raw label.
+    *
     * @return string The label with replaced place holders.
     *
     * @author Christian Achatz
@@ -2750,6 +2968,7 @@ class LanguageLabelTag extends Document {
       foreach ($this->placeHolders as $key => $value) {
          $label = str_replace('{' . $key . '}', $value, $label);
       }
+
       return $label;
    }
 
@@ -2851,6 +3070,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * @param string $name The name of the place holder to fill.
     * @param string $value The value to insert into the place holder.
     * @param bool $append True in case the applied values should be appended, false otherwise.
+    *
     * @throws \InvalidArgumentException In case the place holder cannot be found.
     *
     * @author Christian Schäfer, Jan Wiese
@@ -2865,7 +3085,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
          $this->getDocument()->setPlaceHolder($name, $value, $append);
       } catch (\InvalidArgumentException $e) {
          throw new \InvalidArgumentException('[' . get_class($this) . '::setPlaceHolder()] No place holders '
-            . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
+               . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
       }
    }
 
@@ -2888,6 +3108,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * @param string $name Place holder name.
     * @param string $key Key name of string place holder.
     * @param string $value Value, the string place holder is replaced with.
+    *
     * @throws \InvalidArgumentException In case no place holder has been found.
     *
     * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
@@ -2899,7 +3120,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
          $this->getDocument()->setStringPlaceHolder($name, $key, $value);
       } catch (\InvalidArgumentException $e) {
          throw new \InvalidArgumentException('[' . get_class($this) . '::setStringPlaceHolder()] No place holders '
-            . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
+               . 'found for name "' . $name . '" in document controller "' . get_class($this) . '"!', E_USER_ERROR, $e);
       }
    }
 
@@ -2922,6 +3143,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     *
     * @param string[] $placeHolderValues Key-value-couples to fill place holders.
     * @param bool $append True in case the applied values should be appended, false otherwise.
+    *
     * @throws \InvalidArgumentException In case one of the place holders cannot be found.
     *
     * @author Christian Achatz
@@ -2954,15 +3176,15 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
          $log = & Singleton::getInstance('APF\core\logging\Logger');
          /* @var $log Logger */
          $log->addEntry(
-            new SimpleLogEntry(
-            // use the configured log target to allow custom configuration of APF-internal log statements
-            // to be written to a custom file/location
-               Registry::retrieve('APF\core', 'InternalLogTarget'),
-                  'Place holder with name "' . $name . '" does not exist within the current document '
-                  . 'handled by document controller "' . get_class($this) . '". '
-                  . 'Please check your setup. Details: ' . $e,
-               LogEntry::SEVERITY_WARNING
-            )
+               new SimpleLogEntry(
+               // use the configured log target to allow custom configuration of APF-internal log statements
+               // to be written to a custom file/location
+                     Registry::retrieve('APF\core', 'InternalLogTarget'),
+                     'Place holder with name "' . $name . '" does not exist within the current document '
+                     . 'handled by document controller "' . get_class($this) . '". '
+                     . 'Please check your setup. Details: ' . $e,
+                     LogEntry::SEVERITY_WARNING
+               )
          );
       }
    }
@@ -2994,6 +3216,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * access a form object within a document controller.
     *
     * @param string $formName The name of the form to return.
+    *
     * @return HtmlFormTag The instance of the desired form.
     * @throws \InvalidArgumentException In case the form cannot be found.
     *
@@ -3007,8 +3230,8 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
          return $this->getDocument()->getChildNode('name', $formName, 'APF\tools\form\taglib\HtmlFormTag');
       } catch (\InvalidArgumentException $e) {
          throw new \InvalidArgumentException('[' . get_class($this) . '::getForm()] No form object with name "'
-            . $formName . '" composed in current document for document controller "' . get_class($this)
-            . '"! Perhaps tag library html:form is not loaded in current document!', E_USER_ERROR, $e);
+               . $formName . '" composed in current document for document controller "' . get_class($this)
+               . '"! Perhaps tag library html:form is not loaded in current document!', E_USER_ERROR, $e);
       }
    }
 
@@ -3019,6 +3242,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * to access a html template object within a document controller.
     *
     * @param string $name The name of the template to return.
+    *
     * @return TemplateTag The desired template instance.
     * @throws \InvalidArgumentException In case the template cannot be found.
     *
@@ -3034,8 +3258,8 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
          return $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\TemplateTag');
       } catch (\InvalidArgumentException $e) {
          throw new \InvalidArgumentException('[' . get_class($this) . '::getTemplate()] No template with name "'
-            . $name . '" composed in current document for document controller "' . get_class($this)
-            . '"!', E_USER_ERROR, $e);
+               . $name . '" composed in current document for document controller "' . get_class($this)
+               . '"!', E_USER_ERROR, $e);
       }
    }
 
@@ -3046,6 +3270,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * fill a place holder.
     *
     * @param string $name The content of the tag's "name" attribute to select the node.
+    *
     * @return LanguageLabelTag The instance of the desired label node.
     * @throws \InvalidArgumentException In case no label node can be found.
     */
@@ -3054,8 +3279,8 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
          return $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabelTag');
       } catch (\InvalidArgumentException $e) {
          throw new \InvalidArgumentException('[' . get_class($this) . '::getLabel()] No label with name "'
-            . $name . '" composed in current document for document controller "' . get_class($this)
-            . '"! Perhaps tag library html:getstring is not loaded in current template!', E_USER_ERROR, $e);
+               . $name . '" composed in current document for document controller "' . get_class($this)
+               . '"! Perhaps tag library html:getstring is not loaded in current template!', E_USER_ERROR, $e);
       }
    }
 
@@ -3065,6 +3290,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Checks, if a place holder exists within the current document.
     *
     * @param string $name The name of the place holder.
+    *
     * @return bool True if yes, false otherwise.
     *
     * @author Christian Schäfer
@@ -3076,6 +3302,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    protected function placeHolderExists($name) {
       try {
          $this->getDocument()->getChildNode('name', $name, 'APF\core\pagecontroller\PlaceHolderTag');
+
          return true;
       } catch (\InvalidArgumentException $e) {
          return false;
@@ -3089,6 +3316,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     *
     * @param TemplateTag $template The instance of the template to check.
     * @param string $name The name of the place holder.
+    *
     * @return bool True if yes, false otherwise.
     *
     * @author Christian Schäfer
@@ -3100,6 +3328,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
    protected function templatePlaceHolderExists(TemplateTag &$template, $name) {
       try {
          $template->getChildNode('name', $name, 'APF\core\pagecontroller\PlaceHolderTag');
+
          return true;
       } catch (\InvalidArgumentException $e) {
          return false;
@@ -3112,6 +3341,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     * Returns a reference on the desired iterator.
     *
     * @param string $name Name of the iterator.
+    *
     * @return HtmlIteratorTag The desired iterator.
     * @throws IncludeException In case the iterator taglib is not loaded.
     * @throws \InvalidArgumentException In case the desired iterator cannot be returned.
@@ -3125,8 +3355,8 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
          return $this->getDocument()->getChildNode('name', $name, 'APF\tools\html\taglib\HtmlIteratorTag');
       } catch (\InvalidArgumentException $e) {
          throw new \InvalidArgumentException('[' . get_class($this) . '::getIterator()] No iterator with name "'
-            . $name . '" composed in current document for document controller "' . get_class($this) . '"! '
-            . 'Perhaps tag library html:iterator is not loaded in current template!', E_USER_ERROR, $e);
+               . $name . '" composed in current document for document controller "' . get_class($this) . '"! '
+               . 'Perhaps tag library html:iterator is not loaded in current template!', E_USER_ERROR, $e);
       }
    }
 
@@ -3153,6 +3383,7 @@ abstract class BaseDocumentController extends APFObject implements DocumentContr
     *
     * @param string $name The reference name of the data field to set/add.
     * @param mixed $default The desired default value (optional).
+    *
     * @return mixed The desired data field content or the default value.
     *
     * @author Christian Achatz

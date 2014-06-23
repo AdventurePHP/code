@@ -1,5 +1,5 @@
 <?php
-namespace APF\tools\html\taglib;
+namespace APF\extensions\htmllist\taglib;
 
 /**
  * <!--
@@ -20,26 +20,21 @@ namespace APF\tools\html\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\pagecontroller\TagLib;
-use APF\core\pagecontroller\TemplateTag;
+use APF\core\pagecontroller\Document;
 
 /**
- * @package APF\tools\html\taglib
- * @class HtmlIteratorFallbackTag
+ * @package APF\extensions\htmllist\taglib
+ * @class DefinitionListTermTag
  *
- * Encapsulates a TemplateTag for usage within an iterator tag. Re-declaration
- * due to re-naming of tag names.
+ * Represents a HTMLList definition list element for the definition term.
  *
- * @author Christian Achatz
- * @version
- * Version 0.1, 06.05.2014 (ID#105: added fallback content support)<br />
+ * @author Florian Horn
+ * @version 1.0, 03.04.2010<br />
  */
-class HtmlIteratorFallbackTag extends TemplateTag {
+class DefinitionListTermTag extends Document {
 
-   public function __construct() {
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'fallback', 'placeholder');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\AddTaglibTag', 'fallback', 'addtaglib');
-      $this->tagLibs[] = new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'fallback', 'getstring');
+   public function transform() {
+      return '<dt ' . $this->getAttributesAsString($this->attributes) . '>' . $this->content . '</dt>';
    }
 
 }

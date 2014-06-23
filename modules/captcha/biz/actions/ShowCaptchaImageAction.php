@@ -57,7 +57,7 @@ class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
       $session = new Session('APF\modules\captcha');
 
       // read captcha string from the session.
-      $CaptchaStringName = $this->getInput()->getAttribute('name');
+      $CaptchaStringName = $this->getInput()->getParameter('name');
       $text = $session->load($CaptchaStringName);
 
       // choose background

@@ -41,9 +41,6 @@ class ImageButtonTag extends ButtonTag {
       parent::__construct();
       $this->attributeWhiteList[] = 'src';
       $this->attributeWhiteList[] = 'alt';
-
-      // avoid child tags
-      $this->tagLibs = array();
    }
 
    /**

@@ -89,6 +89,7 @@ class Cookie {
     * @param string $path The path the cookie s valid for.
     * @param bool $secure True in case the cookie is only valid for HTTPS transmission, false otherwise.
     * @param bool $httpOnly True in case the cookie can only be modified via HTTP, false otherwise.
+    *
     * @throws \InvalidArgumentException In case of an empty cookie name.
     *
     * @author Christian Achatz
@@ -116,6 +117,7 @@ class Cookie {
     * Defines the value of the cookie.
     *
     * @param string $value The value of the cookie,
+    *
     * @return bool True, if cookie was set correctly, false, if something was wrong
     *
     * @author Christian Achatz
@@ -133,6 +135,7 @@ class Cookie {
     * Returns the value of the desired key within the current namespace.
     *
     * @param string $default The default value in case the cookie is not existing.
+    *
     * @return string Cookie value or default value.
     *
     * @author Christian Achatz
@@ -157,9 +160,10 @@ class Cookie {
     * Version 0.1, 08.11.2008<br />
     * Version 0.2, 10.01.2009 (Added namespace support)<br />
     * Version 0.3, 13.06.2013 (Refactoring to real domain object representation)<br />
+    * Version 0.4, 27.05.2014 (Removed path and domain for delete as this causes issues with some browsers)<br />
     */
    public function delete() {
-      return setcookie($this->name, false, time() - self::DEFAULT_EXPIRATION_TIME, $this->path, $this->domain);
+      return setcookie($this->name, false, time() - self::DEFAULT_EXPIRATION_TIME);
    }
 
 }

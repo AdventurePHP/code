@@ -33,6 +33,234 @@ use InvalidArgumentException;
 
 /**
  * @package APF\core\frontcontroller
+ * @class Action
+ * @abstract
+ *
+ * Implements an action interface for a front controller action.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 27.01.2007<br />
+ * Version 0.2, 24.02.2007 (Added param "KeepInURL")<br />
+ * Version 0.3, 08.11.2007 (Switched default value for "KeepInURL" to false)<br />
+ * Version 0.4, 07.08.2010 (Added the isActive() method to be able to self-deactivate actions on demand)<br />
+ * Version 0.5, 12.04.2011 (Introduced constants for action types to be more type safe)<br />
+ */
+interface Action extends APFDIService {
+
+   const TYPE_PRE_PAGE_CREATE = 'prepagecreate';
+   const TYPE_PRE_TRANSFORM = 'pretransform';
+   const TYPE_POST_TRANSFORM = 'posttransform';
+
+   /**
+    * @public
+    *
+    * Returns the input object of the action.
+    *
+    * @return FrontcontrollerInput The input object associated with the action.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 05.02.2007<br />
+    */
+   public function getInput();
+
+   /**
+    * @public
+    *
+    * Injects the input param wrapper of the current action.
+    *
+    * @param FrontcontrollerInput $input The input object associated with the action.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function setInput($input);
+
+   /**
+    * @public
+    *
+    * Returns the associated front controller instance.
+    *
+    * @return Frontcontroller The associated front controller instance.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function getFrontController();
+
+   /**
+    * @public
+    *
+    * Allows you to manipulate the priority of this instance in comparison to other actions
+    * of the same type on the action stack.
+    * <p/>
+    * In case priority of another action is higher than the value returned by this method for
+    * the current instance, this action takes higher priority and is executed first.
+    * <p/>
+    * Default value is 10 to allow easier prioritization at a granular level. Example: returning
+    * <em>1</em> means lower priority, <em>20</em> means higher priority.
+    *
+    * @return int The action's priority on the action stack.
+    */
+   public function getPriority();
+
+   /**
+    * @public
+    *
+    * Let's the front controller inject itself.
+    *
+    * @param Frontcontroller $frontController The current front controller instance.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function setFrontController(Frontcontroller &$frontController);
+
+   /**
+    * @public
+    *
+    * Returns the name of the action, that is used to refer it within the
+    * front controller's action stack.
+    *
+    * @return string The name of the action.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function getActionName();
+
+   /**
+    * @public
+    *
+    * Returns the indicator, whether the action should be kept in the url
+    * generating a fully qualified front controller link.
+    *
+    * @return bool The url generation indicator.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function getKeepInUrl();
+
+   /**
+    * @public
+    *
+    * Sets the name of the action, that is used to refer it within the
+    * front controller's action stack.
+    *
+    * @param string $name The name of the action.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function setActionName($name);
+
+   /**
+    * @public
+    *
+    * Sets the type of the action, that defines the execution time.
+    *
+    * @param string $type The type of the action.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function setType($type);
+
+   /**
+    * @public
+    *
+    * Returns the type of the action, that defines the execution time.
+    *
+    * @return string The type of the action.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function getType();
+
+   /**
+    * @public
+    *
+    * Sets the namespace of the action, that is used to refer it within the
+    * front controller's action stack.
+    *
+    * @param string $namespace The namespace of the action.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function setActionNamespace($namespace);
+
+   /**
+    * @public
+    *
+    * Set the indicator, whether the action should be kept in the url
+    * generating a fully qualified front controller link.
+    *
+    * @param bool $keepInUrl The url generation indicator.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function setKeepInUrl($keepInUrl);
+
+   /**
+    * @public
+    *
+    * Indicates, whether the action should be executed by the front controller or not.
+    * This method can be overridden in case an action should not be executed due to
+    * special concerns. This maybe the execution of another action or certain url params.
+    *
+    * @return boolean True, in case the action should be executed, false otherwise.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 07.08.2010<br />
+    */
+   public function isActive();
+
+   /**
+    * @public
+    *
+    * Returns the namespace of the action, that is used to refer it within the
+    * front controller's action stack.
+    *
+    * @return string The namespace of the action.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.02.2010<br />
+    */
+   public function getActionNamespace();
+
+   /**
+    * @public
+    * @abstract
+    *
+    * Defines the interface method, that must be implemented by each concrete action. The method
+    * is called by the front controller when the action is executed.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 27.01.2007<br />
+    */
+   public function run();
+}
+
+/**
+ * @package APF\core\frontcontroller
  * @class AbstractFrontcontrollerAction
  * @abstract
  *
@@ -46,11 +274,7 @@ use InvalidArgumentException;
  * Version 0.4, 07.08.2010 (Added the isActive() method to be able to self-deactivate actions on demand)<br />
  * Version 0.5, 12.04.2011 (Introduced constants for action types to be more type safe)<br />
  */
-abstract class AbstractFrontcontrollerAction extends APFObject implements APFDIService {
-
-   const TYPE_PRE_PAGE_CREATE = 'prepagecreate';
-   const TYPE_PRE_TRANSFORM = 'pretransform';
-   const TYPE_POST_TRANSFORM = 'posttransform';
+abstract class AbstractFrontcontrollerAction extends APFObject implements Action {
 
    /**
     * @private
@@ -93,239 +317,145 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements APFDIS
     */
    private $frontController;
 
-   /**
-    * @public
-    *
-    * Returns the input object of the action.
-    *
-    * @return FrontcontrollerInput The input object associated with the action.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 05.02.2007<br />
-    */
    public function &getInput() {
       return $this->input;
    }
 
-   /**
-    * @public
-    *
-    * Injects the input param wrapper of the current action.
-    *
-    * @param FrontcontrollerInput $input The input object associated with the action.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
    public function setInput($input) {
       $this->input = $input;
    }
 
-   /**
-    * @public
-    *
-    * Sets the name of the action, that is used to refer it within the
-    * front controller's action stack.
-    *
-    * @param string $name The name of the action.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
    public function setActionName($name) {
       $this->actionName = $name;
    }
 
-   /**
-    * @public
-    *
-    * Returns the name of the action, that is used to refer it within the
-    * front controller's action stack.
-    *
-    * @return string The name of the action.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
    public function getActionName() {
       return $this->actionName;
    }
 
-   /**
-    * @public
-    *
-    * Sets the namespace of the action, that is used to refer it within the
-    * front controller's action stack.
-    *
-    * @param string $namespace The namespace of the action.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
    public function setActionNamespace($namespace) {
       $this->actionNamespace = $namespace;
    }
 
-   /**
-    * @public
-    *
-    * Returns the namespace of the action, that is used to refer it within the
-    * front controller's action stack.
-    *
-    * @return string The namespace of the action.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
    public function getActionNamespace() {
       return $this->actionNamespace;
    }
 
-   /**
-    * @public
-    *
-    * Sets the type of the action, that defines the execution time.
-    *
-    * @param string $type The type of the action.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
    public function setType($type) {
       $this->type = $type;
    }
 
-   /**
-    * @public
-    *
-    * Returns the type of the action, that defines the execution time.
-    *
-    * @return string The type of the action.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
    public function getType() {
       return $this->type;
    }
 
-   /**
-    * @public
-    *
-    * Set the indicator, whether the action should be kept in the url
-    * generating a fully qualified front controller link.
-    *
-    * @param bool $keepInUrl The url generation indicator.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
    public function setKeepInUrl($keepInUrl) {
       $this->keepInUrl = $keepInUrl;
    }
 
-   /**
-    * @public
-    *
-    * Returns the indicator, whether the action should be kept in the url
-    * generating a fully qualified front controller link.
-    *
-    * @return bool The url generation indicator.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
    public function getKeepInUrl() {
       return $this->keepInUrl;
    }
 
-   /**
-    * @public
-    *
-    * Indicates, whether the action should be executed by the front controller or not.
-    * This method can be overridden in case an action should not be executed due to
-    * special concerns. This maybe the execution of another action or certain url params.
-    *
-    * @return boolean True, in case the action should be executed, false otherwise.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 07.08.2010<br />
-    */
    public function isActive() {
       return true;
    }
 
-   /**
-    * @public
-    *
-    * Allows you to manipulate the priority of this instance in comparison to other actions
-    * of the same type on the action stack.
-    * <p/>
-    * In case priority of another action is higher than the value returned by this method for
-    * the current instance, this action takes higher priority and is executed first.
-    * <p/>
-    * Default value is 10 to allow easier prioritization at a granular level. Example: returning
-    * <em>1</em> means lower priority, <em>20</em> means higher priority.
-    *
-    * @return int The action's priority on the action stack.
-    */
    public function getPriority() {
       return 10;
    }
 
-   /**
-    * @public
-    *
-    * Returns the associated front controller instance.
-    *
-    * @return Frontcontroller The associated front controller instance.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
    public function &getFrontController() {
       return $this->frontController;
    }
 
-   /**
-    * @public
-    *
-    * Let's the front controller inject itself.
-    *
-    * @param Frontcontroller $frontController The current front controller instance.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 20.02.2010<br />
-    */
    public function setFrontController(Frontcontroller &$frontController) {
       $this->frontController = & $frontController;
    }
 
+}
+
+/**
+ * @package APF\core\frontcontroller
+ * @class ActionParameters
+ *
+ * Defines the structure of a front controller action parameter instance.
+ *
+ * @author Christian Achatz
+ * @version
+ * Version 0.1, 20.06.2014 (Introduced within ID#207)<br />
+ */
+interface ActionParameters {
+
    /**
-    * @public
-    * @abstract
+    * Let's you set an action (URL) parameter.
     *
-    * Defines the interface method, that must be implemented by each concrete action. The method
-    * is called by the front controller when the action is executed.
+    * @param string $name The name of the (URL) parameter.
+    * @param string $value The value to set.
     *
     * @author Christian Achatz
     * @version
-    * Version 0.1, 27.01.2007<br />
+    * Version 0.1, 20.06.2014<br />
     */
-   public abstract function run();
+   public function setParameter($name, $value);
+
+   /**
+    * Let's you set multiple action (URL) parameters.
+    *
+    * @param array $parameters A list of (URL) parameters.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.06.2014<br />
+    */
+   public function setParameters(array $parameters);
+
+   /**
+    * Returns an action (URL) parameter value for the given parameter name.
+    *
+    * @param string $name The name of the (URL) parameter.
+    * @param string $default Default value to return in case the (URL) parameter is not set.
+    *
+    * @return string The desired value.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.06.2014<br />
+    */
+   public function getParameter($name, $default = null);
+
+   /**
+    * Returns all action (URL) parameters with their values.
+    *
+    * @return array The action (URL) parameters with their respective values.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.06.2014<br />
+    */
+   public function getParameters();
+
+   /**
+    * Returns the action associated with the current parameter instance.
+    *
+    * @return Action The front controller action this parameter instance belongs to.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.06.2014<br />
+    */
+   public function getAction();
+
+   /**
+    * Let's you inject the action associated with the current parameter instance.
+    *
+    * @param Action $action The front controller action this parameter instance belongs to.
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 20.06.2014<br />
+    */
+   public function setAction(Action &$action);
 }
 
 /**
@@ -337,20 +467,42 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements APFDIS
  * @author Christian Achatz
  * @version
  * Version 0.1, 27.01.2007<br />
+ * Version 0.2, 17.06.2014 (Introduced interface and separated from APFObject's attributes implementation)<br />
  */
-class FrontcontrollerInput extends APFObject {
+class FrontcontrollerInput extends APFObject implements ActionParameters {
 
    /**
-    * @var AbstractFrontcontrollerAction The action the input belongs to.
+    * @var Action The action the input belongs to.
     */
    private $action;
+
+   /**
+    * @var array Action parameters provided via configuration and/or URL.
+    */
+   protected $parameters = array();
 
    public function &getAction() {
       return $this->action;
    }
 
-   public function setAction(AbstractFrontcontrollerAction &$action) {
+   public function setAction(Action &$action) {
       $this->action = & $action;
+   }
+
+   public function setParameter($name, $value) {
+      $this->parameters[$name] = $value;
+   }
+
+   public function setParameters(array $parameters) {
+      $this->parameters = array_merge($this->parameters, $parameters);
+   }
+
+   public function getParameter($name, $default = null) {
+      return isset($this->parameters[$name]) ? $this->parameters[$name] : $default;
+   }
+
+   public function getParameters() {
+      return $this->parameters;
    }
 
 }
@@ -432,7 +584,7 @@ class Frontcontroller extends APFObject {
 
    /**
     * @protected
-    * @var AbstractFrontcontrollerAction[] The front controller's action stack.
+    * @var Action[] The front controller's action stack.
     */
    protected $actionStack = array();
 
@@ -571,7 +723,7 @@ class Frontcontroller extends APFObject {
       InputFilterChain::getInstance()->filter(null);
 
       // execute pre page create actions (see timing model)
-      $this->runActions(AbstractFrontcontrollerAction::TYPE_PRE_PAGE_CREATE);
+      $this->runActions(Action::TYPE_PRE_PAGE_CREATE);
 
       // create new page
       $page = new Page();
@@ -586,13 +738,13 @@ class Frontcontroller extends APFObject {
       $page->loadDesign($namespace, $template);
 
       // execute actions before transformation (see timing model)
-      $this->runActions(AbstractFrontcontrollerAction::TYPE_PRE_TRANSFORM);
+      $this->runActions(Action::TYPE_PRE_TRANSFORM);
 
       // transform page
       $pageContent = OutputFilterChain::getInstance()->filter($page->transform());
 
       // execute actions after page transformation (see timing model)
-      $this->runActions(AbstractFrontcontrollerAction::TYPE_POST_TRANSFORM);
+      $this->runActions(Action::TYPE_POST_TRANSFORM);
 
       return $pageContent;
    }
@@ -604,7 +756,7 @@ class Frontcontroller extends APFObject {
     *
     * @param string $actionName The name of the action to return.
     *
-    * @return AbstractFrontcontrollerAction The desired action or null.
+    * @return Action The desired action or null.
     *
     * @author Christian Schäfer
     * @version
@@ -636,7 +788,7 @@ class Frontcontroller extends APFObject {
     *
     * Returns the action stack.
     *
-    * @return AbstractFrontcontrollerAction[] The front controller action stack.
+    * @return Action[] The front controller action stack.
     *
     * @author Christian Schäfer
     * @version
@@ -804,7 +956,7 @@ class Frontcontroller extends APFObject {
 
          // init action
          $action = new $actionClass;
-         /* @var $action AbstractFrontcontrollerAction */
+         /* @var $action Action */
 
          $action->setContext($this->getContext());
          $action->setLanguage($this->getLanguage());
@@ -834,9 +986,12 @@ class Frontcontroller extends APFObject {
       /* @var $input FrontcontrollerInput */
 
       // merge input params with the configured params (params included in the URL are kept!)
-      $input->setAttributes(array_merge(
-            $this->generateParamsFromInputConfig($actionConfig->getValue('InputParams')),
-            $params));
+      $input->setParameters(
+            array_merge(
+                  $this->generateParamsFromInputConfig($actionConfig->getValue('InputParams')),
+                  $params
+            )
+      );
 
       $input->setAction($action);
       $action->setInput($input);
@@ -848,7 +1003,7 @@ class Frontcontroller extends APFObject {
       $this->actionStack[] = $action;
 
       // ID#83: Sort actions to allow prioritization of actions. This is done using
-      // uksort() in order to both respect AbstractFrontcontrollerAction::getPriority()
+      // uksort() in order to both respect Action::getPriority()
       // and the order of registration for equivalence groups.
       uksort($this->actionStack, array($this, 'sortActions'));
    }
@@ -949,7 +1104,7 @@ class Frontcontroller extends APFObject {
     *
     * Compares two actions to allow sorting of actions.
     * <p/>
-    * Actions with a lower priority returned by <em>AbstractFrontcontrollerAction::getPriority()</em>
+    * Actions with a lower priority returned by <em>Action::getPriority()</em>
     * are executed prior to others as described in CR ID#83.
     *
     * @param int $a Offset one for comparison.
@@ -1033,7 +1188,7 @@ class Frontcontroller extends APFObject {
     * Version 0.6, 28.03.2008 (Optimized benchmarker call)<br />
     * Version 0.7, 07.08.2010 (Added action activation indicator to disable actions on demand)<br />
     */
-   protected function runActions($type = AbstractFrontcontrollerAction::TYPE_PRE_PAGE_CREATE) {
+   protected function runActions($type = Action::TYPE_PRE_PAGE_CREATE) {
 
       /* @var $t BenchmarkTimer */
       $t = & Singleton::getInstance('APF\core\benchmark\BenchmarkTimer');

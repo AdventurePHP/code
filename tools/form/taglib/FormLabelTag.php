@@ -20,7 +20,6 @@ namespace APF\tools\form\taglib;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\pagecontroller\TagLib;
 
 /**
  * @package APF\tools\form\taglib
@@ -43,7 +42,6 @@ class FormLabelTag extends AbstractFormControl {
 
    public function __construct() {
       $this->attributeWhiteList = array('for', 'id', 'class');
-      $this->tagLibs = array(new TagLib('APF\tools\form\taglib\LabelLanguageLabelTag', 'label', 'getstring'));
    }
 
    public function onParseTime() {
@@ -53,9 +51,10 @@ class FormLabelTag extends AbstractFormControl {
    public function transform() {
       if ($this->isVisible) {
          return '<label ' . $this->getSanitizedAttributesAsString($this->getAttributes()) . '>'
-               . $this->getContent()
-               . '</label>';
+         . $this->getContent()
+         . '</label>';
       }
+
       return '';
    }
 

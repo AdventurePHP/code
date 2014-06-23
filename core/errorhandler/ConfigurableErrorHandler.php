@@ -59,7 +59,7 @@ class ConfigurableErrorHandler extends DefaultErrorHandler {
       $this->errorThresholdLevel = $errorThresholdLevel;
    }
 
-   public function handleError($errorNumber, $errorMessage, $errorFile, $errorLine, array $errorContext) {
+   public function handleError($errorNumber, $errorMessage, $errorFile, $errorLine) {
 
       // ignore errors, that have been excluded by configuration
       if (($this->errorThresholdLevel & $errorNumber) == 0) {
@@ -67,7 +67,7 @@ class ConfigurableErrorHandler extends DefaultErrorHandler {
       }
 
       // otherwise, handle the error as intended by the default error handler
-      parent::handleError($errorNumber, $errorMessage, $errorFile, $errorLine, $errorContext);
+      parent::handleError($errorNumber, $errorMessage, $errorFile, $errorLine);
 
    }
 

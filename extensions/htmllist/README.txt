@@ -17,16 +17,16 @@ Unpack the zipped file into 'extensions/' of the APF.
 INTERFACES:
 
 - List:
-   html_taglib_list::addList( {type:string} , {attributes:array} );
-   html_taglib_list::getListById( {id:string} );
+   HtmlListTag::addList( {type:string} , {attributes:array} );
+   HtmlListTag::getListById( {id:string} );
 
 - Ordered/Unordered-List:
-   list_taglib_ordered::addElement( {content:string} , {cssClass:string} );
-   list_taglib_unordered::addElement( {content:string} , {cssClass:string} );
+   OrderedListTag::addElement( {content:string} , {cssClass:string} );
+   UnorderedListTag::addElement( {content:string} , {cssClass:string} );
 
 - Definition-List:
-   list_taglib_definition::addDefinitionTerm( {content:string} , {cssClass:string} );
-   list_taglib_definition::addDefinition( {content:string} , {cssClass:string} );
+   ListDefinitionTag::addDefinitionTerm( {content:string} , {cssClass:string} );
+   ListDefinitionTag::addDefinition( {content:string} , {cssClass:string} );
 
 
 
@@ -37,9 +37,9 @@ EXAMPLE:
 ================================================================================
 
 
-use APF\extensions\htmllist\taglib\html_taglib_list;
+use APF\extensions\htmllist\taglib\HtmlListTag;
 ...
-$this->list = new html_taglib_list();
+$this->list = new HtmlListTag();
 $this->list->addList( 'list:unordered' , array( 'id' => 'rsslist' ) );
 $list = $this->list->getListById( 'rsslist' );
 
