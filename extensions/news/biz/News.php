@@ -2,85 +2,25 @@
 namespace APF\extensions\news\biz;
 
 /**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
+ * @package APF\extensions\news\biz
+ * @class News
  *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
-use APF\modules\genericormapper\data\GenericDomainObject;
-
-//<*NewsBase:start*> DO NOT CHANGE THIS COMMENT!
-/**
- * Automatically generated BaseObject for News. !!DO NOT CHANGE THIS BASE-CLASS!!
- * CHANGES WILL BE OVERWRITTEN WHEN UPDATING!!
- * You can change class "News" which will extend this base-class.
- */
-class NewsBase extends GenericDomainObject {
-
-   public function __construct($objectName = null) {
-      parent::__construct('News');
-   }
-
-   public function getAppKey() {
-      return $this->getProperty('AppKey');
-   }
-
-   public function setAppKey($value) {
-      $this->setProperty('AppKey', $value);
-      return $this;
-   }
-
-   public function getAuthor() {
-      return $this->getProperty('Author');
-   }
-
-   public function setAuthor($value) {
-      $this->setProperty('Author', $value);
-      return $this;
-   }
-
-   public function getTitle() {
-      return $this->getProperty('Title');
-   }
-
-   public function setTitle($value) {
-      $this->setProperty('Title', $value);
-      return $this;
-   }
-
-   public function getText() {
-      return $this->getProperty('Text');
-   }
-
-   public function setText($value) {
-      $this->setProperty('Text', $value);
-      return $this;
-   }
-
-}
-
-// DO NOT CHANGE THIS COMMENT! <*NewsBase:end*>
-
-/**
- * Domain object for "News"
- * Use this class to add your own functions.
+ * This class represents the "APF\extensions\news\biz\News" domain object.
+ * <p/>
+ * Please use this class to add your own functionality.
  */
 class News extends NewsBase {
+
    /**
-    * Call parent's function because the objectName needs to be set.
+    * Call the parent's constructor because the object name needs to be set.
+    * <p/>
+    * To create an instance of this object, just call
+    * <code>
+    * use APF\extensions\news\biz\News;
+    * $object = new News();
+    * </code>
+    *
+    * @param string $objectName The internal object name of the domain object.
     */
    public function __construct($objectName = null) {
       parent::__construct();

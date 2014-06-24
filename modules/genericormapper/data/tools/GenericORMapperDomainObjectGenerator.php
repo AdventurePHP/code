@@ -22,8 +22,8 @@ namespace APF\modules\genericormapper\data\tools;
  */
 use APF\core\loader\RootClassLoader;
 use APF\modules\genericormapper\data\BaseMapper;
-use APF\tools\filesystem\Folder;
 use APF\tools\filesystem\File;
+use APF\tools\filesystem\Folder;
 
 /**
  * @package APF\modules\genericormapper\data\tools
@@ -75,20 +75,34 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
 
    /**
     * @param string $name The name of the domain object class.
-    * @return string The name of the corresponding file.
+    *
+    * @return string The name of the corresponding class file.
     */
    protected function getFileName($name) {
-      $class = $this->domainObjectsTable[$name]['Class'];
+      return $this->getFileNameByClass($this->domainObjectsTable[$name]['Class']);
+   }
+
+   /**
+    * @param string $name The name of the domain object class.
+    *
+    * @return string The name of the corresponding base class file.
+    */
+   protected function getBaseFileName($name) {
+      return $this->getFileNameByClass($this->domainObjectsTable[$name]['Class'] . 'Base');
+   }
+
+   protected function getFileNameByClass($class) {
       $loader = RootClassLoader::getLoaderByClass($class);
       $vendor = $loader->getVendorName();
       $rootPath = $loader->getRootPath();
-      return $rootPath
-            // first part of the namespace must be dropped to not double the vendor name
-            . '/' . str_replace('\\', '/', str_replace($vendor . '\\', '', $class)) . '.php';
+
+      // first part of the namespace must be dropped to not double the vendor name
+      return $rootPath . '/' . str_replace('\\', '/', str_replace($vendor . '\\', '', $class)) . '.php';
    }
 
    /**
     * @param string $name The domain object descriptor.
+    *
     * @return string The namespace of the given domain object name.
     */
    protected function getNamespaceByObjectName($name) {
@@ -105,43 +119,57 @@ class GenericORMapperDomainObjectGenerator extends BaseMapper {
     */
    protected function generateServiceObject($name) {
 
+      // DO class file
       $fileName = $this->getFileName($name);
 
+      // base class file
+      $baseFileName = $this->getBaseFileName($name);
+
       // check if we need to update an old or create a new definition
-      if (file_exists($fileName)) {
-         $this->updateServiceObject($name, $fileName);
+      if (file_exists($fileName) && file_exists($baseFileName)) {
+         $this->updateServiceObject($name, $baseFileName);
       } else {
-         $this->createNewServiceObject($name, $fileName);
+         $this->createNewServiceObject($name, $baseFileName, $fileName);
       }
+
    }
 
    /**
     * @protected
     *
-    * Creates a new file with the code for the service object with the given name.
-    * Will overwrite existing file!
+    * Creates a new file for each the base class and the DO class with the code for
+    * the object with the given name. Will overwrite existing file!
     *
     * @param string $name The object's name.
+    * @param string $baseFileName The file name the base class will be written to.
     * @param string $fileName The file name the class will be written to.
     *
     * @author Ralf Schubert
-    * @version 0.1,  15.01.2011<br />
+    * @version
+    * Version 0.1, 15.01.2011<br />
+    * Version 0.2, 24.06.2014 (ID#194: split base class and DO class into separate files to better support auto loading.)<br />
     */
-   protected function createNewServiceObject($name, $fileName) {
-      $namespace = $this->getNamespaceByObjectName($name);
-      $content = '<?php
-namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
-            $this->generateBaseObjectCode($name, $namespace) . PHP_EOL . PHP_EOL .
-            $this->generateObjectCode($name, $namespace) . PHP_EOL;
+   protected function createNewServiceObject($name, $baseFileName, $fileName) {
 
+      $namespace = $this->getNamespaceByObjectName($name);
       $path = dirname($fileName);
       if (!file_exists($path)) {
          $folder = new Folder();
          $folder->create($path);
       }
 
+      // create base class file
+      $content = '<?php' . PHP_EOL . 'namespace ' . $namespace . ';'
+            . PHP_EOL . PHP_EOL . $this->generateBaseObjectCode($name, $namespace) . PHP_EOL;
+      $baseFile = new File();
+      $baseFile->create($baseFileName)->writeContent($content);
+
+      // create class file
+      $content = '<?php' . PHP_EOL . 'namespace ' . $namespace . ';'
+            . PHP_EOL . PHP_EOL . $this->generateObjectCode($name, $namespace) . PHP_EOL;
       $file = new File();
       $file->create($fileName)->writeContent($content);
+
    }
 
    /**
@@ -149,16 +177,16 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
     * Will not change anything on the object itself, only the base-model is changed.
     *
     * @param string $name The object's name.
-    * @param string $fileName The file name the class will be written to.
+    * @param string $baseFileName The file name the base class will be written to.
     *
     * @author Ralf Schubert
     * @version
     * Version 0.1, 15.01.2011<br />
-    * Version 0.2, 15.05.2013 (Update start- and endtag with classname instead of class [Tobias Lückel|Megger])<br />
+    * Version 0.2, 15.05.2013 (Update start- and end tag with class name instead of class [Tobias Lückel|Megger])<br />
     */
-   protected function updateServiceObject($name, $fileName) {
+   protected function updateServiceObject($name, $baseFileName) {
 
-      $content = file_get_contents($fileName);
+      $content = file_get_contents($baseFileName);
       $newCode = $this->generateBaseObjectCode($name, $this->getNamespaceByObjectName($name));
 
       // replace only base object area, don't change anything else!
@@ -182,7 +210,7 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
       // write a post in the APF-forum. PHP-version: found at 5.3.5  >>>
 
       $file = new File();
-      $file->open($fileName)->writeContent($content);
+      $file->open($baseFileName)->writeContent($content);
    }
 
    /**
@@ -192,6 +220,7 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
     *
     * @param string $name The object's name.
     * @param string $namespace The namespace of the class to generate.
+    *
     * @return string The base object's PHP code.
     *
     * @author Ralf Schubert
@@ -219,11 +248,11 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
             '/**' . PHP_EOL .
             ' * @package ' . $namespace . PHP_EOL .
             ' * @class ' . $className . 'Base' . PHP_EOL .
-            ' * ' . PHP_EOL .
+            ' *' . PHP_EOL .
             ' * This class provides the descriptive getter and setter methods for the "' . $class . '" domain object.' . PHP_EOL .
             ' */' . PHP_EOL .
             'abstract class ' . $className . 'Base extends ' . $baseClassName . ' {' . PHP_EOL . PHP_EOL .
-            '   public function __construct($objectName = null){' . PHP_EOL .
+            '   public function __construct($objectName = null) {' . PHP_EOL .
             '      parent::__construct(\'' . $name . '\');' . PHP_EOL .
             '   }' . PHP_EOL .
             PHP_EOL;
@@ -244,6 +273,7 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
       $code .= '}' . PHP_EOL .
             PHP_EOL .
             '// DO NOT CHANGE THIS COMMENT! <*' . $className . 'Base:end*>';
+
       return $code;
    }
 
@@ -251,6 +281,7 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
     * Generates the PHP code for a property's getter with the given name.
     *
     * @param string $name The property's name.
+    *
     * @return string The PHP code.
     *
     * @author Ralf Schubert
@@ -258,11 +289,11 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
     */
    protected function generateGetterCode($name) {
       return '   /**' . PHP_EOL .
-            '    * @return string The value for property "' . $name . '".' . PHP_EOL .
-            '    */' . PHP_EOL .
-            '   public function get' . $name . '() {' . PHP_EOL .
-            '      return $this->getProperty(\'' . $name . '\');' . PHP_EOL .
-            '   }' . PHP_EOL . PHP_EOL;
+      '    * @return string The value for property "' . $name . '".' . PHP_EOL .
+      '    */' . PHP_EOL .
+      '   public function get' . $name . '() {' . PHP_EOL .
+      '      return $this->getProperty(\'' . $name . '\');' . PHP_EOL .
+      '   }' . PHP_EOL . PHP_EOL;
    }
 
    /**
@@ -270,6 +301,7 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
     *
     * @param string $name The property's name.
     * @param string $class The name of the class.
+    *
     * @return string The PHP code.
     *
     * @author Christian Achatz
@@ -278,12 +310,12 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
     */
    protected function generateDeleteCode($name, $class) {
       return '   /**' . PHP_EOL .
-            '    * @return ' . RootClassLoader::getClassName($class) . ' The domain object for further usage.' . PHP_EOL .
-            '    */' . PHP_EOL .
-            '   public function delete' . $name . '() {' . PHP_EOL .
-            '      $this->deleteProperty(\'' . $name . '\');' . PHP_EOL .
-            '      return $this;' . PHP_EOL .
-            '   }' . PHP_EOL . PHP_EOL;
+      '    * @return ' . RootClassLoader::getClassName($class) . ' The domain object for further usage.' . PHP_EOL .
+      '    */' . PHP_EOL .
+      '   public function delete' . $name . '() {' . PHP_EOL .
+      '      $this->deleteProperty(\'' . $name . '\');' . PHP_EOL . PHP_EOL .
+      '      return $this;' . PHP_EOL .
+      '   }' . PHP_EOL . PHP_EOL;
    }
 
    /**
@@ -291,6 +323,7 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
     *
     * @param string $name The property's name.
     * @param string $class The name of the class.
+    *
     * @return string The PHP code.
     *
     * @author Ralf Schubert
@@ -298,13 +331,14 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
     */
    protected function generateSetterCode($name, $class) {
       return '   /**' . PHP_EOL .
-            '    * @param string $value The value to set for property "' . $name . '".' . PHP_EOL .
-            '    * @return ' . RootClassLoader::getClassName($class) . ' The domain object for further usage.' . PHP_EOL .
-            '    */' . PHP_EOL .
-            '   public function set' . $name . '($value) {' . PHP_EOL .
-            '      $this->setProperty(\'' . $name . '\', $value);' . PHP_EOL .
-            '      return $this;' . PHP_EOL .
-            '   }' . PHP_EOL . PHP_EOL;
+      '    * @param string $value The value to set for property "' . $name . '".' . PHP_EOL .
+      '    *' . PHP_EOL .
+      '    * @return ' . RootClassLoader::getClassName($class) . ' The domain object for further usage.' . PHP_EOL .
+      '    */' . PHP_EOL .
+      '   public function set' . $name . '($value) {' . PHP_EOL .
+      '      $this->setProperty(\'' . $name . '\', $value);' . PHP_EOL . PHP_EOL .
+      '      return $this;' . PHP_EOL .
+      '   }' . PHP_EOL . PHP_EOL;
    }
 
    /**
@@ -312,6 +346,7 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
     *
     * @param string $name The object's name.
     * @param string $namespace The namespace of the class to generate.
+    *
     * @return string The PHP code.
     *
     * @author Ralf Schubert
@@ -320,11 +355,12 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
    protected function generateObjectCode($name, $namespace) {
       $class = $this->domainObjectsTable[$name]['Class'];
       $className = RootClassLoader::getClassName($class);
+
       return
             '/**' . PHP_EOL .
             ' * @package ' . $namespace . PHP_EOL .
             ' * @class ' . $className . PHP_EOL .
-            ' * ' . PHP_EOL .
+            ' *' . PHP_EOL .
             ' * This class represents the "' . $class . '" domain object.' . PHP_EOL .
             ' * <p/>' . PHP_EOL .
             ' * Please use this class to add your own functionality.' . PHP_EOL .
@@ -342,7 +378,7 @@ namespace ' . $namespace . ';' . PHP_EOL . PHP_EOL .
             '    *' . PHP_EOL .
             '    * @param string $objectName The internal object name of the domain object.' . PHP_EOL .
             '    */' . PHP_EOL .
-            '   public function __construct($objectName = null){' . PHP_EOL .
+            '   public function __construct($objectName = null) {' . PHP_EOL .
             '      parent::__construct();' . PHP_EOL .
             '   }' . PHP_EOL .
             PHP_EOL .
