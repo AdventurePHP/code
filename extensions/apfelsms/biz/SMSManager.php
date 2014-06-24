@@ -9,55 +9,7 @@ use APF\extensions\apfelsms\biz\pages\stores\SMSPageStore;
 use APF\extensions\apfelsms\biz\sites\SMSSite;
 use APF\extensions\apfelsms\data\SMSMapper;
 use APF\tools\request\RequestHandler;
-use Exception;
 use InvalidArgumentException;
-
-/**
- * @package APF\extensions\apfelsms
- */
-class SMSException extends Exception {
-
-}
-
-
-/**
- * @package APF\extensions\apfelsms
- */
-class SMSUnknownTypeException extends SMSException {
-
-
-}
-
-
-/**
- * @package APF\extensions\apfelsms
- */
-class SMSWrongParameterException extends SMSException {
-
-
-}
-
-
-/**
- * @package APF\extensions\apfelsms
- */
-class SMSConfigurationException extends SMSException {
-
-
-}
-
-
-/**
- * @package APF\extensions\apfelsms
- */
-class SMSWrongDataException extends SMSException {
-
-
-}
-
-
-//////////////////////////////////////////////////
-
 
 /**
  * @desc
@@ -237,6 +189,7 @@ class SMSManager extends APFObject {
     *
     * @param string $type Decorator type name
     * @param string|integer $pageId Page id of the page, the decorator belongs to
+    *
     * @return SMSPageDec
     * @throws SMSWrongParameterException
     * @throws SMSUnknownTypeException
@@ -284,6 +237,7 @@ class SMSManager extends APFObject {
     * Map page with pageDecorators and properties.
     *
     * @param string|integer $pageId Page id
+    *
     * @throws SMSException
     * @throws SMSWrongParameterException
     * @throws SMSConfigurationException
