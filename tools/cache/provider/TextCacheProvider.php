@@ -27,6 +27,7 @@ use APF\tools\cache\key\AdvancedCacheKey;
 use APF\tools\filesystem\File;
 use APF\tools\filesystem\FileException;
 use APF\tools\filesystem\FilesystemManager;
+use InvalidArgumentException;
 
 /**
  * @package APF\tools\cache\provider
@@ -74,7 +75,7 @@ class TextCacheProvider extends CacheBase implements CacheProvider {
       // configure file mask
       try {
          $fileMask = sprintf('%04u', $this->getConfigAttribute('Cache.FolderPermission'));
-      } catch (\InvalidArgumentException $e) {
+      } catch (InvalidArgumentException $e) {
          $fileMask = '0770';
       }
 

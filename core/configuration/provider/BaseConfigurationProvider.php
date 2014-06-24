@@ -22,6 +22,7 @@ namespace APF\core\configuration\provider;
  */
 use APF\core\configuration\ConfigurationException;
 use APF\core\loader\RootClassLoader;
+use Exception;
 
 /**
  * @package APF\core\configuration\provider
@@ -137,7 +138,7 @@ abstract class BaseConfigurationProvider {
 
          return $rootPath . $fqNamespace . $contextPath . $fileName;
 
-      } catch (\Exception $e) {
+      } catch (Exception $e) {
          // in order to ease debugging, we are wrapping the class loader exception to a more obvious exception message
          throw new ConfigurationException('Class loader root path for namespace "' . $namespace . '" cannot be determined.'
             . ' Please double-check your configuration!', E_USER_ERROR, $e);

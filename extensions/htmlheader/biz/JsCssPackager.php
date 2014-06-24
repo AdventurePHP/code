@@ -25,10 +25,11 @@ use APF\core\configuration\ConfigurationException;
 use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\IncludeException;
-use APF\core\registry\Registry;
+
 use APF\extensions\htmlheader\biz\filter\JsCssInclusionFilterChain;
 use APF\tools\cache\CacheManagerFabric;
 use APF\tools\cache\key\SimpleCacheKey;
+use InvalidArgumentException;
 
 /**
  * @package APF\extensions\htmlheader\biz
@@ -61,7 +62,7 @@ class JsCssPackager extends APFObject {
     *
     * @param string $name The package name.
     * @param bool $gZip Return package compressed with gzip.
-    * @throws \InvalidArgumentException In case the package configuration section does not exist.
+    * @throws InvalidArgumentException In case the package configuration section does not exist.
     *
     * @return String The complete package.
     *
@@ -73,7 +74,7 @@ class JsCssPackager extends APFObject {
       $cfgPack = $this->getPackageConfiguration()->getSection($name);
 
       if ($cfgPack === null) {
-         throw new \InvalidArgumentException('Package with the given name was not found!');
+         throw new InvalidArgumentException('Package with the given name was not found!');
       }
 
       $ServerCacheMinutes = $cfgPack->getValue('ServerCacheMinutes');

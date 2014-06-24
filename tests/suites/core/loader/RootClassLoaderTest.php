@@ -56,7 +56,7 @@ class RootClassLoaderTest extends \PHPUnit_Framework_TestCase {
    }
 
    public function testIllegalVendor() {
-      $this->setExpectedException('\InvalidArgumentException');
+      $this->setExpectedException('InvalidArgumentException');
       RootClassLoader::getLoaderByVendor('FOO');
    }
 

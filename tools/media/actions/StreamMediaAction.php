@@ -26,6 +26,7 @@ use APF\core\configuration\ConfigurationException;
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\core\loader\RootClassLoader;
 use APF\tools\http\HeaderManager;
+use Exception;
 
 /**
  * @package APF\tools\media\actions
@@ -82,30 +83,34 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
             exit(0);
 
          } else {
-            throw new \Exception('File with name "' . $fileName . '" cannot be found under sub-path "' . $namespace . '"!');
+            throw new Exception('File with name "' . $fileName . '" cannot be found under sub-path "' . $namespace . '"!');
          }
       }
 
-      throw new \Exception('You are not allowed to request "' . $fileName . '" under sub-path "' . $namespace . '"!');
+      throw new Exception('You are not allowed to request "' . $fileName . '" under sub-path "' . $namespace . '"!');
    }
 
    /**
     * @param array $extensions The list of allowed extensions.
     * @param string $extension The extension to check.
+    *
     * @return bool True in case the given extension is allowed, false otherwise.
     */
    private function isAllowedExtension(array $extensions, $extension) {
       $extension = strtolower($extension);
+
       return isset($extensions[$extension]);
    }
 
    /**
     * @param array $extensions The list of allowed extensions.
     * @param string $extension The extension to check
+    *
     * @return string Desired mime type,
     */
    private function getMimeType(array $extensions, $extension) {
       $extension = strtolower($extension);
+
       return $extensions[$extension];
    }
 
@@ -122,8 +127,8 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
     */
    private function getSanitizedNamespace() {
       $namespace = str_replace('_', '\\', // resolve url notation for namespaces
-         preg_replace('/[^A-Za-z0-9\-_\.]/', '',
-            $this->getInput()->getAttribute('namespace'))
+            preg_replace('/[^A-Za-z0-9\-_\.]/', '',
+                  $this->getInput()->getParameter('namespace'))
 
       );
 
@@ -149,7 +154,7 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
     * Version 0.1, 18.07.2011<br />
     */
    private function getSanitizedFileBody() {
-      return preg_replace('/[^A-Za-z0-9\-_]/', '', $this->getInput()->getAttribute('filebody'));
+      return preg_replace('/[^A-Za-z0-9\-_]/', '', $this->getInput()->getParameter('filebody'));
    }
 
    /**
@@ -164,7 +169,7 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
     * Version 0.1, 18.07.2011<br />
     */
    private function getSanitizedExtension() {
-      return preg_replace('/[^A-Za-z0-9]/', '', $this->getInput()->getAttribute('extension'));
+      return preg_replace('/[^A-Za-z0-9]/', '', $this->getInput()->getParameter('extension'));
    }
 
    /**
@@ -185,12 +190,12 @@ class StreamMediaAction extends AbstractFrontcontrollerAction {
          return $this->getExtensions();
       } catch (ConfigurationException $e) {
          return array(
-            'png' => 'image/png',
-            'jpeg' => 'image/jpg',
-            'jpg' => 'image/jpg',
-            'gif' => 'image/gif',
-            'css' => 'text/css',
-            'js' => 'text/javascript'
+               'png'  => 'image/png',
+               'jpeg' => 'image/jpg',
+               'jpg'  => 'image/jpg',
+               'gif'  => 'image/gif',
+               'css'  => 'text/css',
+               'js'   => 'text/javascript'
          );
       }
    }

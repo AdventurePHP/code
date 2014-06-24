@@ -67,6 +67,8 @@ if (!isset($apfClassLoaderConfigurationRootPath)) {
 }
 
 // include the class loader
+include_once(dirname(__FILE__) . '/loader/ClassLoader.php');
+include_once(dirname(__FILE__) . '/loader/StandardClassLoader.php');
 include_once(dirname(__FILE__) . '/loader/RootClassLoader.php');
 
 // register class loader before including/configuring further elements
@@ -91,9 +93,6 @@ ini_set('html_errors', 'off');
 // register the APF error handler to be able to easily configure the error handling mechanism
 GlobalErrorHandler::registerErrorHandler(new DefaultErrorHandler());
 GlobalErrorHandler::enable();
-
-// include the page controller classes here (no auto loading) to avoid issues with multiple classes per file
-include_once(dirname(__FILE__) . '/pagecontroller/pagecontroller.php');
 
 // Define base parameters of the framework's core and tools layer
 Registry::register('APF\core', 'Environment', 'DEFAULT');

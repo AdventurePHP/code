@@ -45,8 +45,8 @@ class MultiFileUploadAction extends AbstractFrontcontrollerAction {
       HeaderManager::send('Pragma: no-cache');
 
       try {
-         $fieldName = $this->getInput()->getAttribute('name');
-         $formName = $this->getInput()->getAttribute('formname');
+         $fieldName = $this->getInput()->getParameter('name');
+         $formName = $this->getInput()->getParameter('formname');
 
          /* @var $manager MultiFileUploadManager */
          $manager = & $this->getAndInitServiceObject(

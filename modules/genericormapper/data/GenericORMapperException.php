@@ -20,6 +20,7 @@ namespace APF\modules\genericormapper\data;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use Exception;
 
 /**
  * @package APF\modules\genericormapper\data
@@ -31,5 +32,6 @@ namespace APF\modules\genericormapper\data;
  * @version
  * Version 0.1, 20.02.2010<br />
  */
-class GenericORMapperException extends \Exception {
+class GenericORMapperException extends Exception {
+
 }

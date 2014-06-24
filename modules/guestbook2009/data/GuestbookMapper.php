@@ -30,6 +30,7 @@ use APF\modules\guestbook2009\biz\GuestbookModel;
 use APF\modules\guestbook2009\biz\User;
 use APF\modules\guestbook2009\biz\Entry;
 use APF\modules\guestbook2009\biz\Guestbook;
+use InvalidArgumentException;
 
 /**
  * @package APF\modules\guestbook2009\data
@@ -127,7 +128,7 @@ class GuestbookMapper extends APFObject {
     *
     * @param GenericDomainObject $guestbook The generic domain object.
     * @return Entry The guestbook's domain object.
-    * @throws \InvalidArgumentException In case the guestbook entry cannot be loaded.
+    * @throws InvalidArgumentException In case the guestbook entry cannot be loaded.
     *
     * @author Christian Achatz
     * @version
@@ -139,7 +140,7 @@ class GuestbookMapper extends APFObject {
          /* @var $model GuestbookModel */
          $model = & $this->getServiceObject('APF\modules\guestbook2009\biz\GuestbookModel');
          $gbId = $model->getGuestbookId();
-         throw new \InvalidArgumentException('[GuestbookManager::mapGenericGuestbook2DomainObject()] '
+         throw new InvalidArgumentException('[GuestbookManager::mapGenericGuestbook2DomainObject()] '
                . 'No guestbook with id "' . $gbId . '" stored in database! Please check your guestbook tag '
                . 'inclusion.', E_USER_ERROR);
       }

@@ -20,6 +20,7 @@ namespace APF\tools\cookie;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use InvalidArgumentException;
 
 /**
  * @package APF\tools\cookie
@@ -90,7 +91,7 @@ class Cookie {
     * @param bool $secure True in case the cookie is only valid for HTTPS transmission, false otherwise.
     * @param bool $httpOnly True in case the cookie can only be modified via HTTP, false otherwise.
     *
-    * @throws \InvalidArgumentException In case of an empty cookie name.
+    * @throws InvalidArgumentException In case of an empty cookie name.
     *
     * @author Christian Achatz
     * @version
@@ -100,7 +101,7 @@ class Cookie {
    public function __construct($name, $expireTime = self::DEFAULT_EXPIRATION_TIME, $domain = null, $path = null, $secure = null, $httpOnly = null) {
 
       if (empty($name)) {
-         throw new \InvalidArgumentException('Cookie cannot be created with an empty name!');
+         throw new InvalidArgumentException('Cookie cannot be created with an empty name!');
       }
 
       $this->name = $name;

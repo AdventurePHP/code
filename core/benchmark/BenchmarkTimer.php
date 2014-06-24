@@ -20,6 +20,7 @@ namespace APF\core\benchmark;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use InvalidArgumentException;
 
 /**
  * @package APF\core\benchmark
@@ -175,7 +176,7 @@ final class BenchmarkTimer {
     * This method is used to starts a new benchmark timer.
     *
     * @param string $name The (unique!) name of the benchmark tag.
-    * @throws \InvalidArgumentException In case the given name is null.
+    * @throws InvalidArgumentException In case the given name is null.
     *
     * @author Christian Schäfer
     * @version
@@ -191,7 +192,7 @@ final class BenchmarkTimer {
       $startTime = $this->generateMicroTime();
 
       if ($name === null) {
-         throw new \InvalidArgumentException('[BenchmarkTimer::start()] Required parameter name is not set!');
+         throw new InvalidArgumentException('[BenchmarkTimer::start()] Required parameter name is not set!');
       }
 
       if ($this->getRunningProcessByName($name) === null) {
@@ -203,7 +204,7 @@ final class BenchmarkTimer {
          $this->setCurrentParent($newProcess);
          $this->addRunningProcess($newProcess);
       } else {
-         throw new \InvalidArgumentException('[BenchmarkTimer::start()] Benchmark process with name "' . $name
+         throw new InvalidArgumentException('[BenchmarkTimer::start()] Benchmark process with name "' . $name
                . '" is already running! Use a different one!');
       }
 
@@ -215,7 +216,7 @@ final class BenchmarkTimer {
     * Stops the benchmark timer, started with start().
     *
     * @param string $name The (unique!) name of the benchmark tag.
-    * @throws \InvalidArgumentException In case the named process is not running.
+    * @throws InvalidArgumentException In case the named process is not running.
     *
     * @author Christian Schäfer
     * @version
@@ -236,7 +237,7 @@ final class BenchmarkTimer {
          $this->setCurrentParent($currentProcess->getParentProcess());
          $this->removeRunningProcess($name);
       } else {
-         throw new \InvalidArgumentException('[BenchmarkTimer::stop()] Process with name "' . $name
+         throw new InvalidArgumentException('[BenchmarkTimer::stop()] Process with name "' . $name
                . '" is not running yet!');
       }
 
@@ -689,132 +690,4 @@ final class BenchmarkTimer {
    public function getTotalTime() {
       return $this->getRootProcess()->getProcessRuntime();
    }
-}
-
-/**
- * @package APF\core\benchmark
- * @class BenchmarkProcess
- *
- * Represents a benchmark process node within the benchmark tree.
- *
- * @author Christian Schäfer
- * @version
- * Version 0.1, 31.12.2006<br />
- */
-final class BenchmarkProcess {
-
-   /**
-    * @var int ID of the process.
-    */
-   private $processId;
-
-   /**
-    * @var string Name of the process.
-    */
-   private $processName;
-
-   /**
-    * @var int Level of the process.
-    */
-   private $processLevel;
-
-   /**
-    * @var int Start time of the process.
-    */
-   private $processStartTime = null;
-
-   /**
-    * @var int Stop time of the process.
-    */
-   private $processStopTime = null;
-
-   /**
-    * @var BenchmarkProcess Reference on the process' parent.
-    */
-   private $parentProcess = null;
-
-   /**
-    * @var BenchmarkProcess[] List of child processes.
-    */
-   private $processes = array();
-
-   public function setProcessId($id) {
-      $this->processId = $id;
-   }
-
-   public function getProcessId() {
-      return $this->processId;
-   }
-
-   public function setProcessName($name) {
-      $this->processName = $name;
-   }
-
-   public function getProcessName() {
-      return $this->processName;
-   }
-
-   public function setProcessLevel($level) {
-      $this->processLevel = $level;
-   }
-
-   public function getProcessLevel() {
-      return $this->processLevel;
-   }
-
-   public function setProcessStartTime($startTime) {
-      $this->processStartTime = $startTime;
-   }
-
-   public function getProcessStartTime() {
-      return $this->processStartTime;
-   }
-
-   public function setProcessStopTime($stopTime) {
-      $this->processStopTime = $stopTime;
-   }
-
-   public function getProcessStopTime() {
-      return $this->processStopTime;
-   }
-
-   public function setParentProcess(BenchmarkProcess &$process) {
-      $this->parentProcess = &$process;
-   }
-
-   public function &getParentProcess() {
-      return $this->parentProcess;
-   }
-
-   public function appendProcess(BenchmarkProcess &$process) {
-      $processId = $process->getProcessID();
-      $this->processes[$processId] = $process;
-   }
-
-   public function getProcesses() {
-      return $this->processes;
-   }
-
-   public function hasChildProcesses() {
-      return count($this->processes) > 0;
-   }
-
-   /**
-    * @public
-    *
-    * Returns the process' runtime.
-    *
-    * @return string The runtime of the process in seconds.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 31.12.2006<br />
-    */
-   public function getProcessRuntime() {
-      if ($this->processStopTime == null) {
-         return '--------------------';
-      }
-      return number_format($this->processStopTime - $this->processStartTime, 10);
-   }
-
 }

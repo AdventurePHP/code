@@ -22,6 +22,7 @@ namespace APF\tools\cache;
  */
 use APF\core\pagecontroller\APFObject;
 use APF\core\registry\Registry;
+use InvalidArgumentException;
 
 /**
  * @package APF\tools\cache
@@ -35,6 +36,7 @@ use APF\core\registry\Registry;
  * @version
  * Version 0.1, 24.11.2008<br />
  */
+// TODO Refactor cache parameter injection as APFObject has no getAttribute()
 abstract class CacheBase extends APFObject {
 
    /**
@@ -45,7 +47,7 @@ abstract class CacheBase extends APFObject {
     *
     * @param string $name The name of the desired attribute.
     * @return string Value of the attribute.
-    * @throws \InvalidArgumentException In case the desired attribute is not defined.
+    * @throws InvalidArgumentException In case the desired attribute is not defined.
     *
     * @author Christian Achatz
     * @version
@@ -56,7 +58,7 @@ abstract class CacheBase extends APFObject {
       $value = $this->getAttribute($name);
       if ($value == null) {
          $env = Registry::retrieve('APF\core', 'Environment');
-         throw new \InvalidArgumentException('[' . get_class($this)
+         throw new InvalidArgumentException('[' . get_class($this)
             . '::getConfigAttribute()] The configuration directive "' . $name . '" is not '
             . 'present or empty. Please check your cache configuration ("' . $env
             . '_cacheconfig.ini") for namespace "APF\tools\cache" and context "'
@@ -83,7 +85,7 @@ abstract class CacheBase extends APFObject {
       }
       try {
          return intval($this->getConfigAttribute('Cache.ExpireTime'));
-      } catch (\InvalidArgumentException $e) {
+      } catch (InvalidArgumentException $e) {
          return 0; // cache forever
       }
    }

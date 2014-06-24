@@ -23,6 +23,7 @@ namespace APF\extensions\postbox\biz;
 use APF\core\database\MySQLxHandler;
 use APF\modules\genericormapper\data\GenericCriterionObject;
 use APF\modules\genericormapper\data\GenericDomainObject;
+use Exception;
 
 /**
  * @package APF\extensions\postbox\biz\abstractdomainobjects
@@ -134,7 +135,7 @@ class AbstractPostboxFolder extends GenericDomainObject {
     * Deletes a Folder.
     *
     * @param bool $moveChannelsToPostbox Optional. If set to true, all channels within the folder will be moved to the postbox instead of throwing an exception.
-    * @throws \Exception
+    * @throws Exception
     */
    public function delete($moveChannelsToPostbox = false) {
       /* @var $channels MessageChannel[] */
@@ -145,7 +146,7 @@ class AbstractPostboxFolder extends GenericDomainObject {
                $this->removeChannel($channel);
             }
          } else {
-            throw new \Exception('[AbstractPostboxFolder::delete()] This folder can\'t be deletes as long as it still contains channels!');
+            throw new Exception('[AbstractPostboxFolder::delete()] This folder can\'t be deletes as long as it still contains channels!');
          }
       }
 

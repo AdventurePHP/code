@@ -26,19 +26,6 @@ use APF\core\logging\writer\FileLogWriter;
 
 /**
  * @package APF\core\logging
- * @class LoggerException
- *
- * Defines a custom exception for the logger component.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 12.04.2010<br />
- */
-class LoggerException extends \Exception {
-}
-
-/**
- * @package APF\core\logging
  * @class Logger
  *
  * Implements a generic logger used in the framework's core components and your applications. The

@@ -23,6 +23,7 @@ namespace APF\tools\media\taglib;
 use APF\core\pagecontroller\Document;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
+use InvalidArgumentException;
 
 /**
  * @package APF\tools\media\taglib
@@ -40,13 +41,13 @@ class MediaInclusionTag extends Document {
    public function onParseTime() {
 
       if ($this->getAttribute('namespace') === null) {
-         throw new \InvalidArgumentException('[' . get_class($this)
+         throw new InvalidArgumentException('[' . get_class($this)
                . '::onParseTime()] The tag definition does not contain a "namespace" definition!');
       }
 
       $filename = $this->getAttribute('filename');
       if ($filename === null) {
-         throw new \InvalidArgumentException('[' . get_class($this)
+         throw new InvalidArgumentException('[' . get_class($this)
                . '::onParseTime()] The tag definition does not contain a "filename" definition!');
       }
 

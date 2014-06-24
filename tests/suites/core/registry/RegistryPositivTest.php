@@ -21,6 +21,7 @@ namespace APF\tests\suites\core\registry;
  * -->
  */
 use APF\core\registry\Registry;
+use InvalidArgumentException;
 
 /**
  * @package APF\tests\suites\core\registry
@@ -182,7 +183,7 @@ class RegistryPositivTest extends \PHPUnit_Framework_TestCase {
    /**
     * @public
     * @depends testRegisterReadonlyMethod
-    * @expectedException \InvalidArgumentException
+    * @expectedException InvalidArgumentException
     *
     * Tests default usage with readonly flag set to true and the throw of an
     * exception if the register method is called again for the same key

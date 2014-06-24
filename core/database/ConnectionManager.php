@@ -26,6 +26,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\core\database\config\StatementConfigurationProvider;
 use APF\core\registry\Registry;
 use APF\core\service\APFService;
+use InvalidArgumentException;
 
 /**
  * @package APF\core\database
@@ -101,7 +102,7 @@ final class ConnectionManager extends APFObject {
     * @param string $connectionKey Desired configuration section.
     * @param string $instanceId The id of the database driver instance.
     * @return AbstractDatabaseHandler An instance of a connection layer implementation.
-    * @throws \InvalidArgumentException In case of missing configuration.
+    * @throws InvalidArgumentException In case of missing configuration.
     *
     * @author Christian Achatz, Tobias Lückel (megger)
     * @version
@@ -132,7 +133,7 @@ final class ConnectionManager extends APFObject {
 
       if ($section == null) {
          $env = Registry::retrieve('APF\core', 'Environment');
-         throw new \InvalidArgumentException('[ConnectionManager::getConnection()] The given '
+         throw new InvalidArgumentException('[ConnectionManager::getConnection()] The given '
                . 'configuration section ("' . $connectionKey . '") does not exist in configuration file "'
                . $env . '_connections.ini" in namespace "APF\core\database" for context "'
                . $this->context . '"!', E_USER_ERROR);

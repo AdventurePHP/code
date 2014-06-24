@@ -20,6 +20,7 @@ namespace APF\core\session;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use InvalidArgumentException;
 
 /**
  * @package APF\core\session
@@ -53,7 +54,7 @@ final class Session {
     * session in case it is not started yet.
     *
     * @param string $namespace The desired namespace.
-    * @throws \InvalidArgumentException In case, the namespace is empty.
+    * @throws InvalidArgumentException In case, the namespace is empty.
     *
     * @author Christian Schäfer
     * @version
@@ -63,7 +64,7 @@ final class Session {
    public function __construct($namespace) {
 
       if (empty($namespace)) {
-         throw new \InvalidArgumentException('Session cannot be created with an empty namespace!');
+         throw new InvalidArgumentException('Session cannot be created with an empty namespace!');
       }
 
       $this->namespace = $namespace;

@@ -22,6 +22,8 @@ namespace APF\tools\html\taglib;
  */
 use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\ImportTemplateTag;
+use Exception;
+use InvalidArgumentException;
 
 /**
  * @package APF\tools\html\taglib
@@ -113,12 +115,12 @@ class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
 
       $templateID = $this->getAttribute('template');
       if ($templateID === null) {
-         throw new \InvalidArgumentException('[LanguageDependentIncParamImportTemplateTag::onParseTime()] Attribute "template" is not given!');
+         throw new InvalidArgumentException('[LanguageDependentIncParamImportTemplateTag::onParseTime()] Attribute "template" is not given!');
       }
 
       $namespace = $this->getAttribute('namespace');
       if ($namespace === null) {
-         throw new \InvalidArgumentException('[LanguageDependentIncParamImportTemplateTag::onParseTime()] Attribute "namespace" is not given!');
+         throw new InvalidArgumentException('[LanguageDependentIncParamImportTemplateTag::onParseTime()] Attribute "namespace" is not given!');
       }
 
       $incparam = $this->getAttribute('incparam', 'incparam');
@@ -146,7 +148,7 @@ class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
          if ($sec !== null) {
             $incParamName = $sec->getValue($incparam);
          }
-      } catch (\Exception $e) {
+      } catch (Exception $e) {
          if ($this->getAttribute('deactivateConfigException', 'false') != "true") {
             throw $e;
          }

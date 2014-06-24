@@ -21,7 +21,8 @@ namespace APF\extensions\forwardmessage\biz;
  * -->
  */
 use APF\core\pagecontroller\APFObject;
-use APF\extensions\forwardmessage\biz\ForwardMessage;
+
+use Exception;
 
 /**
  * @package APF\extensions\forwardmessage\biz
@@ -71,7 +72,7 @@ class ForwardMessageManager extends APFObject {
     *
     * @param string $name The name of the message to show.
     * @param string $group The group of the message.
-    * @throws \Exception
+    * @throws Exception
     *
     * @author Daniel Seemaier, Werner Liemberger
     * @version
@@ -83,7 +84,7 @@ class ForwardMessageManager extends APFObject {
          $group = 'message';
       }
       if (!isset($this->messages[$group][$name])) {
-         throw new \Exception('[ForwardMessageManager::showMessage()] Message "' . $name . '" does not exists in group ' . $group);
+         throw new Exception('[ForwardMessageManager::showMessage()] Message "' . $name . '" does not exists in group ' . $group);
       }
 
       $this->messages[$group][$name]->show();
@@ -96,7 +97,7 @@ class ForwardMessageManager extends APFObject {
     *
     * @param string $name The name of the message to hide.
     * @param string $group The group of the message.
-    * @throws \Exception
+    * @throws Exception
     *
     * @author Daniel Seemaier, Werner Liemberger
     * @version
@@ -108,7 +109,7 @@ class ForwardMessageManager extends APFObject {
          $group = 'message';
       }
       if (!isset($this->messages[$group][$name])) {
-         throw new \Exception('[ForwardMessageManager::hideMessage()] Message "' . $name . '" does not exists in group' . $group);
+         throw new Exception('[ForwardMessageManager::hideMessage()] Message "' . $name . '" does not exists in group' . $group);
       }
 
       $this->messages[$group][$name]->hide();

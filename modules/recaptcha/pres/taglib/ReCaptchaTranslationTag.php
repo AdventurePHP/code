@@ -22,6 +22,7 @@ namespace APF\modules\recaptcha\pres\taglib;
  */
 use APF\core\pagecontroller\LanguageLabelTag;
 use APF\core\registry\Registry;
+use InvalidArgumentException;
 
 /**
  * @package APF\modules\recaptcha\pres\taglib
@@ -41,21 +42,21 @@ class ReCaptchaTranslationTag extends LanguageLabelTag {
       // check for attribute "namespace"
       $namespace = $this->getAttribute('namespace');
       if ($namespace === null) {
-         throw new \InvalidArgumentException('[' . get_class($this) . '->onAfterAppend()] No attribute '
+         throw new InvalidArgumentException('[' . get_class($this) . '->onAfterAppend()] No attribute '
                . '"namespace" given in tag definition!', E_USER_ERROR);
       }
 
       // check for attribute "config"
       $configName = $this->getAttribute('config');
       if ($configName === null) {
-         throw new \InvalidArgumentException('[' . get_class($this) . '->onAfterAppend()] No attribute '
+         throw new InvalidArgumentException('[' . get_class($this) . '->onAfterAppend()] No attribute '
                . '"config" given in tag definition!', E_USER_ERROR);
       }
 
       // check for attribute "entry"
       $entry = $this->getAttribute('entry');
       if ($entry === null) {
-         throw new \InvalidArgumentException('[' . get_class($this) . '->onAfterAppend()] No attribute '
+         throw new InvalidArgumentException('[' . get_class($this) . '->onAfterAppend()] No attribute '
                . '"entry" given in tag definition!', E_USER_ERROR);
       }
 
@@ -68,7 +69,7 @@ class ReCaptchaTranslationTag extends LanguageLabelTag {
          // get environment variable from registry to have nice exception message
          $env = Registry::retrieve('APF\core', 'Environment');
 
-         throw new \InvalidArgumentException('[' . get_class($this) . '::onAfterAppend()] Given section "'
+         throw new InvalidArgumentException('[' . get_class($this) . '::onAfterAppend()] Given section "'
                . $this->getLanguage() . '" is not defined in configuration "' . $env . '_' . $configName
                . '" in namespace "' . $namespace . '" and context "' . $this->getContext() . '"!', E_USER_ERROR);
       }
@@ -83,7 +84,7 @@ class ReCaptchaTranslationTag extends LanguageLabelTag {
          // get environment variable from registry to have nice exception message
          $env = Registry::retrieve('APF\core', 'Environment');
 
-         throw new \InvalidArgumentException('[' . get_class($this) . '::onAfterAppend()] Given entry "'
+         throw new InvalidArgumentException('[' . get_class($this) . '::onAfterAppend()] Given entry "'
                . $entry . '" is not defined in section "' . $this->getLanguage() . '" in configuration "'
                . $env . '_' . $configName . '" in namespace "' . $namespace . '" and context "'
                . $this->getContext() . '"!', E_USER_ERROR);

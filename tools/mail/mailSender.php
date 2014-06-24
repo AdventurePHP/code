@@ -25,9 +25,9 @@ use APF\core\pagecontroller\APFObject;
 use APF\core\logging\Logger;
 use APF\core\singleton\Singleton;
 use APF\tools\form\taglib\ButtonTag;
-use APF\tools\form\taglib\HtmlFormTag;
 use APF\tools\form\taglib\TextFieldTag;
 use APF\tools\form\validator\EMailValidator;
+use InvalidArgumentException;
 
 /**
  * @package APF\tools\mail
@@ -136,7 +136,7 @@ class mailSender extends APFObject {
     * instance of the mailSender.
     *
     * @param string $initParam The name of the config section to initialize the component with.
-    * @throws \InvalidArgumentException In case the init param is referring to non-existent config section.
+    * @throws InvalidArgumentException In case the init param is referring to non-existent config section.
     *
     * @author Christian Schäfer
     * @version
@@ -158,7 +158,7 @@ class mailSender extends APFObject {
       $section = $config->getSection($initParam);
 
       if ($section === null) {
-         throw new \InvalidArgumentException('[mailSender::init()] Section "' . $initParam
+         throw new InvalidArgumentException('[mailSender::init()] Section "' . $initParam
                . '" is not present within the mail sender\'s configuration!');
       }
 

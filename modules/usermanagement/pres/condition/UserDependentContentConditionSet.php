@@ -22,17 +22,9 @@ namespace APF\modules\usermanagement\pres\condition;
  */
 use APF\core\pagecontroller\APFObject;
 use APF\core\service\APFService;
-
 use APF\modules\usermanagement\biz\UmgtManager;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
-
-use APF\modules\usermanagement\pres\condition\UserDependentContentCondition;
-
-use APF\modules\usermanagement\pres\condition\UmgtLoggedOutCondition;
-use APF\modules\usermanagement\pres\condition\UmgtLoggedInCondition;
-use APF\modules\usermanagement\pres\condition\UmgtGroupCondition;
-use APF\modules\usermanagement\pres\condition\UmgtRoleCondition;
-use APF\modules\usermanagement\pres\condition\UmgtNotRoleCondition;
+use Exception;
 
 /**
  * @package APF\modules\usermanagement\pres\condition
@@ -94,10 +86,12 @@ class UserDependentContentConditionSet extends APFObject {
 
    /**
     * @param UserDependentContentCondition $condition The condition to add.
+    *
     * @return UserDependentContentConditionSet This instance for further usage.
     */
    public function &addCondition(UserDependentContentCondition $condition) {
       $this->conditions[] = $condition;
+
       return $this;
    }
 
@@ -108,6 +102,7 @@ class UserDependentContentConditionSet extends APFObject {
     */
    public function resetConditionList() {
       $this->conditions = array();
+
       return $this;
    }
 
@@ -119,6 +114,7 @@ class UserDependentContentConditionSet extends APFObject {
     * @param string $applicationIdentifier The identifier of the current application concerning the login state.
     * @param string $conditionKey The current condition.
     * @param string $options The options to apply to the conditions.
+    *
     * @return bool True, in case one of the condition matches, false otherwise.
     *
     * @author Christian Achatz
@@ -142,7 +138,7 @@ class UserDependentContentConditionSet extends APFObject {
          $condition->setOptions($parsedOptions);
 
          return $condition === null ? false : $condition->matches($conditionKey, $user);
-      } catch (\Exception $e) {
+      } catch (Exception $e) {
          return false;
       }
    }
@@ -156,8 +152,9 @@ class UserDependentContentConditionSet extends APFObject {
 
    /**
     * @param string $conditionKey
+    *
     * @return UserDependentContentCondition
-    * @throws \Exception In case no condition can be found for the given condition key.
+    * @throws Exception In case no condition can be found for the given condition key.
     */
    private function getCondition($conditionKey) {
 
@@ -168,11 +165,12 @@ class UserDependentContentConditionSet extends APFObject {
          }
       }
 
-      throw new \Exception('No condition found for key "' . $conditionKey . '".');
+      throw new Exception('No condition found for key "' . $conditionKey . '".');
    }
 
    /**
     * @param string $rawOptions The string that represents multiple condition options.
+    *
     * @return array The options list.
     */
    private function getOptions($rawOptions) {
@@ -180,6 +178,7 @@ class UserDependentContentConditionSet extends APFObject {
       foreach (explode(',', $rawOptions) as $option) {
          $options[] = trim($option);
       }
+
       return $options;
    }
 

@@ -20,6 +20,7 @@ namespace APF\tools\form;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use Exception;
 
 /**
  * @package APF\tools\form
@@ -31,5 +32,6 @@ namespace APF\tools\form;
  * @version
  * Version 0.1, 13.03.2010<br />
  */
-class FormException extends \Exception {
+class FormException extends Exception {
+
 }

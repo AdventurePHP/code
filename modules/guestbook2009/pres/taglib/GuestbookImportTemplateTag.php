@@ -22,6 +22,7 @@ namespace APF\modules\guestbook2009\pres\taglib;
  */
 use APF\core\pagecontroller\ImportTemplateTag;
 use APF\modules\guestbook2009\biz\GuestbookModel;
+use InvalidArgumentException;
 
 /**
  * @package APF\modules\guestbook2009\pres\taglib
@@ -53,7 +54,7 @@ class GuestbookImportTemplateTag extends ImportTemplateTag {
 
       // do not include the guestbook, if gbid is not set/existent
       if ($guestbookId == null || ((int)$guestbookId) == 0) {
-         throw new \InvalidArgumentException('[GuestbookImportTemplateTag::onParseTime()] The attribute '
+         throw new InvalidArgumentException('[GuestbookImportTemplateTag::onParseTime()] The attribute '
                . '"gbid" is empty or not present or the value is not an id. Please specify the '
                . 'attribute correctly in order to include the guestbook module!');
       }

@@ -21,12 +21,12 @@ namespace APF\extensions\postbox\biz;
  * -->
  */
 use APF\core\pagecontroller\APFObject;
-use APF\extensions\postbox\biz\MessageChannel;
-use APF\extensions\postbox\biz\Message;
+
 use APF\modules\genericormapper\data\GenericCriterionObject;
 use APF\modules\genericormapper\data\GenericORMapperDataObject;
 use APF\modules\genericormapper\data\GenericORRelationMapper;
-use APF\extensions\postbox\biz\PostboxFolder;
+
+use InvalidArgumentException;
 
 /**
  * @package APF\extensions\postbox\biz
@@ -120,11 +120,11 @@ class Postbox extends APFObject {
     *
     * @param string $Name The name of the Folder
     * @return PostboxFolder The new created folder
-    * @throws \InvalidArgumentException
+    * @throws InvalidArgumentException
     */
    public function createPostboxFolder($Name) {
       if ($this->getPostboxFolderByName($Name) !== null) {
-         throw new \InvalidArgumentException('[Postbox::addPostboxFolder()] This postbox already contains a folder with this name!', 1);
+         throw new InvalidArgumentException('[Postbox::addPostboxFolder()] This postbox already contains a folder with this name!', 1);
       }
 
       $Folder = new PostboxFolder();
@@ -153,7 +153,7 @@ class Postbox extends APFObject {
     * @param GenericORMapperDataObject[] $Readers An array of users which will be recipients.
     *
     * @return MessageChannel The new created channel
-    * @throws \InvalidArgumentException
+    * @throws InvalidArgumentException
     */
    public function createChannel($Title, $MessageText, array $Readers) {
       $Message = new Message();
@@ -182,7 +182,7 @@ class Postbox extends APFObject {
       }
 
       if (!$RealReadersPresent) {
-         throw new \InvalidArgumentException('[Postbox::createChannel()] There are no recipients, maybe you tried to send a message to yourself, or the recipient(s) are blocking you!');
+         throw new InvalidArgumentException('[Postbox::createChannel()] There are no recipients, maybe you tried to send a message to yourself, or the recipient(s) are blocking you!');
       }
 
       $Channel->setDataComponent($this->ORM);

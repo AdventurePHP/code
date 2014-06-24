@@ -21,6 +21,7 @@ namespace APF\tools\string;
  * -->
  */
 use APF\core\pagecontroller\APFObject;
+use InvalidArgumentException;
 
 /**
  * @package APF\tools\string
@@ -159,7 +160,7 @@ class RandomStringManager extends APFObject {
     * @param string $select The SQL query to check, if the string is already in use.
     * @param string $connectionKey The database connection key.
     * @return string The created RandomString
-    * @throws \InvalidArgumentException In case of mis-configuration.
+    * @throws InvalidArgumentException In case of mis-configuration.
     *
     * @author dave
     * @version
@@ -170,11 +171,11 @@ class RandomStringManager extends APFObject {
       $this->randomString = null;
 
       if (!$select) {
-         throw new \InvalidArgumentException('[RandomStringManager::advancedCreateHash()] You must provide a SQL query!', E_USER_ERROR);
+         throw new InvalidArgumentException('[RandomStringManager::advancedCreateHash()] You must provide a SQL query!', E_USER_ERROR);
       }
 
       if (!$connectionKey) {
-         throw new \InvalidArgumentException('[RandomStringManager::advancedCreateHash()] You must provide a ConnectionKey for the SQL Statement!', E_USER_ERROR);
+         throw new InvalidArgumentException('[RandomStringManager::advancedCreateHash()] You must provide a ConnectionKey for the SQL Statement!', E_USER_ERROR);
       }
 
       $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');

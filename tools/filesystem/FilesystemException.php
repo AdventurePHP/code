@@ -20,6 +20,7 @@ namespace APF\tools\filesystem;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use Exception;
 
 /**
  * @package APF\tools\filesystem
@@ -30,5 +31,6 @@ namespace APF\tools\filesystem;
  * @author  Nicolas Pecher
  * @version Version 0.1, 06.08.2012
  */
-class FilesystemException extends \Exception {
+class FilesystemException extends Exception {
+
 }

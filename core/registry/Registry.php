@@ -20,6 +20,7 @@ namespace APF\core\registry;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use InvalidArgumentException;
 
 /**
  * @package APF\core\registry
@@ -59,7 +60,7 @@ final class Registry {
     * @param string $name name of the entry.
     * @param string $value value of the entry.
     * @param bool $readOnly true (value is read only) | false (value can be changed).
-    * @throws \InvalidArgumentException In case you try to register a read-only value that has ben registered before.
+    * @throws InvalidArgumentException In case you try to register a read-only value that has ben registered before.
     *
     * @author Christian Achatz
     * @version
@@ -68,7 +69,7 @@ final class Registry {
    public static function register($namespace, $name, $value, $readOnly = false) {
 
       if (isset(self::$REGISTRY_STORE[$namespace][$name]['readonly']) && self::$REGISTRY_STORE[$namespace][$name]['readonly'] === true) {
-         throw new \InvalidArgumentException('[Registry::register()] The entry with name "'
+         throw new InvalidArgumentException('[Registry::register()] The entry with name "'
                . $name . '" already exists in namespace "' . $namespace . '" and is read only! '
                . 'Please choose another name.', E_USER_WARNING);
       } else {

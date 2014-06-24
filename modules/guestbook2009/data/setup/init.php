@@ -11,7 +11,7 @@
  * include('./APF/modules/guestbook2009/data/setup/init.php');
  * </code>
  *
- * Please note, that you may have to adapt the include path for the <em>pagecontroller.php</em>.
+ * Please note, that you may have to adapt the include path for the <em>bootstrap.php</em>.
  */
 use APF\modules\genericormapper\data\GenericDomainObject;
 use APF\modules\genericormapper\data\GenericORRelationMapper;

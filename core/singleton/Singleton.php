@@ -21,6 +21,7 @@ namespace APF\core\singleton;
  * -->
  */
 use APF\core\pagecontroller\APFObject;
+use Exception;
 
 /**
  * @package APF\core\singleton
@@ -69,7 +70,7 @@ class Singleton {
     * @param string $class The name of the class, that should be created a singleton instance from.
     * @param string $instanceId The id of the instance to return.
     * @return APFObject The desired object's singleton instance.
-    * @throws \Exception In case the implementation class cannot be found.
+    * @throws Exception In case the implementation class cannot be found.
     *
     * @author Christian Achatz
     * @version
