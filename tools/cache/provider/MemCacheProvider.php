@@ -53,7 +53,7 @@ class MemCacheProvider extends CacheBase implements CacheProvider {
          return null;
       } else {
 
-         $namespace = $this->getConfigAttribute('Cache.Namespace');
+         $namespace = $this->getConfigAttribute('Namespace');
          $cacheContent = $mem->get($namespace . '_' . $cacheKey->getKey());
          $mem->close();
 
@@ -85,7 +85,7 @@ class MemCacheProvider extends CacheBase implements CacheProvider {
       } else {
 
          // write to cache (try to replace all the time)
-         $namespace = $this->getConfigAttribute('Cache.Namespace');
+         $namespace = $this->getConfigAttribute('Namespace');
 
          $identifier = $namespace . '_' . $cacheKey->getKey();
          $serialized = @serialize($object);
@@ -126,7 +126,7 @@ class MemCacheProvider extends CacheBase implements CacheProvider {
       } else {
 
          // clear cache
-         $namespace = $this->getConfigAttribute('Cache.Namespace');
+         $namespace = $this->getConfigAttribute('Namespace');
          if ($cacheKey === null) {
 
             if (isset($this->cacheKeyStore[$namespace])) {
@@ -164,9 +164,9 @@ class MemCacheProvider extends CacheBase implements CacheProvider {
    protected function getMemCacheConnection() {
 
       // get configuration params
-      $host = $this->getConfigAttribute('Cache.Host');
-      $port = $this->getConfigAttribute('Cache.Port');
-      $pconn = $this->getConfigAttribute('Cache.PersistentConnect');
+      $host = $this->getConfigAttribute('Host');
+      $port = $this->getConfigAttribute('Port');
+      $pconn = $this->getConfigAttribute('PersistentConnect');
 
       // initialize memcache connection
       $mem = new \Memcache();

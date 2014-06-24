@@ -57,6 +57,7 @@ final class CacheManagerFabric extends APFObject {
     * @version
     * Version 0.1, 22.11.2008<br />
     * Version 0.2, 04.08.2010 (Bug-fix: initializing two cache managers failed due to wrong service mode)<br />
+    * Version 0.3, 24.06.2014 (ID#207: directly injecting configuration instead of re-mapping)<br />
     */
    public function &getCacheManager($configSection) {
 
@@ -74,15 +75,9 @@ final class CacheManagerFabric extends APFObject {
                   . '"APF\tools\cache" and context "' . $this->context . '"!', E_USER_ERROR);
          }
 
-         // remap options to array to be able to initialize the cache manager using the service manager
-         $options = array();
-         foreach ($section->getValueNames() as $key) {
-            $options[$key] = $section->getValue($key);
-         }
-
          // create cache manager
          $this->cacheManagerCache[$configSection] =
-               $this->getAndInitServiceObject('APF\tools\cache\CacheManager', $options, APFService::SERVICE_TYPE_NORMAL);
+               $this->getAndInitServiceObject('APF\tools\cache\CacheManager', $section, APFService::SERVICE_TYPE_NORMAL);
 
       }
 
