@@ -25,6 +25,7 @@ use APF\core\pagecontroller\APFObject;
 use APF\core\pagecontroller\Page;
 use APF\extensions\arraypager\data\ArrayPagerMapper;
 use APF\tools\request\RequestHandler;
+use Exception;
 
 /**
  * @package APF\extensions\arraypager\biz
@@ -116,7 +117,7 @@ final class ArrayPagerManager extends APFObject {
     * @param integer $integerPage optional parameter for current page
     * @param integer $integerEntries optional parameter for entries per page
     * @return mixed[] List of entries for the current page
-    * @throws \Exception In case no pager configuration can be found.
+    * @throws Exception In case no pager configuration can be found.
     *
     * @author Lutz Mahlstedt
     * @version
@@ -161,7 +162,7 @@ final class ArrayPagerManager extends APFObject {
             TRUE
          );
       } else {
-         throw new \Exception('[ArrayPagerManager->loadEntries()] There is no pager named "'
+         throw new Exception('[ArrayPagerManager->loadEntries()] There is no pager named "'
                . $stringPager . '" registered!', E_USER_WARNING);
       }
    }
@@ -171,7 +172,7 @@ final class ArrayPagerManager extends APFObject {
     *
     * @param string $stringPager name of the pager
     * @return string The HTML representation of the pager
-    * @throws \Exception In case no pager configuration can be found.
+    * @throws Exception In case no pager configuration can be found.
     *
     * @author Lutz Mahlstedt
     * @version
@@ -228,7 +229,7 @@ final class ArrayPagerManager extends APFObject {
             $stringOutput = $pager->transform();
          }
       } else {
-         throw new \Exception('[ArrayPagerManager->getPager()] There is no pager named "'
+         throw new Exception('[ArrayPagerManager->getPager()] There is no pager named "'
                . $stringPager . '" registered!', E_USER_WARNING);
       }
 
@@ -270,7 +271,7 @@ final class ArrayPagerManager extends APFObject {
     *
     * @param string $stringPager name of the pager
     * @param array $arrayData the data-list
-    * @throws \Exception In case the pager cannot be registered.
+    * @throws Exception In case the pager cannot be registered.
     *
     * @author Lutz Mahlstedt
     * @version
@@ -286,7 +287,7 @@ final class ArrayPagerManager extends APFObject {
             $arrayData
          );
       } else {
-         throw new \Exception('[ArrayPagerManager->registerPager()] Can not register pager named "'
+         throw new Exception('[ArrayPagerManager->registerPager()] Can not register pager named "'
                . $stringPager . '" because the given data is not an array!', E_USER_WARNING);
       }
    }

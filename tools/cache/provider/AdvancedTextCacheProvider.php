@@ -40,8 +40,8 @@ class AdvancedTextCacheProvider extends TextCacheProvider {
 
    public function clear(CacheKey $cacheKey = null) {
 
-      $baseFolder = $this->getConfigAttribute('Cache.BaseFolder');
-      $namespace = str_replace('\\', '/', $this->getConfigAttribute('Cache.Namespace'));
+      $baseFolder = $this->getConfigAttribute('BaseFolder');
+      $namespace = str_replace('\\', '/', $this->getConfigAttribute('Namespace'));
 
       // in case we do not have a cache key, remove the entire cache
       if ($cacheKey === null) {

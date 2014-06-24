@@ -41,8 +41,8 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
    public function read(CacheKey $cacheKey) {
 
       // get configuration params
-      $namespace = $this->getConfigAttribute('Cache.Namespace');
-      $tableName = $this->getConfigAttribute('Cache.Table');
+      $namespace = $this->getConfigAttribute('Namespace');
+      $tableName = $this->getConfigAttribute('Table');
 
       // initialize database connection
       $db = &$this->getDatabaseConnection();
@@ -63,8 +63,8 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
    public function write(CacheKey $cacheKey, $object) {
 
       // get configuration params
-      $namespace = $this->getConfigAttribute('Cache.Namespace');
-      $tableName = $this->getConfigAttribute('Cache.Table');
+      $namespace = $this->getConfigAttribute('Namespace');
+      $tableName = $this->getConfigAttribute('Table');
 
       // initialize database connection
       $db = &$this->getDatabaseConnection();
@@ -100,8 +100,8 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
    public function clear(CacheKey $cacheKey = null) {
 
       // get configuration params
-      $namespace = $this->getConfigAttribute('Cache.Namespace');
-      $tableName = $this->getConfigAttribute('Cache.Table');
+      $namespace = $this->getConfigAttribute('Namespace');
+      $tableName = $this->getConfigAttribute('Table');
 
       // initialize database connection
       $db = &$this->getDatabaseConnection();
@@ -133,7 +133,7 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
     * Version 0.1, 24.11.2008<br />
     */
    protected function &getDatabaseConnection() {
-      $connectionKey = $this->getConfigAttribute('Cache.Connection');
+      $connectionKey = $this->getConfigAttribute('Connection');
       /* @var $cM ConnectionManager */
       $cM = &$this->getServiceObject('APF\core\database\ConnectionManager');
       return $cM->getConnection($connectionKey);

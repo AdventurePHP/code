@@ -46,7 +46,7 @@ class DemoController extends BaseDocumentController {
          $files = $uploadTest->getFiles();
 
          // please note the array with all files uploaded within the above form
-         echo \APF\core\pagecontroller\printObject($files);
+         print_r($files);
       } else {
          $form->transformOnPlace();
       }

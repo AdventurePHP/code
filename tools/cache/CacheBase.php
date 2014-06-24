@@ -20,8 +20,10 @@ namespace APF\tools\cache;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\Configuration;
 use APF\core\pagecontroller\APFObject;
 use APF\core\registry\Registry;
+use InvalidArgumentException;
 
 /**
  * @package APF\tools\cache
@@ -38,14 +40,24 @@ use APF\core\registry\Registry;
 abstract class CacheBase extends APFObject {
 
    /**
+    * @var Configuration Cache configuration options.
+    */
+   private $configuration;
+
+   public function setConfiguration(Configuration $configuration) {
+      $this->configuration = $configuration;
+   }
+
+   /**
     * @protected
     *
     * Returns the value of the cache config attribute or throws an exception,
     * in case the attribute is not given within the attributes array.
     *
     * @param string $name The name of the desired attribute.
+    *
     * @return string Value of the attribute.
-    * @throws \InvalidArgumentException In case the desired attribute is not defined.
+    * @throws InvalidArgumentException In case the desired attribute is not defined.
     *
     * @author Christian Achatz
     * @version
@@ -53,15 +65,16 @@ abstract class CacheBase extends APFObject {
     */
    protected function getConfigAttribute($name) {
 
-      $value = $this->getAttribute($name);
+      $value = $this->configuration->getSection(CacheManager::CACHE_CONFIG_SECTION_NAME)->getValue($name);
       if ($value == null) {
          $env = Registry::retrieve('APF\core', 'Environment');
-         throw new \InvalidArgumentException('[' . get_class($this)
-            . '::getConfigAttribute()] The configuration directive "' . $name . '" is not '
-            . 'present or empty. Please check your cache configuration ("' . $env
-            . '_cacheconfig.ini") for namespace "APF\tools\cache" and context "'
-            . $this->getContext() . '" or consult the documentation!', E_USER_ERROR);
+         throw new InvalidArgumentException('[' . get_class($this)
+               . '::getConfigAttribute()] The configuration directive "' . CacheManager::CACHE_CONFIG_SECTION_NAME
+               . '.' . $name . '" is not ' . 'present or empty. Please check your cache configuration ("' . $env
+               . '_cacheconfig.ini") for namespace "APF\tools\cache" and context "'
+               . $this->getContext() . '" or consult the documentation!', E_USER_ERROR);
       }
+
       return $value;
    }
 
@@ -71,6 +84,7 @@ abstract class CacheBase extends APFObject {
     * Let's you retrieve the validity time of the cache entries.
     *
     * @param CacheKey $cacheKey The current cache key.
+    *
     * @return int The validity time of the cache entry in seconds.
     *
     * @author Christian Achatz
@@ -82,8 +96,8 @@ abstract class CacheBase extends APFObject {
          return $cacheKey->getTtl();
       }
       try {
-         return intval($this->getConfigAttribute('Cache.ExpireTime'));
-      } catch (\InvalidArgumentException $e) {
+         return intval($this->getConfigAttribute('ExpireTime'));
+      } catch (InvalidArgumentException $e) {
          return 0; // cache forever
       }
    }

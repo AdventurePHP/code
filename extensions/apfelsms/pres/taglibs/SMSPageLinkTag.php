@@ -6,6 +6,7 @@ use APF\extensions\apfelsms\biz\SMSException;
 use APF\extensions\apfelsms\biz\SMSManager;
 use APF\tools\link\Url;
 use APF\tools\string\StringAssistant;
+use InvalidArgumentException;
 
 /**
  *
@@ -45,7 +46,7 @@ class SMSPageLinkTag extends Document {
       }
 
       if(empty($pageId)) {
-         throw new \InvalidArgumentException('No page id defined', E_USER_ERROR);
+         throw new InvalidArgumentException('No page id defined', E_USER_ERROR);
       }
 
       /** @var $SMSM SMSManager */

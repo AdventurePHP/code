@@ -22,6 +22,7 @@ namespace APF\core\singleton;
  */
 use APF\core\pagecontroller\APFObject;
 use APF\core\session\Session;
+use Exception;
 
 // ID#178: use closure functions instead of array() to avoid issued with PHP 5.4.x
 register_shutdown_function(function () {
@@ -80,7 +81,7 @@ class SessionSingleton extends Singleton {
     * @param string $instanceId The id of the instance to return.
     *
     * @return APFObject The desired object's singleton instance.
-    * @throws \Exception In case the implementation class cannot be found.
+    * @throws Exception In case the implementation class cannot be found.
     *
     * @author Christian Achatz
     * @version

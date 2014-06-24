@@ -23,6 +23,7 @@ namespace APF\extensions\forwardmessage\pres\taglib;
 use APF\core\pagecontroller\Document;
 use APF\core\service\APFService;
 use APF\extensions\forwardmessage\biz\ForwardMessageManager;
+use InvalidArgumentException;
 
 /**
  * @package APF\extensions\forwardmessage\pres\taglib
@@ -44,7 +45,7 @@ class AddForwardMessageTag extends Document {
    public function onParseTime() {
 
       if (!$name = $this->getAttribute('name')) {
-         throw new \InvalidArgumentException('[AddForwardMessageTag::onParseTime()] '
+         throw new InvalidArgumentException('[AddForwardMessageTag::onParseTime()] '
                . 'The attribute "name" is empty or not present. Thus message cannot be added!');
       }
 

@@ -20,9 +20,7 @@ namespace APF\modules\genericormapper\data;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\modules\genericormapper\data\GenericORMapperDataObject;
-use APF\modules\genericormapper\data\BaseMapper;
-use APF\modules\genericormapper\data\GenericDomainObject;
+use InvalidArgumentException;
 
 /**
  * @package APF\modules\genericormapper\data
@@ -373,7 +371,7 @@ class GenericORMapper extends BaseMapper {
     * @param string $objectName The name of the object in mapping table.
     * @param int $objectId The database id of the desired object.
     * @return GenericORMapperDataObject The desired object.
-    * @throws \InvalidArgumentException In case the applied object id is not numeric.
+    * @throws InvalidArgumentException In case the applied object id is not numeric.
     *
     * @author Christian Achatz
     * @version
@@ -384,7 +382,7 @@ class GenericORMapper extends BaseMapper {
 
       // check for invalid ids to avoid SQL injection
       if (!is_numeric($objectId)) {
-         throw new \InvalidArgumentException('[GenericORMapper::loadObjectByID()] Given object '
+         throw new InvalidArgumentException('[GenericORMapper::loadObjectByID()] Given object '
                . 'id "' . $objectId . '" is not an integer. Thus object with name "' . $objectName . '" '
                . 'cannot be loaded!', E_USER_ERROR);
       }

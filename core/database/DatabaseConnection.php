@@ -24,19 +24,6 @@ use APF\core\service\APFDIService;
 
 /**
  * @package APF\core\database
- * @class DatabaseHandlerException
- *
- * Represents an exception, that is thrown during database operations.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 08.03.2010<br />
- */
-class DatabaseHandlerException extends \Exception {
-}
-
-/**
- * @package APF\core\database
  * @class DatabaseConnection
  *
  * This interface defines the structure and functionality of APF database connections.

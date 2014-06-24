@@ -23,6 +23,7 @@ namespace APF\tools\html\taglib;
 use APF\core\pagecontroller\ImportTemplateTag;
 use APF\core\singleton\Singleton;
 use APF\core\frontcontroller\Frontcontroller;
+use InvalidArgumentException;
 
 /**
  * @package APF\tools\html\taglib
@@ -70,7 +71,7 @@ class GenericImportTemplateTag extends ImportTemplateTag {
       // model-class=""
       $modelClass = $this->getAttribute('model-class');
       if ($modelClass === null) {
-         throw new \InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The attribute "modelclass" is empty or not present. Please provide the name '
                . 'of the model class within this attribute!');
       }
@@ -78,7 +79,7 @@ class GenericImportTemplateTag extends ImportTemplateTag {
       // model-mode="NORMAL|SINGLETON|SESSIONSINGLETON"
       $modelMode = $this->getAttribute('model-mode');
       if ($modelMode === null) {
-         throw new \InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The attribute "modelmode" is empty or not present. Please provide the '
                . 'service type of the model within this attribute! Allowed values are '
                . 'NORMAL, SINGLETON or SESSIONSINGLETON.');
@@ -87,7 +88,7 @@ class GenericImportTemplateTag extends ImportTemplateTag {
       // namespace-param=""
       $namespaceParam = $this->getAttribute('namespace-param');
       if ($namespaceParam === null) {
-         throw new \InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The attribute "namespaceparam" is empty or not present. Please provide the '
                . 'name of the model param for the namespace of the template file within this '
                . 'attribute!');
@@ -96,7 +97,7 @@ class GenericImportTemplateTag extends ImportTemplateTag {
       // template-param=""
       $templateParam = $this->getAttribute('template-param');
       if ($templateParam === null) {
-         throw new \InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] The '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] The '
                . 'attribute "templateparam" is empty or not present. Please provide the name '
                . 'of the model param for the name of the template file within this attribute!');
       }
@@ -142,7 +143,7 @@ class GenericImportTemplateTag extends ImportTemplateTag {
 
       // check for the get method
       if (!method_exists($model, $getMethod)) {
-         throw new \InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The model class ("' . $modelClass . '") does not support the method "' . $getMethod
                . '" provided within the "getmethod" attribute. Please provide the correct '
                . 'function name!');
@@ -151,7 +152,7 @@ class GenericImportTemplateTag extends ImportTemplateTag {
       // read the params from the model
       $templateNamespace = $model->$getMethod($namespaceParam);
       if (empty($templateNamespace)) {
-         throw new \InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The model ("' . $modelClass . '") returned an empty value when trying to get '
                . 'the template namespace using the "' . $getMethod . '" method! Please specify '
                . 'another getter or check the model class implementation!');
@@ -159,7 +160,7 @@ class GenericImportTemplateTag extends ImportTemplateTag {
 
       $templateName = $model->$getMethod($templateParam);
       if (empty($templateName)) {
-         throw new \InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
+         throw new InvalidArgumentException('[GenericImportTemplateTag::onParseTime()] '
                . 'The model ("' . $modelClass . '") returned an empty value when trying to get '
                . 'the template name using the "' . $getMethod . '" method! Please specify another '
                . 'getter or check the model class implementation!');

@@ -27,6 +27,7 @@ use APF\core\pagecontroller\XmlParser;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 use APF\tools\form\FormException;
+use InvalidArgumentException;
 
 /**
  * @package APF\tools\form\taglib
@@ -428,7 +429,7 @@ class HtmlFormTag extends Document {
    protected function &getMarker($markerName) {
       try {
          return $this->getChildNode('name', $markerName, 'APF\tools\form\taglib\DynamicFormElementMarkerTag');
-      } catch (\InvalidArgumentException $e) {
+      } catch (InvalidArgumentException $e) {
          throw new FormException('[HtmlFormTag::addFormContentAfterMarker()] No marker object '
                . 'with name "' . $markerName . '" composed in current form for document controller "'
                . ($this->getParentObject()->getDocumentController()) . '"! Please check the definition of '
@@ -673,7 +674,7 @@ class HtmlFormTag extends Document {
     * @param string $name The name of the form label to return.
     *
     * @return LanguageLabelTag The instance of the desired label.
-    * @throws \InvalidArgumentException In case no label can be found.
+    * @throws InvalidArgumentException In case no label can be found.
     *
     * @author Christian Achatz
     * @version
@@ -682,8 +683,8 @@ class HtmlFormTag extends Document {
    public function &getLabel($name) {
       try {
          return $this->getChildNode('name', $name, 'APF\core\pagecontroller\LanguageLabelTag');
-      } catch (\InvalidArgumentException $e) {
-         throw new \InvalidArgumentException('[HtmlFormTag::getLabel()] No label found with name "' . $name
+      } catch (InvalidArgumentException $e) {
+         throw new InvalidArgumentException('[HtmlFormTag::getLabel()] No label found with name "' . $name
                . '" composed in form with name "' . $this->getAttribute('name') . '" for document controller "'
                . $this->getParentObject()->getDocumentController() . '"!', E_USER_ERROR, $e);
       }

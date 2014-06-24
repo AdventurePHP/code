@@ -9,12 +9,13 @@ use APF\extensions\apfelsms\biz\pages\stores\SMSPageStore;
 use APF\extensions\apfelsms\biz\sites\SMSSite;
 use APF\extensions\apfelsms\data\SMSMapper;
 use APF\tools\request\RequestHandler;
+use Exception;
+use InvalidArgumentException;
 
 /**
  * @package APF\extensions\apfelsms
  */
-class SMSException extends \Exception {
-
+class SMSException extends Exception {
 
 }
 
@@ -264,7 +265,7 @@ class SMSManager extends APFObject {
 
       } catch (ConfigurationException $ce) {
          throw new SMSUnknownTypeException('[SMSManager::getPageDec()] Service configuration for page decorators of type "' . $type . '" with serviceName "' . $serviceName . '" could not be found. Maybe you have an invalid page decorator type in your data-source!? Please check your configuration, espacially the serviceobjects.ini in namespace "extensions\apfelsms\pages\decorators".', E_USER_ERROR);
-      } catch (\InvalidArgumentException $ie) {
+      } catch (InvalidArgumentException $ie) {
          throw new SMSConfigurationException('[SMSManager::getPageDec()] Your configuration for page decorators of type "' . $type . '" with serviceName "' . $serviceName . '" is buggy. DIServiceManager throws following exception: ' . $ie, E_USER_ERROR);
       }
 
@@ -333,7 +334,7 @@ class SMSManager extends APFObject {
 
          } catch (ConfigurationException $ce) {
             throw new SMSUnknownTypeException('[SMSManager::getPage()] Configured serviceName for pages "' . $serviceName . '" is most likely not existent. Please check your configuration, espacially the serviceobjects.ini in namespace "extensions::apfelsms::pages".', E_USER_ERROR);
-         } catch (\InvalidArgumentException $ie) {
+         } catch (InvalidArgumentException $ie) {
             throw new SMSConfigurationException('[SMSManager::getPage()] Your configuration for pages is buggy. Please check service "' . $serviceName . '". DIServiceManager throws following exception: ' . $ie, E_USER_ERROR);
          }
 

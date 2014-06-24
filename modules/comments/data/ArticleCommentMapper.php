@@ -24,6 +24,7 @@ use APF\core\database\AbstractDatabaseHandler;
 use APF\core\database\ConnectionManager;
 use APF\core\pagecontroller\APFObject;
 use APF\modules\comments\biz\ArticleComment;
+use InvalidArgumentException;
 
 /**
  * @package APF\modules\comments\date
@@ -89,7 +90,7 @@ class ArticleCommentMapper extends APFObject {
     * current application instance.
     *
     * @return AbstractDatabaseHandler The database connection.
-    * @throws \InvalidArgumentException In case the connection key does not refer to a valid connection definition.
+    * @throws InvalidArgumentException In case the connection key does not refer to a valid connection definition.
     *
     * @author Christian Achatz
     * @version
@@ -102,7 +103,7 @@ class ArticleCommentMapper extends APFObject {
       $config = $this->getConfiguration('APF\modules\comments', 'comments.ini');
       $connectionKey = $config->getSection('Default')->getValue('Database.ConnectionKey');
       if ($connectionKey == null) {
-         throw new \InvalidArgumentException('[ArticleCommentMapper::getConnection()] The module\'s '
+         throw new InvalidArgumentException('[ArticleCommentMapper::getConnection()] The module\'s '
                   . 'configuration file does not contain a valid database connection key. Please '
                   . 'specify the database configuration according to the example configuration files!',
             E_USER_ERROR);

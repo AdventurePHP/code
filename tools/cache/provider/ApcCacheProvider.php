@@ -58,7 +58,7 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
     */
    protected function getCacheIdentifier(CacheKey $cacheKey) {
 
-      $identifier = $this->getConfigAttribute('Cache.Namespace');
+      $identifier = $this->getConfigAttribute('Namespace');
       $identifier .= self::CACHE_KEY_DELIMITER . $cacheKey->getKey();
 
       if ($cacheKey instanceof AdvancedCacheKey) {
@@ -169,7 +169,7 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
    public function clear(CacheKey $cacheKey = null) {
 
       // clear cache
-      $namespace = $this->getConfigAttribute('Cache.Namespace');
+      $namespace = $this->getConfigAttribute('Namespace');
       if ($cacheKey === null) {
 
          // clear entire namespace

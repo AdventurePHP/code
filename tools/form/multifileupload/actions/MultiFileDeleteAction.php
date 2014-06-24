@@ -46,8 +46,8 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
       HeaderManager::send('Pragma: no-cache');
 
       try {
-         $fieldName = $this->getInput()->getAttribute('name');
-         $formName = $this->getInput()->getAttribute('formname');
+         $fieldName = $this->getInput()->getParameter('name');
+         $formName = $this->getInput()->getParameter('formname');
          $uploadName = $this->getSanitizedUploadName();
 
          /* @var $manager MultiFileUploadManager */
@@ -78,7 +78,7 @@ class MultiFileDeleteAction extends AbstractFrontcontrollerAction {
     * Version 0.1, 25.01.2014<br />
     */
    private function getSanitizedUploadName() {
-      return preg_replace('/[^A-Za-z0-9\-_]/', '', $this->getInput()->getAttribute('uploadname'));
+      return preg_replace('/[^A-Za-z0-9\-_]/', '', $this->getInput()->getParameter('uploadname'));
    }
 
 }

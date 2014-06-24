@@ -20,21 +20,6 @@ namespace APF\tools\filesystem;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use Exception;
-
-/**
- * @class FileException
- * @package APF\tools\filesystem
- *
- * Represents an exception, that is thrown on errors concerning file operations.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 07.08.2010<br />
- */
-class FileException extends \Exception {
-
-}
 
 /**
  * @static

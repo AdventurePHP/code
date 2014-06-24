@@ -20,6 +20,7 @@ namespace APF\tools\cache;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\Configuration;
 
 /**
  * @package APF\tools\cache
@@ -44,6 +45,7 @@ interface CacheProvider {
     *
     * @param CacheKey $cacheKey the application's cache key.
     * @param mixed $object The content to cache.
+    *
     * @return bool True in case of success, otherwise false.
     *
     * @author Christian Achatz
@@ -59,6 +61,7 @@ interface CacheProvider {
     * content on success, otherwise null.
     *
     * @param CacheKey $cacheKey The application's cache key.
+    *
     * @return mixed The cache content concerning the provider implementation.
     *
     * @author Christian Achatz
@@ -76,6 +79,7 @@ interface CacheProvider {
     * on success and false otherwise.
     *
     * @param CacheKey $cacheKey the application's cache key.
+    *
     * @return bool True in case of success, otherwise false.
     *
     * @author Christian Achatz
@@ -83,5 +87,18 @@ interface CacheProvider {
     * Version 0.1, 24.11.2008<br />
     */
    public function clear(CacheKey $cacheKey = null);
+
+   /**
+    * @public
+    *
+    * Allows the CacheManager to inject the respective configuration into the present instance.
+    *
+    * @param Configuration $configuration
+    *
+    * @author Christian Achatz
+    * @version
+    * Version 0.1, 24.06.2014<br />
+    */
+   public function setConfiguration(Configuration $configuration);
 
 }

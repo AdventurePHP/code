@@ -21,6 +21,7 @@ namespace APF\core\exceptionhandler;
  * -->
  */
 use APF\core\registry\Registry;
+use Exception;
 
 /**
  * @package APF\core\exceptionhandler
@@ -36,7 +37,7 @@ use APF\core\registry\Registry;
  */
 class ProductionExceptionHandler extends DefaultExceptionHandler {
 
-   public function handleException(\Exception $exception) {
+   public function handleException(Exception $exception) {
 
       // fill attributes
       $this->exceptionNumber = $exception->getCode();

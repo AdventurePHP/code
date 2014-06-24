@@ -20,177 +20,7 @@ namespace APF\core\exceptionhandler;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\logging\entry\SimpleLogEntry;
-use APF\core\logging\LogEntry;
-use APF\core\logging\Logger;
-use APF\core\pagecontroller\Page;
-use APF\core\registry\Registry;
-use APF\core\singleton\Singleton;
-
-/**
- * @package APF\core\exceptionhandler
- * @class ExceptionHandler
- *
- * Describes the signature of any APF exception handler.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 03.03.2012<br />
- */
-interface ExceptionHandler {
-
-   /**
-    * @public
-    *
-    * This method is intended to take the exception's information and processes it.
-    *
-    * @param \Exception $exception The current exception.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 21.02.2009<br />
-    */
-   public function handleException(\Exception $exception);
-}
-
-/**
- * @package APF\core\exceptionhandler
- * @class DefaultExceptionHandler
- *
- * Implements the default APF exception handler for uncaught exceptions.
- *
- * @author Christian Achatz
- * @version
- * Version 0.1, 21.02.2009<br />
- */
-class DefaultExceptionHandler implements ExceptionHandler {
-
-   /**
-    * @var int The number of the exception.
-    */
-   protected $exceptionNumber = null;
-
-   /**
-    * @var string The message of the exception.
-    */
-   protected $exceptionMessage = null;
-
-   /**
-    * @var string The file, the exception occurs in.
-    */
-   protected $exceptionFile = null;
-
-   /**
-    * @var int The line, the exception occurs in.
-    */
-   protected $exceptionLine = null;
-
-   /**
-    * @var string The exception type (name of the class).
-    */
-   protected $exceptionType = null;
-
-   /**
-    * @var string[] The exception trace.
-    */
-   protected $exceptionTrace = array();
-
-   public function handleException(\Exception $exception) {
-
-      // fill attributes
-      $this->exceptionNumber = $exception->getCode();
-      $this->exceptionMessage = $exception->getMessage();
-      $this->exceptionFile = $exception->getFile();
-      $this->exceptionLine = $exception->getLine();
-      $this->exceptionTrace = $exception->getTrace();
-      $this->exceptionType = get_class($exception);
-
-      // log exception
-      $this->logException();
-
-      // build nice exception page
-      echo $this->buildExceptionPage();
-   }
-
-   /**
-    * @private
-    *
-    * Creates a log entry containing the exception occurred.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 21.02.2009<br />
-    */
-   protected function logException() {
-      $message = '[' . ($this->generateExceptionID()) . '] ' . $this->exceptionMessage . ' (Number: ' . $this->exceptionNumber . ', File: ' . $this->exceptionFile . ', Line: ' . $this->exceptionLine . ')';
-
-      $log = Singleton::getInstance('APF\core\logging\Logger');
-      /* @var $log Logger */
-      $log->addEntry(
-         new SimpleLogEntry(
-         // use the configured log target to allow custom configuration of APF-internal log statements
-         // to be written to a custom file/location
-            Registry::retrieve('APF\core', 'InternalLogTarget'),
-            $message,
-            LogEntry::SEVERITY_ERROR
-         )
-      );
-   }
-
-   /**
-    * @private
-    *
-    * Creates the exception page.
-    *
-    * @return string the exception page content.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 21.02.2009<br />
-    */
-   protected function buildExceptionPage() {
-
-      // at this point we have to re-include the benchmark timer, because PHP
-      // sometimes forgets about this import and throws a
-      // Fatal error: Exception thrown without a stack frame in Unknown on line 0
-      // exception.
-
-
-      // create page
-      $stacktrace = new Page();
-      $stacktrace->setContext('APF\core\exceptionhandler');
-      $stacktrace->loadDesign('APF\core\exceptionhandler\templates', 'exceptionpage');
-
-      // inject exception information into the document attributes array
-      $doc = $stacktrace->getRootDocument();
-      $doc->setAttribute('id', $this->generateExceptionID());
-      $doc->setAttribute('message', $this->exceptionMessage);
-      $doc->setAttribute('number', $this->exceptionNumber);
-      $doc->setAttribute('file', $this->exceptionFile);
-      $doc->setAttribute('line', $this->exceptionLine);
-      $doc->setAttribute('trace', array_reverse($this->exceptionTrace));
-      $doc->setAttribute('type', $this->exceptionType);
-
-      // create exception page
-      return $stacktrace->transform();
-   }
-
-   /**
-    * @private
-    *
-    * Generates the exception id.
-    *
-    * @return string The unique exception id.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 21.02.2009<br />
-    */
-   protected function generateExceptionID() {
-      return md5($this->exceptionMessage . $this->exceptionNumber . $this->exceptionFile . $this->exceptionLine);
-   }
-
-}
+use Exception;
 
 /**
  * @package APF\core\exceptionhandler
@@ -202,7 +32,7 @@ class DefaultExceptionHandler implements ExceptionHandler {
  * method.
  * <p/>
  * To disable the APF exception handling mechanism use PHP's <em>restore_exception_handler()</em> after
- * including the <em>pagecontroller.php</em> or call
+ * including the <em>bootstrap.php</em> or call.
  * <code>
  * GlobalExceptionHandler::disable()
  * </code>
@@ -246,14 +76,14 @@ abstract class GlobalExceptionHandler {
     * exception handling to the registered handler. In case no handler is registered or the mechanism is
     * disables, nothing will happen.
     *
-    * @param \Exception $exception The current exception.
-    * @throws \Exception In case the APF exception handler is disabled, the original exception is thrown.
+    * @param Exception $exception The current exception.
+    * @throws Exception In case the APF exception handler is disabled, the original exception is thrown.
     *
     * @author Christian Achatz
     * @version
     * Version 0.1, 03.03.2012<br />
     */
-   public static function handleException(\Exception $exception) {
+   public static function handleException(Exception $exception) {
       if (self::$HANDLER === null) {
          // restore the PHP default exception handler to avoid loops or other issues
          restore_exception_handler();
@@ -261,7 +91,7 @@ abstract class GlobalExceptionHandler {
       } else {
          try {
             self::$HANDLER->handleException($exception);
-         } catch (\Exception $exception) {
+         } catch (Exception $exception) {
             // catch exceptions thrown within the exception handler to avoid
             // Fatal error: Exception thrown without a stack frame in Unknown on line 0
             // errors.

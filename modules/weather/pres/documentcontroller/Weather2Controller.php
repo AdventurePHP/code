@@ -22,6 +22,7 @@ namespace APF\modules\weather\pres\documentcontroller;
  */
 use APF\core\loader\RootClassLoader;
 use APF\core\pagecontroller\BaseDocumentController;
+use InvalidArgumentException;
 
 /**
  * @package APF\modules\weather\pres\documentcontroller
@@ -103,7 +104,7 @@ class Weather2Controller extends BaseDocumentController {
     * Helper method to get the XML string.<br />
     *
     * @return string Content of the XML stream of the source or null.
-    * @throws \InvalidArgumentException In case of XSLT errors.
+    * @throws InvalidArgumentException In case of XSLT errors.
     *
     * @author Tobias Lückel
     * @version
@@ -139,7 +140,7 @@ class Weather2Controller extends BaseDocumentController {
                if ($result) {
                   return $result;
                } else {
-                  throw new \InvalidArgumentException('[Weather2Controller::getXML()] XSLT Error!');
+                  throw new InvalidArgumentException('[Weather2Controller::getXML()] XSLT Error!');
                }
             } else {
                return $plainXml;
@@ -148,7 +149,7 @@ class Weather2Controller extends BaseDocumentController {
             return null;
          }
       } else {
-         throw new \InvalidArgumentException('[Weather2Controller::getXML()] Attribute "xml_source" not present in "core:importdesign" tag for weather module!');
+         throw new InvalidArgumentException('[Weather2Controller::getXML()] Attribute "xml_source" not present in "core:importdesign" tag for weather module!');
       }
    }
 

@@ -22,6 +22,7 @@ namespace APF\extensions\htmllist\taglib;
  */
 use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\XmlParser;
+use InvalidArgumentException;
 
 /**
  * @package APF\extensions\htmllist\taglib
@@ -60,7 +61,7 @@ class HtmlListTag extends Document {
     * @param string $id The id of the list.
     *
     * @return AbstractListTag The desired instance.
-    * @throws \InvalidArgumentException In case no list can be found.
+    * @throws InvalidArgumentException In case no list can be found.
     */
    public function getListById($id) {
       if (count($this->children) > 0) {
@@ -76,7 +77,7 @@ class HtmlListTag extends Document {
       $grandParent = $parent->getParentObject();
       $docCon = ($grandParent !== null) ? $grandParent->getDocumentController() : $docCon = 'n/a';
 
-      throw new \InvalidArgumentException('[HtmlListTag::getListById()] No list with id "' . $id
+      throw new InvalidArgumentException('[HtmlListTag::getListById()] No list with id "' . $id
             . '" in document controller "' . $docCon . '"!', E_USER_ERROR);
    }
 
@@ -87,7 +88,7 @@ class HtmlListTag extends Document {
     * @param array $elementAttributes The attributes of the list.
     *
     * @return string The object id of the created list.
-    * @throws \InvalidArgumentException In case the desired list cannot be created.
+    * @throws InvalidArgumentException In case the desired list cannot be created.
     */
    protected function createList($elementType, array $elementAttributes = array()) {
 
@@ -124,7 +125,7 @@ class HtmlListTag extends Document {
          return $objectId;
       } else {
          // throw error and return null as object id
-         throw new \InvalidArgumentException('[HtmlListTag::createList()] No list element with name "'
+         throw new InvalidArgumentException('[HtmlListTag::createList()] No list element with name "'
                . $elementType . '" found! Maybe the tag name is mis-spelt. Please use &lt;list:addtaglib /&gt;!');
       }
    }

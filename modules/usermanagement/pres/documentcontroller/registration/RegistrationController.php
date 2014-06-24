@@ -29,6 +29,7 @@ use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 use APF\core\logging\Logger;
+use Exception;
 
 /**
  * @package APF\modules\usermanagement\pres\documentcontroller\registration
@@ -109,7 +110,7 @@ class RegistrationController extends UmgtBaseController {
          try {
             $uM->saveUser($user);
             $this->getTemplate('register-ok')->transformOnPlace();
-         } catch (\Exception $e) {
+         } catch (Exception $e) {
             $this->getTemplate('system-error')->transformOnPlace();
             $l = & Singleton::getInstance('APF\core\logging\Logger');
             /* @var $l Logger */

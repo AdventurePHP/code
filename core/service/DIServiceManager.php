@@ -29,6 +29,7 @@ use APF\core\logging\LogEntry;
 use APF\core\logging\Logger;
 use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
+use InvalidArgumentException;
 
 /**
  * The DIServiceManager provides a dependency injection container for
@@ -116,7 +117,7 @@ final class DIServiceManager {
     * @param string $language The language of the current application.
     * @return APFDIService The pre-configured service object.
     * @throws ConfigurationException In case the requested service is not existent.
-    * @throws \InvalidArgumentException In case of injection issues.
+    * @throws InvalidArgumentException In case of injection issues.
     *
     * @author Christian Achatz
     * @version
@@ -172,7 +173,7 @@ final class DIServiceManager {
 
       // Check if configuration section was complete. If not throw an exception to fail fast.
       if ($serviceType === null || $class === null) {
-         throw new \InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "' .
+         throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "' .
                   $sectionName . '" from namespace "' . $configNamespace . '" cannot be accomplished, due to missing
                or incorrect configuration! Please revise the configuration file and consult the manual!',
             E_USER_ERROR);
@@ -200,7 +201,7 @@ final class DIServiceManager {
             $method = $directive->getValue('method');
             $value = $directive->getValue('value');
             if ($method === null || $value === null) {
-               throw new \InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the'
+               throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the'
                      . ' service object "' . $sectionName . '" cannot be accomplished, due to'
                      . ' incorrect configuration! Please revise the "' . $initKey . '" sub section and'
                      . ' consult the manual!', E_USER_ERROR);
@@ -210,7 +211,7 @@ final class DIServiceManager {
             if (method_exists($serviceObject, $method)) {
                $serviceObject->$method($value);
             } else {
-               throw new \InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of'
+               throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of'
                         . ' configuration value "' . $directive->getValue('value') . '" cannot be accomplished'
                         . ' to service object "' . $class . '"! Method ' . $method . '() is not implemented!',
                   E_USER_ERROR);
@@ -231,7 +232,7 @@ final class DIServiceManager {
             $namespace = $directive->getValue('namespace');
             $name = $directive->getValue('name');
             if ($method === null || $namespace === null || $name === null) {
-               throw new \InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "' .
+               throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Initialization of the service object "' .
                         $sectionName . '" cannot be accomplished, due to incorrect configuration! Please revise the "' . $initKey .
                         '" sub section and consult the manual!',
                   E_USER_ERROR);
@@ -263,7 +264,7 @@ final class DIServiceManager {
                );
 
                // print note with shorted information
-               throw new \InvalidArgumentException('[DIServiceManager::getServiceObject()] Detected circular injection! ' .
+               throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Detected circular injection! ' .
                      'Class "' . $class . '" from namespace "' . $namespace . '" with service type "' . $serviceType .
                      '" was already configured with service object "' . $name . '" from namespace "' .
                      $namespace . '"! Full stack trace can be taken from the logfile!', E_USER_ERROR);
@@ -279,7 +280,7 @@ final class DIServiceManager {
                if (method_exists($serviceObject, $method)) {
                   $serviceObject->$method($miObject);
                } else {
-                  throw new \InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of service object "' . $name .
+                  throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Injection of service object "' . $name .
                            '" from namespace "' . $namespace . '" cannot be accomplished to service object "' .
                            $class . '" from namespace "' . $namespace . '"! Method ' . $method . '() is not implemented!',
                      E_USER_ERROR);
@@ -303,7 +304,7 @@ final class DIServiceManager {
             if (method_exists($serviceObject, $setupMethod)) {
                $serviceObject->$setupMethod();
             } else {
-               throw new \InvalidArgumentException('[DIServiceManager::getServiceObject()] Custom service object setup '
+               throw new InvalidArgumentException('[DIServiceManager::getServiceObject()] Custom service object setup '
                         . 'method "' . $setupMethod . '()" is not implemented for given type "'
                         . get_class($serviceObject) . '"! Please double-check your configuration '
                         . 'for service "' . $sectionName . '" from namespace "' . $configNamespace . '."',

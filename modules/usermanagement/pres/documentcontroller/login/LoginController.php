@@ -36,8 +36,8 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\http\HeaderManager;
 use APF\modules\usermanagement\biz\login\UmgtAutoLoginAction;
 use APF\tools\link\Url;
-
 use APF\core\logging\Logger;
+use Exception;
 
 /**
  * @package APF\modules\usermanagement\pres\documentcontroller\login
@@ -101,7 +101,7 @@ class LoginController extends BaseDocumentController {
                   /* @var $urlProvider UmgtRedirectUrlProvider */
                   HeaderManager::forward(LinkGenerator::generateUrl(Url::fromString($urlProvider->getRedirectUrl())));
                }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                $this->getTemplate('system-error')->transformOnPlace();
 
                $l = & Singleton::getInstance('APF\core\logging\Logger');

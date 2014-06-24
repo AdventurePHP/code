@@ -20,6 +20,7 @@ namespace APF\tools\image;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use InvalidArgumentException;
 
 /**
  * @package APF\tools\image
@@ -59,7 +60,7 @@ class ImageManager {
     * @param string $image a full qualified image path.
     * @param string $attributeName the name of the attribute, that should be returned.
     * @return string[] The attributes of an image.
-    * @throws \InvalidArgumentException In case the applied image or the applied attribute does not exist.
+    * @throws InvalidArgumentException In case the applied image or the applied attribute does not exist.
     *
     * @author Christian Achatz
     * @version
@@ -72,7 +73,7 @@ class ImageManager {
 
       // check if the image is present on disk
       if (!file_exists($image)) {
-         throw new \InvalidArgumentException('[ImageManager::showImageAttributes()] The given '
+         throw new InvalidArgumentException('[ImageManager::showImageAttributes()] The given '
             . 'image ("' . $image . '") does not exist! Hence, no attributes can be analyzed.',
             E_USER_ERROR);
       }
@@ -88,7 +89,7 @@ class ImageManager {
 
       // analyze the image attributes
       if (($attributes = getimagesize($image)) === false) {
-         throw new \InvalidArgumentException('[ImageManager::showImageAttributes()] The attributes of the image ("'
+         throw new InvalidArgumentException('[ImageManager::showImageAttributes()] The attributes of the image ("'
          . $image . '") cannot be analyzed since it is corrupt!');
       }
 
@@ -124,7 +125,7 @@ class ImageManager {
          if (isset($imageAttributes[$attributeName])) {
             return $imageAttributes[$attributeName];
          } else {
-            throw new \InvalidArgumentException('[ImageManager::getImageAttributes()] The desired image attribute ("' . $attributeName . '") does not exist!');
+            throw new InvalidArgumentException('[ImageManager::getImageAttributes()] The desired image attribute ("' . $attributeName . '") does not exist!');
          }
 
       }
@@ -146,7 +147,7 @@ class ImageManager {
     * @param string $targetImage full qualified path to the target image.
     * @param int $jpgQuality The jpg quality (0-100).
     * @param int $pngCompression The png compression level (0-9).
-    * @throws \InvalidArgumentException In case the applied image does not exist.
+    * @throws InvalidArgumentException In case the applied image does not exist.
     *
     * @author Christian Achatz
     * @version
@@ -156,7 +157,7 @@ class ImageManager {
    public static function resizeImage($sourceImage, $width, $height, $targetImage = null, $jpgQuality = 80, $pngCompression = 0) {
       // check if the image is present on disk
       if (!file_exists($sourceImage)) {
-         throw new \InvalidArgumentException('[ImageManager::resizeImage()] The given image ("'
+         throw new InvalidArgumentException('[ImageManager::resizeImage()] The given image ("'
          . $sourceImage . '") does not exist! Hence, it cannot be adjusted.', E_USER_ERROR);
       }
 
@@ -219,7 +220,7 @@ class ImageManager {
                imagepng($targetImageStream, $targetImage, $pngCompression);
                break;
             default:
-               throw new \InvalidArgumentException('[ImageManager::resizeImage()] The targetImage extension ("'
+               throw new InvalidArgumentException('[ImageManager::resizeImage()] The targetImage extension ("'
                . $targetImageType . '") does not match "jpg", "png", or "gif"!', E_USER_ERROR);
          }
       } else {

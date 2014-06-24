@@ -38,9 +38,9 @@ use APF\tools\form\FormException;
 class MultiFileGetFileAction extends AbstractFrontcontrollerAction {
 
    public function run() {
-      $fieldName = $this->getInput()->getAttribute('name');
-      $formName = $this->getInput()->getAttribute('formname');
-      $uploadName = $this->getInput()->getAttribute('uploadname');
+      $fieldName = $this->getInput()->getParameter('name');
+      $formName = $this->getInput()->getParameter('formname');
+      $uploadName = $this->getInput()->getParameter('uploadname');
 
       // only upload if we have a valid request
       if ($fieldName !== null && $formName !== null && $uploadName !== null) {

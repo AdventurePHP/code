@@ -24,6 +24,7 @@ use APF\core\pagecontroller\BaseDocumentController;
 use APF\modules\newspager\data\NewsPagerProvider;
 use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
+use InvalidArgumentException;
 
 /**
  * @package APF\modules\newspager\pres\controller
@@ -53,7 +54,7 @@ class NewsPagerController extends BaseDocumentController {
       // get current data dir or trigger error
       $dataDir = $this->getDocument()->getAttribute('datadir');
       if ($dataDir === null) {
-         throw new \InvalidArgumentException('[NewsPagerController::transformContent()] Tag '
+         throw new InvalidArgumentException('[NewsPagerController::transformContent()] Tag '
             . 'attribute "datadir" was not present in the &lt;core:importdesign /&gt; tag '
             . 'definition! Please specify a news content directory!');
       }

@@ -20,10 +20,11 @@ namespace APF\core\service;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
-use APF\core\service\APFService;
+
 use APF\core\singleton\Singleton;
 use APF\core\singleton\SessionSingleton;
 use APF\core\singleton\ApplicationSingleton;
+use InvalidArgumentException;
 
 /**
  * @package APF\core\service
@@ -54,7 +55,7 @@ final class ServiceManager {
     * @param string $type The initializing type (see service manager for details).
     * @param string $instanceId The id of the instance to return.
     * @return APFService The desired service object.
-    * @throws \InvalidArgumentException In case of invalid ServiceType or if requested service does not implement the APFService interface.
+    * @throws InvalidArgumentException In case of invalid ServiceType or if requested service does not implement the APFService interface.
     *
     * @author Christian Schäfer
     * @version
@@ -94,7 +95,7 @@ final class ServiceManager {
             $service = new $class();
             break;
          default:
-            throw new \InvalidArgumentException('[ServiceManager::getServiceObject()] The given type ('
+            throw new InvalidArgumentException('[ServiceManager::getServiceObject()] The given type ('
             . $type . ') is not supported. Please provide one out of "' . APFService::SERVICE_TYPE_SINGLETON
             . '", "' . APFService::SERVICE_TYPE_SESSION_SINGLETON . '" or "' . APFService::SERVICE_TYPE_NORMAL
             . '"', E_USER_WARNING);
@@ -106,7 +107,7 @@ final class ServiceManager {
          $service->setLanguage($language);
          $service->setServiceType($type);
       } else {
-         throw new \InvalidArgumentException('[ServiceManager::getServiceObject()] The precisely '
+         throw new InvalidArgumentException('[ServiceManager::getServiceObject()] The precisely '
          . 'now created object (' . $class . ') does not implement the APFService interface! '
          . 'So context, language and service type cannot be set correctly!', E_USER_WARNING);
       }
@@ -130,7 +131,7 @@ final class ServiceManager {
     * @param string $type The initializing type (see service manager for details).
     * @param string $instanceId The id of the instance to return.
     * @return APFService The desired service object.
-    * @throws \InvalidArgumentException In case the service object does not implement the APFService interface.
+    * @throws InvalidArgumentException In case the service object does not implement the APFService interface.
     *
     * @author Christian Schäfer
     * @version

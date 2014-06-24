@@ -20,6 +20,7 @@ namespace APF\tools\cache;
  * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
  * -->
  */
+use APF\core\configuration\Configuration;
 use APF\core\service\APFService;
 
 /**
@@ -38,6 +39,11 @@ use APF\core\service\APFService;
  * Version 0.2, 05.08.2010 (Added cache sub key to make cms page caching possible)<br />
  */
 final class CacheManager extends CacheBase {
+
+   /**
+    * @const string Name of the cache configuration sub section.
+    */
+   const CACHE_CONFIG_SECTION_NAME = 'Cache';
 
    /**
     * @private
@@ -67,19 +73,24 @@ final class CacheManager extends CacheBase {
     * Version 0.1, 21.11.2008<br />
     * Version 0.2, 22.11.2008 (Refactored due to fabric introduction.)<br />
     * Version 0.3, 24.11.2008 (Refactoring due to discussions on the fusion of writers and readers)<br />
+    * Version 0.4, 24.06.2014 (ID#207: Refactoring due to separation of attribute handling from APFObject)<br />
     */
    public function init($initParam) {
 
-      // injects the config section
-      $this->setAttributes($initParam);
+      /* @var $initParam Configuration */
+      $cacheConfig = $initParam->getSection(self::CACHE_CONFIG_SECTION_NAME);
+      $class = $cacheConfig->getValue('Provider');
 
-      // include and create the provider
-      $class = $this->getConfigAttribute('Cache.Provider');
-      $this->provider = $this->getServiceObject($class, APFService::SERVICE_TYPE_NORMAL);
-      $this->provider->setAttributes($initParam);
+      /* @var $provider CacheProvider */
+      $provider = $this->getServiceObject($class, APFService::SERVICE_TYPE_NORMAL);
+
+      // inject configuration
+      $provider->setConfiguration($initParam);
+
+      $this->provider = $provider;
 
       // map the active configuration key
-      $active = $this->getConfigAttribute('Cache.Active');
+      $active = $cacheConfig->getValue('Active');
       if ($active == 'true') {
          $this->active = true;
       }
@@ -97,6 +108,7 @@ final class CacheManager extends CacheBase {
     * page can be called with different parameters (e.g. for CMS page caching).
     *
     * @param CacheKey $cacheKey The application's cache key.
+    *
     * @return mixed The cache content concerning the provider implementation.
     *
     * @author Christian Achatz
@@ -117,6 +129,7 @@ final class CacheManager extends CacheBase {
     *
     * @param CacheKey $cacheKey the application's cache key.
     * @param mixed $content The content to cache.
+    *
     * @return bool True in case of success, false otherwise.
     *
     * @author Christian Achatz
@@ -141,6 +154,7 @@ final class CacheManager extends CacheBase {
     * entries are deleted belonging to the given cache key.
     *
     * @param CacheKey $cacheKey the application's cache key.
+    *
     * @return bool True in case of success, otherwise false.
     *
     * @author Christian Achatz

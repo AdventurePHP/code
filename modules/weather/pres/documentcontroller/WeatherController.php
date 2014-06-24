@@ -21,6 +21,8 @@ namespace APF\modules\weather\pres\documentcontroller;
  * -->
  */
 use APF\core\pagecontroller\BaseDocumentController;
+use Exception;
+use InvalidArgumentException;
 
 /**
  * @package APF\modules\weather\pres\documentcontroller
@@ -110,8 +112,8 @@ class WeatherController extends BaseDocumentController {
     * Helper method to get the RSS string.<br />
     *
     * @return string Content of the RSS stream of wetter.com or null
-    * @throws \Exception In case the socket connection fails.
-    * @throws \InvalidArgumentException In case the rss_source attribute is missing.
+    * @throws Exception In case the socket connection fails.
+    * @throws InvalidArgumentException In case the rss_source attribute is missing.
     *
     * @author Christian Achatz
     * @version
@@ -156,7 +158,7 @@ class WeatherController extends BaseDocumentController {
             // Close socket
             fclose($Socket);
          } else {
-            throw new \Exception('Socket cannot be created');
+            throw new Exception('Socket cannot be created');
          }
 
          // Remove header and return string
@@ -169,7 +171,7 @@ class WeatherController extends BaseDocumentController {
             return null;
          }
       } else {
-         throw new \InvalidArgumentException('[WeatherController::getRSSFeed()] Attribute "rss_source" not present in "core:importdesign" tag for weather module!');
+         throw new InvalidArgumentException('[WeatherController::getRSSFeed()] Attribute "rss_source" not present in "core:importdesign" tag for weather module!');
       }
    }
 

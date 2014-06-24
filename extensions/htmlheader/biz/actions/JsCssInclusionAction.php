@@ -23,6 +23,7 @@ namespace APF\extensions\htmlheader\biz\actions;
 use APF\core\frontcontroller\AbstractFrontcontrollerAction;
 use APF\extensions\htmlheader\biz\JsCssPackager;
 use APF\tools\http\HeaderManager;
+use InvalidArgumentException;
 
 /**
  * @package APF\extensions\htmlheader\biz\actions
@@ -66,7 +67,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
    }
 
    protected function getRequestedType() {
-      $PackageName = $this->getInput()->getAttribute('package');
+      $PackageName = $this->getInput()->getParameter('package');
       if (!empty($PackageName)) {
          return 'package';
       }
@@ -85,7 +86,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
          case 'js':
             return 'text/javascript';
          default:
-            throw new \InvalidArgumentException('[JsCssInclusionAction::getMimeType()] The attribute '
+            throw new InvalidArgumentException('[JsCssInclusionAction::getMimeType()] The attribute '
                   . '"type" must be either "css" or "js".');
       }
    }
@@ -108,11 +109,11 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
    }
 
    protected function sendPackage() {
-      $package = $this->getInput()->getAttribute('package');
+      $package = $this->getInput()->getParameter('package');
 
       $packageExpl = explode('.', $package);
       if (count($packageExpl) !== 2) {
-         throw new \InvalidArgumentException('[JsCssInclusionAction::sendPackage()] The attribute
+         throw new InvalidArgumentException('[JsCssInclusionAction::sendPackage()] The attribute
                  "package" has to be like "packagename.type", with type
                  beeing "js" or "css".');
       }
@@ -152,21 +153,21 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
    }
 
    protected function sendFile() {
-      $namespace = $this->getSanitizedNamespace($this->getInput()->getAttribute('path'));
-      $file = $this->getSanitizedFileBody($this->getInput()->getAttribute('file'));
-      $type = $this->getInput()->getAttribute('type');
+      $namespace = $this->getSanitizedNamespace($this->getInput()->getParameter('path'));
+      $file = $this->getSanitizedFileBody($this->getInput()->getParameter('file'));
+      $type = $this->getInput()->getParameter('type');
 
       // Check if all required attributes are given
       if (empty($namespace)) {
-         throw new \InvalidArgumentException('[JsCssInclusionAction::sendFile()] The attribute "path" '
+         throw new InvalidArgumentException('[JsCssInclusionAction::sendFile()] The attribute "path" '
                . 'is empty or not present.');
       }
       if (empty($file)) {
-         throw new \InvalidArgumentException('[JsCssInclusionAction::sendFile()] The attribute "file" '
+         throw new InvalidArgumentException('[JsCssInclusionAction::sendFile()] The attribute "file" '
                . 'is empty or not present.');
       }
       if (empty($type)) {
-         throw new \InvalidArgumentException('[JsCssInclusionAction::SendFile()] The attribute "type" '
+         throw new InvalidArgumentException('[JsCssInclusionAction::SendFile()] The attribute "type" '
                . 'is empty or not present.');
       }
 

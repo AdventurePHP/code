@@ -47,10 +47,3 @@ GlobalErrorHandler::disable();
 use APF\core\exceptionhandler\GlobalExceptionHandler;
 
 GlobalExceptionHandler::disable();
-
-// Class loading hack to avoid class loading issues due to Frontcontroller.php containing both
-// - APF\core\frontcontroller\AbstractFrontcontrollerAction
-// - APF\core\frontcontroller\FrontcontrollerInput
-use APF\core\singleton\Singleton;
-
-$fC = Singleton::getInstance('APF\core\frontcontroller\Frontcontroller');

@@ -23,6 +23,7 @@ namespace APF\extensions\htmlheader\pres\taglib;
 use APF\core\pagecontroller\Document;
 use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\CssImageNode;
+use InvalidArgumentException;
 
 /**
  * @package APF\extensions\htmlheader\pres\taglib
@@ -46,7 +47,7 @@ class HtmlHeaderAddCssImageTag extends Document {
 
       $href = $this->getAttribute('href');
       if ($href == null) {
-         throw new \InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please provide the "href" '
+         throw new InvalidArgumentException('[' . get_class($this) . '::onParseTime()] Please provide the "href" '
                . 'attribute in order to add a Css image.', E_USER_ERROR);
       }
       $rel = $this->getAttribute('rel', 'icon');

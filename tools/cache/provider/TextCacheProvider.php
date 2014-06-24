@@ -27,6 +27,7 @@ use APF\tools\cache\key\AdvancedCacheKey;
 use APF\tools\filesystem\File;
 use APF\tools\filesystem\FileException;
 use APF\tools\filesystem\FilesystemManager;
+use InvalidArgumentException;
 
 /**
  * @package APF\tools\cache\provider
@@ -73,8 +74,8 @@ class TextCacheProvider extends CacheBase implements CacheProvider {
 
       // configure file mask
       try {
-         $fileMask = sprintf('%04u', $this->getConfigAttribute('Cache.FolderPermission'));
-      } catch (\InvalidArgumentException $e) {
+         $fileMask = sprintf('%04u', $this->getConfigAttribute('FolderPermission'));
+      } catch (InvalidArgumentException $e) {
          $fileMask = '0770';
       }
 
@@ -115,8 +116,8 @@ class TextCacheProvider extends CacheBase implements CacheProvider {
     */
    protected function getCacheFile(CacheKey $cacheKey) {
 
-      $baseFolder = $this->getConfigAttribute('Cache.BaseFolder');
-      $namespace = str_replace('\\', '/', $this->getConfigAttribute('Cache.Namespace'));
+      $baseFolder = $this->getConfigAttribute('BaseFolder');
+      $namespace = str_replace('\\', '/', $this->getConfigAttribute('Namespace'));
 
       $key = md5($cacheKey->getKey());
       $folder = substr($key, 0, 2);
@@ -132,7 +133,7 @@ class TextCacheProvider extends CacheBase implements CacheProvider {
 
    public function clear(CacheKey $cacheKey = null) {
 
-      $baseFolder = $this->getConfigAttribute('Cache.BaseFolder');
+      $baseFolder = $this->getConfigAttribute('BaseFolder');
 
       if ($cacheKey === null) {
          return FilesystemManager::deleteFolder($baseFolder, true);
