@@ -645,7 +645,7 @@ class Document extends APFObject {
     */
    public function addInstanceTagLibs(array $tags) {
       foreach ($tags as $tag) {
-         self::addInstanceTagLib($tag);
+         $this->addInstanceTagLib($tag);
       }
    }
 

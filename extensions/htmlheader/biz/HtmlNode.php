@@ -39,11 +39,6 @@ use APF\tools\link\Url;
 abstract class HtmlNode extends Document implements HeaderNode {
 
    /**
-    * @var string The content of the node.
-    */
-   private $content = null;
-
-   /**
     * @var int The priority of the header node.
     */
    private $priority = 0;
@@ -52,16 +47,6 @@ abstract class HtmlNode extends Document implements HeaderNode {
     * @var bool Defines if the taglib should be set to gethead or getjsbody taglib.
     */
    private $appendToBody = false;
-
-   public function getContent() {
-      return $this->content;
-   }
-
-   public function setContent($content) {
-      $this->content = $content;
-
-      return $this;
-   }
 
    public function getPriority() {
       return $this->priority;
