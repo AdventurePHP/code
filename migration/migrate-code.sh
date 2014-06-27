@@ -22,6 +22,9 @@ echo "Starting migration ..."
 echo "* Migrate taglib declaration statements ..."
 $PHP_BINARY $SCRIPT_DIR/migrate_taglib_registration.php
 
+echo "* Consolidate tag usage ..."
+$PHP_BINARY $SCRIPT_DIR/migrate_consolidate_tag_usage.php
+
 echo
 echo "#############################################"
 echo
