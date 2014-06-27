@@ -50,6 +50,7 @@ use APF\tools\link\LinkGenerator;
  * @author Christian Achatz
  * @version
  * Version 0.1, 14.04.2013<br />
+ * Version 0.2, 27.06.2014 (Added static registration of tags)<br />
  */
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -138,10 +139,12 @@ Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'html',
 
 Document::addTagLib(new TagLib('APF\core\pagecontroller\TemplateTag', 'html', 'template'));
 Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'template', 'addtaglib'));
-Document::addTagLib(new  TagLib('APF\core\pagecontroller\LanguageLabelTag', 'template', 'getstring'));
+Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'template', 'getstring'));
 Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'template', 'placeholder'));
 
 // APF\tools
+Document::addTagLib(new TagLib('APF\tools\form\taglib\HtmlFormTag', 'html', 'form'));
+
 Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'form', 'addtaglib'));
 Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'form', 'getstring'));
 Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'form', 'placeholder'));
@@ -153,6 +156,7 @@ Document::addTagLib(new TagLib('APF\tools\form\taglib\CsrfProtectionHashTag', 'f
 Document::addTagLib(new TagLib('APF\tools\form\taglib\DateSelectorTag', 'form', 'date'));
 Document::addTagLib(new TagLib('APF\tools\form\taglib\DynamicFormElementMarkerTag', 'form', 'marker'));
 Document::addTagLib(new TagLib('APF\tools\form\taglib\FileUploadTag', 'form', 'file'));
+Document::addTagLib(new TagLib('APF\tools\form\multifileupload\pres\taglib\MultiFileUploadTag', 'form', 'multifileupload'));
 Document::addTagLib(new TagLib('APF\tools\form\taglib\FormErrorDisplayTag', 'form', 'error'));
 Document::addTagLib(new TagLib('APF\tools\form\taglib\FormLabelTag', 'form', 'label'));
 Document::addTagLib(new TagLib('APF\tools\form\taglib\FormSuccessDisplayTag', 'form', 'success'));
@@ -181,6 +185,7 @@ Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'succ
 Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'success', 'addtaglib'));
 Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'success', 'placeholder'));
 
+Document::addTagLib(new TagLib('APF\tools\html\taglib\HtmlIteratorTag', 'html', 'iterator'));
 Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'iterator', 'addtaglib'));
 Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'iterator', 'placeholder'));
 Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'iterator', 'getstring'));
@@ -206,9 +211,14 @@ Document::addTagLib(new TagLib('APF\tools\link\taglib\LinkLanguageLabelTag', 'a'
 Document::addTagLib(new TagLib('APF\tools\link\taglib\LinkLanguageTitleActiveTag', 'titleActive', 'getstring'));
 Document::addTagLib(new TagLib('APF\tools\link\taglib\LinkLanguageTitleTag', 'title', 'getstring'));
 
+Document::addTagLib(new TagLib('APF\tools\media\taglib\MediaInclusionTag', 'html', 'mediastream'));
+
 // APF\modules
 Document::addTagLib(new TagLib('APF\modules\recaptcha\pres\taglib\ReCaptchaTranslationTag', 'recaptcha', 'getstring'));
 Document::addTagLib(new TagLib('APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionLanguageLabelTag', 'media', 'getstring'));
+
+Document::addTagLib(new TagLib('APF\modules\captcha\pres\taglib\SimpleCaptchaTag', 'form', 'captcha'));
+Document::addTagLib(new TagLib('APF\modules\recaptcha\pres\taglib\ReCaptchaTag', 'form', 'recaptcha'));
 
 // APF\extensions
 Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'addtitle', 'addtaglib'));
