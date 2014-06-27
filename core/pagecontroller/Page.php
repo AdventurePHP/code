@@ -73,6 +73,7 @@ class Page extends APFObject {
     * Version 0.3, 04.03.2007 (The namespace is taken as a context, if no other was set before)<br />
     * Version 0.4, 22.04.2007 (Now the language is applied to the document)<br />
     * Version 0.5, 08.03.2009 (Bug-fix: protected variable parentObject might not be used)<br />
+    * Version 0.6, 27.06.2014 (Bug fix: ensure native environment for Document to allow expression-style place holders)<br />
     */
    public function loadDesign($namespace, $design) {
 
@@ -92,6 +93,11 @@ class Page extends APFObject {
       // load the design
       $this->document->loadDesign($namespace, $design);
       $this->document->setObjectId(XmlParser::generateUniqID());
+
+      // ensure native APF environment
+      $this->document->onParseTime();
+      $this->document->onAfterAppend();
+
    }
 
    /**

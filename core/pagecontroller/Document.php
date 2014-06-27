@@ -121,21 +121,6 @@ class Document extends APFObject {
    /**
     * @public
     *
-    * Initializes the built-in taglibs, used to create the APF DOM tree.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    * Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
-    * Version 0.3, 11.02.2012 (Added html:getstring tag as known tag (refactoring!))<br />
-    */
-   public function __construct() {
-      $this->setObjectId(XmlParser::generateUniqID());
-   }
-
-   /**
-    * @public
-    *
     * Injects the parent node of the current APF object.
     *
     * @param Document $parentObject The parent node.
@@ -1294,14 +1279,14 @@ class Document extends APFObject {
     * Interface definition of the onAfterAppend() method. This function is called after the DOM
     * node is appended to the DOM tree. It must be implemented by derived classes.
     *
-    * @public
-    * @abstract
-    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 28.12.2006<br />
+    * Version 0.2, 27.06.2014 (Added expression tag analysis to "standard" document to allow expression place holders in initial document)<br />
     */
    public function onAfterAppend() {
+      // ID#191: extract "static" expressions (e.g. place holders)
+      $this->extractExpressionTags();
    }
 
    /**
