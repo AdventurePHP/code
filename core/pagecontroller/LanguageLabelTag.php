@@ -54,10 +54,6 @@ class LanguageLabelTag extends Document {
     */
    private $placeHolders = array();
 
-   public function __construct() {
-      // do nothing, especially not initialize tag libs
-   }
-
    /**
     * @public
     *

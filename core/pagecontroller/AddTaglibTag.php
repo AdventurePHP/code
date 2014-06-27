@@ -35,10 +35,6 @@ namespace APF\core\pagecontroller;
  */
 class AddTaglibTag extends Document {
 
-   public function __construct() {
-      // do nothing, especially not initialize tag libs
-   }
-
    /**
     * @public
     *

@@ -38,19 +38,6 @@ class ImportTemplateTag extends Document {
    /**
     * @public
     *
-    * Constructor of the class. Sets the known taglibs.
-    *
-    * @author Christian Schäfer
-    * @version
-    * Version 0.1, 28.12.2006<br />
-    */
-   public function __construct() {
-      parent::__construct();
-   }
-
-   /**
-    * @public
-    *
     * Implements the onParseTime() method from the Document class. Includes the desired template
     * as a new DOM node into the current APF DOM tree.
     *

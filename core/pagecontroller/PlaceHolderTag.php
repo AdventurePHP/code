@@ -41,10 +41,6 @@ class PlaceHolderTag extends Document {
     */
    protected $stringReplacement = array();
 
-   public function __construct() {
-      // do nothing, especially not initialize tag libs
-   }
-
    /**
     * @public
     *

@@ -52,19 +52,6 @@ class AppendNodeTag extends Document {
    /**
     * @public
     *
-    *  Initializes the known taglib list.
-    *
-    * @author Christian Achatz
-    * @version
-    * Version 0.1, 16.11.2008<br />
-    */
-   public function __construct() {
-      parent::__construct();
-   }
-
-   /**
-    * @public
-    *
     * Load the content and parse the template.
     *
     * @author Christian Achatz

@@ -121,6 +121,21 @@ class Document extends APFObject {
    /**
     * @public
     *
+    * Default constructor of an APF document. The APF DOM tree is constructed by objects derived from this class.
+    *
+    * @author Christian Schäfer
+    * @version
+    * Version 0.1, 28.12.2006<br />
+    * Version 0.2, 03.03.2007 (Removed the "&" in front of "new")<br />
+    * Version 0.3, 11.02.2012 (Added html:getstring tag as known tag (refactoring!))<br />
+    * Version 0.4, 27.06.2014 (Removed constructor content due to new APF parser allows static tag registration)<br />
+    */
+   public function __construct() {
+   }
+
+   /**
+    * @public
+    *
     * Injects the parent node of the current APF object.
     *
     * @param Document $parentObject The parent node.
