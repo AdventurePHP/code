@@ -138,16 +138,10 @@ Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'html
 Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'html', 'placeholder'));
 
 Document::addTagLib(new TagLib('APF\core\pagecontroller\TemplateTag', 'html', 'template'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'template', 'addtaglib'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'template', 'getstring'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'template', 'placeholder'));
 
 // APF\tools
 Document::addTagLib(new TagLib('APF\tools\form\taglib\HtmlFormTag', 'html', 'form'));
 
-Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'form', 'addtaglib'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'form', 'getstring'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'form', 'placeholder'));
 Document::addTagLib(new TagLib('APF\tools\form\taglib\AddFormControlFilterTag', 'form', 'addfilter'));
 Document::addTagLib(new TagLib('APF\tools\form\taglib\AddFormControlValidatorTag', 'form', 'addvalidator'));
 Document::addTagLib(new TagLib('APF\tools\form\taglib\ButtonTag', 'form', 'button'));
@@ -173,30 +167,9 @@ Document::addTagLib(new TagLib('APF\tools\form\taglib\TimeCaptchaTag', 'form', '
 Document::addTagLib(new TagLib('APF\tools\form\taglib\TimeSelectorTag', 'form', 'time'));
 Document::addTagLib(new TagLib('APF\tools\form\taglib\ValidationListenerTag', 'form', 'listener'));
 
-Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'error', 'placeholder'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'error', 'addtaglib'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'error', 'getstring'));
-
-Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'listener', 'getstring'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'listener', 'addtaglib'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'listener', 'placeholder'));
-
-Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'success', 'getstring'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'success', 'addtaglib'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'success', 'placeholder'));
-
 Document::addTagLib(new TagLib('APF\tools\html\taglib\HtmlIteratorTag', 'html', 'iterator'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'iterator', 'addtaglib'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'iterator', 'placeholder'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'iterator', 'getstring'));
 Document::addTagLib(new TagLib('APF\core\pagecontroller\TemplateTag', 'iterator', 'fallback'));
 Document::addTagLib(new TagLib('APF\tools\html\taglib\HtmlIteratorItemTag', 'iterator', 'item'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'item', 'addtaglib'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'item', 'getstring'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'item', 'placeholder'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'fallback', 'addtaglib'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'fallback', 'getstring'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\PlaceHolderTag', 'fallback', 'placeholder'));
 
 Document::addTagLib(new TagLib('APF\tools\form\taglib\ButtonLanguageLabelTag', 'button', 'getstring'));
 
@@ -221,11 +194,6 @@ Document::addTagLib(new TagLib('APF\modules\captcha\pres\taglib\SimpleCaptchaTag
 Document::addTagLib(new TagLib('APF\modules\recaptcha\pres\taglib\ReCaptchaTag', 'form', 'recaptcha'));
 
 // APF\extensions
-Document::addTagLib(new TagLib('APF\core\pagecontroller\AddTaglibTag', 'addtitle', 'addtaglib'));
-Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'addtitle', 'getstring'));
-
-Document::addTagLib(new TagLib('APF\core\pagecontroller\LanguageLabelTag', 'message', 'getstring'));
-
 Document::addTagLib(new TagLib('APF\extensions\htmllist\taglib\DefinitionListDefinitionTag', 'list', 'elem_defdef'));
 Document::addTagLib(new TagLib('APF\extensions\htmllist\taglib\DefinitionListTermTag', 'list', 'elem_defterm'));
 Document::addTagLib(new TagLib('APF\extensions\htmllist\taglib\ListElementTag', 'list', 'elem_list'));
