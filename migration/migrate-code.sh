@@ -25,6 +25,12 @@ $PHP_BINARY $SCRIPT_DIR/migrate_taglib_registration.php
 echo "* Consolidate tag usage ..."
 $PHP_BINARY $SCRIPT_DIR/migrate_consolidate_tag_usage.php
 
+echo "* Remove redundant tag lib registration ..."
+$PHP_BINARY $SCRIPT_DIR/migrate_extract_add_tag_statements.php
+
+echo "* Switch to new place holder logic ..."
+$PHP_BINARY $SCRIPT_DIR/migrate_update_place_holders_to_expression_notation.php
+
 echo
 echo "#############################################"
 echo
