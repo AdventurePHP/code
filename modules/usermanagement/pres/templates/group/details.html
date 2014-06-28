@@ -23,7 +23,7 @@
       /></h4>
 <html:iterator name="Users">
    <ul>
-   <iterator:item getter="getProperty">
+   <iterator:item>
       <li>
          <umgt:media filename="user.png">
             <media:getstring
@@ -32,7 +32,7 @@
                entry="frontend.group.details.user-img.label"
             />
          </umgt:media>
-         ${FirstName}, ${LastName}
+         ${item->getFirstName()}, ${item->getLastName()}
       </li>
    </iterator:item>
    </ul>
@@ -54,7 +54,7 @@
                entry="frontend.group.details.role-img.label"
             />
          </umgt:media>
-         <html:placeholder getter="getDisplayName"/>
+         ${item->getDisplayName()}
       </li>
    </iterator:item>
    </ul>
