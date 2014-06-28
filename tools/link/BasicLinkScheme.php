@@ -26,9 +26,6 @@ use APF\core\frontcontroller\Frontcontroller;
 use APF\core\singleton\Singleton;
 
 /**
- * @package APF\tools\link
- * @class BasicLinkScheme
- *
  * Implements basic functionality used by different link scheme implementations.
  *
  * @author Christian Achatz
@@ -58,8 +55,6 @@ abstract class BasicLinkScheme {
    }
 
    /**
-    * @protected
-    *
     * Creates a base url string including scheme, host and port in case
     * it differs from the default ports.
     *
@@ -94,8 +89,6 @@ abstract class BasicLinkScheme {
    }
 
    /**
-    * @protected
-    *
     * Retrieves the current action stack from the front controller.
     *
     * @return AbstractFrontcontrollerAction[] The list of registered actions.
@@ -116,8 +109,6 @@ abstract class BasicLinkScheme {
    }
 
    /**
-    * @protected
-    *
     * Creates a url sub-string that contains all action's encoded information that
     * have the <em>keepInUrl</em> flag set to true.
     * <p/>
@@ -179,8 +170,6 @@ abstract class BasicLinkScheme {
    }
 
    /**
-    * @protected
-    *
     * Creates a url sub-string that contains one action's encoded information.
     *
     * @param AbstractFrontcontrollerAction $action The front controller action.
@@ -203,8 +192,6 @@ abstract class BasicLinkScheme {
    }
 
    /**
-    * @protected
-    *
     * Returns an url identifier that addresses the action described by the applied parameters.
     *
     * @param string $namespace The namespace of the action.
@@ -245,8 +232,6 @@ abstract class BasicLinkScheme {
    }
 
    /**
-    * @protected
-    *
     * Returns all input parameters as a url formatted string.
     *
     * @param array $params The action parameters.
@@ -280,8 +265,6 @@ abstract class BasicLinkScheme {
    }
 
    /**
-    * @protected
-    *
     * Safely tests whether the applied value is considered empty or not.
     *
     * @param string $value The value to check.
@@ -297,8 +280,6 @@ abstract class BasicLinkScheme {
    }
 
    /**
-    * @protected
-    *
     * Appends an anchor if present within the url representation applied to a LinkScheme
     * implementation.
     *
@@ -322,8 +303,6 @@ abstract class BasicLinkScheme {
    }
 
    /**
-    * @protected
-    *
     * Removes action instructions from the query of a Url instance. Only works for
     * normal URLs.
     *

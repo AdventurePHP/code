@@ -23,9 +23,6 @@ namespace APF\tools\cache\provider;
 use APF\tools\cache\CacheKey;
 
 /**
- * @package APF\tools\cache\provider
- * @class AdvancedObjectCacheProvider
- *
  * Implements the cache provider for serialized php objects using the AdvancedTextCacheProvider.
  *
  * @author Christian Achatz
@@ -44,6 +41,7 @@ class AdvancedObjectCacheProvider extends AdvancedTextCacheProvider {
          $unserialized = @unserialize($content);
          if ($unserialized === false) {
             $this->clear($cacheKey);
+
             return null;
          } else {
             return $unserialized;
@@ -55,6 +53,7 @@ class AdvancedObjectCacheProvider extends AdvancedTextCacheProvider {
 
    public function write(CacheKey $cacheKey, $object) {
       $serialized = @serialize($object);
+
       return ($serialized !== false)
             ? parent::write($cacheKey, $serialized)
             : false;

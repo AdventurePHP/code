@@ -23,9 +23,6 @@ namespace APF\modules\usermanagement\biz\provider;
 use APF\modules\usermanagement\biz\model\UmgtUser;
 
 /**
- * @package APF\modules\usermanagement\biz\provider
- * @class UserFieldEncryptionProvider
- *
  * Provider for encrypting user data
  *
  * @author Ralf Schubert
@@ -33,6 +30,7 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
  * Version 1.0, 24.06.2013<br />
  */
 class UserFieldEncryptionProvider {
+
    public static $encryptedFieldNames = null;
    public static $encryptionConfigKey = null;
    protected static $encryptionHardCodedKey = 'sjhdjhaDSAHKHSLdäASÖdo75&$/6923598(&)(3k;;';
@@ -106,6 +104,7 @@ class UserFieldEncryptionProvider {
          $iv = substr($iv, 0, $ivSize);
          self::$encryptionIV = $iv;
       }
+
       return $td;
    }
 
@@ -126,6 +125,7 @@ class UserFieldEncryptionProvider {
     *
     * @param String $value Plain value which should be encrypted
     * @param type $encryptionHandler
+    *
     * @return String encrypted value
     */
    public static function encrypt($value, $encryptionHandler = null) {
@@ -151,6 +151,7 @@ class UserFieldEncryptionProvider {
     *
     * @param String $crypted Encrypted value which should be decrypted.
     * @param type $encryptionHandler
+    *
     * @return String The decrypted plain value
     */
    public static function decrypt($crypted, $encryptionHandler = null) {
@@ -176,17 +177,20 @@ class UserFieldEncryptionProvider {
     * Checks wether the given property is configured to be encrypted
     *
     * @param String $propertyName
+    *
     * @return boolean Returns true if property has encryption enabled
     */
    public static function propertyHasEncryptionEnabled($propertyName) {
       if (self::$encryptedFieldNames === null) {
          return false;
       }
+
       return in_array($propertyName, self::$encryptedFieldNames);
    }
 
    /**
     * Encrypts all properties of the given user which have encryption enabled
+    *
     * @param UmgtUser $user
     */
    public static function encryptProperties(UmgtUser $user) {
@@ -205,6 +209,7 @@ class UserFieldEncryptionProvider {
 
    /**
     * Decrypts all properties of the given user which have encryption enabled
+    *
     * @param UmgtUser $user
     */
    public static function decryptProperties(UmgtUser $user) {

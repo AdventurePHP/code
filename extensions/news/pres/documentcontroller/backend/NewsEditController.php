@@ -26,9 +26,6 @@ use APF\extensions\news\pres\documentcontroller\NewsBaseController;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\extensions\news\pres\documentcontroller\backend
- * @class NewsEditController
- *
  * Document controller for editing and creating news.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
@@ -52,9 +49,10 @@ class NewsEditController extends NewsBaseController {
       $editId = RequestHandler::getValue('editnewsid');
       $news = null;
       if ($editId !== null && $editId !== '') {
-         $news = $newsManager->getNewsById((int)$editId);
+         $news = $newsManager->getNewsById((int) $editId);
          if ($news === null) {
             $this->getTemplate('notfound')->transformOnPlace();
+
             return;
          }
       }

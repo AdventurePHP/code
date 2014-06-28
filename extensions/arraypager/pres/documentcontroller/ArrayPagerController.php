@@ -28,9 +28,6 @@ use APF\tools\link\Url;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\extensions\arraypager\pres\documentcontroller
- * @class ArrayPagerController
- *
  *  Implements the document controller to display the paging bar. The bar includes:
  *  <ul>
  *    <li>display present pages</li>

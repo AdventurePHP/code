@@ -1,12 +1,14 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\group\GroupEditController"
+class="APF\modules\usermanagement\pres\documentcontroller\group\GroupEditController"
 @>
-<h3><html:getstring
-      name="headline"
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.group.edit.headline"
-      /></h3>
+<h3>
+   <html:getstring
+         name="headline"
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.group.edit.headline"
+         />
+</h3>
 <p>
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
@@ -22,27 +24,31 @@
             control="DisplayName"
             />
       <p>
-         <label><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.group.edit.form.display-name.label"
-               /></label>
+         <label>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.group.edit.form.display-name.label"
+                  />
+         </label>
          <form:text name="DisplayName" maxlength="100"/>
       </p>
       <p>
-         <label><html:getstring
-                     namespace="APF\modules\usermanagement\pres"
-                     config="labels.ini"
-                     entry="frontend.group.edit.form.description.label"
-                     /></label>
+         <label>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.group.edit.form.description.label"
+                  />
+         </label>
          <form:area name="Description"/>
       </p>
       <form:button name="Edit">
          <button:getstring
-            namespace="APF\modules\usermanagement\pres"
-            config="labels.ini"
-            entry="frontend.group.edit.form.button.label"
-            />
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.group.edit.form.button.label"
+               />
       </form:button>
       <form:hidden name="groupid"/>
    </div>

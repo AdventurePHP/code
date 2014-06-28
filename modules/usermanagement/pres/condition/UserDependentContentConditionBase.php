@@ -23,9 +23,6 @@ namespace APF\modules\usermanagement\pres\condition;
 use APF\core\pagecontroller\Document;
 
 /**
- * @package APF\modules\usermanagement\pres\condition
- * @class UserDependentContentConditionBase
- *
  * Implements basic functionality for content conditions.
  *
  * @author Christian Achatz

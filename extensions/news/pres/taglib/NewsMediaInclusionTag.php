@@ -23,9 +23,6 @@ namespace APF\extensions\news\pres\taglib;
 use APF\tools\media\taglib\MediaInclusionTag;
 
 /**
- * @package APF\extensions\news\pres\taglib
- * @class NewsMediaInclusionTag
- *
  * Implements the image displaying tablib. Based on the *:mediastream taglib.
  *
  * @author Ralf Schubert
@@ -33,8 +30,6 @@ use APF\tools\media\taglib\MediaInclusionTag;
 class NewsMediaInclusionTag extends MediaInclusionTag {
 
    /**
-    * @public
-    *
     * Overwrites the parent's onParseTime().
     *
     * @author Ralf Schubert
@@ -46,8 +41,6 @@ class NewsMediaInclusionTag extends MediaInclusionTag {
    }
 
    /**
-    * @public
-    *
     * Returns the image tag, that includes the image resource (front controller action). The
     * tag definition also contains size and border instruction.
     *
@@ -72,6 +65,7 @@ class NewsMediaInclusionTag extends MediaInclusionTag {
       $height = $this->getAttribute('height', '20px');
 
       $attributes = $this->getAttributesAsString($this->getAttributes(), array('alt', 'title'));
+
       return '<img src="' . $imgSrc . '" ' . $attributes . ' style="width: ' . $width . '; height: ' . $height . '; border-width: 0px;" />';
    }
 

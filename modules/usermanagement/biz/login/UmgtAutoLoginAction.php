@@ -27,8 +27,8 @@ use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 use APF\tools\cookie\Cookie;
 
 /**
- * @package APF\modules\usermanagement\biz\login
- * @class UmgtAutoLoginAction
+
+
  */
 class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
 
@@ -49,6 +49,7 @@ class UmgtAutoLoginAction extends AbstractFrontcontrollerAction {
     */
    public function isActive() {
       $requestedMimeType = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
+
       return strpos($requestedMimeType, 'text/html') !== false;
    }
 

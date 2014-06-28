@@ -23,9 +23,6 @@ namespace APF\core\frontcontroller;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\core\frontcontroller
- * @class FrontcontrollerInput
- *
  * Implements a base class for input parameters for front controller actions.
  *
  * @author Christian Achatz

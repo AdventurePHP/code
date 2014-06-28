@@ -1,30 +1,27 @@
 <?php
 namespace APF\tools\form\taglib;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\tools\form\taglib
- * @class FormControl
- *
  * Defines the basic structure/functionality of an APF form control.
  * <p/>
  * It contains the basic methods the APF form tag needs to operate on.
@@ -36,8 +33,6 @@ namespace APF\tools\form\taglib;
 interface FormControl {
 
    /**
-    * @public
-    *
     * Returns the sending status of a form control. Since the framework does not know about
     * custom tags, this status is queried from all controls but it is only relevant for
     * buttons.
@@ -51,8 +46,6 @@ interface FormControl {
    public function isSent();
 
    /**
-    * @public
-    *
     * Returns the validity status of a form control. Since the framework does not know about
     * custom tags, this status is queried from all controls but it is only relevant for
     * input controls.

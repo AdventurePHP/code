@@ -27,9 +27,6 @@ use APF\core\configuration\provider\BaseConfigurationProvider;
 use APF\core\database\config\StatementConfiguration;
 
 /**
- * @package APF\core\database\config
- * @class StatementConfigurationProvider
- *
  * Implements the configuration provider to handle stored statements to treat them as "normal"
  * configuration files (e.g. to support the omitContext feature).
  *
@@ -46,6 +43,7 @@ class StatementConfigurationProvider extends BaseConfigurationProvider implement
       if (file_exists($fileName)) {
          $config = new StatementConfiguration();
          $config->setStatement(file_get_contents($fileName));
+
          return $config;
       }
 

@@ -26,9 +26,6 @@ use APF\extensions\forwardmessage\biz\ForwardMessageManager;
 use InvalidArgumentException;
 
 /**
- * @package APF\extensions\forwardmessage\pres\taglib
- * @class AddForwardMessageTag
- *
  * Adds a status message for the next page.
  *
  * @author Daniel Seemaier, Werner Liemberger

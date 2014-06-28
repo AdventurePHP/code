@@ -23,9 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class PermissionNavigationController
- *
  * Displays the permission sub menu.
  *
  * @author Christian Achatz

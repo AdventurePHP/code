@@ -24,9 +24,6 @@ use APF\core\pagecontroller\ImportTemplateTag;
 use APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet;
 
 /**
- * @package APF\modules\usermanagement\pres\taglib
- * @class UmgtImportTemplateTag
- *
  * Enables you to include templates based on various conditions registered within
  * the <em>UserDependentContentConditionSet</em>.
  * <p/>
@@ -68,6 +65,7 @@ class UmgtImportTemplateTag extends ImportTemplateTag {
       if ($this->display) {
          return parent::transform();
       }
+
       return '';
    }
 

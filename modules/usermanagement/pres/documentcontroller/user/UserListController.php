@@ -24,9 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\user
- * @class UserListController
- *
  * Implements the list controller for users.
  *
  * @author Christian Achatz
@@ -79,6 +76,7 @@ class UserListController extends UmgtBaseController {
       foreach ($roles as $role) {
          $roleNames .= '<li>' . $role->getDisplayName() . '</li>';
       }
+
       return $roleNames . '</ul>';
    }
 
@@ -93,6 +91,7 @@ class UserListController extends UmgtBaseController {
       foreach ($groups as $group) {
          $groupNames .= '<li>' . $group->getDisplayName() . '</li>';
       }
+
       return $groupNames . '</ul>';
    }
 

@@ -24,9 +24,6 @@ use Exception;
 use InvalidArgumentException;
 
 /**
- * @package APF\core\loader
- * @class RootClassLoader
- *
  * This is the root class loader of the APF. To add further class loaders, please use
  * <em>addLoader()</em>.
  *
@@ -49,9 +46,6 @@ class RootClassLoader {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Main entry for all class loading activities. This method is registered with the
     * <em>spl_autoload_register()</em> function.
     *
@@ -68,9 +62,6 @@ class RootClassLoader {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Returns a class loader by the applied vendor name.
     *
     * @param string $vendorName The name of the desired class loader to get.
@@ -90,9 +81,6 @@ class RootClassLoader {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Returns a class loader by the applied namespace.
     *
     * @param string $namespace The namespace of the desired class loader to get.
@@ -110,9 +98,6 @@ class RootClassLoader {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Returns a class loader by the applied namespace.
     *
     * @param string $class The fully-qualified class of the desired class loader to get.
@@ -134,9 +119,6 @@ class RootClassLoader {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Determines the class name of a fully-qualified class for you.
     *
     * @param string $class Fully-qualified class name (e.g. <em>APF\core\loader\StandardClassLoader</em>).
@@ -152,9 +134,6 @@ class RootClassLoader {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Determines the namespace of a fully-qualified class for you.
     *
     * @param string $class Fully-qualified class name (e.g. <em>APF\core\loader\StandardClassLoader</em>).
@@ -170,9 +149,6 @@ class RootClassLoader {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Determines the namespace without the leading vendor of a fully-qualified class for you.
     *
     * @param string $class Fully-qualified class name (e.g. <em>APF\core\loader\StandardClassLoader</em>).
@@ -192,9 +168,6 @@ class RootClassLoader {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Determines the vendor of a fully-qualified class for you.
     *
     * @param string $class Fully-qualified class name (e.g. <em>APF\core\loader\StandardClassLoader</em>).
@@ -210,9 +183,6 @@ class RootClassLoader {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Determines whether the given namespace only consists of a vendor.
     *
     * @param string $namespace A fully-qualified namespace (e.g. <em>APF\core\loader</em> or <em>APF</em>).

@@ -25,9 +25,6 @@ use APF\core\frontcontroller\Frontcontroller;
 use APF\core\singleton\Singleton;
 
 /**
- * @package APF\core\filter
- * @class ChainedStandardInputFilter
- *
  * Implements an input filter that resolves the URL layout of the front and page
  * controller in standard url mode.
  * <p/>

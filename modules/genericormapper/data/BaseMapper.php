@@ -29,9 +29,6 @@ use APF\core\pagecontroller\APFObject;
 use APF\core\singleton\Singleton;
 
 /**
- * @package APF\modules\genericormapper\data
- * @class BaseMapper
- *
  * Implements the base class for all concrete or-mapper implementations.<br />
  *
  * @author Christian Achatz
@@ -45,19 +42,16 @@ use APF\core\singleton\Singleton;
 class BaseMapper extends APFObject {
 
    /**
-    * @protected
     * @var string Namespace, where the configuration files are located.
     */
    protected $configNamespace = null;
 
    /**
-    * @protected
     * @var string Name affix of the configuration files.
     */
    protected $configNameAffix = null;
 
    /**
-    * @protected
     * @var AbstractDatabaseHandler Instance of the database driver.
     */
    protected $dbDriver = null;
@@ -70,52 +64,44 @@ class BaseMapper extends APFObject {
    protected $connectionName = null;
 
    /**
-    * @protected
     * @var string[] Object mapping table.
     */
    protected $mappingTable = array();
 
    /**
-    * @protected
     * @since 1.12
     * @var string[] Additional indices for the object tables.
     */
    protected $mappingIndexTable = array();
 
    /**
-    * @protected
     * @since 2.1
     * @var string[] Storage Engine for the object tables.
     */
    protected $mappingStorageEngineTable = array();
 
    /**
-    * @protected
     * @since 2.1
     * @var string[] Storage Engine for the relation tables.
     */
    protected $relationStorageEngineTable = array();
    /**
-    * @protected
     * @var array Object relation table.
     */
    protected $relationTable = array();
 
    /**
-    * @protected
     * @since 1.14
     * @var string[] Domain object table
     */
    protected $domainObjectsTable = array();
 
    /**
-    * @protected
     * @var string[] Indicates, if a additional configuration was already imported.
     */
    protected $importedConfigCache = array();
 
    /**
-    * @protected
     * @var boolean Indicates, whether the generated statements should be logged for debugging purposes.
     */
    protected $logStatements = false;
@@ -127,7 +113,6 @@ class BaseMapper extends APFObject {
    private $configFileExtension = 'ini';
 
    /**
-    * @protected
     * @var string Identifies the param that defines additional indices relevant for database setup.
     */
    protected static $ADDITIONAL_INDICES_INDICATOR = 'AddIndices';
@@ -148,8 +133,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Injects the config name affix and sets up the interal mapping structures.
     * Please note, that this method must be called after <em>setConfigNamespace()</em>!
     *
@@ -188,8 +171,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Injects the desired config file extension to use with the APF's configuration
     * provider concept. Must be called before <em>setConfigNamespace()</em> and
     * <em>setConfigNameAffix()</em>!
@@ -205,7 +186,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @protected
     * @since 1.12
     *
     * Initializes the database connection. This is used on creation of the mapper
@@ -222,8 +202,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * DI initialization method to setup and re-initialize (on session restore!) the password hash providers.
     *
     * @author Christian Achatz
@@ -264,8 +242,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the instance of the current database instance to be able to native
     * execute statements against the database without extra configuration.
     *
@@ -280,8 +256,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * This method can be used to inject the database connection via the
     * DIServiceManager.
     *
@@ -296,8 +270,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Imports additional mapping information.
     *
     * @param string $configNamespace the desired configuration namespace
@@ -361,8 +333,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Allows you to initialize/enhance the generic or mapper's mapping configuration using
     * the DI service manager. See documentation of the
     * <em>GenericORMapperDIMappingConfiguration</em> class on configuration definition.
@@ -378,8 +348,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Imports additional relation information.
     *
     * @param string $configNamespace The desired configuration namespace.
@@ -432,8 +400,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Allows you to initialize/enhance the generic or mapper's relation configuration using
     * the DI service manager. See documentation of the
     * <em>GenericORMapperDIMappingConfiguration</em> class on configuration definition.
@@ -449,8 +415,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Imports additional domain object mapping information.
     *
     * @param string $configNamespace the desired configuration namespace
@@ -498,8 +462,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Allows you to initialize/enhance the generic or mapper's service object configuration using
     * the DI service manager. See documentation of the
     * <em>GenericORMapperDIDomainObjectsConfiguration</em> class on configuration definition.
@@ -515,8 +477,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Resolves the table and primary key name within the object definition configuration.
     *
     * @param string $objectName Name of the current configuration section (=name of the current object).
@@ -544,8 +504,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Resolves the table name, source and target id of the relation definition within
     * the relation configuration.
     *
@@ -582,8 +540,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Checks, whether or not an object has been registered/defined w/ the GORM.
     *
     * @param string $objectName The name of the object to check.
@@ -599,8 +555,6 @@ class BaseMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Checks, whether or not an object property has been registered/defined w/ the GORM.
     *
     * @param string $objectName The name of the object to check.

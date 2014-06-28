@@ -24,9 +24,6 @@ use APF\core\pagecontroller\BaseDocumentController;
 use APF\core\registry\Registry;
 
 /**
- * @package APF\core\exceptionhandler\documentcontroller
- * @class ExceptionPageController
- *
  * Implements the exception page's document controller.
  *
  * @author Christian Achatz
@@ -36,8 +33,6 @@ use APF\core\registry\Registry;
 class ExceptionPageController extends BaseDocumentController {
 
    /**
-    * @public
-    *
     * Displays the exception page.
     *
     * @author Christian Achatz
@@ -49,7 +44,7 @@ class ExceptionPageController extends BaseDocumentController {
       // get the exception trace, init output buffer
       $document = $this->getDocument();
       $exceptions = $document->getAttribute('trace');
-      $buffer = (string)'';
+      $buffer = (string) '';
 
       // get template
       $templateExceptionEntry = & $this->getTemplate('ExceptionEntry');

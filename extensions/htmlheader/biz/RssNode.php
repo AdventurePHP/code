@@ -26,9 +26,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class RssNode
- *
  * Represents an RSS reference within the HTML header area.
  *
  * @author Coach83, Christian Achatz

@@ -7,8 +7,6 @@ use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\tools\link\Url;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (06.06.12)
  *            v0.2 (23.09.12) Changed method signature of getDecoratorTypes and getAllDecorators to optional give-through arrays
@@ -86,7 +84,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
       $page = $this->SMSPage;
 
-      if($page instanceof SMSPageDec) {
+      if ($page instanceof SMSPageDec) {
          /**
           * @var SMSPageDec $page
           */
@@ -109,7 +107,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
       $page = $this->SMSPage;
 
-      if($page instanceof SMSPageDec) {
+      if ($page instanceof SMSPageDec) {
          /**
           * @var SMSPageDec $page
           */
@@ -130,8 +128,8 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
 
       return call_user_func_array(
-         array($this->SMSPage, $name),
-         $arguments
+            array($this->SMSPage, $name),
+            $arguments
       );
    }
 
@@ -144,13 +142,13 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
    public function providesDecMethod($name) {
 
 
-      if(method_exists($this, $name)) {
+      if (method_exists($this, $name)) {
          return true;
       }
 
       $page = $this->SMSPage;
 
-      if($page instanceof SMSPageDec) {
+      if ($page instanceof SMSPageDec) {
          /**
           * @var SMSPageDec $page
           */
@@ -173,7 +171,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
        */
       $site = $this->SMSPage;
 
-      if(!($site instanceof SMSPageDec)) {
+      if (!($site instanceof SMSPageDec)) {
          /**
           * @var SMSPage $site
           */
@@ -194,14 +192,12 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
       foreach ($data AS $prop => $val) {
 
-         if(property_exists($this, $prop)) { // check if property is applicable
+         if (property_exists($this, $prop)) { // check if property is applicable
             $this->$prop = $val;
-         }
-         elseif(is_array($val) && property_exists($this, $prop . 's')) { // try plural form, e.g. an XMl element name may be "requestParam" and belong to property "requestParams"
+         } elseif (is_array($val) && property_exists($this, $prop . 's')) { // try plural form, e.g. an XMl element name may be "requestParam" and belong to property "requestParams"
             $pluralProp = $prop . 's';
             $this->$pluralProp = $val;
-         }
-         else {
+         } else {
             throw new SMSException('[' . get_class($this) . '::mapData()] Mapper delivers data that is not applicable to ' . get_class($this) . ' object');
          }
 
@@ -213,6 +209,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
    /**
     * @param $id
+    *
     * @return mixed
     */
    public function setId($id) {
@@ -234,6 +231,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
    /**
     * @param $lvl
+    *
     * @return mixed
     */
    public function setLevel($lvl) {
@@ -336,6 +334,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
    /**
     * @param Url $url
+    *
     * @return string
     */
    public function getLink(Url $url) {
@@ -347,6 +346,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
    /**
     * @param Url $url
+    *
     * @return Url
     */
    final public function setPageRequestParamInURL(Url $url) {
@@ -428,6 +428,7 @@ abstract class SMSAbstractPageDec extends APFObject implements SMSPageDec {
 
    /**
     * @param $includeMe
+    *
     * @return SMSPage[]
     */
    public function getSiblings($includeMe = false) {

@@ -24,9 +24,6 @@ use APF\core\pagecontroller\TemplateTag;
 use APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet;
 
 /**
- * @package APF\modules\usermanagement\pres\taglib
- * @class UmgtTemplateTag
- *
  * Enables you to display template content based on various conditions registered within
  * the <em>UserDependentContentConditionSet</em>.
  * <p/>
@@ -53,12 +50,13 @@ class UmgtTemplateTag extends TemplateTag {
    }
 
    public function transform() {
-      $condSet = &$this->getServiceObject('APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet');
+      $condSet = & $this->getServiceObject('APF\modules\usermanagement\pres\condition\UserDependentContentConditionSet');
       /* @var $condSet UserDependentContentConditionSet */
 
       if ($condSet->conditionMatches($this->getContext(), $this->getAttribute('condition'), $this->getAttribute('options'))) {
          return parent::transform();
       }
+
       return '';
    }
 

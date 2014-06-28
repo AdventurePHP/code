@@ -23,10 +23,6 @@ namespace APF\core\frontcontroller;
 use APF\core\service\APFDIService;
 
 /**
- * @package APF\core\frontcontroller
- * @class Action
- * @abstract
- *
  * Implements an action interface for a front controller action.
  *
  * @author Christian Achatz
@@ -44,8 +40,6 @@ interface Action extends APFDIService {
    const TYPE_POST_TRANSFORM = 'posttransform';
 
    /**
-    * @public
-    *
     * Returns the input object of the action.
     *
     * @return FrontcontrollerInput The input object associated with the action.
@@ -57,8 +51,6 @@ interface Action extends APFDIService {
    public function getInput();
 
    /**
-    * @public
-    *
     * Injects the input param wrapper of the current action.
     *
     * @param FrontcontrollerInput $input The input object associated with the action.
@@ -70,8 +62,6 @@ interface Action extends APFDIService {
    public function setInput($input);
 
    /**
-    * @public
-    *
     * Returns the associated front controller instance.
     *
     * @return Frontcontroller The associated front controller instance.
@@ -83,8 +73,6 @@ interface Action extends APFDIService {
    public function getFrontController();
 
    /**
-    * @public
-    *
     * Allows you to manipulate the priority of this instance in comparison to other actions
     * of the same type on the action stack.
     * <p/>
@@ -99,8 +87,6 @@ interface Action extends APFDIService {
    public function getPriority();
 
    /**
-    * @public
-    *
     * Let's the front controller inject itself.
     *
     * @param Frontcontroller $frontController The current front controller instance.
@@ -112,8 +98,6 @@ interface Action extends APFDIService {
    public function setFrontController(Frontcontroller &$frontController);
 
    /**
-    * @public
-    *
     * Returns the name of the action, that is used to refer it within the
     * front controller's action stack.
     *
@@ -126,8 +110,6 @@ interface Action extends APFDIService {
    public function getActionName();
 
    /**
-    * @public
-    *
     * Returns the indicator, whether the action should be kept in the url
     * generating a fully qualified front controller link.
     *
@@ -140,8 +122,6 @@ interface Action extends APFDIService {
    public function getKeepInUrl();
 
    /**
-    * @public
-    *
     * Sets the name of the action, that is used to refer it within the
     * front controller's action stack.
     *
@@ -154,8 +134,6 @@ interface Action extends APFDIService {
    public function setActionName($name);
 
    /**
-    * @public
-    *
     * Sets the type of the action, that defines the execution time.
     *
     * @param string $type The type of the action.
@@ -167,8 +145,6 @@ interface Action extends APFDIService {
    public function setType($type);
 
    /**
-    * @public
-    *
     * Returns the type of the action, that defines the execution time.
     *
     * @return string The type of the action.
@@ -180,8 +156,6 @@ interface Action extends APFDIService {
    public function getType();
 
    /**
-    * @public
-    *
     * Sets the namespace of the action, that is used to refer it within the
     * front controller's action stack.
     *
@@ -194,8 +168,6 @@ interface Action extends APFDIService {
    public function setActionNamespace($namespace);
 
    /**
-    * @public
-    *
     * Set the indicator, whether the action should be kept in the url
     * generating a fully qualified front controller link.
     *
@@ -208,8 +180,6 @@ interface Action extends APFDIService {
    public function setKeepInUrl($keepInUrl);
 
    /**
-    * @public
-    *
     * Indicates, whether the action should be executed by the front controller or not.
     * This method can be overridden in case an action should not be executed due to
     * special concerns. This maybe the execution of another action or certain url params.
@@ -223,8 +193,6 @@ interface Action extends APFDIService {
    public function isActive();
 
    /**
-    * @public
-    *
     * Returns the namespace of the action, that is used to refer it within the
     * front controller's action stack.
     *
@@ -237,9 +205,6 @@ interface Action extends APFDIService {
    public function getActionNamespace();
 
    /**
-    * @public
-    * @abstract
-    *
     * Defines the interface method, that must be implemented by each concrete action. The method
     * is called by the front controller when the action is executed.
     *

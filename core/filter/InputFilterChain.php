@@ -23,9 +23,6 @@ namespace APF\core\filter;
 use APF\core\filter\AbstractFilterChain;
 
 /**
- * @package APF\core\filter
- * @class InputFilterChain
- *
  * Represents the singleton instance of the input filter chain.
  *
  * @author Christian Achatz
@@ -49,6 +46,7 @@ class InputFilterChain extends AbstractFilterChain {
       if (self::$CHAIN === null) {
          self::$CHAIN = new InputFilterChain();
       }
+
       return self::$CHAIN;
    }
 

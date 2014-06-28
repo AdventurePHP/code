@@ -1,42 +1,49 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\user\UserDetailsController"
+class="APF\modules\usermanagement\pres\documentcontroller\user\UserDetailsController"
 @>
-<h3><html:getstring
-      name="headline"
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.user.details.headline"
-      /></h3>
+<h3>
+   <html:getstring
+         name="headline"
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.user.details.headline"
+         />
+</h3>
 
-<h4><html:getstring
-      name="headline"
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.user.details.user-details.label"/></h4>
+<h4>
+   <html:getstring
+         name="headline"
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.user.details.user-details.label"/>
+</h4>
 <html:template name="User">
    <p>
       ${FirstName}, ${LastName}
    </p>
+
    <p>
       ${EMail}
    </p>
 </html:template>
 
-<h4><html:getstring
-      name="headline"
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.user.details.groups.label"/></h4>
+<h4>
+   <html:getstring
+         name="headline"
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.user.details.groups.label"/>
+</h4>
 <html:iterator name="Groups">
    <ul>
       <iterator:item>
          <li>
             <umgt:media filename="group.png">
                <media:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.user.details.group-img.label"
-               />
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.user.details.group-img.label"
+                     />
             </umgt:media>
             ${item->getDisplayName()}
          </li>
@@ -44,63 +51,67 @@
    </ul>
 </html:iterator>
 
-<h4><html:getstring
-      name="headline"
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.user.details.roles.label"/></h4>
+<h4>
+   <html:getstring
+         name="headline"
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.user.details.roles.label"/>
+</h4>
 <html:iterator name="Roles">
    <ul>
-   <iterator:item>
-      <li>
-         <umgt:media filename="role.png">
-            <media:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.user.details.role-img.label"
-            />
-         </umgt:media>
-         ${item->getDisplayName()}
-      </li>
-   </iterator:item>
+      <iterator:item>
+         <li>
+            <umgt:media filename="role.png">
+               <media:getstring
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.user.details.role-img.label"
+                     />
+            </umgt:media>
+            ${item->getDisplayName()}
+         </li>
+      </iterator:item>
    </ul>
 </html:iterator>
-      
-<h4><html:getstring
-      name="headline"
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.user.details.objects.label"/></h4>
+
+<h4>
+   <html:getstring
+         name="headline"
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.user.details.objects.label"/>
+</h4>
 <html:iterator name="Proxies">
    <ul>
-   <iterator:item>
-      <li>
-         <umgt:media filename="visibility_def.png">
-            <media:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.user.details.proxy-img.label"
-            />
-         </umgt:media>
+      <iterator:item>
+         <li>
+            <umgt:media filename="visibility_def.png">
+               <media:getstring
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.user.details.proxy-img.label"
+                     />
+            </umgt:media>
 
-         <html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.user.details.app-obj-id.label"/>
-         <strong>${item->getAppObjectId()}</strong>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.user.details.app-obj-id.label"/>
+            <strong>${item->getAppObjectId()}</strong>
 
-         <html:getstring
-            namespace="APF\modules\usermanagement\pres"
-            config="labels.ini"
-            entry="frontend.user.details.proxy-id.label" />
-         <strong>${item->getObjectId()}</strong>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.user.details.proxy-id.label"/>
+            <strong>${item->getObjectId()}</strong>
 
-         <html:getstring
-            namespace="APF\modules\usermanagement\pres"
-            config="labels.ini"
-            entry="frontend.user.details.permissions.label" />
-         <strong>${item->getReadPermission()}</strong>/<strong>${item->getWritePermission()}</strong>/<strong>${item->getLinkPermission()}</strong>/<strong>${item->getDeletePermission()}</strong>
-      </li>
-   </iterator:item>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.user.details.permissions.label"/>
+            <strong>${item->getReadPermission()}</strong>/<strong>${item->getWritePermission()}</strong>/<strong>${item->getLinkPermission()}</strong>/<strong>${item->getDeletePermission()}</strong>
+         </li>
+      </iterator:item>
    </ul>
 </html:iterator>

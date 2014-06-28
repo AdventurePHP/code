@@ -24,9 +24,6 @@ use APF\modules\genericormapper\data\BaseMapper;
 use APF\modules\genericormapper\data\GenericORMapperException;
 
 /**
- * @package APF\modules\genericormapper\data
- * @class GenericORMapperManagementTool
- *
  * This tool allows you to setup a database for use with the generic or mapper. It enables
  * you to generate the table layout from a given couple of configuration files (objects and
  * relations). In order to adapt the automatic
@@ -185,8 +182,6 @@ class GenericORMapperManagementTool extends BaseMapper {
    }
 
    /**
-    * @public
-    *
     * Let's you influence the storage engine that is used to create the tables with.
     * <p/>
     * Please note, that changes in storage engine changes on database layout updates are
@@ -207,8 +202,6 @@ class GenericORMapperManagementTool extends BaseMapper {
    }
 
    /**
-    * @public
-    *
     * Let's you influence the data type of the indexed id columns to have
     * a greater range of objects to store within the database.
     * <p/>
@@ -228,8 +221,6 @@ class GenericORMapperManagementTool extends BaseMapper {
    }
 
    /**
-    * @public
-    *
     * Creates or updates a database, that is used with the GenericORRelationMapper. You can
     * choose between direct update (<em>$updateInPlace=true</em>) and displaying the update
     * statements for manual update (<em>$updateInPlace=false</em>). Default is direct update.
@@ -413,7 +404,6 @@ class GenericORMapperManagementTool extends BaseMapper {
    }
 
    /**
-    * @public
     * @since 1.12
     *
     * Let's you influence the character sets, the tables are created with. By default,

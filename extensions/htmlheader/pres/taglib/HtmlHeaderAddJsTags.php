@@ -25,9 +25,6 @@ use APF\extensions\htmlheader\biz\DynamicJsNode;
 use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 
 /**
- * @package APF\extensions\htmlheader\pres\taglib
- * @class HtmlHeaderAddJsTags
- *
  *  Taglib for adding javascripts to htmlheader.
  *
  * @example

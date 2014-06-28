@@ -24,9 +24,6 @@ use APF\extensions\htmlheader\biz\HtmlNode;
 use APF\extensions\htmlheader\biz\CssNode;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @Class DynamicCssNode
- *
  * Css file node for HtmlHeaderManagers data.
  *
  * @author Ralf Schubert
@@ -47,11 +44,11 @@ class DynamicCssNode extends HtmlNode implements CssNode {
     */
    public function __construct($url, $namespace, $filename, $fcaction = true, $media = null) {
       $this->setAttribute('href', $this->buildFrontcontrollerLink(
-         $url,
-         $namespace,
-         $filename,
-         $fcaction,
-         'css'
+            $url,
+            $namespace,
+            $filename,
+            $fcaction,
+            'css'
       ));
       $this->setAttribute('rel', 'stylesheet');
       $this->setAttribute('type', 'text/css');

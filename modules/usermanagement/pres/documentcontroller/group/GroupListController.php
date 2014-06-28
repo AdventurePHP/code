@@ -24,9 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtGroup;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\group
- * @class GroupListController
- *
  * Implements the controller to list the groups.
  *
  * @author Christian Achatz
@@ -41,7 +38,7 @@ class GroupListController extends UmgtBaseController {
       $groups = $this->getManager()->getPagedGroupList();
 
       // display group list
-      $buffer = (string)'';
+      $buffer = (string) '';
       $template = & $this->getTemplate('Group');
 
       foreach ($groups as $group) {
@@ -77,6 +74,7 @@ class GroupListController extends UmgtBaseController {
       foreach ($users as $user) {
          $userNames .= '<li>' . $user->getDisplayName() . '</li>';
       }
+
       return $userNames . '</ul>';
    }
 
@@ -91,6 +89,7 @@ class GroupListController extends UmgtBaseController {
       foreach ($roles as $role) {
          $roleNames .= '<li>' . $role->getDisplayName() . '</li>';
       }
+
       return $roleNames . '</ul>';
    }
 }

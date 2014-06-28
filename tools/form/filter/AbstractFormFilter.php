@@ -24,9 +24,6 @@ use APF\core\filter\AbstractFilter;
 use APF\tools\form\taglib\AbstractFormControl;
 
 /**
- * @package APF\tools\form\filter
- * @class AbstractFormFilter
- *
  * Defines the base class for all form filters. In case you want to implement your
  * own form filter, derive from this class.
  *
@@ -39,6 +36,7 @@ abstract class AbstractFormFilter extends AbstractFilter {
 
    /**
     * Includes a reference on the control to filter.
+    *
     * @var AbstractFormControl The control to filter.
     */
    protected $control;
@@ -46,13 +44,12 @@ abstract class AbstractFormFilter extends AbstractFilter {
    /**
     * Includes a reference on the button of the form,
     * that initiates the validation event.
+    *
     * @var AbstractFormControl The button that triggers the event.
     */
    protected $button;
 
    /**
-    * @public
-    *
     * Injects the control to validate and the trigger button into the filter.
     *
     * @param AbstractFormControl $control The control, that should be validated.
@@ -63,13 +60,11 @@ abstract class AbstractFormFilter extends AbstractFilter {
     * Version 0.1, 28.08.2009<br />
     */
    public function __construct(AbstractFormControl &$control, AbstractFormControl &$button) {
-      $this->control = &$control;
-      $this->button = &$button;
+      $this->control = & $control;
+      $this->button = & $button;
    }
 
    /**
-    * @public
-    *
     * Indicates, whether the control should be filtered or not.
     *
     * @return boolean True, in case the filter should be executes, in all other cases: false.
@@ -83,22 +78,22 @@ abstract class AbstractFormFilter extends AbstractFilter {
    }
 
    /**
-    * @protected
-    * @since 1.14
-    *
     * Evaluates the regular expression that is used for filtering the
     * control's input. In case the developer has defined a custom
     * regexp it is returned instead of the default value.
     *
     * @param String $default The default filter expression.
+    *
     * @return string The effective filter expression.
     *
+    * @since 1.14
     * @author Christian Achatz
     * @version
     * Version 0.1, 21.04.2011<br />
     */
    protected function getFilterExpression($default) {
       $expr = $this->control->getAttribute('filter-expr');
+
       return $expr === null ? $default : $expr;
    }
 

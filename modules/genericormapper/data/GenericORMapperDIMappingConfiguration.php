@@ -23,9 +23,6 @@ namespace APF\modules\genericormapper\data;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\modules\genericormapper\data
- * @class GenericORMapperDIMappingConfiguration
- *
  * Represents a configuration service to be able to add a further mapping configuration to
  * the generic or mapper with the <em>DIServiceManager</em>. In order to do so, a service
  * section must be created for this configuration that looks as follows:

@@ -25,9 +25,6 @@ use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
 /**
- * @package APF\core\filter
- * @class ChainedUrlRewritingOutputFilter
- *
  * Implements the output filter for the new filter chain implementation
  * (since release 1.13). Rewrites links and form actions if activated
  * within your application's bootstrap file.
@@ -47,12 +44,12 @@ class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
     * @var string[][] The link rewrite replace pattern definition.
     */
    private static $REPLACE_PATTERN = array(
-      '/?' => '/',
-      './?' => '/',
-      '=' => '/',
-      '&' => '/',
-      '&amp;' => '/',
-      '?' => '/'
+         '/?'    => '/',
+         './?'   => '/',
+         '='     => '/',
+         '&'     => '/',
+         '&amp;' => '/',
+         '?'     => '/'
    );
 
    /**
@@ -70,12 +67,12 @@ class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
       $t->start($id);
 
       $input = preg_replace_callback(
-         '/<form (.*?)action="(.*?)"(.*?)>(.*?)<\/form>/ims',
-         array('APF\core\filter\ChainedUrlRewritingOutputFilter', 'replaceForm'),
-         preg_replace_callback(
-            '/<a (.*?)href="(.*?)"(.*?)>(.*?)<\/a>/ims',
-            array('APF\core\filter\ChainedUrlRewritingOutputFilter', 'replaceLink'),
-            $input)
+            '/<form (.*?)action="(.*?)"(.*?)>(.*?)<\/form>/ims',
+            array('APF\core\filter\ChainedUrlRewritingOutputFilter', 'replaceForm'),
+            preg_replace_callback(
+                  '/<a (.*?)href="(.*?)"(.*?)>(.*?)<\/a>/ims',
+                  array('APF\core\filter\ChainedUrlRewritingOutputFilter', 'replaceLink'),
+                  $input)
       );
 
       $t->stop($id);
@@ -85,12 +82,10 @@ class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Callback function for link rewriting.
     *
     * @param string $hits The matches on the current link tag.
+    *
     * @return string The replaced link tag.
     *
     * @author Christian Achatz
@@ -113,16 +108,15 @@ class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
       }
       $hits[1] = preg_replace(self::$REWRITE_CONTROL_PATTERN, '', $hits[1]);
       $hits[3] = preg_replace(self::$REWRITE_CONTROL_PATTERN, '', $hits[3]);
+
       return '<a ' . $hits[1] . 'href="' . $hits[2] . '"' . $hits[3] . '>' . $hits[4] . '</a>';
    }
 
    /**
-    * @public
-    * @static
-    *
     * Callback function for form action rewriting.
     *
     * @param string $hits The matches on the current form tag.
+    *
     * @return string The replaced form tag.
     *
     * @author Christian Achatz
@@ -131,6 +125,7 @@ class ChainedUrlRewritingOutputFilter implements ChainedContentFilter {
     */
    public static function replaceForm($hits) {
       $hits[2] = strtr($hits[2], self::$REPLACE_PATTERN);
+
       return '<form ' . $hits[1] . 'action="' . $hits[2] . '"' . $hits[3] . '>' . $hits[4] . '</form>';
    }
 

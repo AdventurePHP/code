@@ -23,10 +23,6 @@ namespace APF\core\filter;
 use APF\core\filter\FilterChain;
 
 /**
- * @package APF\core\filter
- * @class AbstractFilterChain
- * @abstract
- *
  * Implements the basic functionality of an input and output filter chain.
  *
  * @author Christian Achatz
@@ -56,21 +52,22 @@ abstract class AbstractFilterChain implements FilterChain {
 
    /**
     * @param ChainedContentFilter $filter The filter implementation to add.
+    *
     * @return FilterChain The current filter chain instance for further usage.
     */
    public function &appendFilter(ChainedContentFilter $filter) {
       $this->filters[] = $filter;
       $this->count++;
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * Let's you add a filter to the beginning of the chain. Please note, that
     * the execution order corresponds to the order the filters are added.
     *
     * @param ChainedContentFilter $filter The filter implementation to add.
+    *
     * @return FilterChain The current filter chain instance for further usage.
     *
     * @author Christian Achatz
@@ -95,6 +92,7 @@ abstract class AbstractFilterChain implements FilterChain {
 
    /**
     * @param string $class The class name of the filter to remove from the chain.
+    *
     * @return FilterChain The current filter chain instance for further usage.
     */
    public function &removeFilter($class) {
@@ -113,12 +111,11 @@ abstract class AbstractFilterChain implements FilterChain {
    }
 
    /**
-    * @public
-    *
     * This method can be used to check, whether a filter is registered on the chain.
     * The filter is addressed by it's implementation class' name.
     *
     * @param string $class The class name of the filter to check for it's status on the stack.
+    *
     * @return boolean True in case the filter is registered, false otherwise.
     *
     * @author Christian Achatz
@@ -131,12 +128,11 @@ abstract class AbstractFilterChain implements FilterChain {
             return true;
          }
       }
+
       return false;
    }
 
    /**
-    * @public
-    *
     * Resets the filter chain to the first filter to be executed again.
     *
     * @return AbstractFilterChain The current filter chain for further configuration.
@@ -147,12 +143,11 @@ abstract class AbstractFilterChain implements FilterChain {
     */
    public function &reset() {
       $this->offset = 0;
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * This method clears the filter chain and resets it's state.
     * <p/>
     * Please use this method in case you want to re-order the registered
@@ -170,6 +165,7 @@ abstract class AbstractFilterChain implements FilterChain {
       $this->filters = array();
       $this->count = 0;
       $this->offset = 0;
+
       return $this;
    }
 

@@ -24,9 +24,6 @@ use APF\core\registry\Registry;
 use InvalidArgumentException;
 
 /**
- * @package APF\core\pagecontroller
- * @class LanguageLabelTag
- *
  * Implements a class for the taglibs &lt;html:getstring /&gt; and &lt;template:getstring /&gt;. This
  * lib fetches the desired configuration value and returns it on transformation time. The configuration
  * files must be structured as follows:
@@ -55,8 +52,6 @@ class LanguageLabelTag extends Document {
    private $placeHolders = array();
 
    /**
-    * @public
-    *
     * Implements the functionality to retrieve a language dependent value form a
     * configuration file. Checks the attributes needed for displaying data.
     *
@@ -112,8 +107,6 @@ class LanguageLabelTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Let's you add a place holder that is replaced into the current label. Each place holder
     * must be defined with square brackets ("{" and "}") with the key between the opening and
     * the closing bracket (e.g. "{foo}" in case the name of the place holder is "foo").
@@ -141,8 +134,6 @@ class LanguageLabelTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Resets the list of place holders that have been defined so far.
     *
     * @return LanguageLabelTag This instance for further usage.
@@ -158,8 +149,6 @@ class LanguageLabelTag extends Document {
    }
 
    /**
-    * @private
-    *
     * Replaces all place holders within the current label that are registered within this instance.
     *
     * @param string $label The raw label.

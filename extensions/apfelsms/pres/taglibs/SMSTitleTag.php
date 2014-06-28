@@ -7,8 +7,6 @@ use APF\tools\string\StringAssistant;
 use APF\core\pagecontroller\Document;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (08.08.12)
  *
@@ -35,10 +33,9 @@ class SMSTitleTag extends Document {
 
       $currentPage = $site->getCurrentPage();
 
-      if($currentPage === null) {
+      if ($currentPage === null) {
          $pageTitle = $siteTitle;
-      }
-      else {
+      } else {
          /** @var $currentPage SMSPage */
          $pageTitle = $currentPage->getNavTitle();
       }
@@ -46,9 +43,9 @@ class SMSTitleTag extends Document {
       $pageTitle = StringAssistant::escapeSpecialCharacters($pageTitle);
 
       return str_replace(
-         array('{PAGETITLE}', '{SITETITLE}'),
-         array($pageTitle, $siteTitle),
-         self::$titleTemplate
+            array('{PAGETITLE}', '{SITETITLE}'),
+            array($pageTitle, $siteTitle),
+            self::$titleTemplate
       );
 
    }

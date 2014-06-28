@@ -1,32 +1,38 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeListController"
+class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeListController"
 @>
-<h3><html:getstring
-       namespace="APF\modules\usermanagement\pres"
-       config="labels.ini"
-       entry="frontend.proxy.type-list.headline"/></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.type-list.headline"/>
+</h3>
 <p>
    <html:getstring
-          namespace="APF\modules\usermanagement\pres"
-          config="labels.ini"
-          entry="frontend.proxy.type-list.intro.text"/>
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.type-list.intro.text"/>
 </p>
 <table class="vis-def">
    <thead>
-      <tr>
-         <td>&nbsp;</td>
-         <td><html:getstring
-                namespace="APF\modules\usermanagement\pres"
-                config="labels.ini"
-                entry="frontend.proxy.type-list.proxy-type.label"/></td>
-         <td><html:getstring
-                namespace="APF\modules\usermanagement\pres"
-                config="labels.ini"
-                entry="frontend.proxy.type-list.actions.label"/></td>
-      </tr>
+   <tr>
+      <td>&nbsp;</td>
+      <td>
+         <html:getstring
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.proxy.type-list.proxy-type.label"/>
+      </td>
+      <td>
+         <html:getstring
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.proxy.type-list.actions.label"/>
+      </td>
+   </tr>
    </thead>
    <tbody>
-      ${TypeList}
+   ${TypeList}
    </tbody>
 </table>
 <html:template name="Type">
@@ -34,28 +40,28 @@
       <td>
          <umgt:media filename="visibility_def_type.png">
             <media:getstring
-                   namespace="APF\modules\usermanagement\pres"
-                   config="labels.ini"
-                   entry="frontend.proxy.type-list.proxy-type-img.label"/>
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.type-list.proxy-type-img.label"/>
          </umgt:media>
       </td>
       <td>${AppObjectName}</td>
       <td class="actions">
          <a href="${type_edit}">
-           <umgt:media filename="edit.png">
-              <media:getstring
+            <umgt:media filename="edit.png">
+               <media:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
                      entry="frontend.proxy.type-list.action.edit.label"/>
-           </umgt:media>
+            </umgt:media>
          </a>
          <a href="${type_delete}">
-           <umgt:media filename="delete.png">
-              <media:getstring
+            <umgt:media filename="delete.png">
+               <media:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
                      entry="frontend.proxy.type-list.action.delete.label"/>
-           </umgt:media>
+            </umgt:media>
          </a>
       </td>
    </tr>

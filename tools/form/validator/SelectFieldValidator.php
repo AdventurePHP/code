@@ -23,9 +23,6 @@ namespace APF\tools\form\validator;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package APF\tools\form\validator
- * @class SelectFieldValidator
- *
  * Implements a base class for all select field validators.
  * <p/>
  * As of release 1.12, this class is empty but present, because form validation
@@ -36,4 +33,5 @@ use APF\tools\form\validator\TextFieldValidator;
  * Version 0.1, 29.08.2009<br />
  */
 abstract class SelectFieldValidator extends TextFieldValidator {
+
 }

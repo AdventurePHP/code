@@ -25,9 +25,6 @@ use APF\core\service\APFService;
 use APF\modules\genericormapper\data\GenericORRelationMapper;
 
 /**
- * @package APF\modules\genericormapper\data
- * @class GenericORMapperFactory
- *
  * @deprecated Please use the GORM with the DIServiceManager instead of this factory to initialize the desired instance!
  *
  * Implements a factory for creating GenericORRelationMapper instances. Automatically
@@ -51,21 +48,17 @@ use APF\modules\genericormapper\data\GenericORRelationMapper;
 final class GenericORMapperFactory extends APFObject {
 
    /**
-    * @private
     * @var GenericORRelationMapper[] Stores the o/r mapper instances.
     */
    private $orMapperCache = array();
 
    /**
-    * @private
     * @since 1.14
     * @var string Defines the config file extension the GORM instance uses.
     */
    private $configFileExtension = 'ini';
 
    /**
-    * @public
-    *
     * Injects the desired config file extension into the factory. The extension is
     * passed to the GORM instance to allow dynamic file extension mapping in
     * combination with the APF's configuration provider concept.
@@ -83,8 +76,6 @@ final class GenericORMapperFactory extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Factory for the generic or mapper. Returns a reference on an instance of the
     * GenericORRelationMapper class. Do not use the $debugMode option set to true in production
     * environment!
@@ -97,6 +88,7 @@ final class GenericORMapperFactory extends APFObject {
     * @param string $configNameAffix name affix of the object and relation definition files
     * @param string $connectionName name of the connection, that the mapper should use to access the database
     * @param boolean $debugMode Indicates, if the generated statements should be logged to a file. Do not use this option set to true in production environment!
+    *
     * @return GenericORRelationMapper The desired instance of the generic OR mapper.
     *
     * @author Christian Achatz
@@ -117,8 +109,8 @@ final class GenericORMapperFactory extends APFObject {
       if (!isset($this->orMapperCache[$cacheKey])) {
          $this->orMapperCache[$cacheKey] =
                $this->getServiceObject(
-                  'APF\modules\genericormapper\data\GenericORRelationMapper',
-                  APFService::SERVICE_TYPE_NORMAL);
+                     'APF\modules\genericormapper\data\GenericORRelationMapper',
+                     APFService::SERVICE_TYPE_NORMAL);
 
          // as of 1.14 the mapper is explicitly initialized by the provided setter
          // methods to be able to directly create the service via the DI container

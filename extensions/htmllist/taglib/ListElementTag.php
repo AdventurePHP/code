@@ -23,9 +23,6 @@ namespace APF\extensions\htmllist\taglib;
 use APF\core\pagecontroller\Document;
 
 /**
- * @package APF\extensions\htmllist\taglib
- * @class ListElementTag
- *
  * Represents a HTMLList list element.
  *
  * @author Florian Horn

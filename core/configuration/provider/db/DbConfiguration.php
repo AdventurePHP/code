@@ -24,9 +24,6 @@ use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
- * @package APF\core\configuration\provider\db
- * @class DbConfiguration
- *
  * Implements the configuration interface for the database scheme.
  *
  * @author Christian Achatz
@@ -34,4 +31,5 @@ use APF\core\configuration\provider\BaseConfiguration;
  * Version 0.1, 30.10.2010<br />
  */
 class DbConfiguration extends BaseConfiguration implements Configuration {
+
 }

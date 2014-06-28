@@ -1,21 +1,26 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\PermissionNavigationController"
+class="APF\modules\usermanagement\pres\documentcontroller\PermissionNavigationController"
 @>
 <div class="umgt-menu">
    <a href="${manage_permissions}" title="<html:getstring
-          namespace="APF\modules\usermanagement\pres"
-          config="labels.ini"
-          entry="frontend.permission.navi.list.label"/>"><html:getstring
-                    namespace="APF\modules\usermanagement\pres"
-                    config="labels.ini"
-                    entry="frontend.permission.navi.list.label"/></a>
+          namespace=" APF\modules\usermanagement\pres"
+   config="labels.ini"
+   entry="frontend.permission.navi.list.label"/>">
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.permission.navi.list.label"/>
+   </a>
    &nbsp;|&nbsp;
    <a href="${permission_add}" title="<html:getstring
-             namespace="APF\modules\usermanagement\pres"
-             config="labels.ini"
-             entry="frontend.permission.navi.add.label"/>"><html:getstring
-                          namespace="APF\modules\usermanagement\pres"
-                          config="labels.ini"
-                          entry="frontend.permission.navi.add.label"/></a>
+             namespace=" APF\modules\usermanagement\pres"
+   config="labels.ini"
+   entry="frontend.permission.navi.add.label"/>">
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.permission.navi.add.label"/>
+   </a>
 </div>
-<core:importdesign namespace="APF\modules\usermanagement\pres\templates\permission" template="[permissionview = list]" incparam="permissionview" />
+<core:importdesign namespace="APF\modules\usermanagement\pres\templates\permission" template="[permissionview = list]"
+                   incparam="permissionview"/>

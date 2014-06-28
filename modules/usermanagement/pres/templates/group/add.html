@@ -1,17 +1,19 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddController"
+class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddController"
 @>
-<h3><html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.group.add.headline"
-      /></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.group.add.headline"
+         />
+</h3>
 <p>
    <html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.group.add.intro.text"
-      />
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.group.add.intro.text"
+         />
 </p>
 <html:form name="GroupAdd" method="post">
    <div>
@@ -21,27 +23,31 @@
             button="Add"
             />
       <p>
-         <label><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.group.add.display-name.label"
-               /></label>
+         <label>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.group.add.display-name.label"
+                  />
+         </label>
          <form:text name="DisplayName" maxlength="100"/>
       </p>
       <p>
-         <label><html:getstring
-                     namespace="APF\modules\usermanagement\pres"
-                     config="labels.ini"
-                     entry="frontend.group.add.description.label"
-                     /></label>
-         <form:area name="Description" />
+         <label>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.group.add.description.label"
+                  />
+         </label>
+         <form:area name="Description"/>
       </p>
       <form:button name="Add">
          <html:getstring
-            namespace="APF\modules\usermanagement\pres"
-            config="labels.ini"
-            entry="frontend.group.add.button.label"
-            />
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.group.add.button.label"
+               />
       </form:button>
    </div>
 </html:form>

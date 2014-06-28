@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!ELEMENT apfelsms (page)*>
+        <!ELEMENT apfelsms (page)*>
 
-<!-- page -->
-<!ELEMENT page (title|navTitle|page|pageDec|css|js)*>
-<!ATTLIST page id ID #REQUIRED>
-<!ELEMENT namespace (#PCDATA)>
-<!ELEMENT title (#PCDATA)>
-<!ELEMENT navTitle (#PCDATA)>
-<!ELEMENT css (#PCDATA)>
-<!ATTLIST css key CDATA #IMPLIED>
-<!ELEMENT js (#PCDATA)>
+        <!-- page -->
+        <!ELEMENT page (title|navTitle|page|pageDec|css|js)*>
+        <!ATTLIST page id ID #REQUIRED>
+        <!ELEMENT namespace (#PCDATA)>
+        <!ELEMENT title (#PCDATA)>
+        <!ELEMENT navTitle (#PCDATA)>
+        <!ELEMENT css (#PCDATA)>
+        <!ATTLIST css key CDATA #IMPLIED>
+        <!ELEMENT js (#PCDATA)>
 
-<!--pageDec -->
-<!ELEMENT pageDec (referencedPageId|requestParam|externalURL|providerServiceName|providerServiceNamespace|permissionName|anchor)*>
-<!ATTLIST pageDec type CDATA #REQUIRED>
+        <!--pageDec -->
+        <!ELEMENT pageDec (referencedPageId|requestParam|externalURL|providerServiceName|providerServiceNamespace|permissionName|anchor)*>
+        <!ATTLIST pageDec type CDATA #REQUIRED>
 
-<!-- pageDec type "alias" -->
-<!ELEMENT referencedPageId (#PCDATA)>
+        <!-- pageDec type "alias" -->
+        <!ELEMENT referencedPageId (#PCDATA)>
 
-<!-- pageDec type "request" and "parentRequest" -->
-<!ELEMENT requestParam (#PCDATA)>
-<!ATTLIST requestParam key CDATA #REQUIRED>
+        <!-- pageDec type "request" and "parentRequest" -->
+        <!ELEMENT requestParam (#PCDATA)>
+        <!ATTLIST requestParam key CDATA #REQUIRED>
 
-<!-- pageDec type "externalURL" -->
-<!ELEMENT externalURL (#PCDATA)>
+        <!-- pageDec type "externalURL" -->
+        <!ELEMENT externalURL (#PCDATA)>
 
-<!-- pageDec type "accessCtrl" -->
-<!ELEMENT providerServiceName (#PCDATA)>
-<!ELEMENT providerServiceNamespace (#PCDATA)>
-<!ELEMENT permissionName (#PCDATA)>
+        <!-- pageDec type "accessCtrl" -->
+        <!ELEMENT providerServiceName (#PCDATA)>
+        <!ELEMENT providerServiceNamespace (#PCDATA)>
+        <!ELEMENT permissionName (#PCDATA)>
 
-<!-- pageDec type "anchor" and "parentAnchor" -->
-<!ELEMENT anchor (#PCDATA)>
+        <!-- pageDec type "anchor" and "parentAnchor" -->
+        <!ELEMENT anchor (#PCDATA)>
 
 

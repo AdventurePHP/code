@@ -1,30 +1,27 @@
 <?php
 namespace APF\tools\link;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\tools\link
- * @class Url
- *
  * This class represents a url designed to generate related urls using
  * the APF's link scheme implementations.
  *
@@ -45,8 +42,6 @@ final class Url {
    private $anchor;
 
    /**
-    * @public
-    *
     * Constructs a url for link generation purposes.
     *
     * @param string $scheme The url's scheme (e.g. http, ftp).
@@ -86,8 +81,6 @@ final class Url {
    }
 
    /**
-    * @public
-    *
     * Returns the list of registered query parameters.
     *
     * @return array The query parameters of the url.
@@ -105,8 +98,6 @@ final class Url {
    }
 
    /**
-    * @public
-    *
     * Let's you query a request parameter.
     *
     * @param string $name The name of the desired parameter.
@@ -123,8 +114,6 @@ final class Url {
    }
 
    /**
-    * @public
-    *
     * Let's you inject the scheme of the url.
     *
     * @param string $scheme The url scheme (e.g. http, ftp).
@@ -142,8 +131,6 @@ final class Url {
    }
 
    /**
-    * @public
-    *
     * Let's you inject the host of the url.
     *
     * @param string $host The url' host (e.g. example.com).
@@ -161,8 +148,6 @@ final class Url {
    }
 
    /**
-    * @public
-    *
     * Let's you inject the port of the url.
     *
     * @param int|null $port The url's port (e.g. 80, 443).
@@ -180,8 +165,6 @@ final class Url {
    }
 
    /**
-    * @public
-    *
     * Let's you inject the path of the url.
     *
     * @param string $path The url's path (e.g. /foo/bar).
@@ -199,8 +182,6 @@ final class Url {
    }
 
    /**
-    * @public
-    *
     * Let's you inject the desired amount of request parameters.
     *
     * @param array $query The query parameters to inject.
@@ -218,8 +199,6 @@ final class Url {
    }
 
    /**
-    * @public
-    *
     * This method let's you merge a list of parameters into the current url's
     * list. Setting a query parameter's value to <em>null</em> indicates to
     * delete the parameter within the LinkScheme implementation.
@@ -241,8 +220,6 @@ final class Url {
    }
 
    /**
-    * @public
-    *
     * Let's you inject the anchor of the url.
     *
     * @param string $anchor The anchor (e.g. #top).
@@ -260,8 +237,6 @@ final class Url {
    }
 
    /**
-    * @public
-    *
     * This method resets the list of parameters.
     *
     * @return Url This object for further usage.
@@ -277,8 +252,6 @@ final class Url {
    }
 
    /**
-    * @public
-    *
     * This method can be used to set a query parameter. Setting it's value
     * to <em>null</em> indicates to delete the parameter within the
     * LinkScheme implementation.
@@ -299,9 +272,6 @@ final class Url {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Let's you construct a url applying a string.
     *
     * @param string $url The url to parse.
@@ -346,9 +316,6 @@ final class Url {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Creates a url representation from the current request url.
     *
     * @param boolean $absolute True, in case the url should be absolute, false otherwise.
@@ -378,9 +345,6 @@ final class Url {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Creates a url representation from the referring url.
     *
     * @param boolean $absolute True, in case the url should be absolute, false otherwise.
@@ -407,8 +371,6 @@ final class Url {
    }
 
    /**
-    * @private
-    *
     * Generates a query param array from a given query string.
     *
     * @param string $query The query params string.

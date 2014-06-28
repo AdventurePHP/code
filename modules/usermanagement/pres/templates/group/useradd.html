@@ -1,10 +1,12 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddUserController"
+class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddUserController"
 @>
-<h3><html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.group.add-users-to-group.headline"/></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.group.add-users-to-group.headline"/>
+</h3>
 
 <html:form name="User" method="post">
    <div>
@@ -25,9 +27,9 @@
       <p>
          <form:button name="Add">
             <button:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.group.add-users-to-group.button.label"/>
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.group.add-users-to-group.button.label"/>
          </form:button>
       </p>
    </div>

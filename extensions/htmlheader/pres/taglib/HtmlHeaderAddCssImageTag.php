@@ -26,9 +26,6 @@ use APF\extensions\htmlheader\biz\CssImageNode;
 use InvalidArgumentException;
 
 /**
- * @package APF\extensions\htmlheader\pres\taglib
- * @class HtmlHeaderAddCssImageTag
- *
  * Taglib for adding an image to the html header.
  *
  * @example
@@ -43,7 +40,7 @@ class HtmlHeaderAddCssImageTag extends Document {
 
    public function transform() {
       /* @var $header HtmlHeaderManager */
-      $header = &$this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
+      $header = & $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
 
       $href = $this->getAttribute('href');
       if ($href == null) {

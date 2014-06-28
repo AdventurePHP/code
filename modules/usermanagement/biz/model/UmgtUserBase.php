@@ -10,9 +10,6 @@ namespace APF\modules\usermanagement\biz\model;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package APF\modules\usermanagement\biz\model
- * @class UmgtUserBase
- *
  * This class provides the descriptive getter and setter methods for the "APF\modules\usermanagement\biz\model\UmgtUser" domain object.
  */
 abstract class UmgtUserBase extends GenericDomainObject {

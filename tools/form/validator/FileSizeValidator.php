@@ -24,9 +24,6 @@ use APF\tools\form\taglib\FileUploadTag;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package APF\tools\form\validator
- * @class FileSizeValidator
- *
  * Implements a simple validator, that checks the uploaded file
  * to have the desired file size. Min and max size can be defined.
  *
@@ -40,11 +37,10 @@ class FileSizeValidator extends TextFieldValidator {
    private static $MIN_REQUIRED_SIZE_ATTRIBUTE_NAME = 'minsize';
 
    /**
-    * @public
-    *
     * Validates the file control attached to.
     *
     * @param string $input The input of the file field (not relevant here).
+    *
     * @return boolean True in case the control is valid, false otherwise.
     *
     * @author Christian Achatz
@@ -62,21 +58,20 @@ class FileSizeValidator extends TextFieldValidator {
          // retrieve file model to check the file size against the max size
          $fileModel = $control->getFile();
 
-         $size = (int)$fileModel->getSize();
-         $allowed = (int)$this->getMaxSize();
-         $required = (int)$this->getMinSize();
+         $size = (int) $fileModel->getSize();
+         $allowed = (int) $this->getMaxSize();
+         $required = (int) $this->getMinSize();
          if ($size >= $required && $size <= $allowed) {
             return true;
          }
 
       }
+
       return false;
 
    }
 
    /**
-    * @private
-    *
     * Returns the maximum allowed file size.
     *
     * @return int The maximum allowed file size.
@@ -88,14 +83,13 @@ class FileSizeValidator extends TextFieldValidator {
    private function getMaxSize() {
       $maxSize = $this->control->getAttribute(self::$MAX_ALLOWED_SIZE_ATTRIBUTE_NAME);
       if (empty($maxSize)) {
-         return (int)1024000; // 1MB in bytes
+         return (int) 1024000; // 1MB in bytes
       }
-      return (int)$maxSize;
+
+      return (int) $maxSize;
    }
 
    /**
-    * @private
-    *
     * Returns the minimum required file size.
     *
     * @return int The minimum required file size.
@@ -107,9 +101,10 @@ class FileSizeValidator extends TextFieldValidator {
    private function getMinSize() {
       $minSize = $this->control->getAttribute(self::$MIN_REQUIRED_SIZE_ATTRIBUTE_NAME);
       if (empty($minSize)) {
-         return (int)0; // 0 bytes allowed!
+         return (int) 0; // 0 bytes allowed!
       }
-      return (int)$minSize;
+
+      return (int) $minSize;
    }
 
 }

@@ -5,8 +5,6 @@ use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\tools\link\Url;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (21.06.12)
  * @desc    : Adds request params and uses template name of parent page
@@ -28,6 +26,7 @@ class SMSParentRequestPageDec extends SMSRequestPageDec {
 
    /**
     * @param Url $url
+    *
     * @return string
     */
    public function getLink(Url $url) {

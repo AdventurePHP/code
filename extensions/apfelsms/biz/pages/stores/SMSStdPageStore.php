@@ -5,8 +5,6 @@ use APF\core\pagecontroller\APFObject;
 use APF\extensions\apfelsms\biz\pages\SMSPage;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (04.08.12)
  *
@@ -22,6 +20,7 @@ class SMSStdPageStore extends APFObject implements SMSPageStore {
 
    /**
     * @param string|integer $id
+    *
     * @return SMSPage
     */
    public function getPage($id) {
@@ -38,6 +37,7 @@ class SMSStdPageStore extends APFObject implements SMSPageStore {
 
    /**
     * @param string|integer $id
+    *
     * @return boolean
     */
    public function isPageSet($id) {

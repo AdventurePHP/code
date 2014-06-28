@@ -2,9 +2,6 @@
 namespace APF\modules\guestbook2009\biz;
 
 /**
- * @package APF\modules\guestbook2009\biz
- * @class Guestbook
- *
  * Represents the Guestbook domain object of the guestbook.
  *
  * @author Christian Achatz

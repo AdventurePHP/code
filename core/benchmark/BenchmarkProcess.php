@@ -1,30 +1,27 @@
 <?php
 namespace APF\core\benchmark;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\core\benchmark
- * @class BenchmarkProcess
- *
  * Represents a benchmark process node within the benchmark tree.
  *
  * @author Christian Schäfer
@@ -109,7 +106,7 @@ final class BenchmarkProcess {
    }
 
    public function setParentProcess(BenchmarkProcess &$process) {
-      $this->parentProcess = &$process;
+      $this->parentProcess = & $process;
    }
 
    public function &getParentProcess() {
@@ -130,8 +127,6 @@ final class BenchmarkProcess {
    }
 
    /**
-    * @public
-    *
     * Returns the process' runtime.
     *
     * @return string The runtime of the process in seconds.
@@ -144,6 +139,7 @@ final class BenchmarkProcess {
       if ($this->processStopTime == null) {
          return '--------------------';
       }
+
       return number_format($this->processStopTime - $this->processStartTime, 10);
    }
 

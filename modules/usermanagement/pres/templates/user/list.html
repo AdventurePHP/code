@@ -1,34 +1,44 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\user\UserListController"
+class="APF\modules\usermanagement\pres\documentcontroller\user\UserListController"
 @>
 <table class="vis-def">
    <thead>
-      <tr>
-         <td>&nbsp;</td>
-         <td><html:getstring
+   <tr>
+      <td>&nbsp;</td>
+      <td>
+         <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.list.display-name.label"/></td>
-         <td><html:getstring
+               entry="frontend.user.list.display-name.label"/>
+      </td>
+      <td>
+         <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.list.user-name.label"/></td>
-         <td><html:getstring
+               entry="frontend.user.list.user-name.label"/>
+      </td>
+      <td>
+         <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.list.groups.label"/></td>
-         <td><html:getstring
+               entry="frontend.user.list.groups.label"/>
+      </td>
+      <td>
+         <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.list.roles.label"/></td>
-         <td><html:getstring
+               entry="frontend.user.list.roles.label"/>
+      </td>
+      <td>
+         <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
-               entry="frontend.user.list.actions.label"/></td>
-      </tr>
+               entry="frontend.user.list.actions.label"/>
+      </td>
+   </tr>
    </thead>
    <tbody>
-      ${UserList}
+   ${UserList}
    </tbody>
 </table>
 
@@ -37,9 +47,9 @@
       <td>
          <umgt:media filename="user.png">
             <media:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.user.list.action.details.label"/>
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.user.list.action.details.label"/>
          </umgt:media>
       </td>
       <td>
@@ -58,57 +68,57 @@
          <a href="${LinkUserDetails}">
             <umgt:media filename="details.png">
                <media:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.user.list.user-icon.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.user.list.user-icon.label"/>
             </umgt:media>
          </a>
          <a href="${LinkUserEdit}">
             <umgt:media filename="edit.png">
                <media:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.user.list.action.edit.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.user.list.action.edit.label"/>
             </umgt:media>
          </a>
          <a href="${LinkUserDelete}">
             <umgt:media filename="delete.png">
                <media:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.user.list.action.delete.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.user.list.action.delete.label"/>
             </umgt:media>
          </a>
          <a href="${AddUserToGroup}">
             <umgt:media filename="add_group.png">
                <media:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.user.list.action.add-group.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.user.list.action.add-group.label"/>
             </umgt:media>
          </a>
          <a href="${RemoveUserFromGroup}">
             <umgt:media filename="remove_group.png">
                <media:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.user.list.action.remove-group.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.user.list.action.remove-group.label"/>
             </umgt:media>
          </a>
          <a href="${AssignRoleToUser}">
             <umgt:media filename="role_add.png">
                <media:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.user.list.action.role-add.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.user.list.action.role-add.label"/>
             </umgt:media>
          </a>
          <a href="${RemoveRoleFromUser}">
             <umgt:media filename="role_remove.png">
                <media:getstring
-                  namespace="APF\modules\usermanagement\pres"
-                  config="labels.ini"
-                  entry="frontend.user.list.action.role-remove.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.user.list.action.role-remove.label"/>
             </umgt:media>
          </a>
       </td>

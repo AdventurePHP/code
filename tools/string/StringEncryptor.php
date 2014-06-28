@@ -24,9 +24,6 @@ use APF\core\configuration\ConfigurationException;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\tools\string
- * @class StringEncryptor
- *
  * Providers password encryption services using a configured salt.
  *
  * @author Christian Schäfer
@@ -37,13 +34,12 @@ use APF\core\pagecontroller\APFObject;
 class StringEncryptor extends APFObject {
 
    /**
-    * @public
-    *
     * Creates a password hash with a static salt. The salt is read from a configuration
     * names <em>{ENVIRONMENT}_encryption.ini</em> located under <em>config/tools/string/{CONTEXT}</em>.
     *
     * @param string $password The clear text password.
     * @param string $section he name of the configuration section.
+    *
     * @return string The password hash.
     * @throws ConfigurationException In case the config is not present.
     *
@@ -54,6 +50,7 @@ class StringEncryptor extends APFObject {
     */
    public function getPasswordHash($password, $section = 'Standard') {
       $config = $this->getConfiguration('APF\tools\string', 'encryption.ini');
+
       return crypt($password, $config->getSection($section)->getValue('PasswordSalt'));
    }
 

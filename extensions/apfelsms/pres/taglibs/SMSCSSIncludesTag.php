@@ -5,8 +5,6 @@ use APF\core\pagecontroller\Document;
 use APF\extensions\apfelsms\biz\SMSManager;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version:   v0.1 (08.08.12)
  *             v0.2 (30.10.12) Removed extension appending
@@ -38,13 +36,13 @@ class SMSCSSIncludesTag extends Document {
       $currentPage = $SMSM->getSite()->getCurrentPage();
 
 
-      if($currentPage === null) { // this is no normal operation, but ...
+      if ($currentPage === null) { // this is no normal operation, but ...
          return ''; // be quiet
       }
 
       $cssArray = $currentPage->getCSS();
 
-      if(count($cssArray) < 1) {
+      if (count($cssArray) < 1) {
          return ''; // no styles to include
       }
 
@@ -54,15 +52,15 @@ class SMSCSSIncludesTag extends Document {
       foreach ($cssArray AS $media => $urlReplacer) {
 
          $mediaReplacer = 'all';
-         if(is_string($media)) {
+         if (is_string($media)) {
             $mediaReplacer = $media;
          }
 
 
          $stringBuffer .= str_replace(
-            array('{MEDIA}', '{URL}'),
-            array($mediaReplacer, $urlReplacer),
-            self::$CSSIncludeTemplate
+               array('{MEDIA}', '{URL}'),
+               array($mediaReplacer, $urlReplacer),
+               self::$CSSIncludeTemplate
          );
 
          $stringBuffer .= self::$newLine;

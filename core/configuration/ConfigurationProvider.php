@@ -1,30 +1,27 @@
 <?php
 namespace APF\core\configuration;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\core\configuration
- * @class ConfigurationProvider
- *
  * Defines the scheme, a APF configuration provider must have. A configuration
  * provider represents a configuration format (e.g. ini, xml, ...) and can be
  * added to the ConfigurationManager to support multiple formats at the same time.
@@ -43,6 +40,7 @@ interface ConfigurationProvider {
     * @param string $language The current application's language.
     * @param string $environment The environment, the applications runs on.
     * @param string $name The name of the configuration to load including it's extension.
+    *
     * @return Configuration The desired configuration.
     *
     * @author Christian Achatz
@@ -60,6 +58,7 @@ interface ConfigurationProvider {
     * @param string $environment The environment, the applications runs on.
     * @param string $name The name of the configuration to load including it's extension.
     * @param Configuration $config The configuration to save.
+    *
     * @throws ConfigurationException In case the file cannot be saved.
     *
     * @author Christian Achatz
@@ -87,6 +86,7 @@ interface ConfigurationProvider {
     * @param string $language The current application's language.
     * @param string $environment The environment, the applications runs on.
     * @param string $name The name of the configuration to delete including it's extension.
+    *
     * @throws ConfigurationException In case the file cannot be deleted.
     *
     * @author Ralf Schubert

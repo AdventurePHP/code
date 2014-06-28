@@ -26,9 +26,6 @@ use Exception;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\html\taglib
- * @class LanguageDependentIncParamImportTemplateTag
- *
  * This is an extension of the core:importdesign taglib. With this taglib you are
  * able to use language-dependent incparams. The names of these language-dependent
  * parameters have to be stored in a config file.
@@ -92,6 +89,7 @@ class LanguageDependentIncParamImportTemplateTag extends ImportTemplateTag {
     * @param string $identification Language-independent template ID (needed to find related templates in different languages.)
     * @param string $name Language-dependent name
     * @param string $lang Language which should be used.
+    *
     * @return string Template file name.
     */
    private function getFileName($prefix = '', $identification = '', $name = '', $lang = null) {

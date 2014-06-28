@@ -26,9 +26,6 @@ use APF\modules\genericormapper\data\GenericDomainObject;
 use Exception;
 
 /**
- * @package APF\extensions\postbox\biz\abstractdomainobjects
- * @class AbstractPostboxFolder
- *
  * This is the base class for "PostboxFolder" from the Postbox-Extension.
  * For further information visit the extension's documentation.
  *
@@ -46,14 +43,15 @@ class AbstractPostboxFolder extends GenericDomainObject {
       /* @var $DBDriver MySQLxHandler */
       $DBDriver = $this->getDataComponent()->getDbDriver();
       $result = $DBDriver->executeStatement(
-         'postbox',
-         'PostboxFolder_hasUnreadMessages.sql',
-         array(
-            'PostboxFolderID' => (int)$this->getObjectId()
-         )
+            'postbox',
+            'PostboxFolder_hasUnreadMessages.sql',
+            array(
+                  'PostboxFolderID' => (int) $this->getObjectId()
+            )
       );
+
       // limit is 1 - just convert 0 or 1 to a boolean
-      return (bool)$DBDriver->getNumRows($result);
+      return (bool) $DBDriver->getNumRows($result);
    }
 
    /**
@@ -66,8 +64,9 @@ class AbstractPostboxFolder extends GenericDomainObject {
     * @return MessageChannel[] A list of MessageChannels
     */
    public function getChannelsByPage($Page = 1, $ChannelsPerPage = 15) {
-      $start = ((int)$Page - 1) * (int)$ChannelsPerPage;
-      return $this->getChannels($start, (int)$ChannelsPerPage);
+      $start = ((int) $Page - 1) * (int) $ChannelsPerPage;
+
+      return $this->getChannels($start, (int) $ChannelsPerPage);
    }
 
    /**
@@ -80,7 +79,8 @@ class AbstractPostboxFolder extends GenericDomainObject {
     */
    public function getChannels($start = 0, $count = 15) {
       $crit = new GenericCriterionObject();
-      $crit->addCountIndicator((int)$start, (int)$count);
+      $crit->addCountIndicator((int) $start, (int) $count);
+
       return $this->loadRelatedObjects('PostboxFolder2MessageChannel', $crit);
    }
 
@@ -89,6 +89,7 @@ class AbstractPostboxFolder extends GenericDomainObject {
     * part of another folder, it will be automatically removed from the old folder.
     *
     * @param MessageChannel $channel The channel which should be added to the folder.
+    *
     * @return AbstractPostboxFolder Returns itself (fluent-interface)
     */
    public function addChannel(MessageChannel $channel) {
@@ -107,6 +108,7 @@ class AbstractPostboxFolder extends GenericDomainObject {
     * Removes a channel from the folder.
     *
     * @param MessageChannel $Channel The channel which should be removed.
+    *
     * @return AbstractPostboxFolder Returns itself (fluent-interface)
     */
    public function removeChannel(MessageChannel $Channel) {
@@ -119,6 +121,7 @@ class AbstractPostboxFolder extends GenericDomainObject {
     * Saves the folder
     *
     * @param bool $saveTree Optional. Default: true. If set to false only the folder will be saved, and not the relation-tree
+    *
     * @return AbstractPostboxFolder Returns itself (fluent-interface)
     * @throws \BadFunctionCallException
     */
@@ -135,6 +138,7 @@ class AbstractPostboxFolder extends GenericDomainObject {
     * Deletes a Folder.
     *
     * @param bool $moveChannelsToPostbox Optional. If set to true, all channels within the folder will be moved to the postbox instead of throwing an exception.
+    *
     * @throws Exception
     */
    public function delete($moveChannelsToPostbox = false) {

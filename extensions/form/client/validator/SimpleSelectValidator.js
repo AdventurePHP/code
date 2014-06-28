@@ -26,7 +26,7 @@
 (function ($) {
     $(document).ready(function () {
         jQuery.APFFormValidator.addClientValidator('SimpleSelectValidator', {
-            validate:function (control, options) {
+            validate: function (control, options) {
                 if (control.val().length > 0) {
                     return true;
                 }

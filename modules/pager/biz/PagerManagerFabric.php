@@ -24,9 +24,6 @@ use APF\core\pagecontroller\APFObject;
 use APF\core\service\APFService;
 
 /**
- * @package APF\modules\pager\biz
- * @class PagerManagerFabric
- *
  * @deprecated Please use initialization of the PagerManager via the DIServiceManager instead.
  *
  * Implements the factory of the pager manager. Initializes concrete PagerManager
@@ -42,19 +39,17 @@ use APF\core\service\APFService;
 final class PagerManagerFabric extends APFObject {
 
    /**
-    * @private
     * Cache list if concrete pager manager instances.
     */
    private $pager = array();
 
    /**
-    * @public
-    *
     * Returns a reference on the desired pager manager. Initializes newly created ones.
     *
     * @deprecated Please use initialization of the PagerManager via the DIServiceManager instead.
     *
     * @param string $configString The configuration/initialization string (configuration section name).
+    *
     * @return PagerManager Reference on the desired PagerManager instance.
     *
     * @author Christian Achatz

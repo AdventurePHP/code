@@ -24,9 +24,6 @@ use APF\extensions\htmlheader\biz\PackageNode;
 use APF\extensions\htmlheader\biz\CssNode;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class CssPackageNode
- *
  * Implements a css node, that loads a css package.
  *
  * @author Christian Achatz

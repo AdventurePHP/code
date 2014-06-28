@@ -4,9 +4,6 @@ namespace APF\modules\usermanagement\biz\model;
 use APF\modules\usermanagement\biz\provider\UserFieldEncryptionProvider;
 
 /**
- * @package APF\modules\usermanagement\biz\model
- * @class UmgtUser
- *
  * This class represents the "APF\modules\usermanagement\biz\model\UmgtUser" domain object.
  * <p/>
  * Please use this class to add your own functionality.

@@ -25,9 +25,6 @@ use APF\tools\form\FormException;
 use APF\tools\form\taglib\AbstractFormControl;
 
 /**
- * @package APF\modules\recaptcha\pres\taglib
- * @class ReCaptchaTag
- *
  * Implements a re-captcha wrapper for Google's ReCaptcha.
  * <p/>
  * Further docs can be found under https://developers.google.com/recaptcha/docs/php?hl=de.
@@ -64,8 +61,6 @@ class ReCaptchaTag extends AbstractFormControl {
    private $errorMessageKey;
 
    /**
-    * @public
-    *
     * Overwrites the parent method since filtering is not necessary with the reCaptcha form.
     *
     * @param AbstractFormFilter $filter The desired filter.
@@ -115,8 +110,6 @@ class ReCaptchaTag extends AbstractFormControl {
    }
 
    /**
-    * @private
-    *
     * Returns the name of the theme configured. Default is <em>red</em>.
     * <p/>
     * For details, please refer to https://developers.google.com/recaptcha/docs/customization?hl=de.
@@ -170,8 +163,6 @@ class ReCaptchaTag extends AbstractFormControl {
    }
 
    /**
-    * @private
-    *
     * Evaluates custom translation options and returns the JavaScript option string.
     *
     * @return string The custom translation option string.

@@ -1,15 +1,17 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeEditController"
+class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeEditController"
 @>
-<h3><html:getstring
-       namespace="APF\modules\usermanagement\pres"
-       config="labels.ini"
-       entry="frontend.proxy.edit-type.headline"/></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.edit-type.headline"/>
+</h3>
 <p>
    <html:getstring
-       namespace="APF\modules\usermanagement\pres"
-       config="labels.ini"
-       entry="frontend.proxy.edit-type.intro.text"/>
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.edit-type.intro.text"/>
 </p>
 <html:form name="add" method="post">
    <div>
@@ -22,11 +24,13 @@
          </div>
       </form:error>
       <p>
-         <label for="proxytypename"><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.proxy.edit-type.type-name.label"/></label>
-         <form:text id="proxytypename" name="proxytypename" maxlength="100" />
+         <label for="proxytypename">
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.edit-type.type-name.label"/>
+         </label>
+         <form:text id="proxytypename" name="proxytypename" maxlength="100"/>
          <form:addvalidator
                class="APF\tools\form\validator\TextLengthValidator"
                control="proxytypename"

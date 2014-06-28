@@ -23,9 +23,6 @@ namespace APF\tools\form\filter;
 use APF\tools\form\filter\AbstractFormFilter;
 
 /**
- * @package APF\tools\form\filter
- * @class FloatFilter
- *
  * Implements a filter that can be used to convert text input of floating numbers
  * into a float representation that matches the PHP syntax of floats.
  *

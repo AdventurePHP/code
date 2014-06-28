@@ -23,9 +23,6 @@ namespace APF\core\logging\entry;
 use APF\core\logging\LogEntry;
 
 /**
- * @package APF\core\logging\entry
- * @class GraphiteLogEntry
- *
  * Implements a log entry that is compatible with the GraphiteLogWriter.
  * <p/>
  * Creates a dot-separated representation of the current log entry that is
@@ -75,8 +72,6 @@ class GraphiteLogEntry implements LogEntry {
    protected $severity;
 
    /**
-    * @public
-    *
     * Creates a Graphite log entry.
     *
     * @param string $target The desired log target to write this log entry to.

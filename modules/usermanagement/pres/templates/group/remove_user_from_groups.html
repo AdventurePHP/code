@@ -1,10 +1,12 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\group\GroupRemoveUserFromGroupsController"
+class="APF\modules\usermanagement\pres\documentcontroller\group\GroupRemoveUserFromGroupsController"
 @>
-<h3><html:getstring
-       namespace="APF\modules\usermanagement\pres"
-       config="labels.ini"
-       entry="frontend.user.remove-user-from-group.headline"/></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.user.remove-user-from-group.headline"/>
+</h3>
 <html:form name="Groups" method="post">
    <div>
       <form:addvalidator
@@ -14,9 +16,9 @@
             />
       <p>
          <html:getstring
-                namespace="APF\modules\usermanagement\pres"
-                config="labels.ini"
-                entry="frontend.user.remove-user-from-group.intro.text"/>
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.user.remove-user-from-group.intro.text"/>
       </p>
       <p>
          <form:multiselect name="Groups" size="4"/>
@@ -24,9 +26,9 @@
       <p>
          <form:button name="Remove">
             <button:getstring
-                   namespace="APF\modules\usermanagement\pres"
-                   config="labels.ini"
-                   entry="frontend.user.remove-user-from-group.button.label"/>
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.user.remove-user-from-group.button.label"/>
          </form:button>
       </p>
    </div>

@@ -1,11 +1,11 @@
 <@controller
-   class="APF\modules\guestbook2009\pres\controller\GuestbookListController"
+class="APF\modules\guestbook2009\pres\controller\GuestbookListController"
 @>
 <div class="gb--list-entries">
    <div class="gb--list-text">
       <html:langlabel entry="list.headline.start"/>
-      <a href="${createlink}" title="<html:langlabel entry="list.headline.link.title"/>">
-         <html:langlabel entry="list.headline.link.text"/>
+      <a href="${createlink}" title="<html:langlabel entry=" list.headline.link.title"/>">
+      <html:langlabel entry="list.headline.link.text"/>
       </a>
       <html:langlabel entry="list.headline.end"/>
    </div>
@@ -28,7 +28,10 @@
          ${text}
       </div>
       <div class="gb--list-entry-footer">
-         <html:langlabel entry="list.date"/>: ${date}, <html:langlabel entry="list.time"/>: ${time}
+         <html:langlabel entry="list.date"/>
+         : ${date},
+         <html:langlabel entry="list.time"/>
+         : ${time}
       </div>
    </div>
 </html:template>

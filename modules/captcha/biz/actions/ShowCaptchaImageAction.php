@@ -26,9 +26,6 @@ use APF\core\session\Session;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package APF\modules\captcha\biz\actions
- * @class ShowCaptchaImageAction
- *
  * Front controller action that displays a captcha image.
  *
  * @author Christian Achatz
@@ -38,14 +35,11 @@ use APF\tools\http\HeaderManager;
 class ShowCaptchaImageAction extends AbstractFrontcontrollerAction {
 
    /**
-    * @private
     * @var array Defines the installed fonts.
     */
    private $fonts = array('XFILES.TTF');
 
    /**
-    * @public
-    *
     * Implements the front controller's run method.
     *
     * @author Christian Achatz

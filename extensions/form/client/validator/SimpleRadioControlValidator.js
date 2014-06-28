@@ -26,7 +26,7 @@
 (function ($) {
     $(document).ready(function () {
         jQuery.APFFormValidator.addClientValidator('SimpleRadioControlValidator', {
-            validate:function (control, options) {
+            validate: function (control, options) {
                 for (var i = 0; i < control.length; i++) {
                     if (control[i].checked) {
                         return true;

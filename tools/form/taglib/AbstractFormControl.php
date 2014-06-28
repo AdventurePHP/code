@@ -26,10 +26,6 @@ use APF\tools\form\FormException;
 use APF\tools\form\validator\AbstractFormValidator;
 
 /**
- * @package APF\tools\form\taglib
- * @class AbstractFormControl
- * @abstract
- *
  * Implements a base class for all APF form elements.
  *
  * @author Christian Schäfer
@@ -86,25 +82,23 @@ abstract class AbstractFormControl extends Document implements FormControl {
     * @var array{string} The attributes, that are allowed to render into the XHTML/1.1 strict document.
     */
    protected $attributeWhiteList = array(
-         // core attributes
+      // core attributes
          'id', 'style', 'class',
 
-         // event attributes
+      // event attributes
          'accesskey', 'tabindex', 'onfocus', 'onblur', 'onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover',
          'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup',
 
-         // i18n attributes
+      // i18n attributes
          'lang', 'xml:lang', 'dir',
 
-         // HTML5 attributes
+      // HTML5 attributes
          'placeholder', 'name', 'disabled', 'form', 'autocomplete', 'autofocus', 'list', 'maxlength', 'pattern', 'readonly',
          'required', 'size', 'min', 'max', 'step', 'multiple', 'formaction', 'formenctype', 'formmethod', 'formtarget',
          'formnovalidate', 'height', 'width', 'alt', 'src', 'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone'
    );
 
    /**
-    * @public
-    *
     * Initiate presetting of the form control. If you cannot use
     * value presetting, overwrite the protected method
     * <code>presetValue()</code>.
@@ -118,8 +112,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Returns true in case the form is valid and false otherwise.
     *
     * @return boolean The validity status.
@@ -133,8 +125,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Allows you to mark this form control as invalid.
     *
     * @author Christian Achatz
@@ -146,8 +136,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Allows you to mark this form control as valid (again).
     *
     * @since 1.17
@@ -161,8 +149,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Marks a form as sent.
     *
     * @author Christian Achatz
@@ -174,8 +160,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the sending status of the form.
     *
     * @return boolean True in case the form was sent, false otherwise.
@@ -189,8 +173,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Let's you check, if a radio button was checked.
     *
     * @return boolean True in case the radio button is checked, false otherwise.
@@ -204,8 +186,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Method for checking the checkbox.
     *
     * @author Christian Achatz
@@ -217,8 +197,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Method for un-checking the checkbox.
     *
     * @author Christian Achatz
@@ -230,8 +208,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Disables a form control for usage.
     *
     * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
@@ -245,8 +221,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Enables a form control for user access.
     *
     * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
@@ -260,8 +234,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Let's you query the user access status.
     *
     * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
@@ -277,8 +249,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Sets a form control to read only.
     *
     * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
@@ -292,8 +262,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Enables a form control for write access.
     *
     * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
@@ -307,8 +275,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Let's you query the read only status.
     *
     * @see http://www.w3.org/TR/html401/interact/forms.html#h-17.12
@@ -324,13 +290,11 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    * @since 1.11
-    *
     * Applies the given filter to the present input element.
     *
     * @param AbstractFormFilter $filter The desired filter.
     *
+    * @since 1.11
     * @author Christian Achatz
     * @version
     * Version 0.1, 24.08.2009<br />
@@ -351,7 +315,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
     * @since 1.11
     *
     * Executes the given form validator in context of the current form element.
@@ -384,8 +347,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @protected
-    *
     * Indicates, whether validation is mandatory or not. This enables to introduce
     * optional validators that are only active in case a field is filled.
     *
@@ -406,8 +367,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @protected
-    *
     * Pre-fills the value of the current control.
     *
     * @throws FormException In case the form control has no name.
@@ -437,8 +396,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @protected
-    *
     * Converts an attributes array into a xml string including the black list
     * and white list definition within the taglib instance.
     *
@@ -455,13 +412,11 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    * @since 1.13
-    *
     * Adds an additional attribute to the white list of the control.
     *
     * @param string $name The attribute which should be added to the white list.
     *
+    * @since 1.13
     * @author Ralf Schubert
     * @version
     * Version 0.1, 21.07.2010<br />
@@ -471,8 +426,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Savely appends a css class. Resolves missing attribute.
     *
     * @param string $class The css class to append.
@@ -497,8 +450,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the value of the form control. Does not always return the 'value'
     * attribute. This returns the attribute/content which contains the user input.
     * (For example text areas store the input in the content, not in the value
@@ -517,8 +468,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Set's the value of the form control. Should not always set the 'value'
     * attribute. This set's the same attribute/content as the user would type it.
     *
@@ -539,8 +488,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Let's check if the form:text or form:area was filled with content.
     *
     * @return bool True in case the control is filled, false otherwise.
@@ -556,8 +503,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Let's check if something was selected in form:select or form:multiselect.
     *
     * @return bool True in case the control is selected, false otherwise.
@@ -572,8 +517,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Hides a form control from the HTML output of the form it is contained in. Together with
     * it's <em>dependent controls</em> you can hide entire parts of a form from being displayed
     * on transformation.
@@ -600,8 +543,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Shows a previously hidden form control from the HTML output of the form it is contained in.
     * Together with it's <em>dependent controls</em> you can show entire parts of a form from being
     * displayed on transformation.
@@ -628,8 +569,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the current control's visibility status.
     *
     * @return bool True in case the control is visible, false otherwise.
@@ -643,8 +582,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @protected
-    *
     * Evaluates the list of controls that should be hidden/displayed in case this control is
     * hidden/displayed again.
     * <p/>
@@ -677,7 +614,6 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
     * @since 2.1
     *
     * Allows you to retrieve all registered validators for this form control added within this form
@@ -694,13 +630,12 @@ abstract class AbstractFormControl extends Document implements FormControl {
    }
 
    /**
-    * @public
-    * @since 2.1
-    *
     * Allows you to retrieve all registered filters for this form control registered within this form
     * instance. May be used to generate client-side validation rules.
     *
     * @return AbstractFormFilter[] The filters registered for the current control.
+    *
+    * @since 2.1
     *
     * @author Christian Achatz
     * @version

@@ -1,156 +1,156 @@
 .umgt-header {
-   font-size: 28px;
-   font-weight: bolder;
-   color: #bbbbbb;
-   margin-bottom: .5em;
+    font-size: 28px;
+    font-weight: bolder;
+    color: #bbbbbb;
+    margin-bottom: .5em;
 }
 
 .umgt-menu {
-   margin-bottom: 1em;
+    margin-bottom: 1em;
 }
 
 .umgt-content .umgt-warn {
-   border: 2px solid orange;
-   padding: 10px;
-   color: orange;
-   font-weight: bold;
-   background: #efefef;
+    border: 2px solid orange;
+    padding: 10px;
+    color: orange;
+    font-weight: bold;
+    background: #efefef;
 }
 
 .umgt-content a:link,
 .umgt-content a:visited {
-   color: #bbbbbb;
-   font-weight: bold;
-   text-decoration: none;
+    color: #bbbbbb;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .umgt-content a:focus,
 .umgt-content a:hover,
 .umgt-content a:active {
-   color: #bbbbbb;
-   font-weight: bold;
-   text-decoration: underline;
+    color: #bbbbbb;
+    font-weight: bold;
+    text-decoration: underline;
 }
 
 .umgt-menu a:link,
 .umgt-menu a:visited {
-   color: #bbbbbb;
-   font-weight: bold;
-   text-decoration: none;
+    color: #bbbbbb;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .umgt-menu a:focus,
 .umgt-menu a:hover,
 .umgt-menu a:active {
-   color: #bbbbbb;
-   font-weight: bold;
-   text-decoration: none;
+    color: #bbbbbb;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .umgt-content .apf-form-error {
-   border: 2px solid red;
+    border: 2px solid red;
 }
 
 .umgt-content .error-cont {
-   margin: 5px;
-   padding: 5px;
-   border: 2px solid red;
-   background-color: #eeeeee;
+    margin: 5px;
+    padding: 5px;
+    border: 2px solid red;
+    background-color: #eeeeee;
 }
 
 .umgt-content form label {
-   display: block;
+    display: block;
 }
 
 .umgt-content form input[type=text],
 .umgt-content form input[type=password],
 .umgt-content form select,
 .umgt-content form textarea {
-   border: 1px solid #000000;
-   background-color: #eeeeee;
-   width: 200px;
+    border: 1px solid #000000;
+    background-color: #eeeeee;
+    width: 200px;
 }
 
 .umgt-content form input[type=submit] {
-   display: block;
-   margin-top: 20px;
-   border: 1px solid #000000;
-   background-color: #eeeeee;
+    display: block;
+    margin-top: 20px;
+    border: 1px solid #000000;
+    background-color: #eeeeee;
 }
 
 .umgt-content table.vis-def {
-   border: none;
-   width: 100%;
+    border: none;
+    width: 100%;
 }
 
 .umgt-content table.vis-def td {
-   padding: 4px;
-   vertical-align: top;
+    padding: 4px;
+    vertical-align: top;
 }
 
 .umgt-content table.vis-def td:first-child {
-   width: 40px;
+    width: 40px;
 }
 
 .umgt-content table.vis-def tbody td {
-   border-bottom: 1px solid gray;
+    border-bottom: 1px solid gray;
 }
 
 .umgt-content table.vis-def tbody td.actions,
 .umgt-content table.vis-def tbody td li {
-   white-space: nowrap;
+    white-space: nowrap;
 }
 
 .umgt-content table.vis-def tbody tr {
-   position: relative;
+    position: relative;
 }
 
 .umgt-content table.vis-def thead {
-   background-color: #cccccc;
-   font-weight: bold;
+    background-color: #cccccc;
+    font-weight: bold;
 }
 
 .umgt-content table.vis-def ul {
-   margin: 0;
-   padding: 0 0 0 14px;
+    margin: 0;
+    padding: 0 0 0 14px;
 }
 
 .umgt-content form.type-filter {
-   margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .umgt-content form.type-filter select,
 .umgt-content form.type-filter input {
-   border: 1px solid gray;
-   background: #cccccc;
+    border: 1px solid gray;
+    background: #cccccc;
 }
 
 .umgt-content form.type-filter input[type=submit] {
-   display: inline-block;
-   margin-top: 0;
+    display: inline-block;
+    margin-top: 0;
 }
 
 .umgt-content img.icon {
-   width: 40px;
-   height: 40px;
-   border: none;
+    width: 40px;
+    height: 40px;
+    border: none;
 }
 
 .umgt-content .umgt-access-perms p {
-   margin: 0;
+    margin: 0;
 }
 
 .umgt-content .umgt-access-perms p label {
-   display: inline-block;
+    display: inline-block;
 }
 
 .umgt-content .umgt-access-perms p input {
-   vertical-align: middle;
+    vertical-align: middle;
 }
 
 .umgt-content .umgt-access-perms p img.icon {
-   vertical-align: middle;
-   margin-right: 10px;
-   width: 20px;
-   height: 20px;
+    vertical-align: middle;
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
 }

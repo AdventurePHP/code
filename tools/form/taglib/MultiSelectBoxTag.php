@@ -23,9 +23,6 @@ namespace APF\tools\form\taglib;
 use APF\tools\form\FormException;
 
 /**
- * @package APF\tools\form\taglib
- * @class MultiSelectBoxTag
- *
  * Represents the APF multiselect field.
  *
  * @author Christian Achatz
@@ -38,8 +35,6 @@ use APF\tools\form\FormException;
 class MultiSelectBoxTag extends SelectBoxTag {
 
    /**
-    * @public
-    *
     * Initializes the known child taglibs, sets the validator style and adds the multiple attribute.
     *
     * @author Christian Schäfer
@@ -59,8 +54,6 @@ class MultiSelectBoxTag extends SelectBoxTag {
    }
 
    /**
-    * @public
-    *
     * Parses the child tags and checks the name of the element to contain "[]".
     *
     * @author Christian Achatz
@@ -93,8 +86,6 @@ class MultiSelectBoxTag extends SelectBoxTag {
    }
 
    /**
-    * @public
-    *
     * Creates the HTML output of the select field.
     *
     * @return string The HTML code of the select field.
@@ -133,8 +124,6 @@ class MultiSelectBoxTag extends SelectBoxTag {
    }
 
    /**
-    * @public
-    *
     * Returns the selected options.
     *
     * @return SelectBoxOptionTag[] List of the options, that are selected.
@@ -171,8 +160,6 @@ class MultiSelectBoxTag extends SelectBoxTag {
    }
 
    /**
-    * @protected
-    *
     * Re-implements the presetting method for the multi-select field.
     *
     * @author Christian Achatz
@@ -189,8 +176,6 @@ class MultiSelectBoxTag extends SelectBoxTag {
    }
 
    /**
-    * @private
-    *
     * retrieves the selected values from the current request. Returns an
     * empty array, if no options are found.
     *
@@ -211,8 +196,6 @@ class MultiSelectBoxTag extends SelectBoxTag {
    }
 
    /**
-    * @public
-    *
     * Re-implements the retrieving of values for multi-select controls.
     *
     * @return SelectBoxOptionTag[] List of the options, that are selected.
@@ -228,8 +211,6 @@ class MultiSelectBoxTag extends SelectBoxTag {
    }
 
    /**
-    * @public
-    *
     * Let's check if something was selected in form:multiselect.
     *
     * @return bool True in case the control is selected, false otherwise.

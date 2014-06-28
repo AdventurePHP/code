@@ -29,9 +29,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class UmgtBaseController
- *
  * Implements a base controller for the concrete document controllers of
  * the usermanagement module. Includes helper functions.
  *
@@ -42,12 +39,11 @@ use APF\tools\link\Url;
 abstract class UmgtBaseController extends BaseDocumentController {
 
    /**
-    * @protected
-    *
     * Returns a link including the desired params and some standard parts.
     *
     * @param string[] $linkParams the desired link params.
     * @param string $baseURL the desired base url.
+    *
     * @return string The generated link.
     *
     * @author Christian Achatz
@@ -58,12 +54,11 @@ abstract class UmgtBaseController extends BaseDocumentController {
       if ($baseURL === null) {
          $baseURL = $_SERVER['REQUEST_URI'];
       }
+
       return LinkGenerator::generateUrl(Url::fromString($baseURL)->mergeQuery($linkParams));
    }
 
    /**
-    * @protected
-    *
     * Initializes the umgt manager for usage within the presentation layer.
     *
     * @return UmgtManager The manager of the usermanagement module.
@@ -77,11 +72,10 @@ abstract class UmgtBaseController extends BaseDocumentController {
    }
 
    /**
-    * @protected
-    *
     * Returns the media inclusion tag contained in the given template.
     *
     * @param TemplateTag $template The template to search the media file tag in.
+    *
     * @return UmgtMediaInclusionTag The media file inclusion tag.
     *
     * @author Christian Achatz
@@ -95,6 +89,7 @@ abstract class UmgtBaseController extends BaseDocumentController {
             return $children[$objectId];
          }
       }
+
       return null;
    }
 

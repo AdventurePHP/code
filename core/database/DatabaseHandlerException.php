@@ -23,9 +23,6 @@ namespace APF\core\database;
 use Exception;
 
 /**
- * @package APF\core\database
- * @class DatabaseHandlerException
- *
  * Represents an exception, that is thrown during database operations.
  *
  * @author Christian Achatz

@@ -3,106 +3,111 @@
 * your existing style sheets or include it to your website's head.                                 *
 ***************************************************************************************************/
 
-.cm--create {}
+.cm--create {
+}
 
-.cm--create-head {}
+.cm--create-head {
+}
 
 .cm--create-form {
-   margin-top: 20px;
+    margin-top: 20px;
 }
 
 .cm--create-form textarea {
-   width: 444px;
-   height: 120px;
-   overflow: auto;
+    width: 444px;
+    height: 120px;
+    overflow: auto;
 }
 
 .cm--create-form input, textarea {
-   border: 1px solid black;
-   background-color: #efefef;
-   width: 390px;
+    border: 1px solid black;
+    background-color: #efefef;
+    width: 390px;
 }
 
 .cm--create-form span {
-   margin-right: 10px;
+    margin-right: 10px;
 }
 
 /* mark invalid form controls */
 .cm--create-form .apf-form-error {
-   border: 2px solid red;
+    border: 2px solid red;
 }
 
 .cm--create-element-button {
-   width: 90px !important;
+    width: 90px !important;
 }
 
 .cm--create-element-captcha {
-   margin-left: 10px;
-   width: 60px !important;
+    margin-left: 10px;
+    width: 60px !important;
 }
 
-.cm--create-element-name {}
+.cm--create-element-name {
+}
 
-.cm--create-element-email {}
+.cm--create-element-email {
+}
 
-.cm--list {}
+.cm--list {
+}
 
-.cm--list-head {}
+.cm--list-head {
+}
 
 .cm--list-pager {
-   margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
-.cm--list-items {}
+.cm--list-items {
+}
 
 .cm--list-item {
-   width: 100%;
-   margin-bottom: 20px;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .cm--list-item-head {
-   display: inline-block;
+    display: inline-block;
 }
 
 .cm--list-item-head-num {
-   float: left;
-   width: 60px;
-   padding: 2px;
-   font-size: 36px;
-   color: #777BB4;
-   font-style: italic;
+    float: left;
+    width: 60px;
+    padding: 2px;
+    font-size: 36px;
+    color: #777BB4;
+    font-style: italic;
 }
 
 .cm--list-item-head-date {
-   float: left;
-   padding: 2px; 
+    float: left;
+    padding: 2px;
 }
 
 .cm--list-item-head-date > span {
-   display: block;
-   font-weight: bold;
+    display: block;
+    font-weight: bold;
 }
 
 .cm--list-item-head-date > em {
-   font-style: italic;
+    font-style: italic;
 }
 
 .cm--list-item-body {
-   background-color: #eeeeee;
-   padding: 2px;
+    background-color: #eeeeee;
+    padding: 2px;
 }
 
 .cm--list-noentries {
-   margin-left: 30px;
-   margin-top: 20px;
-   margin-bottom: 60px;
-   font-style: italic;
-   font-weight: bold;
+    margin-left: 30px;
+    margin-top: 20px;
+    margin-bottom: 60px;
+    font-style: italic;
+    font-weight: bold;
 }
-
-
 
 /* mark invalid form controls */
 .contact-form .apf-form-error {
-   border: 2px solid red;
+    border: 2px solid red;
 }

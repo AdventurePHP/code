@@ -24,9 +24,6 @@ use APF\extensions\htmlheader\biz\HtmlNode;
 use APF\extensions\htmlheader\biz\JsNode;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class StaticJsNode
- *
  * Represents a node for static js inclusion.
  *
  * @author Christian Achatz

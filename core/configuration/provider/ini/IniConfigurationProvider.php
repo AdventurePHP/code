@@ -27,9 +27,6 @@ use APF\core\configuration\provider\ini\IniConfiguration;
 use APF\core\configuration\Configuration;
 
 /**
- * @package APF\core\configuration\provider\ini
- * @class IniConfigurationProvider
- *
  * Implements the configuration provider for the default APF ini format. The
  * following features can be activated:
  * <ul>
@@ -60,7 +57,6 @@ use APF\core\configuration\Configuration;
 class IniConfigurationProvider extends BaseConfigurationProvider implements ConfigurationProvider {
 
    /**
-    * @private
     * @var string The sub key delimiter.
     */
    private static $NAMESPACE_DELIMITER = '.';
@@ -85,11 +81,10 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
    }
 
    /**
-    * @private
-    *
     * Creates the configuration representation for all sections.
     *
     * @param string[] $entries The sections of the current configuration.
+    *
     * @return IniConfiguration The appropriate configuration.
     *
     * @author Christian Achatz
@@ -107,15 +102,15 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
       foreach ($entries as $section => $subEntries) {
          $config->setSection($section, $this->parseSection($subEntries));
       }
+
       return $config;
    }
 
    /**
-    * @private
-    *
     * Creates the configuration representation of one single section.
     *
     * @param string[] $entries The entries of the current main section.
+    *
     * @return IniConfiguration The configuration, that represents the applied entries.
     *
     * @author Christian Achatz
@@ -134,12 +129,11 @@ class IniConfigurationProvider extends BaseConfigurationProvider implements Conf
             $this->parseSubSection($config, $name, $value);
          }
       }
+
       return $config;
    }
 
    /**
-    * @private
-    *
     * Creates the sub-section configuration representation in case the
     * parse sub section feature is activated.
     *

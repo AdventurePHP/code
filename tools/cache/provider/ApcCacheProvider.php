@@ -26,9 +26,6 @@ use APF\tools\cache\CacheProvider;
 use APF\tools\cache\key\AdvancedCacheKey;
 
 /**
- * @package APF\tools\cache\provider
- * @class ApcCacheProvider
- *
  * Implements the cache reader for serialized php objects stored in an APC in-memory store.
  * <p/>
  * Supports both the SimpleCacheKey as well as the AdvancedCacheKey to store information.
@@ -40,16 +37,15 @@ use APF\tools\cache\key\AdvancedCacheKey;
 class ApcCacheProvider extends CacheBase implements CacheProvider {
 
    /**
-    * @const string The delimiter between namespace, key, and sub-key.
+    * @var string The delimiter between namespace, key, and sub-key.
     */
    const CACHE_KEY_DELIMITER = '#';
 
    /**
-    * @protected
-    *
     * Calculates the cache identifier for read and write operations.
     *
     * @param CacheKey $cacheKey The applied cache key.
+    *
     * @return string The cache identifier with respect for the given cache key (simple and advanced).
     *
     * @author Christian Achatz
@@ -69,8 +65,6 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
    }
 
    /**
-    * @protected
-    *
     * Gathers the entire list of cache entries and returns it.
     *
     * @return string[] The list of current cache entries.
@@ -85,15 +79,15 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
       foreach ($cacheInfo['cache_list'] as $cacheEntryInfo) {
          $entries[] = $cacheEntryInfo['info'];
       }
+
       return $entries;
    }
 
    /**
-    * @protected
-    *
     * Gathers the entries of a given namespace.
     *
     * @param string $namespace The desired namespace to filter the entries.
+    *
     * @return string[] The list of current cache entries.
     *
     * @author Christian Achatz
@@ -107,16 +101,16 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
             $namespaceEntries[] = $entry;
          }
       }
+
       return $namespaceEntries;
    }
 
    /**
-    * @protected
-    *
     * Gathers the entries of a given namespace and main cache key.
     *
     * @param string $namespace The desired namespace to filter the entries.
     * @param string $key The main cache key.
+    *
     * @return string[] The list of current cache entries.
     *
     * @author Christian Achatz
@@ -130,6 +124,7 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
             $namespaceAndKeyEntries[] = $entry;
          }
       }
+
       return $namespaceAndKeyEntries;
    }
 
@@ -186,6 +181,7 @@ class ApcCacheProvider extends CacheBase implements CacheProvider {
             foreach ($this->getCacheEntriesByNamespaceAndKey($namespace, $cacheKey->getKey()) as $key) {
                apc_delete($key);
             }
+
             return true;
          } else {
             // delete dedicated entry

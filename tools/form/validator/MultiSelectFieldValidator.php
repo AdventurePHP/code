@@ -23,9 +23,6 @@ namespace APF\tools\form\validator;
 use APF\tools\form\validator\SelectFieldValidator;
 
 /**
- * @package APF\tools\form\validator
- * @class MultiSelectFieldValidator
- *
  * Implements a simple multi select field validator, that expects the value
  * of the select field not to be empty.
  *
@@ -36,11 +33,10 @@ use APF\tools\form\validator\SelectFieldValidator;
 class MultiSelectFieldValidator extends SelectFieldValidator {
 
    /**
-    * @public
-    *
     * Implements the validation method for multiselect fields.
     *
     * @param string $input The input of the multiselect field.
+    *
     * @return boolean True, in case the control is valid, false otherwise.
     *
     * @author Christian Achatz
@@ -53,6 +49,7 @@ class MultiSelectFieldValidator extends SelectFieldValidator {
       if (!isset($_REQUEST[$controlName])) {
          return false;
       }
+
       return true;
 
    }

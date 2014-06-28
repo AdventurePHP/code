@@ -23,9 +23,6 @@ namespace APF\modules\guestbook2009\pres\taglib;
 use APF\core\pagecontroller\LanguageLabelTag;
 
 /**
- * @package APF\modules\guestbook2009\pres
- * @class GuestbookLanguageLabelTag
- *
  * Implements the wrapper taglib for displaying the lang dependent labels, that can be
  * configured in configuration files.
  *
@@ -36,8 +33,6 @@ use APF\core\pagecontroller\LanguageLabelTag;
 class GuestbookLanguageLabelTag extends LanguageLabelTag {
 
    /**
-    * @public
-    *
     * Presets the attributes needed by the GuestbookLanguageLabelTag class to be able to only
     * have to provide the label key in the templates (saves your fingers!).
     *

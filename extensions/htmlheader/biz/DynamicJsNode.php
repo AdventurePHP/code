@@ -24,9 +24,6 @@ use APF\extensions\htmlheader\biz\HtmlNode;
 use APF\extensions\htmlheader\biz\JsNode;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class DynamicJsNode
- *
  * Js file node for HtmlHeaderManagers data.
  *
  * @author Ralf Schubert
@@ -38,6 +35,7 @@ class DynamicJsNode extends HtmlNode implements JsNode {
 
    /**
     * Receives information and configures node.
+    *
     * @param string $url Optional url.
     * @param string $namespace Namespace of file
     * @param string $filename Name of file (without .js)
@@ -45,11 +43,11 @@ class DynamicJsNode extends HtmlNode implements JsNode {
     */
    public function __construct($url, $namespace, $filename, $fcaction = null) {
       $this->setAttribute('src', $this->buildFrontcontrollerLink(
-         $url,
-         $namespace,
-         $filename,
-         $fcaction,
-         'js'
+            $url,
+            $namespace,
+            $filename,
+            $fcaction,
+            'js'
       ));
       $this->setAttribute('type', 'text/javascript');
       $this->setContent(''); // empty content but existent!

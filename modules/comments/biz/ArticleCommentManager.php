@@ -28,9 +28,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\modules\comments\biz
- * @class ArticleCommentManager
- *
  *  Implements the business component of the comment module.
  *
  * @author Christian Achatz
@@ -41,7 +38,6 @@ use APF\tools\link\Url;
 class ArticleCommentManager extends APFObject {
 
    /**
-    * @protected
     * @var string Category key.
     */
    protected $categoryKey;
@@ -51,8 +47,6 @@ class ArticleCommentManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads a list of comment entries.
     *
     * @return ArticleComment[] The list of desired entries.
@@ -65,15 +59,15 @@ class ArticleCommentManager extends APFObject {
    public function loadEntries() {
       $pager = & $this->getPagerManager();
       $m = & $this->getServiceObject('APF\modules\comments\data\ArticleCommentMapper');
+
       return $pager->loadEntriesByAppDataComponent($m, 'loadArticleCommentByID', array('CategoryKey' => $this->categoryKey));
    }
 
    /**
-    * @public
-    *
     * Returns the HTML representation of the pager.
     *
     * @param string $anchorName The desired anchor name (optional).
+    *
     * @return string The HTML code of the pager.
     *
     * @author Christian Schäfer
@@ -85,12 +79,11 @@ class ArticleCommentManager extends APFObject {
    public function getPager($anchorName = null) {
       $pager = & $this->getPagerManager();
       $pager->setAnchorName($anchorName);
+
       return $pager->getPager(array('CategoryKey' => $this->categoryKey));
    }
 
    /**
-    * @public
-    *
     * Returns the url parameters the pager used.
     *
     * @return string[] Pager URL parameters.
@@ -104,8 +97,6 @@ class ArticleCommentManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Saves a comment.
     *
     * @param ArticleComment $articleComment The entry to save.
@@ -125,9 +116,9 @@ class ArticleCommentManager extends APFObject {
       $M->saveArticleComment($articleComment);
 
       $link = LinkGenerator::generateUrl(
-         Url::fromCurrent()
-               ->mergeQuery(array('coview' => 'listing'))
-               ->setAnchor('comments')
+            Url::fromCurrent()
+                  ->mergeQuery(array('coview' => 'listing'))
+                  ->setAnchor('comments')
       );
       HeaderManager::forward($link);
    }

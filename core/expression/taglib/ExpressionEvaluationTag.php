@@ -24,9 +24,6 @@ use APF\core\expression\ExpressionEvaluator;
 use APF\core\pagecontroller\Document;
 
 /**
- * @package APF\core\expression\taglib
- * @class ExpressionEvaluationTag
- *
  * Represents a tag that evaluates dynamic expressions used in templates to ease
  * displaying content and have at least a bit of template logic.
  * <p/>

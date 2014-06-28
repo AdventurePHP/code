@@ -29,11 +29,11 @@
 (function ($) {
     $(document).ready(function () {
         jQuery.APFFormValidator.addClientValidator('TextLengthValidator', {
-            validate:function (control, options) {
+            validate: function (control, options) {
                 var ctrlvalue = control.attr('value');
                 var defaultOptions = {
-                    maxlength:0,
-                    minlength:3
+                    maxlength: 0,
+                    minlength: 3
                 };
                 var valiOptions = {};
 

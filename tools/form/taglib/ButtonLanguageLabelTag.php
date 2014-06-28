@@ -23,9 +23,6 @@ namespace APF\tools\form\taglib;
 use APF\core\pagecontroller\LanguageLabelTag;
 
 /**
- * @package APF\tools\form\taglib
- * @class ButtonLanguageLabelTag
- *
  * Implements a taglib that let's you easily label your button within forms. This makes
  * usage of the document controller obsolete.
  *

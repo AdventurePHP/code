@@ -24,9 +24,6 @@ use APF\extensions\htmlheader\biz\HtmlNode;
 use APF\extensions\htmlheader\biz\JsNode;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class JsContentNode
- *
  * Represents a js node with explicit content.
  *
  * @author Christian Achatz

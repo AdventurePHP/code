@@ -27,9 +27,6 @@ use APF\tools\string\AdvancedBBCodeParser;
 use APF\tools\link\LinkGenerator;
 
 /**
- * @package APF\modules\comments\pres\controller
- * @class CommentListingController
- *
  * Implements the document controller for the 'listing.html' template.
  *
  * @author Christian Achatz
@@ -41,8 +38,6 @@ use APF\tools\link\LinkGenerator;
 class CommentListingController extends CommentBaseDocumentController {
 
    /**
-    * @public
-    *
     *  Displays the paged comment list.
     *
     * @author Christian Achatz
@@ -56,17 +51,17 @@ class CommentListingController extends CommentBaseDocumentController {
    public function transformContent() {
 
       /* @var $m ArticleCommentManager */
-      $m = &$this->getAndInitServiceObject('APF\modules\comments\biz\ArticleCommentManager', $this->getCategoryKey());
+      $m = & $this->getAndInitServiceObject('APF\modules\comments\biz\ArticleCommentManager', $this->getCategoryKey());
 
       // load the entries using the business component
       $entries = $m->loadEntries();
 
-      $buffer = (string)'';
-      $template = &$this->getTemplate('ArticleComment');
+      $buffer = (string) '';
+      $template = & $this->getTemplate('ArticleComment');
 
       // init bb code parser (remove some provider, that we don't need configuration files)
       /* @var $bP AdvancedBBCodeParser */
-      $bP = &$this->getServiceObject('APF\tools\string\AdvancedBBCodeParser');
+      $bP = & $this->getServiceObject('APF\tools\string\AdvancedBBCodeParser');
       $bP->removeProvider('standard.font.color');
       $bP->removeProvider('standard.font.size');
 
@@ -85,7 +80,7 @@ class CommentListingController extends CommentBaseDocumentController {
 
       // display hint, if no entries are to display
       if (count($entries) < 1) {
-         $Template__NoEntries = &$this->getTemplate('NoEntries');
+         $Template__NoEntries = & $this->getTemplate('NoEntries');
          $buffer = $Template__NoEntries->transformTemplate();
       }
 
@@ -101,13 +96,13 @@ class CommentListingController extends CommentBaseDocumentController {
 
       // generate the add comment link
       $this->setPlaceHolder('Link',
-         LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
-                  $urlParams['PageName'] => '',
-                  $urlParams['CountName'] => '',
-                  'coview' => 'form'
-               )
+            LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array(
+                              $urlParams['PageName']  => '',
+                              $urlParams['CountName'] => '',
+                              'coview'                => 'form'
+                        )
+                  )
             )
-         )
       );
    }
 

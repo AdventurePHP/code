@@ -24,9 +24,6 @@ use APF\tools\form\taglib\TextFieldTag;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package APF\modules\captcha\pres\validator
- * @class CaptchaValidator
- *
  * Implements a validator for the captcha field.
  *
  * @author Christian Achatz
@@ -36,11 +33,10 @@ use APF\tools\form\validator\TextFieldValidator;
 class CaptchaValidator extends TextFieldValidator {
 
    /**
-    * @public
-    *
     * Checks the input of the captcha field.
     *
     * @param string $input The input to validate.
+    *
     * @return boolean True, in case the control is valid, false otherwise.
     *
     * @author Christian Achatz
@@ -50,7 +46,7 @@ class CaptchaValidator extends TextFieldValidator {
    public function validate($input) {
 
       // get the captcha content of the current request
-      /* @var $this->control SimpleCaptchaTag */
+      /* @var $this ->control SimpleCaptchaTag */
       $captcha = $this->control->getCurrentCaptcha();
 
       // validate field
@@ -60,13 +56,12 @@ class CaptchaValidator extends TextFieldValidator {
       ) {
          return true;
       }
+
       return false;
 
    }
 
    /**
-    * @public
-    *
     * Re-implements the notify() to care about the special
     * structure of the captcha control.
     *

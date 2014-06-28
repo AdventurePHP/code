@@ -23,9 +23,6 @@ namespace APF\core\session;
 use InvalidArgumentException;
 
 /**
- * @package APF\core\session
- * @class Session
- *
  * Provides advances session handling with namespaces. Example:
  * <pre>$session = new Session('{namespace}');
  * $session->load('{key}');
@@ -42,18 +39,16 @@ use InvalidArgumentException;
 final class Session {
 
    /**
-    * @private
     * The namespace of the current instance of the session.
     */
    private $namespace;
 
    /**
-    * @public
-    *
     * Initializes the namespace of the current instance and starts the
     * session in case it is not started yet.
     *
     * @param string $namespace The desired namespace.
+    *
     * @throws InvalidArgumentException In case, the namespace is empty.
     *
     * @author Christian Schäfer
@@ -84,8 +79,6 @@ final class Session {
    }
 
    /**
-    * @public
-    *
     * Deletes the session for a given namespace.
     *
     * @author Christian Schäfer
@@ -98,12 +91,11 @@ final class Session {
    }
 
    /**
-    * @public
-    *
     * Loads data from the session.
     *
     * @param string $attribute The desired attribute.
     * @param string $default The default value to load, when no data is available.
+    *
     * @return string The desired session data or the default value (null, if not present).
     *
     * @author Christian Schäfer
@@ -122,8 +114,6 @@ final class Session {
    }
 
    /**
-    * @public
-    *
     * Returns an associative array including all session keys registered
     * up to the point of calling this method.
     *
@@ -138,8 +128,6 @@ final class Session {
    }
 
    /**
-    * @public
-    *
     * Returns the list of registered session keys as a numeric array.
     *
     * @return string[] The list of registered session keys.
@@ -153,8 +141,6 @@ final class Session {
    }
 
    /**
-    * @public
-    *
     * Saves session data.
     *
     * @param string $attribute the desired attribute
@@ -169,8 +155,6 @@ final class Session {
    }
 
    /**
-    * @public
-    *
     * Deletes session data.
     *
     * @param string $attribute the desired attribute
@@ -184,8 +168,6 @@ final class Session {
    }
 
    /**
-    * @public
-    *
     * Returns the id of the current session.
     *
     * @return string The current session id

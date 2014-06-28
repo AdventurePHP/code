@@ -23,9 +23,6 @@ namespace APF\tools\string\bbcpprovider;
 use APF\tools\string\BBCodeParserProvider;
 
 /**
- * @package APF\tools\string\bbcpprovider
- * @class FontSizeProvider
- *
  * Implements the font color parser.
  *
  * @author Christian Achatz
@@ -35,13 +32,12 @@ use APF\tools\string\BBCodeParserProvider;
 class FontColorProvider extends BBCodeParserProvider {
 
    /**
-    * @public
-    *
     *  Implements the getOutput() method of the abstract BBCodeParserProvider. Parses font color
     *  definitions provided th the "fontcolor" configuration file under the tools::string::bbcpprovider
     *  namespace. An configuration example can be found in the adventure-configpack-* release file.
     *
     * @param string $string the content to parse
+    *
     * @return string $parsedString the parsed content
     *
     * @author Christian Achatz

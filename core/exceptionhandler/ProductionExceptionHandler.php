@@ -24,9 +24,6 @@ use APF\core\registry\Registry;
 use Exception;
 
 /**
- * @package APF\core\exceptionhandler
- * @class ProductionExceptionHandler
- *
  * Implements a live exception handler, that logs the occurred exception and redirects
  * to a statically configured page to hide the exception from the customer (e.g. for
  * security reasons).

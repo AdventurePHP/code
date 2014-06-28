@@ -1,10 +1,12 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionEditController"
+class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionEditController"
 @>
-<h3><html:getstring
+<h3>
+   <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
-         entry="frontend.permission.edit.headline"/></h3>
+         entry="frontend.permission.edit.headline"/>
+</h3>
 <html:form name="PermissionEdit" method="post">
    <div>
       <form:addvalidator
@@ -19,24 +21,30 @@
                entry="frontend.permission.edit.intro.text"/>
       </p>
       <p>
-         <label><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.permission.edit.display-name.label"/></label>
+         <label>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.permission.edit.display-name.label"/>
+         </label>
          <form:text name="DisplayName" maxlength="100"/>
       </p>
       <p>
-         <label><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.permission.edit.name.label"/></label>
+         <label>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.permission.edit.name.label"/>
+         </label>
          <form:text name="Name" maxlength="100"/>
       </p>
       <p>
-         <label><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.permission.edit.value.label"/></label>
+         <label>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.permission.edit.value.label"/>
+         </label>
          <form:text name="Value" maxlength="100"/>
       </p>
       <p>
@@ -46,7 +54,7 @@
                   config="labels.ini"
                   entry="frontend.permission.edit.button.label"/>
          </form:button>
-         <form:hidden name="permissionid" />
+         <form:hidden name="permissionid"/>
       </p>
    </div>
 </html:form>

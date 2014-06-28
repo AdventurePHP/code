@@ -1,10 +1,12 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveUsersController"
+class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveUsersController"
 @>
-<h3><html:getstring
-       namespace="APF\modules\usermanagement\pres"
-       config="labels.ini"
-       entry="frontend.proxy.remove-users-from-proxy.headline"/></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.remove-users-from-proxy.headline"/>
+</h3>
 <html:form name="add_perm" method="post">
    <div>
       <p>
@@ -23,11 +25,13 @@
          </div>
       </form:listener>
       <div>
-         <label for="users"><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.proxy.remove-users-from-proxy.users.label"/></label>
-         <form:multiselect id="users" name="users" size="6" />
+         <label for="users">
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.remove-users-from-proxy.users.label"/>
+         </label>
+         <form:multiselect id="users" name="users" size="6"/>
       </div>
       <form:addvalidator
             class="APF\tools\form\validator\MultiSelectFieldValidator"
@@ -40,7 +44,7 @@
                config="labels.ini"
                entry="frontend.proxy.remove-users-from-proxy.button.label"/>
       </form:button>
-      <form:hidden name="proxyid" />
+      <form:hidden name="proxyid"/>
    </div>
 </html:form>
 <html:template name="NoMoreUsers">

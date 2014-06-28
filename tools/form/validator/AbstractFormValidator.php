@@ -24,9 +24,6 @@ use APF\core\pagecontroller\APFObject;
 use APF\tools\form\taglib\AbstractFormControl;
 
 /**
- * @package APF\tools\form\filter
- * @class AbstractFormValidator
- *
  * This class defines the scheme of form validators. Implements some basic
  * parts of the validator implementation.
  *
@@ -50,6 +47,7 @@ abstract class AbstractFormValidator extends APFObject {
 
    /**
     * Includes a reference on the control to validate.
+    *
     * @var AbstractFormControl The control to validate.
     */
    protected $control;
@@ -57,6 +55,7 @@ abstract class AbstractFormValidator extends APFObject {
    /**
     * Includes a reference on the button of the form,
     * that initiates the validation event.
+    *
     * @var AbstractFormControl The button that triggers the event.
     */
    protected $button;
@@ -65,6 +64,7 @@ abstract class AbstractFormValidator extends APFObject {
     * Indicates the type of validator listeners, that should be notified.
     * In case the type is set to <em>special</em>, only listeners having
     * the <em>validator</em> attribute specified should be notified.
+    *
     * @since 1.12
     * @var string The validator type.
     */
@@ -77,8 +77,6 @@ abstract class AbstractFormValidator extends APFObject {
    protected static $SPECIAL_VALIDATOR_INDICATOR = 'special';
 
    /**
-    * @public
-    *
     * Injects the control to validate and the button, that triggers the validation.
     *
     * @param AbstractFormControl $control The control, that should be validated.
@@ -90,18 +88,16 @@ abstract class AbstractFormValidator extends APFObject {
     * Version 0.1, 24.08.2009<br />
     */
    public function __construct(AbstractFormControl &$control, AbstractFormControl &$button, $type = null) {
-      $this->control = &$control;
-      $this->button = &$button;
+      $this->control = & $control;
+      $this->button = & $button;
       $this->type = $type;
    }
 
    /**
-    * @public
-    * @abstract
-    *
     * Method, that is called to validate the element.
     *
     * @param string $input The input to validate.
+    *
     * @return boolean True, in case the control is valid, false otherwise.
     *
     * @author Christian Achatz
@@ -111,9 +107,6 @@ abstract class AbstractFormValidator extends APFObject {
    public abstract function validate($input);
 
    /**
-    * @public
-    * @abstract
-    *
     * Method, that is called, when the validation fails.
     *
     * @author Christian Achatz
@@ -123,8 +116,6 @@ abstract class AbstractFormValidator extends APFObject {
    public abstract function notify();
 
    /**
-    * @public
-    *
     * Indicates, whether the current validator is active.
     *
     * @return boolean True, in case the validator is active, false otherwise.

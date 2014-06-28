@@ -24,9 +24,6 @@ use APF\tools\form\FormException;
 use APF\tools\form\validator\AbstractFormValidator;
 
 /**
- * @package APF\tools\form\taglib
- * @class FormControlObserverBase
- *
  * Implements a base class for the <em>form:addfilter</em> and
  * <em>form:addvalidator</em> taglibs. Constructs a form control
  * observer (filter or validator) using the tag attributes.
@@ -51,8 +48,6 @@ abstract class FormControlObserverBase extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Overwrites the transform() method to generate empty output.
     *
     * @return string Empty string, because the tag generates no output.
@@ -66,8 +61,6 @@ abstract class FormControlObserverBase extends AbstractFormControl {
    }
 
    /**
-    * @protected
-    *
     * Constructs the desired form control observer using tag attributes.
     *
     * @@param string $injectionMethod The name of the method to inject the observer with.

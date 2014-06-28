@@ -24,9 +24,6 @@ use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
- * @package APF\core\configuration\provider\ini
- * @class MemcachedConfiguration
- *
  * Implements the configuration interface for the default APF scheme stored within
  * a memcached store.
  *
@@ -35,4 +32,5 @@ use APF\core\configuration\provider\BaseConfiguration;
  * Version 0.1, 30.10.2010<br />
  */
 class MemcachedConfiguration extends BaseConfiguration implements Configuration {
+
 }

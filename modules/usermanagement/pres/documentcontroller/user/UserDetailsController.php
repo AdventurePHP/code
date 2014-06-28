@@ -24,9 +24,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\user
- * @class UserDetailsController
- *
  * Implements the controller to display a user's details.
  *
  * @author Christian Achatz

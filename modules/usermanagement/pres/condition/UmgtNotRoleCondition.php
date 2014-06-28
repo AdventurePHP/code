@@ -26,9 +26,6 @@ use APF\modules\usermanagement\biz\model\UmgtRole;
 use APF\modules\usermanagement\pres\condition\UserDependentContentCondition;
 
 /**
- * @package APF\modules\usermanagement\pres\condition
- * @class UmgtGroupCondition
- *
  * Implements the decision logic, whether a user's role is *NOT* part of given options array.
  *
  * @author Ralf Schubert
@@ -48,6 +45,7 @@ class UmgtNotRoleCondition extends UserDependentContentConditionBase implements 
             return false;
          }
       }
+
       return true;
    }
 
@@ -57,6 +55,7 @@ class UmgtNotRoleCondition extends UserDependentContentConditionBase implements 
 
    /**
     * @param UmgtUser $user
+    *
     * @return UmgtRole[]
     */
    private function getRoles(UmgtUser $user) {

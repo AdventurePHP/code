@@ -25,9 +25,6 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\SimpleTitleNode;
 
 /**
- * @package APF\extensions\htmlheader\pres\taglib
- * @class HtmlHeaderAddTitleTag
- *
  * Taglib for adding a title to htmlheader.
  * <p/>
  * Example:

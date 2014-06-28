@@ -8,8 +8,6 @@ use APF\extensions\apfelsms\biz\SMSWrongParameterException;
 use APF\tools\link\Url;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (03.10.12)
  *
@@ -42,8 +40,6 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
 
 
    /**
-    * @public
-    *
     * @desc Checks for 404 and 403 errors and redirects to error pages.
     *       If error page is current page, status code is adjusted.
     */
@@ -115,7 +111,7 @@ class SMSCurrentPageCheckAction extends AbstractFrontcontrollerAction {
 
       $sessM = new Session(self::SESSION_NAMESPACE);
       $sessM->save(
-         self::SESSION_LOOPCOUNT_NAME,
+            self::SESSION_LOOPCOUNT_NAME,
             intval($sessM->load(self::SESSION_LOOPCOUNT_NAME, 0)) + 1
       );
    }

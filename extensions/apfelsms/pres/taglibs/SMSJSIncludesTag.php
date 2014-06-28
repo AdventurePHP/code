@@ -5,8 +5,6 @@ use APF\core\pagecontroller\Document;
 use APF\extensions\apfelsms\biz\SMSManager;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version:   v0.1 (08.08.12)
  *             v0.2 (30.09.12) Removed extension appending
@@ -38,13 +36,13 @@ class SMSJSIncludesTag extends Document {
       $currentPage = $SMSM->getSite()->getCurrentPage();
 
 
-      if($currentPage === null) { // this is no normal operation, but ...
+      if ($currentPage === null) { // this is no normal operation, but ...
          return ''; // be quiet
       }
 
       $jsArray = $currentPage->getJS();
 
-      if(count($jsArray) < 1) {
+      if (count($jsArray) < 1) {
          return ''; // no scripts to include
       }
 
@@ -55,9 +53,9 @@ class SMSJSIncludesTag extends Document {
 
 
          $stringBuffer .= str_replace(
-            '{URL}',
-            $urlReplacer,
-            self::$JSIncludeTemplate
+               '{URL}',
+               $urlReplacer,
+               self::$JSIncludeTemplate
          );
 
          $stringBuffer .= self::$newLine;

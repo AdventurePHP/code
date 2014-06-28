@@ -25,9 +25,6 @@ use APF\tools\link\Url;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\link\taglib
- * @class HtmlLinkTag
- *
  * This taglib generates a html link tag based on the LinkGenerationTag taglib.
  *
  * @author Werner Liemberger wpublicmail [at] gmail DOT com

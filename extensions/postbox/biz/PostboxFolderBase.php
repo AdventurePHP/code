@@ -10,9 +10,6 @@ namespace APF\extensions\postbox\biz;
 use APF\extensions\postbox\biz\AbstractPostboxFolder;
 
 /**
- * @package APF\extensions\postbox\biz
- * @class PostboxFolderBase
- *
  * This class provides the descriptive getter and setter methods for the "APF\extensions\postbox\biz\PostboxFolder" domain object.
  */
 abstract class PostboxFolderBase extends AbstractPostboxFolder {

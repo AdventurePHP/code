@@ -24,9 +24,6 @@ use APF\core\pagecontroller\APFObject;
 use APF\core\session\Session;
 
 /**
- * @package APF\extensions\arraypager\data
- * @class ArrayPagerMapper
- *
  * Represents the data layer of the array-pager.
  *
  * @author Lutz Mahlstedt
@@ -36,11 +33,10 @@ use APF\core\session\Session;
 final class ArrayPagerMapper extends APFObject {
 
    /**
-    * @protected
-    *
     *  Returns the session key.
     *
     * @param string $stringPager name of the pager
+    *
     * @return string $stringSessionKey the desired session key
     *
     * @author Lutz Mahlstedt
@@ -52,11 +48,10 @@ final class ArrayPagerMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Returns the number of entries of the desired object.
     *
     * @param string $stringPager name of the pager
+    *
     * @return integer $integerEntriesCount the number of entries
     *
     * @author Lutz Mahlstedt
@@ -70,11 +65,10 @@ final class ArrayPagerMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     *  Returns a list of the objects, that should be loaded for the current page.
     *
     * @param string $stringPager name of the pager
+    *
     * @return array $arrayEntries a list of entries
     *
     * @author Lutz Mahlstedt
@@ -97,8 +91,6 @@ final class ArrayPagerMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * @param string $stringPager name of the pager
     * @param array $arrayData a list of entries
     *
@@ -110,13 +102,11 @@ final class ArrayPagerMapper extends APFObject {
       $objectSession = $this->getSessionManager();
       $stringSessionKey = $this->getSessionKey($stringPager);
       $objectSession->save($stringSessionKey,
-         $arrayData
+            $arrayData
       );
    }
 
    /**
-    * @public
-    *
     * @param string $stringPager name of the pager
     *
     * @author Lutz Mahlstedt
@@ -130,9 +120,8 @@ final class ArrayPagerMapper extends APFObject {
    }
 
    /**
-    * @public
-    *
     * @param string $stringPager name of the pager
+    *
     * @return boolean $mixedData whether pager exists or not
     *
     * @author Lutz Mahlstedt
@@ -144,10 +133,10 @@ final class ArrayPagerMapper extends APFObject {
       $stringSessionKey = $this->getSessionKey($stringPager);
       $mixedData = $objectSession->load($stringSessionKey);
 
-      $booleanExists = FALSE;
+      $booleanExists = false;
 
-      if ($mixedData !== NULL) {
-         $booleanExists = TRUE;
+      if ($mixedData !== null) {
+         $booleanExists = true;
       }
 
       return $booleanExists;

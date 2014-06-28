@@ -7,8 +7,6 @@ use APF\extensions\apfelsms\biz\SMSManager;
 use APF\extensions\apfelsms\biz\SMSWrongParameterException;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version:   v0.1 (30.07.12)
  *             v0.2 (18.08.12) Removed rootPageId (wasn't used)
@@ -97,6 +95,7 @@ class SMSStdSite extends APFObject implements SMSSite {
 
    /**
     * @param string|integer $startPageId
+    *
     * @throws SMSWrongParameterException
     */
    public function setStartPageId($startPageId) {
@@ -154,6 +153,7 @@ class SMSStdSite extends APFObject implements SMSSite {
 
    /**
     * @param string|integer $currentPageId
+    *
     * @throws SMSWrongParameterException
     */
    public function setCurrentPageId($currentPageId) {

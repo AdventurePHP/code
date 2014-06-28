@@ -7,8 +7,6 @@ use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version v0.1 (08.03.13)
  * @since v0.4
@@ -25,6 +23,7 @@ class SMSUmgtLoggedInAccessCtrlProvider extends APFObject implements SMSAccessCt
    /**
     * @param SMSPage $page
     * @param $permissionName
+    *
     * @return bool
     */
    public function isAccessProtected(SMSPage $page, $permissionName) {
@@ -38,7 +37,7 @@ class SMSUmgtLoggedInAccessCtrlProvider extends APFObject implements SMSAccessCt
 
 
       // user IS NOT logged in
-      if($user === null) {
+      if ($user === null) {
          return (!$this->accessProtectedOnLogin);
       }
 

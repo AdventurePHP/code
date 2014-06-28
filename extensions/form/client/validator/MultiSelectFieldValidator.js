@@ -27,7 +27,7 @@
 (function ($) {
     $(document).ready(function () {
         jQuery.APFFormValidator.addClientValidator('MultiSelectFieldValidator', {
-            validate:function (control, options) {
+            validate: function (control, options) {
                 if (control.val() !== null) {
                     return true;
                 }

@@ -1,30 +1,27 @@
 <?php
 namespace APF\core\loader;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\core\loader
- * @class StandardClassLoader
- *
  * Implements the standard APF class loader.
  *
  * @author Christian Achatz
@@ -49,8 +46,6 @@ class StandardClassLoader implements ClassLoader {
    private $configRootPath;
 
    /**
-    * @public
-    *
     * Constructs the standard class loader.
     *
     * @param string $vendorName The vendor name this class loader is registered for.
@@ -106,8 +101,6 @@ class StandardClassLoader implements ClassLoader {
    }
 
    /**
-    * @public
-    *
     * Let's you define the vendor name this class loader is registered for.
     *
     * @param string $name The vendor name.
@@ -125,8 +118,6 @@ class StandardClassLoader implements ClassLoader {
    }
 
    /**
-    * @public
-    *
     * Let's you define the root path for load classes/configurations/templates.
     *
     * @param string $rootPath The root path to load classes/configurations/templates from.

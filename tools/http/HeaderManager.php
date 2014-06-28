@@ -1,29 +1,27 @@
 <?php
 namespace APF\tools\http;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\tools\http
- * @class HeaderManager
  * @see http://forum.adventure-php-framework.org/viewtopic.php?p=243#p243
  * @see http://tracker.adventure-php-framework.org/view.php?id=72
  *
@@ -61,9 +59,6 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Activates behaviour to stop code execution after forward() or redirect().
     *
     * @author Christian Achatz
@@ -75,9 +70,6 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Deactivates behaviour to stop code execution after forward() or redirect().
     *
     * @author Christian Achatz
@@ -89,8 +81,6 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
     * @see http://www.faqs.org/rfcs/rfc2616 (section 10.3.4 303 See Other)
     *
     * Forwards to a given target.
@@ -113,8 +103,6 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
     * @see http://www.faqs.org/rfcs/rfc2616 (sections 10.3.2 301 Moved Permanently and 10.3.3 302 Found)
     *
     * Redirects to a given target.
@@ -136,8 +124,6 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
     * @see http://www.faqs.org/rfcs/rfc2616
     *
     * Sends a generic header.
@@ -159,9 +145,6 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Sends a 404 answer back to the client.
     *
     * @param bool $exitAfterForward True in case code execution is stopped after this action, false otherwise.
@@ -179,9 +162,6 @@ class HeaderManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Sends an 500 answer back to the client.
     *
     * @param bool $exitAfterForward True in case code execution is stopped after this action, false otherwise.

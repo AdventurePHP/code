@@ -24,9 +24,6 @@ use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\PlaceHolderTag;
 
 /**
- * @package APF\tools\html\taglib
- * @class HtmlIteratorItemTag
- *
  * Represents an item within the iterator.
  *
  * @author Christian Achatz
@@ -45,8 +42,6 @@ class HtmlIteratorItemTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Returns the place holders defined within the item, to be filled
     * te desired values.
     *

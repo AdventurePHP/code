@@ -27,9 +27,6 @@ use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 use Exception;
 
 /**
- * @package APF\modules\usermanagement\pres\condition
- * @class UserDependentContentConditionSet
- *
  * Represents a set of conditions that can be used to match the current situation to
  * decide whether a piece of content should be displayed or not.
  * <p/>
@@ -65,8 +62,6 @@ class UserDependentContentConditionSet extends APFObject {
    private $conditions = array();
 
    /**
-    * @public
-    *
     * Initializes the condition set with the shipped conditions of the user management module.
     * <p/>
     * This is done within the constructor, since this method is called only once due to
@@ -107,8 +102,6 @@ class UserDependentContentConditionSet extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Executes the conditions and evaluates the results.
     *
     * @param string $applicationIdentifier The identifier of the current application concerning the login state.

@@ -23,9 +23,6 @@ namespace APF\core\logging\entry;
 use APF\core\logging\LogEntry;
 
 /**
- * @package APF\core\logging\entry
- * @class SimpleLogEntry
- *
  * Implements a log entry.
  *
  * @author Christian Achatz

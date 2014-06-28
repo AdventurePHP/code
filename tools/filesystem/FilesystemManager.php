@@ -1,31 +1,27 @@
 <?php
 namespace APF\tools\filesystem;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @static
- * @class FilesystemManager
- * @package APF\tools\filesystem
- *
  * Implements a helper tool for filesystem access, directory and file handling.
  *
  * @author Christian Achatz
@@ -38,9 +34,6 @@ class FilesystemManager {
    }
 
    /**
-    * @static
-    * @public
-    *
     * Deletes the content of a folder (without it's directories) or the entire folder, if
     * the <em>$recursive</em> argument is switched to true.
     *
@@ -88,9 +81,6 @@ class FilesystemManager {
    }
 
    /**
-    * @static
-    * @public
-    *
     * Creates a folder recursively  with the given permission mask.
     *
     * @param string $folder the desired folder to create.
@@ -136,9 +126,6 @@ class FilesystemManager {
    }
 
    /**
-    * @static
-    * @public
-    *
     * Copies one file to another. If the target already exists, you can switch $force to true.
     * This indicates, that the target file will be overwritten.
     *
@@ -162,7 +149,7 @@ class FilesystemManager {
       $target = str_replace('\\', '/', $targetFile);
       if (!file_exists($source)) {
          throw new FileException('[FilesystemManager::copyFile()] The source file "'
-            . $sourceFile . '" does not exist!', E_USER_NOTICE);
+               . $sourceFile . '" does not exist!', E_USER_NOTICE);
       }
 
       // copy source to target
@@ -179,9 +166,6 @@ class FilesystemManager {
    }
 
    /**
-    * @static
-    * @public
-    *
     * Removes a given file from the filesystem.
     *
     * @param string $file the file to delete.
@@ -202,16 +186,13 @@ class FilesystemManager {
       $realFile = str_replace('\\', '/', realpath($file));
       if (!file_exists($realFile)) {
          throw new FileException('[FilesystemManager::removeFile()] The file "' . $file
-            . '" does not exist!', E_USER_NOTICE);
+               . '" does not exist!', E_USER_NOTICE);
       }
 
       return unlink($realFile);
    }
 
    /**
-    * @public
-    * @static
-    *
     * Uploads a file sent via PHP's file upload mechanism. The method checks, if the filesize is
     * not above the limit given and whether the mime type is one of the present. If the file is
     * not valid, false will be returned.
@@ -254,9 +235,6 @@ class FilesystemManager {
    }
 
    /**
-    * @static
-    * @public
-    *
     * Renames the source file to the target file. If the target already exists, you can switch
     * $force to true. This indicates, that the target file will be overwritten.
     *
@@ -280,7 +258,7 @@ class FilesystemManager {
       $target = str_replace('\\', '/', $targetFile);
       if (!file_exists($source)) {
          throw new FileException('[FilesystemManager::renameFile()] The source file "'
-            . $sourceFile . '" does not exist!', E_USER_NOTICE);
+               . $sourceFile . '" does not exist!', E_USER_NOTICE);
       }
 
       // copy source to target
@@ -297,9 +275,6 @@ class FilesystemManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Returns a list of files/dirs within the given folder. If $fullpath is set to true, the
     * full path to the file/dir is included in the list. Set to false, only the file/dir name
     * is included.
@@ -340,9 +315,6 @@ class FilesystemManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Returns the attributes of the given file. If the file exists, additional attributes are
     * included. The associative array contains the following offsets:
     * <ul>
@@ -377,7 +349,7 @@ class FilesystemManager {
       $realFile = str_replace('\\', '/', realpath($file));
       if (!file_exists($realFile)) {
          throw new FileException('[FilesystemManager::getFileAttributes()] The given file ("'
-            . $file . '") does not exist!', E_USER_WARNING);
+               . $file . '") does not exist!', E_USER_WARNING);
       }
 
       // gather attributes
@@ -398,8 +370,8 @@ class FilesystemManager {
             return $attributes[$attributeName];
          } else {
             throw new FileException('[FilesytemManager::getFileAttributes()] The desired file '
-               . 'attribute ("' . $attributes . '") is not a valid attribute. Please consult the '
-               . ' API documentation!', E_USER_ERROR);
+                  . 'attribute ("' . $attributes . '") is not a valid attribute. Please consult the '
+                  . ' API documentation!', E_USER_ERROR);
          }
       }
 
@@ -408,9 +380,6 @@ class FilesystemManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Returns the size of the given folder. The size includes all files and subfolders.
     *
     * @param string $folder the desired folder.
@@ -429,7 +398,7 @@ class FilesystemManager {
       $realFolder = str_replace('\\', '/', realpath($folder));
       if (!file_exists($realFolder)) {
          throw new FileException('[FilesystemManager::getFolderSize()] The given folder ("'
-            . $folder . '") does not exist!', E_USER_ERROR);
+               . $folder . '") does not exist!', E_USER_ERROR);
       }
 
       // get content of the desired folder
@@ -452,9 +421,6 @@ class FilesystemManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * This method formats the applied amount of bytes. You are able to provide the number of digits
     * after the colon as well as the unit the value is transformed to.
     * <p/>

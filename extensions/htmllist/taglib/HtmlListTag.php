@@ -25,9 +25,6 @@ use APF\core\pagecontroller\XmlParser;
 use InvalidArgumentException;
 
 /**
- * @package APF\extensions\htmllist\taglib
- * @class HtmlListTag
- *
  * Represents a HTMLList list (DOM node).
  *
  * @author Florian Horn

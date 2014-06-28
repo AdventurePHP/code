@@ -1,30 +1,27 @@
 <?php
 namespace APF\modules\comments\biz;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\modules\comments\biz
- * @class ArticleComment
- *
  * Represents the business object of the article commend module
  *
  * @author Christian W. Schäfer
@@ -35,43 +32,36 @@ namespace APF\modules\comments\biz;
 class ArticleComment {
 
    /**
-    * @protected
     * Id of the entry
     */
    private $id = null;
 
    /**
-    * @protected
     * Name of the author.
     */
    private $name;
 
    /**
-    * @protected
     * Email of the author.
     */
    private $email;
 
    /**
-    * @protected
     * Comment.
     */
    private $comment;
 
    /**
-    * @protected
     * Date
     */
    private $date;
 
    /**
-    * @protected
     * Time
     */
    private $time;
 
    /**
-    * @protected
     * Category
     */
    private $categoryKey;

@@ -23,9 +23,6 @@ namespace APF\core\pagecontroller;
 use InvalidArgumentException;
 
 /**
- * @package APF\core\pagecontroller
- * @class TemplateTag
- *
  * Represents a reusable html fragment (template) within a template file. The tag's functionality
  * can be extended by the &lt;template:addtaglib /&gt; tag. Use setPlaceHolder() to set a place
  * holder's value and transformOnPlace() or transformTemplate() to generate the output.
@@ -41,14 +38,11 @@ use InvalidArgumentException;
 class TemplateTag extends Document {
 
    /**
-    * @protected
     * Indicates, if the template should be transformed on the place of definition. Default is false.
     */
    protected $transformOnPlace = false;
 
    /**
-    * @public
-    *
     * Implements the onParseTime() method from the APFObject class. Uses the extractTagLibTags()
     * function to parse the known tags.
     *
@@ -66,8 +60,6 @@ class TemplateTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Let's you retrieve an &lt;template:getstring /&gt; tag instance with the specified name.
     *
     * @param string $name The name of the template label to return.
@@ -91,8 +83,6 @@ class TemplateTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Returns the content of the template. Can be used to generate the template output
     * within a document controller. Usage:
     * <pre>
@@ -115,8 +105,6 @@ class TemplateTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Returns the transformed state of the current template instance. Can be used to retrieve the
     * content of the current template more convenient.
     * <p/>
@@ -141,8 +129,6 @@ class TemplateTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Allows you to clear a TemplateTag instance according to the applied clear approach.
     * <p/>
     * By default, the <em>DefaultTemplateTagClearApproach</em> is used reset the template's
@@ -165,8 +151,6 @@ class TemplateTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Indicates, that the template should be displayed on the place of definition.
     *
     * @author Christian Achatz
@@ -178,8 +162,6 @@ class TemplateTag extends Document {
    }
 
    /**
-    * @public
-    *
     * By default, the content of the template is returned as an empty string. This is because the
     * html:template tag normally is used as a reusable fragment. If the transformOnPlace() function
     * is called before, the content of the template is returned instead.

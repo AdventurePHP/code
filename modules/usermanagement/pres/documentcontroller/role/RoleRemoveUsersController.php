@@ -27,9 +27,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\role
- * @class RoleRemoveUsersController
- *
  * Implements the controller to detach a role from a user.
  *
  * @author Christian Achatz
@@ -59,6 +56,7 @@ class RoleRemoveUsersController extends UmgtBaseController {
          $template->getLabel('message-1')->setPlaceHolder('display-name', $role->getDisplayName());
          $template->getLabel('message-2')->setPlaceHolder('role-view-link', $this->generateLink(array('mainview' => 'role', 'roleview' => null, 'roleid' => null)));
          $template->transformOnPlace();
+
          return;
       }
 

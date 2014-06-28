@@ -23,9 +23,6 @@ namespace APF\tools\filesystem;
 use Exception;
 
 /**
- * @class FileException
- * @package APF\tools\filesystem
- *
  * Represents an exception, that is thrown on errors concerning file operations.
  *
  * @author Christian Achatz

@@ -23,9 +23,6 @@ namespace APF\tools\form\validator;
 use APF\tools\form\validator\SelectFieldValidator;
 
 /**
- * @package APF\tools\form\validator
- * @class SimpleSelectControlValidator
- *
  * Implements a validator for select fields.
  *
  * @author Christian Achatz
@@ -35,11 +32,10 @@ use APF\tools\form\validator\SelectFieldValidator;
 class SimpleSelectControlValidator extends SelectFieldValidator {
 
    /**
-    * @public
-    *
     * Validates the select field content.
     *
     * @param string $input The content of the select control.
+    *
     * @return boolean True, in case the control is valid, false otherwise.
     *
     * @author Christian Achatz
@@ -55,6 +51,7 @@ class SimpleSelectControlValidator extends SelectFieldValidator {
       if (!isset($_REQUEST[$name]) || empty($_REQUEST[$name])) {
          return false;
       }
+
       return true;
 
    }

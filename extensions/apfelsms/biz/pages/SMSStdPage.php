@@ -9,8 +9,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version :  v0.1 (06.06.12)
  *             v0.2 (20.06.12) Added method isReference() (implementing the SMSPage interface)
@@ -72,10 +70,10 @@ class SMSStdPage extends APFObject implements SMSPage {
     * @var array
     */
    public static $mapVars = array(
-      'title' => '',
-      'navTitle' => '',
-      'js' => array(),
-      'css' => array()
+         'title'    => '',
+         'navTitle' => '',
+         'js'       => array(),
+         'css'      => array()
    );
 
 
@@ -214,6 +212,7 @@ class SMSStdPage extends APFObject implements SMSPage {
 
    /**
     * @param Url $url
+    *
     * @return string
     */
    public function getLink(Url $url) {
@@ -227,6 +226,7 @@ class SMSStdPage extends APFObject implements SMSPage {
 
    /**
     * @param Url $url
+    *
     * @return Url
     */
    public function setPageRequestParamInURL(Url $url) {
@@ -291,6 +291,7 @@ class SMSStdPage extends APFObject implements SMSPage {
 
    /**
     * @param boolean $includeMe Include this page in returned array
+    *
     * @return null|SMSPage[]
     */
    public function getSiblings($includeMe = false) {

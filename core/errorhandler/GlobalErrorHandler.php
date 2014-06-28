@@ -1,30 +1,27 @@
 <?php
 namespace APF\core\errorhandler;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\core\errorhandler
- * @class GlobalErrorHandler
- *
  * This is the APF error handler automatically registered to handle errors.
  * <p/>
  * In case you want to register your custom error handler, use the <em>registerErrorHandler()</em>
@@ -58,9 +55,6 @@ abstract class GlobalErrorHandler {
    private static $catchFatalErrors = true;
 
    /**
-    * @public
-    * @static
-    *
     * Let's you register an error handler.
     *
     * @param ErrorHandler $handler The error handler that is delegated the error processing.
@@ -74,9 +68,6 @@ abstract class GlobalErrorHandler {
    }
 
    /**
-    * @public
-    * @static
-    *
     * This method is used as the central entry point to the APF's error management. It delegates the
     * error handling to the registered handler. In case no handler is registered or the mechanism is
     * disables, nothing will happen.
@@ -107,9 +98,6 @@ abstract class GlobalErrorHandler {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Disables the APF error handling mechanism. From this point in time, the PHP default
     * error handler will be used to handle the error.
     *
@@ -127,9 +115,6 @@ abstract class GlobalErrorHandler {
    }
 
    /**
-    * @public
-    * @static
-    *
     * (Re-)enables the APF error handling mechanism. In case no error handler has been
     * registered, the APF default error handler is used.
     *
@@ -156,9 +141,6 @@ abstract class GlobalErrorHandler {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Shutdown function registered during enabling the GlobalErrorHandler to catch fatal errors
     * and handle identically to other errors caught by <em>handleError()</em>.
     *

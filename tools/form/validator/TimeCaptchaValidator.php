@@ -24,9 +24,6 @@ use APF\core\session\Session;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package APF\tools\form\validator
- * @class TimeCaptchaValidator
- *
  * Implements, in combination with TimeCaptchaTag, a non-visual captcha
  * which tries to identify bots by the time they need to fill in the data in a
  * form.
@@ -46,11 +43,10 @@ class TimeCaptchaValidator extends TextFieldValidator {
    protected $defaultSeconds = 2;
 
    /**
-    * @public
-    *
     * Re-implements the <em>validate()</em> method for the TimeCaptchaValidator
     *
     * @param string $input Empty string, because we have no html-definition
+    *
     * @return boolean true, in case the control to validate is considered valid, false otherwise.
     *
     * @author Ralf Schubert
@@ -76,6 +72,7 @@ class TimeCaptchaValidator extends TextFieldValidator {
       if (($seconds + $storedTime) >= time()) {
          return false;
       }
+
       return true;
 
    }

@@ -1,10 +1,12 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveGroupsController"
+class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyRemoveGroupsController"
 @>
-<h3><html:getstring
-       namespace="APF\modules\usermanagement\pres"
-       config="labels.ini"
-       entry="frontend.proxy.remove-groups-from-proxy.headline"/></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.remove-groups-from-proxy.headline"/>
+</h3>
 <html:form name="add_perm" method="post">
    <div>
       <p>
@@ -23,10 +25,12 @@
          </div>
       </form:listener>
       <div>
-         <label for="groups"><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.proxy.remove-groups-from-proxy.groups.label"/></label>
+         <label for="groups">
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.remove-groups-from-proxy.groups.label"/>
+         </label>
          <form:multiselect id="groups" name="groups" size="6"/>
       </div>
       <form:addvalidator
@@ -40,7 +44,7 @@
                config="labels.ini"
                entry="frontend.proxy.remove-groups-from-proxy.button.label"/>
       </form:button>
-      <form:hidden name="proxyid" />
+      <form:hidden name="proxyid"/>
    </div>
 </html:form>
 <html:template name="NoMoreGroups">

@@ -2,9 +2,6 @@
 namespace APF\modules\usermanagement\biz\model;
 
 /**
- * @package APF\modules\usermanagement\biz\model
- * @class UmgtPermission
- *
  * This class represents the "APF\modules\usermanagement\biz\model\UmgtPermission" domain object.
  * <p/>
  * Please use this class to add your own functionality.

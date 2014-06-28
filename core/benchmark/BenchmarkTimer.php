@@ -23,9 +23,6 @@ namespace APF\core\benchmark;
 use InvalidArgumentException;
 
 /**
- * @package APF\core\benchmark
- * @class BenchmarkTimer
- *
  * This class implements the benchmark timer used for measurement of the core components
  * and your software. Must be used as a singleton to guarantee, that all benchmark tags
  * are included within the report. Usage (for each time!):
@@ -51,37 +48,31 @@ use InvalidArgumentException;
 final class BenchmarkTimer {
 
    /**
-    * @private
     * @var BenchmarkProcess The benchmark root process.
     */
    private $rootProcess = null;
 
    /**
-    * @private
     * @var BenchmarkProcess[] The process table, that contains all running processes (hash table).
     */
    private $runningProcesses = array();
 
    /**
-    * @private
     * @var BenchmarkProcess References the current parent process (=last process created).
     */
    private $currentParent = null;
 
    /**
-    * @private
     * @var int Stores the process count.
     */
    private $currentProcessId = 0;
 
    /**
-    * @private
     * @var float Defines the critical time for the benchmark report.
     */
    private $criticalTime = 0.5;
 
    /**
-    * @private
     * @var int Line counter for the report.
     */
    private $lineCounter = 0;
@@ -90,13 +81,12 @@ final class BenchmarkTimer {
 
    /**
     * Indicator, that defines, if the benchmarker is enabled or not (for performance reasons!)
+    *
     * @var boolean <em>true</em> in case, the benchmarker is enabled, <em>false</em> otherwise.
     */
    private $enabled = true;
 
    /**
-    * @public
-    *
     * Constructor of the BenchmarkTimer. Initializes the root process.
     *
     * @author Christian Schäfer
@@ -104,14 +94,12 @@ final class BenchmarkTimer {
     * Version 0.1, 31.12.2006<br />
     */
    public function __construct() {
-      $rootProcess = &$this->createRootProcess();
+      $rootProcess = & $this->createRootProcess();
       $this->addRunningProcess($rootProcess);
       $this->setCurrentParent($rootProcess);
    }
 
    /**
-    * @public
-    *
     * Enables the benchmarker for measurement of the predefined points.
     *
     * @author Christian Achatz
@@ -123,8 +111,6 @@ final class BenchmarkTimer {
    }
 
    /**
-    * @public
-    *
     * Disables the benchmarker for measurement of the predefined points. This is often
     * important for performance reasons, because release 1.11 introduced onParseTime()
     * measurement, that could probably decrease the APF's performance!
@@ -141,8 +127,6 @@ final class BenchmarkTimer {
    }
 
    /**
-    * @public
-    *
     * Sets the critical time. If the critical time is reached, the time is printed in red digits.
     *
     * @param float $time the critical time in seconds.
@@ -156,8 +140,6 @@ final class BenchmarkTimer {
    }
 
    /**
-    * @public
-    *
     * Returns the critical time.
     *
     * @return float The critical time.
@@ -171,11 +153,10 @@ final class BenchmarkTimer {
    }
 
    /**
-    * @public
-    *
     * This method is used to starts a new benchmark timer.
     *
     * @param string $name The (unique!) name of the benchmark tag.
+    *
     * @throws InvalidArgumentException In case the given name is null.
     *
     * @author Christian Schäfer
@@ -197,9 +178,9 @@ final class BenchmarkTimer {
 
       if ($this->getRunningProcessByName($name) === null) {
 
-         $parent = &$this->getCurrentParent();
+         $parent = & $this->getCurrentParent();
          $process = $this->createProcess($name, $startTime, $parent);
-         $newProcess = &$process; // note process as reference to have the same process instance!
+         $newProcess = & $process; // note process as reference to have the same process instance!
          $parent->appendProcess($newProcess);
          $this->setCurrentParent($newProcess);
          $this->addRunningProcess($newProcess);
@@ -211,11 +192,10 @@ final class BenchmarkTimer {
    }
 
    /**
-    * @public
-    *
     * Stops the benchmark timer, started with start().
     *
     * @param string $name The (unique!) name of the benchmark tag.
+    *
     * @throws InvalidArgumentException In case the named process is not running.
     *
     * @author Christian Schäfer
@@ -232,7 +212,7 @@ final class BenchmarkTimer {
       $stopTime = $this->generateMicroTime();
 
       if (isset($this->runningProcesses[$name])) {
-         $currentProcess = &$this->getRunningProcessByName($name);
+         $currentProcess = & $this->getRunningProcessByName($name);
          $currentProcess->setProcessStopTime($stopTime);
          $this->setCurrentParent($currentProcess->getParentProcess());
          $this->removeRunningProcess($name);
@@ -244,8 +224,6 @@ final class BenchmarkTimer {
    }
 
    /**
-    * @private
-    *
     * Returns the id of the next process.
     *
     * @return int The next internal process id.
@@ -256,12 +234,11 @@ final class BenchmarkTimer {
     */
    private function getID() {
       $this->currentProcessId += 1;
+
       return $this->currentProcessId;
    }
 
    /**
-    * @private
-    *
     * Returns the current timestamp in milliseconds.
     *
     * @return string Current timestamp in milliseconds.
@@ -275,13 +252,12 @@ final class BenchmarkTimer {
    }
 
    /**
-    * @private
-    *
     * Creates the process and returns it.
     *
     * @param string $name the name of the process.
     * @param string $startTime the start timestamp.
     * @param BenchmarkProcess $parent reference on the parent object.
+    *
     * @return BenchmarkProcess The process itself.
     *
     * @author Christian Schäfer
@@ -296,13 +272,12 @@ final class BenchmarkTimer {
       $process->setProcessLevel($parent->getProcessLevel() + 1);
       $process->setProcessStartTime($startTime);
       $process->setParentProcess($parent);
+
       return $process;
 
    }
 
    /**
-    * @private
-    *
     * Creates the root process and returns it.
     *
     * @return BenchmarkProcess The root process.
@@ -319,14 +294,13 @@ final class BenchmarkTimer {
       $rootProcess->setProcessName('Root');
       $rootProcess->setProcessLevel(0);
       $rootProcess->setProcessStartTime($startTime);
-      $this->rootProcess = &$rootProcess;
+      $this->rootProcess = & $rootProcess;
+
       return $rootProcess;
 
    }
 
    /**
-    * @private
-    *
     * Stops the root process and returns it.
     *
     * @return BenchmarkProcess The stopped root process.
@@ -337,15 +311,14 @@ final class BenchmarkTimer {
     */
    private function &getRootProcess() {
 
-      $rootProcess = &$this->rootProcess;
+      $rootProcess = & $this->rootProcess;
       $rootProcess->setProcessStopTime($this->generateMicroTime());
+
       return $rootProcess;
 
    }
 
    /**
-    * @private
-    *
     * Adds a process to the list of running processes.
     *
     * @param BenchmarkProcess $process A reference on the running process.
@@ -360,8 +333,6 @@ final class BenchmarkTimer {
    }
 
    /**
-    * @private
-    *
     * Deletes a running process from the hash table.
     *
     * @param string $name The name of the process.
@@ -375,11 +346,10 @@ final class BenchmarkTimer {
    }
 
    /**
-    * @private
-    *
     * Returns a running process by it's name.
     *
     * @param string $name Name of the desired process.
+    *
     * @return BenchmarkProcess Null or the desired object reference.
     *
     * @author Christian Schäfer
@@ -392,14 +362,13 @@ final class BenchmarkTimer {
          return $this->runningProcesses[$name];
       } else {
          $return = null;
+
          return $return;
       }
 
    }
 
    /**
-    * @private
-    *
     * References the currently created process.
     *
     * @param BenchmarkProcess $process The reference on the desired benchmark process.
@@ -409,12 +378,10 @@ final class BenchmarkTimer {
     * Version 0.1, 31.12.2006<br />
     */
    private function setCurrentParent(&$process) {
-      $this->currentParent = &$process;
+      $this->currentParent = & $process;
    }
 
    /**
-    * @private
-    *
     * Returns the currently created process.
     *
     * @return BenchmarkProcess The reference on the desired benchmark process.
@@ -428,8 +395,6 @@ final class BenchmarkTimer {
    }
 
    /**
-    * @public
-    *
     * Generates the report of the recorded benchmark tags.
     *
     * @return string The HTML source code of the benchmark.
@@ -443,15 +408,15 @@ final class BenchmarkTimer {
       // return, if benchmarker is disabled
       if ($this->enabled === false) {
          return 'Benchmarker is currently disabled. To generate a detailed report, please '
-               . 'enable it calling <em>$t = &Singleton::getInstance(\'BenchmarkTimer\'); '
-               . '$t->enable();</em>!';
+         . 'enable it calling <em>$t = &Singleton::getInstance(\'BenchmarkTimer\'); '
+         . '$t->enable();</em>!';
       }
 
       // get process tree
       $processTree = $this->getRootProcess();
 
       // initialize buffer
-      $buffer = (string)'';
+      $buffer = (string) '';
 
       // generate header
       $buffer .= $this->generateHeader();
@@ -466,11 +431,10 @@ final class BenchmarkTimer {
    }
 
    /**
-    * @private
-    *
     * Marks classes to format the process run time with.
     *
     * @param float $time The process run time.
+    *
     * @return string The markup of the process time.
     *
     * @author Christian Achatz
@@ -479,22 +443,22 @@ final class BenchmarkTimer {
     */
    private function getMarkedUpProcessTimeClass($time) {
 
-      $class = (string)'';
+      $class = (string) '';
       if ($time > $this->criticalTime) {
          $class .= 'warn';
       } else {
          $class .= 'ok';
       }
+
       return $class;
 
    }
 
    /**
-    * @private
-    *
     * Generates the report for one single process.
     *
     * @param BenchmarkProcess $process the current process.
+    *
     * @return string The report for the current process.
     *
     * @author Christian Schäfer
@@ -504,17 +468,17 @@ final class BenchmarkTimer {
     */
    private function createReport4Process(&$process) {
 
-      $buffer = (string)'';
+      $buffer = (string) '';
       $level = $process->getProcessLevel();
 
       // add closing dl only if level greater than 0 to have
       // correct definition list leveling!
       if ($level > 0) {
-         $buffer = (string)'<dl>';
+         $buffer = (string) '<dl>';
       }
 
       // assemble class for the current line
-      $class = (string)'';
+      $class = (string) '';
       if (($this->lineCounter % 2) == 0) {
          $class .= 'even';
       } else {
@@ -560,8 +524,6 @@ final class BenchmarkTimer {
    }
 
    /**
-    * @private
-    *
     * Generates the header.
     *
     * @return string The report header.
@@ -574,7 +536,7 @@ final class BenchmarkTimer {
     */
    private function generateHeader() {
 
-      $buffer = (string)'';
+      $buffer = (string) '';
       $buffer .= self::$NEWLINE;
       $buffer .= '<style type="text/css">
 #APF-Benchmark-Report {
@@ -648,13 +610,12 @@ final class BenchmarkTimer {
       $buffer .= '    <dt class="header">Processtree</dt>';
       $buffer .= self::$NEWLINE;
       $buffer .= '    <dd class="header">Time</dd>';
+
       return $buffer;
 
    }
 
    /**
-    * @private
-    *
     * Generates the footer.
     *
     * @return string The footer.
@@ -666,16 +627,15 @@ final class BenchmarkTimer {
     */
    private function generateFooter() {
 
-      $buffer = (string)'';
+      $buffer = (string) '';
       $buffer .= '</dl>';
       $buffer .= self::$NEWLINE;
       $buffer .= '</div>';
+
       return $buffer;
    }
 
    /**
-    * @public
-    *
     * Returns the total process time recorded until the call to this method.
     * <p/>
     * You may use this method to add the total rendering time of an APF-based

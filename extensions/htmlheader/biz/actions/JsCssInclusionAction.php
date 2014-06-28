@@ -26,9 +26,6 @@ use APF\tools\http\HeaderManager;
 use InvalidArgumentException;
 
 /**
- * @package APF\extensions\htmlheader\biz\actions
- * @class JsCssInclusionAction
- *
  * Implements an FC-action which returns .css and .js files
  *
  * @example
@@ -71,6 +68,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
       if (!empty($PackageName)) {
          return 'package';
       }
+
       return 'file';
    }
 
@@ -93,7 +91,7 @@ final class JsCssInclusionAction extends AbstractFrontcontrollerAction {
 
    protected function getSanitizedNamespace($namespace) {
       $namespace = str_replace('_', '\\', // resolve url notation for namespaces
-         preg_replace('/[^A-Za-z0-9\-_\.]/', '', $namespace)
+            preg_replace('/[^A-Za-z0-9\-_\.]/', '', $namespace)
       );
 
       // Changing to higher directories is not allowed, either!

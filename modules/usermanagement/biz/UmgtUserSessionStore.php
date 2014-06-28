@@ -25,9 +25,6 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
 use InvalidArgumentException;
 
 /**
- * @package APF\modules\usermanagement\biz
- * @class UmgtUserSessionStore
- *
  * Stores the user information for each application identifier separately to
  * support multiple applications being executed at one context/application.
  * <p/>
@@ -52,12 +49,11 @@ class UmgtUserSessionStore extends APFObject {
    private $store;
 
    /**
-    * @public
-    *
     * Let's you retrieve the current user by a given application identifier. This key
     * represents the application you want to store your login information.
     *
     * @param string $applicationIdentifier Identifies the application.
+    *
     * @return UmgtUser The currently logged-in user.
     * @throws InvalidArgumentException In case the application identifier is not given.
     *
@@ -69,17 +65,17 @@ class UmgtUserSessionStore extends APFObject {
       if (empty($applicationIdentifier)) {
          throw new InvalidArgumentException($this->getExceptionMessage());
       }
+
       return isset($this->store[$applicationIdentifier]) ? $this->store[$applicationIdentifier] : null;
    }
 
    /**
-    * @public
-    *
     * Let's you store the current user by a given application identifier. This key
     * represents the application you want to store your login information.
     *
     * @param string $applicationIdentifier Identifies the application.
     * @param UmgtUser $user The user to store within the session.
+    *
     * @throws InvalidArgumentException In case the application identifier is not given.
     *
     * @author Christian Achatz
@@ -94,11 +90,10 @@ class UmgtUserSessionStore extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Indicates, whether the user is logged in for the current application.
     *
     * @param string $applicationIdentifier Identifies the application.
+    *
     * @return boolean True in case the user is logged in, false otherwise.
     *
     * @author Christian Achatz
@@ -110,11 +105,10 @@ class UmgtUserSessionStore extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Indicates, whether the user is logged out for the current application.
     *
     * @param string $applicationIdentifier Identifies the application.
+    *
     * @return boolean True in case the user is logged out, false otherwise.
     *
     * @author Christian Achatz
@@ -126,11 +120,10 @@ class UmgtUserSessionStore extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Logs out the user for the current application.
     *
     * @param string $applicationIdentifier Identifies the application.
+    *
     * @throws InvalidArgumentException In case the application identifier is not given.
     *
     * @author Christian Achatz

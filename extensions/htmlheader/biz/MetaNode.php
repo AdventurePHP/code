@@ -23,9 +23,6 @@ namespace APF\extensions\htmlheader\biz;
 use APF\extensions\htmlheader\biz\HeaderNode;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class MetaNode
- *
  * This interface specifies a <em>&lt;meta /&gt;</em> tag.
  *
  * @author Christian Achatz
@@ -33,4 +30,5 @@ use APF\extensions\htmlheader\biz\HeaderNode;
  * Version 0.1, 20.08.2010<br />
  */
 interface MetaNode extends HeaderNode {
+
 }

@@ -25,10 +25,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @abstract
- * @package APF\extensions\htmlheader\biz
- * @class HtmlNode
- *
  * General node for HtmlHeaderManagers data.
  *
  * @author Ralf Schubert
@@ -68,8 +64,6 @@ abstract class HtmlNode extends Document implements HeaderNode {
    }
 
    /**
-    * @public
-    *
     * Transforms the node to html.
     *
     * @return string The ready html code.

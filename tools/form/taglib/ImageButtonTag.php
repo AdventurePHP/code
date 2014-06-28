@@ -24,9 +24,6 @@ use APF\tools\form\FormException;
 use APF\tools\form\taglib\ButtonTag;
 
 /**
- * @package APF\tools\form\taglib
- * @class ImageButtonTag
- *
  * Represents an image button.
  *
  * @author Christian Achatz
@@ -44,7 +41,6 @@ class ImageButtonTag extends ButtonTag {
    }
 
    /**
-    * @public
     * @since 1.17
     *
     * Re-implements the onParseTime() method of the ButtonTag to respect the difference
@@ -80,8 +76,6 @@ class ImageButtonTag extends ButtonTag {
    }
 
    /**
-    * @public
-    *
     * Generates the HTML code of the image button.
     *
     * @return string Image button html.
@@ -94,9 +88,10 @@ class ImageButtonTag extends ButtonTag {
    public function transform() {
       if ($this->isVisible) {
          return '<input type="image" '
-               . $this->getSanitizedAttributesAsString($this->attributes)
-               . ' />';
+         . $this->getSanitizedAttributesAsString($this->attributes)
+         . ' />';
       }
+
       return '';
    }
 

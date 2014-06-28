@@ -29,10 +29,6 @@ use APF\core\service\DIServiceManager;
 use APF\core\service\ServiceManager;
 
 /**
- * @package APF\core\pagecontroller
- * @class APFObject
- * @abstract
- *
  * Represents the base objects of (nearly) all APF classes. Especially all GUI classes derive
  * from this class.
  *
@@ -46,27 +42,23 @@ use APF\core\service\ServiceManager;
 abstract class APFObject implements APFDIService {
 
    /**
-    * @protected
     * @var string The context of the current object within the application.
     */
    protected $context = null;
 
    /**
-    * @protected
     * @var string The language of the current object within the application.
     */
    protected $language = 'de';
 
    /**
     * @since 0.3
-    * @protected
     * @var string Contains the service type, if the object was created with the ServiceManager.
     */
    protected $serviceType = null;
 
    /**
     * @since 1.15
-    * @protected
     * @var bool Stores the internal initialization status of the present APFDIService.
     */
    protected $isInitialized = false;
@@ -111,8 +103,6 @@ abstract class APFObject implements APFDIService {
    }
 
    /**
-    * @public
-    *
     * This method returns the current version of the present APF distribution. Please
     * note that this revision is no warranty that all files within your current
     * installation are subjected to the returned version number since the APF team
@@ -129,8 +119,6 @@ abstract class APFObject implements APFDIService {
    }
 
    /**
-    * @protected
-    *
     * Returns a service object, that is initialized by dependency injection.
     * For details see {@link DIServiceManager}.
     *
@@ -149,8 +137,6 @@ abstract class APFObject implements APFDIService {
    }
 
    /**
-    * @protected
-    *
     * Returns a service object according to the current application context.
     *
     * @param string $class Fully qualified class name of the service object.
@@ -173,8 +159,6 @@ abstract class APFObject implements APFDIService {
    }
 
    /**
-    * @protected
-    *
     * Returns a initialized service object according to the current application context.
     *
     * @deprecated Please use getServiceObject() applying the init param to dedicated methods or the DIServiceManager instead.
@@ -198,8 +182,6 @@ abstract class APFObject implements APFDIService {
    }
 
    /**
-    * @protected
-    *
     * Convenience method for loading a configuration depending on APF DOM attributes and
     * the current environment.
     *
@@ -218,8 +200,6 @@ abstract class APFObject implements APFDIService {
    }
 
    /**
-    * @protected
-    *
     * Convenience method for saving a configuration depending on APF DOM attributes and
     * the current environment.
     *
@@ -237,8 +217,6 @@ abstract class APFObject implements APFDIService {
    }
 
    /**
-    * @protected
-    *
     * Convenience method for deleting a configuration depending on APF DOM attributes and
     * the current environment.
     *
@@ -255,8 +233,6 @@ abstract class APFObject implements APFDIService {
    }
 
    /**
-    * @protected
-    *
     * Creates a string representation of the given attributes list, using a
     * white list to especially include attributes.
     *

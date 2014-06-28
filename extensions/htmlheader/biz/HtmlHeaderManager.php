@@ -23,9 +23,6 @@ namespace APF\extensions\htmlheader\biz;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class HtmlHeaderManager
- *
  * Container for htmlheader objects.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>, Christian Achatz
@@ -59,6 +56,7 @@ class HtmlHeaderManager extends APFObject {
     * Returns true if duplicate was found.
     *
     * @param HeaderNode $node New node
+    *
     * @return bool Returns true if duplicate was found.
     */
    protected function isUnique(HeaderNode $node) {
@@ -69,11 +67,13 @@ class HtmlHeaderManager extends APFObject {
             return false;
          }
       }
+
       return true;
    }
 
    /**
     * @param string $type The (interface) type of node to include in the list.
+    *
     * @return HeaderNode[] The list of header nodes that is described by the given type.
     */
    protected function getNodesByType($type) {
@@ -96,6 +96,7 @@ class HtmlHeaderManager extends APFObject {
       if (count($titles) > 0) {
          return $titles[count($titles) - 1]; // always return the last title, to allow override!
       }
+
       return null;
    }
 
@@ -107,6 +108,7 @@ class HtmlHeaderManager extends APFObject {
       if (count($canonical) > 0) {
          return $canonical[count($canonical) - 1]; // always return the last title, to allow override!
       }
+
       return null;
    }
 

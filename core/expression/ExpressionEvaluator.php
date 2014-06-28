@@ -25,9 +25,6 @@ use APF\core\pagecontroller\ParserException;
 use Exception;
 
 /**
- * @package APF\core\expression
- * @class ExpressionEvaluator
- *
  * Evaluates APF dynamic expressions allowing a more comfortable way of templating.
  *
  * @author Christian Achatz
@@ -37,14 +34,12 @@ use Exception;
 abstract class ExpressionEvaluator {
 
    /**
-    * @public
-    * @static
-    *
     * Evaluates a dynamic expression. Acts both as a factory as well as an
     * abstraction component to evaluate expressions.
     *
     * @param Document $dataNode The APF DOM node that can be used to retrieve the model information.
     * @param string $expressionString The APF dynamic expression string.
+    *
     * @return string The result of the expression evaluation.
     * @throws Exception In case evaluation of the given expression fails.
     *

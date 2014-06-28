@@ -26,9 +26,6 @@ use APF\modules\contact\biz\ContactManager;
 use APF\tools\form\taglib\SelectBoxTag;
 
 /**
- * @package APF\modules\contact\pres\controller
- * @class ContactFormController
- *
  * Document controller for the form view of the contact module.
  *
  * @author Christian Schäfer
@@ -42,8 +39,6 @@ use APF\tools\form\taglib\SelectBoxTag;
 class ContactFormController extends BaseDocumentController {
 
    /**
-    * @public
-    *
     * Displays the form and handles the user input.
     *
     * @author Christian Schäfer

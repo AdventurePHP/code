@@ -25,9 +25,6 @@ use APF\core\loader\RootClassLoader;
 use Exception;
 
 /**
- * @package APF\core\configuration\provider
- * @class BaseConfigurationProvider
- *
  * Provides basic configuration provider functionality.
  *
  * @author Christian Achatz
@@ -141,13 +138,11 @@ abstract class BaseConfigurationProvider {
       } catch (Exception $e) {
          // in order to ease debugging, we are wrapping the class loader exception to a more obvious exception message
          throw new ConfigurationException('Class loader root path for namespace "' . $namespace . '" cannot be determined.'
-            . ' Please double-check your configuration!', E_USER_ERROR, $e);
+               . ' Please double-check your configuration!', E_USER_ERROR, $e);
       }
    }
 
    /**
-    * @protected
-    *
     * Creates the configuration file's path in case if does not exist. This is used for
     * saving configurations as <em>file_put_contents()</em> does not create missing folders.
     *

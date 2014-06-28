@@ -1,30 +1,27 @@
 <?php
 namespace APF\tools\form\taglib;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\tools\form\taglib
- * @class DateSelectorTag
- *
  * Represents a APF form date control. Please remember the following things when using the control:
  * <ul>
  *   <li>The "class" attribute is applied to all child elements.</li>
@@ -41,20 +38,16 @@ namespace APF\tools\form\taglib;
 class DateSelectorTag extends AbstractFormControl {
 
    /**
-    * @protected
     * @var string[] Start and end of the year range.
     */
    protected $yearRange;
 
    /**
-    * @protected
     * @var string[] Names of the offsets for day, month and year.
     */
    protected $offsetNames;
 
    /**
-    * @public
-    *
     * Initializes the member variables.
     *
     * @author Christian Schäfer
@@ -72,8 +65,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Creates the children select fields for the date control.
     *
     * @author Christian Schäfer
@@ -198,8 +189,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @private
-    *
     * Returns the id of the date element. In case the developer does not
     * provide the <em>id</em> attribute within the tag definition, the
     * <em>name</em> attribute is used instead.
@@ -220,8 +209,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Generated the HTML code of the date control.
     *
     * @return string The HTML code of the date control.
@@ -262,8 +249,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the date with the pattern YYYY-MM-DD.
     *
     * @return string Date with pattern YYYY-MM-DD.
@@ -298,8 +283,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Allows you to initialize the date control with a given date (e.g. "2010-06-16").
     *
     * @param string $date The date to initialize the control with.
@@ -318,8 +301,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns a reference on the day control of the date control.
     *
     * @return SelectBoxTag The day control.
@@ -333,8 +314,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns a reference on the month control of the date control.
     *
     * @return SelectBoxTag The month control.
@@ -348,8 +327,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns a reference on the year control of the date control.
     *
     * @return SelectBoxTag The year control.
@@ -363,8 +340,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @protected
-    *
     * Initializes the year range to display.
     *
     * @author Christian Achatz
@@ -387,8 +362,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @protected
-    *
     * Initializes the offset names of the fields.
     *
     * @author Christian Achatz
@@ -413,8 +386,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @protected
-    *
     * Appends a zero for month or day numbers without leading zeros.
     *
     * @param int $input The month or day number.
@@ -430,8 +401,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Re-implements the retrieving of values for date controls
     *
     * @return string The current value or content of the control.
@@ -447,8 +416,6 @@ class DateSelectorTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Re-implements the setting of values for date controls.
     *
     * @param string $value The date to set (e.g. "2012-04-30").

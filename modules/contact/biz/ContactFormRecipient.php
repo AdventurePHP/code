@@ -23,9 +23,6 @@ namespace APF\modules\contact\biz;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\modules\contact\biz
- * @class ContactFormRecipient
- *
  * Represents the domain object for the contact form.
  *
  * @author Christian Schäfer

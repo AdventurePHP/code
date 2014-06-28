@@ -8,8 +8,6 @@ use APF\extensions\apfelsms\biz\SMSManager;
 use APF\tools\link\Url;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (02.10.12)
  *
@@ -30,8 +28,6 @@ class SMSExternalURLRedirectAction extends AbstractFrontcontrollerAction {
 
 
    /**
-    * @public
-    *
     * @desc Checks if current page is decorated with externalURL pageDec and redirects to external URL if applicable.
     */
    public function run() {

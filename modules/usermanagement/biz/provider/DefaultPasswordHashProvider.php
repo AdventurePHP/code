@@ -49,13 +49,14 @@ abstract class DefaultPasswordHashProvider extends APFObject implements Password
             ->getSection(UmgtManager::CONFIG_SECTION_NAME);
       if ($section === null) {
          throw new Exception('[DefaultPasswordHashProvider::init()] No section with name"'
-                  . UmgtManager::CONFIG_SECTION_NAME . '" found in the umgtconfig.ini!',
-            E_USER_ERROR);
+               . UmgtManager::CONFIG_SECTION_NAME . '" found in the umgtconfig.ini!',
+               E_USER_ERROR);
       } else {
          $salt = $section->getValue('Salt');
          if ($salt === null) {
             return self::$DEFAULT_HARDCODED_SALT;
          }
+
          return $salt;
       }
    }

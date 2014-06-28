@@ -28,9 +28,6 @@ use Exception;
 use InvalidArgumentException;
 
 /**
- * @package APF\core\pagecontroller
- * @class Document
- *
  * Represents a node within the APF DOM tree. Each document can compose several other documents
  * by use of the $children property (composite tree).
  *
@@ -59,44 +56,37 @@ class Document extends APFObject {
    const CONTROLLER_ATTR_CLASS = 'class';
 
    /**
-    * @protected
     * @var string Unique object identifier.
     */
    protected $objectId = null;
 
    /**
-    * @protected
     * @var Document Reference to the parent object.
     */
    protected $parentObject = null;
 
    /**
-    * @protected
     * @var string[] The attributes of an object (merely the XML tag attributes).
     */
    protected $attributes = array();
 
    /**
-    * @protected
     * @var string The content of the tag. Example:
     * <pre>&lt;foo:bar&gt;This is the content of the tag.&lt;/foo:bar&gt;</pre>
     */
    protected $content;
 
    /**
-    * @protected
     * @var DocumentController The instance of the document controller to use at transformation time.
     */
    protected $documentController = null;
 
    /**
-    * @protected
     * @var Document[] List of the children of the current object.
     */
    protected $children = array();
 
    /**
-    * @protected
     * @var string[][] Data attributes of the current DOM document (similar to Java Script).
     */
    protected $data = array();
@@ -112,15 +102,11 @@ class Document extends APFObject {
    protected $knownInstanceTags = array();
 
    /**
-    * @public
-    * @static
     * @var int The maximum number of parser loops taken to analyze tags within a document. Used to protect against infinite loops.
     */
    public static $maxParserLoops = 500;
 
    /**
-    * @public
-    *
     * Default constructor of an APF document. The APF DOM tree is constructed by objects derived from this class.
     *
     * @author Christian Schäfer
@@ -134,8 +120,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Injects the parent node of the current APF object.
     *
     * @param Document $parentObject The parent node.
@@ -149,8 +133,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the parent node of the current APF object.
     *
     * @return Document The parent node.
@@ -164,8 +146,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Sets the object id of the current APF object.
     *
     * @param string $objectId The object id.
@@ -179,8 +159,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the object id of the current APF object.
     *
     * @return string The object id.
@@ -194,8 +172,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the object's attribute.
     *
     * @param string $name The name of the desired attribute.
@@ -213,8 +189,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Let's you retrieve a tag attribute expressing to other developers that it is a mandatory attribute.
     *
     * @param string $name The name of the desired attribute.
@@ -238,8 +212,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Sets an object's attribute.
     *
     * @param string $name Name of the attribute.
@@ -254,8 +226,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns an object's attributes.
     *
     * @return string[] Returns the list of attributes of the current object.
@@ -269,8 +239,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Deletes an attribute.
     *
     * @param string $name The name of the attribute to delete.
@@ -284,8 +252,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Sets an object's attributes.
     *
     * @param array $attributes The attributes list.
@@ -304,8 +270,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Let's you add the applied value to the given attribute.
     * <p/>
     * Implicitly creates the attribute in case it doesn't exist.
@@ -327,8 +291,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the textual content of the current node.
     *
     * @return string The content of the current node.
@@ -342,8 +304,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Sets the textual content of the current node.
     *
     * @param string $content The content of the current node.
@@ -357,8 +317,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the list of the current node's children.
     *
     * @return Document[] The current node's children.
@@ -372,8 +330,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Let's you retrieve a child node of the current document by specifying a selector
     * (attribute name and attribute value) and the expected node type (name of the taglib
     * class).
@@ -410,8 +366,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Let's you retrieve a list of child nodes of the current document by specifying a selector
     * (attribute name and attribute value) and the expected node type (name of the taglib
     * class).
@@ -453,8 +407,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * API method to set a place holder's content within a document.
     *
     * @param string $name name of the place holder.
@@ -511,8 +463,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * This method is for conveniently setting of multiple place holders. The applied
     * array must contain a structure like this:
     * <code>
@@ -543,8 +493,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Replaces string place holders in content of &lt;*:placeholder /&gt; tag.
     * An example of a string place holder with key "url" is "{URL}"
     * String place holders are always written in capital letters!
@@ -571,8 +519,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the name of the document controller in case the document should
     * be transformed using an MVC controller. In case no controller is defined
     * <em>null</em> is returned instead.
@@ -650,8 +596,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Allows you to set data attributes to the current DOM node (similar to Java Script for HTML nodes).
     *
     * @param string $name The reference name of the data field to set/add.
@@ -666,8 +610,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Allows you to retrieve a data attribute from the current DOM node (similar to Java Script for HTML nodes).
     *
     * @param string $name The reference name of the data field to set/add.
@@ -684,8 +626,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Loads the initial template for the initial document. Can also be used to load
     * content from files within sub taglibs.
     *
@@ -710,8 +650,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Loads a template from a given namespace. The convention says, that the name of the template
     * is equal to the file body plus the ".html" extensions. The namespace is a APF namespace.
     *
@@ -759,8 +697,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Generates the file path of the desired template.
     * <p/>
     * Overwriting this method allows you to use a different algorithm of creating the
@@ -800,8 +736,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Parses the content of the current APF DOM node. Extracts all tags contained in the current
     * document content. Each tag is converted into a child Document of the current tree element.
     * The tag definition place is remembered by a marker tag using the internal id of the DOM node.
@@ -1090,8 +1024,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @private
-    *
     * Returns the name of the tag implementation according to the given tag prefix and name.
     * <p/>
     * As this method gets called with each tag, it introduces a lazy cache to return the
@@ -1124,8 +1056,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Initializes the document controller class, that is executed at APF DOM node
     * transformation time.
     *
@@ -1190,8 +1120,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Parses the content of the current APF DOM node. Extracts all dynamic expression statements
     * that are shortcuts on certain tags (e.g. place holders or dynamic access on DOM node data).
     * <p/>
@@ -1280,9 +1208,6 @@ class Document extends APFObject {
     * Interface definition of the onParseTime() method. This function is called after the creation
     * of a new DOM node. It must be implemented by derived classes.
     *
-    * @public
-    * @abstract
-    *
     * @author Christian Schäfer
     * @version
     * Version 0.1, 28.12.2006<br />
@@ -1305,8 +1230,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Implements the method, that is called at transformation time (see DOM node life cycle). If
     * you want to add custom logic in your taglib, overwrite this method. The page controller
     * expects the method to return the content of the transformed node.
@@ -1363,8 +1286,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Convenience method to transform the current node's children within the current node's content
     * buffer (<em>$this->content</em>).
     * <p/>
@@ -1384,8 +1305,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Convenience method to transform the current node's children and return the result of the
     * transformation. Preserves the current node's internal content buffer (<em>$this->content</em>)
     * to allow further transformations.
@@ -1408,8 +1327,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Convenience method to remove the child tag marker within the current node's content
     * buffer (<em>$this->content</em>). Can be used in case the child nodes should be
     * removed from the output.
@@ -1428,8 +1345,6 @@ class Document extends APFObject {
    }
 
    /**
-    * @protected
-    *
     * Convenience method to transform the remove the child tag marker and return the result of the
     * transformation. Preserves the current node's internal content buffer (<em>$this->content</em>)
     * to allow further transformations.

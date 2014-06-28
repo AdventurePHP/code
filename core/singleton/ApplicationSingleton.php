@@ -29,10 +29,6 @@ register_shutdown_function(function () {
 });
 
 /**
- * @package APF\core\singleton
- * @class ApplicationSingleton
- * @static
- *
  * Implements the generic application singleton pattern. Can be used to create singleton objects from
  * every class. This eases unit tests, because explicit singleton implementations cause side
  * effects during unit testing.
@@ -58,9 +54,6 @@ class ApplicationSingleton {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Returns an application singleton instance of the given class. In case the object is found in the
     * singleton cache, the cached object is returned.
     * <p>
@@ -107,9 +100,6 @@ class ApplicationSingleton {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Implements a shutdown function to save all application singleton objects to the APC store.
     *
     * @author Christian Achatz

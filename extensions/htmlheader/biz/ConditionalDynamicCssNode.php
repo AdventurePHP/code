@@ -24,9 +24,6 @@ use APF\extensions\htmlheader\biz\CssNode;
 use APF\extensions\htmlheader\biz\DynamicCssNode;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class ConditionalDynamicCssNode
- *
  * Implements a conditional dynamic css node.
  *
  * @author Christian Achatz

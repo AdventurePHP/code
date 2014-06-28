@@ -23,9 +23,6 @@ namespace APF\modules\guestbook2009\pres\controller\admin;
 use APF\modules\guestbook2009\pres\controller\admin\GuestbookBackendBaseController;
 
 /**
- * @package APF\modules\guestbook2009\pres
- * @class GuestbookLogoutController
- *
  * Handles the logout call. The class itself is only a wrapper to call the
  * service. This is done, because the guestbook is not based on the front
  * controller.

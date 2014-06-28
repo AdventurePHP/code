@@ -24,9 +24,6 @@ use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
- * @package APF\core\database\configuration
- * @class StatementConfiguration
- *
  * Implements a configuration abstraction for database statements stored within files.
  * Stored statements are used within the <em>executeStatement()</em> methods of the
  * <em>AbstractDatabaseHandler</em> implementations.
@@ -59,6 +56,7 @@ class StatementConfiguration extends BaseConfiguration implements Configuration 
       for ($i = 0; $i < count($matches); $i++) {
          $paramNames[] = $matches[$i][1];
       }
+
       return $paramNames;
    }
 

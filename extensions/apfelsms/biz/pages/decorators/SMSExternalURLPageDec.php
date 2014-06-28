@@ -4,8 +4,6 @@ namespace APF\extensions\apfelsms\biz\pages\decorators;
 use APF\tools\link\Url;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version : v0.1 (19.08.12)
  * @desc    . Returns an external URL as page URL.
@@ -20,7 +18,7 @@ class SMSExternalURLPageDec extends SMSAbstractPageDec {
 
 
    public static $mapVars = array(
-      'externalURL' => null
+         'externalURL' => null
    );
 
 
@@ -46,6 +44,7 @@ class SMSExternalURLPageDec extends SMSAbstractPageDec {
 
    /**
     * @param Url $url (Unused)
+    *
     * @return string
     */
    public function getLink(Url $url) {

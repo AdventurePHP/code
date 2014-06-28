@@ -24,9 +24,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class GroupDetailsController
- *
  * Implements the controller to show a group's details.
  *
  * @author Christian Achatz
@@ -38,7 +35,7 @@ class GroupDetailsController extends UmgtBaseController {
    public function transformContent() {
 
       // load data
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
       $groupId = RequestHandler::getValue('groupid');
       $group = $uM->loadGroupByID($groupId);
 
@@ -47,13 +44,13 @@ class GroupDetailsController extends UmgtBaseController {
 
       // display users
       $users = $uM->loadUsersWithGroup($group);
-      $usersIterator = &$this->getIterator('Users');
+      $usersIterator = & $this->getIterator('Users');
       $usersIterator->fillDataContainer($users);
       $usersIterator->transformOnPlace();
 
       // display roles
       $roles = $uM->loadRolesWithGroup($group);
-      $iteratorRoles = &$this->getIterator('Roles');
+      $iteratorRoles = & $this->getIterator('Roles');
       $iteratorRoles->fillDataContainer($roles);
       $iteratorRoles->transformOnPlace();
 

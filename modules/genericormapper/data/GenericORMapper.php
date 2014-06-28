@@ -23,9 +23,6 @@ namespace APF\modules\genericormapper\data;
 use InvalidArgumentException;
 
 /**
- * @package APF\modules\genericormapper\data
- * @class GenericORMapper
- *
  * Implements an abstract OR mapper, that can map any objects defined in the object
  * configuration file into a domain object. The type of the object is therefore not defined
  * by it's class name, but by the "ObjectName" attribute.
@@ -47,16 +44,16 @@ class GenericORMapper extends BaseMapper {
     * Bug 289: This identifier is used to distinguish between fiels, that can
     * contain null values. This is necessary, because the MySQL client libs
     * map MySQL NULL values to empty PHP strings.
+    *
     * @var string Identifies fields, that can contain null values.
     */
    private static $NULL_FIELD_IDENTIFIER = 'NULL DEFAULT NULL';
 
    /**
-    * @public
-    *
     * Loads an object list.
     *
     * @param string $objectName The Name of the object in mapping table
+    *
     * @return GenericORMapperDataObject[] The desired object list
     *
     * @author Nicolas Pecher
@@ -66,12 +63,11 @@ class GenericORMapper extends BaseMapper {
    public function loadObjectList($objectName) {
       $statement = 'SELECT * FROM `' . $this->mappingTable[$objectName]['Table'] . '`';
       $result = $this->dbDriver->executeTextStatement($statement, $this->logStatements);
+
       return $this->loadObjectListByStatementResult($objectName, $result);
    }
 
    /**
-    * @public
-    *
     * Loads an object list by a special statement. The statement must return the desired
     * object properties.
     *
@@ -79,6 +75,7 @@ class GenericORMapper extends BaseMapper {
     * @param string $namespace namespace of the statement
     * @param string $statementName name of the statement file
     * @param array $statementParams a list of statement parameters
+    *
     * @return GenericORMapperDataObject[] The desired object list.
     *
     * @author Christian Achatz
@@ -88,18 +85,17 @@ class GenericORMapper extends BaseMapper {
     */
    public function loadObjectListByStatement($objectName, $namespace, $statementName, $statementParams = array()) {
       return $this->loadObjectListByStatementResult(
-         $objectName,
-         $this->dbDriver->executeStatement($namespace, $statementName, $statementParams, $this->logStatements)
+            $objectName,
+            $this->dbDriver->executeStatement($namespace, $statementName, $statementParams, $this->logStatements)
       );
    }
 
    /**
-    * @public
-    *
     * Loads an object list by a list of object ids.<br />
     *
     * @param string $objectName name of the object in mapping table
     * @param array $ids list of object ids
+    *
     * @return GenericORMapperDataObject[] The desired object list.
     *
     * @author Christian Achatz
@@ -122,13 +118,12 @@ class GenericORMapper extends BaseMapper {
    }
 
    /**
-    * @public
-    *
     * Loads an object list by a special statement. The statement must return the desired
     * object properties.
     *
     * @param string $objectName Name of the object in mapping table
     * @param string $statement Sql statement
+    *
     * @return GenericORMapperDataObject[] The desired object list.
     *
     * @author Christian Achatz
@@ -140,14 +135,13 @@ class GenericORMapper extends BaseMapper {
    }
 
    /**
-    * @public
-    *
     * Loads an object by a special statement. The statement must return the desired object properties.
     *
     * @param string $objectName name of the object in mapping table
     * @param string $namespace namespace of the statement
     * @param string $statementName name of the statement file
     * @param array $statementParams a list of statement parameters
+    *
     * @return GenericORMapperDataObject The desired object
     *
     * @author Christian Achatz
@@ -158,17 +152,17 @@ class GenericORMapper extends BaseMapper {
    public function loadObjectByStatement($objectName, $namespace, $statementName, $statementParams = array()) {
       $result = $this->dbDriver->executeStatement($namespace, $statementName, $statementParams, $this->logStatements);
       $data = $this->dbDriver->fetchData($result);
+
       return $this->mapResult2DomainObject($objectName, $data);
    }
 
    /**
-    * @public
-    *
     * Loads an object by a special statement. The statement must return the desired
     * object properties.
     *
     * @param string $objectName name of the object in mapping table
     * @param string $statement sql statement
+    *
     * @return GenericORMapperDataObject The desired object or null if the object has not been found.
     *
     * @author Christian Achatz
@@ -182,15 +176,15 @@ class GenericORMapper extends BaseMapper {
       if ($data === false) {
          return null;
       }
+
       return $this->mapResult2DomainObject($objectName, $data);
    }
 
    /**
-    * @public
-    *
     * Deletes an Object.
     *
     * @param GenericORMapperDataObject $object the object to delete
+    *
     * @return int Database id of the object.
     *
     * @author Christian Achatz
@@ -215,11 +209,10 @@ class GenericORMapper extends BaseMapper {
    }
 
    /**
-    * @public
-    *
     * Saves an Object.
     *
     * @param GenericORMapperDataObject $object the object to save.
+    *
     * @return int Database id of the object.
     * @throws GenericORMapperException In case the object name cannot be found within the mapping table.
     *
@@ -245,9 +238,9 @@ class GenericORMapper extends BaseMapper {
       }
       $pkName = $this->mappingTable[$objectName]['ID'];
       $attrExceptions = array(
-         $pkName,
-         'ModificationTimestamp',
-         'CreationTimestamp'
+            $pkName,
+            'ModificationTimestamp',
+            'CreationTimestamp'
       );
 
 
@@ -364,12 +357,11 @@ class GenericORMapper extends BaseMapper {
    }
 
    /**
-    * @public
-    *
     * Returns an object by name and id.
     *
     * @param string $objectName The name of the object in mapping table.
     * @param int $objectId The database id of the desired object.
+    *
     * @return GenericORMapperDataObject The desired object.
     * @throws InvalidArgumentException In case the applied object id is not numeric.
     *
@@ -396,12 +388,11 @@ class GenericORMapper extends BaseMapper {
    }
 
    /**
-    * @protected
-    *
     * Loads an object list by a statement resource.
     *
     * @param string $objectName name of the object in mapping table
     * @param resource $stmtResult sql statement result
+    *
     * @return GenericORMapperDataObject[] The desired object list.
     *
     * @author Christian Achatz
@@ -420,12 +411,11 @@ class GenericORMapper extends BaseMapper {
    }
 
    /**
-    * @protected
-    *
     * Creates an domain object by name and properties.
     *
     * @param string $objectName Name of the object in mapping table.
     * @param array $properties Properties of the object.
+    *
     * @return GenericORMapperDataObject The desired object or null.
     *
     * @author Christian Achatz

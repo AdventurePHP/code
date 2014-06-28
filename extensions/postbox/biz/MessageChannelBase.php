@@ -10,9 +10,6 @@ namespace APF\extensions\postbox\biz;
 use APF\extensions\postbox\biz\AbstractMessageChannel;
 
 /**
- * @package APF\extensions\postbox\biz
- * @class MessageChannelBase
- *
  * This class provides the descriptive getter and setter methods for the "APF\extensions\postbox\biz\MessageChannel" domain object.
  */
 abstract class MessageChannelBase extends AbstractMessageChannel {

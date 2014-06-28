@@ -24,9 +24,6 @@ use APF\core\logging\LogWriter;
 use APF\core\logging\LoggerException;
 
 /**
- * @package APF\core\logging\writer
- * @class GraphiteLogWriter
- *
  * Implements a UDP-based non-blocking log writer to be used with the statsd daemon
  * that is used with Graphite an advanced system monitoring tool.
  * <p/>
@@ -72,8 +69,6 @@ class GraphiteLogWriter implements LogWriter {
    protected $batchWrites;
 
    /**
-    * @public
-    *
     * Configures the Graphite log writer.
     *
     * @param string $host The Graphite server address (IP or DNS name).
@@ -91,8 +86,6 @@ class GraphiteLogWriter implements LogWriter {
    }
 
    /**
-    * @public
-    *
     * Let's you define the separator between multiple entries that are bulk-sent to the Grapite server.
     *
     * @param string $entrySeparator The separator between multiple log entries.
@@ -106,8 +99,6 @@ class GraphiteLogWriter implements LogWriter {
    }
 
    /**
-    * @public
-    *
     * Let's you define if batch writes should be considered.
     *
     * @param bool $batchWrites True enables batch writes, false disables multiple datagrams per connection.
@@ -131,11 +122,10 @@ class GraphiteLogWriter implements LogWriter {
    }
 
    /**
-    * @public
-    *
     * Send the actual UDP datagram to statsd.
     *
     * @param string $data The data that should be send to statsd.
+    *
     * @throws LoggerException In case the UDP connection cannot be established.
     *
     * @author Christian Achatz

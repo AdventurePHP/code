@@ -24,9 +24,6 @@ use APF\extensions\htmlheader\biz\HtmlNode;
 use APF\extensions\htmlheader\biz\MetaNode;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class HttpMetaNode
- *
  * Represents a http header meta tag.
  *
  * @author Christian Achatz

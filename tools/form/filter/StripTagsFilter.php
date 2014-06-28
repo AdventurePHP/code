@@ -23,9 +23,6 @@ namespace APF\tools\form\filter;
 use APF\tools\form\filter\AbstractFormFilter;
 
 /**
- * @package APF\tools\form\filter
- * @class StripTagsFilter
- *
  * Implements a filter, that removes PHP and HTML tags.
  *
  * @author Christian Achatz

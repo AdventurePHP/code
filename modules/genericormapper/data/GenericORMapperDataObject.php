@@ -1,30 +1,27 @@
 <?php
 namespace APF\modules\genericormapper\data;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\modules\genericormapper\data
- * @class GenericORMapperDataObject
- *
  * Defines the Interface which must be implemented by every domain object.
  *
  * @author Ralf Schubert
@@ -57,6 +54,7 @@ interface GenericORMapperDataObject {
    /**
     * @param string $relationName The name of the relation to load the objects with.
     * @param GenericCriterionObject $criterion The criterion to limit the selection.
+    *
     * @return GenericORMapperDataObject The related object.
     */
    public function loadRelatedObject($relationName, GenericCriterionObject $criterion = null);
@@ -64,6 +62,7 @@ interface GenericORMapperDataObject {
    /**
     * @param string $relationName The name of the relation to load the objects with.
     * @param GenericCriterionObject $criterion The criterion to limit the selection.
+    *
     * @return GenericORMapperDataObject[] A list of related objects.
     */
    public function loadRelatedObjects($relationName, GenericCriterionObject $criterion = null);
@@ -76,6 +75,7 @@ interface GenericORMapperDataObject {
 
    /**
     * @param string $relationName The name of the relation to get the related objects with.
+    *
     * @return GenericORMapperDataObject[] The list of related objects.
     */
    public function &getRelatedObjects($relationName);
@@ -90,8 +90,8 @@ interface GenericORMapperDataObject {
    public function setProperty($name, $value);
 
    /**
-    * @abstract
     * @param $name
+    *
     * @return string The value of the desired property.
     */
    public function getProperty($name);

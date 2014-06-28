@@ -23,9 +23,6 @@ namespace APF\modules\guestbook2009\biz;
 use APF\modules\guestbook2009\biz\User;
 
 /**
- * @package APF\modules\guestbook2009\biz
- * @class Entry
- *
  * Represents the Entry domain object of the guestbook.
  *
  * @author Christian Achatz

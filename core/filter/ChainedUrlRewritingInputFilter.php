@@ -24,9 +24,6 @@ use APF\core\benchmark\BenchmarkTimer;
 use APF\core\singleton\Singleton;
 
 /**
- * @package APF\core\filter
- * @class ChainedUrlRewritingInputFilter
- *
  * Implements an input filter that resolves the URL layout of the front and page
  * controller with respect to an active url rewriting setup.
  * <p/>
@@ -184,8 +181,6 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
    }
 
    /**
-    * @protected
-    *
     * Creates a request array out of a slash-separated url string.
     *
     * @param string $url URL string.
@@ -224,8 +219,6 @@ class ChainedUrlRewritingInputFilter extends ChainedStandardInputFilter implemen
    }
 
    /**
-    * @protected
-    *
     * Removes trailing slashes from URL strings.
     *
     * @param string $url URL string.

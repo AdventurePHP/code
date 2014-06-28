@@ -23,9 +23,6 @@ namespace APF\tools\cache;
 use APF\core\configuration\Configuration;
 
 /**
- * @package APF\tools\cache
- * @class CacheProvider
- *
  * Interface for concrete provider implementations. To access the configuration, the provider
  * is injected the current configuration params as the attributes array.
  *
@@ -38,8 +35,6 @@ use APF\core\configuration\Configuration;
 interface CacheProvider {
 
    /**
-    * @public
-    *
     * Interface definition of the provider's write() method. Must return true on write success,
     * otherwise false.
     *
@@ -55,8 +50,6 @@ interface CacheProvider {
    public function write(CacheKey $cacheKey, $object);
 
    /**
-    * @public
-    *
     * Interface definition of the provider's read() method. Must return the desired cache
     * content on success, otherwise null.
     *
@@ -71,7 +64,6 @@ interface CacheProvider {
    public function read(CacheKey $cacheKey);
 
    /**
-    * @public
     * @since 0.2
     *
     * Interface definition of the provider's clear() method. Delete the dedicated cache item
@@ -89,8 +81,6 @@ interface CacheProvider {
    public function clear(CacheKey $cacheKey = null);
 
    /**
-    * @public
-    *
     * Allows the CacheManager to inject the respective configuration into the present instance.
     *
     * @param Configuration $configuration

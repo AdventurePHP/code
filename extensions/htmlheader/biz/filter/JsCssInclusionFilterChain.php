@@ -47,6 +47,7 @@ class JsCssInclusionFilterChain extends AbstractFilterChain {
       if (self::$CHAIN === null) {
          self::$CHAIN = new JsCssInclusionFilterChain();
       }
+
       return self::$CHAIN;
    }
 

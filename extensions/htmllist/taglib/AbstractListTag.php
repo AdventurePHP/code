@@ -24,9 +24,6 @@ use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\XmlParser;
 
 /**
- * @package APF\extensions\htmllist\taglib
- * @class AbstractListTag
- *
  * Abstract class for list classes.
  *
  * @author Florian Horn
@@ -67,6 +64,7 @@ abstract class AbstractListTag extends Document {
 
    /**
     * Adds a list element.
+    *
     * @param string $content The content of the element.
     * @param string $cssClass The name of the implementation class.
     * @param string $elementName The name of the tag (e.g. "elem_list" for ListElementTag class).

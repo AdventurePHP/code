@@ -23,9 +23,6 @@ namespace APF\tools\form\taglib;
 use APF\tools\form\taglib\FormControlObserverBase;
 
 /**
- * @package APF\tools\form\filter
- * @class AddFormControlValidatorTag
- *
  * Implements the taglib, that lets you add a form element validator to
  * the desired element.
  *
@@ -36,8 +33,6 @@ use APF\tools\form\taglib\FormControlObserverBase;
 class AddFormControlValidatorTag extends FormControlObserverBase {
 
    /**
-    * @public
-    *
     * Add the desired validator to the given form element.
     *
     * @author Christian Achatz

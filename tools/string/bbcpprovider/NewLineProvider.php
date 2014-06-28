@@ -23,9 +23,6 @@ namespace APF\tools\string\bbcpprovider;
 use APF\tools\string\BBCodeParserProvider;
 
 /**
- * @package APF\tools\string\bbcpprovider
- * @class NewLineProvider
- *
  * Implements the font color parser.
  *
  * @author Christian Achatz
@@ -35,12 +32,11 @@ use APF\tools\string\BBCodeParserProvider;
 class NewLineProvider extends BBCodeParserProvider {
 
    /**
-    * @public
-    *
     * Implements the getOutput() method of the abstract BBCodeParserProvider.
     * Parses newline characters.
     *
     * @param string $string the content to parse.
+    *
     * @return string $parsedString the parsed content.
     *
     * @author Christian Achatz

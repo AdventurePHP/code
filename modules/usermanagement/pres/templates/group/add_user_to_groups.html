@@ -1,10 +1,12 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddUserToGroupsController"
+class="APF\modules\usermanagement\pres\documentcontroller\group\GroupAddUserToGroupsController"
 @>
-<h3><html:getstring
-       namespace="APF\modules\usermanagement\pres"
-       config="labels.ini"
-       entry="frontend.user.add-user-to-group.headline"/></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.user.add-user-to-group.headline"/>
+</h3>
 <html:form name="Groups" method="post">
    <div>
       <form:addvalidator
@@ -31,7 +33,7 @@
       </p>
    </div>
 </html:form>
-      
+
 <html:template name="NoMoreGroups">
    <p>
       <html:getstring

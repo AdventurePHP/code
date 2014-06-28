@@ -27,7 +27,7 @@
 (function ($) {
     $(document).ready(function () {
         jQuery.APFFormValidator.addClientValidator('SimpleDateControlValidator', {
-            validate:function (control, options) {
+            validate: function (control, options) {
                 var ctrlDay = $(control).find(':input[name="' + control.attr('id') + '\[Day\]"]')[0];
                 var ctrlMonth = $(control).find(':input[name="' + control.attr('id') + '\[Month\]"]')[0];
                 var ctrlYear = $(control).find(':input[name="' + control.attr('id') + '\[Year]"]')[0];

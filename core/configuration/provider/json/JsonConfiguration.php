@@ -24,9 +24,6 @@ use APF\core\configuration\Configuration;
 use APF\core\configuration\provider\BaseConfiguration;
 
 /**
- * @package APF\core\configuration\provider\ini
- * @class JsonConfiguration
- *
  * Implements the configuration interface for the default APF json scheme.
  *
  * @author Christian Achatz
@@ -34,4 +31,5 @@ use APF\core\configuration\provider\BaseConfiguration;
  * Version 0.1, 27.09.2010<br />
  */
 class JsonConfiguration extends BaseConfiguration implements Configuration {
+
 }

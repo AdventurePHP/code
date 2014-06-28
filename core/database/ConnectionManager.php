@@ -29,9 +29,6 @@ use APF\core\service\APFService;
 use InvalidArgumentException;
 
 /**
- * @package APF\core\database
- * @class ConnectionManager
- *
  * The ConnectionManager is a database connection fabric. You can use it to create APF style
  * database connections. To gain performance and to enable APF style configuration the manager
  * must be created as a service object.
@@ -66,15 +63,12 @@ use InvalidArgumentException;
 final class ConnectionManager extends APFObject {
 
    /**
-    * @private
     * @var AbstractDatabaseHandler[] Cache for existing database connections.
     */
    private $connections = array();
    private static $STATEMENT_FILE_EXTENSION = 'sql';
 
    /**
-    * @public
-    *
     * Initializes the configuration provider for file based statements.
     *
     * @author Christian Achatz
@@ -90,8 +84,6 @@ final class ConnectionManager extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Returns the initialized handler for the desired connection key. Caches connections, that
     * were created previously.
     * <p/>
@@ -101,6 +93,7 @@ final class ConnectionManager extends APFObject {
     *
     * @param string $connectionKey Desired configuration section.
     * @param string $instanceId The id of the database driver instance.
+    *
     * @return AbstractDatabaseHandler An instance of a connection layer implementation.
     * @throws InvalidArgumentException In case of missing configuration.
     *
@@ -148,12 +141,11 @@ final class ConnectionManager extends APFObject {
       // create the connection lazily
       $this->connections[$cacheKey] = $this->getServiceObject($section->getValue('Type'), APFService::SERVICE_TYPE_NORMAL);
       $this->connections[$cacheKey]->init($options);
+
       return $this->connections[$cacheKey];
    }
 
    /**
-    * @public
-    *
     * Let's you clear/close a dedicated connection.
     * <p/>
     * Please be careful with this functionality since you may significantly decrease performance!

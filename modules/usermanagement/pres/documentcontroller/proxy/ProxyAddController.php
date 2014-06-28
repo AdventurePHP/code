@@ -31,9 +31,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\proxy
- * @class ProxyAddController
- *
  * Let's the user create a new visibility entry (proxy type <-> proxy <-> user+group).
  *
  * @author Christian Achatz
@@ -68,8 +65,8 @@ class ProxyAddController extends UmgtBaseController {
 
       foreach ($proxyTypes as $proxyType) {
          $typeElement->addOption(
-            $proxyType->getAppObjectName(),
-            $proxyType->getObjectId()
+               $proxyType->getAppObjectName(),
+               $proxyType->getObjectId()
          );
       }
 
@@ -80,8 +77,8 @@ class ProxyAddController extends UmgtBaseController {
       $usersElement = & $form->getFormElementByName('users');
       foreach ($userList as $user) {
          $usersElement->addOption(
-            $user->getDisplayName(),
-            $user->getObjectId()
+               $user->getDisplayName(),
+               $user->getObjectId()
          );
       }
       foreach ($selectedUsers as $selectedUser) {
@@ -95,8 +92,8 @@ class ProxyAddController extends UmgtBaseController {
       $groupsElement = & $form->getFormElementByName('groups');
       foreach ($groups as $group) {
          $groupsElement->addOption(
-            $group->getDisplayName(),
-            $group->getObjectId()
+               $group->getDisplayName(),
+               $group->getObjectId()
          );
       }
       foreach ($selectedGroups as $selectedGroup) {
@@ -109,13 +106,13 @@ class ProxyAddController extends UmgtBaseController {
          // setup type
          $type = new UmgtVisibilityDefinitionType();
          $type->setObjectId(
-            $typeElement->getSelectedOption()->getAttribute('value')
+               $typeElement->getSelectedOption()->getAttribute('value')
          );
 
          // setup proxy
          $definition = new UmgtVisibilityDefinition();
          $definition->setAppObjectId(
-            $form->getFormElementByName('appobjectid')->getAttribute('value')
+               $form->getFormElementByName('appobjectid')->getAttribute('value')
          );
 
          // setup users

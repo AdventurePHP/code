@@ -1,40 +1,36 @@
 <?php
 namespace APF\tools\filesystem;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @class   Folder
- * @package APF\tools\filesystem
- *
  * @author  Nicolas Pecher
  * @version Version 0.1, 30.04.2012
  */
 final class Folder extends FilesystemItem {
 
    /**
-    * @public
-    *
     * @param   string $path The path of the Folder
     * @param   int $permission The permission to create the folder with.
+    *
     * @return  Folder The domain object for further usage
     *
     * @author  Nicolas Pecher
@@ -73,13 +69,13 @@ final class Folder extends FilesystemItem {
          umask($oldUmask);
       }
       $this->open($path);
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * @param string $path The path of the Folder.
+    *
     * @return Folder The domain object for further usage.
     * @throws FilesystemException In case the applied folder does not exist.
     *
@@ -89,7 +85,7 @@ final class Folder extends FilesystemItem {
    public function open($path) {
       if (!is_dir($path)) {
          throw new FilesystemException('[Folder::open()] A folder with the passed path "' . $path . '" does not exists!',
-            E_USER_ERROR);
+               E_USER_ERROR);
       }
       $stat = stat($path);
       $pathParts = pathinfo($path);
@@ -97,26 +93,24 @@ final class Folder extends FilesystemItem {
       $this->permissions = $stat['mode'];
       $this->name = $pathParts['basename'];
       $this->basePath = $pathParts['dirname'];
+
       return $this;
    }
 
 
    /**
-    * @public
-    * 
     * @author  Jan Wiese
     * @version Version 0.1, 27.02.2014
     */
-   public function close(){
+   public function close() {
       // empty, only dummy
    }
 
    /**
-    * @public
-    *
     * @param   Folder $folder The Folder where the copy should be stored
     * @param   string $copyName The new name of the copy (optional)
     * @param   boolean $getCopy If true, this method returns the copy (optional)
+    *
     * @return  Folder The domain object for further usage
     *
     * @author  Nicolas Pecher
@@ -138,9 +132,8 @@ final class Folder extends FilesystemItem {
    }
 
    /**
-    * @public
-    *
     * @param   Folder $folder The Folder into which it should be moved
+    *
     * @return  Folder The domain object for further usage
     *
     * @author  Nicolas Pecher
@@ -157,12 +150,11 @@ final class Folder extends FilesystemItem {
 
       $this->delete();
       $this->basePath = $folder->getPath();
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * @return FilesystemItem[] An array of File- and Folder-Objects
     *
     * @author  Nicolas Pecher
@@ -192,8 +184,6 @@ final class Folder extends FilesystemItem {
    }
 
    /**
-    * @public
-    *
     * Deletes child-files, -directories and itself
     *
     * @return  Folder The domain object for further usage
@@ -204,12 +194,11 @@ final class Folder extends FilesystemItem {
    public function delete() {
       $this->deleteContent();
       rmdir($this->getPath());
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * Deletes only the child-files and -directories
     *
     * @return  Folder The domain object for further usage
@@ -222,12 +211,11 @@ final class Folder extends FilesystemItem {
       foreach ($children as $child) {
          $child->delete();
       }
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * @return  int The size in Bytes
     *
     * @author  Nicolas Pecher

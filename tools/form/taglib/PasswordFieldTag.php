@@ -23,9 +23,6 @@ namespace APF\tools\form\taglib;
 use APF\tools\form\taglib\TextFieldTag;
 
 /**
- * @package APF\tools\form\taglib
- * @class PasswordFieldTag
- *
  * Represents a APF password field.
  *
  * @author Christian Schäfer
@@ -41,8 +38,6 @@ class PasswordFieldTag extends TextFieldTag {
    }
 
    /**
-    * @public
-    *
     * Returns the HTML source code of the text field.
     *
     * @return string HTML code of the password field.
@@ -57,6 +52,7 @@ class PasswordFieldTag extends TextFieldTag {
       if ($this->isVisible) {
          return '<input type="password" ' . $this->getSanitizedAttributesAsString($this->attributes) . ' />';
       }
+
       return '';
    }
 

@@ -23,9 +23,6 @@ namespace APF\core\exceptionhandler;
 use Exception;
 
 /**
- * @package APF\core\exceptionhandler
- * @class GlobalExceptionHandler
- *
  * This is the APF exception handler automatically registered to handle exceptions.
  * <p/>
  * In case you want to register your custom exception handler, use the <em>registerExceptionHandler()</em>
@@ -53,9 +50,6 @@ abstract class GlobalExceptionHandler {
    private static $HANDLER;
 
    /**
-    * @public
-    * @static
-    *
     * Let's you register an exception handler.
     *
     * @param ExceptionHandler $handler The exception handler that is delegated the exception processing.
@@ -69,14 +63,12 @@ abstract class GlobalExceptionHandler {
    }
 
    /**
-    * @public
-    * @static
-    *
     * This method is used as the central entry point to the APF's exception management. It delegates the
     * exception handling to the registered handler. In case no handler is registered or the mechanism is
     * disables, nothing will happen.
     *
     * @param Exception $exception The current exception.
+    *
     * @throws Exception In case the APF exception handler is disabled, the original exception is thrown.
     *
     * @author Christian Achatz
@@ -103,9 +95,6 @@ abstract class GlobalExceptionHandler {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Disables the APF exception handling mechanism. From this point in time, the PHP default
     * error handler will be used to handle the error.
     *
@@ -119,9 +108,6 @@ abstract class GlobalExceptionHandler {
    }
 
    /**
-    * @public
-    * @static
-    *
     * (Re-)enables the APF exception handling mechanism. In case no exception handler has been
     * registered, the APF default exception handler is used.
     *

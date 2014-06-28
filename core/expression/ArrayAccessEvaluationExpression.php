@@ -23,9 +23,6 @@ namespace APF\core\expression;
 use APF\core\pagecontroller\ParserException;
 
 /**
- * @package APF\core\expression
- * @class ArrayAccessEvaluationExpression
- *
  * Implements a dynamic expression to access an array offset.
  *
  * @author Christian Achatz

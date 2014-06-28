@@ -1,36 +1,36 @@
 <@controller
-   class="APF\modules\weather\pres\documentcontroller\WeatherController"
+class="APF\modules\weather\pres\documentcontroller\WeatherController"
 @>
 ${Content}
 
 <html:template name="Channel">
-  <h3>${Title}</h3>
-  <a href="${Link}" title="${Link}">${Link}</a>
-  <br />
-  <br />
-  ${Description}
-  <br />
-  ${Items}
+   <h3>${Title}</h3>
+   <a href="${Link}" title="${Link}">${Link}</a>
+   <br/>
+   <br/>
+   ${Description}
+   <br/>
+   ${Items}
 </html:template>
 
 <html:template name="Item">
-  <br />
-  <br />
-  <h4>${Title}</h4>
-  <a href="${Link}" title="${Link}">${Link}</a>
-  <br />
-  <br />
-  ${Description}
-  <br />
+   <br/>
+   <br/>
+   <h4>${Title}</h4>
+   <a href="${Link}" title="${Link}">${Link}</a>
+   <br/>
+   <br/>
+   ${Description}
+   <br/>
 </html:template>
 
 <html:template name="NoEntries_de">
-  <h3>Fehler</h3>
-  Es konnten leider keine RSS-Feed-Informationen unter <strong>${Source}</strong> abgerufen werden.
+   <h3>Fehler</h3>
+   Es konnten leider keine RSS-Feed-Informationen unter <strong>${Source}</strong> abgerufen werden.
 </html:template>
 
 
 <html:template name="NoEntries_en">
-  <h3>Error</h3>
-  The RSS feed information cannot be obtained from <strong>${Source}</strong>.
+   <h3>Error</h3>
+   The RSS feed information cannot be obtained from <strong>${Source}</strong>.
 </html:template>

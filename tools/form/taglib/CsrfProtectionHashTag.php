@@ -25,9 +25,6 @@ use APF\tools\form\provider\csrf\CSRFHashProvider;
 use APF\tools\form\validator\CSRFHashValidator;
 
 /**
- * @package APF\tools\form\taglib
- * @class CsrfProtectionHashTag
- *
  * Generates a hidden input field with a hash to prevent the form
  * from csrf attacks.
  *
@@ -38,14 +35,11 @@ use APF\tools\form\validator\CSRFHashValidator;
 class CsrfProtectionHashTag extends AbstractFormControl {
 
    /**
-    * @protected
     * @var string The generated hash.
     */
    protected $hash;
 
    /**
-    * @public
-    *
     * Sets the default namespace and provider class name.
     *
     * @author Daniel Seemaier
@@ -57,8 +51,6 @@ class CsrfProtectionHashTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Generates the hash.
     *
     * @author Daniel Seemaier
@@ -77,7 +69,7 @@ class CsrfProtectionHashTag extends AbstractFormControl {
       }
 
       /* @var $provider CSRFHashProvider */
-      $provider = &$this->getServiceObject($class);
+      $provider = & $this->getServiceObject($class);
       $this->hash = $provider->generateHash($salt);
 
       // preset the value to make it available for the validator
@@ -94,8 +86,6 @@ class CsrfProtectionHashTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the HTML code of the csrf hash field.
     *
     * @author Daniel Seemaier

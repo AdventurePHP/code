@@ -25,9 +25,6 @@ use APF\core\pagecontroller\Document;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\html\taglib
- * @class LanguageDependentImportTemplateTag
- *
  * Implements a special importdesign tag, that can handle language files like eZComponents. The
  * APF implementation includes the following principles:
  * <ul>
@@ -49,8 +46,6 @@ use InvalidArgumentException;
 class LanguageDependentImportTemplateTag extends Document {
 
    /**
-    * @public
-    *
     * Re-implements the onParseTime() method. Loads the desired template and parses the language
     * marker. By default the tag searches for a file with name "<template>.<language>.xml". If
     * this file is not found, the "dictionary.xml" is loaded, that must be located in parallel to
@@ -88,8 +83,6 @@ class LanguageDependentImportTemplateTag extends Document {
    }
 
    /**
-    * @protected
-    *
     * Replaces the language keys surrounded by "{{{" and "}}}" by a given XML string containing
     * the translations.
     *
@@ -113,12 +106,11 @@ class LanguageDependentImportTemplateTag extends Document {
    }
 
    /**
-    * @protected
-    *
     * Parses a dedicated language file defined by it's namespace and language file name.
     *
     * @param string $namespace the namespace of the language file
     * @param string $filename the name of the language file
+    *
     * @throws InvalidArgumentException In case the translation file cannot be found.
     *
     * @author Christian Achatz
@@ -150,13 +142,12 @@ class LanguageDependentImportTemplateTag extends Document {
    }
 
    /**
-    * @protected
-    *
     *  Replaces the language keys surrounded by "{{{" and "}}}" by a given XML string containing
     *  the translations.
     *
     * @param string $content the content to be translated
     * @param string $domDoc the DOM document created from the translation file
+    *
     * @return string $content the translated content
     *
     * @author Christian Achatz
@@ -177,12 +168,11 @@ class LanguageDependentImportTemplateTag extends Document {
    }
 
    /**
-    * @protected
-    *
     *  Returns the value of a desired attribute of the given SimpleXMLElement.
     *
     * @param \SimpleXMLElement $element the XML node
     * @param string $name the name of the desired node attribute
+    *
     * @return string $attributeValue the value of the node attribute
     *
     * @author Christian Achatz
@@ -197,6 +187,7 @@ class LanguageDependentImportTemplateTag extends Document {
             $attributeValue = $value;
          }
       }
+
       return $attributeValue;
 
    }

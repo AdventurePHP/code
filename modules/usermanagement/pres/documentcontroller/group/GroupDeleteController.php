@@ -26,9 +26,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class GroupDeleteController
- *
  * Implements the controller to delete a group.
  *
  * @author Christian Achatz
@@ -43,13 +40,13 @@ class GroupDeleteController extends UmgtBaseController {
       $groupId = RequestHandler::getValue('groupid');
 
       // load the current group and print the display name
-      $uM = &$this->getManager();
+      $uM = & $this->getManager();
       $group = $uM->loadGroupByID($groupId);
       $this->getLabel('display-name')->setPlaceHolder('display-name', $group->getDisplayName());
 
       // prepare the forms and execute action
-      $formNo = &$this->getForm('GroupDelNo');
-      $formYes = &$this->getForm('GroupDelYes');
+      $formNo = & $this->getForm('GroupDelNo');
+      $formYes = & $this->getForm('GroupDelYes');
 
       if ($formYes->isSent()) {
          $group = new UmgtGroup();

@@ -5,8 +5,6 @@ use APF\core\pagecontroller\Document;
 use APF\core\pagecontroller\TagLib;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (11.08.12)
  */

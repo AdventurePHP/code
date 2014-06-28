@@ -26,9 +26,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\user
- * @class UserDeleteController
- *
  * Implements the controller to delete a user.
  *
  * @author Christian Achatz

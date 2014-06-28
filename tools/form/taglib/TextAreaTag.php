@@ -1,30 +1,27 @@
 <?php
 namespace APF\tools\form\taglib;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\tools\form\taglib
- * @class TextAreaTag
- *
  * Represents a APF text area.
  *
  * @author Christian Schäfer
@@ -43,8 +40,6 @@ class TextAreaTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Returns the HTML source code of the text area.
     *
     * @return string HTML code of the text area.
@@ -58,14 +53,13 @@ class TextAreaTag extends AbstractFormControl {
    public function transform() {
       if ($this->isVisible) {
          return '<textarea ' . $this->getSanitizedAttributesAsString($this->attributes) . '>'
-               . $this->content . '</textarea>';
-   }
+         . $this->content . '</textarea>';
+      }
+
       return '';
    }
 
    /**
-    * @protected
-    *
     * Implements the presetting method for the text area.
     *
     * @author Christian Schäfer
@@ -80,8 +74,6 @@ class TextAreaTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Re-implements the retrieving of values for text area, because
     * the text area contains it's value in the content, not in an
     * attribute.
@@ -99,13 +91,12 @@ class TextAreaTag extends AbstractFormControl {
    }
 
    /**
-    * @public
-    *
     * Re-implements the setting of values for text area, because
     * the text area contains it's value in the content, not in an
     * attribute.
     *
     * @param string $value
+    *
     * @return AbstractFormControl
     *
     * @since 1.14
@@ -116,12 +107,11 @@ class TextAreaTag extends AbstractFormControl {
     */
    public function setValue($value) {
       $this->content = $value;
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * Let's check if the form:area was filled with content.
     *
     * @return bool True in case the control is filled, false otherwise.

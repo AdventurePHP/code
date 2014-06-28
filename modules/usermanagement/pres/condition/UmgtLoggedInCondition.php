@@ -24,9 +24,6 @@ use APF\modules\usermanagement\biz\model\UmgtUser;
 use APF\modules\usermanagement\pres\condition\UserDependentContentCondition;
 
 /**
- * @package APF\modules\usermanagement\pres\condition
- * @class UmgtLoggedInCondition
- *
  * Implements the decision logic, whether a user is logged in.
  *
  * @author Christian Achatz

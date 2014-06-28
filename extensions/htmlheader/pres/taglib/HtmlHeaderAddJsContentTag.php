@@ -25,9 +25,6 @@ use APF\extensions\htmlheader\biz\HtmlHeaderManager;
 use APF\extensions\htmlheader\biz\JsContentNode;
 
 /**
- * @package APF\extensions\htmlheader\pres\taglib
- * @class HtmlHeaderAddJsContentTag
- *
  * Taglib for adding static stylesheets to the html header.
  *
  * @example
@@ -44,7 +41,7 @@ class HtmlHeaderAddJsContentTag extends Document {
 
    public function transform() {
       /* @var $header HtmlHeaderManager */
-      $header = &$this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
+      $header = & $this->getServiceObject('APF\extensions\htmlheader\biz\HtmlHeaderManager');
 
       $node = new JsContentNode($this->getContent());
 
@@ -54,6 +51,7 @@ class HtmlHeaderAddJsContentTag extends Document {
 
       $node->setPriority($this->getAttribute('priority'));
       $header->addNode($node);
+
       return '';
    }
 

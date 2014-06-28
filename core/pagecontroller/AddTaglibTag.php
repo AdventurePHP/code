@@ -1,30 +1,27 @@
 <?php
 namespace APF\core\pagecontroller;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\core\pagecontroller
- * @class AddTaglibTag
- *
  * Represents the functionality of the core:addtaglib tag. Adds a further taglib to the known
  * tags of the tag's parent object. This can be used to enhance the known tag list if a
  * desired APF DOM node.
@@ -36,8 +33,6 @@ namespace APF\core\pagecontroller;
 class AddTaglibTag extends Document {
 
    /**
-    * @public
-    *
     * Implements the onParseTime() method of the Document class. Adds the desired
     * taglib to the parent object.
     *
@@ -80,8 +75,6 @@ class AddTaglibTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Implements the Document's transform() method. Returns an empty string, because the addtaglib
     * tag generates no output.
     *

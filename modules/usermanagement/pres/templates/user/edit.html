@@ -1,14 +1,16 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\user\UserEditController"
+class="APF\modules\usermanagement\pres\documentcontroller\user\UserEditController"
 @>
-<h3><html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.user.edit.headline"/></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.user.edit.headline"/>
+</h3>
 <p>
    <html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.user.edit.intro.text"/>
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.user.edit.intro.text"/>
 </p>
-<core:appendnode namespace="APF\modules\usermanagement\pres\templates\user" template="user_form" />
+<core:appendnode namespace="APF\modules\usermanagement\pres\templates\user" template="user_form"/>

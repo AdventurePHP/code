@@ -24,9 +24,6 @@ use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class RoleDetailsController
- *
  * Implements the controller to list the existing roles.
  *
  * @author Christian Achatz

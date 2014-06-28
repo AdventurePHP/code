@@ -1,23 +1,27 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\role\RoleEditController"
+class="APF\modules\usermanagement\pres\documentcontroller\role\RoleEditController"
 @>
-<h3><html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.role.edit.headline"/></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.role.edit.headline"/>
+</h3>
 <p>
    <html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.role.edit.intro.text"/>
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.role.edit.intro.text"/>
 </p>
 <html:form name="RoleEdit" method="post">
    <div>
       <p>
-         <label><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.role.edit.display-name.label"/></label>
+         <label>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.role.edit.display-name.label"/>
+         </label>
          <form:text name="DisplayName" maxlength="100"/>
          <form:addvalidator
                class="APF\tools\form\validator\TextLengthValidator"
@@ -26,10 +30,12 @@
                />
       </p>
       <p>
-         <label><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.role.edit.description.label"/></label>
+         <label>
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.role.edit.description.label"/>
+         </label>
          <form:area name="Description"/>
       </p>
       <p>

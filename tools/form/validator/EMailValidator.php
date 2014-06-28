@@ -23,9 +23,6 @@ namespace APF\tools\form\validator;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package APF\tools\form\validator
- * @class EMailValidator
- *
  * Validates a given form control to contain a syntactically correct email.
  *
  * @author Christian Achatz
@@ -38,6 +35,7 @@ class EMailValidator extends TextFieldValidator {
       if (!empty($input) && preg_match('/^([a-zA-Z0-9\.\_\-]+)@([a-zA-Z0-9\.\-]+\.[A-Za-z][A-Za-z]+)$/', $input)) {
          return true;
       }
+
       return false;
    }
 

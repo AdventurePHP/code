@@ -1,5 +1,5 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyListController"
+class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyListController"
 @>
 <p>
    <html:getstring
@@ -14,7 +14,7 @@
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.list.filter.label"/>
-         <form:select name="proxytypeid" />
+         <form:select name="proxytypeid"/>
          <form:button name="go">
             <button:getstring
                   namespace="APF\modules\usermanagement\pres"
@@ -26,28 +26,36 @@
 </p>
 <table class="vis-def">
    <thead>
-      <tr>
-         <td>&nbsp;</td>
-         <td><html:getstring
-                namespace="APF\modules\usermanagement\pres"
-                config="labels.ini"
-                entry="frontend.proxy.list.proxy-definition.label"/></td>
-         <td><html:getstring
-                namespace="APF\modules\usermanagement\pres"
-                config="labels.ini"
-                entry="frontend.proxy.list.users.label"/></td>
-         <td><html:getstring
-                namespace="APF\modules\usermanagement\pres"
-                config="labels.ini"
-                entry="frontend.proxy.list.groups.label"/></td>
-         <td><html:getstring
-                namespace="APF\modules\usermanagement\pres"
-                config="labels.ini"
-                entry="frontend.proxy.list.actions.label"/></td>
-      </tr>
+   <tr>
+      <td>&nbsp;</td>
+      <td>
+         <html:getstring
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.proxy.list.proxy-definition.label"/>
+      </td>
+      <td>
+         <html:getstring
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.proxy.list.users.label"/>
+      </td>
+      <td>
+         <html:getstring
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.proxy.list.groups.label"/>
+      </td>
+      <td>
+         <html:getstring
+               namespace="APF\modules\usermanagement\pres"
+               config="labels.ini"
+               entry="frontend.proxy.list.actions.label"/>
+      </td>
+   </tr>
    </thead>
    <tbody>
-      ${ProxyList}
+   ${ProxyList}
    </tbody>
 </table>
 
@@ -73,49 +81,49 @@
          <a href="${proxy_details}">
             <umgt:media filename="details.png">
                <media:getstring
-                   namespace="APF\modules\usermanagement\pres"
-                   config="labels.ini"
-                   entry="frontend.proxy.list.action.details.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.proxy.list.action.details.label"/>
             </umgt:media>
          </a>
          <a href="${proxy_delete}">
             <umgt:media filename="delete.png">
                <media:getstring
-                   namespace="APF\modules\usermanagement\pres"
-                   config="labels.ini"
-                   entry="frontend.proxy.list.action.delete.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.proxy.list.action.delete.label"/>
             </umgt:media>
          </a>
          <a href="${proxy_add_user}">
             <umgt:media filename="group_add_user.png">
                <media:getstring
-                   namespace="APF\modules\usermanagement\pres"
-                   config="labels.ini"
-                   entry="frontend.proxy.list.action.add-users-to-proxy.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.proxy.list.action.add-users-to-proxy.label"/>
             </umgt:media>
          </a>
          <a href="${proxy_remove_user}">
             <umgt:media filename="group_remove_user.png">
                <media:getstring
-                   namespace="APF\modules\usermanagement\pres"
-                   config="labels.ini"
-                   entry="frontend.proxy.list.action.remove-users-from-proxy.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.proxy.list.action.remove-users-from-proxy.label"/>
             </umgt:media>
          </a>
          <a href="${proxy_add_group}">
             <umgt:media filename="add_group.png">
                <media:getstring
-                   namespace="APF\modules\usermanagement\pres"
-                   config="labels.ini"
-                   entry="frontend.proxy.list.action.add-groups-to-proxy.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.proxy.list.action.add-groups-to-proxy.label"/>
             </umgt:media>
          </a>
          <a href="${proxy_remove_group}">
             <umgt:media filename="remove_group.png">
                <media:getstring
-                   namespace="APF\modules\usermanagement\pres"
-                   config="labels.ini"
-                   entry="frontend.proxy.list.action.remove-groups-from-proxy.label"/>
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.proxy.list.action.remove-groups-from-proxy.label"/>
             </umgt:media>
          </a>
       </td>

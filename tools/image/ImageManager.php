@@ -23,9 +23,6 @@ namespace APF\tools\image;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\image
- * @class ImageManager
- *
  * Provides methods to manipulate images.
  *
  * @author Christian Schäfer
@@ -43,9 +40,6 @@ class ImageManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Returns information about an image. The return list contains the following offsets:
     * <ul>
     *   <li>width: the width of the image</li>
@@ -59,6 +53,7 @@ class ImageManager {
     *
     * @param string $image a full qualified image path.
     * @param string $attributeName the name of the attribute, that should be returned.
+    *
     * @return string[] The attributes of an image.
     * @throws InvalidArgumentException In case the applied image or the applied attribute does not exist.
     *
@@ -74,8 +69,8 @@ class ImageManager {
       // check if the image is present on disk
       if (!file_exists($image)) {
          throw new InvalidArgumentException('[ImageManager::showImageAttributes()] The given '
-            . 'image ("' . $image . '") does not exist! Hence, no attributes can be analyzed.',
-            E_USER_ERROR);
+               . 'image ("' . $image . '") does not exist! Hence, no attributes can be analyzed.',
+               E_USER_ERROR);
       }
 
       // declare image flags
@@ -90,7 +85,7 @@ class ImageManager {
       // analyze the image attributes
       if (($attributes = getimagesize($image)) === false) {
          throw new InvalidArgumentException('[ImageManager::showImageAttributes()] The attributes of the image ("'
-         . $image . '") cannot be analyzed since it is corrupt!');
+               . $image . '") cannot be analyzed since it is corrupt!');
       }
 
       // image define the image dimensions
@@ -135,9 +130,6 @@ class ImageManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Resizes an image to the given dimensions. If a target image is given, the file is saved to
     * the desired file.
     *
@@ -147,6 +139,7 @@ class ImageManager {
     * @param string $targetImage full qualified path to the target image.
     * @param int $jpgQuality The jpg quality (0-100).
     * @param int $pngCompression The png compression level (0-9).
+    *
     * @throws InvalidArgumentException In case the applied image does not exist.
     *
     * @author Christian Achatz
@@ -158,7 +151,7 @@ class ImageManager {
       // check if the image is present on disk
       if (!file_exists($sourceImage)) {
          throw new InvalidArgumentException('[ImageManager::resizeImage()] The given image ("'
-         . $sourceImage . '") does not exist! Hence, it cannot be adjusted.', E_USER_ERROR);
+               . $sourceImage . '") does not exist! Hence, it cannot be adjusted.', E_USER_ERROR);
       }
 
       // gather the current dimensions of the image
@@ -221,7 +214,7 @@ class ImageManager {
                break;
             default:
                throw new InvalidArgumentException('[ImageManager::resizeImage()] The targetImage extension ("'
-               . $targetImageType . '") does not match "jpg", "png", or "gif"!', E_USER_ERROR);
+                     . $targetImageType . '") does not match "jpg", "png", or "gif"!', E_USER_ERROR);
          }
       } else {
          switch ($sourceImageType) {

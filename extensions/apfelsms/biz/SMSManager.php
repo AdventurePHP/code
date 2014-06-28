@@ -12,12 +12,10 @@ use APF\tools\request\RequestHandler;
 use InvalidArgumentException;
 
 /**
- * @desc
  * Please configure the SMSManager as DIService in namespace 'extensions::apfelsms' with name 'Manager'.
  * You need to inject an SMSMapper using setMapper() and a site using setSite().
  * Please also configure setup() as setupmethod in your DIService configuration.
  *
- * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version :  v0.1 (06.06.12)
  *             v0.2 (20.06.12) Added language support in getInstance() and Constructor

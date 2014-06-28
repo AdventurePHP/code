@@ -23,9 +23,6 @@ namespace APF\tools\soap;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\tools\soap
- * @class WsdlObjectMapping
- *
  * Implements a wrapper class for an WSDL-to-PHP object mapping that can be registered with the APFSoapClient in
  * order to transform WSDL types to PHP objects.
  * <p/>
@@ -83,10 +80,12 @@ class WsdlObjectMapping extends APFObject {
 
    /**
     * @param string $phpClassName The fully qualified name of the PHP class.
+    *
     * @return WsdlObjectMapping This object for further usage.
     */
    public function setPhpClassName($phpClassName) {
       $this->phpClassName = $phpClassName;
+
       return $this;
    }
 
@@ -96,10 +95,12 @@ class WsdlObjectMapping extends APFObject {
 
    /**
     * @param string $wsdlType The name of the WSDL type.
+    *
     * @return WsdlObjectMapping This object for further usage.
     */
    public function setWsdlType($wsdlType) {
       $this->wsdlType = $wsdlType;
+
       return $this;
    }
 

@@ -23,9 +23,6 @@ namespace APF\extensions\htmlheader\biz;
 use APF\extensions\htmlheader\biz\HtmlNode;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class CanonicalNode
- *
  * Represents a canonical node (e.g. for avoiding duplicate content in search enginges)
  *
  * @author Ralf Schubert

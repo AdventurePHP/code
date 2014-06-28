@@ -23,9 +23,6 @@ namespace APF\modules\guestbook2009\biz;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\modules\guestbook2009\biz
- * @class GuestbookModel
- *
  * The GuestbookModel represents the application status. It is used to store the
  * id of the guestbook.
  *

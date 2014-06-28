@@ -23,9 +23,6 @@ namespace APF\tools\cookie;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\cookie
- * @class Cookie
- *
  * The Cookie is a tool, that provides sophisticated cookie handling. The methods included allow you to
  * create, update and delete cookies using a clean API. Usage:
  * <pre>$c = new Cookie('my_cookie');
@@ -80,8 +77,6 @@ class Cookie {
    protected $expireTime;
 
    /**
-    * @public
-    *
     * Let's you create a Cookie.
     *
     * @param string $name The name of the cookie.
@@ -113,8 +108,6 @@ class Cookie {
    }
 
    /**
-    * @public
-    *
     * Defines the value of the cookie.
     *
     * @param string $value The value of the cookie,
@@ -131,8 +124,6 @@ class Cookie {
    }
 
    /**
-    * @public
-    *
     * Returns the value of the desired key within the current namespace.
     *
     * @param string $default The default value in case the cookie is not existing.
@@ -150,8 +141,6 @@ class Cookie {
    }
 
    /**
-    * @public
-    *
     * Deletes the Cookie.
     *
     * @return bool True in case the operation has been successful, false otherwise.

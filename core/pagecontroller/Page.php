@@ -1,30 +1,27 @@
 <?php
 namespace APF\core\pagecontroller;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\core\pagecontroller
- * @class Page
- *
  * The Page object represents the root node of  a web page. It is used as a container for the
  * initial document (root document) and is responsible for creating and transforming the root
  * document.
@@ -43,8 +40,6 @@ class Page extends APFObject {
    private $document;
 
    /**
-    * @public
-    *
     * Returns the root document of the APF DOM tree.
     *
     * @return Document The root document of the page controller's APF DOM tree.
@@ -58,8 +53,6 @@ class Page extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Creates the initial document (root) of the page object and loads the initial template. If
     * no context was set before, the namespace of the initial template is taken instead.
     *
@@ -101,8 +94,6 @@ class Page extends APFObject {
    }
 
    /**
-    * @public
-    *
     * Transforms the APF DOM tree of the current page. Returns the content of the transformed document.
     *
     * @return string The content of the transformed page

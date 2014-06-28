@@ -1,30 +1,27 @@
 <?php
 namespace APF\core\filter;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\core\filter
- * @class FilterChain
- *
  * Defines the structure of an APF filter chain used for input and output
  * filter chains.
  * <p/>
@@ -39,8 +36,6 @@ namespace APF\core\filter;
 interface FilterChain {
 
    /**
-    * @public
-    *
     * Executes the filter chain including all registered filters. The given
     * argument takes the input that is to be filtered and the return value is
     * the result of the filter chain execution.
@@ -48,6 +43,7 @@ interface FilterChain {
     * To register custom filters, use the <em>addFilter()</em> method.
     *
     * @param string $input The input to filter.
+    *
     * @return string The output of the filter chain
     *
     * @author Christian Achatz
@@ -57,12 +53,11 @@ interface FilterChain {
    public function filter($input);
 
    /**
-    * @public
-    *
     * Let's you add a filter to the end of the chain. Please note, that
     * the execution order corresponds to the order the filters are added.
     *
     * @param ChainedContentFilter $filter The filter implementation to add.
+    *
     * @return FilterChain The current filter chain instance for further usage.
     *
     * @author Christian Achatz
@@ -72,12 +67,11 @@ interface FilterChain {
    public function &appendFilter(ChainedContentFilter $filter);
 
    /**
-    * @public
-    *
     * Let's you add a filter to the beginning of the chain. Please note, that
     * the execution order corresponds to the order the filters are added.
     *
     * @param ChainedContentFilter $filter The filter implementation to add.
+    *
     * @return FilterChain The current filter chain instance for further usage.
     *
     * @author Christian Achatz
@@ -87,12 +81,11 @@ interface FilterChain {
    public function &prependFilter(ChainedContentFilter $filter);
 
    /**
-    * @public
-    *
     * This method can be used to remove a filter from the chain. The filter
     * to remove is addressed by it's implementation class' name.
     *
     * @param string $class The class name of the filter to remove from the chain.
+    *
     * @return FilterChain The current filter chain instance for further usage.
     *
     * @author Christian Achatz

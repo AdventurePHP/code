@@ -6,7 +6,6 @@ use APF\tools\string\StringAssistant;
 
 
 /**
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version:   v0.1 (08.08.2012)
  *             v.02 (15.05.2013) Added support to keep certain request parameters in url

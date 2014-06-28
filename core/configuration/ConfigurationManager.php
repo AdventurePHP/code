@@ -1,30 +1,27 @@
 <?php
 namespace APF\core\configuration;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\core\configuration
- * @class ConfigurationManager
- *
  * This class represents the central APF configuration facility introduced in release 1.13
  * to have a clean and flexible way of multi-extension configuration support.
  * <p/>
@@ -43,6 +40,7 @@ final class ConfigurationManager {
    /**
     * Contains the registered providers as an associative array mapping the file extension
     * to the appropriate provider.
+    *
     * @var ConfigurationProvider[] The configuration provider instances.
     */
    private static $PROVIDER = array();
@@ -53,9 +51,6 @@ final class ConfigurationManager {
    private static $CONFIG_CACHE = array();
 
    /**
-    * @public
-    * @static
-    *
     * Allows to register a configuration provider that is specified by the
     * ConfigurationProvider interface. Please note, that the extension is
     * the file extension of the configuration file.
@@ -74,9 +69,6 @@ final class ConfigurationManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Allows to un-register a configuration provider specified by the extension.
     *
     * @param string $extension The file extension.
@@ -90,9 +82,6 @@ final class ConfigurationManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Returns a list of registered providers containing the file extensions the providers
     * are registered for.
     *
@@ -107,12 +96,10 @@ final class ConfigurationManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Returns the configuration provider specified by the given extension.
     *
     * @param string $extension The extension the provider is registered for.
+    *
     * @return ConfigurationProvider The desired configuration provider.
     * @throws ConfigurationException In case the provider is not registered.
     *
@@ -125,9 +112,6 @@ final class ConfigurationManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Delegates configuration loading to the specified provider.
     *
     * @param string $namespace The namespace of the configuration.
@@ -135,6 +119,7 @@ final class ConfigurationManager {
     * @param string $language The current application's language.
     * @param string $environment The environment, the applications runs on.
     * @param string $name The name of the configuration to load including it's extension.
+    *
     * @return Configuration The desired configuration.
     *
     * @author Christian Achatz
@@ -146,13 +131,11 @@ final class ConfigurationManager {
       if (!isset(self::$CONFIG_CACHE[$key])) {
          self::$CONFIG_CACHE[$key] = self::getProvider($name)->loadConfiguration($namespace, $context, $language, $environment, $name);
       }
+
       return self::$CONFIG_CACHE[$key];
    }
 
    /**
-    * @public
-    * @static
-    *
     * Delegates the configuration saving to the specified provider.
     *
     * @param string $namespace The namespace of the configuration.
@@ -173,9 +156,6 @@ final class ConfigurationManager {
    }
 
    /**
-    * @public
-    * @static
-    *
     * Delegates the configuration deleting to the specified provider.
     *
     * @param string $namespace The namespace of the configuration.
@@ -195,9 +175,6 @@ final class ConfigurationManager {
    }
 
    /**
-    * @static
-    * @private
-    *
     * Calculates the cache key for the current config.
     *
     * @param string $namespace The namespace of the configuration.
@@ -205,6 +182,7 @@ final class ConfigurationManager {
     * @param string $language The current application's language.
     * @param string $environment The environment, the applications runs on.
     * @param string $name The name of the configuration to load including it's extension.
+    *
     * @return string The case key for the current config.
     *
     * @author Christian Achatz
@@ -216,9 +194,6 @@ final class ConfigurationManager {
    }
 
    /**
-    * @private
-    * @static
-    *
     * Returns a configuration provider identified by the given file extension. In case no
     * provider can be found, the first registered provider is returned to have a fallback
     * for pre 1.13 configuration style and to enable the developer to specify fallback
@@ -231,6 +206,7 @@ final class ConfigurationManager {
     * }</code>
     *
     * @param string $name The name of the configuration file to load.
+    *
     * @return ConfigurationProvider The desired configuration provider.
     * @throws ConfigurationException In case no provider can be found.
     */
@@ -257,7 +233,7 @@ final class ConfigurationManager {
 
       // In case, no fallback is possible, we have to end here.
       throw new ConfigurationException('Provider with extension "' . $ext . '" is not registered!',
-         E_USER_ERROR);
+            E_USER_ERROR);
    }
 
 }

@@ -26,7 +26,7 @@
 (function ($) {
     $(document).ready(function () {
         jQuery.APFFormValidator.addClientValidator('CheckboxValidator', {
-            validate:function (control, options) {
+            validate: function (control, options) {
                 if (control[0].checked) {
                     return true;
                 }

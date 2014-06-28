@@ -26,9 +26,6 @@ use APF\core\configuration\ConfigurationManager;
 use APF\core\configuration\ConfigurationProvider;
 
 /**
- * @package APF\core\configuration\provider\apc
- * @class ApcConfigurationProvider
- *
  * Implements a configuration provider to store a configuration within an APC store.
  * This is done by using another configuration provider to read the persistent configuration
  * from.
@@ -55,8 +52,6 @@ class ApcConfigurationProvider implements ConfigurationProvider {
    private $expireTime = 3600;
 
    /**
-    * @public
-    *
     * Initializes the memcached configuration provider.
     *
     * @param string $persistenceProviderExtension The name of the extension of the provider to use to load the persistent config with.
@@ -84,12 +79,11 @@ class ApcConfigurationProvider implements ConfigurationProvider {
    }
 
    /**
-    * @private
-    *
     * Remaps the configuration file name to the extension of the persistent configuration
     * file to be able to load and store the physical file.
     *
     * @param string $name The given in-memory configuration file name.
+    *
     * @return string The remapped configuration file name.
     *
     * @author Christian Achatz

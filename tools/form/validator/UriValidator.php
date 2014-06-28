@@ -23,9 +23,6 @@ namespace APF\tools\form\validator;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package APF\tools\form\validator
- * @class UriValidator
- *
  * Validates a given form control to contain a syntactically correct uri.
  *
  * @author Ralf Schubert
@@ -40,6 +37,7 @@ class UriValidator extends TextFieldValidator {
       ) {
          return true;
       }
+
       return false;
    }
 

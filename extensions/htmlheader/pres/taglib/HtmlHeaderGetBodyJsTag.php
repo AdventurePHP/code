@@ -25,9 +25,6 @@ use APF\core\pagecontroller\Document;
 use APF\extensions\htmlheader\pres\filter\HtmlHeaderOutputFilter;
 
 /**
- * @package APF\extensions\htmlheader\pres\taglib
- * @class HtmlHeaderGetBodyJsTag
- *
  * Taglib for receiving javascript definitions which should be placed at
  * the end of the body.
  *
@@ -41,6 +38,7 @@ use APF\extensions\htmlheader\pres\filter\HtmlHeaderOutputFilter;
  * Version 0.2, 21.12.2012 (Added context and language to output filter just as in HtmlHeaderGetHeadTag)<br />
  */
 class HtmlHeaderGetBodyJsTag extends Document {
+
    const HTML_BODYJS_INDICATOR = '<!--HTMLHEADER_GETBODYJS_TAG-->';
 
    public function transform() {

@@ -24,9 +24,6 @@ use APF\extensions\htmlheader\biz\HtmlNode;
 use APF\extensions\htmlheader\biz\CssNode;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class CssContentNode
- *
  * Represents a css node with explicit content.
  *
  * @author Christian Achatz

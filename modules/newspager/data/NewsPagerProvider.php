@@ -27,9 +27,6 @@ use APF\tools\filesystem\FilesystemItem;
 use APF\tools\filesystem\Folder;
 
 /**
- * @package APF\modules\newspager\data
- * @class NewsPagerProvider
- *
  * Data layer component for loading the news page objects.<br />
  *
  * @author Christian Achatz
@@ -39,12 +36,11 @@ use APF\tools\filesystem\Folder;
 class NewsPagerProvider extends APFObject {
 
    /**
-    * @public
-    *
     * Loads a news page object.
     *
     * @param string $dataDir Defines the dir, where the news content is located.
     * @param int $page Desired page number.
+    *
     * @return NewsItem The NewsItem domain object.
     * @throws IncludeException In case no news files are found.
     *
@@ -79,7 +75,7 @@ class NewsPagerProvider extends APFObject {
 
       if ($newsCount == 0) {
          throw new IncludeException('[NewsPagerProvider::getNewsByPage()] No news files are '
-            . 'given for language ' . $this->getLanguage(), E_USER_ERROR);
+               . 'given for language ' . $this->getLanguage(), E_USER_ERROR);
       }
 
       // if page number is lower then zero, correct it!

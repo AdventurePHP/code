@@ -27,9 +27,6 @@ use APF\tools\link\Url;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\pager\pres\documentcontroller
- * @class AdvancedPagerController
- *
  * Implements a document controller displaying the model information of the pager. This
  * includes:
  * <ul>
@@ -97,7 +94,7 @@ class AdvancedPagerController extends BaseDocumentController {
          $pageCount = $pages[$i]->getPageCount();
       }
       $content->setPlaceHolder('Content', $buffer);
-      
+
       // display previous page link
       if ($currentPage > 1) {
 
@@ -114,7 +111,7 @@ class AdvancedPagerController extends BaseDocumentController {
          $prevInactive = & $this->getTemplate('PreviousPage_Inactive');
          $content->setPlaceHolder('PreviousPage', $prevInactive->transformTemplate());
       }
-      
+
       // display first page link
       if ($currentPage > 2) {
          $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($pageUrlParameterName => '1')));
@@ -145,7 +142,7 @@ class AdvancedPagerController extends BaseDocumentController {
          $nextInactive = & $this->getTemplate('NextPage_Inactive');
          $content->setPlaceHolder('NextPage', $nextInactive->transformTemplate());
       }
-      
+
       // display last page link
       if ($currentPage < $pageCount - 1) {
          $link = LinkGenerator::generateUrl(Url::fromCurrent()->mergeQuery(array($pageUrlParameterName => $pageCount)));

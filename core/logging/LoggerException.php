@@ -23,9 +23,6 @@ namespace APF\core\logging;
 use Exception;
 
 /**
- * @package APF\core\logging
- * @class LoggerException
- *
  * Defines a custom exception for the logger component.
  *
  * @author Christian Achatz
@@ -33,4 +30,5 @@ use Exception;
  * Version 0.1, 12.04.2010<br />
  */
 class LoggerException extends Exception {
+
 }

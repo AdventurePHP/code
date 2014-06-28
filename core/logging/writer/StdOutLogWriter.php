@@ -23,9 +23,6 @@ namespace APF\core\logging\writer;
 use APF\core\logging\LogWriter;
 
 /**
- * @package APF\core\logging\writer
- * @class StdOutLogWriter
- *
  * Implements a log writer to persist the applied entries to stdout.
  *
  * @author Christian Achatz

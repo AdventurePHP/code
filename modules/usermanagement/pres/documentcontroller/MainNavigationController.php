@@ -23,9 +23,6 @@ namespace APF\modules\usermanagement\pres\documentcontroller;
 use APF\modules\usermanagement\pres\documentcontroller\UmgtBaseController;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class MainNavigationController
- *
  * Displays the user management menu.
  *
  * @author Christian Achatz
@@ -37,9 +34,9 @@ class MainNavigationController extends UmgtBaseController {
    public function transformContent() {
 
       // define the general param exclusion array
-      $generalExclusion = array('userid' => '', 'groupid' => '', 'roleid' => '', 'permissionid' => '', 'proxyid' => '',
-         'userview' => '', 'groupview' => '', 'roleview' => '', 'permissionsetview' => '',
-         'permissionview' => '', 'proxyview' => '');
+      $generalExclusion = array('userid'         => '', 'groupid' => '', 'roleid' => '', 'permissionid' => '', 'proxyid' => '',
+                                'userview'       => '', 'groupview' => '', 'roleview' => '', 'permissionsetview' => '',
+                                'permissionview' => '', 'proxyview' => '');
 
       // display the links
       $this->setPlaceHolder('manage_user', $this->generateLink(array_merge($generalExclusion, array('mainview' => 'user'))));

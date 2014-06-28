@@ -2,9 +2,6 @@
 namespace APF\extensions\postbox\biz;
 
 /**
- * @package APF\extensions\postbox\biz
- * @class RecipientList
- *
  * This class represents the "APF\extensions\postbox\biz\RecipientList" domain object.
  * <p/>
  * Please use this class to add your own functionality.

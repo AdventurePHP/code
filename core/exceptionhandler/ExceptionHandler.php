@@ -23,9 +23,6 @@ namespace APF\core\exceptionhandler;
 use Exception;
 
 /**
- * @package APF\core\exceptionhandler
- * @class ExceptionHandler
- *
  * Describes the signature of any APF exception handler.
  *
  * @author Christian Achatz
@@ -35,8 +32,6 @@ use Exception;
 interface ExceptionHandler {
 
    /**
-    * @public
-    *
     * This method is intended to take the exception's information and processes it.
     *
     * @param Exception $exception The current exception.

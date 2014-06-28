@@ -34,17 +34,17 @@
          * ValidatorTypes: Contains all Clientvalidators, which have been loaded and could be used.
          * Valmarkerclasses: Contains the valmarkerclasses of each control .
          */
-        Validators:[],
-        ValidatorTypes:[],
-        Valmarkerclasses:{},
+        Validators: [],
+        ValidatorTypes: [],
+        Valmarkerclasses: {},
 
         /* adds a client validator, so it can be used to validate controls */
-        addClientValidator:function (name, validator) {
+        addClientValidator: function (name, validator) {
             jQuery.APFFormValidator.ValidatorTypes[name] = validator;
             return $(this);
         },
         /*Adds a validator to the given control*/
-        addValidator:function (buttonName, controlName, validatorType, validatorOptions) {
+        addValidator: function (buttonName, controlName, validatorType, validatorOptions) {
             if (typeof jQuery.APFFormValidator.Validators[buttonName] == 'undefined') {
                 jQuery.APFFormValidator.Validators[buttonName] = [];
             }
@@ -56,17 +56,17 @@
             return $(this);
         },
         /* Adds a valmarkerclass to a single control */
-        addValmarkerclass:function (controlName, valmarkerclass) {
+        addValmarkerclass: function (controlName, valmarkerclass) {
             jQuery.APFFormValidator.Valmarkerclasses[controlName] = valmarkerclass;
             return $(this);
         },
         /* Adds a complete set of valmarkerclasses. give an objekt like: {'fieldname':'classname','field2':'class'}*/
-        addValmarkerclasses:function (valmarkerclasses) {
+        addValmarkerclasses: function (valmarkerclasses) {
             $.extend(jQuery.APFFormValidator.Valmarkerclasses, valmarkerclasses);
             return $(this);
         },
         /*Responsible for checking validation status of a whole form*/
-        validate:function (buttonName) {
+        validate: function (buttonName) {
             var isValid = true;
             for (var controlName in jQuery.APFFormValidator.Validators[buttonName]) {
                 var control = $(this).find(':input[name="' + controlName + '"]');
@@ -98,7 +98,7 @@
         },
 
         /* Responsible for checking validation status of a single form element*/
-        validateControl:function (buttonName, control) {
+        validateControl: function (buttonName, control) {
             var controlName = $(control).attr('name');
             /* We need a special check for date-controls, because we only can match the span around it */
             if (typeof(controlName) === 'undefined') {
@@ -120,7 +120,7 @@
             return true;
         },
         /* Marks an control as invalid and calls ValidationNotify event */
-        markAsInvalid:function () {
+        markAsInvalid: function () {
             $(this).each(function () {
                 switch (this.tagName.toLowerCase()) {
                     case 'textarea':
@@ -140,14 +140,14 @@
                 }
 
                 $(this).trigger('ValidationNotify', {
-                    valid:false
+                    valid: false
                 });
             });
 
             return $(this);
         },
         /* Marks an control as valid and calls ValidationNotify event */
-        markAsValid:function () {
+        markAsValid: function () {
             $(this).each(function () {
                 switch (this.tagName.toLowerCase()) {
                     case 'textarea':
@@ -167,13 +167,13 @@
                 }
 
                 $(this).trigger('ValidationNotify', {
-                    valid:true
+                    valid: true
                 });
             });
             return $(this);
         },
         /* Handles Events of clientlistener (shows or hides listener)*/
-        handleClientListenerEvent:function (listener, param) {
+        handleClientListenerEvent: function (listener, param) {
             listener = $(listener);
 
             var anprop = listener.data("animationproperties");

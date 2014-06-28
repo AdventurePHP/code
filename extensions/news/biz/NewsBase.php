@@ -10,9 +10,6 @@ namespace APF\extensions\news\biz;
 use APF\modules\genericormapper\data\GenericDomainObject;
 
 /**
- * @package APF\extensions\news\biz
- * @class NewsBase
- *
  * This class provides the descriptive getter and setter methods for the "APF\extensions\news\biz\News" domain object.
  */
 abstract class NewsBase extends GenericDomainObject {

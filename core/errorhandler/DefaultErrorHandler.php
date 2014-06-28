@@ -28,9 +28,6 @@ use APF\core\registry\Registry;
 use APF\core\singleton\Singleton;
 
 /**
- * @package APF\core\errorhandler
- * @class DefaultErrorHandler
- *
  * Implements the default error handler of the APF. Logs errors to a logfile and displays the
  * standard error page.
  *
@@ -76,8 +73,6 @@ class DefaultErrorHandler implements ErrorHandler {
    }
 
    /**
-    * @protected
-    *
     * Creates a log entry containing the error occurred.
     *
     * @author Christian Schäfer
@@ -102,8 +97,6 @@ class DefaultErrorHandler implements ErrorHandler {
    }
 
    /**
-    * @protected
-    *
     * Creates the error page.
     *
     * @return string The APF error page.
@@ -142,8 +135,6 @@ class DefaultErrorHandler implements ErrorHandler {
    }
 
    /**
-    * @private
-    *
     * Generates the error id.
     *
     * @return string The unique error id.

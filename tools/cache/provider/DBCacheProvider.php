@@ -27,9 +27,6 @@ use APF\tools\cache\CacheKey;
 use APF\tools\cache\CacheProvider;
 
 /**
- * @package APF\tools\cache\provider
- * @class DBCacheProvider
- *
  * Implements the cache reader for normal content to the database.
  *
  * @author Christian Achatz
@@ -45,7 +42,7 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
       $tableName = $this->getConfigAttribute('Table');
 
       // initialize database connection
-      $db = &$this->getDatabaseConnection();
+      $db = & $this->getDatabaseConnection();
 
       // read from the database
       $select = 'SELECT `value` FROM `' . $tableName . '`
@@ -67,7 +64,7 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
       $tableName = $this->getConfigAttribute('Table');
 
       // initialize database connection
-      $db = &$this->getDatabaseConnection();
+      $db = & $this->getDatabaseConnection();
 
       // insert into the the database
       $select = 'SELECT `value` FROM `' . $tableName . '`
@@ -93,6 +90,7 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
       }
 
       $db->executeTextStatement($stmt);
+
       return true;
 
    }
@@ -104,7 +102,7 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
       $tableName = $this->getConfigAttribute('Table');
 
       // initialize database connection
-      $db = &$this->getDatabaseConnection();
+      $db = & $this->getDatabaseConnection();
 
       if ($cacheKey === null) {
          $delete = 'DELETE FROM `' . $tableName . '`
@@ -117,13 +115,12 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
                           `cachekey` = \'' . $cacheKey->getKey() . '\';';
       }
       $db->executeTextStatement($delete);
+
       return true;
 
    }
 
    /**
-    * @protected
-    *
     * Returns the database connection need.
     *
     * @return AbstractDatabaseHandler The database connection.
@@ -135,7 +132,8 @@ class DBCacheProvider extends CacheBase implements CacheProvider {
    protected function &getDatabaseConnection() {
       $connectionKey = $this->getConfigAttribute('Connection');
       /* @var $cM ConnectionManager */
-      $cM = &$this->getServiceObject('APF\core\database\ConnectionManager');
+      $cM = & $this->getServiceObject('APF\core\database\ConnectionManager');
+
       return $cM->getConnection($connectionKey);
    }
 

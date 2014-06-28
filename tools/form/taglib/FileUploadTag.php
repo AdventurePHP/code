@@ -24,9 +24,6 @@ use APF\tools\form\FormException;
 use APF\tools\form\model\FileModel;
 
 /**
- * @package APF\tools\form\taglib
- * @class FileUploadTag
- *
  * Represents the APF form file field.
  *
  * @author Christian Schäfer, Ralf Schubert
@@ -48,8 +45,6 @@ class FileUploadTag extends TextFieldTag {
    }
 
    /**
-    * @public
-    *
     * Executes the presetting and validation. Adds the "enctype" to the form,
     * so that the developer must not care about that!
     *
@@ -64,8 +59,6 @@ class FileUploadTag extends TextFieldTag {
    }
 
    /**
-    * @public
-    *
     * Ensures that name does not contain brackets [] to be able to address it
     * via plain name
     *
@@ -91,8 +84,6 @@ class FileUploadTag extends TextFieldTag {
    }
 
    /**
-    * @public
-    *
     * Returns the HTML code of the file selection field.
     *
     * @return string The HTML code of the file field.
@@ -118,8 +109,6 @@ class FileUploadTag extends TextFieldTag {
    }
 
    /**
-    * @public
-    *
     * Indicates, whether a file has been uploaded (true) or not (false).
     *
     * @return boolean Returns TRUE if a file has been transferred, FALSE otherwise.
@@ -143,8 +132,6 @@ class FileUploadTag extends TextFieldTag {
    }
 
    /**
-    * @public
-    *
     * Returns the File Domain Object. If multiple files where uploaded
     * this function only returns the first file. If you want to retrieve all
     * files, use "getFiles()" instead.
@@ -171,8 +158,6 @@ class FileUploadTag extends TextFieldTag {
    }
 
    /**
-    * @public
-    *
     * Returns an array of File Domain Objects.
     *
     * @return FileModel[]|null List of file models or NULL.
@@ -195,8 +180,6 @@ class FileUploadTag extends TextFieldTag {
    }
 
    /**
-    * @private
-    *
     * Maps the File Array to the File Domain Object
     *
     * @param string[] The content of the <em>$_FILES</em> array for the current form control.
@@ -230,8 +213,6 @@ class FileUploadTag extends TextFieldTag {
    }
 
    /**
-    * @private
-    *
     * Maps the files array with multiple files in it to file domain objects
     *
     * @param string[] The content of the <em>$_FILES</em> array for the current form control with multiple option set.
@@ -256,8 +237,6 @@ class FileUploadTag extends TextFieldTag {
    }
 
    /**
-    * @protected
-    *
     * Overwrite the parent's method since file upload controls have different content.
     *
     * @param string $value The current value of the form control.
@@ -278,8 +257,6 @@ class FileUploadTag extends TextFieldTag {
    }
 
    /**
-    * @public
-    *
     * Indicates whether multi-upload has been activated.
     *
     * @return boolean <em>True</em> if activated, <em>false</em> otherwise.

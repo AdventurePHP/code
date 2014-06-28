@@ -29,9 +29,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\role
- * @class RemoveUserFromRolesController
- *
  * Let's you remove a user from one or more roles.
  *
  * @author Christian Achatz
@@ -54,6 +51,7 @@ class RemoveUserFromRolesController extends UmgtBaseController {
          $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $user->getDisplayName());
          $tmpl->getLabel('message-2')->setPlaceHolder('user-view-link', $this->generateLink(array('mainview' => 'user', 'groupview' => null, 'userid' => null)));
          $tmpl->transformOnPlace();
+
          return;
       }
 

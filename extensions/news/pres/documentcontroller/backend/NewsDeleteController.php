@@ -26,9 +26,6 @@ use APF\tools\request\RequestHandler;
 use APF\tools\link\LinkGenerator;
 
 /**
- * @package APF\extensions\news\pres\documentcontroller\backend
- * @class NewsDeleteController
- *
  * Document controller for deleting news.
  *
  * @author Ralf Schubert <ralf.schubert@the-screeze.de>
@@ -40,13 +37,14 @@ class NewsDeleteController extends NewsBaseController {
    public function transformContent() {
 
       $deleteId = RequestHandler::getValue('deletenewsid');
-      $deleteYes = (bool)RequestHandler::getValue('deleteyes', false);
+      $deleteYes = (bool) RequestHandler::getValue('deleteyes', false);
 
       $newsManager = $this->getNewsManager();
 
-      $news = $newsManager->getNewsById((int)$deleteId);
+      $news = $newsManager->getNewsById((int) $deleteId);
       if ($news === null) {
          $this->getTemplate('error')->transformOnPlace();
+
          return;
       }
 
@@ -54,30 +52,31 @@ class NewsDeleteController extends NewsBaseController {
          $newsManager->deleteNews($news);
          $tpl = $this->getTemplate('success');
          $tpl->transformOnPlace();
+
          return;
       }
 
       $tpl = $this->getTemplate('delete');
       $tpl->setPlaceHolder(
-         'LinkYes', LinkGenerator::generateUrl(
-            Url::fromCurrent()->mergeQuery(
-               array(
-                  'backendview' => 'delete',
-                  'deletenewsid' => (int)$deleteId,
-                  'deleteyes' => 'true'
-               )
+            'LinkYes', LinkGenerator::generateUrl(
+                  Url::fromCurrent()->mergeQuery(
+                        array(
+                              'backendview'  => 'delete',
+                              'deletenewsid' => (int) $deleteId,
+                              'deleteyes'    => 'true'
+                        )
+                  )
             )
-         )
       );
       $tpl->setPlaceHolder(
-         'LinkNo', LinkGenerator::generateUrl(
-            Url::fromCurrent()->mergeQuery(
-               array(
-                  'backendview' => 'list',
-                  'deletenewsid' => null
-               )
+            'LinkNo', LinkGenerator::generateUrl(
+                  Url::fromCurrent()->mergeQuery(
+                        array(
+                              'backendview'  => 'list',
+                              'deletenewsid' => null
+                        )
+                  )
             )
-         )
       );
       $tpl->transformOnPlace();
    }

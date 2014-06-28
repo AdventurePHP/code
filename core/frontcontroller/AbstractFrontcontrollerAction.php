@@ -23,10 +23,6 @@ namespace APF\core\frontcontroller;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\core\frontcontroller
- * @class AbstractFrontcontrollerAction
- * @abstract
- *
  * Implements an action interface for a front controller action.
  *
  * @author Christian Achatz
@@ -40,25 +36,21 @@ use APF\core\pagecontroller\APFObject;
 abstract class AbstractFrontcontrollerAction extends APFObject implements Action {
 
    /**
-    * @private
     * @var string The namespace of the action.
     */
    protected $actionNamespace;
 
    /**
-    * @private
     * @var string The name of the action (used to identify the action within the action stack).
     */
    protected $actionName;
 
    /**
-    * @private
     * @var FrontcontrollerInput Input object of the action.
     */
    protected $input;
 
    /**
-    * @private
     * Defines the type of the action. Allowed values
     * <ul>
     *   <li>prepagecreate: executed before the page controller page is created</li>
@@ -70,7 +62,6 @@ abstract class AbstractFrontcontrollerAction extends APFObject implements Action
    protected $type = self::TYPE_PRE_PAGE_CREATE;
 
    /**
-    * @private
     * @var boolean Indicates, if the action should be included in the URL. Values: true | false.
     */
    private $keepInUrl = false;

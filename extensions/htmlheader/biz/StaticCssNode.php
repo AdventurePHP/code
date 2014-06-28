@@ -24,9 +24,6 @@ use APF\extensions\htmlheader\biz\HtmlNode;
 use APF\extensions\htmlheader\biz\CssNode;
 
 /**
- * @package APF\extensions\htmlheader\biz
- * @class StaticCssNode
- *
  * Represents a node for static css inclusion.
  *
  * @author Christian Achatz

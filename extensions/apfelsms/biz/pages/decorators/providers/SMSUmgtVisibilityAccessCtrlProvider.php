@@ -8,8 +8,6 @@ use APF\modules\usermanagement\biz\UmgtManager;
 use APF\modules\usermanagement\biz\UmgtUserSessionStore;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version v0.1 (08.03.13)
  * @since v0.4
@@ -33,6 +31,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
    /**
     * @param SMSPage $page
     * @param mixed $permissionName In this case, permissionName is the appProxyType name!
+    *
     * @return bool
     */
    public function isAccessProtected(SMSPage $page, $permissionName) {
@@ -45,7 +44,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       $pageId = $page->getId();
 
       // try to return chached protection status
-      if(isset($this->cache[$permissionName][$pageId])) {
+      if (isset($this->cache[$permissionName][$pageId])) {
          return $this->cache[$permissionName][$pageId];
       }
 
@@ -56,7 +55,7 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       $user = $umgtUS->getUser($this->getContext());
 
       // protect against access if no user is logged in and no anonymous acces is granted
-      if($user === null) {
+      if ($user === null) {
          return $this->cache[$permissionName][$pageId] = (!$this->anonymousAccess);
       }
 
@@ -66,27 +65,27 @@ class SMSUmgtVisibilityAccessCtrlProvider extends APFObject implements SMSAccess
       // load visibilities from users and groups
       $groups = $umgtM->loadGroupsWithUser($user);
       $visibilityType = $umgtM->loadVisibilityDefinitionTypeByName($permissionName);
-      if($visibilityType === null) {
+      if ($visibilityType === null) {
          return $this->cache[$permissionName][$pageId] = true; // visibility type is not existent
       }
 
       $visibilities = $umgtM->loadVisibilityDefinitionsByUser($user, $visibilityType);
-      if(count($groups) > 0) {
+      if (count($groups) > 0) {
          foreach ($groups AS $group) {
             $visibilities = array_merge(
-               $visibilities,
-               $umgtM->loadVisibilityDefinitionsByGroup($group, $visibilityType)
+                  $visibilities,
+                  $umgtM->loadVisibilityDefinitionsByGroup($group, $visibilityType)
             );
          }
       }
 
 
       // search visibility definitions
-      if(count($visibilities) > 0) {
+      if (count($visibilities) > 0) {
          foreach ($visibilities AS $visibility) {
 
-            if($visibility->getAppObjectId() == $pageId &&
-               ((bool) $visibility->getReadPermission())
+            if ($visibility->getAppObjectId() == $pageId &&
+                  ((bool) $visibility->getReadPermission())
             ) {
                return $this->cache[$permissionName][$pageId] = false; // visibility definition with read permission found, grant access
             }

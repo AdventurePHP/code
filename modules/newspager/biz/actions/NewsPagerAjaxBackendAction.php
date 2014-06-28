@@ -25,9 +25,6 @@ use APF\modules\newspager\data\NewsPagerProvider;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package APF\modules\newspager\biz\actions
- * @class NewsPagerAjaxBackendAction
- *
  * Front controller action implementation for AJAX style loading of a news page.
  *
  * @author Christian Achatz
@@ -37,8 +34,6 @@ use APF\tools\http\HeaderManager;
 class NewsPagerAjaxBackendAction extends AbstractFrontcontrollerAction {
 
    /**
-    * @public
-    *
     * Implements the abstract run() method to deliver the news XML for the AJAX call.
     *
     * @author Christian Achatz
@@ -65,10 +60,10 @@ class NewsPagerAjaxBackendAction extends AbstractFrontcontrollerAction {
       // send json
       HeaderManager::send('Content-Type: application/json');
       echo json_encode(array(
-         'headline' => $news->getHeadline(),
-         'subheadline' => $news->getSubHeadline(),
-         'content' => $news->getContent(),
-         'newscount' => $news->getNewsCount()
+            'headline'    => $news->getHeadline(),
+            'subheadline' => $news->getSubHeadline(),
+            'content'     => $news->getContent(),
+            'newscount'   => $news->getNewsCount()
       ));
 
       // close application, since we've done all the work here.

@@ -23,9 +23,6 @@ namespace APF\tools\form\filter;
 use APF\tools\form\filter\AbstractFormFilter;
 
 /**
- * @package APF\tools\form\filter
- * @class String2UpperFilter
- *
  * Implements a filter, that converts all characters to upper letters.
  *
  * @author Christian Achatz

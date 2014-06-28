@@ -27,8 +27,8 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\proxy
- * @class ProxyTypeEditController
+
+
  */
 class ProxyTypeEditController extends UmgtBaseController {
 

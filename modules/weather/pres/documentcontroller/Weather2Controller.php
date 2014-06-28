@@ -25,9 +25,6 @@ use APF\core\pagecontroller\BaseDocumentController;
 use InvalidArgumentException;
 
 /**
- * @package APF\modules\weather\pres\documentcontroller
- * @class Weather2Controller
- *
  * Implements an xml consumer to display current weather information.
  * Please provide the attribute "xml_source" in the core:importdesign tag that
  * includes the weather module.
@@ -39,8 +36,6 @@ use InvalidArgumentException;
 class Weather2Controller extends BaseDocumentController {
 
    /**
-    * @public
-    *
     * Implements the abstract method transformContent() of the BaseDocumentController class.<br />
     *
     * @author Tobias Lückel
@@ -65,11 +60,10 @@ class Weather2Controller extends BaseDocumentController {
    }
 
    /**
-    * @protected
-    *
     * Transforms the content<br />
     *
     * @param string $XML XML string
+    *
     * @return string The information section HTML code.
     *
     * @author Tobias Lückel
@@ -99,8 +93,6 @@ class Weather2Controller extends BaseDocumentController {
    }
 
    /**
-    * @protected
-    *
     * Helper method to get the XML string.<br />
     *
     * @return string Content of the XML stream of the source or null.
@@ -154,8 +146,6 @@ class Weather2Controller extends BaseDocumentController {
    }
 
    /**
-    * @protected
-    *
     * Helper method to read the attribute "xml_source" from the current object<br />
     * (core:importdesign), that is used to include the module.<br />
     *

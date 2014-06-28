@@ -5,8 +5,6 @@ use APF\extensions\apfelsms\biz\pages\SMSPage;
 use APF\extensions\apfelsms\biz\SMSManager;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author  : Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @desc    : An alias page decorator uses the template name (and title/navTitle if own are not defined) of a referenced page
  *            There is no impact on the link (url returned by getLink()) or parents and children
@@ -29,7 +27,7 @@ class SMSAliasPageDec extends SMSAbstractPageDec {
 
 
    public static $mapVars = array(
-      'referencedPageId' => null
+         'referencedPageId' => null
    );
 
 

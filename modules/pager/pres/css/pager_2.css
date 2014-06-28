@@ -3,16 +3,19 @@
 ***************************************************************************************************/
 
 .apf-pager {
-   text-align: right;
-   margin-bottom: .5em;
+    text-align: right;
+    margin-bottom: .5em;
 }
+
 .apf-pager .apf-pages {
-   font-size: 1.2em;
+    font-size: 1.2em;
 }
+
 .apf-pager .apf-pages .active {
-   font-weight: bold;
-   font-size: 1.2em;
+    font-weight: bold;
+    font-size: 1.2em;
 }
+
 .apf-pager .apf-pages span.first {
-   margin-right: 1em;
+    margin-right: 1em;
 }

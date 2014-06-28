@@ -29,9 +29,6 @@ use APF\core\singleton\Singleton;
 use Exception;
 
 /**
- * @package APF\core\exceptionhandler
- * @class DefaultExceptionHandler
- *
  * Implements the default APF exception handler for uncaught exceptions.
  *
  * @author Christian Achatz
@@ -88,8 +85,6 @@ class DefaultExceptionHandler implements ExceptionHandler {
    }
 
    /**
-    * @private
-    *
     * Creates a log entry containing the exception occurred.
     *
     * @author Christian Achatz
@@ -113,8 +108,6 @@ class DefaultExceptionHandler implements ExceptionHandler {
    }
 
    /**
-    * @private
-    *
     * Creates the exception page.
     *
     * @return string the exception page content.
@@ -151,8 +144,6 @@ class DefaultExceptionHandler implements ExceptionHandler {
    }
 
    /**
-    * @private
-    *
     * Generates the exception id.
     *
     * @return string The unique exception id.

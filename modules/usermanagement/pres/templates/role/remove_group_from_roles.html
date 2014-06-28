@@ -1,11 +1,13 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\role\RemoveGroupFromRolesController"
+class="APF\modules\usermanagement\pres\documentcontroller\role\RemoveGroupFromRolesController"
 @>
-<h3><html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.group.remove-roles-from-group.headline"
-      /></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.group.remove-roles-from-group.headline"
+         />
+</h3>
 <html:form name="Roles" method="post">
    <div>
       <form:addvalidator

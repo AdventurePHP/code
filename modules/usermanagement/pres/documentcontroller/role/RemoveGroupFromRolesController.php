@@ -28,9 +28,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller\role
- * @class RemoveGroupFromRolesController
- *
  * Let's you remove a group from one or more roles.
  *
  * @author Christian Achatz
@@ -53,6 +50,7 @@ class RemoveGroupFromRolesController extends UmgtBaseController {
          $tmpl->getLabel('message-1')->setPlaceHolder('display-name', $group->getDisplayName());
          $tmpl->getLabel('message-2')->setPlaceHolder('group-view-link', $this->generateLink(array('mainview' => 'group', 'roleview' => null, 'groupid' => null)));
          $tmpl->transformOnPlace();
+
          return;
       }
 

@@ -24,10 +24,6 @@ use APF\core\pagecontroller\APFObject;
 use APF\tools\filesystem\FilesystemException;
 
 /**
- * @abstract
- * @class   FilesystemItem
- * @package APF\tools\filesystem
- *
  * Defines the base class for File and Folder
  *
  * @author  Nicolas Pecher
@@ -36,53 +32,44 @@ use APF\tools\filesystem\FilesystemException;
 abstract class FilesystemItem extends APFObject {
 
    /**
-    * @protected
     * @var string The name of the FilesystemItem
     */
    protected $name = null;
 
    /**
-    * @protected
     * @var string The base path of the FilesystemItem
     */
    protected $basePath = null;
 
    /**
-    * @protected
     * @var int The permissions of the FilesystemItem
     */
    protected $permissions = null;
 
    /**
-    * @protected
     * @var int The user-id of the file-owner
     */
    protected $owner = null;
 
    /**
-    * @public
-    *
     * @author  Nicolas Pecher
     * @version Version 0.1, 06.08.2012
     */
    public abstract function open($path);
+
    /**
-    * @public
-    * 
     * @author  Jan Wiese
     * @version Version 0.1, 27.02.2014
     */
    public abstract function close();
+
    /**
-    * @public
-    *
     * @author  Nicolas Pecher
     * @version Version 0.1, 06.08.2012
     */
    public abstract function create($path);
+
    /**
-    * @public
-    *
     * @param   Folder $folder
     * @param   string $copyName
     * @param   boolean $getCopy
@@ -91,39 +78,34 @@ abstract class FilesystemItem extends APFObject {
     * @version Version 0.1, 01.05.2012
     */
    public abstract function createCopy(Folder $folder, $copyName = null, $getCopy = true);
+
    /**
-    * @public
-    *
     * @param   Folder $folder
     *
     * @author  Nicolas Pecher
     * @version Version 0.1, 01.05.2012
     */
    public abstract function moveTo(Folder $folder);
+
    /**
-    * @public
-    *
     * @author  Nicolas Pecher
     * @version Version 0.1, 01.05.2012
     */
    public abstract function delete();
+
    /**
-    * @public
-    *
     * @author  Nicolas Pecher
     * @version Version 0.1, 01.05.2012
     */
    public abstract function getContent();
+
    /**
-    * @public
-    *
     * @author  Nicolas Pecher
     * @version Version 0.1, 01.05.2012
     */
    public abstract function getSize();
+
    /**
-    * @public
-    *
     * @return  string The name of the FilesystemItem
     * @throws FilesystemException In case there is no name defined.
     *
@@ -133,14 +115,13 @@ abstract class FilesystemItem extends APFObject {
    public function getName() {
       if (empty($this->name)) {
          throw new FilesystemException('[Filesystem::getName()] The name is not '
-                 . 'defined', E_USER_ERROR);
+               . 'defined', E_USER_ERROR);
       }
+
       return $this->name;
    }
 
    /**
-    * @public
-    *
     * @return  string The base path of the FilesystemItem
     * @throws FilesystemException In case there is no basePath defined.
     *
@@ -150,14 +131,13 @@ abstract class FilesystemItem extends APFObject {
    public function getBasePath() {
       if (empty($this->basePath)) {
          throw new FilesystemException('[Filesystem::getName()] The base path is not '
-                 . 'defined', E_USER_ERROR);
+               . 'defined', E_USER_ERROR);
       }
+
       return $this->basePath;
    }
 
    /**
-    * @public
-    *
     * The name of the FilesystemItem is appended to the base path.
     * So this function returns the whole path of the file.
     *
@@ -172,8 +152,6 @@ abstract class FilesystemItem extends APFObject {
    }
 
    /**
-    * @public
-    *
     * @return  int The permissions of the FilesystemItem
     *
     * @author  Nicolas Pecher
@@ -184,8 +162,6 @@ abstract class FilesystemItem extends APFObject {
    }
 
    /**
-    * @public
-    *
     * @return  int The user-id of the owner of the FilesystemItem
     *
     * @author  Nicolas Pecher
@@ -196,8 +172,6 @@ abstract class FilesystemItem extends APFObject {
    }
 
    /**
-    * @public
-    *
     * @return  Folder The parent folder of the actual FilesystemItem
     *
     * @author  Nicolas Pecher
@@ -208,8 +182,6 @@ abstract class FilesystemItem extends APFObject {
    }
 
    /**
-    * @public
-    *
     * This function tells you if the actual FilesystemItem is readable
     *
     * @return  boolean
@@ -222,8 +194,6 @@ abstract class FilesystemItem extends APFObject {
    }
 
    /**
-    * @public
-    *
     * This function tells you if the actual FilesystemItem is writable
     *
     * @return  boolean
@@ -236,10 +206,9 @@ abstract class FilesystemItem extends APFObject {
    }
 
    /**
-    * @public
-    *
     * @param   string $newName The new name of the FilesystemItem
     * @param   boolean $force true = overwrite, false = return false
+    *
     * @return  boolean
     *
     * @author  Nicolas Pecher
@@ -249,28 +218,29 @@ abstract class FilesystemItem extends APFObject {
       $newPath = $this->getBasePath() . '/' . $newName;
       $fileExists = file_exists($newPath);
       if (($fileExists === true && $force === true) || $fileExists === false) {
-         
+
          $this->close();
-         
+
          $renameError = (rename($this->getPath(), $newPath) === false);
-                  
-         if($renameError){
+
+         if ($renameError) {
             $this->open($this->getPath());
+
             return false;
          }
-         
+
          $this->name = $newName;
          $this->open($newPath);
-         
+
          return true;
       }
+
       return false;
    }
 
    /**
-    * @public
-    *
     * @param   mixed $owner The name or the id of the owner
+    *
     * @return  boolean
     *
     * @author  Nicolas Pecher
@@ -278,13 +248,13 @@ abstract class FilesystemItem extends APFObject {
     */
    public function changeOwnerTo($owner) {
       chown($this->getPath(), $owner);
+
       return true;
    }
 
    /**
-    * @public
-    *
     * @param   int $permissions The permissions of the FilesystemItem
+    *
     * @return  boolean
     *
     * @author  Nicolas Pecher
@@ -292,23 +262,22 @@ abstract class FilesystemItem extends APFObject {
     */
    public function changeModeTo($permissions) {
       chmod($this->getPath(), $permissions);
+
       return true;
    }
 
    /**
     *
-    * @public
-    * 
     * DateTime::setTimestamp is only available since PHP Version 5.3.0
     * First, we check if the method is available, otherwise we use an alternative for PHP 5.2.0
-    * Check also documentation: http://de.php.net/manual/en/datetime.settimestamp.php 
-    * 
+    * Check also documentation: http://de.php.net/manual/en/datetime.settimestamp.php
+    *
     * Please keep in mind that there is no way for a creation time of a file in most Unix filesystems.
     * filectime returns also a new timestamop when owner or rights of the file has been changed!
     * Check also documentation: http://de.php.net/manual/en/function.filectime.php
-    * 
+    *
     * @return \DateTime The creation time as a DateTime-Instance of the file
-    * 
+    *
     * @author  dave
     * @version Version 0.1, 16.08.2012
     */
@@ -320,6 +289,7 @@ abstract class FilesystemItem extends APFObject {
 
       if (!method_exists($time, 'setTimestamp')) {
          $Timestamp = filectime($this->getPath());
+
          return new \DateTime("@$Timestamp");
       } else {
          return $time->setTimestamp(filectime($this->getPath()));
@@ -328,17 +298,15 @@ abstract class FilesystemItem extends APFObject {
 
    /**
     *
-    * @public
-    * 
     * DateTime::setTimestamp is only available since PHP Version 5.3.0
     * First, we check if the method is available, otherwise we use an alternative for PHP 5.2.0
-    * Check also documentation: http://de.php.net/manual/en/datetime.settimestamp.php 
-    * 
+    * Check also documentation: http://de.php.net/manual/en/datetime.settimestamp.php
+    *
     * Please keep in mind that time resolution may differ from one file system to another.
     * Check also documentation: http://de.php.net/manual/en/function.filemtime.php
-    * 
+    *
     * @return \DateTime The modification time as a DateTime-Instance of the file
-    * 
+    *
     * @author  dave
     * @version Version 0.1, 16.08.2012
     */
@@ -350,6 +318,7 @@ abstract class FilesystemItem extends APFObject {
 
       if (!method_exists($time, 'setTimestamp')) {
          $Timestamp = filemtime($this->getPath());
+
          return new \DateTime("@$Timestamp");
       } else {
          return $time->setTimestamp(filemtime($this->getPath()));

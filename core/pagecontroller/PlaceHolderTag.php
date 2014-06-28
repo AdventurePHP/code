@@ -1,30 +1,27 @@
 <?php
 namespace APF\core\pagecontroller;
 
-/**
- * <!--
- * This file is part of the adventure php framework (APF) published under
- * http://adventure-php-framework.org.
- *
- * The APF is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The APF is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
- * -->
- */
+   /**
+    * <!--
+    * This file is part of the adventure php framework (APF) published under
+    * http://adventure-php-framework.org.
+    *
+    * The APF is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU Lesser General Public License as published
+    * by the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * The APF is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    * GNU Lesser General Public License for more details.
+    *
+    * You should have received a copy of the GNU Lesser General Public License
+    * along with the APF. If not, see http://www.gnu.org/licenses/lgpl-3.0.txt.
+    * -->
+    */
 
 /**
- * @package APF\core\pagecontroller
- * @class PlaceHolderTag
- *
  * Represents a place holder within a template file. Can be filled within a document controller
  * using the setPlaceHolder() method.
  *
@@ -42,8 +39,6 @@ class PlaceHolderTag extends Document {
    protected $stringReplacement = array();
 
    /**
-    * @public
-    *
     * Let's you set a string replacement to the current place holder instance.
     * <p/>
     * Please note, that the keys must be specified in uppercase letters.
@@ -61,8 +56,6 @@ class PlaceHolderTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Implements the transform() method. Returns the content of the tag, that is set by a
     * document controller using the BaseDocumentController's setPlaceHolder() method.
     *

@@ -25,9 +25,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\modules\usermanagement\pres\taglib
- * @class UmgtLogoutLinkTag
- *
  * Creates a logout link that points to the current page but defines the parameters
  * of the logout action for you (especially the application identifier).
  *
@@ -39,6 +36,7 @@ class UmgtLogoutLinkTag extends Document {
 
    public function transform() {
       $params = array('logout' => 'true');
+
       return LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\modules\usermanagement\biz', 'logout', $params);
    }
 

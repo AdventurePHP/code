@@ -1,10 +1,12 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddUsersController"
+class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyAddUsersController"
 @>
-<h3><html:getstring
-       namespace="APF\modules\usermanagement\pres"
-       config="labels.ini"
-       entry="frontend.proxy.add-users-to-proxy.headline"/></h3>
+<h3>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.proxy.add-users-to-proxy.headline"/>
+</h3>
 <html:form name="add_perm" method="post">
    <div>
       <p>
@@ -23,10 +25,12 @@
          </div>
       </form:listener>
       <div>
-         <label for="users"><html:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.proxy.add-users-to-proxy.users.label"/></label>
+         <label for="users">
+            <html:getstring
+                  namespace="APF\modules\usermanagement\pres"
+                  config="labels.ini"
+                  entry="frontend.proxy.add-users-to-proxy.users.label"/>
+         </label>
          <form:multiselect id="users" name="users" size="6"/>
       </div>
       <form:addvalidator
@@ -40,7 +44,7 @@
                config="labels.ini"
                entry="frontend.proxy.add-users-to-proxy.button.label"/>
       </form:button>
-      <form:hidden name="proxyid" />
+      <form:hidden name="proxyid"/>
    </div>
 </html:form>
 <html:template name="NoMoreUsers">

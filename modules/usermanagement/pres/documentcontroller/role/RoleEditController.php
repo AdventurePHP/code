@@ -26,9 +26,6 @@ use APF\tools\http\HeaderManager;
 use APF\tools\request\RequestHandler;
 
 /**
- * @package APF\modules\usermanagement\pres\documentcontroller
- * @class RoleEditController
- *
  * Implements the controller to edit a role.
  *
  * @author Christian Achatz

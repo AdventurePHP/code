@@ -23,9 +23,6 @@ namespace APF\tools\form\validator;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package APF\tools\form\validator
- * @class SimpleRadioControlValidator
- *
  * Implements a validator for radio buttons.
  *
  * @author Christian Achatz
@@ -35,11 +32,10 @@ use APF\tools\form\validator\TextFieldValidator;
 class SimpleRadioControlValidator extends TextFieldValidator {
 
    /**
-    * @public
-    *
     * Validates the radio button content.
     *
     * @param string $input The content of the radio control.
+    *
     * @return boolean True, in case the radio is valid, false otherwise.
     *
     * @author Christian Achatz
@@ -55,6 +51,7 @@ class SimpleRadioControlValidator extends TextFieldValidator {
       if (!isset($_REQUEST[$name]) || empty($_REQUEST[$name])) {
          return false;
       }
+
       return true;
 
    }

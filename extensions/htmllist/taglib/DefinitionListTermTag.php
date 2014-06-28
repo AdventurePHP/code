@@ -23,9 +23,6 @@ namespace APF\extensions\htmllist\taglib;
 use APF\core\pagecontroller\Document;
 
 /**
- * @package APF\extensions\htmllist\taglib
- * @class DefinitionListTermTag
- *
  * Represents a HTMLList definition list element for the definition term.
  *
  * @author Florian Horn

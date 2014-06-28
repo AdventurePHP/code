@@ -23,9 +23,6 @@ namespace APF\modules\comments\pres\controller;
 use APF\core\pagecontroller\BaseDocumentController;
 
 /**
- * @package APF\modules\comments\pres\controller
- * @class CommentBaseDocumentController
- *
  * Provides basic functionality for the document controllers of the comment module.
  *
  * @author Christian W. Schäfer
@@ -35,8 +32,6 @@ use APF\core\pagecontroller\BaseDocumentController;
 abstract class CommentBaseDocumentController extends BaseDocumentController {
 
    /**
-    * @protected
-    *
     * Returns the category key that has been defined within the parent's
     * node's attribute list of the &lt;core:importdesign /&gt; tag.
     *
@@ -49,6 +44,7 @@ abstract class CommentBaseDocumentController extends BaseDocumentController {
     */
    protected function getCategoryKey() {
       $parent = & $this->getDocument()->getParentObject();
+
       return $parent->getAttribute('categorykey', 'standard');
    }
 

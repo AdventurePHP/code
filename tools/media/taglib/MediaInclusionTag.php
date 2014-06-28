@@ -26,9 +26,6 @@ use APF\tools\link\Url;
 use InvalidArgumentException;
 
 /**
- * @package APF\tools\media\taglib
- * @class MediaInclusionTag
- *
  * Implements the base class for the <*:mediastream /> tag implementations. Generates a
  * generic front controller image source out of a namespace and file name.
  *
@@ -58,8 +55,6 @@ class MediaInclusionTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Generates the tag's output.
     *
     * @return string The desired media url
@@ -76,9 +71,9 @@ class MediaInclusionTag extends Document {
    public function transform() {
       // generate action url using the APF's new link generation mechanism since 1.14
       return LinkGenerator::generateActionUrl(Url::fromCurrent(), 'APF\tools\media', 'streamMedia', array(
-         'namespace' => str_replace('\\', '_', $this->getAttribute('namespace')),
-         'extension' => $this->getAttribute('extension'),
-         'filebody' => $this->getAttribute('filebody')
+            'namespace' => str_replace('\\', '_', $this->getAttribute('namespace')),
+            'extension' => $this->getAttribute('extension'),
+            'filebody'  => $this->getAttribute('filebody')
       ));
    }
 

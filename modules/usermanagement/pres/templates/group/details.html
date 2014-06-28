@@ -1,61 +1,69 @@
 <@controller
-   class="APF\modules\usermanagement\pres\documentcontroller\group\GroupDetailsController"
+class="APF\modules\usermanagement\pres\documentcontroller\group\GroupDetailsController"
 @>
-<h3><html:getstring
-      name="headline"
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.group.details.headline"
-      /></h3>
-<h4><html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.group.details.group-details.label"
-      /></h4>
+<h3>
+   <html:getstring
+         name="headline"
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.group.details.headline"
+         />
+</h3>
+<h4>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.group.details.group-details.label"
+         />
+</h4>
 <p>
    ${Description}
 </p>
 
-<h4><html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.group.details.users.label"
-      /></h4>
+<h4>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.group.details.users.label"
+         />
+</h4>
 <html:iterator name="Users">
    <ul>
-   <iterator:item>
-      <li>
-         <umgt:media filename="user.png">
-            <media:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.group.details.user-img.label"
-            />
-         </umgt:media>
-         ${item->getFirstName()}, ${item->getLastName()}
-      </li>
-   </iterator:item>
+      <iterator:item>
+         <li>
+            <umgt:media filename="user.png">
+               <media:getstring
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.group.details.user-img.label"
+                     />
+            </umgt:media>
+            ${item->getFirstName()}, ${item->getLastName()}
+         </li>
+      </iterator:item>
    </ul>
 </html:iterator>
 
-<h4><html:getstring
-      namespace="APF\modules\usermanagement\pres"
-      config="labels.ini"
-      entry="frontend.group.details.roles.label"
-      /></h4>
+<h4>
+   <html:getstring
+         namespace="APF\modules\usermanagement\pres"
+         config="labels.ini"
+         entry="frontend.group.details.roles.label"
+         />
+</h4>
 <html:iterator name="Roles">
    <ul>
-   <iterator:item>
-      <li>
-         <umgt:media filename="role.png">
-            <media:getstring
-               namespace="APF\modules\usermanagement\pres"
-               config="labels.ini"
-               entry="frontend.group.details.role-img.label"
-            />
-         </umgt:media>
-         ${item->getDisplayName()}
-      </li>
-   </iterator:item>
+      <iterator:item>
+         <li>
+            <umgt:media filename="role.png">
+               <media:getstring
+                     namespace="APF\modules\usermanagement\pres"
+                     config="labels.ini"
+                     entry="frontend.group.details.role-img.label"
+                     />
+            </umgt:media>
+            ${item->getDisplayName()}
+         </li>
+      </iterator:item>
    </ul>
 </html:iterator>

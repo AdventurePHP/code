@@ -25,9 +25,6 @@ use APF\tools\link\LinkGenerator;
 use APF\tools\link\Url;
 
 /**
- * @package APF\tools\link\taglib
- * @class LinkGenerationTag
- *
  * This taglib generates a url with the given parameters taking care of the
  * current LinkScheme.
  *

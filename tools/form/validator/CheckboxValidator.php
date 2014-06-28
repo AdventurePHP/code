@@ -23,9 +23,6 @@ namespace APF\tools\form\validator;
 use APF\tools\form\validator\TextFieldValidator;
 
 /**
- * @package APF\tools\form\validator
- * @class CheckboxValidator
- *
  * Validates checkboxes, which need to be checked by the user.
  *
  * @author Ralf Schubert
@@ -35,11 +32,10 @@ use APF\tools\form\validator\TextFieldValidator;
 class CheckboxValidator extends TextFieldValidator {
 
    /**
-    * @public
-    *
     * Validates the checkbox content.
     *
     * @param string $input The content of the checkbox.
+    *
     * @return boolean True, in case the checkbox is valid, false otherwise.
     *
     * @author Ralf Schubert
@@ -51,6 +47,7 @@ class CheckboxValidator extends TextFieldValidator {
       if (!isset($_REQUEST[$name])) {
          return false;
       }
+
       return true;
 
    }

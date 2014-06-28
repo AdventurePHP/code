@@ -23,10 +23,6 @@ namespace APF\core\filter;
 use APF\core\pagecontroller\APFObject;
 
 /**
- * @package APF\core\filter
- * @class AbstractFilter
- * @abstract
- *
  * Abstract filter class.
  *
  * @author Christian Schäfer
@@ -37,12 +33,10 @@ use APF\core\pagecontroller\APFObject;
 abstract class AbstractFilter extends APFObject {
 
    /**
-    * @public
-    * @abstract
-    *
     * Abstract filter method. Must be implemented by concrete filter implementations.
     *
     * @param string $input the input of the filter.
+    *
     * @return string The output of the filter.
     *
     * @author Christian Achatz

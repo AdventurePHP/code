@@ -7,8 +7,6 @@ use APF\extensions\apfelsms\biz\SMSManager;
 use APF\tools\string\StringAssistant;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (10.08.12)
  *
@@ -25,11 +23,10 @@ class SMSPageTitleTag extends Document {
       $page = $SMSM->getSite()->getCurrentPage();
 
       $pageId = $this->getAttribute('pageId');
-      if(!empty($pageId)) {
+      if (!empty($pageId)) {
          try {
             $page = $SMSM->getPage($pageId);
-         }
-         catch (SMSException $e) {
+         } catch (SMSException $e) {
             return 'Untitled'; // no title could be found (no valid ID)
          }
       }

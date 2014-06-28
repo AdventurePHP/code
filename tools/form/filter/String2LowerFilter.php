@@ -23,9 +23,6 @@ namespace APF\tools\form\filter;
 use APF\tools\form\filter\AbstractFormFilter;
 
 /**
- * @package APF\tools\form\filter
- * @class String2LowerFilter
- *
  * Implements a filter, that converts all characters to lower letters.
  *
  * @author Christian Achatz

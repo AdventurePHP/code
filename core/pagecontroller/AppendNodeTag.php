@@ -23,9 +23,6 @@ namespace APF\core\pagecontroller;
 use InvalidArgumentException;
 
 /**
- * @package APF\core\pagecontroller
- * @class AppendNodeTag
- *
  * Parses a template and appends the child nodes to the parent's child list. Hence, this taglib
  * can be used to swap shared templates / forms / ... Please make sure, that the imported template
  * includes the necessary "*:addtaglib" statements for the relevant tag definitions.
@@ -50,8 +47,6 @@ class AppendNodeTag extends Document {
    protected static $INCLUDE_STATIC_CONTENT_ATTRIBUTE_NAME = 'includestatic';
 
    /**
-    * @public
-    *
     * Load the content and parse the template.
     *
     * @author Christian Achatz
@@ -84,8 +79,6 @@ class AppendNodeTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Appends the node's children to the parent node.
     *
     * @author Christian Achatz
@@ -151,8 +144,6 @@ class AppendNodeTag extends Document {
    }
 
    /**
-    * @public
-    *
     * Returns an empty string, due to the fact, that the core:appendnode tag does not have to
     * create output.
     *

@@ -23,9 +23,6 @@ namespace APF\core\database;
 use APF\core\service\APFDIService;
 
 /**
- * @package APF\core\database
- * @class DatabaseConnection
- *
  * This interface defines the structure and functionality of APF database connections.
  *
  * @since 1.15
@@ -46,9 +43,6 @@ interface DatabaseConnection extends APFDIService {
    public function setup();
 
    /**
-    * @public
-    * @abstract
-    *
     * Executes a statement, located within a statement file. The place holders contained in the
     * file are replaced by the given values.
     *
@@ -56,6 +50,7 @@ interface DatabaseConnection extends APFDIService {
     * @param string $statementName Name of the statement file (filebody!).
     * @param string[] $params A list of statement parameters.
     * @param bool $logStatement Indicates, if the statement is logged for debug purposes.
+    *
     * @return resource The database result resource.
     *
     * @author Christian Achatz
@@ -65,15 +60,13 @@ interface DatabaseConnection extends APFDIService {
    public function executeStatement($namespace, $statementName, array $params = array(), $logStatement = false);
 
    /**
-    * @public
-    * @abstract
-    *
     * Executes a statement applied as a string to the method and returns the
     * result pointer.
     *
     * @param string $statement The statement string.
     * @param boolean $logStatement Indicates, whether the given statement should be
     *                              logged for debug purposes.
+    *
     * @return resource The database result resource.
     *
     * @author Christian Achatz
@@ -83,12 +76,11 @@ interface DatabaseConnection extends APFDIService {
    public function executeTextStatement($statement, $logStatement = false);
 
    /**
-    * @public
-    *
     * Fetches a record from the database using the given result resource.
     *
     * @param resource $resultCursor The result resource returned by executeStatement() or executeTextStatement().
     * @param int $type The type the returned data should have. Use the static *_FETCH_MODE constants.
+    *
     * @return string[] The associative result array. Returns false if no row was found.
     *
     * @author Christian Achatz
@@ -99,12 +91,10 @@ interface DatabaseConnection extends APFDIService {
    public function fetchData($resultCursor, $type = self::ASSOC_FETCH_MODE);
 
    /**
-    * @public
-    * @abstract
-    *
     * Escapes given values to be SQL injection save.
     *
     * @param string $value The un-escaped value.
+    *
     * @return string The escaped string.
     *
     * @author Christian Achatz
@@ -114,12 +104,10 @@ interface DatabaseConnection extends APFDIService {
    public function escapeValue($value);
 
    /**
-    * @public
-    * @abstract
-    *
     * Returns the amount of rows, that are affected by a previous update or delete call.
     *
     * @param resource $resultCursor The result resource pointer.
+    *
     * @return int The number of affected rows.
     *
     * @author Christian Achatz
@@ -129,12 +117,10 @@ interface DatabaseConnection extends APFDIService {
    public function getAffectedRows($resultCursor);
 
    /**
-    * @public
-    * @abstract
-    *
     * Returns the number of selected rows by the given result resource.
     *
     * @param resource $result The result resource.
+    *
     * @return int The number of selected rows.
     *
     * @author Christian Achatz

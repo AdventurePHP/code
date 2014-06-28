@@ -5,8 +5,6 @@ use APF\extensions\apfelsms\biz\pages\decorators\providers\SMSAccessCtrlProvider
 use APF\extensions\apfelsms\biz\SMSWrongDataException;
 
 /**
- *
- * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (30.09.12)
  *           v0.2 (19.01.13) Added permissionName parameter
@@ -45,9 +43,9 @@ class SMSAccessCtrlPageDec extends SMSAbstractPageDec {
     * @var array
     */
    public static $mapVars = array(
-      'providerServiceNamespace' => 'APF\extensions\apfelsms\pages\decorators\provider',
-      'providerServiceName' => null,
-      'permissionName' => 'SMSViewPermission'
+         'providerServiceNamespace' => 'APF\extensions\apfelsms\pages\decorators\provider',
+         'providerServiceName'      => null,
+         'permissionName'           => 'SMSViewPermission'
    );
 
 

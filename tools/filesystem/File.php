@@ -23,36 +23,29 @@ namespace APF\tools\filesystem;
 use APF\tools\http\HeaderManager;
 
 /**
- * @package APF\tools\filesystem
- * @class   File
- *
  * @author  Nicolas Pecher
  * @version Version 0.1, 30.04.2012
  */
 class File extends FilesystemItem {
 
    /**
-    * @private
     * @var resource A file pointer resource
     */
    protected $fileHandle = null;
 
    /**
-    * @private
     * @var string The content of the file
     */
    protected $content = null;
 
    /**
-    * @private
     * @var string The mime type of the file
     */
    protected $mimeType = null;
 
    /**
-    * @public
-    *
     * @param string $path A path that will be used as file path for the new file
+    *
     * @return File This instance for further usage.
     *
     * @author  Nicolas Pecher
@@ -63,13 +56,13 @@ class File extends FilesystemItem {
          $this->fileHandle = fopen($path, "w+");
       }
       $this->open($path);
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * @param string $path The path to the file that should be opened.
+    *
     * @return File This instance for further usage.
     * @throws FilesystemException In case the file does not exist.
     *
@@ -80,7 +73,7 @@ class File extends FilesystemItem {
 
       if (!is_file($path)) {
          throw new FilesystemException('[File::open()] A file with the passed '
-            . 'path does not exists.', E_USER_ERROR);
+               . 'path does not exists.', E_USER_ERROR);
       }
 
       if (!is_resource($this->fileHandle)) {
@@ -106,14 +99,12 @@ class File extends FilesystemItem {
    }
 
    /**
-    * @public
-    *
     * Closes the opened file handle
     *
     * @author  Jan Wiese
     * @version Version 0.1, 27.02.2014
     */
-   public function close(){
+   public function close() {
 
       if (is_resource($this->fileHandle)) {
          fclose($this->fileHandle);
@@ -121,8 +112,6 @@ class File extends FilesystemItem {
    }
 
    /**
-    * @public
-    *
     * Closes the opened file handle on objects destruction
     *
     * @author  Nicolas Pecher
@@ -130,16 +119,15 @@ class File extends FilesystemItem {
     *          version 0.2, 27.02.2014 Moved closing functionality to close()
     */
    public function __destruct() {
-      
+
       $this->close();
    }
 
    /**
-    * @public
-    *
     * @param Folder $folder The Folder where the copy should be stored.
     * @param string $copyName The new name of the copy (optional).
     * @param boolean $getCopy If true, this method returns the copy (optional).
+    *
     * @return File The domain object for further usage.
     *
     * @author  Nicolas Pecher
@@ -151,13 +139,13 @@ class File extends FilesystemItem {
       copy($this->getPath(), $copyPath);
       $copy = new File();
       $copy->open($copyPath);
+
       return ($getCopy === true) ? $copy : $this;
    }
 
    /**
-    * @public
-    *
     * @param   Folder $folder The Folder into which it should be moved
+    *
     * @return  boolean
     *
     * @author  Nicolas Pecher
@@ -167,12 +155,11 @@ class File extends FilesystemItem {
       copy($this->getPath(), $folder->getPath() . '/' . $this->getName());
       $this->delete();
       $this->basePath = $folder->getPath();
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * @return  Folder The domain object for further usage
     *
     * @author  Nicolas Pecher
@@ -182,12 +169,11 @@ class File extends FilesystemItem {
    public function delete() {
       fclose($this->fileHandle);
       unlink($this->getPath());
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * @return  string The content of the file
     *
     * @author  Nicolas Pecher
@@ -198,8 +184,6 @@ class File extends FilesystemItem {
    }
 
    /**
-    * @public
-    *
     * @return  int The size in Bytes
     *
     * @author  Nicolas Pecher
@@ -210,8 +194,6 @@ class File extends FilesystemItem {
    }
 
    /**
-    * @public
-    *
     * @return  string The content type (mime-format)
     *
     * @author  Nicolas Pecher
@@ -222,8 +204,6 @@ class File extends FilesystemItem {
    }
 
    /**
-    * @public
-    *
     * @return  string The file-extension
     *
     * @author  Nicolas Pecher
@@ -231,13 +211,13 @@ class File extends FilesystemItem {
     */
    public function getExtension() {
       $name = $this->getName();
+
       return substr(strrchr($name, '.'), 1);
    }
 
    /**
-    * @public
-    *
     * @param string $content The content that should be inserted into the file
+    *
     * @return File This instance for further usage.
     * @throws FilesystemException In case the current object has not been opened or created before.
     *
@@ -250,8 +230,8 @@ class File extends FilesystemItem {
 
       if (!is_resource($this->fileHandle)) {
          throw new FilesystemException('[File::writeContent()] You have to set up this '
-            . 'domain object by using File::open() or File::create() before calling '
-            . 'this function.', E_USER_ERROR);
+               . 'domain object by using File::open() or File::create() before calling '
+               . 'this function.', E_USER_ERROR);
       }
 
       if (ftruncate($this->fileHandle, 0) === false) {
@@ -263,13 +243,13 @@ class File extends FilesystemItem {
       }
 
       $this->content = $content;
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * @param   string $content The content that should be appended to the actual content
+    *
     * @return  boolean
     *
     * @author  Nicolas Pecher
@@ -278,13 +258,13 @@ class File extends FilesystemItem {
    public function appendContent($content) {
       $newContent = $this->content . $content;
       $this->writeContent($newContent);
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * @param   string $content The content that should be prepended to the actual content
+    *
     * @return  boolean
     *
     * @author  Nicolas Pecher
@@ -293,12 +273,11 @@ class File extends FilesystemItem {
    public function prependContent($content) {
       $newContent = $content . $this->content;
       $this->writeContent($newContent);
+
       return $this;
    }
 
    /**
-    * @public
-    *
     * @author  Nicolas Pecher
     * @version Version 0.1, 01.05.2012
     */

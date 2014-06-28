@@ -4,49 +4,60 @@
 ***************************************************************************************************/
 
 .contact-form .error-container li {
-   color: red;
+    color: red;
 }
+
 .contact-form .error-container {
-   border: 2px solid red;
+    border: 2px solid red;
 }
+
 .contact-form form {
-   margin: 1.3em 0 1.3em 2em;
+    margin: 1.3em 0 1.3em 2em;
 }
+
 .contact-form label {
-   display: block;
-   font-size: 0.8em;
-   margin: .6em 0 .1em 0;
+    display: block;
+    font-size: 0.8em;
+    margin: .6em 0 .1em 0;
 }
+
 .contact-form input, .contact-form textarea {
-   width: 30em;
+    width: 30em;
 }
+
 .contact-form select {
-   width: 30.4em;
+    width: 30.4em;
 }
+
 .contact-form input[type="submit"], .contact-form input[type="button"] {
-   width: auto;
+    width: auto;
 }
+
 .contact-form .captcha img {
-   float: left;
-   margin-right: 0.8em;
+    float: left;
+    margin-right: 0.8em;
 }
+
 .contact-form .captcha input {
-   width: 10em;
+    width: 10em;
 }
+
 .contact-form .captcha:after {
-   clear: both;
-   content: ' ';
-   display: block;
-   height: 0;
-   margin-bottom: 0.6em;
-   visibility: hidden;
+    clear: both;
+    content: ' ';
+    display: block;
+    height: 0;
+    margin-bottom: 0.6em;
+    visibility: hidden;
 }
+
 .contact-form .buttonbox {
-   font-size: 0.9em;
-   text-align: right;
-   width: 30em;
+    font-size: 0.9em;
+    text-align: right;
+    width: 30em;
 }
+
 /* mark invalid form controls */
 .contact-form .apf-form-error {
-   border: 2px solid red;
+    border: 2px solid red;
 }
