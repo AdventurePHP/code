@@ -1,5 +1,5 @@
 <?php
-namespace APF\core\exceptionhandler\documentcontroller;
+namespace APF\core\exceptionhandler\controller;
 
 /**
  * <!--
