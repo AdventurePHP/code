@@ -91,8 +91,8 @@ class Page extends APFObject {
       $this->document->setLanguage($this->getLanguage());
 
       // load the design
-      $this->document->loadDesign($namespace, $design);
       $this->document->setObjectId(XmlParser::generateUniqID());
+      $this->document->loadDesign($namespace, $design);
 
       // ensure native APF environment
       $this->document->onParseTime();
