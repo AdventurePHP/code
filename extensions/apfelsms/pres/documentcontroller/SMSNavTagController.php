@@ -6,7 +6,6 @@ use APF\tools\string\StringAssistant;
 
 
 /**
- *
  * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version:   v0.1 (08.08.2012)
@@ -15,21 +14,17 @@ use APF\tools\string\StringAssistant;
  */
 class SMSNavTagController extends SMSBaseNavTagController {
 
-
    /**
     * @var \APF\extensions\apfelsms\biz\SMSManager
     */
    protected $SMSM;
-
 
    /**
     * @var bool
     */
    protected $autoDepth = false;
 
-
    public function transformContent() {
-
 
       /** @var $SMSM \APF\extensions\apfelsms\biz\SMSManager */
       $SMSM = $this->getDIServiceObject('APF\extensions\apfelsms', 'Manager');
@@ -40,7 +35,6 @@ class SMSNavTagController extends SMSBaseNavTagController {
       $rellevel = $doc->getAttribute('SMSNavRelLevel');
       $depth = $doc->getAttribute('SMSNavDepth');
       $basePageId = $doc->getAttribute('SMSNavBasePageId');
-
 
       ////
       // fetch base page
@@ -82,10 +76,8 @@ class SMSNavTagController extends SMSBaseNavTagController {
          $depth = 1;
       }
 
-
       ////
       // collect pages to display in first menu level (no subpages, even in case of depth > 1)
-
 
       if ($targetLevel <= $basePageLevel) {
 
@@ -126,7 +118,6 @@ class SMSNavTagController extends SMSBaseNavTagController {
 
    }
 
-
    /**
     * @param SMSPage[] $navPages
     * @param $depth
@@ -144,16 +135,15 @@ class SMSNavTagController extends SMSBaseNavTagController {
 
    }
 
-
    /**
     * @param SMSPage[] $navPages
     * @param $depth
+    *
     * @return string
     * @version v0.1
     *          v0.2 (15.05.2013) Added support to keep certain request parameters in url
     */
    protected function buildMenuEntries(array $navPages, $depth) {
-
 
       $lastCount = count($navPages);
       $count = 0;
@@ -214,10 +204,10 @@ class SMSNavTagController extends SMSBaseNavTagController {
             $template = $this->getTemplate('navEntry');
          }
 
-         $template->setStringPlaceHolder('anchor', 'URL', StringAssistant::escapeSpecialCharacters($linkURL));
-         $template->setStringPlaceHolder('anchor', 'TITLE', StringAssistant::escapeSpecialCharacters($linkTitle));
-         $template->setStringPlaceHolder('anchor', 'CLASSES', $linkClasses);
-         $template->setStringPlaceHolder('anchor', 'TEXT', StringAssistant::escapeSpecialCharacters($linkText));
+         $template->setPlaceHolder('URL', StringAssistant::escapeSpecialCharacters($linkURL));
+         $template->setPlaceHolder('TITLE', StringAssistant::escapeSpecialCharacters($linkTitle));
+         $template->setPlaceHolder('CLASSES', $linkClasses);
+         $template->setPlaceHolder('TEXT', StringAssistant::escapeSpecialCharacters($linkText));
 
          $buffer .= $template->transformTemplate();
 
@@ -227,9 +217,9 @@ class SMSNavTagController extends SMSBaseNavTagController {
 
    }
 
-
    /**
     * @param SMSPage[] $navPages
+    *
     * @return SMSPage[]|array
     */
    protected function cullEntries(array $navPages) {
@@ -249,6 +239,5 @@ class SMSNavTagController extends SMSBaseNavTagController {
 
       return $buffer;
    }
-
 
 }

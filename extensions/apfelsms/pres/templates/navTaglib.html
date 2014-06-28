@@ -1,19 +1,21 @@
-<@controller class="APF\extensions\apfelsms\pres\documentcontroller\SMSNavTagController" @>
+<@controller
+   class="APF\extensions\apfelsms\pres\documentcontroller\SMSNavTagController"
+@>
 <html:template name="navRoot">
     <ul>
-        <template:placeholder name="entries" />
+        ${entries}
     </ul>
 </html:template>
 
 <html:template name="navEntry">
-    <li><template:placeholder name="anchor"><a href="{URL}" title="{TITLE}" class="{CLASSES}" >{TEXT}</a></template:placeholder></li>
+    <li><a href="${URL}" title="${TITLE}" class="${CLASSES}">${TEXT}</a></li>
 </html:template>
 
 <html:template name="navEntryWithSubs">
-    <li><template:placeholder name="anchor"><a href="{URL}" title="{TITLE}" class="hasSubEntries {CLASSES}" >{TEXT}</a></template:placeholder></li>
+    <li><a href="${URL}" title="${TITLE}" class="hasSubEntries {CLASSES}">${TEXT}</a></li>
     <li class="subEntries">
         <ul>
-            <template:placeholder name="subEntries" />
+            ${subEntries}
         </ul>
     </li>
 </html:template>

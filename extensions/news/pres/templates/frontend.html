@@ -1,7 +1,6 @@
 <@controller
    class="APF\extensions\news\pres\documentcontroller\NewsFrontendController"
 @>
-<core:addtaglib class="APF\tools\html\taglib\HtmlIteratorTag" prefix="html" name="iterator" />
 <html:iterator name="list">
     <div id="news">
         
@@ -9,41 +8,41 @@
             <iterator:item>
                 <div class="news-entry">
                     <div class="news-entry-title">
-                        <item:placeholder name="title" />
+                        ${title}
                     </div>
                     <div class="news-entry-info">
                         <span class="news-entry-date">
-                            <item:placeholder name="date" />
+                            ${date}
                         </span>
-                        <item:placeholder name="author" />
+                        ${author}
                     </div>
                     <div class="news-entry-text">
-                        <item:placeholder name="text" />
+                        ${text}
                     </div>
                 </div>
             </iterator:item>
         </div>
         
-        <iterator:placeholder name="pager" />
+        ${pager}
         
     </div>
 </html:iterator>
 
 <html:template name="author">
     <span class="news-entry-author">
-        <span class="label"><template:getstring namespace="APF\extensions\news" config="labels.ini" entry="Author" />: </span>
-        <template:placeholder name="authorname" />
+        <span class="label"><html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Author" />: </span>
+        ${authorname}
     </span>
 </html:template>
 
 <html:template name="pager">
     <div id="news-pager">
-        <template:getstring namespace="APF\extensions\news" config="labels.ini" entry="Page" />: <template:placeholder name="pages" />
+        <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Page" />: ${pages}
     </div>
 </html:template>
 
 <html:template name="noentry">
     <div id="news-noentry">
-        <template:getstring namespace="APF\extensions\news" config="labels.ini" entry="NoEntry" />
+        <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="NoEntry" />
     </div>
 </html:template>

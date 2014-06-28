@@ -4,22 +4,17 @@ namespace APF\extensions\apfelsms\pres\documentcontroller;
 use APF\extensions\apfelsms\biz\SMSManager;
 use APF\tools\string\StringAssistant;
 
-
 /**
- *
  * @package APF\extensions\apfelsms
  * @author: Jan Wiese <jan.wiese@adventure-php-framework.org>
  * @version: v0.1 (23.09.12)
- *
  */
 class SMSBreadcrumbNavTagController extends SMSBaseNavTagController {
-
 
    /**
     * @var SMSManager
     */
    protected $SMSM;
-
 
    public function transformContent() {
 
@@ -115,10 +110,10 @@ class SMSBreadcrumbNavTagController extends SMSBaseNavTagController {
             $linkClasses .= ' first';
          }
 
-         $template->setStringPlaceHolder('anchor', 'URL', StringAssistant::escapeSpecialCharacters($linkURL));
-         $template->setStringPlaceHolder('anchor', 'TITLE', StringAssistant::escapeSpecialCharacters($linkTitle));
-         $template->setStringPlaceHolder('anchor', 'TEXT', StringAssistant::escapeSpecialCharacters($linkText));
-         $template->setStringPlaceHolder('anchor', 'CLASSES', $linkClasses);
+         $template->setPlaceHolder('URL', StringAssistant::escapeSpecialCharacters($linkURL));
+         $template->setPlaceHolder('TITLE', StringAssistant::escapeSpecialCharacters($linkTitle));
+         $template->setPlaceHolder('TEXT', StringAssistant::escapeSpecialCharacters($linkText));
+         $template->setPlaceHolder('CLASSES', $linkClasses);
 
          $buffer .= $template->transformTemplate();
       }

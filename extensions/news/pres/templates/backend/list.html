@@ -1,27 +1,30 @@
 <@controller
    class="APF\extensions\news\pres\documentcontroller\backend\NewsListController"
 @>
-<core:addtaglib class="APF\tools\html\taglib\HtmlIteratorTag" prefix="html" name="iterator" />
+<core:addtaglib
+   class="APF\extensions\news\pres\taglib\NewsMediaInclusionTag"
+   prefix="news"
+   name="media"
+/>
 <html:iterator name="newslist">
     <table id="news-backendlist">
         <thead>
             <tr>
-                <th><iterator:getstring namespace="APF\extensions\news" config="labels.ini" entry="Title" /></th>
-                <th><iterator:getstring namespace="APF\extensions\news" config="labels.ini" entry="Date" /></th>
-                <th><iterator:getstring namespace="APF\extensions\news" config="labels.ini" entry="Action" /></th>
+                <th><html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Title" /></th>
+                <th><html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Date" /></th>
+                <th><html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Action" /></th>
             </tr>
         </thead>
         <tbody>
             <iterator:item>
-                <item:addtaglib class="APF\extensions\news\pres\taglib\NewsMediaInclusionTag" prefix="news" name="media" />
                 <tr>
-                    <td><item:placeholder name="Title" /></td>
-                    <td><item:placeholder name="Date" /></td>
+                    <td>${Title}</td>
+                    <td>${Date}</td>
                     <td>
-                        <a href="<item:placeholder name="LinkEdit" />">
+                        <a href="${LinkEdit}">
                             <news:media filename="edit.png" label="Edit" />
                         </a>
-                        <a href="<item:placeholder name="LinkDelete" />">
+                        <a href="${LinkDelete}">
                             <news:media filename="delete.png" label="Delete" />
                         </a>
                     </td>
@@ -33,6 +36,6 @@
 
 <html:template name="noentry">
     <div id="news-noentry">
-        <template:getstring namespace="APF\extensions\news" config="labels.ini" entry="NoEntry" />
+        <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="NoEntry" />
     </div>
 </html:template>

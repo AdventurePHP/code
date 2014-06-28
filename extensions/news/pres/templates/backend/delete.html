@@ -3,14 +3,15 @@
 @>
 <html:template name="delete">
     <div id="news-delete">
-        <template:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.Message" /><br />
+        <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.Message" />
         <br />
-        <a href="<template:placeholder name="LinkYes" />">
-           <template:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.Yes" />
+        <br />
+        <a href="${LinkYes}">
+           <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.Yes" />
         </a>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a href="<template:placeholder name="LinkNo" />">
-           <template:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.No" />
+        <a href="${LinkNo}">
+           <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Delete.No" />
         </a>
     </div>
 </html:template>

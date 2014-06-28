@@ -1,21 +1,20 @@
 <@controller
    class="APF\extensions\news\pres\documentcontroller\backend\NewsEditController"
 @>
-<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <html:form name="edit" id="news-edit">
     <form:success>
         <div class="news-edit-success">
-            <success:getstring namespace="APF\extensions\news" config="labels.ini" entry="Form.Success" />
+            <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Form.Success" />
         </div>
     </form:success>
     <form:error>
         <div class="news-edit-error">
-            <error:getstring namespace="APF\extensions\news" config="labels.ini" entry="Form.Error" />
+            <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Form.Error" />
         </div>
     </form:error>
     <fieldset>
         <label for="news-edit-title">
-            <form:getstring
+            <html:getstring
                 namespace="APF\extensions\news"
                 config="labels.ini"
                 entry="Form.Title" 
@@ -24,7 +23,7 @@
         <form:text id="news-edit-title" name="news-edit-title" maxlength="100" /><br />
         
         <label for="news-edit-user">
-            <form:getstring
+            <html:getstring
                 namespace="APF\extensions\news"
                 config="labels.ini"
                 entry="Form.User" 
@@ -33,7 +32,7 @@
         <form:text id="news-edit-user" name="news-edit-user" maxlength="100" /><br />
         
         <label for="news-edit-text">
-            <form:getstring
+            <html:getstring
                 namespace="APF\extensions\news"
                 config="labels.ini"
                 entry="Form.Text" 
@@ -59,6 +58,6 @@
 
 <html:template name="notfound">
     <div class="news-edit-error">
-        <template:getstring namespace="APF\extensions\news" config="labels.ini" entry="Form.NotFound" />
+        <html:getstring namespace="APF\extensions\news" config="labels.ini" entry="Form.NotFound" />
     </div>
 </html:template>
