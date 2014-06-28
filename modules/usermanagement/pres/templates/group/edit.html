@@ -14,7 +14,6 @@
          entry="frontend.group.edit.intro.text"
          />
 </p>
-<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <html:form name="GroupEdit" method="post">
    <div>
       <form:addvalidator
@@ -23,7 +22,7 @@
             control="DisplayName"
             />
       <p>
-         <label><form:getstring
+         <label><html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.group.edit.form.display-name.label"
@@ -31,7 +30,7 @@
          <form:text name="DisplayName" maxlength="100"/>
       </p>
       <p>
-         <label><form:getstring
+         <label><html:getstring
                      namespace="APF\modules\usermanagement\pres"
                      config="labels.ini"
                      entry="frontend.group.edit.form.description.label"

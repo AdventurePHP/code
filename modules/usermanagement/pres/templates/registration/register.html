@@ -1,19 +1,18 @@
 <@controller
    class="APF\modules\usermanagement\pres\documentcontroller\registration\RegistrationController"
 @>
-<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <html:form class="umgt-fe-reg" name="register" method="post">
    <div>
       <p>
-         <form:getstring
+         <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="register.form.hint"/>
       </p>
-      <form:placeholder name="register-error"/>
+      ${register-error}
       <p>
          <label for="umgt-fe-reg-firstname">
-            <form:getstring
+            <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="register.firstname.label"/>
@@ -22,7 +21,7 @@
       </p>
       <p>
          <label for="umgt-fe-reg-lastname">
-            <form:getstring
+            <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="register.lastname.label"/>
@@ -31,7 +30,7 @@
       </p>
       <p>
          <label for="umgt-fe-reg-street">
-            <form:getstring
+            <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="register.streetandnumber.label"/>
@@ -41,7 +40,7 @@
       </p>
       <p>
          <label for="umgt-fe-reg-pass">
-            <form:getstring
+            <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="register.zipandcity.label"/>
@@ -51,7 +50,7 @@
       </p>
       <p>
          <label for="umgt-fe-reg-email">
-            <form:getstring
+            <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="register.email.label"/>
@@ -65,7 +64,7 @@
       </p>
       <p>
          <label for="umgt-fe-reg-user">
-            <form:getstring
+            <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="register.username.label"/>
@@ -79,7 +78,7 @@
       </p>
       <p>
          <label for="umgt-fe-reg-pass">
-            <form:getstring
+            <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="register.password.label"/>
@@ -93,7 +92,7 @@
       </p>
       <p>
          <label for="umgt-fe-reg-repeat">
-            <form:getstring
+            <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="register.repeat.label"/>
@@ -113,7 +112,7 @@
 
 <html:template name="register-error">
    <div class="registration-error">
-      <template:getstring
+      <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="register.input.error"/>
@@ -122,7 +121,7 @@
 
 <html:template name="system-error">
    <div class="system-error">
-      <template:getstring
+      <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="register.system.error"/>
@@ -131,7 +130,7 @@
 
 <html:template name="register-ok">
    <div class="credentials-ok">
-      <template:getstring
+      <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="register.success"/>

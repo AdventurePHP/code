@@ -11,22 +11,21 @@
           config="labels.ini"
           entry="frontend.proxy.add-proxy.intro.text"/>
 </p>
-<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <html:form name="visibilitydef" method="post">
    <div>
-      <h4><form:getstring
+      <h4><html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="frontend.proxy.add-proxy.basics.headline"/></h4>
       <div>
-         <label for="proxytypeid"><form:getstring
+         <label for="proxytypeid"><html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.add-proxy.proxy-type.label"/></label>
          <form:select id="proxytypeid" name="proxytypeid" />
       </div>
       <div>
-         <label for="appobjectid"><form:getstring
+         <label for="appobjectid"><html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.add-proxy.proxy-app-id.label"/></label>
@@ -44,21 +43,21 @@
       </div>
       <form:listener control="users">
          <div class="error-cont">
-            <listener:getstring
+            <html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="frontend.proxy.add-proxy.validator.message"/>
          </div>
       </form:listener>
       <div>
-         <label for="users"><form:getstring
+         <label for="users"><html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.add-proxy.users.label"/></label>
          <form:multiselect id="users" name="users" size="6" alt="groups"/>
       </div>
       <div>
-         <label for="groups"><form:getstring
+         <label for="groups"><html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.add-proxy.groups.label"/></label>
@@ -69,35 +68,35 @@
             control="users"
             button="add"
             />
-      <h4><form:getstring
+      <h4><html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="frontend.proxy.add-proxy.access.headline"/></h4>
       <div class="umgt-access-perms">
          <p>
             <form:checkbox id="read-perm" name="ReadPermission"/>
-            <label for="read-perm"><form:getstring
+            <label for="read-perm"><html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="frontend.proxy.add-proxy.read-perm.label"/></label>
          </p>
          <p>
             <form:checkbox id="write-perm" name="WritePermission"/>
-            <label for="write-perm"><form:getstring
+            <label for="write-perm"><html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="frontend.proxy.add-proxy.write-perm.label"/></label>
          </p>
          <p>
             <form:checkbox id="link-perm" name="LinkPermission"/>
-            <label for="link-perm"><form:getstring
+            <label for="link-perm"><html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="frontend.proxy.add-proxy.link-perm.label"/></label>
          </p>
          <p>
             <form:checkbox id="delete-perm" name="DeletePermission"/>
-            <label for="delete-perm"><form:getstring
+            <label for="delete-perm"><html:getstring
                   namespace="APF\modules\usermanagement\pres"
                   config="labels.ini"
                   entry="frontend.proxy.add-proxy.delete-perm.label"/></label>

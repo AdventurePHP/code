@@ -1,7 +1,11 @@
 <@controller
    class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyListController"
 @>
-<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
+<core:addtaglib
+   class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag"
+   prefix="umgt"
+   name="media"
+/>
 <p>
    <html:getstring
          namespace="APF\modules\usermanagement\pres"
@@ -11,7 +15,7 @@
 <p>
    <html:form class="type-filter" name="type-filter">
       <div>
-         <form:getstring
+         <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.list.filter.label"/>
@@ -48,31 +52,30 @@
       </tr>
    </thead>
    <tbody>
-      <html:placeholder name="ProxyList"/>
+      ${ProxyList}
    </tbody>
 </table>
 
 <html:template name="Proxy">
-   <template:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media" />
    <tr>
       <td>
          <umgt:media filename="visibility_def.png" alt="Delete visibility definition"/>
       </td>
       <td>
-         <template:getstring
+         <html:getstring
                name="proxy-def"
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.proxy.list.proxy-def.label"/>
       </td>
       <td>
-         <template:placeholder name="Users"/>
+         ${Users}
       </td>
       <td>
-         <template:placeholder name="Groups"/>
+         ${Groups}
       </td>
       <td class="actions">
-         <a href="<template:placeholder name="proxy_details" />">
+         <a href="${proxy_details}">
             <umgt:media filename="details.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -80,7 +83,7 @@
                    entry="frontend.proxy.list.action.details.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="proxy_delete" />">
+         <a href="${proxy_delete}">
             <umgt:media filename="delete.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -88,7 +91,7 @@
                    entry="frontend.proxy.list.action.delete.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="proxy_add_user" />">
+         <a href="${proxy_add_user}">
             <umgt:media filename="group_add_user.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -96,7 +99,7 @@
                    entry="frontend.proxy.list.action.add-users-to-proxy.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="proxy_remove_user" />">
+         <a href="${proxy_remove_user}">
             <umgt:media filename="group_remove_user.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -104,7 +107,7 @@
                    entry="frontend.proxy.list.action.remove-users-from-proxy.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="proxy_add_group" />">
+         <a href="${proxy_add_group}">
             <umgt:media filename="add_group.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -112,7 +115,7 @@
                    entry="frontend.proxy.list.action.add-groups-to-proxy.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="proxy_remove_group" />">
+         <a href="${proxy_remove_group}">
             <umgt:media filename="remove_group.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"

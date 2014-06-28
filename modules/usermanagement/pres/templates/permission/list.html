@@ -1,6 +1,11 @@
 <@controller
    class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionListController"
 @>
+<core:addtaglib
+   class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag"
+   prefix="umgt"
+   name="media"
+/>
 <table class="vis-def">
    <thead>
       <tr>
@@ -24,11 +29,10 @@
       </tr>
    </thead>
    <tbody>
-      <html:placeholder name="ListPermissions"/>
+      ${ListPermissions}
    </tbody>
 </table>
 <html:template name="Permission">
-   <template:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media" />
    <tr>
       <td>
          <umgt:media filename="permission.png">
@@ -39,16 +43,16 @@
          </umgt:media>
       </td>
       <td>
-         <template:placeholder name="DisplayName"/>
+         ${DisplayName}
       </td>
       <td>
-         <template:placeholder name="Name"/>
+         ${Name}
       </td>
       <td>
-         <template:placeholder name="Value"/>
+         ${Value}
       </td>
       <td class="actions">
-         <a href="<template:placeholder name="permission_edit" />">
+         <a href="${permission_edit}">
             <umgt:media filename="edit.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -56,7 +60,7 @@
                    entry="frontend.permission.list.action.edit.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="permission_delete" />">
+         <a href="${permission_delete}">
             <umgt:media filename="delete.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"

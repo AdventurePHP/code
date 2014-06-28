@@ -11,11 +11,10 @@
       config="labels.ini"
       entry="frontend.role.edit.intro.text"/>
 </p>
-<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <html:form name="RoleEdit" method="post">
    <div>
       <p>
-         <label><form:getstring
+         <label><html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.role.edit.display-name.label"/></label>
@@ -27,7 +26,7 @@
                />
       </p>
       <p>
-         <label><form:getstring
+         <label><html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.role.edit.description.label"/></label>

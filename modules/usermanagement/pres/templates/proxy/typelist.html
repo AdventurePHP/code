@@ -1,6 +1,11 @@
 <@controller
    class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyTypeListController"
 @>
+<core:addtaglib
+   class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag"
+   prefix="umgt"
+   name="media"
+/>
 <h3><html:getstring
        namespace="APF\modules\usermanagement\pres"
        config="labels.ini"
@@ -26,11 +31,10 @@
       </tr>
    </thead>
    <tbody>
-      <html:placeholder name="TypeList" />
+      ${TypeList}
    </tbody>
 </table>
 <html:template name="Type">
-   <template:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media" />
    <tr>
       <td>
          <umgt:media filename="visibility_def_type.png">
@@ -40,9 +44,9 @@
                    entry="frontend.proxy.type-list.proxy-type-img.label"/>
          </umgt:media>
       </td>
-      <td><template:placeholder name="AppObjectName" /></td>
+      <td>${AppObjectName}</td>
       <td class="actions">
-         <a href="<template:placeholder name="type_edit" />">
+         <a href="${type_edit}">
            <umgt:media filename="edit.png">
               <media:getstring
                      namespace="APF\modules\usermanagement\pres"
@@ -50,7 +54,7 @@
                      entry="frontend.proxy.type-list.action.edit.label"/>
            </umgt:media>
          </a>
-         <a href="<template:placeholder name="type_delete" />">
+         <a href="${type_delete}">
            <umgt:media filename="delete.png">
               <media:getstring
                      namespace="APF\modules\usermanagement\pres"

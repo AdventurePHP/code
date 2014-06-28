@@ -1,7 +1,6 @@
 <@controller
    class="APF\modules\usermanagement\pres\documentcontroller\permission\PermissionEditController"
 @>
-<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <h3><html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
@@ -14,27 +13,27 @@
             control="DisplayName|Name|Value"
             />
       <p>
-         <form:getstring
+         <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.permission.edit.intro.text"/>
       </p>
       <p>
-         <label><form:getstring
+         <label><html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.permission.edit.display-name.label"/></label>
          <form:text name="DisplayName" maxlength="100"/>
       </p>
       <p>
-         <label><form:getstring
+         <label><html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.permission.edit.name.label"/></label>
          <form:text name="Name" maxlength="100"/>
       </p>
       <p>
-         <label><form:getstring
+         <label><html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.permission.edit.value.label"/></label>

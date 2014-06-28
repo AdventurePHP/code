@@ -1,6 +1,11 @@
 <@controller
    class="APF\modules\usermanagement\pres\documentcontroller\proxy\ProxyDetailsController"
 @>
+<core:addtaglib
+   class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag"
+   prefix="umgt"
+   name="media"
+/>
 <h3><html:getstring
        namespace="APF\modules\usermanagement\pres"
        config="labels.ini"
@@ -31,7 +36,7 @@
       </tr>
    </thead>
    <tbody>
-      <html:placeholder name="list" />
+      ${list}
    </tbody>
 </table>
 
@@ -47,32 +52,31 @@
        entry="frontend.proxy.details.intro.text.access"/>
 </p>
 <html:template name="access-perms">
-   <template:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media" />
    <div class="umgt-access-perms">
       <p>
          <umgt:media id="read"/>
-         <template:getstring
+         <html:getstring
                 namespace="APF\modules\usermanagement\pres"
                 config="labels.ini"
                 entry="frontend.proxy.details.read-perm.label"/>
       </p>
       <p>
          <umgt:media id="write"/>
-         <template:getstring
+         <html:getstring
                 namespace="APF\modules\usermanagement\pres"
                 config="labels.ini"
                 entry="frontend.proxy.details.write-perm.label"/>
       </p>
       <p>
          <umgt:media id="relation"/>
-         <template:getstring
+         <html:getstring
                 namespace="APF\modules\usermanagement\pres"
                 config="labels.ini"
                 entry="frontend.proxy.details.link-perm.label"/>
       </p>
       <p>
          <umgt:media id="delete"/>
-         <template:getstring
+         <html:getstring
                 namespace="APF\modules\usermanagement\pres"
                 config="labels.ini"
                 entry="frontend.proxy.details.delete-perm.label"/>
@@ -81,16 +85,15 @@
 </html:template>
 
 <html:template name="listitem">
-   <template:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media" />
    <tr>
       <td>
          <umgt:media />
       </td>
       <td>
-         <template:placeholder name="item" />
+         ${item}
       </td>
       <td>
-         <a href="<template:placeholder name="delete_link"/>">
+         <a href="${delete_link}">
             <umgt:media filename="delete.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"

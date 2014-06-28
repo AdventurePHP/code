@@ -1,6 +1,11 @@
 <@controller
    class="APF\modules\usermanagement\pres\documentcontroller\group\GroupListController"
 @>
+<core:addtaglib
+   class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag"
+   prefix="umgt"
+   name="media"
+/>
 <table class="vis-def">
    <thead>
       <tr>
@@ -24,12 +29,11 @@
       </tr>
    </thead>
    <tbody>
-      <html:placeholder name="Grouplist"/>
+      ${Grouplist}
    </tbody>
 </table>
 
 <html:template name="Group">
-   <template:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media"/>
    <tr>
       <td>
          <umgt:media filename="group.png">
@@ -40,16 +44,16 @@
          </umgt:media>
       </td>
       <td>
-         <template:placeholder name="DisplayName"/>
+         ${DisplayName}
       </td>
       <td>
-         <template:placeholder name="Users"/>
+         ${Users}
       </td>
       <td>
-         <template:placeholder name="Roles"/>
+         ${Roles}
       </td>
       <td class="actions">
-         <a href="<template:placeholder name="group_details" />">
+         <a href="${group_details}">
             <umgt:media filename="details.png">
                <media:getstring
                   namespace="APF\modules\usermanagement\pres"
@@ -57,7 +61,7 @@
                   entry="frontend.group.list.action.details.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="group_edit" />">
+         <a href="${group_edit}">
             <umgt:media filename="edit.png" title="Edit group">
                <media:getstring
                   namespace="APF\modules\usermanagement\pres"
@@ -65,7 +69,7 @@
                   entry="frontend.group.list.action.edit.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="group_delete" />">
+         <a href="${group_delete}">
             <umgt:media filename="delete.png" title="Delete group">
                <media:getstring
                   namespace="APF\modules\usermanagement\pres"
@@ -73,7 +77,7 @@
                   entry="frontend.group.list.action.delete.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="AddUsersToGroup" />">
+         <a href="${AddUsersToGroup}">
             <umgt:media filename="group_add_user.png" title="Add users to group">
                <media:getstring
                   namespace="APF\modules\usermanagement\pres"
@@ -81,7 +85,7 @@
                   entry="frontend.group.list.action.add-user.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="RemoveUsersFromGroup" />">
+         <a href="${RemoveUsersFromGroup}">
             <umgt:media filename="group_remove_user.png" title="Remove users from group">
                <media:getstring
                   namespace="APF\modules\usermanagement\pres"
@@ -89,7 +93,7 @@
                   entry="frontend.group.list.action.remove-user.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="AddRolesToGroup" />">
+         <a href="${AddRolesToGroup}">
             <umgt:media filename="role_add.png" title="Add roles to group">
                <media:getstring
                   namespace="APF\modules\usermanagement\pres"
@@ -97,7 +101,7 @@
                   entry="frontend.group.list.action.role-add.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="RemoveRolesFromGroup" />">
+         <a href="${RemoveRolesFromGroup}">
             <umgt:media filename="role_remove.png" title="Remove roles from group">
                <media:getstring
                      namespace="APF\modules\usermanagement\pres"

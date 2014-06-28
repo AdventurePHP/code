@@ -1,26 +1,25 @@
 <@controller
    class="APF\modules\usermanagement\pres\documentcontroller\login\LoginController"
 @>
-<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <html:form class="umgt-fe-login" autocomplete="off" name="login" method="post">
    <div>
-      <form:placeholder name="login-error" />
+      ${login-error}
       <label for="umgt-fe-login-user">
-         <form:getstring
+         <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="login.form.username.label" />
       </label>
       <form:text id="umgt-fe-login-user" name="username" />
       <label for="umgt-fe-login-pass">
-         <form:getstring
+         <html:getstring
             namespace="APF\modules\usermanagement\pres"
             config="labels.ini"
             entry="login.form.password.label" />
       </label>
       <form:password id="umgt-fe-login-pass" name="password" />
       <label for="umgt-fe-login-remember-me">
-         <form:getstring
+         <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="login.form.remember-me.label" />
@@ -42,7 +41,7 @@
 
 <html:template name="login-error">
    <div class="credentials-error">
-      <template:getstring
+      <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
          entry="login.credentials.error" />
@@ -51,7 +50,7 @@
 
 <html:template name="system-error">
    <div class="system-error">
-      <template:getstring
+      <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
          entry="login.system.error" />
@@ -60,7 +59,7 @@
 
 <html:template name="login-ok">
    <div class="credentials-ok">
-      <template:getstring
+      <html:getstring
          namespace="APF\modules\usermanagement\pres"
          config="labels.ini"
          entry="login.already.logged.in" />

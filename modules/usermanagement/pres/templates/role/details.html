@@ -1,14 +1,18 @@
 <@controller
    class="APF\modules\usermanagement\pres\documentcontroller\role\RoleDetailsController
 @>
-<core:addtaglib class="APF\tools\html\taglib\HtmlIteratorTag" prefix="html" name="iterator" />
+<core:addtaglib
+   class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag"
+   prefix="umgt"
+   name="media"
+/>
 <h3><html:getstring
       name="display-name"
       namespace="APF\modules\usermanagement\pres"
       config="labels.ini"
       entry="frontend.role.details.headline"/></h3>
 <p>
-   <html:placeholder name="Description" />
+   ${Description}
 </p>
 <h4><html:getstring
       namespace="APF\modules\usermanagement\pres"
@@ -17,7 +21,6 @@
 <html:iterator name="Permissions">
    <ul>
       <iterator:item>
-         <item:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media" />
          <li>
             <umgt:media filename="permission.png">
                <media:getstring
@@ -25,8 +28,8 @@
                   config="labels.ini"
                   entry="frontend.role.details.permission-img.label"/>
             </umgt:media>
-            <item:placeholder getter="getDisplayName" />
-            (<em><item:placeholder getter="getName" />=<item:placeholder getter="getValue" /></em>)
+            <html:placeholder getter="getDisplayName" />
+            (<em><html:placeholder getter="getName" />=<html:placeholder getter="getValue" /></em>)
          </li>
       </iterator:item>
    </ul>
@@ -39,7 +42,6 @@
 <html:iterator name="Users">
    <ul>
       <iterator:item>
-         <item:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media" />
          <li>
             <umgt:media filename="user.png">
                <media:getstring
@@ -47,7 +49,7 @@
                   config="labels.ini"
                   entry="frontend.role.details.user-img.label"/>
             </umgt:media>
-            <item:placeholder getter="getFirstName" />, <item:placeholder getter="getLastName" />
+            <html:placeholder getter="getFirstName" />, <html:placeholder getter="getLastName" />
          </li>
       </iterator:item>
    </ul>
@@ -60,7 +62,6 @@
 <html:iterator name="Groups">
    <ul>
       <iterator:item>
-         <item:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media" />
          <li>
             <umgt:media filename="group.png">
                <media:getstring
@@ -68,7 +69,7 @@
                   config="labels.ini"
                   entry="frontend.role.details.group-img.label"/>
             </umgt:media>
-            <item:placeholder getter="getDisplayName" />
+            <html:placeholder getter="getDisplayName" />
          </li>
       </iterator:item>
    </ul>

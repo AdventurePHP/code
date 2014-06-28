@@ -1,7 +1,6 @@
 <@controller
    class="APF\modules\usermanagement\pres\documentcontroller\role\RoleAddController"
 @>
-<core:addtaglib class="APF\tools\form\taglib\HtmlFormTag" prefix="html" name="form" />
 <h3><html:getstring
       namespace="APF\modules\usermanagement\pres"
       config="labels.ini"
@@ -9,13 +8,13 @@
 <html:form name="RoleAdd" method="post">
    <div>
       <p>
-         <form:getstring
+         <html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.role.add.intro.text"/>
       </p>
       <p>
-         <label><form:getstring
+         <label><html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.role.add.display-name.label"/></label>
@@ -27,14 +26,14 @@
                />
       </p>
       <p>
-         <label><form:getstring
+         <label><html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.role.add.description.label"/></label>
          <form:area name="Description"/>
       </p>
       <p>
-         <label><form:getstring
+         <label><html:getstring
                namespace="APF\modules\usermanagement\pres"
                config="labels.ini"
                entry="frontend.role.add.permissions.label"/></label>

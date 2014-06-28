@@ -1,6 +1,11 @@
 <@controller
    class="APF\modules\usermanagement\pres\documentcontroller\role\RoleListController"
 @>
+<core:addtaglib
+   class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag"
+   prefix="umgt"
+   name="media"
+/>
 <table class="vis-def">
    <thead>
       <tr>
@@ -28,12 +33,11 @@
       </tr>
    </thead>
    <tbody>
-      <html:placeholder name="RoleList"/>
+      ${RoleList}
    </tbody>
 </table>
 
 <html:template name="Role">
-   <template:addtaglib class="APF\modules\usermanagement\pres\taglib\UmgtMediaInclusionTag" prefix="umgt" name="media"/>
    <tr>
       <td>
          <umgt:media filename="role.png">
@@ -44,19 +48,19 @@
          </umgt:media>
       </td>
       <td>
-         <template:placeholder name="DisplayName"/>
+         ${DisplayName}
       </td>
       <td>
-         <template:placeholder name="Permissions"/>
+         ${Permissions}
       </td>
       <td>
-         <template:placeholder name="Users"/>
+         ${Users}
       </td>
       <td>
-         <template:placeholder name="Groups"/>
+         ${Groups}
       </td>
       <td class="actions">
-         <a href="<template:placeholder name="role_details" />">
+         <a href="${role_details}">
             <umgt:media filename="details.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -64,7 +68,7 @@
                    entry="frontend.role.list.action.details.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="role_edit" />">
+         <a href="${role_edit}">
             <umgt:media filename="edit.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -72,7 +76,7 @@
                    entry="frontend.role.list.action.edit.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="role_delete" />">
+         <a href="${role_delete}">
             <umgt:media filename="delete.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -80,7 +84,7 @@
                    entry="frontend.role.list.action.delete.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="AddPermissionToRole" />">
+         <a href="${AddPermissionToRole}">
             <umgt:media filename="permission_add.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -88,7 +92,7 @@
                    entry="frontend.role.list.action.add-permission-to-role.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="RemoveRoleFromPermission" />">
+         <a href="${RemoveRoleFromPermission}">
             <umgt:media filename="permission_remove.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -96,7 +100,7 @@
                    entry="frontend.role.list.action.remove-permission-from-role.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="AssignRoleToUser" />">
+         <a href="${AssignRoleToUser}">
             <umgt:media filename="group_add_user.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -104,7 +108,7 @@
                    entry="frontend.role.list.action.assign-role-to-user.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="DetachRoleFromUser" />">
+         <a href="${DetachRoleFromUser}">
             <umgt:media filename="group_remove_user.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -112,7 +116,7 @@
                    entry="frontend.role.list.action.remove-role-from-user.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="AddGroupToRole" />">
+         <a href="${AddGroupToRole}">
             <umgt:media filename="add_group.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
@@ -120,7 +124,7 @@
                    entry="frontend.role.list.action.add-group-to-role.label"/>
             </umgt:media>
          </a>
-         <a href="<template:placeholder name="RemoveGroupFromRole" />">
+         <a href="${RemoveGroupFromRole}">
             <umgt:media filename="remove_group.png">
                <media:getstring
                    namespace="APF\modules\usermanagement\pres"
